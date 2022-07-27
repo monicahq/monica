@@ -19,7 +19,7 @@ Monica depends on the following:
 
 -   A Web server, like [Apache httpd webserver](https://httpd.apache.org/)
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
--   PHP 7.4+
+-   PHP 8.0+
 -   [Composer](https://getcomposer.org/)
 -   [Node.js](https://nodejs.org)
 -   [Yarn](https://yarnpkg.com)
@@ -42,32 +42,50 @@ sudo apt install -y git
 
 **PHP:**
 
-If you are using Debian 10 or lower, PHP 7.4 is not available from the Debian project directly.  Instead use the [deb.sury.org](https://deb.sury.org/) package repository from Ondřej Surý, maintainer of the mainline Debian packages.
+If you are using Debian 10 or lower, PHP 8.0 is not available from the Debian project directly.  Instead use the [deb.sury.org](https://deb.sury.org/) package repository from Ondřej Surý, maintainer of the mainline Debian packages.
 
 ```sh
-sudo wget -q https://packages.sury.org/php/apt.gpg -O /etc/apt/trusted.gpg.d/php-sury.gpg
+sudo apt install -y curl software-properties-common
+curl -sSL https://packages.sury.org/php/apt.gpg | sudo tee /etc/apt/trusted.gpg.d/php-sury.gpg
 echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php-sury.list
 sudo apt update
 ```
 
+Install PHP 8.0 or 8.1 with these extensions:
 
-Install PHP 7.4 with these extensions:
+-   bcmath
+-   curl
+-   dom
+-   gd
+-   gmp
+-   iconv
+-   intl
+-   json
+-   mbstring
+-   mysqli
+-   opcache
+-   pdo_mysql
+-   redis
+-   sodium
+-   xml
+-   zip
 
+Run:
 ```sh
-sudo apt install -y php7.4 php7.4-bcmath php7.4-curl php7.4-gd php7.4-gmp \
-    php7.4-intl php7.4-mbstring php7.4-mysql php7.4-redis php7.4-xml php7.4-zip
+sudo apt install -y php8.1 php8.1-bcmath php8.1-curl php8.1-gd php8.1-gmp \
+    php8.1-intl php8.1-mbstring php8.1-mysql php8.1-redis php8.1-xml php8.1-zip
 ```
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager.
 
 ```sh
-wget -q -O - https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin/ --filename=composer
+curl -sSL https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin/ --filename=composer
 ```
 
 **Node.js:** Install node.js with package manager.
 
 ```sh
-wget -q -O - https://deb.nodesource.com/setup_16.x | sudo bash -
+curl -sSL https://deb.nodesource.com/setup_16.x | sudo bash -
 sudo apt install -y nodejs
 ```
 

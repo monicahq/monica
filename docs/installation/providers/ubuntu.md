@@ -20,7 +20,7 @@ Monica depends on the following:
 
 -   [Apache httpd webserver](https://httpd.apache.org/)
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
--   PHP 7.4+
+-   PHP 8.0+
 -   [Composer](https://getcomposer.org/)
 -   [Node.js](https://nodejs.org)
 -   [Yarn](https://yarnpkg.com)
@@ -42,22 +42,22 @@ sudo apt update
 sudo apt install -y apache2
 ```
 
-**PHP 7.4+:**
+**PHP 8.0+:**
 
 First add this PPA repository:
 
 ```sh
-sudo apt-get install -y software-properties-common
+sudo apt install -y software-properties-common
 sudo add-apt-repository ppa:ondrej/php
 ```
 
-Then install php 7.4 with these extensions:
+Then install php 8.0 or 8.1 with these extensions:
 
 ```sh
 sudo apt update
-sudo apt install -y php7.4 php7.4-bcmath php7.4-cli php7.4-curl php7.4-common \
-    php7.4-fpm php7.4-gd php7.4-gmp php7.4-intl php7.4-json php7.4-mbstring \
-    php7.4-mysql php7.4-opcache php7.4-redis php7.4-xml php7.4-zip
+sudo apt install -y php8.1 php8.1-bcmath php8.1-cli php8.1-curl php8.1-common \
+    php8.1-fpm php8.1-gd php8.1-gmp php8.1-intl php8.1-json php8.1-mbstring \
+    php8.1-mysql php8.1-opcache php8.1-redis php8.1-xml php8.1-zip
 ```
 
 **Composer:** After you're done installing PHP, you'll need the [Composer](https://getcomposer.org/download/) dependency manager.
@@ -233,10 +233,10 @@ Then, in the `nano` text editor window you just opened, copy the following - swa
 sudo a2dissite 000-default.conf
 sudo a2ensite monica.conf
 
-# Enable php7.4 fpm, and restart apache
+# Enable php8.1 fpm, and restart apache
 sudo a2enmod proxy_fcgi setenvif
-sudo a2enconf php7.4-fpm
-sudo service php7.4-fpm restart
+sudo a2enconf php8.1-fpm
+sudo service php8.1-fpm restart
 sudo service apache2 restart
 ```
 

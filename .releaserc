@@ -10,7 +10,7 @@
     [
       "@semantic-release/commit-analyzer",
       {
-        "preset": "angular",
+        "preset": "conventionalcommits",
         "releaseRules": [
           {"scope": "no-release", "release": false}
         ]
@@ -19,10 +19,7 @@
     [
       "@semantic-release/release-notes-generator",
       {
-        "preset": "angular",
-        "parserOpts": {
-          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
-        },
+        "preset": "conventionalcommits",
         "writerOpts": {
           "commitGroupsSort": ["feat"],
           "commitsSort": ["scope", "subject"]
