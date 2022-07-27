@@ -106,7 +106,7 @@ class CreateUser extends BaseService
         // Currency
         if ((! is_null($currencyCode)
             && ! $this->associateCurrency($user, $currencyCode))
-            ||! is_null($country)) {
+            || ! is_null($country)) {
             foreach ($country->getCurrencies() as $currency) {
                 if ($this->associateCurrency($user, $currency['iso_4217_code'])) {
                     break;
