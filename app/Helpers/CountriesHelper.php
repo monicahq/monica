@@ -47,7 +47,7 @@ class CountriesHelper
      * Find a country by the (english) name of the country.
      *
      * @param  string  $name  Common name of a country
-     * @return string cca2 code of the country
+     * @return string  iso_3166_1_alpha2 code of the country
      */
     public static function find($name): string
     {
@@ -125,7 +125,7 @@ class CountriesHelper
      * Get default country for a language.
      *
      * @param  string  $locale  language code (iso)
-     * @return string|null cca2 code
+     * @return string|null  iso_3166_1_alpha2 code
      */
     private static function getDefaultCountryFromLocale($locale): ?string
     {
