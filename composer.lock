@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d8cb24574a957ac42d8b673b01e15b85",
+    "content-hash": "ffe3e5c25099def00b2b2ab43e787960",
     "packages": [
         {
             "name": "asbiin/laravel-adorable",
@@ -16138,41 +16138,45 @@
         },
         {
             "name": "psalm/plugin-laravel",
-            "version": "v1.6.2",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/psalm-plugin-laravel.git",
-                "reference": "8c46a820d4de59ae601a9fcf5534df6bb03e619a"
+                "reference": "e56a90f322bef7246523ec76bdc31204f2ed6e60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/psalm-plugin-laravel/zipball/8c46a820d4de59ae601a9fcf5534df6bb03e619a",
-                "reference": "8c46a820d4de59ae601a9fcf5534df6bb03e619a",
+                "url": "https://api.github.com/repos/psalm/psalm-plugin-laravel/zipball/e56a90f322bef7246523ec76bdc31204f2ed6e60",
+                "reference": "e56a90f322bef7246523ec76bdc31204f2ed6e60",
                 "shasum": ""
             },
             "require": {
-                "barryvdh/laravel-ide-helper": ">=2.8.0",
+                "barryvdh/laravel-ide-helper": "^2.10",
                 "ext-simplexml": "*",
-                "illuminate/config": "^6.0 || ^8.0",
-                "illuminate/container": "^6.0 || ^8.0",
-                "illuminate/contracts": "^6.0 || ^8.0",
-                "illuminate/database": "^6.0 || ^8.0",
-                "illuminate/events": "^6.0 || ^8.0",
-                "illuminate/http": "^6.0 || ^8.0",
-                "illuminate/routing": "^6.0 || ^8.0",
-                "illuminate/support": "^6.0 || ^8.0",
-                "illuminate/view": "^6.0 || ^8.0",
-                "orchestra/testbench": "^3.8 || ^4.0 || ^5.0 || ^6.22 || ^7.0",
-                "php": "^7.3|^8.0",
+                "illuminate/config": "^8.0 || ^9.0",
+                "illuminate/container": "^8.0 || ^9.0",
+                "illuminate/contracts": "^8.0 || ^9.0",
+                "illuminate/database": "^8.0 || ^9.0",
+                "illuminate/events": "^8.0 || ^9.0",
+                "illuminate/http": "^8.0 || ^9.0",
+                "illuminate/routing": "^8.0 || ^9.0",
+                "illuminate/support": "^8.0 || ^9.0",
+                "illuminate/view": "^8.0 || ^9.0",
+                "orchestra/testbench": "^6.22 || ^7.0",
+                "php": "^8.0",
                 "vimeo/psalm": "^4.8.1"
             },
             "require-dev": {
-                "codeception/codeception": "^4.1.6",
-                "codeception/module-asserts": "^1.0.0",
-                "codeception/module-phpbrowser": "^1.0.0",
+                "codeception/codeception": "^5.0",
+                "codeception/module-asserts": "*@dev",
+                "codeception/module-cli": "^2.0",
+                "codeception/module-filesystem": "^3.0",
+                "codeception/module-phpbrowser": "*@dev",
+                "phpoption/phpoption": "^1.8.0",
+                "ramsey/collection": "^1.2.0",
                 "slevomat/coding-standard": "^6.2",
                 "squizlabs/php_codesniffer": "*",
-                "weirdan/codeception-psalm-module": "^0.13.1"
+                "symfony/http-foundation": "^5.3.7 || ^6.0"
             },
             "type": "psalm-plugin",
             "extra": {
@@ -16199,9 +16203,9 @@
             "homepage": "https://github.com/psalm/psalm-plugin-laravel",
             "support": {
                 "issues": "https://github.com/psalm/psalm-plugin-laravel/issues",
-                "source": "https://github.com/psalm/psalm-plugin-laravel/tree/v1.6.2"
+                "source": "https://github.com/psalm/psalm-plugin-laravel/tree/v2.0.1"
             },
-            "time": "2022-06-22T15:30:59+00:00"
+            "time": "2022-06-21T18:50:45+00:00"
         },
         {
             "name": "psy/psysh",

@@ -2,10 +2,10 @@
 
 namespace App\Services\DavClient\Utils;
 
+use Illuminate\Support\Arr;
 use App\Jobs\Dav\PushVCard;
 use App\Jobs\Dav\DeleteVCard;
 use Illuminate\Support\Collection;
-use IlluminateAgnostic\Collection\Support\Arr;
 use App\Services\DavClient\Utils\Model\SyncDto;
 use App\Services\DavClient\Utils\Model\ContactDto;
 use App\Services\DavClient\Utils\Traits\WithSyncDto;

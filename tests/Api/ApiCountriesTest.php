@@ -28,7 +28,7 @@ class ApiCountriesTest extends ApiTestCase
             'data' => ['*' => $this->jsonCountries],
         ]);
         $response->assertJsonFragment([
-            'DEU' => [
+            'de' => [
                 'id' => 'DE',
                 'iso' => 'DE',
                 'name' => 'Germany',
