@@ -10,10 +10,7 @@ parameters:
     ignoreErrors:
         - '#Call to an undefined method Illuminate\\View\\View::with[a-zA-Z0-9\\_]+\(\)\.#'
         - '#Access to an undefined property Sabre\\VObject\\Component\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9_]+\.#'
-        - '#Access to an undefined property PragmaRX\\Countries\\Package\\Support\\Collection::\$[a-zA-Z0-9_]+\.#'
 
-        - message: '#Call to an undefined static method PragmaRX\\CountriesLaravel\\Package\\Facade::[a-zA-Z0-9_]+\(\)\.#'
-          path: */Helpers/CountriesHelper.php
         - message: '#Access to an undefined property Illuminate\\Support\\Fluent::\$[a-zA-Z0-9_]+\.#'
           path: */Http/Location/Drivers/CloudflareDriver.php
         - message: '#Access to an undefined property App\\Interfaces\\IsJournalableInterface::\$account_id\.#'
