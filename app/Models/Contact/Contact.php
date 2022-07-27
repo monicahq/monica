@@ -5,6 +5,7 @@ namespace App\Models\Contact;
 use DateTime;
 use App\Traits\HasUuid;
 use App\Traits\Searchable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
@@ -37,7 +38,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Support\Arr;
 
 /**
  * @method static \Illuminate\Database\Eloquent\Builder search()

@@ -2,8 +2,8 @@
 
 namespace App\Services\DavClient\Utils;
 
-use Illuminate\Support\Arr;
 use App\Jobs\Dav\PushVCard;
+use Illuminate\Support\Arr;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use App\Services\DavClient\Utils\Model\SyncDto;
