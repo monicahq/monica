@@ -14,7 +14,7 @@ on:
     types: [completed]
 
 env:
-  default-php-version: '7.4'
+  default-php-version: '8.0'
   node-version: 16
 
 
@@ -29,9 +29,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: [7.4, '8.0']
+        php-version: ['8.0', '8.1']
         connection: [mysql]
         testsuite: [Api, Feature, Unit-Models, Unit-Services]
+        # exclude:
+        #   - php-version: '8.1'
+        #     testsuite: Feature
 
     steps:
       - name: Checkout sources
@@ -147,7 +150,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: [7.4, '8.0']
+        php-version: ['8.0']
         connection: [mysql]
 
     steps:

@@ -41,7 +41,7 @@ info:
     # These are the name/version of the Platforms.h containers, not including the Nginx router.
     notes:
         - heading: "Apps & Services"
-          content: "PHP 7.4<br/>MariaDB 10.4<br/>Redis 5.0"
+          content: "PHP 8.1<br/>MariaDB 10.4<br/>Redis 5.0"
 
 
 # This key describes the initialization call made to the main environment at

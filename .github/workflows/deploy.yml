@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 env:
-  php-version: '8.0'
+  php-version: '8.1'
   node-version: 16
 
 jobs:
