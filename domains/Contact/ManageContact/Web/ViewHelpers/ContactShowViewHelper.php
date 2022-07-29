@@ -18,6 +18,7 @@ use App\Contact\ManageLabels\Web\ViewHelpers\ModuleLabelViewHelper;
 use App\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
 use App\Contact\ManageNotes\Web\ViewHelpers\ModuleNotesViewHelper;
 use App\Contact\ManagePets\Web\ViewHelpers\ModulePetsViewHelper;
+use App\Contact\ManagePhotos\Web\ViewHelpers\ModulePhotosViewHelper;
 use App\Contact\ManagePronouns\Web\ViewHelpers\ModuleGenderPronounViewHelper;
 use App\Contact\ManageRelationships\Web\ViewHelpers\ModuleFamilySummaryViewHelper;
 use App\Contact\ManageRelationships\Web\ViewHelpers\ModuleRelationshipViewHelper;
@@ -240,6 +241,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_DOCUMENTS) {
                 $data = ModuleDocumentsViewHelper::data($contact);
+            }
+
+            if ($module->type == Module::TYPE_PHOTOS) {
+                $data = ModulePhotosViewHelper::data($contact);
             }
 
             $modulesCollection->push([

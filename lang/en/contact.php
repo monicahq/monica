@@ -89,4 +89,17 @@ return [
     'documents_new_success' => 'The document has been added',
     'documents_delete_confirm' => 'Are you sure? This will delete the document permanently.',
     'documents_delete_success' => 'The document has been deleted',
+
+    /***************************************************************
+     * MODULE: PHOTOS
+     **************************************************************/
+
+    'photos_title' => 'Photos',
+    'photos_cta' => 'Add a photo',
+    'photos_blank' => 'There are no photos yet.',
+    'photos_not_enough_storage' => 'You don’t have enough space left in your account.',
+    'photos_key_missing' => 'The keys to manage uploads have not been set in this Monica instance.',
+    'photos_new_success' => 'The photo has been added',
+    'photos_delete_confirm' => 'Are you sure? This will delete the photo permanently.',
+    'photos_delete_success' => 'The photo has been deleted',
 ];

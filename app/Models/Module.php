@@ -35,6 +35,7 @@ class Module extends Model
     public const TYPE_GROUPS = 'groups';
     public const TYPE_CONTACT_INFORMATION = 'contact_information';
     public const TYPE_DOCUMENTS = 'documents';
+    public const TYPE_PHOTOS = 'photos';
 
     /**
      * The attributes that are mass assignable.

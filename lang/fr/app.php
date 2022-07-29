@@ -24,6 +24,7 @@ return [
     'breadcrumb_contact_show' => 'Profil de :name',
     'breadcrumb_contact_create' => 'Créer un contact',
     'breadcrumb_contact_note_index' => 'Toutes les notes',
+    'breadcrumb_contact_photo' => 'Toutes les photos',
     'breadcrumb_settings' => 'Paramètres',
     'breadcrumb_settings_preferences' => 'Préférences de l’utilisateur',
     'breadcrumb_settings_notification_channels' => 'Chaînes de notification',
@@ -99,6 +100,7 @@ return [
     'module_groups' => 'Groupes',
     'module_contact_information' => 'Information de contact',
     'module_documents' => 'Documents',
+    'module_photos' => 'Photos',
 
     'module_option_default_number_of_items_to_display' => 'Nombre par défaut d’éléments à afficher',
 

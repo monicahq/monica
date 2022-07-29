@@ -19,7 +19,6 @@ class VaultFileIndexViewHelper
 
             $filesCollection->push([
                 'id' => $file->id,
-                'download_url' => $file->cdn_url,
                 'name' => $file->name,
                 'mime_type' => $file->mime_type,
                 'size' => FileHelper::formatFileSize($file->size),
@@ -36,6 +35,7 @@ class VaultFileIndexViewHelper
                     ],
                 ],
                 'url' => [
+                    'download' => $file->cdn_url,
                     'destroy' => route('contact.document.destroy', [
                         'vault' => $contact->vault_id,
                         'contact' => $contact->id,

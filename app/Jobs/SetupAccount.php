@@ -442,6 +442,22 @@ class SetupAccount implements ShouldQueue
             'module_id' => $module->id,
         ]);
 
+        // Documents
+        $module = (new CreateModule())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'name' => trans('app.module_photos'),
+            'type' => Module::TYPE_PHOTOS,
+            'can_be_deleted' => false,
+        ]);
+        (new AssociateModuleToTemplatePage())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageInformation->id,
+            'module_id' => $module->id,
+        ]);
+
         // Notes
         $module = (new CreateModule())->execute([
             'account_id' => $this->user->account_id,

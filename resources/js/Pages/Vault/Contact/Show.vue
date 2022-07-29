@@ -156,6 +156,8 @@
                 <contact-information v-if="module.type == 'contact_information'" :data="contactInformation" />
 
                 <documents v-if="module.type == 'documents'" :data="documents" />
+
+                <photos v-if="module.type == 'photos'" :data="photos" />
               </div>
             </div>
           </div>
@@ -187,6 +189,7 @@ import Addresses from '@/Shared/Modules/Addresses';
 import Groups from '@/Shared/Modules/Groups';
 import ContactInformation from '@/Shared/Modules/ContactInformation';
 import Documents from '@/Shared/Modules/Documents';
+import Photos from '@/Shared/Modules/Photos';
 
 export default {
   components: {
@@ -211,6 +214,7 @@ export default {
     Groups,
     ContactInformation,
     Documents,
+    Photos,
   },
 
   props: {
@@ -246,6 +250,7 @@ export default {
       groups: [],
       contactInformation: [],
       documents: [],
+      photos: [],
     };
   },
 
@@ -346,6 +351,10 @@ export default {
 
       if (this.data.modules.findIndex((x) => x.type == 'documents') > -1) {
         this.documents = this.data.modules[this.data.modules.findIndex((x) => x.type == 'documents')].data;
+      }
+
+      if (this.data.modules.findIndex((x) => x.type == 'photos') > -1) {
+        this.photos = this.data.modules[this.data.modules.findIndex((x) => x.type == 'photos')].data;
       }
     }
   },

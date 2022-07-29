@@ -1,30 +1,34 @@
 <?php
 
-namespace App\Contact\ManageDocuments\Web\ViewHelpers;
+namespace App\Contact\ManagePhotos\Web\ViewHelpers;
 
 use App\Helpers\FileHelper;
 use App\Helpers\StorageHelper;
 use App\Models\Contact;
 use App\Models\File;
 
-class ModuleDocumentsViewHelper
+class ModulePhotosViewHelper
 {
     public static function data(Contact $contact): array
     {
-        $documentsCollection = $contact->files()
-            ->where('type', File::TYPE_DOCUMENT)
-            ->orderBy('created_at', 'desc')
+        $photosCollection = $contact->files()
+            ->where('type', File::TYPE_PHOTO)
+            ->take(6)
             ->get()
             ->map(function (File $file) use ($contact) {
                 return self::dto($file, $contact);
             });
 
         return [
-            'documents' => $documentsCollection,
+            'photos' => $photosCollection,
             'uploadcarePublicKey' => config('services.uploadcare.public_key'),
             'canUploadFile' => StorageHelper::canUploadFile($contact->vault->account),
             'url' => [
-                'store' => route('contact.document.store', [
+                'index' => route('contact.photo.index', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+                'store' => route('contact.photo.store', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
                 ]),
@@ -40,11 +44,12 @@ class ModuleDocumentsViewHelper
             'mime_type' => $file->mime_type,
             'size' => FileHelper::formatFileSize($file->size),
             'url' => [
+                'display' => 'https://ucarecdn.com/' . $file->uuid . '/-/scale_crop/300x300/smart/-/format/auto/-/quality/smart_retina/',
                 'download' => $file->cdn_url,
-                'destroy' => route('contact.document.destroy', [
+                'destroy' => route('contact.photo.destroy', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
-                    'document' => $file->id,
+                    'photo' => $file->id,
                 ]),
             ],
         ];

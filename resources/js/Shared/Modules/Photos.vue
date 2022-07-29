@@ -43,11 +43,11 @@ select {
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
         </span>
 
-        <span class="font-semibold">{{ $t('contact.documents_title') }}</span>
+        <span class="font-semibold">{{ $t('contact.photos_title') }}</span>
       </div>
       <uploadcare
         v-if="data.uploadcarePublicKey && data.canUploadFile"
@@ -57,56 +57,46 @@ select {
         :preview-step="false"
         @success="onSuccess"
         @error="onError">
-        <pretty-button :text="$t('contact.documents_cta')" :icon="'plus'" :classes="'sm:w-fit w-full'" />
+        <pretty-button :text="$t('contact.photos_cta')" :icon="'plus'" :classes="'sm:w-fit w-full'" />
       </uploadcare>
     </div>
 
     <!-- not enough space in storage -->
     <div v-if="!data.canUploadFile" class="mb-6 rounded-lg border border-gray-200 bg-white">
       <p class="bg-gray-100 p-3 text-center">
-        <span class="mr-1">⚠️</span> {{ $t('contact.documents_not_enough_storage') }}
+        <span class="mr-1">⚠️</span> {{ $t('contact.photos_not_enough_storage') }}
       </p>
     </div>
 
-    <!-- documents -->
-    <div v-if="localDocuments.length > 0">
-      <ul class="mb-4 rounded-lg border border-gray-200 bg-white">
-        <li
-          v-for="document in localDocuments"
-          :key="document.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50">
-          <!-- document -->
-          <div class="flex items-center justify-between px-3 py-2">
-            <span class="flex items-center">
-              <span class="max-w-sm truncate">{{ document.name }}</span>
+    <!-- photos -->
+    <div v-if="localPhotos.length > 0">
+      <div class="mb-4 grid grid-cols-3 gap-4">
+        <div
+          v-for="photo in localPhotos"
+          :key="photo.id"
+          class="rounded-md border border-gray-200 p-2 shadow-sm hover:bg-slate-50 hover:shadow-lg">
+          <img :src="photo.url.display" :alt="photo.name" />
+        </div>
+      </div>
 
-              <span class="ml-2 rounded border bg-blue-50 px-1 py-0 font-mono text-xs text-blue-500">
-                {{ document.size }}
-              </span>
-            </span>
-
-            <!-- actions -->
-            <ul class="text-sm">
-              <li class="mr-4 inline">
-                <a :href="document.url.download" class="text-blue-500 hover:underline">{{ $t('app.download') }}</a>
-              </li>
-              <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(document)">
-                {{ $t('app.delete') }}
-              </li>
-            </ul>
-          </div>
-        </li>
-      </ul>
+      <!-- view all button -->
+      <div class="text-center">
+        <inertia-link
+          :href="data.url.index"
+          class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500">
+          {{ $t('app.view_all') }}
+        </inertia-link>
+      </div>
     </div>
 
     <!-- blank state -->
-    <div v-if="localDocuments.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
-      <p class="p-5 text-center">{{ $t('contact.documents_blank') }}</p>
+    <div v-if="localPhotos.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+      <p class="p-5 text-center">{{ $t('contact.photos_blank') }}</p>
     </div>
 
     <!-- uploadcare api key not set -->
     <div v-if="!data.uploadcarePublicKey" class="mb-6 rounded-lg border border-gray-200 bg-white">
-      <p class="p-5 text-center">{{ $t('contact.documents_key_missing') }}</p>
+      <p class="p-5 text-center">{{ $t('contact.photos_key_missing') }}</p>
     </div>
   </div>
 </template>
@@ -134,7 +124,7 @@ export default {
 
   data() {
     return {
-      localDocuments: [],
+      localPhotos: [],
       form: {
         searchTerm: null,
         employeeId: 0,
@@ -150,7 +140,7 @@ export default {
   },
 
   created() {
-    this.localDocuments = this.data.documents;
+    this.localPhotos = this.data.photos;
   },
 
   methods: {
@@ -171,22 +161,22 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.localDocuments.unshift(response.data.data);
-          this.flash(this.$t('contact.documents_new_success'), 'success');
+          this.localPhotos.unshift(response.data.data);
+          this.flash(this.$t('contact.photos_new_success'), 'success');
         })
         .catch((error) => {
           this.form.errors = error.response.data;
         });
     },
 
-    destroy(document) {
-      if (confirm(this.$t('contact.documents_delete_confirm'))) {
+    destroy(photo) {
+      if (confirm(this.$t('contact.photos_delete_confirm'))) {
         axios
-          .delete(document.url.destroy)
+          .delete(photo.url.destroy)
           .then((response) => {
-            this.flash(this.$t('contact.documents_delete_success'), 'success');
-            var id = this.localDocuments.findIndex((x) => x.id === document.id);
-            this.localDocuments.splice(id, 1);
+            this.flash(this.$t('contact.photos_delete_success'), 'success');
+            var id = this.localPhotos.findIndex((x) => x.id === photo.id);
+            this.localPhotos.splice(id, 1);
           })
           .catch((error) => {
             this.form.errors = error.response.data;

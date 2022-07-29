@@ -83,9 +83,21 @@ return [
 
     'documents_title' => 'Documents',
     'documents_cta' => 'Ajouter un document',
-    'documents_blank' => 'Il n’y a pas encore d’information de documents.',
+    'documents_blank' => 'Il n’y a pas encore de documents.',
     'documents_key_missing' => 'Les clés pour gérer les uploads n’ont pas été définies sur cette instance de Monica.',
     'documents_new_success' => 'Le document a été ajouté',
     'documents_delete_confirm' => 'Êtes vous sûr ? Cela va supprimer le document de contact de façon permanente.',
     'documents_delete_success' => 'Le document a été supprimé',
+
+    /***************************************************************
+     * MODULE: PHOTOS
+     **************************************************************/
+
+    'photos_title' => 'Photos',
+    'photos_cta' => 'Ajouter une photo',
+    'photos_blank' => 'Il n’y a pas encore de photos.',
+    'photos_key_missing' => 'Les clés pour gérer les uploads n’ont pas été définies sur cette instance de Monica.',
+    'photos_new_success' => 'La photo a été ajoutée',
+    'photos_delete_confirm' => 'Êtes vous sûr ? Cela va supprimer la photo de contact de façon permanente.',
+    'photos_delete_success' => 'La photo a été supprimée',
 ];

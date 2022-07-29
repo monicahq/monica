@@ -46,7 +46,7 @@
 
               <p class="mb-2 pl-2 text-sm text-gray-500">{{ $t('vault.files_filter_or') }}</p>
               <ul>
-                <li class="border-l-2 pl-2" :class="{ 'border-orange-500': tab === 'documents' }">
+                <li class="mb-2 border-l-2 pl-2" :class="{ 'border-orange-500': tab === 'documents' }">
                   <inertia-link :href="data.statistics.url.documents"
                     >{{ $t('vault.files_filter_documents') }}
                     <span class="text-sm text-gray-500"
@@ -54,13 +54,13 @@
                     ></inertia-link
                   >
                 </li>
-                <li class="border-l-2 pl-2" :class="{ 'border-orange-500': tab === 'photos' }">
+                <li class="mb-2 border-l-2 pl-2" :class="{ 'border-orange-500': tab === 'photos' }">
                   <inertia-link :href="data.statistics.url.photos"
                     >{{ $t('vault.files_filter_photos') }}
                     <span class="text-sm text-gray-500">({{ data.statistics.statistics.photos }})</span></inertia-link
                   >
                 </li>
-                <li class="border-l-2 pl-2" :class="{ 'border-orange-500': tab === 'avatars' }">
+                <li class="mb-2 border-l-2 pl-2" :class="{ 'border-orange-500': tab === 'avatars' }">
                   <inertia-link :href="data.statistics.url.avatars"
                     >{{ $t('vault.files_filter_avatars') }}
                     <span class="text-sm text-gray-500">({{ data.statistics.statistics.avatars }})</span></inertia-link
@@ -111,7 +111,7 @@
                 <!-- right part -->
                 <ul class="text-sm">
                   <li class="mr-4 inline">
-                    <a :href="file.download_url" class="text-blue-500 hover:underline">{{ $t('app.download') }}</a>
+                    <a :href="file.url.download" class="text-blue-500 hover:underline">{{ $t('app.download') }}</a>
                   </li>
                   <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(file)">
                     {{ $t('app.delete') }}

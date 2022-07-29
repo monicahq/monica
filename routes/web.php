@@ -22,6 +22,8 @@ use App\Contact\ManageLoans\Web\Controllers\ContactModuleToggleLoanController;
 use App\Contact\ManageNotes\Web\Controllers\ContactModuleNoteController;
 use App\Contact\ManageNotes\Web\Controllers\ContactNotesController;
 use App\Contact\ManagePets\Web\Controllers\ContactModulePetController;
+use App\Contact\ManagePhotos\Web\Controllers\ContactModulePhotoController;
+use App\Contact\ManagePhotos\Web\Controllers\ContactPhotoController;
 use App\Contact\ManageRelationships\Web\Controllers\ContactRelationshipsController;
 use App\Contact\ManageReminders\Web\Controllers\ContactModuleReminderController;
 use App\Contact\ManageTasks\Web\Controllers\ContactModuleTaskController;
@@ -206,6 +208,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     // documents
                     Route::post('documents', [ContactModuleDocumentController::class, 'store'])->name('contact.document.store');
                     Route::delete('documents/{document}', [ContactModuleDocumentController::class, 'destroy'])->name('contact.document.destroy');
+
+                    // photos
+                    Route::get('photos', [ContactPhotoController::class, 'index'])->name('contact.photo.index');
+                    Route::get('photos/{photo}', [ContactPhotoController::class, 'show'])->name('contact.photo.show');
+                    Route::post('photos', [ContactModulePhotoController::class, 'store'])->name('contact.photo.store');
+                    Route::delete('photos/{photo}', [ContactModulePhotoController::class, 'destroy'])->name('contact.photo.destroy');
 
                     // tasks
                     Route::get('tasks/completed', [ContactModuleTaskController::class, 'index'])->name('contact.task.index');
