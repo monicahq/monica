@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Commands;
+namespace Tests\Commands\Scheduling;
 
 use Tests\TestCase;
 use Illuminate\Database\QueryException;
