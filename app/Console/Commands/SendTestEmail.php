@@ -30,11 +30,11 @@ class SendTestEmail extends Command
     public function handle()
     {
         // retrieve the email from the option
-        $email = $this->option('email');
+        $email = (string) $this->option('email');
 
         // if no email was passed to the option, prompt the user to enter the email
         if (! $email) {
-            $email = $this->ask('What email address should I send the test email to?');
+            $email = (string) $this->ask('What email address should I send the test email to?');
         }
 
         // Validate user provided email address
