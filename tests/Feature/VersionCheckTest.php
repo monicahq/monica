@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VersionCheckTest extends FeatureTestCase
 {
