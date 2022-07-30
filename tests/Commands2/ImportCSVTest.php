@@ -57,7 +57,7 @@ class ImportCSVTest extends TestCase
 
         $this->artisan('import:csv', [
             'user' => 'test@test.com',
-            'file' => $path
+            'file' => $path,
         ])
             ->assertFailed()
             ->expectsOutput('You need to provide a valid User ID or email address!')
@@ -71,7 +71,7 @@ class ImportCSVTest extends TestCase
 
         $this->artisan('import:csv', [
             'user' => $user->email,
-            'file' => 'xxx'
+            'file' => 'xxx',
         ])
             ->assertFailed()
             ->expectsOutput('You need to provide a valid file path.')
