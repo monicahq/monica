@@ -39,16 +39,16 @@ class SendTestEmail extends Command
 
         // Validate user provided email address
         if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-            $this->error('Invalid email address: "'.$email.'".');
+            $this->error("Invalid email address: \"$email\".");
 
             return -1;
         }
 
-        $this->info('Preparing and sending email to "'.$email.'"');
+        $this->info("Preparing and sending email to \"$email\"");
 
         // immediately deliver the test email (bypassing the queue)
         Mail::raw(
-            'Hi '.$email.', you requested a test email from Monica.',
+            "Hi $email, you requested a test email from Monica.",
             function ($message) use ($email) {
                 $message->to($email)
                     ->subject('Monica email delivery test');

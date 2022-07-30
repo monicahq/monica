@@ -14,12 +14,12 @@ class SetupFrontEndTestUserTest extends TestCase
     /** @test */
     public function it_create_a_test_user()
     {
-        $this->withoutMockingConsoleOutput();
+        // $this->withoutMockingConsoleOutput();
 
         $accountCount = Account::count();
         $userCount = User::count();
 
-        $exitCode = $this->artisan('setup:frontendtestuser');
+        $this->artisan('setup:frontendtestuser')->run();
 
         $this->assertEquals($accountCount + 1, Account::count());
         $this->assertEquals($userCount + 1, User::count());

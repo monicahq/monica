@@ -34,7 +34,7 @@ class PingVersionServerTest extends TestCase
             'https://version.test/*' => Http::response($ret, 200),
         ]);
 
-        $this->artisan('monica:ping');
+        $this->artisan('monica:ping')->run();
 
         $instance->refresh();
 
@@ -67,7 +67,7 @@ class PingVersionServerTest extends TestCase
             'https://version.test/*' => Http::response($ret, 200),
         ]);
 
-        $this->artisan('monica:ping');
+        $this->artisan('monica:ping')->run();
 
         $instance->refresh();
 

@@ -61,16 +61,16 @@ class ImportCSV extends Command
             $user = User::where('email', $this->argument('user'))->first();
         }
 
-        if (! file_exists($file)) {
-            $this->error('You need to provide a valid file path.');
-
-            return -1;
-        }
-
         if (! $user) {
             $this->error('You need to provide a valid User ID or email address!');
 
             return -1;
+        }
+
+        if (! file_exists($file)) {
+            $this->error('You need to provide a valid file path.');
+
+            return -2;
         }
 
         if (is_string($file)) {

@@ -7,7 +7,6 @@ use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Artisan;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -29,7 +28,7 @@ class SendStayInTouchTest extends TestCase
             'stay_in_touch_frequency' => 30,
         ]);
 
-        $exitCode = Artisan::call('send:stay_in_touch', []);
+        $this->artisan('send:stay_in_touch')->run();
 
         Bus::assertDispatched(ScheduleStayInTouch::class);
     }
@@ -48,7 +47,7 @@ class SendStayInTouchTest extends TestCase
             'stay_in_touch_frequency' => 30,
         ]);
 
-        $exitCode = Artisan::call('send:stay_in_touch', []);
+        $this->artisan('send:stay_in_touch')->run();
 
         Bus::assertNotDispatched(ScheduleStayInTouch::class);
     }

@@ -16,7 +16,7 @@ class CalculateStatisticsTest extends TestCase
         $runsWell = true;
 
         try {
-            $this->artisan('monica:calculatestatistics');
+            $this->artisan('monica:calculatestatistics')->run();
         } catch (QueryException $e) {
             $runsWell = false;
         }

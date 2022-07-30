@@ -5,7 +5,6 @@ namespace Tests\Commands;
 use Tests\TestCase;
 use App\Models\User\User;
 use Mockery\MockInterface;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\CreateAddressBookSubscription;
 
@@ -34,11 +33,11 @@ class CreateAddressBookSubscriptionTest extends TestCase
                 });
         });
 
-        Artisan::call('monica:newaddressbooksubscription', [
+        $this->artisan('monica:newaddressbooksubscription', [
             '--email' => $user->email,
             '--url' => 'https://test',
             '--login' => 'login',
             '--password' => 'password',
-        ]);
+        ])->run();
     }
 }
