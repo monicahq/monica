@@ -29,8 +29,8 @@ class SendTestEmail extends Command
      */
     public function handle()
     {
-        /** retrieve the email from the option
-         * @var  string  $email
+        /** retrieve the email from the option.
+         * @var string $email
          */
         $email = $this->option('email');
 
