@@ -20,7 +20,7 @@
 If you don't want to use Docker, the best way to setup the project is to use the same configuration that [Homestead](https://laravel.com/docs/homestead) uses. Basically, Monica depends on the following:
 
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
--   PHP 8.0+
+-   PHP 8.1+
 -   [Composer](https://getcomposer.org/)
 -   [Node.js](https://nodejs.org)
 -   [Yarn](https://yarnpkg.com)
@@ -29,7 +29,7 @@ If you don't want to use Docker, the best way to setup the project is to use the
 
 **Git:** Git should come pre-installed with your server. If it doesn't - use the installation instructions in the link.
 
-**PHP:** Install php8.0 minimum, with these extensions:
+**PHP:** Install php8.1 minimum, with these extensions:
 
 -   bcmath
 -   curl

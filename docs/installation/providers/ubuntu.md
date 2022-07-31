@@ -20,7 +20,7 @@ Monica depends on the following:
 
 -   [Apache httpd webserver](https://httpd.apache.org/)
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
--   PHP 8.0+
+-   PHP 8.1+
 -   [Composer](https://getcomposer.org/)
 -   [Node.js](https://nodejs.org)
 -   [Yarn](https://yarnpkg.com)
@@ -42,7 +42,7 @@ sudo apt update
 sudo apt install -y apache2
 ```
 
-**PHP 8.0+:**
+**PHP 8.1+:**
 
 First add this PPA repository:
 
@@ -51,7 +51,7 @@ sudo apt install -y software-properties-common
 sudo add-apt-repository ppa:ondrej/php
 ```
 
-Then install php 8.0 or 8.1 with these extensions:
+Then install php 8.1 with these extensions:
 
 ```sh
 sudo apt update

@@ -95,7 +95,7 @@ You'll need to run the installation instructions below and setup a local mysql i
 **Prerequisites**:
 * Git
 * [Node](https://nodejs.org/en/)
-* PHP 8.0+
+* PHP 8.1+
 * [Composer](https://getcomposer.org/)
 * GNU Make
 
