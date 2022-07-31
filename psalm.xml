@@ -112,11 +112,9 @@
             </errorLevel>
         </UndefinedPropertyAssignment>
 
-        <UndefinedMagicPropertyAssignment>
-            <errorLevel type="suppress">
-                <file name="database/migrations/2017_08_06_153253_move_kids_to_contacts.php" />
-            </errorLevel>
-        </UndefinedMagicPropertyAssignment>
+        <UndefinedMagicPropertyAssignment errorLevel="suppress" />
+        <UndefinedThisPropertyFetch errorLevel="suppress" />
+        <UndefinedThisPropertyAssignment errorLevel="suppress" />
 
         <UndefinedPropertyFetch>
             <errorLevel type="suppress">
@@ -136,6 +134,10 @@
         <InvalidReturnType>
             <errorLevel type="suppress">
                 <file name="app/Http/Controllers/Auth/RegisterController.php" />
+                <file name="app/Services/Account/Activity/ActivityType/CreateActivityType.php" />
+                <file name="app/Services/Account/Activity/ActivityTypeCategory/CreateActivityTypeCategory.php" />
+                <file name="app/Services/Account/LifeEvent/LifeEventType/CreateLifeEventType.php" />
+                <file name="app/Services/Contact/LifeEvent/CreateLifeEvent.php" />
             </errorLevel>
         </InvalidReturnType>
 

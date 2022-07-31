@@ -104,11 +104,11 @@ class CreateUser extends BaseService
         }
 
         // Currency
-        if (! is_null($currencyCode)) {
-            $this->associateCurrency($user, $currencyCode);
-        } elseif (! is_null($country)) {
-            foreach ($country->currencies as $currency) {
-                if ($this->associateCurrency($user, $currency)) {
+        if ((! is_null($currencyCode)
+            && ! $this->associateCurrency($user, $currencyCode))
+            || ! is_null($country)) {
+            foreach ($country->getCurrencies() as $currency) {
+                if ($this->associateCurrency($user, $currency['iso_4217_code'])) {
                     break;
                 }
             }
@@ -116,7 +116,7 @@ class CreateUser extends BaseService
 
         // Temperature scale
         if (! is_null($country)) {
-            switch ($country->cca2) {
+            switch ($country->getIsoAlpha2()) {
                 case 'US':
                 case 'BZ':
                 case 'KY':
