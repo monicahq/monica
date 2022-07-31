@@ -8,36 +8,6 @@
         "social"
     ],
     "license": "AGPL",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/asbiin/etagconditionals"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/asbiin/countries-laravel"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/asbiin/coollection"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/asbiin/countries"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/asbiin/ia-arr"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/asbiin/ia-str"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/asbiin/ia-collection"
-        }
-    ],
     "require": {
         "php": "^8.1",
         "ext-bcmath": "*",
@@ -89,7 +59,7 @@
         "web-token/jwt-signature-algorithm-ecdsa": "^3.0",
         "web-token/jwt-signature-algorithm-eddsa": "^3.0",
         "web-token/jwt-signature-algorithm-rsa": "^3.0",
-        "werk365/etagconditionals": "dev-laravel9",
+        "werk365/etagconditionals": "dev-master",
         "xantios/mimey": "^2.0"
     },
     "require-dev": {

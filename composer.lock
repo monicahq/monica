@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f8b2d86e894dd9f5f006d82d66308e1",
+    "content-hash": "058c753117c80674f9909927b3ee58ee",
     "packages": [
         {
             "name": "asbiin/laravel-adorable",
@@ -12484,16 +12484,16 @@
         },
         {
             "name": "werk365/etagconditionals",
-            "version": "dev-laravel9",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/asbiin/etagconditionals.git",
-                "reference": "9e8911e893fb6b859062892304d3c878f018130e"
+                "url": "https://github.com/365Werk/etagconditionals.git",
+                "reference": "cc6579720fe4f789b38d6b3fe5c6718c78967457"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/etagconditionals/zipball/9e8911e893fb6b859062892304d3c878f018130e",
-                "reference": "9e8911e893fb6b859062892304d3c878f018130e",
+                "url": "https://api.github.com/repos/365Werk/etagconditionals/zipball/cc6579720fe4f789b38d6b3fe5c6718c78967457",
+                "reference": "cc6579720fe4f789b38d6b3fe5c6718c78967457",
                 "shasum": ""
             },
             "require": {
@@ -12503,6 +12503,7 @@
                 "orchestra/testbench": "~5|~6|~7",
                 "phpunit/phpunit": "~8.0|~9.0"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -12519,11 +12520,7 @@
                     "Werk365\\EtagConditionals\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Werk365\\EtagConditionals\\Tests\\": "tests"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -12538,12 +12535,13 @@
             "homepage": "https://github.com/werk365/etagconditionals",
             "keywords": [
                 "EtagConditionals",
-                "Laravel"
+                "laravel"
             ],
             "support": {
-                "source": "https://github.com/asbiin/etagconditionals/tree/laravel9"
+                "issues": "https://github.com/365Werk/etagconditionals/issues",
+                "source": "https://github.com/365Werk/etagconditionals/tree/master"
             },
-            "time": "2022-05-04T07:08:49+00:00"
+            "time": "2022-05-27T11:22:35+00:00"
         },
         {
             "name": "xantios/mimey",

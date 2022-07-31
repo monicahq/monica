@@ -14,7 +14,7 @@
 
     <notifications group="dav" position="top middle" :duration="5000" width="400" />
 
-    
+
     <div class="form-group">
       <label for="dav_url_base">
         {{ $t('settings.dav_url_base') }}
