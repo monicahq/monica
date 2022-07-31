@@ -17,8 +17,7 @@ class PassportCommandTest extends TestCase
         /** @var \Tests\Helpers\CommandCallerFake */
         $fake = Command::fake();
 
-        $app = $this->createApplication();
-        $app->make('config')->set(['passport.private_key' => '', 'passport.public_key' => '']);
+        config(['passport.private_key' => '', 'passport.public_key' => '']);
         foreach (PersonalAccessClient::all() as $client) {
             $client->delete();
         }
@@ -35,8 +34,7 @@ class PassportCommandTest extends TestCase
         /** @var \Tests\Helpers\CommandCallerFake */
         $fake = Command::fake();
 
-        $app = $this->createApplication();
-        $app->make('config')->set(['passport.private_key' => '', 'passport.public_key' => '']);
+        config(['passport.private_key' => '', 'passport.public_key' => '']);
         PersonalAccessClient::create();
 
         $this->artisan('monica:passport')->run();
@@ -50,8 +48,7 @@ class PassportCommandTest extends TestCase
         /** @var \Tests\Helpers\CommandCallerFake */
         $fake = Command::fake();
 
-        $app = $this->createApplication();
-        $app->make('config')->set(['passport.private_key' => '-', 'passport.public_key' => '-']);
+        config(['passport.private_key' => '', 'passport.public_key' => '']);
 
         $this->artisan('monica:passport')->run();
 

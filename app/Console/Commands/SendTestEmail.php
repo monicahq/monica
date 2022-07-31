@@ -29,8 +29,10 @@ class SendTestEmail extends Command
      */
     public function handle()
     {
-        // retrieve the email from the option
-        $email = (string) $this->option('email');
+        /** retrieve the email from the option
+         * @var  string  $email
+         */
+        $email = $this->option('email');
 
         // if no email was passed to the option, prompt the user to enter the email
         if (! $email) {

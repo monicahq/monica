@@ -14,8 +14,6 @@ class SetupFrontEndTestUserTest extends TestCase
     /** @test */
     public function it_create_a_test_user()
     {
-        // $this->withoutMockingConsoleOutput();
-
         $accountCount = Account::count();
         $userCount = User::count();
 
