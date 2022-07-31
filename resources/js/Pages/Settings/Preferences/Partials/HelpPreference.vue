@@ -10,7 +10,9 @@ select {
   <div class="mb-16">
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
-      <h3 class="mb-4 sm:mb-0"><span class="mr-1">⁉️</span> {{ $t('settings.user_preferences_locale_title') }}</h3>
+      <h3 class="mb-4 font-semibold sm:mb-0">
+        <span class="mr-1">⁉️</span> {{ $t('settings.user_preferences_locale_title') }}
+      </h3>
     </div>
 
     <div class="mb-6 rounded-lg border border-gray-200 bg-white px-5 pt-3 pb-2">

@@ -10,7 +10,9 @@ select {
   <div class="mb-16">
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
-      <h3 class="mb-4 sm:mb-0"><span class="mr-1">🗓</span> {{ $t('settings.user_preferences_timezone_title') }}</h3>
+      <h3 class="mb-4 font-semibold sm:mb-0">
+        <span class="mr-1">🗓</span> {{ $t('settings.user_preferences_timezone_title') }}
+      </h3>
       <pretty-button v-if="!editMode" :text="$t('app.edit')" @click="enableEditMode" />
     </div>
 
