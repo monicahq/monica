@@ -53,6 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'timezone',
         'default_map_site',
         'locale',
+        'help_shown',
     ];
 
     /**
@@ -73,6 +74,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'invitation_accepted_at' => 'datetime',
         'is_account_administrator' => 'boolean',
+        'help_shown' => 'boolean',
     ];
 
     /**

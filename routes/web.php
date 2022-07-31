@@ -46,6 +46,7 @@ use App\Settings\ManageGroupTypes\Web\Controllers\PersonalizeGroupTypeController
 use App\Settings\ManageGroupTypes\Web\Controllers\PersonalizeGroupTypePositionController;
 use App\Settings\ManageGroupTypes\Web\Controllers\PersonalizeGroupTypeRoleController;
 use App\Settings\ManageGroupTypes\Web\Controllers\PersonalizeGroupTypeRolePositionController;
+use App\Settings\ManageHelp\Web\Controllers\HelpController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventCategoriesController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventTypesController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventTypesPositionController;
@@ -112,6 +113,10 @@ Route::post(
 );
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    // toggle help
+    Route::put('help', [HelpController::class, 'update'])->name('help.update');
+
     // vaults
     Route::prefix('vaults')->group(function () {
         Route::get('', [VaultController::class, 'index'])->name('vault.index');

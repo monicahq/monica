@@ -127,11 +127,11 @@ main {
                   {{ $t('app.layout_menu_dashboard') }}
                 </inertia-link>
 
-                <inertia-link
+                <!-- <inertia-link
                   href=""
                   class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
                   {{ $t('app.layout_menu_reports') }}
-                </inertia-link>
+                </inertia-link> -->
 
                 <inertia-link
                   :href="layoutData.vault.url.contacts"
@@ -140,17 +140,17 @@ main {
                   {{ $t('app.layout_menu_contacts') }}
                 </inertia-link>
 
-                <inertia-link
+                <!-- <inertia-link
                   href=""
                   class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
                   {{ $t('app.layout_menu_gift_center') }}
-                </inertia-link>
+                </inertia-link> -->
 
-                <inertia-link
+                <!-- <inertia-link
                   href=""
                   class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
                   {{ $t('app.layout_menu_loans') }}
-                </inertia-link>
+                </inertia-link> -->
 
                 <inertia-link
                   :href="layoutData.vault.url.files"

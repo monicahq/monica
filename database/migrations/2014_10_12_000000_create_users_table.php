@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->string('default_map_site')->default(User::MAPS_SITE_OPEN_STREET_MAPS);
             $table->string('password')->nullable();
             $table->boolean('is_account_administrator')->default(false);
+            $table->boolean('help_shown')->default(true);
             $table->string('invitation_code')->nullable();
             $table->dateTime('invitation_accepted_at')->nullable();
             $table->string('locale')->default('en');

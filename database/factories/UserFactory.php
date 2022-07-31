@@ -28,6 +28,7 @@ class UserFactory extends Factory
             'name_order' => '%first_name% %last_name%',
             'date_format' => 'MMM DD, YYYY',
             'default_map_site' => User::MAPS_SITE_GOOGLE_MAPS,
+            'help_shown' => true,
         ];
     }
 

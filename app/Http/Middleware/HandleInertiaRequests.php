@@ -34,8 +34,12 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request)
     {
         return array_merge(parent::share($request), [
-            'auth' => [
+            'auth' => fn () => [
+                'user' => $request->user() ? [
+                    'help_shown' => $request->user()->help_shown,
+                ] : null,
             ],
+            'help_links' => fn () => config('monica.help_links'),
         ]);
     }
 }
