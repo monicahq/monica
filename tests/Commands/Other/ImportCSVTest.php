@@ -80,7 +80,7 @@ class ImportCSVTest extends TestCase
 
     private function getUser()
     {
-        $account = Account::createDefault('John', 'Doe', 'johndoe@example.com', 'secret');
+        $account = Account::createDefault('John', 'Doe', 'johndoe@example.com', 'secret', null, 'en');
 
         return $account->users()->first();
     }

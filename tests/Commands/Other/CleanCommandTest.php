@@ -90,7 +90,7 @@ class CleanCommandTest extends TestCase
             'timestamp' => now()->addDays(-10),
         ]);
 
-        $this->artisan('monica:clean --dry-run')->run();
+        $this->artisan('monica:clean', ['--dry-run' => true])->run();
 
         $this->assertDatabaseHas('synctoken', [
             'id' => $s1->id,
