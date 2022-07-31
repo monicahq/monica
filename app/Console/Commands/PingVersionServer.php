@@ -43,13 +43,19 @@ class PingVersionServer extends Command
         }
 
         if (! $this->confirmToProceed('Checking version deactivated', function () {
-            return $this->getLaravel()->environment() == 'production';
+            return $this->getLaravel()->environment() === 'production';
         })) {
             return false;
         }
 
         $instance = Instance::first();
         $instance->current_version = config('monica.app_version');
+
+        if ($instance->current_version == '') {
+            Log::warning('Current instance version is not set, skipping version check.');
+
+            return;
+        }
 
         // Query version.monicahq.com
         try {
@@ -72,10 +78,10 @@ class PingVersionServer extends Command
         $json = $response->json();
 
         $this->log('instance version: '.$instance->current_version);
-        $this->log('current version: '.$json['latest_version']);
+        $currentVersion = $this->getVersion($instance->current_version);
 
-        $latestVersion = new Version($json['latest_version']);
-        $currentVersion = new Version($instance->current_version);
+        $this->log('current version: '.$json['latest_version']);
+        $latestVersion = $this->getVersion($json['latest_version']);
 
         if ($latestVersion > $currentVersion) {
             $instance->latest_version = $json['latest_version'];
@@ -92,5 +98,16 @@ class PingVersionServer extends Command
     public function log($string)
     {
         $this->info($string, OutputInterface::VERBOSITY_VERBOSE);
+    }
+
+    private function getVersion(string $version): ?Version
+    {
+        try {
+            return new Version($version);
+        } catch (\Exception $e) {
+            $this->error("Error parsing version '$version': ".$e->getMessage());
+        }
+
+        return null;
     }
 }

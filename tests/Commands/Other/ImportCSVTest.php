@@ -1,8 +1,7 @@
 <?php
 
-namespace Tests\Commands;
+namespace Tests\Commands\Other;
 
-use Mockery as m;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -16,7 +15,6 @@ class ImportCSVTest extends TestCase
     /** @test */
     public function csv_import_contacts()
     {
-        $this->withoutMockingConsoleOutput();
         Storage::fake('public');
 
         $user = $this->getUser();
@@ -24,7 +22,12 @@ class ImportCSVTest extends TestCase
 
         $totalContacts = Contact::where('account_id', $user->account_id)->count();
 
-        $exitCode = $this->artisan('import:csv '.$user->email.' '.$path);
+        $this->artisan('import:csv', [
+            'user' => $user->email,
+            'file' => $path,
+        ])
+            ->assertSuccessful()
+            ->run();
 
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'Bono',
@@ -45,49 +48,39 @@ class ImportCSVTest extends TestCase
             $totalContacts + 1,
             Contact::where('account_id', $user->account_id)->count()
         );
-
-        $this->assertEquals(0, $exitCode);
     }
 
     /** @test */
     public function csv_import_validates_user()
     {
-        $this->withoutMockingConsoleOutput();
-
         $path = base_path('tests/stubs/single_contact_stub.csv');
 
-        $command = m::mock('\App\Console\Commands\ImportCSV[error]', [new \Illuminate\Filesystem\Filesystem()]);
-
-        $command->shouldReceive('error')->once()->with('You need to provide a valid User ID or email address!');
-
-        $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
-
-        $exitCode = $this->artisan('import:csv test@test.com '.$path);
-
-        $this->assertEquals(-1, $exitCode);
+        $this->artisan('import:csv', [
+            'user' => 'test@test.com',
+            'file' => $path,
+        ])
+            ->assertFailed()
+            ->expectsOutput('You need to provide a valid User ID or email address!')
+            ->run();
     }
 
     /** @test */
     public function csv_import_validates_file()
     {
-        $this->withoutMockingConsoleOutput();
-
         $user = $this->getUser();
 
-        $command = m::mock('\App\Console\Commands\ImportCSV[error]', [new \Illuminate\Filesystem\Filesystem()]);
-
-        $command->shouldReceive('error')->once()->with('You need to provide a valid file path.');
-
-        $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
-
-        $exitCode = $this->artisan('import:csv '.$user->email.' xxx');
-
-        $this->assertEquals(-1, $exitCode);
+        $this->artisan('import:csv', [
+            'user' => $user->email,
+            'file' => 'xxx',
+        ])
+            ->assertFailed()
+            ->expectsOutput('You need to provide a valid file path.')
+            ->run();
     }
 
     private function getUser()
     {
-        $account = Account::createDefault('John', 'Doe', 'johndoe@example.com', 'secret');
+        $account = Account::createDefault('John', 'Doe', 'johndoe@example.com', 'secret', null, 'en');
 
         return $account->users()->first();
     }

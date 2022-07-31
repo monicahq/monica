@@ -4507,9 +4507,9 @@ laravel-mix-purgecss@^6.0:
     postcss-purgecss-laravel "^2.0.0"
 
 laravel-mix@^6.0:
-  version "6.0.43"
-  resolved "https://registry.yarnpkg.com/laravel-mix/-/laravel-mix-6.0.43.tgz#6a9d67419e891f5075fc08bfff47770bf1f00d8a"
-  integrity sha512-SOO+C1aOpVSAUs30DYc6k/e0QJxfyD42aav4IKJtE5UZKw9ROWcVzkVoek2J475jNeNnl7GkoLAC27gejZsQ8g==
+  version "6.0.48"
+  resolved "https://registry.yarnpkg.com/laravel-mix/-/laravel-mix-6.0.48.tgz#ffef205bfd92e2017f85ca565b156992727ea93c"
+  integrity sha512-dOuFOC1S2cOREG6zyu3vGADSaWpagVfZwUUN88P7kUWewXc7IeqTZJVSCDlqtXS2pR+eP6k8JzQwz1QglCqfoQ==
   dependencies:
     "@babel/core" "^7.15.8"
     "@babel/plugin-proposal-object-rest-spread" "^7.15.6"
@@ -5025,10 +5025,10 @@ nanoid@3.3.1:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.1.tgz#6347a18cac88af88f58af0b3594b723d5e99bb35"
   integrity sha512-n6Vs/3KGyxPQd6uO0eH4Bv0ojGSUvuLlIHtC3Y0kEO23YRge8H9x1GCzLn28YX0H66pMkxuaeESFq4tKISKwdw==
 
-nanoid@^3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.3.tgz#fd8e8b7aa761fe807dba2d1b98fb7241bb724a25"
-  integrity sha512-p1sjXuopFs0xg+fPASzQ28agW1oHD7xDsd9Xkf3T15H3c/cifrFHVwrh74PdoklAPi+i7MdRsE47vm2r6JoB+w==
+nanoid@^3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"
+  integrity sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==
 
 natural-compare@^1.4.0:
   version "1.4.0"
@@ -5754,11 +5754,11 @@ postcss@^7.0.14, postcss@^7.0.35:
     supports-color "^6.1.0"
 
 postcss@^8.2.1, postcss@^8.2.13, postcss@^8.2.15:
-  version "8.4.13"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.13.tgz#7c87bc268e79f7f86524235821dfdf9f73e5d575"
-  integrity sha512-jtL6eTBrza5MPzy8oJLFuUscHDXTV5KcLlqAWHl5q5WYRfnNRGSmOZmOZ1T6Gy7A99mOZfqungmZMpMmCVJ8ZA==
+  version "8.4.14"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.14.tgz#ee9274d5622b4858c1007a74d76e42e56fd21caf"
+  integrity sha512-E398TUmfAYFPBSdzgeieK2Y1+1cpdxJx8yXbK/m57nRhKSmk1GB2tO4lbLBtlkfPQTDKfe4Xqv1ASWPpayPEig==
   dependencies:
-    nanoid "^3.3.3"
+    nanoid "^3.3.4"
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
@@ -6179,9 +6179,9 @@ sass-loader@^11.0:
     neo-async "^2.6.2"
 
 sass@^1.32:
-  version "1.51.0"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.51.0.tgz#25ea36cf819581fe1fe8329e8c3a4eaaf70d2845"
-  integrity sha512-haGdpTgywJTvHC2b91GSq+clTKGbtkkZmVAb82jZQN/wTy6qs8DdFm2lhEQbEwrY0QDRgSQ3xDurqM977C3noA==
+  version "1.52.2"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.52.2.tgz#cd1f03e0e7be5bb2cebcf1c34d735f087d790936"
+  integrity sha512-mfHB2VSeFS7sZlPv9YohB9GB7yWIgQNTGniQwfQ04EoQN0wsQEv7SwpCwy/x48Af+Z3vDeFXz+iuXM3HK/phZQ==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
     immutable "^4.0.0"
@@ -6388,9 +6388,9 @@ slice-ansi@^4.0.0:
     is-fullwidth-code-point "^3.0.0"
 
 snyk@^1.410:
-  version "1.915.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.915.0.tgz#1a3a6d6c220582fa3549f95d01cc35fe2fb08b59"
-  integrity sha512-1b7HkeFdD33hA/yWbAhenPIMJeqxR0w377+HsgIUHqDbbBVMvgEkz93tlZE3WigaiQ1J09R6bA4QA1/ELMnUNA==
+  version "1.946.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.946.0.tgz#d95afad5321f5bb15499c8f3fef5be17e0fd39ef"
+  integrity sha512-3XE1rk5qF1DOb5t5bQlOFDyp4x1V7HjpppH+RDVIqq7is0Hf9NTHeOpeNALplJjVVyEIfAzqiJThKupWDx5ptg==
 
 sockjs@^0.3.21:
   version "0.3.21"

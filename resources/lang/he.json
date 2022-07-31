@@ -1,7 +1,7 @@
 {
-    "The :attribute must contain at least one uppercase and one lowercase letter.": "The :attribute must contain at least one uppercase and one lowercase letter.",
-    "The :attribute must contain at least one letter.": "The :attribute must contain at least one letter.",
-    "The :attribute must contain at least one symbol.": "The :attribute must contain at least one symbol.",
-    "The :attribute must contain at least one number.": "The :attribute must contain at least one number.",
-    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": "The given :attribute has appeared in a data leak. Please choose a different :attribute."
+    "The :attribute must contain at least one uppercase and one lowercase letter.": ":attribute חייב להכיל לפחות אות גדולה ואות קטנה באנגלית.",
+    "The :attribute must contain at least one letter.": ":attribute חייב להכיל לפחות אות אחת.",
+    "The :attribute must contain at least one symbol.": ":attribute חייב להכיל לפחות סימן אחד.",
+    "The :attribute must contain at least one number.": ":attribute חייב להכיל לפחות ספרה אחת.",
+    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": ":attribute הופיע בדליפת נתונים. נא לבחור ב:attribute אחר."
 }

@@ -25,8 +25,17 @@
     </testsuite>
 
     <testsuite name="Feature">
-      <directory suffix="Test.php">./tests/Commands</directory>
       <directory suffix="Test.php">./tests/Feature</directory>
+    </testsuite>
+
+    <testsuite name="Commands-Other">
+      <directory suffix="Test.php">./tests/Commands/OneTime</directory>
+      <directory suffix="Test.php">./tests/Commands/Other</directory>
+    </testsuite>
+
+    <testsuite name="Commands-Scheduling">
+      <directory suffix="Test.php">./tests/Commands/Scheduling</directory>
+      <directory suffix="Test.php">./tests/Commands/Tests</directory>
     </testsuite>
 
     <testsuite name="Unit-Models">

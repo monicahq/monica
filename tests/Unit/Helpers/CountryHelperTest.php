@@ -56,7 +56,7 @@ class CountryHelperTest extends FeatureTestCase
         $this->assertNotNull($country);
         $this->assertEquals(
             $expect,
-            $country->cca2
+            $country->getIsoAlpha2()
         );
     }
 
@@ -83,6 +83,43 @@ class CountryHelperTest extends FeatureTestCase
             ['ja', 'JP'],
             ['pt-BR', 'BR'],
             ['fr-BE', 'BE'],
+        ];
+    }
+
+    /**
+     * @dataProvider timezoneFromLocaleProvider
+     * @test
+     */
+    public function it_get_default_timezone($locale, $expect)
+    {
+        $country = CountriesHelper::getCountryFromLocale($locale);
+        $timezone = CountriesHelper::getDefaultTimezone($country);
+
+        $this->assertNotNull($timezone);
+        $this->assertEquals(
+            $expect,
+            $timezone
+        );
+    }
+
+    public function timezoneFromLocaleProvider()
+    {
+        return [
+            ['en', 'America/Chicago'],
+            ['cs', 'Europe/Prague'],
+            ['he', 'Asia/Jerusalem'],
+            ['zh', 'Asia/Shanghai'],
+            ['de', 'Europe/Berlin'],
+            ['es', 'Europe/Madrid'],
+            ['fr', 'Europe/Paris'],
+            ['hr', 'Europe/Zagreb'],
+            ['id', 'Asia/Jakarta'],
+            ['it', 'Europe/Rome'],
+            ['nl', 'Europe/Amsterdam'],
+            ['pt', 'Europe/Lisbon'],
+            ['ru', 'Europe/Moscow'],
+            ['tr', 'Europe/Istanbul'],
+            ['ja', 'Asia/Tokyo'],
         ];
     }
 }

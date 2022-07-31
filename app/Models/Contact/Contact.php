@@ -5,6 +5,7 @@ namespace App\Models\Contact;
 use DateTime;
 use App\Traits\HasUuid;
 use App\Traits\Searchable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
@@ -22,7 +23,6 @@ use App\Models\Account\AddressBook;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use IlluminateAgnostic\Arr\Support\Arr;
 use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
@@ -1152,7 +1152,11 @@ class Contact extends Model
                 $avatarURL = $this->avatar_gravatar_url;
                 break;
             case 'photo':
-                $avatarURL = $this->avatarPhoto()->first()->url();
+                if ($this->avatarPhoto) {
+                    $avatarURL = $this->avatarPhoto()->first()->url();
+                } else {
+                    $avatarURL = $this->getAvatarDefaultURL();
+                }
                 break;
             case 'default':
             default:

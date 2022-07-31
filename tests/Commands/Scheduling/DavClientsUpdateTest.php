@@ -1,11 +1,10 @@
 <?php
 
-namespace Tests\Commands;
+namespace Tests\Commands\Scheduling;
 
 use Tests\TestCase;
 use App\Jobs\SynchronizeAddressBooks;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Support\Facades\Artisan;
 use App\Models\Account\AddressBookSubscription;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -20,7 +19,7 @@ class DavClientsUpdateTest extends TestCase
 
         $subscription = AddressBookSubscription::factory()->create();
 
-        Artisan::call('monica:davclients', []);
+        $this->artisan('monica:davclients')->run();
 
         Queue::assertPushed(SynchronizeAddressBooks::class, function ($job) use ($subscription) {
             return $job->subscription->id === $subscription->id;

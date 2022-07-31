@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Commands;
+namespace Tests\Commands\Other;
 
 use Tests\TestCase;
 use App\Models\User\User;
@@ -15,11 +15,11 @@ class CreateAccountTest extends TestCase
     public function it_creates_account()
     {
         $email = 'user1@example.com';
-        $this->artisan('account:create', ['--email' => 'user1@example.com', '--password' => 'astrongpassword']);
+        $this->artisan('account:create', ['--email' => 'user1@example.com', '--password' => 'astrongpassword'])
+            ->run();
 
         $user = User::where('email', '=', $email)->first();
         $this->assertNotEmpty($user);
-        $account = $user->account;
     }
 
     /** @test */
@@ -33,35 +33,28 @@ class CreateAccountTest extends TestCase
             '--password' => 'astrongpassword',
             '--firstname' => $firstname,
             '--lastname' => $lastname,
-        ]);
+        ])->run();
 
         $user = User::where('email', '=', $email)->first();
         $this->assertNotEmpty($user);
-        $account = $user->account;
     }
 
     /** @test */
     public function it_fails_creation_without_email()
     {
-        $firstname = 'firstname';
-        $lastname = 'lastname';
-        $this->artisan('account:create', [
-            '--password' => 'astrongpassword',
-        ])
-        ->expectsOutput(CreateAccount::ERROR_MISSING_EMAIL)
-        ->doesntExpectOutput(CreateAccount::ERROR_MISSING_PASSWORD);
+        $this->artisan('account:create', ['--password' => 'astrongpassword'])
+            ->expectsOutput(CreateAccount::ERROR_MISSING_EMAIL)
+            ->doesntExpectOutput(CreateAccount::ERROR_MISSING_PASSWORD)
+            ->run();
     }
 
     /** @test */
     public function it_fails_creation_without_password()
     {
         $email = 'user1@example.com';
-        $firstname = 'firstname';
-        $lastname = 'lastname';
-        $this->artisan('account:create', [
-            '--email' => $email,
-        ])
-        ->expectsOutput(CreateAccount::ERROR_MISSING_PASSWORD)
-        ->doesntExpectOutput(CreateAccount::ERROR_MISSING_EMAIL);
+        $this->artisan('account:create', ['--email' => $email])
+            ->expectsOutput(CreateAccount::ERROR_MISSING_PASSWORD)
+            ->doesntExpectOutput(CreateAccount::ERROR_MISSING_EMAIL)
+            ->run();
     }
 }

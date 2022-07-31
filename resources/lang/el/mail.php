@@ -46,8 +46,8 @@ return [
     'invitation_button' => 'Αποδοχή πρόσκλησης',
     'invitation_expiration' => 'Ο σύνδεσμος θα λήξει σε :count μέρες.',
 
-    'export_title' => 'Your export is ready',
-    'export_description' => 'You requested a data export on :date. It is now ready to download.',
-    'export_download' => 'Download export',
+    'export_title' => 'Το αρχείο εξαγωγής δεδομένων είναι έτοιμο',
+    'export_description' => 'Ζητήσατε εξαγωγή δεδομένων στις :date. Τώρα είναι έτοιμο για λήψη.',
+    'export_download' => 'Λήψη εξαγωγής δεδομένων',
 
 ];

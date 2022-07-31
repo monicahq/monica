@@ -46,8 +46,8 @@ return [
     'invitation_button' => 'Accetta l\'invito',
     'invitation_expiration' => 'Questo link scadrà tra :count giorni.',
 
-    'export_title' => 'Your export is ready',
-    'export_description' => 'You requested a data export on :date. It is now ready to download.',
-    'export_download' => 'Download export',
+    'export_title' => 'L\'esportazione è pronta',
+    'export_description' => 'Hai richiesto un\'esportazione di dati il :date. Ora è pronto per il download.',
+    'export_download' => 'Scarica l\'esportazione',
 
 ];
