@@ -48,7 +48,7 @@ class PassportCommandTest extends TestCase
         /** @var \Tests\Helpers\CommandCallerFake */
         $fake = Command::fake();
 
-        config(['passport.private_key' => '', 'passport.public_key' => '']);
+        config(['passport.private_key' => '-', 'passport.public_key' => '-']);
 
         $this->artisan('monica:passport')->run();
 
