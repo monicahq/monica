@@ -22,10 +22,6 @@ export default {
       type: String,
       default: '',
     },
-    datacy: {
-      type: String,
-      default: '',
-    },
     top: {
       type: String,
       default: '3px',
@@ -34,7 +30,7 @@ export default {
 
   data() {
     return {
-      localUrl: 'https://docs.officelife.io/documentation/',
+      localUrl: this.$page.props.help_url,
     };
   },
 

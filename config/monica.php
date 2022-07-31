@@ -23,7 +23,7 @@ return [
     |
     */
 
-    'help_center_url' => 'https://docs.officelife.io/documentation/',
+    'help_center_url' => 'https://docs-ivory-one.vercel.app/docs/',
 
     /*
     |--------------------------------------------------------------------------
@@ -36,6 +36,6 @@ return [
     */
 
     'help_links' => [
-        'work_from_home' => 'manage/employee-management.html#work-from-home',
+        'last_updated_contacts' => 'vaults/dashboard#last-updated-contacts',
     ],
 ];

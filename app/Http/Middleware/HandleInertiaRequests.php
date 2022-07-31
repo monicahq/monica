@@ -40,6 +40,7 @@ class HandleInertiaRequests extends Middleware
                 ] : null,
             ],
             'help_links' => fn () => config('monica.help_links'),
+            'help_url' => fn () => config('monica.help_center_url'),
         ]);
     }
 }

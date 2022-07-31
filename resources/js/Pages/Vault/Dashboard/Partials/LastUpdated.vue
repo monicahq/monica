@@ -22,7 +22,7 @@
 
       <span class="mr-2 inline">{{ $t('vault.dashboard_last_updated_contacts_title') }}</span>
 
-      <help :url="$page.props.help_links.billing" :top="'4px'" />
+      <help :url="$page.props.help_links.last_updated_contacts" :top="'4px'" />
     </h3>
     <div v-for="contact in data" :key="contact.id" class="mb-2 flex items-center text-sm">
       <div v-html="contact.avatar" class="mr-2 h-5 w-5"></div>
