@@ -19,7 +19,7 @@ Monica depends on the following:
 
 -   A Web server, like [Apache httpd webserver](https://httpd.apache.org/)
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
--   PHP 8.0+
+-   PHP 8.1+
 -   [Composer](https://getcomposer.org/)
 -   [Node.js](https://nodejs.org)
 -   [Yarn](https://yarnpkg.com)
@@ -42,7 +42,7 @@ sudo apt install -y git
 
 **PHP:**
 
-If you are using Debian 10 or lower, PHP 8.0 is not available from the Debian project directly.  Instead use the [deb.sury.org](https://deb.sury.org/) package repository from Ondřej Surý, maintainer of the mainline Debian packages.
+If you are using Debian 10 or lower, PHP 8.1 is not available from the Debian project directly.  Instead use the [deb.sury.org](https://deb.sury.org/) package repository from Ondřej Surý, maintainer of the mainline Debian packages.
 
 ```sh
 sudo apt install -y curl software-properties-common
@@ -51,7 +51,7 @@ echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /et
 sudo apt update
 ```
 
-Install PHP 8.0 or 8.1 with these extensions:
+Install PHP 8.1 with these extensions:
 
 -   bcmath
 -   curl

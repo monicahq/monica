@@ -14,7 +14,7 @@ Monica can be installed on a variety of platforms. The choice of the platform is
 If you don't want to use [Docker](/docs/installation/providers/docker.md), the best way to setup the project is to use the same configuration that [Homestead](https://laravel.com/docs/homestead) uses. Basically, Monica depends on the following:
 
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-* PHP 8.0+
+* PHP 8.1+
 * [Composer](https://getcomposer.org/)
 * [MySQL](https://www.mysql.com/)
 * Optional: Redis or Beanstalk
