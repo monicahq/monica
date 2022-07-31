@@ -15,7 +15,7 @@ on:
 
 env:
   php-version: '8.1'
-  node-version: 16
+  node-version: 18
 
 jobs:
   #############
