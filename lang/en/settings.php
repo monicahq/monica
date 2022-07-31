@@ -14,6 +14,9 @@ return [
      * USER PREFERENCES
      **************************************************************/
 
+    'user_preferences_help_title' => 'Help',
+    'user_preferences_help_current_language' => 'Display help links in the interface to help you (English only)',
+
     'user_preferences_locale_title' => 'Language of the application',
     'user_preferences_locale_current_language' => 'Current language:',
     'user_preferences_locale_en' => 'English',

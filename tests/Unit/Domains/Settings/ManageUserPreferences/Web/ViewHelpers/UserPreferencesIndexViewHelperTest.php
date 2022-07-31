@@ -24,10 +24,11 @@ class UserPreferencesIndexViewHelperTest extends TestCase
         $array = UserPreferencesIndexViewHelper::data($user);
 
         $this->assertEquals(
-            7,
+            8,
             count($array)
         );
 
+        $this->assertArrayHasKey('help', $array);
         $this->assertArrayHasKey('name_order', $array);
         $this->assertArrayHasKey('date_format', $array);
         $this->assertArrayHasKey('timezone', $array);
@@ -42,6 +43,24 @@ class UserPreferencesIndexViewHelperTest extends TestCase
                 'back' => env('APP_URL').'/settings',
             ],
             $array['url']
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_data_needed_for_help(): void
+    {
+        $user = User::factory()->create([
+            'help_shown' => true,
+        ]);
+        $array = UserPreferencesIndexViewHelper::dtoHelp($user);
+        $this->assertEquals(
+            [
+                'help_shown' => true,
+                'url' => [
+                    'store' => env('APP_URL').'/settings/preferences/help',
+                ],
+            ],
+            $array
         );
     }
 

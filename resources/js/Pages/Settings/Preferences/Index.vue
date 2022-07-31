@@ -47,6 +47,8 @@
 
     <main class="relative sm:mt-20">
       <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+        <help-preference :data="data.help" />
+
         <locale :data="data.locale" />
 
         <name-order :data="data.name_order" />
@@ -71,6 +73,7 @@ import NumberFormat from '@/Pages/Settings/Preferences/Partials/NumberFormat';
 import Timezone from '@/Pages/Settings/Preferences/Partials/Timezone';
 import Maps from '@/Pages/Settings/Preferences/Partials/Maps';
 import Locale from '@/Pages/Settings/Preferences/Partials/Locale';
+import HelpPreference from '@/Pages/Settings/Preferences/Partials/HelpPreference';
 
 export default {
   components: {
@@ -81,6 +84,7 @@ export default {
     NumberFormat,
     Maps,
     Locale,
+    HelpPreference,
   },
 
   props: {

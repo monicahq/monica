@@ -46,7 +46,6 @@ use App\Settings\ManageGroupTypes\Web\Controllers\PersonalizeGroupTypeController
 use App\Settings\ManageGroupTypes\Web\Controllers\PersonalizeGroupTypePositionController;
 use App\Settings\ManageGroupTypes\Web\Controllers\PersonalizeGroupTypeRoleController;
 use App\Settings\ManageGroupTypes\Web\Controllers\PersonalizeGroupTypeRolePositionController;
-use App\Settings\ManageHelp\Web\Controllers\HelpController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventCategoriesController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventTypesController;
 use App\Settings\ManageLifeEventCategories\Web\Controllers\PersonalizeLifeEventTypesPositionController;
@@ -72,6 +71,7 @@ use App\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatePagesControl
 use App\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatesController;
 use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesController;
 use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesDateFormatController;
+use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesHelpController;
 use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesLocaleController;
 use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesMapsPreferenceController;
 use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesNameOrderController;
@@ -113,9 +113,6 @@ Route::post(
 );
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
-    // toggle help
-    Route::put('help', [HelpController::class, 'update'])->name('help.update');
 
     // vaults
     Route::prefix('vaults')->group(function () {
@@ -292,6 +289,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('number', [PreferencesNumberFormatController::class, 'store'])->name('number.store');
             Route::post('maps', [PreferencesMapsPreferenceController::class, 'store'])->name('maps.store');
             Route::post('locale', [PreferencesLocaleController::class, 'store'])->name('locale.store');
+            Route::post('help', [PreferencesHelpController::class, 'store'])->name('help.store');
         });
 
         // notifications
