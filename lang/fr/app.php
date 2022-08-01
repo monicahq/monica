@@ -69,8 +69,7 @@ return [
 
     'no_results' => 'Pas de résultats',
 
-    'show_help' => 'Montrer l’aide',
-    'hide_help' => 'Cacher l’aide',
+    'help_open_new_page' => 'Ce lien ouvrira dans un nouvel onglet',
 
     'default_template_name' => 'Modèle par défaut',
     'default_template_page_contact_information' => 'Information du contact',

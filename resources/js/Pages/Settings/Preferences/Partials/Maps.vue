@@ -8,8 +8,11 @@ input[type='radio'] {
   <div class="mb-16">
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
-      <h3 class="mb-4 font-semibold sm:mb-0">
-        <span class="mr-1">🗺️</span> {{ $t('settings.user_preferences_map_title') }}
+      <h3 class="mb-4 flex font-semibold sm:mb-0">
+        <span class="mr-1">🗺️</span>
+        <span class="mr-2">{{ $t('settings.user_preferences_map_title') }}</span>
+
+        <help :url="$page.props.help_links.settings_preferences_maps" :top="'5px'" />
       </h3>
       <pretty-button v-if="!editMode" :text="$t('app.edit')" @click="enableEditMode" />
     </div>
@@ -57,12 +60,14 @@ input[type='radio'] {
 import PrettyButton from '@/Shared/Form/PrettyButton';
 import PrettyLink from '@/Shared/Form/PrettyLink';
 import Errors from '@/Shared/Form/Errors';
+import Help from '@/Shared/Help';
 
 export default {
   components: {
     PrettyButton,
     PrettyLink,
     Errors,
+    Help,
   },
 
   props: {

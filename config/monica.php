@@ -37,5 +37,12 @@ return [
 
     'help_links' => [
         'last_updated_contacts' => 'vaults/dashboard#last-updated-contacts',
+        'settings_preferences_help' => 'account-settings/manage-preferences#help-display',
+        'settings_preferences_language' => 'account-settings/manage-preferences#language',
+        'settings_preferences_contact_names' => 'account-settings/manage-preferences#customize-contact-names',
+        'settings_preferences_date' => 'account-settings/manage-preferences#date-format',
+        'settings_preferences_numerical_format' => 'account-settings/manage-preferences#numerical-format',
+        'settings_preferences_timezone' => 'account-settings/manage-preferences#timezone',
+        'settings_preferences_maps' => 'account-settings/manage-preferences#maps-preferences',
     ],
 ];

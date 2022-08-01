@@ -69,8 +69,7 @@ return [
 
     'no_results' => 'No results',
 
-    'show_help' => 'Show help',
-    'hide_help' => 'Hide help',
+    'help_open_new_page' => 'This link will open in a new tab',
 
     'default_template_name' => 'Default template',
     'default_template_page_contact_information' => 'Contact information',
