@@ -11,6 +11,7 @@ use App\Services\BaseService;
 class RemoveModuleFromTemplatePage extends BaseService implements ServiceInterface
 {
     private TemplatePage $templatePage;
+
     private Module $module;
 
     /**

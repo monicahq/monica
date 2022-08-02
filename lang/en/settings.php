@@ -121,22 +121,22 @@ return [
      * PERSONNALIZE
      **************************************************************/
 
-     'personalize_title' => 'Personalize your account',
-     'personalize_title_manage_template' => 'Manage templates',
-     'personalize_title_manage_module' => 'Manage modules',
-     'personalize_title_manage_rel_types' => 'Manage relationship types',
-     'personalize_title_manage_life_event_categories' => 'Manage life event categories',
-     'personalize_title_manage_group_types' => 'Manage group types',
-     'personalize_title_manage_activity_types' => 'Manage activity types',
-     'personalize_title_manage_pronouns' => 'Manage pronouns',
-     'personalize_title_manage_genders' => 'Manage genders',
-     'personalize_title_manage_adress_types' => 'Manage address types',
-     'personalize_title_manage_contact_information_types' => 'Manage contact information types',
-     'personalize_title_manage_call_reasons' => 'Manage call reasons',
-     'personalize_title_manage_pet_categories' => 'Manage pet categories',
-     'personalize_title_manage_gift_occasions' => 'Manage gift occasions',
-     'personalize_title_manage_gift_states' => 'Manage gift states',
-     'personalize_title_manage_currencies' => 'Manage currencies',
+    'personalize_title' => 'Personalize your account',
+    'personalize_title_manage_template' => 'Manage templates',
+    'personalize_title_manage_module' => 'Manage modules',
+    'personalize_title_manage_rel_types' => 'Manage relationship types',
+    'personalize_title_manage_life_event_categories' => 'Manage life event categories',
+    'personalize_title_manage_group_types' => 'Manage group types',
+    'personalize_title_manage_activity_types' => 'Manage activity types',
+    'personalize_title_manage_pronouns' => 'Manage pronouns',
+    'personalize_title_manage_genders' => 'Manage genders',
+    'personalize_title_manage_adress_types' => 'Manage address types',
+    'personalize_title_manage_contact_information_types' => 'Manage contact information types',
+    'personalize_title_manage_call_reasons' => 'Manage call reasons',
+    'personalize_title_manage_pet_categories' => 'Manage pet categories',
+    'personalize_title_manage_gift_occasions' => 'Manage gift occasions',
+    'personalize_title_manage_gift_states' => 'Manage gift states',
+    'personalize_title_manage_currencies' => 'Manage currencies',
 
     /***************************************************************
      * PERSONNALIZE TEMPLATES
@@ -181,7 +181,7 @@ return [
     'personalize_relationship_types_help_2' => 'a father-son relation—shown on the father page,',
     'personalize_relationship_types_help_3' => 'a son-father relation—shown on the son page.',
     'personalize_relationship_types_help_4' => 'We call them a relation, and its reverse relation. For each relation you define, you need to define its counterpart.',
-    'personalize_relationship_types_new_name' =>'Name of the group type',
+    'personalize_relationship_types_new_name' => 'Name of the group type',
     'personalize_relationship_types_new_relationship_name' => 'Name of the relationship',
     'personalize_relationship_types_new_relationship_reverse_name' => 'Name of the reverse relationship',
     'personalize_relationship_types_add_relationship' => 'Add a relationship type',
@@ -189,10 +189,10 @@ return [
     'personalize_relationship_types_group_update_success' => 'The group type has been updated',
     'personalize_relationship_types_group_destroy_confirm' => 'Are you sure? This will delete all the relationships of this type for all the contacts that were using it.',
     'personalize_relationship_types_group_destroy_success' => 'The group type has been deleted',
-    'personalize_relationship_types_new_success' =>'The relationship type has been created',
-    'personalize_relationship_types_update_success' =>'The relationship type has been updated',
+    'personalize_relationship_types_new_success' => 'The relationship type has been created',
+    'personalize_relationship_types_update_success' => 'The relationship type has been updated',
     'personalize_relationship_types_destroy_confirm' => 'Are you sure? This will delete all the relationships of this type for all the contacts that were using it.',
-    'personalize_relationship_types_destroy_success' =>'The relationship type has been deleted',
+    'personalize_relationship_types_destroy_success' => 'The relationship type has been deleted',
 
     /***************************************************************
      * PERSONNALIZE CONTACT TYPE INFORMATION

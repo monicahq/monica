@@ -16,14 +16,18 @@ class Vault extends Model
      * Possible vault permissions.
      */
     public const PERMISSION_VIEW = 300;
+
     public const PERMISSION_EDIT = 200;
+
     public const PERMISSION_MANAGE = 100;
 
     /**
      * Possible vault types.
      */
     public const TYPE_PERSONAL = 'personal';
+
     public const TYPE_FAMILY = 'family';
+
     public const TYPE_COMMUNITY = 'community';
 
     /**

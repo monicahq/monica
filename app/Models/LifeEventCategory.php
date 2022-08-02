@@ -18,9 +18,13 @@ class LifeEventCategory extends Model
      * Possible types.
      */
     public const TYPE_WORK_EDUCATION = 'work_education';
+
     public const TYPE_FAMILY_RELATIONSHIPS = 'family_relationships';
+
     public const TYPE_HOME_LIVING = 'home_living';
+
     public const TYPE_TRAVEL_EXPERIENCES = 'travel_experiences';
+
     public const TYPE_HEALTH_WELLNESS = 'health_wellness';
 
     /**

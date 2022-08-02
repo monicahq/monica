@@ -15,6 +15,7 @@ use Carbon\Carbon;
 class UpdateContactImportantDate extends BaseService implements ServiceInterface
 {
     private ContactImportantDate $date;
+
     private array $data;
 
     /**

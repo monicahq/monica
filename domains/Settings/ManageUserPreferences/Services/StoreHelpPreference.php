@@ -40,8 +40,7 @@ class StoreHelpPreference extends BaseService
      * If it's set to true, it will show an help button next to the main features
      * on the screen.
      *
-     * @param array $data
-     *
+     * @param  array  $data
      * @return User
      */
     public function execute(array $data): User

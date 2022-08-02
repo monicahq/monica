@@ -39,7 +39,7 @@ class MonetaryNumberHelper
                 $formattedNumber = $formattedNumber.'.'.$decimals;
                 break;
 
-            // 1 234,56
+                // 1 234,56
             case User::NUMBER_FORMAT_TYPE_SPACE_THOUSANDS_COMMA_DECIMAL:
                 for ($i = 0; $i < $lengthThousands; $i++) {
                     if (($i % 3 == 0) && $i) {
@@ -50,7 +50,7 @@ class MonetaryNumberHelper
                 $formattedNumber = $formattedNumber.','.$decimals;
                 break;
 
-            // 1234.56
+                // 1234.56
             case User::NUMBER_FORMAT_TYPE_NO_SPACE_DOT_DECIMAL:
                 for ($i = 0; $i < $lengthThousands; $i++) {
                     $formattedNumber = $thousands[$lengthThousands - $i - 1].$formattedNumber;

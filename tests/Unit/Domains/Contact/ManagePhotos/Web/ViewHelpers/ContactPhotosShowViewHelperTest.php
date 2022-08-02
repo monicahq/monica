@@ -41,9 +41,9 @@ class ContactPhotosShowViewHelperTest extends TestCase
                 'url' => [
                     'display' => 'https://ucarecdn.com/123/-/resize/1700x/-/format/auto/-/quality/smart_retina/',
                     'download' => $file->cdn_url,
-                    'show' => env('APP_URL') . '/vaults/' . $contact->vault->id . '/contacts/' . $contact->id,
-                    'index' => env('APP_URL') . '/vaults/' . $contact->vault->id . '/contacts/' . $contact->id.'/photos',
-                    'destroy' => env('APP_URL') . '/vaults/' . $contact->vault->id . '/contacts/' . $contact->id . '/photos/' . $file->id,
+                    'show' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id,
+                    'index' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/photos',
+                    'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/photos/'.$file->id,
                 ],
             ],
             $array

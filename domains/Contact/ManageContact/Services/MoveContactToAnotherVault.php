@@ -14,6 +14,7 @@ use Carbon\Carbon;
 class MoveContactToAnotherVault extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private Vault $newVault;
 
     /**

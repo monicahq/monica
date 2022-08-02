@@ -19,48 +19,48 @@ class ContactLogHelper
     {
         switch ($log->action_name) {
             case 'contact_created':
-                    $sentence = trans('contact_log.contact_created');
-                    break;
+                $sentence = trans('contact_log.contact_created');
+                break;
             case 'contact_updated':
-                    $sentence = trans('contact_log.contact_updated');
-                    break;
+                $sentence = trans('contact_log.contact_updated');
+                break;
             case 'contact_copied_to_another_vault':
-                    $sentence = ContactLogHelper::contactCopiedToAnotherVault($log);
-                    break;
+                $sentence = ContactLogHelper::contactCopiedToAnotherVault($log);
+                break;
             case 'contact_moved_to_another_vault':
-                    $sentence = ContactLogHelper::contactMovedToAnotherVault($log);
-                    break;
+                $sentence = ContactLogHelper::contactMovedToAnotherVault($log);
+                break;
 
             case 'label_assigned':
-                    $sentence = ContactLogHelper::labelAssigned($log);
-                    break;
+                $sentence = ContactLogHelper::labelAssigned($log);
+                break;
             case 'label_removed':
-                    $sentence = ContactLogHelper::labelRemoved($log);
-                    break;
+                $sentence = ContactLogHelper::labelRemoved($log);
+                break;
 
             case 'pronoun_assigned':
-                    $sentence = ContactLogHelper::pronounAssigned($log);
-                    break;
+                $sentence = ContactLogHelper::pronounAssigned($log);
+                break;
             case 'pronoun_removed':
-                    $sentence = ContactLogHelper::pronounRemoved($log);
-                    break;
+                $sentence = ContactLogHelper::pronounRemoved($log);
+                break;
 
             case 'contact_information_created':
-                    $sentence = ContactLogHelper::contactInformationCreated($log);
-                    break;
+                $sentence = ContactLogHelper::contactInformationCreated($log);
+                break;
             case 'contact_information_updated':
-                    $sentence = ContactLogHelper::contactInformationUpdated($log);
-                    break;
+                $sentence = ContactLogHelper::contactInformationUpdated($log);
+                break;
             case 'contact_information_destroyed':
-                    $sentence = ContactLogHelper::contactInformationDestroyed($log);
-                    break;
+                $sentence = ContactLogHelper::contactInformationDestroyed($log);
+                break;
 
             case 'relationship_set':
-                    $sentence = ContactLogHelper::relationshipSet($log);
-                    break;
+                $sentence = ContactLogHelper::relationshipSet($log);
+                break;
             case 'relationship_unset':
-                    $sentence = ContactLogHelper::relationshipUnset($log);
-                    break;
+                $sentence = ContactLogHelper::relationshipUnset($log);
+                break;
 
             case 'contact_address_created':
                 $sentence = ContactLogHelper::contactAddressCreated($log);

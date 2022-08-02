@@ -9,9 +9,9 @@ use App\Models\User;
 use App\Models\Vault;
 use App\Vault\ManageFiles\Web\ViewHelpers\VaultFileIndexViewHelper;
 use Carbon\Carbon;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-use function env;
 
 class VaultFileIndexViewHelperTest extends TestCase
 {
@@ -60,12 +60,12 @@ class VaultFileIndexViewHelperTest extends TestCase
                         'name' => $contact->name,
                         'avatar' => '123',
                         'url' => [
-                            'show' => env('APP_URL') . '/vaults/' . $vault->id . '/contacts/' . $contact->id,
+                            'show' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/'.$contact->id,
                         ],
                     ],
                     'url' => [
                         'download' => $file->cdn_url,
-                        'destroy' => env('APP_URL') . '/vaults/' . $contact->vault->id . '/contacts/' . $contact->id . '/documents/' . $file->id,
+                        'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/documents/'.$file->id,
                     ],
                 ],
             ],

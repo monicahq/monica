@@ -13,8 +13,11 @@ use Illuminate\Support\Facades\DB;
 class RescheduleContactReminderForChannel extends BaseService implements ServiceInterface
 {
     private UserNotificationChannel $userNotificationChannel;
+
     private ContactReminder $contactReminder;
+
     private array $data;
+
     private Carbon $upcomingDate;
 
     /**

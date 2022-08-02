@@ -10,6 +10,7 @@ use App\Services\BaseService;
 class DestroyTemplatePage extends BaseService implements ServiceInterface
 {
     private Template $template;
+
     private TemplatePage $templatePage;
 
     /**

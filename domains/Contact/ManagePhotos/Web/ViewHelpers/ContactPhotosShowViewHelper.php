@@ -19,7 +19,7 @@ class ContactPhotosShowViewHelper
             'mime_type' => $file->mime_type,
             'size' => FileHelper::formatFileSize($file->size),
             'url' => [
-                'display' => 'https://ucarecdn.com/' . $file->uuid . '/-/resize/1700x/-/format/auto/-/quality/smart_retina/',
+                'display' => 'https://ucarecdn.com/'.$file->uuid.'/-/resize/1700x/-/format/auto/-/quality/smart_retina/',
                 'download' => $file->cdn_url,
                 'show' => route('contact.show', [
                     'vault' => $contact->vault_id,

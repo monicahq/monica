@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 class InviteUser extends BaseService implements ServiceInterface
 {
     private User $user;
+
     private array $data;
 
     /**

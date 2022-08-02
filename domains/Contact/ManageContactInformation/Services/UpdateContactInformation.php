@@ -13,6 +13,7 @@ use Carbon\Carbon;
 class UpdateContactInformation extends BaseService implements ServiceInterface
 {
     private ContactInformation $contactInformation;
+
     private ContactInformationType $contactInformationType;
 
     /**

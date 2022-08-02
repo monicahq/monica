@@ -10,7 +10,9 @@ use App\Services\BaseService;
 class AssociateInformationToTemplate extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private Template $template;
+
     private Information $information;
 
     /**

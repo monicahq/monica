@@ -18,6 +18,7 @@ class UserNotificationChannel extends Model
      * Possible type.
      */
     public const TYPE_EMAIL = 'email';
+
     public const TYPE_TELEGRAM = 'telegram';
 
     /**

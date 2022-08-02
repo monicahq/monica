@@ -15,7 +15,9 @@ use Carbon\Carbon;
 class UpdateContact extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private Gender $gender;
+
     private Pronoun $pronoun;
 
     /**

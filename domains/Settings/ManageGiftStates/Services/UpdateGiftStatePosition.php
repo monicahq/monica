@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 class UpdateGiftStatePosition extends BaseService implements ServiceInterface
 {
     private GiftState $giftState;
+
     private int $pastPosition;
 
     /**

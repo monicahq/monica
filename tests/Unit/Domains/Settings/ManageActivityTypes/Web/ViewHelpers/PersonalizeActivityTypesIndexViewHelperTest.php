@@ -5,9 +5,9 @@ namespace Tests\Unit\Domains\Settings\ManageActivityTypes\Web\ViewHelpers;
 use App\Models\Activity;
 use App\Models\ActivityType;
 use App\Settings\ManageActivityTypes\Web\ViewHelpers\PersonalizeActivityTypesIndexViewHelper;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-use function env;
 
 class PersonalizeActivityTypesIndexViewHelperTest extends TestCase
 {

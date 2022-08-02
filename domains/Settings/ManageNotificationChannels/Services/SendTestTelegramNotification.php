@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Notification;
 class SendTestTelegramNotification extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private UserNotificationChannel $userNotificationChannel;
 
     /**

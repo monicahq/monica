@@ -10,6 +10,7 @@ use App\Services\BaseService;
 class CreateGroupType extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private GroupType $groupType;
 
     /**

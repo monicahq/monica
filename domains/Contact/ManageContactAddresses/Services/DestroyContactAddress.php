@@ -13,6 +13,7 @@ use Carbon\Carbon;
 class DestroyContactAddress extends BaseService implements ServiceInterface
 {
     private Address $address;
+
     private AddressType $addressType;
 
     /**

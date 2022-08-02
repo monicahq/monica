@@ -60,8 +60,8 @@ class ContactImportantDatesViewHelper
             'label' => $date->label,
             'date' => ImportantDateHelper::formatDate($date, $user),
             'type' => $date->contactImportantDateType ? [
-                'id' =>  $date->contactImportantDateType->id,
-                'label' =>  $date->contactImportantDateType->label,
+                'id' => $date->contactImportantDateType->id,
+                'label' => $date->contactImportantDateType->label,
             ] : null,
             'age' => ImportantDateHelper::getAge($date),
             'choice' => ImportantDateHelper::determineType($date),

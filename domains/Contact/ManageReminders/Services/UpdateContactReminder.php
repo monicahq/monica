@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 class UpdateContactReminder extends BaseService implements ServiceInterface
 {
     private ContactReminder $reminder;
+
     private array $data;
 
     /**

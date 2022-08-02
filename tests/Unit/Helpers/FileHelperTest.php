@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
 use App\Helpers\FileHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class FileHelperTest extends TestCase
 {

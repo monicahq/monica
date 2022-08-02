@@ -10,6 +10,7 @@ use Carbon\Carbon;
 class ToggleLoan extends BaseService implements ServiceInterface
 {
     private Loan $loan;
+
     private array $data;
 
     /**

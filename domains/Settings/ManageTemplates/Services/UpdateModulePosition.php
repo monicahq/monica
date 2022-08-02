@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 class UpdateModulePosition extends BaseService implements ServiceInterface
 {
     private TemplatePage $templatePage;
+
     private Module $module;
 
     /**

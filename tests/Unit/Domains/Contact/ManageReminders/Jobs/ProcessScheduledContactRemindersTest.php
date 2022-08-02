@@ -10,8 +10,8 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 class ProcessScheduledContactRemindersTest extends TestCase
 {

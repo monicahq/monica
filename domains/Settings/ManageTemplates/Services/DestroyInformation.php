@@ -9,6 +9,7 @@ use App\Services\BaseService;
 class DestroyInformation extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private Information $information;
 
     /**

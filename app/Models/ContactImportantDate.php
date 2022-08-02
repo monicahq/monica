@@ -17,13 +17,16 @@ class ContactImportantDate extends Model
      * Possible type.
      */
     public const TYPE_BIRTHDATE = 'birthdate';
+
     public const TYPE_DECEASED_DATE = 'deceased_date';
 
     /**
      * Possible type of dates.
      */
     public const TYPE_FULL_DATE = 'full_date';
+
     public const TYPE_MONTH_DAY = 'month_day';
+
     public const TYPE_YEAR = 'year';
 
     /**

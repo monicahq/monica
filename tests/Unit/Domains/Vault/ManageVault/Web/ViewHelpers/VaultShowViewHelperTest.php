@@ -10,10 +10,10 @@ use App\Models\UserNotificationChannel;
 use App\Models\Vault;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultShowViewHelper;
 use Carbon\Carbon;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
-use function env;
 
 class VaultShowViewHelperTest extends TestCase
 {
@@ -50,7 +50,7 @@ class VaultShowViewHelperTest extends TestCase
                     'name' => $mitchell->name,
                     'avatar' => '123',
                     'url' => [
-                        'show' => env('APP_URL') . '/vaults/' . $vault->id . '/contacts/' . $mitchell->id,
+                        'show' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/'.$mitchell->id,
                     ],
                 ],
                 1 => [
@@ -58,7 +58,7 @@ class VaultShowViewHelperTest extends TestCase
                     'name' => $john->name,
                     'avatar' => '123',
                     'url' => [
-                        'show' => env('APP_URL') . '/vaults/' . $vault->id . '/contacts/' . $john->id,
+                        'show' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/'.$john->id,
                     ],
                 ],
             ],
@@ -124,7 +124,7 @@ class VaultShowViewHelperTest extends TestCase
 
         $this->assertEquals(
             [
-                'index' => env('APP_URL') . '/vaults/' . $vault->id . '/reminders',
+                'index' => env('APP_URL').'/vaults/'.$vault->id.'/reminders',
             ],
             $array['url']
         );
@@ -139,7 +139,7 @@ class VaultShowViewHelperTest extends TestCase
                         'name' => $mitchell->name,
                         'avatar' => '123',
                         'url' => [
-                            'show' => env('APP_URL') . '/vaults/' . $vault->id . '/contacts/' . $mitchell->id,
+                            'show' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/'.$mitchell->id,
                         ],
                     ],
                 ],

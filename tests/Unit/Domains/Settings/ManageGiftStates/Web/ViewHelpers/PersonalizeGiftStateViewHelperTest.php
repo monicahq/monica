@@ -4,9 +4,9 @@ namespace Tests\Unit\Domains\Settings\ManageGiftStates\Web\ViewHelpers;
 
 use App\Models\GiftState;
 use App\Settings\ManageGiftStates\Web\ViewHelpers\PersonalizeGiftStateViewHelper;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-use function env;
 
 class PersonalizeGiftStateViewHelperTest extends TestCase
 {

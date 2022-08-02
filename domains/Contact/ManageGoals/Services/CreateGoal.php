@@ -11,6 +11,7 @@ use Carbon\Carbon;
 class CreateGoal extends BaseService implements ServiceInterface
 {
     private Goal $goal;
+
     private array $data;
 
     /**

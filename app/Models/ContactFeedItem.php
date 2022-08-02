@@ -17,29 +17,53 @@ class ContactFeedItem extends Model
      * Possible actions.
      */
     public const ACTION_CONTACT_INFORMATION_UPDATED = 'contact_information_updated';
+
     public const ACTION_JOB_INFORMATION_UPDATED = 'job_information_updated';
+
     public const ACTION_NOTE_CREATED = 'note_created';
+
     public const ACTION_NOTE_UPDATED = 'note_updated';
+
     public const ACTION_NOTE_DESTROYED = 'note_destroyed';
+
     public const ACTION_GOAL_CREATED = 'goal_created';
+
     public const ACTION_IMPORTANT_DATE_CREATED = 'important_date_created';
+
     public const ACTION_IMPORTANT_DATE_UPDATED = 'important_date_updated';
+
     public const ACTION_IMPORTANT_DATE_DESTROYED = 'important_date_destroyed';
+
     public const ACTION_LABEL_ASSIGNED = 'label_assigned';
+
     public const ACTION_LABEL_REMOVED = 'label_removed';
+
     public const ACTION_CONTACT_EVENT_CREATED = 'added an event';
+
     public const ACTION_CONTACT_EVENT_UPDATED = 'updated an event';
+
     public const ACTION_CONTACT_EVENT_DESTROYED = 'deleted an event';
+
     public const ACTION_CONTACT_ACTIVITY_CREATED = 'added an activity';
+
     public const ACTION_CONTACT_ACTIVITY_UPDATED = 'updated an activity';
+
     public const ACTION_CONTACT_ACTIVITY_DESTROYED = 'deleted an activity';
+
     public const ACTION_LOAN_CREATED = 'loan_created';
+
     public const ACTION_LOAN_UPDATED = 'loan_updated';
+
     public const ACTION_ADDED_TO_GROUP = 'added_to_group';
+
     public const ACTION_REMOVED_FROM_GROUP = 'removed_from_group';
+
     public const ACTION_ARCHIVED_CONTACT = 'archived';
+
     public const ACTION_UNARCHIVED_CONTACT = 'unarchived';
+
     public const ACTION_FAVORITED_CONTACT = 'favorited';
+
     public const ACTION_UNFAVORITED_CONTACT = 'unfavorited';
 
     /**

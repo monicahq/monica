@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class AddDefaultValueToAttribute extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private Attribute $attribute;
 
     /**

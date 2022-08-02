@@ -10,6 +10,7 @@ use App\Services\BaseService;
 class RemoveInformationFromTemplate extends BaseService implements ServiceInterface
 {
     private Template $template;
+
     private Information $information;
 
     /**

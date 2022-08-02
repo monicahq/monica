@@ -10,6 +10,7 @@ use App\Services\BaseService;
 class CreateGroupTypeRole extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private GroupTypeRole $groupTypeRole;
 
     /**

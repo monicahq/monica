@@ -19,7 +19,7 @@ class TelegramNotificationsController extends Controller
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::user()->id,
             'label' => 'Telegram',
-            'type' =>  UserNotificationChannel::TYPE_TELEGRAM,
+            'type' => UserNotificationChannel::TYPE_TELEGRAM,
             'content' => 'tbd',
             'verify_email' => false,
             'preferred_time' => $time,

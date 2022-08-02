@@ -3,13 +3,13 @@
 namespace App\Contact\ManageDocuments\Listeners;
 
 use App\Contact\ManageDocuments\Events\FileDeleted;
-use Uploadcare\Api;
-use Uploadcare\Configuration;
-use Http\Client\Exception\HttpException;
 use App\Exceptions\EnvVariablesNotSetException;
 use App\Models\File;
-use Uploadcare\Interfaces\File\FileInfoInterface;
+use Http\Client\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Uploadcare\Api;
+use Uploadcare\Configuration;
+use Uploadcare\Interfaces\File\FileInfoInterface;
 
 class DeleteFileInStorage
 {

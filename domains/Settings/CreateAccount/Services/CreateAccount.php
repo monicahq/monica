@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Hash;
 class CreateAccount extends BaseService implements ServiceInterface
 {
     private User $user;
+
     private Account $account;
+
     private array $data;
 
     /**

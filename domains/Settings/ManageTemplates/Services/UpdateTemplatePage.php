@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 class UpdateTemplatePage extends BaseService implements ServiceInterface
 {
     private Template $template;
+
     private TemplatePage $templatePage;
 
     /**

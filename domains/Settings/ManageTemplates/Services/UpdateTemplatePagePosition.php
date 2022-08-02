@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 class UpdateTemplatePagePosition extends BaseService implements ServiceInterface
 {
     private Template $template;
+
     private TemplatePage $templatePage;
 
     /**

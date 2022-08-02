@@ -3,9 +3,9 @@
 namespace Tests\Unit\Controllers\Auth\ViewHelpers;
 
 use App\Http\Controllers\Auth\ViewHelpers\AcceptInvitationShowViewHelper;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-use function env;
 
 class AcceptInvitationShowViewHelperTest extends TestCase
 {

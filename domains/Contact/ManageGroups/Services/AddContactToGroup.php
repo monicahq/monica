@@ -14,6 +14,7 @@ use Carbon\Carbon;
 class AddContactToGroup extends BaseService implements ServiceInterface
 {
     private Group $group;
+
     private array $data;
 
     /**

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 class ToggleFavoriteContact extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private bool $isFavorite;
 
     /**

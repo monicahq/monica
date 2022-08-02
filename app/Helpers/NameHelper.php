@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
-use Illuminate\Support\Str;
 use App\Models\Contact;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class NameHelper
 {

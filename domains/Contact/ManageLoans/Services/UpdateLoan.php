@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\DB;
 class UpdateLoan extends BaseService implements ServiceInterface
 {
     private Loan $loan;
+
     private Collection $loanersCollection;
+
     private Collection $loaneesCollection;
+
     private array $data;
 
     /**

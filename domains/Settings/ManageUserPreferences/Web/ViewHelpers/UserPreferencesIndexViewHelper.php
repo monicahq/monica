@@ -35,6 +35,7 @@ class UserPreferencesIndexViewHelper
             ],
         ];
     }
+
     public static function dtoNameOrder(User $user): array
     {
         $contact = new Contact([

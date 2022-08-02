@@ -17,6 +17,7 @@ class RelationshipGroupType extends Model
      * Possible types.
      */
     public const TYPE_FAMILY = 'family';
+
     public const TYPE_LOVE = 'love';
 
     /**

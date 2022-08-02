@@ -17,6 +17,7 @@ use App\Services\BaseService;
 class GrantVaultAccessToUser extends BaseService implements ServiceInterface
 {
     private User $user;
+
     private array $data;
 
     /**

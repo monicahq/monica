@@ -9,9 +9,9 @@ use App\Settings\ManageNotificationChannels\Services\SendTestTelegramNotificatio
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Notification;
 
 class SendTestTelegramNotificationTest extends TestCase
 {

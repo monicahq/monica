@@ -16,8 +16,11 @@ class Call extends Model
      * Possible type.
      */
     public const TYPE_AUDIO = 'audio';
+
     public const TYPE_VIDEO = 'video';
+
     public const INITIATOR_ME = 'me';
+
     public const INITIATOR_CONTACT = 'contact';
 
     /**

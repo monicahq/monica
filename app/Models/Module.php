@@ -16,25 +16,45 @@ class Module extends Model
      * Possible module types.
      */
     public const TYPE_NOTES = 'notes';
+
     public const TYPE_CONTACT_NAMES = 'contact_names';
+
     public const TYPE_AVATAR = 'avatar';
+
     public const TYPE_FAMILY_SUMMARY = 'family_summary';
+
     public const TYPE_COMPANY = 'company';
+
     public const TYPE_FEED = 'feed';
+
     public const TYPE_GENDER_PRONOUN = 'gender_pronoun';
+
     public const TYPE_IMPORTANT_DATES = 'important_dates';
+
     public const TYPE_LABELS = 'labels';
+
     public const TYPE_REMINDERS = 'reminders';
+
     public const TYPE_LOANS = 'loans';
+
     public const TYPE_RELATIONSHIPS = 'relationships';
+
     public const TYPE_TASKS = 'tasks';
+
     public const TYPE_CALLS = 'calls';
+
     public const TYPE_PETS = 'pets';
+
     public const TYPE_GOALS = 'goals';
+
     public const TYPE_ADDRESSES = 'addresses';
+
     public const TYPE_GROUPS = 'groups';
+
     public const TYPE_CONTACT_INFORMATION = 'contact_information';
+
     public const TYPE_DOCUMENTS = 'documents';
+
     public const TYPE_PHOTOS = 'photos';
 
     /**

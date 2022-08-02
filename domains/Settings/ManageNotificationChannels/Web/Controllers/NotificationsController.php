@@ -30,8 +30,8 @@ class NotificationsController extends Controller
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::user()->id,
             'label' => $request->input('label'),
-            'type' =>  UserNotificationChannel::TYPE_EMAIL,
-            'content' =>  $request->input('content'),
+            'type' => UserNotificationChannel::TYPE_EMAIL,
+            'content' => $request->input('content'),
             'verify_email' => true,
             'preferred_time' => $time,
         ];

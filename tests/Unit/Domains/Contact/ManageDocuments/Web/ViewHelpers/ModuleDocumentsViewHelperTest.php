@@ -41,7 +41,7 @@ class ModuleDocumentsViewHelperTest extends TestCase
         $this->assertFalse($array['canUploadFile']);
         $this->assertEquals(
             [
-                'store' => env('APP_URL') . '/vaults/' . $contact->vault->id . '/contacts/' . $contact->id . '/documents',
+                'store' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/documents',
             ],
             $array['url']
         );
@@ -66,7 +66,7 @@ class ModuleDocumentsViewHelperTest extends TestCase
                 'size' => '123B',
                 'url' => [
                     'download' => $file->cdn_url,
-                    'destroy' => env('APP_URL') . '/vaults/' . $contact->vault->id . '/contacts/' . $contact->id . '/documents/'.$file->id,
+                    'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/documents/'.$file->id,
                 ],
             ],
             $array

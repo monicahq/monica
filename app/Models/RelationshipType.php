@@ -17,6 +17,7 @@ class RelationshipType extends Model
      * Possible types.
      */
     public const TYPE_LOVE = 'family';
+
     public const TYPE_CHILD = 'child';
 
     /**

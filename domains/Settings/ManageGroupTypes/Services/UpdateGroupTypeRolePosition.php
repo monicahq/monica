@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 class UpdateGroupTypeRolePosition extends BaseService implements ServiceInterface
 {
     private GroupTypeRole $groupTypeRole;
+
     private int $pastPosition;
 
     /**

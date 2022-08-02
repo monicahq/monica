@@ -11,6 +11,7 @@ use Carbon\Carbon;
 class DestroyContactInformation extends BaseService implements ServiceInterface
 {
     private ContactInformation $contactInformation;
+
     private ContactInformationType $contactInformationType;
 
     /**

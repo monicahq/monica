@@ -15,6 +15,7 @@ use App\Vault\ManageVaultImportantDateTypes\Services\CreateContactImportantDateT
 class CreateVault extends BaseService implements ServiceInterface
 {
     public Vault $vault;
+
     private array $data;
 
     /**

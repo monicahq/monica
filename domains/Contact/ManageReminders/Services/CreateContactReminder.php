@@ -12,6 +12,7 @@ use Carbon\Carbon;
 class CreateContactReminder extends BaseService implements ServiceInterface
 {
     private ContactReminder $reminder;
+
     private array $data;
 
     /**

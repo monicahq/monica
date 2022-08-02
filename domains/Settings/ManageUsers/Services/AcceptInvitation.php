@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 class AcceptInvitation extends BaseService implements ServiceInterface
 {
     private User $user;
+
     private array $data;
 
     /**

@@ -2,14 +2,15 @@
 
 namespace App\Contact\ManageDocuments\Services;
 
-use App\Services\BaseService;
 use App\Exceptions\EnvVariablesNotSetException;
 use App\Models\File;
+use App\Services\BaseService;
 use Carbon\Carbon;
 
 class UploadFile extends BaseService
 {
     private array $data;
+
     private File $file;
 
     /**
@@ -57,7 +58,7 @@ class UploadFile extends BaseService
      * the payload that Uploadcare sends us back, and map it into a File object
      * that the clients will consume.
      *
-     * @param array $data
+     * @param  array  $data
      * @return File
      */
     public function execute(array $data): File

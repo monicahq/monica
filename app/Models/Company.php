@@ -16,7 +16,9 @@ class Company extends Model
      * Possible module types.
      */
     public const TYPE_COMPANY = 'company';
+
     public const TYPE_ORGANIZATION = 'organization';
+
     public const TYPE_ASSOCIATION = 'association';
 
     /**

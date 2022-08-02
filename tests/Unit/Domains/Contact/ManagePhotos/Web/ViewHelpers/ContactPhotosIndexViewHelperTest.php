@@ -46,8 +46,8 @@ class ContactPhotosIndexViewHelperTest extends TestCase
         $this->assertTrue($array['canUploadFile']);
         $this->assertEquals(
             [
-                'show' => env('APP_URL') . '/vaults/' . $contact->vault->id . '/contacts/' . $contact->id,
-                'store' => env('APP_URL') . '/vaults/' . $contact->vault->id . '/contacts/' . $contact->id . '/photos',
+                'show' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id,
+                'store' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/photos',
             ],
             $array['url']
         );
@@ -74,8 +74,8 @@ class ContactPhotosIndexViewHelperTest extends TestCase
                 'url' => [
                     'display' => 'https://ucarecdn.com/123/-/scale_crop/400x400/smart/-/format/auto/-/quality/smart_retina/',
                     'download' => $file->cdn_url,
-                    'show' => env('APP_URL') . '/vaults/' . $contact->vault->id . '/contacts/' . $contact->id . '/photos/' . $file->id,
-                    'destroy' => env('APP_URL') . '/vaults/' . $contact->vault->id . '/contacts/' . $contact->id . '/photos/' . $file->id,
+                    'show' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/photos/'.$file->id,
+                    'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/photos/'.$file->id,
                 ],
             ],
             $array

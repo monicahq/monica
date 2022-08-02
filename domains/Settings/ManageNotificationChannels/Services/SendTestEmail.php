@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Mail;
 class SendTestEmail extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private UserNotificationChannel $userNotificationChannel;
 
     /**

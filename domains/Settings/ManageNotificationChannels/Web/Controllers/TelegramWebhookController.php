@@ -13,7 +13,7 @@ class TelegramWebhookController extends Controller
     /**
      * Store Telegram Chat ID from telegram webhook message.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -22,8 +22,8 @@ class TelegramWebhookController extends Controller
             $messageText = $request->message['text'];
         } catch (Exception $e) {
             return response()->json([
-                'code'     => $e->getCode(),
-                'message'  => 'Accepted with error: \'' . $e->getMessage() . '\'',
+                'code' => $e->getCode(),
+                'message' => 'Accepted with error: \''.$e->getMessage().'\'',
             ], 202);
         }
 

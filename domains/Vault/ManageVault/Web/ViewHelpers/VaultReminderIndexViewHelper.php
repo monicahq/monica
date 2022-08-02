@@ -18,7 +18,6 @@ class VaultReminderIndexViewHelper
      *
      * @param  Vault  $vault
      * @param  User  $user
-     *
      * @return Collection
      */
     public static function data(Vault $vault, User $user): Collection

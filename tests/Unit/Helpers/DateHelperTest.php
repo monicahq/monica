@@ -171,7 +171,7 @@ class DateHelperTest extends TestCase
                     'name' => 'April',
                 ],
                 4 => [
-                    'id' =>5,
+                    'id' => 5,
                     'name' => 'May',
                 ],
                 5 => [

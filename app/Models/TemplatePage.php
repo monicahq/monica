@@ -17,6 +17,7 @@ class TemplatePage extends Model
      * Possible template page types.
      */
     public const TYPE_CONTACT = 'contact_information';
+
     public const TYPE_FEED = 'feed';
 
     /**

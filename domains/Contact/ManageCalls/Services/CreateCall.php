@@ -12,7 +12,9 @@ use Carbon\Carbon;
 class CreateCall extends BaseService implements ServiceInterface
 {
     private Call $call;
+
     private CallReason $callReason;
+
     private array $data;
 
     /**

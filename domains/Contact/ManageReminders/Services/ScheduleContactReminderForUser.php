@@ -12,8 +12,11 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class ScheduleContactReminderForUser extends BaseService implements ServiceInterface
 {
     private ContactReminder $contactReminder;
+
     private array $data;
+
     private Carbon $upcomingDate;
+
     private User $user;
 
     /**

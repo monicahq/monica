@@ -13,6 +13,7 @@ use Carbon\Carbon;
 class CreateContactLifeEvent extends BaseService implements ServiceInterface
 {
     private ContactLifeEvent $contactLifeEvent;
+
     private array $data;
 
     /**

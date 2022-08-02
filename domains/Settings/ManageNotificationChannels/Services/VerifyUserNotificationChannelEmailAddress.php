@@ -12,6 +12,7 @@ use Carbon\Carbon;
 class VerifyUserNotificationChannelEmailAddress extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private UserNotificationChannel $userNotificationChannel;
 
     /**

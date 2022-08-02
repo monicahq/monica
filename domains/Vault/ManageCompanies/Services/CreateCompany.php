@@ -9,6 +9,7 @@ use App\Services\BaseService;
 class CreateCompany extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private Company $company;
 
     /**

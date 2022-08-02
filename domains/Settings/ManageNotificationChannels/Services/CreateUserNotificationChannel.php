@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 class CreateUserNotificationChannel extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private UserNotificationChannel $userNotificationChannel;
 
     /**

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 class DestroyUser extends BaseService implements ServiceInterface
 {
     private User $user;
+
     private array $data;
 
     /**

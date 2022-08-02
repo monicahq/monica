@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 class UpdateGroupTypePosition extends BaseService implements ServiceInterface
 {
     private GroupType $groupType;
+
     private int $pastPosition;
 
     /**

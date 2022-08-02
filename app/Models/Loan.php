@@ -18,6 +18,7 @@ class Loan extends Model
      * Possible types.
      */
     public const TYPE_DEBT = 'debt';
+
     public const TYPE_LOAN = 'loan';
 
     /**

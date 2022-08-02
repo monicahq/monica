@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 class ScheduleAllContactRemindersForNotificationChannel extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private UserNotificationChannel $userNotificationChannel;
 
     /**

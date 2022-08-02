@@ -22,7 +22,9 @@ use Illuminate\Console\Command;
 class SetupDummyAccount extends Command
 {
     protected ?\Faker\Generator $faker;
+
     protected User $firstUser;
+
     protected User $secondUser;
 
     /**

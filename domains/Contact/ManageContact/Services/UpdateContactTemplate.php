@@ -13,6 +13,7 @@ use Carbon\Carbon;
 class UpdateContactTemplate extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private Template $template;
 
     /**

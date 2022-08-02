@@ -15,7 +15,7 @@ class PreferencesHelpController extends Controller
         $request = [
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::user()->id,
-            'visibility' => !Auth::user()->help_shown,
+            'visibility' => ! Auth::user()->help_shown,
         ];
 
         (new StoreHelpPreference())->execute($request);

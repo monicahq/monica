@@ -52,7 +52,7 @@ class ModuleContactInformationViewHelperTest extends TestCase
 
         $this->assertEquals(
             [
-                'store' => env('APP_URL') . '/vaults/' . $contact->vault->id . '/contacts/' . $contact->id . '/contactInformation',
+                'store' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/contactInformation',
             ],
             $array['url']
         );
@@ -65,7 +65,7 @@ class ModuleContactInformationViewHelperTest extends TestCase
         $type = ContactInformationType::factory()->create([
             'name' => 'Facebook shit',
             'protocol' => 'mailto:',
-            'can_be_deleted' => true
+            'can_be_deleted' => true,
         ]);
         $info = ContactInformation::factory()->create([
             'contact_id' => $contact->id,
@@ -84,8 +84,8 @@ class ModuleContactInformationViewHelperTest extends TestCase
                     'name' => 'Facebook shit',
                 ],
                 'url' => [
-                    'update' => env('APP_URL') . '/vaults/' . $contact->vault->id . '/contacts/' . $contact->id . '/contactInformation/' . $info->id,
-                    'destroy' => env('APP_URL') . '/vaults/' . $contact->vault->id . '/contacts/' . $contact->id . '/contactInformation/' . $info->id,
+                    'update' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/contactInformation/'.$info->id,
+                    'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/contactInformation/'.$info->id,
                 ],
             ],
             $array

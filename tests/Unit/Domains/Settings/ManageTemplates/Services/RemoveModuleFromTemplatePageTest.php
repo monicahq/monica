@@ -20,7 +20,9 @@ class RemoveModuleFromTemplatePageTest extends TestCase
     use DatabaseTransactions;
 
     private Template $template;
+
     private TemplatePage $templatePage;
+
     private Module $module;
 
     /** @test */

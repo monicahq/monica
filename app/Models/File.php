@@ -17,7 +17,9 @@ class File extends Model
      * Possible type.
      */
     public const TYPE_DOCUMENT = 'document';
+
     public const TYPE_AVATAR = 'avatar';
+
     public const TYPE_PHOTO = 'photo';
 
     /**

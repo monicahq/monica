@@ -3,7 +3,6 @@
 namespace App\Vault\ManageFiles\Web\Controllers;
 
 use App\Helpers\PaginatorHelper;
-use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\File;
@@ -12,6 +11,7 @@ use App\Vault\ManageFiles\Web\ViewHelpers\VaultFileIndexViewHelper;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class VaultFileController extends Controller
 {

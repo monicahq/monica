@@ -4,8 +4,8 @@ namespace Tests\Unit\Domains\Settings\CancelAccount\Services;
 
 use App\Models\Account;
 use App\Models\Contact;
-use App\Models\User;
 use App\Models\File;
+use App\Models\User;
 use App\Settings\CancelAccount\Services\CancelAccount;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

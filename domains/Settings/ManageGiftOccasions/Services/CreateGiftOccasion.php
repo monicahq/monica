@@ -10,6 +10,7 @@ use App\Services\BaseService;
 class CreateGiftOccasion extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private GiftOccasion $giftOccasion;
 
     /**

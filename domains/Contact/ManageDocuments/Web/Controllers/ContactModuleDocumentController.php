@@ -2,9 +2,9 @@
 
 namespace App\Contact\ManageDocuments\Web\Controllers;
 
-use App\Contact\ManageDocuments\Web\ViewHelpers\ModuleDocumentsViewHelper;
 use App\Contact\ManageDocuments\Services\DestroyDocument;
 use App\Contact\ManageDocuments\Services\UploadFile;
+use App\Contact\ManageDocuments\Web\ViewHelpers\ModuleDocumentsViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\File;

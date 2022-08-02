@@ -11,6 +11,7 @@ use App\Services\BaseService;
 class UpdateGroupTypeRole extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private GroupTypeRole $groupTypeRole;
 
     /**

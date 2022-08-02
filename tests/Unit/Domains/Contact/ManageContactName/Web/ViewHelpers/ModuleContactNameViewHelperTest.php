@@ -35,7 +35,7 @@ class ModuleContactNameViewHelperTest extends TestCase
                 'is_favorite' => false,
                 'url' => [
                     'edit' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/edit',
-                    'toggle_favorite' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id. '/toggle-favorite',
+                    'toggle_favorite' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/toggle-favorite',
                 ],
             ],
             $array

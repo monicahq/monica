@@ -10,6 +10,7 @@ use Carbon\Carbon;
 class CreateContactTask extends BaseService implements ServiceInterface
 {
     private ContactTask $task;
+
     private array $data;
 
     /**

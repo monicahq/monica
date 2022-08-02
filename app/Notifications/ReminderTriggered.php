@@ -15,7 +15,9 @@ class ReminderTriggered extends Notification
     use Queueable;
 
     private UserNotificationChannel $channel;
+
     private string $content;
+
     private string $contactName;
 
     /**

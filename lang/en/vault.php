@@ -64,7 +64,7 @@ return [
     'dashboard_reminders_blank' => 'No planned reminders.',
     'dashboard_favorites_title' => 'Favorites',
 
-     /***************************************************************
+    /***************************************************************
      * VAULT DASHBOARD REMINDERS
      **************************************************************/
 

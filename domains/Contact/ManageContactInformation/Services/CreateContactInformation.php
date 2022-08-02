@@ -13,7 +13,9 @@ use Carbon\Carbon;
 class CreateContactInformation extends BaseService implements ServiceInterface
 {
     private ContactInformation $contactInformation;
+
     private ContactInformationType $contactInformationType;
+
     private array $data;
 
     /**

@@ -11,7 +11,9 @@ use Illuminate\Validation\Rule;
 class CreateAttribute extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private Attribute $attribute;
+
     private Information $information;
 
     /**

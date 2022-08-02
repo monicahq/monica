@@ -5,9 +5,9 @@ namespace Tests\Unit\Domains\Settings\ManageUserPreferences\Web\ViewHelpers;
 use App\Models\User;
 use App\Settings\ManageUserPreferences\Web\ViewHelpers\UserPreferencesIndexViewHelper;
 use Carbon\Carbon;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-use function env;
 
 class UserPreferencesIndexViewHelperTest extends TestCase
 {

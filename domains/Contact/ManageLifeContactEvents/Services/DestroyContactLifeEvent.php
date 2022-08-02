@@ -10,6 +10,7 @@ use Carbon\Carbon;
 class DestroyContactLifeEvent extends BaseService implements ServiceInterface
 {
     private ContactLifeEvent $contactLifeEvent;
+
     private array $data;
 
     /**

@@ -11,6 +11,7 @@ use App\Services\BaseService;
 class DestroyUserNotificationChannel extends BaseService implements ServiceInterface
 {
     private array $data;
+
     private UserNotificationChannel $userNotificationChannel;
 
     /**

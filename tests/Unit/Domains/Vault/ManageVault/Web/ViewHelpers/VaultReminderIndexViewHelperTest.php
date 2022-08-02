@@ -10,10 +10,10 @@ use App\Models\UserNotificationChannel;
 use App\Models\Vault;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultReminderIndexViewHelper;
 use Carbon\Carbon;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
-use function env;
 
 class VaultReminderIndexViewHelperTest extends TestCase
 {
@@ -91,7 +91,7 @@ class VaultReminderIndexViewHelperTest extends TestCase
                         'name' => $mitchell->name,
                         'avatar' => '123',
                         'url' => [
-                            'show' => env('APP_URL') . '/vaults/' . $vault->id . '/contacts/' . $mitchell->id,
+                            'show' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/'.$mitchell->id,
                         ],
                     ],
                 ],

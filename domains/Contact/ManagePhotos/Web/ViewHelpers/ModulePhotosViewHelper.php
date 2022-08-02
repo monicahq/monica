@@ -44,7 +44,7 @@ class ModulePhotosViewHelper
             'mime_type' => $file->mime_type,
             'size' => FileHelper::formatFileSize($file->size),
             'url' => [
-                'display' => 'https://ucarecdn.com/' . $file->uuid . '/-/scale_crop/300x300/smart/-/format/auto/-/quality/smart_retina/',
+                'display' => 'https://ucarecdn.com/'.$file->uuid.'/-/scale_crop/300x300/smart/-/format/auto/-/quality/smart_retina/',
                 'download' => $file->cdn_url,
                 'destroy' => route('contact.photo.destroy', [
                     'vault' => $contact->vault_id,

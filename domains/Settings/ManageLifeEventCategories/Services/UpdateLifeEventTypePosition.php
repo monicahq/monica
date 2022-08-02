@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\DB;
 class UpdateLifeEventTypePosition extends BaseService implements ServiceInterface
 {
     private LifeEventCategory $lifeEventCategory;
+
     private LifeEventType $lifeEventType;
+
     private int $pastPosition;
 
     /**

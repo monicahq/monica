@@ -7,9 +7,9 @@ use App\Models\Contact;
 use App\Models\Pet;
 use App\Models\PetCategory;
 use App\Models\User;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-use function env;
 
 class ModulePetsViewHelperTest extends TestCase
 {

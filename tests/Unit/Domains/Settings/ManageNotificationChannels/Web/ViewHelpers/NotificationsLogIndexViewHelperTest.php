@@ -6,9 +6,9 @@ use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Models\UserNotificationSent;
 use App\Settings\ManageNotificationChannels\Web\ViewHelpers\NotificationsLogIndexViewHelper;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-use function env;
 
 class NotificationsLogIndexViewHelperTest extends TestCase
 {
