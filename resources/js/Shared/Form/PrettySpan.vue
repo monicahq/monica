@@ -1,3 +1,24 @@
+<template>
+  <span :class="classes" class="relative cursor-pointer text-sm">
+    {{ text }}
+  </span>
+</template>
+
+<script>
+export default {
+  props: {
+    text: {
+      type: String,
+      default: '',
+    },
+    classes: {
+      type: String,
+      default: '',
+    },
+  },
+};
+</script>
+
 <style lang="scss" scoped>
 span {
   --tw-shadow: 2px 2px 0 #191a1b !important;
@@ -30,24 +51,3 @@ span {
   }
 }
 </style>
-
-<template>
-  <span :class="classes" class="relative cursor-pointer text-sm">
-    {{ text }}
-  </span>
-</template>
-
-<script>
-export default {
-  props: {
-    text: {
-      type: String,
-      default: '',
-    },
-    classes: {
-      type: String,
-      default: '',
-    },
-  },
-};
-</script>

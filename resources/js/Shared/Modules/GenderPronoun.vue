@@ -1,9 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  top: -2px;
-}
-</style>
-
 <template>
   <div class="mb-4 grid grid-cols-2 gap-4">
     <!-- gender -->
@@ -70,3 +64,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  top: -2px;
+}
+</style>

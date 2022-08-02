@@ -1,29 +1,3 @@
-<style lang="scss" scoped>
-.optional-badge {
-  border-radius: 4px;
-  color: #283e59;
-  background-color: #edf2f9;
-  padding: 1px 3px;
-}
-
-.length {
-  top: 10px;
-  right: 10px;
-  background-color: #e5eeff;
-  padding: 3px 4px;
-}
-
-.counter {
-  padding-right: 64px;
-}
-
-select {
-  padding-left: 8px;
-  padding-right: 20px;
-  background-position: right 3px center;
-}
-</style>
-
 <template>
   <div :class="divOuterClass">
     <label v-if="label" class="mb-2 block text-sm" :for="id">
@@ -105,10 +79,6 @@ export default {
       type: String,
       default: '',
     },
-    ref: {
-      type: String,
-      default: 'input',
-    },
   },
   emits: ['update:modelValue'],
 
@@ -139,3 +109,29 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.optional-badge {
+  border-radius: 4px;
+  color: #283e59;
+  background-color: #edf2f9;
+  padding: 1px 3px;
+}
+
+.length {
+  top: 10px;
+  right: 10px;
+  background-color: #e5eeff;
+  padding: 3px 4px;
+}
+
+.counter {
+  padding-right: 64px;
+}
+
+select {
+  padding-left: 8px;
+  padding-right: 20px;
+  background-position: right 3px center;
+}
+</style>

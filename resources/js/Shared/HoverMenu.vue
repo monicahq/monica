@@ -1,13 +1,3 @@
-<style lang="scss" scoped>
-.ant-dropdown-menu {
-  padding: 0;
-}
-
-.ant-dropdown-menu-item:hover {
-  background-color: rgb(248 250 252 / var(--tw-bg-opacity));
-}
-</style>
-
 <template>
   <a-dropdown>
     <a class="ant-dropdown-link cursor-pointer" @click.prevent>
@@ -48,3 +38,13 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.ant-dropdown-menu {
+  padding: 0;
+}
+
+.ant-dropdown-menu-item:hover {
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity));
+}
+</style>

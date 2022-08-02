@@ -1,10 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-</style>
-
 <template>
   <div class="mb-10">
     <!-- title + cta -->
@@ -25,7 +18,7 @@
           </svg>
         </span>
 
-        <span class="font-semibold">Goals</span>
+        <span class="font-semibold"> Goals </span>
       </div>
       <pretty-button :text="'Add a goal'" :icon="'plus'" :classes="'sm:w-fit w-full'" @click="showCreateGoalModal" />
     </div>
@@ -63,7 +56,7 @@
             </div>
 
             <div>
-              <inertia-link class="text-sm text-blue-500 hover:underline">View details</inertia-link>
+              <inertia-link class="text-sm text-blue-500 hover:underline"> View details </inertia-link>
             </div>
           </div>
 
@@ -76,23 +69,27 @@
                 class="mr-0 flex flex-row items-center justify-between border-b border-gray-200 p-3 text-center sm:mr-7 sm:mb-0 sm:w-9 sm:flex-col sm:border-0 sm:p-0"
                 :class="{ 'text-gray-500': !streak.active }">
                 <div>
-                  <span class="mb-0 mr-2 block text-xs font-semibold sm:mr-0">{{ streak.day }}</span>
-                  <span class="mr-2 sm:mr-0">{{ streak.day_number }}</span>
+                  <span class="mb-0 mr-2 block text-xs font-semibold sm:mr-0">
+                    {{ streak.day }}
+                  </span>
+                  <span class="mr-2 sm:mr-0">
+                    {{ streak.day_number }}
+                  </span>
                 </div>
 
                 <!-- active streak -->
                 <span
-                  @click="toggleStreak(goal, streak)"
                   v-if="streak.active"
                   class="mr-2 cursor-pointer text-2xl sm:mr-0"
+                  @click="toggleStreak(goal, streak)"
                   >👍</span
                 >
 
                 <!-- inactive streak -->
                 <span
-                  @click="toggleStreak(goal, streak)"
                   v-else
-                  class="mr-2 cursor-pointer text-center text-2xl sm:mr-0">
+                  class="mr-2 cursor-pointer text-center text-2xl sm:mr-0"
+                  @click="toggleStreak(goal, streak)">
                   <div class="rounded-md border border-gray-200 bg-slate-100 py-1 px-2">
                     <svg
                       class="z-50"
@@ -123,11 +120,15 @@
             <div class="flex justify-between p-3">
               <div class="mr-6 flex items-center">
                 <div class="mr-3 w-14 text-right text-sm text-gray-500">Current streak</div>
-                <div class="text-4xl">{{ goal.streaks_statistics.current_streak }}</div>
+                <div class="text-4xl">
+                  {{ goal.streaks_statistics.current_streak }}
+                </div>
               </div>
               <div class="flex items-center">
                 <div class="mr-3 w-14 text-right text-sm text-gray-500">Longest streak</div>
-                <div class="text-4xl">{{ goal.streaks_statistics.max_streak }}</div>
+                <div class="text-4xl">
+                  {{ goal.streaks_statistics.max_streak }}
+                </div>
               </div>
             </div>
           </div>
@@ -267,7 +268,7 @@ export default {
       if (confirm('Are you sure? This will delete the goal permanently.')) {
         axios
           .delete(goal.url.destroy)
-          .then((response) => {
+          .then(() => {
             this.flash('The goal has been deleted', 'success');
             var id = this.localGoals.findIndex((x) => x.id === goal.id);
             this.localGoals.splice(id, 1);
@@ -281,3 +282,10 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+</style>

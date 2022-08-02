@@ -1,14 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
-.icon-note {
-  top: -1px;
-}
-</style>
-
 <template>
   <div>
     <div class="mb-2 sm:mb-1">
@@ -107,18 +96,31 @@ export default {
     },
   },
 
-  setup(props) {
-    const localNotes = props.data;
-
+  data() {
     return {
-      localNotes,
+      localNotes: [],
     };
+  },
+
+  mounted() {
+    this.localNotes = this.data;
   },
 
   methods: {
     showFull(note) {
-      this.localNotes[this.localNotes.findIndex((x) => x.id === note.id)].show_full_content = true;
+      this.localNotes[this.data.localNotes((x) => x.id === note.id)].show_full_content = true;
     },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+
+.icon-note {
+  top: -1px;
+}
+</style>

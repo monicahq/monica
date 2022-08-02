@@ -1,26 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
-.item-list {
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-</style>
-
 <template>
   <div class="mb-10">
     <!-- title + cta -->
@@ -41,9 +18,9 @@
           </svg>
         </span>
 
-        <span class="font-semibold">Calls</span>
+        <span class="font-semibold"> Calls </span>
       </div>
-      <pretty-button @click="showCreateCallModal()" :text="'Log a call'" :icon="'plus'" :classes="'sm:w-fit w-full'" />
+      <pretty-button :text="'Log a call'" :icon="'plus'" :classes="'sm:w-fit w-full'" @click="showCreateCallModal()" />
     </div>
 
     <!-- add a call modal -->
@@ -57,8 +34,8 @@
         <div class="flex border-b border-gray-200">
           <div class="p-5">
             <p class="mb-2 block text-sm">When did the call happened?</p>
-            <v-date-picker class="inline-block h-full" v-model="form.called_at" :model-config="modelConfig">
-              <template v-slot="{ inputValue, inputEvents }">
+            <v-date-picker v-model="form.called_at" class="inline-block h-full" :model-config="modelConfig">
+              <template #default="{ inputValue, inputEvents }">
                 <input class="rounded border bg-white px-2 py-1" :value="inputValue" v-on="inputEvents" />
               </template>
             </v-date-picker>
@@ -172,9 +149,9 @@
         <div v-if="reasonFieldShown" class="border-b border-gray-200 p-5">
           <p class="mb-2 block text-sm">Was there a reason for the call?</p>
           <select
+            id="types"
             v-model="form.call_reason_id"
             name="types"
-            id="types"
             class="w-full rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm">
             <optgroup
               v-for="callReasonType in data.call_reason_types"
@@ -192,9 +169,9 @@
           <p class="mb-2">How did you feel?</p>
           <div v-for="emotion in data.emotions" :key="emotion.id" class="mb-2 flex items-center">
             <input
-              :value="emotion.id"
-              v-model="form.emotion_id"
               :id="emotion.type"
+              v-model="form.emotion_id"
+              :value="emotion.id"
               name="emotion"
               type="radio"
               class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
@@ -310,8 +287,8 @@
             <div class="flex border-b border-gray-200">
               <div class="p-5">
                 <p class="mb-2 block text-sm">When did the call happened?</p>
-                <v-date-picker class="inline-block h-full" v-model="form.called_at" :model-config="modelConfig">
-                  <template v-slot="{ inputValue, inputEvents }">
+                <v-date-picker v-model="form.called_at" class="inline-block h-full" :model-config="modelConfig">
+                  <template #default="{ inputValue, inputEvents }">
                     <input class="rounded border bg-white px-2 py-1" :value="inputValue" v-on="inputEvents" />
                   </template>
                 </v-date-picker>
@@ -425,9 +402,9 @@
             <div v-if="reasonFieldShown" class="border-b border-gray-200 p-5">
               <p class="mb-2 block text-sm">Was there a reason for the call?</p>
               <select
+                id="types"
                 v-model="form.call_reason_id"
                 name="types"
-                id="types"
                 class="w-full rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm">
                 <optgroup
                   v-for="callReasonType in data.call_reason_types"
@@ -445,9 +422,9 @@
               <p class="mb-2">How did you feel?</p>
               <div v-for="emotion in data.emotions" :key="emotion.id" class="mb-2 flex items-center">
                 <input
-                  :value="emotion.id"
-                  v-model="form.emotion_id"
                   :id="emotion.type"
+                  v-model="form.emotion_id"
+                  :value="emotion.id"
                   name="emotion"
                   type="radio"
                   class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
@@ -655,7 +632,7 @@ export default {
       if (confirm('Are you sure?')) {
         axios
           .delete(call.url.destroy)
-          .then((response) => {
+          .then(() => {
             this.flash('The call has been deleted', 'success');
             var id = this.localCalls.findIndex((x) => x.id === call.id);
             this.localCalls.splice(id, 1);
@@ -668,3 +645,26 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+</style>

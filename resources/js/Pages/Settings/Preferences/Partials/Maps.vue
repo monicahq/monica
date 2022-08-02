@@ -1,16 +1,12 @@
-<style lang="scss" scoped>
-input[type='radio'] {
-  top: 6px;
-}
-</style>
-
 <template>
   <div class="mb-16">
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 flex font-semibold sm:mb-0">
-        <span class="mr-1">🗺️</span>
-        <span class="mr-2">{{ $t('settings.user_preferences_map_title') }}</span>
+        <span class="mr-1"> 🗺️ </span>
+        <span class="mr-2">
+          {{ $t('settings.user_preferences_map_title') }}
+        </span>
 
         <help :url="$page.props.help_links.settings_preferences_maps" :top="'5px'" />
       </h3>
@@ -42,7 +38,9 @@ input[type='radio'] {
             <label :for="'input' + mapType.id" class="block cursor-pointer font-medium text-gray-700">
               {{ mapType.type }}
             </label>
-            <p class="text-sm text-gray-700">{{ mapType.description }}</p>
+            <p class="text-sm text-gray-700">
+              {{ mapType.description }}
+            </p>
           </div>
         </div>
       </div>
@@ -118,3 +116,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+input[type='radio'] {
+  top: 6px;
+}
+</style>

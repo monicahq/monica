@@ -1,10 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-</style>
-
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
     <!-- breadcrumb -->
@@ -12,7 +5,9 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">{{ $t('app.breadcrumb_location') }}</li>
+            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+              {{ $t('app.breadcrumb_location') }}
+            </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 {{ $t('app.breadcrumb_contact_index') }}
@@ -29,9 +24,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.show" class="text-blue-500 hover:underline">{{
-                $t('app.breadcrumb_contact_show', { name: data.contact.name })
-              }}</inertia-link>
+              <inertia-link :href="data.url.show" class="text-blue-500 hover:underline">
+                {{ $t('app.breadcrumb_contact_show', { name: data.contact.name }) }}
+              </inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -44,9 +39,9 @@
               </svg>
             </li>
             <li class="inline">
-              <inertia-link :href="data.url.index" class="text-blue-500 hover:underline">{{
-                $t('app.breadcrumb_contact_photo')
-              }}</inertia-link>
+              <inertia-link :href="data.url.index" class="text-blue-500 hover:underline">
+                {{ $t('app.breadcrumb_contact_photo') }}
+              </inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -58,7 +53,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">{{ data.name }}</li>
+            <li class="inline">
+              {{ data.name }}
+            </li>
           </ul>
         </div>
       </div>
@@ -95,12 +92,14 @@
               </svg>
             </span>
 
-            <span class="font-semibold">{{ data.name }}</span>
+            <span class="font-semibold">
+              {{ data.name }}
+            </span>
           </div>
 
-          <span class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(data)">{{
-            $t('app.delete')
-          }}</span>
+          <span class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(data)">
+            {{ $t('app.delete') }}
+          </span>
         </div>
 
         <div class="">
@@ -147,3 +146,10 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+</style>

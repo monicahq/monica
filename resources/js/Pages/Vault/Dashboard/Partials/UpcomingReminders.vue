@@ -1,26 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
-.item-list {
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-</style>
-
 <template>
   <div class="mb-10">
     <h3 class="mb-3 border-b border-gray-200 pb-1 font-medium">
@@ -50,23 +27,29 @@
           :key="reminder.id"
           class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50">
           <div class="flex items-center">
-            <p class="mr-3 text-xs text-gray-400">{{ reminder.scheduled_at }}</p>
+            <p class="mr-3 text-xs text-gray-400">
+              {{ reminder.scheduled_at }}
+            </p>
             <div class="flex items-center text-sm">
-              <div v-html="reminder.contact.avatar" class="mr-2 h-4 w-4"></div>
+              <div class="mr-2 h-4 w-4" v-html="reminder.contact.avatar" />
 
-              <inertia-link :href="reminder.contact.url.show" class="text-blue-500 hover:underline">{{
-                reminder.contact.name
-              }}</inertia-link>
+              <inertia-link :href="reminder.contact.url.show" class="text-blue-500 hover:underline">
+                {{ reminder.contact.name }}
+              </inertia-link>
             </div>
           </div>
-          <p class="text-sm">{{ reminder.label }}</p>
+          <p class="text-sm">
+            {{ reminder.label }}
+          </p>
         </li>
       </ul>
     </div>
 
     <!-- blank state -->
     <div v-if="data.reminders.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
-      <p class="p-5 text-center">{{ $t('vault.dashboard_reminders_blank') }}</p>
+      <p class="p-5 text-center">
+        {{ $t('vault.dashboard_reminders_blank') }}
+      </p>
     </div>
 
     <div class="text-center">
@@ -89,3 +72,26 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+</style>

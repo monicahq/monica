@@ -1,5 +1,3 @@
-<style lang="scss" scoped></style>
-
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
     <!-- breadcrumb -->
@@ -7,7 +5,9 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">{{ $t('app.breadcrumb_location') }}</li>
+            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+              {{ $t('app.breadcrumb_location') }}
+            </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 {{ $t('app.breadcrumb_contact_index') }}
@@ -24,9 +24,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.contact" class="text-blue-500 hover:underline">{{
-                $t('app.breadcrumb_contact_show', { name: data.contact.name })
-              }}</inertia-link>
+              <inertia-link :href="data.url.contact" class="text-blue-500 hover:underline">
+                {{ $t('app.breadcrumb_contact_show', { name: data.contact.name }) }}
+              </inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -38,7 +38,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">{{ $t('app.breadcrumb_contact_note_index') }}</li>
+            <li class="inline">
+              {{ $t('app.breadcrumb_contact_note_index') }}
+            </li>
           </ul>
         </div>
       </div>
@@ -86,3 +88,5 @@ export default {
   methods: {},
 };
 </script>
+
+<style lang="scss" scoped></style>

@@ -1,4 +1,4 @@
-name: Build
+name: Build assets
 
 on:
   pull_request:
@@ -7,11 +7,10 @@ on:
     types: [created]
 
   workflow_run:
-    workflows: [PHP linting (Pint)]
+    workflows: [PHP linting (Pint), Javascript linting]
     types: [completed]
 
 env:
-  php-version: '8.1'
   node-version: 18
 
 jobs:
@@ -31,40 +30,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup PHP ${{ env.php-version }}
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.php-version }}
-          extensions: redis
-          coverage: none
-      - name: Check PHP Version
-        run: php -v
-      - name: Check Composer Version
-        run: composer -V
-      - name: Check PHP Extensions
-        run: php -m
-
-    # Composer
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Cache composer files
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
-            ${{ runner.os }}-composer-${{ env.php-version }}
-            ${{ runner.os }}-composer-
-
-      - name: Install composer dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
-
-    # Yarn
+      # Yarn
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -83,19 +49,5 @@ jobs:
 
       - name: Install yarn dependencies
         run: yarn install --frozen-lockfile
-      # - name: Lint files
-      #   run: yarn run lint
       - name: Build assets
         run: yarn run production
-
-      - name: Check if there is any file update needed
-        id: check
-        run: |
-          status=$(git status --porcelain)
-          if [ -z "$status" ]; then
-            echo "Nothing to push, already up to date."
-          else
-            echo -e "Waiting modifications:\n$status"
-            echo "::error::Assets are not up to date. Please rebuild with: 'yarn run lint' and 'yarn run production'."
-            exit -1
-          fi

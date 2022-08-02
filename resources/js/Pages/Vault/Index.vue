@@ -1,26 +1,3 @@
-<style lang="scss" scoped>
-.vault-list {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.vault-detail {
-  height: 250px;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
-}
-
-.remaining-contact {
-  top: -1px;
-  left: -5px;
-}
-
-@media (max-width: 480px) {
-  .vault-list {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
-
 <template>
   <layout title="Dashboard" :layout-data="layoutData">
     <main class="relative mt-16 sm:mt-24">
@@ -28,17 +5,29 @@
       <div v-if="data.vaults.length == 0" class="mx-auto mb-6 max-w-md px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <div class="rounded-t-lg border-t border-l border-r border-gray-200 bg-white p-5">
           <p class="text-center">👋</p>
-          <h2 class="mb-6 text-center text-lg">{{ $t('vault.index_blank_title') }}</h2>
-          <p class="mb-3">{{ $t('vault.index_blank_sentence_1') }}</p>
-          <p class="mb-3">{{ $t('vault.index_blank_sentence_2') }}</p>
+          <h2 class="mb-6 text-center text-lg">
+            {{ $t('vault.index_blank_title') }}
+          </h2>
+          <p class="mb-3">
+            {{ $t('vault.index_blank_sentence_1') }}
+          </p>
+          <p class="mb-3">
+            {{ $t('vault.index_blank_sentence_2') }}
+          </p>
           <div class="mb-3 text-center">
             <pretty-link :href="data.url.vault.create" :text="$t('vault.index_cta')" :icon="'plus'" />
           </div>
         </div>
         <div class="rounded-b-lg border border-gray-200 p-5">
-          <p class="mb-3">{{ $t('vault.index_blank_sentence_3') }}</p>
-          <p class="mb-3">{{ $t('vault.index_blank_sentence_4') }}</p>
-          <p class="mb-3">{{ $t('vault.index_blank_sentence_5') }}</p>
+          <p class="mb-3">
+            {{ $t('vault.index_blank_sentence_3') }}
+          </p>
+          <p class="mb-3">
+            {{ $t('vault.index_blank_sentence_4') }}
+          </p>
+          <p class="mb-3">
+            {{ $t('vault.index_blank_sentence_5') }}
+          </p>
           <p>
             <a href="https://twitter.com/maazarin" class="text-blue-500 hover:underline">Régis</a> &
             <a href="https://twitter.com/asbin" class="text-blue-500 hover:underline">Alexis</a>
@@ -49,7 +38,9 @@
       <!-- list of existing vaults -->
       <div v-if="data.vaults.length > 0" class="mx-auto max-w-4xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <div class="mb-10 items-center justify-between sm:mb-6 sm:flex">
-          <h3 class="mb-3 dark:text-slate-200 sm:mb-0">{{ $t('vault.index_title') }}</h3>
+          <h3 class="mb-3 dark:text-slate-200 sm:mb-0">
+            {{ $t('vault.index_title') }}
+          </h3>
           <pretty-link
             :href="data.url.vault.create"
             :text="$t('vault.index_cta')"
@@ -73,7 +64,7 @@
               <div>
                 <div v-if="vault.contacts.length > 0" class="relative flex -space-x-2 overflow-hidden p-3">
                   <div v-for="contact in vault.contacts" :key="contact.id" class="inline-block">
-                    <div v-html="contact.avatar" class="h-8 w-8 rounded-full ring-2 ring-white"></div>
+                    <div class="h-8 w-8 rounded-full ring-2 ring-white" v-html="contact.avatar" />
                   </div>
                   <div
                     v-if="vault.remaining_contacts != 0"
@@ -84,7 +75,9 @@
                 <p v-if="vault.description" class="p-3 dark:text-gray-300">
                   {{ vault.description }}
                 </p>
-                <p v-else class="p-3 text-gray-500">{{ $t('vault.index_description_blank') }}</p>
+                <p v-else class="p-3 text-gray-500">
+                  {{ $t('vault.index_description_blank') }}
+                </p>
               </div>
 
               <!-- actions -->
@@ -162,3 +155,26 @@ export default {
   methods: {},
 };
 </script>
+
+<style lang="scss" scoped>
+.vault-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.vault-detail {
+  height: 250px;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+}
+
+.remaining-contact {
+  top: -1px;
+  left: -5px;
+}
+
+@media (max-width: 480px) {
+  .vault-list {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

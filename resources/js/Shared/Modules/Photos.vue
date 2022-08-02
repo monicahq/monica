@@ -1,32 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
-.item-list {
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-
-select {
-  padding-left: 8px;
-  padding-right: 20px;
-  background-position: right 3px center;
-}
-</style>
-
 <template>
   <div class="mb-10">
     <!-- title + cta -->
@@ -47,7 +18,9 @@ select {
           </svg>
         </span>
 
-        <span class="font-semibold">{{ $t('contact.photos_title') }}</span>
+        <span class="font-semibold">
+          {{ $t('contact.photos_title') }}
+        </span>
       </div>
       <uploadcare
         v-if="data.uploadcarePublicKey && data.canUploadFile"
@@ -91,12 +64,16 @@ select {
 
     <!-- blank state -->
     <div v-if="localPhotos.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
-      <p class="p-5 text-center">{{ $t('contact.photos_blank') }}</p>
+      <p class="p-5 text-center">
+        {{ $t('contact.photos_blank') }}
+      </p>
     </div>
 
     <!-- uploadcare api key not set -->
     <div v-if="!data.uploadcarePublicKey" class="mb-6 rounded-lg border border-gray-200 bg-white">
-      <p class="p-5 text-center">{{ $t('contact.photos_key_missing') }}</p>
+      <p class="p-5 text-center">
+        {{ $t('contact.photos_key_missing') }}
+      </p>
     </div>
   </div>
 </template>
@@ -173,7 +150,7 @@ export default {
       if (confirm(this.$t('contact.photos_delete_confirm'))) {
         axios
           .delete(photo.url.destroy)
-          .then((response) => {
+          .then(() => {
             this.flash(this.$t('contact.photos_delete_success'), 'success');
             var id = this.localPhotos.findIndex((x) => x.id === photo.id);
             this.localPhotos.splice(id, 1);
@@ -186,3 +163,32 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+
+select {
+  padding-left: 8px;
+  padding-right: 20px;
+  background-position: right 3px center;
+}
+</style>

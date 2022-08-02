@@ -1,30 +1,8 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  top: -2px;
-}
-
-.label-list {
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-
-  li:last-child {
-    border-bottom: 0;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-
-  li:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-</style>
-
 <template>
   <div class="mb-4">
     <div class="mb-3 items-center justify-between border-b border-gray-200 sm:flex">
       <div class="mb-2 text-xs sm:mb-0">Job information</div>
-      <span v-if="!editJobInformation" @click="showEditModal" class="relative cursor-pointer">
+      <span v-if="!editJobInformation" class="relative cursor-pointer" @click="showEditModal">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="icon-sidebar relative inline h-3 w-3 text-gray-300 hover:text-gray-600"
@@ -40,7 +18,7 @@
       </span>
 
       <!-- close button -->
-      <span v-if="editJobInformation" @click="editJobInformation = false" class="cursor-pointer text-xs text-gray-600">
+      <span v-if="editJobInformation" class="cursor-pointer text-xs text-gray-600" @click="editJobInformation = false">
         Close
       </span>
     </div>
@@ -63,9 +41,9 @@
             :label="'Existing company'" />
 
           <p
-            @click="showCreateCompany()"
             v-if="showCreateCompanyLink"
-            class="cursor-pointer text-sm text-blue-500 hover:underline">
+            class="cursor-pointer text-sm text-blue-500 hover:underline"
+            @click="showCreateCompany()">
             Or create a new one
           </p>
 
@@ -97,7 +75,7 @@
         </div>
 
         <div class="flex justify-between p-2">
-          <pretty-span @click="editJobInformation = false" :text="$t('app.cancel')" :classes="'mr-3'" />
+          <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editJobInformation = false" />
           <pretty-button
             :href="'data.url.vault.create'"
             :text="$t('app.save')"
@@ -229,3 +207,25 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  top: -2px;
+}
+
+.label-list {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+
+  li:last-child {
+    border-bottom: 0;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
+  li:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+</style>

@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize, reopened]
 
   workflow_run:
-    workflows: [PHP linting (Pint)]
+    workflows: [PHP linting (Pint), Javascript linting]
     types: [completed]
 
 env:

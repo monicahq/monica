@@ -1,31 +1,9 @@
-<style lang="scss" scoped>
-.item-list {
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-
-select {
-  padding-left: 8px;
-  padding-right: 20px;
-  background-position: right 3px center;
-}
-</style>
-
 <template>
   <div>
     <div class="mb-3 flex items-center justify-between">
-      <span class="dark:text-gray-200">{{ $t('settings.notification_channels_telegram_title') }}</span>
+      <span class="dark:text-gray-200">
+        {{ $t('settings.notification_channels_telegram_title') }}
+      </span>
 
       <pretty-button
         v-if="!setupTelegramModalShown && !localTelegram && envVariableSet"
@@ -43,57 +21,32 @@ select {
         <errors :errors="form.errors" />
 
         <!-- preferred time -->
-        <p class="mb-2 block text-sm">{{ $t('settings.notification_channels_email_at') }}</p>
+        <p class="mb-2 block text-sm">
+          {{ $t('settings.notification_channels_email_at') }}
+        </p>
         <div class="flex items-center text-sm font-medium text-gray-700">
-          <span class="mr-2">{{ $t('settings.notification_channels_email_at_word') }}</span>
+          <span class="mr-2">
+            {{ $t('settings.notification_channels_email_at_word') }}
+          </span>
 
           <select
             v-model="form.hours"
             class="mr-1 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm"
             :required="required">
-            <option value="00">00</option>
-            <option value="01">01</option>
-            <option value="02">02</option>
-            <option value="03">03</option>
-            <option value="04">04</option>
-            <option value="05">05</option>
-            <option value="06">06</option>
-            <option value="07">07</option>
-            <option value="08">08</option>
-            <option value="09">09</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-            <option value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
-            <option value="20">20</option>
-            <option value="21">21</option>
-            <option value="23">23</option>
+            <option v-for="n in 24" :key="n" :value="n - 1">
+              {{ String(n - 1).padStart(2, '0') }}
+            </option>
           </select>
 
-          <span class="mr-2">h:</span>
+          <span class="mr-2"> h: </span>
 
           <select
             v-model="form.minutes"
             class="mr-1 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm"
             :required="required">
-            <option value="00">00</option>
-            <option value="05">05</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="20">20</option>
-            <option value="25">25</option>
-            <option value="30">30</option>
-            <option value="35">35</option>
-            <option value="40">40</option>
-            <option value="45">45</option>
-            <option value="50">50</option>
-            <option value="55">55</option>
+            <option v-for="n in 12" :key="n" :value="(n - 1) * 5">
+              {{ String((n - 1) * 5).padStart(2, '0') }}
+            </option>
           </select>
 
           <span>m</span>
@@ -123,7 +76,9 @@ select {
 
     <!-- case if env variables are not set -->
     <div v-if="!envVariableSet" class="mb-6 rounded-lg border border-gray-200 bg-white">
-      <p class="p-5 text-center">{{ $t('settings.notification_channels_telegram_not_set') }}</p>
+      <p class="p-5 text-center">
+        {{ $t('settings.notification_channels_telegram_not_set') }}
+      </p>
     </div>
 
     <div v-if="envVariableSet">
@@ -181,9 +136,9 @@ select {
 
             <!-- view log -->
             <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline">
-              <inertia-link :href="localTelegram.url.logs" class="text-blue-500 hover:underline">{{
-                $t('settings.notification_channels_email_log')
-              }}</inertia-link>
+              <inertia-link :href="localTelegram.url.logs" class="text-blue-500 hover:underline">
+                {{ $t('settings.notification_channels_email_log') }}
+              </inertia-link>
             </li>
 
             <!-- delete email -->
@@ -196,7 +151,9 @@ select {
 
       <!-- blank state -->
       <div v-else class="mb-6 rounded-lg border border-gray-200 bg-white">
-        <p class="p-5 text-center">{{ $t('settings.notification_channels_telegram_blank') }}</p>
+        <p class="p-5 text-center">
+          {{ $t('settings.notification_channels_telegram_blank') }}
+        </p>
       </div>
     </div>
   </div>
@@ -257,7 +214,7 @@ export default {
     sendTest() {
       axios
         .post(this.localTelegram.url.send_test)
-        .then((response) => {
+        .then(() => {
           this.flash(this.$t('settings.notification_channels_test_success_telegram'), 'success');
           this.notificationSent = true;
         })
@@ -299,7 +256,7 @@ export default {
       if (confirm(this.$t('settings.notification_channels_telegram_delete_confirm'))) {
         axios
           .delete(this.localTelegram.url.destroy)
-          .then((response) => {
+          .then(() => {
             this.flash(this.$t('settings.notification_channels_telegram_destroy_success'), 'success');
             this.localTelegram = null;
           })
@@ -312,3 +269,27 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+
+select {
+  padding-left: 8px;
+  padding-right: 20px;
+  background-position: right 3px center;
+}
+</style>

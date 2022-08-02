@@ -1,21 +1,3 @@
-<style lang="scss" scoped>
-.item-list {
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-</style>
-
 <template>
   <layout :layout-data="layoutData">
     <!-- breadcrumb -->
@@ -23,11 +5,13 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">{{ $t('app.breadcrumb_location') }}</li>
+            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+              {{ $t('app.breadcrumb_location') }}
+            </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">{{
-                $t('app.breadcrumb_settings')
-              }}</inertia-link>
+              <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
+                {{ $t('app.breadcrumb_settings') }}
+              </inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -40,9 +24,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">{{
-                $t('app.breadcrumb_settings_personalize')
-              }}</inertia-link>
+              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">
+                {{ $t('app.breadcrumb_settings_personalize') }}
+              </inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -64,7 +48,10 @@
       <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <!-- title + cta -->
         <div class="mb-6 mt-8 items-center justify-between sm:mt-0 sm:flex">
-          <h3 class="mb-4 sm:mb-0"><span class="mr-1"> 📲 </span> All the call reasons</h3>
+          <h3 class="mb-4 sm:mb-0">
+            <span class="mr-1"> 📲 </span>
+            All the call reasons
+          </h3>
           <pretty-button
             v-if="!createCallReasonTypeModalShown"
             :text="'add a call reason type'"
@@ -402,7 +389,7 @@ export default {
       ) {
         axios
           .delete(callReasonType.url.destroy)
-          .then((response) => {
+          .then(() => {
             this.flash('The call reason type has been deleted', 'success');
             var id = this.localCallReasonTypes.findIndex((x) => x.id === callReasonType.id);
             this.localCallReasonTypes.splice(id, 1);
@@ -459,7 +446,7 @@ export default {
       ) {
         axios
           .delete(reason.url.destroy)
-          .then((response) => {
+          .then(() => {
             this.flash('The call reason has been deleted', 'success');
             var callReasonTypeId = this.localCallReasonTypes.findIndex((x) => x.id === callReasonType.id);
             var typeId = this.localCallReasonTypes[callReasonTypeId].reasons.findIndex((x) => x.id === reason.id);
@@ -474,3 +461,21 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+</style>

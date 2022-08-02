@@ -1,32 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
-.item-list {
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-
-select {
-  padding-left: 8px;
-  padding-right: 20px;
-  background-position: right 3px center;
-}
-</style>
-
 <template>
   <div class="mb-10">
     <!-- title + cta -->
@@ -47,7 +18,9 @@ select {
           </svg>
         </span>
 
-        <span class="font-semibold">{{ $t('contact.contact_information_title') }}</span>
+        <span class="font-semibold">
+          {{ $t('contact.contact_information_title') }}
+        </span>
       </div>
       <pretty-button
         :text="$t('contact.contact_information_cta')"
@@ -168,7 +141,9 @@ select {
 
     <!-- blank state -->
     <div v-if="localContactInformation.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
-      <p class="p-5 text-center">{{ $t('contact.contact_information_blank') }}</p>
+      <p class="p-5 text-center">
+        {{ $t('contact.contact_information_blank') }}
+      </p>
     </div>
   </div>
 </template>
@@ -272,7 +247,7 @@ export default {
       if (confirm(this.$t('contact.contact_information_delete_confirm'))) {
         axios
           .delete(info.url.destroy)
-          .then((response) => {
+          .then(() => {
             this.flash(this.$t('contact.contact_information_delete_success'), 'success');
             var id = this.localContactInformation.findIndex((x) => x.id === info.id);
             this.localContactInformation.splice(id, 1);
@@ -286,3 +261,32 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+
+select {
+  padding-left: 8px;
+  padding-right: 20px;
+  background-position: right 3px center;
+}
+</style>

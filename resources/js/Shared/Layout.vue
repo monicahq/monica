@@ -1,22 +1,3 @@
-<style lang="scss" scoped>
-main {
-  color: #343a4b;
-}
-
-.icon-search {
-  left: 8px;
-  top: 8px;
-}
-
-.sha {
-  padding: 0.2em 0.4em;
-}
-
-.icon-cog {
-  top: -1px;
-}
-</style>
-
 <template>
   <main>
     <div class="min-h-full">
@@ -94,7 +75,7 @@ main {
                 </inertia-link>
               </li>
               <li class="inline">
-                <inertia-link @click="logout()" class="inline">
+                <inertia-link class="inline" @click="logout()">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-300 sm:h-4 sm:w-4"
@@ -177,7 +158,9 @@ main {
 
       <footer class="mb-10 text-center text-xs">
         <ul class="dark:text-gray-300">
-          <li class="mr-4 mb-2 sm:mb-0 sm:inline">{{ $t('app.layout_footer_monica') }}</li>
+          <li class="mr-4 mb-2 sm:mb-0 sm:inline">
+            {{ $t('app.layout_footer_monica') }}
+          </li>
           <li class="sm:inline">
             {{ $t('app.layout_footer_version', { version: layoutData.version.date }) }}
 
@@ -239,3 +222,22 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+main {
+  color: #343a4b;
+}
+
+.icon-search {
+  left: 8px;
+  top: 8px;
+}
+
+.sha {
+  padding: 0.2em 0.4em;
+}
+
+.icon-cog {
+  top: -1px;
+}
+</style>

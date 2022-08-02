@@ -1,20 +1,3 @@
-<style lang="scss" scoped>
-.section-head {
-  border-top-left-radius: 7px;
-  border-top-right-radius: 7px;
-}
-
-input[type='checkbox'] {
-  top: 3px;
-}
-
-select {
-  padding-left: 8px;
-  padding-right: 20px;
-  background-position: right 3px center;
-}
-</style>
-
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
     <!-- breadcrumb -->
@@ -22,7 +5,9 @@ select {
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">{{ $t('app.breadcrumb_location') }}</li>
+            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+              {{ $t('app.breadcrumb_location') }}
+            </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 Contacts
@@ -69,13 +54,13 @@ select {
             <errors :errors="form.errors" />
 
             <!-- relationship type -->
-            <label for="types" class="mb-2 block text-sm">Select a relationship type</label>
+            <label for="types" class="mb-2 block text-sm"> Select a relationship type </label>
             <select
-              v-model="form.relationship_type_id"
-              @change="load()"
-              name="types"
               id="types"
-              class="w-full rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm">
+              v-model="form.relationship_type_id"
+              name="types"
+              class="w-full rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm"
+              @change="load()">
               <optgroup v-for="group in data.relationship_group_types" :key="group.id" :label="group.name">
                 <option v-for="type in group.types" :key="type.id" :value="type.id">
                   {{ type.name }}
@@ -94,7 +79,7 @@ select {
                   {{ fromRelationship }}
                 </p>
                 <div class="flex items-center">
-                  <div v-html="data.contact.avatar" class="mr-2 h-5 w-5"></div>
+                  <div class="mr-2 h-5 w-5" v-html="data.contact.avatar" />
 
                   <span>{{ data.contact.name }}</span>
                 </div>
@@ -102,8 +87,8 @@ select {
 
               <!-- switch -->
               <div
-                @click="toggle()"
-                class="w-100 mb-4 block cursor-pointer text-center text-gray-400 hover:text-gray-900">
+                class="w-100 mb-4 block cursor-pointer text-center text-gray-400 hover:text-gray-900"
+                @click="toggle()">
                 <div class="flex">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +102,7 @@ select {
                       stroke-linejoin="round"
                       d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                   </svg>
-                  <span class="text-xs">Switch role</span>
+                  <span class="text-xs"> Switch role </span>
                 </div>
               </div>
 
@@ -150,8 +135,8 @@ select {
                       value="name"
                       name="name-order"
                       type="radio"
-                      @click="displayContactNameField"
-                      class="h-4 w-4 border-gray-300 text-sky-500" />
+                      class="h-4 w-4 border-gray-300 text-sky-500"
+                      @click="displayContactNameField" />
                     <label for="name" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
                       I know the name
                     </label>
@@ -214,8 +199,8 @@ select {
                       value="contact"
                       name="name-order"
                       type="radio"
-                      @click="displayContactSelector"
-                      class="h-4 w-4 border-gray-300 text-sky-500" />
+                      class="h-4 w-4 border-gray-300 text-sky-500"
+                      @click="displayContactSelector" />
                     <label for="contact" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
                       Choose an existing contact
                     </label>
@@ -223,13 +208,13 @@ select {
 
                   <div v-if="form.choice == 'contact'" class="pl-6">
                     <contact-selector
-                      :search-url="this.layoutData.vault.url.search_contacts_only"
-                      :most-consulted-contacts-url="this.layoutData.vault.url.get_most_consulted_contacts"
+                      v-model="form.other_contact_id"
+                      :search-url="layoutData.vault.url.search_contacts_only"
+                      :most-consulted-contacts-url="layoutData.vault.url.get_most_consulted_contacts"
                       :display-most-consulted-contacts="false"
                       :add-multiple-contacts="false"
                       :required="true"
-                      :div-outer-class="'flex-1 border-r border-gray-200'"
-                      v-model="form.other_contact_id" />
+                      :div-outer-class="'flex-1 border-r border-gray-200'" />
                   </div>
                 </div>
               </div>
@@ -312,8 +297,8 @@ select {
             <div v-if="form.choice != 'contact'" class="border-b border-gray-200 p-5">
               <div class="relative flex items-start">
                 <input
-                  v-model="form.create_contact_entry"
                   id="create-contact"
+                  v-model="form.create_contact_entry"
                   name="create-contact"
                   type="checkbox"
                   class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
@@ -487,3 +472,20 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.section-head {
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+
+input[type='checkbox'] {
+  top: 3px;
+}
+
+select {
+  padding-left: 8px;
+  padding-right: 20px;
+  background-position: right 3px center;
+}
+</style>

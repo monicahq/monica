@@ -1,25 +1,3 @@
-<style lang="scss" scoped>
-.user-list {
-  li:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  li:last-child {
-    border-bottom: 0;
-  }
-
-  li:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-
-  .icon-mail {
-    top: -1px;
-  }
-}
-</style>
-
 <template>
   <layout title="Dashboard" :layout-data="layoutData">
     <!-- breadcrumb -->
@@ -27,11 +5,13 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">{{ $t('app.breadcrumb_location') }}</li>
+            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+              {{ $t('app.breadcrumb_location') }}
+            </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.settings.index" class="text-blue-500 hover:underline">{{
-                $t('app.breadcrumb_settings')
-              }}</inertia-link>
+              <inertia-link :href="data.url.settings.index" class="text-blue-500 hover:underline">
+                {{ $t('app.breadcrumb_settings') }}
+              </inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -43,7 +23,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">{{ $t('app.breadcrumb_settings_users') }}</li>
+            <li class="inline">
+              {{ $t('app.breadcrumb_settings_users') }}
+            </li>
           </ul>
         </div>
       </div>
@@ -53,7 +35,10 @@
       <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <!-- title + cta -->
         <div class="mb-6 flex items-center justify-between">
-          <h3><span class="mr-1"> 🥸 </span> {{ $t('settings.users_management_title') }}</h3>
+          <h3>
+            <span class="mr-1"> 🥸 </span>
+            {{ $t('settings.users_management_title') }}
+          </h3>
           <pretty-link :href="data.url.users.create" :text="$t('settings.users_management_cta')" :icon="'plus'" />
         </div>
 
@@ -113,10 +98,10 @@
 
               <!-- actions -->
               <ul v-if="!user.is_logged_user" class="text-sm">
-                <li @click="showEditModal(user)" class="mr-4 inline cursor-pointer text-blue-500 hover:underline">
+                <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="showEditModal(user)">
                   {{ $t('app.edit') }}
                 </li>
-                <li @click="destroy(user)" class="inline cursor-pointer text-red-500 hover:text-red-900">
+                <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(user)">
                   {{ $t('app.delete') }}
                 </li>
               </ul>
@@ -127,7 +112,9 @@
               <div class="border-b border-gray-200 p-5">
                 <errors :errors="form.errors" />
 
-                <p class="mb-2 block text-sm">{{ $t('settings.users_management_permission', { name: user.name }) }}</p>
+                <p class="mb-2 block text-sm">
+                  {{ $t('settings.users_management_permission', { name: user.name }) }}
+                </p>
                 <div class="mb-2 flex items-start">
                   <input
                     id="viewer"
@@ -241,16 +228,35 @@ export default {
 
     destroy(user) {
       if (confirm(this.$t('settings.users_management_delete_confirmation'))) {
-        axios
-          .delete(user.url.destroy)
-          .then((response) => {
-            this.flash(this.$t('settings.users_management_delete_success'), 'success');
-            var id = this.localUsers.findIndex((x) => x.id === user.id);
-            this.localUsers.splice(id, 1);
-          })
-          .catch((error) => {});
+        axios.delete(user.url.destroy).then(() => {
+          this.flash(this.$t('settings.users_management_delete_success'), 'success');
+          var id = this.localUsers.findIndex((x) => x.id === user.id);
+          this.localUsers.splice(id, 1);
+        });
       }
     },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.user-list {
+  li:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  li:last-child {
+    border-bottom: 0;
+  }
+
+  li:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
+  .icon-mail {
+    top: -1px;
+  }
+}
+</style>

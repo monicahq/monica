@@ -1,26 +1,3 @@
-<style lang="scss" scoped>
-.item-list {
-  &:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-</style>
-
 <template>
   <div>
     <div class="mb-4 mt-8 items-center justify-between border-b pb-3 sm:mt-0 sm:flex">
@@ -188,7 +165,7 @@ export default {
     remove(module) {
       axios
         .delete(module.url.destroy)
-        .then((response) => {
+        .then(() => {
           this.flash(this.$t('settings.personalize_template_show_module_remove_success'), 'success');
           this.localAllModules[this.localAllModules.findIndex((x) => x.id === module.id)].already_used = false;
 
@@ -206,7 +183,7 @@ export default {
 
       axios
         .post(event.moved.element.url.position, this.form)
-        .then((response) => {
+        .then(() => {
           this.flash(this.$t('settings.personalize_template_show_module_order_success'), 'success');
         })
         .catch((error) => {
@@ -217,3 +194,26 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.item-list {
+  &:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+</style>

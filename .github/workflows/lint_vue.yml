@@ -1,0 +1,81 @@
+name: Javascript linting
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+  workflow_run:
+    workflows: [PHP linting (Pint)]
+    types: [completed]
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    name: Lint vue and js files
+
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v3
+        if: env.GH_TOKEN != ''
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GH_TOKEN }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - uses: actions/checkout@v3
+        if: env.GH_TOKEN == ''
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      # Yarn
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
+      - name: Get yarn cache directory path
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache yarn files
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            ${{ runner.os }}-yarn-
+
+      - name: Install yarn dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run eslint
+        run: yarn run lint --fix
+      - name: Run prettier
+        run: yarn run format
+
+      - name: Commit changes
+        if: env.GH_TOKEN != ''
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'chore: javascript linting with eslint and prettier'
+          skip_fetch: true
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Check if there is any file update needed
+        if: env.GH_TOKEN == ''
+        run: |
+          status=$(git status --porcelain)
+          if [ -n "$status" ]; then
+            echo -e "Waiting modifications:\n$status"
+            echo "::error::Eslint and prettier found fixes. Please run 'yarn run lint' and 'yarn run format' prior to your next commit."
+            exit -1
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}

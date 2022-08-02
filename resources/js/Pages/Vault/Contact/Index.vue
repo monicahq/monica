@@ -1,31 +1,3 @@
-<style lang="scss" scoped>
-.contact-list {
-  li:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  li:last-child {
-    border-bottom: 0;
-  }
-
-  li:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-
-.special-grid {
-  grid-template-columns: 200px 1fr;
-}
-
-@media (max-width: 480px) {
-  .special-grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
-
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
     <main class="relative sm:mt-24">
@@ -36,22 +8,25 @@
             <!-- labels -->
             <div>
               <div class="mb-3 border-b border-gray-200">
-                <span class="mr-1">🏷️</span> {{ $t('vault.show_contacts_labels') }}
+                <span class="mr-1"> 🏷️ </span>
+                {{ $t('vault.show_contacts_labels') }}
               </div>
               <ul v-if="data.labels.length > 0">
                 <li class="mb-1">
                   <div v-if="data.current_label">
-                    <inertia-link :href="data.url.contact.index" class="text-blue-500 hover:underline">{{
-                      $t('app.view_all')
-                    }}</inertia-link>
+                    <inertia-link :href="data.url.contact.index" class="text-blue-500 hover:underline">
+                      {{ $t('app.view_all') }}
+                    </inertia-link>
                   </div>
-                  <div v-if="!data.current_label">{{ $t('app.view_all') }}</div>
+                  <div v-if="!data.current_label">
+                    {{ $t('app.view_all') }}
+                  </div>
                 </li>
                 <li v-for="label in data.labels" :key="label.id" class="mb-1">
                   <div v-if="label.id !== data.current_label">
-                    <inertia-link :href="label.url.show" class="text-blue-500 hover:underline">{{
-                      label.name
-                    }}</inertia-link>
+                    <inertia-link :href="label.url.show" class="text-blue-500 hover:underline">
+                      {{ label.name }}
+                    </inertia-link>
                     <span class="text-sm text-gray-500">({{ label.count }})</span>
                   </div>
                   <div v-if="label.id === data.current_label">
@@ -60,7 +35,9 @@
                 </li>
               </ul>
 
-              <p v-else class="text-sm text-gray-500">{{ $t('vault.show_contacts_labels_blank') }}</p>
+              <p v-else class="text-sm text-gray-500">
+                {{ $t('vault.show_contacts_labels_blank') }}
+              </p>
             </div>
           </div>
 
@@ -68,7 +45,10 @@
           <div class="p-3 sm:px-3 sm:py-0">
             <!-- title + cta -->
             <div class="mb-6 flex items-center justify-between">
-              <h3><span class="mr-1"> 🥸 </span> {{ $t('vault.show_contacts_index') }}</h3>
+              <h3>
+                <span class="mr-1"> 🥸 </span>
+                {{ $t('vault.show_contacts_index') }}
+              </h3>
               <pretty-link
                 v-if="layoutData.vault.permission.at_least_editor"
                 :href="data.url.contact.create"
@@ -82,7 +62,7 @@
                 v-for="contact in data.contacts"
                 :key="contact.id"
                 class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50">
-                <div v-html="contact.avatar" class="mr-2 h-5 w-5"></div>
+                <div class="mr-2 h-5 w-5" v-html="contact.avatar" />
                 <inertia-link :href="contact.url.show" class="text-blue-500 hover:underline">
                   {{ contact.name }}
                 </inertia-link>
@@ -141,3 +121,31 @@ export default {
   methods: {},
 };
 </script>
+
+<style lang="scss" scoped>
+.contact-list {
+  li:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  li:last-child {
+    border-bottom: 0;
+  }
+
+  li:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+
+.special-grid {
+  grid-template-columns: 200px 1fr;
+}
+
+@media (max-width: 480px) {
+  .special-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

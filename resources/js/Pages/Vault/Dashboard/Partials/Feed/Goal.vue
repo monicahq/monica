@@ -1,9 +1,3 @@
-<style lang="scss" scoped>
-.icon-date {
-  top: -1px;
-}
-</style>
-
 <template>
   <div class="relative border border-gray-300 bg-white sm:rounded-lg">
     <span class="absolute rounded border bg-blue-50 px-2 py-0 text-xs text-blue-500" style="top: -10px; left: 10px">
@@ -23,7 +17,8 @@
             stroke-width="2"
             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span class="font-semibold"> Goal: </span> Walk 500 steps every day
+        <span class="font-semibold"> Goal: </span>
+        Walk 500 steps every day
       </div>
     </div>
     <div class="flex justify-between border-t border-gray-200 px-3 py-2 text-xs text-gray-600">
@@ -60,3 +55,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-date {
+  top: -1px;
+}
+</style>

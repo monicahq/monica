@@ -1,5 +1,3 @@
-<style lang="scss" scoped></style>
-
 <template>
   <div class="relative inline" :class="divOuterClass" :style="'top: ' + top">
     <a-popover placement="bottomLeft">
@@ -64,3 +62,5 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped></style>

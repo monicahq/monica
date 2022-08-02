@@ -1,5 +1,3 @@
-<style lang="scss" scoped></style>
-
 <template>
   <div class="flex justify-between text-center">
     <inertia-link
@@ -29,3 +27,5 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped></style>

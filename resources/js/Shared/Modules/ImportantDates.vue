@@ -1,9 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  top: -2px;
-}
-</style>
-
 <template>
   <div class="mb-4">
     <div class="mb-3 items-center justify-between border-b border-gray-200 sm:flex">
@@ -49,3 +43,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  top: -2px;
+}
+</style>

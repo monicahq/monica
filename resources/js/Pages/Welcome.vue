@@ -190,6 +190,29 @@
   </div>
 </template>
 
+<script>
+export default {
+  props: {
+    laravelVersion: {
+      type: String,
+      default: null,
+    },
+    phpVersion: {
+      type: String,
+      default: null,
+    },
+    canLogin: {
+      type: Boolean,
+      default: false,
+    },
+    canRegister: {
+      type: Boolean,
+      default: false,
+    },
+  },
+};
+</script>
+
 <style scoped>
 .bg-gray-100 {
   background-color: #f7fafc;
@@ -253,26 +276,3 @@
   }
 }
 </style>
-
-<script>
-export default {
-  props: {
-    laravelVersion: {
-      type: String,
-      default: null,
-    },
-    phpVersion: {
-      type: String,
-      default: null,
-    },
-    canLogin: {
-      type: Boolean,
-      default: false,
-    },
-    canRegister: {
-      type: Boolean,
-      default: false,
-    },
-  },
-};
-</script>

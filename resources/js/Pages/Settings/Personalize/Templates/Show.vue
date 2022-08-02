@@ -1,15 +1,3 @@
-<style lang="scss" scoped>
-.grid {
-  grid-template-columns: 1fr 2fr;
-}
-
-@media (max-width: 480px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
-
 <template>
   <layout :layout-data="layoutData">
     <!-- breadcrumb -->
@@ -17,11 +5,13 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">{{ $t('app.breadcrumb_location') }}</li>
+            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+              {{ $t('app.breadcrumb_location') }}
+            </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">{{
-                $t('app.breadcrumb_settings')
-              }}</inertia-link>
+              <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
+                {{ $t('app.breadcrumb_settings') }}
+              </inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -34,9 +24,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">{{
-                $t('app.breadcrumb_settings_personalize')
-              }}</inertia-link>
+              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">
+                {{ $t('app.breadcrumb_settings_personalize') }}
+              </inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -49,9 +39,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.templates" class="text-blue-500 hover:underline">{{
-                $t('app.breadcrumb_settings_personalize_templates')
-              }}</inertia-link>
+              <inertia-link :href="data.url.templates" class="text-blue-500 hover:underline">
+                {{ $t('app.breadcrumb_settings_personalize_templates') }}
+              </inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -96,7 +86,9 @@
           </svg>
 
           <div>
-            <p class="mb-1">{{ $t('settings.personalize_template_show_title') }}</p>
+            <p class="mb-1">
+              {{ $t('settings.personalize_template_show_title') }}
+            </p>
             <p class="mb-1">
               {{ $t('settings.personalize_template_show_description') }}
             </p>
@@ -173,3 +165,15 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.grid {
+  grid-template-columns: 1fr 2fr;
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

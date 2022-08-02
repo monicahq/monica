@@ -3,7 +3,10 @@
     <breeze-validation-errors class="mb-4" />
 
     <form @submit.prevent="submit">
-      <h1 class="mb-3 text-center text-xl"><span class="mr-2"> 👋 </span> Welcome to Monica.</h1>
+      <h1 class="mb-3 text-center text-xl">
+        <span class="mr-2"> 👋 </span>
+        Welcome to Monica.
+      </h1>
       <p class="mb-4 text-center">Please complete this form to finalize your account.</p>
 
       <div>
@@ -109,7 +112,7 @@ export default {
           localStorage.success = 'Your account has been created';
           this.$inertia.visit(response.data.data);
         })
-        .catch((error) => {
+        .catch(() => {
           this.loadingState = null;
         });
     },

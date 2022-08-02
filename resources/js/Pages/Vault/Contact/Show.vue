@@ -1,19 +1,3 @@
-<style lang="scss" scoped>
-.special-grid {
-  grid-template-columns: 300px 1fr;
-}
-
-@media (max-width: 480px) {
-  .special-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.group-list-item:not(:last-child):after {
-  content: ',';
-}
-</style>
-
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
     <!-- breadcrumb -->
@@ -21,7 +5,9 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">{{ $t('app.breadcrumb_location') }}</li>
+            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+              {{ $t('app.breadcrumb_location') }}
+            </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 {{ $t('app.breadcrumb_contact_index') }}
@@ -37,7 +23,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">{{ $t('app.breadcrumb_contact_show', { name: data.contact_name.name }) }}</li>
+            <li class="inline">
+              {{ $t('app.breadcrumb_contact_show', { name: data.contact_name.name }) }}
+            </li>
           </ul>
         </div>
       </div>
@@ -48,7 +36,9 @@
         <!-- banner if contact is archived -->
         <!-- this is based on the `listed` boolean on the contact object -->
         <div v-if="!data.listed" class="mb-8 rounded-lg border border-gray-300 px-3 py-2 text-center">
-          <span class="mr-4">🕸️</span> {{ $t('contact.contact_archived') }} <span class="ml-4">🕷️</span>
+          <span class="mr-4"> 🕸️ </span>
+          {{ $t('contact.contact_archived') }}
+          <span class="ml-4"> 🕷️ </span>
         </div>
 
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -74,19 +64,19 @@
 
             <ul class="text-xs">
               <li v-if="data.listed && data.options.can_be_archived" class="mb-2">
-                <inertia-link @click.prevent="toggleArchive()" class="cursor-pointer text-blue-500 hover:underline">{{
-                  $t('contact.contact_archive_cta')
-                }}</inertia-link>
+                <inertia-link class="cursor-pointer text-blue-500 hover:underline" @click.prevent="toggleArchive()">
+                  {{ $t('contact.contact_archive_cta') }}
+                </inertia-link>
               </li>
               <li v-if="!data.listed" class="mb-2">
-                <inertia-link @click.prevent="toggleArchive()" class="cursor-pointer text-blue-500 hover:underline">{{
-                  $t('contact.contact_unarchive_cta')
-                }}</inertia-link>
+                <inertia-link class="cursor-pointer text-blue-500 hover:underline" @click.prevent="toggleArchive()">
+                  {{ $t('contact.contact_unarchive_cta') }}
+                </inertia-link>
               </li>
               <li class="mb-2">
-                <inertia-link :href="data.url.update_template" class="cursor-pointer text-blue-500 hover:underline">{{
-                  $t('contact.contact_change_template_cta')
-                }}</inertia-link>
+                <inertia-link :href="data.url.update_template" class="cursor-pointer text-blue-500 hover:underline">
+                  {{ $t('contact.contact_change_template_cta') }}
+                </inertia-link>
               </li>
               <li v-if="data.options.can_be_deleted">
                 <span class="cursor-pointer text-blue-500 hover:underline" @click="destroy">{{
@@ -108,7 +98,9 @@
                     v-for="group in data.group_summary_information"
                     :key="group.id"
                     class="group-list-item mr-2 inline">
-                    <inertia-link class="text-blue-500 hover:underline">{{ group.name }}</inertia-link>
+                    <inertia-link class="text-blue-500 hover:underline">
+                      {{ group.name }}
+                    </inertia-link>
                   </li>
                 </ul>
               </div>
@@ -390,3 +382,19 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.special-grid {
+  grid-template-columns: 300px 1fr;
+}
+
+@media (max-width: 480px) {
+  .special-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.group-list-item:not(:last-child):after {
+  content: ',';
+}
+</style>

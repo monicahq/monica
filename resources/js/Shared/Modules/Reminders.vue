@@ -1,32 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
-.item-list {
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-
-select {
-  padding-left: 8px;
-  padding-right: 20px;
-  background-position: right 3px center;
-}
-</style>
-
 <template>
   <div class="mb-10">
     <!-- title + cta -->
@@ -49,7 +20,7 @@ select {
           </svg>
         </span>
 
-        <span class="font-semibold">Reminders</span>
+        <span class="font-semibold"> Reminders </span>
       </div>
       <pretty-button
         :text="'Add a reminder'"
@@ -98,8 +69,8 @@ select {
             </label>
           </div>
           <div v-if="form.choice == 'full_date'" class="ml-6 mb-4">
-            <v-date-picker class="inline-block h-full" v-model="form.date" :model-config="modelConfig">
-              <template v-slot="{ inputValue, inputEvents }">
+            <v-date-picker v-model="form.date" class="inline-block h-full" :model-config="modelConfig">
+              <template #default="{ inputValue, inputEvents }">
                 <input class="rounded border bg-white px-2 py-1" :value="inputValue" v-on="inputEvents" />
               </template>
             </v-date-picker>
@@ -171,7 +142,7 @@ select {
               <label
                 for="recurring"
                 class="ml-3 block flex cursor-pointer items-center text-sm font-medium text-gray-700">
-                <span class="mr-2">Every</span>
+                <span class="mr-2"> Every </span>
 
                 <select
                   :id="id"
@@ -179,16 +150,9 @@ select {
                   class="mr-2 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm"
                   :required="required"
                   @change="change">
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
+                  <option v-for="n in 10" :key="n" :value="n">
+                    {{ n }}
+                  </option>
                 </select>
 
                 <select
@@ -295,8 +259,8 @@ select {
                   </label>
                 </div>
                 <div v-if="form.choice == 'full_date'" class="ml-6 mb-4">
-                  <v-date-picker class="inline-block h-full" v-model="form.date" :model-config="modelConfig">
-                    <template v-slot="{ inputValue, inputEvents }">
+                  <v-date-picker v-model="form.date" class="inline-block h-full" :model-config="modelConfig">
+                    <template #default="{ inputValue, inputEvents }">
                       <input class="rounded border bg-white px-2 py-1" :value="inputValue" v-on="inputEvents" />
                     </template>
                   </v-date-picker>
@@ -375,16 +339,9 @@ select {
                         class="mr-2 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm"
                         :required="required"
                         @change="change">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
+                        <option v-for="n in 10" :key="n" :value="n">
+                          {{ n }}
+                        </option>
                       </select>
 
                       <select
@@ -539,7 +496,7 @@ export default {
       if (confirm('Are you sure? This will delete the reminder permanently.')) {
         axios
           .delete(reminder.url.destroy)
-          .then((response) => {
+          .then(() => {
             this.flash('The reminder has been deleted', 'success');
             var id = this.localReminders.findIndex((x) => x.id === reminder.id);
             this.localReminders.splice(id, 1);
@@ -553,3 +510,32 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+
+select {
+  padding-left: 8px;
+  padding-right: 20px;
+  background-position: right 3px center;
+}
+</style>

@@ -1,25 +1,3 @@
-<style lang="scss" scoped>
-.grid {
-  grid-template-columns: 200px 1fr 300px;
-}
-
-@media (max-width: 480px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
-input[type='checkbox'] {
-  top: 3px;
-  width: 12px;
-}
-</style>
-
 <template>
   <layout title="Dashboard" :inside-vault="true" :layout-data="layoutData">
     <main class="relative sm:mt-24">
@@ -224,3 +202,25 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.grid {
+  grid-template-columns: 200px 1fr 300px;
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+
+input[type='checkbox'] {
+  top: 3px;
+  width: 12px;
+}
+</style>

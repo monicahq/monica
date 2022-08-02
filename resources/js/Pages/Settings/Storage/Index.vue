@@ -1,37 +1,25 @@
-<style lang="scss" scoped>
-.user-list {
-  li:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  li:last-child {
-    border-bottom: 0;
-  }
-
-  li:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-
-  .icon-mail {
-    top: -1px;
-  }
-}
-</style>
-
 <template>
-  <layout title="Dashboard" :layout-data="layoutData">
+  <layout
+    title="Dashboard"
+    :layout-data="layoutData"
+  >
     <!-- breadcrumb -->
     <nav class="bg-white sm:border-b">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">{{ $t('app.breadcrumb_location') }}</li>
+            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+              {{ $t('app.breadcrumb_location') }}
+            </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.settings.index" class="text-blue-500 hover:underline">{{
-                $t('app.breadcrumb_settings')
-              }}</inertia-link>
+              <inertia-link
+                :href="data.url.settings.index"
+                class="text-blue-500 hover:underline"
+              >
+                {{
+                  $t('app.breadcrumb_settings')
+                }}
+              </inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -39,11 +27,19 @@
                 class="icon-breadcrumb relative inline h-3 w-3"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </li>
-            <li class="inline">{{ $t('app.breadcrumb_settings_storage') }}</li>
+            <li class="inline">
+              {{ $t('app.breadcrumb_settings_storage') }}
+            </li>
           </ul>
         </div>
       </div>
@@ -53,7 +49,12 @@
       <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <!-- title + cta -->
         <div class="mb-6 flex items-center justify-between">
-          <h3><span class="mr-1"> 📸 </span> {{ $t('settings.storage_title') }}</h3>
+          <h3>
+            <span class="mr-1">
+              📸
+            </span>
+            {{ $t('settings.storage_title') }}
+          </h3>
         </div>
 
         <!-- stats -->
@@ -61,18 +62,24 @@
           <!-- account limit -->
           <div class="flex justify-between p-3 border-r border-gray-200">
             <p>{{ $t('settings.storage_account_limit') }}</p>
-            <p class="font-bold">{{ data.account_limit }}</p>
+            <p class="font-bold">
+              {{ data.account_limit }}
+            </p>
           </div>
 
           <!-- current usage -->
           <div class="flex justify-between p-3">
             <p>{{ $t('settings.storage_account_current_usage') }}</p>
-            <p class="font-bold">{{ data.statistics.total }} <span class="text-gray-500 font-normal text-sm">({{ data.statistics.total_percent }}%)</span></p>
+            <p class="font-bold">
+              {{ data.statistics.total }} <span class="text-gray-500 font-normal text-sm">({{ data.statistics.total_percent }}%)</span>
+            </p>
           </div>
         </div>
 
         <!-- detail breakdown -->
-        <p class="mb-2"><span class="mr-1">🔽</span> Breakdown of the current usage</p>
+        <p class="mb-2">
+          <span class="mr-1">🔽</span> Breakdown of the current usage
+        </p>
         <ul class="user-list mb-6 rounded-lg border border-gray-200 bg-white">
           <li class="border-b border-gray-200 hover:bg-slate-50 flex justify-between p-3">
             <p>{{ $t('settings.storage_type_photo') }}</p>
@@ -114,3 +121,26 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.user-list {
+  li:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  li:last-child {
+    border-bottom: 0;
+  }
+
+  li:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
+  .icon-mail {
+    top: -1px;
+  }
+}
+</style>
+  

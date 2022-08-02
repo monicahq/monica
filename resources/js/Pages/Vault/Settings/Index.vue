@@ -1,10 +1,3 @@
-<style lang="scss" scoped>
-.section-head {
-  border-top-left-radius: 7px;
-  border-top-right-radius: 7px;
-}
-</style>
-
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
     <main class="relative sm:mt-28">
@@ -53,3 +46,10 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.section-head {
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+</style>

@@ -1,31 +1,3 @@
-<style lang="scss" scoped>
-.file-list {
-  li:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  li:last-child {
-    border-bottom: 0;
-  }
-
-  li:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-
-.special-grid {
-  grid-template-columns: 200px 1fr;
-}
-
-@media (max-width: 480px) {
-  .special-grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
-
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
     <main class="relative sm:mt-24">
@@ -37,34 +9,34 @@
             <div>
               <ul class="mb-4">
                 <li class="border-l-2 pl-2" :class="{ 'border-orange-500': tab === 'index' }">
-                  <inertia-link :href="data.statistics.url.index"
-                    >{{ $t('vault.files_filter_all') }}
-                    <span class="text-sm text-gray-500">({{ data.statistics.statistics.all }})</span></inertia-link
-                  >
+                  <inertia-link :href="data.statistics.url.index">
+                    {{ $t('vault.files_filter_all') }}
+                    <span class="text-sm text-gray-500">({{ data.statistics.statistics.all }})</span>
+                  </inertia-link>
                 </li>
               </ul>
 
-              <p class="mb-2 pl-2 text-sm text-gray-500">{{ $t('vault.files_filter_or') }}</p>
+              <p class="mb-2 pl-2 text-sm text-gray-500">
+                {{ $t('vault.files_filter_or') }}
+              </p>
               <ul>
                 <li class="mb-2 border-l-2 pl-2" :class="{ 'border-orange-500': tab === 'documents' }">
-                  <inertia-link :href="data.statistics.url.documents"
-                    >{{ $t('vault.files_filter_documents') }}
-                    <span class="text-sm text-gray-500"
-                      >({{ data.statistics.statistics.documents }})</span
-                    ></inertia-link
-                  >
+                  <inertia-link :href="data.statistics.url.documents">
+                    {{ $t('vault.files_filter_documents') }}
+                    <span class="text-sm text-gray-500">({{ data.statistics.statistics.documents }})</span>
+                  </inertia-link>
                 </li>
                 <li class="mb-2 border-l-2 pl-2" :class="{ 'border-orange-500': tab === 'photos' }">
-                  <inertia-link :href="data.statistics.url.photos"
-                    >{{ $t('vault.files_filter_photos') }}
-                    <span class="text-sm text-gray-500">({{ data.statistics.statistics.photos }})</span></inertia-link
-                  >
+                  <inertia-link :href="data.statistics.url.photos">
+                    {{ $t('vault.files_filter_photos') }}
+                    <span class="text-sm text-gray-500">({{ data.statistics.statistics.photos }})</span>
+                  </inertia-link>
                 </li>
                 <li class="mb-2 border-l-2 pl-2" :class="{ 'border-orange-500': tab === 'avatars' }">
-                  <inertia-link :href="data.statistics.url.avatars"
-                    >{{ $t('vault.files_filter_avatars') }}
-                    <span class="text-sm text-gray-500">({{ data.statistics.statistics.avatars }})</span></inertia-link
-                  >
+                  <inertia-link :href="data.statistics.url.avatars">
+                    {{ $t('vault.files_filter_avatars') }}
+                    <span class="text-sm text-gray-500">({{ data.statistics.statistics.avatars }})</span>
+                  </inertia-link>
                 </li>
               </ul>
             </div>
@@ -74,7 +46,10 @@
           <div class="p-3 sm:px-3 sm:py-0">
             <!-- title + cta -->
             <div class="mb-6 flex items-center justify-between">
-              <h3><span class="mr-1"> 📸 </span> {{ $t('vault.files_filter_title') }}</h3>
+              <h3>
+                <span class="mr-1"> 📸 </span>
+                {{ $t('vault.files_filter_title') }}
+              </h3>
             </div>
 
             <!-- file list -->
@@ -86,7 +61,9 @@
                 <!-- left part -->
                 <div class="mb-4 block sm:mb-0 sm:flex">
                   <!-- created at -->
-                  <p class="mr-2 text-sm text-gray-400">{{ file.created_at }}</p>
+                  <p class="mr-2 text-sm text-gray-400">
+                    {{ file.created_at }}
+                  </p>
 
                   <!-- file name -->
                   <p class="mr-4 flex max-w-none sm:max-w-sm">
@@ -101,7 +78,7 @@
 
                   <!-- avatar -->
                   <div class="flex items-center">
-                    <div v-html="file.contact.avatar" class="mr-2 h-4 w-4"></div>
+                    <div class="mr-2 h-4 w-4" v-html="file.contact.avatar" />
                     <inertia-link :href="file.contact.url.show" class="text-sm text-blue-500 hover:underline">
                       {{ file.contact.name }}
                     </inertia-link>
@@ -136,7 +113,9 @@
 
             <!-- blank state -->
             <div v-if="data.files.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
-              <p class="p-5 text-center">{{ $t('vault.files_filter_blank') }}</p>
+              <p class="p-5 text-center">
+                {{ $t('vault.files_filter_blank') }}
+              </p>
             </div>
           </div>
         </div>
@@ -189,7 +168,7 @@ export default {
       if (confirm(this.$t('contact.documents_delete_confirm'))) {
         axios
           .delete(file.url.destroy)
-          .then((response) => {
+          .then(() => {
             this.flash(this.$t('contact.documents_delete_success'), 'success');
             var id = this.localFiles.findIndex((x) => x.id === file.id);
             this.localFiles.splice(id, 1);
@@ -202,3 +181,31 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.file-list {
+  li:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  li:last-child {
+    border-bottom: 0;
+  }
+
+  li:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+
+.special-grid {
+  grid-template-columns: 200px 1fr;
+}
+
+@media (max-width: 480px) {
+  .special-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

@@ -1,26 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
-.item-list {
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-</style>
-
 <template>
   <div class="mb-10">
     <!-- title + cta -->
@@ -41,9 +18,9 @@
           </svg>
         </span>
 
-        <span class="font-semibold">Groups</span>
+        <span class="font-semibold"> Groups </span>
       </div>
-      <pretty-span @click="addGroupMode = true" :text="'Add to group'" :icon="'plus'" :classes="'sm:w-fit w-full'" />
+      <pretty-span :text="'Add to group'" :icon="'plus'" :classes="'sm:w-fit w-full'" @click="addGroupMode = true" />
     </div>
 
     <form v-if="addGroupMode" class="bg-form mb-6 rounded-lg border border-gray-200" @submit.prevent="submit()">
@@ -60,8 +37,8 @@
             :required="true"
             :placeholder="$t('app.choose_value')"
             :dropdown-class="'block w-full'"
-            @change="toggleCreateGroup()"
-            :label="'Select a group or create a new one'" />
+            :label="'Select a group or create a new one'"
+            @change="toggleCreateGroup()" />
         </div>
 
         <!-- name -->
@@ -120,9 +97,9 @@
 
           <div v-if="group.contacts" class="relative flex -space-x-2 overflow-hidden py-1">
             <div v-for="contact in group.contacts" :key="contact.id" class="inline-block">
-              <inertia-link :href="contact.url.show"
-                ><div v-html="contact.avatar" class="h-8 w-8 rounded-full ring-2 ring-white"></div
-              ></inertia-link>
+              <inertia-link :href="contact.url.show">
+                <div class="h-8 w-8 rounded-full ring-2 ring-white" v-html="contact.avatar" />
+              </inertia-link>
             </div>
           </div>
         </div>
@@ -185,17 +162,17 @@ export default {
     };
   },
 
-  created() {
-    this.localGroups = this.data.groups;
-    this.localAvailableGroups = this.data.available_groups;
-  },
-
   computed: {
     filteredGroups() {
       return this.localGroups.filter((group) => {
         return group.id > 0;
       });
     },
+  },
+
+  created() {
+    this.localGroups = this.data.groups;
+    this.localAvailableGroups = this.data.available_groups;
   },
 
   methods: {
@@ -255,7 +232,7 @@ export default {
       if (confirm('Are you sure?')) {
         axios
           .delete(group.url.destroy)
-          .then((response) => {
+          .then(() => {
             this.flash('The contact has been removed from the group', 'success');
             var id = this.localGroups.findIndex((x) => x.id === group.id);
             this.localGroups.splice(id, 1);
@@ -269,3 +246,26 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+</style>

@@ -1,9 +1,3 @@
-<style lang="scss" scoped>
-.icon-date {
-  top: -1px;
-}
-</style>
-
 <template>
   <div class="relative mb-6 border border-gray-300 bg-white sm:rounded-lg">
     <span class="absolute rounded border bg-blue-50 px-2 py-0 text-xs text-blue-500" style="top: -10px; left: 10px">
@@ -75,3 +69,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-date {
+  top: -1px;
+}
+</style>

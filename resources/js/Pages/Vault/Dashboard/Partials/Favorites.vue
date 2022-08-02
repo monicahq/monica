@@ -1,10 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-</style>
-
 <template>
   <div class="mb-10">
     <h3 class="mb-3 border-b border-gray-200 pb-1 font-medium">
@@ -31,11 +24,11 @@
       <ul class="mb-4">
         <li v-for="favorite in data" :key="favorite.id">
           <div class="mb-2 flex items-center text-sm">
-            <div v-html="favorite.avatar" class="mr-2 h-4 w-4"></div>
+            <div class="mr-2 h-4 w-4" v-html="favorite.avatar" />
 
-            <inertia-link :href="favorite.url.show" class="text-blue-500 hover:underline">{{
-              favorite.name
-            }}</inertia-link>
+            <inertia-link :href="favorite.url.show" class="text-blue-500 hover:underline">
+              {{ favorite.name }}
+            </inertia-link>
           </div>
         </li>
       </ul>
@@ -48,8 +41,15 @@ export default {
   props: {
     data: {
       type: Object,
-      default: [],
+      default: null,
     },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+</style>

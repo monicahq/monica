@@ -1,11 +1,3 @@
-<style lang="scss" scoped>
-.border-red {
-  background-color: #fff5f5;
-  border-color: #fc8181;
-  color: #c53030;
-}
-</style>
-
 <template>
   <div>
     <div v-if="dataerror || exception" class="border-red mb-3 rounded border p-3" v-bind="$attrs">
@@ -80,3 +72,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.border-red {
+  background-color: #fff5f5;
+  border-color: #fc8181;
+  color: #c53030;
+}
+</style>

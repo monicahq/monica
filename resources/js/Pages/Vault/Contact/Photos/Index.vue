@@ -1,10 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-</style>
-
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
     <!-- breadcrumb -->
@@ -12,7 +5,9 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">{{ $t('app.breadcrumb_location') }}</li>
+            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+              {{ $t('app.breadcrumb_location') }}
+            </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 {{ $t('app.breadcrumb_contact_index') }}
@@ -29,9 +24,9 @@
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.show" class="text-blue-500 hover:underline">{{
-                $t('app.breadcrumb_contact_show', { name: data.contact.name })
-              }}</inertia-link>
+              <inertia-link :href="data.url.show" class="text-blue-500 hover:underline">
+                {{ $t('app.breadcrumb_contact_show', { name: data.contact.name }) }}
+              </inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -43,7 +38,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">{{ $t('app.breadcrumb_contact_photo') }}</li>
+            <li class="inline">
+              {{ $t('app.breadcrumb_contact_photo') }}
+            </li>
           </ul>
         </div>
       </div>
@@ -80,7 +77,7 @@
               </svg>
             </span>
 
-            <span class="font-semibold">Photos</span>
+            <span class="font-semibold"> Photos </span>
           </div>
 
           <!-- upload -->
@@ -102,7 +99,9 @@
               v-for="photo in localPhotos"
               :key="photo.id"
               class="rounded-md border border-gray-200 p-2 shadow-sm hover:bg-slate-50 hover:shadow-lg">
-              <inertia-link :href="photo.url.show"><img :src="photo.url.display" :alt="photo.name" /></inertia-link>
+              <inertia-link :href="photo.url.show">
+                <img :src="photo.url.display" :alt="photo.name" />
+              </inertia-link>
             </div>
           </div>
         </div>
@@ -111,7 +110,9 @@
         <pagination :paginator="paginator" />
 
         <div v-if="localPhotos.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
-          <p class="p-5 text-center">{{ $t('contact.photos_blank') }}</p>
+          <p class="p-5 text-center">
+            {{ $t('contact.photos_blank') }}
+          </p>
         </div>
       </div>
     </main>
@@ -196,3 +197,10 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+</style>

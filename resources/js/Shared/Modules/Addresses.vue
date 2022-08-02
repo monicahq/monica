@@ -1,26 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
-.item-list {
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-</style>
-
 <template>
   <div class="mb-10">
     <!-- title + cta -->
@@ -42,7 +19,9 @@
           </svg>
         </span>
 
-        <span class="font-semibold">{{ $t('contact.addresses_title') }}</span>
+        <span class="font-semibold">
+          {{ $t('contact.addresses_title') }}
+        </span>
       </div>
       <pretty-button
         :text="$t('contact.addresses_cta')"
@@ -138,8 +117,8 @@
           <div class="p-5">
             <input
               :id="form.is_past_address"
-              :name="form.is_past_address"
               v-model="form.is_past_address"
+              :name="form.is_past_address"
               type="checkbox"
               class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
             <label :for="form.is_past_address" class="ml-2 cursor-pointer text-gray-900">
@@ -163,11 +142,17 @@
           <div v-if="address.id != editedAddressId" class="flex items-center justify-between p-3">
             <!-- address detail -->
             <div>
-              <p v-if="address.type" class="mb-2 text-sm font-semibold">{{ address.type.name }}</p>
+              <p v-if="address.type" class="mb-2 text-sm font-semibold">
+                {{ address.type.name }}
+              </p>
               <div>
-                <p v-if="address.street">{{ address.street }}</p>
+                <p v-if="address.street">
+                  {{ address.street }}
+                </p>
                 <p v-if="address.postal_code || address.city">{{ address.postal_code }} {{ address.city }}</p>
-                <p v-if="address.country">{{ address.country }}</p>
+                <p v-if="address.country">
+                  {{ address.country }}
+                </p>
               </div>
             </div>
 
@@ -270,8 +255,8 @@
               <div class="p-5">
                 <input
                   :id="form.is_past_address"
-                  :name="form.is_past_address"
                   v-model="form.is_past_address"
+                  :name="form.is_past_address"
                   type="checkbox"
                   class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
                 <label :for="form.is_past_address" class="ml-2 cursor-pointer text-gray-900">
@@ -290,14 +275,16 @@
 
       <!-- blank state -->
       <div v-if="localActiveAddresses.length == 0" class="mb-2 rounded-lg border border-gray-200 bg-white">
-        <p class="p-5 text-center">{{ $t('contact.addresses_blank') }}</p>
+        <p class="p-5 text-center">
+          {{ $t('contact.addresses_blank') }}
+        </p>
       </div>
 
       <!-- view past addresses link -->
       <p
         v-if="localInactiveAddresses.length > 0"
-        @click="toggleInactiveAdresses"
-        class="mx-4 mb-2 cursor-pointer text-xs text-blue-500 hover:underline">
+        class="mx-4 mb-2 cursor-pointer text-xs text-blue-500 hover:underline"
+        @click="toggleInactiveAdresses">
         {{ $t('contact.addresses_previous') }} ({{ localInactiveAddresses.length }})
       </p>
 
@@ -312,11 +299,17 @@
           <div v-if="address.id != editedAddressId" class="flex items-center justify-between p-3">
             <!-- address detail -->
             <div>
-              <p v-if="address.type" class="mb-2 text-sm font-semibold">{{ address.type.name }}</p>
+              <p v-if="address.type" class="mb-2 text-sm font-semibold">
+                {{ address.type.name }}
+              </p>
               <div>
-                <p v-if="address.street">{{ address.street }}</p>
+                <p v-if="address.street">
+                  {{ address.street }}
+                </p>
                 <p v-if="address.postal_code || address.city">{{ address.postal_code }} {{ address.city }}</p>
-                <p v-if="address.country">{{ address.country }}</p>
+                <p v-if="address.country">
+                  {{ address.country }}
+                </p>
               </div>
             </div>
 
@@ -419,8 +412,8 @@
               <div class="p-5">
                 <input
                   id="is_past_address"
-                  name="is_past_address"
                   v-model="form.is_past_address"
+                  name="is_past_address"
                   type="checkbox"
                   class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
                 <label for="is_past_address" class="ml-2 cursor-pointer text-gray-900">
@@ -582,16 +575,15 @@ export default {
       if (confirm(this.$t('contact.addresses_delete_confirm'))) {
         axios
           .delete(address.url.destroy)
-          .then((response) => {
+          .then(() => {
             this.flash(this.$t('contact.addresses_delete_success'), 'success');
-            var id = this.localActiveAddresses.findIndex((x) => x.id === address.id);
 
             if (address.is_past_address) {
-              var id = this.localInactiveAddresses.findIndex((x) => x.id === address.id);
+              const id = this.localInactiveAddresses.findIndex((x) => x.id === address.id);
               this.localInactiveAddresses.splice(id, 1);
             } else {
-              var id = this.localActiveAddresses.findIndex((x) => x.id === address.id);
-              this.localActiveAddresses.splice(id, 1);
+              const id2 = this.localActiveAddresses.findIndex((x) => x.id === address.id);
+              this.localActiveAddresses.splice(id2, 1);
             }
           })
           .catch((error) => {
@@ -603,3 +595,26 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+</style>

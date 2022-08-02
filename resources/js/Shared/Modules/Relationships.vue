@@ -1,26 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
-.item-list {
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-</style>
-
 <template>
   <div class="mb-10">
     <!-- title + cta -->
@@ -41,7 +18,7 @@
           </svg>
         </span>
 
-        <span class="font-semibold">Relationships</span>
+        <span class="font-semibold"> Relationships </span>
       </div>
       <pretty-link :text="'Add a relationship'" :icon="'plus'" :href="data.url.create" :classes="'sm:w-fit w-full'" />
     </div>
@@ -64,7 +41,7 @@
             class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50">
             <div class="flex">
               <div class="mr-2 flex items-center">
-                <div v-html="relationshipType.contact.avatar" class="mr-2 h-5 w-5"></div>
+                <div class="mr-2 h-5 w-5" v-html="relationshipType.contact.avatar" />
 
                 <!-- name -->
                 <inertia-link
@@ -104,8 +81,6 @@
 </template>
 
 <script>
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import PrettySpan from '@/Shared/Form/PrettySpan';
 import PrettyLink from '@/Shared/Form/PrettyLink';
 import TextInput from '@/Shared/Form/TextInput';
 import TextArea from '@/Shared/Form/TextArea';
@@ -113,8 +88,6 @@ import Errors from '@/Shared/Form/Errors';
 
 export default {
   components: {
-    PrettyButton,
-    PrettySpan,
     PrettyLink,
     TextInput,
     TextArea,
@@ -155,3 +128,26 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+</style>

@@ -1,30 +1,8 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  top: -2px;
-}
-
-.label-list {
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-
-  li:last-child {
-    border-bottom: 0;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-
-  li:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-</style>
-
 <template>
   <div class="mb-4">
     <div class="mb-3 items-center justify-between border-b border-gray-200 sm:flex">
       <div class="mb-2 text-xs sm:mb-0">Labels</div>
-      <span v-if="!editLabelModalShown" @click="showEditModal" class="relative cursor-pointer">
+      <span v-if="!editLabelModalShown" class="relative cursor-pointer" @click="showEditModal">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="icon-sidebar relative inline h-3 w-3 text-gray-300 hover:text-gray-600"
@@ -42,8 +20,8 @@
       <!-- close button -->
       <span
         v-if="editLabelModalShown"
-        @click="editLabelModalShown = false"
-        class="cursor-pointer text-xs text-gray-600">
+        class="cursor-pointer text-xs text-gray-600"
+        @click="editLabelModalShown = false">
         Close
       </span>
     </div>
@@ -71,10 +49,10 @@
         <li
           v-for="label in filteredLabels"
           :key="label.id"
-          @click="set(label)"
-          class="flex cursor-pointer items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50">
+          class="flex cursor-pointer items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50"
+          @click="set(label)">
           <div>
-            <span class="mr-2 inline-block h-4 w-4 rounded-full" :class="label.bg_color"></span>
+            <span class="mr-2 inline-block h-4 w-4 rounded-full" :class="label.bg_color" />
             <span>{{ label.name }}</span>
           </div>
 
@@ -152,20 +130,20 @@ export default {
     };
   },
 
-  created() {
-    this.localLabels = this.data.labels_in_contact;
-
-    // TODO: this should not be loaded up front. we should do a async call once
-    // the edit mode is active to load all the labels from the backend instead..
-    this.localLabelsInVault = this.data.labels_in_vault;
-  },
-
   computed: {
     filteredLabels() {
       return this.localLabelsInVault.filter((label) => {
         return label.name.toLowerCase().indexOf(this.form.search.toLowerCase()) > -1;
       });
     },
+  },
+
+  created() {
+    this.localLabels = this.data.labels_in_contact;
+
+    // TODO: this should not be loaded up front. we should do a async call once
+    // the edit mode is active to load all the labels from the backend instead..
+    this.localLabelsInVault = this.data.labels_in_vault;
   },
 
   methods: {
@@ -227,3 +205,25 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  top: -2px;
+}
+
+.label-list {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+
+  li:last-child {
+    border-bottom: 0;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
+  li:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+</style>

@@ -1,22 +1,12 @@
-<style lang="scss" scoped>
-pre {
-  background-color: #1f2937;
-  color: #c9ef78;
-}
-
-.example {
-  border-bottom-left-radius: 9px;
-  border-bottom-right-radius: 9px;
-}
-</style>
-
 <template>
   <div class="mb-16">
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 flex font-semibold sm:mb-0">
-        <span class="mr-1">👉</span>
-        <span class="mr-2">{{ $t('settings.user_preferences_name_order_title') }}</span>
+        <span class="mr-1"> 👉 </span>
+        <span class="mr-2">
+          {{ $t('settings.user_preferences_name_order_title') }}
+        </span>
 
         <help :url="$page.props.help_links.settings_preferences_contact_names" :top="'5px'" />
       </h3>
@@ -244,3 +234,15 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+pre {
+  background-color: #1f2937;
+  color: #c9ef78;
+}
+
+.example {
+  border-bottom-left-radius: 9px;
+  border-bottom-right-radius: 9px;
+}
+</style>

@@ -1,16 +1,3 @@
-<style lang="scss" scoped>
-.type-list-item {
-  &:last-child {
-    border-bottom: 0;
-  }
-}
-
-.close-button {
-  top: -7px;
-  right: -10px;
-}
-</style>
-
 <template>
   <section class="relative">
     <!-- close button -->
@@ -363,3 +350,16 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.type-list-item {
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.close-button {
+  top: -7px;
+  right: -10px;
+}
+</style>

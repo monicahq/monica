@@ -9,13 +9,12 @@ on:
     types: [created]
 
   workflow_run:
-    workflows: [PHP linting (Pint)]
+    workflows: [PHP linting (Pint), Javascript linting]
     types: [completed]
 
 env:
   default-php-version: '8.1'
   coverage-with: 'sqlite'
-
 
 jobs:
   #############
@@ -61,7 +60,7 @@ jobs:
       - name: Check PHP Extensions
         run: php -m
 
-    # Composer
+      # Composer
       - name: Validate composer.json and composer.lock
         run: composer validate
 
@@ -81,7 +80,7 @@ jobs:
       - name: Install composer dependencies
         run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
 
-    # Prepare
+      # Prepare
       - name: Prepare environment
         run: |
           cp tests/.env.ci.${{ matrix.connection }} .env
@@ -113,7 +112,7 @@ jobs:
       - name: Run seeds
         run: php artisan db:seed --no-interaction -vvv
 
-    # Test
+      # Test
       - name: Run tests suite with coverage
         if: matrix.connection == env.coverage-with && matrix.php-version == env.default-php-version && matrix.coverage
         run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/${{ matrix.connection }}/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/${{ matrix.connection }}/coverage/coverage${{ matrix.testsuite }}.xml
@@ -136,7 +135,6 @@ jobs:
           name: results
           path: results
 
-
   ###########################
   # Reporting to sonarcloud
   ###########################
@@ -150,7 +148,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: Download results
         uses: actions/download-artifact@v3

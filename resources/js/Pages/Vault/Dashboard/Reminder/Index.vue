@@ -1,26 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
-.item-list {
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-</style>
-
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
     <!-- breadcrumb -->
@@ -28,7 +5,9 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">{{ $t('app.breadcrumb_location') }}</li>
+            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+              {{ $t('app.breadcrumb_location') }}
+            </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.dashboard" class="text-blue-500 hover:underline">
                 {{ $t('app.breadcrumb_dashboard_index') }}
@@ -44,7 +23,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">{{ $t('app.breadcrumb_dashboard_reminders') }}</li>
+            <li class="inline">
+              {{ $t('app.breadcrumb_dashboard_reminders') }}
+            </li>
           </ul>
         </div>
       </div>
@@ -81,14 +62,18 @@
               </svg>
             </span>
 
-            <span class="font-semibold">{{ $t('vault.reminders_title') }}</span>
+            <span class="font-semibold">
+              {{ $t('vault.reminders_title') }}
+            </span>
           </div>
         </div>
 
         <!-- reminders -->
         <div v-for="month in data" :key="month.id" class="mb-6">
           <!-- month name -->
-          <p class="mb-2 font-semibold">{{ month.month }}</p>
+          <p class="mb-2 font-semibold">
+            {{ month.month }}
+          </p>
 
           <!-- reminders -->
           <ul v-if="month.reminders.length > 0" class="rounded-lg border border-gray-200 bg-white">
@@ -97,20 +82,26 @@
               :key="reminder.id"
               class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50">
               <div class="items-center sm:flex">
-                <p class="mr-3 text-gray-400">{{ reminder.scheduled_at }}</p>
+                <p class="mr-3 text-gray-400">
+                  {{ reminder.scheduled_at }}
+                </p>
                 <div class="mr-2 flex items-center">
-                  <div v-html="reminder.contact.avatar" class="mr-2 h-4 w-4"></div>
+                  <div class="mr-2 h-4 w-4" v-html="reminder.contact.avatar" />
 
-                  <inertia-link :href="reminder.contact.url.show" class="text-blue-500 hover:underline">{{
-                    reminder.contact.name
-                  }}</inertia-link>
+                  <inertia-link :href="reminder.contact.url.show" class="text-blue-500 hover:underline">
+                    {{ reminder.contact.name }}
+                  </inertia-link>
                 </div>
-                <p class="">{{ reminder.label }}</p>
+                <p class="">
+                  {{ reminder.label }}
+                </p>
               </div>
             </li>
           </ul>
 
-          <p v-else class="text-sm text-gray-500">{{ $t('vault.reminders_blank') }}</p>
+          <p v-else class="text-sm text-gray-500">
+            {{ $t('vault.reminders_blank') }}
+          </p>
         </div>
       </div>
     </main>
@@ -145,3 +136,26 @@ export default {
   methods: {},
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+</style>

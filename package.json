@@ -6,7 +6,8 @@
     "watch": "mix watch",
     "watch-poll": "mix watch -- --watch-options-poll=1000",
     "hot": "mix watch --hot",
-    "lint": "eslint --ext .js,.vue *.js .*.js resources/js/",
+    "lint": "eslint --ext .js,.vue *.js resources/js/",
+    "format": "prettier --write '**/*.{js,vue,css,scss}'",
     "prod": "npm run production",
     "production": "mix --production",
     "pretest": "DB_CONNECTION=testing php artisan migrate:fresh && DB_CONNECTION=testing php artisan db:seed",
@@ -22,16 +23,10 @@
     "ant-design-vue": "^3.2.5",
     "autoprefixer": "^10.4.7",
     "axios": "^0.27.2",
-    "eslint": "^7.11.0",
+    "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-cypress": ">=2.11.2",
-    "eslint-plugin-import": ">=2.26.0",
-    "eslint-plugin-node": ">=11.1.0",
-    "eslint-plugin-promise": ">=4.2.1",
-    "eslint-plugin-standard": ">=4.0.0",
-    "husky": "^4.3.0",
     "eslint-plugin-vue": "^9.1.0",
+    "husky": "^4.3.0",
     "laravel-mix": "^6.0.44",
     "laravel-vue-i18n": "^1.4.3",
     "lint-staged": "^12.5.0",
@@ -51,13 +46,14 @@
     "vuedraggable": "^4.1.0"
   },
   "lint-staged": {
-    "*.js|.*.js|resources/js/**/*.{vue,js}": [
+    "*.js|resources/js/**/*.{vue,js}": [
+      "yarn run eslint --fix",
       "prettier --write --ignore-unknown"
     ],
     "resources/**/*.{css,scss}": [
       "prettier --write --ignore-unknown"
     ],
-    "*.php": [
+    "**/*.php": [
       "php artisan ide-helper:models --nowrite",
       "./vendor/bin/pint"
     ]

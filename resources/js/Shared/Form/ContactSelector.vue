@@ -1,33 +1,3 @@
-<style lang="scss" scoped>
-.optional-badge {
-  border-radius: 4px;
-  color: #283e59;
-  background-color: #edf2f9;
-  padding: 1px 3px;
-}
-
-.icon-search {
-  left: 8px;
-  top: 13px;
-}
-
-.item-list {
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-</style>
-
 <template>
   <div :class="divOuterClass">
     <!-- input -->
@@ -56,8 +26,8 @@
 
       <p
         v-if="displayAddContactButton"
-        @click="showAddContactMode"
-        class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300">
+        class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
+        @click="showAddContactMode">
         + Add a contact
       </p>
     </div>
@@ -80,8 +50,8 @@
 
         <input
           :ref="'search'"
-          :class="localInputClasses"
           v-model="form.searchTerm"
+          :class="localInputClasses"
           :type="type"
           :name="name"
           :required="required"
@@ -108,7 +78,9 @@
             v-for="contact in mostConsultedContacts"
             :key="contact.id"
             class="item-list flex items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50">
-            <inertia-link :href="contact.url" class="text-blue-500 hover:underline">{{ contact.name }}</inertia-link>
+            <inertia-link :href="contact.url" class="text-blue-500 hover:underline">
+              {{ contact.name }}
+            </inertia-link>
             <!-- actions -->
             <ul class="text-sm">
               <li class="inline cursor-pointer text-blue-500 hover:underline" @click="add(contact)">Add</li>
@@ -173,7 +145,7 @@ export default {
   props: {
     modelValue: {
       type: [Array],
-      default: [],
+      default: () => [],
     },
     inputClass: {
       type: String,
@@ -235,6 +207,16 @@ export default {
     };
   },
 
+  computed: {
+    displayAddContactButton: function () {
+      if (!this.addMultipleContacts && this.localContacts.length >= 1) {
+        return false;
+      }
+
+      return !this.addContactMode;
+    },
+  },
+
   created() {
     this.localInputClasses =
       'border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-slate-50 pl-8 w-full' +
@@ -247,18 +229,6 @@ export default {
     if (this.modelValue) {
       this.localContacts = this.modelValue;
     }
-  },
-
-  computed: {
-    displayAddContactButton: function () {
-      if (!this.addMultipleContacts && this.localContacts.length >= 1) {
-        return false;
-      }
-
-      if (!this.addContactMode) {
-        return true;
-      }
-    },
   },
 
   methods: {
@@ -274,12 +244,9 @@ export default {
     },
 
     lookupMostConsultedContacts() {
-      axios
-        .get(this.mostConsultedContactsUrl)
-        .then((response) => {
-          this.mostConsultedContacts = response.data.data;
-        })
-        .catch((error) => {});
+      axios.get(this.mostConsultedContactsUrl).then((response) => {
+        this.mostConsultedContacts = response.data.data;
+      });
     },
 
     add(contact) {
@@ -295,11 +262,11 @@ export default {
     },
 
     remove(contact) {
-      var id = this.localContacts.findIndex((existingContact) => existingContact.id === contact.id);
+      const id = this.localContacts.findIndex((existingContact) => existingContact.id === contact.id);
       this.localContacts.splice(id, 1);
 
-      var id = this.form.contactIds.findIndex((existingContact) => existingContact === contact.id);
-      this.form.contactIds.splice(id, 1);
+      const id2 = this.form.contactIds.findIndex((existingContact) => existingContact === contact.id);
+      this.form.contactIds.splice(id2, 1);
 
       this.$emit('update:modelValue', this.form.contactIds);
     },
@@ -327,3 +294,33 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.optional-badge {
+  border-radius: 4px;
+  color: #283e59;
+  background-color: #edf2f9;
+  padding: 1px 3px;
+}
+
+.icon-search {
+  left: 8px;
+  top: 13px;
+}
+
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+</style>

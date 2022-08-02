@@ -1,19 +1,3 @@
-<style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
-.item-list {
-  &:hover {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-</style>
-
 <template>
   <div class="mb-10">
     <!-- title + cta -->
@@ -34,7 +18,7 @@
           </svg>
         </span>
 
-        <span class="font-semibold">Loans</span>
+        <span class="font-semibold"> Loans </span>
       </div>
       <pretty-button :text="'Record a loan'" :icon="'plus'" :classes="'sm:w-fit w-full'" @click="showCreateLoanModal" />
     </div>
@@ -126,8 +110,8 @@
           <div class="border-b border-gray-200 p-5">
             <p class="mb-2 block text-sm">When was the loan made?</p>
 
-            <v-date-picker class="inline-block h-full" v-model="form.loaned_at" :model-config="modelConfig">
-              <template v-slot="{ inputValue, inputEvents }">
+            <v-date-picker v-model="form.loaned_at" class="inline-block h-full" :model-config="modelConfig">
+              <template #default="{ inputValue, inputEvents }">
                 <input class="rounded border bg-white px-2 py-1" :value="inputValue" v-on="inputEvents" />
               </template>
             </v-date-picker>
@@ -136,24 +120,24 @@
           <!-- loaned by or to -->
           <div class="flex items-center items-stretch border-b border-gray-200">
             <contact-selector
-              :search-url="this.layoutData.vault.url.search_contacts_only"
-              :most-consulted-contacts-url="this.layoutData.vault.url.get_most_consulted_contacts"
+              v-model="form.loaners"
+              :search-url="layoutData.vault.url.search_contacts_only"
+              :most-consulted-contacts-url="layoutData.vault.url.get_most_consulted_contacts"
               :display-most-consulted-contacts="false"
               :label="'Who makes the loan?'"
               :add-multiple-contacts="true"
               :required="true"
-              :div-outer-class="'p-5 flex-1 border-r border-gray-200'"
-              v-model="form.loaners" />
+              :div-outer-class="'p-5 flex-1 border-r border-gray-200'" />
 
             <contact-selector
+              v-model="form.loanees"
               :search-url="layoutData.vault.url.search_contacts_only"
               :most-consulted-contacts-url="layoutData.vault.url.get_most_consulted_contacts"
               :display-most-consulted-contacts="true"
               :label="'Who the loan is for?'"
               :add-multiple-contacts="true"
               :required="true"
-              :div-outer-class="'p-5 flex-1'"
-              v-model="form.loanees" />
+              :div-outer-class="'p-5 flex-1'" />
           </div>
 
           <!-- description -->
@@ -220,11 +204,13 @@
                       {{ loan.currency_name }}
                     </span>
                     {{ loan.amount_lent }}
-                    <span class="ml-2">•</span>
+                    <span class="ml-2"> • </span>
                   </span>
                   {{ loan.name }}
                 </span>
-                <span v-if="loan.description">{{ loan.description }}</span>
+                <span v-if="loan.description">
+                  {{ loan.description }}
+                </span>
               </div>
               <span v-if="loan.loaned_at_human_format" class="mr-2 text-sm text-gray-500">{{
                 loan.loaned_at_human_format
@@ -239,21 +225,21 @@
               <!-- settle -->
               <li
                 v-if="!loan.settled"
-                @click="toggle(loan)"
-                class="mr-4 inline cursor-pointer text-blue-500 hover:underline">
+                class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
+                @click="toggle(loan)">
                 Settle
               </li>
-              <li v-else @click="toggle(loan)" class="mr-4 inline cursor-pointer text-blue-500 hover:underline">
+              <li v-else class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="toggle(loan)">
                 Revert
               </li>
 
               <!-- edit -->
-              <li @click="showEditLoanModal(loan)" class="mr-4 inline cursor-pointer text-blue-500 hover:underline">
+              <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="showEditLoanModal(loan)">
                 Edit
               </li>
 
               <!-- delete -->
-              <li @click="destroy(loan)" class="inline cursor-pointer text-red-500 hover:text-red-900">
+              <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(loan)">
                 {{ $t('app.delete') }}
               </li>
             </ul>
@@ -346,8 +332,8 @@
             <div class="border-b border-gray-200 p-5">
               <p class="mb-2 block text-sm">When was the loan made?</p>
 
-              <v-date-picker class="inline-block h-full" v-model="form.loaned_at" :model-config="modelConfig">
-                <template v-slot="{ inputValue, inputEvents }">
+              <v-date-picker v-model="form.loaned_at" class="inline-block h-full" :model-config="modelConfig">
+                <template #default="{ inputValue, inputEvents }">
                   <input class="rounded border bg-white px-2 py-1" :value="inputValue" v-on="inputEvents" />
                 </template>
               </v-date-picker>
@@ -356,24 +342,24 @@
             <!-- loaned by or to -->
             <div class="flex items-center items-stretch border-b border-gray-200">
               <contact-selector
+                v-model="form.loaners"
                 :search-url="layoutData.vault.url.search_contacts_only"
                 :most-consulted-contacts-url="layoutData.vault.url.get_most_consulted_contacts"
                 :display-most-consulted-contacts="false"
                 :label="'Who makes the loan?'"
                 :add-multiple-contacts="true"
                 :required="true"
-                :div-outer-class="'p-5 flex-1 border-r border-gray-200'"
-                v-model="form.loaners" />
+                :div-outer-class="'p-5 flex-1 border-r border-gray-200'" />
 
               <contact-selector
+                v-model="form.loanees"
                 :search-url="layoutData.vault.url.search_contacts_only"
                 :most-consulted-contacts-url="layoutData.vault.url.get_most_consulted_contacts"
                 :display-most-consulted-contacts="true"
                 :label="'Who the loan is for?'"
                 :add-multiple-contacts="true"
                 :required="true"
-                :div-outer-class="'p-5 flex-1'"
-                v-model="form.loanees" />
+                :div-outer-class="'p-5 flex-1'" />
             </div>
 
             <!-- description -->
@@ -504,12 +490,9 @@ export default {
 
     getCurrencies() {
       if (this.localCurrencies.length == 0) {
-        axios
-          .get(this.data.url.currencies, this.form)
-          .then((response) => {
-            this.localCurrencies = response.data.data;
-          })
-          .catch((error) => {});
+        axios.get(this.data.url.currencies, this.form).then((response) => {
+          this.localCurrencies = response.data.data;
+        });
       }
     },
 
@@ -556,7 +539,7 @@ export default {
       if (confirm('Are you sure? This will delete the loan permanently.')) {
         axios
           .delete(loan.url.destroy)
-          .then((response) => {
+          .then(() => {
             this.flash('The loan has been deleted', 'success');
             var id = this.localLoans.findIndex((x) => x.id === loan.id);
             this.localLoans.splice(id, 1);
@@ -582,3 +565,19 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.icon-sidebar {
+  color: #737e8d;
+  top: -2px;
+}
+
+.item-list {
+  &:hover {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+</style>

@@ -1,5 +1,3 @@
-<style lang="scss" scoped></style>
-
 <template>
   <layout :layout-data="layoutData">
     <!-- breadcrumb -->
@@ -7,11 +5,13 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">{{ $t('app.breadcrumb_location') }}</li>
+            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+              {{ $t('app.breadcrumb_location') }}
+            </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">{{
-                $t('app.breadcrumb_settings')
-              }}</inertia-link>
+              <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
+                {{ $t('app.breadcrumb_settings') }}
+              </inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -23,7 +23,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">{{ $t('app.breadcrumb_settings_notification_channels') }}</li>
+            <li class="inline">
+              {{ $t('app.breadcrumb_settings_notification_channels') }}
+            </li>
           </ul>
         </div>
       </div>
@@ -33,7 +35,10 @@
       <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <!-- title + cta -->
         <div class="mb-3 mt-8 sm:mt-0">
-          <h3 class="mb-4 sm:mb-0"><span class="mr-1">🛰️</span> {{ $t('settings.notification_channels_title') }}</h3>
+          <h3 class="mb-4 sm:mb-0">
+            <span class="mr-1"> 🛰️ </span>
+            {{ $t('settings.notification_channels_title') }}
+          </h3>
         </div>
 
         <!-- help text -->
@@ -116,3 +121,5 @@ export default {
   methods: {},
 };
 </script>
+
+<style lang="scss" scoped></style>

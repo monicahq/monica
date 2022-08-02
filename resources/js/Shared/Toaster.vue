@@ -1,27 +1,7 @@
-<style lang="scss" scoped>
-.flash.notification {
-  z-index: 99999999999;
-  bottom: 30px;
-  right: 0px;
-  transform: translate(100%);
-  transition: all 0.8s ease-in-out;
-  background-color: #fff;
-  border: 1px solid #e7e7e7;
-  border-radius: 6px;
-  box-shadow: 1px 1px 2px rgba(122, 122, 122, 0.17);
-  padding: 10px 20px;
-
-  &.is-visible {
-    transform: translate(0);
-    opacity: 1;
-    right: 30px;
-  }
-}
-</style>
-
 <template>
   <div class="flash notification fixed" :class="[levelClass, isOpen ? isVisibleClass : '']">
-    <span class="mr-1"> 👋 </span> {{ messageText }}
+    <span class="mr-1"> 👋 </span>
+    {{ messageText }}
   </div>
 </template>
 
@@ -88,3 +68,24 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.flash.notification {
+  z-index: 99999999999;
+  bottom: 30px;
+  right: 0px;
+  transform: translate(100%);
+  transition: all 0.8s ease-in-out;
+  background-color: #fff;
+  border: 1px solid #e7e7e7;
+  border-radius: 6px;
+  box-shadow: 1px 1px 2px rgba(122, 122, 122, 0.17);
+  padding: 10px 20px;
+
+  &.is-visible {
+    transform: translate(0);
+    opacity: 1;
+    right: 30px;
+  }
+}
+</style>

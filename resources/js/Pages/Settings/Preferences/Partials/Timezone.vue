@@ -1,18 +1,12 @@
-<style lang="scss" scoped>
-select {
-  padding-left: 8px;
-  padding-right: 20px;
-  background-position: right 3px center;
-}
-</style>
-
 <template>
   <div class="mb-16">
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 flex font-semibold sm:mb-0">
-        <span class="mr-1">🗓</span>
-        <span class="mr-2">{{ $t('settings.user_preferences_timezone_title') }}</span>
+        <span class="mr-1"> 🗓 </span>
+        <span class="mr-2">
+          {{ $t('settings.user_preferences_timezone_title') }}
+        </span>
 
         <help :url="$page.props.help_links.settings_preferences_timezone" :top="'5px'" />
       </h3>
@@ -53,8 +47,8 @@ select {
         <errors :errors="form.errors" />
 
         <select
-          name="timezone"
           v-model="form.timezone"
+          name="timezone"
           class="rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm">
           <optgroup label="General">
             <option value="GMT">GMT timezone</option>
@@ -573,3 +567,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+select {
+  padding-left: 8px;
+  padding-right: 20px;
+  background-position: right 3px center;
+}
+</style>
