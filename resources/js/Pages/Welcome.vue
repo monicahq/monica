@@ -3,7 +3,7 @@
     <div
       class="items-top relative flex min-h-screen justify-center bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
       <div v-if="canLogin" class="fixed top-0 right-0 hidden px-6 py-4 sm:block">
-        <inertia-link v-if="$page.props.auth.user" :href="route('dashboard')" class="text-sm text-gray-700 underline">
+        <inertia-link v-if="$page.props.auth.user" :href="route('vault.index')" class="text-sm text-gray-700 underline">
           Dashboard
         </inertia-link>
 

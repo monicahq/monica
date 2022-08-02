@@ -1,0 +1,197 @@
+name: Build and test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+  release:
+    types: [created]
+
+  workflow_run:
+    workflows: [PHP linting (Pint)]
+    types: [completed]
+
+env:
+  default-php-version: '8.1'
+  coverage-with: 'sqlite'
+
+
+jobs:
+  #############
+  # Run tests
+  #############
+  tests:
+    runs-on: ubuntu-latest
+    name: Testsuite ${{ matrix.testsuite }} with PHP ${{ matrix.php-version }} + ${{ matrix.connection }}
+
+    services:
+      pgsql:
+        image: postgres:13.0
+        env:
+          POSTGRES_DB: monica
+          POSTGRES_USER: monica
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: --name=postgres --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.1']
+        connection: [sqlite, mysql, pgsql]
+        testsuite: [Unit]
+        coverage: [true] # run test with coverage, if 'coverage-with' match with the connection
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, dom, fileinfo, ${{ matrix.connection }}
+          coverage: none
+      - name: Check PHP Version
+        run: php -v
+      - name: Check Composer Version
+        run: composer -V
+      - name: Check PHP Extensions
+        run: php -m
+
+    # Composer
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer files
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-
+
+      - name: Install composer dependencies
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+
+    # Prepare
+      - name: Prepare environment
+        run: |
+          cp tests/.env.ci.${{ matrix.connection }} .env
+          mkdir -p public/js public/css
+          {\
+            echo "{"; \
+            for f in app.js app.css; do \
+              [[ $first == 1 ]] && echo -n "," || first=1; \
+              k=${f##*.}/$f; \
+              echo "\"/$k\": \"/$k\""; \
+              echo '' > public/$k; \
+            done; \
+            echo "}"; \
+          } | tee public/mix-manifest.json
+      - name: Create sqlite database
+        if: matrix.connection == 'sqlite'
+        run: touch database/database.sqlite
+      - name: Create mysql database
+        if: matrix.connection == 'mysql'
+        run: |
+          sudo systemctl start mysql.service
+          mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Run migrations
+        run: php artisan migrate --no-interaction -vvv
+      - name: Run seeds
+        run: php artisan db:seed --no-interaction -vvv
+
+    # Test
+      - name: Run tests suite with coverage
+        if: matrix.connection == env.coverage-with && matrix.php-version == env.default-php-version && matrix.coverage
+        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/${{ matrix.connection }}/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/${{ matrix.connection }}/coverage/coverage${{ matrix.testsuite }}.xml
+        env:
+          DB_CONNECTION: ${{ matrix.connection }}
+      - name: Run tests
+        if: matrix.connection != env.coverage-with || matrix.php-version != env.default-php-version || ! matrix.coverage
+        run: vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/${{ matrix.connection }}/junit/results${{ matrix.testsuite }}.xml
+        env:
+          DB_CONNECTION: ${{ matrix.connection }}
+
+      - name: Fix results files
+        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" **/*.xml
+        working-directory: results/${{ matrix.connection }}
+
+      - name: Store results
+        if: matrix.php-version == env.default-php-version
+        uses: actions/upload-artifact@v3
+        with:
+          name: results
+          path: results
+
+
+  ###########################
+  # Reporting to sonarcloud
+  ###########################
+  reporting:
+    needs: tests
+    runs-on: ubuntu-latest
+    name: Sonarcloud
+    if: ${{ ! startsWith(github.ref, 'dependabot/') }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Download results
+        uses: actions/download-artifact@v3
+        with:
+          name: results
+          path: results
+
+      - name: Merge junit files
+        run: |
+          yarn global add junit-merge
+          $(yarn global bin)/junit-merge --recursive --dir results/${{ env.coverage-with }}/junit --out results/results.xml
+
+      - name: Set version parameter
+        id: version
+        run: |
+          version=$(git tag --points-at HEAD)
+          test -z "$version" && version="main"
+          echo "::set-output name=value::$version"
+
+      - name: Set coverage list
+        id: coverage
+        run: |
+          SONAR_COVERAGE=$(ls -m --format=comma results/${{ env.coverage-with }}/coverage/coverage*.xml | sed -e ':a;N;$!ba;s/\n//g; s/ //g;')
+          echo "::set-output name=list::$SONAR_COVERAGE"
+
+      - name: SonarCloud Scan
+        if: env.SONAR_TOKEN != ''
+        uses: SonarSource/sonarcloud-github-action@v1.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: |
+            -Dsonar.projectKey=monicahq_chandler
+            -Dsonar.organization=monicahq
+            -Dsonar.sources=app,bootstrap,config,database,public,resources,routes
+            -Dsonar.exclusions=bootstrap/cache/*,public/vendor/**,resources/lang/**
+            -Dsonar.tests=tests
+            -Dsonar.coverage.exclusions=routes/*.php,config/**/*.php,bootstrap/**,resources/**/*.php,database/**/*.php,public/*.php,resources/**/*.vue,resources/**/*.js
+            -Dsonar.cpd.exclusions=routes/*.php,config/*.php,bootstrap/**,resources/**/*.php,database/**/*.php
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.projectVersion=${{ steps.version.outputs.value }}
+            -Dsonar.php.tests.reportPath=./results/results.xml
+            -Dsonar.php.coverage.reportPaths=${{ steps.coverage.outputs.list }}

@@ -1,0 +1,23 @@
+version: 2
+
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+
+  # Maintain dependencies for npm
+  # - package-ecosystem: npm
+  #   directory: "/"
+  #   schedule:
+  #     interval: weekly
+  #   versioning-strategy: lockfile-only
+
+  # Maintain dependencies for Composer
+  # - package-ecosystem: composer
+  #   directory: "/"
+  #   schedule:
+  #     interval: weekly
+  #   open-pull-requests-limit: 10
+  #   versioning-strategy: lockfile-only
