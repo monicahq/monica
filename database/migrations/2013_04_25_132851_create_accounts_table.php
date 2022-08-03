@@ -4,16 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAccountsTable extends Migration
+return new class() extends Migration
 {
     /**
      * Run the migrations.
      */
     public function up()
     {
-        // necessary for SQLlite
-        Schema::enableForeignKeyConstraints();
-
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->integer('storage_limit_in_mb')->default(0);
@@ -28,4 +25,4 @@ class CreateAccountsTable extends Migration
     {
         Schema::dropIfExists('accounts');
     }
-}
+};

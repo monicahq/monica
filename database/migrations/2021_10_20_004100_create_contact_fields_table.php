@@ -4,16 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateContactFieldsTable extends Migration
+return new class() extends Migration
 {
     /**
      * Run the migrations.
      */
     public function up()
     {
-        // necessary for SQLlite
-        Schema::enableForeignKeyConstraints();
-
         Schema::create('contact_information_types', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('account_id');
@@ -44,4 +41,4 @@ class CreateContactFieldsTable extends Migration
         Schema::dropIfExists('contact_information_types');
         Schema::dropIfExists('contact_information');
     }
-}
+};

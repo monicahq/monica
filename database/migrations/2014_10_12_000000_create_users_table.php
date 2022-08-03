@@ -5,16 +5,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+return new class() extends Migration
 {
     /**
      * Run the migrations.
      */
     public function up()
     {
-        // necessary for SQLlite
-        Schema::enableForeignKeyConstraints();
-
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('account_id');
@@ -59,4 +56,4 @@ class CreateUsersTable extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('vaults');
     }
-}
+};

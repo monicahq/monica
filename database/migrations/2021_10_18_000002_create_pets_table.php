@@ -4,16 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePetsTable extends Migration
+return new class() extends Migration
 {
     /**
      * Run the migrations.
      */
     public function up()
     {
-        // necessary for SQLlite
-        Schema::enableForeignKeyConstraints();
-
         Schema::create('pet_categories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('account_id');
@@ -41,4 +38,4 @@ class CreatePetsTable extends Migration
         Schema::dropIfExists('pet_categories');
         Schema::dropIfExists('pets');
     }
-}
+};

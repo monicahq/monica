@@ -14,9 +14,6 @@ return new class() extends Migration
      */
     public function up()
     {
-        // necessary for SQLlite
-        Schema::enableForeignKeyConstraints();
-
         Schema::create('currencies', function (Blueprint $table) {
             $table->id();
             $table->string('code');
