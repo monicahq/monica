@@ -184,7 +184,7 @@ jobs:
           args: |
             -Dsonar.projectKey=monicahq_chandler
             -Dsonar.organization=monicahq
-            -Dsonar.sources=app,bootstrap,config,database,public,resources,routes
+            -Dsonar.sources=app,bootstrap,config,database,domains,public,resources,routes
             -Dsonar.exclusions=bootstrap/cache/*,public/vendor/**,resources/lang/**
             -Dsonar.tests=tests
             -Dsonar.coverage.exclusions=routes/*.php,config/**/*.php,bootstrap/**,resources/**/*.php,database/**/*.php,public/*.php,resources/**/*.vue,resources/**/*.js
