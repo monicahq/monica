@@ -3,10 +3,12 @@
   <coverage processUncoveredFiles="true">
     <include>
       <directory suffix=".php">./app</directory>
+      <directory suffix=".php">./domains</directory>
     </include>
   </coverage>
   <testsuites>
     <testsuite name="Unit">
+      <directory suffix="Test.php">./tests/Feature</directory>
       <directory suffix="Test.php">./tests/Unit</directory>
     </testsuite>
   </testsuites>
