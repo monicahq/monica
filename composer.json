@@ -31,7 +31,7 @@
     "brianium/paratest": "^6.4",
     "fakerphp/faker": "^1.9.1",
     "laravel/breeze": "^1.4",
-    "laravel/pint": "^0.1.7",
+    "laravel/pint": "^1.1",
     "laravel/sail": "^1.14.6",
     "mockery/mockery": "^1.4.4",
     "nunomaduro/collision": "^6.0",

@@ -46,7 +46,7 @@
     "vuedraggable": "^4.1.0"
   },
   "lint-staged": {
-    "*.js|resources/js/**/*.{vue,js}": [
+    "*.js|resources/**/*.{vue,js}": [
       "yarn run eslint --fix",
       "prettier --write --ignore-unknown"
     ],
@@ -55,7 +55,7 @@
     ],
     "**/*.php": [
       "php artisan ide-helper:models --nowrite",
-      "./vendor/bin/pint"
+      "vendor/bin/pint --preset laravel"
     ]
   },
   "husky": {
