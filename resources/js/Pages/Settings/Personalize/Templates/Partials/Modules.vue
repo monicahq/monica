@@ -2,11 +2,15 @@
   <div>
     <div class="mb-4 mt-8 items-center justify-between border-b pb-3 sm:mt-0 sm:flex">
       <h3>{{ $t('settings.personalize_template_show_module_title') }}</h3>
+
+      <!-- add module -->
       <pretty-button
         v-if="!addModuleModalShown && moduleLoaded"
         :text="$t('settings.personalize_template_show_module_cta')"
         :icon="'plus'"
         @click="showModuleModal" />
+
+      <!-- cancel button -->
       <pretty-button
         v-if="addModuleModalShown && moduleLoaded"
         :text="$t('app.cancel')"

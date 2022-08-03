@@ -10,9 +10,12 @@ class PersonalizeTemplatePageShowViewHelper
     public static function data(TemplatePage $templatePage): array
     {
         $allModules = $templatePage->template->account->modules()
+            ->where('reserved_to_contact_information', $templatePage->type === TemplatePage::TYPE_CONTACT)
             ->orderBy('name', 'asc')
             ->get();
 
+        // if the current page is not about contact information, we should not
+        // include the modules that should only on the contact information page
         $modulesInPage = $templatePage->modules()
             ->orderBy('position', 'asc')
             ->get();

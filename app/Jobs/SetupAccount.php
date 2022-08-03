@@ -156,6 +156,7 @@ class SetupAccount implements ShouldQueue
             'name' => trans('app.module_avatar'),
             'type' => Module::TYPE_AVATAR,
             'can_be_deleted' => false,
+            'reserved_to_contact_information' => true,
         ]);
         (new AssociateModuleToTemplatePage())->execute([
             'account_id' => $this->user->account_id,
@@ -172,6 +173,7 @@ class SetupAccount implements ShouldQueue
             'name' => trans('app.module_names'),
             'type' => Module::TYPE_CONTACT_NAMES,
             'can_be_deleted' => false,
+            'reserved_to_contact_information' => true,
         ]);
         (new AssociateModuleToTemplatePage())->execute([
             'account_id' => $this->user->account_id,
@@ -188,6 +190,7 @@ class SetupAccount implements ShouldQueue
             'name' => trans('app.module_family_summary'),
             'type' => Module::TYPE_FAMILY_SUMMARY,
             'can_be_deleted' => false,
+            'reserved_to_contact_information' => true,
         ]);
         (new AssociateModuleToTemplatePage())->execute([
             'account_id' => $this->user->account_id,
@@ -204,6 +207,7 @@ class SetupAccount implements ShouldQueue
             'name' => trans('app.module_important_dates'),
             'type' => Module::TYPE_IMPORTANT_DATES,
             'can_be_deleted' => false,
+            'reserved_to_contact_information' => true,
         ]);
         (new AssociateModuleToTemplatePage())->execute([
             'account_id' => $this->user->account_id,
@@ -220,6 +224,7 @@ class SetupAccount implements ShouldQueue
             'name' => trans('app.module_gender_pronoun'),
             'type' => Module::TYPE_GENDER_PRONOUN,
             'can_be_deleted' => false,
+            'reserved_to_contact_information' => true,
         ]);
         (new AssociateModuleToTemplatePage())->execute([
             'account_id' => $this->user->account_id,
@@ -236,6 +241,7 @@ class SetupAccount implements ShouldQueue
             'name' => trans('app.module_labels'),
             'type' => Module::TYPE_LABELS,
             'can_be_deleted' => false,
+            'reserved_to_contact_information' => true,
         ]);
         (new AssociateModuleToTemplatePage())->execute([
             'account_id' => $this->user->account_id,
@@ -252,6 +258,7 @@ class SetupAccount implements ShouldQueue
             'name' => trans('app.module_companies'),
             'type' => Module::TYPE_COMPANY,
             'can_be_deleted' => false,
+            'reserved_to_contact_information' => true,
         ]);
         (new AssociateModuleToTemplatePage())->execute([
             'account_id' => $this->user->account_id,

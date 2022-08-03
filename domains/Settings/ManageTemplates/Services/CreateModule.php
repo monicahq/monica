@@ -23,6 +23,7 @@ class CreateModule extends BaseService implements ServiceInterface
             'name' => 'required|string|max:255',
             'type' => 'nullable|string|max:255',
             'can_be_deleted' => 'required|boolean',
+            'reserved_to_contact_information' => 'nullable|boolean',
         ];
     }
 
@@ -54,6 +55,7 @@ class CreateModule extends BaseService implements ServiceInterface
             'name' => $data['name'],
             'type' => $this->valueOrNull($data, 'type'),
             'can_be_deleted' => $data['can_be_deleted'],
+            'reserved_to_contact_information' => $this->valueOrFalse($data, 'reserved_to_contact_information'),
         ]);
 
         return $this->module;
