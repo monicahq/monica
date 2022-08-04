@@ -2,7 +2,6 @@
 
 namespace App\Contact\ManageContact\Services;
 
-use App\Helpers\AvatarHelper;
 use App\Interfaces\ServiceInterface;
 use App\Jobs\CreateAuditLog;
 use App\Jobs\CreateContactLog;
@@ -66,7 +65,6 @@ class CreateContact extends BaseService implements ServiceInterface
 
         $this->validate();
         $this->createContact();
-        $this->generateAvatar();
         $this->updateLastEditedDate();
         $this->log();
 
@@ -115,14 +113,6 @@ class CreateContact extends BaseService implements ServiceInterface
             'last_updated_at' => Carbon::now(),
             'listed' => $this->valueOrTrue($this->data, 'listed'),
         ]);
-    }
-
-    private function generateAvatar(): void
-    {
-        $avatar = AvatarHelper::generateRandomAvatar($this->contact);
-
-        $this->contact->avatar_id = $avatar->id;
-        $this->contact->save();
     }
 
     private function updateLastEditedDate(): void

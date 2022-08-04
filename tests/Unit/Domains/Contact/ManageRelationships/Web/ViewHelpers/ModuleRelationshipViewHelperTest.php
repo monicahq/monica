@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domains\Contact\ManageRelationships\Web\ViewHelpers;
 
 use App\Contact\ManageRelationships\Web\ViewHelpers\ModuleRelationshipViewHelper;
-use App\Models\Avatar;
 use App\Models\Contact;
 use App\Models\RelationshipGroupType;
 use App\Models\RelationshipType;
@@ -33,11 +32,6 @@ class ModuleRelationshipViewHelperTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
         ]);
-        $avatar = Avatar::factory()->create([
-            'contact_id' => $contact->id,
-        ]);
-        $contact->avatar_id = $avatar->id;
-        $contact->save();
 
         $array = ModuleRelationshipViewHelper::data($contact, $user);
         $this->assertEquals(

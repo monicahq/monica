@@ -2,7 +2,7 @@
   <button
     :class="classes"
     :disabled="state == 'loading' || state == 'disabled'"
-    class="relative text-sm dark:bg-gray-700"
+    class="relative bg-white text-sm dark:bg-gray-700"
     name="save"
     type="submit">
     <span v-if="state == 'loading'"> Loading… </span>
@@ -27,6 +27,18 @@
       viewBox="0 0 24 24"
       stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+    </svg>
+
+    <!-- minus icon -->
+    <svg
+      v-if="icon === 'minus' && state != 'loading'"
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon relative ml-1 mr-1 inline h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
 
     <span v-if="state != 'loading'">

@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domains\Contact\ManageRelationships\Web\ViewHelpers;
 
 use App\Contact\ManageRelationships\Web\ViewHelpers\ContactRelationshipsCreateViewHelper;
-use App\Models\Avatar;
 use App\Models\Contact;
 use App\Models\Gender;
 use App\Models\Pronoun;
@@ -41,11 +40,6 @@ class ContactRelationshipsCreateViewHelperTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
         ]);
-        $avatar = Avatar::factory()->create([
-            'contact_id' => $contact->id,
-        ]);
-        $contact->avatar_id = $avatar->id;
-        $contact->save();
 
         $array = ContactRelationshipsCreateViewHelper::data($vault, $contact, $user);
         $this->assertEquals(

@@ -79,7 +79,7 @@
                   {{ fromRelationship }}
                 </p>
                 <div class="flex items-center">
-                  <div class="mr-2 h-5 w-5" v-html="data.contact.avatar" />
+                  <avatar :data="data.contact.avatar" :classes="'mr-2 h-5 w-5'" />
 
                   <span>{{ data.contact.name }}</span>
                 </div>
@@ -334,6 +334,7 @@ import TextInput from '@/Shared/Form/TextInput';
 import Dropdown from '@/Shared/Form/Dropdown';
 import Errors from '@/Shared/Form/Errors';
 import ContactSelector from '@/Shared/Form/ContactSelector';
+import Avatar from '@/Shared/Avatar';
 
 export default {
   components: {
@@ -345,6 +346,7 @@ export default {
     Dropdown,
     Errors,
     ContactSelector,
+    Avatar,
   },
 
   props: {

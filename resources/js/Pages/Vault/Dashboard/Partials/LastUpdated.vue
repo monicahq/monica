@@ -20,7 +20,7 @@
       <help :url="$page.props.help_links.last_updated_contacts" :top="'4px'" />
     </h3>
     <div v-for="contact in data" :key="contact.id" class="mb-2 flex items-center text-sm">
-      <div class="mr-2 h-5 w-5" v-html="contact.avatar" />
+      <avatar :data="contact.avatar" :classes="'mr-2 h-5 w-5 rounded-full'" />
 
       <inertia-link :href="contact.url.show" class="text-blue-500 hover:underline">
         {{ contact.name }}
@@ -31,10 +31,12 @@
 
 <script>
 import Help from '@/Shared/Help';
+import Avatar from '@/Shared/Avatar';
 
 export default {
   components: {
     Help,
+    Avatar,
   },
 
   props: {

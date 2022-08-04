@@ -3,6 +3,7 @@
 namespace App\Contact\ManageNotes\Web\ViewHelpers;
 
 use App\Helpers\DateHelper;
+use App\Helpers\UserHelper;
 use App\Models\Contact;
 use App\Models\Note;
 use App\Models\User;
@@ -51,7 +52,7 @@ class NotesIndexViewHelper
             'body_excerpt' => Str::length($note->body) >= 200 ? Str::limit($note->body, 200) : null,
             'show_full_content' => false,
             'title' => $note->title,
-            'author' => $note->author ? $note->author->name : $note->author_name,
+            'author' => $note->author ? UserHelper::getInformationAboutContact($note->author, $contact->vault) : null,
             'emotion' => $note->emotion ? [
                 'id' => $note->emotion->id,
                 'name' => $note->emotion->name,

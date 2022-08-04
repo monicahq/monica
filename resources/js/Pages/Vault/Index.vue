@@ -63,8 +63,9 @@
               <!-- description -->
               <div>
                 <div v-if="vault.contacts.length > 0" class="relative flex -space-x-2 overflow-hidden p-3">
+                  <!-- list of contacts -->
                   <div v-for="contact in vault.contacts" :key="contact.id" class="inline-block">
-                    <div class="h-8 w-8 rounded-full ring-2 ring-white" v-html="contact.avatar" />
+                    <avatar :data="contact.avatar" :classes="'h-8 w-8 rounded-full ring-2 ring-white'" />
                   </div>
                   <div
                     v-if="vault.remaining_contacts != 0"
@@ -128,11 +129,13 @@
 <script>
 import Layout from '@/Shared/Layout';
 import PrettyLink from '@/Shared/Form/PrettyLink';
+import Avatar from '@/Shared/Avatar';
 
 export default {
   components: {
     Layout,
     PrettyLink,
+    Avatar,
   },
 
   props: {

@@ -4,8 +4,8 @@
       <div v-for="feedItem in data.items" :key="feedItem.id" class="mb-8">
         <!-- action & user -->
         <div class="mb-3 flex">
-          <div class="relative w-6">
-            <div class="icon-avatar relative h-6 w-6" v-html="feedItem.author.avatar" />
+          <div class="icon-avatar relative w-6">
+            <avatar :data="feedItem.author.avatar" :classes="'rounded-full relative h-6 w-6'" />
           </div>
 
           <div>
@@ -38,7 +38,13 @@
 </template>
 
 <script>
+import Avatar from '@/Shared/Avatar';
+
 export default {
+  components: {
+    Avatar,
+  },
+
   props: {
     data: {
       type: Object,

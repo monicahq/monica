@@ -2,7 +2,6 @@
 
 namespace App\Helpers;
 
-use App\Models\Avatar;
 use App\Models\Contact;
 use App\Models\MultiAvatar;
 use Faker\Factory as Faker;
@@ -18,9 +17,9 @@ class AvatarHelper
      * based on that name.
      *
      * @param  Contact  $contact
-     * @return Avatar
+     * @return string
      */
-    public static function generateRandomAvatar(Contact $contact): Avatar
+    public static function generateRandomAvatar(Contact $contact): string
     {
         $multiavatar = new MultiAvatar();
 
@@ -30,27 +29,6 @@ class AvatarHelper
             $name = $contact->first_name.' '.$contact->last_name;
         }
 
-        $svgCode = $multiavatar($name, null, null);
-
-        $avatar = Avatar::create([
-            'contact_id' => $contact->id,
-            'type' => Avatar::TYPE_GENERATED,
-            'svg' => $svgCode,
-        ]);
-
-        return $avatar;
-    }
-
-    /**
-     * Get the avatar of a contact.
-     *
-     * @param  Contact  $contact
-     * @return string
-     */
-    public static function getSVG(Contact $contact): string
-    {
-        $avatar = $contact->currentAvatar;
-
-        return $avatar->svg;
+        return $multiavatar($name, null, null);
     }
 }

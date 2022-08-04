@@ -98,7 +98,7 @@
           <div v-if="group.contacts" class="relative flex -space-x-2 overflow-hidden py-1">
             <div v-for="contact in group.contacts" :key="contact.id" class="inline-block">
               <inertia-link :href="contact.url.show">
-                <div class="h-8 w-8 rounded-full ring-2 ring-white" v-html="contact.avatar" />
+                <avatar :data="contact.avatar" :classes="'h-8 w-8 rounded-full ring-2 ring-white'" />
               </inertia-link>
             </div>
           </div>
@@ -124,6 +124,7 @@ import PrettySpan from '@/Shared/Form/PrettySpan';
 import TextInput from '@/Shared/Form/TextInput';
 import Dropdown from '@/Shared/Form/Dropdown';
 import Errors from '@/Shared/Form/Errors';
+import Avatar from '@/Shared/Avatar';
 
 export default {
   components: {
@@ -132,6 +133,7 @@ export default {
     TextInput,
     Dropdown,
     Errors,
+    Avatar,
   },
 
   props: {

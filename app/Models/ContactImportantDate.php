@@ -14,7 +14,7 @@ class ContactImportantDate extends Model
     protected $table = 'contact_important_dates';
 
     /**
-     * Possible type.
+     * Possible types.
      */
     public const TYPE_BIRTHDATE = 'birthdate';
 

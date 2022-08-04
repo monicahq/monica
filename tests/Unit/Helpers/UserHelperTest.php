@@ -3,7 +3,6 @@
 namespace Tests\Unit\Helpers;
 
 use App\Helpers\UserHelper;
-use App\Models\Avatar;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
@@ -26,11 +25,6 @@ class UserHelperTest extends TestCase
             'first_name' => 'Keanu',
             'last_name' => 'Reeves',
         ]);
-        $avatar = Avatar::factory()->create([
-            'contact_id' => $contact->id,
-        ]);
-        $contact->avatar_id = $avatar->id;
-        $contact->save();
         $vault->users()->save($rachel, [
             'permission' => 1,
             'contact_id' => $contact->id,

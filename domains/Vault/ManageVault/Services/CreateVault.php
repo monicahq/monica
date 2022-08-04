@@ -2,7 +2,6 @@
 
 namespace App\Vault\ManageVault\Services;
 
-use App\Helpers\AvatarHelper;
 use App\Interfaces\ServiceInterface;
 use App\Jobs\CreateAuditLog;
 use App\Models\Contact;
@@ -95,11 +94,6 @@ class CreateVault extends BaseService implements ServiceInterface
             'permission' => Vault::PERMISSION_MANAGE,
             'contact_id' => $contact->id,
         ]);
-
-        $avatar = AvatarHelper::generateRandomAvatar($contact);
-
-        $contact->avatar_id = $avatar->id;
-        $contact->save();
     }
 
     private function populateDefaultContactImportantDateTypes(): void

@@ -147,9 +147,9 @@
 
               <!-- author -->
               <div v-if="note.author" class="relative mr-3 inline">
-                <div class="relative flex">
-                  <div class="icon-avatar relative mr-1 h-3 w-3" v-html="note.author.avatar" />
-                  <span />{{ note.author.name }}
+                <div class="icon-avatar relative flex">
+                  <avatar :data="note.author.avatar" :classes="'relative mr-1 h-3 w-3'" />
+                  <span>{{ note.author.name }}</span>
                 </div>
               </div>
             </div>
@@ -251,6 +251,7 @@ import PrettySpan from '@/Shared/Form/PrettySpan';
 import TextInput from '@/Shared/Form/TextInput';
 import TextArea from '@/Shared/Form/TextArea';
 import Errors from '@/Shared/Form/Errors';
+import Avatar from '@/Shared/Avatar';
 
 export default {
   components: {
@@ -260,6 +261,7 @@ export default {
     TextInput,
     TextArea,
     Errors,
+    Avatar,
   },
 
   props: {
@@ -394,7 +396,7 @@ export default {
   top: -1px;
 }
 
-.icon-avatar {
+.icon-avatar .img {
   top: 2px;
 }
 </style>

@@ -25,9 +25,9 @@ class ContactFactory extends Factory
     {
         return [
             'vault_id' => Vault::factory(),
-            'first_name' => $this->faker->firstName,
+            'first_name' => 'Regis',
+            'last_name' => 'Troyat',
             'middle_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
             'nickname' => $this->faker->unique()->firstName,
             'maiden_name' => $this->faker->unique()->name,
             'can_be_deleted' => true,

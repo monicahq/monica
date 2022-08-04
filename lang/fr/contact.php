@@ -36,6 +36,7 @@ return [
     'feed_item_unarchived' => 'a désarchivé le contact',
     'feed_item_favorited' => 'a ajouté le contact aux favoris',
     'feed_item_unfavorited' => 'a supprimé le contact des favoris',
+    'feed_item_changed_avatar' => 'a mis à jour l’avatar du contact',
 
     /***************************************************************
      * MODULE: GROUP

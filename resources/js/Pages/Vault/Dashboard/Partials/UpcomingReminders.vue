@@ -31,7 +31,7 @@
               {{ reminder.scheduled_at }}
             </p>
             <div class="flex items-center text-sm">
-              <div class="mr-2 h-4 w-4" v-html="reminder.contact.avatar" />
+              <avatar :data="reminder.contact.avatar" :classes="'mr-2 h-4 w-4 rounded-full'" />
 
               <inertia-link :href="reminder.contact.url.show" class="text-blue-500 hover:underline">
                 {{ reminder.contact.name }}
@@ -63,7 +63,13 @@
 </template>
 
 <script>
+import Avatar from '@/Shared/Avatar';
+
 export default {
+  components: {
+    Avatar,
+  },
+
   props: {
     data: {
       type: Object,

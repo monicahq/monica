@@ -20,6 +20,13 @@ class Contact extends Model
     use Searchable;
 
     /**
+     * Possible avatar types.
+     */
+    public const AVATAR_TYPE_SVG = 'svg';
+
+    public const AVATAR_TYPE_URL = 'url';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -39,7 +46,7 @@ class Contact extends Model
         'company_id',
         'job_position',
         'listed',
-        'avatar_id',
+        'file_id',
     ];
 
     /**
@@ -254,26 +261,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the current avatar associated with the contact.
-     *
-     * @return BelongsTo
-     */
-    public function currentAvatar(): BelongsTo
-    {
-        return $this->belongsTo(Avatar::class, 'avatar_id');
-    }
-
-    /**
-     * Get the avatars associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function avatars(): HasMany
-    {
-        return $this->hasMany(Avatar::class);
-    }
-
-    /**
      * Get the tasks associated with the contact.
      *
      * @return HasMany
@@ -321,6 +308,17 @@ class Contact extends Model
     public function files(): HasMany
     {
         return $this->hasMany(File::class);
+    }
+
+    /**
+     * Get the file associated with the contact.
+     * If it exists, it's the avatar.
+     *
+     * @return BelongsTo
+     */
+    public function file(): BelongsTo
+    {
+        return $this->belongsTo(File::class);
     }
 
     /**
@@ -392,7 +390,18 @@ class Contact extends Model
     {
         return Attribute::make(
             get: function ($value) {
-                return AvatarHelper::getSVG($this);
+                $type = self::AVATAR_TYPE_SVG;
+                $content = AvatarHelper::generateRandomAvatar($this);
+
+                if ($this->file) {
+                    $type = self::AVATAR_TYPE_URL;
+                    $content = 'https://ucarecdn.com/'.$this->file->uuid.'/-/scale_crop/300x300/smart/-/format/auto/-/quality/smart_retina/';
+                }
+
+                return [
+                    'type' => $type,
+                    'content' => $content,
+                ];
             }
         );
     }

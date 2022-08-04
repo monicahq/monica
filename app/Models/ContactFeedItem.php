@@ -66,6 +66,8 @@ class ContactFeedItem extends Model
 
     public const ACTION_UNFAVORITED_CONTACT = 'unfavorited';
 
+    public const ACTION_CHANGE_AVATAR = 'changed_avatar';
+
     /**
      * The attributes that are mass assignable.
      *

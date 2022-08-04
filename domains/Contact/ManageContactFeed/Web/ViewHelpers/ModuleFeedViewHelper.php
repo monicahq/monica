@@ -13,6 +13,7 @@ class ModuleFeedViewHelper
     public static function data(Contact $contact, User $user): array
     {
         $items = ContactFeedItem::where('contact_id', $contact->id)
+            ->with('author')
             ->orderBy('created_at', 'desc')
             ->get();
 

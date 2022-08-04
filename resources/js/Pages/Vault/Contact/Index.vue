@@ -62,7 +62,8 @@
                 v-for="contact in data.contacts"
                 :key="contact.id"
                 class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50">
-                <div class="mr-2 h-5 w-5" v-html="contact.avatar" />
+                <avatar :data="contact.avatar" :classes="'mr-2 h-5 w-5'" />
+
                 <inertia-link :href="contact.url.show" class="text-blue-500 hover:underline">
                   {{ contact.name }}
                 </inertia-link>
@@ -92,11 +93,13 @@
 <script>
 import Layout from '@/Shared/Layout';
 import PrettyLink from '@/Shared/Form/PrettyLink';
+import Avatar from '@/Shared/Avatar';
 
 export default {
   components: {
     Layout,
     PrettyLink,
+    Avatar,
   },
 
   props: {

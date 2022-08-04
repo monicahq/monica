@@ -2,13 +2,14 @@
 
 namespace App\Contact\ManageAvatar\Web\ViewHelpers;
 
-use App\Helpers\AvatarHelper;
 use App\Models\Contact;
 
 class ModuleAvatarViewHelper
 {
-    public static function data(Contact $contact): string
+    public static function data(Contact $contact): array
     {
-        return AvatarHelper::getSVG($contact);
+        return [
+            'avatar' => $contact->avatar,
+        ];
     }
 }

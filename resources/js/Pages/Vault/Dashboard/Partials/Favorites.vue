@@ -24,7 +24,7 @@
       <ul class="mb-4">
         <li v-for="favorite in data" :key="favorite.id">
           <div class="mb-2 flex items-center text-sm">
-            <div class="mr-2 h-4 w-4" v-html="favorite.avatar" />
+            <avatar :data="favorite.avatar" :classes="'mr-2 h-5 w-5 rounded-full'" />
 
             <inertia-link :href="favorite.url.show" class="text-blue-500 hover:underline">
               {{ favorite.name }}
@@ -37,7 +37,13 @@
 </template>
 
 <script>
+import Avatar from '@/Shared/Avatar';
+
 export default {
+  components: {
+    Avatar,
+  },
+
   props: {
     data: {
       type: Object,

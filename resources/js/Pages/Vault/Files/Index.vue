@@ -78,7 +78,7 @@
 
                   <!-- avatar -->
                   <div class="flex items-center">
-                    <div class="mr-2 h-4 w-4" v-html="file.contact.avatar" />
+                    <avatar :data="file.contact.avatar" :classes="'mr-2 h-4 w-4'" />
                     <inertia-link :href="file.contact.url.show" class="text-sm text-blue-500 hover:underline">
                       {{ file.contact.name }}
                     </inertia-link>
@@ -126,11 +126,13 @@
 
 <script>
 import Layout from '@/Shared/Layout';
+import Avatar from '@/Shared/Avatar';
 import PrettyLink from '@/Shared/Form/PrettyLink';
 
 export default {
   components: {
     Layout,
+    Avatar,
     PrettyLink,
   },
 

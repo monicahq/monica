@@ -41,7 +41,7 @@
             class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50">
             <div class="flex">
               <div class="mr-2 flex items-center">
-                <div class="mr-2 h-5 w-5" v-html="relationshipType.contact.avatar" />
+                <avatar :data="relationshipType.contact.avatar" :classes="'mr-2 h-5 w-5'" />
 
                 <!-- name -->
                 <inertia-link
@@ -85,6 +85,7 @@ import PrettyLink from '@/Shared/Form/PrettyLink';
 import TextInput from '@/Shared/Form/TextInput';
 import TextArea from '@/Shared/Form/TextArea';
 import Errors from '@/Shared/Form/Errors';
+import Avatar from '@/Shared/Avatar';
 
 export default {
   components: {
@@ -92,6 +93,7 @@ export default {
     TextInput,
     TextArea,
     Errors,
+    Avatar,
   },
 
   props: {

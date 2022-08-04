@@ -152,15 +152,12 @@ export default {
     return {
       localPhotos: [],
       form: {
-        searchTerm: null,
-        employeeId: 0,
         uuid: null,
         name: null,
         original_url: null,
         cdn_url: null,
         mime_type: null,
         size: null,
-        errors: [],
       },
     };
   },
@@ -180,8 +177,6 @@ export default {
 
       this.upload();
     },
-
-    onError() {},
 
     upload() {
       axios

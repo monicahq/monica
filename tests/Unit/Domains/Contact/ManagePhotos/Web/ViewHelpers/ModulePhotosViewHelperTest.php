@@ -69,6 +69,7 @@ class ModulePhotosViewHelperTest extends TestCase
                 'url' => [
                     'display' => 'https://ucarecdn.com/123/-/scale_crop/300x300/smart/-/format/auto/-/quality/smart_retina/',
                     'download' => $file->cdn_url,
+                    'show' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/photos/'.$file->id,
                     'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/photos/'.$file->id,
                 ],
             ],
