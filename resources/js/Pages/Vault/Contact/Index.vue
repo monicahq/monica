@@ -62,7 +62,7 @@
                 v-for="contact in data.contacts"
                 :key="contact.id"
                 class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50">
-                <avatar :data="contact.avatar" :classes="'mr-2 h-5 w-5'" />
+                <avatar :data="contact.avatar" :classes="'rounded-full mr-2 h-5 w-5'" />
 
                 <inertia-link :href="contact.url.show" class="text-blue-500 hover:underline">
                   {{ contact.name }}

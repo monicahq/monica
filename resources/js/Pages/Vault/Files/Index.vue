@@ -78,7 +78,7 @@
 
                   <!-- avatar -->
                   <div class="flex items-center">
-                    <avatar :data="file.contact.avatar" :classes="'mr-2 h-4 w-4'" />
+                    <avatar :data="file.contact.avatar" :classes="'rounded-full mr-2 h-4 w-4'" />
                     <inertia-link :href="file.contact.url.show" class="text-sm text-blue-500 hover:underline">
                       {{ file.contact.name }}
                     </inertia-link>

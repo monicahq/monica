@@ -148,7 +148,7 @@
               <!-- author -->
               <div v-if="note.author" class="relative mr-3 inline">
                 <div class="icon-avatar relative flex">
-                  <avatar :data="note.author.avatar" :classes="'relative mr-1 h-3 w-3'" />
+                  <avatar :data="note.author.avatar" :classes="'rounded-full relative mr-1 h-3 w-3'" />
                   <span>{{ note.author.name }}</span>
                 </div>
               </div>
