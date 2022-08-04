@@ -13,6 +13,7 @@ use App\Contact\ManageContactAddresses\Web\Controllers\ContactModuleAddressContr
 use App\Contact\ManageContactImportantDates\Web\Controllers\ContactImportantDatesController;
 use App\Contact\ManageContactInformation\Web\Controllers\ContactInformationController;
 use App\Contact\ManageDocuments\Web\Controllers\ContactModuleDocumentController;
+use App\Contact\ManageGoals\Web\Controllers\ContactGoalController;
 use App\Contact\ManageGoals\Web\Controllers\ContactModuleGoalController;
 use App\Contact\ManageGoals\Web\Controllers\ContactModuleStreakController;
 use App\Contact\ManageGroups\Web\Controllers\ContactModuleGroupController;
@@ -166,11 +167,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::delete('notes/{note}', [ContactModuleNoteController::class, 'destroy'])->name('contact.note.destroy');
 
                     // goals
+                    Route::get('goals/{goal}', [ContactGoalController::class, 'show'])->name('contact.goal.show');
                     Route::post('goals', [ContactModuleGoalController::class, 'store'])->name('contact.goal.store');
-                    Route::put('goals/{goal}', [ContactModuleGoalController::class, 'update'])->name('contact.goal.update');
-                    Route::get('goals/{goal}', [ContactModuleGoalController::class, 'show'])->name('contact.goal.show');
+                    Route::put('goals/{goal}', [ContactGoalController::class, 'update'])->name('contact.goal.update');
                     Route::put('goals/{goal}/streaks', [ContactModuleStreakController::class, 'update'])->name('contact.goal.streak.update');
-                    Route::delete('goals/{goal}', [ContactModuleGoalController::class, 'destroy'])->name('contact.goal.destroy');
+                    Route::delete('goals/{goal}', [ContactGoalController::class, 'destroy'])->name('contact.goal.destroy');
 
                     // labels
                     Route::post('labels', [ContactModuleLabelController::class, 'store'])->name('contact.label.store');

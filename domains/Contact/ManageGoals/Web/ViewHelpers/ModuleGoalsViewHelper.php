@@ -46,6 +46,11 @@ class ModuleGoalsViewHelper
             'streaks_statistics' => GoalHelper::getStreakData($goal),
             'last_7_days' => self::getLast7Days($goal),
             'url' => [
+                'show' => route('contact.goal.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                    'goal' => $goal->id,
+                ]),
                 'update' => route('contact.goal.update', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,

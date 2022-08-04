@@ -28,6 +28,10 @@ class ContactFeedItem extends Model
 
     public const ACTION_GOAL_CREATED = 'goal_created';
 
+    public const ACTION_GOAL_UPDATED = 'goal_updated';
+
+    public const ACTION_GOAL_DESTROYED = 'goal_destroyed';
+
     public const ACTION_IMPORTANT_DATE_CREATED = 'important_date_created';
 
     public const ACTION_IMPORTANT_DATE_UPDATED = 'important_date_updated';

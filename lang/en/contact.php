@@ -30,6 +30,8 @@ return [
     'feed_item_note_destroyed' => 'deleted a note',
     'feed_item_job_information_updated' => 'updated the job information',
     'feed_item_goal_created' => 'created a goal',
+    'feed_item_goal_updated' => 'updated a goal',
+    'feed_item_goal_destroyed' => 'deleted a goal',
     'feed_item_added_to_group' => 'added the contact to a group',
     'feed_item_removed_from_group' => 'removed the contact from a group',
     'feed_item_archived' => 'archived the contact',
@@ -103,4 +105,12 @@ return [
     'photos_new_success' => 'The photo has been added',
     'photos_delete_confirm' => 'Are you sure? This will delete the photo permanently.',
     'photos_delete_success' => 'The photo has been deleted',
+
+    /***************************************************************
+     * MODULE: GOALS
+     **************************************************************/
+
+    'goals_delete_confirm' => 'Are you sure? This will delete the goal and all the streaks permanently.',
+    'goals_delete_success' => 'The goal has been deleted',
+    'goals_update_success' => 'The goal has been edited',
 ];

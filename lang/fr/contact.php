@@ -29,7 +29,9 @@ return [
     'feed_item_note_updated' => 'a mis à jour une note',
     'feed_item_note_destroyed' => 'a supprimé une note',
     'feed_item_job_information_updated' => 'a mis à jour les informations professionnelles',
-    'feed_item_goal_created' => 'a crée un but',
+    'feed_item_goal_created' => 'a crée un objectif',
+    'feed_item_goal_updated' => 'a mis à jour un objectif',
+    'feed_item_goal_destroyed' => 'a supprimé un objectif',
     'feed_item_added_to_group' => 'a ajouté le contact à un groupe',
     'feed_item_removed_from_group' => 'a supprimé le contact à un groupe',
     'feed_item_archived' => 'a archivé le contact',
@@ -101,4 +103,12 @@ return [
     'photos_new_success' => 'La photo a été ajoutée',
     'photos_delete_confirm' => 'Êtes vous sûr ? Cela va supprimer la photo de contact de façon permanente.',
     'photos_delete_success' => 'La photo a été supprimée',
+
+    /***************************************************************
+     * MODULE: GOALS
+     **************************************************************/
+
+    'goals_delete_confirm' => 'Êtes vous sûr ? Cela va supprimer l’objectif de façon permanente.',
+    'goals_delete_success' => 'L’objectif a été supprimé',
+    'goals_update_success' => 'L’objectif a été mis à jour',
 ];
