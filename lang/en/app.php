@@ -65,6 +65,8 @@ return [
     'view_map' => 'View on map',
     'download' => 'Download',
 
+    'unknown_name' => 'Unknown name',
+
     'error_title' => '👇 Oops. An error occured.',
 
     'no_results' => 'No results',

@@ -55,6 +55,10 @@ class NameHelper
         $completeName = str_replace('()', '', $completeName);
         $completeName = Str::of($completeName)->rtrim();
 
+        if (trim($completeName) === '') {
+            $completeName = trans('app.unknown_name');
+        }
+
         return $completeName;
     }
 }

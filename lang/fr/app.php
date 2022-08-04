@@ -65,6 +65,8 @@ return [
     'view_map' => 'Voir sur la carte',
     'download' => 'Télécharger',
 
+    'unknown_name' => 'Nom non renseigné',
+
     'error_title' => '👇 Oops. Une erreur est survenue.',
 
     'no_results' => 'Pas de résultats',
