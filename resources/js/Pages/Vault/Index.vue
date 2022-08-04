@@ -14,11 +14,12 @@
           <p class="mb-3">
             {{ $t('vault.index_blank_sentence_2') }}
           </p>
-          <div class="mb-3 text-center">
+          <div class="text-center">
             <pretty-link :href="data.url.vault.create" :text="$t('vault.index_cta')" :icon="'plus'" />
           </div>
         </div>
-        <div class="rounded-b-lg border border-gray-200 p-5">
+
+        <div class="rounded-b-lg border border-gray-200 bg-slate-50 p-5">
           <p class="mb-3">
             {{ $t('vault.index_blank_sentence_3') }}
           </p>
