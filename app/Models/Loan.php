@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\ScoutHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -56,6 +57,16 @@ class Loan extends Model
     protected $casts = [
         'settled' => 'boolean',
     ];
+
+    /**
+     * When updating a model, this method determines if we should update the search index.
+     *
+     * @return bool
+     */
+    public function searchIndexShouldBeUpdated()
+    {
+        return ScoutHelper::activated();
+    }
 
     /**
      * Get the vault associated with the loan.

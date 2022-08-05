@@ -37,8 +37,13 @@ return new class() extends Migration
             $table->unsignedBigInteger('group_type_id');
             $table->string('name');
             $table->timestamps();
+
             $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
             $table->foreign('group_type_id')->references('id')->on('group_types')->onDelete('cascade');
+
+            if (config('scout.driver') === 'database' && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
+                $table->fullText('name');
+            }
         });
 
         Schema::create('contact_group', function (Blueprint $table) {

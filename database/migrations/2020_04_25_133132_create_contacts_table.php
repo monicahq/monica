@@ -28,11 +28,19 @@ return new class() extends Migration
             $table->boolean('listed')->default(true);
             $table->datetime('last_updated_at')->nullable();
             $table->timestamps();
+
             $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
             $table->foreign('gender_id')->references('id')->on('genders')->onDelete('set null');
             $table->foreign('pronoun_id')->references('id')->on('pronouns')->onDelete('set null');
             $table->foreign('template_id')->references('id')->on('templates')->onDelete('set null');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('set null');
+
+            if (config('scout.driver') === 'database' && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
+                $table->fullText('first_name');
+                $table->fullText('middle_name');
+                $table->fullText('nickname');
+                $table->fullText('maiden_name');
+            }
         });
 
         Schema::create('user_vault', function (Blueprint $table) {

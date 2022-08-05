@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\AvatarHelper;
 use App\Helpers\ImportantDateHelper;
 use App\Helpers\NameHelper;
+use App\Helpers\ScoutHelper;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Scout\Attributes\SearchUsingFullText;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 
 class Contact extends Model
@@ -64,7 +67,10 @@ class Contact extends Model
      * Get the indexable data array for the model.
      *
      * @return array
+     * @codeCoverageIgnore
      */
+    #[SearchUsingPrefix(['id', 'vault_id'])]
+    #[SearchUsingFullText(['first_name', 'last_name', 'middle_name', 'nickname', 'maiden_name'])]
     public function toSearchableArray(): array
     {
         return [
@@ -75,10 +81,6 @@ class Contact extends Model
             'middle_name' => $this->middle_name,
             'nickname' => $this->nickname,
             'maiden_name' => $this->maiden_name,
-            'url' => route('contact.show', [
-                'vault' => $this->vault_id,
-                'contact' => $this->id,
-            ]),
         ];
     }
 
@@ -104,6 +106,16 @@ class Contact extends Model
         static::deleting(function ($model) {
             Note::where('contact_id', $model->id)->unsearchable();
         });
+    }
+
+    /**
+     * When updating a model, this method determines if we should update the search index.
+     *
+     * @return bool
+     */
+    public function searchIndexShouldBeUpdated()
+    {
+        return ScoutHelper::activated();
     }
 
     /**

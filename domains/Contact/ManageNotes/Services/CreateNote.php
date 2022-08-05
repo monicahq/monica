@@ -67,6 +67,7 @@ class CreateNote extends BaseService implements ServiceInterface
 
         $this->note = Note::create([
             'contact_id' => $this->contact->id,
+            'vault_id' => $data['vault_id'],
             'author_id' => $this->author->id,
             'title' => $this->valueOrNull($data, 'title'),
             'body' => $data['body'],

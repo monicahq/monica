@@ -11,6 +11,8 @@ use App\Contact\ManageTasks\Services\CreateContactTask;
 use App\Exceptions\EntryAlreadyExistException;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
+use App\Models\Group;
+use App\Models\Note;
 use App\Models\User;
 use App\Models\Vault;
 use App\Settings\CreateAccount\Services\CreateAccount;
@@ -42,16 +44,6 @@ class SetupDummyAccount extends Command
     protected $description = 'Prepare an account with fake data so users can play with it';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return void
@@ -81,9 +73,10 @@ class SetupDummyAccount extends Command
 
     private function wipeAndMigrateDB(): void
     {
-        shell_exec('curl -X DELETE "'.config('scout.meilisearch.host').'/indexes/notes"');
-        shell_exec('curl -X DELETE "'.config('scout.meilisearch.host').'/indexes/contacts"');
-        shell_exec('curl -X DELETE "'.config('scout.meilisearch.host').'/indexes/groups"');
+        $this->artisan('☐ Flush search engine', 'scout:flush', ['model' => Note::class]);
+        $this->artisan('☐ Flush search engine', 'scout:flush', ['model' => Contact::class]);
+        $this->artisan('☐ Flush search engine', 'scout:flush', ['model' => Group::class]);
+
         $this->artisan('☐ Reset search engine', 'monica:setup');
         $this->artisan('☐ Migration of the database', 'migrate:fresh');
         $this->artisan('☐ Symlink the storage folder', 'storage:link');
@@ -124,7 +117,6 @@ class SetupDummyAccount extends Command
         ]);
         $this->firstUser->email_verified_at = Carbon::now();
         $this->firstUser->save();
-        sleep(5);
     }
 
     private function createVaults(): void
