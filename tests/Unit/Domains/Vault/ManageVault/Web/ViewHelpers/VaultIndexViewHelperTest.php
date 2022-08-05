@@ -27,7 +27,7 @@ class VaultIndexViewHelperTest extends TestCase
         $this->be($user);
 
         $array = VaultIndexViewHelper::layoutData($vault);
-        $this->assertCount(4, $array);
+        $this->assertCount(3, $array);
         $this->assertEquals(
             [
                 'id' => $user->id,

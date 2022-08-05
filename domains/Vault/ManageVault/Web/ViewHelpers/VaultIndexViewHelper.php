@@ -2,15 +2,12 @@
 
 namespace App\Vault\ManageVault\Web\ViewHelpers;
 
-use App\Helpers\DateHelper;
 use App\Helpers\VaultHelper;
 use App\Models\User;
 use App\Models\Vault;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class VaultIndexViewHelper
 {
@@ -22,13 +19,6 @@ class VaultIndexViewHelper
      */
     public static function layoutData(Vault $vault = null): array
     {
-        // get version information
-        $disk = Storage::build([
-            'driver' => 'local',
-            'root' => base_path(),
-        ]);
-        $version = json_decode($disk->get('version.json'));
-
         return [
             'user' => [
                 'id' => Auth::user()->id,
@@ -69,10 +59,6 @@ class VaultIndexViewHelper
                 'vaults' => route('vault.index'),
                 'settings' => route('settings.index'),
                 'logout' => route('logout'),
-            ],
-            'version' => [
-                'sha' => $version->sha,
-                'date' => DateHelper::format(Carbon::createFromTimestamp($version->date), Auth::user()),
             ],
         ];
     }

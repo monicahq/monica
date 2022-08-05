@@ -161,18 +161,6 @@
           <li class="mr-4 mb-2 sm:mb-0 sm:inline">
             {{ $t('app.layout_footer_monica') }}
           </li>
-          <li class="sm:inline">
-            {{ $t('app.layout_footer_version', { version: layoutData.version.date }) }}
-
-            <a-tooltip placement="topLeft" :title="$t('app.layout_footer_click_to_see_code')" arrow-point-at-center>
-              <a
-                href="https://github.com/djaiss/butler/commits/main"
-                target="_blank"
-                class="sha ml-2 rounded font-mono dark:bg-gray-500"
-                >{{ layoutData.version.sha }}</a
-              >
-            </a-tooltip>
-          </li>
         </ul>
       </footer>
     </div>
