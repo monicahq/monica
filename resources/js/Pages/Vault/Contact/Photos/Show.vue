@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
+import Layout from '@/Shared/Layout.vue';
 
 export default {
   components: {

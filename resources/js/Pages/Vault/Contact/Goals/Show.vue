@@ -134,10 +134,10 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import TextInput from '@/Shared/Form/TextInput';
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import PrettySpan from '@/Shared/Form/PrettySpan';
+import Layout from '@/Shared/Layout.vue';
+import TextInput from '@/Shared/Form/TextInput.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 
 export default {
   components: {

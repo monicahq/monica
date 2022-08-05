@@ -25,6 +25,7 @@ jobs:
           php-version: ${{ env.php-version }}
           coverage: none
 
+      # Composer
       - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
@@ -57,6 +58,7 @@ jobs:
           php-version: ${{ env.php-version }}
           coverage: none
 
+      # Composer
       - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"

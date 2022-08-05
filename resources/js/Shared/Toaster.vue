@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import mitt from 'mitt';
+
 export default {
   props: {
     level: {
@@ -29,6 +31,8 @@ export default {
   },
 
   created() {
+    const emitter = mitt();
+
     if (this.level) {
       this.levelClass = 'is-' + this.level;
     }
@@ -40,7 +44,7 @@ export default {
 
     const self = this;
 
-    this.$on('flash', (data) => self.show(data));
+    emitter.on('flash', (data) => self.show(data));
   },
 
   methods: {

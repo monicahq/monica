@@ -52,14 +52,14 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import NameOrder from '@/Pages/Settings/Preferences/Partials/NameOrder';
-import DateFormat from '@/Pages/Settings/Preferences/Partials/DateFormat';
-import NumberFormat from '@/Pages/Settings/Preferences/Partials/NumberFormat';
-import Timezone from '@/Pages/Settings/Preferences/Partials/Timezone';
-import Maps from '@/Pages/Settings/Preferences/Partials/Maps';
-import Locale from '@/Pages/Settings/Preferences/Partials/Locale';
-import HelpPreference from '@/Pages/Settings/Preferences/Partials/HelpPreference';
+import Layout from '@/Shared/Layout.vue';
+import NameOrder from '@/Pages/Settings/Preferences/Partials/NameOrder.vue';
+import DateFormat from '@/Pages/Settings/Preferences/Partials/DateFormat.vue';
+import NumberFormat from '@/Pages/Settings/Preferences/Partials/NumberFormat.vue';
+import Timezone from '@/Pages/Settings/Preferences/Partials/Timezone.vue';
+import Maps from '@/Pages/Settings/Preferences/Partials/Maps.vue';
+import Locale from '@/Pages/Settings/Preferences/Partials/Locale.vue';
+import HelpPreference from '@/Pages/Settings/Preferences/Partials/HelpPreference.vue';
 
 export default {
   components: {

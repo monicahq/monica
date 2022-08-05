@@ -1,9 +1,8 @@
+/bootstrap/ssr
 /node_modules
+/public/build
 /public/hot
-/public/js
-/public/css
 /public/storage
-/public/mix-manifest.json
 /storage/*.key
 /vendor
 .env
@@ -21,3 +20,4 @@ yarn-error.log
 _ide_helper.php
 _ide_helper_models.php
 .phpstorm.meta.php
+lang/php_*.json

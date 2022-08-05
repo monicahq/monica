@@ -81,18 +81,12 @@
 </template>
 
 <script>
-import PrettyLink from '@/Shared/Form/PrettyLink';
-import TextInput from '@/Shared/Form/TextInput';
-import TextArea from '@/Shared/Form/TextArea';
-import Errors from '@/Shared/Form/Errors';
-import Avatar from '@/Shared/Avatar';
+import PrettyLink from '@/Shared/Form/PrettyLink.vue';
+import Avatar from '@/Shared/Avatar.vue';
 
 export default {
   components: {
     PrettyLink,
-    TextInput,
-    TextArea,
-    Errors,
     Avatar,
   },
 

@@ -100,13 +100,11 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import PrettySpan from '@/Shared/Form/PrettySpan';
+import Layout from '@/Shared/Layout.vue';
 
 export default {
   components: {
     Layout,
-    PrettySpan,
   },
 
   props: {
@@ -143,4 +141,3 @@ export default {
   }
 }
 </style>
-  

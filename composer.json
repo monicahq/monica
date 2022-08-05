@@ -15,7 +15,7 @@
     "guzzlehttp/guzzle": "^7.4.5",
     "http-interop/http-factory-guzzle": "^1.2",
     "inertiajs/inertia-laravel": "^0.6.3",
-    "itsgoingd/clockwork": "^5.1.6",
+    "itsgoingd/clockwork": "^5.1",
     "laravel-notification-channels/telegram": "^2.1",
     "laravel/framework": "^9.22.1",
     "laravel/sanctum": "^2.15.1",

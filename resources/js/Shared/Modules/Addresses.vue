@@ -434,19 +434,17 @@
 </template>
 
 <script>
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import PrettySpan from '@/Shared/Form/PrettySpan';
-import TextInput from '@/Shared/Form/TextInput';
-import TextArea from '@/Shared/Form/TextArea';
-import Errors from '@/Shared/Form/Errors';
-import Dropdown from '@/Shared/Form/Dropdown';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrettySpan from '@/Shared/Form/PrettySpan.vue';
+import TextInput from '@/Shared/Form/TextInput.vue';
+import Errors from '@/Shared/Form/Errors.vue';
+import Dropdown from '@/Shared/Form/Dropdown.vue';
 
 export default {
   components: {
     PrettyButton,
     PrettySpan,
     TextInput,
-    TextArea,
     Errors,
     Dropdown,
   },

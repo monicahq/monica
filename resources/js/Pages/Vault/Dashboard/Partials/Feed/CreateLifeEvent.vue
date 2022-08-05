@@ -207,7 +207,7 @@
 </template>
 
 <script>
-import Loading from '@/Shared/Loading';
+import Loading from '@/Shared/Loading.vue';
 
 export default {
   components: {

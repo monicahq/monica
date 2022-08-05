@@ -100,11 +100,11 @@
 </template>
 
 <script>
-import TextInput from '@/Shared/Form/TextInput';
-import Dropdown from '@/Shared/Form/Dropdown';
-import PrettySpan from '@/Shared/Form/PrettySpan';
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import Errors from '@/Shared/Form/Errors';
+import TextInput from '@/Shared/Form/TextInput.vue';
+import Dropdown from '@/Shared/Form/Dropdown.vue';
+import PrettySpan from '@/Shared/Form/PrettySpan.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {

@@ -50,10 +50,10 @@
 </template>
 
 <script>
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import PrettyLink from '@/Shared/Form/PrettyLink';
-import Errors from '@/Shared/Form/Errors';
-import Help from '@/Shared/Help';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrettyLink from '@/Shared/Form/PrettyLink.vue';
+import Errors from '@/Shared/Form/Errors.vue';
+import Help from '@/Shared/Help.vue';
 
 export default {
   components: {

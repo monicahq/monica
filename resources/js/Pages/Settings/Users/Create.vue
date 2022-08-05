@@ -131,11 +131,11 @@ k
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import PrettyLink from '@/Shared/Form/PrettyLink';
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import TextInput from '@/Shared/Form/TextInput';
-import Errors from '@/Shared/Form/Errors';
+import Layout from '@/Shared/Layout.vue';
+import PrettyLink from '@/Shared/Form/PrettyLink.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import TextInput from '@/Shared/Form/TextInput.vue';
+import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {

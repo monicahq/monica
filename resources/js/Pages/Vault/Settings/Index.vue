@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import Delete from '@/Pages/Vault/Settings/Partials/Delete';
-import DefaultTemplate from '@/Pages/Vault/Settings/Partials/DefaultTemplate';
-import Labels from '@/Pages/Vault/Settings/Partials/Labels';
-import Users from '@/Pages/Vault/Settings/Partials/Users';
-import ContactImportantDateTypes from '@/Pages/Vault/Settings/Partials/ContactImportantDateTypes';
+import Layout from '@/Shared/Layout.vue';
+import Delete from '@/Pages/Vault/Settings/Partials/Delete.vue';
+import DefaultTemplate from '@/Pages/Vault/Settings/Partials/DefaultTemplate.vue';
+import Labels from '@/Pages/Vault/Settings/Partials/Labels.vue';
+import Users from '@/Pages/Vault/Settings/Partials/Users.vue';
+import ContactImportantDateTypes from '@/Pages/Vault/Settings/Partials/ContactImportantDateTypes.vue';
 
 export default {
   components: {

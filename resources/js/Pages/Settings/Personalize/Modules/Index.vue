@@ -280,10 +280,10 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import PrettyLink from '@/Shared/Form/PrettyLink';
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import TextInput from '@/Shared/Form/TextInput';
+import Layout from '@/Shared/Layout.vue';
+import PrettyLink from '@/Shared/Form/PrettyLink.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import TextInput from '@/Shared/Form/TextInput.vue';
 
 export default {
   components: {

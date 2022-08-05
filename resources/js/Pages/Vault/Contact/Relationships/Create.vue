@@ -326,21 +326,19 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import PrettySpan from '@/Shared/Form/PrettySpan';
-import PrettyLink from '@/Shared/Form/PrettyLink';
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import TextInput from '@/Shared/Form/TextInput';
-import Dropdown from '@/Shared/Form/Dropdown';
-import Errors from '@/Shared/Form/Errors';
-import ContactSelector from '@/Shared/Form/ContactSelector';
-import Avatar from '@/Shared/Avatar';
+import Layout from '@/Shared/Layout.vue';
+import PrettyLink from '@/Shared/Form/PrettyLink.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import TextInput from '@/Shared/Form/TextInput.vue';
+import Dropdown from '@/Shared/Form/Dropdown.vue';
+import Errors from '@/Shared/Form/Errors.vue';
+import ContactSelector from '@/Shared/Form/ContactSelector.vue';
+import Avatar from '@/Shared/Avatar.vue';
 
 export default {
   components: {
     Layout,
     PrettyLink,
-    PrettySpan,
     PrettyButton,
     TextInput,
     Dropdown,

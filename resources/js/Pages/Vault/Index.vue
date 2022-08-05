@@ -128,9 +128,9 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import PrettyLink from '@/Shared/Form/PrettyLink';
-import Avatar from '@/Shared/Avatar';
+import Layout from '@/Shared/Layout.vue';
+import PrettyLink from '@/Shared/Form/PrettyLink.vue';
+import Avatar from '@/Shared/Avatar.vue';
 
 export default {
   components: {

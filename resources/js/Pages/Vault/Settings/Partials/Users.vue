@@ -223,9 +223,9 @@
 </template>
 
 <script>
-import PrettySpan from '@/Shared/Form/PrettySpan';
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import Errors from '@/Shared/Form/Errors';
+import PrettySpan from '@/Shared/Form/PrettySpan.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {

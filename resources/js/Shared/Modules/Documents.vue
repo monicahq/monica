@@ -89,16 +89,12 @@
 </template>
 
 <script>
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import PrettySpan from '@/Shared/Form/PrettySpan';
-import Errors from '@/Shared/Form/Errors';
-import Uploadcare from 'uploadcare-vue/src/Uploadcare.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import Uploadcare from '@/Components/Uploadcare.vue';
 
 export default {
   components: {
     PrettyButton,
-    PrettySpan,
-    Errors,
     Uploadcare,
   },
 

@@ -125,15 +125,13 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import Avatar from '@/Shared/Avatar';
-import PrettyLink from '@/Shared/Form/PrettyLink';
+import Layout from '@/Shared/Layout.vue';
+import Avatar from '@/Shared/Avatar.vue';
 
 export default {
   components: {
     Layout,
     Avatar,
-    PrettyLink,
   },
 
   props: {

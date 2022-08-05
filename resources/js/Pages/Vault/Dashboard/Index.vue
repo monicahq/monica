@@ -141,17 +141,16 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import SmallContact from '@/Shared/SmallContact';
-import LastUpdated from '@/Pages/Vault/Dashboard/Partials/LastUpdated';
-import UpcomingReminders from '@/Pages/Vault/Dashboard/Partials/UpcomingReminders';
-import Favorites from '@/Pages/Vault/Dashboard/Partials/Favorites';
-import Activity from '@/Pages/Vault/Dashboard/Partials/Feed/Activity';
-import Entry from '@/Pages/Vault/Dashboard/Partials/Feed/Entry';
-import Goal from '@/Pages/Vault/Dashboard/Partials/Feed/Goal';
-import FeedItem from '@/Pages/Vault/Dashboard/Partials/Feed/FeedItem';
-import CreateLifeEvent from '@/Pages/Vault/Dashboard/Partials/Feed/CreateLifeEvent';
-import PrettyButton from '@/Shared/Form/PrettyButton';
+import Layout from '@/Shared/Layout.vue';
+import LastUpdated from '@/Pages/Vault/Dashboard/Partials/LastUpdated.vue';
+import UpcomingReminders from '@/Pages/Vault/Dashboard/Partials/UpcomingReminders.vue';
+import Favorites from '@/Pages/Vault/Dashboard/Partials/Favorites.vue';
+import Activity from '@/Pages/Vault/Dashboard/Partials/Feed/Activity.vue';
+import Entry from '@/Pages/Vault/Dashboard/Partials/Feed/Entry.vue';
+import Goal from '@/Pages/Vault/Dashboard/Partials/Feed/Goal.vue';
+import FeedItem from '@/Pages/Vault/Dashboard/Partials/Feed/FeedItem.vue';
+import CreateLifeEvent from '@/Pages/Vault/Dashboard/Partials/Feed/CreateLifeEvent.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 
 export default {
   components: {
@@ -160,7 +159,6 @@ export default {
     UpcomingReminders,
     Favorites,
     PrettyButton,
-    SmallContact,
     Entry,
     Activity,
     Goal,

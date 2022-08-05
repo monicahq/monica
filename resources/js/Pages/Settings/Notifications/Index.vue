@@ -72,21 +72,13 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import PrettySpan from '@/Shared/Form/PrettySpan';
-import TextInput from '@/Shared/Form/TextInput';
-import Errors from '@/Shared/Form/Errors';
-import Emails from '@/Pages/Settings/Notifications/Partials/Emails';
-import Telegram from '@/Pages/Settings/Notifications/Partials/Telegram';
+import Layout from '@/Shared/Layout.vue';
+import Emails from '@/Pages/Settings/Notifications/Partials/Emails.vue';
+import Telegram from '@/Pages/Settings/Notifications/Partials/Telegram.vue';
 
 export default {
   components: {
     Layout,
-    PrettyButton,
-    PrettySpan,
-    TextInput,
-    Errors,
     Emails,
     Telegram,
   },

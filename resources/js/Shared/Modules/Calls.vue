@@ -478,19 +478,17 @@
 </template>
 
 <script>
-import HoverMenu from '@/Shared/HoverMenu';
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import PrettySpan from '@/Shared/Form/PrettySpan';
-import TextInput from '@/Shared/Form/TextInput';
-import TextArea from '@/Shared/Form/TextArea';
-import Errors from '@/Shared/Form/Errors';
+import HoverMenu from '@/Shared/HoverMenu.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrettySpan from '@/Shared/Form/PrettySpan.vue';
+import TextArea from '@/Shared/Form/TextArea.vue';
+import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {
     HoverMenu,
     PrettyButton,
     PrettySpan,
-    TextInput,
     TextArea,
     Errors,
   },

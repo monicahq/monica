@@ -84,17 +84,17 @@ jobs:
       - name: Prepare environment
         run: |
           cp tests/.env.ci.${{ matrix.connection }} .env
-          mkdir -p public/js public/css
+          mkdir -p public/build/assets
           {\
             echo "{"; \
             for f in app.js app.css; do \
               [[ $first == 1 ]] && echo -n "," || first=1; \
               k=${f##*.}/$f; \
-              echo "\"/$k\": \"/$k\""; \
-              echo '' > public/$k; \
+              echo "\"resources/$k\": {\"file\": \"assets/$f\", \"src\": \"resources/$k\"}"; \
+              echo '' > public/build/assets/$f; \
             done; \
             echo "}"; \
-          } | tee public/mix-manifest.json
+          } | tee public/build/manifest.json
       - name: Create sqlite database
         if: matrix.connection == 'sqlite'
         run: touch database/database.sqlite

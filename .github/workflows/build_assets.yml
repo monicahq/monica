@@ -50,4 +50,4 @@ jobs:
       - name: Install yarn dependencies
         run: yarn install --frozen-lockfile
       - name: Build assets
-        run: yarn run production
+        run: yarn run build

@@ -126,19 +126,11 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import PrettySpan from '@/Shared/Form/PrettySpan';
-import TextInput from '@/Shared/Form/TextInput';
-import Errors from '@/Shared/Form/Errors';
+import Layout from '@/Shared/Layout.vue';
 
 export default {
   components: {
     Layout,
-    PrettyButton,
-    PrettySpan,
-    TextInput,
-    Errors,
   },
 
   props: {

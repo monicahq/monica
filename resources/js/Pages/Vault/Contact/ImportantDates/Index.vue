@@ -396,20 +396,16 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import NameOrder from '@/Pages/Settings/Preferences/Partials/NameOrder';
-import DateFormat from '@/Pages/Settings/Preferences/Partials/DateFormat';
-import PrettyButton from '@/Shared/Form/PrettyButton';
-import PrettySpan from '@/Shared/Form/PrettySpan';
-import TextInput from '@/Shared/Form/TextInput';
-import Dropdown from '@/Shared/Form/Dropdown';
-import Errors from '@/Shared/Form/Errors';
+import Layout from '@/Shared/Layout.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrettySpan from '@/Shared/Form/PrettySpan.vue';
+import TextInput from '@/Shared/Form/TextInput.vue';
+import Dropdown from '@/Shared/Form/Dropdown.vue';
+import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {
     Layout,
-    NameOrder,
-    DateFormat,
     PrettyButton,
     PrettySpan,
     Dropdown,

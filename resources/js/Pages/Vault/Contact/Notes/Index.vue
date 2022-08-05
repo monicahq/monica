@@ -55,8 +55,8 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import Notes from '@/Shared/Modules/Notes';
+import Layout from '@/Shared/Layout.vue';
+import Notes from '@/Shared/Modules/Notes.vue';
 
 export default {
   components: {

@@ -49,11 +49,11 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout';
-import TextInput from '@/Shared/Form/TextInput';
-import Contact from '@/Pages/Vault/Search/Partials/Contact';
-import Note from '@/Pages/Vault/Search/Partials/Note';
-import Group from '@/Pages/Vault/Search/Partials/Group';
+import Layout from '@/Shared/Layout.vue';
+import TextInput from '@/Shared/Form/TextInput.vue';
+import Contact from '@/Pages/Vault/Search/Partials/Contact.vue';
+import Note from '@/Pages/Vault/Search/Partials/Note.vue';
+import Group from '@/Pages/Vault/Search/Partials/Group.vue';
 
 export default {
   components: {
