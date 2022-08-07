@@ -6,15 +6,12 @@ use App\Interfaces\ServiceInterface;
 use App\Jobs\CreateAuditLog;
 use App\Jobs\CreateContactLog;
 use App\Models\Address;
-use App\Models\AddressType;
 use App\Services\BaseService;
 use Carbon\Carbon;
 
 class DestroyContactAddress extends BaseService implements ServiceInterface
 {
     private Address $address;
-
-    private AddressType $addressType;
 
     /**
      * Get the validation rules that apply to the service.

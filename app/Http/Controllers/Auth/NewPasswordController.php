@@ -18,7 +18,7 @@ class NewPasswordController extends Controller
      * Display the password reset view.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\View\View
+     * @return \Inertia\Response
      */
     public function create(Request $request)
     {

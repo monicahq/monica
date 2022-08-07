@@ -16,6 +16,8 @@ class UpdateLifeEventTypePosition extends BaseService implements ServiceInterfac
 
     private int $pastPosition;
 
+    private array $data;
+
     /**
      * Get the validation rules that apply to the service.
      *

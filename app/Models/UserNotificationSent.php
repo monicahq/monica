@@ -15,7 +15,7 @@ class UserNotificationSent extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'user_notification_channel_id',

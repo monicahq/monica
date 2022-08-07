@@ -8,6 +8,7 @@ use App\Contact\ManageGroups\Services\RemoveContactFromGroup;
 use App\Contact\ManageGroups\Web\ViewHelpers\ModuleGroupsViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,9 +25,9 @@ class ContactModuleGroupController extends Controller
      * @param  Request  $request
      * @param  int  $vaultId
      * @param  int  $contactId
-     * @return void
+     * @return JsonResponse
      */
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, int $vaultId, int $contactId): JsonResponse
     {
         // case if we need to create the group
         // the current way to know if we need to create the group is if the

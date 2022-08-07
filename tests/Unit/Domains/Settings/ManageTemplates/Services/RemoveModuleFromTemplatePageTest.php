@@ -7,7 +7,6 @@ use App\Models\Module;
 use App\Models\Template;
 use App\Models\TemplatePage;
 use App\Models\User;
-use App\Settings\ManageTemplates\Services\RemoveInformationFromTemplate;
 use App\Settings\ManageTemplates\Services\RemoveModuleFromTemplatePage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -41,7 +40,7 @@ class RemoveModuleFromTemplatePageTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new RemoveInformationFromTemplate())->execute($request);
+        (new RemoveModuleFromTemplatePage())->execute($request);
     }
 
     /** @test */

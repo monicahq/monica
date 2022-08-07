@@ -34,7 +34,7 @@ class NameHelper
                 $variableName = $variableName.$char;
             } elseif ($char !== '%' && $variableFound) {
                 $variableName = $variableName.$char;
-            } elseif ($char === '%' && $variableFound) {
+            } elseif ($char === '%') {
                 // the variable has ended
                 // get rid of the first %
                 $variableName = substr($variableName, 1);

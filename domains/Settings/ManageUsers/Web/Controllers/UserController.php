@@ -28,7 +28,7 @@ class UserController extends Controller
     {
         return Inertia::render('Settings/Users/Create', [
             'layoutData' => VaultIndexViewHelper::layoutData(),
-            'data' => UserCreateViewHelper::data(Auth::user()->account),
+            'data' => UserCreateViewHelper::data(),
         ]);
     }
 

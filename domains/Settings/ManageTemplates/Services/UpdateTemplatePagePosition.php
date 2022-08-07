@@ -14,6 +14,10 @@ class UpdateTemplatePagePosition extends BaseService implements ServiceInterface
 
     private TemplatePage $templatePage;
 
+    private array $data;
+
+    private int $pastPosition;
+
     /**
      * Get the validation rules that apply to the service.
      *

@@ -30,7 +30,7 @@ class ContactLifeEventActivity extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'life_event_id',

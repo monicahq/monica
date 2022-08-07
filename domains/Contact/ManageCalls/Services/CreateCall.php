@@ -4,7 +4,6 @@ namespace App\Contact\ManageCalls\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Call;
-use App\Models\CallReason;
 use App\Models\Emotion;
 use App\Services\BaseService;
 use Carbon\Carbon;
@@ -12,8 +11,6 @@ use Carbon\Carbon;
 class CreateCall extends BaseService implements ServiceInterface
 {
     private Call $call;
-
-    private CallReason $callReason;
 
     private array $data;
 

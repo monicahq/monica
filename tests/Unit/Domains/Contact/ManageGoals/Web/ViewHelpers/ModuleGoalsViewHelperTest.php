@@ -29,7 +29,7 @@ class ModuleGoalsViewHelperTest extends TestCase
             'active' => false,
         ]);
 
-        $array = ModuleGoalsViewHelper::data($contact, $user);
+        $array = ModuleGoalsViewHelper::data($contact);
 
         $this->assertEquals(
             3,

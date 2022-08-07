@@ -29,8 +29,8 @@ class VaultReminderIndexViewHelper
 
         // then we get all the user notification channels for those users
         $userNotificationChannelIds = UserNotificationChannel::whereIn('user_id', $usersInVaultIds)
+            ->select('id')
             ->get()
-            ->pluck('id')
             ->unique('id')
             ->toArray();
 
@@ -49,7 +49,7 @@ class VaultReminderIndexViewHelper
         $monthsReminderCollection = collect();
         for ($month = 0; $month < 12; $month++) {
             $date = $currentDate->copy();
-            $date->addMonth($month);
+            $date->addMonths($month);
 
             $remindersCollection = collect();
             foreach ($contactRemindersScheduled as $contactReminderScheduled) {

@@ -23,7 +23,7 @@ class RelationshipGroupType extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'account_id',
@@ -35,7 +35,7 @@ class RelationshipGroupType extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'can_be_deleted' => 'boolean',

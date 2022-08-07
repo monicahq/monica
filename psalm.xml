@@ -1,116 +1,23 @@
 <?xml version="1.0"?>
 <psalm
-    name="Example Psalm config with recommended defaults"
-    useDocblockTypes="true"
+    errorLevel="7"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
         <directory name="app"/>
         <directory name="database/factories"/>
         <directory name="database/seeders"/>
-        <directory name="tests"/>
         <directory name="routes"/>
+        <directory name="domains"/>
         <ignoreFiles>
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
 
-    <issueHandlers>
-        <LessSpecificReturnType errorLevel="info"/>
-
-        <NonInvariantDocblockPropertyType errorLevel="info"/>
-
-        <!-- level 3 issues - slightly lazy code writing, but probably low false-negatives -->
-
-        <DeprecatedMethod errorLevel="info"/>
-
-        <MissingClosureReturnType errorLevel="info"/>
-        <MissingReturnType errorLevel="info"/>
-        <MissingPropertyType errorLevel="error"/>
-        <InvalidDocblock errorLevel="error"/>
-
-        <PropertyNotSetInConstructor errorLevel="info"/>
-        <MissingConstructor errorLevel="info"/>
-        <MissingParamType errorLevel="info"/>
-        <MissingClosureParamType errorLevel="info"/>
-
-        <DocblockTypeContradiction errorLevel="info"/>
-        <RedundantConditionGivenDocblockType errorLevel="info"/>
-
-        <!-- level 4 issues - points to possible deficiencies in logic, higher false-positives -->
-
-        <MismatchingDocblockReturnType errorLevel="info"/>
-        <MismatchingDocblockParamType errorLevel="info"/>
-
-        <MoreSpecificReturnType errorLevel="info"/>
-        <LessSpecificReturnStatement errorLevel="info"/>
-        <ArgumentTypeCoercion errorLevel="info"/>
-        <RedundantCondition errorLevel="info"/>
-
-        <PossiblyFalseArgument errorLevel="info"/>
-        <PossiblyFalsePropertyAssignmentValue errorLevel="info"/>
-        <PossiblyFalseReference errorLevel="info"/>
-        <PossiblyInvalidArgument errorLevel="info"/>
-        <PossiblyInvalidArrayAccess errorLevel="info"/>
-        <PossiblyInvalidArrayAssignment errorLevel="info"/>
-        <PossiblyInvalidMethodCall errorLevel="info"/>
-        <PossiblyInvalidPropertyAssignment errorLevel="info"/>
-        <PossiblyInvalidPropertyAssignmentValue errorLevel="info"/>
-        <PossiblyInvalidPropertyFetch errorLevel="info"/>
-        <PossiblyNullArgument errorLevel="info"/>
-        <PossiblyNullArrayAccess errorLevel="info"/>
-        <PossiblyNullArrayAssignment errorLevel="info"/>
-        <PossiblyNullArrayOffset errorLevel="info"/>
-        <PossiblyNullFunctionCall errorLevel="info"/>
-        <PossiblyNullIterator errorLevel="info"/>
-        <PossiblyNullOperand errorLevel="info"/>
-        <PossiblyNullPropertyAssignment errorLevel="info"/>
-        <PossiblyNullPropertyAssignmentValue errorLevel="info"/>
-        <PossiblyNullPropertyFetch errorLevel="info"/>
-        <PossiblyNullReference errorLevel="info"/>
-        <PossiblyFalseIterator errorLevel="info"/>
-
-        <!-- level 5 issues - should be avoided at mosts costs... -->
-
-        <ForbiddenCode errorLevel="info"/>
-        <ImplicitToStringCast errorLevel="info"/>
-        <InvalidScalarArgument errorLevel="info"/>
-        <InvalidToString errorLevel="info"/>
-        <MethodSignatureMismatch errorLevel="info"/>
-        <NoInterfaceProperties errorLevel="info"/>
-        <TooManyArguments errorLevel="info"/>
-        <TypeDoesNotContainType errorLevel="info"/>
-        <InvalidOperand errorLevel="info"/>
-        <LessSpecificImplementedReturnType errorLevel="info"/>
-        <MoreSpecificImplementedParamType errorLevel="info"/>
-        <InternalMethod errorLevel="suppress"/>
-
-        <!-- level 6 issues - bad stuff here -->
-
-        <InvalidNullableReturnType errorLevel="info"/>
-        <NullableReturnStatement errorLevel="info"/>
-        <ImplementedReturnTypeMismatch errorLevel="info"/>
-        <UnresolvableInclude errorLevel="info"/>
-        <InvalidReturnStatement errorLevel="info"/>
-        <InvalidReturnType errorLevel="info"/>
-
-        <InvalidArgument errorLevel="info"/>
-
-        <PossiblyUndefinedMethod errorLevel="info"/>
-        <ReservedWord errorLevel="info"/>
-        <UndefinedInterfaceMethod errorLevel="info"/>
-
-        <!-- Personal fixes -->
-        <UndefinedMagicPropertyFetch errorLevel="suppress"/>
-        <InvalidPropertyAssignmentValue errorLevel="suppress"/>
-        <PossibleRawObjectIteration errorLevel="suppress"/>
-
-        <UnsafeInstantiation>
-            <errorLevel type="suppress">
-            </errorLevel>
-        </UnsafeInstantiation>
-
-        <UndefinedPropertyAssignment errorLevel="suppress"/>
-        <PossiblyInvalidArrayOffset errorLevel="suppress"/>
-
-    </issueHandlers>
+    <plugins>
+        <pluginClass class="Psalm\LaravelPlugin\Plugin"/>
+    </plugins>
 </psalm>

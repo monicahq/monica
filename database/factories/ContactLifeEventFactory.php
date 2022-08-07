@@ -12,7 +12,7 @@ class ContactLifeEventFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\Illuminate\Database\Eloquent\Model>
      */
     protected $model = ContactLifeEvent::class;
 

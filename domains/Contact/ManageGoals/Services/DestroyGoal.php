@@ -12,8 +12,6 @@ class DestroyGoal extends BaseService implements ServiceInterface
 {
     private Goal $goal;
 
-    private array $data;
-
     /**
      * Get the validation rules that apply to the service.
      *
@@ -52,7 +50,6 @@ class DestroyGoal extends BaseService implements ServiceInterface
      */
     public function execute(array $data): void
     {
-        $this->data = $data;
         $this->validateRules($data);
 
         $this->goal = Goal::where('contact_id', $data['contact_id'])

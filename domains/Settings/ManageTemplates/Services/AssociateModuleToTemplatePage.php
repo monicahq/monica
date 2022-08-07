@@ -72,7 +72,7 @@ class AssociateModuleToTemplatePage extends BaseService implements ServiceInterf
         $this->module = Module::where('account_id', $this->data['account_id'])
             ->findOrFail($this->data['module_id']);
 
-        $this->template = Template::where('account_id', $this->data['account_id'])
+        Template::where('account_id', $this->data['account_id'])
             ->findOrFail($this->data['template_id']);
 
         $this->templatePage = TemplatePage::where('template_id', $this->data['template_id'])

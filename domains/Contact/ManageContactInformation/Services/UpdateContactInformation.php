@@ -16,6 +16,8 @@ class UpdateContactInformation extends BaseService implements ServiceInterface
 
     private ContactInformationType $contactInformationType;
 
+    private array $data;
+
     /**
      * Get the validation rules that apply to the service.
      *

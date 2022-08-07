@@ -10,6 +10,8 @@ use Carbon\Carbon;
 
 class DestroyAvatar extends BaseService implements ServiceInterface
 {
+    private array $data;
+
     /**
      * Get the validation rules that apply to the service.
      *

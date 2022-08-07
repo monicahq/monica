@@ -11,6 +11,8 @@ class DestroyPhoto extends BaseService implements ServiceInterface
 {
     private File $file;
 
+    private array $data;
+
     /**
      * Get the validation rules that apply to the service.
      *

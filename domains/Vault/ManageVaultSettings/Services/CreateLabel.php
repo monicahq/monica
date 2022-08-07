@@ -10,8 +10,6 @@ use Illuminate\Support\Str;
 
 class CreateLabel extends BaseService implements ServiceInterface
 {
-    private array $data;
-
     private Label $label;
 
     /**

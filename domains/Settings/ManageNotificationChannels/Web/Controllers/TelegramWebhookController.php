@@ -20,7 +20,7 @@ class TelegramWebhookController extends Controller
     {
         try {
             $messageText = $request->message['text'];
-        } catch (Exception $e) {
+        } catch (Exception $e) { /** @phpstan-ignore-line */
             return response()->json([
                 'code' => $e->getCode(),
                 'message' => 'Accepted with error: \''.$e->getMessage().'\'',

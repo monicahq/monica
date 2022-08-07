@@ -10,7 +10,6 @@ use App\Models\Contact;
 use App\Models\Goal;
 use App\Models\Vault;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -25,7 +24,7 @@ class ContactGoalController extends Controller
 
         return Inertia::render('Vault/Contact/Goals/Show', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
-            'data' => GoalShowViewHelper::data($contact, Auth::user(), $goal, Carbon::now()->year),
+            'data' => GoalShowViewHelper::data($contact, Auth::user(), $goal),
         ]);
     }
 
@@ -48,7 +47,7 @@ class ContactGoalController extends Controller
         $contact = Contact::find($contactId);
 
         return response()->json([
-            'data' => GoalShowViewHelper::data($contact, Auth::user(), $goal, Carbon::now()->year),
+            'data' => GoalShowViewHelper::data($contact, Auth::user(), $goal),
         ], 200);
     }
 

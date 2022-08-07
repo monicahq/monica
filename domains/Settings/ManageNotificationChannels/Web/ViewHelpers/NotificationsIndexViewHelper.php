@@ -15,8 +15,8 @@ class NotificationsIndexViewHelper
         $emails = $channels->filter(function ($channel) {
             return $channel->type === 'email';
         });
-        $emailsCollection = $emails->map(function ($channel) use ($user) {
-            return self::dtoEmail($channel, $user);
+        $emailsCollection = $emails->map(function ($channel) {
+            return self::dtoEmail($channel);
         });
 
         // telegram

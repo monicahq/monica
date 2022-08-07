@@ -3,6 +3,7 @@
 namespace App\Vault\ManageVault\Web\ViewHelpers;
 
 use App\Helpers\VaultHelper;
+use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Support\Collection;
@@ -74,12 +75,11 @@ class VaultIndexViewHelper
             ->orderBy('name', 'asc')
             ->get();
 
-        $vaultCollection = collect();
-        foreach ($vaults as $vault) {
+        $vaultCollection = $vaults->map(function (Vault $vault): array {
             $randomContactsCollection = self::getContacts($vault);
             $totalContactNumber = $vault->contacts->count();
 
-            $vaultCollection->push([
+            return [
                 'id' => $vault->id,
                 'name' => $vault->name,
                 'description' => $vault->description,
@@ -93,8 +93,8 @@ class VaultIndexViewHelper
                         'vault' => $vault->id,
                     ]),
                 ],
-            ]);
-        }
+            ];
+        });
 
         return [
             'vaults' => $vaultCollection,
@@ -112,7 +112,7 @@ class VaultIndexViewHelper
             ->inRandomOrder()
             ->take(5)
             ->get()
-            ->map(function ($contact) {
+            ->map(function (Contact $contact): array {
                 return [
                     'id' => $contact->id,
                     'name' => $contact->name,

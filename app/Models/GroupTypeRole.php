@@ -15,7 +15,7 @@ class GroupTypeRole extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'group_type_id',

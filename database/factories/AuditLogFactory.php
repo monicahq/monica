@@ -12,7 +12,7 @@ class AuditLogFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\Illuminate\Database\Eloquent\Model>
      */
     protected $model = AuditLog::class;
 
@@ -25,11 +25,7 @@ class AuditLogFactory extends Factory
     {
         return [
             'account_id' => Account::factory(),
-            'author_id' => function (array $attributes) {
-                return User::factory()->create([
-                    'account_id' => $attributes['account_id'],
-                ])->id;
-            },
+            'author_id' => User::factory(),
             'action_name' => 'account_created',
             'author_name' => 'Dwight Schrute',
             'objects' => '{"user": 1}',

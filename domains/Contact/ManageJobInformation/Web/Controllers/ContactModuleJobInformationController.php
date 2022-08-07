@@ -28,6 +28,7 @@ class ContactModuleJobInformationController extends Controller
 
     public function update(Request $request, int $vaultId, int $contactId)
     {
+        $company = 0;
         if ($request->input('company_id')) {
             $company = Company::findOrFail($request->input('company_id'));
         }

@@ -13,6 +13,8 @@ class UpdateGiftOccasionPosition extends BaseService implements ServiceInterface
 
     private int $pastPosition;
 
+    private array $data;
+
     /**
      * Get the validation rules that apply to the service.
      *

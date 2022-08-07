@@ -4,24 +4,26 @@ includes:
 parameters:
     paths:
         - app
-        - tests
-    excludePaths:
-        - tests/ApiTestCase.php
-        - tests/TestCase.php
-        - app/Providers/RouteServiceProvider.php
-        - app/Helpers/StorageHelper.php
+        - database/factories
+        - database/seeders
+        - routes
+        - domains
+
     inferPrivatePropertyTypeFromConstructor: true
-    checkMissingIterableValueType: false
-    reportUnmatchedIgnoredErrors: false
-    treatPhpDocTypesAsCertain: false
     level: 5
     ignoreErrors:
-        - '#Call to an undefined method Illuminate\\Support\\HigherOrder#'
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Collection#'
-        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Collection#'
-        - '#Parameter \##'
-        - '#is not covariant#'
-        - '#Access to an undefined property#'
-        - '#does not accept#'
-        - '#should return#'
-        - '#unsearchable#'
+        # psalm/plugin-laravel doesn't support \Illuminate\Database\Eloquent\Casts\Attribute yet
+        - '#Access to an undefined property App\\Models\\Contact.*::\$name\.#'
+        - '#Access to an undefined property App\\Models\\Contact::\$avatar\.#'
+        - '#Access to an undefined property App\\Models\\Contact::\$age\.#'
+        - '#Access to an undefined property App\\Models\\Label::\$contacts_count\.#'
+        - '#Access to an undefined property App\\Models\\LifeEventCategory.*::\$label\.#'
+        - '#Access to an undefined property App\\Models\\LifeEventType.*::\$label.#'
+        - '#Access to an undefined property App\\Models\\Module::\$position\.#'
+
+        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Note>::unsearchable\(\)\.#'
+          path: */app/Models/Contact.php
+        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Note>::unsearchable\(\)\.#'
+          path: */app/Models/Vault.php
+        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Contact>::unsearchable\(\)\.#'
+          path: */app/Models/Vault.php

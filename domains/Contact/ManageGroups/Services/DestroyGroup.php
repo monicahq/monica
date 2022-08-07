@@ -8,8 +8,6 @@ use App\Services\BaseService;
 
 class DestroyGroup extends BaseService implements ServiceInterface
 {
-    private array $data;
-
     /**
      * Get the validation rules that apply to the service.
      *

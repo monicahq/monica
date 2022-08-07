@@ -4,13 +4,10 @@ namespace App\Settings\ManageTemplates\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Module;
-use App\Models\Template;
 use App\Services\BaseService;
 
 class DestroyModule extends BaseService implements ServiceInterface
 {
-    private Template $template;
-
     /**
      * Get the validation rules that apply to the service.
      *
@@ -47,13 +44,13 @@ class DestroyModule extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->module = Module::where('account_id', $data['account_id'])
+        $module = Module::where('account_id', $data['account_id'])
             ->findOrFail($data['module_id']);
 
-        if (! $this->module->can_be_deleted) {
+        if (! $module->can_be_deleted) {
             throw new \Exception('The module cannot be deleted.');
         }
 
-        $this->module->delete();
+        $module->delete();
     }
 }

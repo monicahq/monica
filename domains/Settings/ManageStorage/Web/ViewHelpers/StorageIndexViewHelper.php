@@ -11,8 +11,8 @@ class StorageIndexViewHelper
 {
     public static function data(Account $account): array
     {
-        $vaultIds = $account->vaults()->select('id')->get()->pluck('id')->toArray();
-        $contactIds = Contact::whereIn('vault_id', $vaultIds)->select('id')->get()->pluck('id')->toArray();
+        $vaultIds = $account->vaults()->select('id')->get()->toArray();
+        $contactIds = Contact::whereIn('vault_id', $vaultIds)->select('id')->get()->toArray();
 
         $totalSizeDocumentInBytes = File::whereIn('contact_id', $contactIds)
             ->where('type', File::TYPE_DOCUMENT)

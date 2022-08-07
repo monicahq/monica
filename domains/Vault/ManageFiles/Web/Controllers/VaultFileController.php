@@ -19,7 +19,7 @@ class VaultFileController extends Controller
     {
         $vault = Vault::findOrFail($vaultId);
 
-        $contactIds = Contact::where('vault_id', $vault->id)->select('id')->get()->pluck('id')->toArray();
+        $contactIds = Contact::where('vault_id', $vault->id)->select('id')->get()->toArray();
 
         $files = File::whereIn('contact_id', $contactIds)
             ->with('contact')
@@ -38,7 +38,7 @@ class VaultFileController extends Controller
     {
         $vault = Vault::findOrFail($vaultId);
 
-        $contactIds = Contact::where('vault_id', $vault->id)->select('id')->get()->pluck('id')->toArray();
+        $contactIds = Contact::where('vault_id', $vault->id)->select('id')->get()->toArray();
 
         $files = File::whereIn('contact_id', $contactIds)
             ->where('type', File::TYPE_PHOTO)
@@ -58,7 +58,7 @@ class VaultFileController extends Controller
     {
         $vault = Vault::findOrFail($vaultId);
 
-        $contactIds = Contact::where('vault_id', $vault->id)->select('id')->get()->pluck('id')->toArray();
+        $contactIds = Contact::where('vault_id', $vault->id)->select('id')->get()->toArray();
 
         $files = File::whereIn('contact_id', $contactIds)
             ->where('type', File::TYPE_DOCUMENT)
@@ -78,7 +78,7 @@ class VaultFileController extends Controller
     {
         $vault = Vault::findOrFail($vaultId);
 
-        $contactIds = Contact::where('vault_id', $vault->id)->select('id')->get()->pluck('id')->toArray();
+        $contactIds = Contact::where('vault_id', $vault->id)->select('id')->get()->toArray();
 
         $files = File::whereIn('contact_id', $contactIds)
             ->where('type', File::TYPE_AVATAR)

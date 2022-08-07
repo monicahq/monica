@@ -15,7 +15,7 @@ class Pet extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'pet_category_id',

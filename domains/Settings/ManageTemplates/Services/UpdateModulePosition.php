@@ -15,6 +15,10 @@ class UpdateModulePosition extends BaseService implements ServiceInterface
 
     private Module $module;
 
+    private array $data;
+
+    private int $pastPosition;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -64,7 +68,7 @@ class UpdateModulePosition extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->template = Template::where('account_id', $this->data['account_id'])
+        Template::where('account_id', $this->data['account_id'])
             ->findOrFail($this->data['template_id']);
 
         $this->templatePage = TemplatePage::where('template_id', $this->data['template_id'])

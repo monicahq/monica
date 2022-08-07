@@ -11,7 +11,7 @@ class CreateGroup extends BaseService implements ServiceInterface
 {
     private Group $group;
 
-    private array $array;
+    private array $data;
 
     /**
      * Get the validation rules that apply to the service.

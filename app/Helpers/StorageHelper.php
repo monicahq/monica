@@ -19,8 +19,8 @@ class StorageHelper
     {
         // get the file size of all the files in the account
         // the size will be in bytes
-        $vaultIds = $account->vaults()->select('id')->get()->pluck('id')->toArray();
-        $contactIds = Contact::whereIn('vault_id', $vaultIds)->select('id')->get()->pluck('id')->toArray();
+        $vaultIds = $account->vaults()->select('id')->get()->toArray();
+        $contactIds = Contact::whereIn('vault_id', $vaultIds)->select('id')->get()->toArray();
 
         $totalSizeInBytes = File::whereIn('contact_id', $contactIds)->sum('size');
 

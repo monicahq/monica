@@ -56,7 +56,7 @@ class RemoveModuleFromTemplatePage extends BaseService implements ServiceInterfa
         $this->module = Module::where('account_id', $data['account_id'])
             ->findOrFail($data['module_id']);
 
-        $this->template = Template::where('account_id', $data['account_id'])
+        Template::where('account_id', $data['account_id'])
             ->findOrFail($data['template_id']);
 
         $this->templatePage = TemplatePage::where('template_id', $data['template_id'])

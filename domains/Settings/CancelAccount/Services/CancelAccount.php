@@ -56,8 +56,8 @@ class CancelAccount extends BaseService implements ServiceInterface
 
     private function destroyAllFiles(): void
     {
-        $vaultIds = $this->account->vaults()->select('id')->get()->pluck('id')->toArray();
-        $contactIds = Contact::whereIn('vault_id', $vaultIds)->select('id')->get()->pluck('id')->toArray();
+        $vaultIds = $this->account->vaults()->select('id')->get()->toArray();
+        $contactIds = Contact::whereIn('vault_id', $vaultIds)->select('id')->get()->toArray();
 
         File::whereIn('contact_id', $contactIds)->chunk(100, function ($files) {
             $files->each(function ($file) {

@@ -44,6 +44,7 @@ class ContactRelationshipsController extends Controller
         // To know which contact is the "from" contact, we pass it as a parameter.
 
         // first, let's create a contact if there is no contact selected
+        $otherContactId = 0;
         if ($request->input('choice') != 'contact') {
             $otherContact = (new CreateContact())->execute([
                 'account_id' => Auth::user()->account_id,

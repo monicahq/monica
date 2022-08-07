@@ -15,10 +15,6 @@ class ContactModuleLoanController extends Controller
 {
     public function store(Request $request, int $vaultId, int $contactId)
     {
-        if ($request->input('amount_lent')) {
-            $amount = $request->input('amount_lent') * 100;
-        }
-
         $loaners = collect($request->input('loaners'))->pluck('id');
         $loanees = collect($request->input('loanees'))->pluck('id');
 
@@ -33,7 +29,7 @@ class ContactModuleLoanController extends Controller
             'description' => $request->input('description'),
             'loaner_ids' => $loaners,
             'loanee_ids' => $loanees,
-            'amount_lent' => $request->input('amount_lent') ? $amount : null,
+            'amount_lent' => $request->input('amount_lent') ? $request->input('amount_lent') * 100 : null,
             'loaned_at' => $request->input('loaned_at'),
         ];
 
@@ -48,10 +44,6 @@ class ContactModuleLoanController extends Controller
 
     public function update(Request $request, int $vaultId, int $contactId, int $loanId)
     {
-        if ($request->input('amount_lent')) {
-            $amount = $request->input('amount_lent') * 100;
-        }
-
         $loaners = collect($request->input('loaners'))->pluck('id');
         $loanees = collect($request->input('loanees'))->pluck('id');
 
@@ -67,7 +59,7 @@ class ContactModuleLoanController extends Controller
             'description' => $request->input('description'),
             'loaner_ids' => $loaners,
             'loanee_ids' => $loanees,
-            'amount_lent' => $request->input('amount_lent') ? $amount : null,
+            'amount_lent' => $request->input('amount_lent') ? $request->input('amount_lent') * 100 : null,
             'loaned_at' => $request->input('loaned_at'),
         ];
 

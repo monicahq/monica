@@ -53,7 +53,7 @@ class VaultFileIndexViewHelper
 
     public static function statistics(Vault $vault): array
     {
-        $contactIds = Contact::where('vault_id', $vault->id)->select('id')->get()->pluck('id')->toArray();
+        $contactIds = Contact::where('vault_id', $vault->id)->select('id')->get()->toArray();
 
         $totalNumberOfPhotos = File::whereIn('contact_id', $contactIds)
             ->where('type', File::TYPE_PHOTO)

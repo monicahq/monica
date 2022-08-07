@@ -10,12 +10,13 @@ class VaultContactSearchViewHelper
 {
     public static function data(Vault $vault, string $term): Collection
     {
+        /** @var Collection<int, Contact> */
         $contacts = Contact::search($term)
             ->where('vault_id', $vault->id)
             ->take(5)
             ->get();
 
-        $contactsCollection = $contacts->map(function (Contact $contact) {
+        return $contacts->map(function (Contact $contact): array {
             return [
                 'id' => $contact->id,
                 'name' => $contact->first_name.' '.$contact->last_name.' '.$contact->nickname.' '.$contact->maiden_name.' '.$contact->middle_name,
@@ -25,7 +26,5 @@ class VaultContactSearchViewHelper
                 ]),
             ];
         });
-
-        return $contactsCollection;
     }
 }

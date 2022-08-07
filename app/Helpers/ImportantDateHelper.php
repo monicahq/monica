@@ -23,7 +23,8 @@ class ImportantDateHelper
         }
 
         if (self::determineType($date) === ContactImportantDate::TYPE_YEAR) {
-            $age = Carbon::createFromFormat('Y', $date->year)->age;
+            $currentDate = (string) $date->year;
+            $age = Carbon::createFromFormat('Y', $currentDate)->age;
         }
 
         if (self::determineType($date) === ContactImportantDate::TYPE_MONTH_DAY) {

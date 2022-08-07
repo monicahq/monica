@@ -5,6 +5,7 @@ namespace App\Vault\Search\Web\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Vault;
 use App\Vault\Search\Web\ViewHelpers\VaultMostConsultedViewHelper;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,9 +17,9 @@ class VaultMostConsultedContactsController extends Controller
      *
      * @param  Request  $request
      * @param  int  $vaultId
-     * @return void
+     * @return JsonResponse
      */
-    public function index(Request $request, int $vaultId)
+    public function index(Request $request, int $vaultId): JsonResponse
     {
         $vault = Vault::findOrFail($vaultId);
 

@@ -44,8 +44,8 @@ class VaultShowViewHelper
 
         // then we get all the user notification channels for those users
         $userNotificationChannelIds = UserNotificationChannel::whereIn('user_id', $usersInVaultIds)
+            ->select('id')
             ->get()
-            ->pluck('id')
             ->unique('id')
             ->toArray();
 
@@ -106,8 +106,8 @@ class VaultShowViewHelper
             ->where('vault_id', $vault->id)
             ->where('user_id', $user->id)
             ->where('is_favorite', true)
+            ->select('contact_id')
             ->get()
-            ->pluck('contact_id')
             ->toArray();
 
         return Contact::whereIn('id', $favorites)

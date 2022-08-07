@@ -10,8 +10,6 @@ use Illuminate\Support\Str;
 
 class UpdateTemplatePage extends BaseService implements ServiceInterface
 {
-    private Template $template;
-
     private TemplatePage $templatePage;
 
     /**
@@ -53,7 +51,7 @@ class UpdateTemplatePage extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->template = Template::where('account_id', $data['account_id'])
+        Template::where('account_id', $data['account_id'])
             ->findOrFail($data['template_id']);
 
         $this->templatePage = TemplatePage::where('template_id', $data['template_id'])

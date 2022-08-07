@@ -14,8 +14,6 @@ class UpdateContactTemplate extends BaseService implements ServiceInterface
 {
     private array $data;
 
-    private Template $template;
-
     /**
      * Get the validation rules that apply to the service.
      *

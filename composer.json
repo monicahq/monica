@@ -37,8 +37,8 @@
     "nunomaduro/collision": "^6.0",
     "nunomaduro/larastan": "^2.0",
     "phpunit/phpunit": "^9.5.10",
-    "spatie/laravel-ignition": "^1.0",
-    "vimeo/psalm": "^4.14"
+    "psalm/plugin-laravel": "^2.0",
+    "spatie/laravel-ignition": "^1.0"
   },
   "autoload": {
     "psr-4": {
@@ -58,7 +58,6 @@
       "@php artisan package:discover --ansi"
     ],
     "post-update-cmd": [
-      "@php artisan vendor:publish --tag=laravel-assets --ansi",
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
       "@php artisan ide-helper:generate",
       "@php artisan ide-helper:meta"

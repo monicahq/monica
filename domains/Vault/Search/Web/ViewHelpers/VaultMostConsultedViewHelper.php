@@ -16,14 +16,14 @@ class VaultMostConsultedViewHelper
             ->where('vault_id', $vault->id)
             ->where('user_id', $user->id)
             ->orderBy('number_of_views', 'desc')
+            ->select('contact_id')
+            ->limit(5)
             ->get()
-            ->take(5)
-            ->pluck('contact_id')
             ->toArray();
 
         $contactsCollection = collect();
         foreach ($records as $record) {
-            $contact = Contact::find($record);
+            $contact = Contact::find($record->contact_id);
 
             $contactsCollection->push([
                 'id' => $contact->id,

@@ -32,6 +32,10 @@ class ContactImportantDatesController extends Controller
 
     public function store(Request $request, int $vaultId, int $contactId)
     {
+        $day = '';
+        $month = '';
+        $year = '';
+
         if ($request->input('choice') === ContactImportantDate::TYPE_FULL_DATE) {
             $year = Carbon::parse($request->input('date'))->year;
             $month = Carbon::parse($request->input('date'))->month;
@@ -86,6 +90,10 @@ class ContactImportantDatesController extends Controller
 
     public function update(Request $request, int $vaultId, int $contactId, int $dateId)
     {
+        $day = '';
+        $month = '';
+        $year = '';
+
         if ($request->input('choice') === ContactImportantDate::TYPE_FULL_DATE) {
             $year = Carbon::parse($request->input('date'))->year;
             $month = Carbon::parse($request->input('date'))->month;

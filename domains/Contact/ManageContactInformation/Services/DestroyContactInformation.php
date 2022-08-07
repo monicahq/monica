@@ -12,7 +12,7 @@ class DestroyContactInformation extends BaseService implements ServiceInterface
 {
     private ContactInformation $contactInformation;
 
-    private ContactInformationType $contactInformationType;
+    private array $data;
 
     /**
      * Get the validation rules that apply to the service.

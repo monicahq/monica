@@ -125,9 +125,9 @@ abstract class BaseService
      * Validate that the user has the right to do what he's supposed to do in
      * the given vault.
      *
-     * @param  string  $permission
+     * @param  int  $permission
      */
-    public function validateUserPermissionInVault(string $permission): void
+    public function validateUserPermissionInVault(int $permission): void
     {
         $exists = $this->author->vaults()
             ->where('vaults.id', $this->vault->id)
