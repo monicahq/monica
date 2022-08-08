@@ -1,8 +1,9 @@
 ## Run locally
 
 1. `composer install`
-1. `yarn`
-1. `yarn run watch`
+1. `cp .env.example .env` and configure `.env` file
+1. `yarn install`
+1. `yarn run dev`
 1. Optional: make the search work:
    1. Install and run [meilisearch](https://www.meilisearch.com/) locally
    1. Configure and run a queue (`php artisan queue:listen --queue=high,low,default`)
