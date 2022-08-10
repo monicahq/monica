@@ -115,6 +115,14 @@ class ContactShowViewHelper
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
                 ]),
+                'update_avatar' => route('contact.avatar.update', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+                'destroy_avatar' => route('contact.avatar.destroy', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
                 'update_template' => route('contact.blank', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
