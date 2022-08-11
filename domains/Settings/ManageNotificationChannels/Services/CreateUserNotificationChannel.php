@@ -4,7 +4,6 @@ namespace App\Settings\ManageNotificationChannels\Services;
 
 use App\Exceptions\EmailAlreadyExistException;
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Services\BaseService;
@@ -59,7 +58,6 @@ class CreateUserNotificationChannel extends BaseService implements ServiceInterf
         $this->validate();
         $this->create();
         $this->verifyChannel();
-        $this->log();
 
         return $this->userNotificationChannel;
     }
@@ -96,19 +94,5 @@ class CreateUserNotificationChannel extends BaseService implements ServiceInterf
             // we need to verify the email address by sending a verification email
             SendVerificationEmailChannel::dispatch($this->userNotificationChannel)->onQueue('high');
         }
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'user_notification_channel_created',
-            'objects' => json_encode([
-                'label' => $this->userNotificationChannel->label,
-                'type' => $this->userNotificationChannel->type,
-            ]),
-        ])->onQueue('low');
     }
 }

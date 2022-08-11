@@ -4,15 +4,12 @@ namespace Tests\Unit\Domains\Contact\ManageContact\Services;
 
 use App\Contact\ManageContact\Services\MoveContactToAnotherVault;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -107,8 +104,6 @@ class MoveContactToAnotherVaultTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Vault $newVault, Contact $contact): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
@@ -128,13 +123,5 @@ class MoveContactToAnotherVaultTest extends TestCase
             'id' => $contact->id,
             'vault_id' => $vault->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'contact_moved_to_another_vault';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'contact_moved_to_another_vault';
-        });
     }
 }

@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domains\Settings\ManageRelationshipTypes\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\RelationshipGroupType;
 use App\Models\RelationshipType;
@@ -11,7 +10,6 @@ use App\Models\User;
 use App\Settings\ManageRelationshipTypes\Services\UpdateRelationshipType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -89,8 +87,6 @@ class UpdateRelationshipTypeTest extends TestCase
 
     private function executeService(User $author, Account $account, RelationshipGroupType $group, RelationshipType $type): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
@@ -108,9 +104,5 @@ class UpdateRelationshipTypeTest extends TestCase
             'name' => 'type name',
             'name_reverse_relationship' => 'reverse type name',
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'relationship_type_updated';
-        });
     }
 }

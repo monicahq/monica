@@ -3,7 +3,6 @@
 namespace App\Settings\ManageContactInformationTypes\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\ContactInformationType;
 use App\Services\BaseService;
 
@@ -49,15 +48,5 @@ class DestroyContactInformationType extends BaseService implements ServiceInterf
             ->findOrFail($data['contact_information_type_id']);
 
         $type->delete();
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_information_type_destroyed',
-            'objects' => json_encode([
-                'name' => $type->name,
-            ]),
-        ])->onQueue('low');
     }
 }

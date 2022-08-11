@@ -3,7 +3,6 @@
 namespace App\Vault\ManageVault\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\Contact;
 use App\Models\File;
 use App\Services\BaseService;
@@ -59,15 +58,5 @@ class DestroyVault extends BaseService implements ServiceInterface
         });
 
         $this->vault->delete();
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'vault_destroyed',
-            'objects' => json_encode([
-                'vault_name' => $this->vault->name,
-            ]),
-        ])->onQueue('low');
     }
 }

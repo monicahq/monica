@@ -4,8 +4,6 @@ namespace Tests\Unit\Domains\Contact\ManageRelationships\Services;
 
 use App\Contact\ManageRelationships\Services\SetRelationship;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\RelationshipGroupType;
@@ -14,7 +12,6 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -161,8 +158,6 @@ class SetRelationshipTest extends TestCase
         Contact $contact,
         Contact $otherContact
     ): void {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
@@ -179,13 +174,5 @@ class SetRelationshipTest extends TestCase
             'contact_id' => $contact->id,
             'related_contact_id' => $otherContact->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'relationship_set';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'relationship_set';
-        });
     }
 }

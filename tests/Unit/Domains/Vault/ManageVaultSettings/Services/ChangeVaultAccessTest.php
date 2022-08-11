@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domains\Vault\ManageVaultSettings\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\User;
@@ -11,7 +10,6 @@ use App\Models\Vault;
 use App\Vault\ManageVaultSettings\Services\ChangeVaultAccess;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -89,8 +87,6 @@ class ChangeVaultAccessTest extends TestCase
 
     private function executeService(Account $account, User $regis, User $anotherUser, Vault $vault): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $regis->id,
@@ -111,9 +107,5 @@ class ChangeVaultAccessTest extends TestCase
             User::class,
             $user
         );
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'vault_access_permission_changed';
-        });
     }
 }

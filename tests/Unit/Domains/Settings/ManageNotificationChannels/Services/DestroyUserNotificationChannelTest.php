@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Services;
 
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
@@ -10,7 +9,6 @@ use App\Settings\ManageNotificationChannels\Services\CreateUserNotificationChann
 use App\Settings\ManageNotificationChannels\Services\DestroyUserNotificationChannel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -64,8 +62,6 @@ class DestroyUserNotificationChannelTest extends TestCase
 
     private function executeService(User $author, Account $account, UserNotificationChannel $channel): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
@@ -77,9 +73,5 @@ class DestroyUserNotificationChannelTest extends TestCase
         $this->assertDatabaseMissing('user_notification_channels', [
             'id' => $channel->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'user_notification_channel_destroyed';
-        });
     }
 }

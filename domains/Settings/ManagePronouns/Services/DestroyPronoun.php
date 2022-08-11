@@ -3,7 +3,6 @@
 namespace App\Settings\ManagePronouns\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\Pronoun;
 use App\Models\User;
 use App\Services\BaseService;
@@ -50,15 +49,5 @@ class DestroyPronoun extends BaseService implements ServiceInterface
             ->findOrFail($data['pronoun_id']);
 
         $pronoun->delete();
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'pronoun_destroyed',
-            'objects' => json_encode([
-                'gender_name' => $pronoun->name,
-            ]),
-        ])->onQueue('low');
     }
 }

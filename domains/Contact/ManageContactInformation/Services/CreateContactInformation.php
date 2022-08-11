@@ -3,8 +3,6 @@
 namespace App\Contact\ManageContactInformation\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\ContactInformation;
 use App\Models\ContactInformationType;
 use App\Services\BaseService;
@@ -62,7 +60,6 @@ class CreateContactInformation extends BaseService implements ServiceInterface
         $this->validate();
         $this->create();
         $this->updateLastEditedDate();
-        $this->log();
 
         return $this->contactInformation;
     }
@@ -88,30 +85,5 @@ class CreateContactInformation extends BaseService implements ServiceInterface
     {
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_information_created',
-            'objects' => json_encode([
-                'contact_id' => $this->contact->id,
-                'contact_name' => $this->contact->name,
-                'contact_information_type_name' => $this->contactInformationType->name,
-            ]),
-        ])->onQueue('low');
-
-        CreateContactLog::dispatch([
-            'contact_id' => $this->contact->id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_information_created',
-            'objects' => json_encode([
-                'contact_information_type_name' => $this->contactInformationType->name,
-            ]),
-        ])->onQueue('low');
     }
 }

@@ -5,15 +5,12 @@ namespace Tests\Unit\Domains\Contact\ManagePronouns\Services;
 use App\Contact\ManagePronouns\Services\RemovePronoun;
 use App\Contact\ManagePronouns\Services\SetPronoun;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -85,8 +82,6 @@ class RemovePronounTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
@@ -100,13 +95,5 @@ class RemovePronounTest extends TestCase
             'id' => $contact->id,
             'pronoun_id' => null,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'pronoun_unset';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'pronoun_unset';
-        });
     }
 }

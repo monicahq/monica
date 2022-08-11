@@ -4,7 +4,6 @@ namespace App\Vault\ManageVaultSettings\Services;
 
 use App\Exceptions\SameUserException;
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\Contact;
 use App\Models\User;
 use App\Services\BaseService;
@@ -56,8 +55,6 @@ class RemoveVaultAccess extends BaseService implements ServiceInterface
         $this->validate();
         $this->remove();
         $this->removeAllRemindersForThisUserInThisVault();
-
-        $this->log();
     }
 
     private function validate(): void
@@ -100,19 +97,5 @@ class RemoveVaultAccess extends BaseService implements ServiceInterface
         DB::table('contact_reminder_scheduled')
             ->whereIn('user_notification_channel_id', $userNotificationChannelIds)
             ->delete();
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'vault_access_removed',
-            'objects' => json_encode([
-                'user_name' => $this->user->name,
-                'vault_name' => $this->vault->name,
-            ]),
-        ])->onQueue('low');
     }
 }

@@ -3,8 +3,6 @@
 namespace App\Contact\ManageContact\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Contact;
 use App\Models\Template;
 use App\Services\BaseService;
@@ -58,7 +56,6 @@ class UpdateContactTemplate extends BaseService implements ServiceInterface
         $this->validate();
         $this->update();
         $this->updateLastEditedDate();
-        $this->log();
 
         return $this->contact;
     }
@@ -82,27 +79,5 @@ class UpdateContactTemplate extends BaseService implements ServiceInterface
     {
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_template_updated',
-            'objects' => json_encode([
-                'contact_id' => $this->contact->id,
-                'contact_name' => $this->contact->name,
-            ]),
-        ])->onQueue('low');
-
-        CreateContactLog::dispatch([
-            'contact_id' => $this->contact->id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_template_updated',
-            'objects' => json_encode([]),
-        ])->onQueue('low');
     }
 }

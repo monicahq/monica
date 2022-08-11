@@ -3,14 +3,12 @@
 namespace Tests\Unit\Domains\Settings\ManagePronouns\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\Pronoun;
 use App\Models\User;
 use App\Settings\ManagePronouns\Services\CreatePronoun;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -57,8 +55,6 @@ class CreatePronounTest extends TestCase
 
     private function executeService(User $author, Account $account): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
@@ -77,9 +73,5 @@ class CreatePronounTest extends TestCase
             Pronoun::class,
             $pronoun
         );
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'pronoun_created';
-        });
     }
 }

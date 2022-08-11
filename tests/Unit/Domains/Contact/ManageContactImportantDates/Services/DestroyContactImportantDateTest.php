@@ -4,8 +4,6 @@ namespace Tests\Unit\Domains\Contact\ManageContactImportantDates\Services;
 
 use App\Contact\ManageContactImportantDates\Services\DestroyContactImportantDate;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
@@ -13,7 +11,6 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -111,8 +108,6 @@ class DestroyContactImportantDateTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ContactImportantDate $date): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
@@ -126,13 +121,5 @@ class DestroyContactImportantDateTest extends TestCase
         $this->assertDatabaseMissing('contact_important_dates', [
             'id' => $date->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'contact_date_destroyed';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'contact_date_destroyed';
-        });
     }
 }

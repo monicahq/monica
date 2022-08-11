@@ -3,7 +3,6 @@
 namespace App\Settings\ManageRelationshipTypes\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\RelationshipGroupType;
 use App\Models\User;
 use App\Services\BaseService;
@@ -49,16 +48,6 @@ class DestroyRelationshipGroupType extends BaseService implements ServiceInterfa
         $type = RelationshipGroupType::where('account_id', $data['account_id'])
             ->where('can_be_deleted', true)
             ->findOrFail($data['relationship_group_type_id']);
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'relationship_group_type_destroyed',
-            'objects' => json_encode([
-                'name' => $type->name,
-            ]),
-        ])->onQueue('low');
 
         $type->delete();
     }

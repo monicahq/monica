@@ -3,7 +3,6 @@
 namespace App\Settings\ManageGenders\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\Gender;
 use App\Services\BaseService;
 
@@ -49,15 +48,5 @@ class DestroyGender extends BaseService implements ServiceInterface
             ->findOrFail($data['gender_id']);
 
         $gender->delete();
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'gender_destroyed',
-            'objects' => json_encode([
-                'gender_name' => $gender->name,
-            ]),
-        ])->onQueue('low');
     }
 }

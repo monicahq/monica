@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domains\Vault\ManageVaultSettings\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\Template;
 use App\Models\User;
@@ -11,7 +10,6 @@ use App\Models\Vault;
 use App\Vault\ManageVaultSettings\Services\UpdateVaultDefaultTemplate;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -99,8 +97,6 @@ class UpdateVaultDefaultTemplateTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Template $template): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
@@ -115,9 +111,5 @@ class UpdateVaultDefaultTemplateTest extends TestCase
             'account_id' => $account->id,
             'default_template_id' => $template->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'vault_updated';
-        });
     }
 }

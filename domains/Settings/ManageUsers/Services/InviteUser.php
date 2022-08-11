@@ -3,7 +3,6 @@
 namespace App\Settings\ManageUsers\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Mail\UserInvited;
 use App\Models\User;
 use App\Services\BaseService;
@@ -57,7 +56,6 @@ class InviteUser extends BaseService implements ServiceInterface
         $this->validateRules($data);
         $this->createUser();
         $this->sendEmail();
-        $this->log();
 
         return $this->user;
     }
@@ -76,18 +74,5 @@ class InviteUser extends BaseService implements ServiceInterface
     {
         Mail::to($this->user->email)
             ->queue(new UserInvited($this->user, $this->author));
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'user_invited',
-            'objects' => json_encode([
-                'user_email' => $this->user->email,
-            ]),
-        ])->onQueue('low');
     }
 }

@@ -4,8 +4,6 @@ namespace Tests\Unit\Domains\Contact\ManageLoans\Services;
 
 use App\Contact\ManageLoans\Services\CreateLoan;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Currency;
@@ -14,7 +12,6 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -124,8 +121,6 @@ class CreateLoanTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Contact $loaner, Contact $loanee): void
     {
-        Queue::fake();
-
         $currency = Currency::factory()->create();
 
         $request = [
@@ -160,13 +155,5 @@ class CreateLoanTest extends TestCase
             'loaner_id' => $loaner->id,
             'loanee_id' => $loanee->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'loan_created';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'loan_created';
-        });
     }
 }

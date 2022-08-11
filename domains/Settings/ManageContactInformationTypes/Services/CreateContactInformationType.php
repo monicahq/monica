@@ -3,7 +3,6 @@
 namespace App\Settings\ManageContactInformationTypes\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\ContactInformationType;
 use App\Services\BaseService;
 
@@ -52,16 +51,6 @@ class CreateContactInformationType extends BaseService implements ServiceInterfa
             'name' => $data['name'],
             'protocol' => $this->valueOrNull($data, 'protocol'),
         ]);
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_information_type_created',
-            'objects' => json_encode([
-                'name' => $type->name,
-            ]),
-        ])->onQueue('low');
 
         return $type;
     }

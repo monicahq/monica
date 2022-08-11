@@ -4,7 +4,6 @@ namespace App\Contact\ManageContact\Services;
 
 use App\Exceptions\CantBeDeletedException;
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Services\BaseService;
 
 class DestroyContact extends BaseService implements ServiceInterface
@@ -48,8 +47,6 @@ class DestroyContact extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->log();
-
         if (! $this->contact->can_be_deleted) {
             throw new CantBeDeletedException();
         }
@@ -65,18 +62,5 @@ class DestroyContact extends BaseService implements ServiceInterface
         foreach ($files as $file) {
             $file->delete();
         }
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_destroyed',
-            'objects' => json_encode([
-                'name' => $this->contact->name,
-            ]),
-        ])->onQueue('low');
     }
 }

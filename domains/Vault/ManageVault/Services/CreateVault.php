@@ -3,7 +3,6 @@
 namespace App\Vault\ManageVault\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
 use App\Models\Template;
@@ -60,7 +59,6 @@ class CreateVault extends BaseService implements ServiceInterface
         $this->createVault();
         $this->createUserContact();
         $this->populateDefaultContactImportantDateTypes();
-        $this->log();
 
         return $this->vault;
     }
@@ -115,19 +113,5 @@ class CreateVault extends BaseService implements ServiceInterface
             'internal_type' => ContactImportantDate::TYPE_DECEASED_DATE,
             'can_be_deleted' => false,
         ]);
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'vault_created',
-            'objects' => json_encode([
-                'vault_id' => $this->vault->id,
-                'vault_name' => $this->vault->name,
-            ]),
-        ])->onQueue('low');
     }
 }

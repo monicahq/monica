@@ -4,7 +4,6 @@ namespace Tests\Unit\Domains\Vault\ManageVaultSettings\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
 use App\Exceptions\SameUserException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactReminder;
@@ -15,7 +14,6 @@ use App\Vault\ManageVaultSettings\Services\GrantVaultAccessToUser;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -100,7 +98,6 @@ class GrantVaultAccessToUserTest extends TestCase
 
     private function executeService(Account $account, User $user, User $anotherUser, Vault $vault): void
     {
-        Queue::fake();
         Carbon::setTestNow(Carbon::create(2018, 1, 1));
 
         // we'll create contact reminders so we can check that this new user
@@ -159,9 +156,5 @@ class GrantVaultAccessToUserTest extends TestCase
             'contact_reminder_id' => $contactReminder->id,
             'scheduled_at' => '2018-10-02 09:00:00',
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'vault_access_grant';
-        });
     }
 }

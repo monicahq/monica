@@ -4,8 +4,6 @@ namespace Tests\Unit\Domains\Contact\ManageNotes\Services;
 
 use App\Contact\ManageNotes\Services\DestroyNote;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactFeedItem;
@@ -14,7 +12,6 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -117,8 +114,6 @@ class DestroyNoteTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Note $note): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
@@ -132,13 +127,5 @@ class DestroyNoteTest extends TestCase
         $this->assertDatabaseMissing('notes', [
             'id' => $note->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'note_destroyed';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'note_destroyed';
-        });
     }
 }

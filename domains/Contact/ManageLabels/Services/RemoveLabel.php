@@ -3,8 +3,6 @@
 namespace App\Contact\ManageLabels\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\ContactFeedItem;
 use App\Models\Label;
 use App\Services\BaseService;
@@ -63,35 +61,9 @@ class RemoveLabel extends BaseService implements ServiceInterface
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
 
-        $this->log();
         $this->createFeedItem();
 
         return $this->label;
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'label_removed',
-            'objects' => json_encode([
-                'contact_id' => $this->contact->id,
-                'contact_name' => $this->contact->name,
-                'label_name' => $this->label->name,
-            ]),
-        ])->onQueue('low');
-
-        CreateContactLog::dispatch([
-            'contact_id' => $this->contact->id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'label_removed',
-            'objects' => json_encode([
-                'label_name' => $this->label->name,
-            ]),
-        ])->onQueue('low');
     }
 
     private function createFeedItem(): void

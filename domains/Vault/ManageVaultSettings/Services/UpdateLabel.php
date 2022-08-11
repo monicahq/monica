@@ -3,7 +3,6 @@
 namespace App\Vault\ManageVaultSettings\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\Label;
 use App\Services\BaseService;
 use Illuminate\Support\Str;
@@ -62,16 +61,6 @@ class UpdateLabel extends BaseService implements ServiceInterface
         $label->description = $this->valueOrNull($data, 'description');
         $label->slug = Str::slug($data['name'], '-');
         $label->save();
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'label_updated',
-            'objects' => json_encode([
-                'label_name' => $label->name,
-            ]),
-        ])->onQueue('low');
 
         return $label;
     }

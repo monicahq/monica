@@ -4,8 +4,6 @@ namespace Tests\Unit\Domains\Contact\ManageLoans\Services;
 
 use App\Contact\ManageLoans\Services\DestroyLoan;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactFeedItem;
@@ -14,7 +12,6 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -101,8 +98,6 @@ class DestroyLoanTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Loan $loan): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
@@ -116,13 +111,5 @@ class DestroyLoanTest extends TestCase
         $this->assertDatabaseMissing('loans', [
             'id' => $loan->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'loan_destroyed';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'loan_destroyed';
-        });
     }
 }

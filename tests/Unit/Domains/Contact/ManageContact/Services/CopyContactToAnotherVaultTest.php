@@ -4,8 +4,6 @@ namespace Tests\Unit\Domains\Contact\ManageContact\Services;
 
 use App\Contact\ManageContact\Services\CopyContactToAnotherVault;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\User;
@@ -133,13 +131,5 @@ class CopyContactToAnotherVaultTest extends TestCase
             'id' => $contact->id,
             'vault_id' => $newVault->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'contact_copied_to_another_vault';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'contact_copied_to_another_vault';
-        });
     }
 }

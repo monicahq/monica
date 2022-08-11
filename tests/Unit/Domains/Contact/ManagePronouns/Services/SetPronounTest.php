@@ -4,8 +4,6 @@ namespace Tests\Unit\Domains\Contact\ManagePronouns\Services;
 
 use App\Contact\ManagePronouns\Services\SetPronoun;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Pronoun;
@@ -13,7 +11,6 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -103,8 +100,6 @@ class SetPronounTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Pronoun $pronoun): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
@@ -119,13 +114,5 @@ class SetPronounTest extends TestCase
             'id' => $contact->id,
             'pronoun_id' => $pronoun->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'pronoun_set';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'pronoun_set';
-        });
     }
 }

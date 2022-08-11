@@ -4,7 +4,6 @@ namespace Tests\Unit\Domains\Contact\ManageContactInformation\Services;
 
 use App\Contact\ManageContactInformation\Services\UpdateContactInformation;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactInformation;
@@ -13,7 +12,6 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -138,8 +136,6 @@ class UpdateContactInformationTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ContactInformationType $type, ContactInformation $information): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
@@ -156,9 +152,5 @@ class UpdateContactInformationTest extends TestCase
             'id' => $contactInfo->id,
             'data' => 45322322,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'contact_information_updated';
-        });
     }
 }

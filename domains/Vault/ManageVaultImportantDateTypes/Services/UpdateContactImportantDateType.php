@@ -3,7 +3,6 @@
 namespace App\Vault\ManageVaultImportantDateTypes\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\ContactImportantDateType;
 use App\Services\BaseService;
 
@@ -58,16 +57,6 @@ class UpdateContactImportantDateType extends BaseService implements ServiceInter
         $type->can_be_deleted = $this->valueOrTrue($data, 'can_be_deleted');
         $type->internal_type = $this->valueOrNull($data, 'internal_type');
         $type->save();
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_important_date_type_updated',
-            'objects' => json_encode([
-                'type_label' => $type->label,
-            ]),
-        ])->onQueue('low');
 
         return $type;
     }

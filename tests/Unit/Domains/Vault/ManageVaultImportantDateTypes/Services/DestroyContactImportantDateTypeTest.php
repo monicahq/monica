@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domains\Vault\ManageVaultImportantDateTypes\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\ContactImportantDateType;
 use App\Models\User;
@@ -11,7 +10,6 @@ use App\Models\Vault;
 use App\Vault\ManageVaultImportantDateTypes\Services\DestroyContactImportantDateType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -98,8 +96,6 @@ class DestroyContactImportantDateTypeTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, ContactImportantDateType $type): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
@@ -112,9 +108,5 @@ class DestroyContactImportantDateTypeTest extends TestCase
         $this->assertDatabaseMissing('contact_important_date_types', [
             'id' => $type->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'contact_important_date_type_destroyed';
-        });
     }
 }

@@ -9,7 +9,6 @@ use App\Models\Contact;
 use App\Models\ContactImportantDate;
 use App\Models\ContactImportantDateType;
 use App\Models\ContactInformation;
-use App\Models\ContactLog;
 use App\Models\ContactReminder;
 use App\Models\ContactTask;
 use App\Models\File;
@@ -91,17 +90,6 @@ class ContactTest extends TestCase
         $contact->labels()->sync([$label->id]);
 
         $this->assertTrue($contact->labels()->exists());
-    }
-
-    /** @test */
-    public function it_has_many_logs(): void
-    {
-        $contact = Contact::factory()->create();
-        ContactLog::factory()->count(2)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $this->assertTrue($contact->contactLogs()->exists());
     }
 
     /** @test */

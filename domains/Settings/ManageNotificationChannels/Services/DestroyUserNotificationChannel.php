@@ -3,7 +3,6 @@
 namespace App\Settings\ManageNotificationChannels\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Services\BaseService;
@@ -51,7 +50,6 @@ class DestroyUserNotificationChannel extends BaseService implements ServiceInter
         $this->data = $data;
         $this->validate();
         $this->destroy();
-        $this->log();
     }
 
     private function validate(): void
@@ -65,19 +63,5 @@ class DestroyUserNotificationChannel extends BaseService implements ServiceInter
     private function destroy(): void
     {
         $this->userNotificationChannel->delete();
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'user_notification_channel_destroyed',
-            'objects' => json_encode([
-                'label' => $this->userNotificationChannel->label,
-                'type' => $this->userNotificationChannel->type,
-            ]),
-        ])->onQueue('low');
     }
 }

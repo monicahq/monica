@@ -4,8 +4,6 @@ namespace App\Contact\ManageContactImportantDates\Services;
 
 use App\Helpers\ImportantDateHelper;
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Address;
 use App\Models\ContactFeedItem;
 use App\Models\ContactImportantDate;
@@ -64,31 +62,7 @@ class DestroyContactImportantDate extends BaseService implements ServiceInterfac
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
 
-        $this->log();
         $this->createFeedItem();
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_date_destroyed',
-            'objects' => json_encode([
-                'contact_id' => $this->contact->id,
-                'contact_name' => $this->contact->name,
-            ]),
-        ])->onQueue('low');
-
-        CreateContactLog::dispatch([
-            'contact_id' => $this->contact->id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_date_destroyed',
-            'objects' => json_encode([
-            ]),
-        ])->onQueue('low');
     }
 
     private function createFeedItem(): void

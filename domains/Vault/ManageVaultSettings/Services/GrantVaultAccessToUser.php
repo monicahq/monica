@@ -4,9 +4,7 @@ namespace App\Vault\ManageVaultSettings\Services;
 
 use App\Contact\ManageReminders\Services\ScheduleContactReminderForUser;
 use App\Exceptions\SameUserException;
-use App\Helpers\VaultHelper;
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\Contact;
 use App\Models\ContactReminder;
 use App\Models\User;
@@ -61,7 +59,6 @@ class GrantVaultAccessToUser extends BaseService implements ServiceInterface
         $this->validate();
         $this->grant();
         $this->scheduleContactReminders();
-        $this->log();
 
         return $this->user;
     }
@@ -118,20 +115,5 @@ class GrantVaultAccessToUser extends BaseService implements ServiceInterface
                 'user_id' => $this->user->id,
             ]);
         }
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'vault_access_grant',
-            'objects' => json_encode([
-                'user_name' => $this->user->name,
-                'vault_name' => $this->vault->name,
-                'permission_type' => VaultHelper::getPermissionFriendlyName($this->data['permission']),
-            ]),
-        ])->onQueue('low');
     }
 }

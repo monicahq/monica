@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Domains\Vault\ManageVault\Services;
 
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
@@ -11,7 +10,6 @@ use App\Models\Vault;
 use App\Vault\ManageVault\Services\CreateVault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -49,8 +47,6 @@ class CreateVaultTest extends TestCase
 
     private function executeService(User $author, Account $account): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
@@ -98,9 +94,5 @@ class CreateVaultTest extends TestCase
             Vault::class,
             $vault
         );
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'vault_created';
-        });
     }
 }

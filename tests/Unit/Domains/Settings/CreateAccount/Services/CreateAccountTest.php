@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Domains\Settings\CreateAccount\Services;
 
-use App\Jobs\CreateAuditLog;
 use App\Jobs\SetupAccount;
 use App\Models\User;
 use App\Settings\CreateAccount\Services\CreateAccount;
@@ -68,10 +67,6 @@ class CreateAccountTest extends TestCase
 
         Queue::assertPushed(SetupAccount::class, function ($job) use ($user) {
             return $job->user === $user && $job->onQueue('high');
-        });
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'account_created';
         });
     }
 }

@@ -4,8 +4,6 @@ namespace Tests\Unit\Domains\Contact\ManageReminders\Services;
 
 use App\Contact\ManageReminders\Services\DestroyReminder;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactReminder;
@@ -13,7 +11,6 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -111,8 +108,6 @@ class DestroyReminderTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ContactReminder $reminder): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
@@ -126,13 +121,5 @@ class DestroyReminderTest extends TestCase
         $this->assertDatabaseMissing('contact_reminders', [
             'id' => $reminder->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'contact_reminder_destroyed';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'contact_reminder_destroyed';
-        });
     }
 }

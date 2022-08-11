@@ -4,8 +4,6 @@ namespace App\Contact\ManageContactImportantDates\Services;
 
 use App\Helpers\ImportantDateHelper;
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\ContactFeedItem;
 use App\Models\ContactImportantDate;
 use App\Models\ContactImportantDateType;
@@ -74,7 +72,6 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
         ]);
 
         $this->updateLastEditedDate();
-        $this->log();
         $this->createFeedItem();
 
         return $this->date;
@@ -95,31 +92,6 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
     {
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_date_created',
-            'objects' => json_encode([
-                'contact_id' => $this->contact->id,
-                'contact_name' => $this->contact->name,
-                'label' => $this->date->label,
-            ]),
-        ])->onQueue('low');
-
-        CreateContactLog::dispatch([
-            'contact_id' => $this->contact->id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_date_created',
-            'objects' => json_encode([
-                'label' => $this->date->label,
-            ]),
-        ])->onQueue('low');
     }
 
     private function createFeedItem(): void

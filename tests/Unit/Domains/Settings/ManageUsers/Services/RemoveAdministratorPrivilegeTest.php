@@ -3,14 +3,12 @@
 namespace Tests\Unit\Domains\Settings\ManageUsers\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\User;
 use App\Settings\ManageUsers\Services\RemoveAdministratorPrivilege;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -85,8 +83,6 @@ class RemoveAdministratorPrivilegeTest extends TestCase
 
     private function executeService(Account $account, User $author, User $anotherUser): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
@@ -99,9 +95,5 @@ class RemoveAdministratorPrivilegeTest extends TestCase
             'id' => $anotherUser->id,
             'is_account_administrator' => false,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'administrator_privilege_removed';
-        });
     }
 }

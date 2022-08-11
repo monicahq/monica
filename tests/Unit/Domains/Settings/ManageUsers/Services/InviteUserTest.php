@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domains\Settings\ManageUsers\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Mail\UserInvited;
 use App\Models\Account;
 use App\Models\User;
@@ -11,7 +10,6 @@ use App\Settings\ManageUsers\Services\InviteUser;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -69,7 +67,6 @@ class InviteUserTest extends TestCase
     private function executeService(Account $account, User $author): void
     {
         Mail::fake();
-        Queue::fake();
 
         $request = [
             'account_id' => $account->id,
@@ -85,10 +82,6 @@ class InviteUserTest extends TestCase
             'email' => $newUser->email,
             'is_account_administrator' => true,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'user_invited';
-        });
 
         Mail::assertQueued(UserInvited::class, function ($mail) use ($newUser) {
             return $mail->hasTo($newUser->email);

@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Services;
 
-use App\Jobs\CreateAuditLog;
 use App\Models\Contact;
 use App\Models\ContactReminder;
 use App\Models\User;
@@ -12,7 +11,6 @@ use App\Settings\ManageNotificationChannels\Services\ToggleUserNotificationChann
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -66,7 +64,6 @@ class ToggleUserNotificationChannelTest extends TestCase
 
     private function executeService(User $author, UserNotificationChannel $channel, ContactReminder $contactReminder = null): void
     {
-        Queue::fake();
         Carbon::setTestNow(Carbon::create(2018, 1, 1));
 
         $request = [
@@ -93,9 +90,5 @@ class ToggleUserNotificationChannelTest extends TestCase
             'user_notification_channel_id' => $channel->id,
             'scheduled_at' => '2018-10-02 09:00:00',
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'user_notification_channel_toggled';
-        });
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Settings\ManageUsers\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\User;
 use App\Services\BaseService;
 
@@ -55,17 +54,6 @@ class RemoveAdministratorPrivilege extends BaseService implements ServiceInterfa
 
         $user->is_account_administrator = false;
         $user->save();
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'administrator_privilege_removed',
-            'objects' => json_encode([
-                'user_id' => $user->id,
-                'user_name' => $user->name,
-            ]),
-        ])->onQueue('low');
 
         return $user;
     }

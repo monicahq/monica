@@ -3,7 +3,6 @@
 namespace App\Settings\ManageGenders\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\Gender;
 use App\Services\BaseService;
 
@@ -52,16 +51,6 @@ class UpdateGender extends BaseService implements ServiceInterface
 
         $gender->name = $data['name'];
         $gender->save();
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'gender_updated',
-            'objects' => json_encode([
-                'gender_name' => $gender->name,
-            ]),
-        ])->onQueue('low');
 
         return $gender;
     }

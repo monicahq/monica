@@ -3,7 +3,6 @@
 namespace App\Settings\CreateAccount\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Jobs\SetupAccount;
 use App\Models\Account;
 use App\Models\User;
@@ -48,7 +47,6 @@ class CreateAccount extends BaseService implements ServiceInterface
             'storage_limit_in_mb' => config('monica.default_storage_limit_in_mb'),
         ]);
         $this->addFirstUser();
-        $this->addLogs();
 
         SetupAccount::dispatch($this->user)->onQueue('high');
 
@@ -66,16 +64,5 @@ class CreateAccount extends BaseService implements ServiceInterface
             'is_account_administrator' => true,
             'timezone' => 'UTC',
         ]);
-    }
-
-    private function addLogs(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->account->id,
-            'author_id' => $this->user->id,
-            'author_name' => $this->user->name,
-            'action_name' => 'account_created',
-            'objects' => json_encode([]),
-        ])->onQueue('low');
     }
 }

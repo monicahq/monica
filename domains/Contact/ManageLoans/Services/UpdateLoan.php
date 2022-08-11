@@ -3,8 +3,6 @@
 namespace App\Contact\ManageLoans\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Contact;
 use App\Models\Loan;
 use App\Services\BaseService;
@@ -72,7 +70,6 @@ class UpdateLoan extends BaseService implements ServiceInterface
         $this->data = $data;
         $this->validate();
         $this->update();
-        $this->log();
 
         return $this->loan;
     }
@@ -128,30 +125,5 @@ class UpdateLoan extends BaseService implements ServiceInterface
 
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'loan_updated',
-            'objects' => json_encode([
-                'contact_id' => $this->contact->id,
-                'contact_name' => $this->contact->name,
-                'loan_name' => $this->loan->name,
-            ]),
-        ])->onQueue('low');
-
-        CreateContactLog::dispatch([
-            'contact_id' => $this->contact->id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'loan_updated',
-            'objects' => json_encode([
-                'loan_name' => $this->loan->name,
-            ]),
-        ])->onQueue('low');
     }
 }

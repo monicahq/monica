@@ -4,8 +4,6 @@ namespace Tests\Unit\Domains\Contact\ManageContactAddresses\Services;
 
 use App\Contact\ManageContactAddresses\Services\CreateContactAddress;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Address;
 use App\Models\AddressType;
@@ -14,7 +12,6 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -104,8 +101,6 @@ class CreateContactAddressTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact, AddressType $type): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
@@ -139,13 +134,5 @@ class CreateContactAddressTest extends TestCase
             Address::class,
             $address
         );
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'contact_address_created';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'contact_address_created';
-        });
     }
 }

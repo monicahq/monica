@@ -4,8 +4,6 @@ namespace Tests\Unit\Domains\Contact\ManageContactImportantDates\Services;
 
 use App\Contact\ManageContactImportantDates\Services\CreateContactImportantDate;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
@@ -13,7 +11,6 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -85,8 +82,6 @@ class CreateContactImportantDateTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
@@ -117,13 +112,5 @@ class CreateContactImportantDateTest extends TestCase
             ContactImportantDate::class,
             $date
         );
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'contact_date_created';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'contact_date_created';
-        });
     }
 }

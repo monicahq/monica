@@ -3,7 +3,6 @@
 namespace App\Settings\ManageRelationshipTypes\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\RelationshipGroupType;
 use App\Models\RelationshipType;
 use App\Models\User;
@@ -62,17 +61,6 @@ class CreateRelationshipType extends BaseService implements ServiceInterface
             'can_be_deleted' => $data['can_be_deleted'],
             'type' => $this->valueOrNull($data, 'type'),
         ]);
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'relationship_type_created',
-            'objects' => json_encode([
-                'name' => $type->name,
-                'group_type_name' => $group->name,
-            ]),
-        ])->onQueue('low');
 
         return $type;
     }

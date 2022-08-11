@@ -3,7 +3,6 @@
 namespace App\Vault\ManageVaultSettings\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\Label;
 use App\Models\User;
 use App\Services\BaseService;
@@ -52,15 +51,5 @@ class DestroyLabel extends BaseService implements ServiceInterface
             ->findOrFail($data['label_id']);
 
         $label->delete();
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'label_destroyed',
-            'objects' => json_encode([
-                'label_name' => $label->name,
-            ]),
-        ])->onQueue('low');
     }
 }

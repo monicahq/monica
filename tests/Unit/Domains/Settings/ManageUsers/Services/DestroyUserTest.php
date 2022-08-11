@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domains\Settings\ManageUsers\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\User;
@@ -11,7 +10,6 @@ use App\Models\Vault;
 use App\Settings\ManageUsers\Services\DestroyUser;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -112,8 +110,6 @@ class DestroyUserTest extends TestCase
 
     private function executeService(Account $account, User $author, User $user, Vault $vaultManager = null, Vault $vaultEditor = null, Vault $vaultViewer = null): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
@@ -141,9 +137,5 @@ class DestroyUserTest extends TestCase
         $this->assertDatabaseHas('user_vault', [
             'vault_id' => $vaultViewer->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'user_deleted';
-        });
     }
 }

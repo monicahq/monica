@@ -3,7 +3,6 @@
 namespace App\Vault\ManageVaultSettings\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\Template;
 use App\Models\Vault;
 use App\Services\BaseService;
@@ -56,17 +55,6 @@ class UpdateVaultDefaultTemplate extends BaseService implements ServiceInterface
 
         $this->vault->default_template_id = $this->valueOrNull($data, 'template_id');
         $this->vault->save();
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'vault_updated',
-            'objects' => json_encode([
-                'vault_id' => $this->vault->id,
-                'vault_name' => $this->vault->name,
-            ]),
-        ])->onQueue('low');
 
         return $this->vault;
     }

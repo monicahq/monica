@@ -3,7 +3,6 @@
 namespace App\Settings\ManageNotificationChannels\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Services\BaseService;
@@ -53,7 +52,6 @@ class ToggleUserNotificationChannel extends BaseService implements ServiceInterf
         $this->validate();
         $this->toggle();
         $this->updateScheduledReminders();
-        $this->log();
 
         return $this->userNotificationChannel;
     }
@@ -102,19 +100,5 @@ class ToggleUserNotificationChannel extends BaseService implements ServiceInterf
             'author_id' => $this->data['author_id'],
             'user_notification_channel_id' => $this->userNotificationChannel->id,
         ]);
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'user_notification_channel_toggled',
-            'objects' => json_encode([
-                'label' => $this->userNotificationChannel->label,
-                'type' => $this->userNotificationChannel->type,
-            ]),
-        ])->onQueue('low');
     }
 }

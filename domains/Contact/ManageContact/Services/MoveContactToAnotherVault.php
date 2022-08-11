@@ -4,8 +4,6 @@ namespace App\Contact\ManageContact\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Contact;
 use App\Models\Vault;
 use App\Services\BaseService;
@@ -60,7 +58,6 @@ class MoveContactToAnotherVault extends BaseService implements ServiceInterface
         $this->validate();
         $this->move();
         $this->updateLastEditedDate();
-        $this->log();
 
         return $this->contact;
     }
@@ -92,32 +89,5 @@ class MoveContactToAnotherVault extends BaseService implements ServiceInterface
     {
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_moved_to_another_vault',
-            'objects' => json_encode([
-                'original_vault_name' => $this->vault->name,
-                'target_vault_name' => $this->newVault->name,
-                'contact_id' => $this->contact->id,
-                'contact_name' => $this->contact->name,
-            ]),
-        ])->onQueue('low');
-
-        CreateContactLog::dispatch([
-            'contact_id' => $this->contact->id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_moved_to_another_vault',
-            'objects' => json_encode([
-                'initial_vault_name' => $this->vault->name,
-                'destination_vault_name' => $this->newVault->name,
-            ]),
-        ])->onQueue('low');
     }
 }

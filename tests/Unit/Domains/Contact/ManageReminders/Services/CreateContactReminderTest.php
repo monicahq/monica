@@ -4,8 +4,6 @@ namespace Tests\Unit\Domains\Contact\ManageReminders\Services;
 
 use App\Contact\ManageReminders\Services\CreateContactReminder;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactReminder;
@@ -15,7 +13,6 @@ use App\Models\Vault;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -88,7 +85,6 @@ class CreateContactReminderTest extends TestCase
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact): void
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1));
-        Queue::fake();
 
         $userNotificationChannel = UserNotificationChannel::factory()->create([
             'user_id' => $author->id,
@@ -125,13 +121,5 @@ class CreateContactReminderTest extends TestCase
             'contact_reminder_id' => $contactReminder->id,
             'scheduled_at' => '2018-10-29 09:00:00',
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'contact_reminder_created';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'contact_reminder_created';
-        });
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Vault\ManageVault\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\Vault;
 use App\Services\BaseService;
 
@@ -52,17 +51,6 @@ class UpdateVault extends BaseService implements ServiceInterface
         $this->vault->name = $data['name'];
         $this->vault->description = $this->valueOrNull($data, 'description');
         $this->vault->save();
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'vault_updated',
-            'objects' => json_encode([
-                'vault_id' => $this->vault->id,
-                'vault_name' => $this->vault->name,
-            ]),
-        ])->onQueue('low');
 
         return $this->vault;
     }

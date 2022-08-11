@@ -3,8 +3,6 @@
 namespace App\Contact\ManageRelationships\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Contact;
 use App\Models\RelationshipType;
 use App\Services\BaseService;
@@ -75,7 +73,6 @@ class UnsetRelationship extends BaseService implements ServiceInterface
             $otherContact->delete();
         }
 
-        $this->log($otherContact);
         $this->updateLastEditedDate();
     }
 
@@ -90,33 +87,5 @@ class UnsetRelationship extends BaseService implements ServiceInterface
         $contact->relationships()->detach([
             $otherContact->id,
         ]);
-    }
-
-    private function log(Contact $otherContact): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'relationship_unset',
-            'objects' => json_encode([
-                'contact_id' => $this->contact->id,
-                'contact_name' => $this->contact->name,
-                'other_contact_id' => $otherContact->id,
-                'other_contact_name' => $otherContact->name,
-            ]),
-        ])->onQueue('low');
-
-        CreateContactLog::dispatch([
-            'contact_id' => $this->contact->id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'relationship_unset',
-            'objects' => json_encode([
-                'contact_id' => $this->contact->id,
-                'contact_name' => $this->contact->name,
-                'relationship_name' => $this->relationshipType->name,
-            ]),
-        ])->onQueue('low');
     }
 }

@@ -4,8 +4,6 @@ namespace Tests\Unit\Domains\Contact\ManageContact\Services;
 
 use App\Contact\ManageContact\Services\UpdateContactTemplate;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Template;
@@ -13,7 +11,6 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -101,8 +98,6 @@ class UpdateContactTemplateTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Template $template): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
@@ -118,13 +113,5 @@ class UpdateContactTemplateTest extends TestCase
             'vault_id' => $vault->id,
             'template_id' => $template->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'contact_template_updated';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'contact_template_updated';
-        });
     }
 }

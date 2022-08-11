@@ -3,8 +3,6 @@
 namespace App\Contact\ManageNotes\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\ContactFeedItem;
 use App\Models\Emotion;
 use App\Models\Note;
@@ -77,35 +75,9 @@ class UpdateNote extends BaseService implements ServiceInterface
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
 
-        $this->log();
         $this->createFeedItem();
 
         return $this->note;
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'note_updated',
-            'objects' => json_encode([
-                'contact_id' => $this->contact->id,
-                'contact_name' => $this->contact->name,
-                'note_id' => $this->note->id,
-            ]),
-        ])->onQueue('low');
-
-        CreateContactLog::dispatch([
-            'contact_id' => $this->contact->id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'note_updated',
-            'objects' => json_encode([
-                'note_id' => $this->note->id,
-            ]),
-        ])->onQueue('low');
     }
 
     private function createFeedItem(): void

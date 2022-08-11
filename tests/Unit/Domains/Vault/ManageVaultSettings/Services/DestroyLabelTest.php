@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domains\Vault\ManageVaultSettings\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\Label;
 use App\Models\User;
@@ -11,7 +10,6 @@ use App\Models\Vault;
 use App\Vault\ManageVaultSettings\Services\DestroyLabel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -98,8 +96,6 @@ class DestroyLabelTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Label $label): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
@@ -112,9 +108,5 @@ class DestroyLabelTest extends TestCase
         $this->assertDatabaseMissing('labels', [
             'id' => $label->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'label_destroyed';
-        });
     }
 }

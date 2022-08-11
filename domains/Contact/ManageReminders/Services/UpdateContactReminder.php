@@ -3,8 +3,6 @@
 namespace App\Contact\ManageReminders\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\ContactReminder;
 use App\Services\BaseService;
 use Carbon\Carbon;
@@ -68,7 +66,6 @@ class UpdateContactReminder extends BaseService implements ServiceInterface
         $this->deleteOldScheduledReminders();
         $this->updateLastUpdatedDate();
         $this->scheduledReminderForAllUsersInVault();
-        $this->log();
 
         return $this->reminder;
     }
@@ -113,30 +110,5 @@ class UpdateContactReminder extends BaseService implements ServiceInterface
     {
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_reminder_updated',
-            'objects' => json_encode([
-                'contact_id' => $this->contact->id,
-                'contact_name' => $this->contact->name,
-                'reminder_name' => $this->reminder->label,
-            ]),
-        ])->onQueue('low');
-
-        CreateContactLog::dispatch([
-            'contact_id' => $this->contact->id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'contact_reminder_updated',
-            'objects' => json_encode([
-                'reminder_name' => $this->reminder->label,
-            ]),
-        ])->onQueue('low');
     }
 }

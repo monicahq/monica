@@ -3,8 +3,6 @@
 namespace App\Contact\ManagePronouns\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Pronoun;
 use App\Services\BaseService;
 use Carbon\Carbon;
@@ -59,32 +57,5 @@ class SetPronoun extends BaseService implements ServiceInterface
         $this->contact->pronoun_id = $this->pronoun->id;
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
-
-        $this->log();
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'pronoun_set',
-            'objects' => json_encode([
-                'contact_id' => $this->contact->id,
-                'contact_name' => $this->contact->name,
-                'pronoun_name' => $this->pronoun->name,
-            ]),
-        ])->onQueue('low');
-
-        CreateContactLog::dispatch([
-            'contact_id' => $this->contact->id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'pronoun_set',
-            'objects' => json_encode([
-                'pronoun_name' => $this->pronoun->name,
-            ]),
-        ])->onQueue('low');
     }
 }

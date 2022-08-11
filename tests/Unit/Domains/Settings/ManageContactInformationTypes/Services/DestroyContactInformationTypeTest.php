@@ -3,14 +3,12 @@
 namespace Tests\Unit\Domains\Settings\ManageContactInformationTypes\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\ContactInformationType;
 use App\Models\User;
 use App\Settings\ManageContactInformationTypes\Services\DestroyContactInformationType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -76,8 +74,6 @@ class DestroyContactInformationTypeTest extends TestCase
 
     private function executeService(User $author, Account $account, ContactInformationType $type): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
@@ -89,9 +85,5 @@ class DestroyContactInformationTypeTest extends TestCase
         $this->assertDatabaseMissing('contact_information_types', [
             'id' => $type->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'contact_information_type_destroyed';
-        });
     }
 }

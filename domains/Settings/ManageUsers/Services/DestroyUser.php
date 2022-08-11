@@ -3,7 +3,6 @@
 namespace App\Settings\ManageUsers\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\User;
 use App\Models\Vault;
 use App\Services\BaseService;
@@ -57,7 +56,6 @@ class DestroyUser extends BaseService implements ServiceInterface
         $this->validate();
         $this->destroyAllVaults();
         $this->destroy();
-        $this->log();
     }
 
     private function validate(): void
@@ -101,18 +99,5 @@ class DestroyUser extends BaseService implements ServiceInterface
     private function destroy(): void
     {
         $this->user->delete();
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'user_deleted',
-            'objects' => json_encode([
-                'user_email' => $this->user->email,
-            ]),
-        ])->onQueue('low');
     }
 }

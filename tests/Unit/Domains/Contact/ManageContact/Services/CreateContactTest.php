@@ -4,8 +4,6 @@ namespace Tests\Unit\Domains\Contact\ManageContact\Services;
 
 use App\Contact\ManageContact\Services\CreateContact;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\User;
@@ -101,13 +99,5 @@ class CreateContactTest extends TestCase
             Contact::class,
             $contact
         );
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'contact_created';
-        });
-
-        Queue::assertPushed(CreateContactLog::class, function ($job) {
-            return $job->contactLog['action_name'] === 'contact_created';
-        });
     }
 }

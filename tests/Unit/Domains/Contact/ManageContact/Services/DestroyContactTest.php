@@ -5,7 +5,6 @@ namespace Tests\Unit\Domains\Contact\ManageContact\Services;
 use App\Contact\ManageContact\Services\DestroyContact;
 use App\Exceptions\CantBeDeletedException;
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\File;
@@ -125,9 +124,5 @@ class DestroyContactTest extends TestCase
         $this->assertDatabaseMissing('files', [
             'contact_id' => $contact->id,
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'contact_destroyed';
-        });
     }
 }

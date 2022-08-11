@@ -3,16 +3,12 @@
 namespace App\Contact\ManagePronouns\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
-use App\Jobs\CreateContactLog;
 use App\Models\Pronoun;
 use App\Services\BaseService;
 use Carbon\Carbon;
 
 class RemovePronoun extends BaseService implements ServiceInterface
 {
-    private ?Pronoun $pronoun;
-
     /**
      * Get the validation rules that apply to the service.
      *
@@ -52,45 +48,14 @@ class RemovePronoun extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->pronoun = null;
-        if ($this->contact->pronoun) {
-            $this->pronoun = $this->contact->pronoun;
-        }
-
         $this->contact->pronoun_id = null;
         $this->contact->save();
         $this->updateLastEditedDate();
-
-        $this->log();
     }
 
     private function updateLastEditedDate(): void
     {
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
-    }
-
-    private function log(): void
-    {
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'pronoun_unset',
-            'objects' => json_encode([
-                'contact_id' => $this->contact->id,
-                'contact_name' => $this->contact->name,
-            ]),
-        ])->onQueue('low');
-
-        CreateContactLog::dispatch([
-            'contact_id' => $this->contact->id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'pronoun_unset',
-            'objects' => json_encode([
-                'pronoun_name' => $this->pronoun ? $this->pronoun->name : null,
-            ]),
-        ])->onQueue('low');
     }
 }

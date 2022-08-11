@@ -159,16 +159,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the contact log records associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function contactLogs(): HasMany
-    {
-        return $this->hasMany(ContactLog::class)->orderBy('created_at', 'desc');
-    }
-
-    /**
      * Get the relationships associated with the contact.
      *
      * @return BelongsToMany

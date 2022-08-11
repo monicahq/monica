@@ -3,7 +3,6 @@
 namespace App\Settings\ManageAddressTypes\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Jobs\CreateAuditLog;
 use App\Models\AddressType;
 use App\Models\User;
 use App\Services\BaseService;
@@ -51,16 +50,6 @@ class CreateAddressType extends BaseService implements ServiceInterface
             'account_id' => $data['account_id'],
             'name' => $data['name'],
         ]);
-
-        CreateAuditLog::dispatch([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'author_name' => $this->author->name,
-            'action_name' => 'address_type_created',
-            'objects' => json_encode([
-                'name' => $type->name,
-            ]),
-        ])->onQueue('low');
 
         return $type;
     }

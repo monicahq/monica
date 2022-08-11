@@ -3,14 +3,12 @@
 namespace Tests\Unit\Domains\Settings\ManageGenders\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\Gender;
 use App\Models\User;
 use App\Settings\ManageGenders\Services\UpdateGender;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -76,8 +74,6 @@ class UpdateGenderTest extends TestCase
 
     private function executeService(User $author, Account $account, Gender $gender): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
@@ -92,9 +88,5 @@ class UpdateGenderTest extends TestCase
             'account_id' => $account->id,
             'name' => 'gender name',
         ]);
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'gender_updated';
-        });
     }
 }

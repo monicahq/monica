@@ -3,14 +3,12 @@
 namespace Tests\Unit\Domains\Settings\ManageAddressTypes\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
-use App\Jobs\CreateAuditLog;
 use App\Models\Account;
 use App\Models\AddressType;
 use App\Models\User;
 use App\Settings\ManageAddressTypes\Services\CreateAddressType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -57,8 +55,6 @@ class CreateAddressTypeTest extends TestCase
 
     private function executeService(User $author, Account $account): void
     {
-        Queue::fake();
-
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
@@ -77,9 +73,5 @@ class CreateAddressTypeTest extends TestCase
             AddressType::class,
             $type
         );
-
-        Queue::assertPushed(CreateAuditLog::class, function ($job) {
-            return $job->auditLog['action_name'] === 'address_type_created';
-        });
     }
 }
