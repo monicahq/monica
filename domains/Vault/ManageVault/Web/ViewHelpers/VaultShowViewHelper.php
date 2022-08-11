@@ -108,6 +108,7 @@ class VaultShowViewHelper
             ->where('is_favorite', true)
             ->select('contact_id')
             ->get()
+            ->pluck('contact_id')
             ->toArray();
 
         return Contact::whereIn('id', $favorites)

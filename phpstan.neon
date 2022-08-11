@@ -20,6 +20,7 @@ parameters:
         - '#Access to an undefined property App\\Models\\LifeEventCategory.*::\$label\.#'
         - '#Access to an undefined property App\\Models\\LifeEventType.*::\$label.#'
         - '#Access to an undefined property App\\Models\\Module::\$position\.#'
+        - "#Called [a-zA-Z0-9\\']+ on Laravel collection, but could have been retrieved as a query#"
 
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Note>::unsearchable\(\)\.#'
           path: */app/Models/Contact.php
