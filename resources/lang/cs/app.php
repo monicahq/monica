@@ -113,14 +113,14 @@ return [
     'error_try_again' => 'Něco se pokazilo. Zkuste to znovu.',
     'error_id' => 'ID chyby: :id',
     'error_unavailable' => 'Služba není dostupná',
-    'error_maintenance' => 'Maintenance in progress. We’ll be right back.',
+    'error_maintenance' => 'Probíhá údržba. Budeme obratem zpátky.',
     'error_help' => 'Budeme hned zpátky.',
     'error_twitter' => 'Sledujte <a href="https://twitter.com/:twitter">náš Twitter účet</a> a buďte upozorněni, až služba znovu poběží.',
     'error_no_term' => 'Pro tuto instanci zatím neexistují žádná pravidla.',
 
-    'default_save_success' => 'The data has been saved.',
+    'default_save_success' => 'Data byla uložena.',
 
-    'compliance_title' => 'Sorry for the interruption.',
+    'compliance_title' => 'Omlouváme se za vyrušení.',
     'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
     'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
     'compliance_terms' => 'Accept new terms and privacy policy',
