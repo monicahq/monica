@@ -17,6 +17,8 @@ class StorageController extends Controller
     {
         $documents = Document::where('account_id', auth()->user()->account_id)->get();
         $photos = Photo::where('account_id', auth()->user()->account_id)->get();
+        /** @var \Illuminate\Support\Collection<array-key, \Illuminate\Database\Eloquent\Model> */
+        $documents = collect($documents);
         $elements = $documents->concat($photos)->sortByDesc('created_at');
 
         // size is in bytes in the database

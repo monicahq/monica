@@ -34,7 +34,7 @@ class MoneyHelper
 
         $currency = self::getCurrency($currency);
 
-        if (! $currency) {
+        if (! $currency || ! $currency->iso) {
             $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::DECIMAL);
 
             return $numberFormatter->format($amount);
@@ -60,7 +60,7 @@ class MoneyHelper
     {
         $currency = self::getCurrency($currency);
 
-        if (! $currency) {
+        if (! $currency || ! $currency->iso) {
             return (string) ($amount / 100);
         }
 
@@ -84,12 +84,12 @@ class MoneyHelper
     {
         $currency = self::getCurrency($currency);
 
-        if (! $currency) {
+        if (! $currency || ! $currency->iso) {
             return (int) ((float) $exchange * 100);
         }
 
         $moneyParser = new DecimalMoneyParser(new ISOCurrencies());
-        $money = $moneyParser->parse((string) $exchange, $currency->iso);
+        $money = $moneyParser->parse((string) $exchange, new MoneyCurrency($currency->iso));
 
         return (int) $money->getAmount();
     }
@@ -107,7 +107,7 @@ class MoneyHelper
     {
         $currency = self::getCurrency($currency);
 
-        if (! $currency) {
+        if (! $currency || ! $currency->iso) {
             return (string) ($amount / 100);
         }
 

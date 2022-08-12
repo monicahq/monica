@@ -42,7 +42,6 @@ class MeTest extends FeatureTestCase
 
         $response->assertStatus(422);
         $response->assertJson([
-            'message' => 'The given data was invalid.',
             'errors' => [
                 'contact_id' => ['The contact id field is required.'],
             ],

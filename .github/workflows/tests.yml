@@ -15,7 +15,7 @@ on:
 
 env:
   default-php-version: '8.1'
-  node-version: 16
+  node-version: 18
 
 
 jobs:
@@ -115,20 +115,19 @@ jobs:
 
     # Test
       - name: Run Unit test suite
-        if: matrix.php-version == env.default-php-version
-        run: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage/coverage${{ matrix.testsuite }}.xml
+        if: matrix.php-version == env.default-php-version && matrix.testsuite != 'Feature'
+        run: phpdbg -dmemory_limit=6G -qrr vendor/bin/phpunit -c phpunit.xml --testdox --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/coverage/coverage${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
       - name: Run Unit test suite
-        if: matrix.php-version != env.default-php-version
+        if: matrix.php-version != env.default-php-version || matrix.testsuite == 'Feature'
         run: vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/junit/results${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
 
       - name: Fix results files
-        if: matrix.php-version == env.default-php-version
         run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" **/*.xml
         working-directory: results
 

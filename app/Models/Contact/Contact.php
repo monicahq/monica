@@ -1225,7 +1225,7 @@ class Contact extends Model
      */
     public function getTagsAsString()
     {
-        return $this->tags->map(function ($tag) {
+        return $this->tags->map(function (Tag $tag): string {
             return $tag->name;
         })->join(',');
     }
@@ -1251,9 +1251,7 @@ class Contact extends Model
             ->debts()
             ->inProgress()
             ->getResults()
-            ->filter(function ($d) {
-                return Arr::has($d->attributes, 'amount');
-            })
+            ->filter(fn ($d) => Arr::has($d->attributes, 'amount'))
             ->sum(function ($d) {
                 $amount = $d->attributes['amount'];
 
@@ -1374,7 +1372,7 @@ class Contact extends Model
     {
         $relationships = $this->relationships->filter(function ($item) {
             return ! is_null($item->ofContact) &&
-                   ! is_null($item->ofContact->birthday_special_date_id);
+                   $item->ofContact->birthday_special_date_id > 0;
         });
 
         $reminders = collect();

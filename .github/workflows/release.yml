@@ -14,8 +14,8 @@ on:
 
 env:
   php-version: '8.1'
-  build-node-version: 16
-  semantic-node-version: 16
+  build-node-version: 18
+  semantic-node-version: 18
 
 
 jobs:

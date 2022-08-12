@@ -245,7 +245,6 @@ class ActivityTest extends FeatureTestCase
 
         $response->assertStatus(422);
         $response->assertJson([
-            'message' => 'The given data was invalid.',
             'errors' => [
                 'summary' => ['The summary field is required.'],
                 'happened_at' => ['The happened at field is required.'],

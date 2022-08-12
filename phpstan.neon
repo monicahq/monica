@@ -6,17 +6,18 @@ parameters:
     paths:
         - app
     inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
     level: 5
     ignoreErrors:
         - '#Call to an undefined method Illuminate\\View\\View::with[a-zA-Z0-9\\_]+\(\)\.#'
         - '#Access to an undefined property Sabre\\VObject\\Component\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9_]+\.#'
+        - '#Unsafe call to private method .* through static::\.#'
+        - '#Unsafe access to private property .* through static::\.#'
 
         - message: '#Access to an undefined property Illuminate\\Support\\Fluent::\$[a-zA-Z0-9_]+\.#'
           path: */Http/Location/Drivers/CloudflareDriver.php
         - message: '#Access to an undefined property App\\Interfaces\\IsJournalableInterface::\$account_id\.#'
           path: */app/Models/Journal/JournalEntry.php
-        - message: '#Cannot assign offset ''VALUE'' to string\.#'
-          path: */Services/VCalendar/ExportVCalendar.php
         - message: '#Property App\\Models\\Contact\\Contact::\$deceased_special_date_id \(int\) does not accept null\.#'
           path: */Services/Contact/Contact/UpdateDeceasedInformation.php
         - message: '#Parameter \#1 \$principalUri of method Sabre\\CardDAV\\Backend\\BackendInterface::getAddressBooksForUser\(\) expects string, array given\.#'
@@ -39,3 +40,12 @@ parameters:
           path: */Traits/Subscription.php
         - message: '#Function dns_get_record is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\dns_get_record;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.#'
           path: */Services/DavClient/Utils/Dav/ServiceUrlQuery.php
+        - message: '#Access to an undefined property App\\Models\\Relationship\\Relationship::\$relationshipTypeLocalized\.#'
+          path: */Http/Controllers/ContactsController.php
+        - message: '#Call to an undefined method Traversable<int, App\\Models\\Contact\\Debt>::filter\(\)\.#'
+          path: */Models/Contact/Contact.php
+
+    excludePaths:
+        - */Http/Resources/**/*.php
+        - */ExportResources/**/*.php
+        - */ExportResources/*.php

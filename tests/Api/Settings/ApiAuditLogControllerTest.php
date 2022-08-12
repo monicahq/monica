@@ -68,7 +68,7 @@ class ApiAuditLogControllerTest extends ApiTestCase
 
         $response->assertJsonFragment([
             'total' => 10,
-            'per_page' => '1',
+            'per_page' => 1,
             'current_page' => 2,
         ]);
     }

@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Carbon\Carbon;
 use Tests\FeatureTestCase;
 use App\Models\Account\Photo;
+use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
 use Illuminate\Http\Testing\File;
@@ -291,16 +292,12 @@ class StorageControllerTest extends FeatureTestCase
 
     public function storeImage(Contact $contact)
     {
-        $disk = Storage::fake('local', [
-            'cache' => [
-                'store' => 'file',
-                'expire' => 600,
-                'prefix' => 'local',
-            ],
-        ]);
+        Storage::fake('local');
         $image = File::createWithContent('avatar.png', file_get_contents(base_path('public/img/favicon.png')));
 
-        $file = $disk->put('/photos', $image, 'private');
+        $file = Storage::putFile('/photos', $image, [
+            'disk' => 'local',
+        ]);
 
         $photo = factory(Photo::class)->create([
             'account_id' => $contact->account_id,
@@ -312,63 +309,46 @@ class StorageControllerTest extends FeatureTestCase
 
         $contact->photos()->syncWithoutDetaching([$photo->id]);
 
-        $adapter = $disk->getDriver()->getAdapter();
-        $adapter->getCache()->updateObject($file, [
-            'timestamp' => Carbon::create(2021, 6, 19, 7, 0, 0, 'UTC')->timestamp,
-        ]);
+        touch(StorageHelper::disk('local')->path($file), Carbon::create(2021, 6, 19, 7, 0, 0, 'UTC')->timestamp);
 
         return $file;
     }
 
     public function storeDocument(Contact $contact)
     {
-        $disk = Storage::fake('local', [
-            'cache' => [
-                'store' => 'file',
-                'expire' => 600,
-                'prefix' => 'local',
-            ],
-        ]);
+        Storage::fake('local');
         $image = File::createWithContent('file.png', file_get_contents(base_path('public/img/favicon.png')));
 
-        $file = $disk->put('/documents', $image, 'private');
+        $file = Storage::putFile('/documents', $image, [
+            'disk' => 'local',
+        ]);
 
-        $document = factory(Document::class)->create([
+        factory(Document::class)->create([
             'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'original_filename' => 'file.png',
             'new_filename' => $file,
         ]);
 
-        $adapter = $disk->getDriver()->getAdapter();
-        $adapter->getCache()->updateObject($file, [
-            'timestamp' => Carbon::create(2021, 6, 19, 7, 0, 0, 'UTC')->timestamp,
-        ]);
+        touch(StorageHelper::disk('local')->path($file), Carbon::create(2021, 6, 19, 7, 0, 0, 'UTC')->timestamp);
 
         return $file;
     }
 
     public function storeAvatar(Contact $contact)
     {
-        $disk = Storage::fake('local', [
-            'cache' => [
-                'store' => 'file',
-                'expire' => 600,
-                'prefix' => 'local',
-            ],
-        ]);
+        $disk = Storage::fake('local');
         $image = File::createWithContent('avatar.png', file_get_contents(base_path('public/img/favicon.png')));
 
-        $file = $disk->put('/avatars', $image, 'private');
+        $file = Storage::putFile('/avatars', $image, [
+            'disk' => 'local',
+        ]);
 
         $contact->avatar_source = 'default';
         $contact->avatar_default_url = $file.'?123';
         $contact->save();
 
-        $adapter = $disk->getDriver()->getAdapter();
-        $adapter->getCache()->updateObject($file, [
-            'timestamp' => Carbon::create(2021, 6, 19, 7, 0, 0, 'UTC')->timestamp,
-        ]);
+        touch(StorageHelper::disk('local')->path($file), Carbon::create(2021, 6, 19, 7, 0, 0, 'UTC')->timestamp);
 
         return $file;
     }

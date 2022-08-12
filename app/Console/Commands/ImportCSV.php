@@ -7,7 +7,6 @@ use App\Models\User\User;
 use function Safe\fclose;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Gender;
-use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use App\Models\Contact\ContactField;
@@ -92,7 +91,7 @@ class ImportCSV extends Command
         $imported = 0;
         $handle = fopen($file, 'r');
         try {
-            while (($data = fgetcsv($handle)) !== false) {
+            while (($data = fgetcsv($handle)) !== false) { /** @phpstan-ignore-line */
                 // don't import the columns
                 if ($first) {
                     $first = false;

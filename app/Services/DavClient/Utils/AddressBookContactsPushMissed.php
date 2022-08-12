@@ -47,13 +47,10 @@ class AddressBookContactsPushMissed
     {
         $backend = $this->backend();
 
-        /** @var Collection<array-key, string> */
-        $distUuids = $distContacts->map(function (ContactDto $contact) use ($backend) {
+        $distUuids = $distContacts->map(function (ContactDto $contact) use ($backend): string {
             return $backend->getUuid($contact->uri);
         });
-
-        /** @var Collection<array-key, string> */
-        $addedUuids = collect($added)->map(function ($uri) use ($backend) {
+        $addedUuids = collect($added)->map(function (string $uri) use ($backend): string {
             return $backend->getUuid($uri);
         });
 

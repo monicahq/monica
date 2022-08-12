@@ -16,7 +16,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
 use Stripe\Exception\ApiErrorException;
-use Stripe\PaymentIntent as StripePaymentIntent;
 use Laravel\Cashier\Exceptions\IncompletePayment;
 use App\Services\Account\Settings\ArchiveAllContacts;
 
@@ -51,7 +50,7 @@ class SubscriptionsController extends Controller
         }
 
         try {
-            $planInformation = $this->stripeCall(function () use ($subscription) {
+            $planInformation = $this->stripeCall(function () use ($subscription): ?array {
                 return InstanceHelper::getPlanInformationFromSubscription($subscription);
             });
         } catch (StripeException $e) {
@@ -183,8 +182,8 @@ class SubscriptionsController extends Controller
     public function confirmPayment($id)
     {
         try {
-            $payment = $this->stripeCall(function () use ($id) {
-                return StripePaymentIntent::retrieve($id, Cashier::stripeOptions());
+            $payment = $this->stripeCall(function () use ($id): \Stripe\PaymentIntent {
+                return Cashier::stripe()->paymentIntents->retrieve($id);
             });
         } catch (StripeException $e) {
             return back()->withErrors($e->getMessage());

@@ -43,9 +43,6 @@ class ServiceQueue implements ShouldQueue
      */
     public function __construct(QueuableService $service, array $data = null)
     {
-        if (! $service instanceof QueuableService) {
-            throw new \Exception('Service is not queuable');
-        }
         $this->service = $service;
         $this->data = $data;
     }

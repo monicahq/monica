@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use function Safe\exec;
 use function Safe\mkdir;
 use Illuminate\Console\Command;
 use function Safe\file_put_contents;

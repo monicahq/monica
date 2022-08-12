@@ -108,7 +108,7 @@ class ActivityStatisticService
         });
 
         // calculate how many occurences of unique activity type id
-        $activities = $grouped->map(function ($item, $key) {
+        $activities = $grouped->map(function ($item) {
             return collect($item)->count();
         });
 
