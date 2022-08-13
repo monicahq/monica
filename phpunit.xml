@@ -72,5 +72,6 @@
     <env name="MAIL_PORT" value=""/>
     <env name="MAIL_ENCRYPTION" value=""/>
     <env name="APP_EMAIL_NEW_USERS_NOTIFICATION" value=""/>
+    <env name="LARAVEL_CLOUDFLARE_ENABLED" value="false"/>
   </php>
 </phpunit>

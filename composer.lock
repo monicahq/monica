@@ -218,16 +218,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.233.0",
+            "version": "3.233.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2aabbc276b61515ae1897f037fc34ad56028d744"
+                "reference": "1eeac24f921f146b7cef5beb61375d7852df7cf8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2aabbc276b61515ae1897f037fc34ad56028d744",
-                "reference": "2aabbc276b61515ae1897f037fc34ad56028d744",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1eeac24f921f146b7cef5beb61375d7852df7cf8",
+                "reference": "1eeac24f921f146b7cef5beb61375d7852df7cf8",
                 "shasum": ""
             },
             "require": {
@@ -304,9 +304,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.233.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.233.1"
             },
-            "time": "2022-08-11T18:15:54+00:00"
+            "time": "2022-08-12T18:18:34+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -4708,16 +4708,16 @@
         },
         {
             "name": "monicahq/laravel-cloudflare",
-            "version": "3.2.2",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-cloudflare.git",
-                "reference": "bc8881e04223bdd1c564fdfcdc09f11c443e917d"
+                "reference": "80318641a7a85bf29e6c24cf850309bb12df1486"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/bc8881e04223bdd1c564fdfcdc09f11c443e917d",
-                "reference": "bc8881e04223bdd1c564fdfcdc09f11c443e917d",
+                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/80318641a7a85bf29e6c24cf850309bb12df1486",
+                "reference": "80318641a7a85bf29e6c24cf850309bb12df1486",
                 "shasum": ""
             },
             "require": {
@@ -4780,7 +4780,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-30T15:22:48+00:00"
+            "time": "2022-08-13T21:35:05+00:00"
         },
         {
             "name": "monicahq/laravel-sabre",
