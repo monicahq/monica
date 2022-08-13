@@ -22,7 +22,7 @@ $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'name' => $faker->word(),
         'stripe_id' => $faker->word(),
-        'stripe_plan' => $faker->randomElement(['plan-1', 'plan-2', 'plan-3']),
+        'stripe_price' => $faker->randomElement(['plan-1', 'plan-2', 'plan-3']),
         'quantity' => 1,
         'created_at' => now(),
     ];

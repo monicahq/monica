@@ -17,6 +17,7 @@ abstract class ModelBindingWithContact extends Model
      */
     public function resolveRouteBinding($value, $field = null): ?Model
     {
+        /** @var \App\Models\Contact\Contact|null */
         $contact = Route::current()->parameter('contact');
 
         if (Auth::guest() || is_null($contact)) {

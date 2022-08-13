@@ -16,7 +16,7 @@ class RecoveryCodesController extends Controller
      * Generate recovery codes.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection<array-key, array{id: int, recovery: string, used: bool}>
      */
     public function store(Request $request)
     {
@@ -38,7 +38,7 @@ class RecoveryCodesController extends Controller
      * Get list of recovery codes.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection<array-key, array{id: int, recovery: string, used: bool}>
      */
     public function index(Request $request)
     {
@@ -55,12 +55,12 @@ class RecoveryCodesController extends Controller
     /**
      * Format codes collection for response.
      *
-     * @param  \Illuminate\Database\Eloquent\Collection  $codes
-     * @return \Illuminate\Support\Collection
+     * @param  \Illuminate\Support\Collection<array-key, \App\Models\User\RecoveryCode>  $codes
+     * @return \Illuminate\Support\Collection<array-key, array{id: int, recovery: string, used: bool}>
      */
     private function response($codes)
     {
-        return $codes->map(function ($code) {
+        return $codes->map(function (RecoveryCode $code): array {
             return [
                 'id' => $code->id,
                 'recovery' => $code->recovery,

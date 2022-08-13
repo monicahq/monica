@@ -41,6 +41,7 @@ class ApiPhotoControllerTest extends ApiTestCase
         $photo = factory(Photo::class)->create([
             'account_id' => $user->account_id,
         ]);
+        UploadedFile::fake()->image('file.jpg')->storeAs('', 'file.jpg');
 
         $contact->photos()->syncWithoutDetaching([$photo->id]);
 
@@ -91,7 +92,7 @@ class ApiPhotoControllerTest extends ApiTestCase
         $response->assertJsonFragment([
             'total' => 10,
             'current_page' => 1,
-            'per_page' => '1',
+            'per_page' => 1,
             'last_page' => 10,
         ]);
 
@@ -100,7 +101,7 @@ class ApiPhotoControllerTest extends ApiTestCase
         $response->assertJsonFragment([
             'total' => 10,
             'current_page' => 1,
-            'per_page' => '2',
+            'per_page' => 2,
             'last_page' => 5,
         ]);
     }

@@ -58,19 +58,7 @@ class DestroyCall extends BaseService
     {
         // look for all the calls of the contact and take the most recent call
         // as the one we just deleted could have been the most recent call
-        $mostRecentDate = null;
-        foreach ($contact->calls as $call) {
-            if ($call->called_at->greaterThanOrEqualTo($mostRecentDate)) {
-                $mostRecentDate = $call->called_at;
-            }
-        }
-
-        if (is_null($mostRecentDate)) {
-            $contact->last_talked_to = null;
-        } else {
-            $contact->last_talked_to = $mostRecentDate;
-        }
-
+        $contact->last_talked_to = optional($contact->calls->first())->called_at;
         $contact->save();
     }
 }

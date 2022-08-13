@@ -118,14 +118,14 @@ class AddressBookSynchronizer
         $contacts = $etags->filter(function ($contact, $href): bool {
             return $this->filterDistantContacts($contact, $href);
         })
-            ->map(function ($contact, $href): ContactDto {
+            ->map(function (array $contact, string $href): ContactDto {
                 return new ContactDto($href, Arr::get($contact, 'properties.200.{DAV:}getetag'));
             });
 
         $deleted = $etags->filter(function ($contact): bool {
             return is_array($contact) && $contact['status'] === '404';
         })
-            ->map(function ($contact, $href): ContactDto {
+            ->map(function (array $contact, string $href): ContactDto {
                 return new ContactDeleteDto($href);
             });
 
@@ -230,13 +230,13 @@ class AddressBookSynchronizer
         $updated = $data->filter(function ($contact): bool {
             return is_array($contact) && $contact['status'] === '200';
         })
-            ->map(function ($contact, $href): ContactDto {
+            ->map(function (array $contact, string $href): ContactDto {
                 return new ContactDto($href, Arr::get($contact, 'properties.200.{DAV:}getetag'));
             });
         $deleted = $data->filter(function ($contact): bool {
             return is_array($contact) && $contact['status'] === '404';
         })
-            ->map(function ($contact, $href): ContactDto {
+            ->map(function (array $contact, string $href): ContactDto {
                 return new ContactDeleteDto($href);
             });
 

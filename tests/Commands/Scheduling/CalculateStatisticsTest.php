@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Commands;
+namespace Tests\Commands\Scheduling;
 
 use Tests\TestCase;
 use Illuminate\Database\QueryException;
@@ -16,7 +16,7 @@ class CalculateStatisticsTest extends TestCase
         $runsWell = true;
 
         try {
-            $this->artisan('monica:calculatestatistics');
+            $this->artisan('monica:calculatestatistics')->run();
         } catch (QueryException $e) {
             $runsWell = false;
         }

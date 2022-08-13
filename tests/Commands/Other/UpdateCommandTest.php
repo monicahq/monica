@@ -1,9 +1,8 @@
 <?php
 
-namespace Tests\Commands;
+namespace Tests\Commands\Other;
 
 use Tests\TestCase;
-use Illuminate\Support\Facades\Artisan;
 use App\Console\Commands\Helpers\Command;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -17,7 +16,7 @@ class UpdateCommandTest extends TestCase
         /** @var \Tests\Helpers\CommandCallerFake */
         $fake = Command::fake();
 
-        Artisan::call('monica:update');
+        $this->artisan('monica:update')->run();
 
         $this->assertCount(9, $fake->buffer);
         $this->assertCommandContains($fake->buffer[0], 'Maintenance mode: on', 'php artisan down');
@@ -37,7 +36,7 @@ class UpdateCommandTest extends TestCase
         /** @var \Tests\Helpers\CommandCallerFake */
         $fake = Command::fake();
 
-        Artisan::call('monica:update', ['--composer-install' => true]);
+        $this->artisan('monica:update', ['--composer-install' => true])->run();
 
         $this->assertCount(10, $fake->buffer);
         $this->assertCommandContains($fake->buffer[0], 'Maintenance mode: on', 'php artisan down');
