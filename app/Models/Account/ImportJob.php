@@ -8,13 +8,14 @@ use Illuminate\Support\Arr;
 use App\Helpers\AccountHelper;
 use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ImportVCard;
+use League\Flysystem\UnableToReadFile;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use League\Flysystem\UnableToDeleteFile;
 use Illuminate\Validation\ValidationException;
 use Sabre\VObject\Splitter\VCard as VCardReader;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
  * @property int $id
@@ -170,7 +171,7 @@ class ImportJob extends Model
     {
         try {
             $this->physicalFile = Storage::disk(config('filesystems.default'))->readStream($this->filename);
-        } catch (FileNotFoundException $exception) {
+        } catch (UnableToReadFile $exception) {
             $this->fail(trans('settings.import_vcard_file_not_found'));
 
             return false;
@@ -186,7 +187,13 @@ class ImportJob extends Model
      */
     private function deletePhysicalFile(): bool
     {
-        if (! Storage::disk(config('filesystems.default'))->delete($this->filename)) {
+        try {
+            if (Storage::disk(config('filesystems.default'))->delete($this->filename) === false) {
+                $this->fail(trans('settings.import_vcard_file_not_found'));
+
+                return false;
+            }
+        } catch (UnableToDeleteFile $exception) {
             $this->fail(trans('settings.import_vcard_file_not_found'));
 
             return false;

@@ -50,7 +50,7 @@ class ImportVCards extends Command
             // show an error and exist if the user does not exist
             $this->error('No user with that email.');
 
-            return;
+            return -1;
         }
 
         $path = $this->option('path');
@@ -63,7 +63,7 @@ class ImportVCards extends Command
         if (! $filesystem->exists($path) || ! $this->acceptedExtensions($filesystem, $path)) {
             $this->error('The provided vcard file was not found or is not valid!');
 
-            return;
+            return -2;
         }
 
         $importJob = $this->import($path, $user);

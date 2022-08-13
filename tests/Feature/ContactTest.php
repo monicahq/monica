@@ -508,8 +508,8 @@ class ContactTest extends FeatureTestCase
             'number_of_views' => 0,
         ]);
 
-        $response = $this->get('/people/'.$contact->hashID());
-        $response = $this->get('/people/'.$contact->hashID());
+        $this->get('/people/'.$contact->hashID());
+        $this->get('/people/'.$contact->hashID());
 
         $this->assertDatabaseHas('contacts', [
             'number_of_views' => 2,

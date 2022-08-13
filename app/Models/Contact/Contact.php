@@ -5,6 +5,7 @@ namespace App\Models\Contact;
 use DateTime;
 use App\Traits\HasUuid;
 use App\Traits\Searchable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
@@ -22,7 +23,6 @@ use App\Models\Account\AddressBook;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use IlluminateAgnostic\Arr\Support\Arr;
 use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
@@ -1152,7 +1152,11 @@ class Contact extends Model
                 $avatarURL = $this->avatar_gravatar_url;
                 break;
             case 'photo':
-                $avatarURL = $this->avatarPhoto()->first()->url();
+                if ($this->avatarPhoto) {
+                    $avatarURL = $this->avatarPhoto()->first()->url();
+                } else {
+                    $avatarURL = $this->getAvatarDefaultURL();
+                }
                 break;
             case 'default':
             default:
@@ -1221,7 +1225,7 @@ class Contact extends Model
      */
     public function getTagsAsString()
     {
-        return $this->tags->map(function ($tag) {
+        return $this->tags->map(function (Tag $tag): string {
             return $tag->name;
         })->join(',');
     }
@@ -1247,9 +1251,7 @@ class Contact extends Model
             ->debts()
             ->inProgress()
             ->getResults()
-            ->filter(function ($d) {
-                return Arr::has($d->attributes, 'amount');
-            })
+            ->filter(fn ($d) => Arr::has($d->attributes, 'amount'))
             ->sum(function ($d) {
                 $amount = $d->attributes['amount'];
 
@@ -1370,7 +1372,7 @@ class Contact extends Model
     {
         $relationships = $this->relationships->filter(function ($item) {
             return ! is_null($item->ofContact) &&
-                   ! is_null($item->ofContact->birthday_special_date_id);
+                   $item->ofContact->birthday_special_date_id > 0;
         });
 
         $reminders = collect();

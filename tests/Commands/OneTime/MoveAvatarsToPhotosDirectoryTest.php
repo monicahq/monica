@@ -1,12 +1,11 @@
 <?php
 
-namespace Tests\Commands;
+namespace Tests\Commands\OneTime;
 
 use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -49,7 +48,7 @@ class MoveAvatarsToPhotosDirectoryTest extends TestCase
 
         Storage::disk('public')->assertExists('avatars/avatar.jpg');
 
-        $exitCode = Artisan::call('monica:moveavatarstophotosdirectory');
+        $this->artisan('monica:moveavatarstophotosdirectory')->run();
 
         Storage::disk('public')->assertMissing('avatars/avatar.jpg');
         Storage::disk('public')->assertMissing('avatars/avatar_110.jpg');
@@ -79,7 +78,7 @@ class MoveAvatarsToPhotosDirectoryTest extends TestCase
         $contact->has_avatar = true;
         $contact->save();
 
-        $exitCode = Artisan::call('monica:moveavatarstophotosdirectory');
+        $this->artisan('monica:moveavatarstophotosdirectory')->run();
 
         Storage::disk('public')->assertMissing('avatars/avatar.jpg');
 

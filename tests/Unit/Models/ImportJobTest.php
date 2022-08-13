@@ -150,7 +150,9 @@ END:VCARD
     /** @test */
     public function it_throws_an_exception_if_file_doesnt_exist()
     {
-        Storage::fake('public');
+        Storage::fake('public', [
+            'throw' => true,
+        ]);
         $importJob = factory(ImportJob::class)->create([
             'filename' => 'testfile.vcf',
         ]);
@@ -179,21 +181,6 @@ END:VCARD
         $this->invokePrivateMethod($importJob, 'deletePhysicalFile');
 
         Storage::disk('public')->assertMissing($importJob->filename);
-    }
-
-    /** @test */
-    public function it_throws_an_exception_if_file_cant_be_deleted()
-    {
-        Storage::fake('public');
-        $importJob = factory(ImportJob::class)->create([
-            'filename' => 'testfile.vcf',
-        ]);
-
-        $this->invokePrivateMethod($importJob, 'deletePhysicalFile');
-        $this->assertEquals(
-            trans('settings.import_vcard_file_not_found'),
-            $importJob->failed_reason
-        );
     }
 
     /** @test */

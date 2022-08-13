@@ -61,7 +61,7 @@ class LocaleHelper
 
         if (is_null($countryCode)) {
             $country = CountriesHelper::getCountryFromLocale($locale);
-            $countryCode = $country->cca2;
+            $countryCode = $country->getIsoAlpha2();
         }
 
         return mb_strtoupper($countryCode);

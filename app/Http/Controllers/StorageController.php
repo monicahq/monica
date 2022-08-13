@@ -10,7 +10,7 @@ use Illuminate\Support\Carbon;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
 use Illuminate\Support\Facades\Response;
-use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FilesystemException;
 
 class StorageController extends Controller
 {
@@ -45,7 +45,7 @@ class StorageController extends Controller
             }
 
             return $disk->response($file, $filename, $headers);
-        } catch (FileNotFoundException $e) {
+        } catch (FilesystemException $e) {
             abort(404);
         }
     }

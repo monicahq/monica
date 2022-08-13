@@ -66,7 +66,7 @@ class InstanceHelper
 
         if (is_null($stripeSubscription) || is_null($plan)) {
             return [
-                'type' => $subscription->stripe_plan,
+                'type' => $subscription->stripe_price,
                 'name' => $subscription->name,
                 'id' => $subscription->stripe_id,
                 'price' => '?',

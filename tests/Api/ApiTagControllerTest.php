@@ -399,7 +399,7 @@ class ApiTagControllerTest extends ApiTestCase
         $response->assertJsonFragment([
             'total' => 3,
             'current_page' => 1,
-            'per_page' => '1',
+            'per_page' => 1,
             'last_page' => 3,
         ]);
     }

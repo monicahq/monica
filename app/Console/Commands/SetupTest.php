@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use function Safe\exec;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Carbon;

@@ -26,6 +26,13 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     use Notifiable, HasApiTokens, HasUuid;
 
     /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array<string>|bool
+     */
+    protected $guarded = ['id'];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<string>

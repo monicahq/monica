@@ -15,20 +15,7 @@ return [
     |
     */
 
-    'default' => env('DEFAULT_FILESYSTEM', 'public'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Default Cloud Filesystem Disk
-    |--------------------------------------------------------------------------
-    |
-    | Many applications store files both locally and in the cloud. For this
-    | reason, you may specify a default "cloud" driver here. This driver
-    | will be bound as the Cloud disk implementation in the container.
-    |
-    */
-
-    'cloud' => env('FILESYSTEM_CLOUD', 's3'),
+    'default' => env('FILESYSTEM_DISK', env('DEFAULT_FILESYSTEM', 'public')),
 
     /*
     |--------------------------------------------------------------------------
@@ -46,12 +33,15 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
+            'throw' => true,
         ],
 
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
+            'throw' => true,
         ],
 
         's3' => [
@@ -62,12 +52,8 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT', env('AWS_SERVER', '') ? 'https://'.env('AWS_SERVER') : null),
-            'cache' => [
-                'store' => env('S3_CACHE_STORE', env('CACHE_DRIVER', 'file')),
-                'expire' => env('S3_CACHE_EXPIRE', 600),
-                'prefix' => env('S3_CACHE_PREFIX', 's3'),
-            ],
-            'use_path_style_endpoint' => env('S3_PATH_STYLE', false),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', env('S3_PATH_STYLE', false)),
+            'throw' => true,
         ],
 
     ],

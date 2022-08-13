@@ -10,8 +10,10 @@ trait StripeCall
     /**
      * Call stripe.
      *
-     * @param  callable  $callback
-     * @return mixed
+     * @template TValue
+     *
+     * @param  (callable(): TValue)  $callback
+     * @return TValue
      */
     private function stripeCall($callback)
     {

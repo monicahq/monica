@@ -99,6 +99,7 @@ $db = [
         'testing' => [
             'driver' => env('DB_TEST_DRIVER', 'mysql'),
             'host' => env('DB_TEST_HOST'),
+            'port' => env('DB_TEST_PORT', '3306'),
             'unix_socket' => env('DB_TEST_UNIX_SOCKET', ''),
             'database' => env('DB_TEST_DATABASE'),
             'username' => env('DB_TEST_USERNAME'),
