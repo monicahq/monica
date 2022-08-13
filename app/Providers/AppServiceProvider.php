@@ -114,10 +114,6 @@ class AppServiceProvider extends ServiceProvider
                 return sha1($url);
             });
         });
-
-        LaravelCloudflare::getProxiesUsing(function (): array {
-            return config('app.cloudflare') ? CloudflareProxies::load() : [];
-        });
     }
 
     /**

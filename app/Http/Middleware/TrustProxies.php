@@ -13,6 +13,6 @@ class TrustProxies extends Middleware
      */
     protected function proxies()
     {
-        return config('app.trust_proxies');
+        return config('app.trust_proxies') ?? $this->proxies;
     }
 }
