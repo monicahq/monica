@@ -105,12 +105,14 @@ class GenerateDefaultAvatar extends BaseService
      */
     private function deleteExistingDefaultAvatar(Contact $contact)
     {
-        try {
-            Storage::disk(config('filesystems.default'))
-                ->delete($contact->avatar_default_url);
-            $contact->avatar_default_url = null;
-        } catch (FileNotFoundException $e) {
-            // ignore
+        if ($contact->avatar_default_url !== null) {
+            try {
+                Storage::disk(config('filesystems.default'))
+                    ->delete($contact->avatar_default_url);
+                $contact->avatar_default_url = null;
+            } catch (FileNotFoundException $e) {
+                // ignore
+            }
         }
 
         return $contact;

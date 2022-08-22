@@ -51,11 +51,14 @@ everyone is a beginner at first :smile_cat:
 * Write a good commit message. To write good commit messages, please follow
 [those recommendations](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 There are important to maintain an healthy commit logs.
+* We follow [conventionalcommits](https://www.conventionalcommits.org/en/v1.0.0/)
+guideline in our Pull Request title. Please follow it: use the `feat` type
+for new features pull request, and `fix` type to fix a bug.
 * If there are multiple commits in your pull request, these commits will be
 squashed before merging. Please make sure, if that's the case, that your pull
 request has a nice description explaining what it does.
-* It's okay to have work-in-progress pull requests. Add `[WIP]` in the title of
-your pull request if that's the case, otherwise your pull request will be
+* It's okay to have work-in-progress pull requests. Create a `draft` pull request
+if that's the case, otherwise your pull request will be
 considered in a state of being able to be merged as is.
 * If you wish to appear as a contributor, update the CONTRIBUTORS file and
 add your name to it. Include this change in your pull request.

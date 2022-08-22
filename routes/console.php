@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('memcached:stats', function () {
     if (config('cache.default') === 'memcached') {
         /** @var \Illuminate\Console\Command */
+        /** @psalm-suppress InvalidScope */
         $command = $this;
         $hostStats = Cache::getMemcached()->getStats();
         foreach ($hostStats as $host => $stats) {

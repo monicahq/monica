@@ -37,26 +37,26 @@ debconf-set-selections <<< "mysql-server mysql-server/root_password password $MY
 debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $MYSQL_ROOT_PASSWORD"
 apt-get install -y mysql-server mysql-client >/dev/null
 
-echo -e "\n\033[4;32mInstalling PHP 7.4\033[0;40m"
+echo -e "\n\033[4;32mInstalling PHP 8.1\033[0;40m"
 apt-get install -y curl gnupg2 apt-transport-https apt-transport-https lsb-release ca-certificates >/dev/null
 add-apt-repository -y ppa:ondrej/php >/dev/null
 apt-get update >/dev/null
-apt-get install -y php7.4 >/dev/null
+apt-get install -y php8.1 >/dev/null
 
 echo -e "\n\033[4;32mInstalling git\033[0;40m"
 apt-get install -y git >/dev/null
 
 echo -e "\n\033[4;32mInstalling composer\033[0;40m"
-apt-get install -y curl php7.4-cli >/dev/null
+apt-get install -y curl php8.1-cli >/dev/null
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer >/dev/null
 
 echo -e "\n\033[4;32mInstalling packages for Monica\033[0;40m"
-apt-get install -y php7.4-bcmath php7.4-cli php7.4-curl php7.4-common php7.4-fpm \
-    php7.4-gd php7.4-gmp php7.4-intl php7.4-json php7.4-mbstring php7.4-mysql \
-    php7.4-opcache php7.4-redis php7.4-xml php7.4-zip >/dev/null
+apt-get install -y php8.1-bcmath php8.1-curl php8.1-common php8.1-fpm \
+    php8.1-gd php8.1-gmp php8.1-intl php8.1-json php8.1-mbstring php8.1-mysql \
+    php8.1-opcache php8.1-redis php8.1-xml php8.1-zip >/dev/null
 
 echo -e "\n\033[4;32mInstalling node.js\033[0;40m"
-curl -fsSL https://deb.nodesource.com/setup_14.x | bash - >/dev/null
+curl -fsSL https://deb.nodesource.com/setup_18.x | bash - >/dev/null
 apt-get install -y nodejs >/dev/null
 
 echo -e "\n\033[4;32mInstalling yarn\033[0;40m"

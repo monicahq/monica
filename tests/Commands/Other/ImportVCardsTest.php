@@ -1,8 +1,7 @@
 <?php
 
-namespace Tests\Commands;
+namespace Tests\Commands\Other;
 
-use Mockery as m;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -16,43 +15,28 @@ class ImportVCardsTest extends TestCase
     /** @test */
     public function it_validates_user()
     {
-        $this->withoutMockingConsoleOutput();
-
         $path = base_path('tests/stubs/vcard_stub.vcf');
 
-        $command = m::mock('\App\Console\Commands\ImportVCards[error]', [new \Illuminate\Filesystem\Filesystem()]);
-
-        $command->shouldReceive('error')->once()->with('No user with that email.');
-
-        $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
-
-        $exitCode = $this->artisan('import:vcard', ['--user' => 'notfound@example.com', '--path' => $path, '--no-interaction' => true]);
-
-        $this->assertEquals(0, $exitCode);
+        $this->artisan('import:vcard', ['--user' => 'notfound@example.com', '--path' => $path, '--no-interaction' => true])
+            ->assertFailed()
+            ->expectsOutput('No user with that email.')
+            ->run();
     }
 
     /** @test */
     public function it_validates_file()
     {
-        $this->withoutMockingConsoleOutput();
-
         $user = $this->getUser();
 
-        $command = m::mock('\App\Console\Commands\ImportVCards[error]', [new \Illuminate\Filesystem\Filesystem()]);
-
-        $command->shouldReceive('error')->once()->with('The provided vcard file was not found or is not valid!');
-
-        $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
-
-        $exitCode = $this->artisan('import:vcard', ['--user' => $user->email, '--path' => 'not_found', '--no-interaction' => true]);
-
-        $this->assertEquals(0, $exitCode);
+        $this->artisan('import:vcard', ['--user' => $user->email, '--path' => 'not_found', '--no-interaction' => true])
+            ->assertFailed()
+            ->expectsOutput('The provided vcard file was not found or is not valid!')
+            ->run();
     }
 
     /** @test */
     public function it_imports_contacts()
     {
-        $this->withoutMockingConsoleOutput();
         Storage::fake('public');
 
         $user = $this->getUser();
@@ -60,7 +44,9 @@ class ImportVCardsTest extends TestCase
 
         $totalContacts = Contact::where('account_id', $user->account_id)->count();
 
-        $exitCode = $this->artisan('import:vcard', ['--user' => $user->email, '--path' => $path, '--no-interaction' => true]);
+        $this->artisan('import:vcard', ['--user' => $user->email, '--path' => $path, '--no-interaction' => true])
+            ->assertSuccessful()
+            ->run();
 
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'John',
@@ -107,13 +93,11 @@ class ImportVCardsTest extends TestCase
             $totalContacts + 3,
             Contact::where('account_id', $user->account_id)->count()
         );
-
-        $this->assertEquals(0, $exitCode);
     }
 
     private function getUser()
     {
-        $account = Account::createDefault('John', 'Doe', 'johndoe@example.com', 'secret');
+        $account = Account::createDefault('John', 'Doe', 'johndoe@example.com', 'secret', null, 'en');
 
         return $account->users()->first();
     }

@@ -28,7 +28,7 @@ class ApiCountriesTest extends ApiTestCase
             'data' => ['*' => $this->jsonCountries],
         ]);
         $response->assertJsonFragment([
-            'DEU' => [
+            'de' => [
                 'id' => 'DE',
                 'iso' => 'DE',
                 'name' => 'Germany',
@@ -38,7 +38,7 @@ class ApiCountriesTest extends ApiTestCase
     }
 
     /** @test */
-    public function it_gets_a_specific_country_in_a_specific_country()
+    public function it_gets_a_specific_country_in_a_specific_locale()
     {
         $user = $this->signin();
         $user->locale = 'fr';
@@ -51,7 +51,7 @@ class ApiCountriesTest extends ApiTestCase
             'data' => ['*' => $this->jsonCountries],
         ]);
         $response->assertJsonFragment([
-            'DEU' => [
+            'de' => [
                 'id' => 'DE',
                 'iso' => 'DE',
                 'name' => 'Allemagne',

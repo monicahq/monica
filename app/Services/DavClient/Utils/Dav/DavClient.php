@@ -556,16 +556,18 @@ class DavClient
 
         $result = [];
 
-        foreach ($multistatus->getResponses() as $response) {
-            $result[$response->getHref()] = [
-                'properties' => $response->getResponseProperties(),
-                'status' => $response->getHttpStatus() ?? '200',
-            ];
-        }
+        if (is_object($multistatus)) {
+            foreach ($multistatus->getResponses() as $response) {
+                $result[$response->getHref()] = [
+                    'properties' => $response->getResponseProperties(),
+                    'status' => $response->getHttpStatus() ?? '200',
+                ];
+            }
 
-        $synctoken = $multistatus->getSyncToken();
-        if (! empty($synctoken)) {
-            $result['synctoken'] = $synctoken;
+            $synctoken = $multistatus->getSyncToken();
+            if (! empty($synctoken)) {
+                $result['synctoken'] = $synctoken;
+            }
         }
 
         return $result;

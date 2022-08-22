@@ -5,7 +5,7 @@ on:
     types: [labeled, opened, synchronize, reopened]
 
 env:
-  node-version: 16
+  node-version: 18
 
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: [7.4]
+        php-version: ['8.1']
         browser: [chrome]
         containers: [1, 2, 3, 4, 5, 6, 7, 8]
 

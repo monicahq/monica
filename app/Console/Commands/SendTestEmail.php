@@ -29,26 +29,28 @@ class SendTestEmail extends Command
      */
     public function handle()
     {
-        // retrieve the email from the option
+        /** retrieve the email from the option.
+         * @var string $email
+         */
         $email = $this->option('email');
 
         // if no email was passed to the option, prompt the user to enter the email
         if (! $email) {
-            $email = $this->ask('What email address should I send the test email to?');
+            $email = (string) $this->ask('What email address should I send the test email to?');
         }
 
         // Validate user provided email address
         if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-            $this->error('Invalid email address: "'.$email.'".');
+            $this->error("Invalid email address: \"$email\".");
 
             return -1;
         }
 
-        $this->info('Preparing and sending email to "'.$email.'"');
+        $this->info("Preparing and sending email to \"$email\"");
 
         // immediately deliver the test email (bypassing the queue)
         Mail::raw(
-            'Hi '.$email.', you requested a test email from Monica.',
+            "Hi $email, you requested a test email from Monica.",
             function ($message) use ($email) {
                 $message->to($email)
                     ->subject('Monica email delivery test');

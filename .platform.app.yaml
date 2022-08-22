@@ -5,7 +5,7 @@
 name: app
 
 # The type of the application to build.
-type: php:7.4
+type: php:8.1
 build:
   flavor: none
 

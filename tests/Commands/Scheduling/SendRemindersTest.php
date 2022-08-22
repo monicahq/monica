@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Commands;
+namespace Tests\Commands\Scheduling;
 
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -10,7 +10,6 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\Bus;
 use App\Models\Contact\ReminderOutbox;
-use Illuminate\Support\Facades\Artisan;
 use App\Jobs\Reminder\NotifyUserAboutReminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -42,7 +41,7 @@ class SendRemindersTest extends TestCase
             'planned_date' => '2017-01-01',
         ]);
 
-        $exitCode = Artisan::call('send:reminders', []);
+        $this->artisan('send:reminders')->run();
         Bus::assertDispatched(NotifyUserAboutReminder::class);
     }
 
@@ -73,7 +72,7 @@ class SendRemindersTest extends TestCase
             'planned_date' => '2017-01-01',
         ]);
 
-        $exitCode = Artisan::call('send:reminders', []);
+        $this->artisan('send:reminders')->run();
         Bus::assertNotDispatched(NotifyUserAboutReminder::class);
     }
 }
