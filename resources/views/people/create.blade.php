@@ -133,6 +133,27 @@
         </form-select>
       </div>
 
+      <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
+        <form-input
+          :id="'job'"
+          :input-type="'text'"
+          :required="false"
+          :title="'{{ trans('people.people_add_job') }}'"
+          :value="'{{ $job }}'">
+        </form-input>
+      </div>
+
+      <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
+        <form-input
+          :id="'company'"
+          :input-type="'text'"
+          :required="false"
+          :title="'{{ trans('people.people_add_org') }}'"
+          :value="'{{ $company }}'">
+        </form-input>
+      </div>
+
+
       {{-- Form actions --}}
       <div class="ph4-ns ph3 pv3 bb b--gray-monica">
         <div class="flex-ns justify-between">

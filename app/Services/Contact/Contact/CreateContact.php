@@ -37,6 +37,8 @@ class CreateContact extends BaseService
             'last_name' => 'nullable|string|max:255',
             'nickname' => 'nullable|string|max:255',
             'email' => 'nullable|string|max:255',
+            'job' => 'nullable|string|max:255',
+            'company' => 'nullable|string|max:255',
             'gender_id' => 'nullable|integer|exists:genders,id',
             'description' => 'nullable|string|max:255',
             'is_partial' => 'nullable|boolean',
@@ -83,6 +85,7 @@ class CreateContact extends BaseService
         $this->updateBirthDayInformation($data, $contact);
         $this->updateDeceasedInformation($data, $contact);
         $this->updateEmail($data, $contact);
+        // add update org
         $this->generateUUID($contact);
         $this->addAvatars($contact);
 

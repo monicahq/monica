@@ -184,7 +184,9 @@ class ContactsController extends Controller
             ->withFormNameOrder(FormHelper::getNameOrderForForms(auth()->user()))
             ->withFirstName($request->input('first_name'))
             ->withLastName($request->input('last_name'))
-            ->withEmail($request->input('email'));
+            ->withEmail($request->input('email'))
+            ->withJob($request->input('job'))
+            ->withCompany($request->input('company'));
     }
 
     /**
@@ -204,6 +206,8 @@ class ContactsController extends Controller
                 'last_name' => $request->input('last_name', null),
                 'nickname' => $request->input('nickname', null),
                 'email' => $request->input('email', null),
+                'job' => $request->input('job', null),
+                'company' => $request->input('company', null),
                 'gender_id' => $request->input('gender'),
                 'is_birthdate_known' => false,
                 'is_deceased' => false,

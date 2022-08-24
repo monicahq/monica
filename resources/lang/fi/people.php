@@ -56,6 +56,7 @@ return [
     'people_save_and_add_another_cta' => 'Submit and add someone else',
     'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Gender',
+    'people_add_org' => 'Organization',
     'people_delete_success' => 'The contact has been deleted',
     'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Are you sure you want to delete :name’s contact? Deletion is immediate and permanent.',

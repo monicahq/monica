@@ -82,4 +82,18 @@ class DocumentsController extends Controller
 
         return null;
     }
+
+    public function editDate(Request $request, Contact $contact, Document $document): ?JsonResponse
+    {
+        $data = [
+            'account_id' => auth()->user()->account_id,
+            'document_id' => $document->id,
+        ];
+
+        try {
+            
+        } catch (\Exception $e) {
+            return $this->respondNotFound();
+        }
+    }
 }

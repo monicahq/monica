@@ -41,6 +41,7 @@
       </li>
 
       <!-- add a new tag -->
+      <!-- Add validation -->>
       <li v-show="editMode" class="di mb3">
         <div class="relative di mr2">
           <input v-model="search"
