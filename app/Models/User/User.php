@@ -90,6 +90,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         'lastname_nickname_firstname',
         'nickname_firstname_lastname',
         'nickname_lastname_firstname',
+        'nickname_bracketed_firstname_lastname',
         'nickname',
     ];
 
