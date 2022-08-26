@@ -922,10 +922,10 @@ class Contact extends Model
     public function getIncompleteName()
     {
         $incompleteName = '';
+        $incompleteName = $this->first_name;
+
         if ($this->nameOrder == 'nickname_bracketed_firstname_lastname' && ! is_null($this->nickname)) {
             $incompleteName = $this->nickname;
-        } else {
-            $incompleteName = $this->first_name;
         }
 
         if (! is_null($this->last_name)) {
