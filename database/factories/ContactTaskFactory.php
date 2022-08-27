@@ -29,6 +29,7 @@ class ContactTaskFactory extends Factory
             'author_name' => $this->faker->name,
             'label' => $this->faker->sentence(),
             'completed' => false,
+            'due_at' => $this->faker->dateTimeThisCentury(),
         ];
     }
 }

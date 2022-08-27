@@ -62,6 +62,7 @@ class ModuleContactTasksViewHelperTest extends TestCase
         $user = User::factory()->create();
         $task = ContactTask::factory()->create([
             'contact_id' => $contact->id,
+            'due_at' => '2018-01-01',
         ]);
 
         $collection = ModuleContactTasksViewHelper::dtoTask($contact, $task, $user);
@@ -73,6 +74,8 @@ class ModuleContactTasksViewHelperTest extends TestCase
                 'description' => $task->description,
                 'completed' => false,
                 'completed_at' => null,
+                'due_at' => 'Jan 01, 2018',
+                'due_at_late' => false,
                 'url' => [
                     'update' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/tasks/'.$task->id,
                     'toggle' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/tasks/'.$task->id.'/toggle',

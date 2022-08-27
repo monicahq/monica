@@ -41,6 +41,29 @@
           @esc-key-pressed="createTaskModalShown = false" />
       </div>
 
+      <!-- due date -->
+      <div class="border-b border-gray-200 p-5">
+        <div class="flex items-center">
+          <input
+            id="reminder"
+            v-model="form.due_at_checked"
+            name="reminder"
+            type="checkbox"
+            class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+            @click="toggleDueDateModal" />
+          <label for="reminder" class="ml-2 block cursor-pointer text-sm text-gray-900"> Add a due date </label>
+        </div>
+
+        <!-- task options -->
+        <div v-if="form.due_at_checked" class="mt-4 ml-4">
+          <v-date-picker v-model="form.due_at" class="inline-block h-full" :model-config="modelConfig">
+            <template #default="{ inputValue, inputEvents }">
+              <input class="rounded border bg-white px-2 py-1" :value="inputValue" v-on="inputEvents" />
+            </template>
+          </v-date-picker>
+        </div>
+      </div>
+
       <div class="flex justify-between p-5">
         <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createTaskModalShown = false" />
         <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
@@ -51,7 +74,7 @@
     <ul v-if="localTasks.length > 0" class="mb-2 rounded-lg border border-gray-200 bg-white">
       <li v-for="task in localTasks" :key="task.id" class="item-list border-b border-gray-200 hover:bg-slate-50">
         <div v-if="editedTaskId !== task.id" class="flex items-center justify-between p-3">
-          <div>
+          <div class="flex items-center">
             <input
               :id="task.id"
               v-model="task.completed"
@@ -59,8 +82,28 @@
               type="checkbox"
               class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
               @change="toggle(task)" />
-            <label :for="task.id" class="ml-2 cursor-pointer text-gray-900">
+            <label :for="task.id" class="ml-2 flex cursor-pointer text-gray-900">
               {{ task.label }}
+
+              <!-- due date -->
+              <span
+                v-if="task.due_at"
+                :class="task.due_at_late ? 'bg-red-400/10 text-red-600' : 'bg-sky-400/10 text-sky-600'"
+                class="ml-2 flex items-center rounded-full px-2 py-0.5 text-xs font-medium leading-5 dark:text-sky-400">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="mr-1 h-3 w-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span class="">{{ task.due_at }}</span>
+              </span>
             </label>
           </div>
 
@@ -84,6 +127,29 @@
               @esc-key-pressed="editedTaskId = 0" />
           </div>
 
+          <!-- due date -->
+          <div class="border-b border-gray-200 p-5">
+            <div class="flex items-center">
+              <input
+                id="reminder"
+                v-model="form.due_at_checked"
+                name="reminder"
+                type="checkbox"
+                class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                @click="toggleDueDateModal" />
+              <label for="reminder" class="ml-2 block cursor-pointer text-sm text-gray-900"> Add a due date </label>
+            </div>
+
+            <!-- task options -->
+            <div v-if="form.due_at_checked" class="mt-4 ml-4">
+              <v-date-picker v-model="form.due_at" class="inline-block h-full" :model-config="modelConfig">
+                <template #default="{ inputValue, inputEvents }">
+                  <input class="rounded border bg-white px-2 py-1" :value="inputValue" v-on="inputEvents" />
+                </template>
+              </v-date-picker>
+            </div>
+          </div>
+
           <div class="flex justify-between p-5">
             <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedTaskId = 0" />
             <pretty-button :text="'Update'" :state="loadingState" :icon="'check'" :classes="'save'" />
@@ -105,7 +171,7 @@
       <ul v-for="task in localCompletedTasks" :key="task.id" class="mb-2 rounded-lg border border-gray-200 bg-white">
         <li>
           <div class="flex items-center justify-between p-3">
-            <div>
+            <div class="flex items-center">
               <input
                 :id="task.id"
                 v-model="task.completed"
@@ -113,8 +179,29 @@
                 type="checkbox"
                 class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                 @change="toggle(task)" />
-              <label :for="task.id" class="ml-2 cursor-pointer text-gray-900">
+
+              <label :for="task.id" class="ml-2 flex cursor-pointer items-center text-gray-900">
                 {{ task.label }}
+
+                <!-- due date -->
+                <span
+                  v-if="task.due_at"
+                  :class="task.due_at_late ? 'bg-red-400/10' : ''"
+                  class="ml-2 flex items-center rounded-full bg-sky-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-sky-600 dark:text-sky-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="mr-1 h-3 w-3"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span class="">{{ task.due_at }}</span>
+                </span>
               </label>
             </div>
 
@@ -166,8 +253,11 @@ export default {
       localCompletedTasks: [],
       loadingState: '',
       editedTaskId: 0,
+      dueDateShown: false,
       form: {
         label: '',
+        due_at: '',
+        due_at_checked: false,
         errors: [],
       },
     };
@@ -182,6 +272,7 @@ export default {
       this.form.errors = [];
       this.form.label = '';
       this.createTaskModalShown = true;
+      this.form.due_at_checked = false;
 
       this.$nextTick(() => {
         this.$refs.label.focus();
@@ -192,10 +283,16 @@ export default {
       this.form.errors = [];
       this.form.label = task.label;
       this.editedTaskId = task.id;
+      this.form.due_at = task.due_at;
+      this.form.due_at_checked = task.due_at != '';
 
       this.$nextTick(() => {
         this.$refs[`update${task.id}`].focus();
       });
+    },
+
+    toggleDueDateModal() {
+      this.dueDateShown = !this.dueDateShown;
     },
 
     getCompleted() {

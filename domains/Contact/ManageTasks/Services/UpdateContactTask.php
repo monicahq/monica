@@ -26,6 +26,7 @@ class UpdateContactTask extends BaseService implements ServiceInterface
             'contact_task_id' => 'required|integer|exists:contact_tasks,id',
             'label' => 'required|string|max:255',
             'description' => 'nullable|string|max:65535',
+            'due_at' => 'nullable|date',
         ];
     }
 
@@ -59,6 +60,7 @@ class UpdateContactTask extends BaseService implements ServiceInterface
 
         $this->task->label = $data['label'];
         $this->task->description = $this->valueOrNull($data, 'description');
+        $this->task->due_at = $this->valueOrNull($data, 'due_at');
         $this->task->save();
 
         $this->contact->last_updated_at = Carbon::now();

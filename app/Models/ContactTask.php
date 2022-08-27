@@ -25,6 +25,7 @@ class ContactTask extends Model
         'description',
         'completed',
         'completed_at',
+        'due_at',
     ];
 
     /**
@@ -43,6 +44,7 @@ class ContactTask extends Model
      */
     protected $dates = [
         'completed_at',
+        'due_at',
     ];
 
     /**

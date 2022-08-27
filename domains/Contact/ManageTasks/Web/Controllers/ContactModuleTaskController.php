@@ -9,6 +9,7 @@ use App\Contact\ManageTasks\Services\UpdateContactTask;
 use App\Contact\ManageTasks\Web\ViewHelpers\ModuleContactTasksViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,6 +26,11 @@ class ContactModuleTaskController extends Controller
 
     public function store(Request $request, int $vaultId, int $contactId)
     {
+        $dueAt = '';
+        if ($request->input('due_at')) {
+            $dueAt = Carbon::parse($request->input('due_at'))->format('Y-m-d');
+        }
+
         $data = [
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::user()->id,
@@ -32,6 +38,7 @@ class ContactModuleTaskController extends Controller
             'contact_id' => $contactId,
             'label' => $request->input('label'),
             'description' => null,
+            'due_at' => $dueAt,
         ];
 
         $task = (new CreateContactTask())->execute($data);
@@ -44,6 +51,11 @@ class ContactModuleTaskController extends Controller
 
     public function update(Request $request, int $vaultId, int $contactId, int $taskId)
     {
+        $dueAt = '';
+        if ($request->input('due_at')) {
+            $dueAt = Carbon::parse($request->input('due_at'))->format('Y-m-d');
+        }
+
         $data = [
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::user()->id,
@@ -52,6 +64,7 @@ class ContactModuleTaskController extends Controller
             'contact_task_id' => $taskId,
             'label' => $request->input('label'),
             'description' => null,
+            'due_at' => $dueAt,
         ];
 
         $task = (new UpdateContactTask())->execute($data);

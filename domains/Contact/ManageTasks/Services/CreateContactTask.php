@@ -27,7 +27,7 @@ class CreateContactTask extends BaseService implements ServiceInterface
             'contact_id' => 'required|integer|exists:contacts,id',
             'label' => 'required|string|max:255',
             'description' => 'nullable|string|max:65535',
-
+            'due_at' => 'nullable|date_format:Y-m-d',
         ];
     }
 
@@ -71,6 +71,7 @@ class CreateContactTask extends BaseService implements ServiceInterface
             'author_name' => $this->author->name,
             'label' => $this->data['label'],
             'description' => $this->valueOrNull($this->data, 'description'),
+            'due_at' => $this->valueOrNull($this->data, 'due_at'),
         ]);
     }
 
