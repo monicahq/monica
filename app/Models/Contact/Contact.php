@@ -879,7 +879,7 @@ class Contact extends Model
                 break;
             case 'nickname_bracketed_firstname_lastname':
                 $completeName = $this->first_name;
-                
+
                 if (! is_null($this->middle_name)) {
                     $completeName = $completeName.' '.$this->middle_name;
                 }
