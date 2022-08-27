@@ -2,6 +2,7 @@
 
 namespace App\Contact\ManageContactAddresses\Services;
 
+use App\Contact\ManageContactAddresses\Jobs\FetchAddressGeocoding;
 use App\Interfaces\ServiceInterface;
 use App\Models\Address;
 use App\Models\AddressType;
@@ -10,6 +11,8 @@ use Carbon\Carbon;
 
 class CreateContactAddress extends BaseService implements ServiceInterface
 {
+    private Address $address;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -66,7 +69,7 @@ class CreateContactAddress extends BaseService implements ServiceInterface
                 ->findOrFail($data['address_type_id']);
         }
 
-        $address = Address::create([
+        $this->address = Address::create([
             'contact_id' => $data['contact_id'],
             'address_type_id' => $this->valueOrNull($data, 'address_type_id'),
             'street' => $this->valueOrNull($data, 'street'),
@@ -84,6 +87,13 @@ class CreateContactAddress extends BaseService implements ServiceInterface
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
 
-        return $address;
+        $this->geocodeAddress();
+
+        return $this->address;
+    }
+
+    private function geocodeAddress(): void
+    {
+        FetchAddressGeocoding::dispatch($this->address)->onQueue('low');
     }
 }

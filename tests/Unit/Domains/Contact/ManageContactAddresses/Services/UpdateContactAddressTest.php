@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactAddresses\Services;
 
+use App\Contact\ManageContactAddresses\Jobs\FetchAddressGeocoding;
 use App\Contact\ManageContactAddresses\Services\UpdateContactAddress;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
@@ -12,6 +13,7 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -136,6 +138,8 @@ class UpdateContactAddressTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact, AddressType $type, Address $address): void
     {
+        Queue::fake();
+
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
@@ -170,5 +174,9 @@ class UpdateContactAddressTest extends TestCase
             Address::class,
             $address
         );
+
+        Queue::assertPushed(FetchAddressGeocoding::class, function ($job) use ($address) {
+            return $job->address->id === $address->id;
+        });
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Contact\ManageContactAddresses\Services;
 
+use App\Contact\ManageContactAddresses\Jobs\FetchAddressGeocoding;
 use App\Interfaces\ServiceInterface;
 use App\Models\Address;
 use App\Models\AddressType;
@@ -99,7 +100,14 @@ class UpdateContactAddress extends BaseService implements ServiceInterface
         $this->address->is_past_address = $this->valueOrFalse($this->data, 'is_past_address');
         $this->address->save();
 
+        $this->geocodeAddress();
+
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
+    }
+
+    private function geocodeAddress(): void
+    {
+        FetchAddressGeocoding::dispatch($this->address)->onQueue('low');
     }
 }
