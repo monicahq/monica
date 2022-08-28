@@ -30,6 +30,7 @@ use App\Contact\ManageRelationships\Web\Controllers\ContactRelationshipsControll
 use App\Contact\ManageReminders\Web\Controllers\ContactModuleReminderController;
 use App\Contact\ManageTasks\Web\Controllers\ContactModuleTaskController;
 use App\Http\Controllers\Auth\AcceptInvitationController;
+use App\Providers\RouteServiceProvider;
 use App\Settings\CancelAccount\Web\Controllers\CancelAccountController;
 use App\Settings\ManageActivityTypes\Web\Controllers\PersonalizeActivitiesController;
 use App\Settings\ManageActivityTypes\Web\Controllers\PersonalizeActivityTypesController;
@@ -91,17 +92,13 @@ use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsUserController;
 use App\Vault\Search\Web\Controllers\VaultContactSearchController;
 use App\Vault\Search\Web\Controllers\VaultMostConsultedContactsController;
 use App\Vault\Search\Web\Controllers\VaultSearchController;
-use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Auth::check()
+        ? redirect()->intended(RouteServiceProvider::HOME)
+        : redirect()->route('login');
 });
 
 require __DIR__.'/auth.php';
