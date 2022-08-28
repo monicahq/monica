@@ -22,6 +22,8 @@
     "laravel/scout": "^9.4.10",
     "laravel/tinker": "^2.7.2",
     "meilisearch/meilisearch-php": "^0.23.3",
+    "naugrim/laravel-sentry-tunnel": "^1.0",
+    "sentry/sentry-laravel": "^2.13",
     "tightenco/ziggy": "^1.4.6",
     "uploadcare/uploadcare-php": "^3.2.4",
     "vluzrmos/language-detector": "^2.3.3"
