@@ -5,6 +5,7 @@ namespace App\Vault\ManageVault\Web\ViewHelpers;
 use App\Helpers\DateHelper;
 use App\Models\Contact;
 use App\Models\ContactReminder;
+use App\Models\ContactTask;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Models\Vault;
@@ -123,6 +124,51 @@ class VaultShowViewHelper
                             'vault' => $contact->vault_id,
                             'contact' => $contact->id,
                         ]),
+                    ],
+                ];
+            });
+    }
+
+    public static function dueTasks(Vault $vault, User $user): Collection
+    {
+        $contactIds = $vault->contacts()->select('id')->get()->toArray();
+        $tasks = DB::table('contact_tasks')
+            ->where('completed', false)
+            ->whereIn('contact_id', $contactIds)
+            ->where('due_at', '<=', Carbon::now()->addDays(30))
+            ->orderBy('due_at', 'asc')
+            ->get();
+
+        return $tasks
+            ->map(function ($task) use ($user) {
+                $task = ContactTask::find($task->id);
+                $contact = $task->contact;
+
+                return [
+                    'id' => $task->id,
+                    'label' => $task->label,
+                    'description' => $task->description,
+                    'completed' => $task->completed,
+                    'completed_at' => $task->completed_at ? DateHelper::format($task->completed_at, $user) : null,
+                    'due_at' => $task->due_at ? DateHelper::format($task->due_at, $user) : null,
+                    'due_at_late' => optional($task->due_at)->isPast() ?? false,
+                    'url' => [
+                        'toggle' => route('contact.task.toggle', [
+                            'vault' => $contact->vault_id,
+                            'contact' => $contact->id,
+                            'task' => $task->id,
+                        ]),
+                    ],
+                    'contact' => [
+                        'id' => $contact->id,
+                        'name' => $contact->name,
+                        'avatar' => $contact->avatar,
+                        'url' => [
+                            'show' => route('contact.show', [
+                                'vault' => $contact->vault_id,
+                                'contact' => $contact->id,
+                            ]),
+                        ],
                     ],
                 ];
             });

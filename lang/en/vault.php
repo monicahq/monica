@@ -63,6 +63,8 @@ return [
     'dashboard_reminders_title' => 'Reminders for the next 30 days',
     'dashboard_reminders_blank' => 'No upcoming reminders.',
     'dashboard_favorites_title' => 'Favorites',
+    'dashboard_due_tasks_title' => 'Due and upcoming tasks',
+    'dashboard_due_tasks_blank' => 'No tasks.',
 
     /***************************************************************
      * VAULT DASHBOARD REMINDERS

@@ -52,7 +52,7 @@ class ContactModuleTaskController extends Controller
     public function update(Request $request, int $vaultId, int $contactId, int $taskId)
     {
         $dueAt = '';
-        if ($request->input('due_at')) {
+        if ($request->input('due_at_checked')) {
             $dueAt = Carbon::parse($request->input('due_at'))->format('Y-m-d');
         }
 
@@ -64,7 +64,7 @@ class ContactModuleTaskController extends Controller
             'contact_task_id' => $taskId,
             'label' => $request->input('label'),
             'description' => null,
-            'due_at' => $dueAt,
+            'due_at' => $dueAt === '' ? null : $dueAt,
         ];
 
         $task = (new UpdateContactTask())->execute($data);

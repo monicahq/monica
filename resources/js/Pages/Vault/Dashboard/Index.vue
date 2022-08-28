@@ -98,41 +98,8 @@
             <!-- upcoming reminders -->
             <upcoming-reminders :data="upcomingReminders" />
 
-            <h3 class="mb-3 border-b border-gray-200 pb-1 font-medium">
-              <span class="relative">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                </svg>
-              </span>
-              Tasks
-            </h3>
-            <div class="relative mb-3 flex items-start">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
-              <label for="remember-me" class="ml-2 block cursor-pointer text-sm text-gray-900">
-                Remember mea sdfasdf asdf asdf asdf sdf
-              </label>
-            </div>
-            <div class="flex items-start">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
-              <label for="remember-me" class="ml-2 block cursor-pointer text-sm text-gray-900"> Remember me </label>
-            </div>
+            <!-- tasks -->
+            <due-tasks :data="dueTasks" />
           </div>
         </div>
       </div>
@@ -145,6 +112,7 @@ import Layout from '@/Shared/Layout.vue';
 import LastUpdated from '@/Pages/Vault/Dashboard/Partials/LastUpdated.vue';
 import UpcomingReminders from '@/Pages/Vault/Dashboard/Partials/UpcomingReminders.vue';
 import Favorites from '@/Pages/Vault/Dashboard/Partials/Favorites.vue';
+import DueTasks from '@/Pages/Vault/Dashboard/Partials/DueTasks.vue';
 import Activity from '@/Pages/Vault/Dashboard/Partials/Feed/Activity.vue';
 import Entry from '@/Pages/Vault/Dashboard/Partials/Feed/Entry.vue';
 import Goal from '@/Pages/Vault/Dashboard/Partials/Feed/Goal.vue';
@@ -158,6 +126,7 @@ export default {
     LastUpdated,
     UpcomingReminders,
     Favorites,
+    DueTasks,
     PrettyButton,
     Entry,
     Activity,
@@ -183,6 +152,10 @@ export default {
       type: Object,
       default: null,
     },
+    dueTasks: {
+      type: Object,
+      default: null,
+    },
   },
 
   data() {
@@ -203,7 +176,7 @@ export default {
 
 <style lang="scss" scoped>
 .grid {
-  grid-template-columns: 200px 1fr 300px;
+  grid-template-columns: 200px 1fr 400px;
 }
 
 @media (max-width: 480px) {

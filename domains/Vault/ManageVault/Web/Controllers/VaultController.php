@@ -57,6 +57,7 @@ class VaultController extends Controller
             'lastUpdatedContacts' => VaultShowViewHelper::lastUpdatedContacts($vault),
             'upcomingReminders' => VaultShowViewHelper::upcomingReminders($vault, Auth::user()),
             'favorites' => VaultShowViewHelper::favorites($vault, Auth::user()),
+            'dueTasks' => VaultShowViewHelper::dueTasks($vault, Auth::user()),
         ]);
     }
 
