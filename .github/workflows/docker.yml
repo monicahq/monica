@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  php-version: '8.1'
+  php-version: "8.1"
   node-version: 18
 
 jobs:
@@ -33,14 +33,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Login to GitHub container registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ secrets.CR_USER }}
-          password: ${{ secrets.CR_PAT }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-    # Composer
+      # Composer
       - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
@@ -54,7 +54,7 @@ jobs:
             ${{ runner.os }}-composer-${{ env.php-version }}
             ${{ runner.os }}-composer-
 
-    # Yarn
+      # Yarn
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -71,11 +71,11 @@ jobs:
             ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
             ${{ runner.os }}-yarn-
 
-    # Install
+      # Install
       - name: Install
         run: scripts/docker/build.sh --skip-build $GITHUB_SHA
 
-    # Build docker
+      # Build docker
       - name: Docker build
         id: docker_build
         uses: docker/build-push-action@v3

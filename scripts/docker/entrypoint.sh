@@ -4,8 +4,8 @@ set -Eeo pipefail
 
 # wait for the database to start
 waitfordb() {
-    HOST=${DB_HOST:-mysql}
-    PORT=${DB_PORT:-3306}
+    HOST=${DB_HOST:-pgsql}
+    PORT=${DB_PORT:-5432}
     echo "Connecting to ${HOST}:${PORT}"
 
     attempts=0
