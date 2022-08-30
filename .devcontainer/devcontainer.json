@@ -1,0 +1,45 @@
+// Update the VARIANT arg in docker-compose.yml to pick a PHP version: 7, 7.3, 7.4
+{
+  "name": "PHP & SQLite",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "dockerComposeFile": "docker-compose.yaml",
+
+  "build": {
+    "dockerfile": "Dockerfile",
+    // Update 'VARIANT' to pick a PHP version: 8, 8.0, 8.1
+    "args": {
+      "VARIANT": "8",
+      "INSTALL_NODE": "true",
+      "NODE_VERSION": "lts/*"
+    }
+  },
+
+  // Set *default* container specific settings.json values on container create.
+  "settings": {
+  },
+
+  // Add the IDs of extensions you want installed when the container is created.
+  "extensions": [
+    "felixfbecker.php-debug",
+    "felixfbecker.php-intellisense",
+    "absszero.vscode-laravel-goto",
+    "mohamedbenhida.laravel-intellisense",
+    "mrmlnc.vscode-apache",
+    "qwtel.sqlite-viewer",
+    "calebporzio.better-phpunit",
+    "editorconfig.editorconfig",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ],
+
+  // For use with PHP or Apache (e.g.php -S localhost:8080 or apache2ctl start)
+  "forwardPorts": [8080, 8000],
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": ".devcontainer/postCreate.sh"
+
+  // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+  // "remoteUser": "vscode"
+}
