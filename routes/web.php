@@ -112,7 +112,6 @@ Route::post(
 );
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
     // vaults
     Route::prefix('vaults')->group(function () {
         Route::get('', [VaultController::class, 'index'])->name('vault.index');
