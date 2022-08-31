@@ -29,9 +29,7 @@ abstract class TestCase extends BaseTestCase
      */
     public function createAdministrator(): User
     {
-        return User::factory()->create([
-            'is_account_administrator' => true,
-        ]);
+        return User::factory()->administrator()->create();
     }
 
     /**

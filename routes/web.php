@@ -101,8 +101,6 @@ Route::get('/', function () {
         : redirect()->route('login');
 });
 
-require __DIR__.'/auth.php';
-
 Route::get('invitation/{code}', [AcceptInvitationController::class, 'show'])->name('invitation.show');
 Route::post('invitation', [AcceptInvitationController::class, 'store'])->name('invitation.store');
 
@@ -111,7 +109,11 @@ Route::post(
     [TelegramWebhookController::class, 'store']
 );
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
     // vaults
     Route::prefix('vaults')->group(function () {
         Route::get('', [VaultController::class, 'index'])->name('vault.index');

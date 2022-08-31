@@ -6,7 +6,6 @@ use App\Interfaces\ServiceInterface;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\File;
-use App\Models\User;
 use App\Services\BaseService;
 
 class CancelAccount extends BaseService implements ServiceInterface

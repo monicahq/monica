@@ -35,9 +35,7 @@ rules:
   semi-style:
     - error
     - last
-  vue/component-name-in-template-casing:
-    - error
-    - kebab-case
+  vue/component-name-in-template-casing: 0
   vue/html-end-tags: error
   vue/html-self-closing: 0
   vue/no-v-model-argument: 0

@@ -45,4 +45,18 @@ class UserFactory extends Factory
             ];
         });
     }
+
+    /**
+     * Create an admin user.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function administrator()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_account_administrator' => true,
+            ];
+        });
+    }
 }

@@ -8,7 +8,6 @@ use App\Models\UserNotificationChannel;
 use App\Notifications\ReminderTriggered;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
@@ -17,6 +16,9 @@ class ProcessScheduledContactRemindersTest extends TestCase
 {
     use DatabaseTransactions;
 
+    /**
+     * @test
+     */
     public function it_processes_all_the_scheduled_contact_reminders(): void
     {
         Notification::fake();
@@ -50,9 +52,12 @@ class ProcessScheduledContactRemindersTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
     public function it_cant_process_the_scheduled_contact_reminders(): void
     {
-        Bus::fake();
+        Notification::fake();
 
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 0, 0, 0));
 
@@ -73,5 +78,7 @@ class ProcessScheduledContactRemindersTest extends TestCase
         $job = new ProcessScheduledContactReminders();
         $job->dispatch();
         $job->handle();
+
+        Notification::assertNothingSent();
     }
 }

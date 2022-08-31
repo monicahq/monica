@@ -17,7 +17,9 @@
     "inertiajs/inertia-laravel": "^0.6.3",
     "itsgoingd/clockwork": "^5.1",
     "laravel-notification-channels/telegram": "^2.1",
+    "laravel/fortify": "^1.13",
     "laravel/framework": "^9.22.1",
+    "laravel/jetstream": "^2.10",
     "laravel/sanctum": "^2.15.1",
     "laravel/scout": "^9.4.10",
     "laravel/tinker": "^2.7.2",
@@ -32,7 +34,6 @@
     "barryvdh/laravel-ide-helper": "^2.12",
     "brianium/paratest": "^6.4",
     "fakerphp/faker": "^1.9.1",
-    "laravel/breeze": "^1.4",
     "laravel/pint": "^1.1",
     "laravel/sail": "^1.14.6",
     "mockery/mockery": "^1.4.4",
@@ -79,7 +80,10 @@
   "config": {
     "optimize-autoloader": true,
     "preferred-install": "dist",
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+        "composer/package-versions-deprecated": true
+    }
   },
   "minimum-stability": "dev",
   "prefer-stable": true

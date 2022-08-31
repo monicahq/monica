@@ -75,7 +75,7 @@
                 </inertia-link>
               </li>
               <li class="inline">
-                <inertia-link class="inline" @click="logout()">
+                <inertia-link class="inline" method="post" :href="route('logout')">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-300 sm:h-4 sm:w-4"
@@ -200,10 +200,6 @@ export default {
   },
 
   methods: {
-    logout() {
-      this.$inertia.visit(this.layoutData.url.logout);
-    },
-
     goToSearchPage() {
       this.$inertia.visit(this.layoutData.vault.url.search);
     },
