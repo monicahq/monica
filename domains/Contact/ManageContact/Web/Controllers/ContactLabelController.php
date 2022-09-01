@@ -3,6 +3,7 @@
 namespace App\Contact\ManageContact\Web\Controllers;
 
 use App\Contact\ManageContact\Web\ViewHelpers\ContactIndexViewHelper;
+use App\Helpers\PaginatorHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Label;
 use App\Models\Vault;
@@ -26,6 +27,7 @@ class ContactLabelController extends Controller
         return Inertia::render('Vault/Contact/Index', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
             'data' => ContactIndexViewHelper::data($contacts, $vault, $labelId),
+            'paginator' => PaginatorHelper::getData($contacts),
         ]);
     }
 }

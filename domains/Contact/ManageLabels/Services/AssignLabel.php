@@ -68,11 +68,12 @@ class AssignLabel extends BaseService implements ServiceInterface
 
     private function createFeedItem(): void
     {
-        ContactFeedItem::create([
+        $feedItem = ContactFeedItem::create([
             'author_id' => $this->author->id,
             'contact_id' => $this->contact->id,
             'action' => ContactFeedItem::ACTION_LABEL_ASSIGNED,
             'description' => $this->label->name,
         ]);
+        $this->label->feedItem()->save($feedItem);
     }
 }

@@ -6,6 +6,7 @@ use App\Contact\ManageLabels\Services\AssignLabel;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Models\Label;
 use App\Models\User;
 use App\Models\Vault;
@@ -113,6 +114,11 @@ class AssignLabelTest extends TestCase
         $this->assertDatabaseHas('contact_label', [
             'contact_id' => $contact->id,
             'label_id' => $label->id,
+        ]);
+
+        $this->assertDatabaseHas('contact_feed_items', [
+            'contact_id' => $contact->id,
+            'action' => ContactFeedItem::ACTION_LABEL_ASSIGNED,
         ]);
     }
 }

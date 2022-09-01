@@ -26,6 +26,7 @@ use App\Contact\ManageReminders\Web\ViewHelpers\ModuleRemindersViewHelper;
 use App\Contact\ManageTasks\Web\ViewHelpers\ModuleContactTasksViewHelper;
 use App\Helpers\StorageHelper;
 use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Models\Module;
 use App\Models\TemplatePage;
 use App\Models\User;
@@ -225,7 +226,12 @@ class ContactShowViewHelper
             }
 
             if ($module->type == Module::TYPE_FEED) {
-                $data = ModuleFeedViewHelper::data($contact, $user);
+                $items = ContactFeedItem::where('contact_id', $contact->id)
+                    ->with('author')
+                    ->with('contact')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+                $data = ModuleFeedViewHelper::data($items, $user);
             }
 
             if ($module->type == Module::TYPE_REMINDERS) {

@@ -68,11 +68,12 @@ class RemoveLabel extends BaseService implements ServiceInterface
 
     private function createFeedItem(): void
     {
-        ContactFeedItem::create([
+        $feedItem = ContactFeedItem::create([
             'author_id' => $this->author->id,
             'contact_id' => $this->contact->id,
             'action' => ContactFeedItem::ACTION_LABEL_REMOVED,
             'description' => $this->label->name,
         ]);
+        $this->label->feedItem()->save($feedItem);
     }
 }

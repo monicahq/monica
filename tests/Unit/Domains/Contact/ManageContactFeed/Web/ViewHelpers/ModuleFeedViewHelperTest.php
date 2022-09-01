@@ -5,7 +5,6 @@ namespace Tests\Unit\Domains\Contact\ManageContactFeed\Web\ViewHelpers;
 use App\Contact\ManageContactFeed\Web\ViewHelpers\ModuleFeedViewHelper;
 use App\Models\Contact;
 use App\Models\ContactFeedItem;
-use App\Models\Note;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -19,15 +18,16 @@ class ModuleFeedViewHelperTest extends TestCase
     {
         $contact = Contact::factory()->create();
         $user = User::factory()->create();
-        $note = Note::factory()->create();
         ContactFeedItem::factory()->create([
             'contact_id' => $contact->id,
-            'action' => ContactFeedItem::ACTION_NOTE_CREATED,
-            'feedable_id' => $note->id,
-            'feedable_type' => Note::class,
         ]);
+        $items = ContactFeedItem::where('contact_id', $contact->id)
+            ->with('author')
+            ->with('contact')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        $array = ModuleFeedViewHelper::data($contact, $user);
+        $array = ModuleFeedViewHelper::data($items, $user);
 
         $this->assertEquals(
             1,
@@ -35,8 +35,5 @@ class ModuleFeedViewHelperTest extends TestCase
         );
 
         $this->assertArrayHasKey('items', $array);
-        $this->assertArrayHasKey('id', $array['items']->toArray()[0]);
-        $this->assertArrayHasKey('action', $array['items']->toArray()[0]);
-        $this->assertArrayHasKey('description', $array['items']->toArray()[0]);
     }
 }

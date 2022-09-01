@@ -35,6 +35,7 @@ class UserHelperTest extends TestCase
                 'id' => $contact->id,
                 'name' => 'Keanu Reeves',
                 'avatar' => $contact->avatar,
+                'url' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/'.$contact->id,
             ],
             UserHelper::getInformationAboutContact($rachel, $vault)
         );

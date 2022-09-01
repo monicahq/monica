@@ -2,7 +2,10 @@
 
 namespace App\Vault\ManageVault\Web\Controllers;
 
+use App\Contact\ManageContactFeed\Web\ViewHelpers\ModuleFeedViewHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Models\Vault;
 use App\Vault\ManageVault\Services\CreateVault;
 use App\Vault\ManageVault\Services\DestroyVault;
@@ -52,11 +55,20 @@ class VaultController extends Controller
     {
         $vault = Vault::find($vaultId);
 
+        $contactIds = Contact::where('vault_id', $vaultId)->select('id')->get()->toArray();
+
+        $items = ContactFeedItem::whereIn('contact_id', $contactIds)
+            ->with('author')
+            ->with('contact')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return Inertia::render('Vault/Dashboard/Index', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
             'lastUpdatedContacts' => VaultShowViewHelper::lastUpdatedContacts($vault),
             'upcomingReminders' => VaultShowViewHelper::upcomingReminders($vault, Auth::user()),
             'favorites' => VaultShowViewHelper::favorites($vault, Auth::user()),
+            'feed' => ModuleFeedViewHelper::data($items, Auth::user()),
             'dueTasks' => VaultShowViewHelper::dueTasks($vault, Auth::user()),
         ]);
     }

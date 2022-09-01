@@ -6,6 +6,7 @@ use App\Contact\ManageContact\Services\CreateContact;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -99,5 +100,10 @@ class CreateContactTest extends TestCase
             Contact::class,
             $contact
         );
+
+        $this->assertDatabaseHas('contact_feed_items', [
+            'contact_id' => $contact->id,
+            'action' => ContactFeedItem::ACTION_CONTACT_CREATED,
+        ]);
     }
 }
