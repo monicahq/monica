@@ -19,10 +19,13 @@ return [
      **************************************************************/
 
     'feed_item_author_deleted' => 'Utilisateur supprimé',
-    'feed_item_contact_information_updated' => 'a mis à jour les informations de contact',
+    'feed_item_information_updated' => 'a mis à jour les informations de contact',
     'feed_item_important_date_created' => 'a ajouté une date importante',
     'feed_item_important_date_updated' => 'a mis à jour une date importante',
     'feed_item_important_date_destroyed' => 'a supprimé une date importante',
+    'feed_item_contact_information_created' => 'a ajouté une information de contact',
+    'feed_item_contact_information_updated' => 'a mis à jour une information de contact',
+    'feed_item_contact_information_destroyed' => 'a supprimé une information de contact',
     'feed_item_label_assigned' => 'a assigné une étiquette',
     'feed_item_label_removed' => 'a supprimé une étiquette',
     'feed_item_note_created' => 'a écrit une note',

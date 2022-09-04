@@ -18,7 +18,13 @@ class ContactFeedItem extends Model
      */
     public const ACTION_CONTACT_CREATED = 'contact_created';
 
+    public const ACTION_INFORMATION_UPDATED = 'information_updated';
+
+    public const ACTION_CONTACT_INFORMATION_CREATED = 'contact_information_created';
+
     public const ACTION_CONTACT_INFORMATION_UPDATED = 'contact_information_updated';
+
+    public const ACTION_CONTACT_INFORMATION_DESTROYED = 'contact_information_destroyed';
 
     public const ACTION_JOB_INFORMATION_UPDATED = 'job_information_updated';
 

@@ -116,7 +116,7 @@ class UpdateContact extends BaseService implements ServiceInterface
         ContactFeedItem::create([
             'author_id' => $this->author->id,
             'contact_id' => $this->contact->id,
-            'action' => ContactFeedItem::ACTION_CONTACT_INFORMATION_UPDATED,
+            'action' => ContactFeedItem::ACTION_INFORMATION_UPDATED,
         ]);
     }
 }

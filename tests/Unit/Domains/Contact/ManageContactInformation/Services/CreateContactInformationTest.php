@@ -6,6 +6,7 @@ use App\Contact\ManageContactInformation\Services\CreateContactInformation;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Models\ContactInformationType;
 use App\Models\User;
 use App\Models\Vault;
@@ -114,6 +115,11 @@ class CreateContactInformationTest extends TestCase
         $this->assertDatabaseHas('contact_information', [
             'id' => $contactInfo->id,
             'data' => 45322322,
+        ]);
+
+        $this->assertDatabaseHas('contact_feed_items', [
+            'contact_id' => $contact->id,
+            'action' => ContactFeedItem::ACTION_CONTACT_INFORMATION_CREATED,
         ]);
     }
 }

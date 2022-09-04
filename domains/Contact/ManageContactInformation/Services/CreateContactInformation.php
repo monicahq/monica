@@ -3,6 +3,7 @@
 namespace App\Contact\ManageContactInformation\Services;
 
 use App\Interfaces\ServiceInterface;
+use App\Models\ContactFeedItem;
 use App\Models\ContactInformation;
 use App\Models\ContactInformationType;
 use App\Services\BaseService;
@@ -60,6 +61,7 @@ class CreateContactInformation extends BaseService implements ServiceInterface
         $this->validate();
         $this->create();
         $this->updateLastEditedDate();
+        $this->createFeedItem();
 
         return $this->contactInformation;
     }
@@ -85,5 +87,16 @@ class CreateContactInformation extends BaseService implements ServiceInterface
     {
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
+    }
+
+    private function createFeedItem(): void
+    {
+        $feedItem = ContactFeedItem::create([
+            'author_id' => $this->author->id,
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_CONTACT_INFORMATION_CREATED,
+            'description' => $this->contactInformation->name,
+        ]);
+        $this->contactInformation->feedItem()->save($feedItem);
     }
 }

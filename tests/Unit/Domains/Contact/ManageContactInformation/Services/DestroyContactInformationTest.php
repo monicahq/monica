@@ -6,6 +6,7 @@ use App\Contact\ManageContactInformation\Services\DestroyContactInformation;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Models\ContactInformation;
 use App\Models\ContactInformationType;
 use App\Models\User;
@@ -151,6 +152,11 @@ class DestroyContactInformationTest extends TestCase
 
         $this->assertDatabaseMissing('contact_information', [
             'id' => $information->id,
+        ]);
+
+        $this->assertDatabaseHas('contact_feed_items', [
+            'contact_id' => $contact->id,
+            'action' => ContactFeedItem::ACTION_CONTACT_INFORMATION_DESTROYED,
         ]);
     }
 }

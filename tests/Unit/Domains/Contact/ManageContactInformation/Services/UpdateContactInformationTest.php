@@ -6,6 +6,7 @@ use App\Contact\ManageContactInformation\Services\UpdateContactInformation;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Models\ContactInformation;
 use App\Models\ContactInformationType;
 use App\Models\User;
@@ -151,6 +152,11 @@ class UpdateContactInformationTest extends TestCase
         $this->assertDatabaseHas('contact_information', [
             'id' => $contactInfo->id,
             'data' => 45322322,
+        ]);
+
+        $this->assertDatabaseHas('contact_feed_items', [
+            'contact_id' => $contact->id,
+            'action' => ContactFeedItem::ACTION_CONTACT_INFORMATION_UPDATED,
         ]);
     }
 }

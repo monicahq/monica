@@ -39,7 +39,7 @@
             :contact-view-mode="contactViewMode" />
 
           <generic-action
-            v-if="feedItem.action === 'contact_information_updated'"
+            v-if="feedItem.action === 'information_updated'"
             :data="feedItem.data"
             :contact-view-mode="contactViewMode" />
 
@@ -77,6 +77,15 @@
             v-if="feedItem.action === 'label_removed'"
             :data="feedItem.data"
             :contact-view-mode="contactViewMode" />
+
+          <contact-information
+            v-if="
+              feedItem.action === 'contact_information_created' ||
+              feedItem.action === 'contact_information_updated' ||
+              feedItem.action === 'contact_information_destroyed'
+            "
+            :data="feedItem.data"
+            :contact-view-mode="contactViewMode" />
         </div>
 
         <!-- details -->
@@ -101,12 +110,14 @@
 import Avatar from '@/Shared/Avatar.vue';
 import GenericAction from '@/Shared/Modules/FeedItems/GenericAction.vue';
 import LabelAssigned from '@/Shared/Modules/FeedItems/LabelAssigned.vue';
+import ContactInformation from '@/Shared/Modules/FeedItems/ContactInformation.vue';
 
 export default {
   components: {
     Avatar,
     GenericAction,
     LabelAssigned,
+    ContactInformation,
   },
 
   props: {
