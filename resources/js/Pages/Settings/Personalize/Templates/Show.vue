@@ -1,11 +1,11 @@
 <template>
   <layout :layout-data="layoutData">
     <!-- breadcrumb -->
-    <nav class="bg-white sm:border-b">
+    <nav class="bg-white dark:bg-gray-900 sm:border-b">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('app.breadcrumb_location') }}
             </li>
             <li class="mr-2 inline">
@@ -71,7 +71,7 @@
         </div>
 
         <!-- help text -->
-        <div class="mb-10 flex rounded border bg-slate-50 px-3 py-2 text-sm">
+        <div class="mb-10 flex rounded border bg-slate-50 px-3 py-2 text-sm dark:bg-slate-900">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 pr-2"

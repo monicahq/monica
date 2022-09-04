@@ -1,7 +1,7 @@
 <template>
   <div class="mb-10">
     <!-- title + cta -->
-    <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 sm:flex">
+    <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
         <span class="relative mr-1">
           <svg
@@ -24,8 +24,11 @@
     </div>
 
     <!-- add a note modal -->
-    <form v-if="createGoalModalShown" class="bg-form mb-6 rounded-lg border border-gray-200" @submit.prevent="submit()">
-      <div class="border-b border-gray-200 p-5">
+    <form
+      v-if="createGoalModalShown"
+      class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900"
+      @submit.prevent="submit()">
+      <div class="border-b border-gray-200 p-5 dark:border-gray-700">
         <errors :errors="form.errors" />
         <!-- name -->
         <text-input
@@ -48,10 +51,13 @@
 
     <!-- goals -->
     <div v-if="localGoals.length > 0">
-      <div v-for="goal in localGoals" :key="goal.id" class="mb-4 rounded border border-gray-200 last:mb-0">
+      <div
+        v-for="goal in localGoals"
+        :key="goal.id"
+        class="mb-4 rounded border border-gray-200 last:mb-0 dark:border-gray-700">
         <div v-if="editedGoalId !== goal.id">
-          <div class="flex items-center justify-between border-b border-gray-200 p-3">
-            <div class="font-semibold text-gray-600">
+          <div class="flex items-center justify-between border-b border-gray-200 p-3 dark:border-gray-700">
+            <div class="font-semibold text-gray-600 dark:text-gray-400">
               {{ goal.name }}
             </div>
 
@@ -68,7 +74,7 @@
               <div
                 v-for="streak in goal.last_7_days"
                 :key="streak.id"
-                class="mr-0 flex flex-row items-center justify-between border-b border-gray-200 p-3 text-center sm:mr-7 sm:mb-0 sm:w-9 sm:flex-col sm:border-0 sm:p-0"
+                class="mr-0 flex flex-row items-center justify-between border-b border-gray-200 p-3 text-center dark:border-gray-700 sm:mr-7 sm:mb-0 sm:w-9 sm:flex-col sm:border-0 sm:p-0"
                 :class="{ 'text-gray-500': !streak.active }">
                 <div>
                   <span class="mb-0 mr-2 block text-xs font-semibold sm:mr-0">
@@ -92,7 +98,8 @@
                   v-else
                   class="mr-2 cursor-pointer text-center text-2xl sm:mr-0"
                   @click="toggleStreak(goal, streak)">
-                  <div class="rounded-md border border-gray-200 bg-slate-100 py-1 px-2">
+                  <div
+                    class="rounded-md border border-gray-200 bg-slate-100 py-1 px-2 dark:border-gray-700 dark:bg-slate-900">
                     <svg
                       class="z-50"
                       width="18"
@@ -139,7 +146,9 @@
     </div>
 
     <!-- blank state -->
-    <div v-if="localGoals.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div
+      v-if="localGoals.length == 0"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">There are no goals yet.</p>
     </div>
   </div>

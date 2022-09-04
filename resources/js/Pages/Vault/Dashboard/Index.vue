@@ -15,9 +15,9 @@
           <!-- middle -->
           <div class="p-3 sm:p-0">
             <!-- actions -->
-            <div style="background-color: #fcfeff" class="mb-6 rounded-lg border border-gray-200 bg-white">
+            <div class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
               <div v-if="!addMode" class="p-3">
-                <p class="mb-5 text-center"><span class="mr-2">👋</span> Good evening, Regis.</p>
+                <p class="mb-5 text-center dark:text-gray-100"><span class="mr-2">👋</span> Good evening, Regis.</p>
 
                 <div class="mb-2 justify-center sm:flex">
                   <pretty-button
@@ -41,7 +41,7 @@
             <!-- filters -->
             <div class="mb-3 text-right">
               <button
-                class="inline-flex items-center rounded-md border border-gray-300 bg-white px-2 py-1 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                class="inline-flex items-center rounded-md border border-gray-300 bg-white px-2 py-1 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:text-gray-300 hover:dark:bg-gray-800">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="h-4 w-4"

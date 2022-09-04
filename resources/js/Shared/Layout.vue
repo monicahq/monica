@@ -4,9 +4,9 @@
       <div class="fixed top-0 z-10 w-full">
         <!-- main nav -->
         <nav
-          class="max-w-8xl mx-auto flex h-10 items-center justify-between border-b bg-gray-50 px-3 dark:border-slate-600 dark:bg-gray-700 dark:text-slate-200 sm:px-6">
+          class="max-w-8xl mx-auto flex h-10 items-center justify-between border-b bg-gray-50 px-3 dark:border-slate-600 dark:bg-gray-800 dark:text-slate-200 sm:px-6">
           <div
-            class="dark:highlight-white/5 items-center rounded-lg border border-gray-200 bg-white px-2 py-1 text-sm dark:border-0 dark:bg-gray-400/20 sm:flex">
+            class="dark:highlight-white/5 items-center rounded-lg border border-gray-200 bg-white px-2 py-1 text-sm dark:border-0 dark:border-gray-700 dark:bg-gray-900 dark:bg-gray-400/20 sm:flex">
             <inertia-link :href="layoutData.url.vaults" class="flex-shrink-0 dark:text-sky-400">
               {{ layoutData.user.name }}
             </inertia-link>
@@ -43,7 +43,7 @@
             </svg>
             <input
               type="text"
-              class="dark:highlight-white/5 block w-64 rounded-md border border-gray-300 px-2 py-1 text-center hover:cursor-pointer focus:border-indigo-500 focus:ring-indigo-500 dark:border-0 dark:bg-slate-800 dark:hover:bg-slate-700 sm:text-sm"
+              class="dark:highlight-white/5 block w-64 rounded-md border border-gray-300 px-2 py-1 text-center placeholder:text-gray-600 hover:cursor-pointer focus:border-indigo-500 focus:ring-indigo-500 dark:border-0 dark:border-gray-700 dark:bg-slate-900 placeholder:dark:text-gray-400 hover:dark:bg-slate-700 sm:text-sm"
               :placeholder="$t('app.layout_menu_search')"
               @focus="goToSearchPage" />
           </div>
@@ -55,7 +55,7 @@
                 <inertia-link :href="layoutData.url.settings" class="relative inline">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="icon-cog relative mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-300 sm:h-4 sm:w-4"
+                    class="icon-cog relative mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-400 dark:text-gray-300 sm:h-4 sm:w-4"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -78,7 +78,7 @@
                 <inertia-link class="inline" method="post" :href="route('logout')">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-300 sm:h-4 sm:w-4"
+                    class="mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-400 dark:text-gray-300 sm:h-4 sm:w-4"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -97,46 +97,46 @@
         </nav>
 
         <!-- vault sub menu -->
-        <nav v-if="insideVault" class="bg-white dark:border-slate-300/10 dark:bg-gray-700 sm:border-b">
+        <nav v-if="insideVault" class="bg-white dark:border-slate-300/10 dark:bg-gray-900 sm:border-b">
           <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
             <div class="flex items-baseline justify-between space-x-6">
               <div>
                 <inertia-link
                   :href="layoutData.vault.url.dashboard"
                   :class="{ 'bg-blue-700 text-white dark:text-white': $page.component.startsWith('Vault/Dashboard') }"
-                  class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
+                  class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('app.layout_menu_dashboard') }}
                 </inertia-link>
 
                 <!-- <inertia-link
                   href=""
-                  class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
+                  class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('app.layout_menu_reports') }}
                 </inertia-link> -->
 
                 <inertia-link
                   :href="layoutData.vault.url.contacts"
                   :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Contact') }"
-                  class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
+                  class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('app.layout_menu_contacts') }}
                 </inertia-link>
 
                 <!-- <inertia-link
                   href=""
-                  class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
+                  class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('app.layout_menu_gift_center') }}
                 </inertia-link> -->
 
                 <!-- <inertia-link
                   href=""
-                  class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
+                  class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('app.layout_menu_loans') }}
                 </inertia-link> -->
 
                 <inertia-link
                   :href="layoutData.vault.url.files"
                   :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Files') }"
-                  class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
+                  class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('app.layout_menu_files') }}
                 </inertia-link>
 
@@ -208,10 +208,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-main {
-  color: #343a4b;
-}
-
 .icon-search {
   left: 8px;
   top: 8px;

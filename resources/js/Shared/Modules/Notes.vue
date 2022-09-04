@@ -1,7 +1,7 @@
 <template>
   <div class="mb-10">
     <!-- title + cta -->
-    <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 sm:flex">
+    <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
         <span class="relative mr-1">
           <svg
@@ -35,8 +35,11 @@
     </div>
 
     <!-- add a note modal -->
-    <form v-if="createNoteModalShown" class="bg-form mb-6 rounded-lg border border-gray-200" @submit.prevent="submit()">
-      <div class="border-b border-gray-200 p-5">
+    <form
+      v-if="createNoteModalShown"
+      class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900"
+      @submit.prevent="submit()">
+      <div class="border-b border-gray-200 p-5 dark:border-gray-700">
         <errors :errors="form.errors" />
 
         <text-area
@@ -70,8 +73,8 @@
               :value="emotion.id"
               name="emotion"
               type="radio"
-              class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-            <label :for="emotion.type" class="ml-2 block font-medium text-gray-700">
+              class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:border-gray-700 dark:bg-slate-900 dark:text-indigo-400" />
+            <label :for="emotion.type" class="ml-2 block font-medium text-gray-700 dark:text-gray-300">
               {{ emotion.name }}
             </label>
           </div>
@@ -80,7 +83,7 @@
         <!-- cta to add a title -->
         <span
           v-if="!titleFieldShown"
-          class="mr-2 inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
+          class="mr-2 inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300 dark:border-gray-700 dark:bg-slate-800 hover:dark:bg-slate-700"
           @click="showTitleField">
           + add title
         </span>
@@ -88,7 +91,7 @@
         <!-- cta to add emotion -->
         <span
           v-if="!emotionFieldShown"
-          class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
+          class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300 dark:border-gray-700 dark:bg-slate-800 hover:dark:bg-slate-700"
           @click="showEmotionField">
           + add emotion
         </span>
@@ -102,10 +105,15 @@
 
     <!-- notes -->
     <div v-if="localNotes.length > 0">
-      <div v-for="note in localNotes" :key="note.id" class="mb-4 rounded border border-gray-200 last:mb-0">
+      <div
+        v-for="note in localNotes"
+        :key="note.id"
+        class="mb-4 rounded border border-gray-200 last:mb-0 dark:border-gray-700">
         <!-- body of the note, if not being edited -->
         <div v-if="editedNoteId !== note.id">
-          <div v-if="note.title" class="border-b border-gray-200 p-3 text-xs font-semibold text-gray-600">
+          <div
+            v-if="note.title"
+            class="border-b border-gray-200 p-3 text-xs font-semibold text-gray-600 dark:border-gray-700 dark:text-gray-400">
             {{ note.title }}
           </div>
 
@@ -121,7 +129,7 @@
 
           <!-- details -->
           <div
-            class="flex justify-between border-t border-gray-200 px-3 py-1 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50">
+            class="flex justify-between border-t border-gray-200 px-3 py-1 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50 dark:border-gray-700 dark:text-gray-400 hover:dark:bg-slate-900">
             <div class="flex items-center">
               <!-- emotion -->
               <div v-if="note.emotion" class="relative mr-3 inline">
@@ -165,7 +173,7 @@
 
         <!-- edit modal form -->
         <form v-if="editedNoteId === note.id" class="bg-form" @submit.prevent="update(note)">
-          <div class="border-b border-gray-200 p-5">
+          <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <errors :errors="form.errors" />
 
             <text-area
@@ -198,8 +206,8 @@
                   :value="emotion.id"
                   name="emotion"
                   type="radio"
-                  class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                <label :for="emotion.type" class="ml-2 block font-medium text-gray-700">
+                  class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:text-indigo-400" />
+                <label :for="emotion.type" class="ml-2 block font-medium text-gray-700 dark:text-gray-300">
                   {{ emotion.name }}
                 </label>
               </div>
@@ -217,7 +225,7 @@
       <div v-if="moduleMode" class="text-center">
         <inertia-link
           :href="data.url.index"
-          class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500">
+          class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
           {{ $t('app.view_all') }}
         </inertia-link>
       </div>
@@ -238,7 +246,9 @@
     </div>
 
     <!-- blank state -->
-    <div v-if="localNotes.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div
+      v-if="localNotes.length == 0"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">There are no notes yet.</p>
     </div>
   </div>

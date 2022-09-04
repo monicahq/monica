@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h3 class="mb-3 flex border-b border-gray-200 pb-1 font-medium">
+    <h3 class="mb-3 flex border-b border-gray-200 pb-1 font-medium dark:border-gray-700">
       <span class="relative mr-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600"
+          class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-400"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

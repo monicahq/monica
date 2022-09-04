@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0">
+  <div class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 dark:bg-gray-900 sm:justify-center sm:pt-0">
     <div>
       <inertia-link href="/">
         <svg
@@ -56,22 +56,22 @@
       </inertia-link>
     </div>
 
-    <div class="mt-6 flex w-full overflow-hidden bg-white shadow-md sm:max-w-4xl sm:rounded-lg">
+    <div class="mt-6 flex w-full overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:max-w-4xl sm:rounded-lg">
       <img :src="wallpaperUrl" class="w-10/12 sm:invisible md:visible" :alt="'Wallpaper'" />
       <div class="w-full">
-        <div class="border-b border-gray-200 px-6 pt-14 pb-10">
-          <h1 class="mb-6 text-center text-xl">
+        <div class="border-b border-gray-200 px-6 pt-14 pb-10 dark:border-gray-700">
+          <h1 class="mb-6 text-center text-xl text-gray-800 dark:text-gray-200">
             <span class="mr-2"> 👋 </span>
             Sign in to your account
           </h1>
 
           <breeze-validation-errors class="mb-4" />
 
-          <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
+          <div v-if="status" class="mb-4 text-sm font-medium text-green-600 dark:text-green-400">
             {{ status }}
           </div>
 
-          <form @submit.prevent="submit">
+          <form @submit.prevent="submit" class="dark:text-gray-800">
             <div class="mb-4">
               <text-input
                 v-model="form.email"
@@ -99,7 +99,7 @@
             <div class="mb-4 block">
               <label class="flex items-center">
                 <breeze-checkbox v-model:checked="form.remember" name="remember" />
-                <span class="ml-2 text-sm text-gray-600"> Remember me </span>
+                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"> Remember me </span>
               </label>
             </div>
 
@@ -116,7 +116,7 @@
           </form>
         </div>
 
-        <div class="px-6 py-6 text-sm">
+        <div class="px-6 py-6 text-sm dark:text-gray-50">
           New to Monica?
           <inertia-link :href="route('register')" class="text-blue-500 hover:underline">
             Create an account

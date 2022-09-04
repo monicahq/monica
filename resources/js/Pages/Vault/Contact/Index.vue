@@ -7,7 +7,7 @@
           <div>
             <!-- labels -->
             <div>
-              <div class="mb-3 border-b border-gray-200">
+              <div class="mb-3 border-b border-gray-200 dark:border-gray-700">
                 <span class="mr-1"> 🏷️ </span>
                 {{ $t('vault.show_contacts_labels') }}
               </div>
@@ -57,11 +57,12 @@
             </div>
 
             <!-- contact list -->
-            <ul class="contact-list mb-6 rounded-lg border border-gray-200 bg-white">
+            <ul
+              class="contact-list mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
               <li
                 v-for="contact in data.contacts"
                 :key="contact.id"
-                class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50">
+                class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
                 <avatar :data="contact.avatar" :classes="'rounded-full mr-2 h-5 w-5'" />
 
                 <inertia-link :href="contact.url.show" class="text-blue-500 hover:underline">

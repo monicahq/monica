@@ -1,7 +1,7 @@
 <template>
   <div class="mb-10">
     <!-- title + cta -->
-    <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 sm:flex">
+    <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
         <span class="relative mr-1">
           <svg
@@ -32,15 +32,15 @@
     <!-- add a contact information modal -->
     <form
       v-if="addContactInformationModalShown"
-      class="bg-form mb-6 rounded-lg border border-gray-200"
+      class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="submit()">
-      <div class="border-b border-gray-200">
+      <div class="border-b border-gray-200 dark:border-gray-700">
         <div v-if="form.errors.length > 0" class="p-5">
           <errors :errors="form.errors" />
         </div>
 
         <!-- name -->
-        <div class="border-b border-gray-200 p-5">
+        <div class="border-b border-gray-200 p-5 dark:border-gray-700">
           <text-input
             :ref="'newData'"
             v-model="form.data"
@@ -74,11 +74,11 @@
 
     <!-- contact infos -->
     <div v-if="localContactInformation.length > 0">
-      <ul class="mb-4 rounded-lg border border-gray-200 bg-white">
+      <ul class="mb-4 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <li
           v-for="info in localContactInformation"
           :key="info.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50">
+          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
           <!-- contact information -->
           <div v-if="editedContactInformationId != info.id" class="flex items-center justify-between px-3 py-2">
             <a :href="info.data" class="text-blue-500 hover:underline">{{ info.label }} </a>
@@ -98,13 +98,13 @@
 
           <!-- edit info modal -->
           <form v-if="editedContactInformationId == info.id" class="bg-form" @submit.prevent="update(info)">
-            <div class="border-b border-gray-200">
+            <div class="border-b border-gray-200 dark:border-gray-700">
               <div v-if="form.errors.length > 0" class="p-5">
                 <errors :errors="form.errors" />
               </div>
 
               <!-- name -->
-              <div class="border-b border-gray-200 p-5">
+              <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <text-input
                   :ref="'newData'"
                   v-model="form.data"
@@ -140,7 +140,9 @@
     </div>
 
     <!-- blank state -->
-    <div v-if="localContactInformation.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div
+      v-if="localContactInformation.length == 0"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">
         {{ $t('contact.contact_information_blank') }}
       </p>

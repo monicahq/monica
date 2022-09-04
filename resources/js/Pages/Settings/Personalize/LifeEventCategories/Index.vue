@@ -1,11 +1,11 @@
 <template>
   <layout :layout-data="layoutData">
     <!-- breadcrumb -->
-    <nav class="bg-white sm:border-b">
+    <nav class="bg-white dark:bg-gray-900 sm:border-b">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('app.breadcrumb_location') }}
             </li>
             <li class="mr-2 inline">
@@ -60,7 +60,7 @@
         </div>
 
         <!-- help text -->
-        <div class="mb-6 flex rounded border bg-slate-50 px-3 py-2 text-sm">
+        <div class="mb-6 flex rounded border bg-slate-50 px-3 py-2 text-sm dark:bg-slate-900">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 grow pr-2"
@@ -86,9 +86,9 @@
         <!-- modal to create a life event category -->
         <form
           v-if="createLifeEventCategoryModalShown"
-          class="mb-6 rounded-lg border border-gray-200 bg-white"
+          class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
           @submit.prevent="submitLifeEventCategory()">
-          <div class="border-b border-gray-200 p-5">
+          <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <errors :errors="form.errors" />
 
             <text-input
@@ -114,12 +114,14 @@
         </form>
 
         <!-- list of life event categories -->
-        <ul v-if="localLifeEventCategories.length > 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+        <ul
+          v-if="localLifeEventCategories.length > 0"
+          class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <li v-for="lifeEventCategory in localLifeEventCategories" :key="lifeEventCategory.id">
             <!-- detail of the life event category -->
             <div
               v-if="renameLifeEventCategoryModalShownId != lifeEventCategory.id"
-              class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50">
+              class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
               <span class="text-base font-semibold">{{ lifeEventCategory.label }}</span>
 
               <!-- actions -->
@@ -141,9 +143,9 @@
             <!-- rename a life event category modal -->
             <form
               v-if="renameLifeEventCategoryModalShownId == lifeEventCategory.id"
-              class="item-list border-b border-gray-200 hover:bg-slate-50"
+              class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
               @submit.prevent="updateLifeEventCategory(lifeEventCategory)">
-              <div class="border-b border-gray-200 p-5">
+              <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />
 
                 <text-input
@@ -178,7 +180,7 @@
               <template #item="{ element }">
                 <div
                   v-if="renameLifeEventTypeModalId != element.id"
-                  class="flex items-center justify-between border-b border-gray-200 py-2 pl-4 pr-5 hover:bg-slate-50">
+                  class="flex items-center justify-between border-b border-gray-200 py-2 pl-4 pr-5 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
                   <!-- icon to move position -->
                   <div class="mr-2 flex">
                     <svg
@@ -220,9 +222,9 @@
 
                 <form
                   v-else
-                  class="item-list border-b border-gray-200 hover:bg-slate-50"
+                  class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
                   @submit.prevent="updateLifeEventType(lifeEventCategory, element)">
-                  <div class="border-b border-gray-200 p-5">
+                  <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                     <errors :errors="form.errors" />
 
                     <text-input
@@ -252,7 +254,7 @@
             <!-- create a new life event type cta -->
             <div
               v-if="createLifeEventCategoryModalId != lifeEventCategory.id"
-              class="item-list border-b border-gray-200 px-5 py-2 pl-6 hover:bg-slate-50">
+              class="item-list border-b border-gray-200 px-5 py-2 pl-6 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
               <span
                 class="cursor-pointer text-sm text-blue-500 hover:underline"
                 @click="showLifeEventTypeModal(lifeEventCategory)"
@@ -263,9 +265,9 @@
             <!-- create a life event type -->
             <form
               v-if="createLifeEventCategoryModalId == lifeEventCategory.id"
-              class="item-list border-b border-gray-200 hover:bg-slate-50"
+              class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
               @submit.prevent="storeLifeEventType(lifeEventCategory)">
-              <div class="border-b border-gray-200 p-5">
+              <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />
 
                 <text-input
@@ -294,7 +296,9 @@
         </ul>
 
         <!-- blank state -->
-        <div v-if="localLifeEventCategories.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+        <div
+          v-if="localLifeEventCategories.length == 0"
+          class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">
             Life events let you document what happened in your life, or the rich life of your contacts.
           </p>

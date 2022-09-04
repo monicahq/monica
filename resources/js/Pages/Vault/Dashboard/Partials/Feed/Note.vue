@@ -1,11 +1,15 @@
 <template>
-  <div class="relative mb-6 border border-gray-300 bg-white sm:rounded-lg">
-    <span class="absolute rounded border bg-blue-50 px-2 py-0 text-xs text-blue-500" style="top: -10px; left: 10px">
+  <div class="relative border border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-900 sm:rounded-lg">
+    <span
+      class="absolute rounded border bg-blue-50 px-2 py-0 text-xs text-blue-500 dark:bg-blue-800 dark:text-blue-300"
+      style="top: -10px; left: 10px">
       note
     </span>
 
     <!-- title, if it exists -->
-    <div v-if="note.title" class="font-semibol mb-1 border-b border-gray-200 p-3 pt-5 text-xs text-gray-600">
+    <div
+      v-if="note.title"
+      class="font-semibol mb-1 border-b border-gray-200 p-3 pt-5 text-xs text-gray-600 dark:border-gray-700 dark:text-gray-400 dark:text-gray-400">
       {{ note.title }}
     </div>
 
@@ -14,7 +18,7 @@
     </div>
 
     <div
-      class="flex justify-between border-t border-gray-200 px-3 py-1 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50">
+      class="flex justify-between border-t border-gray-200 px-3 py-1 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400 dark:text-gray-400 hover:dark:bg-slate-800 hover:dark:bg-slate-900">
       <div>
         <!-- emotion -->
         <div v-if="note.emotion" class="relative mr-3 inline">
@@ -25,7 +29,7 @@
         <div class="relative mr-3 inline">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="icon-note relative inline h-3 w-3 text-gray-400"
+            class="icon-note relative inline h-3 w-3 text-gray-400 dark:text-gray-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor">
@@ -42,7 +46,7 @@
         <div class="relative mr-3 inline">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="icon-note relative inline h-3 w-3 text-gray-400"
+            class="icon-note relative inline h-3 w-3 text-gray-400 dark:text-gray-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor">

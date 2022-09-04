@@ -14,7 +14,7 @@
     </div>
 
     <!-- help text -->
-    <div class="mb-6 flex rounded border bg-slate-50 px-3 py-2 text-sm">
+    <div class="mb-6 flex rounded border bg-slate-50 px-3 py-2 text-sm dark:bg-slate-900">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-6 w-6 pr-2"
@@ -34,22 +34,25 @@
     </div>
 
     <!-- normal mode -->
-    <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="px-5 py-2">
         <span class="mb-2 block">{{ $t('settings.user_preferences_timezone_current') }}</span>
-        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm">{{ localTimezone }}</span>
+        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{ localTimezone }}</span>
       </p>
     </div>
 
     <!-- edit mode -->
-    <form v-if="editMode" class="bg-form mb-6 rounded-lg border border-gray-200" @submit.prevent="submit()">
-      <div class="border-b border-gray-200 px-5 py-2">
+    <form
+      v-if="editMode"
+      class="bg-form mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
+      @submit.prevent="submit()">
+      <div class="border-b border-gray-200 px-5 py-2 dark:border-gray-700">
         <errors :errors="form.errors" />
 
         <select
           v-model="form.timezone"
           name="timezone"
-          class="rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm">
+          class="rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
           <optgroup label="General">
             <option value="GMT">GMT timezone</option>
             <option value="UTC">UTC timezone</option>

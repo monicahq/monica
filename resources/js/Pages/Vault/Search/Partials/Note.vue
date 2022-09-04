@@ -30,8 +30,13 @@
       Notes
     </div>
     <ul v-if="localNotes.length > 0">
-      <li v-for="note in localNotes" :key="note.id" class="mb-4 rounded border border-gray-200 last:mb-0">
-        <div v-if="note.title" class="mb-1 border-b border-gray-200 p-3 text-xs font-semibold text-gray-600">
+      <li
+        v-for="note in localNotes"
+        :key="note.id"
+        class="mb-4 rounded border border-gray-200 last:mb-0 dark:border-gray-700">
+        <div
+          v-if="note.title"
+          class="mb-1 border-b border-gray-200 p-3 text-xs font-semibold text-gray-600 dark:border-gray-700 dark:text-gray-400">
           {{ note.title }}
         </div>
         <div v-if="!note.show_full_content" class="p-3">
@@ -41,7 +46,8 @@
         <div v-else class="p-3">
           {{ note.body }}
         </div>
-        <div class="flex border-t border-gray-200 px-3 py-2 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50">
+        <div
+          class="flex border-t border-gray-200 px-3 py-2 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400 hover:dark:bg-slate-800">
           <!-- date -->
           <div class="relative mr-3 inline">
             <svg
@@ -81,7 +87,9 @@
       </li>
     </ul>
     <!-- blank state -->
-    <div v-else class="mb-6 rounded-lg border border-gray-200 bg-white p-5 text-center text-gray-500">
+    <div
+      v-else
+      class="mb-6 rounded-lg border border-gray-200 bg-white p-5 text-center text-gray-500 dark:border-gray-700 dark:bg-gray-900">
       No notes found.
     </div>
   </div>

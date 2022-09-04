@@ -1,7 +1,7 @@
 <template>
   <div class="mb-10">
     <!-- title + cta -->
-    <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 sm:flex">
+    <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
         <span class="relative mr-1">
           <svg
@@ -35,7 +35,9 @@
     </div>
 
     <!-- not enough space in storage -->
-    <div v-if="!data.canUploadFile" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div
+      v-if="!data.canUploadFile"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="bg-gray-100 p-3 text-center">
         <span class="mr-1">⚠️</span> {{ $t('contact.documents_not_enough_storage') }}
       </p>
@@ -43,11 +45,11 @@
 
     <!-- documents -->
     <div v-if="localDocuments.length > 0">
-      <ul class="mb-4 rounded-lg border border-gray-200 bg-white">
+      <ul class="mb-4 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <li
           v-for="document in localDocuments"
           :key="document.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50">
+          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
           <!-- document -->
           <div class="flex items-center justify-between px-3 py-2">
             <span class="flex items-center">
@@ -73,14 +75,18 @@
     </div>
 
     <!-- blank state -->
-    <div v-if="localDocuments.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div
+      v-if="localDocuments.length == 0"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">
         {{ $t('contact.documents_blank') }}
       </p>
     </div>
 
     <!-- uploadcare api key not set -->
-    <div v-if="!data.uploadcarePublicKey" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div
+      v-if="!data.uploadcarePublicKey"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">
         {{ $t('contact.documents_key_missing') }}
       </p>

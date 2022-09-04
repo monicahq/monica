@@ -10,7 +10,8 @@
 
     <!-- help text -->
     <div class="mb-6 rounded border text-sm">
-      <div class="flex rounded-t border-b border-gray-200 bg-slate-50 px-3 py-2">
+      <div
+        class="flex rounded-t border-b border-gray-200 bg-slate-50 px-3 py-2 dark:border-gray-700 dark:bg-slate-900 dark:bg-slate-900">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-6 grow pr-2"
@@ -32,11 +33,11 @@
       </div>
 
       <!-- list of templates -->
-      <ul v-if="localTemplates.length > 0" class="rounded-b bg-white">
+      <ul v-if="localTemplates.length > 0" class="rounded-b bg-white dark:bg-gray-900">
         <li
           v-for="template in localTemplates"
           :key="template.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50">
+          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
           <div class="flex items-center justify-between px-5 py-2">
             <span>{{ template.name }}</span>
 

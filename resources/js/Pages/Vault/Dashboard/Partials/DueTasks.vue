@@ -1,10 +1,10 @@
 <template>
   <div class="mb-10">
-    <h3 class="mb-3 border-b border-gray-200 pb-1 font-medium">
+    <h3 class="mb-3 border-b border-gray-200 pb-1 font-medium dark:border-gray-800">
       <span class="relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600"
+          class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-700 hover:dark:text-gray-400"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor">
@@ -21,17 +21,17 @@
 
     <!-- list of tasks -->
     <div v-if="data.length > 0">
-      <ul class="mb-4 rounded-lg border border-gray-200">
+      <ul class="mb-4 rounded-lg border border-gray-200 dark:border-gray-800">
         <li
           v-for="task in data"
           :key="task.id"
-          class="item-list flex border-b border-gray-200 px-3 py-2 hover:bg-slate-50">
+          class="item-list flex border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-800 hover:dark:bg-slate-900">
           <input
             :id="task.id"
             v-model="task.completed"
             :name="task.id"
             type="checkbox"
-            class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+            class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-700 dark:bg-gray-900 dark:ring-offset-gray-800 focus:dark:ring-blue-700"
             @change="toggle(task)" />
 
           <div>
@@ -43,7 +43,11 @@
               <!-- due date -->
               <span
                 v-if="task.due_at"
-                :class="task.due_at_late ? 'bg-red-400/10 text-red-600' : 'bg-sky-400/10 text-sky-600'"
+                :class="
+                  task.due_at_late
+                    ? 'bg-red-400/10 text-red-600 dark:bg-red-600/10 dark:text-red-400'
+                    : 'bg-sky-400/10 text-sky-600 dark:bg-sky-600/10 dark:text-sky-400'
+                "
                 class="ml-2 mr-4 flex items-center rounded-full px-2 py-0.5 text-xs font-medium leading-5 dark:text-sky-400">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +79,9 @@
     </div>
 
     <!-- blank state -->
-    <div v-if="data.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div
+      v-if="data.length == 0"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
       <p class="p-5 text-center">
         {{ $t('vault.dashboard_due_tasks_blank') }}
       </p>

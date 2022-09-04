@@ -15,9 +15,9 @@
     <!-- add modal -->
     <form
       v-if="addEmailModalShown"
-      class="item-list bg-form mb-6 rounded-lg border border-b border-gray-200 hover:bg-slate-50"
+      class="item-list bg-form mb-6 rounded-lg border border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
       @submit.prevent="store()">
-      <div class="border-b border-gray-200 p-5">
+      <div class="border-b border-gray-200 p-5 dark:border-gray-700">
         <errors :errors="form.errors" />
 
         <!-- content -->
@@ -51,14 +51,14 @@
         <p class="mb-2 block text-sm">
           {{ $t('settings.notification_channels_email_at') }}
         </p>
-        <div class="flex items-center text-sm font-medium text-gray-700">
+        <div class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
           <span class="mr-2">
             {{ $t('settings.notification_channels_email_at_word') }}
           </span>
 
           <select
             v-model="form.hours"
-            class="mr-1 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm"
+            class="mr-1 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
             :required="required">
             <option v-for="n in 24" :key="n" :value="n - 1">
               {{ String(n - 1).padStart(2, '0') }}
@@ -69,7 +69,7 @@
 
           <select
             v-model="form.minutes"
-            class="mr-1 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm"
+            class="mr-1 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
             :required="required">
             <option v-for="n in 12" :key="n" :value="(n - 1) * 5">
               {{ String((n - 1) * 5).padStart(2, '0') }}
@@ -80,7 +80,7 @@
         </div>
       </div>
 
-      <div class="border-b border-gray-200 p-5">
+      <div class="border-b border-gray-200 p-5 dark:border-gray-700">
         <p class="flex"><span class="mr-2">⚠️</span> {{ $t('settings.notification_channels_email_help') }}</p>
       </div>
 
@@ -91,11 +91,13 @@
     </form>
 
     <!-- list of emails -->
-    <ul v-if="localEmails.length > 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <ul
+      v-if="localEmails.length > 0"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <li
         v-for="email in localEmails"
         :key="email.id"
-        class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50">
+        class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
         <div class="flex items-center">
           <a-tooltip v-if="email.verified_at" placement="topLeft" title="Verified" arrow-point-at-center>
             <svg
@@ -183,7 +185,7 @@
     </ul>
 
     <!-- blank state -->
-    <div v-else class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div v-else class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">
         {{ $t('settings.notification_channels_blank') }}
       </p>

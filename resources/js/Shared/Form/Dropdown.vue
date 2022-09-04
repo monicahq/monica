@@ -80,18 +80,17 @@ export default {
       default: '',
     },
   },
-  emits: ['update:modelValue'],
+  emits: ['esc-key-pressed', 'update:modelValue'],
 
-  data() {
-    return {
-      localDropdownClasses: '',
-    };
-  },
-
-  created() {
-    this.localDropdownClasses =
-      'py-2 px-3 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-white rounded-md shadow-sm focus:outline-none sm:text-sm ' +
-      this.dropdownClass;
+  computed: {
+    localDropdownClasses() {
+      return [
+        'py-2 px-3 rounded-md shadow-sm sm:text-sm',
+        'bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700',
+        'focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 focus:outline-none',
+        this.dropdownClass,
+      ];
+    },
   },
 
   methods: {
@@ -118,11 +117,11 @@ export default {
   padding: 1px 3px;
 }
 
-.length {
-  top: 10px;
-  right: 10px;
-  background-color: #e5eeff;
-  padding: 3px 4px;
+@media (prefers-color-scheme: dark) {
+  .optional-badge {
+    color: #d4d8dd;
+    background-color: #2f3031;
+  }
 }
 
 .counter {

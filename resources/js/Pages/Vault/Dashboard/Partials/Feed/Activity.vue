@@ -1,12 +1,14 @@
 <template>
-  <div class="relative mb-7 border border-gray-300 bg-white sm:rounded-lg">
-    <span class="absolute rounded border bg-blue-50 px-2 py-0 text-xs text-blue-500" style="top: -10px; left: 10px">
+  <div class="relative border border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-900 sm:rounded-lg">
+    <span
+      class="absolute rounded border bg-blue-50 px-2 py-0 text-xs text-blue-500 dark:bg-blue-800 dark:text-blue-300"
+      style="top: -10px; left: 10px">
       activity
     </span>
     <div class="p-3 pt-5">
       <p class="inline">Went to the theater</p>
     </div>
-    <div class="border-t border-gray-200 px-3 py-2">
+    <div class="border-t border-gray-200 px-3 py-2 dark:border-gray-700">
       <span class="mr-3 text-sm text-gray-500"> With </span>
       <div class="relative mr-3 inline text-sm">
         <small-contact top="4px;" />
@@ -15,12 +17,12 @@
         <small-contact top="4px;" />
       </div>
     </div>
-    <div class="flex border-t border-gray-200 px-3 py-2">
+    <div class="flex border-t border-gray-200 px-3 py-2 dark:border-gray-700">
       <div class="mr-3">
         <span class="relative mr-1 text-sm text-gray-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="icon-location relative inline h-5 w-5 text-gray-400"
+            class="icon-location relative inline h-5 w-5 text-gray-400 dark:text-gray-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor">
@@ -43,12 +45,13 @@
         <div class="mb-2 mr-2 inline text-sm">★✩✩✩✩</div>
       </div>
     </div>
-    <div class="flex justify-between border-t border-gray-200 px-3 py-2 text-xs text-gray-600">
+    <div
+      class="dark: flex justify-between border-t border-gray-200 px-3 py-2 text-xs text-gray-600 dark:border-gray-700 dark:text-gray-400">
       <div>
         <div class="relative mr-3 inline">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="icon-date relative inline h-4 w-4 text-gray-400"
+            class="icon-date relative inline h-4 w-4 text-gray-400 dark:text-gray-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor">

@@ -1,11 +1,11 @@
 <template>
   <div class="mb-4">
-    <div class="mb-1 items-center justify-between border-b border-gray-200 sm:flex">
+    <div class="mb-1 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
       <div class="mb-2 text-xs sm:mb-0">Name</div>
       <inertia-link :href="data.url.edit" class="relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="icon-sidebar relative inline h-3 w-3 text-gray-300 hover:text-gray-600"
+          class="icon-sidebar relative inline h-3 w-3 text-gray-300 hover:text-gray-600 dark:text-gray-400"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor">

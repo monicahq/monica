@@ -1,6 +1,6 @@
 <template>
   <div class="timeline-item relative flex items-center">
-    <div class="icon z-10 mr-3 flex items-center justify-center rounded-full bg-gray-200">
+    <div class="icon z-10 mr-3 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-900">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-4 w-4 text-stone-500"

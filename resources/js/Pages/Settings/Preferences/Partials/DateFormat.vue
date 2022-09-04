@@ -14,7 +14,7 @@
     </div>
 
     <!-- help text -->
-    <div class="mb-6 flex rounded border bg-slate-50 px-3 py-2 text-sm">
+    <div class="mb-6 flex rounded border bg-slate-50 px-3 py-2 text-sm dark:bg-slate-900">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-6 w-6 pr-2"
@@ -34,16 +34,21 @@
     </div>
 
     <!-- normal mode -->
-    <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="px-5 py-2">
         <span class="mb-2 block">{{ $t('settings.user_preferences_date_name') }}</span>
-        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm">{{ localHumanDateFormat }}</span>
+        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{
+          localHumanDateFormat
+        }}</span>
       </p>
     </div>
 
     <!-- edit mode -->
-    <form v-if="editMode" class="bg-form mb-6 rounded-lg border border-gray-200" @submit.prevent="submit()">
-      <div class="border-b border-gray-200 px-5 py-2">
+    <form
+      v-if="editMode"
+      class="bg-form mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
+      @submit.prevent="submit()">
+      <div class="border-b border-gray-200 px-5 py-2 dark:border-gray-700">
         <errors :errors="form.errors" />
 
         <div v-for="date in data.dates" :key="date.id" class="mb-2 flex items-center">
@@ -53,8 +58,10 @@
             :value="date.format"
             name="date-format"
             type="radio"
-            class="h-4 w-4 border-gray-300 text-sky-500" />
-          <label :for="'input' + date.id" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+            class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+          <label
+            :for="'input' + date.id"
+            class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
             {{ date.value }}
           </label>
         </div>

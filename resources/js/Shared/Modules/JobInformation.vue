@@ -1,11 +1,11 @@
 <template>
   <div class="mb-4">
-    <div class="mb-3 items-center justify-between border-b border-gray-200 sm:flex">
+    <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
       <div class="mb-2 text-xs sm:mb-0">Job information</div>
       <span v-if="!editJobInformation" class="relative cursor-pointer" @click="showEditModal">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="icon-sidebar relative inline h-3 w-3 text-gray-300 hover:text-gray-600"
+          class="icon-sidebar relative inline h-3 w-3 text-gray-300 hover:text-gray-600 dark:text-gray-400"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor">
@@ -18,15 +18,20 @@
       </span>
 
       <!-- close button -->
-      <span v-if="editJobInformation" class="cursor-pointer text-xs text-gray-600" @click="editJobInformation = false">
+      <span
+        v-if="editJobInformation"
+        class="cursor-pointer text-xs text-gray-600 dark:text-gray-400"
+        @click="editJobInformation = false">
         Close
       </span>
     </div>
 
     <!-- edit job information -->
-    <div v-if="editJobInformation" class="bg-form mb-6 rounded-lg border border-gray-200">
+    <div
+      v-if="editJobInformation"
+      class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
       <form @submit.prevent="update">
-        <div class="border-b border-gray-200 p-2">
+        <div class="border-b border-gray-200 p-2 dark:border-gray-700">
           <errors :errors="form.errors" />
 
           <!-- companies -->
@@ -61,7 +66,7 @@
             :maxlength="255" />
         </div>
 
-        <div class="border-b border-gray-200 p-2">
+        <div class="border-b border-gray-200 p-2 dark:border-gray-700">
           <!-- job position -->
           <text-input
             v-model="form.job_position"
@@ -87,12 +92,12 @@
     </div>
 
     <!-- blank state -->
-    <p v-if="!form.job_position && !company_name" class="text-sm text-gray-600">Not set</p>
+    <p v-if="!form.job_position && !company_name" class="text-sm text-gray-600 dark:text-gray-400">Not set</p>
 
     <p v-else>
       <span v-if="form.job_position">
         {{ form.job_position }}
-        <span v-if="company_name" class="text-sm text-gray-600">at </span>
+        <span v-if="company_name" class="text-sm text-gray-600 dark:text-gray-400">at </span>
       </span>
       <span v-if="company_name">{{ company_name }}</span>
     </p>

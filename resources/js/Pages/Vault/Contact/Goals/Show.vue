@@ -1,11 +1,11 @@
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
     <!-- breadcrumb -->
-    <nav class="bg-white sm:mt-20 sm:border-b">
+    <nav class="bg-white dark:bg-gray-900 sm:mt-20 sm:border-b">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('app.breadcrumb_location') }}
             </li>
             <li class="mr-2 inline">
@@ -62,8 +62,11 @@
             <h1 v-if="!editMode" class="mb-4 font-semibold">{{ localGoal.name }}</h1>
 
             <!-- edit modal form -->
-            <form v-if="editMode" class="bg-form mb-4 rounded-lg border border-gray-200" @submit.prevent="update()">
-              <div class="border-b border-gray-200 p-5">
+            <form
+              v-if="editMode"
+              class="bg-form mb-4 rounded-lg border border-gray-200 dark:border-gray-700"
+              @submit.prevent="update()">
+              <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />
 
                 <!-- name -->
@@ -86,7 +89,7 @@
             </form>
 
             <!-- stats -->
-            <div class="mb-6 flex justify-between rounded border border-gray-200 p-3">
+            <div class="mb-6 flex justify-between rounded border border-gray-200 p-3 dark:border-gray-700">
               <div class="mr-6 flex items-center">
                 <div class="mr-3 w-14 text-right text-sm text-gray-500">Total streaks</div>
                 <div class="text-4xl">

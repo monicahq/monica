@@ -1,7 +1,7 @@
 <template>
   <div class="mb-10">
     <!-- title + cta -->
-    <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 sm:flex">
+    <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
         <span class="relative mr-1">
           <svg
@@ -27,11 +27,11 @@
       <!-- add a loan modal -->
       <form
         v-if="createLoanModalShown"
-        class="bg-form mb-6 rounded-lg border border-gray-200"
+        class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900"
         @submit.prevent="submit()">
-        <div class="border-b border-gray-200">
+        <div class="border-b border-gray-200 dark:border-gray-700">
           <!-- loan options -->
-          <div class="border-b border-gray-200 px-5 pt-5 pb-3">
+          <div class="border-b border-gray-200 px-5 pt-5 pb-3 dark:border-gray-700">
             <ul class="">
               <li class="mr-5 inline-block">
                 <div class="flex items-center">
@@ -41,8 +41,10 @@
                     value="object"
                     name="name-order"
                     type="radio"
-                    class="h-4 w-4 border-gray-300 text-sky-500" />
-                  <label for="object" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+                    class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+                  <label
+                    for="object"
+                    class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                     The loan is an object
                   </label>
                 </div>
@@ -56,8 +58,10 @@
                     value="monetary"
                     name="name-order"
                     type="radio"
-                    class="h-4 w-4 border-gray-300 text-sky-500" />
-                  <label for="monetary" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+                    class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+                  <label
+                    for="monetary"
+                    class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                     The loan is monetary
                   </label>
                 </div>
@@ -66,7 +70,7 @@
           </div>
 
           <!-- name -->
-          <div class="border-b border-gray-200 p-5">
+          <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <text-input
               :ref="'name'"
               v-model="form.name"
@@ -81,7 +85,7 @@
           </div>
 
           <!-- amount + currency -->
-          <div v-if="form.type === 'monetary'" class="flex border-b border-gray-200 p-5">
+          <div v-if="form.type === 'monetary'" class="flex border-b border-gray-200 p-5 dark:border-gray-700">
             <text-input
               :ref="'label'"
               v-model="form.amount_lent"
@@ -107,18 +111,21 @@
           </div>
 
           <!-- loaned at -->
-          <div class="border-b border-gray-200 p-5">
+          <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <p class="mb-2 block text-sm">When was the loan made?</p>
 
             <v-date-picker v-model="form.loaned_at" class="inline-block h-full" :model-config="modelConfig">
               <template #default="{ inputValue, inputEvents }">
-                <input class="rounded border bg-white px-2 py-1" :value="inputValue" v-on="inputEvents" />
+                <input
+                  class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                  :value="inputValue"
+                  v-on="inputEvents" />
               </template>
             </v-date-picker>
           </div>
 
           <!-- loaned by or to -->
-          <div class="flex items-center items-stretch border-b border-gray-200">
+          <div class="flex items-center items-stretch border-b border-gray-200 dark:border-gray-700">
             <contact-selector
               v-model="form.loaners"
               :search-url="layoutData.vault.url.search_contacts_only"
@@ -127,7 +134,7 @@
               :label="'Who makes the loan?'"
               :add-multiple-contacts="true"
               :required="true"
-              :div-outer-class="'p-5 flex-1 border-r border-gray-200'" />
+              :div-outer-class="'p-5 flex-1 border-r border-gray-200 dark:border-gray-700'" />
 
             <contact-selector
               v-model="form.loanees"
@@ -194,8 +201,8 @@
 
         <div
           v-if="editedLoanId != loan.id"
-          class="item-list w-full rounded-lg border border-gray-200 bg-white hover:bg-slate-50">
-          <div class="border-b border-gray-200 px-3 py-2">
+          class="item-list w-full rounded-lg border border-gray-200 bg-white hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
+          <div class="border-b border-gray-200 px-3 py-2 dark:border-gray-700">
             <div class="flex items-center justify-between">
               <div>
                 <span class="mr-2 block">
@@ -249,11 +256,11 @@
         <!-- edit loan modal -->
         <form
           v-if="editedLoanId === loan.id"
-          class="bg-form mb-6 w-full rounded-lg border border-gray-200"
+          class="bg-form mb-6 w-full rounded-lg border border-gray-200 dark:border-gray-700"
           @submit.prevent="update(loan)">
-          <div class="border-b border-gray-200">
+          <div class="border-b border-gray-200 dark:border-gray-700">
             <!-- loan options -->
-            <div class="border-b border-gray-200 px-5 pt-5 pb-3">
+            <div class="border-b border-gray-200 px-5 pt-5 pb-3 dark:border-gray-700">
               <ul class="">
                 <li class="mr-5 inline-block">
                   <div class="flex items-center">
@@ -263,8 +270,10 @@
                       value="object"
                       name="name-order"
                       type="radio"
-                      class="h-4 w-4 border-gray-300 text-sky-500" />
-                    <label for="object" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+                      class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+                    <label
+                      for="object"
+                      class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                       The loan is an object
                     </label>
                   </div>
@@ -278,8 +287,10 @@
                       value="monetary"
                       name="name-order"
                       type="radio"
-                      class="h-4 w-4 border-gray-300 text-sky-500" />
-                    <label for="monetary" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+                      class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+                    <label
+                      for="monetary"
+                      class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                       The loan is monetary
                     </label>
                   </div>
@@ -288,7 +299,7 @@
             </div>
 
             <!-- name -->
-            <div class="border-b border-gray-200 p-5">
+            <div class="border-b border-gray-200 p-5 dark:border-gray-700">
               <text-input
                 :ref="'name'"
                 v-model="form.name"
@@ -303,7 +314,7 @@
             </div>
 
             <!-- amount + currency -->
-            <div v-if="form.type === 'monetary'" class="flex border-b border-gray-200 p-5">
+            <div v-if="form.type === 'monetary'" class="flex border-b border-gray-200 p-5 dark:border-gray-700">
               <text-input
                 :ref="'label'"
                 v-model="form.amount_lent"
@@ -329,18 +340,21 @@
             </div>
 
             <!-- loaned at -->
-            <div class="border-b border-gray-200 p-5">
+            <div class="border-b border-gray-200 p-5 dark:border-gray-700">
               <p class="mb-2 block text-sm">When was the loan made?</p>
 
               <v-date-picker v-model="form.loaned_at" class="inline-block h-full" :model-config="modelConfig">
                 <template #default="{ inputValue, inputEvents }">
-                  <input class="rounded border bg-white px-2 py-1" :value="inputValue" v-on="inputEvents" />
+                  <input
+                    class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                    :value="inputValue"
+                    v-on="inputEvents" />
                 </template>
               </v-date-picker>
             </div>
 
             <!-- loaned by or to -->
-            <div class="flex items-center items-stretch border-b border-gray-200">
+            <div class="flex items-center items-stretch border-b border-gray-200 dark:border-gray-700">
               <contact-selector
                 v-model="form.loaners"
                 :search-url="layoutData.vault.url.search_contacts_only"
@@ -349,7 +363,7 @@
                 :label="'Who makes the loan?'"
                 :add-multiple-contacts="true"
                 :required="true"
-                :div-outer-class="'p-5 flex-1 border-r border-gray-200'" />
+                :div-outer-class="'p-5 flex-1 border-r border-gray-200 dark:border-gray-700'" />
 
               <contact-selector
                 v-model="form.loanees"
@@ -387,7 +401,9 @@
     </div>
 
     <!-- blank state -->
-    <div v-if="localLoans.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div
+      v-if="localLoans.length == 0"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">There are no loans yet.</p>
     </div>
   </div>

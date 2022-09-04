@@ -1,11 +1,11 @@
 <template>
   <layout title="Dashboard" :layout-data="layoutData">
     <!-- breadcrumb -->
-    <nav class="bg-white sm:border-b">
+    <nav class="bg-white dark:bg-gray-900 sm:border-b">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('app.breadcrumb_location') }}
             </li>
             <li class="mr-2 inline">
@@ -43,8 +43,11 @@
         </div>
 
         <!-- list of users -->
-        <ul class="user-list mb-6 rounded-lg border border-gray-200 bg-white">
-          <li v-for="user in data.users" :key="user.id" class="border-b border-gray-200 hover:bg-slate-50">
+        <ul class="user-list mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+          <li
+            v-for="user in data.users"
+            :key="user.id"
+            class="border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <!-- case: user has been invited -->
             <div v-if="!user.name" class="flex items-center justify-between px-5 py-2">
               <div>
@@ -109,7 +112,7 @@
 
             <!-- edit user -->
             <form v-if="editModalshownId == user.id" @submit.prevent="update(user)">
-              <div class="border-b border-gray-200 p-5">
+              <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />
 
                 <p class="mb-2 block text-sm">
@@ -122,8 +125,10 @@
                     value="false"
                     name="permission"
                     type="radio"
-                    class="h-4 w-4 border-gray-300 text-sky-500" />
-                  <label for="viewer" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+                    class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+                  <label
+                    for="viewer"
+                    class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ $t('settings.users_management_regular_user') }}
                   </label>
                 </div>
@@ -136,8 +141,10 @@
                     value="true"
                     name="permission"
                     type="radio"
-                    class="h-4 w-4 border-gray-300 text-sky-500" />
-                  <label for="manager" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+                    class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+                  <label
+                    for="manager"
+                    class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ $t('settings.users_management_administrator_role') }}
                     <span class="ml-4 font-normal text-gray-500">
                       {{ $t('settings.users_management_administrator_role_help') }}

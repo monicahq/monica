@@ -1,7 +1,7 @@
 <template>
   <div class="mb-10">
     <!-- title + cta -->
-    <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 sm:flex">
+    <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
         <span class="relative mr-1">
           <svg
@@ -34,11 +34,11 @@
         <!-- list of relationship types in this group -->
         <ul
           v-if="relationshipGroupType.relationship_types.length > 0"
-          class="mb-4 rounded-lg border border-gray-200 last:mb-0">
+          class="mb-4 rounded-lg border border-gray-200 last:mb-0 dark:border-gray-700">
           <li
             v-for="relationshipType in relationshipGroupType.relationship_types"
             :key="relationshipType.id"
-            class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50">
+            class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <div class="flex">
               <div class="mr-2 flex items-center">
                 <avatar :data="relationshipType.contact.avatar" :classes="'mr-2 h-5 w-5'" />
@@ -74,7 +74,9 @@
     </div>
 
     <!-- blank state -->
-    <div v-if="data.number_of_defined_relations == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div
+      v-if="data.number_of_defined_relations == 0"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">There are no relationships yet.</p>
     </div>
   </div>

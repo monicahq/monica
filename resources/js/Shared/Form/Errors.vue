@@ -79,4 +79,11 @@ export default {
   border-color: #fc8181;
   color: #c53030;
 }
+@media (prefers-color-scheme: dark) {
+  .border-red {
+    background-color: #333131;
+    border-color: #4b2626;
+    color: #c53030;
+  }
+}
 </style>

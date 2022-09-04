@@ -1,8 +1,5 @@
 <template>
-  <inertia-link
-    :class="classes"
-    class="dark:box-s relative bg-white text-sm dark:bg-gray-700 dark:text-gray-300"
-    :href="href">
+  <inertia-link :class="linkClasses" :href="href">
     <!-- + icon -->
     <svg
       v-if="icon === 'plus' && state != 'loading'"
@@ -53,6 +50,16 @@ export default {
       default: '',
     },
   },
+
+  computed: {
+    linkClasses() {
+      return [
+        'relative text-sm dark:text-gray-100 dark:box-s',
+        'bg-white dark:bg-gray-800 border-zinc-900 dark:border-zinc-100',
+        this.classes,
+      ];
+    },
+  },
 };
 </script>
 
@@ -62,9 +69,8 @@ export default {
 }
 
 a {
-  --tw-shadow: 2px 2px 0 #575a5d !important;
+  --tw-shadow: 2px 2px 0 #191a1b !important;
   border-radius: 0.25rem !important;
-  border-color: #191a1b;
   border-width: 1px !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 transparent), var(--tw-ring-shadow, 0 0 transparent), var(--tw-shadow) !important;
   display: inline-block !important;
@@ -87,7 +93,7 @@ a {
 
 @media (prefers-color-scheme: dark) {
   a {
-    --tw-shadow: 2px 2px 0 #575a5d !important;
+    --tw-shadow: 2px 2px 0 rgb(242, 242, 245) !important;
   }
 }
 </style>

@@ -17,7 +17,9 @@
 
     <div v-if="!loading" class="mt4 mw7 center mb3">
       <!-- Breadcrumb -->
-      <ul v-if="view == 'types' || view == 'add'" class="mb-2 rounded-md border border-gray-200 p-2 text-sm">
+      <ul
+        v-if="view == 'types' || view == 'add'"
+        class="mb-2 rounded-md border border-gray-200 p-2 text-sm dark:border-gray-700">
         <li class="inline">
           <a class="cursor-pointer" href="" @click.prevent="view = 'categories'">
             {{ $t('people.life_event_create_category') }}
@@ -38,12 +40,14 @@
       </ul>
 
       <!-- List of event categories -->
-      <div v-if="view == 'categories'" class="rounded-sm border border-gray-200 bg-white">
+      <div
+        v-if="view == 'categories'"
+        class="rounded-sm border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <ul>
           <li
             v-for="category in categories"
             :key="category.id"
-            class="type-list-item relative flex cursor-pointer items-center justify-between border-b border-gray-200 p-2 hover:bg-yellow-50"
+            class="type-list-item relative flex cursor-pointer items-center justify-between border-b border-gray-200 p-2 hover:bg-yellow-50 dark:border-gray-700"
             @click="getType(category)">
             <div>
               <img
@@ -71,12 +75,14 @@
         </div>
       </div>
 
-      <ul v-if="view == 'types'" class="rounded-sm border border-gray-200 bg-white">
+      <ul
+        v-if="view == 'types'"
+        class="rounded-sm border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <!-- TYPES -->
         <li
           v-for="type in types"
           :key="type.id"
-          class="type-list-item relative flex cursor-pointer items-center justify-between border-b border-gray-200 p-2 hover:bg-yellow-50"
+          class="type-list-item relative flex cursor-pointer items-center justify-between border-b border-gray-200 p-2 hover:bg-yellow-50 dark:border-gray-700"
           @click="displayAddScreen(type)">
           <div>
             <img
@@ -110,7 +116,7 @@
       </ul>
 
       <!-- ADD SCREEN -->
-      <div v-if="add" class="br2 pt4 border border-gray-200">
+      <div v-if="add" class="br2 pt4 border border-gray-200 dark:border-gray-700">
         <div class="life-event-add-icon tc center">
           <img
             :src="'img/people/life-events/types/' + activeType.default_life_event_type_key + '.svg'"
@@ -128,7 +134,7 @@
         </h3>
 
         <!-- This field will be the same for every life event type no matter what, as the date is the only required field -->
-        <div class="ph4 pv3 mb3 mb0-ns bb border-gray-200">
+        <div class="ph4 pv3 mb3 mb0-ns bb border-gray-200 dark:border-gray-700">
           <label for="year" class="mr-2">
             {{ $t('people.life_event_date_it_happened') }}
           </label>
@@ -169,7 +175,7 @@
         <create-default-life-event @contentChange="updateLifeEventContent($event)" />
 
         <!-- YEARLY REMINDER -->
-        <div class="ph4 pv3 mb3 mb0-ns bb border-gray-200">
+        <div class="ph4 pv3 mb3 mb0-ns bb border-gray-200 dark:border-gray-700">
           <form-checkbox
             v-model.lazy="newLifeEvent.has_reminder"
             :name="'addReminder'"
@@ -179,7 +185,7 @@
         </div>
 
         <!-- FORM ACTIONS -->
-        <div class="ph4-ns ph3 pv3 bb border-gray-200">
+        <div class="ph4-ns ph3 pv3 bb border-gray-200 dark:border-gray-700">
           <div class="flex-ns justify-between">
             <div>
               <a

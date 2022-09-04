@@ -1,11 +1,11 @@
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
     <!-- breadcrumb -->
-    <nav class="bg-white sm:mt-20 sm:border-b">
+    <nav class="bg-white dark:bg-gray-900 sm:mt-20 sm:border-b">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('app.breadcrumb_location') }}
             </li>
             <li class="mr-2 inline">
@@ -49,7 +49,7 @@
     <main class="sm:mt-18 relative">
       <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <!-- title + cta -->
-        <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 sm:flex">
+        <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
           <div class="mb-2 sm:mb-0">
             <span class="relative mr-1">
               <svg
@@ -98,7 +98,7 @@
             <div
               v-for="photo in localPhotos"
               :key="photo.id"
-              class="rounded-md border border-gray-200 p-2 shadow-sm hover:bg-slate-50 hover:shadow-lg">
+              class="rounded-md border border-gray-200 p-2 shadow-sm hover:bg-slate-50 hover:shadow-lg dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
               <inertia-link :href="photo.url.show">
                 <img :src="photo.url.display" :alt="photo.name" />
               </inertia-link>
@@ -109,7 +109,9 @@
         <!-- pagination -->
         <pagination :paginator="paginator" />
 
-        <div v-if="localPhotos.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+        <div
+          v-if="localPhotos.length == 0"
+          class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">
             {{ $t('contact.photos_blank') }}
           </p>

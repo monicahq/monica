@@ -1,6 +1,6 @@
 <template>
   <layout title="Dashboard" :layout-data="layoutData">
-    <nav class="bg-white sm:border-b">
+    <nav class="bg-white dark:bg-gray-900 sm:border-b">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
@@ -21,7 +21,7 @@
         <h2 class="mb-6 text-center text-lg">
           {{ $t('settings.user_settings') }}
         </h2>
-        <div class="mb-12 rounded-lg border border-gray-200 bg-white p-5">
+        <div class="mb-12 rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
           <ul>
             <li class="mb-2 flex justify-start">
               <span class="mr-2">🥳</span>
@@ -43,7 +43,7 @@
           <h2 class="mb-6 text-center text-lg">
             {{ $t('settings.account_settings') }}
           </h2>
-          <div class="mb-6 rounded-lg border border-gray-200 bg-white p-5">
+          <div class="mb-6 rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
             <ul>
               <li class="mb-2 flex justify-start">
                 <span class="mr-2">🥸</span>

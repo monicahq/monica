@@ -53,11 +53,13 @@
             </div>
 
             <!-- file list -->
-            <ul v-if="data.files.length > 0" class="file-list mb-6 rounded-lg border border-gray-200 bg-white">
+            <ul
+              v-if="data.files.length > 0"
+              class="file-list mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
               <li
                 v-for="file in data.files"
                 :key="file.id"
-                class="items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 sm:flex">
+                class="items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800 sm:flex">
                 <!-- left part -->
                 <div class="mb-4 block sm:mb-0 sm:flex">
                   <!-- created at -->
@@ -112,7 +114,9 @@
             </div>
 
             <!-- blank state -->
-            <div v-if="data.files.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+            <div
+              v-if="data.files.length == 0"
+              class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
               <p class="p-5 text-center">
                 {{ $t('vault.files_filter_blank') }}
               </p>

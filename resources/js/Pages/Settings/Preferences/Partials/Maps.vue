@@ -14,16 +14,19 @@
     </div>
 
     <!-- normal mode -->
-    <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="px-5 py-2">
         <span class="mb-2 block">{{ $t('settings.user_preferences_map_current') }}</span>
-        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm">{{ currentMap }}</span>
+        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{ currentMap }}</span>
       </p>
     </div>
 
     <!-- edit mode -->
-    <form v-if="editMode" class="bg-form mb-6 rounded-lg border border-gray-200" @submit.prevent="submit()">
-      <div class="border-b border-gray-200 px-5 py-2">
+    <form
+      v-if="editMode"
+      class="bg-form mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
+      @submit.prevent="submit()">
+      <div class="border-b border-gray-200 px-5 py-2 dark:border-gray-700">
         <errors :errors="form.errors" />
 
         <div v-for="mapType in data.types" :key="mapType.id" class="relative mb-2 flex">
@@ -33,12 +36,14 @@
             :value="mapType.value"
             name="date-format"
             type="radio"
-            class="relative mr-3 h-4 w-4 border-gray-300 text-sky-500" />
+            class="relative mr-3 h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
           <div>
-            <label :for="'input' + mapType.id" class="block cursor-pointer font-medium text-gray-700">
+            <label
+              :for="'input' + mapType.id"
+              class="block cursor-pointer font-medium text-gray-700 dark:text-gray-300">
               {{ mapType.type }}
             </label>
-            <p class="text-sm text-gray-700">
+            <p class="text-sm text-gray-700 dark:text-gray-300">
               {{ mapType.description }}
             </p>
           </div>

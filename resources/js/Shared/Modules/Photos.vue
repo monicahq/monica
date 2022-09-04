@@ -1,7 +1,7 @@
 <template>
   <div class="mb-10">
     <!-- title + cta -->
-    <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 sm:flex">
+    <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
         <span class="relative mr-1">
           <svg
@@ -35,7 +35,9 @@
     </div>
 
     <!-- not enough space in storage -->
-    <div v-if="!data.canUploadFile" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div
+      v-if="!data.canUploadFile"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="bg-gray-100 p-3 text-center">
         <span class="mr-1">⚠️</span> {{ $t('contact.photos_not_enough_storage') }}
       </p>
@@ -47,7 +49,7 @@
         <div
           v-for="photo in localPhotos"
           :key="photo.id"
-          class="rounded-md border border-gray-200 p-2 shadow-sm hover:bg-slate-50 hover:shadow-lg">
+          class="rounded-md border border-gray-200 p-2 shadow-sm hover:bg-slate-50 hover:shadow-lg dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
           <inertia-link :href="photo.url.show"><img :src="photo.url.display" :alt="photo.name" /></inertia-link>
         </div>
       </div>
@@ -56,21 +58,25 @@
       <div class="text-center">
         <inertia-link
           :href="data.url.index"
-          class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500">
+          class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
           {{ $t('app.view_all') }}
         </inertia-link>
       </div>
     </div>
 
     <!-- blank state -->
-    <div v-if="localPhotos.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div
+      v-if="localPhotos.length == 0"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">
         {{ $t('contact.photos_blank') }}
       </p>
     </div>
 
     <!-- uploadcare api key not set -->
-    <div v-if="!data.uploadcarePublicKey" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div
+      v-if="!data.uploadcarePublicKey"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">
         {{ $t('contact.photos_key_missing') }}
       </p>

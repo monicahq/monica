@@ -4,11 +4,11 @@
     :layout-data="layoutData"
   >
     <!-- breadcrumb -->
-    <nav class="bg-white sm:border-b">
+    <nav class="bg-white dark:bg-gray-900 sm:border-b">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('app.breadcrumb_location') }}
             </li>
             <li class="mr-2 inline">
@@ -58,9 +58,9 @@
         </div>
 
         <!-- stats -->
-        <div class="border border-gray-200 rounded-lg grid grid-cols-2 mb-8">
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg grid grid-cols-2 mb-8">
           <!-- account limit -->
-          <div class="flex justify-between p-3 border-r border-gray-200">
+          <div class="flex justify-between p-3 border-r border-gray-200 dark:border-gray-700">
             <p>{{ $t('settings.storage_account_limit') }}</p>
             <p class="font-bold">
               {{ data.account_limit }}
@@ -80,16 +80,16 @@
         <p class="mb-2">
           <span class="mr-1">🔽</span> Breakdown of the current usage
         </p>
-        <ul class="user-list mb-6 rounded-lg border border-gray-200 bg-white">
-          <li class="border-b border-gray-200 hover:bg-slate-50 flex justify-between p-3">
+        <ul class="user-list mb-6 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+          <li class="border-b border-gray-200 dark:border-gray-700 hover:bg-slate-50 hover:dark:bg-slate-800 dark:bg-slate-900 flex justify-between p-3">
             <p>{{ $t('settings.storage_type_photo') }}</p>
             <p>{{ data.statistics.photo.total }} <span class="text-gray-500 font-normal text-sm">({{ data.statistics.photo.size }} - {{ data.statistics.photo.total_percent }}%)</span></p>
           </li>
-          <li class="border-b border-gray-200 hover:bg-slate-50 flex justify-between p-3">
+          <li class="border-b border-gray-200 dark:border-gray-700 hover:bg-slate-50 hover:dark:bg-slate-800 dark:bg-slate-900 flex justify-between p-3">
             <p>{{ $t('settings.storage_type_document') }}</p>
             <p>{{ data.statistics.document.total }} <span class="text-gray-500 font-normal text-sm">({{ data.statistics.document.size }} - {{ data.statistics.document.total_percent }}%)</span></p>
           </li>
-          <li class="border-b border-gray-200 hover:bg-slate-50 flex justify-between p-3">
+          <li class="border-b border-gray-200 dark:border-gray-700 hover:bg-slate-50 hover:dark:bg-slate-800 dark:bg-slate-900 flex justify-between p-3">
             <p>{{ $t('settings.storage_type_avatar') }}</p>
             <p>{{ data.statistics.avatar.total }} <span class="text-gray-500 font-normal text-sm">({{ data.statistics.avatar.size }} - {{ data.statistics.avatar.total_percent }}%)</span></p>
           </li>

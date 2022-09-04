@@ -1,6 +1,6 @@
 <template>
   <div class="mb-4">
-    <div class="ml-4 border-l border-gray-200">
+    <div class="ml-4 border-l border-gray-200 dark:border-gray-700">
       <div v-for="feedItem in data.items" :key="feedItem.id" class="mb-8">
         <!-- action & user -->
         <div class="mb-3 flex">

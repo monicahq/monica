@@ -12,7 +12,7 @@
     <!-- contact information page | can't be removed -->
     <div
       :class="isSelectedId == data.template_page_contact_information.id ? 'border-2	bg-sky-100' : ''"
-      class="mb-2 flex items-center rounded-lg border border-gray-200 bg-white px-5 py-2 hover:bg-slate-50"
+      class="mb-2 flex items-center rounded-lg border border-gray-200 bg-white px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800"
       @click="selectPage(data.template_page_contact_information)">
       <!-- detail of a page -->
       <div>
@@ -46,7 +46,7 @@
         <div
           v-if="renamePageModalShownId != element.id"
           :class="isSelectedId == element.id ? 'border-2	bg-sky-100' : ''"
-          class="mb-2 flex items-center rounded-lg border border-gray-200 bg-white py-2 pl-2 pr-5 hover:bg-slate-50"
+          class="mb-2 flex items-center rounded-lg border border-gray-200 bg-white py-2 pl-2 pr-5 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800"
           @click="selectPage(element)">
           <!-- icon to move position -->
           <div class="mr-2">
@@ -89,9 +89,9 @@
         <!-- modal to edit the page -->
         <form
           v-else
-          class="item-list mb-2 rounded-lg border border-gray-200 bg-white hover:bg-slate-50"
+          class="item-list mb-2 rounded-lg border border-gray-200 bg-white hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800"
           @submit.prevent="update(element)">
-          <div class="border-b border-gray-200 p-5">
+          <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <errors :errors="form.errors" />
 
             <text-input
@@ -118,9 +118,9 @@
     <!-- modal to create a new page -->
     <form
       v-if="createPageModalShown"
-      class="mb-6 rounded-lg border border-gray-200 bg-white"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="submit()">
-      <div class="border-b border-gray-200 p-5">
+      <div class="border-b border-gray-200 p-5 dark:border-gray-700">
         <errors :errors="form.errors" />
 
         <text-input
@@ -144,7 +144,7 @@
 
     <!-- blank state -->
     <div v-if="localPages.length == 0">
-      <p class="rounded-lg border border-gray-200 bg-white p-5 text-center">
+      <p class="rounded-lg border border-gray-200 bg-white p-5 text-center dark:border-gray-700 dark:bg-gray-900">
         {{ $t('settings.personalize_template_show_page_blank') }}
       </p>
     </div>

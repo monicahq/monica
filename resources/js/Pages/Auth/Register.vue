@@ -60,7 +60,9 @@
       </div>
 
       <div class="mt-4 flex items-center justify-end">
-        <inertia-link :href="route('login')" class="text-sm text-gray-600 underline hover:text-gray-900">
+        <inertia-link
+          :href="route('login')"
+          class="text-sm text-gray-600 underline hover:text-gray-900 dark:text-gray-400">
           Already registered?
         </inertia-link>
 

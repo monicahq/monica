@@ -1,11 +1,11 @@
 <template>
   <layout :layout-data="layoutData">
     <!-- breadcrumb -->
-    <nav class="bg-white sm:border-b">
+    <nav class="bg-white dark:bg-gray-900 sm:border-b">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-slate-200">
+            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('app.breadcrumb_location') }}
             </li>
             <li class="mr-2 inline">
@@ -62,9 +62,9 @@
         <!-- modal to create a new gender -->
         <form
           v-if="createGenderModalShown"
-          class="mb-6 rounded-lg border border-gray-200 bg-white"
+          class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
           @submit.prevent="submit()">
-          <div class="border-b border-gray-200 p-5">
+          <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <errors :errors="form.errors" />
 
             <text-input
@@ -87,11 +87,13 @@
         </form>
 
         <!-- list of groups types -->
-        <ul v-if="localGenders.length > 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+        <ul
+          v-if="localGenders.length > 0"
+          class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <li
             v-for="gender in localGenders"
             :key="gender.id"
-            class="item-list border-b border-gray-200 hover:bg-slate-50">
+            class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <!-- detail of the gender -->
             <div v-if="renameGenderModalShownId != gender.id" class="flex items-center justify-between px-5 py-2">
               <span class="text-base">{{ gender.name }}</span>
@@ -110,9 +112,9 @@
             <!-- rename a gender modal -->
             <form
               v-if="renameGenderModalShownId == gender.id"
-              class="item-list border-b border-gray-200 hover:bg-slate-50"
+              class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
               @submit.prevent="update(gender)">
-              <div class="border-b border-gray-200 p-5">
+              <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />
 
                 <text-input
@@ -137,7 +139,9 @@
         </ul>
 
         <!-- blank state -->
-        <div v-if="localGenders.length == 0" class="mb-6 rounded-lg border border-gray-200 bg-white">
+        <div
+          v-if="localGenders.length == 0"
+          class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">Add genders to associate them to contacts.</p>
         </div>
       </div>

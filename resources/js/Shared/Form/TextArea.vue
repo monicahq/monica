@@ -1,6 +1,6 @@
 <template>
   <div class="mb3">
-    <label v-if="label" class="mb-2 block text-sm" :for="id">
+    <label v-if="label" class="mb-2 block text-sm dark:text-gray-100" :for="id">
       {{ label }}
       <span v-if="!required" class="optional-badge text-xs">
         {{ $t('app.optional') }}
@@ -21,7 +21,7 @@
         @keydown.esc="sendEscKey"
         @focus="showMaxLength"
         @blur="displayMaxLength = false" />
-      <span v-if="maxlength && displayMaxLength" class="length absolute rounded text-xs">
+      <span v-if="maxlength && displayMaxLength" class="length absolute rounded text-xs dark:text-gray-100">
         {{ charactersLeft }}
       </span>
     </div>
@@ -110,12 +110,15 @@ export default {
 
       return `${this.maxlength - char} / ${this.maxlength}`;
     },
-  },
 
-  created() {
-    this.localTextAreaClasses =
-      'border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm ' +
-      this.textareaClass;
+    localTextAreaClasses() {
+      return [
+        'rounded-md shadow-sm',
+        'bg-white dark:bg-slate-900 border-gray-300 dark:border-gray-700',
+        'focus:border-indigo-300 focus:dark:border-indigo-700 focus:ring focus:ring-indigo-200 focus:dark:ring-indigo-800 focus:ring-opacity-50',
+        this.textareaClass,
+      ];
+    },
   },
 
   methods: {
@@ -143,6 +146,16 @@ export default {
   right: 10px;
   background-color: #e5eeff;
   padding: 3px 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .optional-badge {
+    color: #d4d8dd;
+    background-color: #2f3031;
+  }
+  .length {
+    background-color: #2d2f33;
+  }
 }
 
 .counter {

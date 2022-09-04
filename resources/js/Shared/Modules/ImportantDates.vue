@@ -1,11 +1,11 @@
 <template>
   <div class="mb-4">
-    <div class="mb-3 items-center justify-between border-b border-gray-200 sm:flex">
+    <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
       <div class="mb-2 text-xs sm:mb-0">Important dates</div>
       <inertia-link :href="data.url.edit" class="relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="icon-sidebar relative inline h-3 w-3 text-gray-300 hover:text-gray-600"
+          class="icon-sidebar relative inline h-3 w-3 text-gray-300 hover:text-gray-600 dark:text-gray-400"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor">
@@ -20,7 +20,7 @@
 
     <!-- list of dates -->
     <ul v-for="date in data.dates" :key="date.id" class="">
-      <li class="mb-1 flex items-center justify-between hover:bg-slate-50">
+      <li class="mb-1 flex items-center justify-between hover:bg-slate-50 dark:bg-slate-900 hover:dark:bg-slate-800">
         <span class="text-sm">{{ date.label }}</span>
         <span class="text-sm">
           {{ date.date }} <span v-if="date.age" class="text-xs text-gray-400">({{ date.age }})</span>
@@ -29,7 +29,7 @@
     </ul>
 
     <!-- blank state -->
-    <p v-if="data.dates.length == 0" class="text-sm text-gray-600">Not set</p>
+    <p v-if="data.dates.length == 0" class="text-sm text-gray-600 dark:text-gray-400">Not set</p>
   </div>
 </template>
 

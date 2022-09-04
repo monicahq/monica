@@ -14,16 +14,19 @@
     </div>
 
     <!-- normal mode -->
-    <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white">
+    <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="px-5 py-2">
         <span class="mb-2 block">{{ $t('settings.user_preferences_number_format_description') }}</span>
-        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm">{{ localNumberFormat }}</span>
+        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{ localNumberFormat }}</span>
       </p>
     </div>
 
     <!-- edit mode -->
-    <form v-if="editMode" class="bg-form mb-6 rounded-lg border border-gray-200" @submit.prevent="submit()">
-      <div class="border-b border-gray-200 px-5 py-2">
+    <form
+      v-if="editMode"
+      class="bg-form mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
+      @submit.prevent="submit()">
+      <div class="border-b border-gray-200 px-5 py-2 dark:border-gray-700">
         <errors :errors="form.errors" />
 
         <div v-for="numberFormat in data.numbers" :key="numberFormat.id" class="mb-2 flex items-center">
@@ -33,8 +36,10 @@
             :value="numberFormat.format"
             name="date-format"
             type="radio"
-            class="h-4 w-4 border-gray-300 text-sky-500" />
-          <label :for="'input' + numberFormat.id" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700">
+            class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+          <label
+            :for="'input' + numberFormat.id"
+            class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
             {{ numberFormat.value }}
           </label>
         </div>
