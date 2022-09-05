@@ -9,6 +9,7 @@ use App\Models\Account;
 use App\Models\Address;
 use App\Models\AddressType;
 use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -142,5 +143,10 @@ class CreateContactAddressTest extends TestCase
         Queue::assertPushed(FetchAddressGeocoding::class, function ($job) use ($address) {
             return $job->address->id === $address->id;
         });
+
+        $this->assertDatabaseHas('contact_feed_items', [
+            'contact_id' => $contact->id,
+            'action' => ContactFeedItem::ACTION_CONTACT_ADDRESS_CREATED,
+        ]);
     }
 }

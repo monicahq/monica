@@ -69,4 +69,35 @@ class MapHelper
         // trim extra whitespaces inside the address
         return Str::of($sentence)->replaceMatches('/\s+/', ' ');
     }
+
+    /**
+     * Return the URL for a static image for the given place.
+     *
+     * @param  Address  $address
+     * @param  int  $width
+     * @param  int  $height
+     * @param  int  $zoom
+     * @return string|null
+     */
+    public static function getStaticImage(Address $address, int $width, int $height, int $zoom = 7): ?string
+    {
+        if (! config('monica.mapbox_api_key')) {
+            return null;
+        }
+
+        if (! config('monica.mapbox_username')) {
+            return null;
+        }
+
+        $url = 'https://api.mapbox.com/styles/v1/';
+        $url .= config('monica.mapbox_username').'/';
+        $url .= config('monica.mapbox_custom_style_name').'/static/';
+        $url .= $address->longitude.',';
+        $url .= $address->latitude.',';
+        $url .= $zoom.'/';
+        $url .= $width.'x'.$height;
+        $url .= '?access_token='.config('monica.mapbox_api_key');
+
+        return $url;
+    }
 }

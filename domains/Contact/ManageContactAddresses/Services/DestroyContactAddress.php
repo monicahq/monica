@@ -2,8 +2,10 @@
 
 namespace App\Contact\ManageContactAddresses\Services;
 
+use App\Helpers\MapHelper;
 use App\Interfaces\ServiceInterface;
 use App\Models\Address;
+use App\Models\ContactFeedItem;
 use App\Services\BaseService;
 use Carbon\Carbon;
 
@@ -56,7 +58,19 @@ class DestroyContactAddress extends BaseService implements ServiceInterface
 
         $this->address->delete();
 
+        $this->createFeedItem();
+
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
+    }
+
+    private function createFeedItem(): void
+    {
+        ContactFeedItem::create([
+            'author_id' => $this->author->id,
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_CONTACT_ADDRESS_DESTROYED,
+            'description' => MapHelper::getAddressAsString($this->address),
+        ]);
     }
 }

@@ -7,6 +7,7 @@ use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Address;
 use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -120,6 +121,11 @@ class DestroyContactAddressTest extends TestCase
 
         $this->assertDatabaseMissing('addresses', [
             'id' => $address->id,
+        ]);
+
+        $this->assertDatabaseHas('contact_feed_items', [
+            'contact_id' => $contact->id,
+            'action' => ContactFeedItem::ACTION_CONTACT_ADDRESS_DESTROYED,
         ]);
     }
 }

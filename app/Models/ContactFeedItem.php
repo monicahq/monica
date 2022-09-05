@@ -50,6 +50,12 @@ class ContactFeedItem extends Model
 
     public const ACTION_LABEL_REMOVED = 'label_removed';
 
+    public const ACTION_CONTACT_ADDRESS_CREATED = 'address_created';
+
+    public const ACTION_CONTACT_ADDRESS_UPDATED = 'address_updated';
+
+    public const ACTION_CONTACT_ADDRESS_DESTROYED = 'address_destroyed';
+
     public const ACTION_CONTACT_EVENT_CREATED = 'added an event';
 
     public const ACTION_CONTACT_EVENT_UPDATED = 'updated an event';

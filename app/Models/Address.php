@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Address extends Model
 {
@@ -69,5 +70,15 @@ class Address extends Model
     public function addressType(): BelongsTo
     {
         return $this->belongsTo(AddressType::class);
+    }
+
+    /**
+     * Get the address's feed item.
+     *
+     * @return MorphOne
+     */
+    public function feedItem(): MorphOne
+    {
+        return $this->morphOne(ContactFeedItem::class, 'feedable');
     }
 }

@@ -3,9 +3,11 @@
 namespace App\Contact\ManageContactAddresses\Services;
 
 use App\Contact\ManageContactAddresses\Jobs\FetchAddressGeocoding;
+use App\Helpers\MapHelper;
 use App\Interfaces\ServiceInterface;
 use App\Models\Address;
 use App\Models\AddressType;
+use App\Models\ContactFeedItem;
 use App\Services\BaseService;
 use Carbon\Carbon;
 
@@ -89,11 +91,25 @@ class CreateContactAddress extends BaseService implements ServiceInterface
 
         $this->geocodeAddress();
 
+        $this->createFeedItem();
+
         return $this->address;
     }
 
     private function geocodeAddress(): void
     {
         FetchAddressGeocoding::dispatch($this->address)->onQueue('low');
+    }
+
+    private function createFeedItem(): void
+    {
+        $feedItem = ContactFeedItem::create([
+            'author_id' => $this->author->id,
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_CONTACT_ADDRESS_CREATED,
+            'description' => MapHelper::getAddressAsString($this->address),
+        ]);
+
+        $this->address->feedItem()->save($feedItem);
     }
 }

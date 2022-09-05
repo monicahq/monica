@@ -10,6 +10,7 @@ use App\Contact\ManageContact\Web\Controllers\ContactNoTemplateController;
 use App\Contact\ManageContact\Web\Controllers\ContactPageController;
 use App\Contact\ManageContact\Web\Controllers\ContactTemplateController;
 use App\Contact\ManageContactAddresses\Web\Controllers\ContactModuleAddressController;
+use App\Contact\ManageContactAddresses\Web\Controllers\ContactModuleAddressImageController;
 use App\Contact\ManageContactImportantDates\Web\Controllers\ContactImportantDatesController;
 use App\Contact\ManageContactInformation\Web\Controllers\ContactInformationController;
 use App\Contact\ManageDocuments\Web\Controllers\ContactModuleDocumentController;
@@ -189,6 +190,10 @@ Route::middleware([
                     Route::post('addresses', [ContactModuleAddressController::class, 'store'])->name('contact.address.store');
                     Route::put('addresses/{address}', [ContactModuleAddressController::class, 'update'])->name('contact.address.update');
                     Route::delete('addresses/{address}', [ContactModuleAddressController::class, 'destroy'])->name('contact.address.destroy');
+                    Route::get('addresses/{address}/image/{width}x{height}', [ContactModuleAddressImageController::class, 'show'])
+                        ->where('width', '.*')
+                        ->where('height', '.*')
+                        ->name('contact.address.image.show');
 
                     // contact information
                     Route::post('contactInformation', [ContactInformationController::class, 'store'])->name('contact.contact_information.store');
