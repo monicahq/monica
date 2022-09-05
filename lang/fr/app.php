@@ -7,6 +7,7 @@ return [
     'layout_menu_dashboard' => 'Tableau de bord',
     'layout_menu_reports' => 'Rapports',
     'layout_menu_contacts' => 'Contacts',
+    'layout_menu_tasks' => 'Tâches',
     'layout_menu_gift_center' => 'Cadeaux',
     'layout_menu_loans' => 'Prêts et dettes',
     'layout_menu_files' => 'Fichiers',

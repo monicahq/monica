@@ -20,10 +20,10 @@
     </h3>
 
     <!-- list of tasks -->
-    <div v-if="data.length > 0">
-      <ul class="mb-4 rounded-lg border border-gray-200 dark:border-gray-800">
+    <div v-if="data.tasks.length > 0">
+      <ul class="mb-4 rounded-lg border border-gray-200 dark:border-gray-800 dark:bg-gray-900">
         <li
-          v-for="task in data"
+          v-for="task in data.tasks"
           :key="task.id"
           class="item-list flex border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-800 hover:dark:bg-slate-900">
           <input
@@ -35,7 +35,7 @@
             @change="toggle(task)" />
 
           <div>
-            <label :for="task.id" class="ml-2 mb-2 flex cursor-pointer text-gray-900">
+            <label :for="task.id" class="ml-2 mb-2 flex cursor-pointer text-gray-900 dark:text-gray-300">
               {{ task.label }}
             </label>
 
@@ -80,11 +80,19 @@
 
     <!-- blank state -->
     <div
-      v-if="data.length == 0"
+      v-if="data.tasks.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
       <p class="p-5 text-center">
         {{ $t('vault.dashboard_due_tasks_blank') }}
       </p>
+    </div>
+
+    <div class="text-center">
+      <inertia-link
+        :href="data.url.index"
+        class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
+        {{ $t('app.view_all') }}
+      </inertia-link>
     </div>
   </div>
 </template>

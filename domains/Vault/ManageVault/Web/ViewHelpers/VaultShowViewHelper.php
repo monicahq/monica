@@ -129,7 +129,7 @@ class VaultShowViewHelper
             });
     }
 
-    public static function dueTasks(Vault $vault, User $user): Collection
+    public static function dueTasks(Vault $vault, User $user): array
     {
         $contactIds = $vault->contacts()->select('id')->get()->toArray();
         $tasks = DB::table('contact_tasks')
@@ -139,7 +139,7 @@ class VaultShowViewHelper
             ->orderBy('due_at', 'asc')
             ->get();
 
-        return $tasks
+        $tasksCollection = $tasks
             ->map(function ($task) use ($user) {
                 $task = ContactTask::find($task->id);
                 $contact = $task->contact;
@@ -172,5 +172,14 @@ class VaultShowViewHelper
                     ],
                 ];
             });
+
+        return [
+            'tasks' => $tasksCollection,
+            'url' => [
+                'index' => route('vault.tasks.index', [
+                    'vault' => $vault->id,
+                ]),
+            ],
+        ];
     }
 }

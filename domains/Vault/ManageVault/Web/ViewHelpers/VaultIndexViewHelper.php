@@ -39,6 +39,9 @@ class VaultIndexViewHelper
                     'contacts' => route('contact.index', [
                         'vault' => $vault->id,
                     ]),
+                    'tasks' => route('vault.tasks.index', [
+                        'vault' => $vault->id,
+                    ]),
                     'files' => route('vault.files.index', [
                         'vault' => $vault->id,
                     ]),

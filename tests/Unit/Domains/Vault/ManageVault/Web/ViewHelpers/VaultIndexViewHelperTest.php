@@ -46,6 +46,7 @@ class VaultIndexViewHelperTest extends TestCase
                 'url' => [
                     'dashboard' => env('APP_URL').'/vaults/'.$vault->id,
                     'contacts' => env('APP_URL').'/vaults/'.$vault->id.'/contacts',
+                    'tasks' => env('APP_URL').'/vaults/'.$vault->id.'/tasks',
                     'files' => env('APP_URL').'/vaults/'.$vault->id.'/files',
                     'settings' => env('APP_URL').'/vaults/'.$vault->id.'/settings',
                     'search' => env('APP_URL').'/vaults/'.$vault->id.'/search',
