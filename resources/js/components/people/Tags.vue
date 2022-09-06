@@ -161,7 +161,7 @@ export default {
         });
         this.arrowCounter = -1;
         this.isOpen = false;
-        this.search = null;
+        this.search = '';
         this.store();
       }
     },
@@ -183,11 +183,11 @@ export default {
     onEscape() {
       this.arrowCounter = -1;
       this.isOpen = false;
-      this.search = null;
+      this.search = '';
     },
 
     setResult(result) {
-      this.search = null;
+      this.search = '';
       this.isOpen = false;
       this.contactTags.push(result);
       this.store();
