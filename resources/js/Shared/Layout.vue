@@ -50,7 +50,121 @@
 
           <!-- icons -->
           <div class="flew-grow">
-            <ul>
+            <ul class="relative">
+              <li class="icon-dark-mode relative mr-4 inline">
+                <label for="default-toggle" class="relative inline-flex cursor-pointer">
+                  <input
+                    id="default-toggle"
+                    v-model="style.checked"
+                    type="checkbox"
+                    class="peer sr-only"
+                    @click="toggleStyle" />
+                  <div
+                    class="peer mr-2 h-4 w-7 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-3 after:w-3 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
+                  <svg
+                    v-if="!style.checked"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 14 14"
+                    height="15"
+                    width="15">
+                    <g>
+                      <circle
+                        cx="7"
+                        cy="7"
+                        r="2.5"
+                        fill="none"
+                        stroke="#4B5563"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></circle>
+                      <line
+                        x1="7"
+                        y1="0.5"
+                        x2="7"
+                        y2="2.5"
+                        fill="none"
+                        stroke="#4B5563"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></line>
+                      <line
+                        x1="2.4"
+                        y1="2.4"
+                        x2="3.82"
+                        y2="3.82"
+                        fill="none"
+                        stroke="#4B5563"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></line>
+                      <line
+                        x1="0.5"
+                        y1="7"
+                        x2="2.5"
+                        y2="7"
+                        fill="none"
+                        stroke="#4B5563"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></line>
+                      <line
+                        x1="2.4"
+                        y1="11.6"
+                        x2="3.82"
+                        y2="10.18"
+                        fill="none"
+                        stroke="#4B5563"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></line>
+                      <line
+                        x1="7"
+                        y1="13.5"
+                        x2="7"
+                        y2="11.5"
+                        fill="none"
+                        stroke="#4B5563"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></line>
+                      <line
+                        x1="11.6"
+                        y1="11.6"
+                        x2="10.18"
+                        y2="10.18"
+                        fill="none"
+                        stroke="#4B5563"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></line>
+                      <line
+                        x1="13.5"
+                        y1="7"
+                        x2="11.5"
+                        y2="7"
+                        fill="none"
+                        stroke="#4B5563"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></line>
+                      <line
+                        x1="11.6"
+                        y1="2.4"
+                        x2="10.18"
+                        y2="3.82"
+                        fill="none"
+                        stroke="#4B5563"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></line>
+                    </g>
+                  </svg>
+                  <svg
+                    v-if="style.checked"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 14 14"
+                    height="15"
+                    width="15">
+                    <path
+                      d="M12,10.48A6.55,6.55,0,0,1,6.46.5a6.55,6.55,0,0,0,1,13A6.46,6.46,0,0,0,13,10.39,6.79,6.79,0,0,1,12,10.48Z"
+                      fill="none"
+                      stroke="#e5e7eb"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                </label>
+              </li>
               <li class="mr-4 inline">
                 <inertia-link :href="layoutData.url.settings" class="relative inline">
                   <svg
@@ -205,7 +319,18 @@ export default {
     },
   },
 
+  data() {
+    return {
+      style: {
+        checked: false,
+      },
+    };
+  },
+
   mounted() {
+    this.style.checked =
+      localStorage.theme === 'dark' ||
+      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
     if (localStorage.success) {
       this.flash(localStorage.success, 'success');
       localStorage.removeItem('success');
@@ -215,6 +340,17 @@ export default {
   methods: {
     goToSearchPage() {
       this.$inertia.visit(this.layoutData.vault.url.search);
+    },
+
+    toggleStyle() {
+      this.style.checked = !this.style.checked;
+      if (this.style.checked) {
+        document.documentElement.classList.add('dark');
+        localStorage.theme = 'dark';
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.theme = 'light';
+      }
     },
   },
 };
@@ -232,5 +368,9 @@ export default {
 
 .icon-cog {
   top: -1px;
+}
+
+.icon-dark-mode {
+  top: 3px;
 }
 </style>
