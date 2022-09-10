@@ -6,6 +6,7 @@ use App\Contact\ManagePets\Services\UpdatePet;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Models\ContactInformationType;
 use App\Models\Pet;
 use App\Models\PetCategory;
@@ -157,6 +158,11 @@ class UpdatePetTest extends TestCase
             'contact_id' => $contact->id,
             'pet_category_id' => $petCategory->id,
             'name' => 'boubou',
+        ]);
+
+        $this->assertDatabaseHas('contact_feed_items', [
+            'contact_id' => $contact->id,
+            'action' => ContactFeedItem::ACTION_PET_UPDATED,
         ]);
     }
 }

@@ -34,6 +34,12 @@ class ContactFeedItem extends Model
 
     public const ACTION_NOTE_DESTROYED = 'note_destroyed';
 
+    public const ACTION_PET_CREATED = 'pet_created';
+
+    public const ACTION_PET_UPDATED = 'pet_updated';
+
+    public const ACTION_PET_DESTROYED = 'pet_destroyed';
+
     public const ACTION_GOAL_CREATED = 'goal_created';
 
     public const ACTION_GOAL_UPDATED = 'goal_updated';

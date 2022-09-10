@@ -3,6 +3,7 @@
 namespace App\Contact\ManagePets\Services;
 
 use App\Interfaces\ServiceInterface;
+use App\Models\ContactFeedItem;
 use App\Models\Pet;
 use App\Services\BaseService;
 use Carbon\Carbon;
@@ -58,5 +59,17 @@ class DestroyPet extends BaseService implements ServiceInterface
 
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
+
+        $this->createFeedItem();
+    }
+
+    private function createFeedItem(): void
+    {
+        ContactFeedItem::create([
+            'author_id' => $this->author->id,
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_PET_DESTROYED,
+            'description' => $this->pet->petCategory->name,
+        ]);
     }
 }

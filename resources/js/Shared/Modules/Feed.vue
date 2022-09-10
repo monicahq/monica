@@ -95,6 +95,15 @@
             "
             :data="feedItem.data"
             :contact-view-mode="contactViewMode" />
+
+          <pet
+            v-if="
+              feedItem.action === 'pet_created' ||
+              feedItem.action === 'pet_updated' ||
+              feedItem.action === 'pet_destroyed'
+            "
+            :data="feedItem.data"
+            :contact-view-mode="contactViewMode" />
         </div>
 
         <!-- details -->
@@ -121,6 +130,7 @@ import GenericAction from '@/Shared/Modules/FeedItems/GenericAction.vue';
 import LabelAssigned from '@/Shared/Modules/FeedItems/LabelAssigned.vue';
 import Addresses from '@/Shared/Modules/FeedItems/Address.vue';
 import ContactInformation from '@/Shared/Modules/FeedItems/ContactInformation.vue';
+import Pet from '@/Shared/Modules/FeedItems/Pet.vue';
 
 export default {
   components: {
@@ -129,6 +139,7 @@ export default {
     LabelAssigned,
     Addresses,
     ContactInformation,
+    Pet,
   },
 
   props: {

@@ -3,6 +3,7 @@
 namespace App\Contact\ManagePets\Services;
 
 use App\Interfaces\ServiceInterface;
+use App\Models\ContactFeedItem;
 use App\Models\Pet;
 use App\Models\PetCategory;
 use App\Services\BaseService;
@@ -66,6 +67,20 @@ class CreatePet extends BaseService implements ServiceInterface
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
 
+        $this->createFeedItem();
+
         return $this->pet;
+    }
+
+    private function createFeedItem(): void
+    {
+        $feedItem = ContactFeedItem::create([
+            'author_id' => $this->author->id,
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_PET_CREATED,
+            'description' => $this->pet->petCategory->name,
+        ]);
+
+        $this->pet->feedItem()->save($feedItem);
     }
 }

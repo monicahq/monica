@@ -6,6 +6,7 @@ use App\Contact\ManagePets\Services\DestroyPet;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\ContactFeedItem;
 use App\Models\Pet;
 use App\Models\User;
 use App\Models\Vault;
@@ -120,6 +121,11 @@ class DestroyPetTest extends TestCase
 
         $this->assertDatabaseMissing('pets', [
             'id' => $pet->id,
+        ]);
+
+        $this->assertDatabaseHas('contact_feed_items', [
+            'contact_id' => $contact->id,
+            'action' => ContactFeedItem::ACTION_PET_DESTROYED,
         ]);
     }
 }
