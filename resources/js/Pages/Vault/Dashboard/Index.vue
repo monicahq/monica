@@ -58,7 +58,7 @@
               </button>
             </div>
 
-            <feed :data="feed" :contact-view-mode="false" />
+            <feed :url="loadFeedUrl" :contact-view-mode="false" />
 
             <!-- feed -->
             <div class="mb-10 overflow-auto">
@@ -156,8 +156,8 @@ export default {
       type: Object,
       default: null,
     },
-    feed: {
-      type: Object,
+    loadFeedUrl: {
+      type: String,
       default: null,
     },
     dueTasks: {

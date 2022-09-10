@@ -152,7 +152,7 @@
 
                 <reminders v-if="module.type == 'reminders'" :data="reminders" />
 
-                <feed v-if="module.type == 'feed'" :data="feed" />
+                <feed v-if="module.type == 'feed'" :url="feed" />
 
                 <loans v-if="module.type == 'loans'" :data="loans" :layout-data="layoutData" />
 

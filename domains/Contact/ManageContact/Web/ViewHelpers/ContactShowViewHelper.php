@@ -5,7 +5,6 @@ namespace App\Contact\ManageContact\Web\ViewHelpers;
 use App\Contact\ManageAvatar\Web\ViewHelpers\ModuleAvatarViewHelper;
 use App\Contact\ManageCalls\Web\ViewHelpers\ModuleCallsViewHelper;
 use App\Contact\ManageContactAddresses\Web\ViewHelpers\ModuleContactAddressesViewHelper;
-use App\Contact\ManageContactFeed\Web\ViewHelpers\ModuleFeedViewHelper;
 use App\Contact\ManageContactImportantDates\Web\ViewHelpers\ModuleImportantDatesViewHelper;
 use App\Contact\ManageContactInformation\Web\ViewHelpers\ModuleContactInformationViewHelper;
 use App\Contact\ManageContactName\Web\ViewHelpers\ModuleContactNameViewHelper;
@@ -26,7 +25,6 @@ use App\Contact\ManageReminders\Web\ViewHelpers\ModuleRemindersViewHelper;
 use App\Contact\ManageTasks\Web\ViewHelpers\ModuleContactTasksViewHelper;
 use App\Helpers\StorageHelper;
 use App\Models\Contact;
-use App\Models\ContactFeedItem;
 use App\Models\Module;
 use App\Models\TemplatePage;
 use App\Models\User;
@@ -226,12 +224,12 @@ class ContactShowViewHelper
             }
 
             if ($module->type == Module::TYPE_FEED) {
-                $items = ContactFeedItem::where('contact_id', $contact->id)
-                    ->with('author')
-                    ->with('contact')
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-                $data = ModuleFeedViewHelper::data($items, $user);
+                // this is the only module where the data is loaded asynchroniously
+                // so it needs an URL to load the data from
+                $data = route('contact.feed.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]);
             }
 
             if ($module->type == Module::TYPE_REMINDERS) {

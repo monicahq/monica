@@ -11,10 +11,11 @@ use App\Helpers\DateHelper;
 use App\Helpers\UserHelper;
 use App\Models\ContactFeedItem;
 use App\Models\User;
+use App\Models\Vault;
 
 class ModuleFeedViewHelper
 {
-    public static function data($items, User $user): array
+    public static function data($items, User $user, Vault $vault): array
     {
         $itemsCollection = $items->map(function ($item) use ($user) {
             return [

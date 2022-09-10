@@ -1,7 +1,7 @@
 <template>
   <div class="mb-4">
     <div class="ml-4 border-l border-gray-200 dark:border-gray-700">
-      <div v-for="feedItem in data.items" :key="feedItem.id" class="mb-8">
+      <div v-for="feedItem in feed" :key="feedItem.id" class="mb-8">
         <!-- action & user -->
         <div class="mb-3 flex">
           <div class="icon-avatar relative w-6">
@@ -118,13 +118,28 @@
     </div>
 
     <!-- blank state -->
-    <div v-if="data.items.length == 0">
+    <div v-if="feed.length == 0 && !loading">
       <p class="p-5 text-center">There is no activity yet.</p>
+    </div>
+
+    <!-- loading mode -->
+    <div v-if="loading" class="mb-5 rounded-lg border border-gray-200 p-20 text-center">
+      <loading />
+    </div>
+
+    <!-- load more -->
+    <div class="text-center" v-if="paginator.hasMorePages">
+      <span
+        @click="load()"
+        class="cursor-pointer rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
+        {{ $t('app.view_older') }}
+      </span>
     </div>
   </div>
 </template>
 
 <script>
+import Loading from '@/Shared/Loading.vue';
 import Avatar from '@/Shared/Avatar.vue';
 import GenericAction from '@/Shared/Modules/FeedItems/GenericAction.vue';
 import LabelAssigned from '@/Shared/Modules/FeedItems/LabelAssigned.vue';
@@ -134,6 +149,7 @@ import Pet from '@/Shared/Modules/FeedItems/Pet.vue';
 
 export default {
   components: {
+    Loading,
     Avatar,
     GenericAction,
     LabelAssigned,
@@ -143,13 +159,53 @@ export default {
   },
 
   props: {
-    data: {
-      type: Object,
-      default: null,
-    },
     contactViewMode: {
       type: Boolean,
       default: true,
+    },
+    url: {
+      type: String,
+      default: '',
+    },
+  },
+
+  data() {
+    return {
+      feed: [],
+      loading: false,
+      paginator: [],
+    };
+  },
+
+  mounted() {
+    this.initialLoad();
+  },
+
+  methods: {
+    initialLoad() {
+      this.loading = true;
+      axios
+        .get(this.url)
+        .then((response) => {
+          this.loading = false;
+          response.data.data.items.forEach((entry) => {
+            this.feed.push(entry);
+          });
+          this.paginator = response.data.paginator;
+        })
+        .catch(() => {});
+    },
+
+    load() {
+      axios
+        .get(this.paginator.nextPageUrl)
+        .then((response) => {
+          response.data.data.items.forEach((entry) => {
+            this.feed.push(entry);
+          });
+          this.paginator = response.data.paginator;
+        })
+        .catch(() => {});
     },
   },
 };

@@ -27,7 +27,7 @@ class ModuleFeedViewHelperTest extends TestCase
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $array = ModuleFeedViewHelper::data($items, $user);
+        $array = ModuleFeedViewHelper::data($items, $user, $contact->vault);
 
         $this->assertEquals(
             1,

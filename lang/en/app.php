@@ -65,6 +65,7 @@ return [
     'next' => 'Next',
     'view_all' => 'View all',
     'view_map' => 'View on map',
+    'view_older' => 'Load previous entries',
     'download' => 'Download',
 
     'unknown_name' => 'Unknown name',
