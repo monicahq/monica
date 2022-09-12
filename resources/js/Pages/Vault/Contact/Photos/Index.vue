@@ -107,7 +107,7 @@
         </div>
 
         <!-- pagination -->
-        <pagination :paginator="paginator" />
+        <Pagination :items="paginator" />
 
         <div
           v-if="localPhotos.length == 0"
@@ -124,7 +124,7 @@
 <script>
 import Layout from '@/Shared/Layout.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
-import Pagination from '@/Shared/Pagination.vue';
+import Pagination from '@/Components/Pagination.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
 
 export default {

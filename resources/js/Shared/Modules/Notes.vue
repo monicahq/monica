@@ -231,18 +231,7 @@
       </div>
 
       <!-- pagination -->
-      <div v-if="!moduleMode" class="flex justify-between text-center">
-        <inertia-link
-          v-show="paginator.previousPageUrl"
-          class="fl dib"
-          :href="paginator.previousPageUrl"
-          title="Previous">
-          &larr; Previous
-        </inertia-link>
-        <inertia-link v-show="paginator.nextPageUrl" class="fr dib" :href="paginator.nextPageUrl" title="Next">
-          Next &rarr;
-        </inertia-link>
-      </div>
+      <Pagination v-if="!moduleMode" :items="paginator" />
     </div>
 
     <!-- blank state -->
@@ -262,6 +251,7 @@ import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 import Avatar from '@/Shared/Avatar.vue';
+import Pagination from '@/Components/Pagination.vue';
 
 export default {
   components: {
@@ -272,6 +262,7 @@ export default {
     TextArea,
     Errors,
     Avatar,
+    Pagination,
   },
 
   props: {

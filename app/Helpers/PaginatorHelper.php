@@ -2,28 +2,34 @@
 
 namespace App\Helpers;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+
 class PaginatorHelper
 {
     /**
      * Provide an array of all the data needed to display a pagination.
      *
-     * @param  mixed  $eloquentCollection
+     * @param  LengthAwarePaginator  $paginator
      * @return array
      */
-    public static function getData($eloquentCollection): array
+    public static function getData(LengthAwarePaginator $paginator): array
     {
         return [
-            'count' => $eloquentCollection->count(),
-            'currentPage' => $eloquentCollection->currentPage(),
-            'firstItem' => $eloquentCollection->firstItem(),
-            'hasMorePages' => $eloquentCollection->hasMorePages(),
-            'lastItem' => $eloquentCollection->lastItem(),
-            'lastPage' => $eloquentCollection->lastPage(),
-            'nextPageUrl' => $eloquentCollection->nextPageUrl(),
-            'onFirstPage' => $eloquentCollection->onFirstPage(),
-            'perPage' => $eloquentCollection->perPage(),
-            'previousPageUrl' => $eloquentCollection->previousPageUrl(),
-            'total' => $eloquentCollection->total(),
+            'count' => $paginator->count(),
+            'currentPage' => $paginator->currentPage(),
+            'firstItem' => $paginator->firstItem(),
+            'firstPageUrl' => $paginator->url(1),
+            'hasMorePages' => $paginator->hasMorePages(),
+            'lastItem' => $paginator->lastItem(),
+            'lastPage' => $paginator->lastPage(),
+            'lastPageUrl' => $paginator->url($paginator->lastPage()),
+            'links' => $paginator->linkCollection()->toArray(),
+            'nextPageUrl' => $paginator->nextPageUrl(),
+            'onFirstPage' => $paginator->onFirstPage(),
+            'path' => $paginator->path(),
+            'perPage' => $paginator->perPage(),
+            'previousPageUrl' => $paginator->previousPageUrl(),
+            'total' => $paginator->total(),
         ];
     }
 }

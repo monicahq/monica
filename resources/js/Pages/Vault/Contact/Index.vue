@@ -72,18 +72,7 @@
             </ul>
 
             <!-- pagination -->
-            <div v-if="!moduleMode" class="flex justify-between text-center">
-              <inertia-link
-                v-show="paginator.previousPageUrl"
-                class="fl dib"
-                :href="paginator.previousPageUrl"
-                title="Previous">
-                &larr; {{ $t('app.previous') }}
-              </inertia-link>
-              <inertia-link v-show="paginator.nextPageUrl" class="fr dib" :href="paginator.nextPageUrl" title="Next">
-                {{ $t('app.next') }} &rarr;
-              </inertia-link>
-            </div>
+            <Pagination :items="paginator" />
           </div>
         </div>
       </div>
@@ -95,12 +84,14 @@
 import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import Avatar from '@/Shared/Avatar.vue';
+import Pagination from '@/Components/Pagination.vue';
 
 export default {
   components: {
     Layout,
     PrettyLink,
     Avatar,
+    Pagination,
   },
 
   props: {
