@@ -6408,9 +6408,9 @@ slice-ansi@^4.0.0:
     is-fullwidth-code-point "^3.0.0"
 
 snyk@^1.410:
-  version "1.986.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.986.0.tgz#d3dcd45d4b9a5e8b36b9a389bc4b9a6c449231ce"
-  integrity sha512-u61QevBUVWBUEaZhq+zElxLrLEuQ4tgWenzagTkmTgXqRAe/S5M4y7WJwQSHfie+qt6xn37BDl9/ACyH3XAFEg==
+  version "1.1001.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.1001.0.tgz#c19b9448812a56f5e4b79e73e45f7fa7533a0087"
+  integrity sha512-EDa5VZ4c0i//hhvRPZmUl64bsfSstcdK9jiXi10WI1E4A0JMoWnE5kydcw7UVebQGr1GwqbZ7UgbQ0lz25EIHA==
 
 sockjs@^0.3.24:
   version "0.3.24"
