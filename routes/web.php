@@ -32,6 +32,8 @@ use App\Contact\ManageRelationships\Web\Controllers\ContactRelationshipsControll
 use App\Contact\ManageReminders\Web\Controllers\ContactModuleReminderController;
 use App\Contact\ManageTasks\Web\Controllers\ContactModuleTaskController;
 use App\Http\Controllers\Auth\AcceptInvitationController;
+use App\Http\Controllers\Auth\SocialiteCallbackController;
+use App\Http\Controllers\Profile\UserTokenController;
 use App\Providers\RouteServiceProvider;
 use App\Settings\CancelAccount\Web\Controllers\CancelAccountController;
 use App\Settings\ManageActivityTypes\Web\Controllers\PersonalizeActivitiesController;
@@ -103,6 +105,12 @@ Route::get('/', function () {
     return Auth::check()
         ? redirect()->intended(RouteServiceProvider::HOME)
         : redirect()->route('login');
+})->name('home');
+
+Route::middleware(['throttle:oauth2-socialite'])->group(function () {
+    Route::get('auth/{driver}', [SocialiteCallbackController::class, 'login'])->name('login.provider');
+    Route::get('auth/{driver}/callback', [SocialiteCallbackController::class, 'callback']);
+    Route::post('auth/{driver}/callback', [SocialiteCallbackController::class, 'callback']);
 });
 
 Route::get('invitation/{code}', [AcceptInvitationController::class, 'show'])->name('invitation.show');
@@ -496,4 +504,7 @@ Route::middleware([
 
     // General stuff called by everyone/everywhere
     Route::get('currencies', [CurrencyController::class, 'index'])->name('currencies.index');
+
+    // User & Profile...
+    Route::delete('auth/{driver}', [UserTokenController::class, 'destroy'])->name('provider.delete');
 });

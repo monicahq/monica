@@ -1,8 +1,8 @@
 <template>
-  <inertia-link :class="linkClasses" :href="href">
+  <inertia-link :class="linkClasses" :href="href" preserve-scroll>
     <!-- + icon -->
     <svg
-      v-if="icon === 'plus' && state != 'loading'"
+      v-if="icon === 'plus'"
       xmlns="http://www.w3.org/2000/svg"
       class="icon relative inline h-5 w-5"
       fill="none"
@@ -13,7 +13,7 @@
 
     <!-- check icon -->
     <svg
-      v-if="icon === 'check' && state != 'loading'"
+      v-else-if="icon === 'check'"
       xmlns="http://www.w3.org/2000/svg"
       class="icon relative inline h-5 w-5"
       fill="none"

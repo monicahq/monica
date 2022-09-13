@@ -14,4 +14,6 @@ return [
     'login_password' => 'Your password',
     'login_cta' => 'Login →',
     'login_invalid_credentials' => '😳 Invalid credentials',
+
+    'login_provider_github' => 'GitHub',
 ];

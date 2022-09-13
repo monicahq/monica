@@ -34,10 +34,8 @@ export default {
       default: 'dropdown-',
     },
     data: {
-      type: Array,
-      default() {
-        return [];
-      },
+      type: Object,
+      default: null,
     },
     dropdownClass: {
       type: String,

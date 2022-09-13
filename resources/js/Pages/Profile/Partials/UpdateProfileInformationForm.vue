@@ -2,11 +2,11 @@
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-vue3';
-import JetButton from '@/Components/Jetstream/Button.vue';
+import JetButton from '@/Components/Button.vue';
 import JetFormSection from '@/Components/Jetstream/FormSection.vue';
-import JetInput from '@/Components/Jetstream/Input.vue';
-import JetInputError from '@/Components/Jetstream/InputError.vue';
-import JetLabel from '@/Components/Jetstream/Label.vue';
+import JetInput from '@/Components/Input.vue';
+import JetInputError from '@/Components/InputError.vue';
+import JetLabel from '@/Components/Label.vue';
 import JetActionMessage from '@/Components/Jetstream/ActionMessage.vue';
 import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
 
@@ -16,7 +16,8 @@ const props = defineProps({
 
 const form = useForm({
   _method: 'PUT',
-  name: props.user.name,
+  first_name: props.user.first_name,
+  last_name: props.user.last_name,
   email: props.user.email,
   photo: null,
 });
@@ -114,15 +115,32 @@ const clearPhotoFileInput = () => {
         <JetInputError :message="form.errors.photo" class="mt-2" />
       </div>
 
-      <!-- Name -->
-      <div class="col-span-6 sm:col-span-4">
-        <JetLabel for="name" value="Name" />
-        <JetInput id="name" v-model="form.name" type="text" class="mt-1 block w-full" autocomplete="name" />
-        <JetInputError :message="form.errors.name" class="mt-2" />
+      <!-- First Name -->
+      <div class="col-span-6 mb-4 sm:col-span-4">
+        <JetLabel for="first_name" value="First name" />
+        <JetInput
+          id="first_name"
+          v-model="form.first_name"
+          type="text"
+          class="mt-1 block w-full"
+          autocomplete="firstname" />
+        <JetInputError :message="form.errors.first_name" class="mt-2" />
+      </div>
+
+      <!-- Last Name -->
+      <div class="col-span-6 mb-4 sm:col-span-4">
+        <JetLabel for="last_name" value="Last name" />
+        <JetInput
+          id="last_name"
+          v-model="form.last_name"
+          type="text"
+          class="mt-1 block w-full"
+          autocomplete="lastname" />
+        <JetInputError :message="form.errors.last_name" class="mt-2" />
       </div>
 
       <!-- Email -->
-      <div class="col-span-6 sm:col-span-4">
+      <div class="col-span-6 mb-4 sm:col-span-4">
         <JetLabel for="email" value="Email" />
         <JetInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" autocomplete="email" />
         <JetInputError :message="form.errors.email" class="mt-2" />

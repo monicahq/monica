@@ -11,6 +11,7 @@
   "license": "MIT",
   "require": {
     "php": "^8.1",
+    "asbiin/laravel-webauthn": "^3.2",
     "fruitcake/laravel-cors": "^2.2",
     "guzzlehttp/guzzle": "^7.4.5",
     "http-interop/http-factory-guzzle": "^1.2",
@@ -21,10 +22,12 @@
     "laravel/jetstream": "^2.10",
     "laravel/sanctum": "^2.15.1",
     "laravel/scout": "^9.4.10",
+    "laravel/socialite": "^5.5",
     "laravel/tinker": "^2.7.2",
     "meilisearch/meilisearch-php": "^0.23.3",
     "naugrim/laravel-sentry-tunnel": "^1.0",
     "sentry/sentry-laravel": "^2.13",
+    "socialiteproviders/github": "^4.1",
     "tightenco/ziggy": "^1.4.6",
     "uploadcare/uploadcare-php": "^3.2.4",
     "vluzrmos/language-detector": "^2.3.3"

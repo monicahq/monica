@@ -3,12 +3,12 @@ import { ref, computed, watch } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import JetActionSection from '@/Components/Jetstream/ActionSection.vue';
-import JetButton from '@/Components/Jetstream/Button.vue';
+import JetButton from '@/Components/Button.vue';
 import JetConfirmsPassword from '@/Components/Jetstream/ConfirmsPassword.vue';
 import JetDangerButton from '@/Components/Jetstream/DangerButton.vue';
-import JetInput from '@/Components/Jetstream/Input.vue';
-import JetInputError from '@/Components/Jetstream/InputError.vue';
-import JetLabel from '@/Components/Jetstream/Label.vue';
+import JetInput from '@/Components/Input.vue';
+import JetInputError from '@/Components/InputError.vue';
+import JetLabel from '@/Components/Label.vue';
 import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
 
 const props = defineProps({

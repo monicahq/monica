@@ -1,39 +1,59 @@
 <script setup>
-import { computed, useSlots } from 'vue';
+import { computed, ref, useSlots } from 'vue';
 import JetSectionTitle from './SectionTitle.vue';
 
-defineEmits(['submitted']);
+const emit = defineEmits(['submitted']);
+const props = defineProps({
+  useEditMode: Boolean,
+});
 
 const hasActions = computed(() => !!useSlots().actions);
+const editMode = ref(!props.useEditMode);
+
+const submit = () => {
+  emit('submitted');
+  if (props.useEditMode) {
+    editMode.value = false;
+  }
+};
 </script>
 
 <template>
-  <div class="md:grid md:grid-cols-3 md:gap-6">
-    <JetSectionTitle>
+  <div>
+    <JetSectionTitle :editMode="editMode" @edit="editMode = true">
       <template #title>
         <slot name="title" />
       </template>
       <template #description>
         <slot name="description" />
       </template>
+      <template #icon>
+        <slot name="icon" />
+      </template>
+      <template #help>
+        <slot name="help" />
+      </template>
     </JetSectionTitle>
 
-    <div class="mt-5 md:col-span-2 md:mt-0">
-      <form @submit.prevent="$emit('submitted')">
-        <div
-          class="bg-white px-4 py-5 shadow dark:bg-gray-900 dark:shadow-gray-700 sm:p-6"
-          :class="hasActions ? 'sm:rounded-tl-md sm:rounded-tr-md' : 'sm:rounded-md'">
-          <div class="grid grid-cols-6 gap-6">
-            <slot name="form" />
-          </div>
-        </div>
-
-        <div
-          v-if="hasActions"
-          class="flex items-center justify-end bg-gray-50 px-4 py-3 text-right shadow dark:bg-gray-900 dark:shadow-gray-700 sm:rounded-bl-md sm:rounded-br-md sm:px-6">
-          <slot name="actions" />
-        </div>
-      </form>
+    <!-- normal mode -->
+    <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+      <slot name="content" />
     </div>
+
+    <!-- edit mode -->
+    <form
+      v-if="editMode"
+      class="bg-form mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
+      @submit.prevent="submit">
+      <div class="border-b border-gray-200 px-5 py-4 dark:border-gray-700">
+        <slot name="form" />
+      </div>
+
+      <div
+        v-if="hasActions"
+        class="flex items-center justify-end bg-gray-50 px-4 py-3 text-right shadow dark:bg-gray-900 dark:shadow-gray-700 sm:rounded-bl-md sm:rounded-br-md sm:px-6">
+        <slot name="actions" />
+      </div>
+    </form>
   </div>
 </template>

@@ -2,11 +2,11 @@
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import JetActionMessage from '@/Components/Jetstream/ActionMessage.vue';
-import JetButton from '@/Components/Jetstream/Button.vue';
+import JetButton from '@/Components/Button.vue';
 import JetFormSection from '@/Components/Jetstream/FormSection.vue';
-import JetInput from '@/Components/Jetstream/Input.vue';
-import JetInputError from '@/Components/Jetstream/InputError.vue';
-import JetLabel from '@/Components/Jetstream/Label.vue';
+import JetInput from '@/Components/Input.vue';
+import JetInputError from '@/Components/InputError.vue';
+import JetLabel from '@/Components/Label.vue';
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -55,7 +55,7 @@ const updatePassword = () => {
           ref="currentPasswordInput"
           v-model="form.current_password"
           type="password"
-          class="mt-1 block w-full"
+          class="mt-1 mb-4 block w-full"
           autocomplete="current-password" />
         <JetInputError :message="form.errors.current_password" class="mt-2" />
       </div>
@@ -67,7 +67,7 @@ const updatePassword = () => {
           ref="passwordInput"
           v-model="form.password"
           type="password"
-          class="mt-1 block w-full"
+          class="mt-1 mb-4 block w-full"
           autocomplete="new-password" />
         <JetInputError :message="form.errors.password" class="mt-2" />
       </div>
@@ -78,7 +78,7 @@ const updatePassword = () => {
           id="password_confirmation"
           v-model="form.password_confirmation"
           type="password"
-          class="mt-1 block w-full"
+          class="mt-1 mb-4 block w-full"
           autocomplete="new-password" />
         <JetInputError :message="form.errors.password_confirmation" class="mt-2" />
       </div>

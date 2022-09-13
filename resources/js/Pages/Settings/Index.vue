@@ -46,6 +46,12 @@
           <div class="mb-6 rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
             <ul>
               <li class="mb-2 flex justify-start">
+                <span class="mr-2">🔐</span>
+                <inertia-link :href="route('profile.show')" class="text-blue-500 hover:underline">
+                  Account and security
+                </inertia-link>
+              </li>
+              <li class="mb-2 flex justify-start">
                 <span class="mr-2">🥸</span>
                 <inertia-link :href="data.url.users.index" class="text-blue-500 hover:underline">
                   {{ $t('settings.manage_users') }}
@@ -91,8 +97,8 @@ export default {
       default: null,
     },
     data: {
-      type: Array,
-      default: () => [],
+      type: Object,
+      default: null,
     },
   },
 };

@@ -6,6 +6,8 @@ module.exports = {
     './storage/framework/views/*.php',
     './resources/views/**/*.blade.php',
     './resources/js/**/*.vue',
+    './lang/**/*.php',
+    './lang/*.json',
   ],
 
   safelist: [

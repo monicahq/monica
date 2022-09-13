@@ -132,8 +132,8 @@ export default {
       default: null,
     },
     data: {
-      type: Array,
-      default: () => [],
+      type: Object,
+      default: null,
     },
   },
 
