@@ -2,6 +2,7 @@
 
 namespace App\Contact\ManageLoans\Web\ViewHelpers;
 
+use App\Helpers\ContactCardHelper;
 use App\Helpers\DateHelper;
 use App\Helpers\MonetaryNumberHelper;
 use App\Models\Contact;
@@ -39,18 +40,10 @@ class ModuleLoanViewHelper
     {
         $loaners = $loan->loaners->unique('id');
         $loanees = $loan->loanees->unique('id');
-        $loanersCollection = $loaners->map(function ($loaner) {
-            return [
-                'id' => $loaner->id,
-                'name' => $loaner->name,
-            ];
+        $loanersCollection = $loaners->map(function ($loaner) use ($user) {
+            return ContactCardHelper::data($loaner, $user);
         });
-        $loaneesCollection = $loanees->map(function ($loanee) {
-            return [
-                'id' => $loanee->id,
-                'name' => $loanee->name,
-            ];
-        });
+        $loaneesCollection = $loanees->map(fn ($loanee) => ContactCardHelper::data($loanee, $user));
 
         return [
             'id' => $loan->id,

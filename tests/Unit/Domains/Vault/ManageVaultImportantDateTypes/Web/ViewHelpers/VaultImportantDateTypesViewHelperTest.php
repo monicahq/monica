@@ -40,7 +40,7 @@ class VaultImportantDateTypesViewHelperTest extends TestCase
             [
                 'id' => $type->id,
                 'label' => $type->label,
-                'internal_type' => null,
+                'internal_type' => 'birthdate',
                 'can_be_deleted' => true,
                 'url' => [
                     'update' => env('APP_URL').'/vaults/'.$vault->id.'/settings/contactImportantDateTypes/'.$type->id,

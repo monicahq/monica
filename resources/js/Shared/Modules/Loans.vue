@@ -174,10 +174,7 @@
         <div v-if="editedLoanId != loan.id" class="mr-3 flex items-center">
           <div class="flex -space-x-2 overflow-hidden">
             <div v-for="loaner in loan.loaners" :key="loaner.id">
-              <small-contact
-                :div-outer-class="'inline-block rounded-full ring-2 ring-white'"
-                :show-name="false"
-                :preview-contact-size="30" />
+              <contact-card :contact="loaner" :avatarClasses="'h-7 w-7 rounded-full mr-2'" :displayName="false" />
             </div>
           </div>
 
@@ -192,10 +189,7 @@
           </svg>
 
           <div v-for="loanee in loan.loanees" :key="loanee.id">
-            <small-contact
-              :div-outer-class="'inline-block rounded-full ring-2 ring-white'"
-              :show-name="false"
-              :preview-contact-size="30" />
+            <contact-card :contact="loanee" :avatarClasses="'h-7 w-7 rounded-full mr-2'" :displayName="false" />
           </div>
         </div>
 
@@ -227,7 +221,6 @@
 
           <!-- actions -->
           <div class="flex items-center justify-between px-3 py-2">
-            <!-- <small-contact /> -->
             <ul class="text-sm">
               <!-- settle -->
               <li
@@ -415,9 +408,9 @@ import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import Errors from '@/Shared/Form/Errors.vue';
-import SmallContact from '@/Shared/SmallContact.vue';
 import ContactSelector from '@/Shared/Form/ContactSelector.vue';
 import Dropdown from '@/Shared/Form/Dropdown.vue';
+import ContactCard from '@/Shared/ContactCard.vue';
 
 export default {
   components: {
@@ -426,9 +419,9 @@ export default {
     TextInput,
     TextArea,
     Errors,
-    SmallContact,
     Dropdown,
     ContactSelector,
+    ContactCard,
   },
 
   props: {

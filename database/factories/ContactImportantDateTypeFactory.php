@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\ContactImportantDate;
 use App\Models\ContactImportantDateType;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -25,6 +26,7 @@ class ContactImportantDateTypeFactory extends Factory
         return [
             'vault_id' => Vault::factory(),
             'label' => 'birthdate',
+            'internal_type' => ContactImportantDate::TYPE_BIRTHDATE,
             'can_be_deleted' => true,
         ];
     }

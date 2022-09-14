@@ -10,12 +10,8 @@
     </div>
     <div class="border-t border-gray-200 px-3 py-2 dark:border-gray-700">
       <span class="mr-3 text-sm text-gray-500"> With </span>
-      <div class="relative mr-3 inline text-sm">
-        <small-contact top="4px;" />
-      </div>
-      <div class="inline text-sm">
-        <small-contact top="4px;" />
-      </div>
+      <div class="relative mr-3 inline text-sm"></div>
+      <div class="inline text-sm"></div>
     </div>
     <div class="flex border-t border-gray-200 px-3 py-2 dark:border-gray-700">
       <div class="mr-3">
@@ -72,12 +68,10 @@
 </template>
 
 <script>
-import SmallContact from '@/Shared/SmallContact.vue';
 import HoverMenu from '@/Shared/HoverMenu.vue';
 
 export default {
   components: {
-    SmallContact,
     HoverMenu,
   },
 };
