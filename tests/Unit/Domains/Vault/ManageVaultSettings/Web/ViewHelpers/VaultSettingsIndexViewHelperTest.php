@@ -31,6 +31,7 @@ class VaultSettingsIndexViewHelperTest extends TestCase
         ]);
         $vault->users()->sync([$userInVault->id => ['permission' => 100, 'contact_id' => Contact::factory()->create()->id]]);
 
+        $vault->refresh();
         $array = VaultSettingsIndexViewHelper::data($vault);
         $this->assertCount(
             7,

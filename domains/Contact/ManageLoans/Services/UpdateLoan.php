@@ -108,20 +108,22 @@ class UpdateLoan extends BaseService implements ServiceInterface
         $this->loan->currency_id = $this->valueOrNull($this->data, 'currency_id');
         $this->loan->save();
 
-        // remove all the current loaners and loanees
-        DB::table('contact_loan')->where('loan_id', $this->loan->id)->delete();
+        DB::transaction(function () {
+            // remove all the current loaners and loanees
+            DB::table('contact_loan')->where('loan_id', $this->loan->id)->delete();
 
-        foreach ($this->loanersCollection as $loaner) {
-            foreach ($this->loaneesCollection as $loanee) {
-                $loaner->loansAsLoaner()->syncWithoutDetaching([$this->loan->id => ['loanee_id' => $loanee->id]]);
-            }
-        }
-
-        foreach ($this->loaneesCollection as $loanee) {
             foreach ($this->loanersCollection as $loaner) {
-                $loanee->loansAsLoanee()->syncWithoutDetaching([$this->loan->id => ['loaner_id' => $loaner->id]]);
+                foreach ($this->loaneesCollection as $loanee) {
+                    $loaner->loansAsLoaner()->syncWithoutDetaching([$this->loan->id => ['loanee_id' => $loanee->id]]);
+                }
             }
-        }
+
+            foreach ($this->loaneesCollection as $loanee) {
+                foreach ($this->loanersCollection as $loaner) {
+                    $loanee->loansAsLoanee()->syncWithoutDetaching([$this->loan->id => ['loaner_id' => $loaner->id]]);
+                }
+            }
+        });
 
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();

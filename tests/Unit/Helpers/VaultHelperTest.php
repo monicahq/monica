@@ -37,9 +37,11 @@ class VaultHelperTest extends TestCase
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create();
-        $user->vaults()->attach($vault->id, [
-            'permission' => Vault::PERMISSION_VIEW,
-            'contact_id' => Contact::factory()->create()->id,
+        $user->vaults()->sync([
+            $vault->id => [
+                'permission' => Vault::PERMISSION_VIEW,
+                'contact_id' => Contact::factory()->create()->id,
+            ],
         ]);
 
         $this->assertEquals(

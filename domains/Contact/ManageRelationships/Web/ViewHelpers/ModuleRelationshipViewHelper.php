@@ -4,7 +4,6 @@ namespace App\Contact\ManageRelationships\Web\ViewHelpers;
 
 use App\Models\Contact;
 use App\Models\User;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class ModuleRelationshipViewHelper
@@ -39,12 +38,12 @@ class ModuleRelationshipViewHelper
                     })
                     ->get();
 
-                if ($relations->count() == 0) {
+                if ($relations->count() === 0) {
                     continue;
                 }
 
                 foreach ($relations as $relation) {
-                    if ($relation->contact_id == $contact->id) {
+                    if ($relation->contact_id === $contact->id) {
                         $relatedContact = Contact::find($relation->related_contact_id);
                         $relationshipName = $relationshipType->name_reverse_relationship;
                     } else {
@@ -53,7 +52,7 @@ class ModuleRelationshipViewHelper
                     }
 
                     $relationshipTypesCollection->push([
-                        'contact' => self::getContact($relatedContact, $user),
+                        'contact' => self::getContact($relatedContact),
                         'relationship_type' => [
                             'id' => $relationshipType->id,
                             'name' => $relationshipName,
@@ -90,7 +89,7 @@ class ModuleRelationshipViewHelper
         ];
     }
 
-    private static function getContact(Contact $contact, User $user): array
+    private static function getContact(Contact $contact): array
     {
         return [
             'id' => $contact->id,

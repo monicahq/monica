@@ -29,3 +29,5 @@ parameters:
           path: */app/Models/Vault.php
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Contact>::unsearchable\(\)\.#'
           path: */app/Models/Vault.php
+        - message: '#Parameter \#1 \$value of function count expects array\|Countable, App\\Models\\Contact given\.#'
+          path: */domains/Vault/ManageVault/Web/ViewHelpers/VaultIndexViewHelper.php

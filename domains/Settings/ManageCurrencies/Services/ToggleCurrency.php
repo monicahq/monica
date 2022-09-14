@@ -45,16 +45,11 @@ class ToggleCurrency extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $record = DB::table('account_currencies')
-            ->where('account_id', $data['account_id'])
-            ->where('currency_id', $data['currency_id'])
-            ->first();
-
         DB::table('account_currencies')
             ->where('account_id', $data['account_id'])
             ->where('currency_id', $data['currency_id'])
             ->update([
-                'active' => ! $record->active,
+                'active' => DB::raw('NOT active'),
             ]);
     }
 }

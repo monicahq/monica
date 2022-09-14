@@ -20,14 +20,13 @@ class CheckVaultAccess
     {
         $requestedVaultId = $request->route()->parameter('vault');
 
-        $exists = DB::table('user_vault')->where('user_id', Auth::user()->id)
-            ->where('vault_id', $requestedVaultId)
-            ->count() > 0;
+        $exists = DB::table('user_vault')->where([
+            'user_id' => Auth::id(),
+            'vault_id' => $requestedVaultId,
+        ])->exists();
 
-        if ($exists) {
-            return $next($request);
-        } else {
-            abort(401);
-        }
+        abort_if(! $exists, 401);
+
+        return $next($request);
     }
 }

@@ -54,7 +54,7 @@ class ProcessScheduledContactReminders implements ShouldQueue
         foreach ($scheduledContactReminders as $scheduledReminder) {
             $channel = UserNotificationChannel::findOrFail($scheduledReminder->user_notification_channel_id);
 
-            if ($channel->type == UserNotificationChannel::TYPE_EMAIL) {
+            if ($channel->type === UserNotificationChannel::TYPE_EMAIL) {
                 $contactReminder = ContactReminder::find($scheduledReminder->contact_reminder_id);
                 $contact = $contactReminder->contact;
                 $contactName = NameHelper::formatContactName($channel->user, $contact);

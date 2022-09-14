@@ -17,16 +17,14 @@ class ModuleFeedViewHelper
 {
     public static function data($items, User $user, Vault $vault): array
     {
-        $itemsCollection = $items->map(function ($item) use ($user) {
-            return [
-                'id' => $item->id,
-                'action' => $item->action,
-                'author' => self::getAuthor($item),
-                'sentence' => self::getSentence($item),
-                'data' => self::getData($item, $user),
-                'created_at' => DateHelper::format($item->created_at, $user),
-            ];
-        });
+        $itemsCollection = $items->map(fn ($item) => [
+            'id' => $item->id,
+            'action' => $item->action,
+            'author' => self::getAuthor($item, $vault),
+            'sentence' => self::getSentence($item),
+            'data' => self::getData($item, $user),
+            'created_at' => DateHelper::format($item->created_at, $user),
+        ]);
 
         return [
             'items' => $itemsCollection,
@@ -38,7 +36,7 @@ class ModuleFeedViewHelper
         return trans('contact.feed_item_'.$item->action);
     }
 
-    private static function getAuthor(ContactFeedItem $item): ?array
+    private static function getAuthor(ContactFeedItem $item, Vault $vault): ?array
     {
         $author = $item->author;
         if (! $author) {
@@ -63,7 +61,7 @@ class ModuleFeedViewHelper
             ];
         }
 
-        return UserHelper::getInformationAboutContact($author, $item->contact->vault);
+        return UserHelper::getInformationAboutContact($author, $vault);
     }
 
     private static function getData(ContactFeedItem $item, User $user)

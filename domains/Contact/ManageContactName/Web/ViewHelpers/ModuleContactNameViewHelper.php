@@ -17,7 +17,7 @@ class ModuleContactNameViewHelper
 
         return [
             'name' => $contact->name,
-            'is_favorite' => $entry ? $entry->is_favorite : false,
+            'is_favorite' => optional($entry)->is_favorite ?? false,
             'url' => [
                 'edit' => route('contact.edit', [
                     'vault' => $contact->vault_id,

@@ -17,10 +17,8 @@ class CheckAdministratorPrivilege
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->is_account_administrator) {
-            return $next($request);
-        } else {
-            abort(401);
-        }
+        abort_if(! Auth::user()->is_account_administrator, 401);
+
+        return $next($request);
     }
 }

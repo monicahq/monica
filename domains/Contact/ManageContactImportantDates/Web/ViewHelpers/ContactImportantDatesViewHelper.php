@@ -12,7 +12,7 @@ class ContactImportantDatesViewHelper
 {
     public static function data(Contact $contact, User $user): array
     {
-        $dates = $contact->dates;
+        $dates = $contact->importantDates;
 
         $datesCollection = $dates->map(function ($date) use ($user, $contact) {
             return self::dto($contact, $date, $user);

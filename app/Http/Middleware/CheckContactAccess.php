@@ -20,14 +20,13 @@ class CheckContactAccess
         $requestedVaultId = $request->route()->parameter('vault');
         $requestedContactId = $request->route()->parameter('contact');
 
-        $exists = DB::table('contacts')->where('vault_id', $requestedVaultId)
-            ->where('id', $requestedContactId)
-            ->count() > 0;
+        $exists = DB::table('contacts')->where([
+            'vault_id' => $requestedVaultId,
+            'id' => $requestedContactId,
+        ])->exists();
 
-        if ($exists) {
-            return $next($request);
-        } else {
-            abort(401);
-        }
+        abort_if(! $exists, 401);
+
+        return $next($request);
     }
 }

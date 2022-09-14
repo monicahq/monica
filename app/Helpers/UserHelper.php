@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Support\Facades\Cache;
 
 class UserHelper
 {
@@ -15,7 +16,8 @@ class UserHelper
      */
     public static function getInformationAboutContact(User $user, Vault $vault): ?array
     {
-        $contact = $user->getContactInVault($vault);
+        $contact = Cache::store('array')->remember("InformationAboutContact:{$user->id}:{$vault->id}", 5, fn () => $user->getContactInVault($vault)
+        );
 
         if (! $contact) {
             return null;

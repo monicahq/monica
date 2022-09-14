@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class VaultHelper
@@ -46,9 +47,15 @@ class VaultHelper
      */
     public static function getPermission(User $user, Vault $vault): ?int
     {
-        $permission = DB::table('user_vault')->where('vault_id', $vault->id)
-            ->where('user_id', $user->id)
-            ->select('permission')->first();
+        $permission = Cache::store('array')->remember("Permission:{$user->id}:{$vault->id}", 5,
+            fn () => DB::table('user_vault')
+                ->where([
+                    'vault_id' => $vault->id,
+                    'user_id' => $user->id,
+                ])
+                ->select('permission')
+                ->first()
+        );
 
         if (! $permission) {
             return null;

@@ -111,18 +111,12 @@ class VaultIndexViewHelper
 
     private static function getContacts(Vault $vault): Collection
     {
-        $contacts = $vault->contacts()
-            ->inRandomOrder()
-            ->take(5)
-            ->get()
-            ->map(function (Contact $contact): array {
-                return [
-                    'id' => $contact->id,
-                    'name' => $contact->name,
-                    'avatar' => $contact->avatar,
-                ];
-            });
-
-        return $contacts;
+        return $vault->contacts
+            ->random(fn ($items) => min(5, count($items)))
+            ->map(fn (Contact $contact) => [
+                'id' => $contact->id,
+                'name' => $contact->name,
+                'avatar' => $contact->avatar,
+            ]);
     }
 }

@@ -20,15 +20,14 @@ class CheckVaultPermissionAtLeastEditor
     {
         $requestedVaultId = $request->route()->parameter('vault');
 
-        $exists = DB::table('user_vault')->where('vault_id', $requestedVaultId)
-            ->where('user_id', Auth::user()->id)
-            ->where('permission', '<=', 200)
-            ->count() > 0;
+        $exists = DB::table('user_vault')->where([
+            ['vault_id', '=', $requestedVaultId],
+            ['user_id', '=', Auth::id()],
+            ['permission', '<=', 200],
+        ])->exists();
 
-        if ($exists) {
-            return $next($request);
-        } else {
-            abort(401);
-        }
+        abort_if(! $exists, 401);
+
+        return $next($request);
     }
 }

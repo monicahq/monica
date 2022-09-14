@@ -70,27 +70,26 @@ class ToggleFavoriteContact extends BaseService implements ServiceInterface
 
     private function toggle(): void
     {
+        $contact = [
+            'contact_id' => $this->data['contact_id'],
+            'vault_id' => $this->data['vault_id'],
+            'user_id' => $this->data['author_id'],
+        ];
+
         $exists = DB::table('contact_vault_user')
-            ->where('contact_id', $this->data['contact_id'])
-            ->where('vault_id', $this->data['vault_id'])
-            ->where('user_id', $this->data['author_id'])
+            ->where($contact)
             ->first();
 
         if ($exists) {
             $this->isFavorite = $exists->is_favorite;
 
             DB::table('contact_vault_user')
-                ->where('contact_id', $this->data['contact_id'])
-                ->where('vault_id', $this->data['vault_id'])
-                ->where('user_id', $this->data['author_id'])
+                ->where($contact)
                 ->update(['is_favorite' => ! $this->isFavorite]);
         } else {
             $this->isFavorite = true;
 
-            DB::table('contact_vault_user')->insert([
-                'contact_id' => $this->data['contact_id'],
-                'vault_id' => $this->data['vault_id'],
-                'user_id' => $this->data['author_id'],
+            DB::table('contact_vault_user')->insert($contact + [
                 'is_favorite' => true,
                 'number_of_views' => 1,
             ]);

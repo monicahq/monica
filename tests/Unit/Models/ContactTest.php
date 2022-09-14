@@ -133,7 +133,7 @@ class ContactTest extends TestCase
             'contact_id' => $contact->id,
         ]);
 
-        $this->assertTrue($contact->dates()->exists());
+        $this->assertTrue($contact->importantDates()->exists());
     }
 
     /** @test */
@@ -326,6 +326,7 @@ class ContactTest extends TestCase
             'year' => 2000,
         ]);
 
+        $contact->refresh();
         $this->assertEquals(
             21,
             $contact->age

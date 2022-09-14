@@ -18,11 +18,13 @@ class ContactPageController extends Controller
     public function show(Request $request, int $vaultId, int $contactId, string $slug)
     {
         $vault = Vault::findOrFail($vaultId);
-        $contact = Contact::with('gender')
-            ->with('pronoun')
-            ->with('notes')
-            ->with('dates')
-            ->with('vault')
+        $contact = Contact::with([
+            'gender',
+            'pronoun',
+            'notes',
+            'importantDates',
+            'vault',
+        ])
             ->findOrFail($contactId);
 
         if (! $contact->template_id) {

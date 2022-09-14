@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\AvatarHelper;
+use App\Helpers\ContactImportantDateHelper;
 use App\Helpers\ImportantDateHelper;
 use App\Helpers\NameHelper;
 use App\Helpers\ScoutHelper;
@@ -213,7 +214,7 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function dates(): HasMany
+    public function importantDates(): HasMany
     {
         return $this->hasMany(ContactImportantDate::class);
     }
@@ -362,15 +363,13 @@ class Contact extends Model
     {
         return Attribute::make(
             get: function ($value) {
-                $type = ContactImportantDateType::where('vault_id', $this->vault_id)
-                    ->where('internal_type', ContactImportantDate::TYPE_BIRTHDATE)
-                    ->first();
+                $type = ContactImportantDateHelper::getImportantDateType(ContactImportantDate::TYPE_BIRTHDATE, $this->vault_id);
 
                 if (! $type) {
                     return null;
                 }
 
-                $birthdate = $this->dates()
+                $birthdate = $this->importantDates
                     ->where('contact_important_date_type_id', $type->id)
                     ->first();
 

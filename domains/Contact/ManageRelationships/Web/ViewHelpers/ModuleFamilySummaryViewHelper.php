@@ -65,20 +65,20 @@ class ModuleFamilySummaryViewHelper
                 })
                 ->get();
 
-            if ($relations->count() == 0) {
+            if ($relations->count() === 0) {
                 continue;
             }
 
             foreach ($relations as $relation) {
-                if ($relation->contact_id == $contact->id) {
-                    $relatedContact = Contact::find($relation->related_contact_id);
-                } else {
+                if ($relation->contact_id !== $contact->id) {
                     continue;
                 }
 
+                $relatedContact = Contact::find($relation->related_contact_id);
+
                 $relationshipsCollection->push([
                     'id' => $counter,
-                    'contact' => self::getContact($relatedContact, $user),
+                    'contact' => self::getContact($relatedContact),
                 ]);
             }
             $counter++;
@@ -87,7 +87,7 @@ class ModuleFamilySummaryViewHelper
         return $relationshipsCollection;
     }
 
-    private static function getContact(Contact $contact, User $user): array
+    private static function getContact(Contact $contact): array
     {
         return [
             'id' => $contact->id,

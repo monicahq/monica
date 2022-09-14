@@ -68,16 +68,18 @@ class RescheduleContactReminderForChannel extends BaseService implements Service
 
         $this->upcomingDate = Carbon::createFromFormat('Y-m-d H:i:s', $record->scheduled_at);
 
-        if ($this->contactReminder->type === ContactReminder::TYPE_RECURRING_DAY) {
-            $this->upcomingDate = $this->upcomingDate->addDay();
-        }
-
-        if ($this->contactReminder->type === ContactReminder::TYPE_RECURRING_MONTH) {
-            $this->upcomingDate = $this->upcomingDate->addMonth();
-        }
-
-        if ($this->contactReminder->type === ContactReminder::TYPE_RECURRING_YEAR) {
-            $this->upcomingDate = $this->upcomingDate->addYear();
+        switch ($this->contactReminder->type) {
+            case ContactReminder::TYPE_RECURRING_DAY:
+                $this->upcomingDate = $this->upcomingDate->addDay();
+                break;
+            case ContactReminder::TYPE_RECURRING_MONTH:
+                $this->upcomingDate = $this->upcomingDate->addMonth();
+                break;
+            case ContactReminder::TYPE_RECURRING_YEAR:
+                $this->upcomingDate = $this->upcomingDate->addYear();
+                break;
+            default:
+                throw new \Exception('Invalid contact reminder type.');
         }
 
         $this->contactReminder->userNotificationChannels()->syncWithoutDetaching([$this->userNotificationChannel->id => [

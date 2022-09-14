@@ -15,8 +15,12 @@ class ContactFeedController extends Controller
     public function show(Request $request, int $vaultId, int $contactId)
     {
         $items = ContactFeedItem::where('contact_id', $contactId)
-            ->with('author')
-            ->with('contact')
+            ->with([
+                'author',
+                'contact' => [
+                    'importantDates',
+                ],
+            ])
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 

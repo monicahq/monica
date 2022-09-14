@@ -20,8 +20,12 @@ class VaultFeedController extends Controller
         $contactIds = Contact::where('vault_id', $vaultId)->select('id')->get()->toArray();
 
         $items = ContactFeedItem::whereIn('contact_id', $contactIds)
-            ->with('author')
-            ->with('contact')
+            ->with([
+                'author',
+                'contact' => [
+                    'importantDates',
+                ],
+            ])
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
