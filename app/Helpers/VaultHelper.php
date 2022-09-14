@@ -5,7 +5,6 @@ namespace App\Helpers;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 class VaultHelper
 {
@@ -47,20 +46,16 @@ class VaultHelper
      */
     public static function getPermission(User $user, Vault $vault): ?int
     {
-        $permission = Cache::store('array')->remember("Permission:{$user->id}:{$vault->id}", 5,
-            fn () => DB::table('user_vault')
-                ->where([
-                    'vault_id' => $vault->id,
-                    'user_id' => $user->id,
-                ])
-                ->select('permission')
-                ->first()
-        );
+        return Cache::store('array')
+            ->remember("Permission:{$user->id}:{$vault->id}", 5, fn () => self::internalGetPermission($user, $vault));
+    }
 
-        if (! $permission) {
-            return null;
-        }
+    private static function internalGetPermission(User $user, Vault $vault): ?int
+    {
+        $entry = $user->vaults()
+            ->wherePivot('vault_id', $vault->id)
+            ->first();
 
-        return $permission->permission;
+        return $entry !== null ? $entry->pivot->permission : null;
     }
 }

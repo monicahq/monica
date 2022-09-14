@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class VaultIndexViewHelper
 {
@@ -69,11 +68,8 @@ class VaultIndexViewHelper
 
     public static function data(User $user): array
     {
-        $vaultIds = DB::table('user_vault')->where('user_id', $user->id)
-            ->pluck('vault_id')->toArray();
-
-        $vaults = Vault::where('account_id', $user->account->id)
-            ->whereIn('id', $vaultIds)
+        $vaults = $user->vaults()
+            ->where('account_id', $user->account_id)
             ->with('contacts')
             ->orderBy('name', 'asc')
             ->get();

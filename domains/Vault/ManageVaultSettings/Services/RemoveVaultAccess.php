@@ -6,8 +6,8 @@ use App\Exceptions\SameUserException;
 use App\Interfaces\ServiceInterface;
 use App\Models\Contact;
 use App\Models\User;
+use App\Models\UserNotificationChannel;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 
 class RemoveVaultAccess extends BaseService implements ServiceInterface
 {
@@ -76,12 +76,13 @@ class RemoveVaultAccess extends BaseService implements ServiceInterface
      */
     private function remove(): void
     {
-        $contact = DB::table('user_vault')
-            ->where('vault_id', $this->vault->id)
-            ->where('user_id', $this->user->id)
-            ->select('contact_id')->first();
+        $vault = $this->user->vaults()
+             ->wherePivot('vault_id', $this->vault->id)
+             ->first();
 
-        Contact::find($contact->contact_id)->delete();
+        if ($vault !== null) {
+            Contact::find($vault->pivot->contact_id)->delete();
+        }
     }
 
     /**
@@ -92,10 +93,10 @@ class RemoveVaultAccess extends BaseService implements ServiceInterface
      */
     private function removeAllRemindersForThisUserInThisVault(): void
     {
-        $userNotificationChannelIds = $this->user->notificationChannels()->pluck('id')->toArray();
-
-        DB::table('contact_reminder_scheduled')
-            ->whereIn('user_notification_channel_id', $userNotificationChannelIds)
-            ->delete();
+        $this->user->notificationChannels->each(function (UserNotificationChannel $notificationChannel) {
+            $notificationChannel->contactReminders->each(function ($reminder) {
+                $reminder->pivot->delete();
+            });
+        });
     }
 }

@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Vault;
 use App\Services\BaseService;
 use Dotenv\Exception\ValidationException;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DestroyUser extends BaseService implements ServiceInterface
 {
@@ -80,18 +80,18 @@ class DestroyUser extends BaseService implements ServiceInterface
      */
     private function destroyAllVaults(): void
     {
-        $vaultsUserIsManagerOf = DB::table('user_vault')->where('user_id', $this->user->id)
-            ->where('permission', Vault::PERMISSION_MANAGE)
+        $vaultsUserIsManagerOf = $this->user->vaults()
+            ->wherePivot('permission', Vault::PERMISSION_MANAGE)
             ->get();
 
         foreach ($vaultsUserIsManagerOf as $vault) {
-            $users = DB::table('user_vault')->where('user_id', '!=', $this->user->id)
-                ->where('vault_id', $vault->vault_id)
-                ->where('permission', Vault::PERMISSION_MANAGE)
-                ->count();
-
-            if ($users === 0) {
-                DB::table('vaults')->where('id', $vault->vault_id)->delete();
+            try {
+                $vault->users()
+                    ->wherePivot('user_id', '!=', $this->user->id)
+                    ->wherePivot('permission', Vault::PERMISSION_MANAGE)
+                    ->firstOrFail();
+            } catch (ModelNotFoundException) {
+                $vault->delete();
             }
         }
     }

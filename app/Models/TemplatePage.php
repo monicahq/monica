@@ -61,6 +61,7 @@ class TemplatePage extends Model
      */
     public function modules(): BelongsToMany
     {
-        return $this->belongsToMany(Module::class, 'module_template_page')->withTimestamps();
+        return $this->belongsToMany(Module::class, 'module_template_page')
+            ->withTimestamps();
     }
 }

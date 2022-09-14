@@ -6,7 +6,6 @@ use App\Interfaces\ServiceInterface;
 use App\Models\ContactReminder;
 use App\Services\BaseService;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class UpdateContactReminder extends BaseService implements ServiceInterface
 {
@@ -91,14 +90,12 @@ class UpdateContactReminder extends BaseService implements ServiceInterface
 
     private function deleteOldScheduledReminders(): void
     {
-        DB::table('contact_reminder_scheduled')->where('contact_reminder_id', $this->reminder->id)->delete();
+        $this->reminder->userNotificationChannels->each->delete();
     }
 
     private function scheduledReminderForAllUsersInVault(): void
     {
-        $users = $this->vault->users()->get();
-
-        foreach ($users as $user) {
+        foreach ($this->vault->users as $user) {
             (new ScheduleContactReminderForUser())->execute([
                 'contact_reminder_id' => $this->reminder->id,
                 'user_id' => $user->id,

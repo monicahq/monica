@@ -3,10 +3,8 @@
 namespace App\Settings\ManageNotificationChannels\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 
 class ToggleUserNotificationChannel extends BaseService implements ServiceInterface
 {
@@ -88,9 +86,7 @@ class ToggleUserNotificationChannel extends BaseService implements ServiceInterf
 
     private function deleteScheduledReminders(): void
     {
-        DB::table('contact_reminder_scheduled')
-            ->where('user_notification_channel_id', $this->userNotificationChannel->id)
-            ->delete();
+        $this->userNotificationChannel->contactReminders->each->delete();
     }
 
     private function rescheduledReminders(): void

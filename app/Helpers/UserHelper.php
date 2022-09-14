@@ -12,12 +12,19 @@ class UserHelper
      * Get the information about the contact linked to the given user, in the
      * given vault.
      *
+     * @param  User  $user
+     * @param  Vault  $vault
      * @return null|array
      */
     public static function getInformationAboutContact(User $user, Vault $vault): ?array
     {
-        $contact = Cache::store('array')->remember("InformationAboutContact:{$user->id}:{$vault->id}", 5, fn () => $user->getContactInVault($vault)
-        );
+        return Cache::store('array')
+            ->remember("InformationAboutContact:{$user->id}:{$vault->id}", 5, fn () => self::internalGetInformationAboutContact($user, $vault));
+    }
+
+    private static function internalGetInformationAboutContact(User $user, Vault $vault): ?array
+    {
+        $contact = $user->getContactInVault($vault);
 
         if (! $contact) {
             return null;

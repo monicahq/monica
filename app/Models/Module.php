@@ -108,6 +108,7 @@ class Module extends Model
      */
     public function templatePages(): BelongsToMany
     {
-        return $this->belongsToMany(TemplatePage::class, 'module_template_page')->withTimestamps();
+        return $this->belongsToMany(TemplatePage::class, 'module_template_page')
+            ->withTimestamps();
     }
 }
