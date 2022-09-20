@@ -88,7 +88,9 @@
                   {{ reminder.scheduled_at }}
                 </p>
                 <div class="mr-2 flex items-center">
-                  <div class="mr-2 h-4 w-4" v-html="reminder.contact.avatar" />
+                  <avatar
+                    :data="reminder.contact.avatar"
+                    :classes="'h-4 w-4 mr-2 rounded-full ring-2 ring-white dark:ring-gray-900'" />
 
                   <inertia-link :href="reminder.contact.url.show" class="text-blue-500 hover:underline">
                     {{ reminder.contact.name }}
@@ -112,10 +114,12 @@
 
 <script>
 import Layout from '@/Shared/Layout.vue';
+import Avatar from '@/Shared/Avatar.vue';
 
 export default {
   components: {
     Layout,
+    Avatar,
   },
 
   props: {
