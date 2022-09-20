@@ -121,7 +121,7 @@
                     v-for="group in data.group_summary_information"
                     :key="group.id"
                     class="group-list-item mr-2 inline">
-                    <inertia-link class="text-blue-500 hover:underline">
+                    <inertia-link :href="group.url.show" class="text-blue-500 hover:underline">
                       {{ group.name }}
                     </inertia-link>
                   </li>

@@ -19,6 +19,7 @@ use App\Contact\ManageGoals\Web\Controllers\ContactGoalController;
 use App\Contact\ManageGoals\Web\Controllers\ContactModuleGoalController;
 use App\Contact\ManageGoals\Web\Controllers\ContactModuleStreakController;
 use App\Contact\ManageGroups\Web\Controllers\ContactModuleGroupController;
+use App\Contact\ManageGroups\Web\Controllers\GroupController;
 use App\Contact\ManageJobInformation\Web\Controllers\ContactModuleJobInformationController;
 use App\Contact\ManageLabels\Web\Controllers\ContactModuleLabelController;
 use App\Contact\ManageLoans\Web\Controllers\ContactModuleLoanController;
@@ -269,6 +270,12 @@ Route::middleware([
                     Route::post('groups', [ContactModuleGroupController::class, 'store'])->name('contact.group.store');
                     Route::delete('groups/{group}', [ContactModuleGroupController::class, 'destroy'])->name('contact.group.destroy');
                 });
+            });
+
+            // group page
+            Route::prefix('groups')->middleware(['group'])->group(function () {
+                Route::get('', [GroupController::class, 'index'])->name('group.index');
+                Route::get('{group}', [GroupController::class, 'show'])->name('group.show');
             });
 
             // vault files

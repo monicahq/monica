@@ -40,9 +40,8 @@ class ModuleLoanViewHelper
     {
         $loaners = $loan->loaners->unique('id');
         $loanees = $loan->loanees->unique('id');
-        $loanersCollection = $loaners->map(function ($loaner) use ($user) {
-            return ContactCardHelper::data($loaner, $user);
-        });
+
+        $loanersCollection = $loaners->map(fn ($loaner) => ContactCardHelper::data($loaner, $user));
         $loaneesCollection = $loanees->map(fn ($loanee) => ContactCardHelper::data($loanee, $user));
 
         return [

@@ -33,6 +33,9 @@ class GroupsViewHelperTest extends TestCase
                 0 => [
                     'id' => $group->id,
                     'name' => $group->name,
+                    'url' => [
+                        'show' => env('APP_URL').'/vaults/'.$group->vault_id.'/groups/'.$group->id,
+                    ],
                 ],
             ],
             $collection->toArray()

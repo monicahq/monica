@@ -114,6 +114,7 @@ class ModuleGroupsViewHelperTest extends TestCase
         );
         $this->assertEquals(
             [
+                'show' => env('APP_URL').'/vaults/'.$contact->vault_id.'/groups/'.$group->id,
                 'destroy' => env('APP_URL').'/vaults/'.$contact->vault_id.'/contacts/'.$contact->id.'/groups/'.$group->id,
             ],
             $array['url']

@@ -23,6 +23,12 @@ class GroupsViewHelper
             return [
                 'id' => $group->id,
                 'name' => $group->name,
+                'url' => [
+                    'show' => route('group.show', [
+                        'vault' => $group->vault_id,
+                        'group' => $group->id,
+                    ]),
+                ],
             ];
         });
     }

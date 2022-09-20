@@ -1,5 +1,5 @@
 <template>
-  <div class="img relative">
+  <div class="">
     <div v-if="data.type === 'svg'" :class="classes" v-html="data.content" />
     <img v-else :class="classes + ' ' + imgClasses" :src="data.content" alt="avatar" />
   </div>

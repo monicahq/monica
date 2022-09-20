@@ -100,6 +100,10 @@ class ModuleGroupsViewHelper
             'roles' => $roles,
             'selected' => $taken,
             'url' => [
+                'show' => route('group.show', [
+                    'vault' => $contact->vault_id,
+                    'group' => $group->id,
+                ]),
                 'destroy' => route('contact.group.destroy', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,

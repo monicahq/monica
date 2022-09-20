@@ -21,6 +21,7 @@ return [
     'breadcrumb_vault_create' => 'Add a vault',
     'breadcrumb_dashboard_index' => 'Dashboard',
     'breadcrumb_dashboard_reminders' => 'All the planned reminders',
+    'breadcrumb_group_index' => 'Groups',
     'breadcrumb_contact_index' => 'Contacts',
     'breadcrumb_contact_show' => 'Profile of :name',
     'breadcrumb_contact_create' => 'Create a contact',
