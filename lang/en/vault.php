@@ -35,6 +35,13 @@ return [
     'show_contacts_cta' => 'Add a contact',
 
     /***************************************************************
+     * VAULT - GROUP LIST
+     **************************************************************/
+
+    'show_groups_index' => 'All groups in the vault',
+    'show_groups_blank' => 'Groups let you put your contacts together in a single place.',
+
+    /***************************************************************
      * VAULT - ADD A CONTACT
      **************************************************************/
 

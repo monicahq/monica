@@ -7,6 +7,7 @@ return [
     'layout_menu_dashboard' => 'Dashboard',
     'layout_menu_reports' => 'Reports',
     'layout_menu_contacts' => 'Contacts',
+    'layout_menu_groups' => 'Groups',
     'layout_menu_tasks' => 'Tasks',
     'layout_menu_gift_center' => 'Gifts',
     'layout_menu_loans' => 'Loans & debts',

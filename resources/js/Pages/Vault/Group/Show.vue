@@ -88,11 +88,12 @@ defineProps({
         <!-- contacts by roles -->
         <div v-for="role in data.roles" :key="role.id" class="mb-8">
           <p
+            v-if="role.contacts.length > 0"
             class="mr-2 mb-2 inline-block rounded bg-neutral-200 py-1 px-2 text-xs font-semibold text-neutral-800 last:mr-0">
             {{ role.label }}
           </p>
 
-          <div class="grid grid-cols-3 gap-x-12 gap-y-6 sm:grid-cols-4">
+          <div v-if="role.contacts.length > 0" class="grid grid-cols-3 gap-x-12 gap-y-6 sm:grid-cols-4">
             <div
               v-for="contact in role.contacts"
               :key="contact.id"

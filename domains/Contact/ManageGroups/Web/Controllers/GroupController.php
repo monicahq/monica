@@ -2,6 +2,7 @@
 
 namespace App\Contact\ManageGroups\Web\Controllers;
 
+use App\Contact\ManageGroups\Web\ViewHelpers\GroupIndexViewHelper;
 use App\Contact\ManageGroups\Web\ViewHelpers\GroupShowViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Group;
@@ -15,6 +16,12 @@ class GroupController extends Controller
 {
     public function index(Request $request, int $vaultId)
     {
+        $vault = Vault::findOrFail($vaultId);
+
+        return Inertia::render('Vault/Group/Index', [
+            'layoutData' => VaultIndexViewHelper::layoutData($vault),
+            'data' => GroupIndexViewHelper::data($vault),
+        ]);
     }
 
     public function show(Request $request, int $vaultId, int $groupId)

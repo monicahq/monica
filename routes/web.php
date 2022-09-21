@@ -273,8 +273,8 @@ Route::middleware([
             });
 
             // group page
+            Route::get('groups', [GroupController::class, 'index'])->name('group.index');
             Route::prefix('groups')->middleware(['group'])->group(function () {
-                Route::get('', [GroupController::class, 'index'])->name('group.index');
                 Route::get('{group}', [GroupController::class, 'show'])->name('group.show');
             });
 

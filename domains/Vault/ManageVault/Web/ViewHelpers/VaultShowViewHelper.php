@@ -36,9 +36,6 @@ class VaultShowViewHelper
         $currentDate = Carbon::now()->copy();
         $currentDate->second = 0;
 
-        // this query is a bit long and tough to do, and it could surely
-        // be optimized if I knew how to properly join queries
-
         // first we get all the user notification channels for the users in the vault
         $userNotificationChannels = $vault->users->flatMap(fn ($u) => $u->notificationChannels);
 
@@ -78,6 +75,10 @@ class VaultShowViewHelper
                 ],
             ];
         });
+
+        // this line removes the null values that are added when the contact
+        // is not in the vault (in the method above)
+        $remindersCollection = $remindersCollection->filter(fn ($value) => $value != null);
 
         return [
             'reminders' => $remindersCollection,
