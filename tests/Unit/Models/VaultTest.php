@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Contact;
 use App\Models\ContactImportantDateType;
 use App\Models\Group;
+use App\Models\Journal;
 use App\Models\Label;
 use App\Models\Template;
 use App\Models\User;
@@ -104,5 +105,16 @@ class VaultTest extends TestCase
         ]);
 
         $this->assertTrue($vault->groups()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_journals(): void
+    {
+        $vault = Vault::factory()->create();
+        Journal::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+
+        $this->assertTrue($vault->journals()->exists());
     }
 }

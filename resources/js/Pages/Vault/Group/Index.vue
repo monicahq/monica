@@ -12,7 +12,6 @@ defineProps({
   <layout :layout-data="layoutData" :inside-vault="true">
     <main class="relative sm:mt-24">
       <div class="mx-auto max-w-4xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
-        <!-- group title -->
         <h3 class="mb-6 font-semibold">
           <span class="mr-1"> 👥 </span>
           {{ $t('vault.show_groups_index') }}

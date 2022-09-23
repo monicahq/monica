@@ -143,4 +143,14 @@ class Vault extends Model
     {
         return $this->hasMany(Group::class);
     }
+
+    /**
+     * Get the journals associated with the vault.
+     *
+     * @return HasMany
+     */
+    public function journals()
+    {
+        return $this->hasMany(Journal::class);
+    }
 }

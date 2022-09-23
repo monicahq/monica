@@ -269,6 +269,13 @@
               </inertia-link>
 
               <inertia-link
+                :href="layoutData.vault.url.journals"
+                :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Journal') }"
+                class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
+                {{ $t('app.layout_menu_journals') }}
+              </inertia-link>
+
+              <inertia-link
                 v-if="layoutData.vault.permission.at_least_editor"
                 :href="layoutData.vault.url.settings"
                 :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Settings') }"
