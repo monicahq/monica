@@ -32,8 +32,7 @@ const open = (provider) => {
 };
 
 defineProps({
-  providers: Array,
-  providersName: Object,
+  providers: Object,
   userTokens: Array,
 });
 </script>
@@ -63,29 +62,29 @@ defineProps({
       </div>
 
       <div class="mt-5 space-y-6">
-        <div v-for="provider in providers" :key="provider" class="flex items-center">
-          <img :src="`/img/auth/${provider}.svg`" :alt="provider" class="auth-provider relative" />
+        <div v-for="(provider, id) in providers" :key="id" class="flex items-center">
+          <img :src="provider.logo" :alt="provider.name" class="auth-provider relative" />
           <span class="mr-3 text-sm text-gray-600 dark:text-gray-400">
-            {{ providersName[provider] }}
+            {{ provider.name }}
           </span>
 
-          <template v-if="userTokens.findIndex((driver) => driver.driver === provider) > -1">
+          <template v-if="userTokens.findIndex((driver) => driver.driver === id) > -1">
             <span class="text-sm text-green-600 dark:text-green-400">
               {{ $t('Connected') }}
             </span>
-            <JetSecondaryButton class="ml-3" @click.prevent="deleteProvider(provider)">
+            <JetSecondaryButton class="ml-3" @click.prevent="deleteProvider(id)">
               {{ $t('Disconnect') }}
             </JetSecondaryButton>
 
-            <JetInputError :message="form.errors[provider]" class="mt-4" />
+            <JetInputError :message="form.errors[id]" class="mt-4" />
           </template>
 
           <template v-else>
-            <JetButton class="ml-3" @click.prevent="open(provider)">
+            <JetButton class="ml-3" @click.prevent="open(id)">
               {{ $t('Connect') }}
             </JetButton>
 
-            <JetInputError v-if="errors[provider]" :message="errors[provider]" class="mt-4" />
+            <JetInputError v-if="errors[id]" :message="errors[id]" class="mt-4" />
           </template>
         </div>
       </div>

@@ -1,4 +1,6 @@
 <script setup>
+import { computed } from 'vue';
+import { size } from 'lodash';
 import Layout from '@/Shared/Layout.vue';
 import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm.vue';
 import LogoutOtherBrowserSessionsForm from '@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue';
@@ -9,16 +11,17 @@ import UpdateProviders from '@/Pages/Profile/Partials/UpdateProviders.vue';
 import WebauthnKeys from '@/Pages/Webauthn/WebauthnKeys.vue';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
 
-defineProps({
+const props = defineProps({
   confirmsTwoFactorAuthentication: Boolean,
   sessions: Array,
-  providers: Array,
-  providersName: Object,
+  providers: Object,
   userTokens: Array,
   locales: Array,
   webauthnKeys: Array,
   layoutData: Object,
 });
+
+const providersExists = computed(() => size(props.providers) > 0);
 </script>
 
 <template>
@@ -46,12 +49,8 @@ defineProps({
           <UpdatePasswordForm class="mt-10 sm:mt-0" />
         </div>
 
-        <div class="mb-16" v-if="providers.length > 0">
-          <UpdateProviders
-            :user="$page.props.user"
-            :providers="providers"
-            :providersName="providersName"
-            :userTokens="userTokens" />
+        <div class="mb-16" v-if="providersExists">
+          <UpdateProviders :user="$page.props.user" :providers="providers" :userTokens="userTokens" />
         </div>
 
         <div class="mb-16" v-if="$page.props.jetstream.canManageTwoFactorAuthentication">

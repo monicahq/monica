@@ -9,8 +9,13 @@ use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use SocialiteProviders\Azure\AzureExtendSocialite;
+use SocialiteProviders\Facebook\FacebookExtendSocialite;
 use SocialiteProviders\GitHub\GitHubExtendSocialite;
+use SocialiteProviders\Google\GoogleExtendSocialite;
+use SocialiteProviders\LinkedIn\LinkedInExtendSocialite;
 use SocialiteProviders\Manager\SocialiteWasCalled;
+use SocialiteProviders\Twitter\TwitterExtendSocialite;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -30,7 +35,12 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         SocialiteWasCalled::class => [
+            AzureExtendSocialite::class,
+            FacebookExtendSocialite::class,
             GitHubExtendSocialite::class,
+            GoogleExtendSocialite::class,
+            LinkedInExtendSocialite::class,
+            TwitterExtendSocialite::class,
         ],
     ];
 

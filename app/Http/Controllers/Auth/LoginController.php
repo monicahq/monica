@@ -22,10 +22,14 @@ class LoginController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $providers = collect(config('auth.login_providers'))->reject(fn ($provider) => empty($provider));
-        $providersName = $providers->mapWithKeys(fn ($provider) => [
-            $provider => config("services.$provider.name") ?? __("auth.login_provider_{$provider}"),
-        ]);
+        $providers = collect(config('auth.login_providers'))
+            ->filter(fn ($provider) => ! empty($provider))
+            ->mapWithKeys(fn ($provider) => [
+                $provider => [
+                    'name' => config("services.$provider.name") ?? __("auth.login_provider_{$provider}"),
+                    'logo' => config("services.$provider.logo") ?? "/img/auth/$provider.svg",
+                ],
+            ]);
 
         $data = [];
 
@@ -43,7 +47,6 @@ class LoginController extends Controller
             'status' => session('status'),
             'wallpaperUrl' => WallpaperHelper::getRandomWallpaper(),
             'providers' => $providers,
-            'providersName' => $providersName,
         ]);
     }
 }

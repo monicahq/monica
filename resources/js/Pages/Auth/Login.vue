@@ -1,7 +1,8 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Link, useForm } from '@inertiajs/inertia-vue3';
+import { size } from 'lodash';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import BreezeCheckbox from '@/Components/Checkbox.vue';
 import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
@@ -14,8 +15,7 @@ const props = defineProps({
   canResetPassword: Boolean,
   status: String,
   wallpaperUrl: String,
-  providers: Array,
-  providersName: Object,
+  providers: Object,
   publicKey: Object,
   userName: String,
 });
@@ -39,6 +39,8 @@ watch(
 onMounted(() => {
   publicKeyRef.value = props.publicKey;
 });
+
+const providersExists = computed(() => size(props.providers) > 0);
 
 const submit = () => {
   form
@@ -163,19 +165,19 @@ const reload = () => {
             </div>
 
             <div class="mt-3 block">
-              <p v-if="providers.length > 0" class="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <p v-if="providersExists" class="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 {{ $t('Login with:') }}
               </p>
               <div class="flex flex-wrap">
                 <JetSecondaryButton
-                  v-for="provider in providers"
-                  :key="provider"
-                  class="mr-2 inline align-middle"
-                  :href="route('login.provider', { driver: provider })"
-                  @click.prevent="open(provider)">
-                  <img :src="`/img/auth/${provider}.svg`" alt="" class="relative mr-2 h-4 w-4 align-middle" />
+                  v-for="(provider, id) in providers"
+                  :key="id"
+                  class="mr-2 mb-2 inline w-32 align-middle"
+                  :href="route('login.provider', { driver: id })"
+                  @click.prevent="open(id)">
+                  <img :src="provider.logo" :alt="provider.name" class="relative mr-2 h-4 w-4 align-middle" />
                   <span class="align-middle">
-                    {{ providersName[provider] }}
+                    {{ provider.name }}
                   </span>
                 </JetSecondaryButton>
               </div>
