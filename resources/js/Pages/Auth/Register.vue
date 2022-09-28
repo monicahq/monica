@@ -1,11 +1,11 @@
 <script setup>
 import { Link, useForm } from '@inertiajs/inertia-vue3';
 import { trans } from 'laravel-vue-i18n';
-import BreezeGuestLayout from '@/Shared/Guest.vue';
-import BreezeInput from '@/Components/Input.vue';
-import BreezeLabel from '@/Components/Label.vue';
+import JetGuestLayout from '@/Shared/Guest.vue';
+import JetInput from '@/Components/Input.vue';
+import JetLabel from '@/Components/Label.vue';
+import JetValidationErrors from '@/Components/ValidationErrors.vue';
 import JetCheckbox from '@/Components/Checkbox.vue';
-import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 
 const form = useForm({
@@ -40,16 +40,16 @@ const policy = () => {
 </script>
 
 <template>
-  <BreezeGuestLayout>
-    <breeze-validation-errors class="mb-4" />
+  <JetGuestLayout>
+    <JetValidationErrors class="mb-4" />
 
     <p class="mb-2 text-lg font-bold">Sign up for an account</p>
     <p class="mb-8 text-sm text-gray-500">Your name here will be used to add yourself as a contact.</p>
 
     <form @submit.prevent="submit">
       <div>
-        <BreezeLabel for="first_name" value="First name" />
-        <BreezeInput
+        <JetLabel for="first_name" value="First name" />
+        <JetInput
           id="first_name"
           v-model="form.first_name"
           type="text"
@@ -60,8 +60,8 @@ const policy = () => {
       </div>
 
       <div class="mt-4">
-        <BreezeLabel for="last_name" value="Last name" />
-        <BreezeInput
+        <JetLabel for="last_name" value="Last name" />
+        <JetInput
           id="last_name"
           v-model="form.last_name"
           type="text"
@@ -71,8 +71,8 @@ const policy = () => {
       </div>
 
       <div class="mt-4">
-        <BreezeLabel for="email" value="Email" />
-        <BreezeInput
+        <JetLabel for="email" value="Email" />
+        <JetInput
           id="email"
           v-model="form.email"
           type="email"
@@ -82,8 +82,8 @@ const policy = () => {
       </div>
 
       <div class="mt-4">
-        <BreezeLabel for="password" value="Password" />
-        <BreezeInput
+        <JetLabel for="password" value="Password" />
+        <JetInput
           id="password"
           v-model="form.password"
           type="password"
@@ -93,8 +93,8 @@ const policy = () => {
       </div>
 
       <div class="mt-4 mb-8">
-        <BreezeLabel for="password_confirmation" value="Confirm Password" />
-        <BreezeInput
+        <JetLabel for="password_confirmation" value="Confirm Password" />
+        <JetInput
           id="password_confirmation"
           v-model="form.password_confirmation"
           type="password"
@@ -104,7 +104,7 @@ const policy = () => {
       </div>
 
       <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4">
-        <BreezeLabel for="terms">
+        <JetLabel for="terms">
           <div class="flex">
             <JetCheckbox id="terms" v-model:checked="form.terms" name="terms" />
 
@@ -112,7 +112,7 @@ const policy = () => {
               class="ml-2"
               v-html="$t('I agree to the :terms and :policy', { terms: terms(), policy: policy() })"></div>
           </div>
-        </BreezeLabel>
+        </JetLabel>
       </div>
 
       <div class="mt-4 flex items-center justify-end">
@@ -123,5 +123,5 @@ const policy = () => {
         <PrettyButton :text="'Register'" :state="loadingState" :classes="'save'" />
       </div>
     </form>
-  </BreezeGuestLayout>
+  </JetGuestLayout>
 </template>

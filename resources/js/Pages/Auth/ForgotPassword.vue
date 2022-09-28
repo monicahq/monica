@@ -1,5 +1,26 @@
+<script setup>
+import { useForm } from '@inertiajs/inertia-vue3';
+import JetButton from '@/Components/Button.vue';
+import JetGuestLayout from '@/Shared/Guest.vue';
+import JetInput from '@/Components/Input.vue';
+import JetLabel from '@/Components/Label.vue';
+import JetValidationErrors from '@/Components/ValidationErrors.vue';
+
+defineProps({
+  status: String,
+});
+
+const form = useForm({
+  email: '',
+});
+
+const submit = () => {
+  form.post(route('password.email'));
+};
+</script>
+
 <template>
-  <div>
+  <JetGuestLayout>
     <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
       Forgot your password? No problem. Just let us know your email address and we will email you a password reset link
       that will allow you to choose a new one.
@@ -9,12 +30,12 @@
       {{ status }}
     </div>
 
-    <breeze-validation-errors class="mb-4" />
+    <JetValidationErrors class="mb-4" />
 
     <form @submit.prevent="submit">
       <div>
-        <breeze-label for="email" value="Email" />
-        <breeze-input
+        <JetLabel for="email" value="Email" />
+        <JetInput
           id="email"
           v-model="form.email"
           type="email"
@@ -25,49 +46,10 @@
       </div>
 
       <div class="mt-4 flex items-center justify-end">
-        <breeze-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+        <JetButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
           Email Password Reset Link
-        </breeze-button>
+        </JetButton>
       </div>
     </form>
-  </div>
+  </JetGuestLayout>
 </template>
-
-<script>
-import BreezeButton from '@/Components/Button.vue';
-import BreezeGuestLayout from '@/Shared/Guest.vue';
-import BreezeInput from '@/Components/Input.vue';
-import BreezeLabel from '@/Components/Label.vue';
-import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
-
-export default {
-  components: {
-    BreezeButton,
-    BreezeInput,
-    BreezeLabel,
-    BreezeValidationErrors,
-  },
-  layout: BreezeGuestLayout,
-
-  props: {
-    status: {
-      type: String,
-      default: '',
-    },
-  },
-
-  data() {
-    return {
-      form: this.$inertia.form({
-        email: '',
-      }),
-    };
-  },
-
-  methods: {
-    submit() {
-      this.form.post(this.route('password.email'));
-    },
-  },
-};
-</script>

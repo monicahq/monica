@@ -3,12 +3,12 @@ import { ref, watch, onMounted, computed } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Link, useForm } from '@inertiajs/inertia-vue3';
 import { size } from 'lodash';
+import JetCheckbox from '@/Components/Checkbox.vue';
+import JetValidationErrors from '@/Components/ValidationErrors.vue';
+import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
-import BreezeCheckbox from '@/Components/Checkbox.vue';
-import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import WebauthnLogin from '@/Pages/Webauthn/WebauthnLogin.vue';
-import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 
 const props = defineProps({
@@ -100,7 +100,7 @@ const reload = () => {
             Sign in to your account
           </h1>
 
-          <BreezeValidationErrors class="mb-2" />
+          <JetValidationErrors class="mb-2" />
 
           <div v-if="status" class="mb-2 text-sm font-medium text-green-600 dark:text-green-400">
             {{ status }}
@@ -148,7 +148,7 @@ const reload = () => {
 
             <div class="mb-3 block">
               <label class="flex items-center">
-                <BreezeCheckbox v-model:checked="form.remember" name="remember" />
+                <JetCheckbox v-model:checked="form.remember" name="remember" />
                 <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"> Remember me </span>
               </label>
             </div>

@@ -1,5 +1,24 @@
+<script setup>
+import { computed } from 'vue';
+import { Link, useForm } from '@inertiajs/inertia-vue3';
+import JetButton from '@/Components/Button.vue';
+import JetGuestLayout from '@/Shared/Guest.vue';
+
+const props = defineProps({
+  status: String,
+});
+
+const form = useForm();
+
+const verificationLinkSent = computed(() => props.status === 'verification-link-sent');
+
+const submit = () => {
+  form.post(route('verification.send'));
+};
+</script>
+
 <template>
-  <div>
+  <JetGuestLayout>
     <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
       Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just
       emailed to you? If you didn't receive the email, we will gladly send you another.
@@ -11,55 +30,18 @@
 
     <form @submit.prevent="submit">
       <div class="mt-4 flex items-center justify-between">
-        <breeze-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+        <JetButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
           Resend Verification Email
-        </breeze-button>
+        </JetButton>
 
-        <inertia-link
+        <Link
           :href="route('logout')"
           method="post"
           as="button"
-          class="text-sm text-gray-600 underline hover:text-gray-900 dark:text-gray-400">
+          class="text-sm text-gray-600 underline hover:text-gray-900 dark:text-gray-400 hover:dark:text-gray-100">
           Log Out
-        </inertia-link>
+        </Link>
       </div>
     </form>
-  </div>
+  </JetGuestLayout>
 </template>
-
-<script>
-import BreezeButton from '@/Components/Button.vue';
-import BreezeGuestLayout from '@/Shared/Guest.vue';
-
-export default {
-  components: {
-    BreezeButton,
-  },
-  layout: BreezeGuestLayout,
-
-  props: {
-    status: {
-      type: String,
-      default: '',
-    },
-  },
-
-  data() {
-    return {
-      form: this.$inertia.form(),
-    };
-  },
-
-  computed: {
-    verificationLinkSent() {
-      return this.status === 'verification-link-sent';
-    },
-  },
-
-  methods: {
-    submit() {
-      this.form.post(this.route('verification.send'));
-    },
-  },
-};
-</script>

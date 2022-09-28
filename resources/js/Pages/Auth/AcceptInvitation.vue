@@ -1,6 +1,37 @@
+<script setup>
+import { useForm } from '@inertiajs/inertia-vue3';
+import { Inertia } from '@inertiajs/inertia';
+import JetButton from '@/Components/Button.vue';
+import JetGuestLayout from '@/Shared/Guest.vue';
+import JetInput from '@/Components/Input.vue';
+import JetLabel from '@/Components/Label.vue';
+import JetValidationErrors from '@/Components/ValidationErrors.vue';
+
+const props = defineProps({
+  data: Object,
+});
+
+const form = useForm({
+  first_name: '',
+  last_name: '',
+  password: '',
+  password_confirmation: '',
+  invitation_code: props.data.invitation_code,
+});
+
+const submit = () => {
+  form.post(props.data.url.store, {
+    onSuccess: (response) => {
+      localStorage.success = 'Your account has been created';
+      Inertia.visit(response.data.data);
+    },
+  });
+};
+</script>
+
 <template>
-  <div>
-    <breeze-validation-errors class="mb-4" />
+  <JetGuestLayout>
+    <JetValidationErrors class="mb-4" />
 
     <form @submit.prevent="submit">
       <h1 class="mb-3 text-center text-xl">
@@ -10,8 +41,8 @@
       <p class="mb-4 text-center">Please complete this form to finalize your account.</p>
 
       <div>
-        <breeze-label for="first_name" value="First name" />
-        <breeze-input
+        <JetLabel for="first_name" value="First name" />
+        <JetInput
           id="first_name"
           v-model="form.first_name"
           type="text"
@@ -22,8 +53,8 @@
       </div>
 
       <div class="mt-4">
-        <breeze-label for="last_name" value="Last name" />
-        <breeze-input
+        <JetLabel for="last_name" value="Last name" />
+        <JetInput
           id="last_name"
           v-model="form.last_name"
           type="text"
@@ -33,8 +64,8 @@
       </div>
 
       <div class="mt-4">
-        <breeze-label for="password" value="Password" />
-        <breeze-input
+        <JetLabel for="password" value="Password" />
+        <JetInput
           id="password"
           v-model="form.password"
           type="password"
@@ -44,8 +75,8 @@
       </div>
 
       <div class="mt-4">
-        <breeze-label for="password_confirmation" value="Confirm Password" />
-        <breeze-input
+        <JetLabel for="password_confirmation" value="Confirm Password" />
+        <JetInput
           id="password_confirmation"
           v-model="form.password_confirmation"
           type="password"
@@ -55,67 +86,10 @@
       </div>
 
       <div class="mt-4 flex items-center justify-end">
-        <breeze-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+        <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
           Create account
-        </breeze-button>
+        </JetButton>
       </div>
     </form>
-  </div>
+  </JetGuestLayout>
 </template>
-
-<script>
-import BreezeButton from '@/Components/Button.vue';
-import BreezeGuestLayout from '@/Shared/Guest.vue';
-import BreezeInput from '@/Components/Input.vue';
-import BreezeLabel from '@/Components/Label.vue';
-import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
-
-export default {
-  components: {
-    BreezeButton,
-    BreezeInput,
-    BreezeLabel,
-    BreezeValidationErrors,
-  },
-  layout: BreezeGuestLayout,
-
-  props: {
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-
-  data() {
-    return {
-      form: {
-        first_name: '',
-        last_name: '',
-        password: '',
-        password_confirmation: '',
-        invitation_code: '',
-      },
-    };
-  },
-
-  mounted() {
-    this.form.invitation_code = this.data.invitation_code;
-  },
-
-  methods: {
-    submit() {
-      this.loadingState = 'loading';
-
-      axios
-        .post(this.data.url.store, this.form)
-        .then((response) => {
-          localStorage.success = 'Your account has been created';
-          this.$inertia.visit(response.data.data);
-        })
-        .catch(() => {
-          this.loadingState = null;
-        });
-    },
-  },
-};
-</script>
