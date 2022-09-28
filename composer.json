@@ -3,12 +3,12 @@
   "type": "project",
   "description": "Monica is a personal relationship manager.",
   "keywords": [
-    "framework",
     "laravel",
     "crm",
-    "prm"
+    "prm",
+    "social"
   ],
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "require": {
     "php": "^8.1",
     "asbiin/laravel-webauthn": "^3.2",
@@ -72,12 +72,6 @@
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
       "@php artisan ide-helper:generate",
       "@php artisan ide-helper:meta"
-    ],
-    "post-root-package-install": [
-      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-    ],
-    "post-create-project-cmd": [
-      "@php artisan key:generate --ansi"
     ]
   },
   "extra": {
@@ -90,7 +84,7 @@
     "preferred-install": "dist",
     "sort-packages": true,
     "allow-plugins": {
-        "composer/package-versions-deprecated": true
+      "composer/package-versions-deprecated": true
     }
   },
   "minimum-stability": "dev",
