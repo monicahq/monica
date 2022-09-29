@@ -28,7 +28,7 @@ class JournalShowViewHelperTest extends TestCase
         ]);
 
         $array = JournalShowViewHelper::data($journal, $user);
-        $this->assertCount(4, $array);
+        $this->assertCount(5, $array);
         $this->assertEquals(
             $journal->id,
             $array['id']
@@ -50,6 +50,12 @@ class JournalShowViewHelperTest extends TestCase
                 ],
             ],
             $array['posts']->toArray()
+        );
+        $this->assertEquals(
+            [
+                'create' => env('APP_URL').'/vaults/'.$journal->vault->id.'/journals/'.$journal->id.'/posts/create',
+            ],
+            $array['url']
         );
     }
 }

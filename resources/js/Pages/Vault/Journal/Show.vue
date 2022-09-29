@@ -1,5 +1,6 @@
 <script setup>
 import Layout from '@/Shared/Layout.vue';
+import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 
 defineProps({
   layoutData: Object,
@@ -44,6 +45,16 @@ defineProps({
       <div class="mx-auto max-w-6xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <h1 class="mb-8 text-2xl">{{ data.name }}</h1>
 
+        <!-- cta -->
+        <div class="mb-4 flex items-end">
+          <pretty-link
+            v-if="layoutData.vault.permission.at_least_editor"
+            :href="data.url.create"
+            :text="$t('vault.journal_show_cta')"
+            :icon="'plus'" />
+        </div>
+
+        <!-- list of posts -->
         <ul class="post-list mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <li
             v-for="post in data.posts"

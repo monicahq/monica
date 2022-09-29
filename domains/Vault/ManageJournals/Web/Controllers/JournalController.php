@@ -17,6 +17,16 @@ use Redirect;
 
 class JournalController extends Controller
 {
+    public function index(Request $request, int $vaultId)
+    {
+        $vault = Vault::findOrFail($vaultId);
+
+        return Inertia::render('Vault/Journal/Index', [
+            'layoutData' => VaultIndexViewHelper::layoutData($vault),
+            'data' => JournalIndexViewHelper::data($vault),
+        ]);
+    }
+
     public function create(Request $request, int $vaultId)
     {
         $vault = Vault::findOrFail($vaultId);
@@ -42,16 +52,6 @@ class JournalController extends Controller
         return Redirect::route('journal.show', [
             'vault' => $vaultId,
             'journal' => $journal,
-        ]);
-    }
-
-    public function index(Request $request, int $vaultId)
-    {
-        $vault = Vault::findOrFail($vaultId);
-
-        return Inertia::render('Vault/Journal/Index', [
-            'layoutData' => VaultIndexViewHelper::layoutData($vault),
-            'data' => JournalIndexViewHelper::data($vault),
         ]);
     }
 

@@ -296,10 +296,14 @@ Route::middleware([
                     Route::get('', [JournalController::class, 'show'])->name('journal.show');
 
                     // posts
-                    Route::get('posts/create', [PostController::class, 'create'])->name('post.create');
+                    Route::get('posts/create', [PostController::class, 'chooseTemplate'])->name('post.choose_template');
+                    Route::get('posts/create/{template}', [PostController::class, 'create'])->name('post.create');
                     Route::post('posts', [PostController::class, 'store'])->name('post.store');
 
-                    Route::get('posts', [PostController::class, 'index'])->name('post.index');
+                    // details of a post
+                    Route::prefix('posts/{post}')->middleware(['post'])->group(function () {
+                        Route::get('', [PostController::class, 'show'])->name('post.show');
+                    });
                 });
             });
 

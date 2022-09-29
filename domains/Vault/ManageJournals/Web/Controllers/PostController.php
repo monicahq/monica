@@ -4,6 +4,7 @@ namespace App\Vault\ManageJournals\Web\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Journal;
+use App\Models\Post;
 use App\Models\Vault;
 use App\Vault\ManageJournals\Services\CreatePost;
 use App\Vault\ManageJournals\Web\ViewHelpers\PostCreateViewHelper;
@@ -15,6 +16,17 @@ use Redirect;
 
 class PostController extends Controller
 {
+    public function chooseTemplate(Request $request, int $vaultId, int $journalId)
+    {
+        $vault = Vault::findOrFail($vaultId);
+        $journal = Journal::findOrFail($journalId);
+
+        return Inertia::render('Vault/Journal/Post/Template', [
+            'layoutData' => VaultIndexViewHelper::layoutData($vault),
+            'data' => PostCreateViewHelper::template($journal),
+        ]);
+    }
+
     public function create(Request $request, int $vaultId, int $journalId)
     {
         $vault = Vault::findOrFail($vaultId);
@@ -22,7 +34,7 @@ class PostController extends Controller
 
         return Inertia::render('Vault/Journal/Post/Create', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
-            'data' => PostCreateViewHelper::data($journal),
+            'data' => PostCreateViewHelper::template($journal),
         ]);
     }
 
@@ -43,6 +55,18 @@ class PostController extends Controller
         return Redirect::route('journal.show', [
             'vault' => $post->journal->vault_id,
             'journal' => $post->journal,
+        ]);
+    }
+
+    public function show(Request $request, int $vaultId, int $journalId, int $postId)
+    {
+        $vault = Vault::findOrFail($vaultId);
+        $journal = Journal::findOrFail($journalId);
+        $post = Post::findOrFail($postId);
+
+        return Inertia::render('Vault/Journal/Post/Create', [
+            'layoutData' => VaultIndexViewHelper::layoutData($vault),
+            'data' => PostCreateViewHelper::template($journal),
         ]);
     }
 }

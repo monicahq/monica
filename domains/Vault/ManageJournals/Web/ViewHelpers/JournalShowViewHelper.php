@@ -25,6 +25,12 @@ class JournalShowViewHelper
             'name' => $journal->name,
             'description' => $journal->description,
             'posts' => $postsCollection,
+            'url' => [
+                'create' => route('post.choose_template', [
+                    'vault' => $journal->vault_id,
+                    'journal' => $journal->id,
+                ]),
+            ],
         ];
     }
 }

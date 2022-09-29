@@ -109,6 +109,7 @@ return [
     'journal_index_title' => 'All the journals',
     'journal_index_create' => 'Create a journal',
     'journal_index_blank' => 'Create a journal to document your life.',
+    'journal_show_cta' => 'Create a post',
 
     /***************************************************************
      * VAULT SETTINGS
