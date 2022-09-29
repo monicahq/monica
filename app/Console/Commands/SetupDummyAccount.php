@@ -16,6 +16,8 @@ use App\Models\Note;
 use App\Models\User;
 use App\Models\Vault;
 use App\Settings\CreateAccount\Services\CreateAccount;
+use App\Vault\ManageJournals\Services\CreateJournal;
+use App\Vault\ManageJournals\Services\CreatePost;
 use App\Vault\ManageVault\Services\CreateVault;
 use Carbon\Carbon;
 use Faker\Factory as Faker;
@@ -65,6 +67,7 @@ class SetupDummyAccount extends Command
         $this->createNotes();
         $this->createTasks();
         $this->createGoals();
+        $this->createJournals();
         $this->stop();
     }
 
@@ -252,6 +255,42 @@ class SetupDummyAccount extends Command
                             continue;
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private function createJournals(): void
+    {
+        $this->info('☐ Create journals');
+
+        $journals = collect([
+            'Road trip',
+            'My private diary',
+            'Journal of 2022',
+            'Incredible stories',
+        ]);
+
+        foreach (Vault::all() as $vault) {
+            foreach ($journals->take(rand(1, 4)) as $journal) {
+                $journal = (new CreateJournal())->execute([
+                    'account_id' => $this->firstUser->account_id,
+                    'author_id' => $this->firstUser->id,
+                    'vault_id' => $vault->id,
+                    'name' => $journal,
+                    'description' => rand(1, 2) == 1 ? $this->faker->sentence() : null,
+                ]);
+
+                for ($j = 0; $j < rand(1, 20); $j++) {
+                    (new CreatePost())->execute([
+                        'account_id' => $this->firstUser->account_id,
+                        'author_id' => $this->firstUser->id,
+                        'vault_id' => $vault->id,
+                        'journal_id' => $journal->id,
+                        'title' => $this->faker->sentence(),
+                        'content' => $this->faker->paragraphs(rand(1, 30), true),
+                        'written_at' => $this->faker->dateTimeThisYear()->format('Y-m-d'),
+                    ]);
                 }
             }
         }

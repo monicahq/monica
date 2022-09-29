@@ -551,5 +551,38 @@ class SetupAccountTest extends TestCase
             'label' => trans('account.gift_state_offered'),
             'position' => 5,
         ]);
+
+        $this->assertDatabaseHas('post_templates', [
+            'label' => trans('settings.personalize_post_templates_default_template'),
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('post_templates', [
+            'label' => trans('settings.personalize_post_templates_default_template_inspirational'),
+            'position' => 2,
+        ]);
+        $this->assertDatabaseHas('post_template_sections', [
+            'label' => trans('settings.personalize_post_templates_default_template_section'),
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('post_template_sections', [
+            'label' => trans('settings.personalize_post_templates_default_template_section_grateful'),
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('post_template_sections', [
+            'label' => trans('settings.personalize_post_templates_default_template_section_daily_affirmation'),
+            'position' => 2,
+        ]);
+        $this->assertDatabaseHas('post_template_sections', [
+            'label' => trans('settings.personalize_post_templates_default_template_section_better'),
+            'position' => 3,
+        ]);
+        $this->assertDatabaseHas('post_template_sections', [
+            'label' => trans('settings.personalize_post_templates_default_template_section_day'),
+            'position' => 4,
+        ]);
+        $this->assertDatabaseHas('post_template_sections', [
+            'label' => trans('settings.personalize_post_templates_default_template_section_three_things'),
+            'position' => 5,
+        ]);
     }
 }

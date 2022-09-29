@@ -201,4 +201,14 @@ class Account extends Model
     {
         return $this->hasMany(Vault::class);
     }
+
+    /**
+     * Get the post templates associated with the account.
+     *
+     * @return HasMany
+     */
+    public function postTemplates(): HasMany
+    {
+        return $this->hasMany(PostTemplate::class);
+    }
 }

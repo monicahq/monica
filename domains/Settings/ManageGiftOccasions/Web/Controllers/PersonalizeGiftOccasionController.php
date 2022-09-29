@@ -37,7 +37,7 @@ class PersonalizeGiftOccasionController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $giftOccasionId, int $giftOccasion)
+    public function update(Request $request, int $giftOccasionId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

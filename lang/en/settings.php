@@ -137,6 +137,7 @@ return [
     'personalize_title_manage_gift_occasions' => 'Manage gift occasions',
     'personalize_title_manage_gift_states' => 'Manage gift states',
     'personalize_title_manage_currencies' => 'Manage currencies',
+    'personalize_title_post_templates' => 'Manage post templates',
 
     /***************************************************************
      * PERSONNALIZE TEMPLATES
@@ -193,6 +194,23 @@ return [
     'personalize_relationship_types_update_success' => 'The relationship type has been updated',
     'personalize_relationship_types_destroy_confirm' => 'Are you sure? This will delete all the relationships of this type for all the contacts that were using it.',
     'personalize_relationship_types_destroy_success' => 'The relationship type has been deleted',
+
+    /***************************************************************
+     * PERSONNALIZE POST TEMPLATES
+     **************************************************************/
+
+    'personalize_post_templates_title' => 'Post templates',
+    'personalize_post_templates_cta' => 'Add a post template',
+    'personalize_post_templates_help' => 'A post template defines how the content of a post should be displayed. You can define as many templates as you want, and choose which template should be used on which post.',
+    'personalize_post_templates_new_name' => 'Name',
+    'personalize_post_templates_default_template' => 'Regular post',
+    'personalize_post_templates_default_template_section' => 'Content',
+    'personalize_post_templates_default_template_inspirational' => 'Inspirational post',
+    'personalize_post_templates_default_template_section_grateful' => 'I am grateful for',
+    'personalize_post_templates_default_template_section_daily_affirmation' => 'Daily affirmation',
+    'personalize_post_templates_default_template_section_better' => 'How could I have done this day better?',
+    'personalize_post_templates_default_template_section_day' => 'What would make today great?',
+    'personalize_post_templates_default_template_section_three_things' => 'Three things that happened today',
 
     /***************************************************************
      * PERSONNALIZE CONTACT TYPE INFORMATION

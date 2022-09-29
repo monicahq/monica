@@ -42,6 +42,7 @@ return [
     'breadcrumb_settings_personalize_templates' => 'Templates',
     'breadcrumb_settings_personalize_relationship_types' => 'Relationship types',
     'breadcrumb_settings_personalize_contact_information_types' => 'Contact information types',
+    'breadcrumb_settings_personalize_post_templates' => 'Post templates',
     'breadcrumb_settings_storage' => 'Storage',
 
     'notification_flash_changes_saved' => 'Changes saved',

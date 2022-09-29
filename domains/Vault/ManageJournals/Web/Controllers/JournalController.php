@@ -62,7 +62,7 @@ class JournalController extends Controller
 
         return Inertia::render('Vault/Journal/Show', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
-            'data' => JournalShowViewHelper::data($journal),
+            'data' => JournalShowViewHelper::data($journal, Auth::user()),
         ]);
     }
 }

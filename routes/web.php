@@ -67,6 +67,10 @@ use App\Settings\ManageNotificationChannels\Web\Controllers\TelegramNotification
 use App\Settings\ManageNotificationChannels\Web\Controllers\TelegramWebhookController;
 use App\Settings\ManagePersonalization\Web\Controllers\PersonalizeController;
 use App\Settings\ManagePetCategories\Web\Controllers\PersonalizePetCategoriesController;
+use App\Settings\ManagePostTemplates\Web\Controllers\PersonalizePostTemplateController;
+use App\Settings\ManagePostTemplates\Web\Controllers\PersonalizePostTemplatePositionController;
+use App\Settings\ManagePostTemplates\Web\Controllers\PersonalizePostTemplateSectionController;
+use App\Settings\ManagePostTemplates\Web\Controllers\PersonalizePostTemplateSectionPositionController;
 use App\Settings\ManagePronouns\Web\Controllers\PersonalizePronounController;
 use App\Settings\ManageRelationshipTypes\Web\Controllers\PersonalizeRelationshipController;
 use App\Settings\ManageRelationshipTypes\Web\Controllers\PersonalizeRelationshipTypeController;
@@ -88,6 +92,7 @@ use App\Settings\ManageUserPreferences\Web\Controllers\PreferencesTimezoneContro
 use App\Settings\ManageUsers\Web\Controllers\UserController;
 use App\Vault\ManageFiles\Web\Controllers\VaultFileController;
 use App\Vault\ManageJournals\Web\Controllers\JournalController;
+use App\Vault\ManageJournals\Web\Controllers\PostController;
 use App\Vault\ManageTasks\Web\Controllers\VaultTaskController;
 use App\Vault\ManageVault\Web\Controllers\VaultController;
 use App\Vault\ManageVault\Web\Controllers\VaultFeedController;
@@ -289,6 +294,12 @@ Route::middleware([
 
                 Route::prefix('{journal}')->middleware(['journal'])->group(function () {
                     Route::get('', [JournalController::class, 'show'])->name('journal.show');
+
+                    // posts
+                    Route::get('posts/create', [PostController::class, 'create'])->name('post.create');
+                    Route::post('posts', [PostController::class, 'store'])->name('post.store');
+
+                    Route::get('posts', [PostController::class, 'index'])->name('post.index');
                 });
             });
 
@@ -436,6 +447,19 @@ Route::middleware([
                 Route::put('giftStates/{giftState}', [PersonalizeGiftStateController::class, 'update'])->name('gift_states.update');
                 Route::delete('giftStates/{giftState}', [PersonalizeGiftStateController::class, 'destroy'])->name('gift_states.destroy');
                 Route::post('giftStates/{giftState}/position', [PersonalizeGiftStatesPositionController::class, 'update'])->name('gift_states.order.update');
+
+                // post templates
+                Route::get('postTemplates', [PersonalizePostTemplateController::class, 'index'])->name('post_templates.index');
+                Route::post('postTemplates', [PersonalizePostTemplateController::class, 'store'])->name('post_templates.store');
+                Route::put('postTemplates/{postTemplate}', [PersonalizePostTemplateController::class, 'update'])->name('post_templates.update');
+                Route::delete('postTemplates/{postTemplate}', [PersonalizePostTemplateController::class, 'destroy'])->name('post_templates.destroy');
+                Route::post('postTemplates/{postTemplate}/position', [PersonalizePostTemplatePositionController::class, 'update'])->name('post_templates.order.update');
+
+                // post template sections
+                Route::post('postTemplates/{postTemplate}/sections', [PersonalizePostTemplateSectionController::class, 'store'])->name('post_templates.section.store');
+                Route::put('postTemplates/{postTemplate}/sections/{section}', [PersonalizePostTemplateSectionController::class, 'update'])->name('post_templates.section.update');
+                Route::delete('postTemplates/{postTemplate}/sections/{section}', [PersonalizePostTemplateSectionController::class, 'destroy'])->name('post_templates.section.destroy');
+                Route::post('postTemplates/{postTemplate}/sections/{section}/position', [PersonalizePostTemplateSectionPositionController::class, 'update'])->name('post_templates.section.order.update');
 
                 // group types
                 Route::get('groupTypes', [PersonalizeGroupTypeController::class, 'index'])->name('group_types.index');

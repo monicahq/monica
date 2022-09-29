@@ -23,6 +23,8 @@ use App\Settings\ManageGroupTypes\Services\CreateGroupType;
 use App\Settings\ManageGroupTypes\Services\CreateGroupTypeRole;
 use App\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
 use App\Settings\ManagePetCategories\Services\CreatePetCategory;
+use App\Settings\ManagePostTemplates\Services\CreatePostTemplate;
+use App\Settings\ManagePostTemplates\Services\CreatePostTemplateSection;
 use App\Settings\ManagePronouns\Services\CreatePronoun;
 use App\Settings\ManageRelationshipTypes\Services\CreateRelationshipGroupType;
 use App\Settings\ManageTemplates\Services\AssociateModuleToTemplatePage;
@@ -562,6 +564,7 @@ class SetupAccount implements ShouldQueue
         $this->addLifeEventCategories();
         $this->addGiftOccasions();
         $this->addGiftStates();
+        $this->addPostTemplates();
     }
 
     /**
@@ -1539,6 +1542,69 @@ class SetupAccount implements ShouldQueue
                 'label' => trans('account.gift_state_offered'),
                 'position' => 5,
             ],
+        ]);
+    }
+
+    private function addPostTemplates(): void
+    {
+        // default template
+        $postTemplate = (new CreatePostTemplate())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('settings.personalize_post_templates_default_template'),
+            'can_be_deleted' => false,
+        ]);
+
+        (new CreatePostTemplateSection())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'post_template_id' => $postTemplate->id,
+            'label' => trans('settings.personalize_post_templates_default_template_section'),
+            'can_be_deleted' => false,
+        ]);
+
+        // inspirational template
+        $postTemplate = (new CreatePostTemplate())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'label' => trans('settings.personalize_post_templates_default_template_inspirational'),
+            'can_be_deleted' => true,
+        ]);
+
+        (new CreatePostTemplateSection())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'post_template_id' => $postTemplate->id,
+            'label' => trans('settings.personalize_post_templates_default_template_section_grateful'),
+            'can_be_deleted' => true,
+        ]);
+        (new CreatePostTemplateSection())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'post_template_id' => $postTemplate->id,
+            'label' => trans('settings.personalize_post_templates_default_template_section_daily_affirmation'),
+            'can_be_deleted' => true,
+        ]);
+        (new CreatePostTemplateSection())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'post_template_id' => $postTemplate->id,
+            'label' => trans('settings.personalize_post_templates_default_template_section_better'),
+            'can_be_deleted' => true,
+        ]);
+        (new CreatePostTemplateSection())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'post_template_id' => $postTemplate->id,
+            'label' => trans('settings.personalize_post_templates_default_template_section_day'),
+            'can_be_deleted' => true,
+        ]);
+        (new CreatePostTemplateSection())->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'post_template_id' => $postTemplate->id,
+            'label' => trans('settings.personalize_post_templates_default_template_section_three_things'),
+            'can_be_deleted' => true,
         ]);
     }
 }
