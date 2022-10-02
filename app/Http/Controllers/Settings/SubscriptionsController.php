@@ -3,13 +3,10 @@
 namespace App\Http\Controllers\Settings;
 
 use Exception;
-use Illuminate\View\View;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Helpers\AccountHelper;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Validation\ValidationException;
 use App\Services\Account\Subscription\ActivateLicenceKey;
 
