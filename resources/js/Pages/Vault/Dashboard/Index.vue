@@ -14,85 +14,7 @@
 
           <!-- middle -->
           <div class="p-3 sm:p-0">
-            <!-- actions -->
-            <div class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-              <div v-if="!addMode" class="p-3">
-                <p class="mb-5 text-center dark:text-gray-100"><span class="mr-2">👋</span> Good evening, Regis.</p>
-
-                <div class="mb-2 justify-center sm:flex">
-                  <pretty-button
-                    :text="'life event'"
-                    :icon="'plus'"
-                    :classes="'mr-3'"
-                    @click="showAddModal('lifeEvent')" />
-                  <pretty-button :text="'activity'" :icon="'plus'" :classes="'mr-3'" />
-                  <pretty-button :text="'entry'" :icon="'plus'" :classes="'mr-3'" />
-                  <pretty-button :text="'mood'" :icon="'plus'" :classes="'mr-3'" />
-                  <pretty-button :text="'communication'" :icon="'plus'" :classes="'mr-3'" />
-                  <pretty-button :text="'goal'" :icon="'plus'" />
-                </div>
-              </div>
-
-              <div v-if="addMode" class="p-5">
-                <create-life-event @cancelled="addMode = false" />
-              </div>
-            </div>
-
-            <!-- filters -->
-            <div class="mb-3 text-right">
-              <button
-                class="inline-flex items-center rounded-md border border-gray-300 bg-white px-2 py-1 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:text-gray-300 hover:dark:bg-gray-800">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                </svg>
-                Filters
-              </button>
-            </div>
-
             <feed :url="loadFeedUrl" :contact-view-mode="false" />
-
-            <!-- feed -->
-            <div class="mb-10 overflow-auto">
-              <h3 class="mb-5 font-bold">Janvier 2010</h3>
-
-              <!-- journal entry -->
-              <entry />
-
-              <feed-item />
-
-              <feed-item />
-
-              <!-- activity -->
-              <activity />
-
-              <!-- goal -->
-              <goal />
-            </div>
-
-            <!-- archives -->
-            <div>
-              <p class="text-xs">Browse past entries</p>
-              <ul>
-                <li class="mr-2 inline text-sm">
-                  <a class="underline" href="">2021</a> <span class="text-xs text-gray-500">(3)</span>
-                </li>
-                <li class="mr-2 inline text-sm">
-                  <a class="underline" href="">2020</a> <span class="text-xs text-gray-500">(139)</span>
-                </li>
-                <li class="mr-2 inline text-sm">
-                  <a class="underline" href="">2019</a> <span class="text-xs text-gray-500">(23)</span>
-                </li>
-              </ul>
-            </div>
           </div>
 
           <!-- right -->
@@ -115,12 +37,6 @@ import LastUpdated from '@/Pages/Vault/Dashboard/Partials/LastUpdated.vue';
 import UpcomingReminders from '@/Pages/Vault/Dashboard/Partials/UpcomingReminders.vue';
 import Favorites from '@/Pages/Vault/Dashboard/Partials/Favorites.vue';
 import DueTasks from '@/Pages/Vault/Dashboard/Partials/DueTasks.vue';
-import Activity from '@/Pages/Vault/Dashboard/Partials/Feed/Activity.vue';
-import Entry from '@/Pages/Vault/Dashboard/Partials/Feed/Entry.vue';
-import Goal from '@/Pages/Vault/Dashboard/Partials/Feed/Goal.vue';
-import FeedItem from '@/Pages/Vault/Dashboard/Partials/Feed/FeedItem.vue';
-import CreateLifeEvent from '@/Pages/Vault/Dashboard/Partials/Feed/CreateLifeEvent.vue';
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import Feed from '@/Shared/Modules/Feed.vue';
 
 export default {
@@ -130,12 +46,6 @@ export default {
     UpcomingReminders,
     Favorites,
     DueTasks,
-    PrettyButton,
-    Entry,
-    Activity,
-    Goal,
-    FeedItem,
-    CreateLifeEvent,
     Feed,
   },
 
@@ -163,20 +73,6 @@ export default {
     dueTasks: {
       type: Object,
       default: null,
-    },
-  },
-
-  data() {
-    return {
-      addMode: false,
-    };
-  },
-
-  methods: {
-    showAddModal(type) {
-      if (type == 'lifeEvent') {
-        this.addMode = true;
-      }
     },
   },
 };
