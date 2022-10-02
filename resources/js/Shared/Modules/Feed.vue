@@ -104,6 +104,15 @@
             "
             :data="feedItem.data"
             :contact-view-mode="contactViewMode" />
+
+          <goal
+            v-if="
+              feedItem.action === 'goal_created' ||
+              feedItem.action === 'goal_updated' ||
+              feedItem.action === 'goal_destroyed'
+            "
+            :data="feedItem.data"
+            :contact-view-mode="contactViewMode" />
         </div>
 
         <!-- details -->
@@ -146,6 +155,7 @@ import LabelAssigned from '@/Shared/Modules/FeedItems/LabelAssigned.vue';
 import Addresses from '@/Shared/Modules/FeedItems/Address.vue';
 import ContactInformation from '@/Shared/Modules/FeedItems/ContactInformation.vue';
 import Pet from '@/Shared/Modules/FeedItems/Pet.vue';
+import Goal from '@/Shared/Modules/FeedItems/Goal.vue';
 
 export default {
   components: {
@@ -156,6 +166,7 @@ export default {
     Addresses,
     ContactInformation,
     Pet,
+    Goal,
   },
 
   props: {

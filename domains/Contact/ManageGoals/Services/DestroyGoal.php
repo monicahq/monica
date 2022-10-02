@@ -69,6 +69,7 @@ class DestroyGoal extends BaseService implements ServiceInterface
             'author_id' => $this->author->id,
             'contact_id' => $this->contact->id,
             'action' => ContactFeedItem::ACTION_GOAL_DESTROYED,
+            'description' => $this->goal->name,
         ]);
     }
 }

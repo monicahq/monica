@@ -5,6 +5,7 @@ namespace App\Contact\ManageContactFeed\Web\ViewHelpers;
 use App\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedAddress;
 use App\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedContactInformation;
 use App\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedGenericContactInformation;
+use App\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedGoal;
 use App\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedLabelAssigned;
 use App\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedPet;
 use App\Helpers\DateHelper;
@@ -85,6 +86,11 @@ class ModuleFeedViewHelper
             case 'pet_updated':
             case 'pet_destroyed':
                 return ActionFeedPet::data($item);
+
+            case 'goal_created':
+            case 'goal_updated':
+            case 'goal_destroyed':
+                return ActionFeedGoal::data($item);
 
             default:
                 return ActionFeedGenericContactInformation::data($item);
