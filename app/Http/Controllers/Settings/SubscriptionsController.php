@@ -15,11 +15,6 @@ use App\Services\Account\Subscription\ActivateLicenceKey;
 
 class SubscriptionsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return View|Factory|RedirectResponse
-     */
     public function index()
     {
         if (! config('monica.requires_subscription')) {
@@ -27,6 +22,13 @@ class SubscriptionsController extends Controller
         }
 
         $account = auth()->user()->account;
+
+        if ($account->is_on_stripe) {
+            return view('settings.subscriptions.stripe', [
+                'customerPortalUrl' => config('monica.customer_portal_stripe_url'),
+                'accountHasLimitations' => AccountHelper::hasLimitations($account),
+            ]);
+        }
 
         if (! $account->isSubscribed()) {
             return view('settings.subscriptions.blank', [

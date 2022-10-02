@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Account\Account;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -18,7 +19,10 @@ class AddLicenceKeysToAccounts extends Migration
             $table->datetime('valid_until_at')->after('licence_key')->nullable();
             $table->string('purchaser_email', 255)->after('valid_until_at')->nullable();
             $table->string('frequency', 15)->after('purchaser_email')->nullable();
+            $table->boolean('is_on_stripe')->after('frequency')->default(false);
         });
+
+        Account::whereNotNull('stripe_id')->update(['is_on_stripe' => true]);
     }
 
     /**
@@ -33,6 +37,7 @@ class AddLicenceKeysToAccounts extends Migration
             $table->dropColumn('valid_until_at');
             $table->dropColumn('purchaser_email');
             $table->dropColumn('frequency');
+            $table->dropColumn('is_on_stripe');
         });
     }
 }

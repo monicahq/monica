@@ -36,7 +36,6 @@
           <div class="br3 ba b--gray-monica bg-white mb4">
             <div class="pa4">
 
-              <h3 class="tc">{{ trans('settings.subscriptions_account_payment') }}</h3>
               <div class="cf mb4">
                 <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-50-ns w-100 pa3 mt0-ns mt4">
                   <div class="b--purple ba pt3 br3 bw1 relative">
@@ -101,7 +100,11 @@
           <!-- licence key -->
           <div class="br3 pa4 ba b--gray-monica bg-white mb4">
 
-            <h3 class="tc mb3">{{ trans('settings.subscriptions_plan_question')  }}</h3>
+            <h3 class="mb3">Steps to have a subscription</h3>
+
+            <p>1. Go to the customer portal to get a licence key</p>
+            <p>2. Subscribe and obtain your licence key</p>
+            <p class="mb4">3. Paste your licence key below.</p>
 
             @include('partials.errors')
 
@@ -109,7 +112,7 @@
               @csrf
 
               <div class="flex-ns items-end">
-                <form-input value="" :input-type="'text'" :id="'licence_key'" :required="true" :title="$t('settings.subscriptions_key_paste')">
+                <form-input value="" :input-type="'text'" :id="'licence_key'" :required="true" :title="'Paste your licence key'">
                 </form-input>
                 <div><button name="save" type="submit" class="ml2 btn btn-primary w-auto-ns w-100 pb0-ns">{{ trans('app.save')  }}</button></div>
               </div>

@@ -76,6 +76,7 @@ class Account extends Model
         'licence_key',
         'valid_until_at',
         'purchaser_email',
+        'is_on_stripe',
     ];
 
     /**
@@ -85,6 +86,7 @@ class Account extends Model
      */
     protected $casts = [
         'has_access_to_paid_version_for_free' => 'boolean',
+        'is_on_stripe' => 'boolean',
     ];
 
     /**

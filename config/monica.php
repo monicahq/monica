@@ -300,6 +300,8 @@ return [
 
     'customer_portal_client_secret' => env('CUSTOMER_PORTAL_CLIENT_SECRET'),
 
+    'customer_portal_stripe_url' => env('CUSTOMER_PORTAL_STRIPE_URL', ''),
+
     /*
     |--------------------------------------------------------------------------
     | Licence key encryption key
