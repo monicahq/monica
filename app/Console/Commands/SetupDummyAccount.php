@@ -13,6 +13,7 @@ use App\Models\Contact;
 use App\Models\ContactImportantDate;
 use App\Models\Group;
 use App\Models\Note;
+use App\Models\PostTemplate;
 use App\Models\User;
 use App\Models\Vault;
 use App\Settings\CreateAccount\Services\CreateAccount;
@@ -287,8 +288,9 @@ class SetupDummyAccount extends Command
                         'author_id' => $this->firstUser->id,
                         'vault_id' => $vault->id,
                         'journal_id' => $journal->id,
+                        'post_template_id' => PostTemplate::where('account_id', $this->firstUser->account_id)->inRandomOrder()->first()->id,
                         'title' => $this->faker->sentence(),
-                        'content' => $this->faker->paragraphs(rand(1, 30), true),
+                        'published' => false,
                         'written_at' => $this->faker->dateTimeThisYear()->format('Y-m-d'),
                     ]);
                 }

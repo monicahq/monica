@@ -120,4 +120,7 @@ return [
     'emotion_negative' => '😡 Negative',
 
     'notification_channel_email' => 'My email',
+
+    'min_read' => '{count} min read',
+    'word_count' => '{count} words',
 ];

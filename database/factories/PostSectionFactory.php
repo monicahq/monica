@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Journal;
 use App\Models\Post;
+use App\Models\PostSection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class PostFactory extends Factory
+class PostSectionFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var class-string<\Illuminate\Database\Eloquent\Model>
      */
-    protected $model = Post::class;
+    protected $model = PostSection::class;
 
     /**
      * Define the model's default state.
@@ -23,10 +23,10 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'journal_id' => Journal::factory(),
-            'title' => $this->faker->sentence(),
-            'published' => false,
-            'written_at' => $this->faker->dateTimeThisCentury(),
+            'post_id' => Post::factory(),
+            'label' => 'label',
+            'position' => $this->faker->numberBetween(1, 10),
+            'content' => $this->faker->sentence(),
         ];
     }
 }

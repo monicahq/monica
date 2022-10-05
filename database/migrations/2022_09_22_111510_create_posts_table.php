@@ -36,11 +36,21 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('journal_id');
-            $table->string('title');
-            $table->text('content');
+            $table->boolean('published')->default(false);
+            $table->string('title')->nullable();
             $table->datetime('written_at');
             $table->timestamps();
             $table->foreign('journal_id')->references('id')->on('journals')->onDelete('cascade');
+        });
+
+        Schema::create('post_sections', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('post_id');
+            $table->integer('position');
+            $table->string('label');
+            $table->text('content')->nullable();
+            $table->timestamps();
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
         });
     }
 

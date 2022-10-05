@@ -5,6 +5,7 @@ namespace App\Vault\ManageJournals\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\Journal;
 use App\Models\Post;
+use App\Models\PostSection;
 use App\Services\BaseService;
 
 class UpdatePost extends BaseService implements ServiceInterface
@@ -26,8 +27,8 @@ class UpdatePost extends BaseService implements ServiceInterface
             'author_id' => 'required|integer|exists:users,id',
             'journal_id' => 'required|integer|exists:journals,id',
             'post_id' => 'required|integer|exists:posts,id',
-            'content' => 'required|string|max:65535',
-            'excerpt' => 'nullable|string|max:65535',
+            'title' => 'nullable|string|max:255',
+            'sections' => 'required',
             'written_at' => 'nullable|date_format:Y-m-d',
         ];
     }
@@ -58,6 +59,7 @@ class UpdatePost extends BaseService implements ServiceInterface
 
         $this->validate();
         $this->update();
+        $this->updateSections();
 
         return $this->post;
     }
@@ -82,8 +84,22 @@ class UpdatePost extends BaseService implements ServiceInterface
         }
 
         $this->post->title = $this->data['title'];
-        $this->post->content = $this->data['content'];
         $this->post->written_at = $writtenAt;
         $this->post->save();
+    }
+
+    private function updateSections(): void
+    {
+        foreach ($this->data['sections'] as $section) {
+            if (! array_key_exists('content', $section)) {
+                continue;
+            }
+
+            PostSection::where('post_id', $this->post->id)
+                ->where('id', $section['id'])
+                ->update([
+                    'content' => $section['content'],
+                ]);
+        }
     }
 }

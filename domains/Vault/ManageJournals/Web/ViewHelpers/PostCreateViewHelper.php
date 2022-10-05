@@ -8,7 +8,7 @@ use App\Models\PostTemplateSection;
 
 class PostCreateViewHelper
 {
-    public static function template(Journal $journal): array
+    public static function data(Journal $journal): array
     {
         $templatesCollection = $journal->vault->account->postTemplates()
             ->orderBy('position')
@@ -25,7 +25,7 @@ class PostCreateViewHelper
                         'label' => $postTemplateSection->label,
                     ]),
                 'url' => [
-                    'create' => route('post.create', [
+                    'create' => route('post.store', [
                         'vault' => $journal->vault_id,
                         'journal' => $journal->id,
                         'template' => $postTemplate->id,

@@ -26,7 +26,7 @@ class JournalShowViewHelper
             'description' => $journal->description,
             'posts' => $postsCollection,
             'url' => [
-                'create' => route('post.choose_template', [
+                'create' => route('post.create', [
                     'vault' => $journal->vault_id,
                     'journal' => $journal->id,
                 ]),

@@ -16,6 +16,7 @@
         :type="type"
         :autofocus="autofocus"
         :rows="rows"
+        ref="zone"
         :maxlength="maxlength"
         @input="$emit('update:modelValue', $event.target.value)"
         @keydown.esc="sendEscKey"

@@ -5,6 +5,8 @@ namespace App\Vault\ManageJournals\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\Journal;
 use App\Models\Post;
+use App\Models\PostSection;
+use App\Models\PostTemplate;
 use App\Services\BaseService;
 
 class CreatePost extends BaseService implements ServiceInterface
@@ -12,6 +14,8 @@ class CreatePost extends BaseService implements ServiceInterface
     private array $data;
 
     private Post $post;
+
+    private PostTemplate $postTemplate;
 
     /**
      * Get the validation rules that apply to the service.
@@ -25,8 +29,9 @@ class CreatePost extends BaseService implements ServiceInterface
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
             'journal_id' => 'required|integer|exists:journals,id',
-            'title' => 'required|string|max:255',
-            'content' => 'required|string|max:65535',
+            'post_template_id' => 'required|integer|exists:post_templates,id',
+            'title' => 'nullable|string|max:255',
+            'published' => 'required|boolean',
             'written_at' => 'nullable|date_format:Y-m-d',
         ];
     }
@@ -57,6 +62,7 @@ class CreatePost extends BaseService implements ServiceInterface
 
         $this->validate();
         $this->create();
+        $this->createPostSections();
 
         return $this->post;
     }
@@ -67,6 +73,9 @@ class CreatePost extends BaseService implements ServiceInterface
 
         Journal::where('vault_id', $this->data['vault_id'])
             ->findOrfail($this->data['journal_id']);
+
+        $this->postTemplate = PostTemplate::where('account_id', $this->data['account_id'])
+            ->findOrFail($this->data['post_template_id']);
     }
 
     private function create(): void
@@ -79,9 +88,32 @@ class CreatePost extends BaseService implements ServiceInterface
 
         $this->post = Post::create([
             'journal_id' => $this->data['journal_id'],
-            'title' => $this->data['title'],
-            'content' => $this->data['content'],
+            'title' => $this->valueOrNull($this->data, 'title'),
+            'published' => $this->data['published'],
             'written_at' => $writtenAt,
         ]);
+    }
+
+    /**
+     * Once the post is created, we also create post sections for this post.
+     * The post sections are defined by the post template that was chosen upon
+     * the creation of the post
+     * All these post sections will be blank until the user fills them.
+     *
+     * @return void
+     */
+    private function createPostSections(): void
+    {
+        $postTemplateSections = $this->postTemplate->postTemplateSections()
+            ->orderBy('position')
+            ->get();
+
+        foreach ($postTemplateSections as $postTemplateSection) {
+            PostSection::create([
+                'post_id' => $this->post->id,
+                'position' => $postTemplateSection->position,
+                'label' => $postTemplateSection->label,
+            ]);
+        }
     }
 }

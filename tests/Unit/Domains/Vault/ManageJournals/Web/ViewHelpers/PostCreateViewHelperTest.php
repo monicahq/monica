@@ -29,7 +29,7 @@ class PostCreateViewHelperTest extends TestCase
             'post_template_id' => $postTemplate->id,
         ]);
 
-        $array = PostCreateViewHelper::template($journal);
+        $array = PostCreateViewHelper::data($journal);
 
         $this->assertCount(3, $array);
         $this->assertEquals(
@@ -54,7 +54,7 @@ class PostCreateViewHelperTest extends TestCase
         );
         $this->assertEquals(
             [
-                'create' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/create/'.$postTemplate->id,
+                'create' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$postTemplate->id,
             ],
             $array['templates']->toArray()[0]['url']
         );

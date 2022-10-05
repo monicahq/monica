@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
 {
@@ -20,8 +21,9 @@ class Post extends Model
     protected $fillable = [
         'journal_id',
         'title',
-        'content',
+        'published',
         'written_at',
+        'updated_at',
     ];
 
     /**
@@ -31,6 +33,16 @@ class Post extends Model
      */
     protected $dates = [
         'written_at',
+        'updated_at',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'published' => 'boolean',
     ];
 
     /**
@@ -41,5 +53,15 @@ class Post extends Model
     public function journal(): BelongsTo
     {
         return $this->belongsTo(Journal::class);
+    }
+
+    /**
+     * Get the post sections associated with the post.
+     *
+     * @return HasMany
+     */
+    public function postSections(): HasMany
+    {
+        return $this->hasMany(PostSection::class);
     }
 }

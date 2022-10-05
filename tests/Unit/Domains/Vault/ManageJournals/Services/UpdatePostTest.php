@@ -6,10 +6,10 @@ use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Journal;
 use App\Models\Post;
+use App\Models\PostSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\Vault\ManageJournals\Services\UpdatePost;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;
@@ -117,7 +117,10 @@ class UpdatePostTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Journal $journal, Post $post): void
     {
-        Carbon::setTestNow(Carbon::create(2022, 1, 1));
+        PostSection::factory()->create([
+            'post_id' => $post->id,
+            'content' => 'this is a content',
+        ]);
 
         $request = [
             'account_id' => $account->id,
@@ -125,8 +128,13 @@ class UpdatePostTest extends TestCase
             'author_id' => $author->id,
             'journal_id' => $journal->id,
             'post_id' => $post->id,
-            'content' => 'super content',
             'title' => 'title',
+            'sections' => [
+                0 => [
+                    'id' => PostSection::first()->id,
+                    'content' => 'this is a content',
+                ],
+            ],
             'written_at' => null,
         ];
 
@@ -135,9 +143,12 @@ class UpdatePostTest extends TestCase
         $this->assertDatabaseHas('posts', [
             'id' => $post->id,
             'journal_id' => $journal->id,
-            'content' => 'super content',
             'title' => 'title',
-            'written_at' => '2022-01-01 00:00:00',
+        ]);
+
+        $this->assertDatabaseHas('post_sections', [
+            'post_id' => $post->id,
+            'content' => 'this is a content',
         ]);
     }
 }

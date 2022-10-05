@@ -2,59 +2,76 @@
 
 namespace App\Vault\ManageJournals\Web\Controllers;
 
+use App\Helpers\PostHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Journal;
 use App\Models\Post;
+use App\Models\PostTemplate;
 use App\Models\Vault;
 use App\Vault\ManageJournals\Services\CreatePost;
+use App\Vault\ManageJournals\Services\UpdatePost;
 use App\Vault\ManageJournals\Web\ViewHelpers\PostCreateViewHelper;
+use App\Vault\ManageJournals\Web\ViewHelpers\PostEditViewHelper;
 use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Redirect;
 
 class PostController extends Controller
 {
-    public function chooseTemplate(Request $request, int $vaultId, int $journalId)
+    public function create(Request $request, int $vaultId, int $journalId)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = Journal::findOrFail($journalId);
 
         return Inertia::render('Vault/Journal/Post/Template', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
-            'data' => PostCreateViewHelper::template($journal),
+            'data' => PostCreateViewHelper::data($journal),
         ]);
     }
 
-    public function create(Request $request, int $vaultId, int $journalId)
+    /**
+     * The post will be created upon visiting the page.
+     * This will create the post as a draft, with all the post sections
+     * populated from the post template.
+     *
+     * @param  Request  $request
+     * @param  int  $vaultId
+     * @param  int  $journalId
+     * @param  int  $templateId
+     */
+    public function store(Request $request, int $vaultId, int $journalId, int $templateId)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = Journal::findOrFail($journalId);
 
-        return Inertia::render('Vault/Journal/Post/Create', [
-            'layoutData' => VaultIndexViewHelper::layoutData($vault),
-            'data' => PostCreateViewHelper::template($journal),
-        ]);
-    }
+        try {
+            PostTemplate::where('account_id', $vault->account_id)
+                ->findOrFail($templateId);
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('post.choose_template', [
+                'vault' => $vaultId,
+                'journal' => $journalId,
+            ]);
+        }
 
-    public function store(Request $request, int $vaultId, int $journalId)
-    {
-        $data = [
+        $post = (new CreatePost())->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::user()->id,
             'vault_id' => $vaultId,
             'journal_id' => $journalId,
-            'content' => $request->input('content'),
-            'excerpt' => $request->input('excerpt'),
-            'written_at' => $request->input('written_at'),
-        ];
+            'post_template_id' => $templateId,
+            'title' => null,
+            'published' => false,
+            'written_at' => Carbon::now()->format('Y-m-d'),
+        ]);
 
-        $post = (new CreatePost())->execute($data);
-
-        return Redirect::route('journal.show', [
-            'vault' => $post->journal->vault_id,
-            'journal' => $post->journal,
+        return redirect()->route('post.edit', [
+            'vault' => $vaultId,
+            'journal' => $journalId,
+            'post' => $post->id,
         ]);
     }
 
@@ -66,7 +83,38 @@ class PostController extends Controller
 
         return Inertia::render('Vault/Journal/Post/Create', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
-            'data' => PostCreateViewHelper::template($journal),
         ]);
+    }
+
+    public function edit(Request $request, int $vaultId, int $journalId, int $postId)
+    {
+        $vault = Vault::findOrFail($vaultId);
+        $journal = Journal::findOrFail($journalId);
+        $post = Post::findOrFail($postId);
+
+        return Inertia::render('Vault/Journal/Post/Edit', [
+            'layoutData' => VaultIndexViewHelper::layoutData($vault),
+            'data' => PostEditViewHelper::data($journal, $post),
+        ]);
+    }
+
+    public function update(Request $request, int $vaultId, int $journalId, int $postId)
+    {
+        $vault = Vault::findOrFail($vaultId);
+
+        $post = (new UpdatePost())->execute([
+            'account_id' => Auth::user()->account_id,
+            'author_id' => Auth::user()->id,
+            'vault_id' => $vaultId,
+            'journal_id' => $journalId,
+            'post_id' => $postId,
+            'title' => $request->input('title'),
+            'sections' => $request->input('sections'),
+            'written_at' => Carbon::now()->format('Y-m-d'),
+        ]);
+
+        return response()->json([
+            'data' => PostHelper::statistics($post),
+        ], 200);
     }
 }
