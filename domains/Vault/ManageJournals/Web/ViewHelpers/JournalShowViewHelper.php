@@ -18,6 +18,13 @@ class JournalShowViewHelper
                 'id' => $post->id,
                 'title' => $post->title,
                 'written_at' => DateHelper::format($post->written_at, $user),
+                'url' => [
+                    'show' => route('post.show', [
+                        'vault' => $journal->vault_id,
+                        'journal' => $journal->id,
+                        'post' => $post->id,
+                    ]),
+                ],
             ]);
 
         return [

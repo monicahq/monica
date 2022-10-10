@@ -47,6 +47,9 @@ class JournalShowViewHelperTest extends TestCase
                     'id' => $post->id,
                     'title' => 'My Post',
                     'written_at' => 'Jan 01, 2020',
+                    'url' => [
+                        'show' => env('APP_URL').'/vaults/'.$journal->vault->id.'/journals/'.$journal->id.'/posts/'.$post->id,
+                    ],
                 ],
             ],
             $array['posts']->toArray()

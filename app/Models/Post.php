@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -63,5 +64,19 @@ class Post extends Model
     public function postSections(): HasMany
     {
         return $this->hasMany(PostSection::class);
+    }
+
+    protected function title(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                if ($value) {
+                    return $value;
+                }
+
+                return trans('app.undefined');
+            },
+            set: fn ($value) => $value,
+        );
     }
 }

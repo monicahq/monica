@@ -297,13 +297,14 @@ Route::middleware([
 
                     // posts
                     Route::get('posts/create', [PostController::class, 'create'])->name('post.create');
-                    Route::get('posts/{template}', [PostController::class, 'store'])->name('post.store');
+                    Route::get('posts/template/{template}', [PostController::class, 'store'])->name('post.store');
 
                     // details of a post
                     Route::prefix('posts/{post}')->middleware(['post'])->group(function () {
                         Route::get('', [PostController::class, 'show'])->name('post.show');
                         Route::get('edit', [PostController::class, 'edit'])->name('post.edit');
                         Route::put('update', [PostController::class, 'update'])->name('post.update');
+                        Route::delete('', [PostController::class, 'destroy'])->name('post.destroy');
                     });
                 });
             });

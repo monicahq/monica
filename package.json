@@ -61,5 +61,8 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "dependencies": {
+    "@tailwindcss/typography": "^0.5.7"
   }
 }

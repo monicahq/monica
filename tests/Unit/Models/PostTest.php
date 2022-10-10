@@ -29,4 +29,26 @@ class PostTest extends TestCase
 
         $this->assertTrue($post->postSections()->exists());
     }
+
+    /** @test */
+    public function it_gets_the_title(): void
+    {
+        $post = Post::factory()->create([
+            'title' => null,
+        ]);
+
+        $this->assertEquals(
+            'Undefined',
+            $post->title
+        );
+
+        $post = Post::factory()->create([
+            'title' => 'Awesome post',
+        ]);
+
+        $this->assertEquals(
+            'Awesome post',
+            $post->title
+        );
+    }
 }

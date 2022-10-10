@@ -54,7 +54,7 @@ class PostCreateViewHelperTest extends TestCase
         );
         $this->assertEquals(
             [
-                'create' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$postTemplate->id,
+                'create' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/template/'.$postTemplate->id,
             ],
             $array['templates']->toArray()[0]['url']
         );

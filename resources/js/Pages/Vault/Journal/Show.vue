@@ -64,9 +64,7 @@ defineProps({
             <span class="mr-2">{{ post.written_at }}</span>
 
             <!-- content -->
-            <inertia-link :href="'journal.url.show'" class="text-blue-500 hover:underline">{{
-              post.title
-            }}</inertia-link>
+            <inertia-link :href="post.url.show" class="text-blue-500 hover:underline">{{ post.title }}</inertia-link>
           </li>
         </ul>
       </div>

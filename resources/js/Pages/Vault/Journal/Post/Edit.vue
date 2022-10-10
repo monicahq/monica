@@ -64,6 +64,14 @@ const update = () => {
     })
     .catch(() => {});
 };
+
+const destroy = () => {
+  if (confirm('Are you sure you want to delete this post?')) {
+    form.delete(props.data.url.destroy, {
+      onFinish: () => {},
+    });
+  }
+};
 </script>
 
 <template>
@@ -119,7 +127,7 @@ const update = () => {
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
           <!-- left -->
           <div class="">
-            <form class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+            <div class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
               <div class="border-gray-200 p-5 dark:border-gray-700">
                 <!-- title -->
                 <text-input
@@ -143,7 +151,7 @@ const update = () => {
                     :textarea-class="'block w-full mb-8'" />
                 </div>
               </div>
-            </form>
+            </div>
           </div>
 
           <!-- right -->
@@ -153,7 +161,7 @@ const update = () => {
               <div class="border-b border-gray-200 p-2 text-sm dark:border-gray-700">Post status: draft</div>
 
               <div class="bg-form rounded-b-lg p-5">
-                <pretty-link :classes="'mr-8'" :text="'Close'" :icon="'exit'" />
+                <pretty-link :href="data.url.show" :classes="'mr-8'" :text="'Close'" :icon="'exit'" />
 
                 <pretty-button
                   @click="update()"
@@ -263,7 +271,7 @@ const update = () => {
             </ul>
 
             <!-- delete -->
-            <div class="cursor-pointer text-red-500 hover:text-red-900">{{ $t('app.delete') }}</div>
+            <div @click="destroy" class="cursor-pointer text-red-500 hover:text-red-900">{{ $t('app.delete') }}</div>
           </div>
         </div>
       </div>

@@ -20,6 +20,7 @@ parameters:
         - '#Access to an undefined property App\\Models\\LifeEventCategory.*::\$label\.#'
         - '#Access to an undefined property App\\Models\\LifeEventType.*::\$label.#'
         - '#Access to an undefined property App\\Models\\Module::\$position\.#'
+        - '#Access to an undefined property App\\Models\\Post::\$title\.#'
         - '#Parameter \$get of static method Illuminate\\Database\\Eloquent\\Casts\\Attribute<mixed,mixed>::make\(\) expects \(callable\(mixed, mixed=\): .*\)\|null, Closure\(mixed, mixed\): .* given\.#'
         - '#Access to an undefined property App\\Models\\.*::\$pivot\.#'
 
