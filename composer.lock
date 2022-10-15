@@ -13473,59 +13473,6 @@
             "time": "2022-03-03T08:28:38+00:00"
         },
         {
-            "name": "facade/ignition-contracts",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/facade/ignition-contracts.git",
-                "reference": "3c921a1cdba35b68a7f0ccffc6dffc1995b18267"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/facade/ignition-contracts/zipball/3c921a1cdba35b68a7f0ccffc6dffc1995b18267",
-                "reference": "3c921a1cdba35b68a7f0ccffc6dffc1995b18267",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.3|^8.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^v2.15.8",
-                "phpunit/phpunit": "^9.3.11",
-                "vimeo/psalm": "^3.17.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Facade\\IgnitionContracts\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "homepage": "https://flareapp.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Solution contracts for Ignition",
-            "homepage": "https://github.com/facade/ignition-contracts",
-            "keywords": [
-                "contracts",
-                "flare",
-                "ignition"
-            ],
-            "support": {
-                "issues": "https://github.com/facade/ignition-contracts/issues",
-                "source": "https://github.com/facade/ignition-contracts/tree/1.0.2"
-            },
-            "time": "2020-10-16T08:27:54+00:00"
-        },
-        {
             "name": "fakerphp/faker",
             "version": "v1.20.0",
             "source": {
@@ -14417,32 +14364,32 @@
         },
         {
             "name": "nunomaduro/collision",
-            "version": "v6.2.1",
+            "version": "v6.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/collision.git",
-                "reference": "5f058f7e39278b701e455b3c82ec5298cf001d89"
+                "reference": "0f6349c3ed5dd28467087b08fb59384bb458a22b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/5f058f7e39278b701e455b3c82ec5298cf001d89",
-                "reference": "5f058f7e39278b701e455b3c82ec5298cf001d89",
+                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/0f6349c3ed5dd28467087b08fb59384bb458a22b",
+                "reference": "0f6349c3ed5dd28467087b08fb59384bb458a22b",
                 "shasum": ""
             },
             "require": {
-                "facade/ignition-contracts": "^1.0.2",
                 "filp/whoops": "^2.14.5",
                 "php": "^8.0.0",
                 "symfony/console": "^6.0.2"
             },
             "require-dev": {
                 "brianium/paratest": "^6.4.1",
-                "laravel/framework": "^9.7",
-                "laravel/pint": "^0.2.1",
-                "nunomaduro/larastan": "^1.0.2",
+                "laravel/framework": "^9.26.1",
+                "laravel/pint": "^1.1.1",
+                "nunomaduro/larastan": "^1.0.3",
                 "nunomaduro/mock-final-classes": "^1.1.0",
-                "orchestra/testbench": "^7.3.0",
-                "phpunit/phpunit": "^9.5.11"
+                "orchestra/testbench": "^7.7",
+                "phpunit/phpunit": "^9.5.23",
+                "spatie/ignition": "^1.4.1"
             },
             "type": "library",
             "extra": {
@@ -14501,7 +14448,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-06-27T16:11:16+00:00"
+            "time": "2022-09-29T12:29:49+00:00"
         },
         {
             "name": "nunomaduro/larastan",
