@@ -11,6 +11,9 @@ on:
 env:
   php-version: '8.1'
 
+concurrency: 
+  group: Static analysis ${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   psalm:

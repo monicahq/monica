@@ -17,6 +17,9 @@ env:
   default-php-version: '8.1'
   node-version: 18
 
+concurrency: 
+  group: Unit tests ${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   #############
