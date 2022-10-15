@@ -12072,16 +12072,16 @@
         },
         {
             "name": "web-token/jwt-key-mgmt",
-            "version": "v3.0.7",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-key-mgmt.git",
-                "reference": "abe168fdba4e03e4d497cc1c4945df7be0bc7f8e"
+                "reference": "adaed6fbba2ac8f1308c0ce3b46cdf90bc627f86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-key-mgmt/zipball/abe168fdba4e03e4d497cc1c4945df7be0bc7f8e",
-                "reference": "abe168fdba4e03e4d497cc1c4945df7be0bc7f8e",
+                "url": "https://api.github.com/repos/web-token/jwt-key-mgmt/zipball/adaed6fbba2ac8f1308c0ce3b46cdf90bc627f86",
+                "reference": "adaed6fbba2ac8f1308c0ce3b46cdf90bc627f86",
                 "shasum": ""
             },
             "require": {
@@ -12138,7 +12138,7 @@
                 "symfony"
             ],
             "support": {
-                "source": "https://github.com/web-token/jwt-key-mgmt/tree/v3.0.7"
+                "source": "https://github.com/web-token/jwt-key-mgmt/tree/3.1.2"
             },
             "funding": [
                 {
@@ -12146,7 +12146,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-08-04T20:24:29+00:00"
+            "time": "2022-08-24T06:42:07+00:00"
         },
         {
             "name": "web-token/jwt-signature",
