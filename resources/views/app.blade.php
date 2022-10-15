@@ -8,7 +8,7 @@
 
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-    <link rel="shortcut icon" href="img/favicon.svg">
+    <link rel="shortcut icon" href="/img/favicon.svg">
 
     <!-- Scripts -->
     @if (app()->bound('sentry') && config('sentry.dsn') !== null)
