@@ -10,7 +10,7 @@ env:
   node-version: 18
 
 concurrency: 
-  group: ${{ github.ref }}
+  group: Docker ${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
