@@ -12290,16 +12290,16 @@
         },
         {
             "name": "web-token/jwt-signature-algorithm-eddsa",
-            "version": "v3.0.7",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-eddsa.git",
-                "reference": "f447d5f53eab151ffe1b68498e3f6ec862f3db3a"
+                "reference": "a38b4909e447c2d5bb6d1bf32a953ebb2d76a275"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-eddsa/zipball/f447d5f53eab151ffe1b68498e3f6ec862f3db3a",
-                "reference": "f447d5f53eab151ffe1b68498e3f6ec862f3db3a",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-eddsa/zipball/a38b4909e447c2d5bb6d1bf32a953ebb2d76a275",
+                "reference": "a38b4909e447c2d5bb6d1bf32a953ebb2d76a275",
                 "shasum": ""
             },
             "require": {
@@ -12348,7 +12348,7 @@
                 "symfony"
             ],
             "support": {
-                "source": "https://github.com/web-token/jwt-signature-algorithm-eddsa/tree/v3.0.7"
+                "source": "https://github.com/web-token/jwt-signature-algorithm-eddsa/tree/3.1.2"
             },
             "funding": [
                 {
@@ -12356,7 +12356,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-02-27T09:13:59+00:00"
+            "time": "2022-08-22T19:38:12+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-rsa",
