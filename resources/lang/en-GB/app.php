@@ -153,10 +153,10 @@ return [
     'relationship_type_spouse_male_with_name' => ':name’s husband',
 
     'relationship_type_date' => 'date',
-    'relationship_type_date_female' => 'date',
+    'relationship_type_date_female' => 'girlfriend',
     'relationship_type_date_male' => 'boyfriend',
     'relationship_type_date_with_name' => ':name’s date',
-    'relationship_type_date_female_with_name' => ':name’s date',
+    'relationship_type_date_female_with_name' => ':name’s girlfriend',
     'relationship_type_date_male_with_name' => ':name’s boyfriend',
 
     'relationship_type_lover' => 'lover',
