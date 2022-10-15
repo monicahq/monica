@@ -12,7 +12,7 @@ on:
     types: [completed]
 
 concurrency: 
-  group: ${{ github.ref }}
+  group: Migration tests ${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
