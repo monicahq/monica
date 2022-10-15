@@ -13813,25 +13813,26 @@
         },
         {
             "name": "khanamiryan/qrcode-detector-decoder",
-            "version": "1.0.6",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/khanamiryan/php-qrcode-detector-decoder.git",
-                "reference": "45326fb83a2a375065dbb3a134b5b8a5872da569"
+                "reference": "69c49a5960483e4c3d01214320f178c1a28bee79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/khanamiryan/php-qrcode-detector-decoder/zipball/45326fb83a2a375065dbb3a134b5b8a5872da569",
-                "reference": "45326fb83a2a375065dbb3a134b5b8a5872da569",
+                "url": "https://api.github.com/repos/khanamiryan/php-qrcode-detector-decoder/zipball/69c49a5960483e4c3d01214320f178c1a28bee79",
+                "reference": "69c49a5960483e4c3d01214320f178c1a28bee79",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6"
+                "php": ">=8.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.7 | ^7.5 | ^8.0 | ^9.0",
+                "phpunit/phpunit": "^7.5 | ^8.0 | ^9.0",
                 "rector/rector": "^0.13.6",
-                "symplify/easy-coding-standard": "^11.0"
+                "symplify/easy-coding-standard": "^11.0",
+                "vimeo/psalm": "^4.24"
             },
             "type": "library",
             "autoload": {
@@ -13864,9 +13865,9 @@
             ],
             "support": {
                 "issues": "https://github.com/khanamiryan/php-qrcode-detector-decoder/issues",
-                "source": "https://github.com/khanamiryan/php-qrcode-detector-decoder/tree/1.0.6"
+                "source": "https://github.com/khanamiryan/php-qrcode-detector-decoder/tree/2.0.0"
             },
-            "time": "2022-06-29T09:25:13+00:00"
+            "time": "2022-07-05T07:28:04+00:00"
         },
         {
             "name": "laravel/dusk",
