@@ -18,7 +18,7 @@ env:
   node-version: 18
 
 concurrency: 
-  group: ${{ github.ref }}
+  group: Deploy ${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
