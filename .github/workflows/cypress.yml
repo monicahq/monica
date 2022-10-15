@@ -8,7 +8,7 @@ env:
   node-version: 18
 
 concurrency: 
-  group: ${{ github.ref }}
+  group: Cypress tests ${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
