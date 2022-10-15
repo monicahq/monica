@@ -405,7 +405,7 @@ return [
     'personalization_genders_modal_name_help' => 'Der Name, mit dem das Geschlecht auf einer Kontaktseite angezeigt wird.',
     'personalization_genders_modal_sex' => 'Geschlecht',
     'personalization_genders_modal_sex_help' => 'Wird verwendet, um die Beziehungen zu definieren, und während des VCard Import/Export Prozesses.',
-    'personalization_genders_modal_default' => 'Ist dies das standartmäßige Geschlecht für einen neuen Kontakt',
+    'personalization_genders_modal_default' => 'Neuen Kontakten das Standardgeschlecht zuweisen',
     'personalization_genders_modal_delete' => 'Geschlechtsidentität löschen',
     'personalization_genders_modal_delete_desc' => 'Möchtest Du das Geschlecht "{name}" wirklich löschen?',
     'personalization_genders_modal_delete_question' => 'Du hast aktuell {count} Kontakt mit diesem Geschlecht. Wenn du dieses Geschlecht löschst, welches Geschlecht soll der Kontakt dann haben?|Du hast aktuell {count} Kontakte mit diesem Geschlecht. Wenn du dieses Geschlecht löschst, welches Geschlecht sollen die Kontakte dann haben?',
