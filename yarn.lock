@@ -2751,7 +2751,7 @@ debug@2.6.9, debug@^2.2.0, debug@^2.6.9:
   dependencies:
     ms "2.0.0"
 
-debug@4.3.3, debug@^4.0.1, debug@^4.3.2:
+debug@4.3.3:
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.3.tgz#04266e0b70a98d4462e6e288e38259213332b664"
   integrity sha512-/zxw5+vh1Tfv+4Qn7a5nsbcJKPaSvCDhojn6FEl9vupwK2VCSDtEiEtqr8DFtzYFOdz63LBkxec7DYuc2jon6Q==
@@ -2765,7 +2765,7 @@ debug@^3.1.0, debug@^3.2.7:
   dependencies:
     ms "^2.1.1"
 
-debug@^4.1.0, debug@^4.1.1:
+debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.2:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
   integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
@@ -4932,9 +4932,9 @@ mkdirp@~0.5.1:
     minimist "^1.2.5"
 
 mocha-junit-reporter@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/mocha-junit-reporter/-/mocha-junit-reporter-2.0.2.tgz#d521689b651dc52f52044739f8ffb368be415731"
-  integrity sha512-vYwWq5hh3v1lG0gdQCBxwNipBfvDiAM1PHroQRNp96+2l72e9wEUTw+mzoK+O0SudgfQ7WvTQZ9Nh3qkAYAjfg==
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/mocha-junit-reporter/-/mocha-junit-reporter-2.1.0.tgz#7997348c2e757686c54e42b3756930b55a4518a4"
+  integrity sha512-Zhz1J+XqJUaAOuSFtHgi2+b+W3rP1SZtaU3HHNNp1iEKMSeoC1/EQUVkGknkLNOBxJhXJ4xLgOr8TbYAZOkUIw==
   dependencies:
     debug "^2.2.0"
     md5 "^2.1.0"
