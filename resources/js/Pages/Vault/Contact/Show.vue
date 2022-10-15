@@ -136,7 +136,7 @@
                   <inertia-link
                     :href="page.url.show"
                     :class="{ 'border-orange-500 hover:border-orange-500': page.selected }"
-                    class="inline-block border-b-2 border-transparent px-2 pb-2 hover:border-gray-200 dark:border-gray-700">
+                    class="inline-block border-b-2 border-transparent px-2 pb-2 hover:border-gray-200 hover:dark:border-gray-700">
                     <span class="mb-0 block rounded-sm px-3 py-1 hover:bg-gray-100 hover:dark:bg-gray-900">{{
                       page.name
                     }}</span>
