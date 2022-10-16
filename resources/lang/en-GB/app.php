@@ -140,10 +140,10 @@ return [
 
     'relationship_type_partner' => 'significant other',
     'relationship_type_partner_female' => 'significant other',
-    'relationship_type_partner_male' => 'significant other',
+    'relationship_type_partner_male' => 'partner',
     'relationship_type_partner_with_name' => ':name’s significant other',
     'relationship_type_partner_female_with_name' => ':name’s significant other',
-    'relationship_type_partner_male_with_name' => ':name’s significant other',
+    'relationship_type_partner_male_with_name' => ':name’s partner',
 
     'relationship_type_spouse' => 'spouse',
     'relationship_type_spouse_female' => 'wife',
@@ -153,11 +153,11 @@ return [
     'relationship_type_spouse_male_with_name' => ':name’s husband',
 
     'relationship_type_date' => 'date',
-    'relationship_type_date_female' => 'date',
-    'relationship_type_date_male' => 'date',
+    'relationship_type_date_female' => 'girlfriend',
+    'relationship_type_date_male' => 'boyfriend',
     'relationship_type_date_with_name' => ':name’s date',
-    'relationship_type_date_female_with_name' => ':name’s date',
-    'relationship_type_date_male_with_name' => ':name’s date',
+    'relationship_type_date_female_with_name' => ':name’s girlfriend',
+    'relationship_type_date_male_with_name' => ':name’s boyfriend',
 
     'relationship_type_lover' => 'lover',
     'relationship_type_lover_female' => 'lover',
@@ -233,7 +233,7 @@ return [
     'relationship_type_grandchild_female' => 'granddaughter',
     'relationship_type_grandchild_male' => 'grandson',
     'relationship_type_grandchild_with_name' => ':name’s grandchild',
-    'relationship_type_grandchild_female_with_name' => ':name’s granddauther',
+    'relationship_type_grandchild_female_with_name' => ':name’s granddaughter',
     'relationship_type_grandchild_male_with_name' => ':name’s grandson',
 
     'relationship_type_uncle' => 'uncle',
