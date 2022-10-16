@@ -11,7 +11,7 @@ return [
     //index
     'people_not_found' => 'Contatto non trovato',
     'people_list_number_kids' => ':count bambino|:count bambini',
-    'people_list_last_updated' => 'Ultimo contatto:',
+    'people_list_last_updated' => 'Consultato l\'ultima volta:',
     'people_list_number_reminders' => ':count promemoria|:count promemoria',
     'people_list_blank_title' => 'Non ci sono contatti nel tuo account',
     'people_list_blank_cta' => 'Aggiungi qualcuno',
@@ -228,7 +228,7 @@ return [
     'relationship_form_also_create_contact' => 'Aggiungi questa persona anche come Contatto.',
     'relationship_form_add_description' => 'Ti permetterà di trattare questa persona come ogni altro contatto.',
     'relationship_form_add_no_existing_contact' => 'Al momento non hai contatti che possono essere una relazione :name.',
-    'relationship_delete_confirmation' => 'Rimuovere relazione? Questo cambio è permanente.',
+    'relationship_delete_confirmation' => 'Sei sicuro di voler eliminare questa relazione? L\'eliminazione è permanente.',
     'relationship_unlink_confirmation' => 'Rimuovere questa relazione? Il contatto non sará cancellato – solo la relazione.',
     'relationship_form_add_success' => 'Relazione impostata correttamente.',
     'relationship_form_deletion_success' => 'La relazione è stata eliminata.',

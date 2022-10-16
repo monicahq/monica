@@ -9,6 +9,10 @@ env:
   php-version: '8.1'
   node-version: 18
 
+concurrency: 
+  group: Docker ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   docker-run:
     runs-on: ubuntu-latest
@@ -25,7 +29,7 @@ jobs:
 
       - name: Docker meta
         id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v4.0.1
+        uses: crazy-max/ghaction-docker-meta@v4
         with:
           images: ghcr.io/monicahq/monica
           tag-sha: true

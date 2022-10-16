@@ -21,7 +21,7 @@ return [
     'people_list_firstnameZA' => 'Sorteer op voornaam Z → A',
     'people_list_lastnameAZ' => 'Sorteer op achternaam A → Z',
     'people_list_lastnameZA' => 'Sorteer op achternaam Z → A',
-    'people_list_lastactivitydateNewtoOld' => 'Sorteren op laatste activiteit datum, nieuwste naar oudste',
+    'people_list_lastactivitydateNewtoOld' => 'Sorteer activiteit op datum, nieuw naar oud',
     'people_list_lastactivitydateOldtoNew' => 'Sorteren op laatste activiteit datum, oudste naar nieuwste',
     'people_list_filter_tag' => 'Tonen alle contactpersonen gelabeld met',
     'people_list_clear_filter' => 'Filter wissen',
