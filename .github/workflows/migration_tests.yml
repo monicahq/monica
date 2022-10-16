@@ -11,6 +11,10 @@ on:
     workflows: ['Compress images']
     types: [completed]
 
+concurrency: 
+  group: Migration tests ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   #####################
   # Run tests migration

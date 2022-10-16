@@ -9,7 +9,6 @@ parameters:
     checkMissingIterableValueType: false
     level: 5
     ignoreErrors:
-        - '#Call to an undefined method Illuminate\\View\\View::with[a-zA-Z0-9\\_]+\(\)\.#'
         - '#Access to an undefined property Sabre\\VObject\\Component\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9_]+\.#'
         - '#Unsafe call to private method .* through static::\.#'
         - '#Unsafe access to private property .* through static::\.#'
