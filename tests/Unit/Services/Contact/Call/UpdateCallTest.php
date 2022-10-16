@@ -124,8 +124,8 @@ class UpdateCallTest extends TestCase
         ]);
 
         $emotionArray = [];
-        array_push($emotionArray, $emotion->id);
-        array_push($emotionArray, $emotion2->id);
+        $emotionArray[] = $emotion->id;
+        $emotionArray[] = $emotion2->id;
 
         $request = [
             'account_id' => $call->account_id,
@@ -184,8 +184,8 @@ class UpdateCallTest extends TestCase
         $emotion3 = factory(Emotion::class)->create([]);
         $emotion4 = factory(Emotion::class)->create([]);
         $emotionArray = [];
-        array_push($emotionArray, $emotion3->id);
-        array_push($emotionArray, $emotion4->id);
+        $emotionArray[] = $emotion3->id;
+        $emotionArray[] = $emotion4->id;
 
         $request = [
             'account_id' => $call->account_id,

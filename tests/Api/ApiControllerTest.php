@@ -33,8 +33,7 @@ class ApiControllerTest extends ApiTestCase
     {
         $apiController = new ApiController;
 
-        $this->assertEquals(
-            null,
+        $this->assertNull(
             $apiController->getErrorCode()
         );
 
@@ -51,8 +50,7 @@ class ApiControllerTest extends ApiTestCase
     {
         $apiController = new ApiController;
 
-        $this->assertEquals(
-            null,
+        $this->assertNull(
             $apiController->getWithParameter()
         );
 
