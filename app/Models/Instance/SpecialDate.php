@@ -156,6 +156,7 @@ class SpecialDate extends Model
         // the years
         if ($year != 0) {
             $date = Carbon::createFromDate($year, $month, $day);
+            $this->is_year_unknown = false;
         } else {
             $date = Carbon::createFromDate(now()->year, $month, $day);
             $this->is_year_unknown = true;
