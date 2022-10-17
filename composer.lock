@@ -11569,16 +11569,16 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "v5.4.1",
+            "version": "v5.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "264dce589e7ce37a7ba99cb901eed8249fbec92f"
+                "reference": "1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/264dce589e7ce37a7ba99cb901eed8249fbec92f",
-                "reference": "264dce589e7ce37a7ba99cb901eed8249fbec92f",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7",
+                "reference": "1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7",
                 "shasum": ""
             },
             "require": {
@@ -11593,15 +11593,19 @@
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.4.1",
                 "ext-filter": "*",
-                "phpunit/phpunit": "^7.5.20 || ^8.5.21 || ^9.5.10"
+                "phpunit/phpunit": "^7.5.20 || ^8.5.30 || ^9.5.25"
             },
             "suggest": {
                 "ext-filter": "Required to use the boolean validator."
             },
             "type": "library",
             "extra": {
+                "bamarni-bin": {
+                    "bin-links": true,
+                    "forward-command": true
+                },
                 "branch-alias": {
-                    "dev-master": "5.4-dev"
+                    "dev-master": "5.5-dev"
                 }
             },
             "autoload": {
@@ -11633,7 +11637,7 @@
             ],
             "support": {
                 "issues": "https://github.com/vlucas/phpdotenv/issues",
-                "source": "https://github.com/vlucas/phpdotenv/tree/v5.4.1"
+                "source": "https://github.com/vlucas/phpdotenv/tree/v5.5.0"
             },
             "funding": [
                 {
@@ -11645,7 +11649,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-12T23:22:04+00:00"
+            "time": "2022-10-16T01:01:54+00:00"
         },
         {
             "name": "vluzrmos/language-detector",
@@ -14485,16 +14489,16 @@
         },
         {
             "name": "nunomaduro/larastan",
-            "version": "2.2.3",
+            "version": "2.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/larastan.git",
-                "reference": "37e08dad38c2b94cad702fd6226ee7878554fc4e"
+                "reference": "65f8254194c4db0324c7ba2207440c11a4348890"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/37e08dad38c2b94cad702fd6226ee7878554fc4e",
-                "reference": "37e08dad38c2b94cad702fd6226ee7878554fc4e",
+                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/65f8254194c4db0324c7ba2207440c11a4348890",
+                "reference": "65f8254194c4db0324c7ba2207440c11a4348890",
                 "shasum": ""
             },
             "require": {
@@ -14560,7 +14564,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nunomaduro/larastan/issues",
-                "source": "https://github.com/nunomaduro/larastan/tree/2.2.3"
+                "source": "https://github.com/nunomaduro/larastan/tree/2.2.4"
             },
             "funding": [
                 {
@@ -14580,7 +14584,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-10-14T11:28:59+00:00"
+            "time": "2022-10-15T19:24:23+00:00"
         },
         {
             "name": "openlss/lib-array2xml",
