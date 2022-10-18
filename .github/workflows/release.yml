@@ -56,7 +56,7 @@ jobs:
 
       - name: New release published
         if: steps.semantic.outputs.new_release_published == 'true'
-        run: echo ${{ steps.semantic.outputs.new_release_version }}
+        run: echo "### Release ${{ steps.semantic.outputs.new_release_version }} created :rocket:" >> $GITHUB_STEP_SUMMARY
 
       - name: Store changelog file
         if: steps.semantic.outputs.new_release_published == 'true'
@@ -91,7 +91,7 @@ jobs:
     # Composer
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       - name: Cache composer files
         uses: actions/cache@v3
         with:
@@ -109,7 +109,7 @@ jobs:
           node-version: ${{ env.build-node-version }}
       - name: Get yarn cache directory path
         id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
       - name: Cache yarn files
         uses: actions/cache@v3
         with:

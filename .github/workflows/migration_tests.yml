@@ -11,7 +11,7 @@ on:
     workflows: ['Compress images']
     types: [completed]
 
-concurrency: 
+concurrency:
   group: Migration tests ${{ github.ref }}
   cancel-in-progress: true
 
@@ -52,7 +52,7 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       - name: Cache composer files
         uses: actions/cache@v3
         with:
