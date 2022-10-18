@@ -8,6 +8,11 @@ on:
     workflows: [Javascript linting]
     types: [completed]
 
+concurrency:
+  group: Lint php ${{ github.ref }}
+  cancel-in-progress: true
+
+
 jobs:
   phplint:
     runs-on: ubuntu-latest

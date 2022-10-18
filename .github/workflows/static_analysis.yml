@@ -11,6 +11,11 @@ on:
 env:
   php-version: '8.1'
 
+concurrency:
+  group: Static ${{ github.ref }}
+  cancel-in-progress: true
+
+
 jobs:
   psalm:
     runs-on: ubuntu-latest

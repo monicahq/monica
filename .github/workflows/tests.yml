@@ -16,6 +16,11 @@ env:
   default-php-version: '8.1'
   coverage-with: 'sqlite'
 
+concurrency:
+  group: Build ${{ github.ref }}
+  cancel-in-progress: true
+
+
 jobs:
   #############
   # Run tests

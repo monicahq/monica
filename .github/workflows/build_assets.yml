@@ -13,6 +13,11 @@ on:
 env:
   node-version: 18
 
+concurrency:
+  group: Build assets ${{ github.ref }}
+  cancel-in-progress: true
+
+
 jobs:
   #############
   # Build
