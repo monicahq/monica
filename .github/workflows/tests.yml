@@ -66,7 +66,7 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       - name: Cache composer files
         uses: actions/cache@v3
         with:
@@ -166,13 +166,13 @@ jobs:
         run: |
           version=$(git tag --points-at HEAD)
           test -z "$version" && version="main"
-          echo "::set-output name=value::$version"
+          echo "value=$version" >> $GITHUB_OUTPUT
 
       - name: Set coverage list
         id: coverage
         run: |
           SONAR_COVERAGE=$(ls -m --format=comma results/${{ env.coverage-with }}/coverage/coverage*.xml | sed -e ':a;N;$!ba;s/\n//g; s/ //g;')
-          echo "::set-output name=list::$SONAR_COVERAGE"
+          echo "list=$SONAR_COVERAGE" >> $GITHUB_OUTPUT
 
       - name: SonarCloud Scan
         if: env.SONAR_TOKEN != ''
