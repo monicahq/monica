@@ -74,7 +74,7 @@ mkdir -p $package/storage/framework/sessions
 tar chfj $package.tar.bz2 --exclude .gitignore --exclude .gitkeep $package
 sha512sum "$package.tar.bz2" > "$package.tar.bz2.sha512"
 
-echo "::set-output name=package::$package.tar.bz2"
+echo "package=$package.tar.bz2" >> $GITHUB_OUTPUT
 
 
 # ASSETS
@@ -88,7 +88,7 @@ ln -s $ROOT/public/fonts $assets/public/
 tar chfj $assets.tar.bz2 --exclude .gitignore --exclude .gitkeep $assets
 sha512sum "$assets.tar.bz2" > "$assets.tar.bz2.sha512"
 
-echo "::set-output name=assets::$assets.tar.bz2"
+echo "assets=$assets.tar.bz2" >> $GITHUB_OUTPUT
 
 
 # SIGN
