@@ -24,7 +24,7 @@
     "lint:cypress": "eslint --ext .js tests/cypress/",
     "lint:all": "yarn run lint & yarn run lint:cypress",
     "lint:fix": "yarn run lint --fix & yarn run lint:cypress --fix",
-    "snyk-protect": "snyk protect",
+    "snyk-protect": "snyk-protect",
     "prepublish": "yarn run snyk-protect",
     "delete:reports": "rm results/cypress/* || true",
     "pree2e": "yarn run delete:reports",
@@ -39,6 +39,7 @@
     "yarn": "1.22.x"
   },
   "devDependencies": {
+    "@snyk/protect": "^1.1034.0",
     "cross-env": "^7.0",
     "cypress": "^7.2.0",
     "eslint": "^7.10",
@@ -78,7 +79,6 @@
     "pretty-checkbox-vue": "^1.1",
     "rx-js": "^0.0.0",
     "sass": "^1.32",
-    "snyk": "^1.410",
     "sweet-modal-vue": "^2.0",
     "tachyons": "^4.12",
     "vue": "^2.6",
