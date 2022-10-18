@@ -9,7 +9,7 @@ use App\Services\DispatchableService;
 use App\Exceptions\LicenceKeyErrorException;
 use App\Exceptions\LicenceKeyInvalidException;
 use App\Exceptions\LicenceKeyDontExistException;
-use App\Exceptions\NoLicenceKeyEncryptionSetException;
+use App\Exceptions\MissingPrivateKeyException;
 
 class ActivateLicenceKey extends BaseService implements QueuableService
 {
@@ -54,7 +54,7 @@ class ActivateLicenceKey extends BaseService implements QueuableService
     private function validateEnvVariables(): void
     {
         if (config('monica.licence_private_key') === null) {
-            throw new NoLicenceKeyEncryptionSetException;
+            throw new MissingPrivateKeyException();
         }
     }
 

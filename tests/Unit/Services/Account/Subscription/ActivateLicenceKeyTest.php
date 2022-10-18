@@ -9,7 +9,7 @@ use App\Exceptions\LicenceKeyErrorException;
 use App\Exceptions\LicenceKeyInvalidException;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\LicenceKeyDontExistException;
-use App\Exceptions\NoLicenceKeyEncryptionSetException;
+use App\Exceptions\MissingPrivateKeyException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Account\Subscription\ActivateLicenceKey;
 use App\Services\Account\Subscription\CustomerPortalCall;
@@ -78,7 +78,7 @@ class ActivateLicenceKeyTest extends TestCase
     {
         config(['monica.licence_private_key' => null]);
 
-        $this->expectException(NoLicenceKeyEncryptionSetException::class);
+        $this->expectException(MissingPrivateKeyException::class);
 
         $account = factory(Account::class)->create([]);
 
