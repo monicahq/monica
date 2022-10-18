@@ -8,8 +8,8 @@ use App\Services\QueuableService;
 use App\Services\DispatchableService;
 use App\Exceptions\LicenceKeyErrorException;
 use App\Exceptions\LicenceKeyInvalidException;
-use App\Exceptions\LicenceKeyDontExistException;
 use App\Exceptions\MissingPrivateKeyException;
+use App\Exceptions\LicenceKeyDontExistException;
 
 class ActivateLicenceKey extends BaseService implements QueuableService
 {
