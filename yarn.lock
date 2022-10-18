@@ -1101,6 +1101,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@snyk/protect@^1.1034.0":
+  version "1.1034.0"
+  resolved "https://registry.yarnpkg.com/@snyk/protect/-/protect-1.1034.0.tgz#6140faf18de86b60b0d156aba0d9fb4a9449708b"
+  integrity sha512-UdNRBzhOsVZM0fzdh4wAmq14vDwPAdYgdIYqvlsm9T+46hlddv54Y6vMP7/LVypiroKYWCjO8ufvERz7ZVMRtA==
+
 "@trysound/sax@0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
@@ -6388,11 +6393,6 @@ slice-ansi@^4.0.0:
     ansi-styles "^4.0.0"
     astral-regex "^2.0.0"
     is-fullwidth-code-point "^3.0.0"
-
-snyk@^1.410:
-  version "1.1032.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.1032.0.tgz#8a942452c8ceadb790f1ea45f32bbe0b57fb7fe6"
-  integrity sha512-06c1DN4l5Tw7lOdEm2eVj5FgE7rpAzl83D1eBNrx1tOTtapL3fmMtrInP2pf5eAwGzhU/jFEzCwEi8F4JKHa4Q==
 
 sockjs@^0.3.24:
   version "0.3.24"
