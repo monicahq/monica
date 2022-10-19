@@ -27,16 +27,17 @@ class CustomerPortalCallTest extends TestCase
 
         Http::fake([
             'https://fake.test/oauth/token' => Http::response(['access_token' => '123']),
-            'https://fake.test/api/validate' => Http::response([], 200),
+            'https://fake.test/api/validate' => Http::response(['data' => 'ok'], 200),
         ]);
 
         $request = [
             'licence_key' => 'key',
         ];
 
-        $status = app(CustomerPortalCall::class)->execute($request);
+        $response = app(CustomerPortalCall::class)->execute($request);
 
-        $this->assertEquals(200, $status);
+        $this->assertEquals(200, $response['status']);
+        $this->assertEquals(['data' => 'ok'], $response['data']);
 
         Http::assertSentInOrder([
             function ($request, $response) {

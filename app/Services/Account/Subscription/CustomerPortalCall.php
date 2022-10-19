@@ -31,9 +31,9 @@ class CustomerPortalCall extends BaseService
      * If it is, activate the licence key and set the valid_until_at date.
      *
      * @param  array  $data
-     * @return int
+     * @return array
      */
-    public function execute(array $data): int
+    public function execute(array $data): array
     {
         $this->validate($data);
         $this->data = $data;
@@ -43,7 +43,10 @@ class CustomerPortalCall extends BaseService
         $accessToken = $this->getAccessToken();
         $response = $this->makeRequestToCustomerPortal($accessToken);
 
-        return $response->status();
+        return [
+            'status' => $response->status(),
+            'data' => $response->json(),
+        ];
     }
 
     private function validateEnvVariables(): void

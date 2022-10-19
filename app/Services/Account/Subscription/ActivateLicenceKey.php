@@ -18,6 +18,7 @@ class ActivateLicenceKey extends BaseService implements QueuableService
     private Account $account;
     private array $data;
     private int $status;
+    private array $response;
 
     /**
      * Get the validation rules that apply to the service.
@@ -60,9 +61,11 @@ class ActivateLicenceKey extends BaseService implements QueuableService
 
     private function makeRequestToCustomerPortal(): void
     {
-        $this->status = app(CustomerPortalCall::class)->execute([
+        $data = app(CustomerPortalCall::class)->execute([
             'licence_key' => $this->data['licence_key'],
         ]);
+        $this->status = $data['status'];
+        $this->response = $data['data'];
     }
 
     private function checkResponseCode(): void
@@ -85,9 +88,19 @@ class ActivateLicenceKey extends BaseService implements QueuableService
         $licenceKey = $this->decodeKey();
 
         $this->account->licence_key = $this->data['licence_key'];
-        $this->account->valid_until_at = $licenceKey['next_check_at'];
+        $this->account->valid_until_at = $this->response['next_check_at'];
         $this->account->purchaser_email = $licenceKey['purchaser_email'];
-        $this->account->frequency = $licenceKey['frequency'];
+        switch ($licenceKey['frequency']) {
+            case 'month':
+                $this->account->frequency = 'monthly';
+                break;
+            case 'year':
+                $this->account->frequency = 'annual';
+                break;
+            default:
+                $this->account->frequency = $licenceKey['frequency'];
+                break;
+        }
         $this->account->save();
     }
 
