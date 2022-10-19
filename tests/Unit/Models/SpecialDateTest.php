@@ -79,8 +79,7 @@ class SpecialDateTest extends FeatureTestCase
 
         $specialDate->createFromAge(100);
 
-        $this->assertEquals(
-            true,
+        $this->assertTrue(
             $specialDate->is_age_based
         );
 
@@ -102,8 +101,7 @@ class SpecialDateTest extends FeatureTestCase
 
         $specialDate->createFromDate(0, 10, 10);
 
-        $this->assertEquals(
-            true,
+        $this->assertTrue(
             $specialDate->is_year_unknown
         );
 
@@ -130,8 +128,7 @@ class SpecialDateTest extends FeatureTestCase
 
         $specialDate->createFromDate(2019, 10, 10);
 
-        $this->assertEquals(
-            false,
+        $this->assertFalse(
             $specialDate->is_year_unknown
         );
 

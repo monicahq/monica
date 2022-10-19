@@ -17,8 +17,7 @@ class GiftTest extends TestCase
     {
         $gift = factory(Gift::class)->make();
 
-        $this->assertEquals(
-            false,
+        $this->assertFalse(
             $gift->hasParticularRecipient()
         );
     }
@@ -30,8 +29,7 @@ class GiftTest extends TestCase
             'is_for' => 1,
         ]);
 
-        $this->assertEquals(
-            true,
+        $this->assertTrue(
             $gift->hasParticularRecipient()
         );
     }
