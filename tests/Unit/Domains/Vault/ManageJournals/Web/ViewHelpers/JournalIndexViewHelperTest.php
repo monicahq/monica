@@ -3,8 +3,11 @@
 namespace Tests\Unit\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
 use App\Models\Journal;
+use App\Models\Post;
+use App\Models\User;
 use App\Models\Vault;
 use App\Vault\ManageJournals\Web\ViewHelpers\JournalIndexViewHelper;
+use Carbon\Carbon;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -16,6 +19,7 @@ class JournalIndexViewHelperTest extends TestCase
     /** @test */
     public function it_gets_the_data_needed_for_the_view(): void
     {
+        $user = User::factory()->create();
         $vault = Vault::factory()->create();
         $journal = Journal::factory()->create([
             'vault_id' => $vault->id,
@@ -23,7 +27,16 @@ class JournalIndexViewHelperTest extends TestCase
             'description' => 'Description 1',
         ]);
 
-        $array = JournalIndexViewHelper::data($vault);
+        Post::factory()->create([
+            'journal_id' => $journal->id,
+            'written_at' => Carbon::createFromFormat('Y-m-d', '2020-01-01'),
+        ]);
+        Post::factory()->create([
+            'journal_id' => $journal->id,
+            'written_at' => Carbon::createFromFormat('Y-m-d', '2019-01-01'),
+        ]);
+
+        $array = JournalIndexViewHelper::data($vault, $user);
 
         $this->assertEquals(
             [
@@ -31,6 +44,7 @@ class JournalIndexViewHelperTest extends TestCase
                     'id' => $journal->id,
                     'name' => 'Journal 1',
                     'description' => 'Description 1',
+                    'last_updated' => 'Jan 01, 2020',
                     'url' => [
                         'show' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id,
                     ],

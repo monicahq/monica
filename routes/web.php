@@ -294,6 +294,7 @@ Route::middleware([
 
                 Route::prefix('{journal}')->middleware(['journal'])->group(function () {
                     Route::get('', [JournalController::class, 'show'])->name('journal.show');
+                    Route::get('years/{year}', [JournalController::class, 'year'])->name('journal.year');
 
                     // posts
                     Route::get('posts/create', [PostController::class, 'create'])->name('post.create');

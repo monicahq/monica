@@ -21,14 +21,14 @@ class JournalShowViewHelperTest extends TestCase
             'name' => 'My Journal',
             'description' => 'My Journal Description',
         ]);
-        $post = Post::factory()->create([
+        Post::factory()->create([
             'journal_id' => $journal->id,
             'title' => 'My Post',
             'written_at' => '2020-01-01',
         ]);
 
-        $array = JournalShowViewHelper::data($journal, $user);
-        $this->assertCount(5, $array);
+        $array = JournalShowViewHelper::data($journal, 2020, $user);
+        $this->assertCount(6, $array);
         $this->assertEquals(
             $journal->id,
             $array['id']
@@ -43,22 +43,69 @@ class JournalShowViewHelperTest extends TestCase
         );
         $this->assertEquals(
             [
-                0 => [
-                    'id' => $post->id,
-                    'title' => 'My Post',
-                    'written_at' => 'Jan 01, 2020',
-                    'url' => [
-                        'show' => env('APP_URL').'/vaults/'.$journal->vault->id.'/journals/'.$journal->id.'/posts/'.$post->id,
-                    ],
-                ],
-            ],
-            $array['posts']->toArray()
-        );
-        $this->assertEquals(
-            [
                 'create' => env('APP_URL').'/vaults/'.$journal->vault->id.'/journals/'.$journal->id.'/posts/create',
             ],
             $array['url']
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_posts_in_the_given_year(): void
+    {
+        $user = User::factory()->create();
+        $journal = Journal::factory()->create([
+            'name' => 'My Journal',
+            'description' => 'My Journal Description',
+        ]);
+        $post = Post::factory()->create([
+            'journal_id' => $journal->id,
+            'title' => 'My Post',
+            'written_at' => '2020-01-01',
+        ]);
+
+        $collection = JournalShowViewHelper::postsInYear($journal, 2020, $user);
+
+        $this->assertEquals(
+            '12',
+            $collection->toArray()[0]['id']
+        );
+        $this->assertEquals(
+            'December 2020',
+            $collection->toArray()[0]['month_human_format']
+        );
+        $this->assertEquals(
+            'DEC',
+            $collection->toArray()[0]['month']
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_years_in_the_given_journal(): void
+    {
+        User::factory()->create();
+        $journal = Journal::factory()->create([
+            'name' => 'My Journal',
+            'description' => 'My Journal Description',
+        ]);
+        $post = Post::factory()->create([
+            'journal_id' => $journal->id,
+            'title' => 'My Post',
+            'written_at' => '2020-01-01',
+        ]);
+
+        $collection = JournalShowViewHelper::yearsOfContentInJournal($journal);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'year' => 2020,
+                    'posts' => 1,
+                    'url' => [
+                        'show' => env('APP_URL').'/vaults/'.$journal->vault->id.'/journals/'.$journal->id.'/years/2020',
+                    ],
+                ],
+            ],
+            $collection->toArray()
         );
     }
 }

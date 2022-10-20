@@ -23,6 +23,9 @@ module.exports = {
     'text-slate-600',
     'bg-sky-200',
     'text-sky-600',
+    {
+      pattern: /bg-(green)-(100|200|300|400|500|600|700|800|900)/,
+    },
   ],
 
   theme: {

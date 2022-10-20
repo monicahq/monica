@@ -88,14 +88,4 @@ export default {
     grid-template-columns: 1fr;
   }
 }
-
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
-input[type='checkbox'] {
-  top: 3px;
-  width: 12px;
-}
 </style>

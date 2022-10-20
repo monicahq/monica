@@ -74,7 +74,18 @@ class DateHelper
      */
     public static function formatMonthAndYear(Carbon $date): string
     {
-        return $date->isoFormat(trans('format.short_month_day'));
+        return $date->isoFormat(trans('format.short_month_year'));
+    }
+
+    /**
+     * Return the long month and the year in a format like "September 2020".
+     *
+     * @param  Carbon  $date
+     * @return string
+     */
+    public static function formatLongMonthAndYear(Carbon $date): string
+    {
+        return $date->isoFormat(trans('format.long_month_year'));
     }
 
     /**
@@ -124,6 +135,17 @@ class DateHelper
     public static function formatFullDate(Carbon $date): string
     {
         return $date->isoFormat(trans('format.full_date'));
+    }
+
+    /**
+     * Return the day as a number, like "03".
+     *
+     * @param  Carbon  $date
+     * @return string
+     */
+    public static function formatDayNumber(Carbon $date): string
+    {
+        return $date->isoFormat(trans('format.day_number'));
     }
 
     /**

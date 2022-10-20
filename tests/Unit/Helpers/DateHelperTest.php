@@ -137,6 +137,17 @@ class DateHelperTest extends TestCase
     }
 
     /** @test */
+    public function it_gets_a_long_month_and_year(): void
+    {
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', '1978-10-01 17:56:03');
+
+        $this->assertEquals(
+            'October 1978',
+            DateHelper::formatLongMonthAndYear($date)
+        );
+    }
+
+    /** @test */
     public function it_gets_the_complete_date(): void
     {
         $date = Carbon::createFromFormat('Y-m-d H:i:s', '1978-10-01 17:56:03');
@@ -144,6 +155,17 @@ class DateHelperTest extends TestCase
         $this->assertEquals(
             'Sunday, Oct 1st 1978',
             DateHelper::formatFullDate($date)
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_day_as_number(): void
+    {
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', '1978-10-01 17:56:03');
+
+        $this->assertEquals(
+            '01',
+            DateHelper::formatDayNumber($date)
         );
     }
 

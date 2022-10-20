@@ -109,7 +109,11 @@ return [
     'journal_index_title' => 'All the journals',
     'journal_index_create' => 'Create a journal',
     'journal_index_blank' => 'Create a journal to document your life.',
+    'journal_index_last_updated' => 'Updated on :date',
     'journal_show_cta' => 'Create a post',
+    'journal_show_years' => 'Years',
+    'journal_show_tags' => 'All tags',
+    'journal_show_blank' => 'The journal lets you document your life with your own words.',
 
     /***************************************************************
      * VAULT SETTINGS

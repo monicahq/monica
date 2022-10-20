@@ -45,28 +45,128 @@ defineProps({
       <div class="mx-auto max-w-6xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <h1 class="mb-8 text-2xl">{{ data.name }}</h1>
 
-        <!-- cta -->
-        <div class="mb-4 flex items-end">
-          <pretty-link
-            v-if="layoutData.vault.permission.at_least_editor"
-            :href="data.url.create"
-            :text="$t('vault.journal_show_cta')"
-            :icon="'plus'" />
+        <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
+          <!-- left -->
+          <div class="p-3 sm:p-0">
+            <!-- years -->
+            <p v-if="data.years.length > 0" class="mb-2 font-medium">
+              <span class="mr-1"> 📆 </span> {{ $t('vault.journal_show_years') }}
+            </p>
+            <ul v-if="data.years.length > 0" class="mb-8">
+              <li v-for="year in data.years" :key="year.year" class="mb-2 flex items-center justify-between last:mb-0">
+                <inertia-link :href="year.url.show" class="text-blue-500 hover:underline">{{ year.year }}</inertia-link>
+                <span class="text-sm text-gray-400">{{ year.posts }}</span>
+              </li>
+            </ul>
+
+            <!-- tags -->
+            <p class="mb-2 font-medium"><span class="mr-1"> ⚡ </span> {{ $t('vault.journal_show_tags') }}</p>
+            <ul>
+              <li class="mb-2 flex items-center justify-between">
+                <span>Motorcycle</span>
+                <span class="text-sm text-gray-400">12</span>
+              </li>
+              <li class="flex items-center justify-between">
+                <span>Holiday</span>
+                <span class="text-sm text-gray-400">1</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- middle -->
+          <div class="p-3 sm:p-0">
+            <!-- all months in the year -->
+            <div class="mb-2 grid grid-cols-12 gap-2">
+              <div v-for="month in data.months" :key="month.id" class="text-center">
+                <div class="mb-1 text-xs">{{ month.month }}</div>
+
+                <div :class="month.color" class="h-3 rounded-md border border-gray-200"></div>
+              </div>
+            </div>
+
+            <!-- list of posts -->
+            <ul
+              v-if="data.months.length > 0"
+              class="post-list mb-6 rounded-lg border border-b-0 border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+              <!-- loop on months -->
+              <li v-for="month in data.months" :key="month.id">
+                <div v-if="month.posts.length > 0">
+                  <div class="border-b border-gray-200 bg-gray-100 px-5 py-2 text-sm font-semibold">
+                    {{ month.month_human_format }}
+                  </div>
+
+                  <ul class="border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+                    <li
+                      v-for="post in month.posts"
+                      :key="post.id"
+                      class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                      <!-- written at -->
+                      <div class="mr-4 rounded-lg border border-gray-200 p-2 text-center leading-tight">
+                        <span class="block text-xs uppercase">{{ post.written_at_day }}</span>
+                        <span class="text-xl">{{ post.written_at_day_number }}</span>
+                      </div>
+
+                      <!-- content -->
+                      <div>
+                        <span
+                          ><inertia-link :href="post.url.show" class="text-blue-500 hover:underline">{{
+                            post.title
+                          }}</inertia-link></span
+                        >
+                        <p v-if="post.excerpt" class="">{{ post.excerpt }}</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+
+            <!-- blank state -->
+            <div v-else class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+              <p class="p-5 text-center">
+                {{ $t('vault.journal_show_blank') }}
+              </p>
+            </div>
+          </div>
+
+          <!-- right -->
+          <div class="p-3 sm:p-0">
+            <!-- cta -->
+            <div class="mb-6 flex justify-center">
+              <pretty-link
+                v-if="layoutData.vault.permission.at_least_editor"
+                :href="data.url.create"
+                :text="$t('vault.journal_show_cta')"
+                :icon="'plus'" />
+            </div>
+
+            <!-- slices of life -->
+            <p class="mb-2 font-medium"><span class="mr-1"> 🍕 </span> Slices of life</p>
+            <div class="mb-6">
+              <img
+                class="h-32 w-full rounded-t"
+                src="https://images.unsplash.com/photo-1665328236871-4932f62b72de?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+                alt="" />
+              <div
+                class="rounded-b border-b border-r border-l border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                <p class="font-semibold">Trip to Venice</p>
+                <p class="text-sm text-gray-600">Jan 23 - Mar 20</p>
+              </div>
+            </div>
+
+            <div class="mb-6">
+              <img
+                class="h-32 w-full rounded-t"
+                src="https://images.unsplash.com/photo-1665324031594-382930e876df?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2074&q=80"
+                alt="" />
+              <div
+                class="rounded-b border-b border-r border-l border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                <p class="font-semibold">Holiday 2022</p>
+                <p class="text-sm text-gray-600">Jun 21 - Aug 12</p>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <!-- list of posts -->
-        <ul class="post-list mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-          <li
-            v-for="post in data.posts"
-            :key="post.id"
-            class="border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-            <!-- written at -->
-            <span class="mr-2">{{ post.written_at }}</span>
-
-            <!-- content -->
-            <inertia-link :href="post.url.show" class="text-blue-500 hover:underline">{{ post.title }}</inertia-link>
-          </li>
-        </ul>
       </div>
     </main>
   </layout>
@@ -86,6 +186,16 @@ defineProps({
   li:hover:last-child {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
+  }
+}
+
+.special-grid {
+  grid-template-columns: 150px 1fr 200px;
+}
+
+@media (max-width: 480px) {
+  .special-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
