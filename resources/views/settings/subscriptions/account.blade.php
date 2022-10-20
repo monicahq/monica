@@ -55,7 +55,9 @@
                 </div>
                 <div class="dtc {{ htmldir() == 'ltr' ? 'tr' : 'tl' }}">
                   <div class="pa2">
-                    <a href="{{ $customerPortalUrl }}">{{ trans('settings.subscriptions_account_change') }}</a>
+                    <a href="{{ $customerPortalUrl }}/monica">
+                      {{ trans('settings.subscriptions_account_change') }}
+                    </a>
                   </div>
                 </div>
               </div>
@@ -73,7 +75,7 @@
                 </div>
                 <div class="dtc {{ htmldir() == 'ltr' ? 'tr' : 'tl' }}">
                   <div class="pa2">
-                    <a href="{{ $customerPortalUrl }}">
+                    <a href="{{ $customerPortalUrl }}/monica">
                       {{ trans('settings.subscriptions_account_cancel_action') }}
                     </a>
                   </div>
