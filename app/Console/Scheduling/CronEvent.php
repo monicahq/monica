@@ -97,6 +97,20 @@ class CronEvent
     }
 
     /**
+     * Run the command every $minutes.
+     *
+     * @param  int  $minutes
+     * @return self
+     */
+    public function minutes(int $minutes): self
+    {
+        $this->minutes = $minutes;
+        $this->days = 0;
+
+        return $this;
+    }
+
+    /**
      * Test if the command is due to run.
      *
      * @return bool
