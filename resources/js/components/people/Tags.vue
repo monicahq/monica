@@ -35,7 +35,7 @@
 
       <!-- edit button -->
       <li v-show="contactTags.length > 0" class="di">
-        <a v-show="!editMode" class="pointer" href="" @click.prevent="search = ''; editMode = true">
+        <a v-show="!editMode" class="pointer" href="" @click.prevent="enterEditMode">
           {{ $t('app.edit') }}
         </a>
       </li>
@@ -52,6 +52,7 @@
                  @keydown.enter="onEnter"
                  @keydown.esc="onEscape"
                  @input="onChange"
+                 ref="tags"
           />
 
           <ul v-show="isOpen" v-if="results.length > 0" class="autocomplete-results ba b--gray-monica absolute bg-white left-0 z-9999">
@@ -66,7 +67,7 @@
           </ul>
         </div>
 
-        <a class="pointer" href="" @click.prevent="editMode = false">
+        <a class="pointer" href="" @click.prevent="search = ''; editMode = false; isOpen = false;">
           {{ $t('app.close') }}
         </a>
       </li>
@@ -76,7 +77,7 @@
         <span class="i mr2">
           {{ $t('people.tag_no_tags') }}
         </span>
-        <a v-show="!editMode" class="pointer" href="" @click.prevent="editMode = true">
+        <a v-show="!editMode" class="pointer" href="" @click.prevent="enterEditMode">
           {{ $t('people.tag_add') }}
         </a>
       </li>
@@ -141,6 +142,11 @@ export default {
         .then(response => {
           this.contactTags = response.data.data;
         });
+    },
+
+    enterEditMode() {
+      this.editMode = true;
+      this.$nextTick(() => this.$refs.tags.focus());
     },
 
     removeTag(tag) {
