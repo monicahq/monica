@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Post;
 use App\Models\PostSection;
+use App\Models\Tag;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -28,6 +29,17 @@ class PostTest extends TestCase
         ]);
 
         $this->assertTrue($post->postSections()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_tags(): void
+    {
+        $post = Post::factory()->create();
+        $tag = Tag::factory()->create();
+
+        $post->tags()->sync([$tag->id]);
+
+        $this->assertTrue($post->tags()->exists());
     }
 
     /** @test */

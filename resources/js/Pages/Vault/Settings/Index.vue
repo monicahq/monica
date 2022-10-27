@@ -10,6 +10,8 @@
 
         <contact-important-date-types :data="data" />
 
+        <tags :data="data" />
+
         <delete :data="data" />
       </div>
     </main>
@@ -21,6 +23,7 @@ import Layout from '@/Shared/Layout.vue';
 import Delete from '@/Pages/Vault/Settings/Partials/Delete.vue';
 import DefaultTemplate from '@/Pages/Vault/Settings/Partials/DefaultTemplate.vue';
 import Labels from '@/Pages/Vault/Settings/Partials/Labels.vue';
+import Tags from '@/Pages/Vault/Settings/Partials/Tags.vue';
 import Users from '@/Pages/Vault/Settings/Partials/Users.vue';
 import ContactImportantDateTypes from '@/Pages/Vault/Settings/Partials/ContactImportantDateTypes.vue';
 
@@ -30,6 +33,7 @@ export default {
     Delete,
     DefaultTemplate,
     Labels,
+    Tags,
     Users,
     ContactImportantDateTypes,
   },

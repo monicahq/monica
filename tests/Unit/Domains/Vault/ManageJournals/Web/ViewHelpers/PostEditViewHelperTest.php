@@ -25,13 +25,13 @@ class PostEditViewHelperTest extends TestCase
         $post = Post::factory()->create([
             'journal_id' => $journal->id,
         ]);
-        $section = PostSection::factory()->create([
+        PostSection::factory()->create([
             'post_id' => $post->id,
         ]);
 
         $array = PostEditViewHelper::data($journal, $post);
 
-        $this->assertCount(6, $array);
+        $this->assertCount(8, $array);
         $this->assertEquals(
             $post->id,
             $array['id']
@@ -50,6 +50,7 @@ class PostEditViewHelperTest extends TestCase
             [
                 'update' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$post->id.'/update',
                 'show' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$post->id,
+                'tag_store' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$post->id.'/tags',
                 'back' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id,
                 'destroy' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$post->id,
             ],

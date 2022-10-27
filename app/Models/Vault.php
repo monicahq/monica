@@ -153,4 +153,14 @@ class Vault extends Model
     {
         return $this->hasMany(Journal::class);
     }
+
+    /**
+     * Get the tags associated with the vault.
+     *
+     * @return HasMany
+     */
+    public function tags(): HasMany
+    {
+        return $this->hasMany(Tag::class);
+    }
 }

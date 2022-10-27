@@ -52,6 +52,7 @@ return [
     'save' => 'Save',
     'add' => 'Add',
     'cancel' => 'Cancel',
+    'close' => 'Close',
     'delete_confirm' => 'Sure?',
     'delete' => 'Delete',
     'edit' => 'Edit',

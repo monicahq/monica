@@ -4,6 +4,7 @@ import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
+import Tags from '@/Pages/Vault/Journal/Post/Partials/Tags.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { onMounted, watch, ref } from 'vue';
 import { debounce } from 'lodash';
@@ -211,10 +212,7 @@ const destroy = () => {
             </div>
 
             <!-- categories -->
-            <p class="mb-2 flex items-center font-bold">
-              <span>Categories</span>
-            </p>
-            <div class="mb-6">Jeux videos</div>
+            <tags :data="data" />
 
             <!-- stats -->
             <p class="mb-2 font-bold">Statistics</p>

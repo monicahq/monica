@@ -1,8 +1,9 @@
 <template>
-  <div class="mb-4">
-    <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
-      <div class="mb-2 text-xs sm:mb-0">Labels</div>
-      <span v-if="!editLabelModalShown" class="relative cursor-pointer" @click="showEditModal">
+  <div class="mb-8">
+    <p class="mb-2 flex items-center justify-between font-bold">
+      <span>{{ $t('vault.journal_post_edit_tags') }}</span>
+
+      <span v-if="!editTagModalShown" class="relative cursor-pointer" @click="showEditModal">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="icon-sidebar relative inline h-3 w-3 text-gray-300 hover:text-gray-600 dark:text-gray-400"
@@ -19,47 +20,47 @@
 
       <!-- close button -->
       <span
-        v-if="editLabelModalShown"
+        v-if="editTagModalShown"
         class="cursor-pointer text-xs text-gray-600 dark:text-gray-400"
-        @click="editLabelModalShown = false">
-        Close
+        @click="editTagModalShown = false">
+        {{ $t('app.close') }}
       </span>
-    </div>
+    </p>
 
     <!-- edit labels -->
     <div
-      v-if="editLabelModalShown"
+      v-if="editTagModalShown"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-      <!-- filter list of labels -->
+      <!-- filter list of tags -->
       <div class="border-b border-gray-200 p-2 dark:border-gray-700">
         <errors :errors="form.errors" />
 
         <text-input
-          :ref="'label'"
+          :ref="'tag'"
           v-model="form.search"
           :type="'text'"
-          :placeholder="'Filter list or create a new label'"
+          :placeholder="'Filter list or create a new tag'"
           :autofocus="true"
           :input-class="'block w-full'"
           :required="true"
           :autocomplete="false"
-          @esc-key-pressed="editLabelModalShown = false" />
+          @esc-key-pressed="editTagModalShown = false" />
       </div>
 
-      <!-- labels in vault -->
-      <ul class="label-list overflow-auto bg-white dark:bg-gray-900" :class="filteredLabels.length > 0 ? 'h-40' : ''">
+      <!-- tags in vault -->
+      <ul class="tag-list overflow-auto bg-white dark:bg-gray-900" :class="filteredTags.length > 0 ? 'h-40' : ''">
         <li
-          v-for="label in filteredLabels"
-          :key="label.id"
+          v-for="tag in filteredTags"
+          :key="tag.id"
           class="flex cursor-pointer items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
-          @click="set(label)">
+          @click="set(tag)">
           <div>
-            <span class="mr-2 inline-block h-4 w-4 rounded-full" :class="label.bg_color" />
-            <span>{{ label.name }}</span>
+            <span class="mr-2 inline-block h-4 w-4 rounded-full" :class="tag.bg_color" />
+            <span>{{ tag.name }}</span>
           </div>
 
           <svg
-            v-if="label.taken"
+            v-if="tag.taken"
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 w-6 text-green-700"
             fill="none"
@@ -69,36 +70,35 @@
           </svg>
         </li>
 
-        <!-- case if the label does not exist and needs to be created -->
+        <!-- case if the tag does not exist and needs to be created -->
         <li
-          v-if="filteredLabels.length == 0 && form.search.length != ''"
+          v-if="filteredTags.length == 0 && form.search.length != ''"
           class="cursor-pointer border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
           @click="store()">
-          Create new label <span class="italic">"{{ form.search }}"</span>
+          Create new tag <span class="italic">"{{ form.search }}"</span>
         </li>
 
-        <!-- blank state when there is no label at all -->
+        <!-- blank state when there is no tag at all -->
         <li
-          v-if="filteredLabels.length == 0 && form.search.length == ''"
+          v-if="filteredTags.length == 0 && form.search.length == ''"
           class="border-b border-gray-200 px-3 py-2 text-sm text-gray-600 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400 hover:dark:bg-slate-800">
-          Please type a few characters to create a new label.
+          Please type a few characters to create a new tag.
         </li>
       </ul>
     </div>
 
-    <!-- list of labels -->
+    <!-- list of tags -->
     <div class="flex flex-wrap">
       <span
-        v-for="label in localLabels"
-        :key="label.id"
-        class="mr-2 mb-2 inline-block rounded py-1 px-2 text-xs font-semibold last:mr-0"
-        :class="label.bg_color + ' ' + label.text_color">
-        <inertia-link :href="label.url.show">{{ label.name }}</inertia-link>
+        v-for="tag in localTags"
+        :key="tag.id"
+        class="mr-2 inline-block rounded bg-neutral-200 py-1 px-2 text-xs font-semibold text-neutral-500 last:mr-0">
+        <inertia-link :href="tag.url.show">{{ tag.name }}</inertia-link>
       </span>
     </div>
 
     <!-- blank state -->
-    <p v-if="localLabels.length == 0" class="text-sm text-gray-600 dark:text-gray-400">Not set</p>
+    <p v-if="localTags.length == 0" class="text-sm text-gray-600 dark:text-gray-400">Not set</p>
   </div>
 </template>
 
@@ -121,9 +121,9 @@ export default {
 
   data() {
     return {
-      editLabelModalShown: false,
-      localLabels: [],
-      localLabelsInVault: [],
+      editTagModalShown: false,
+      localTags: [],
+      localTagsInVault: [],
       form: {
         search: '',
         name: '',
@@ -133,28 +133,28 @@ export default {
   },
 
   computed: {
-    filteredLabels() {
-      return this.localLabelsInVault.filter((label) => {
-        return label.name.toLowerCase().indexOf(this.form.search.toLowerCase()) > -1;
+    filteredTags() {
+      return this.localTagsInVault.filter((tag) => {
+        return tag.name.toLowerCase().indexOf(this.form.search.toLowerCase()) > -1;
       });
     },
   },
 
   created() {
-    this.localLabels = this.data.labels_in_contact;
+    this.localTags = this.data.tags_in_post;
 
     // TODO: this should not be loaded up front. we should do a async call once
-    // the edit mode is active to load all the labels from the backend instead.
-    this.localLabelsInVault = this.data.labels_in_vault;
+    // the edit mode is active to load all the tags from the backend instead.
+    this.localTagsInVault = this.data.tags_in_vault;
   },
 
   methods: {
     showEditModal() {
       this.form.name = '';
-      this.editLabelModalShown = true;
+      this.editTagModalShown = true;
 
       this.$nextTick(() => {
-        this.$refs.label.focus();
+        this.$refs.tag.focus();
       });
     },
 
@@ -162,43 +162,43 @@ export default {
       this.form.name = this.form.search;
 
       axios
-        .post(this.data.url.store, this.form)
+        .post(this.data.url.tag_store, this.form)
         .then((response) => {
-          this.flash('The label has been added', 'success');
+          this.flash('The tag has been added', 'success');
           this.form.search = '';
-          this.localLabelsInVault.push(response.data.data);
-          this.localLabels.push(response.data.data);
+          this.localTagsInVault.push(response.data.data);
+          this.localTags.push(response.data.data);
         })
         .catch((error) => {
           this.form.errors = error.response.data;
         });
     },
 
-    set(label) {
-      if (label.taken) {
-        this.remove(label);
+    set(tag) {
+      if (tag.taken) {
+        this.remove(tag);
         return;
       }
 
       axios
-        .put(label.url.update)
+        .put(tag.url.update)
         .then((response) => {
-          this.localLabelsInVault[this.localLabelsInVault.findIndex((x) => x.id === label.id)] = response.data.data;
-          this.localLabels.push(response.data.data);
+          this.localTagsInVault[this.localTagsInVault.findIndex((x) => x.id === tag.id)] = response.data.data;
+          this.localTags.push(response.data.data);
         })
         .catch((error) => {
           this.form.errors = error.response.data;
         });
     },
 
-    remove(label) {
+    remove(tag) {
       axios
-        .delete(label.url.destroy)
+        .delete(tag.url.destroy)
         .then((response) => {
-          this.localLabelsInVault[this.localLabelsInVault.findIndex((x) => x.id === label.id)] = response.data.data;
+          this.localTagsInVault[this.localTagsInVault.findIndex((x) => x.id === tag.id)] = response.data.data;
 
-          var id = this.localLabels.findIndex((x) => x.id === label.id);
-          this.localLabels.splice(id, 1);
+          var id = this.localTags.findIndex((x) => x.id === tag.id);
+          this.localTags.splice(id, 1);
         })
         .catch((error) => {
           this.form.errors = error.response.data;
@@ -213,7 +213,7 @@ export default {
   top: -2px;
 }
 
-.label-list {
+.tag-list {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 

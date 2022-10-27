@@ -4,6 +4,7 @@ namespace App\Vault\ManageVaultSettings\Web\ViewHelpers;
 
 use App\Helpers\VaultHelper;
 use App\Models\Label;
+use App\Models\Tag;
 use App\Models\User;
 use App\Models\Vault;
 use App\Vault\ManageVaultImportantDateTypes\Web\ViewHelpers\VaultImportantDateTypesViewHelper;
@@ -71,12 +72,23 @@ class VaultSettingsIndexViewHelper
         // contact important date types
         $dateTypesCollection = VaultImportantDateTypesViewHelper::data($vault);
 
+        // tags
+        $tags = $vault->tags()
+            ->withCount('posts')
+            ->orderBy('name', 'asc')
+            ->get();
+
+        $tagsCollection = $tags->map(function ($tag) use ($vault) {
+            return self::dtoTag($vault, $tag);
+        });
+
         return [
             'templates' => $templatesCollection,
             'users_in_vault' => $usersInVaultCollection,
             'users_in_account' => $usersInAccountCollection,
             'labels' => $labelsCollection,
             'label_colors' => $labelColorsCollection,
+            'tags' => $tagsCollection,
             'contact_important_date_types' => $dateTypesCollection,
             'url' => [
                 'template_update' => route('vault.settings.template.update', [
@@ -86,6 +98,9 @@ class VaultSettingsIndexViewHelper
                     'vault' => $vault->id,
                 ]),
                 'label_store' => route('vault.settings.label.store', [
+                    'vault' => $vault->id,
+                ]),
+                'tag_store' => route('vault.settings.tag.store', [
                     'vault' => $vault->id,
                 ]),
                 'contact_date_important_date_type_store' => route('vault.settings.important_date_type.store', [
@@ -136,6 +151,25 @@ class VaultSettingsIndexViewHelper
                 'destroy' => route('vault.settings.label.destroy', [
                     'vault' => $vault->id,
                     'label' => $label->id,
+                ]),
+            ],
+        ];
+    }
+
+    public static function dtoTag(Vault $vault, Tag $tag): array
+    {
+        return [
+            'id' => $tag->id,
+            'name' => $tag->name,
+            'count' => $tag->posts_count,
+            'url' => [
+                'update' => route('vault.settings.tag.update', [
+                    'vault' => $vault->id,
+                    'tag' => $tag->id,
+                ]),
+                'destroy' => route('vault.settings.tag.destroy', [
+                    'vault' => $vault->id,
+                    'tag' => $tag->id,
                 ]),
             ],
         ];

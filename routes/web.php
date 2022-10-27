@@ -93,6 +93,7 @@ use App\Settings\ManageUsers\Web\Controllers\UserController;
 use App\Vault\ManageFiles\Web\Controllers\VaultFileController;
 use App\Vault\ManageJournals\Web\Controllers\JournalController;
 use App\Vault\ManageJournals\Web\Controllers\PostController;
+use App\Vault\ManageJournals\Web\Controllers\PostTagController;
 use App\Vault\ManageTasks\Web\Controllers\VaultTaskController;
 use App\Vault\ManageVault\Web\Controllers\VaultController;
 use App\Vault\ManageVault\Web\Controllers\VaultFeedController;
@@ -100,6 +101,7 @@ use App\Vault\ManageVault\Web\Controllers\VaultReminderController;
 use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsContactImportantDateTypeController;
 use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsController;
 use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsLabelController;
+use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsTagController;
 use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsTemplateController;
 use App\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsUserController;
 use App\Vault\Search\Web\Controllers\VaultContactSearchController;
@@ -306,6 +308,11 @@ Route::middleware([
                         Route::get('edit', [PostController::class, 'edit'])->name('post.edit');
                         Route::put('update', [PostController::class, 'update'])->name('post.update');
                         Route::delete('', [PostController::class, 'destroy'])->name('post.destroy');
+
+                        // tags
+                        Route::post('tags', [PostTagController::class, 'store'])->name('post.tag.store');
+                        Route::put('tags/{tag}', [PostTagController::class, 'update'])->name('post.tag.update');
+                        Route::delete('tags/{tag}', [PostTagController::class, 'destroy'])->name('post.tag.destroy');
                     });
                 });
             });
@@ -333,6 +340,12 @@ Route::middleware([
                 Route::post('settings/labels', [VaultSettingsLabelController::class, 'store'])->name('vault.settings.label.store');
                 Route::put('settings/labels/{label}', [VaultSettingsLabelController::class, 'update'])->name('vault.settings.label.update');
                 Route::delete('settings/labels/{label}', [VaultSettingsLabelController::class, 'destroy'])->name('vault.settings.label.destroy');
+
+                // tags
+                Route::get('settings/tags', [VaultSettingsTagController::class, 'index'])->name('vault.settings.tag.index');
+                Route::post('settings/tags', [VaultSettingsTagController::class, 'store'])->name('vault.settings.tag.store');
+                Route::put('settings/tags/{tag}', [VaultSettingsTagController::class, 'update'])->name('vault.settings.tag.update');
+                Route::delete('settings/tags/{tag}', [VaultSettingsTagController::class, 'destroy'])->name('vault.settings.tag.destroy');
 
                 // contact important date types
                 Route::post('settings/contactImportantDateTypes', [VaultSettingsContactImportantDateTypeController::class, 'store'])->name('vault.settings.important_date_type.store');

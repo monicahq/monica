@@ -19,6 +19,7 @@ parameters:
         - '#Access to an undefined property App\\Models\\Post::\$excerpt\.#'
         - '#Access to an undefined property App\\Models\\Post::\$year\.#'
         - '#Access to an undefined property App\\Models\\Label::\$contacts_count\.#'
+        - '#Access to an undefined property App\\Models\\Tag::\$posts_count\.#'
         - '#Access to an undefined property App\\Models\\LifeEventCategory.*::\$label\.#'
         - '#Access to an undefined property App\\Models\\LifeEventType.*::\$label.#'
         - '#Access to an undefined property App\\Models\\Module::\$position\.#'

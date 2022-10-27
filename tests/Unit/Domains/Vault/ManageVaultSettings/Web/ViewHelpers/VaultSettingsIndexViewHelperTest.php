@@ -4,6 +4,7 @@ namespace Tests\Unit\Domains\Vault\ManageVaultSettings\Web\ViewHelpers;
 
 use App\Models\Contact;
 use App\Models\Label;
+use App\Models\Tag;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
@@ -34,7 +35,7 @@ class VaultSettingsIndexViewHelperTest extends TestCase
         $vault->refresh();
         $array = VaultSettingsIndexViewHelper::data($vault);
         $this->assertCount(
-            7,
+            8,
             $array
         );
         $this->assertArrayHasKey('templates', $array);
@@ -43,6 +44,7 @@ class VaultSettingsIndexViewHelperTest extends TestCase
         $this->assertArrayHasKey('url', $array);
         $this->assertArrayHasKey('labels', $array);
         $this->assertArrayHasKey('label_colors', $array);
+        $this->assertArrayHasKey('tags', $array);
         $this->assertEquals(
             [
                 0 => [
@@ -86,6 +88,7 @@ class VaultSettingsIndexViewHelperTest extends TestCase
                 'template_update' => env('APP_URL').'/vaults/'.$vault->id.'/settings/template',
                 'user_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/users',
                 'label_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/labels',
+                'tag_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/tags',
                 'contact_date_important_date_type_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/contactImportantDateTypes',
                 'update' => env('APP_URL').'/vaults/'.$vault->id.'/settings',
                 'destroy' => env('APP_URL').'/vaults/'.$vault->id,
@@ -110,6 +113,28 @@ class VaultSettingsIndexViewHelperTest extends TestCase
                 'url' => [
                     'update' => env('APP_URL').'/vaults/'.$vault->id.'/settings/labels/'.$label->id,
                     'destroy' => env('APP_URL').'/vaults/'.$vault->id.'/settings/labels/'.$label->id,
+                ],
+            ],
+            $array
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_data_needed_for_the_data_transfer_object_tag(): void
+    {
+        $vault = Vault::factory()->create();
+        $tag = Tag::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        $array = VaultSettingsIndexViewHelper::dtoTag($vault, $tag);
+        $this->assertEquals(
+            [
+                'id' => $tag->id,
+                'name' => $tag->name,
+                'count' => null,
+                'url' => [
+                    'update' => env('APP_URL').'/vaults/'.$vault->id.'/settings/tags/'.$tag->id,
+                    'destroy' => env('APP_URL').'/vaults/'.$vault->id.'/settings/tags/'.$tag->id,
                 ],
             ],
             $array

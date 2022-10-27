@@ -103,7 +103,7 @@ class PostController extends Controller
 
     public function update(Request $request, int $vaultId, int $journalId, int $postId)
     {
-        $vault = Vault::findOrFail($vaultId);
+        Vault::findOrFail($vaultId);
 
         $post = (new UpdatePost())->execute([
             'account_id' => Auth::user()->account_id,

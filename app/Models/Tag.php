@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-class Label extends Model
+class Tag extends Model
 {
     use HasFactory;
 
-    protected $table = 'labels';
+    protected $table = 'tags';
 
     /**
      * The attributes that are mass assignable.
@@ -23,13 +23,10 @@ class Label extends Model
         'vault_id',
         'name',
         'slug',
-        'description',
-        'bg_color',
-        'text_color',
     ];
 
     /**
-     * Get the vault associated with the label.
+     * Get the vault associated with the journal tag.
      *
      * @return BelongsTo
      */
@@ -39,17 +36,17 @@ class Label extends Model
     }
 
     /**
-     * Get the contacts associated with the label.
+     * Get the posts associated with the journal tag.
      *
      * @return BelongsToMany
      */
-    public function contacts(): BelongsToMany
+    public function posts(): BelongsToMany
     {
-        return $this->belongsToMany(Contact::class);
+        return $this->belongsToMany(Post::class);
     }
 
     /**
-     * Get the label's feed item.
+     * Get the journal tag's feed item.
      *
      * @return MorphOne
      */
