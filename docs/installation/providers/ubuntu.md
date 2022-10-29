@@ -56,7 +56,7 @@ Then install php 8.1 with these extensions:
 ```sh
 sudo apt update
 sudo apt install -y php8.1 php8.1-bcmath php8.1-cli php8.1-curl php8.1-common \
-    php8.1-fpm php8.1-gd php8.1-gmp php8.1-intl php8.1-json php8.1-mbstring \
+    php8.1-fpm php8.1-gd php8.1-gmp php8.1-intl php-json php8.1-mbstring \
     php8.1-mysql php8.1-opcache php8.1-redis php8.1-xml php8.1-zip
 ```
 
