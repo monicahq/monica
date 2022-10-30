@@ -31,7 +31,7 @@ class ModuleFamilySummaryViewHelper
             ->where('type', RelationshipType::TYPE_LOVE)
             ->get();
 
-        $loveRelationshipsCollection = self::getRelations($loveRelationships, $contact, $user);
+        $loveRelationshipsCollection = self::getRelations($loveRelationships, $contact);
 
         $familyRelationshipType = $contact->vault->account->relationshipGroupTypes()
             ->where('type', RelationshipGroupType::TYPE_FAMILY)
@@ -41,7 +41,7 @@ class ModuleFamilySummaryViewHelper
             ->where('type', RelationshipType::TYPE_CHILD)
             ->get();
 
-        $familyRelationshipsCollection = self::getRelations($familyRelationships, $contact, $user);
+        $familyRelationshipsCollection = self::getRelations($familyRelationships, $contact);
 
         return [
             'family_relationships' => $familyRelationshipsCollection,
@@ -49,7 +49,7 @@ class ModuleFamilySummaryViewHelper
         ];
     }
 
-    private static function getRelations(EloquentCollection $collection, Contact $contact, User $user): Collection
+    private static function getRelations(EloquentCollection $collection, Contact $contact): Collection
     {
         $relationshipsCollection = collect();
         $counter = 0;
@@ -70,11 +70,11 @@ class ModuleFamilySummaryViewHelper
             }
 
             foreach ($relations as $relation) {
-                if ($relation->contact_id !== $contact->id) {
-                    continue;
+                if ($relation->contact_id === $contact->id) {
+                    $relatedContact = Contact::find($relation->related_contact_id);
+                } else {
+                    $relatedContact = Contact::find($relation->contact_id);
                 }
-
-                $relatedContact = Contact::find($relation->related_contact_id);
 
                 $relationshipsCollection->push([
                     'id' => $counter,
