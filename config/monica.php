@@ -85,7 +85,7 @@ return [
     |
     */
 
-    'help_center_url' => 'https://docs-ivory-one.vercel.app/docs/',
+    'help_center_url' => 'https://regis-freyd.gitbook.io/docs/',
 
     /*
     |--------------------------------------------------------------------------
@@ -99,12 +99,12 @@ return [
 
     'help_links' => [
         'last_updated_contacts' => 'vaults/dashboard#last-updated-contacts',
-        'settings_preferences_help' => 'account-settings/manage-preferences#help-display',
-        'settings_preferences_language' => 'account-settings/manage-preferences#language',
-        'settings_preferences_contact_names' => 'account-settings/manage-preferences#customize-contact-names',
-        'settings_preferences_date' => 'account-settings/manage-preferences#date-format',
-        'settings_preferences_numerical_format' => 'account-settings/manage-preferences#numerical-format',
-        'settings_preferences_timezone' => 'account-settings/manage-preferences#timezone',
-        'settings_preferences_maps' => 'account-settings/manage-preferences#maps-preferences',
+        'settings_preferences_help' => 'user-and-account-settings/manage-preferences#help-display',
+        'settings_preferences_language' => 'user-and-account-settings/manage-preferences#language',
+        'settings_preferences_contact_names' => 'user-and-account-settings/manage-preferences#customize-contact-names',
+        'settings_preferences_date' => 'user-and-account-settings/manage-preferences#date-format',
+        'settings_preferences_numerical_format' => 'user-and-account-settings/manage-preferences#numerical-format',
+        'settings_preferences_timezone' => 'user-and-account-settings/manage-preferences#timezone',
+        'settings_preferences_maps' => 'user-and-account-settings/manage-preferences#timezone',
     ],
 ];
