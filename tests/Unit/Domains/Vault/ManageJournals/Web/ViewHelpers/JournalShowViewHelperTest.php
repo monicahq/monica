@@ -28,7 +28,7 @@ class JournalShowViewHelperTest extends TestCase
         ]);
 
         $array = JournalShowViewHelper::data($journal, 2020, $user);
-        $this->assertCount(6, $array);
+        $this->assertCount(7, $array);
         $this->assertEquals(
             $journal->id,
             $array['id']

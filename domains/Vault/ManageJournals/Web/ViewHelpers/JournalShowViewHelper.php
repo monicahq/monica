@@ -6,6 +6,7 @@ use App\Helpers\DateHelper;
 use App\Helpers\SQLHelper;
 use App\Models\Journal;
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -24,6 +25,7 @@ class JournalShowViewHelper
             'description' => $journal->description,
             'months' => $monthsCollection,
             'years' => self::yearsOfContentInJournal($journal),
+            'tags' => self::tags($journal),
             'url' => [
                 'create' => route('post.create', [
                     'vault' => $journal->vault_id,
@@ -143,5 +145,30 @@ class JournalShowViewHelper
                 ]),
             ],
         ]);
+    }
+
+    public static function tags(Journal $journal): Collection
+    {
+        // this is not optimized
+        $posts = $journal->posts->pluck('id')->toArray();
+
+        $tags = DB::table('post_tag')
+            ->whereIn('post_id', $posts)
+            ->get()
+            ->unique('tag_id')
+            ->toArray();
+
+        $tagsCollection = collect();
+        foreach ($tags as $tag) {
+            $tag = Tag::with('posts')->find($tag->tag_id);
+
+            $tagsCollection->push([
+                'id' => $tag->id,
+                'name' => $tag->name,
+                'count' => $tag->posts()->count(),
+            ]);
+        }
+
+        return $tagsCollection;
     }
 }

@@ -60,15 +60,13 @@ defineProps({
             </ul>
 
             <!-- tags -->
-            <p class="mb-2 font-medium"><span class="mr-1"> ⚡ </span> {{ $t('vault.journal_show_tags') }}</p>
-            <ul>
-              <li class="mb-2 flex items-center justify-between">
-                <span>Motorcycle</span>
-                <span class="text-sm text-gray-400">12</span>
-              </li>
-              <li class="flex items-center justify-between">
-                <span>Holiday</span>
-                <span class="text-sm text-gray-400">1</span>
+            <p v-if="data.tags.length > 0" class="mb-2 font-medium">
+              <span class="mr-1"> ⚡ </span> {{ $t('vault.journal_show_tags') }}
+            </p>
+            <ul v-if="data.tags.length > 0">
+              <li v-for="tag in data.tags" :key="tag.id" class="mb-2 flex items-center justify-between">
+                <span>{{ tag.name }}</span>
+                <span class="text-sm text-gray-400">{{ tag.count }}</span>
               </li>
             </ul>
           </div>

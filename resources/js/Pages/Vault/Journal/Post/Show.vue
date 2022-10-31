@@ -47,7 +47,7 @@ defineProps({
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">
+            <li class="relative inline">
               {{ data.title }}
             </li>
           </ul>

@@ -115,8 +115,23 @@ const destroy = () => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">
-              {{ $t('app.breadcrumb_post_create_template') }}
+            <li class="mr-2 inline">
+              <inertia-link :href="data.url.show" class="text-blue-500 hover:underline">
+                {{ data.title }}
+              </inertia-link>
+            </li>
+            <li class="relative mr-2 inline">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon-breadcrumb relative inline h-3 w-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </li>
+            <li class="relative inline">
+              {{ $t('app.breadcrumb_post_edit') }}
             </li>
           </ul>
         </div>

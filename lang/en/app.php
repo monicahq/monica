@@ -32,6 +32,7 @@ return [
     'breadcrumb_contact_goal' => 'Detail of a goal',
     'breadcrumb_journal_index' => 'Journals',
     'breadcrumb_journal_create' => 'Create a journal',
+    'breadcrumb_post_edit' => 'Edit a post',
     'breadcrumb_post_create_template' => 'Choose a template',
     'breadcrumb_settings' => 'Settings',
     'breadcrumb_settings_preferences' => 'User preferences',
