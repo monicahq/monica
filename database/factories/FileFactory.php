@@ -30,7 +30,7 @@ class FileFactory extends Factory
             'name' => $this->faker->name,
             'mime_type' => 'avatar',
             'type' => 'avatar',
-            'size' => $this->faker->numberBetween(),
+            'size' => $this->faker->numberBetween(200 * 1024 * 1024, 500 * 1024 * 1024),
         ];
     }
 }
