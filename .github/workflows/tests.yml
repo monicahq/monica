@@ -29,17 +29,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Testsuite ${{ matrix.testsuite }} with PHP ${{ matrix.php-version }} + ${{ matrix.connection }}
 
-    services:
-      pgsql:
-        image: postgres:13.0
-        env:
-          POSTGRES_DB: monica
-          POSTGRES_USER: monica
-          POSTGRES_PASSWORD: root
-        ports:
-          - 5432:5432
-        options: --name=postgres --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
-
     strategy:
       fail-fast: false
       matrix:
@@ -115,6 +104,13 @@ jobs:
         run: |
           sudo systemctl start mysql.service
           mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+      - name: Create pgsql database
+        if: matrix.connection == 'pgsql'
+        run: |
+          sudo systemctl start postgresql.service
+          sudo -u postgres psql --command="CREATE USER monica PASSWORD 'secret'" --command="\du"
+          sudo -u postgres createdb --owner=monica monica
+          PGPASSWORD=secret psql --username=monica --host=localhost --list monica
 
       - name: Generate key
         run: php artisan key:generate
