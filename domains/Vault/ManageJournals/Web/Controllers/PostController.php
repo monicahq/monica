@@ -10,6 +10,7 @@ use App\Models\PostTemplate;
 use App\Models\Vault;
 use App\Vault\ManageJournals\Services\CreatePost;
 use App\Vault\ManageJournals\Services\DestroyPost;
+use App\Vault\ManageJournals\Services\IncrementPostReadCounter;
 use App\Vault\ManageJournals\Services\UpdatePost;
 use App\Vault\ManageJournals\Web\ViewHelpers\PostCreateViewHelper;
 use App\Vault\ManageJournals\Web\ViewHelpers\PostEditViewHelper;
@@ -82,6 +83,14 @@ class PostController extends Controller
     {
         $vault = Vault::findOrFail($vaultId);
         $post = Post::findOrFail($postId);
+
+        (new IncrementPostReadCounter())->execute([
+            'account_id' => Auth::user()->account_id,
+            'author_id' => Auth::user()->id,
+            'vault_id' => $vaultId,
+            'journal_id' => $journalId,
+            'post_id' => $postId,
+        ]);
 
         return Inertia::render('Vault/Journal/Post/Show', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),

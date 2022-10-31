@@ -23,6 +23,7 @@ class Post extends Model
     protected $fillable = [
         'journal_id',
         'title',
+        'view_count',
         'published',
         'written_at',
         'updated_at',

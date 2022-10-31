@@ -25,6 +25,7 @@ class PostHelperTest extends TestCase
             [
                 'word_count' => 24,
                 'time_to_read_in_minute' => 1,
+                'view_count' => 0,
             ],
             PostHelper::statistics($post)
         );

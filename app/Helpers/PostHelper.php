@@ -16,7 +16,6 @@ class PostHelper
     public static function statistics(Post $post): array
     {
         $wordCount = 0;
-        $duration = 0;
 
         $postSections = $post->postSections()
             ->whereNotNull('content')
@@ -33,6 +32,7 @@ class PostHelper
         return [
             'word_count' => $wordCount,
             'time_to_read_in_minute' => $duration,
+            'view_count' => $post->view_count,
         ];
     }
 }
