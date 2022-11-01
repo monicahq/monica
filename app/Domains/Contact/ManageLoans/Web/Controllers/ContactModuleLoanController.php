@@ -20,7 +20,7 @@ class ContactModuleLoanController extends Controller
 
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'currency_id' => $request->input('currency_id'),
@@ -49,7 +49,7 @@ class ContactModuleLoanController extends Controller
 
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'loan_id' => $loanId,
@@ -75,7 +75,7 @@ class ContactModuleLoanController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'loan_id' => $loanId,

@@ -26,7 +26,7 @@ class PersonalizeCurrencyController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
         ];
 
         (new EnableAllCurrencies())->execute($data);
@@ -40,7 +40,7 @@ class PersonalizeCurrencyController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'currency_id' => $currencyId,
         ];
 
@@ -55,7 +55,7 @@ class PersonalizeCurrencyController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
         ];
 
         (new DisableAllCurrencies())->execute($data);

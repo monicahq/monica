@@ -19,7 +19,7 @@ class PersonalizeTemplatePagesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'template_id' => $templateId,
             'name' => $request->input('name'),
             'can_be_deleted' => true,
@@ -36,7 +36,7 @@ class PersonalizeTemplatePagesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'template_id' => $templateId,
             'template_page_id' => $templatePageId,
             'name' => $request->input('name'),
@@ -53,7 +53,7 @@ class PersonalizeTemplatePagesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'template_id' => $templateId,
             'template_page_id' => $templatePageId,
         ];

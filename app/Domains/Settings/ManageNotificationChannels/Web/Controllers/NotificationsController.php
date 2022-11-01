@@ -28,7 +28,7 @@ class NotificationsController extends Controller
 
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'label' => $request->input('label'),
             'type' => UserNotificationChannel::TYPE_EMAIL,
             'content' => $request->input('content'),
@@ -47,7 +47,7 @@ class NotificationsController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'user_notification_channel_id' => $channelId,
         ];
 

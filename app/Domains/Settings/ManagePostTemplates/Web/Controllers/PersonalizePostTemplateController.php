@@ -26,7 +26,7 @@ class PersonalizePostTemplateController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'label' => $request->input('label'),
             'can_be_deleted' => true,
         ];
@@ -42,7 +42,7 @@ class PersonalizePostTemplateController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'post_template_id' => $postTemplateId,
             'label' => $request->input('label'),
         ];
@@ -58,7 +58,7 @@ class PersonalizePostTemplateController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'post_template_id' => $postTemplateId,
         ];
 

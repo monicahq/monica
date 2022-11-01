@@ -63,7 +63,7 @@ class PostController extends Controller
 
         $post = (new CreatePost())->execute([
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'journal_id' => $journalId,
             'post_template_id' => $templateId,
@@ -86,7 +86,7 @@ class PostController extends Controller
 
         (new IncrementPostReadCounter())->execute([
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'journal_id' => $journalId,
             'post_id' => $postId,
@@ -116,7 +116,7 @@ class PostController extends Controller
 
         $post = (new UpdatePost())->execute([
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'journal_id' => $journalId,
             'post_id' => $postId,
@@ -134,7 +134,7 @@ class PostController extends Controller
     {
         (new DestroyPost())->execute([
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'journal_id' => $journalId,
             'post_id' => $postId,

@@ -26,7 +26,7 @@ class PersonalizeContatInformationTypesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'name' => $request->input('name'),
             'protocol' => $request->input('protocol'),
         ];
@@ -42,7 +42,7 @@ class PersonalizeContatInformationTypesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'contact_information_type_id' => $contactInformationTypeId,
             'name' => $request->input('name'),
             'protocol' => $request->input('protocol'),
@@ -59,7 +59,7 @@ class PersonalizeContatInformationTypesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'contact_information_type_id' => $contactInformationTypeId,
         ];
 

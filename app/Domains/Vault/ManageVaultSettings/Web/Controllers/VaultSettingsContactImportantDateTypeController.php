@@ -17,7 +17,7 @@ class VaultSettingsContactImportantDateTypeController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'label' => $request->input('label'),
             'internal_type' => $request->input('internal_type'),
@@ -36,7 +36,7 @@ class VaultSettingsContactImportantDateTypeController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_important_date_type_id' => $typeId,
             'label' => $request->input('label'),
@@ -56,7 +56,7 @@ class VaultSettingsContactImportantDateTypeController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_important_date_type_id' => $typeId,
         ];

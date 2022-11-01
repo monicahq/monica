@@ -14,7 +14,7 @@ class PersonalizeGiftOccasionsPositionController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'gift_occasion_id' => $giftOccasionId,
             'new_position' => $request->input('position'),
         ];

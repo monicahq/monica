@@ -14,7 +14,7 @@ class PreferencesDateFormatController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'date_format' => $request->input('dateFormat'),
         ];
 

@@ -16,7 +16,7 @@ class PersonalizeCallReasonsController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'call_reason_type_id' => $callReasonTypeId,
             'label' => $request->input('label'),
         ];
@@ -32,7 +32,7 @@ class PersonalizeCallReasonsController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'call_reason_type_id' => $callReasonTypeId,
             'call_reason_id' => $reasonId,
             'label' => $request->input('label'),
@@ -49,7 +49,7 @@ class PersonalizeCallReasonsController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'call_reason_type_id' => $callReasonTypeId,
             'call_reason_id' => $reasonId,
         ];

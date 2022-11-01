@@ -17,7 +17,7 @@ class ContactModuleNoteController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'title' => $request->input('title'),
@@ -38,7 +38,7 @@ class ContactModuleNoteController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'note_id' => $noteId,
@@ -60,7 +60,7 @@ class ContactModuleNoteController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'note_id' => $noteId,

@@ -41,7 +41,7 @@ class ContactPageController extends Controller
         (new UpdateContactView())->execute([
             'account_id' => Auth::user()->account_id,
             'vault_id' => $vaultId,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'contact_id' => $contactId,
         ]);
 

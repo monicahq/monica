@@ -17,7 +17,7 @@ class PersonalizePostTemplateSectionController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'post_template_id' => $postTemplateId,
             'label' => $request->input('label'),
             'can_be_deleted' => true,
@@ -35,7 +35,7 @@ class PersonalizePostTemplateSectionController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'post_template_id' => $postTemplateId,
             'post_template_section_id' => $postTemplateSectionId,
             'label' => $request->input('label'),
@@ -53,7 +53,7 @@ class PersonalizePostTemplateSectionController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'post_template_id' => $postTemplateId,
             'post_template_section_id' => $postTemplateSectionId,
         ];

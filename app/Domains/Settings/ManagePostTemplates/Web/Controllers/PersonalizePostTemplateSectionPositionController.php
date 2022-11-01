@@ -15,7 +15,7 @@ class PersonalizePostTemplateSectionPositionController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'post_template_id' => $postTemplateId,
             'post_template_section_id' => $postTemplateSectionId,
             'new_position' => $request->input('position'),

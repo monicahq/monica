@@ -16,7 +16,7 @@ class PersonalizeActivitiesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'activity_type_id' => $activityTypeId,
             'label' => $request->input('label'),
         ];
@@ -32,7 +32,7 @@ class PersonalizeActivitiesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'activity_type_id' => $activityTypeId,
             'activity_id' => $activityId,
             'label' => $request->input('label'),
@@ -49,7 +49,7 @@ class PersonalizeActivitiesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'activity_type_id' => $activityTypeId,
             'activity_id' => $activityId,
         ];

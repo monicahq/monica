@@ -51,7 +51,7 @@ class ContactController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
@@ -96,7 +96,7 @@ class ContactController extends Controller
         (new UpdateContactView())->execute([
             'account_id' => Auth::user()->account_id,
             'vault_id' => $vaultId,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'contact_id' => $contactId,
         ]);
 
@@ -121,7 +121,7 @@ class ContactController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'first_name' => $request->input('first_name'),
@@ -147,7 +147,7 @@ class ContactController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
         ];

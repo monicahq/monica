@@ -17,7 +17,7 @@ class VaultSettingsUserController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'user_id' => $request->input('user_id'),
             'permission' => $request->input('permission'),
@@ -36,7 +36,7 @@ class VaultSettingsUserController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'user_id' => $userId,
             'permission' => $request->input('permission'),
@@ -55,7 +55,7 @@ class VaultSettingsUserController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'user_id' => $userId,
         ];

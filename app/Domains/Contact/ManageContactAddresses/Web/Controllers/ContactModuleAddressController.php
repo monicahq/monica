@@ -17,7 +17,7 @@ class ContactModuleAddressController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'address_type_id' => $request->input('address_type_id') == 0 ? null : $request->input('address_type_id'),
@@ -45,7 +45,7 @@ class ContactModuleAddressController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'address_id' => $addressId,
@@ -74,7 +74,7 @@ class ContactModuleAddressController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'address_id' => $addressId,

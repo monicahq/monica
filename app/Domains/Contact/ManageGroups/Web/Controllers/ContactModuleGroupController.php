@@ -36,7 +36,7 @@ class ContactModuleGroupController extends Controller
         if ($request->input('name') != '') {
             $data = [
                 'account_id' => Auth::user()->account_id,
-                'author_id' => Auth::user()->id,
+                'author_id' => Auth::id(),
                 'vault_id' => $vaultId,
                 'group_type_id' => $request->input('group_type_id'),
                 'name' => $request->input('name'),
@@ -48,7 +48,7 @@ class ContactModuleGroupController extends Controller
 
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'group_id' => $request->input('group_id') != 0 ? $request->input('group_id') : $groupId,
@@ -68,7 +68,7 @@ class ContactModuleGroupController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'group_id' => $groupId,

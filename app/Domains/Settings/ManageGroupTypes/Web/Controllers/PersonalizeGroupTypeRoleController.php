@@ -16,7 +16,7 @@ class PersonalizeGroupTypeRoleController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'group_type_id' => $groupTypeId,
             'label' => $request->input('label'),
         ];
@@ -32,7 +32,7 @@ class PersonalizeGroupTypeRoleController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'group_type_id' => $groupTypeId,
             'group_type_role_id' => $groupTypeRoleId,
             'label' => $request->input('label'),
@@ -49,7 +49,7 @@ class PersonalizeGroupTypeRoleController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'group_type_id' => $groupTypeId,
             'group_type_role_id' => $groupTypeRoleId,
         ];

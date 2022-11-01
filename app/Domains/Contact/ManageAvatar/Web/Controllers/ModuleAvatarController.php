@@ -17,7 +17,7 @@ class ModuleAvatarController extends Controller
         // first we upload the file
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'uuid' => $request->input('uuid'),
@@ -33,7 +33,7 @@ class ModuleAvatarController extends Controller
 
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'file_id' => $file->id,
@@ -53,7 +53,7 @@ class ModuleAvatarController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
         ];

@@ -17,7 +17,7 @@ class VaultSettingsLabelController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'name' => $request->input('name'),
             'description' => $request->input('description'),
@@ -37,7 +37,7 @@ class VaultSettingsLabelController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'label_id' => $labelId,
             'name' => $request->input('name'),
@@ -58,7 +58,7 @@ class VaultSettingsLabelController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'label_id' => $labelId,
         ];

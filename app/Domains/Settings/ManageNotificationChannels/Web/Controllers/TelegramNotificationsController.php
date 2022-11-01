@@ -17,7 +17,7 @@ class TelegramNotificationsController extends Controller
 
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'label' => 'Telegram',
             'type' => UserNotificationChannel::TYPE_TELEGRAM,
             'content' => 'tbd',

@@ -17,7 +17,7 @@ class ContactInformationController extends Controller
     {
         $info = (new CreateContactInformation())->execute([
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'contact_information_type_id' => $request->input('contact_information_type_id'),
@@ -35,7 +35,7 @@ class ContactInformationController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'contact_information_id' => $infoId,
@@ -55,7 +55,7 @@ class ContactInformationController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'contact_information_id' => $infoId,

@@ -16,7 +16,7 @@ class PersonalizeLifeEventTypesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'life_event_category_id' => $lifeEventCategoryId,
             'label' => $request->input('label'),
             'can_be_deleted' => true,
@@ -34,7 +34,7 @@ class PersonalizeLifeEventTypesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'life_event_category_id' => $lifeEventCategoryId,
             'life_event_type_id' => $lifeEventTypeId,
             'label' => $request->input('label'),
@@ -53,7 +53,7 @@ class PersonalizeLifeEventTypesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'life_event_category_id' => $lifeEventCategoryId,
             'life_event_type_id' => $lifeEventTypeId,
         ];

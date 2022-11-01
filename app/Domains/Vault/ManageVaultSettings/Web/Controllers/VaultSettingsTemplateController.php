@@ -13,7 +13,7 @@ class VaultSettingsTemplateController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'template_id' => $request->input('template_id'),
         ];

@@ -44,7 +44,7 @@ class ContactModuleCallController extends Controller
 
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'call_reason_id' => $request->input('call_reason_id') == 0 ? null : $request->input('call_reason_id'),
@@ -98,7 +98,7 @@ class ContactModuleCallController extends Controller
 
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'call_id' => $callId,
@@ -124,7 +124,7 @@ class ContactModuleCallController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'call_id' => $callId,

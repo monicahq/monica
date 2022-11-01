@@ -26,7 +26,7 @@ class PersonalizePetCategoriesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'name' => $request->input('name'),
         ];
 
@@ -41,7 +41,7 @@ class PersonalizePetCategoriesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'pet_category_id' => $petCategoryId,
             'name' => $request->input('name'),
         ];
@@ -57,7 +57,7 @@ class PersonalizePetCategoriesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'pet_category_id' => $petCategoryId,
         ];
 

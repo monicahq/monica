@@ -29,7 +29,7 @@ class PersonalizeTemplatesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'name' => $request->input('name'),
         ];
 
@@ -44,7 +44,7 @@ class PersonalizeTemplatesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'template_id' => $templateId,
             'name' => $request->input('name'),
         ];
@@ -60,7 +60,7 @@ class PersonalizeTemplatesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'template_id' => $templateId,
         ];
 

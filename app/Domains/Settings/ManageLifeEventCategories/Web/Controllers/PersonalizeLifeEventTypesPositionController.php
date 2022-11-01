@@ -14,7 +14,7 @@ class PersonalizeLifeEventTypesPositionController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'life_event_category_id' => $lifeEventCategoryId,
             'life_event_type_id' => $lifeEventTypeId,
             'new_position' => $request->input('position'),

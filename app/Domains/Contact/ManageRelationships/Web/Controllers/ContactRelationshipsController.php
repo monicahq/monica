@@ -48,7 +48,7 @@ class ContactRelationshipsController extends Controller
         if ($request->input('choice') != 'contact') {
             $otherContact = (new CreateContact())->execute([
                 'account_id' => Auth::user()->account_id,
-                'author_id' => Auth::user()->id,
+                'author_id' => Auth::id(),
                 'vault_id' => $vaultId,
                 'first_name' => $request->input('first_name'),
                 'last_name' => $request->input('last_name'),
@@ -69,7 +69,7 @@ class ContactRelationshipsController extends Controller
 
         (new SetRelationship())->execute([
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'relationship_type_id' => $request->input('relationship_type_id'),
             'contact_id' => $request->input('base_contact_id') == $contactId ? $contactId : $otherContactId,
@@ -90,7 +90,7 @@ class ContactRelationshipsController extends Controller
 
         (new UnsetRelationship())->execute([
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'relationship_type_id' => $relationship->relationship_type_id,
             'contact_id' => $relationship->contact_id,

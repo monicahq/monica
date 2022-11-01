@@ -36,7 +36,7 @@ class ContactModuleJobInformationController extends Controller
         if ($request->input('company_name')) {
             $data = [
                 'account_id' => Auth::user()->account_id,
-                'author_id' => Auth::user()->id,
+                'author_id' => Auth::id(),
                 'vault_id' => $vaultId,
                 'name' => $request->input('company_name'),
                 'type' => Company::TYPE_COMPANY,
@@ -47,7 +47,7 @@ class ContactModuleJobInformationController extends Controller
 
         (new UpdateJobInformation())->execute([
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'company_id' => $company->id,

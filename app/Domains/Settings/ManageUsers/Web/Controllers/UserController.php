@@ -36,7 +36,7 @@ class UserController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'email' => $request->input('email'),
             'is_administrator' => $request->input('administrator') === 'true' ? true : false,
         ];
@@ -52,7 +52,7 @@ class UserController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'user_id' => $userId,
         ];
 
@@ -71,7 +71,7 @@ class UserController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'user_id' => $userId,
         ];
 

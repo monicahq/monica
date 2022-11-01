@@ -56,7 +56,7 @@ class ContactImportantDatesController extends Controller
 
         $date = (new CreateContactImportantDate())->execute([
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'contact_important_date_type_id' => $request->input('contact_important_date_type_id') == 0 ? null : $request->input('contact_important_date_type_id'),
@@ -69,7 +69,7 @@ class ContactImportantDatesController extends Controller
         if ($request->input('reminder')) {
             (new CreateContactReminder())->execute([
                 'account_id' => Auth::user()->account_id,
-                'author_id' => Auth::user()->id,
+                'author_id' => Auth::id(),
                 'vault_id' => $vaultId,
                 'contact_id' => $contactId,
                 'label' => $request->input('label'),
@@ -114,7 +114,7 @@ class ContactImportantDatesController extends Controller
 
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'contact_important_date_id' => $dateId,
@@ -138,7 +138,7 @@ class ContactImportantDatesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'contact_important_date_id' => $dateId,

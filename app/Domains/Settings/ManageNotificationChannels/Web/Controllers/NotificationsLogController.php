@@ -16,7 +16,7 @@ class NotificationsLogController extends Controller
     public function index(Request $request, int $userNotificationChannelId)
     {
         try {
-            $channel = UserNotificationChannel::where('user_id', Auth::user()->id)
+            $channel = UserNotificationChannel::where('user_id', Auth::id())
                 ->findOrFail($userNotificationChannelId);
         } catch (ModelNotFoundException) {
             return redirect('vaults');

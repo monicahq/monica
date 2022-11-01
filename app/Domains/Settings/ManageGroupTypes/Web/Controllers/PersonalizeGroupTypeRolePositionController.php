@@ -14,7 +14,7 @@ class PersonalizeGroupTypeRolePositionController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'group_type_id' => $groupTypeId,
             'group_type_role_id' => $groupTypeRoleId,
             'new_position' => $request->input('position'),

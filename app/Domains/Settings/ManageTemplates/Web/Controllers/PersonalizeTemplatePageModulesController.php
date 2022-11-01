@@ -16,7 +16,7 @@ class PersonalizeTemplatePageModulesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'template_id' => $templateId,
             'template_page_id' => $templatePageId,
             'module_id' => $request->input('module_id'),
@@ -35,7 +35,7 @@ class PersonalizeTemplatePageModulesController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'template_id' => $templateId,
             'template_page_id' => $templatePageId,
             'module_id' => $moduleId,

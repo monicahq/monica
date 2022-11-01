@@ -16,7 +16,7 @@ class PersonalizeRelationshipTypeController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'relationship_group_type_id' => $groupTypeId,
             'name' => $request->input('name'),
             'name_reverse_relationship' => $request->input('nameReverseRelationship'),
@@ -34,7 +34,7 @@ class PersonalizeRelationshipTypeController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'relationship_group_type_id' => $groupTypeId,
             'relationship_type_id' => $typeId,
             'name' => $request->input('name'),
@@ -52,7 +52,7 @@ class PersonalizeRelationshipTypeController extends Controller
     {
         $data = [
             'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::user()->id,
+            'author_id' => Auth::id(),
             'relationship_group_type_id' => $groupTypeId,
             'relationship_type_id' => $typeId,
         ];
