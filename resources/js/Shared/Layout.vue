@@ -51,9 +51,9 @@
         <div class="flew-grow">
           <ul class="relative">
             <li class="icon-dark-mode relative mr-4 inline">
-              <label for="default-toggle" class="relative inline-flex cursor-pointer">
+              <label for="dark-mode-toggle" class="relative inline-flex cursor-pointer">
                 <input
-                  id="default-toggle"
+                  id="dark-mode-toggle"
                   v-model="style.checked"
                   type="checkbox"
                   class="peer sr-only"
