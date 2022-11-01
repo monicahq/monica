@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Services;
 
+use App\Domains\Settings\ManageNotificationChannels\Services\SendTestTelegramNotification;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Notifications\ReminderTriggered;
-use App\Settings\ManageNotificationChannels\Services\SendTestTelegramNotification;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

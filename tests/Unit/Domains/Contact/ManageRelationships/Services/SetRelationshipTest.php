@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageRelationships\Services;
 
-use App\Contact\ManageRelationships\Services\SetRelationship;
+use App\Domains\Contact\ManageRelationships\Services\SetRelationship;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions;
 
-use App\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedPet;
+use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedPet;
 use App\Models\Contact;
 use App\Models\ContactFeedItem;
 use App\Models\Pet;

@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Domains\Settings\ManageAddressTypes\Web\ViewHelpers;
 
+use App\Domains\Settings\ManageAddressTypes\Web\ViewHelpers\PersonalizeAddressTypeIndexViewHelper;
 use App\Models\AddressType;
-use App\Settings\ManageAddressTypes\Web\ViewHelpers\PersonalizeAddressTypeIndexViewHelper;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

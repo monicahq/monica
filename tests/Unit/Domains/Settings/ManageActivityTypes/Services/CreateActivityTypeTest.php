@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageActivityTypes\Services;
 
+use App\Domains\Settings\ManageActivityTypes\Services\CreateActivityType;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\ActivityType;
 use App\Models\User;
-use App\Settings\ManageActivityTypes\Services\CreateActivityType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

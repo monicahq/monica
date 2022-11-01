@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactInformation\Web\ViewHelpers;
 
-use App\Contact\ManageContactInformation\Web\ViewHelpers\ModuleContactInformationViewHelper;
+use App\Domains\Contact\ManageContactInformation\Web\ViewHelpers\ModuleContactInformationViewHelper;
 use App\Models\Contact;
 use App\Models\ContactInformation;
 use App\Models\ContactInformationType;

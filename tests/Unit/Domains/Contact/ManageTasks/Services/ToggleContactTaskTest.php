@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageTasks\Services;
 
-use App\Contact\ManageTasks\Services\ToggleContactTask;
+use App\Domains\Contact\ManageTasks\Services\ToggleContactTask;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

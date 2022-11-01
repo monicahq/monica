@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageCalls\Services;
 
-use App\Contact\ManageCalls\Services\DestroyCall;
+use App\Domains\Contact\ManageCalls\Services\DestroyCall;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Call;

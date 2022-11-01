@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageTasks\Services;
 
-use App\Contact\ManageTasks\Services\DestroyContactTask;
+use App\Domains\Contact\ManageTasks\Services\DestroyContactTask;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageGroups\Services;
 
-use App\Contact\ManageGroups\Services\RemoveContactFromGroup;
+use App\Domains\Contact\ManageGroups\Services\RemoveContactFromGroup;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

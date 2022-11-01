@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUserPreferences\Services;
 
+use App\Domains\Settings\ManageUserPreferences\Services\StoreMapsPreference;
 use App\Models\Account;
 use App\Models\User;
-use App\Settings\ManageUserPreferences\Services\StoreMapsPreference;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

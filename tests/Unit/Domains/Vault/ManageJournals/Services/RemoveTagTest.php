@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Domains\Vault\ManageJournals\Services;
 
+use App\Domains\Vault\ManageJournals\Services\RemoveTag;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Journal;
@@ -9,7 +10,6 @@ use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Vault;
-use App\Vault\ManageJournals\Services\RemoveTag;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

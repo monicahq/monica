@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageAddressTypes\Services;
 
+use App\Domains\Settings\ManageAddressTypes\Services\DestroyAddressType;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\AddressType;
 use App\Models\User;
-use App\Settings\ManageAddressTypes\Services\DestroyAddressType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

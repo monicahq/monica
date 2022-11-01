@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
+use App\Domains\Vault\ManageJournals\Web\ViewHelpers\JournalIndexViewHelper;
 use App\Models\Journal;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Vault;
-use App\Vault\ManageJournals\Web\ViewHelpers\JournalIndexViewHelper;
 use Carbon\Carbon;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

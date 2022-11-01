@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Domains\Vault\ManageCompanies\Web\ViewHelpers;
 
+use App\Domains\Vault\ManageCompanies\Web\ViewHelpers\CompanyViewHelper;
 use App\Models\Company;
 use App\Models\Vault;
-use App\Vault\ManageCompanies\Web\ViewHelpers\CompanyViewHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 

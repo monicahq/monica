@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageReminders\Jobs;
 
-use App\Contact\ManageReminders\Jobs\ProcessScheduledContactReminders;
+use App\Domains\Contact\ManageReminders\Jobs\ProcessScheduledContactReminders;
 use App\Models\ContactReminder;
 use App\Models\UserNotificationChannel;
 use App\Notifications\ReminderTriggered;

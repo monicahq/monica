@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageAvatar\Services;
 
-use App\Contact\ManageAvatar\Services\DestroyAvatar;
+use App\Domains\Contact\ManageAvatar\Services\DestroyAvatar;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\File;

@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageContactInformationTypes\Services;
 
+use App\Domains\Settings\ManageContactInformationTypes\Services\DestroyContactInformationType;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\ContactInformationType;
 use App\Models\User;
-use App\Settings\ManageContactInformationTypes\Services\DestroyContactInformationType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageGoals\Web\ViewHelpers;
 
-use App\Contact\ManageGoals\Web\ViewHelpers\ModuleGoalsViewHelper;
+use App\Domains\Contact\ManageGoals\Web\ViewHelpers\ModuleGoalsViewHelper;
 use App\Models\Contact;
 use App\Models\Goal;
 use App\Models\User;

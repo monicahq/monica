@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageCurrencies\Services;
 
+use App\Domains\Settings\ManageCurrencies\Services\DisableAllCurrencies;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Currency;
 use App\Models\User;
-use App\Settings\ManageCurrencies\Services\DisableAllCurrencies;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

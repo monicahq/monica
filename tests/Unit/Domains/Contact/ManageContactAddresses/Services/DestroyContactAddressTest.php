@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactAddresses\Services;
 
-use App\Contact\ManageContactAddresses\Services\DestroyContactAddress;
+use App\Domains\Contact\ManageContactAddresses\Services\DestroyContactAddress;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Address;

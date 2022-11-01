@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Domains\Vault\ManageVaultSettings\Services;
 
+use App\Domains\Vault\ManageVaultSettings\Services\GrantVaultAccessToUser;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Exceptions\SameUserException;
 use App\Models\Account;
@@ -10,7 +11,6 @@ use App\Models\ContactReminder;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Models\Vault;
-use App\Vault\ManageVaultSettings\Services\GrantVaultAccessToUser;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

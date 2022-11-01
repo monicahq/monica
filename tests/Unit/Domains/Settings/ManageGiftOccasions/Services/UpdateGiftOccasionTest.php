@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageGiftOccasions\Services;
 
+use App\Domains\Settings\ManageGiftOccasions\Services\UpdateGiftOccasion;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\GiftOccasion;
 use App\Models\User;
-use App\Settings\ManageGiftOccasions\Services\UpdateGiftOccasion;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

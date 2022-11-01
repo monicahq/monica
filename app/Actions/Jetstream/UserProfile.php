@@ -2,7 +2,7 @@
 
 namespace App\Actions\Jetstream;
 
-use App\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
+use App\Domains\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use Illuminate\Http\Request;
 
 class UserProfile

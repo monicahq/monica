@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageGenders\Services;
 
+use App\Domains\Settings\ManageGenders\Services\UpdateGender;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Gender;
 use App\Models\User;
-use App\Settings\ManageGenders\Services\UpdateGender;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

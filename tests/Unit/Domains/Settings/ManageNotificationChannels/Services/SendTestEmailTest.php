@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Services;
 
+use App\Domains\Settings\ManageNotificationChannels\Services\SendTestEmail;
 use App\Mail\TestEmailSent;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
-use App\Settings\ManageNotificationChannels\Services\SendTestEmail;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

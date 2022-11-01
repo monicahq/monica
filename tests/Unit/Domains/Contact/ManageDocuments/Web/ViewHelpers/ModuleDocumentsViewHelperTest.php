@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageDocuments\Web\ViewHelpers;
 
-use App\Contact\ManageDocuments\Web\ViewHelpers\ModuleDocumentsViewHelper;
+use App\Domains\Contact\ManageDocuments\Web\ViewHelpers\ModuleDocumentsViewHelper;
 use App\Models\Contact;
 use App\Models\File;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

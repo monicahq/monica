@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Contact\ManageDocuments\Events\FileDeleted;
-use App\Contact\ManageDocuments\Listeners\DeleteFileInStorage;
+use App\Domains\Contact\ManageDocuments\Events\FileDeleted;
+use App\Domains\Contact\ManageDocuments\Listeners\DeleteFileInStorage;
 use App\Listeners\LoginListener;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;

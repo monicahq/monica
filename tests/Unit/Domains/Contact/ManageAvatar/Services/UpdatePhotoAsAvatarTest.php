@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageAvatar\Services;
 
-use App\Contact\ManageAvatar\Services\UpdatePhotoAsAvatar;
+use App\Domains\Contact\ManageAvatar\Services\UpdatePhotoAsAvatar;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

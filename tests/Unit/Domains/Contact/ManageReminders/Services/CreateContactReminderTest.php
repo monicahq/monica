@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageReminders\Services;
 
-use App\Contact\ManageReminders\Services\CreateContactReminder;
+use App\Domains\Contact\ManageReminders\Services\CreateContactReminder;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

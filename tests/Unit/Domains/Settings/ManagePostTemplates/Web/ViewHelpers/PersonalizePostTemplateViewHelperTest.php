@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Domains\Settings\ManagePostTemplates\Web\ViewHelpers;
 
+use App\Domains\Settings\ManagePostTemplates\Web\ViewHelpers\PersonalizePostTemplateViewHelper;
 use App\Models\PostTemplate;
 use App\Models\PostTemplateSection;
-use App\Settings\ManagePostTemplates\Web\ViewHelpers\PersonalizePostTemplateViewHelper;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Services;
 
+use App\Domains\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
+use App\Domains\Settings\ManageNotificationChannels\Services\DestroyUserNotificationChannel;
 use App\Models\Account;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
-use App\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
-use App\Settings\ManageNotificationChannels\Services\DestroyUserNotificationChannel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

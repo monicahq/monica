@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUsers\Services;
 
+use App\Domains\Settings\ManageUsers\Services\GiveAdministratorPrivilege;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\User;
-use App\Settings\ManageUsers\Services\GiveAdministratorPrivilege;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

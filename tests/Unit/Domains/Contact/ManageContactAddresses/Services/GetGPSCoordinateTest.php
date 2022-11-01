@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactAddresses\Services;
 
-use App\Contact\ManageContactAddresses\Services\GetGPSCoordinate;
+use App\Domains\Contact\ManageContactAddresses\Services\GetGPSCoordinate;
 use App\Exceptions\EnvVariablesNotSetException;
 use App\Models\Address;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

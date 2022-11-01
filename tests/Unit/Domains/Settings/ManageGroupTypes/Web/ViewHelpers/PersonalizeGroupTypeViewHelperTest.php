@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Domains\Settings\ManageGroupTypes\Web\ViewHelpers;
 
+use App\Domains\Settings\ManageGroupTypes\Web\ViewHelpers\PersonalizeGroupTypeViewHelper;
 use App\Models\GroupType;
 use App\Models\GroupTypeRole;
-use App\Settings\ManageGroupTypes\Web\ViewHelpers\PersonalizeGroupTypeViewHelper;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

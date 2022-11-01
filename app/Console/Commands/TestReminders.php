@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Contact\ManageReminders\Services\RescheduleContactReminderForChannel;
+use App\Domains\Contact\ManageReminders\Services\RescheduleContactReminderForChannel;
 use App\Helpers\NameHelper;
 use App\Models\ContactReminder;
 use App\Models\UserNotificationChannel;

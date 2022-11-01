@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageCallReasons\Services;
 
+use App\Domains\Settings\ManageCallReasons\Services\CreateCallReasonType;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\CallReasonType;
 use App\Models\User;
-use App\Settings\ManageCallReasons\Services\CreateCallReasonType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

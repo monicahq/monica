@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManagePhotos\Services;
 
-use App\Contact\ManagePhotos\Services\DestroyPhoto;
+use App\Domains\Contact\ManagePhotos\Services\DestroyPhoto;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

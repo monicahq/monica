@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Domains\Settings\ManageContactInformationTypes\Web\ViewHelpers;
 
+use App\Domains\Settings\ManageContactInformationTypes\Web\ViewHelpers\PersonalizeContactInformationTypeIndexViewHelper;
 use App\Models\ContactInformationType;
-use App\Settings\ManageContactInformationTypes\Web\ViewHelpers\PersonalizeContactInformationTypeIndexViewHelper;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

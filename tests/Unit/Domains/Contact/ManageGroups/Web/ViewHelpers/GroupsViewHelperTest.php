@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageGroups\Web\ViewHelpers;
 
-use App\Contact\ManageGroups\Web\ViewHelpers\GroupsViewHelper;
+use App\Domains\Contact\ManageGroups\Web\ViewHelpers\GroupsViewHelper;
 use App\Models\Contact;
 use App\Models\Group;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

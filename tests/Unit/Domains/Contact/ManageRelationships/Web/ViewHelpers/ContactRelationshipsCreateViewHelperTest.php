@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageRelationships\Web\ViewHelpers;
 
-use App\Contact\ManageRelationships\Web\ViewHelpers\ContactRelationshipsCreateViewHelper;
+use App\Domains\Contact\ManageRelationships\Web\ViewHelpers\ContactRelationshipsCreateViewHelper;
 use App\Models\Contact;
 use App\Models\Gender;
 use App\Models\Pronoun;

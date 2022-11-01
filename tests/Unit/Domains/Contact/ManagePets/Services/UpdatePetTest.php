@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManagePets\Services;
 
-use App\Contact\ManagePets\Services\UpdatePet;
+use App\Domains\Contact\ManagePets\Services\UpdatePet;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

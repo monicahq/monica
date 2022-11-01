@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Services;
 
+use App\Domains\Settings\ManageNotificationChannels\Services\ToggleUserNotificationChannel;
 use App\Models\Contact;
 use App\Models\ContactReminder;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Models\Vault;
-use App\Settings\ManageNotificationChannels\Services\ToggleUserNotificationChannel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

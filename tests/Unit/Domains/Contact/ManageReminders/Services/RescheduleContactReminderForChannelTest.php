@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageReminders\Services;
 
-use App\Contact\ManageReminders\Services\RescheduleContactReminderForChannel;
+use App\Domains\Contact\ManageReminders\Services\RescheduleContactReminderForChannel;
 use App\Models\ContactReminder;
 use App\Models\UserNotificationChannel;
 use Carbon\Carbon;

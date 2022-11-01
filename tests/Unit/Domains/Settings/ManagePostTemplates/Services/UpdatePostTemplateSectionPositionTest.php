@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManagePostTemplates\Services;
 
+use App\Domains\Settings\ManagePostTemplates\Services\UpdatePostTemplateSectionPosition;
 use App\Models\Account;
 use App\Models\PostTemplate;
 use App\Models\PostTemplateSection;
 use App\Models\User;
-use App\Settings\ManagePostTemplates\Services\UpdatePostTemplateSectionPosition;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

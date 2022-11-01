@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageRelationshipTypes\Services;
 
+use App\Domains\Settings\ManageRelationshipTypes\Services\UpdateRelationshipGroupType;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\RelationshipGroupType;
 use App\Models\User;
-use App\Settings\ManageRelationshipTypes\Services\UpdateRelationshipGroupType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

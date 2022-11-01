@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Vault\ManageVaultImportantDateTypes\Services;
 
+use App\Domains\Vault\ManageVaultImportantDateTypes\Services\UpdateContactImportantDateType;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\ContactImportantDateType;
 use App\Models\User;
 use App\Models\Vault;
-use App\Vault\ManageVaultImportantDateTypes\Services\UpdateContactImportantDateType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

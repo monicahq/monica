@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageTasks\Web\ViewHelpers;
 
-use App\Contact\ManageTasks\Web\ViewHelpers\ModuleContactTasksViewHelper;
+use App\Domains\Contact\ManageTasks\Web\ViewHelpers\ModuleContactTasksViewHelper;
 use App\Models\Contact;
 use App\Models\ContactTask;
 use App\Models\User;

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Domains\Vault\ManageVaultSettings\Services;
 
+use App\Domains\Vault\ManageVaultSettings\Services\RemoveVaultAccess;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
@@ -9,7 +10,6 @@ use App\Models\ContactReminder;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Models\Vault;
-use App\Vault\ManageVaultSettings\Services\RemoveVaultAccess;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageGroups\Web\ViewHelpers;
 
-use App\Contact\ManageGroups\Web\ViewHelpers\GroupIndexViewHelper;
+use App\Domains\Contact\ManageGroups\Web\ViewHelpers\GroupIndexViewHelper;
 use App\Models\Contact;
 use App\Models\Group;
 use App\Models\GroupType;

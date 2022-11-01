@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageGoals\Services;
 
-use App\Contact\ManageGoals\Services\CreateGoal;
+use App\Domains\Contact\ManageGoals\Services\CreateGoal;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

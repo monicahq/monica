@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Vault\ManageVault\Services;
 
+use App\Domains\Vault\ManageVault\Services\UpdateVault;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\User;
 use App\Models\Vault;
-use App\Vault\ManageVault\Services\UpdateVault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

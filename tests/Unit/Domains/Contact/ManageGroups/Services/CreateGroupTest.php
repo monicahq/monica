@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageGroups\Services;
 
-use App\Contact\ManageGroups\Services\CreateGroup;
+use App\Domains\Contact\ManageGroups\Services\CreateGroup;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\GroupType;

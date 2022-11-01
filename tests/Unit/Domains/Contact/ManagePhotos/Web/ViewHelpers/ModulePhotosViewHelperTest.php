@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManagePhotos\Web\ViewHelpers;
 
-use App\Contact\ManagePhotos\Web\ViewHelpers\ModulePhotosViewHelper;
+use App\Domains\Contact\ManagePhotos\Web\ViewHelpers\ModulePhotosViewHelper;
 use App\Models\Contact;
 use App\Models\File;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

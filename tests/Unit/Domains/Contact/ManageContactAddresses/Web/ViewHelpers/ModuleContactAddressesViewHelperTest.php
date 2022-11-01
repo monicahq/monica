@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactAddresses\Web\ViewHelpers;
 
-use App\Contact\ManageContactAddresses\Web\ViewHelpers\ModuleContactAddressesViewHelper;
+use App\Domains\Contact\ManageContactAddresses\Web\ViewHelpers\ModuleContactAddressesViewHelper;
 use App\Models\Address;
 use App\Models\AddressType;
 use App\Models\Contact;

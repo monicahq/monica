@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
+use App\Domains\Vault\ManageJournals\Web\ViewHelpers\PostCreateViewHelper;
 use App\Models\Journal;
 use App\Models\PostTemplate;
 use App\Models\PostTemplateSection;
 use App\Models\Vault;
-use App\Vault\ManageJournals\Web\ViewHelpers\PostCreateViewHelper;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

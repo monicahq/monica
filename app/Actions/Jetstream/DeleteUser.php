@@ -2,7 +2,7 @@
 
 namespace App\Actions\Jetstream;
 
-use App\Settings\ManageUsers\Services\DestroyUser;
+use App\Domains\Settings\ManageUsers\Services\DestroyUser;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Jetstream\Contracts\DeletesUsers;
 

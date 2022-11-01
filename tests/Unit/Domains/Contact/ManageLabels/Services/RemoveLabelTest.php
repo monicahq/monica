@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageLabels\Services;
 
-use App\Contact\ManageLabels\Services\RemoveLabel;
+use App\Domains\Contact\ManageLabels\Services\RemoveLabel;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

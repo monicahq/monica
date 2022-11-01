@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Domains\Contact\ManageNotes\Web\ViewHelpers;
 
-use App\Contact\ManageNotes\Web\ViewHelpers\ModuleNotesViewHelper;
-use App\Contact\ManageNotes\Web\ViewHelpers\NotesIndexViewHelper;
+use App\Domains\Contact\ManageNotes\Web\ViewHelpers\ModuleNotesViewHelper;
+use App\Domains\Contact\ManageNotes\Web\ViewHelpers\NotesIndexViewHelper;
 use App\Models\Contact;
 use App\Models\Emotion;
 use App\Models\Note;

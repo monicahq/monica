@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUsers\Services;
 
+use App\Domains\Settings\ManageUsers\Services\InviteUser;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Mail\UserInvited;
 use App\Models\Account;
 use App\Models\User;
-use App\Settings\ManageUsers\Services\InviteUser;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;

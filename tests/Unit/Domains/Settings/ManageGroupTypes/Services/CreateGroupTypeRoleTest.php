@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Settings\ManageGroupTypes\Services;
 
+use App\Domains\Settings\ManageGroupTypes\Services\CreateGroupTypeRole;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\GroupType;
 use App\Models\GroupTypeRole;
 use App\Models\User;
-use App\Settings\ManageGroupTypes\Services\CreateGroupTypeRole;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

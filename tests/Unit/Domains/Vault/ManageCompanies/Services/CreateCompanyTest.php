@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Vault\ManageCompanies\Services;
 
+use App\Domains\Vault\ManageCompanies\Services\CreateCompany;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\Vault;
-use App\Vault\ManageCompanies\Services\CreateCompany;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;

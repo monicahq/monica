@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageDocuments\Services;
 
-use App\Contact\ManageDocuments\Services\UploadFile;
+use App\Domains\Contact\ManageDocuments\Services\UploadFile;
 use App\Exceptions\EnvVariablesNotSetException;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactImportantDates\Web\ViewHelpers;
 
-use App\Contact\ManageContactImportantDates\Web\ViewHelpers\ModuleImportantDatesViewHelper;
+use App\Domains\Contact\ManageContactImportantDates\Web\ViewHelpers\ModuleImportantDatesViewHelper;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
 use App\Models\User;

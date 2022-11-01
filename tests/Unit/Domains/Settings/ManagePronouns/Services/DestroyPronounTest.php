@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManagePronouns\Services;
 
+use App\Domains\Settings\ManagePronouns\Services\DestroyPronoun;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Pronoun;
 use App\Models\User;
-use App\Settings\ManagePronouns\Services\DestroyPronoun;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

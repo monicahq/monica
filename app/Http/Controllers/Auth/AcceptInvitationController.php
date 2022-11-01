@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Domains\Settings\ManageUsers\Services\AcceptInvitation;
 use App\Http\Controllers\Auth\ViewHelpers\AcceptInvitationShowViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Settings\ManageUsers\Services\AcceptInvitation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Services;
 
+use App\Domains\Settings\ManageNotificationChannels\Services\VerifyUserNotificationChannelEmailAddress;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
-use App\Settings\ManageNotificationChannels\Services\VerifyUserNotificationChannelEmailAddress;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

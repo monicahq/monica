@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUsers\Web\ViewHelpers;
 
+use App\Domains\Settings\ManageUsers\Web\ViewHelpers\UserIndexViewHelper;
 use App\Models\User;
-use App\Settings\ManageUsers\Web\ViewHelpers\UserIndexViewHelper;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Domains\Vault\ManageJournals\Services;
 
+use App\Domains\Vault\ManageJournals\Services\CreatePost;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Journal;
@@ -9,7 +10,6 @@ use App\Models\PostTemplate;
 use App\Models\PostTemplateSection;
 use App\Models\User;
 use App\Models\Vault;
-use App\Vault\ManageJournals\Services\CreatePost;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;

@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Vault\ManageFiles\Web\ViewHelpers;
 
+use App\Domains\Vault\ManageFiles\Web\ViewHelpers\VaultFileIndexViewHelper;
 use App\Models\Contact;
 use App\Models\File;
 use App\Models\User;
 use App\Models\Vault;
-use App\Vault\ManageFiles\Web\ViewHelpers\VaultFileIndexViewHelper;
 use Carbon\Carbon;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

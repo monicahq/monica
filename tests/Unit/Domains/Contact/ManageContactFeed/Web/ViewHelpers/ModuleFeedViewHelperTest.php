@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactFeed\Web\ViewHelpers;
 
-use App\Contact\ManageContactFeed\Web\ViewHelpers\ModuleFeedViewHelper;
+use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\ModuleFeedViewHelper;
 use App\Models\Contact;
 use App\Models\ContactFeedItem;
 use App\Models\User;

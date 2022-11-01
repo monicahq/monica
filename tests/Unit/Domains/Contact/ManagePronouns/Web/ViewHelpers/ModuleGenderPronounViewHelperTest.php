@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManagePronouns\Web\ViewHelpers;
 
-use App\Contact\ManagePronouns\Web\ViewHelpers\ModuleGenderPronounViewHelper;
+use App\Domains\Contact\ManagePronouns\Web\ViewHelpers\ModuleGenderPronounViewHelper;
 use App\Models\Contact;
 use App\Models\Gender;
 use App\Models\Pronoun;

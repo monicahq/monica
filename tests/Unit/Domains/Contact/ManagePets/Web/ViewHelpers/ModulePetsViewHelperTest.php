@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManagePets\Web\ViewHelpers;
 
-use App\Contact\ManagePets\Web\ViewHelpers\ModulePetsViewHelper;
+use App\Domains\Contact\ManagePets\Web\ViewHelpers\ModulePetsViewHelper;
 use App\Models\Contact;
 use App\Models\Pet;
 use App\Models\PetCategory;

@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUsers\Services;
 
+use App\Domains\Settings\ManageUsers\Services\AcceptInvitation;
 use App\Models\User;
-use App\Settings\ManageUsers\Services\AcceptInvitation;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

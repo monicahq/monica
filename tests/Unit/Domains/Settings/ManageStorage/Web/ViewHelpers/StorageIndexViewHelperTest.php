@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageStorage\Web\ViewHelpers;
 
+use App\Domains\Settings\ManageStorage\Web\ViewHelpers\StorageIndexViewHelper;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\File;
 use App\Models\Vault;
-use App\Settings\ManageStorage\Web\ViewHelpers\StorageIndexViewHelper;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions;
 
-use App\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedAddress;
+use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedAddress;
 use App\Models\Address;
 use App\Models\AddressType;
 use App\Models\Contact;

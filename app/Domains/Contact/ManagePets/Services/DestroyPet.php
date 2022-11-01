@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Domains\Contact\ManagePets\Services;
+
+use App\Interfaces\ServiceInterface;
+use App\Models\ContactFeedItem;
+use App\Models\Pet;
+use App\Services\BaseService;
+use Carbon\Carbon;
+
+class DestroyPet extends BaseService implements ServiceInterface
+{
+    private Pet $pet;
+
+    /**
+     * Get the validation rules that apply to the service.
+     *
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'vault_id' => 'required|integer|exists:vaults,id',
+            'author_id' => 'required|integer|exists:users,id',
+            'contact_id' => 'required|integer|exists:contacts,id',
+            'pet_id' => 'required|integer|exists:pets,id',
+        ];
+    }
+
+    /**
+     * Get the permissions that apply to the user calling the service.
+     *
+     * @return array
+     */
+    public function permissions(): array
+    {
+        return [
+            'author_must_belong_to_account',
+            'vault_must_belong_to_account',
+            'contact_must_belong_to_vault',
+            'author_must_be_vault_editor',
+        ];
+    }
+
+    /**
+     * Destroy a pet.
+     *
+     * @param  array  $data
+     */
+    public function execute(array $data): void
+    {
+        $this->validateRules($data);
+
+        $this->pet = Pet::where('contact_id', $data['contact_id'])
+            ->findOrFail($data['pet_id']);
+
+        $this->pet->delete();
+
+        $this->contact->last_updated_at = Carbon::now();
+        $this->contact->save();
+
+        $this->createFeedItem();
+    }
+
+    private function createFeedItem(): void
+    {
+        ContactFeedItem::create([
+            'author_id' => $this->author->id,
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_PET_DESTROYED,
+            'description' => $this->pet->petCategory->name,
+        ]);
+    }
+}

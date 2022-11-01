@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Contact\ManageReminders\Jobs\ProcessScheduledContactReminders;
+use App\Domains\Contact\ManageReminders\Jobs\ProcessScheduledContactReminders;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 

@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Settings\ManageTemplates\Services;
 
+use App\Domains\Settings\ManageTemplates\Services\AssociateModuleToTemplatePage;
 use App\Models\Account;
 use App\Models\Module;
 use App\Models\Template;
 use App\Models\TemplatePage;
 use App\Models\User;
-use App\Settings\ManageTemplates\Services\AssociateModuleToTemplatePage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;

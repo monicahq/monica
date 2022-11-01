@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageGroups\Services;
 
-use App\Contact\ManageGroups\Services\DestroyGroup;
+use App\Domains\Contact\ManageGroups\Services\DestroyGroup;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Group;

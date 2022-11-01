@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManagePetCategories\Services;
 
+use App\Domains\Settings\ManagePetCategories\Services\DestroyPetCategory;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\PetCategory;
 use App\Models\User;
-use App\Settings\ManagePetCategories\Services\DestroyPetCategory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;

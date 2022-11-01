@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Domains\Vault\Search\Web\ViewHelpers;
 
+use App\Domains\Vault\Search\Web\ViewHelpers\VaultMostConsultedViewHelper;
 use App\Models\Contact;
 use App\Models\User;
-use App\Vault\Search\Web\ViewHelpers\VaultMostConsultedViewHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;

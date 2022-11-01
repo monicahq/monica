@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Domains\Contact\ManagePronouns\Services;
 
-use App\Contact\ManagePronouns\Services\RemovePronoun;
-use App\Contact\ManagePronouns\Services\SetPronoun;
+use App\Domains\Contact\ManagePronouns\Services\RemovePronoun;
+use App\Domains\Contact\ManagePronouns\Services\SetPronoun;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

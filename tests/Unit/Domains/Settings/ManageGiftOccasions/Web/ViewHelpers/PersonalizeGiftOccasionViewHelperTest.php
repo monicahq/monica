@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Domains\Settings\ManageGiftOccasions\Web\ViewHelpers;
 
+use App\Domains\Settings\ManageGiftOccasions\Web\ViewHelpers\PersonalizeGiftOccasionViewHelper;
 use App\Models\GiftOccasion;
-use App\Settings\ManageGiftOccasions\Web\ViewHelpers\PersonalizeGiftOccasionViewHelper;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

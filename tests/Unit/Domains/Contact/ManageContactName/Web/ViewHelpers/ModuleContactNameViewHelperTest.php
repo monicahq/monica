@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactName\Web\ViewHelpers;
 
-use App\Contact\ManageContactName\Web\ViewHelpers\ModuleContactNameViewHelper;
+use App\Domains\Contact\ManageContactName\Web\ViewHelpers\ModuleContactNameViewHelper;
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

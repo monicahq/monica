@@ -11,7 +11,6 @@
         <directory name="database/factories"/>
         <directory name="database/seeders"/>
         <directory name="routes"/>
-        <directory name="domains"/>
         <ignoreFiles>
             <directory name="vendor"/>
         </ignoreFiles>

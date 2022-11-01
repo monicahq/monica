@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContact\Web\ViewHelpers;
 
-use App\Contact\ManageContact\Web\ViewHelpers\ContactIndexViewHelper;
+use App\Domains\Contact\ManageContact\Web\ViewHelpers\ContactIndexViewHelper;
 use App\Models\Contact;
 use App\Models\Label;
 use App\Models\Vault;

@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageGiftStates\Services;
 
+use App\Domains\Settings\ManageGiftStates\Services\UpdateGiftState;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\GiftState;
 use App\Models\User;
-use App\Settings\ManageGiftStates\Services\UpdateGiftState;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

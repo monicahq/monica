@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Services;
 
+use App\Domains\Settings\ManageNotificationChannels\Jobs\SendVerificationEmailChannel;
+use App\Domains\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
 use App\Exceptions\EmailAlreadyExistException;
 use App\Models\Account;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
-use App\Settings\ManageNotificationChannels\Jobs\SendVerificationEmailChannel;
-use App\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Bus;

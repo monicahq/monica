@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageLoans\Web\ViewHelpers;
 
-use App\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
+use App\Domains\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
 use App\Models\Contact;
 use App\Models\Currency;
 use App\Models\Loan;

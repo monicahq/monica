@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUsers\Services;
 
+use App\Domains\Settings\ManageUsers\Services\RemoveAdministratorPrivilege;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\User;
-use App\Settings\ManageUsers\Services\RemoveAdministratorPrivilege;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

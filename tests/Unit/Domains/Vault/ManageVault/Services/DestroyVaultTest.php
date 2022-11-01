@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Domains\Vault\ManageVault\Services;
 
+use App\Domains\Vault\ManageVault\Services\DestroyVault;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\File;
 use App\Models\User;
 use App\Models\Vault;
-use App\Vault\ManageVault\Services\DestroyVault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;

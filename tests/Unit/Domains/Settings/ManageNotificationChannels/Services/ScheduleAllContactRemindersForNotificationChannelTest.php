@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Services;
 
+use App\Domains\Settings\ManageNotificationChannels\Services\ScheduleAllContactRemindersForNotificationChannel;
 use App\Models\Contact;
 use App\Models\ContactReminder;
 use App\Models\UserNotificationChannel;
 use App\Models\Vault;
-use App\Settings\ManageNotificationChannels\Services\ScheduleAllContactRemindersForNotificationChannel;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

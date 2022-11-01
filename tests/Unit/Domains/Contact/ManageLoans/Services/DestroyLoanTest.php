@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageLoans\Services;
 
-use App\Contact\ManageLoans\Services\DestroyLoan;
+use App\Domains\Contact\ManageLoans\Services\DestroyLoan;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

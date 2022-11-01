@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUserPreferences\Web\ViewHelpers;
 
+use App\Domains\Settings\ManageUserPreferences\Web\ViewHelpers\UserPreferencesIndexViewHelper;
 use App\Models\User;
-use App\Settings\ManageUserPreferences\Web\ViewHelpers\UserPreferencesIndexViewHelper;
 use Carbon\Carbon;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

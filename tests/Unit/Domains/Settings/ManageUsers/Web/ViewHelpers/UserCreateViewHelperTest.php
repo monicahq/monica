@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUsers\Web\ViewHelpers;
 
-use App\Settings\ManageUsers\Web\ViewHelpers\UserCreateViewHelper;
+use App\Domains\Settings\ManageUsers\Web\ViewHelpers\UserCreateViewHelper;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

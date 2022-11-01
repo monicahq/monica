@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactInformation\Services;
 
-use App\Contact\ManageContactInformation\Services\UpdateContactInformation;
+use App\Domains\Contact\ManageContactInformation\Services\UpdateContactInformation;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

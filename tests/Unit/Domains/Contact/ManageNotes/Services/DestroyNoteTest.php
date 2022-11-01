@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageNotes\Services;
 
-use App\Contact\ManageNotes\Services\DestroyNote;
+use App\Domains\Contact\ManageNotes\Services\DestroyNote;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

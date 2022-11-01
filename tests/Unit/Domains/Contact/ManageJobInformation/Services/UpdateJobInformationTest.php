@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageJobInformation\Services;
 
-use App\Contact\ManageJobInformation\Services\UpdateJobInformation;
+use App\Domains\Contact\ManageJobInformation\Services\UpdateJobInformation;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Company;

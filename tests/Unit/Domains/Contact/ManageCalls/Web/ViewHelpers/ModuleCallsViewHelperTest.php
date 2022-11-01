@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageCalls\Web\ViewHelpers;
 
-use App\Contact\ManageCalls\Web\ViewHelpers\ModuleCallsViewHelper;
+use App\Domains\Contact\ManageCalls\Web\ViewHelpers\ModuleCallsViewHelper;
 use App\Models\Call;
 use App\Models\Contact;
 use App\Models\Emotion;

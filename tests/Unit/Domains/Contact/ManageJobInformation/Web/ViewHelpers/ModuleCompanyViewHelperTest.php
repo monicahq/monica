@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageJobInformation\Web\ViewHelpers;
 
-use App\Contact\ManageJobInformation\Web\ViewHelpers\ModuleCompanyViewHelper;
+use App\Domains\Contact\ManageJobInformation\Web\ViewHelpers\ModuleCompanyViewHelper;
 use App\Models\Company;
 use App\Models\Contact;
 use App\Models\Vault;

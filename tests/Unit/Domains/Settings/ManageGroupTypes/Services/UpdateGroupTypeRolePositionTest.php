@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Settings\ManageGroupTypes\Services;
 
+use App\Domains\Settings\ManageGroupTypes\Services\UpdateGroupTypeRolePosition;
 use App\Models\Account;
 use App\Models\GroupType;
 use App\Models\GroupTypeRole;
 use App\Models\User;
-use App\Settings\ManageGroupTypes\Services\UpdateGroupTypeRolePosition;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;

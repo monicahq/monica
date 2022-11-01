@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Contact\ManageGroups\Web\ViewHelpers\GroupsViewHelper;
+use App\Domains\Contact\ManageGroups\Web\ViewHelpers\GroupsViewHelper;
 use App\Models\Contact;
 use App\Models\User;
 

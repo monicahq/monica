@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Domains\Vault\ManageTasks\Web\ViewHelpers;
 
+use App\Domains\Vault\ManageTasks\Web\ViewHelpers\VaultTasksIndexViewHelper;
 use App\Models\Contact;
 use App\Models\ContactTask;
 use App\Models\User;
 use App\Models\Vault;
-use App\Vault\ManageTasks\Web\ViewHelpers\VaultTasksIndexViewHelper;
 use Carbon\Carbon;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

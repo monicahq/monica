@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContactImportantDates\Services;
 
-use App\Contact\ManageContactImportantDates\Services\UpdateContactImportantDate;
+use App\Domains\Contact\ManageContactImportantDates\Services\UpdateContactImportantDate;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;

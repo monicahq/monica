@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageReminders\Services;
 
-use App\Contact\ManageReminders\Services\ScheduleContactReminderForUser;
+use App\Domains\Contact\ManageReminders\Services\ScheduleContactReminderForUser;
 use App\Models\Contact;
 use App\Models\ContactReminder;
 use App\Models\User;

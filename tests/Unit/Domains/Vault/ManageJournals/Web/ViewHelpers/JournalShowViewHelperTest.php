@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
+use App\Domains\Vault\ManageJournals\Web\ViewHelpers\JournalShowViewHelper;
 use App\Models\Journal;
 use App\Models\Post;
 use App\Models\User;
-use App\Vault\ManageJournals\Web\ViewHelpers\JournalShowViewHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 

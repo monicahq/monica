@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Domains\Vault\ManageVault\Web\ViewHelpers;
 
+use App\Domains\Vault\ManageVault\Web\ViewHelpers\VaultShowViewHelper;
 use App\Models\Contact;
 use App\Models\ContactReminder;
 use App\Models\ContactTask;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Models\Vault;
-use App\Vault\ManageVault\Web\ViewHelpers\VaultShowViewHelper;
 use Carbon\Carbon;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

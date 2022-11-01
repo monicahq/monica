@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Vault\ManageJournals\Services;
 
+use App\Domains\Vault\ManageJournals\Services\UpdateJournal;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Journal;
 use App\Models\User;
 use App\Models\Vault;
-use App\Vault\ManageJournals\Services\UpdateJournal;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;

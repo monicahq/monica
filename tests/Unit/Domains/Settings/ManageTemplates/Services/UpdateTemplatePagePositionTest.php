@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Domains\Settings\ManageTemplates\Services;
 
+use App\Domains\Settings\ManageTemplates\Services\UpdateTemplatePage;
+use App\Domains\Settings\ManageTemplates\Services\UpdateTemplatePagePosition;
 use App\Models\Account;
 use App\Models\Template;
 use App\Models\TemplatePage;
 use App\Models\User;
-use App\Settings\ManageTemplates\Services\UpdateTemplatePage;
-use App\Settings\ManageTemplates\Services\UpdateTemplatePagePosition;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
