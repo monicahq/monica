@@ -26,6 +26,7 @@ class PersonalizeIndexViewHelper
                 'manage_gift_states' => route('settings.personalize.gift_states.index'),
                 'manage_group_types' => route('settings.personalize.group_types.index'),
                 'manage_post_templates' => route('settings.personalize.post_templates.index'),
+                'manage_religions' => route('settings.personalize.religions.index'),
             ],
         ];
     }

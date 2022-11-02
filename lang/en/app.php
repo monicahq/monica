@@ -46,6 +46,7 @@ return [
     'breadcrumb_settings_personalize_contact_information_types' => 'Contact information types',
     'breadcrumb_settings_personalize_post_templates' => 'Post templates',
     'breadcrumb_settings_storage' => 'Storage',
+    'breadcrumb_settings_religions' => 'Religions',
 
     'notification_flash_changes_saved' => 'Changes saved',
 

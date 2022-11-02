@@ -584,5 +584,18 @@ class SetupAccountTest extends TestCase
             'label' => trans('settings.personalize_post_templates_default_template_section_three_things'),
             'position' => 5,
         ]);
+
+        $this->assertDatabaseHas('religions', [
+            'translation_key' => 'account.religion_christian',
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('religions', [
+            'translation_key' => 'account.religion_islam',
+            'position' => 2,
+        ]);
+        $this->assertDatabaseHas('religions', [
+            'translation_key' => 'account.religion_hinduism',
+            'position' => 3,
+        ]);
     }
 }

@@ -137,6 +137,7 @@ return [
     'personalize_title_manage_gift_occasions' => 'Manage gift occasions',
     'personalize_title_manage_gift_states' => 'Manage gift states',
     'personalize_title_manage_currencies' => 'Manage currencies',
+    'personalize_title_manage_religions' => 'Manage religions',
     'personalize_title_post_templates' => 'Manage post templates',
 
     /***************************************************************
@@ -238,4 +239,17 @@ return [
     'storage_type_document' => 'Documents',
     'storage_type_avatar' => 'Avatars',
     'storage_type_photo' => 'Photos',
+
+    /***************************************************************
+     * RELIGIONS
+     **************************************************************/
+
+    'religion_title' => 'All the religions',
+    'religion_blank' => 'Religions is all about faith.',
+    'religion_cta' => 'Add a religion',
+    'religion_name' => 'Name',
+    'religion_new_success' => 'The religion has been created',
+    'religion_update_success' => 'The religion has been updated',
+    'religion_delete_success' => 'The religion has been deleted',
+    'religion_delete_warning' => 'Are you sure? This can not be undone.',
 ];

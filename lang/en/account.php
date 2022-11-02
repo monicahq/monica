@@ -104,6 +104,16 @@ return [
     'pets_small_animal' => 'Small animal',
     'pets_other' => 'Other',
 
+    'religion_christian' => 'Christian',
+    'religion_islam' => 'Islam',
+    'religion_hinduism' => 'Hinduism',
+    'religion_buddhism' => 'Buddhism',
+    'religion_shinto' => 'Shinto',
+    'religion_taoism' => 'Taoism',
+    'religion_sikhism' => 'Sikhism',
+    'religion_judaism' => 'Judaism',
+    'religion_atheism' => 'Atheism',
+
     'labels_work' => 'Work',
     'labels_love' => 'Love interest',
     'labels_money' => 'Money',

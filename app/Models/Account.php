@@ -211,4 +211,14 @@ class Account extends Model
     {
         return $this->hasMany(PostTemplate::class);
     }
+
+    /**
+     * Get the religions associated with the account.
+     *
+     * @return HasMany
+     */
+    public function religions(): HasMany
+    {
+        return $this->hasMany(Religion::class);
+    }
 }

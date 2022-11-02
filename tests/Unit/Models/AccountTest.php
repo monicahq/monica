@@ -18,6 +18,7 @@ use App\Models\PetCategory;
 use App\Models\PostTemplate;
 use App\Models\Pronoun;
 use App\Models\RelationshipGroupType;
+use App\Models\Religion;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
@@ -224,5 +225,16 @@ class AccountTest extends TestCase
         ]);
 
         $this->assertTrue($account->postTemplates()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_religions()
+    {
+        $account = Account::factory()->create();
+        Religion::factory(2)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->religions()->exists());
     }
 }

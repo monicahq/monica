@@ -70,6 +70,8 @@ use App\Domains\Settings\ManagePostTemplates\Web\Controllers\PersonalizePostTemp
 use App\Domains\Settings\ManagePronouns\Web\Controllers\PersonalizePronounController;
 use App\Domains\Settings\ManageRelationshipTypes\Web\Controllers\PersonalizeRelationshipController;
 use App\Domains\Settings\ManageRelationshipTypes\Web\Controllers\PersonalizeRelationshipTypeController;
+use App\Domains\Settings\ManageReligion\Web\Controllers\PersonalizeReligionController;
+use App\Domains\Settings\ManageReligion\Web\Controllers\PersonalizeReligionsPositionController;
 use App\Domains\Settings\ManageSettings\Web\Controllers\SettingsController;
 use App\Domains\Settings\ManageStorage\Web\Controllers\AccountStorageController;
 use App\Domains\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatePageModulesController;
@@ -556,6 +558,13 @@ Route::middleware([
                 Route::put('currencies/{currency}', [PersonalizeCurrencyController::class, 'update'])->name('currency.update');
                 Route::post('currencies', [PersonalizeCurrencyController::class, 'store'])->name('currency.store');
                 Route::delete('currencies', [PersonalizeCurrencyController::class, 'destroy'])->name('currency.destroy');
+
+                // religions
+                Route::get('religions', [PersonalizeReligionController::class, 'index'])->name('religions.index');
+                Route::post('religions', [PersonalizeReligionController::class, 'store'])->name('religions.store');
+                Route::put('religions/{religion}', [PersonalizeReligionController::class, 'update'])->name('religions.update');
+                Route::delete('religions/{religion}', [PersonalizeReligionController::class, 'destroy'])->name('religions.destroy');
+                Route::post('religions/{religion}/position', [PersonalizeReligionsPositionController::class, 'update'])->name('religions.order.update');
             });
 
             // storage

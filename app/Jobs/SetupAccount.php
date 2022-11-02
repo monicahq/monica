@@ -565,6 +565,7 @@ class SetupAccount implements ShouldQueue
         $this->addGiftOccasions();
         $this->addGiftStates();
         $this->addPostTemplates();
+        $this->addReligions();
     }
 
     /**
@@ -1605,6 +1606,57 @@ class SetupAccount implements ShouldQueue
             'post_template_id' => $postTemplate->id,
             'label' => trans('settings.personalize_post_templates_default_template_section_three_things'),
             'can_be_deleted' => true,
+        ]);
+    }
+
+    private function addReligions(): void
+    {
+        DB::table('religions')->insert([
+            [
+                'account_id' => $this->user->account_id,
+                'translation_key' => 'account.religion_christian',
+                'position' => 1,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'translation_key' => 'account.religion_islam',
+                'position' => 2,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'translation_key' => 'account.religion_hinduism',
+                'position' => 3,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'translation_key' => 'account.religion_buddhism',
+                'position' => 4,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'translation_key' => 'account.religion_shinto',
+                'position' => 5,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'translation_key' => 'account.religion_taoism',
+                'position' => 6,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'translation_key' => 'account.religion_sikhism',
+                'position' => 7,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'translation_key' => 'account.religion_judaism',
+                'position' => 8,
+            ],
+            [
+                'account_id' => $this->user->account_id,
+                'translation_key' => 'account.religion_atheism',
+                'position' => 9,
+            ],
         ]);
     }
 }

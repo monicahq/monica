@@ -23,6 +23,7 @@ parameters:
         - '#Access to an undefined property App\\Models\\LifeEventType.*::\$label.#'
         - '#Access to an undefined property App\\Models\\Module::\$position\.#'
         - '#Access to an undefined property App\\Models\\Post::\$title\.#'
+        - '#Access to an undefined property App\\Models\\Religion::\$name\.#'
         - '#Access to an undefined property App\\Models\\.*::\$pivot\.#'
 
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Note>::unsearchable\(\)\.#'
