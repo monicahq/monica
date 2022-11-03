@@ -1,5 +1,15 @@
+<script setup>
+import { Link } from '@inertiajs/inertia-vue3';
+import Layout from '@/Shared/Layout.vue';
+
+defineProps({
+  layoutData: Object,
+  data: Object,
+});
+</script>
+
 <template>
-  <layout title="Dashboard" :layout-data="layoutData">
+  <Layout title="Dashboard" :layout-data="layoutData">
     <nav class="bg-white dark:bg-gray-900 sm:border-b">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
@@ -25,21 +35,27 @@
           <ul>
             <li class="mb-2 flex justify-start">
               <span class="mr-2">🥳</span>
-              <inertia-link :href="data.url.preferences.index" class="text-blue-500 hover:underline">
+              <Link :href="data.url.preferences.index" class="text-blue-500 hover:underline">
                 {{ $t('settings.user_preferences') }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="mb-2 flex justify-start">
               <span class="mr-2">📡</span>
-              <inertia-link :href="data.url.notifications.index" class="text-blue-500 hover:underline">
+              <Link :href="data.url.notifications.index" class="text-blue-500 hover:underline">
                 {{ $t('settings.notification_channels') }}
-              </inertia-link>
+              </Link>
+            </li>
+            <li class="mb-2 flex justify-start">
+              <span class="mr-2">🔐</span>
+              <Link :href="route('profile.show')" class="text-blue-500 hover:underline">
+                {{ $t('Profile and security') }}
+              </Link>
             </li>
             <li class="flex justify-start">
-              <span class="mr-2">🔐</span>
-              <inertia-link :href="route('profile.show')" class="text-blue-500 hover:underline">
-                Profile and security
-              </inertia-link>
+              <span class="mr-2">⚓</span>
+              <Link :href="route('api-tokens.index')" class="text-blue-500 hover:underline">
+                {{ $t('API Tokens') }}
+              </Link>
             </li>
           </ul>
         </div>
@@ -53,55 +69,32 @@
             <ul>
               <li class="mb-2 flex justify-start">
                 <span class="mr-2">🥸</span>
-                <inertia-link :href="data.url.users.index" class="text-blue-500 hover:underline">
+                <Link :href="data.url.users.index" class="text-blue-500 hover:underline">
                   {{ $t('settings.manage_users') }}
-                </inertia-link>
+                </Link>
               </li>
               <li class="mb-2 flex justify-start">
                 <span class="mr-2">🎃</span>
-                <inertia-link :href="data.url.personalize.index" class="text-blue-500 hover:underline">
+                <Link :href="data.url.personalize.index" class="text-blue-500 hover:underline">
                   {{ $t('settings.personalize_your_contacts_data') }}
-                </inertia-link>
+                </Link>
               </li>
               <li class="mb-2 flex justify-start">
                 <span class="mr-2">📸</span>
-                <inertia-link :href="data.url.storage.index" class="text-blue-500 hover:underline">
+                <Link :href="data.url.storage.index" class="text-blue-500 hover:underline">
                   {{ $t('settings.manage_storage') }}
-                </inertia-link>
+                </Link>
               </li>
               <li class="flex justify-start">
                 <span class="mr-2">💩</span>
-                <inertia-link :href="data.url.cancel.index" class="text-blue-500 hover:underline">
+                <Link :href="data.url.cancel.index" class="text-blue-500 hover:underline">
                   {{ $t('settings.cancel_your_account') }}
-                </inertia-link>
+                </Link>
               </li>
             </ul>
           </div>
         </div>
       </div>
     </main>
-  </layout>
+  </Layout>
 </template>
-
-<script>
-import Layout from '@/Shared/Layout.vue';
-
-export default {
-  components: {
-    Layout,
-  },
-
-  props: {
-    layoutData: {
-      type: Object,
-      default: null,
-    },
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-};
-</script>
-
-<style lang="scss" scoped></style>

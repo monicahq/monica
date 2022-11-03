@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Actions\Jetstream\DeleteUser;
 use App\Actions\Jetstream\UserProfile;
+use App\Domains\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
 
@@ -30,6 +31,13 @@ class JetstreamServiceProvider extends ServiceProvider
 
         Jetstream::deleteUsersUsing(DeleteUser::class);
         Jetstream::inertia()->whenRendering('Profile/Show', new UserProfile());
+        Jetstream::inertia()->whenRendering('API/Index', function ($request, $data) {
+            // @codeCoverageIgnoreStart
+            $data['layoutData'] = VaultIndexViewHelper::layoutData();
+
+            return $data;
+            // @codeCoverageIgnoreEnd
+        });
     }
 
     /**
