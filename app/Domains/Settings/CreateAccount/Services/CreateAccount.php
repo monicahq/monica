@@ -4,7 +4,6 @@ namespace App\Domains\Settings\CreateAccount\Services;
 
 use App\Actions\Fortify\PasswordValidationRules;
 use App\Interfaces\ServiceInterface;
-use App\Jobs\SetupAccount;
 use App\Models\Account;
 use App\Models\User;
 use App\Services\BaseService;
@@ -13,8 +12,6 @@ use Illuminate\Support\Facades\Hash;
 class CreateAccount extends BaseService implements ServiceInterface
 {
     use PasswordValidationRules;
-
-    private User $user;
 
     private Account $account;
 
@@ -49,16 +46,15 @@ class CreateAccount extends BaseService implements ServiceInterface
         $this->account = Account::create([
             'storage_limit_in_mb' => config('monica.default_storage_limit_in_mb'),
         ]);
-        $this->addFirstUser();
 
-        SetupAccount::dispatch($this->user)->onQueue('high');
-
-        return $this->user;
+        return tap($this->addFirstUser(), function ($user) {
+            $this->setupAccount($user);
+        });
     }
 
-    private function addFirstUser(): void
+    private function addFirstUser(): User
     {
-        $this->user = User::create([
+        return User::create([
             'account_id' => $this->account->id,
             'first_name' => $this->data['first_name'],
             'last_name' => $this->data['last_name'],
@@ -67,5 +63,15 @@ class CreateAccount extends BaseService implements ServiceInterface
             'is_account_administrator' => true,
             'timezone' => 'UTC',
         ]);
+    }
+
+    private function setupAccount(User $user): void
+    {
+        $request = [
+            'account_id' => $this->account->id,
+            'author_id' => $user->id,
+        ];
+
+        SetupAccount::dispatch($request)->onQueue('high');
     }
 }

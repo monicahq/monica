@@ -32,6 +32,23 @@ class CancelAccountTest extends TestCase
     }
 
     /** @test */
+    public function it_queues_destroying_an_account(): void
+    {
+        Queue::fake();
+
+        $user = $this->createAdministrator();
+
+        $request = [
+            'account_id' => $user->account->id,
+            'author_id' => $user->id,
+        ];
+
+        CancelAccount::dispatch($request);
+
+        Queue::assertPushed(CancelAccount::class, fn ($job) => $job->data === $request);
+    }
+
+    /** @test */
     public function it_fails_if_user_doesnt_belong_to_account(): void
     {
         $user = $this->createAdministrator();
@@ -59,12 +76,11 @@ class CancelAccountTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CancelAccount())->execute($request);
+        CancelAccount::dispatch($request);
     }
 
     private function executeService(Account $account, User $user, File $file = null): void
     {
-        Queue::fake();
         Event::fake();
 
         $request = [
@@ -72,7 +88,7 @@ class CancelAccountTest extends TestCase
             'author_id' => $user->id,
         ];
 
-        (new CancelAccount())->execute($request);
+        CancelAccount::dispatchSync($request);
 
         $this->assertDatabaseMissing('accounts', [
             'id' => $account->id,

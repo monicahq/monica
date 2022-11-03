@@ -6,12 +6,10 @@ use App\Interfaces\ServiceInterface;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\File;
-use App\Services\BaseService;
+use App\Services\QueuableService;
 
-class CancelAccount extends BaseService implements ServiceInterface
+class CancelAccount extends QueuableService implements ServiceInterface
 {
-    private Account $account;
-
     /**
      * Get the validation rules that apply to the service.
      *
@@ -42,20 +40,21 @@ class CancelAccount extends BaseService implements ServiceInterface
      * Delete an account.
      *
      * @param  array  $data
+     * @return void
      */
     public function execute(array $data): void
     {
         $this->validateRules($data);
 
-        $this->account = Account::findOrFail($data['account_id']);
-        $this->destroyAllFiles();
+        $account = Account::findOrFail($data['account_id']);
+        $this->destroyAllFiles($account);
 
-        $this->account->delete();
+        $account->delete();
     }
 
-    private function destroyAllFiles(): void
+    private function destroyAllFiles(Account $account): void
     {
-        $vaultIds = $this->account->vaults()->select('id')->get()->toArray();
+        $vaultIds = $account->vaults()->select('id')->get()->toArray();
         $contactIds = Contact::whereIn('vault_id', $vaultIds)->select('id')->get()->toArray();
 
         File::whereIn('contact_id', $contactIds)->chunk(100, function ($files) {

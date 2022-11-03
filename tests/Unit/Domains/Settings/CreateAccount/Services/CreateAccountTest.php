@@ -3,7 +3,7 @@
 namespace Tests\Unit\Domains\Settings\CreateAccount\Services;
 
 use App\Domains\Settings\CreateAccount\Services\CreateAccount;
-use App\Jobs\SetupAccount;
+use App\Domains\Settings\CreateAccount\Services\SetupAccount;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
@@ -65,8 +65,7 @@ class CreateAccountTest extends TestCase
             $user
         );
 
-        Queue::assertPushed(SetupAccount::class, function ($job) use ($user) {
-            return $job->user === $user && $job->onQueue('high');
-        });
+        Queue::assertPushed(SetupAccount::class, fn ($job) => $job->data['author_id'] === $user->id);
+        Queue::assertPushedOn('high', SetupAccount::class);
     }
 }

@@ -33,7 +33,7 @@ class CancelAccountController extends Controller
             'author_id' => Auth::id(),
         ];
 
-        (new CancelAccount())->execute($data);
+        CancelAccount::dispatch($data);
 
         return response()->json([
             'data' => route('login'),
