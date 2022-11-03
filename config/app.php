@@ -166,6 +166,7 @@ return [
          * Package Service Providers...
          */
         SocialiteProviders\Manager\ServiceProvider::class,
+        Laravel\Telescope\TelescopeServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -174,6 +175,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
     ],

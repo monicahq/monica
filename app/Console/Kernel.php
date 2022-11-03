@@ -13,10 +13,12 @@ class Kernel extends ConsoleKernel
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
+     * @codeCoverageIgnore
      */
     protected function schedule(Schedule $schedule)
     {
         $schedule->job(new ProcessScheduledContactReminders())->everyMinute();
+        $schedule->command('telescope:prune')->daily();
     }
 
     /**

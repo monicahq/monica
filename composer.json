@@ -23,6 +23,7 @@
     "laravel/sanctum": "^2.15.1",
     "laravel/scout": "^9.4.10",
     "laravel/socialite": "^5.5",
+    "laravel/telescope": "^4.9",
     "laravel/tinker": "^2.7.2",
     "meilisearch/meilisearch-php": "^0.23.3",
     "naugrim/laravel-sentry-tunnel": "^1.0",
@@ -69,13 +70,9 @@
       "@php artisan package:discover --ansi"
     ],
     "post-update-cmd": [
-      "Illuminate\\Foundation\\ComposerScripts::postUpdate"
+      "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+      "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
     ]
-  },
-  "extra": {
-    "laravel": {
-      "dont-discover": []
-    }
   },
   "config": {
     "optimize-autoloader": true,
