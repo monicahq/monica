@@ -38,14 +38,9 @@ echo -n "$release" | tee config/.release
 
 echo -e "\n"
 
-# BUILD
-composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --no-dev --working-dir=$ROOT
-yarn --cwd $ROOT install
-yarn --cwd $ROOT run build
-
 # DOCKER BUILD
 if [ "$tag" != "--skip-build" ]; then
   docker build -t $tag -f $SELF_PATH/Dockerfile $ROOT
 fi
 
-rm -f config/.{version,commit,release}
+# rm -f config/.{version,commit,release}

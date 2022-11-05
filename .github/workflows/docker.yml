@@ -5,10 +5,6 @@ on:
     branches:
       - main
 
-env:
-  php-version: '8.1'
-  node-version: 18
-
 concurrency:
   group: Docker ${{ github.ref }}
   cancel-in-progress: true
@@ -33,6 +29,9 @@ jobs:
         with:
           images: ghcr.io/monicahq/monica-next
           tag-sha: true
+          tags: |
+            # set latest tag for default branch
+            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -44,8 +43,8 @@ jobs:
           username: ${{ secrets.CR_USER }}
           password: ${{ secrets.CR_PAT }}
 
-    # Install
-      - name: Install
+    # Configure
+      - name: Configure variables
         run: scripts/docker/build.sh --skip-build $GITHUB_SHA
 
     # Build docker
@@ -55,6 +54,7 @@ jobs:
         with:
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
+          cache-from: type=registry,ref=ghcr.io/monicahq/monica-next:main
           labels: ${{ steps.docker_meta.outputs.labels }}
           file: scripts/docker/Dockerfile
           context: .
