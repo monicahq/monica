@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Domains\Settings\CreateAccount\Services;
 
+use App\Domains\Settings\CreateAccount\Jobs\SetupAccount;
 use App\Domains\Settings\CreateAccount\Services\CreateAccount;
-use App\Domains\Settings\CreateAccount\Services\SetupAccount;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;

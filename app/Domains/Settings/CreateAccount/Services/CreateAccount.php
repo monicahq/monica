@@ -3,6 +3,7 @@
 namespace App\Domains\Settings\CreateAccount\Services;
 
 use App\Actions\Fortify\PasswordValidationRules;
+use App\Domains\Settings\CreateAccount\Jobs\SetupAccount;
 use App\Interfaces\ServiceInterface;
 use App\Models\Account;
 use App\Models\User;

@@ -5,18 +5,16 @@ namespace App\Domains\Contact\ManageReminders\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactReminder;
 use App\Models\UserNotificationChannel;
-use App\Services\BaseService;
+use App\Services\QueuableService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
-class RescheduleContactReminderForChannel extends BaseService implements ServiceInterface
+class RescheduleContactReminderForChannel extends QueuableService implements ServiceInterface
 {
     private UserNotificationChannel $userNotificationChannel;
 
     private ContactReminder $contactReminder;
-
-    private array $data;
 
     private Carbon $upcomingDate;
 

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Settings\CreateAccount\Services;
 
-use App\Domains\Settings\CreateAccount\Services\SetupAccount;
+use App\Domains\Settings\CreateAccount\Jobs\SetupAccount;
 use App\Models\Currency;
 use App\Models\RelationshipGroupType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

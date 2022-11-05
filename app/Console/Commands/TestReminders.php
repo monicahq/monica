@@ -58,11 +58,11 @@ class TestReminders extends Command
             }
 
             try {
-                (new RescheduleContactReminderForChannel())->execute([
+                (new RescheduleContactReminderForChannel([
                     'contact_reminder_id' => $scheduledReminder->contact_reminder_id,
                     'user_notification_channel_id' => $scheduledReminder->user_notification_channel_id,
                     'contact_reminder_scheduled_id' => $scheduledReminder->id,
-                ]);
+                ]))->handle();
             } catch (ModelNotFoundException) {
                 continue;
             }

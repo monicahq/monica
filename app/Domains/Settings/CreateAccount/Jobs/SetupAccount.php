@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Settings\CreateAccount\Services;
+namespace App\Domains\Settings\CreateAccount\Jobs;
 
 use App\Domains\Settings\ManageActivityTypes\Services\CreateActivityType;
 use App\Domains\Settings\ManageAddressTypes\Services\CreateAddressType;
