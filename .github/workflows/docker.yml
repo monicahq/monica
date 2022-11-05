@@ -29,9 +29,6 @@ jobs:
         with:
           images: ghcr.io/monicahq/monica-next
           tag-sha: true
-          tags: |
-            # set latest tag for default branch
-            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2

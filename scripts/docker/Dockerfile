@@ -20,13 +20,6 @@ RUN set -ex; \
 ## Image
 FROM php:8.1-apache
 
-# opencontainers annotations https://github.com/opencontainers/image-spec/blob/master/annotations.md
-LABEL org.opencontainers.image.authors="Alexis Saettler <alexis@saettler.org>" \
-      org.opencontainers.image.title="MonicaHQ, the Personal Relationship Manager" \
-      org.opencontainers.image.description="This is MonicaHQ, your personal memory! MonicaHQ is like a CRM but for the friends, family, and acquaintances around you." \
-      org.opencontainers.image.url="https://monicahq.com" \
-      org.opencontainers.image.vendor="Monica"
-
 # entrypoint.sh dependencies
 RUN set -ex; \
     \
