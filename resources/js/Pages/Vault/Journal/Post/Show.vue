@@ -60,13 +60,22 @@ defineProps({
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
           <!-- left -->
           <div class="mr-8">
-            <div class="post prose relative rounded bg-white">
-              <p class="text-sm text-gray-400">{{ data.written_at }}</p>
+            <div class="post relative rounded bg-white">
+              <p class="mb-2 text-sm text-gray-400">{{ data.written_at }}</p>
+
+              <ul v-if="data.tags" class="p0 list mb-3">
+                <li
+                  v-for="tag in data.tags"
+                  :key="tag.id"
+                  class="mr-2 inline-block rounded bg-neutral-200 py-1 px-2 text-xs font-semibold text-neutral-500 last:mr-0">
+                  {{ tag.name }}
+                </li>
+              </ul>
 
               <h1 v-if="data.title_exists" class="mb-4 text-2xl font-medium">{{ data.title }}</h1>
 
               <!-- sections -->
-              <div v-if="data.sections.length > 0">
+              <div v-if="data.sections.length > 0" class="prose">
                 <div v-for="section in data.sections" :key="section.id" class="mb-4">
                   <div class="mb-1 italic text-gray-400">
                     {{ section.label }}
@@ -83,24 +92,8 @@ defineProps({
 
           <!-- right -->
           <div class="">
-            <p class="mb-2 font-bold">Options</p>
+            <p class="mb-2 font-bold">{{ $t('vault.journal_show_options') }}</p>
             <ul class="mb-6 text-sm">
-              <li class="mb-2 flex items-center">
-                <svg
-                  class="mr-2 h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
-                </svg>
-
-                <span>Draft</span>
-              </li>
               <li class="flex items-center">
                 <svg
                   class="mr-2 h-4 w-4"

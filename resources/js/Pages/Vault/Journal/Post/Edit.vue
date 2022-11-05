@@ -1,6 +1,5 @@
 <script setup>
 import Layout from '@/Shared/Layout.vue';
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
@@ -19,7 +18,6 @@ const form = useForm({
   sections: [],
 });
 
-const loadingState = ref('');
 const saveInProgress = ref(false);
 const statistics = ref([]);
 
@@ -174,17 +172,8 @@ const destroy = () => {
           <div class="">
             <!-- Publish action -->
             <div class="mb-2 rounded-lg border border-gray-200 text-center dark:border-gray-700 dark:bg-gray-900">
-              <div class="border-b border-gray-200 p-2 text-sm dark:border-gray-700">Post status: draft</div>
-
               <div class="bg-form rounded-b-lg p-5">
-                <pretty-link :href="data.url.show" :classes="'mr-8'" :text="'Close'" :icon="'exit'" />
-
-                <pretty-button
-                  @click="update()"
-                  :text="'Publish'"
-                  :state="loadingState"
-                  :icon="'check'"
-                  :classes="'save'" />
+                <pretty-link :href="data.url.show" :text="'Close'" :icon="'exit'" />
               </div>
             </div>
 
@@ -216,14 +205,6 @@ const destroy = () => {
 
                 <span>Saving in progress</span>
               </div>
-            </div>
-
-            <!-- contacts -->
-            <p class="mb-2 flex items-center font-bold">
-              <span>Contacts in this post</span>
-            </p>
-            <div class="bg-form mb-6 rounded-lg border border-gray-200 p-5 dark:border-gray-700 dark:bg-gray-900">
-              This post is about
             </div>
 
             <!-- categories -->
