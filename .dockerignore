@@ -1,5 +1,6 @@
 .vscode/
 .composer/
+.devcontainer/
 .git/
 .gitattributes
 .github/
@@ -22,6 +23,7 @@ node_modules/
 npm-debug.log*
 persist/
 .phpunit.result.cache
+public/build/
 public/storage
 resources/vendor/
 results/
