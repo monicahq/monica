@@ -38,8 +38,10 @@
           @submit.prevent="submit()">
           <div
             class="section-head border-b border-gray-200 bg-blue-50 p-3 dark:border-gray-700 dark:bg-blue-900 sm:p-5">
-            <h1 class="mb-1 text-center text-2xl font-medium">
-              {{ $t('vault.create_title') }}
+            <h1 class="mb-1 flex justify-center text-2xl font-medium">
+              <span>{{ $t('vault.create_title') }}</span>
+
+              <help :url="$page.props.help_links.vault_create" :top="'9px'" :classes="'ml-2'" />
             </h1>
             <p class="text-center text-sm">
               {{ $t('vault.create_description') }}
@@ -83,6 +85,7 @@ import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
+import Help from '@/Shared/Help.vue';
 
 export default {
   components: {
@@ -91,6 +94,7 @@ export default {
     PrettyButton,
     TextInput,
     TextArea,
+    Help,
   },
 
   props: {

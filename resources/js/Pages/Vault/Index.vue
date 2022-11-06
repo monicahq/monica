@@ -5,14 +5,14 @@
       <div v-if="data.vaults.length == 0" class="mx-auto mb-6 max-w-md px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <div
           class="dark:bg-ghray-900 rounded-t-lg border-t border-l border-r border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
-          <p class="text-center">👋</p>
-          <h2 class="mb-6 text-center text-lg">
+          <p class="mb-2 text-center text-xl">👋</p>
+          <h2 class="mb-6 text-center text-lg font-semibold">
             {{ $t('vault.index_blank_title') }}
           </h2>
           <p class="mb-3">
             {{ $t('vault.index_blank_sentence_1') }}
           </p>
-          <p class="mb-3">
+          <p class="mb-5">
             {{ $t('vault.index_blank_sentence_2') }}
           </p>
           <div class="mb-4 text-center">

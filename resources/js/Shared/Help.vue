@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="$page.props.auth.user.help_shown"
-    class="relative inline cursor-pointer"
+    :class="svgClasses"
     :data-url="finalURL"
     :style="'top:' + top"
     @click="goTo()">
@@ -28,6 +28,10 @@ export default {
       type: String,
       default: '3px',
     },
+    classes: {
+      type: String,
+      default: '',
+    },
   },
 
   data() {
@@ -39,6 +43,10 @@ export default {
   computed: {
     finalURL: function () {
       return this.localUrl + this.url;
+    },
+
+    svgClasses() {
+      return ['relative inline cursor-pointer', this.classes];
     },
   },
 
