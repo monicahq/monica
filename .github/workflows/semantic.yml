@@ -4,6 +4,7 @@ on:
   pull_request:
     types: [opened, edited, synchronize]
 
+
 jobs:
   main:
     name: Validate PR title

@@ -7,6 +7,7 @@ on:
   workflow_run:
     workflows: [PHP linting (Pint), Javascript linting]
     types: [completed]
+    branches-ignore: [main]
 
 env:
   php-version: '8.1'
