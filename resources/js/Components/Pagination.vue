@@ -12,7 +12,7 @@ defineProps({
 });
 
 const commonClasses =
-  'relative inline-flex items-center px-4 py-2 text-sm font-medium bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 leading-5';
+  'relative inline-flex items-center px-4 py-2 text-sm font-medium bg-white border border-gray-300 dark:border-gray-700 leading-5';
 const linkClasses =
   'hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 dark:ring-gray-700 focus:border-blue-300 focus:dark:border-blue-700 active:bg-gray-100 active:dark:bg-gray-900 active:text-gray-700 active:dark:text-gray-300 transition ease-in-out duration-150';
 </script>
@@ -24,14 +24,16 @@ const linkClasses =
     :aria-label="$t('Pagination Navigation')"
     class="flex items-center justify-between">
     <div class="flex flex-1 justify-between sm:hidden">
-      <span v-if="items.currentPage === 1" :class="[commonClasses, 'rounded-md', 'text-gray-500', 'cursor-default']">
+      <span
+        v-if="items.currentPage === 1"
+        :class="[commonClasses, 'rounded-md', 'text-gray-500', 'dark:bg-gray-900', 'cursor-default']">
         <span v-html="$t('pagination.previous')"></span>
       </span>
       <Link
         v-else
         :href="items.previousPageUrl"
         preserve-scroll
-        :class="[commonClasses, linkClasses, 'rounded-md', 'text-gray-700', 'dark:text-gray-300']">
+        :class="[commonClasses, linkClasses, 'rounded-md', 'text-gray-700', 'dark:text-gray-300', 'dark:bg-gray-900']">
         <span v-html="$t('pagination.previous')"></span>
       </Link>
 
@@ -39,10 +41,20 @@ const linkClasses =
         v-if="items.lastPage > 1"
         :href="items.nextPageUrl"
         preserve-scroll
-        :class="[commonClasses, linkClasses, 'ml-3', 'rounded-md', 'text-gray-700', 'dark:text-gray-300']">
+        :class="[
+          commonClasses,
+          linkClasses,
+          'ml-3',
+          'rounded-md',
+          'text-gray-700',
+          'dark:text-gray-300',
+          'dark:bg-gray-900',
+        ]">
         <span v-html="$t('pagination.next')"></span>
       </Link>
-      <span v-else :class="[commonClasses, 'ml-3', 'rounded-md', 'text-gray-500', 'cursor-default']">
+      <span
+        v-else
+        :class="[commonClasses, 'ml-3', 'rounded-md', 'text-gray-500', 'cursor-default', 'dark:bg-gray-900']">
         <span v-html="$t('pagination.next')"></span>
       </span>
     </div>
@@ -71,7 +83,15 @@ const linkClasses =
       <div class="relative z-0 inline-flex rounded-md shadow-sm">
         <span
           v-if="items.currentPage === 1"
-          :class="[commonClasses, 'px-2', 'rounded-l-md', 'text-gray-500', 'focus:z-10', 'cursor-default']"
+          :class="[
+            commonClasses,
+            'px-2',
+            'rounded-l-md',
+            'text-gray-500',
+            'focus:z-10',
+            'cursor-default',
+            'dark:bg-gray-900',
+          ]"
           :aria-label="$t('pagination.previous')"
           aria-hidden="true"
           aria-disabled="true">
@@ -89,6 +109,7 @@ const linkClasses =
             'px-2',
             'rounded-l-md',
             'text-gray-500',
+            'dark:bg-gray-900',
             'hover:text-gray-400',
             'hover:dark:text-gray-600',
             'focus:z-10',
@@ -101,7 +122,14 @@ const linkClasses =
           <span
             v-if="link.url === null"
             aria-disabled="true"
-            :class="[commonClasses, '-ml-px', 'text-gray-700', 'dark:text-gray-500', 'cursor-default']"
+            :class="[
+              commonClasses,
+              '-ml-px',
+              'text-gray-700',
+              'dark:text-gray-500',
+              'dark:bg-gray-900',
+              'cursor-default',
+            ]"
             v-html="link.label">
           </span>
           <span
@@ -114,7 +142,15 @@ const linkClasses =
             v-else
             :href="link.url"
             preserve-scroll
-            :class="[commonClasses, linkClasses, '-ml-px', 'text-gray-700', 'dark:text-gray-300', 'focus:z-10']"
+            :class="[
+              commonClasses,
+              linkClasses,
+              '-ml-px',
+              'text-gray-700',
+              'dark:text-gray-300',
+              'dark:bg-gray-900',
+              'focus:z-10',
+            ]"
             :aria-label="$t('Go to page :page', { page: link.label })">
             <span v-html="link.label"></span>
           </Link>
@@ -132,6 +168,7 @@ const linkClasses =
             'px-2',
             'rounded-r-md',
             'text-gray-500',
+            'dark:bg-gray-900',
             'hover:text-gray-400',
             'hover:dark:text-gray-600',
             'focus:z-10',
@@ -148,6 +185,7 @@ const linkClasses =
             'px-2',
             'rounded-r-md',
             'text-gray-500',
+            'dark:bg-gray-900',
             'focus:z-10',
             'cursor-default',
           ]"
