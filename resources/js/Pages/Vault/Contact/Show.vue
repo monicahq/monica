@@ -59,6 +59,8 @@
                 <labels v-if="module.type == 'labels'" :data="labels" />
 
                 <job-information v-if="module.type == 'company'" :data="jobInformation" />
+
+                <religion v-if="module.type == 'religions'" :data="religions" />
               </div>
             </div>
 
@@ -207,6 +209,7 @@ import Groups from '@/Shared/Modules/Groups.vue';
 import ContactInformation from '@/Shared/Modules/ContactInformation.vue';
 import Documents from '@/Shared/Modules/Documents.vue';
 import Photos from '@/Shared/Modules/Photos.vue';
+import Religion from '@/Shared/Modules/Religion.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
 
 export default {
@@ -233,6 +236,7 @@ export default {
     ContactInformation,
     Documents,
     Photos,
+    Religion,
     Uploadcare,
   },
 
@@ -270,6 +274,7 @@ export default {
       contactInformation: [],
       documents: [],
       photos: [],
+      religions: [],
       form: {
         searchTerm: null,
         uuid: null,
@@ -324,6 +329,11 @@ export default {
           this.data.contact_information[
             this.data.contact_information.findIndex((x) => x.type == 'family_summary')
           ].data;
+      }
+
+      if (this.data.contact_information.findIndex((x) => x.type == 'religions') > -1) {
+        this.religions =
+          this.data.contact_information[this.data.contact_information.findIndex((x) => x.type == 'religions')].data;
       }
     }
 

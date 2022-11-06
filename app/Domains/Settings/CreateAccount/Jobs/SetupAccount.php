@@ -266,6 +266,23 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'template_page_id' => $templatePageContact->id,
             'module_id' => $module->id,
         ]);
+
+        // religions
+        $module = (new CreateModule())->execute([
+            'account_id' => $this->author->account_id,
+            'author_id' => $this->author->id,
+            'name' => trans('app.module_religions'),
+            'type' => Module::TYPE_RELIGIONS,
+            'can_be_deleted' => false,
+            'reserved_to_contact_information' => true,
+        ]);
+        (new AssociateModuleToTemplatePage())->execute([
+            'account_id' => $this->author->account_id,
+            'author_id' => $this->author->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageContact->id,
+            'module_id' => $module->id,
+        ]);
     }
 
     private function addTemplatePageFeed(): void

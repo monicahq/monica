@@ -95,6 +95,10 @@ class SetupAccountTest extends TestCase
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
+            'name' => trans('app.module_religions'),
+        ]);
+        $this->assertDatabaseHas('modules', [
+            'account_id' => $user->account_id,
             'name' => trans('app.module_tasks'),
         ]);
         $this->assertDatabaseHas('modules', [

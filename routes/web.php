@@ -30,6 +30,7 @@ use App\Domains\Contact\ManagePets\Web\Controllers\ContactModulePetController;
 use App\Domains\Contact\ManagePhotos\Web\Controllers\ContactModulePhotoController;
 use App\Domains\Contact\ManagePhotos\Web\Controllers\ContactPhotoController;
 use App\Domains\Contact\ManageRelationships\Web\Controllers\ContactRelationshipsController;
+use App\Domains\Contact\ManageReligion\Web\Controllers\ContactModuleReligionController;
 use App\Domains\Contact\ManageReminders\Web\Controllers\ContactModuleReminderController;
 use App\Domains\Contact\ManageTasks\Web\Controllers\ContactModuleTaskController;
 use App\Domains\Settings\CancelAccount\Web\Controllers\CancelAccountController;
@@ -242,6 +243,9 @@ Route::middleware([
                     // job information
                     Route::get('companies/list', [ContactModuleJobInformationController::class, 'index'])->name('contact.companies.list.index');
                     Route::put('jobInformation', [ContactModuleJobInformationController::class, 'update'])->name('contact.job_information.update');
+
+                    // religion
+                    Route::put('religion', [ContactModuleReligionController::class, 'update'])->name('contact.religion.update');
 
                     // relationships
                     Route::get('relationships/create', [ContactRelationshipsController::class, 'create'])->name('contact.relationships.create');

@@ -51,6 +51,7 @@ class Contact extends Model
         'job_position',
         'listed',
         'file_id',
+        'religion_id',
     ];
 
     /**
@@ -332,6 +333,16 @@ class Contact extends Model
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class, 'contact_group');
+    }
+
+    /**
+     * Get the religion associated with the contact.
+     *
+     * @return BelongsTo
+     */
+    public function religion(): BelongsTo
+    {
+        return $this->belongsTo(Religion::class);
     }
 
     /**

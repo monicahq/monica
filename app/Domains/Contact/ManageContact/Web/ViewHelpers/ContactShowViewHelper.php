@@ -21,6 +21,7 @@ use App\Domains\Contact\ManagePhotos\Web\ViewHelpers\ModulePhotosViewHelper;
 use App\Domains\Contact\ManagePronouns\Web\ViewHelpers\ModuleGenderPronounViewHelper;
 use App\Domains\Contact\ManageRelationships\Web\ViewHelpers\ModuleFamilySummaryViewHelper;
 use App\Domains\Contact\ManageRelationships\Web\ViewHelpers\ModuleRelationshipViewHelper;
+use App\Domains\Contact\ManageReligion\Web\ViewHelpers\ModuleReligionViewHelper;
 use App\Domains\Contact\ManageReminders\Web\ViewHelpers\ModuleRemindersViewHelper;
 use App\Domains\Contact\ManageTasks\Web\ViewHelpers\ModuleContactTasksViewHelper;
 use App\Helpers\StorageHelper;
@@ -197,6 +198,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_FAMILY_SUMMARY) {
                 $data = ModuleFamilySummaryViewHelper::data($contact, $user);
+            }
+
+            if ($module->type == Module::TYPE_RELIGIONS) {
+                $data = ModuleReligionViewHelper::data($contact);
             }
 
             $modulesCollection->push([

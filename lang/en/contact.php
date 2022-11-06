@@ -39,6 +39,7 @@ return [
     'feed_item_note_updated' => 'edited a note',
     'feed_item_note_destroyed' => 'deleted a note',
     'feed_item_job_information_updated' => 'updated the job information',
+    'feed_item_religion_updated' => 'updated the religion',
     'feed_item_goal_created' => 'created a goal',
     'feed_item_goal_updated' => 'updated a goal',
     'feed_item_goal_destroyed' => 'deleted a goal',
@@ -123,4 +124,12 @@ return [
     'goals_delete_confirm' => 'Are you sure? This will delete the goal and all the streaks permanently.',
     'goals_delete_success' => 'The goal has been deleted',
     'goals_update_success' => 'The goal has been edited',
+
+    /***************************************************************
+     * MODULE: RELIGIONS
+     **************************************************************/
+
+    'religions_title' => 'Religion',
+    'religions_delete_success' => 'The goal has been deleted',
+    'religions_update_success' => 'The goal has been edited',
 ];

@@ -115,6 +115,7 @@ return [
     'module_contact_information' => 'Contact information',
     'module_documents' => 'Documents',
     'module_photos' => 'Photos',
+    'module_religions' => 'Religions',
 
     'module_option_default_number_of_items_to_display' => 'Default number of items to display',
 
