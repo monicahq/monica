@@ -109,5 +109,6 @@ return [
         'settings_preferences_numerical_format' => 'user-and-account-settings/manage-preferences#numerical-format',
         'settings_preferences_timezone' => 'user-and-account-settings/manage-preferences#timezone',
         'settings_preferences_maps' => 'user-and-account-settings/manage-preferences#timezone',
+        'settings_account_deletion' => 'user-and-account-settings/account-deletion',
     ],
 ];

@@ -36,7 +36,11 @@
           @submit.prevent="destroy()">
           <!-- title -->
           <div class="section-head border-b border-gray-200 bg-blue-50 p-5 dark:border-gray-700 dark:bg-blue-900">
-            <h1 class="mb-4 text-center text-2xl font-medium">Cancel your account</h1>
+            <h1 class="mb-4 flex justify-center text-2xl font-medium">
+              <span>Cancel your account</span>
+
+              <help :url="$page.props.help_links.settings_account_deletion" :top="'9px'" :classes="'ml-3'" />
+            </h1>
             <p class="mb-2">Thanks for giving Monica a try.</p>
             <p class="mb-2">Once you cancel,</p>
             <ul class="list-disc pl-6">
@@ -85,6 +89,7 @@ import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
+import Help from '@/Shared/Help.vue';
 
 export default {
   components: {
@@ -93,6 +98,7 @@ export default {
     PrettyButton,
     TextInput,
     Errors,
+    Help,
   },
 
   props: {
