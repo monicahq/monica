@@ -72,6 +72,7 @@ return [
     'dashboard_favorites_title' => 'Favorites',
     'dashboard_due_tasks_title' => 'Due and upcoming tasks',
     'dashboard_due_tasks_blank' => 'No tasks.',
+    'dashboard_feed_title' => 'Activity feed',
 
     /***************************************************************
      * VAULT DASHBOARD REMINDERS

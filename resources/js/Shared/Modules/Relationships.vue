@@ -77,7 +77,8 @@
     <div
       v-if="data.number_of_defined_relations == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-      <p class="p-5 text-center">There are no relationships yet.</p>
+      <img src="/img/contact_blank_relationship.svg" class="mx-auto mt-4 h-14 w-14" />
+      <p class="px-5 pb-5 pt-2 text-center">There are no relationships yet.</p>
     </div>
   </div>
 </template>

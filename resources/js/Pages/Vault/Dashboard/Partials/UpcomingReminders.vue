@@ -48,8 +48,9 @@
     <!-- blank state -->
     <div
       v-if="data.reminders.length == 0"
-      class="mb-4 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-      <p class="p-5 text-center">
+      class="mb-4 flex items-center rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-900">
+      <img src="/img/dashboard_blank_reminders.svg" class="mr-2 h-14 w-14" />
+      <p class="px-5 text-center">
         {{ $t('vault.dashboard_reminders_blank') }}
       </p>
     </div>
