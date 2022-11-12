@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Support\Facades\Schema;
-use MeiliSearch\Client;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -43,6 +42,7 @@ class SetupApplication extends Command
             $this->migrate();
             $this->cacheConfig();
             $this->scout();
+            $this->documentation();
         }
     }
 
@@ -121,23 +121,17 @@ class SetupApplication extends Command
      */
     protected function scout(): void
     {
-        if (config('scout.driver') === 'meilisearch' && ($host = config('scout.meilisearch.host')) !== '') {
-            $this->info('-> Creating indexes on Meilisearch. Make sure Meilisearch is running.');
+        $this->artisan('✓ Setup scout', 'scout:setup', ['--force' => true]);
+    }
 
-            $config = [
-                'contacts' => ['id', 'vault_id'],
-                'notes' => ['id', 'vault_id', 'contact_id'],
-                'groups' => ['id', 'vault_id'],
-            ];
-
-            $client = new Client($host, config('scout.meilisearch.key'));
-            foreach ($config as $name => $fields) {
-                $index = $client->index($name);
-                $index->updateFilterableAttributes($fields);
-            }
-
-            $this->info('✓ Indexes created');
-        }
+    /**
+     * Regenerate api documentation.
+     *
+     * @return void
+     */
+    protected function documentation(): void
+    {
+        $this->artisan('✓ Generate api documentation', 'scribe:setup', ['--force' => true]);
     }
 
     private function artisan(string $message, string $command, array $options = [])

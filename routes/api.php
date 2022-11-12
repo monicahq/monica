@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Domains\Settings\ManageUsers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum', 'abilities:read'])->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware(['auth:sanctum', 'abilities:read'])->get('/user', UserController::class);

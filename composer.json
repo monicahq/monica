@@ -16,6 +16,7 @@
     "guzzlehttp/guzzle": "^7.4.5",
     "http-interop/http-factory-guzzle": "^1.2",
     "inertiajs/inertia-laravel": "^0.6.3",
+    "knuckleswtf/scribe": "^4.2",
     "laravel-notification-channels/telegram": "^2.1",
     "laravel/fortify": "^1.13",
     "laravel/framework": "^9.22.1",
