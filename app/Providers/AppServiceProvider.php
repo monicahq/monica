@@ -47,6 +47,9 @@ class AppServiceProvider extends ServiceProvider
                 '--force' => true,
             ]);
             $user = User::first();
+            $user->wasRecentlyCreated = false;
+            $newToken = $user->createToken('test');
+            $user->withAccessToken($newToken->accessToken);
             app('auth')->guard('sanctum')->setUser($user);
             app('auth')->shouldUse('sanctum');
             // @codeCoverageIgnoreEnd
