@@ -40,9 +40,9 @@ class SetupApplication extends Command
             $this->clearConfig();
             $this->symlink();
             $this->migrate();
+            $this->documentation();
             $this->cacheConfig();
             $this->scout();
-            $this->documentation();
         }
     }
 

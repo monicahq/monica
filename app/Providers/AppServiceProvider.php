@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Knuckles\Scribe\Scribe;
-use Laravel\Sanctum\Sanctum;
 use LaravelWebauthn\Facades\Webauthn;
 
 class AppServiceProvider extends ServiceProvider
@@ -48,7 +47,8 @@ class AppServiceProvider extends ServiceProvider
                 '--force' => true,
             ]);
             $user = User::first();
-            Sanctum::actingAs($user, ['*']);
+            app('auth')->guard('sanctum')->setUser($user);
+            app('auth')->shouldUse('sanctum');
             // @codeCoverageIgnoreEnd
         });
     }
