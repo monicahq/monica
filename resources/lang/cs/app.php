@@ -44,11 +44,11 @@ return [
     'retry' => 'Opakovat',
     'filter' => 'Filtrovat seznam',
     'go_back' => 'Jít zpět',
-    'file_selected' => 'One file selected…|{count} files selected…',
+    'file_selected' => 'Jeden soubor vybrán…| vybráno {count} souborů…',
 
     'application_title' => 'Monica – správce osobních vztahů',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
-    'application_og_title' => 'Have better relations with your loved ones. Free online CRM for friends and family.',
+    'application_og_title' => 'Pro lepší vztahy s vašimi blízkými. Bezplatný online CRM pro přátele a rodinu.',
 
     'markdown_description' => 'Chcete pohodlně formátovat text? Podporujeme formát markdown pro značení tučně, kurzivou, vytváření seznamu a další.',
     'markdown_link' => 'Číst dokumentaci',
@@ -64,7 +64,7 @@ return [
     'main_nav_activities' => 'Aktivity',
     'main_nav_tasks' => 'Úkoly',
 
-    'footer_remarks' => 'Comments?',
+    'footer_remarks' => 'Komentáře?',
     'footer_send_email' => 'Pošlete nám e-mail',
     'footer_privacy' => 'Podmínky používání',
     'footer_release' => 'Poznámky k vydání',
@@ -121,9 +121,9 @@ return [
     'default_save_success' => 'Data byla uložena.',
 
     'compliance_title' => 'Omlouváme se za vyrušení.',
-    'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
+    'compliance_desc' => 'Změnili jsme <a href=":urlterm" hreflang=":hreflang">Smluvní podmínky</a> a <a href=":url" hreflang=":hreflang">Zásady ochrany osobních údajů</a>. Podle zákona vás musíme požádat, abyste je zkontrolovali a přijali, abyste mohli nadále používat svůj účet.',
     'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
-    'compliance_terms' => 'Accept new terms and privacy policy',
+    'compliance_terms' => 'Přijmout nové podmínky a zásady ochrany osobních údajů',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -187,16 +187,16 @@ return [
     'relationship_type_ex_female_with_name' => ':name’s ex-girlfriend',
     'relationship_type_ex_male_with_name' => ':name’s ex-boyfriend',
 
-    'relationship_type_parent' => 'parent',
+    'relationship_type_parent' => 'rodič',
     'relationship_type_parent_female' => 'matka',
-    'relationship_type_parent_male' => 'father',
+    'relationship_type_parent_male' => 'otec',
     'relationship_type_parent_with_name' => ':name’s parent',
     'relationship_type_parent_female_with_name' => ':name’s mother',
     'relationship_type_parent_male_with_name' => ':name’s father',
 
-    'relationship_type_child' => 'child',
+    'relationship_type_child' => 'dítě',
     'relationship_type_child_female' => 'dcera',
-    'relationship_type_child_male' => 'son',
+    'relationship_type_child_male' => 'syn',
     'relationship_type_child_with_name' => ':name’s child',
     'relationship_type_child_female_with_name' => ':name’s daughter',
     'relationship_type_child_male_with_name' => ':name’s son',
