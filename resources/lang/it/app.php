@@ -253,8 +253,8 @@ return [
     'relationship_type_cousin' => 'cugino',
     'relationship_type_cousin_female' => 'cugino',
     'relationship_type_cousin_male' => 'cugino',
-    'relationship_type_cousin_with_name' => ': nome del cugino',
-    'relationship_type_cousin_female_with_name' => ': nome del cugino',
+    'relationship_type_cousin_with_name' => 'Cugino di :name',
+    'relationship_type_cousin_female_with_name' => 'Cugina di :name',
     'relationship_type_cousin_male_with_name' => 'cugino di :name',
 
     'relationship_type_godfather' => 'padrino',
@@ -321,7 +321,7 @@ return [
     'relationship_type_protege_male_with_name' => ':name’s protégé',
 
     'relationship_type_ex_husband' => 'ex coniuge',
-    'relationship_type_ex_husband_female' => 'ex moglio',
+    'relationship_type_ex_husband_female' => 'ex moglie',
     'relationship_type_ex_husband_male' => 'ex marito',
     'relationship_type_ex_husband_with_name' => 'Ex coniuge di :name',
     'relationship_type_ex_husband_female_with_name' => 'ex moglie di :name',
