@@ -381,7 +381,7 @@ return [
     'deceased_add_reminder' => 'Aggiungi un promemoria per questa data',
     'deceased_label' => 'Deceduto/a',
     'deceased_date_label' => 'Data morte',
-    'deceased_label_with_date' => 'Decesso il :date',
+    'deceased_label_with_date' => 'Deceduto/a il :date',
     'deceased_age' => 'Età di decesso',
 
     // Contact information
