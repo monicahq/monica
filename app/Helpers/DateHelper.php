@@ -184,4 +184,15 @@ class DateHelper
 
         return $daysCollection;
     }
+
+    /**
+     * Return the date as timestamp.
+     *
+     * @param  Carbon  $date
+     * @return string
+     */
+    public static function getTimestamp(Carbon $date): string
+    {
+        return $date->translatedFormat(config('api.timestamp_format'));
+    }
 }

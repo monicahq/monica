@@ -13,6 +13,7 @@ parameters:
     ignoreErrors:
         # psalm/plugin-laravel doesn't support \Illuminate\Database\Eloquent\Casts\Attribute yet
         - '#Access to an undefined property App\\Models\\Contact.*::\$name\.#'
+        - '#Access to an undefined property App\\Http\\Resources\\UserResource::\$[a-zA-Z0-9_]+\.#'
         - '#Access to an undefined property App\\Models\\Contact::\$avatar\.#'
         - '#Access to an undefined property App\\Models\\Contact::\$age\.#'
         - '#Access to an undefined property App\\Models\\Post::\$excerpt\.#'
@@ -24,6 +25,7 @@ parameters:
         - '#Access to an undefined property App\\Models\\Module::\$position\.#'
         - '#Access to an undefined property App\\Models\\Post::\$title\.#'
         - '#Access to an undefined property App\\Models\\Religion::\$name\.#'
+        - '#Access to an undefined property App\\Models\\User::\$name\.#'
         - '#Access to an undefined property App\\Models\\.*::\$pivot\.#'
 
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Note>::unsearchable\(\)\.#'

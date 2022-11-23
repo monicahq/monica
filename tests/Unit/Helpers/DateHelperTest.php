@@ -363,4 +363,22 @@ class DateHelperTest extends TestCase
             $collection->toArray()
         );
     }
+
+    /** @test */
+    public function it_gets_the_date_as_a_timestamp()
+    {
+        $testDate = Carbon::now();
+
+        $testDate->year = 2019;
+        $testDate->month = 1;
+        $testDate->day = 20;
+        $testDate->hour = 23;
+        $testDate->minute = 21;
+        $testDate->second = 44;
+
+        $this->assertEquals(
+            '2019-01-20T23:21:44Z',
+            DateHelper::getTimestamp($testDate)
+        );
+    }
 }
