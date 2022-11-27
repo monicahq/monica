@@ -25,13 +25,13 @@ const close = () => {
 
 <template>
   <Modal :show="show" :max-width="maxWidth" :closeable="closeable" @close="close">
-    <div class="bg-white">
+    <div class="bg-white dark:bg-gray-900">
       <div>
         <!-- title -->
         <div class="flex items-center px-4 pt-5 pb-4">
           <div
-            class="mx-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-6 sm:w-6">
-            <svg class="h-4 w-4 text-red-600" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+            class="mx-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900 sm:mx-0 sm:h-6 sm:w-6">
+            <svg class="h-4 w-4 text-red-600 dark:text-red-400" stroke="currentColor" fill="none" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -54,7 +54,7 @@ const close = () => {
       </div>
     </div>
 
-    <div class="flex flex-row justify-end bg-gray-100 px-6 py-4 text-right">
+    <div class="flex flex-row justify-end bg-gray-100 px-6 py-4 text-right dark:bg-gray-900">
       <slot name="footer" />
     </div>
   </Modal>

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3';
+import useClipboard from 'vue-clipboard3';
 import JetActionMessage from '@/Components/Jetstream/ActionMessage.vue';
 import JetActionSection from '@/Components/Jetstream/ActionSection.vue';
 import JetButton from '@/Components/Button.vue';
@@ -67,6 +68,16 @@ const deleteApiToken = () => {
     preserveScroll: true,
     preserveState: true,
     onSuccess: () => (apiTokenBeingDeleted.value = null),
+  });
+};
+
+const copied = ref(false);
+const { toClipboard } = useClipboard();
+const copyToClipboard = (token) => {
+  toClipboard(token).then(() => {
+    copied.value = true;
+    setTimeout(() => (copied.value = false), 2000);
+    flash($t('Value copied into your clipboard'));
   });
 };
 </script>
@@ -173,10 +184,23 @@ const deleteApiToken = () => {
           {{ $t('Please copy your new API token. For your security, it won’t be shown again.') }}
         </div>
 
-        <div
-          v-if="$page.props.jetstream.flash.token"
-          class="mt-4 rounded bg-gray-100 px-4 py-2 font-mono text-sm text-gray-500">
-          {{ $page.props.jetstream.flash.token }}
+        <div v-if="$page.props.jetstream.flash.token" class="mt-4 flex">
+          <div
+            class="rounded bg-gray-100 px-4 py-2 font-mono text-sm text-gray-500"
+            @click.prevent="copyToClipboard($page.props.jetstream.flash.token)">
+            {{ $page.props.jetstream.flash.token }}
+          </div>
+
+          <JetButton
+            class="ml-3"
+            :title="$t('Copy value into the clipboard')"
+            @click.prevent="copyToClipboard($page.props.jetstream.flash.token)">
+            {{ $t('Copy') }}
+          </JetButton>
+
+          <JetActionMessage :on="copied" class="px-2 py-2">
+            {{ $t('Copied.') }}
+          </JetActionMessage>
         </div>
       </template>
 
