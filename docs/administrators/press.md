@@ -5,6 +5,11 @@ Here are all the mentions of Monica we've found on the web somewhere. Feel free 
 * https://blog.desdelinux.net/gestione-relaciones-personales-monica/
 * https://tideways.io/profiler/blog/profiling-laravel-applications-using-the-open-source-monica-crm-as-example
 * https://laravel-news.com/monica
-* http://techblog.danielpellarini.com/sysadmin/how-to-install-monica-personal-relationship-manager-on-ubuntu-1604/
 * https://sivers.org/dbt
-* https://www.infoworld.com/article/3263736/open-source-tools/the-best-open-source-rookies-of-2018.html
+* https://medevel.com/monica-is-your-own-persona-crm-assistant-solution/
+* https://www.cloudron.io/store/com.monicahq.cloudronapp.html
+* https://bestlaravel.com/p/monica
+* https://betalist.com/startups/monicahq
+* https://www.bypeople.com/free-personal-crm/
+* https://steemhunt.com/author/@mindblast/monica-open-source-personal-crm
+* https://osinum.fr/monica/
