@@ -21,6 +21,9 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),
+            'links' => [
+                'self' => route('api.users.show', $this),
+            ],
         ];
     }
 }

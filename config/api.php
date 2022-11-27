@@ -40,6 +40,12 @@ return [
     |--------------------------------------------------------------------------
     */
     'error_codes' => [
-        '30' => 'The limit parameter is too big',
+        30 => 'The limit parameter is too big',
+        31 => 'The resource has not been found',
+        32 => 'Error while trying to save the data',
+        33 => 'Too many parameters',
+        40 => 'Invalid query',
+        41 => 'Invalid parameters',
+        42 => 'Unauthorized',
     ],
 ];

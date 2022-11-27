@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware('abilities:read')->only(['user', 'index', 'show']);
+
+        parent::__construct();
+    }
+
     /**
      * Retrieve the authenticated user
      *

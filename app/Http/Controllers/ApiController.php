@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Traits\JsonRespondController;
+use Closure;
+use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
@@ -12,7 +14,7 @@ class ApiController extends Controller
 
     public function __construct()
     {
-        $this->middleware(function ($request, $next) {
+        $this->middleware(function (Request $request, Closure $next) {
             if ($request->has('limit')) {
                 if ($request->input('limit') > config('api.max_limit_per_page')) {
                     return $this->setHTTPStatusCode(400)
@@ -20,7 +22,7 @@ class ApiController extends Controller
                         ->respondWithError();
                 }
 
-                $this->setLimitPerPage($request->input('limit'));
+                $this->setLimitPerPage($request->integer('limit'));
             }
 
             return $next($request);

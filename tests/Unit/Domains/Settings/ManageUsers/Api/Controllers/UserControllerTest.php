@@ -25,6 +25,9 @@ class UserControllerTest extends ApiTestCase
                 'email' => $user->email,
                 'created_at' => '2018-01-01T00:00:00Z',
                 'updated_at' => '2018-01-01T00:00:00Z',
+                'links' => [
+                    'self' => env('APP_URL')."/api/users/{$user->id}",
+                ],
             ],
         ]);
     }
@@ -47,6 +50,9 @@ class UserControllerTest extends ApiTestCase
                     'email' => $user->email,
                     'created_at' => '2018-01-01T00:00:00Z',
                     'updated_at' => '2018-01-01T00:00:00Z',
+                    'links' => [
+                        'self' => env('APP_URL')."/api/users/{$user->id}",
+                    ],
                 ],
             ],
             'links' => $this->links('/api/users'),
