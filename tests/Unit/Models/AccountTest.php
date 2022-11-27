@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use Carbon\Carbon;
 use App\Models\User\User;
 use Tests\FeatureTestCase;
 use App\Models\User\Module;
@@ -276,6 +277,7 @@ class AccountTest extends FeatureTestCase
     {
         $account = factory(Account::class)->make([
             'has_access_to_paid_version_for_free' => false,
+            'licence_key' => null,
         ]);
 
         $this->assertFalse(
@@ -284,18 +286,13 @@ class AccountTest extends FeatureTestCase
     }
 
     /** @test */
-    public function user_is_subscribed_returns_true_if_monthly_plan_is_set()
+    public function user_is_subscribed_returns_true_if_there_is_a_valid_licence_key()
     {
-        $account = factory(Account::class)->create();
-
-        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
-            'account_id' => $account->id,
-            'stripe_price' => 'chandler_5',
-            'stripe_id' => 'sub_C0R444pbxddhW7',
-            'name' => 'fakePlan',
+        Carbon::setTestNow(Carbon::create(2018, 1, 1));
+        $account = factory(Account::class)->create([
+            'licence_key' => '123',
+            'valid_until_at' => '2022-01-01',
         ]);
-
-        config(['monica.paid_plan_monthly_friendly_name' => 'fakePlan']);
 
         $this->assertTrue(
             $account->isSubscribed()
@@ -303,104 +300,16 @@ class AccountTest extends FeatureTestCase
     }
 
     /** @test */
-    public function user_is_subscribed_returns_true_if_annual_plan_is_set()
+    public function user_is_subscribed_returns_false_if_there_is_a_valid_key_but_expired()
     {
-        $account = factory(Account::class)->create();
-
-        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
-            'account_id' => $account->id,
-            'stripe_price' => 'chandler_annual',
-            'stripe_id' => 'sub_C0R444pbxddhW7',
-            'name' => 'annualPlan',
+        Carbon::setTestNow(Carbon::create(2018, 1, 1));
+        $account = factory(Account::class)->create([
+            'licence_key' => '123',
+            'valid_until_at' => '1999-01-01',
         ]);
-
-        config(['monica.paid_plan_annual_friendly_name' => 'annualPlan']);
-
-        $this->assertTrue(
-            $account->isSubscribed()
-        );
-    }
-
-    /** @test */
-    public function user_is_subscribed_returns_false_if_no_plan_is_set()
-    {
-        $account = factory(Account::class)->create();
 
         $this->assertFalse(
             $account->isSubscribed()
-        );
-    }
-
-    /** @test */
-    public function has_invoices_returns_true_if_a_plan_exists()
-    {
-        $account = factory(Account::class)->create();
-
-        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
-            'account_id' => $account->id,
-            'stripe_price' => 'chandler_5',
-            'stripe_id' => 'sub_C0R444pbxddhW7',
-            'name' => 'fakePlan',
-        ]);
-
-        $this->assertTrue($account->hasInvoices());
-    }
-
-    /** @test */
-    public function has_invoices_returns_false_if_a_plan_does_not_exist()
-    {
-        $account = factory(Account::class)->create();
-
-        $this->assertFalse($account->hasInvoices());
-    }
-
-    /** @test */
-    public function it_gets_the_id_of_the_subscribed_plan()
-    {
-        config([
-            'monica.paid_plan_annual_friendly_name' => 'fakePlan',
-            'monica.paid_plan_annual_id' => 'chandler_5',
-        ]);
-
-        $user = $this->signIn();
-
-        $account = $user->account;
-
-        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
-            'account_id' => $account->id,
-            'stripe_price' => 'chandler_5',
-            'stripe_id' => 'sub_C0R444pbxddhW7',
-            'name' => 'fakePlan',
-        ]);
-
-        $this->assertEquals(
-            'chandler_5',
-            $account->getSubscribedPlanId()
-        );
-    }
-
-    /** @test */
-    public function it_gets_the_friendly_name_of_the_subscribed_plan()
-    {
-        config([
-            'monica.paid_plan_annual_friendly_name' => 'fakePlan',
-            'monica.paid_plan_annual_id' => 'chandler_5',
-        ]);
-
-        $user = $this->signIn();
-
-        $account = $user->account;
-
-        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
-            'account_id' => $account->id,
-            'stripe_price' => 'chandler_5',
-            'stripe_id' => 'sub_C0R444pbxddhW7',
-            'name' => 'fakePlan',
-        ]);
-
-        $this->assertEquals(
-            'fakePlan',
-            $account->getSubscribedPlanName()
         );
     }
 

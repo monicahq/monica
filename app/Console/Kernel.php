@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Scheduling\CronEvent;
+use App\Jobs\Settings\CheckLicenceKeys;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -54,6 +55,8 @@ class Kernel extends ConsoleKernel
             $this->scheduleCommand($schedule, 'cloudflare:reload', 'daily');
         }
         $this->scheduleCommand($schedule, 'model:prune', 'daily');
+
+        $this->scheduleJob($schedule, CheckLicenceKeys::class, 'minutes', 60 * 6);
     }
 
     /**
@@ -61,12 +64,32 @@ class Kernel extends ConsoleKernel
      *
      * @codeCoverageIgnore
      */
-    private function scheduleCommand(Schedule $schedule, string $command, $frequency)
+    private function scheduleCommand(Schedule $schedule, string $command, string $frequency, mixed ...$params)
     {
-        $schedule->command($command)->when(function () use ($command, $frequency) {
+        $this->scheduleAction($schedule, $command, $frequency, $params);
+    }
+
+    /**
+     * Define a new schedule command with a frequency.
+     *
+     * @codeCoverageIgnore
+     */
+    private function scheduleJob(Schedule $schedule, string $job, string $frequency, mixed ...$params)
+    {
+        $this->scheduleAction($schedule, $job, $frequency, $params, 'job');
+    }
+
+    /**
+     * Define a new schedule.
+     *
+     * @codeCoverageIgnore
+     */
+    private function scheduleAction(Schedule $schedule, string $command, string $frequency, array $params, string $action = 'command')
+    {
+        $schedule->$action($command)->when(function () use ($command, $frequency, $params) {
             $event = CronEvent::command($command);
             if ($frequency) {
-                $event = $event->$frequency();
+                $event = $event->{$frequency}(...$params);
             }
 
             return $event->isDue();

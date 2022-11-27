@@ -266,23 +266,6 @@ class DateHelper
     }
 
     /**
-     * Gets the next theoritical billing date.
-     * This is used on the Upgrade page to tell the user when the next billing
-     * date would be if he subscribed.
-     *
-     * @param  string  $interval
-     * @return Carbon
-     */
-    public static function getNextTheoriticalBillingDate(string $interval): Carbon
-    {
-        if ($interval == 'monthly') {
-            return now(static::getTimezone())->addMonth();
-        }
-
-        return now(static::getTimezone())->addYear();
-    }
-
-    /**
      * Gets a list of all the year from min to max (0 is the current year).
      *
      * @param  int  $max

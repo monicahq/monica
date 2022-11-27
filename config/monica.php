@@ -284,4 +284,35 @@ return [
     */
     'export_size' => (int) env('EXPORT_SIZE', 5),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Licence key server
+    |--------------------------------------------------------------------------
+    |
+    | When REQUIRES_SUBSCRIPTION is set to true, we need to check if the user
+    | has a valid licence key to unlock paid features. Licence keys are managed
+    | on our own customer portal.
+    |
+    */
+    'customer_portal_url' => env('CUSTOMER_PORTAL_URL', ''),
+
+    'customer_portal_client_id' => env('CUSTOMER_PORTAL_CLIENT_ID'),
+
+    'customer_portal_client_secret' => env('CUSTOMER_PORTAL_CLIENT_SECRET'),
+
+    'customer_portal_stripe_url' => env('CUSTOMER_PORTAL_STRIPE_URL', ''),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Licence key encryption key
+    |--------------------------------------------------------------------------
+    |
+    | All licence keys are encrypted with this key on the customer portal when
+    | the key is generated.
+    |
+    */
+
+    'licence_private_key' => env('LICENCE_PRIVATE_KEY'),
+
+    'licence_cipher' => 'AES-256-GCM',
 ];

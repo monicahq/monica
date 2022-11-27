@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Helpers\DBHelper;
-use Laravel\Cashier\Cashier;
 use Laravel\Passport\Passport;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
@@ -87,8 +86,6 @@ class AppServiceProvider extends ServiceProvider
             Schema::defaultStringLength(191);
         }
 
-        Cashier::useCustomerModel(\App\Models\Account\Account::class);
-
         VerifyEmail::toMailUsing(function ($user, $verificationUrl) {
             return EmailMessaging::verifyEmailMail($user, $verificationUrl);
         });
@@ -122,12 +119,6 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Passport::ignoreMigrations();
-        Cashier::ignoreMigrations();
-        Cashier::formatCurrencyUsing(function ($amount, $currency) {
-            $currency = \App\Models\Settings\Currency::where('iso', strtoupper($currency ?? config('cashier.currency')))->first();
-
-            return \App\Helpers\MoneyHelper::format($amount, $currency);
-        });
     }
 
     /**
