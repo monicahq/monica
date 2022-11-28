@@ -9,7 +9,7 @@
     "posttest": "vendor/bin/phpstan analyse && vendor/bin/psalm",
     "test": "vendor/bin/phpunit",
     "docker:build": "docker build --cache-from monica-next -t monica-next -f scripts/docker/Dockerfile . && docker image prune -f",
-    "docker:run": "docker run --name monica -p 8080:80 -e MAIL_MAILER=log monica-next"
+    "docker:run": "docker run --name monica -p 8080:80 monica-next"
   },
   "devDependencies": {
     "@inertiajs/inertia": "^0.11.0",

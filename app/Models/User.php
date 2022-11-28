@@ -88,6 +88,22 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        if (config('mail.default') !== 'smtp' || (
+            config('mail.mailers.smtp.username') !== null && config('mail.mailers.smtp.password') !== null
+        )) {
+            parent::sendEmailVerificationNotification();
+        } else {
+            $this->markEmailAsVerified();
+        }
+    }
+
+    /**
      * Get the account record associated with the user.
      *
      * @return BelongsTo
