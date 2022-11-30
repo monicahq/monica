@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Laravel\Sanctum\Sanctum;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -19,7 +20,9 @@ abstract class TestCase extends BaseTestCase
      */
     public function createUser(): User
     {
-        return User::factory()->create();
+        return tap(User::factory()->create(), function (User $user) {
+            Sanctum::actingAs($user, ['*']);
+        });
     }
 
     /**

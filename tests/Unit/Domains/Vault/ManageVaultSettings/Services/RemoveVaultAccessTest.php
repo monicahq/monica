@@ -123,6 +123,8 @@ class RemoveVaultAccessTest extends TestCase
             'scheduled_at' => Carbon::now(),
         ]]);
 
+        Carbon::setTestNow(Carbon::create(2018, 1, 1, 0, 0, 0));
+
         $request = [
             'account_id' => $account->id,
             'author_id' => $regis->id,
@@ -138,8 +140,9 @@ class RemoveVaultAccessTest extends TestCase
             'permission' => Vault::PERMISSION_VIEW,
         ]);
 
-        $this->assertDatabaseMissing('contacts', [
+        $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
+            'deleted_at' => now(),
         ]);
 
         $this->assertDatabaseMissing('contact_reminder_scheduled', [

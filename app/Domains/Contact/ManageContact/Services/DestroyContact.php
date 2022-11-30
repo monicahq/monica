@@ -4,9 +4,9 @@ namespace App\Domains\Contact\ManageContact\Services;
 
 use App\Exceptions\CantBeDeletedException;
 use App\Interfaces\ServiceInterface;
-use App\Services\BaseService;
+use App\Services\QueuableService;
 
-class DestroyContact extends BaseService implements ServiceInterface
+class DestroyContact extends QueuableService implements ServiceInterface
 {
     /**
      * Get the validation rules that apply to the service.

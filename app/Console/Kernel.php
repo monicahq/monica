@@ -26,9 +26,13 @@ class Kernel extends ConsoleKernel
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
+     *
+     * @codeCoverageIgnore
      */
     protected function schedule(Schedule $schedule)
     {
+        $this->scheduleCommand($schedule, 'model:prune', 'daily');
+        $this->scheduleCommand($schedule, 'queue:prune-batches', 'daily');
         $this->scheduleCommand($schedule, 'telescope:prune', 'daily');
         $this->scheduleJob($schedule, ProcessScheduledContactReminders::class, 'minutes', 1);
     }

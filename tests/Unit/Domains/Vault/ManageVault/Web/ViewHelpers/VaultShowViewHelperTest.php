@@ -27,6 +27,8 @@ class VaultShowViewHelperTest extends TestCase
         $mitchell = Contact::factory()->create([
             'vault_id' => $vault->id,
             'last_updated_at' => Carbon::now()->subDays(1),
+            'first_name' => 'Regis',
+            'last_name' => 'Troyat',
         ]);
         $john = Contact::factory()->create([
             'vault_id' => $vault->id,
@@ -71,6 +73,8 @@ class VaultShowViewHelperTest extends TestCase
         $vault = Vault::factory()->create();
         $mitchell = Contact::factory()->create([
             'vault_id' => $vault->id,
+            'first_name' => 'Regis',
+            'last_name' => 'Troyat',
         ]);
         $vault->users()->save($user, [
             'permission' => Vault::PERMISSION_MANAGE,
@@ -190,6 +194,8 @@ class VaultShowViewHelperTest extends TestCase
         $vault = Vault::factory()->create();
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
+            'first_name' => 'Regis',
+            'last_name' => 'Troyat',
         ]);
         $task = ContactTask::factory()->create([
             'contact_id' => $contact->id,

@@ -39,6 +39,7 @@ class ContactRelationshipsCreateViewHelperTest extends TestCase
         ]);
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
+            'gender_id' => $gender->id,
         ]);
 
         $array = ContactRelationshipsCreateViewHelper::data($vault, $contact, $user);

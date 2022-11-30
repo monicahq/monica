@@ -27,6 +27,7 @@ return new class() extends Migration
             $table->boolean('can_be_deleted')->default(true);
             $table->boolean('listed')->default(true);
             $table->datetime('last_updated_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');

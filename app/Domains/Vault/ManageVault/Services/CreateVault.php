@@ -6,7 +6,6 @@ use App\Domains\Vault\ManageVaultImportantDateTypes\Services\CreateContactImport
 use App\Interfaces\ServiceInterface;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
-use App\Models\Template;
 use App\Models\Vault;
 use App\Services\BaseService;
 
