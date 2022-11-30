@@ -12,16 +12,14 @@ class TestEmailSent extends Mailable
     use Queueable;
     use SerializesModels;
 
-    public UserNotificationChannel $channel;
-
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(UserNotificationChannel $channel)
-    {
-        $this->channel = $channel;
+    public function __construct(
+        public UserNotificationChannel $channel
+    ) {
     }
 
     /**

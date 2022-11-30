@@ -13,7 +13,7 @@ trait PasswordValidationRules
      * @param  bool  $confirmed
      * @return array
      */
-    protected function passwordRules(bool $confirmed = true)
+    protected function passwordRules(bool $confirmed = true): array
     {
         $rules = (new Password)->length(4);
 

@@ -66,7 +66,7 @@ class SocialiteCallbackController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Pipeline\Pipeline
      */
-    protected function loginPipeline(Request $request)
+    protected function loginPipeline(Request $request): Pipeline
     {
         return (new Pipeline(app()))->send($request)->through([
             AttemptToAuthenticateSocialite::class,

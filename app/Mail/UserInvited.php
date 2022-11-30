@@ -14,24 +14,14 @@ class UserInvited extends Mailable implements ShouldQueue
     use SerializesModels;
 
     /**
-     * @var User
-     */
-    protected $user;
-
-    /**
-     * @var User
-     */
-    protected $invitedUser;
-
-    /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $invitedUser, User $user)
-    {
-        $this->user = $user;
-        $this->invitedUser = $invitedUser;
+    public function __construct(
+        protected User $invitedUser,
+        protected User $user
+    ) {
     }
 
     /**
@@ -46,7 +36,7 @@ class UserInvited extends Mailable implements ShouldQueue
         ]);
 
         return $this->markdown('emails.user.invitation')
-            ->subject('You are invited to join Monica')
+            ->subject(__('You are invited to join Monica'))
             ->with('userName', $this->user->name)
             ->with('url', $invitationRoute);
     }

@@ -14,22 +14,16 @@ class ReminderTriggered extends Notification
 {
     use Queueable;
 
-    private UserNotificationChannel $channel;
-
-    private string $content;
-
-    private string $contactName;
-
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(UserNotificationChannel $channel, string $content, string $contactName)
-    {
-        $this->content = $content;
-        $this->contactName = $contactName;
-        $this->channel = $channel;
+    public function __construct(
+        private UserNotificationChannel $channel,
+        private string $content,
+        private string $contactName
+    ) {
     }
 
     /**

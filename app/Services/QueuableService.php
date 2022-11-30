@@ -16,13 +16,6 @@ abstract class QueuableService extends BaseService implements ShouldQueue
     use Dispatchable, Queueable, InteractsWithQueue;
 
     /**
-     * The data to run service.
-     *
-     * @var ?array
-     */
-    public ?array $data;
-
-    /**
      * The number of times the job may be attempted.
      *
      * @var int
@@ -32,12 +25,11 @@ abstract class QueuableService extends BaseService implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  array|null  $data
+     * @param  array|null  $data  The data to run service.
      */
-    public function __construct(?array $data = null)
-    {
-        $this->data = $data;
-
+    public function __construct(
+        public ?array $data = null
+    ) {
         $this->validateRules($data ?? []);
     }
 

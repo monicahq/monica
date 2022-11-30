@@ -14,30 +14,16 @@ use LaravelWebauthn\Services\Webauthn;
 class AttemptToAuthenticateWebauthn
 {
     /**
-     * The guard implementation.
-     *
-     * @var \Illuminate\Contracts\Auth\StatefulGuard
-     */
-    protected StatefulGuard $guard;
-
-    /**
-     * The login rate limiter instance.
-     *
-     * @var \LaravelWebauthn\Services\LoginRateLimiter
-     */
-    protected LoginRateLimiter $limiter;
-
-    /**
      * Create a new controller instance.
      *
      * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
      * @param  \LaravelWebauthn\Services\LoginRateLimiter  $limiter
      * @return void
      */
-    public function __construct(StatefulGuard $guard, LoginRateLimiter $limiter)
-    {
-        $this->guard = $guard;
-        $this->limiter = $limiter;
+    public function __construct(
+        protected StatefulGuard $guard,
+        protected LoginRateLimiter $limiter
+    ) {
     }
 
     /**

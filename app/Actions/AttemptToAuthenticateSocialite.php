@@ -22,23 +22,10 @@ use Laravel\Socialite\One\User as OAuth1User;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\User as OAuth2User;
 use LaravelWebauthn\Facades\Webauthn;
+use Symfony\Component\HttpFoundation\Response;
 
 class AttemptToAuthenticateSocialite
 {
-    /**
-     * The guard implementation.
-     *
-     * @var \Illuminate\Contracts\Auth\StatefulGuard
-     */
-    protected $guard;
-
-    /**
-     * The login rate limiter instance.
-     *
-     * @var \Laravel\Fortify\LoginRateLimiter
-     */
-    protected $limiter;
-
     /**
      * Create a new action instance.
      *
@@ -46,10 +33,10 @@ class AttemptToAuthenticateSocialite
      * @param  \Laravel\Fortify\LoginRateLimiter  $limiter
      * @return void
      */
-    public function __construct(StatefulGuard $guard, LoginRateLimiter $limiter)
-    {
-        $this->guard = $guard;
-        $this->limiter = $limiter;
+    public function __construct(
+        protected StatefulGuard $guard,
+        protected LoginRateLimiter $limiter
+    ) {
     }
 
     /**
@@ -130,7 +117,7 @@ class AttemptToAuthenticateSocialite
      * @param  string  $driver
      * @return void
      */
-    private function checkUserAssociation(Request $request, User $user, string $driver)
+    private function checkUserAssociation(Request $request, User $user, string $driver): void
     {
         if (($userId = Auth::id()) && $userId !== $user->id) {
             $this->throwFailedAuthenticationException($request, $driver, __('This provider is already associated with another account'));
@@ -217,7 +204,7 @@ class AttemptToAuthenticateSocialite
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function throwFailedAuthenticationException(Request $request, string $driver, string $message = null)
+    protected function throwFailedAuthenticationException(Request $request, string $driver, string $message = null): void
     {
         $this->fireFailedEvent($request, Auth::user());
 
@@ -235,7 +222,7 @@ class AttemptToAuthenticateSocialite
      * @param  User|null  $user
      * @return void
      */
-    protected function fireFailedEvent(Request $request, ?User $user = null)
+    protected function fireFailedEvent(Request $request, ?User $user = null): void
     {
         event(new Failed('web', $user, [
             'email' => $request->email,
@@ -246,10 +233,10 @@ class AttemptToAuthenticateSocialite
      * Get the two factor authentication enabled response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
+     * @param  User|null  $user
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function twoFactorChallengeResponse($request, $user)
+    protected function twoFactorChallengeResponse(Request $request, ?User $user): Response
     {
         $request->session()->put([
             'login.id' => $user->getKey(),

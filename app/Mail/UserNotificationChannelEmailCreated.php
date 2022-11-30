@@ -12,16 +12,14 @@ class UserNotificationChannelEmailCreated extends Mailable
     use Queueable;
     use SerializesModels;
 
-    public UserNotificationChannel $channel;
-
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(UserNotificationChannel $channel)
-    {
-        $this->channel = $channel;
+    public function __construct(
+        public UserNotificationChannel $channel
+    ) {
     }
 
     /**
@@ -31,7 +29,7 @@ class UserNotificationChannelEmailCreated extends Mailable
      */
     public function build()
     {
-        return $this->subject('Please validate your email address')
+        return $this->subject(__('Please validate your email address'))
             ->markdown('emails.notifications.validate-email', [
                 'url' => route('settings.notifications.verification.store', [
                     'notification' => $this->channel->id,
