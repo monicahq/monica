@@ -27,6 +27,7 @@ parameters:
         - '#Access to an undefined property App\\Models\\Religion::\$name\.#'
         - '#Access to an undefined property App\\Models\\User::\$name\.#'
         - '#Access to an undefined property App\\Models\\.*::\$pivot\.#'
+        - '#Access to an undefined property Sabre\\VObject\\Component\\VCard::\$.*\.#'
 
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Note>::unsearchable\(\)\.#'
           path: */app/Models/Contact.php

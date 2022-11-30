@@ -125,6 +125,11 @@ Route::get('/', function () {
     return Redirect::intended(RouteServiceProvider::HOME);
 })->name('home');
 
+// Redirect .well-known urls (https://en.wikipedia.org/wiki/List_of_/.well-known/_services_offered_by_webservers)
+Route::permanentRedirect('/.well-known/carddav', '/dav');
+Route::permanentRedirect('/.well-known/caldav', '/dav');
+Route::permanentRedirect('/.well-known/security.txt', '/security.txt');
+
 Route::middleware(['throttle:oauth2-socialite'])->group(function () {
     Route::get('auth/{driver}', [SocialiteCallbackController::class, 'login'])->name('login.provider');
     Route::get('auth/{driver}/callback', [SocialiteCallbackController::class, 'callback']);

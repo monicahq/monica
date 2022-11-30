@@ -24,6 +24,7 @@ class CreateContact extends BaseService implements ServiceInterface
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
+            'uuid' => 'nullable|string',
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
             'first_name' => 'nullable|string|max:255',
@@ -112,6 +113,9 @@ class CreateContact extends BaseService implements ServiceInterface
             'last_updated_at' => Carbon::now(),
             'listed' => $this->valueOrTrue($this->data, 'listed'),
         ]);
+        if (($uuid = $this->valueOrNull($this->data, 'uuid')) !== null) {
+            $this->contact->uuid = $uuid;
+        }
     }
 
     private function updateLastEditedDate(): void

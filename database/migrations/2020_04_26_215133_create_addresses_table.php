@@ -13,6 +13,7 @@ return new class() extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->nullable();
             $table->unsignedBigInteger('contact_id');
             $table->unsignedBigInteger('address_type_id')->nullable();
             $table->boolean('is_past_address')->default(false);

@@ -27,6 +27,7 @@
     "laravel/telescope": "^4.9",
     "laravel/tinker": "^2.7.2",
     "meilisearch/meilisearch-php": "^0.23.3",
+    "monicahq/laravel-sabre": "^1.6",
     "naugrim/laravel-sentry-tunnel": "^1.0",
     "sentry/sentry-laravel": "^2.13",
     "socialiteproviders/facebook": "^4.1",

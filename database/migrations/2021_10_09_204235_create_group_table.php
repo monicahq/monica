@@ -33,6 +33,7 @@ return new class() extends Migration
 
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->nullable();
             $table->unsignedBigInteger('vault_id');
             $table->unsignedBigInteger('group_type_id');
             $table->string('name');

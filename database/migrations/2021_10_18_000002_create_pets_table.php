@@ -21,6 +21,7 @@ return new class() extends Migration
 
         Schema::create('pets', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->nullable();
             $table->unsignedBigInteger('contact_id');
             $table->unsignedBigInteger('pet_category_id');
             $table->string('name')->nullable();

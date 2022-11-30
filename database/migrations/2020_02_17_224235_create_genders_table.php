@@ -15,6 +15,7 @@ return new class() extends Migration
             $table->id();
             $table->unsignedBigInteger('account_id');
             $table->string('name');
+            $table->char('type', 1)->nullable();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });

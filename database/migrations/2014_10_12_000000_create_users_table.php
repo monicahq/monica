@@ -14,6 +14,7 @@ return new class() extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->nullable();
             $table->unsignedBigInteger('account_id');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
@@ -37,6 +38,7 @@ return new class() extends Migration
 
         Schema::create('vaults', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->nullable();
             $table->unsignedBigInteger('account_id');
             $table->string('type');
             $table->string('name');

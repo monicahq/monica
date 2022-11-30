@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class() extends Migration
@@ -13,6 +14,7 @@ return new class() extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->nullable();
             $table->unsignedBigInteger('vault_id');
             $table->unsignedBigInteger('gender_id')->nullable();
             $table->unsignedBigInteger('pronoun_id')->nullable();
@@ -26,6 +28,10 @@ return new class() extends Migration
             $table->string('job_position')->nullable();
             $table->boolean('can_be_deleted')->default(true);
             $table->boolean('listed')->default(true);
+
+            $table->mediumText('vcard')->nullable();
+            $table->string('distant_etag', 256)->nullable();
+
             $table->datetime('last_updated_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
@@ -35,6 +41,8 @@ return new class() extends Migration
             $table->foreign('pronoun_id')->references('id')->on('pronouns')->onDelete('set null');
             $table->foreign('template_id')->references('id')->on('templates')->onDelete('set null');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('set null');
+
+            $table->index(['vault_id', 'uuid']);
 
             if (config('scout.driver') === 'database' && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
                 $table->fullText('first_name');

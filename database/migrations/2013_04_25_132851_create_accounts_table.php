@@ -13,6 +13,7 @@ return new class() extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->nullable();
             $table->integer('storage_limit_in_mb')->default(0);
             $table->timestamps();
         });
