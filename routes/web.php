@@ -111,12 +111,18 @@ use App\Http\Controllers\Auth\SocialiteCallbackController;
 use App\Http\Controllers\Profile\UserTokenController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return Auth::check()
-        ? redirect()->intended(RouteServiceProvider::HOME)
-        : redirect()->route('login');
+    if (! Auth::check()) {
+        return Redirect::route('login');
+    }
+    if (($vaults = Auth::user()->vaults)->count() === 1) {
+        return Redirect::route('vault.show', $vaults->first());
+    }
+
+    return Redirect::intended(RouteServiceProvider::HOME);
 })->name('home');
 
 Route::middleware(['throttle:oauth2-socialite'])->group(function () {
