@@ -25,7 +25,7 @@ class CheckContactAccess
             'id' => $requestedContactId,
         ])->exists();
 
-        abort_if(! $exists, 401);
+        abort_if(! $exists, 404);
 
         return $next($request);
     }
