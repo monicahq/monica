@@ -9,7 +9,14 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Knuckles\Scribe\Attributes\QueryParam;
+use Knuckles\Scribe\Attributes\Response;
+use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 
+/**
+ * @group Account management
+ * @subgroup Users
+ */
 class UserController extends ApiController
 {
     public function __construct()
@@ -23,12 +30,9 @@ class UserController extends ApiController
      * Retrieve the authenticated user
      *
      * Get the authenticated user.
-     *
-     * @group Account management
-     * @subgroup Users
-     * @apiResourceModel \App\Models\User
-     * @response status=404 scenario="user not found" {"message": "User not found"}
      */
+    #[ResponseFromApiResource(UserResource::class, User::class)]
+    #[Response(['message' => 'User not found'], status: 404, description: 'User not found')]
     public function user(Request $request)
     {
         return new UserResource($request->user());
@@ -38,11 +42,8 @@ class UserController extends ApiController
      * Retrieve a user
      *
      * Get a specific user object.
-     *
-     * @group Account management
-     * @subgroup Users
-     * @apiResourceModel \App\Models\User
      */
+    #[ResponseFromApiResource(UserResource::class, User::class)]
     public function show(Request $request, int $userId)
     {
         try {
@@ -59,12 +60,9 @@ class UserController extends ApiController
      * List all users
      *
      * Get all the users in the account.
-     *
-     * @group Account management
-     * @subgroup Users
-     * @queryParam limit int A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10. Example: 10
-     * @apiResourceModel \App\Models\User
      */
+    #[QueryParam('limit', 'int', description: 'A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.', required: false, example: 10)]
+    #[ResponseFromApiResource(UserResource::class, User::class, collection: true)]
     public function index(Request $request)
     {
         try {

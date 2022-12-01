@@ -131,7 +131,7 @@ class SetupApplication extends Command
      */
     protected function documentation(): void
     {
-        $this->artisan('✓ Generate api documentation', 'scribe:setup', ['--force' => true]);
+        $this->artisan('✓ Generate api documentation', 'scribe:setup', ['--clean' => true, '--force' => true]);
     }
 
     private function artisan(string $message, string $command, array $options = [])

@@ -188,11 +188,11 @@ class DateHelper
     /**
      * Return the date as timestamp.
      *
-     * @param  Carbon  $date
+     * @param  Carbon|null  $date
      * @return string
      */
-    public static function getTimestamp(Carbon $date): string
+    public static function getTimestamp(?Carbon $date): string
     {
-        return $date->translatedFormat(config('api.timestamp_format'));
+        return $date ? $date->translatedFormat(config('api.timestamp_format')) : '';
     }
 }

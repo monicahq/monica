@@ -45,7 +45,7 @@ return [
 
         'docs' => [
             'driver' => 'sqlite',
-            'database' => ':memory:',
+            'database' => env('DB_DOC_DATABASE', database_path('database-doc.sqlite')),
             'foreign_key_constraints' => true,
         ],
 
