@@ -21,7 +21,7 @@ class UserController extends ApiController
 {
     public function __construct()
     {
-        $this->middleware('abilities:read')->only(['user', 'index', 'show']);
+        $this->middleware('abilities:read');
 
         parent::__construct();
     }

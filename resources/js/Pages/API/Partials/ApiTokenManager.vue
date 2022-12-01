@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3';
+import { trans } from 'laravel-vue-i18n';
 import useClipboard from 'vue-clipboard3';
 import JetActionMessage from '@/Components/Jetstream/ActionMessage.vue';
 import JetActionSection from '@/Components/Jetstream/ActionSection.vue';
@@ -35,6 +36,15 @@ const deleteApiTokenForm = useForm();
 const displayingToken = ref(false);
 const managingPermissionsFor = ref(null);
 const apiTokenBeingDeleted = ref(null);
+
+watch(
+  () => createApiTokenForm.permissions,
+  async (permissions) => {
+    if (permissions.findIndex((p) => p === 'write') >= 0 && permissions.findIndex((p) => p === 'read') <= -1) {
+      createApiTokenForm.permissions.push('read');
+    }
+  },
+);
 
 const createApiToken = () => {
   createApiTokenForm.post(route('api-tokens.store'), {
@@ -77,7 +87,7 @@ const copyToClipboard = (token) => {
   toClipboard(token).then(() => {
     copied.value = true;
     setTimeout(() => (copied.value = false), 2000);
-    flash($t('Value copied into your clipboard'));
+    flash(trans('Value copied into your clipboard'));
   });
 };
 </script>
@@ -97,14 +107,14 @@ const copyToClipboard = (token) => {
       <template #form>
         <!-- Token Name -->
         <div class="col-span-6 mb-4 sm:col-span-4">
-          <JetLabel for="name" :value="'Token name (for your reference only)'" />
+          <JetLabel for="name" :value="$t('Token name (for your reference only)')" />
           <JetInput id="name" v-model="createApiTokenForm.name" type="text" class="mt-1 block w-full" autofocus />
           <JetInputError :message="createApiTokenForm.errors.name" class="mt-2" />
         </div>
 
         <!-- Token Permissions -->
         <div v-if="availablePermissions.length > 0" class="col-span-6">
-          <JetLabel for="permissions" value="Permissions" />
+          <JetLabel for="permissions" :value="$t('Permissions')" />
 
           <div class="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2">
             <div v-for="permission in availablePermissions" :key="permission">
