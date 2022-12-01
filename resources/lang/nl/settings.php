@@ -45,7 +45,7 @@ return [
     'export_json_beta' => 'Json export is in preview mode. Tell us what you think about it:',
     'export_json_cta' => 'Export to Json',
     'export_header_type' => 'Type',
-    'export_header_timestamp' => 'Creation date',
+    'export_header_timestamp' => 'Aanmaak datum',
     'export_header_status' => 'Status',
     'export_header_actions' => 'Actions',
     'export_last_title' => 'Last exports',
