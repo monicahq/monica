@@ -147,7 +147,7 @@
     <!-- blank state -->
     <div v-if="feed.length == 0 && !loading">
       <p class="p-5 text-center">There is no activity yet.</p>
-      <img src="/img/dashboard_blank_activity_feed.svg" class="mx-auto h-96 w-96" />
+      <img src="/img/dashboard_blank_activity_feed.svg" :alt="$t('Activity feed')" class="mx-auto h-96 w-96" />
     </div>
 
     <!-- loading mode -->

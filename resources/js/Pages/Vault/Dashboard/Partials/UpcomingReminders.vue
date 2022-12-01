@@ -49,7 +49,7 @@
     <div
       v-if="data.reminders.length == 0"
       class="mb-4 flex items-center rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-900">
-      <img src="/img/dashboard_blank_reminders.svg" class="mr-2 h-14 w-14" />
+      <img src="/img/dashboard_blank_reminders.svg" :alt="$t('Reminders')" class="mr-2 h-14 w-14" />
       <p class="px-5 text-center">
         {{ $t('vault.dashboard_reminders_blank') }}
       </p>

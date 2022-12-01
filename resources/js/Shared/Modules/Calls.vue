@@ -516,7 +516,7 @@
     <div
       v-if="localCalls.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-      <img src="/img/contact_blank_call.svg" class="mx-auto mt-4 h-20 w-20" />
+      <img src="/img/contact_blank_call.svg" :alt="$t('Calls')" class="mx-auto mt-4 h-20 w-20" />
       <p class="px-5 pb-5 pt-2 text-center">There are no calls logged yet.</p>
     </div>
   </div>
