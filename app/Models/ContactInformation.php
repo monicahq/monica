@@ -50,7 +50,7 @@ class ContactInformation extends Model
      * If the contact information type is a phone number or an email, return the
      * content. If it's something else, return the contact information type's label.
      *
-     * @return Attribute
+     * @return Attribute<string,never>
      */
     protected function name(): Attribute
     {

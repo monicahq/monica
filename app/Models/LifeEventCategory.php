@@ -65,7 +65,7 @@ class LifeEventCategory extends Model
      * Life Event categories have a default label that can be translated.
      * Howerer, if a label is set, it will be used instead of the default.
      *
-     * @return Attribute
+     * @return Attribute<string,never>
      */
     protected function label(): Attribute
     {

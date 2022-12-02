@@ -19,10 +19,10 @@ abstract class TestCase extends BaseTestCase
      *
      * @return User
      */
-    public function createUser(): User
+    public function createUser($abilities = ['read', 'write']): User
     {
-        return tap(User::factory()->create(), function (User $user) {
-            Sanctum::actingAs($user, ['*']);
+        return tap(User::factory()->create(), function (User $user) use ($abilities) {
+            Sanctum::actingAs($user, $abilities);
         });
     }
 

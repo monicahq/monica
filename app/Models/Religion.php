@@ -38,7 +38,7 @@ class Religion extends Model
      * The name is either the default name that we get from the translation key,
      * or the name that the user has entered.
      *
-     * @return Attribute
+     * @return Attribute<string,string>
      */
     protected function name(): Attribute
     {

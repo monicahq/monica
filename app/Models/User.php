@@ -171,7 +171,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     /**
      * Get the name of the user.
      *
-     * @return Attribute
+     * @return Attribute<string,never>
      */
     protected function name(): Attribute
     {

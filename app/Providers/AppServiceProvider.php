@@ -6,9 +6,12 @@ use App\Http\Controllers\Profile\WebauthnDestroyResponse;
 use App\Http\Controllers\Profile\WebauthnUpdateResponse;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Testing\TestResponse;
 use LaravelWebauthn\Facades\Webauthn;
+use Tests\TestResponseMacros;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        if (App::environment('testing')) {
+            TestResponse::mixin(new TestResponseMacros);
+        }
     }
 
     /**

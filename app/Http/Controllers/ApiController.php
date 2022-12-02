@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Traits\JsonRespondController;
 use Closure;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ApiController extends Controller
 {
@@ -39,5 +42,25 @@ class ApiController extends Controller
         $this->limitPerPage = $limit;
 
         return $this;
+    }
+
+    /**
+     * Execute an action on the controller.
+     *
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function callAction($method, $parameters)
+    {
+        try {
+            return $this->{$method}(...array_values($parameters));
+        } catch (ModelNotFoundException) {
+            return $this->respondNotFound();
+        } catch (QueryException) {
+            return $this->respondInvalidQuery();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        }
     }
 }

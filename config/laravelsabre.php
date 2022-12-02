@@ -52,7 +52,7 @@ return [
     'middleware' => [
         'api',
         \App\Http\Middleware\EnsureDavRequestsAreStateful::class,
-        'abilities:create,read,update,delete',
+        'abilities:read,write',
     ],
 
 ];

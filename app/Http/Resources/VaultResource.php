@@ -6,9 +6,9 @@ use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \App\Models\User
+ * @mixin \App\Models\Vault
  */
-class UserResource extends JsonResource
+class VaultResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,11 +21,11 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
+            'description' => $this->description,
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),
             'links' => [
-                'self' => route('api.users.show', $this),
+                'self' => route('api.vaults.show', $this),
             ],
         ];
     }

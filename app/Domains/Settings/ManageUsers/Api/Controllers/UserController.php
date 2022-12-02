@@ -5,10 +5,7 @@ namespace App\Domains\Settings\ManageUsers\Api\Controllers;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Knuckles\Scribe\Attributes\QueryParam;
 use Knuckles\Scribe\Attributes\Response;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
@@ -46,12 +43,8 @@ class UserController extends ApiController
     #[ResponseFromApiResource(UserResource::class, User::class)]
     public function show(Request $request, int $userId)
     {
-        try {
-            $user = User::where('account_id', Auth::user()->account_id)
-                ->findOrFail($userId);
-        } catch (ModelNotFoundException) {
-            return $this->respondNotFound();
-        }
+        $user = $request->user()->account->users()
+            ->findOrFail($userId);
 
         return new UserResource($user);
     }
@@ -65,12 +58,8 @@ class UserController extends ApiController
     #[ResponseFromApiResource(UserResource::class, User::class, collection: true)]
     public function index(Request $request)
     {
-        try {
-            $users = Auth::user()->account->users()
-                ->paginate($this->getLimitPerPage());
-        } catch (QueryException $e) {
-            return $this->respondInvalidQuery();
-        }
+        $users = $request->user()->account->users()
+            ->paginate($this->getLimitPerPage());
 
         return UserResource::collection($users);
     }

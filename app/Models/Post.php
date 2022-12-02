@@ -78,6 +78,11 @@ class Post extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    /**
+     * Get the post's title.
+     *
+     * @return Attribute<string,string>
+     */
     protected function title(): Attribute
     {
         return Attribute::make(

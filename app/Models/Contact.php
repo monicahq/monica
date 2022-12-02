@@ -375,7 +375,7 @@ class Contact extends Model
     /**
      * Get the name of the contact, according to the user preference.
      *
-     * @return Attribute
+     * @return Attribute<string,never>
      */
     protected function name(): Attribute
     {
@@ -395,7 +395,7 @@ class Contact extends Model
      * The birthdate is stored in a ContactImportantDate object, of the
      * TYPE_BIRTHDATE type. So we need to find if a date of this type exists.
      *
-     * @return Attribute
+     * @return Attribute<?int,never>
      */
     protected function age(): Attribute
     {
@@ -423,7 +423,7 @@ class Contact extends Model
     /**
      * Get the avatar of the contact.
      *
-     * @return Attribute
+     * @return Attribute<array,never>
      */
     protected function avatar(): Attribute
     {
