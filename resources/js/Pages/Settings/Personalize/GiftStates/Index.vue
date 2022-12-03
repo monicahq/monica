@@ -95,7 +95,7 @@
             handle=".handle"
             @change="updatePosition">
             <template #item="{ element }">
-              <div v-if="editGiftStateId != element.id" class="">
+              <div v-if="editGiftStateId != element.id" class="list-icon">
                 <div
                   class="item-list mb-2 flex items-center justify-between rounded-lg border border-gray-200 bg-white py-2 pl-4 pr-5 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
                   <!-- icon to move position -->
@@ -134,7 +134,7 @@
                   </ul>
                 </div>
 
-                <div class="ml-3 mb-3">👇</div>
+                <div class="state-list-icon ml-3 mb-3">👇</div>
               </div>
 
               <form
@@ -319,5 +319,9 @@ export default {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }
+}
+
+.list-icon:last-child .state-list-icon {
+  display: none;
 }
 </style>
