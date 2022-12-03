@@ -6,25 +6,28 @@ use App\Helpers\DateHelper;
 use App\Models\User;
 use App\Models\Vault;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class VaultTasksIndexViewHelper
 {
     public static function data(Vault $vault, User $user): Collection
     {
         $contacts = $vault->contacts()
-            ->with('tasks')
-            ->whereHas('tasks', fn (Builder $query) => $query->where('completed', false)
-            )
             ->orderBy('last_name', 'asc')
             ->get();
 
         $contactsCollection = collect();
         foreach ($contacts as $contact) {
-            $tasksCollection = $contact->tasks
-                ->sortBy('due_at')
-                ->map(fn ($task) => [
+            $tasks = DB::table('contact_tasks')
+                ->where('completed', false)
+                ->where('contact_id', $contact->id)
+                ->orderBy('due_at', 'asc')
+                ->get();
+
+            $tasksCollection = collect();
+            foreach ($tasks as $task) {
+                $tasksCollection->push([
                     'id' => $task->id,
                     'label' => $task->label,
                     'due_at' => $task->due_at ? DateHelper::format(Carbon::parse($task->due_at), $user) : null,
@@ -37,6 +40,7 @@ class VaultTasksIndexViewHelper
                         ]),
                     ],
                 ]);
+            }
 
             if ($tasksCollection->count() <= 0) {
                 continue;
