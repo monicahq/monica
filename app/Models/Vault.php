@@ -63,13 +63,11 @@ class Vault extends Model
     {
         parent::boot();
 
-        static::deleting(function ($model) {
-            if ($model->contacts) {
-                foreach ($model->contacts as $contact) {
-                    Note::where('contact_id', $contact->id)->unsearchable();
-                }
-                Contact::where('vault_id', $model->id)->unsearchable();
+        static::deleting(function (self $model) {
+            foreach ($model->contacts as $contact) {
+                $contact->notes()->unsearchable();
             }
+            $model->contacts()->unsearchable();
         });
     }
 

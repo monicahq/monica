@@ -7,7 +7,6 @@ use App\Domains\Vault\ManageVaultSettings\Services\DestroyLabel;
 use App\Domains\Vault\ManageVaultSettings\Services\UpdateLabel;
 use App\Domains\Vault\ManageVaultSettings\Web\ViewHelpers\VaultSettingsIndexViewHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Vault;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,10 +25,9 @@ class VaultSettingsLabelController extends Controller
         ];
 
         $label = (new CreateLabel())->execute($data);
-        $vault = Vault::findOrFail($vaultId);
 
         return response()->json([
-            'data' => VaultSettingsIndexViewHelper::dtoLabel($vault, $label),
+            'data' => VaultSettingsIndexViewHelper::dtoLabel($label),
         ], 201);
     }
 
@@ -47,10 +45,9 @@ class VaultSettingsLabelController extends Controller
         ];
 
         $label = (new UpdateLabel())->execute($data);
-        $vault = Vault::findOrFail($vaultId);
 
         return response()->json([
-            'data' => VaultSettingsIndexViewHelper::dtoLabel($vault, $label),
+            'data' => VaultSettingsIndexViewHelper::dtoLabel($label),
         ], 200);
     }
 

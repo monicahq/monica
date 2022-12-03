@@ -80,7 +80,7 @@
             <div class="mr-2 inline-block h-4 w-4 rounded-full" :class="label.bg_color" />
             <span class="mr-2">{{ label.name }}</span>
             <span v-if="label.count > 0" class="text-xs text-gray-500"
-              >({{ $t('vault.settings_labels_count', { count: label.count }) }})</span
+              >({{ $tChoice('vault.settings_labels_count', label.count, { count: label.count }) }})</span
             >
           </span>
 

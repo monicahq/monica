@@ -17,6 +17,7 @@ class PersonalizeTemplatePageShowViewHelper
         // if the current page is not about contact information, we should not
         // include the modules that should only on the contact information page
         $modulesInPage = $templatePage->modules()
+            ->withPivot('position')
             ->orderBy('position', 'asc')
             ->get();
 
@@ -62,7 +63,7 @@ class PersonalizeTemplatePageShowViewHelper
         return [
             'id' => $module->id,
             'name' => $module->name,
-            'position' => $module->position,
+            'position' => optional($module->pivot)->position,
             'url' => [
                 'position' => route('settings.personalize.template.template_page.module.order.update', [
                     'template' => $templatePage->template->id,

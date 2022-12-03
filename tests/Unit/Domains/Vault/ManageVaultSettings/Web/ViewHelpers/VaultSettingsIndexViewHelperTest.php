@@ -100,9 +100,11 @@ class VaultSettingsIndexViewHelperTest extends TestCase
     /** @test */
     public function it_gets_the_data_needed_for_the_data_transfer_object(): void
     {
-        $label = Label::factory()->create();
         $vault = Vault::factory()->create();
-        $array = VaultSettingsIndexViewHelper::dtoLabel($vault, $label);
+        $label = Label::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        $array = VaultSettingsIndexViewHelper::dtoLabel($label);
         $this->assertEquals(
             [
                 'id' => $label->id,
@@ -126,7 +128,7 @@ class VaultSettingsIndexViewHelperTest extends TestCase
         $tag = Tag::factory()->create([
             'vault_id' => $vault->id,
         ]);
-        $array = VaultSettingsIndexViewHelper::dtoTag($vault, $tag);
+        $array = VaultSettingsIndexViewHelper::dtoTag($tag);
         $this->assertEquals(
             [
                 'id' => $tag->id,

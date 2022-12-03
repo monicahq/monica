@@ -153,7 +153,7 @@ return [
     'settings_labels_create_name' => 'Name',
     'settings_labels_create_color' => 'Choose a color',
     'settings_labels_create_cta' => 'Create label',
-    'settings_labels_count' => ':count contacts',
+    'settings_labels_count' => ':count contact|:count contacts',
     'settings_labels_blank' => 'Labels let you classify contacts using a system that matters to you.',
     'settings_labels_create_success' => 'The label has been created',
     'settings_labels_update_success' => 'The label has been updated',

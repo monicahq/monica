@@ -9,21 +9,30 @@ parameters:
         - routes
 
     inferPrivatePropertyTypeFromConstructor: true
+
     level: 5
     ignoreErrors:
-        - '#Access to an undefined property App\\Models\\Post::\$excerpt\.#'
-        - '#Access to an undefined property App\\Models\\Post::\$year\.#'
-        - '#Access to an undefined property App\\Models\\Label::\$contacts_count\.#'
-        - '#Access to an undefined property App\\Models\\Tag::\$posts_count\.#'
-        - '#Access to an undefined property App\\Models\\Module::\$position\.#'
-        - '#Access to an undefined property App\\Models\\.*::\$pivot\.#'
+        # Global ignore of VCard properties access
         - '#Access to an undefined property Sabre\\VObject\\Component\\VCard::\$.*\.#'
 
-        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Note>::unsearchable\(\)\.#'
+        # Specific column loaded with DB::raw
+        - message: '#Access to an undefined property App\\Models\\Post::\$year\.#'
+          path: */app/Domains/Vault/ManageJournals/Web/ViewHelpers/JournalShowViewHelper.php
+
+        # unsearchable scout global method
+        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany<App\\Models\\Note>::unsearchable\(\)\.#'
           path: */app/Models/Contact.php
-        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Note>::unsearchable\(\)\.#'
+        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany<App\\Models\\Note>::unsearchable\(\)\.#'
           path: */app/Models/Vault.php
-        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Contact>::unsearchable\(\)\.#'
+        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany<App\\Models\\Contact>::unsearchable\(\)\.#'
           path: */app/Models/Vault.php
-        - message: '#Parameter \#1 \$value of function count expects array\|Countable, App\\Models\\Contact given\.#'
+
+        # larastan false positive with Collection::random
+        - message: '#Parameter \#1 \$number of method Illuminate\\Support\\Collection<int,.*>::random\(\) expects .*, Closure\(Illuminate\\Support\\Collection\): int.* given\.#'
           path: */app/Domains/Vault/ManageVault/Web/ViewHelpers/VaultIndexViewHelper.php
+
+        # larastan needs to manage ->pivot properties
+        - '#Access to an undefined property App\\Models\\[^:]*::\$pivot\.#'
+
+        # larastan needs to manage ->withCount() loads https://github.com/nunomaduro/larastan/issues/466
+        - '#Access to an undefined property App\\Models\\[^:]*::\$.*_count\.#'

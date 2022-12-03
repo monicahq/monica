@@ -7,7 +7,6 @@ use App\Domains\Vault\ManageVaultSettings\Services\DestroyTag;
 use App\Domains\Vault\ManageVaultSettings\Services\UpdateTag;
 use App\Domains\Vault\ManageVaultSettings\Web\ViewHelpers\VaultSettingsIndexViewHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Vault;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,10 +22,9 @@ class VaultSettingsTagController extends Controller
         ];
 
         $tag = (new CreateTag())->execute($data);
-        $vault = Vault::findOrFail($vaultId);
 
         return response()->json([
-            'data' => VaultSettingsIndexViewHelper::dtoTag($vault, $tag),
+            'data' => VaultSettingsIndexViewHelper::dtoTag($tag),
         ], 201);
     }
 
@@ -41,10 +39,9 @@ class VaultSettingsTagController extends Controller
         ];
 
         $tag = (new UpdateTag())->execute($data);
-        $vault = Vault::findOrFail($vaultId);
 
         return response()->json([
-            'data' => VaultSettingsIndexViewHelper::dtoTag($vault, $tag),
+            'data' => VaultSettingsIndexViewHelper::dtoTag($tag),
         ], 200);
     }
 

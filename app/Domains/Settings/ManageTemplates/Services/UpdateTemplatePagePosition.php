@@ -66,10 +66,10 @@ class UpdateTemplatePagePosition extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->template = Template::where('account_id', $this->data['account_id'])
+        $this->template = $this->author->account->templates()
             ->findOrFail($this->data['template_id']);
 
-        $this->templatePage = TemplatePage::where('template_id', $this->data['template_id'])
+        $this->templatePage = $this->template->pages()
             ->findOrFail($this->data['template_page_id']);
 
         $this->pastPosition = $this->templatePage->position;

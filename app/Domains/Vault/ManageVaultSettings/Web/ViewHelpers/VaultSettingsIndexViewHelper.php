@@ -39,9 +39,7 @@ class VaultSettingsIndexViewHelper
             ->orderBy('name', 'asc')
             ->get();
 
-        $labelsCollection = $labels->map(function ($label) use ($vault) {
-            return self::dtoLabel($vault, $label);
-        });
+        $labelsCollection = $labels->map(fn ($label) => self::dtoLabel($label));
 
         $labelColorsCollection = collect();
         $labelColorsCollection->push([
@@ -78,9 +76,7 @@ class VaultSettingsIndexViewHelper
             ->orderBy('name', 'asc')
             ->get();
 
-        $tagsCollection = $tags->map(function ($tag) use ($vault) {
-            return self::dtoTag($vault, $tag);
-        });
+        $tagsCollection = $tags->map(fn ($tag) => self::dtoTag($tag));
 
         return [
             'templates' => $templatesCollection,
@@ -135,7 +131,7 @@ class VaultSettingsIndexViewHelper
         ];
     }
 
-    public static function dtoLabel(Vault $vault, Label $label): array
+    public static function dtoLabel(Label $label): array
     {
         return [
             'id' => $label->id,
@@ -145,18 +141,18 @@ class VaultSettingsIndexViewHelper
             'text_color' => $label->text_color,
             'url' => [
                 'update' => route('vault.settings.label.update', [
-                    'vault' => $vault->id,
+                    'vault' => $label->vault_id,
                     'label' => $label->id,
                 ]),
                 'destroy' => route('vault.settings.label.destroy', [
-                    'vault' => $vault->id,
+                    'vault' => $label->vault_id,
                     'label' => $label->id,
                 ]),
             ],
         ];
     }
 
-    public static function dtoTag(Vault $vault, Tag $tag): array
+    public static function dtoTag(Tag $tag): array
     {
         return [
             'id' => $tag->id,
@@ -164,11 +160,11 @@ class VaultSettingsIndexViewHelper
             'count' => $tag->posts_count,
             'url' => [
                 'update' => route('vault.settings.tag.update', [
-                    'vault' => $vault->id,
+                    'vault' => $tag->vault_id,
                     'tag' => $tag->id,
                 ]),
                 'destroy' => route('vault.settings.tag.destroy', [
-                    'vault' => $vault->id,
+                    'vault' => $tag->vault_id,
                     'tag' => $tag->id,
                 ]),
             ],

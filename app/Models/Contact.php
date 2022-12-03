@@ -132,8 +132,8 @@ class Contact extends Model
     {
         parent::boot();
 
-        static::deleting(function ($model) {
-            Note::where('contact_id', $model->id)->unsearchable();
+        static::deleting(function (self $model) {
+            $model->notes()->unsearchable();
         });
     }
 

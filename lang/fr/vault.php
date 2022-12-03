@@ -127,7 +127,7 @@ return [
     'settings_labels_create_name' => 'Nom',
     'settings_labels_create_color' => 'Choisissez une couleur',
     'settings_labels_create_cta' => 'Créer l’étiquette',
-    'settings_labels_count' => ':count contacts',
+    'settings_labels_count' => ':count contact|:count contacts',
     'settings_labels_blank' => 'Les étiquettes vous permettent de classifier les contacts selon un système qui compte pour vous.',
     'settings_labels_create_success' => 'L’étiquette a été créée',
     'settings_labels_update_success' => 'L’étiquette a été mise à jour',

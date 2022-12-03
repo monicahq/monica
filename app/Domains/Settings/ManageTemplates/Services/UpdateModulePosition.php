@@ -4,7 +4,6 @@ namespace App\Domains\Settings\ManageTemplates\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Module;
-use App\Models\Template;
 use App\Models\TemplatePage;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
@@ -68,20 +67,18 @@ class UpdateModulePosition extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        Template::where('account_id', $this->data['account_id'])
+        $template = $this->author->account->templates()
             ->findOrFail($this->data['template_id']);
 
-        $this->templatePage = TemplatePage::where('template_id', $this->data['template_id'])
+        $this->templatePage = $template->pages()
             ->findOrFail($this->data['template_page_id']);
 
-        $this->module = Module::where('account_id', $this->data['account_id'])
+        $this->module = $this->templatePage->modules()
+            ->wherePivot('template_page_id', $this->templatePage->id)
+            ->withPivot('position')
             ->findOrFail($this->data['module_id']);
 
-        $this->pastPosition = DB::table('module_template_page')
-            ->where('template_page_id', $this->templatePage->id)
-            ->where('module_id', $this->module->id)
-            ->select('position')
-            ->first()->position;
+        $this->pastPosition = $this->module->pivot->position;
     }
 
     private function updatePosition(): void

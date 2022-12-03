@@ -2,6 +2,7 @@
 
 namespace App\Domains\Contact\ManageContact\Web\ViewHelpers;
 
+use App\Models\Label;
 use App\Models\Vault;
 
 class ContactIndexViewHelper
@@ -27,22 +28,18 @@ class ContactIndexViewHelper
             ->orderBy('name', 'asc')
             ->withCount('contacts')
             ->get()
-            ->filter(function ($label) {
-                return $label->contacts_count > 0;
-            })
-            ->map(function ($label) {
-                return [
-                    'id' => $label->id,
-                    'name' => $label->name,
-                    'count' => $label->contacts_count,
-                    'url' => [
-                        'show' => route('contact.label.index', [
-                            'vault' => $label->vault_id,
-                            'label' => $label->id,
-                        ]),
-                    ],
-                ];
-            });
+            ->filter(fn (Label $label): bool => $label->contacts_count > 0)
+            ->map(fn (Label $label) => [
+                'id' => $label->id,
+                'name' => $label->name,
+                'count' => $label->contacts_count,
+                'url' => [
+                    'show' => route('contact.label.index', [
+                        'vault' => $label->vault_id,
+                        'label' => $label->id,
+                    ]),
+                ],
+            ]);
 
         return [
             'contacts' => $contactCollection,
