@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use App\Models\Contact;
 use App\Models\Post;
 use App\Models\PostSection;
 use App\Models\Tag;
@@ -29,6 +30,17 @@ class PostTest extends TestCase
         ]);
 
         $this->assertTrue($post->postSections()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_contacts(): void
+    {
+        $ross = Contact::factory()->create([]);
+        $post = Post::factory()->create();
+
+        $post->contacts()->sync([$ross->id]);
+
+        $this->assertTrue($post->contacts()->exists());
     }
 
     /** @test */
@@ -61,6 +73,33 @@ class PostTest extends TestCase
         $this->assertEquals(
             'Awesome post',
             $post->title
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_excerpt(): void
+    {
+        $post = Post::factory()->create([
+            'title' => null,
+        ]);
+
+        $this->assertNull(
+            $post->excerpt
+        );
+
+        PostSection::factory()->create([
+            'post_id' => $post->id,
+            'content' => null,
+        ]);
+
+        PostSection::factory()->create([
+            'post_id' => $post->id,
+            'content' => 'this is incredible',
+        ]);
+
+        $this->assertEquals(
+            'this is incredible',
+            $post->excerpt
         );
     }
 }

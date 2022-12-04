@@ -7,6 +7,7 @@ import Tags from '@/Pages/Vault/Journal/Post/Partials/Tags.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { onMounted, watch, ref } from 'vue';
 import { debounce } from 'lodash';
+import ContactSelector from '@/Shared/Form/ContactSelector.vue';
 
 const props = defineProps({
   layoutData: Object,
@@ -16,6 +17,7 @@ const props = defineProps({
 const form = useForm({
   title: '',
   sections: [],
+  contacts: [],
 });
 
 const saveInProgress = ref(false);
@@ -24,6 +26,7 @@ const statistics = ref([]);
 onMounted(() => {
   form.title = props.data.title;
   statistics.value = props.data.statistics;
+  form.contacts = props.data.contacts;
 
   props.data.sections.forEach((section) => {
     form.sections.push({
@@ -45,6 +48,13 @@ watch(
   () => form.title,
   () => {
     debouncedWatch(form.title);
+  },
+);
+
+watch(
+  () => _.cloneDeep(form.contacts),
+  () => {
+    debouncedWatch(form.contacts);
   },
 );
 
@@ -206,6 +216,19 @@ const destroy = () => {
                 <span>Saving in progress</span>
               </div>
             </div>
+
+            <!-- contacts -->
+            <p class="mb-2 flex items-center font-bold">
+              <span>Contacts in this post</span>
+            </p>
+            <contact-selector
+              v-model="form.contacts"
+              :search-url="layoutData.vault.url.search_contacts_only"
+              :most-consulted-contacts-url="layoutData.vault.url.get_most_consulted_contacts"
+              :display-most-consulted-contacts="true"
+              :add-multiple-contacts="true"
+              :required="true"
+              :div-outer-class="'flex-1 border-gray-200 dark:border-gray-700 mb-6'" />
 
             <!-- categories -->
             <tags :data="data" />

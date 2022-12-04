@@ -3,6 +3,7 @@
 namespace App\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
 use App\Helpers\PostHelper;
+use App\Models\Contact;
 use App\Models\Journal;
 use App\Models\Post;
 use App\Models\PostSection;
@@ -37,10 +38,15 @@ class PostEditViewHelper
             return self::dtoTag($journal, $post, $tag);
         });
 
+        $contacts = $post->contacts()
+            ->get()
+            ->map(fn (Contact $contact) => self::dtoContact($contact));
+
         return [
             'id' => $post->id,
             'title' => $post->title,
             'sections' => $sectionsCollection,
+            'contacts' => $contacts,
             'statistics' => PostHelper::statistics($post),
             'tags_in_post' => $tagsAssociatedWithPostCollection,
             'tags_in_vault' => $tagsInVaultCollection,
@@ -94,6 +100,21 @@ class PostEditViewHelper
                     'journal' => $journal->id,
                     'post' => $post->id,
                     'tag' => $tag->id,
+                ]),
+            ],
+        ];
+    }
+
+    public static function dtoContact(Contact $contact): array
+    {
+        return [
+            'id' => $contact->id,
+            'name' => $contact->name,
+            'avatar' => $contact->avatar,
+            'url' => [
+                'show' => route('contact.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
                 ]),
             ],
         ];

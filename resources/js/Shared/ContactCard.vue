@@ -58,7 +58,7 @@
           </div>
         </div>
       </template>
-      <template v-if="showName" #title>
+      <template v-if="displayName" #title>
         <span>{{ contact.name }}</span>
       </template>
 
@@ -73,7 +73,9 @@
         </div>
 
         <!-- name -->
-        <a v-if="showName" class="colored-link" href="">{{ contact.name }}</a>
+        <inertia-link v-if="displayName" class="text-blue-500 hover:underline" :href="contact.url">{{
+          contact.name
+        }}</inertia-link>
       </div>
     </a-popover>
   </div>

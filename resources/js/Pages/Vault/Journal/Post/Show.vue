@@ -1,5 +1,6 @@
 <script setup>
 import Layout from '@/Shared/Layout.vue';
+import ContactCard from '@/Shared/ContactCard.vue';
 
 defineProps({
   layoutData: Object,
@@ -92,6 +93,16 @@ defineProps({
 
           <!-- right -->
           <div class="">
+            <!-- contacts -->
+            <div v-if="data.contacts.length > 0" class="mb-4">
+              <p class="mb-2 font-bold">{{ $t('vault.journal_show_contacts') }}</p>
+
+              <div v-for="contact in data.contacts" :key="contact.id" class="mb-2 block">
+                <contact-card :contact="contact" :avatarClasses="'h-5 w-5 rounded-full mr-2'" :displayName="true" />
+              </div>
+            </div>
+
+            <!-- options -->
             <p class="mb-2 font-bold">{{ $t('vault.journal_show_options') }}</p>
             <ul class="mb-6 text-sm">
               <li class="flex items-center">

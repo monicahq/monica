@@ -222,7 +222,7 @@
                       :display-most-consulted-contacts="false"
                       :add-multiple-contacts="false"
                       :required="true"
-                      :div-outer-class="'flex-1 border-r border-gray-200 dark:border-gray-700'" />
+                      :div-outer-class="'flex-1 border-gray-200 dark:border-gray-700'" />
                   </div>
                 </div>
               </div>

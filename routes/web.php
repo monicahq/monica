@@ -291,7 +291,6 @@ Route::middleware([
                     Route::delete('calls/{call}', [ContactModuleCallController::class, 'destroy'])->name('contact.call.destroy');
 
                     // groups
-                    Route::get('groups', [ContactModuleGroupController::class, 'index'])->name('contact.group.index');
                     Route::post('groups', [ContactModuleGroupController::class, 'store'])->name('contact.group.store');
                     Route::delete('groups/{group}', [ContactModuleGroupController::class, 'destroy'])->name('contact.group.destroy');
                 });

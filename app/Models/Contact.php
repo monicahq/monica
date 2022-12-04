@@ -363,6 +363,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the posts associated with the contact.
+     *
+     * @return BelongsToMany
+     */
+    public function posts(): BelongsToMany
+    {
+        return $this->belongsToMany(Post::class, 'contact_post');
+    }
+
+    /**
      * Get the religion associated with the contact.
      *
      * @return BelongsTo

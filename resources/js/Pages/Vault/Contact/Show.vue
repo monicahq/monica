@@ -31,6 +31,7 @@ import ContactInformation from '@/Shared/Modules/ContactInformation.vue';
 import Documents from '@/Shared/Modules/Documents.vue';
 import Photos from '@/Shared/Modules/Photos.vue';
 import Religion from '@/Shared/Modules/Religion.vue';
+import Posts from '@/Shared/Modules/Posts.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
 
 const props = defineProps({
@@ -324,6 +325,8 @@ const destroyAvatar = () => {
                 <Documents v-else-if="module.type == 'documents'" :data="module.data" />
 
                 <Photos v-else-if="module.type == 'photos'" :data="module.data" />
+
+                <Posts v-else-if="module.type == 'posts'" :data="module.data" />
               </div>
             </div>
           </div>

@@ -3,6 +3,7 @@
 namespace Tests\Unit\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
 use App\Domains\Vault\ManageJournals\Web\ViewHelpers\PostEditViewHelper;
+use App\Models\Contact;
 use App\Models\Journal;
 use App\Models\Post;
 use App\Models\PostSection;
@@ -28,10 +29,14 @@ class PostEditViewHelperTest extends TestCase
         PostSection::factory()->create([
             'post_id' => $post->id,
         ]);
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        $post->contacts()->attach($contact);
 
         $array = PostEditViewHelper::data($journal, $post);
 
-        $this->assertCount(8, $array);
+        $this->assertCount(9, $array);
         $this->assertEquals(
             $post->id,
             $array['id']
@@ -45,6 +50,19 @@ class PostEditViewHelperTest extends TestCase
                 'name' => $journal->name,
             ],
             $array['journal']
+        );
+        $this->assertEquals(
+            [
+                0 => [
+                    'id' => $contact->id,
+                    'name' => $contact->name,
+                    'avatar' => $contact->avatar,
+                    'url' => [
+                        'show' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/'.$contact->id,
+                    ],
+                ],
+            ],
+            $array['contacts']->toArray()
         );
         $this->assertEquals(
             [

@@ -2,7 +2,9 @@
 
 namespace App\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
+use App\Helpers\ContactCardHelper;
 use App\Helpers\DateHelper;
+use App\Models\Contact;
 use App\Models\Post;
 use App\Models\PostSection;
 use App\Models\Tag;
@@ -30,6 +32,10 @@ class PostShowViewHelper
                 'name' => $tag->name,
             ]);
 
+        $contacts = $post->contacts()
+            ->get()
+            ->map(fn (Contact $contact) => ContactCardHelper::data($contact, $user));
+
         return [
             'id' => $post->id,
             'title' => $post->title,
@@ -38,6 +44,7 @@ class PostShowViewHelper
             'published' => $post->published,
             'sections' => $sections,
             'tags' => $tags,
+            'contacts' => $contacts,
             'journal' => [
                 'name' => $post->journal->name,
                 'url' => [

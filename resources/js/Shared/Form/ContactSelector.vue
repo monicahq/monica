@@ -4,7 +4,7 @@
     <div>
       <label v-if="label" class="mb-2 block text-sm" :for="id">
         {{ label }}
-        <span v-if="!required" class="optional-badge text-xs"> optional </span>
+        <span v-if="!required" class="optional-badge text-xs"> {{ $t('app.optional') }} </span>
       </label>
 
       <!-- list of selected contacts -->
@@ -30,7 +30,7 @@
         v-if="displayAddContactButton"
         class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
         @click="showAddContactMode">
-        + Add a contact
+        {{ labelCta }}
       </p>
     </div>
 
@@ -165,6 +165,10 @@ export default {
       type: String,
       default: '',
     },
+    labelCta: {
+      type: String,
+      default: '+ Add a contact',
+    },
     type: {
       type: String,
       default: 'text',
@@ -202,7 +206,6 @@ export default {
       searchResults: [],
       form: {
         searchTerm: '',
-        contactIds: [],
         errors: [],
       },
     };
@@ -231,10 +234,18 @@ export default {
     if (this.displayMostConsultedContacts) {
       this.lookupMostConsultedContacts();
     }
+  },
 
+  mounted() {
     if (this.modelValue) {
       this.localContacts = this.modelValue;
     }
+  },
+
+  watch: {
+    modelValue: function (value) {
+      this.localContacts = value;
+    },
   },
 
   methods: {
@@ -260,10 +271,9 @@ export default {
 
       if (id == -1) {
         this.localContacts.push(contact);
-        this.form.contactIds.push(contact);
         this.form.searchTerm = '';
         this.addContactMode = false;
-        this.$emit('update:modelValue', this.form.contactIds);
+        this.$emit('update:modelValue', this.localContacts);
       }
     },
 
@@ -271,10 +281,7 @@ export default {
       const id = this.localContacts.findIndex((existingContact) => existingContact.id === contact.id);
       this.localContacts.splice(id, 1);
 
-      const id2 = this.form.contactIds.findIndex((existingContact) => existingContact === contact.id);
-      this.form.contactIds.splice(id2, 1);
-
-      this.$emit('update:modelValue', this.form.contactIds);
+      this.$emit('update:modelValue', this.localContacts);
     },
 
     search: _.debounce(function () {

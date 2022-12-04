@@ -24,6 +24,7 @@ use App\Domains\Contact\ManageRelationships\Web\ViewHelpers\ModuleRelationshipVi
 use App\Domains\Contact\ManageReligion\Web\ViewHelpers\ModuleReligionViewHelper;
 use App\Domains\Contact\ManageReminders\Web\ViewHelpers\ModuleRemindersViewHelper;
 use App\Domains\Contact\ManageTasks\Web\ViewHelpers\ModuleContactTasksViewHelper;
+use App\Domains\Vault\ManageJournals\Web\ViewHelpers\ModulePostsViewHelper;
 use App\Helpers\StorageHelper;
 use App\Models\Contact;
 use App\Models\Module;
@@ -283,6 +284,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_PHOTOS) {
                 $data = ModulePhotosViewHelper::data($contact);
+            }
+
+            if ($module->type == Module::TYPE_POSTS) {
+                $data = ModulePostsViewHelper::data($contact, $user);
             }
 
             $modulesCollection->push([

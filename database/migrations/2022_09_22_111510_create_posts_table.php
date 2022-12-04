@@ -53,6 +53,14 @@ return new class extends Migration
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
         });
 
+        Schema::create('contact_post', function (Blueprint $table) {
+            $table->unsignedBigInteger('post_id');
+            $table->unsignedBigInteger('contact_id');
+            $table->timestamps();
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+        });
+
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('vault_id');
@@ -81,6 +89,9 @@ return new class extends Migration
         Schema::dropIfExists('post_templates');
         Schema::dropIfExists('post_template_sections');
         Schema::dropIfExists('posts');
-        Schema::dropIfExists('journal_tags');
+        Schema::dropIfExists('post_sections');
+        Schema::dropIfExists('contact_post');
+        Schema::dropIfExists('tags');
+        Schema::dropIfExists('post_tag');
     }
 };

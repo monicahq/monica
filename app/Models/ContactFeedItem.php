@@ -84,6 +84,10 @@ class ContactFeedItem extends Model
 
     public const ACTION_REMOVED_FROM_GROUP = 'removed_from_group';
 
+    public const ACTION_ADDED_TO_POST = 'added_to_post';
+
+    public const ACTION_REMOVED_FROM_POST = 'removed_from_post';
+
     public const ACTION_ARCHIVED_CONTACT = 'archived';
 
     public const ACTION_UNARCHIVED_CONTACT = 'unarchived';

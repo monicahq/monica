@@ -65,7 +65,7 @@
             <!-- actions -->
             <ul class="text-sm">
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(relationshipType)">
-                Remove
+                {{ $t('app.remove') }}
               </li>
             </ul>
           </li>
