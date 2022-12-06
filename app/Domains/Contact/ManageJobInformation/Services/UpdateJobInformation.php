@@ -56,7 +56,7 @@ class UpdateJobInformation extends BaseService implements ServiceInterface
         $this->validateRules($data);
 
         if (! is_null($this->valueOrNull($data, 'company_id'))) {
-            $this->company = Company::where('vault_id', $data['vault_id'])
+            $this->company = $this->vault->companies()
                 ->findOrFail($data['company_id']);
         }
 

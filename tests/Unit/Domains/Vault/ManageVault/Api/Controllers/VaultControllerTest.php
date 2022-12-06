@@ -4,10 +4,13 @@ namespace Tests\Unit\Domains\Vault\ManageVault\Api\Controllers;
 
 use App\Models\Vault;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\ApiTestCase;
 
 class VaultControllerTest extends ApiTestCase
 {
+    use DatabaseTransactions;
+
     /** @test */
     public function it_gets_a_list_of_vaults(): void
     {

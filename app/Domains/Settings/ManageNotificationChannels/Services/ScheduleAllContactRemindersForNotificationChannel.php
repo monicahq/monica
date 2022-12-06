@@ -3,10 +3,7 @@
 namespace App\Domains\Settings\ManageNotificationChannels\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Contact;
-use App\Models\User;
 use App\Models\UserNotificationChannel;
-use App\Models\Vault;
 use App\Services\BaseService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -65,14 +62,15 @@ class ScheduleAllContactRemindersForNotificationChannel extends BaseService impl
     {
         $this->validateRules($this->data);
 
-        $this->userNotificationChannel = UserNotificationChannel::where('user_id', $this->data['author_id'])
+        $this->userNotificationChannel = $this->author->notificationChannels()
             ->findOrFail($this->data['user_notification_channel_id']);
     }
 
     private function schedule(): void
     {
-        $vaults = Vault::where('account_id', $this->data['account_id'])
-            ->pluck('id')->toArray();
+        $vaults = $this->account()->vaults()
+            ->pluck('id')
+            ->toArray();
 
         $contactReminders = DB::table('contact_reminders')
             ->join('contacts', 'contacts.id', '=', 'contact_reminders.contact_id')

@@ -2,6 +2,7 @@
 
 namespace App\Domains\Settings\ManageTemplates\Services;
 
+use App\Exceptions\CantBeDeletedException;
 use App\Interfaces\ServiceInterface;
 use App\Models\Module;
 use App\Services\BaseService;
@@ -44,11 +45,11 @@ class DestroyModule extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $module = Module::where('account_id', $data['account_id'])
+        $module = $this->account()->modules()
             ->findOrFail($data['module_id']);
 
         if (! $module->can_be_deleted) {
-            throw new \Exception('The module cannot be deleted.');
+            throw new CantBeDeletedException('The module cannot be deleted.');
         }
 
         $module->delete();

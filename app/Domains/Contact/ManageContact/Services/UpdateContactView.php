@@ -3,7 +3,6 @@
 namespace App\Domains\Contact\ManageContact\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\User;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 

@@ -53,7 +53,7 @@ class DestroyContactAddress extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->address = Address::where('contact_id', $this->contact->id)
+        $this->address = $this->contact->addresses()
             ->findOrFail($data['address_id']);
 
         $this->address->delete();

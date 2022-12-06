@@ -4,7 +4,6 @@ namespace App\Domains\Contact\ManageLifeContactEvents\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactLifeEvent;
-use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
 use App\Services\BaseService;
 use Carbon\Carbon;
@@ -26,12 +25,12 @@ class UpdateContactLifeEvent extends BaseService implements ServiceInterface
             'account_id' => 'required|integer|exists:accounts,id',
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
-            'life_event_type_id' => 'required|integer|exists:life_event_types,id',
             'contact_id' => 'required|integer|exists:contacts,id',
+            'life_event_type_id' => 'required|integer|exists:life_event_types,id',
             'contact_life_event_id' => 'required|integer|exists:contact_life_events,id',
             'summary' => 'required|string|max:255',
-            'started_at' => 'date|format:Y-m-d',
-            'ended_at' => 'date|format:Y-m-d',
+            'started_at' => 'date|date_format:Y-m-d',
+            'ended_at' => 'date|date_format:Y-m-d',
         ];
     }
 
@@ -72,12 +71,12 @@ class UpdateContactLifeEvent extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->contactLifeEvent = ContactLifeEvent::where('contact_id', $this->data['contact_id'])
+        $this->contactLifeEvent = $this->contact->contactLifeEvents()
             ->findOrFail($this->data['contact_life_event_id']);
 
         $lifeEventType = LifeEventType::findOrFail($this->data['life_event_type_id']);
 
-        LifeEventCategory::where('account_id', $this->data['account_id'])
+        $this->account()->lifeEventCategories()
             ->findOrFail($lifeEventType->lifeEventCategory->id);
     }
 

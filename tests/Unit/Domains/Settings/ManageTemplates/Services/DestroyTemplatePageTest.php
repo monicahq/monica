@@ -2,9 +2,10 @@
 
 namespace Tests\Unit\Domains\Settings\ManageTemplates\Services;
 
-use App\Domains\Settings\ManageTemplates\Services\DestroyTemplate;
+use App\Domains\Settings\ManageTemplates\Services\DestroyTemplatePage;
 use App\Models\Account;
 use App\Models\Template;
+use App\Models\TemplatePage;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -20,8 +21,8 @@ class DestroyTemplatePageTest extends TestCase
     public function it_destroys_a_template(): void
     {
         $ross = $this->createAdministrator();
-        $template = $this->createTemplate($ross->account);
-        $this->executeService($ross, $ross->account, $template);
+        $templatePage = $this->createTemplatePage($ross->account);
+        $this->executeService($ross, $ross->account, $templatePage);
     }
 
     /** @test */
@@ -32,7 +33,7 @@ class DestroyTemplatePageTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyTemplate())->execute($request);
+        (new DestroyTemplatePage())->execute($request);
     }
 
     /** @test */
@@ -42,8 +43,8 @@ class DestroyTemplatePageTest extends TestCase
 
         $ross = $this->createAdministrator();
         $account = $this->createAccount();
-        $template = $this->createTemplate($ross->account);
-        $this->executeService($ross, $account, $template);
+        $templatePage = $this->createTemplatePage($ross->account);
+        $this->executeService($ross, $account, $templatePage);
     }
 
     /** @test */
@@ -53,33 +54,36 @@ class DestroyTemplatePageTest extends TestCase
 
         $ross = $this->createAdministrator();
         $account = Account::factory()->create();
-        $template = $this->createTemplate($account);
-        $this->executeService($ross, $ross->account, $template);
+        $templatePage = $this->createTemplatePage($account);
+        $this->executeService($ross, $ross->account, $templatePage);
     }
 
-    private function executeService(User $author, Account $account, Template $template): void
+    private function executeService(User $author, Account $account, TemplatePage $templatePage): void
     {
         Queue::fake();
 
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
-            'template_id' => $template->id,
+            'template_id' => $templatePage->template_id,
+            'template_page_id' => $templatePage->id,
         ];
 
-        (new DestroyTemplate())->execute($request);
+        (new DestroyTemplatePage())->execute($request);
 
-        $this->assertDatabaseMissing('templates', [
-            'id' => $template->id,
+        $this->assertDatabaseMissing('template_pages', [
+            'id' => $templatePage->id,
         ]);
     }
 
-    private function createTemplate(Account $account): Template
+    private function createTemplatePage(Account $account): TemplatePage
     {
         $template = Template::factory()->create([
             'account_id' => $account->id,
         ]);
 
-        return $template;
+        return TemplatePage::factory()->create([
+            'template_id' => $template->id,
+        ]);
     }
 }

@@ -129,6 +129,31 @@ class UpdatePostTemplateSectionPositionTest extends TestCase
             'position' => 3,
         ]);
 
+        $request['new_position'] = 2;
+
+        $postTemplateSection = (new UpdatePostTemplateSectionPosition())->execute($request);
+
+        $this->assertDatabaseHas('post_template_sections', [
+            'id' => $postTemplateSection1->id,
+            'post_template_id' => $postTemplate->id,
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('post_template_sections', [
+            'id' => $postTemplateSection3->id,
+            'post_template_id' => $postTemplate->id,
+            'position' => 3,
+        ]);
+        $this->assertDatabaseHas('post_template_sections', [
+            'id' => $postTemplateSection4->id,
+            'post_template_id' => $postTemplate->id,
+            'position' => 4,
+        ]);
+        $this->assertDatabaseHas('post_template_sections', [
+            'id' => $postTemplateSection->id,
+            'post_template_id' => $postTemplate->id,
+            'position' => 2,
+        ]);
+
         $this->assertInstanceOf(
             PostTemplateSection::class,
             $postTemplateSection

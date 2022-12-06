@@ -5,7 +5,6 @@ namespace App\Domains\Settings\ManageGiftStates\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\GiftState;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 
 class UpdateGiftStatePosition extends BaseService implements ServiceInterface
 {
@@ -62,13 +61,10 @@ class UpdateGiftStatePosition extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->giftState = GiftState::where('account_id', $this->data['account_id'])
+        $this->giftState = $this->account()->giftStates()
             ->findOrFail($this->data['gift_state_id']);
 
-        $this->pastPosition = DB::table('gift_states')
-            ->where('id', $this->giftState->id)
-            ->select('position')
-            ->first()->position;
+        $this->pastPosition = $this->giftState->position;
     }
 
     private function updatePosition(): void
@@ -79,8 +75,7 @@ class UpdateGiftStatePosition extends BaseService implements ServiceInterface
             $this->updateDescendingPosition();
         }
 
-        DB::table('gift_states')
-            ->where('id', $this->giftState->id)
+        $this->giftState
             ->update([
                 'position' => $this->data['new_position'],
             ]);
@@ -88,7 +83,7 @@ class UpdateGiftStatePosition extends BaseService implements ServiceInterface
 
     private function updateAscendingPosition(): void
     {
-        DB::table('gift_states')
+        $this->account()->giftStates()
             ->where('position', '>', $this->pastPosition)
             ->where('position', '<=', $this->data['new_position'])
             ->decrement('position');
@@ -96,7 +91,7 @@ class UpdateGiftStatePosition extends BaseService implements ServiceInterface
 
     private function updateDescendingPosition(): void
     {
-        DB::table('gift_states')
+        $this->account()->giftStates()
             ->where('position', '>=', $this->data['new_position'])
             ->where('position', '<', $this->pastPosition)
             ->increment('position');

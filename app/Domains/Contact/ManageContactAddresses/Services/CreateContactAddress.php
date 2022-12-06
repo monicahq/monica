@@ -6,7 +6,6 @@ use App\Domains\Contact\ManageContactAddresses\Jobs\FetchAddressGeocoding;
 use App\Helpers\MapHelper;
 use App\Interfaces\ServiceInterface;
 use App\Models\Address;
-use App\Models\AddressType;
 use App\Models\ContactFeedItem;
 use App\Services\BaseService;
 use Carbon\Carbon;
@@ -67,7 +66,7 @@ class CreateContactAddress extends BaseService implements ServiceInterface
         $this->validateRules($data);
 
         if ($this->valueOrNull($data, 'address_type_id')) {
-            AddressType::where('account_id', $data['account_id'])
+            $this->account()->addressTypes()
                 ->findOrFail($data['address_type_id']);
         }
 

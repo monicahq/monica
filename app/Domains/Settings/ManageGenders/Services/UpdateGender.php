@@ -46,7 +46,7 @@ class UpdateGender extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $gender = Gender::where('account_id', $data['account_id'])
+        $gender = $this->account()->genders()
             ->findOrFail($data['gender_id']);
 
         $gender->name = $data['name'];

@@ -3,7 +3,6 @@
 namespace App\Domains\Contact\ManageLoans\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Contact;
 use App\Models\Loan;
 use App\Services\BaseService;
 use Carbon\Carbon;
@@ -78,22 +77,22 @@ class UpdateLoan extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->loan = Loan::where('vault_id', $this->data['vault_id'])
+        $this->loan = $this->vault->loans()
             ->findOrFail($this->data['loan_id']);
 
         $this->loanersCollection = collect();
         foreach ($this->data['loaner_ids'] as $loanerId) {
             $this->loanersCollection->push(
-                Contact::where('vault_id', $this->data['vault_id'])
-                ->findOrFail($loanerId)
+                $this->vault->contacts()
+                    ->findOrFail($loanerId)
             );
         }
 
         $this->loaneesCollection = collect();
         foreach ($this->data['loanee_ids'] as $loaneeId) {
             $this->loaneesCollection->push(
-                Contact::where('vault_id', $this->data['vault_id'])
-                ->findOrFail($loaneeId)
+                $this->vault->contacts()
+                    ->findOrFail($loaneeId)
             );
         }
     }

@@ -5,7 +5,6 @@ namespace App\Domains\Settings\ManageGiftOccasions\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\GiftOccasion;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 
 class UpdateGiftOccasionPosition extends BaseService implements ServiceInterface
 {
@@ -62,13 +61,10 @@ class UpdateGiftOccasionPosition extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->giftOccasion = GiftOccasion::where('account_id', $this->data['account_id'])
+        $this->giftOccasion = $this->account()->giftOccasions()
             ->findOrFail($this->data['gift_occasion_id']);
 
-        $this->pastPosition = DB::table('gift_occasions')
-            ->where('id', $this->giftOccasion->id)
-            ->select('position')
-            ->first()->position;
+        $this->pastPosition = $this->giftOccasion->position;
     }
 
     private function updatePosition(): void
@@ -79,8 +75,7 @@ class UpdateGiftOccasionPosition extends BaseService implements ServiceInterface
             $this->updateDescendingPosition();
         }
 
-        DB::table('gift_occasions')
-            ->where('id', $this->giftOccasion->id)
+        $this->giftOccasion
             ->update([
                 'position' => $this->data['new_position'],
             ]);
@@ -88,7 +83,7 @@ class UpdateGiftOccasionPosition extends BaseService implements ServiceInterface
 
     private function updateAscendingPosition(): void
     {
-        DB::table('gift_occasions')
+        $this->account()->giftOccasions()
             ->where('position', '>', $this->pastPosition)
             ->where('position', '<=', $this->data['new_position'])
             ->decrement('position');
@@ -96,7 +91,7 @@ class UpdateGiftOccasionPosition extends BaseService implements ServiceInterface
 
     private function updateDescendingPosition(): void
     {
-        DB::table('gift_occasions')
+        $this->account()->giftOccasions()
             ->where('position', '>=', $this->data['new_position'])
             ->where('position', '<', $this->pastPosition)
             ->increment('position');

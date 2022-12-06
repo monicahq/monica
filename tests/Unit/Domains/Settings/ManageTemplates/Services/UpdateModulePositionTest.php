@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domains\Settings\ManageTemplates\Services;
 
 use App\Domains\Settings\ManageTemplates\Services\UpdateModulePosition;
-use App\Domains\Settings\ManageTemplates\Services\UpdateTemplatePage;
 use App\Models\Account;
 use App\Models\Module;
 use App\Models\Template;
@@ -44,7 +43,7 @@ class UpdateModulePositionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateTemplatePage())->execute($request);
+        (new UpdateModulePosition())->execute($request);
     }
 
     /** @test */
@@ -162,6 +161,31 @@ class UpdateModulePositionTest extends TestCase
             'module_id' => $module->id,
             'template_page_id' => $templatePage->id,
             'position' => 3,
+        ]);
+
+        $request['new_position'] = 2;
+
+        $module = (new UpdateModulePosition())->execute($request);
+
+        $this->assertDatabaseHas('module_template_page', [
+            'module_id' => $module1->id,
+            'template_page_id' => $templatePage->id,
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('module_template_page', [
+            'module_id' => $module3->id,
+            'template_page_id' => $templatePage->id,
+            'position' => 3,
+        ]);
+        $this->assertDatabaseHas('module_template_page', [
+            'module_id' => $module4->id,
+            'template_page_id' => $templatePage->id,
+            'position' => 4,
+        ]);
+        $this->assertDatabaseHas('module_template_page', [
+            'module_id' => $module->id,
+            'template_page_id' => $templatePage->id,
+            'position' => 2,
         ]);
 
         $this->assertInstanceOf(

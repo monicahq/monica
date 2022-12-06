@@ -4,7 +4,6 @@ namespace App\Domains\Settings\ManagePronouns\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Pronoun;
-use App\Models\User;
 use App\Services\BaseService;
 
 class UpdatePronoun extends BaseService implements ServiceInterface
@@ -47,7 +46,7 @@ class UpdatePronoun extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $pronoun = Pronoun::where('account_id', $data['account_id'])
+        $pronoun = $this->account()->pronouns()
             ->findOrFail($data['pronoun_id']);
 
         $pronoun->name = $data['name'];

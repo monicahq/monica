@@ -3,9 +3,7 @@
 namespace App\Domains\Settings\ManagePostTemplates\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\PostTemplate;
 use App\Models\PostTemplateSection;
-use App\Models\Template;
 use App\Services\BaseService;
 
 class CreatePostTemplateSection extends BaseService implements ServiceInterface
@@ -51,12 +49,11 @@ class CreatePostTemplateSection extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        PostTemplate::where('account_id', $data['account_id'])
-            ->where('id', $data['post_template_id'])
-            ->firstOrFail();
+        $postTemplate = $this->account()->postTemplates()
+            ->findOrFail($data['post_template_id']);
 
         // determine the new position of the template page
-        $newPosition = PostTemplateSection::where('post_template_id', $data['post_template_id'])
+        $newPosition = $postTemplate->postTemplateSections()
             ->max('position');
         $newPosition++;
 

@@ -63,7 +63,7 @@ class ToggleLoan extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->loan = Loan::where('vault_id', $this->data['vault_id'])
+        $this->loan = $this->vault->loans()
             ->findOrFail($this->data['loan_id']);
     }
 

@@ -48,7 +48,7 @@ class UpdateModule extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->module = Module::where('account_id', $data['account_id'])
+        $this->module = $this->account()->modules()
             ->findOrFail($data['module_id']);
 
         $this->module->name = $data['name'];

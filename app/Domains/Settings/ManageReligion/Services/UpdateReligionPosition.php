@@ -5,7 +5,6 @@ namespace App\Domains\Settings\ManageReligion\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\Religion;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 
 class UpdateReligionPosition extends BaseService implements ServiceInterface
 {
@@ -62,13 +61,10 @@ class UpdateReligionPosition extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->religion = Religion::where('account_id', $this->data['account_id'])
+        $this->religion = $this->account()->religions()
             ->findOrFail($this->data['religion_id']);
 
-        $this->pastPosition = DB::table('religions')
-            ->where('id', $this->religion->id)
-            ->select('position')
-            ->first()->position;
+        $this->pastPosition = $this->religion->position;
     }
 
     private function updatePosition(): void
@@ -79,8 +75,7 @@ class UpdateReligionPosition extends BaseService implements ServiceInterface
             $this->updateDescendingPosition();
         }
 
-        DB::table('religions')
-            ->where('id', $this->religion->id)
+        $this->religion
             ->update([
                 'position' => $this->data['new_position'],
             ]);
@@ -88,7 +83,7 @@ class UpdateReligionPosition extends BaseService implements ServiceInterface
 
     private function updateAscendingPosition(): void
     {
-        DB::table('religions')
+        $this->account()->religions()
             ->where('position', '>', $this->pastPosition)
             ->where('position', '<=', $this->data['new_position'])
             ->decrement('position');
@@ -96,7 +91,7 @@ class UpdateReligionPosition extends BaseService implements ServiceInterface
 
     private function updateDescendingPosition(): void
     {
-        DB::table('religions')
+        $this->account()->religions()
             ->where('position', '>=', $this->data['new_position'])
             ->where('position', '<', $this->pastPosition)
             ->increment('position');

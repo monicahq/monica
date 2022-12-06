@@ -3,7 +3,6 @@
 namespace App\Domains\Contact\ManageGroups\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Contact;
 use App\Models\ContactFeedItem;
 use App\Models\Group;
 use App\Services\BaseService;
@@ -71,7 +70,7 @@ class RemoveContactFromGroup extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->group = Group::where('vault_id', $this->data['vault_id'])
+        $this->group = $this->vault->groups()
             ->findOrFail($this->data['group_id']);
     }
 

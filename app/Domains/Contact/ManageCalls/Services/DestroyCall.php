@@ -51,7 +51,7 @@ class DestroyCall extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->call = Call::where('contact_id', $data['contact_id'])
+        $this->call = $this->contact->calls()
             ->findOrFail($data['call_id']);
 
         $this->call->delete();

@@ -59,7 +59,7 @@ class DestroyJournal extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->journal = Journal::where('vault_id', $this->data['vault_id'])
+        $this->journal = $this->vault->journals()
             ->findOrFail($this->data['journal_id']);
     }
 }

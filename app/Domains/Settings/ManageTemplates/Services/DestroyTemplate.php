@@ -46,7 +46,7 @@ class DestroyTemplate extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->template = Template::where('account_id', $data['account_id'])
+        $this->template = $this->account()->templates()
             ->findOrFail($data['template_id']);
 
         $this->template->delete();

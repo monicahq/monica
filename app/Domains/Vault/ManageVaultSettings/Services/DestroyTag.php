@@ -3,8 +3,6 @@
 namespace App\Domains\Vault\ManageVaultSettings\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Tag;
-use App\Models\User;
 use App\Services\BaseService;
 
 class DestroyTag extends BaseService implements ServiceInterface
@@ -47,7 +45,7 @@ class DestroyTag extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $tag = Tag::where('vault_id', $data['vault_id'])
+        $tag = $this->vault->tags()
             ->findOrFail($data['tag_id']);
 
         $tag->delete();

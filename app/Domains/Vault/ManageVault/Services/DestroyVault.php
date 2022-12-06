@@ -3,7 +3,6 @@
 namespace App\Domains\Vault\ManageVault\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Contact;
 use App\Models\File;
 use App\Services\BaseService;
 
@@ -46,9 +45,8 @@ class DestroyVault extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $contactIds = Contact::where('vault_id', $this->vault->id)
-            ->select('id')
-            ->get()
+        $contactIds = $this->vault->contacts()
+            ->pluck('id')
             ->toArray();
 
         File::whereIn('contact_id', $contactIds)->chunk(100, function ($files) {

@@ -49,7 +49,7 @@ class UpdateTag extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $tag = Tag::where('vault_id', $data['vault_id'])
+        $tag = $this->vault->tags()
             ->findOrFail($data['tag_id']);
 
         $tag->name = $data['name'];

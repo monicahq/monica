@@ -129,6 +129,31 @@ class UpdateLifeEventTypePositionTest extends TestCase
             'position' => 3,
         ]);
 
+        $request['new_position'] = 2;
+
+        $lifeEventType = (new UpdateLifeEventTypePosition())->execute($request);
+
+        $this->assertDatabaseHas('life_event_types', [
+            'id' => $lifeEventType1->id,
+            'life_event_category_id' => $lifeEventCategory->id,
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('life_event_types', [
+            'id' => $lifeEventType3->id,
+            'life_event_category_id' => $lifeEventCategory->id,
+            'position' => 3,
+        ]);
+        $this->assertDatabaseHas('life_event_types', [
+            'id' => $lifeEventType4->id,
+            'life_event_category_id' => $lifeEventCategory->id,
+            'position' => 4,
+        ]);
+        $this->assertDatabaseHas('life_event_types', [
+            'id' => $lifeEventType->id,
+            'life_event_category_id' => $lifeEventCategory->id,
+            'position' => 2,
+        ]);
+
         $this->assertInstanceOf(
             LifeEventType::class,
             $lifeEventType

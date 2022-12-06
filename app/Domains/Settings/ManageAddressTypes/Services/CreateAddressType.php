@@ -4,7 +4,6 @@ namespace App\Domains\Settings\ManageAddressTypes\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\AddressType;
-use App\Models\User;
 use App\Services\BaseService;
 
 class CreateAddressType extends BaseService implements ServiceInterface

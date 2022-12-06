@@ -46,7 +46,7 @@ class UpdatePetCategory extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $petCategory = PetCategory::where('account_id', $data['account_id'])
+        $petCategory = $this->account()->petCategories()
             ->findOrFail($data['pet_category_id']);
 
         $petCategory->name = $data['name'];

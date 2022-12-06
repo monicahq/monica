@@ -212,7 +212,7 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function contactInformation(): HasMany
+    public function contactInformations(): HasMany
     {
         return $this->hasMany(ContactInformation::class);
     }
@@ -380,6 +380,16 @@ class Contact extends Model
     public function religion(): BelongsTo
     {
         return $this->belongsTo(Religion::class);
+    }
+
+    /**
+     * Get the religion associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function contactLifeEvents(): HasMany
+    {
+        return $this->hasMany(ContactLifeEvent::class);
     }
 
     /**

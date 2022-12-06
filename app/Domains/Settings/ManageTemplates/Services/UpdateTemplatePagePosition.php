@@ -6,7 +6,6 @@ use App\Interfaces\ServiceInterface;
 use App\Models\Template;
 use App\Models\TemplatePage;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 
 class UpdateTemplatePagePosition extends BaseService implements ServiceInterface
 {
@@ -66,7 +65,7 @@ class UpdateTemplatePagePosition extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->template = $this->author->account->templates()
+        $this->template = $this->account()->templates()
             ->findOrFail($this->data['template_id']);
 
         $this->templatePage = $this->template->pages()
@@ -83,9 +82,7 @@ class UpdateTemplatePagePosition extends BaseService implements ServiceInterface
             $this->updateDescendingPosition();
         }
 
-        DB::table('template_pages')
-            ->where('template_id', $this->template->id)
-            ->where('id', $this->templatePage->id)
+        $this->templatePage
             ->update([
                 'position' => $this->data['new_position'],
             ]);
@@ -93,8 +90,7 @@ class UpdateTemplatePagePosition extends BaseService implements ServiceInterface
 
     private function updateAscendingPosition(): void
     {
-        DB::table('template_pages')
-            ->where('template_id', $this->template->id)
+        $this->template->pages()
             ->where('position', '>', $this->pastPosition)
             ->where('position', '<=', $this->data['new_position'])
             ->decrement('position');
@@ -102,8 +98,7 @@ class UpdateTemplatePagePosition extends BaseService implements ServiceInterface
 
     private function updateDescendingPosition(): void
     {
-        DB::table('template_pages')
-            ->where('template_id', $this->template->id)
+        $this->template->pages()
             ->where('position', '>=', $this->data['new_position'])
             ->where('position', '<', $this->pastPosition)
             ->increment('position');

@@ -6,7 +6,6 @@ use App\Interfaces\ServiceInterface;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 
 class UpdateLifeEventTypePosition extends BaseService implements ServiceInterface
 {
@@ -66,17 +65,13 @@ class UpdateLifeEventTypePosition extends BaseService implements ServiceInterfac
     {
         $this->validateRules($this->data);
 
-        $this->lifeEventCategory = LifeEventCategory::where('account_id', $this->data['account_id'])
+        $this->lifeEventCategory = $this->account()->lifeEventCategories()
             ->findOrFail($this->data['life_event_category_id']);
 
-        $this->lifeEventType = LifeEventType::where('life_event_category_id', $this->data['life_event_category_id'])
+        $this->lifeEventType = $this->lifeEventCategory->lifeEventTypes()
             ->findOrFail($this->data['life_event_type_id']);
 
-        $this->pastPosition = DB::table('life_event_types')
-            ->where('life_event_category_id', $this->lifeEventCategory->id)
-            ->where('id', $this->lifeEventType->id)
-            ->select('position')
-            ->first()->position;
+        $this->pastPosition = $this->lifeEventType->position;
     }
 
     private function updatePosition(): void
@@ -87,9 +82,7 @@ class UpdateLifeEventTypePosition extends BaseService implements ServiceInterfac
             $this->updateDescendingPosition();
         }
 
-        DB::table('life_event_types')
-            ->where('life_event_category_id', $this->lifeEventCategory->id)
-            ->where('id', $this->lifeEventType->id)
+        $this->lifeEventType
             ->update([
                 'position' => $this->data['new_position'],
             ]);
@@ -97,8 +90,7 @@ class UpdateLifeEventTypePosition extends BaseService implements ServiceInterfac
 
     private function updateAscendingPosition(): void
     {
-        DB::table('life_event_types')
-            ->where('life_event_category_id', $this->lifeEventCategory->id)
+        $this->lifeEventCategory->lifeEventTypes()
             ->where('position', '>', $this->pastPosition)
             ->where('position', '<=', $this->data['new_position'])
             ->decrement('position');
@@ -106,8 +98,7 @@ class UpdateLifeEventTypePosition extends BaseService implements ServiceInterfac
 
     private function updateDescendingPosition(): void
     {
-        DB::table('life_event_types')
-            ->where('life_event_category_id', $this->lifeEventCategory->id)
+        $this->lifeEventCategory->lifeEventTypes()
             ->where('position', '>=', $this->data['new_position'])
             ->where('position', '<', $this->pastPosition)
             ->increment('position');

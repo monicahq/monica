@@ -100,7 +100,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
     {
         $currencies = Currency::get();
         foreach ($currencies as $currency) {
-            $this->author->account->currencies()->attach($currency->id);
+            $this->account()->currencies()->attach($currency->id);
         }
     }
 
@@ -144,7 +144,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
     {
         // the contact information page is automatically created when we
         // create the template
-        $templatePageContact = TemplatePage::where('template_id', $this->template->id)
+        $templatePageContact = $this->template->pages()
             ->where('type', TemplatePage::TYPE_CONTACT)
             ->first();
 

@@ -51,7 +51,7 @@ class SetPronoun extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->pronoun = Pronoun::where('account_id', $data['account_id'])
+        $this->pronoun = $this->account()->pronouns()
             ->findOrFail($data['pronoun_id']);
 
         $this->contact->pronoun_id = $this->pronoun->id;

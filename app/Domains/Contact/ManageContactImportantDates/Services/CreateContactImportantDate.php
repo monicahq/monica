@@ -6,7 +6,6 @@ use App\Helpers\ImportantDateHelper;
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactFeedItem;
 use App\Models\ContactImportantDate;
-use App\Models\ContactImportantDateType;
 use App\Services\BaseService;
 use Carbon\Carbon;
 
@@ -83,7 +82,7 @@ class CreateContactImportantDate extends BaseService implements ServiceInterface
 
         // make sure the vault matches
         if (! is_null($this->valueOrNull($this->data, 'contact_important_date_type_id'))) {
-            ContactImportantDateType::where('vault_id', $this->data['vault_id'])
+            $this->vault->contactImportantDateTypes()
                 ->findOrFail($this->data['contact_important_date_type_id']);
         }
     }

@@ -172,4 +172,14 @@ class Vault extends Model
     {
         return $this->hasMany(Tag::class);
     }
+
+    /**
+     * Get the loans associated with the vault.
+     *
+     * @return HasMany
+     */
+    public function loans(): HasMany
+    {
+        return $this->hasMany(Loan::class);
+    }
 }

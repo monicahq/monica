@@ -66,7 +66,7 @@ class MoveContactToAnotherVault extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->newVault = Vault::where('account_id', $this->data['account_id'])
+        $this->newVault = $this->account()->vaults()
             ->findOrFail($this->data['other_vault_id']);
 
         $exists = $this->author->vaults()

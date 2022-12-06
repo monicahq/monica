@@ -6,7 +6,6 @@ use App\Exceptions\EnvVariablesNotSetException;
 use App\Helpers\MapHelper;
 use App\Interfaces\ServiceInterface;
 use App\Models\Address;
-use App\Models\Company\Place;
 use App\Services\BaseService;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Http;

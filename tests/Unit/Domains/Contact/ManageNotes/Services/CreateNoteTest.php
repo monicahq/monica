@@ -6,6 +6,7 @@ use App\Domains\Contact\ManageNotes\Services\CreateNote;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\Emotion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -26,6 +27,20 @@ class CreateNoteTest extends TestCase
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
 
         $this->executeService($regis, $regis->account, $vault, $contact);
+    }
+
+    /** @test */
+    public function it_creates_a_note_with_emotion(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $emotion = Emotion::factory()->create([
+            'account_id' => $regis->account->id,
+        ]);
+
+        $this->executeService($regis, $regis->account, $vault, $contact, $emotion);
     }
 
     /** @test */
@@ -79,7 +94,7 @@ class CreateNoteTest extends TestCase
         $this->executeService($regis, $regis->account, $vault, $contact);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ?Emotion $emotion = null): void
     {
         $request = [
             'account_id' => $account->id,
@@ -90,6 +105,10 @@ class CreateNoteTest extends TestCase
             'body' => 'super body',
         ];
 
+        if ($emotion !== null) {
+            $request['emotion_id'] = $emotion->id;
+        }
+
         $note = (new CreateNote())->execute($request);
 
         $this->assertDatabaseHas('notes', [
@@ -98,6 +117,7 @@ class CreateNoteTest extends TestCase
             'author_id' => $author->id,
             'title' => 'super title',
             'body' => 'super body',
+            'emotion_id' => optional($emotion)->id,
         ]);
 
         $this->assertDatabaseHas('contact_feed_items', [

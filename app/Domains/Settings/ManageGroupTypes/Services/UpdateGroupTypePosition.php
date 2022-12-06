@@ -5,7 +5,6 @@ namespace App\Domains\Settings\ManageGroupTypes\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\GroupType;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 
 class UpdateGroupTypePosition extends BaseService implements ServiceInterface
 {
@@ -62,13 +61,10 @@ class UpdateGroupTypePosition extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->groupType = GroupType::where('account_id', $this->data['account_id'])
+        $this->groupType = $this->account()->groupTypes()
             ->findOrFail($this->data['group_type_id']);
 
-        $this->pastPosition = DB::table('group_types')
-            ->where('id', $this->groupType->id)
-            ->select('position')
-            ->first()->position;
+        $this->pastPosition = $this->groupType->position;
     }
 
     private function updatePosition(): void
@@ -79,8 +75,7 @@ class UpdateGroupTypePosition extends BaseService implements ServiceInterface
             $this->updateDescendingPosition();
         }
 
-        DB::table('group_types')
-            ->where('id', $this->groupType->id)
+        $this->groupType
             ->update([
                 'position' => $this->data['new_position'],
             ]);
@@ -88,7 +83,7 @@ class UpdateGroupTypePosition extends BaseService implements ServiceInterface
 
     private function updateAscendingPosition(): void
     {
-        DB::table('group_types')
+        $this->account()->groupTypes()
             ->where('position', '>', $this->pastPosition)
             ->where('position', '<=', $this->data['new_position'])
             ->decrement('position');
@@ -96,7 +91,7 @@ class UpdateGroupTypePosition extends BaseService implements ServiceInterface
 
     private function updateDescendingPosition(): void
     {
-        DB::table('group_types')
+        $this->account()->groupTypes()
             ->where('position', '>=', $this->data['new_position'])
             ->where('position', '<', $this->pastPosition)
             ->increment('position');

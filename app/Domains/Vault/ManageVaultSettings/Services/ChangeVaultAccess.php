@@ -6,7 +6,6 @@ use App\Exceptions\SameUserException;
 use App\Interfaces\ServiceInterface;
 use App\Models\User;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 
 class ChangeVaultAccess extends BaseService implements ServiceInterface
 {
@@ -64,7 +63,7 @@ class ChangeVaultAccess extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->user = User::where('account_id', $this->data['account_id'])
+        $this->user = $this->account()->users()
             ->findOrFail($this->data['user_id']);
 
         if ($this->user->id === $this->author->id) {
@@ -74,9 +73,13 @@ class ChangeVaultAccess extends BaseService implements ServiceInterface
 
     private function change(): void
     {
-        DB::table('user_vault')
+        // We need to get the vault with pivot, $this->vault does not contains it.
+        $this->user->vaults()
             ->where('vault_id', $this->vault->id)
-            ->where('user_id', $this->user->id)
-            ->update(['permission' => $this->data['permission']]);
+            ->first()
+            ->pivot
+            ->update([
+                'permission' => $this->data['permission'],
+            ]);
     }
 }

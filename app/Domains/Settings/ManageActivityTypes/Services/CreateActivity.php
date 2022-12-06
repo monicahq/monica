@@ -4,8 +4,6 @@ namespace App\Domains\Settings\ManageActivityTypes\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Activity;
-use App\Models\ActivityType;
-use App\Models\User;
 use App\Services\BaseService;
 
 class CreateActivity extends BaseService implements ServiceInterface
@@ -48,7 +46,7 @@ class CreateActivity extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $type = ActivityType::where('account_id', $data['account_id'])
+        $type = $this->account()->activityTypes()
             ->findOrFail($data['activity_type_id']);
 
         $activity = Activity::create([

@@ -4,9 +4,7 @@ namespace App\Domains\Settings\ManageGiftOccasions\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\GiftOccasion;
-use App\Models\User;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 
 class DestroyGiftOccasion extends BaseService implements ServiceInterface
 {
@@ -48,7 +46,7 @@ class DestroyGiftOccasion extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->giftOccasion = GiftOccasion::where('account_id', $data['account_id'])
+        $this->giftOccasion = $this->account()->giftOccasions()
             ->findOrFail($data['gift_occasion_id']);
 
         $this->giftOccasion->delete();
@@ -58,6 +56,8 @@ class DestroyGiftOccasion extends BaseService implements ServiceInterface
 
     private function repositionEverything(): void
     {
-        DB::table('gift_occasions')->where('position', '>', $this->giftOccasion->position)->decrement('position');
+        $this->account()->giftOccasions()
+            ->where('position', '>', $this->giftOccasion->position)
+            ->decrement('position');
     }
 }

@@ -4,10 +4,13 @@ namespace Tests\Unit\Domains\Settings\ManageUsers\Api\Controllers;
 
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\ApiTestCase;
 
 class UserControllerTest extends ApiTestCase
 {
+    use DatabaseTransactions;
+
     /** @test */
     public function it_gets_the_current_user(): void
     {

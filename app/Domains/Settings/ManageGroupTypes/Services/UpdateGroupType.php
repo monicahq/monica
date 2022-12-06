@@ -4,7 +4,6 @@ namespace App\Domains\Settings\ManageGroupTypes\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\GroupType;
-use App\Models\User;
 use App\Services\BaseService;
 
 class UpdateGroupType extends BaseService implements ServiceInterface
@@ -59,7 +58,7 @@ class UpdateGroupType extends BaseService implements ServiceInterface
     private function validate(): void
     {
         $this->validateRules($this->data);
-        $this->groupType = GroupType::where('account_id', $this->data['account_id'])
+        $this->groupType = $this->account()->groupTypes()
             ->findOrFail($this->data['group_type_id']);
     }
 

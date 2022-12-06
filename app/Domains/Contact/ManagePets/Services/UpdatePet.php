@@ -5,7 +5,6 @@ namespace App\Domains\Contact\ManagePets\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactFeedItem;
 use App\Models\Pet;
-use App\Models\PetCategory;
 use App\Services\BaseService;
 use Carbon\Carbon;
 
@@ -56,10 +55,10 @@ class UpdatePet extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $petCategory = PetCategory::where('account_id', $data['account_id'])
+        $petCategory = $this->account()->petCategories()
             ->findOrFail($data['pet_category_id']);
 
-        $this->pet = Pet::where('contact_id', $data['contact_id'])
+        $this->pet = $this->contact->pets()
             ->where('pet_category_id', $petCategory->id)
             ->findOrFail($data['pet_id']);
 

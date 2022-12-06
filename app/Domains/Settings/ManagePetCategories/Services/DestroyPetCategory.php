@@ -3,7 +3,6 @@
 namespace App\Domains\Settings\ManagePetCategories\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\PetCategory;
 use App\Services\BaseService;
 
 class DestroyPetCategory extends BaseService implements ServiceInterface
@@ -44,7 +43,7 @@ class DestroyPetCategory extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $petCategory = PetCategory::where('account_id', $data['account_id'])
+        $petCategory = $this->account()->petCategories()
             ->findOrFail($data['pet_category_id']);
 
         $petCategory->delete();

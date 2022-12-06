@@ -3,7 +3,6 @@
 namespace App\Domains\Settings\ManageContactInformationTypes\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\ContactInformationType;
 use App\Services\BaseService;
 
 class DestroyContactInformationType extends BaseService implements ServiceInterface
@@ -44,7 +43,7 @@ class DestroyContactInformationType extends BaseService implements ServiceInterf
     {
         $this->validateRules($data);
 
-        $type = ContactInformationType::where('account_id', $data['account_id'])
+        $type = $this->account()->contactInformationTypes()
             ->findOrFail($data['contact_information_type_id']);
 
         $type->delete();

@@ -3,7 +3,6 @@
 namespace App\Domains\Settings\ManageTemplates\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Template;
 use App\Models\TemplatePage;
 use App\Services\BaseService;
 use Illuminate\Support\Str;
@@ -52,12 +51,11 @@ class CreateTemplatePage extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        Template::where('account_id', $data['account_id'])
-            ->where('id', $data['template_id'])
-            ->firstOrFail();
+        $template = $this->account()->templates()
+            ->findOrFail($data['template_id']);
 
         // determine the new position of the template page
-        $newPosition = TemplatePage::where('template_id', $data['template_id'])
+        $newPosition = $template->pages()
             ->max('position');
         $newPosition++;
 

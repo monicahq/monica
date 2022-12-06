@@ -7,6 +7,7 @@ use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
+use App\Models\ContactImportantDateType;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -30,6 +31,21 @@ class UpdateContactImportantDateTest extends TestCase
         ]);
 
         $this->executeService($regis, $regis->account, $vault, $contact, $date);
+    }
+
+    /** @test */
+    public function it_updates_a_contact_date_with_type(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $date = ContactImportantDate::factory()->create([
+            'contact_id' => $contact->id,
+        ]);
+        $contactImportantDateType = ContactImportantDateType::factory()->create(['vault_id' => $vault->id]);
+
+        $this->executeService($regis, $regis->account, $vault, $contact, $date, $contactImportantDateType);
     }
 
     /** @test */
@@ -106,7 +122,7 @@ class UpdateContactImportantDateTest extends TestCase
         $this->executeService($regis, $regis->account, $vault, $contact, $date);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ContactImportantDate $date): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ContactImportantDate $date, ?ContactImportantDateType $contactImportantDateType = null): void
     {
         $request = [
             'account_id' => $account->id,
@@ -120,6 +136,10 @@ class UpdateContactImportantDateTest extends TestCase
             'year' => 1981,
         ];
 
+        if ($contactImportantDateType !== null) {
+            $request['contact_important_date_type_id'] = $contactImportantDateType->id;
+        }
+
         $date = (new UpdateContactImportantDate())->execute($request);
 
         $this->assertDatabaseHas('contact_important_dates', [
@@ -128,6 +148,7 @@ class UpdateContactImportantDateTest extends TestCase
             'day' => 29,
             'month' => 10,
             'year' => 1981,
+            'contact_important_date_type_id' => optional($contactImportantDateType)->id,
         ]);
 
         $this->assertInstanceOf(

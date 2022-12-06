@@ -4,7 +4,6 @@ namespace App\Domains\Contact\ManageContactImportantDates\Services;
 
 use App\Helpers\ImportantDateHelper;
 use App\Interfaces\ServiceInterface;
-use App\Models\Address;
 use App\Models\ContactFeedItem;
 use App\Models\ContactImportantDate;
 use App\Services\BaseService;
@@ -54,7 +53,7 @@ class DestroyContactImportantDate extends BaseService implements ServiceInterfac
     {
         $this->validateRules($data);
 
-        $this->date = ContactImportantDate::where('contact_id', $this->contact->id)
+        $this->date = $this->contact->importantDates()
             ->findOrFail($data['contact_important_date_id']);
 
         $this->date->delete();

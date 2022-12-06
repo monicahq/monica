@@ -54,7 +54,7 @@ class SetRelationship extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $otherContact = Contact::where('vault_id', $data['vault_id'])
+        $otherContact = $this->vault->contacts()
             ->findOrFail($data['other_contact_id']);
 
         $relationshipType = RelationshipType::findOrFail($data['relationship_type_id']);

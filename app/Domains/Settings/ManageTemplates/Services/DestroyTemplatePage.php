@@ -3,7 +3,6 @@
 namespace App\Domains\Settings\ManageTemplates\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Template;
 use App\Models\TemplatePage;
 use App\Services\BaseService;
 
@@ -48,10 +47,10 @@ class DestroyTemplatePage extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        Template::where('account_id', $data['account_id'])
+        $template = $this->account()->templates()
             ->findOrFail($data['template_id']);
 
-        $this->templatePage = TemplatePage::where('template_id', $data['template_id'])
+        $this->templatePage = $template->pages()
             ->findOrFail($data['template_page_id']);
 
         $this->templatePage->delete();

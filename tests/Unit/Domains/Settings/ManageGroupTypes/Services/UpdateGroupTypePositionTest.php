@@ -104,6 +104,31 @@ class UpdateGroupTypePositionTest extends TestCase
             'position' => 3,
         ]);
 
+        $request['new_position'] = 2;
+
+        $groupType = (new UpdateGroupTypePosition())->execute($request);
+
+        $this->assertDatabaseHas('group_types', [
+            'id' => $groupType1->id,
+            'account_id' => $account->id,
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('group_types', [
+            'id' => $groupType3->id,
+            'account_id' => $account->id,
+            'position' => 3,
+        ]);
+        $this->assertDatabaseHas('group_types', [
+            'id' => $groupType4->id,
+            'account_id' => $account->id,
+            'position' => 4,
+        ]);
+        $this->assertDatabaseHas('group_types', [
+            'id' => $groupType->id,
+            'account_id' => $account->id,
+            'position' => 2,
+        ]);
+
         $this->assertInstanceOf(
             GroupType::class,
             $groupType

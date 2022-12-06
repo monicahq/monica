@@ -61,7 +61,7 @@ class RemoveVaultAccess extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->user = User::where('account_id', $this->data['account_id'])
+        $this->user = $this->account()->users()
             ->findOrFail($this->data['user_id']);
 
         if ($this->user->id === $this->author->id) {

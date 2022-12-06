@@ -3,7 +3,6 @@
 namespace App\Domains\Vault\ManageJournals\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Journal;
 use App\Models\Post;
 use App\Models\PostSection;
 use App\Models\PostTemplate;
@@ -71,10 +70,10 @@ class CreatePost extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        Journal::where('vault_id', $this->data['vault_id'])
+        $this->vault->journals()
             ->findOrfail($this->data['journal_id']);
 
-        $this->postTemplate = PostTemplate::where('account_id', $this->data['account_id'])
+        $this->postTemplate = $this->account()->postTemplates()
             ->findOrFail($this->data['post_template_id']);
     }
 

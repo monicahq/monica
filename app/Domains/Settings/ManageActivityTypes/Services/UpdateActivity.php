@@ -4,8 +4,6 @@ namespace App\Domains\Settings\ManageActivityTypes\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Activity;
-use App\Models\ActivityType;
-use App\Models\User;
 use App\Services\BaseService;
 
 class UpdateActivity extends BaseService implements ServiceInterface
@@ -49,10 +47,10 @@ class UpdateActivity extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        ActivityType::where('account_id', $data['account_id'])
+        $activityType = $this->account()->activityTypes()
             ->findOrFail($data['activity_type_id']);
 
-        $activity = Activity::where('activity_type_id', $data['activity_type_id'])
+        $activity = $activityType->activities()
             ->findOrFail($data['activity_id']);
 
         $activity->label = $data['label'];

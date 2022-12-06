@@ -45,7 +45,7 @@ class GiveAdministratorPrivilege extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $user = User::where('account_id', $data['account_id'])
+        $user = $this->account()->users()
             ->findOrFail($data['user_id']);
 
         $user->is_account_administrator = true;

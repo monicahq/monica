@@ -70,7 +70,7 @@ class CreateContactInformation extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->contactInformationType = ContactInformationType::where('account_id', $this->data['account_id'])
+        $this->contactInformationType = $this->account()->contactInformationTypes()
             ->findOrFail($this->data['contact_information_type_id']);
     }
 

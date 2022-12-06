@@ -5,7 +5,6 @@ namespace App\Domains\Contact\ManagePets\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactFeedItem;
 use App\Models\Pet;
-use App\Models\PetCategory;
 use App\Services\BaseService;
 use Carbon\Carbon;
 
@@ -55,7 +54,7 @@ class CreatePet extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        PetCategory::where('account_id', $data['account_id'])
+        $this->account()->petCategories()
             ->findOrFail($data['pet_category_id']);
 
         $this->pet = Pet::create([

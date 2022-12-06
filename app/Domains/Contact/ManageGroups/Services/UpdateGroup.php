@@ -4,7 +4,6 @@ namespace App\Domains\Contact\ManageGroups\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Group;
-use App\Models\GroupType;
 use App\Services\BaseService;
 
 class UpdateGroup extends BaseService implements ServiceInterface
@@ -66,10 +65,10 @@ class UpdateGroup extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->group = Group::where('vault_id', $this->data['vault_id'])
+        $this->group = $this->vault->groups()
             ->findOrFail($this->data['group_id']);
 
-        GroupType::where('account_id', $this->data['account_id'])
+        $this->account()->groupTypes()
             ->findOrFail($this->data['group_type_id']);
     }
 }

@@ -4,9 +4,7 @@ namespace App\Domains\Settings\ManageReligion\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Religion;
-use App\Models\User;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 
 class DestroyReligion extends BaseService implements ServiceInterface
 {
@@ -48,7 +46,7 @@ class DestroyReligion extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->religion = Religion::where('account_id', $data['account_id'])
+        $this->religion = $this->account()->religions()
             ->findOrFail($data['religion_id']);
 
         $this->religion->delete();
@@ -58,6 +56,8 @@ class DestroyReligion extends BaseService implements ServiceInterface
 
     private function repositionEverything(): void
     {
-        DB::table('religions')->where('position', '>', $this->religion->position)->decrement('position');
+        $this->account()->religions()
+            ->where('position', '>', $this->religion->position)
+            ->decrement('position');
     }
 }

@@ -59,7 +59,6 @@ class ToggleStreak extends BaseService implements ServiceInterface
         $this->validate();
 
         $entry = $this->goal->streaks()
-            ->where('goal_id', $this->goal->id)
             ->whereDate('happened_at', $this->data['happened_at'])
             ->first();
 
@@ -77,7 +76,7 @@ class ToggleStreak extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->goal = Goal::where('contact_id', $this->data['contact_id'])
+        $this->goal = $this->contact->Goals()
             ->findOrFail($this->data['goal_id']);
     }
 

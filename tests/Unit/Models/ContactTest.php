@@ -102,7 +102,7 @@ class ContactTest extends TestCase
             'contact_id' => $contact->id,
         ]);
 
-        $this->assertTrue($contact->contactInformation()->exists());
+        $this->assertTrue($contact->contactInformations()->exists());
     }
 
     /** @test */

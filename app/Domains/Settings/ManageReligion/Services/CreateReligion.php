@@ -4,7 +4,6 @@ namespace App\Domains\Settings\ManageReligion\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Religion;
-use App\Models\User;
 use App\Services\BaseService;
 
 class CreateReligion extends BaseService implements ServiceInterface
@@ -64,7 +63,7 @@ class CreateReligion extends BaseService implements ServiceInterface
     private function create(): void
     {
         // determine the new position of the religion
-        $newPosition = Religion::where('account_id', $this->data['account_id'])
+        $newPosition = $this->account()->religions()
             ->max('position');
         $newPosition++;
 

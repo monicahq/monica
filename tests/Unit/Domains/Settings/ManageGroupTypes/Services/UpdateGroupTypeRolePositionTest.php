@@ -115,6 +115,31 @@ class UpdateGroupTypeRolePositionTest extends TestCase
             'position' => 3,
         ]);
 
+        $request['new_position'] = 2;
+
+        $groupTypeRole = (new UpdateGroupTypeRolePosition())->execute($request);
+
+        $this->assertDatabaseHas('group_type_roles', [
+            'id' => $groupTypeRole1->id,
+            'group_type_id' => $groupType->id,
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('group_type_roles', [
+            'id' => $groupTypeRole3->id,
+            'group_type_id' => $groupType->id,
+            'position' => 3,
+        ]);
+        $this->assertDatabaseHas('group_type_roles', [
+            'id' => $groupTypeRole4->id,
+            'group_type_id' => $groupType->id,
+            'position' => 4,
+        ]);
+        $this->assertDatabaseHas('group_type_roles', [
+            'id' => $groupTypeRole->id,
+            'group_type_id' => $groupType->id,
+            'position' => 2,
+        ]);
+
         $this->assertInstanceOf(
             GroupTypeRole::class,
             $groupTypeRole

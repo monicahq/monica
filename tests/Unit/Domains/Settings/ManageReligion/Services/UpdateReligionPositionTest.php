@@ -104,6 +104,31 @@ class UpdateReligionPositionTest extends TestCase
             'position' => 3,
         ]);
 
+        $request['new_position'] = 2;
+
+        $religion = (new UpdateReligionPosition())->execute($request);
+
+        $this->assertDatabaseHas('religions', [
+            'id' => $religion1->id,
+            'account_id' => $account->id,
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('religions', [
+            'id' => $religion3->id,
+            'account_id' => $account->id,
+            'position' => 3,
+        ]);
+        $this->assertDatabaseHas('religions', [
+            'id' => $religion4->id,
+            'account_id' => $account->id,
+            'position' => 4,
+        ]);
+        $this->assertDatabaseHas('religions', [
+            'id' => $religion->id,
+            'account_id' => $account->id,
+            'position' => 2,
+        ]);
+
         $this->assertInstanceOf(
             Religion::class,
             $religion

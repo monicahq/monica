@@ -7,6 +7,9 @@ use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactFeedItem;
+use App\Models\Gender;
+use App\Models\Pronoun;
+use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -26,6 +29,45 @@ class CreateContactTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_MANAGE, $vault);
         $this->executeService($regis, $regis->account, $vault);
+    }
+
+    /** @test */
+    public function it_creates_a_contact_with_gender(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_MANAGE, $vault);
+        $gender = Gender::factory()->create([
+            'account_id' => $regis->account_id,
+        ]);
+
+        $this->executeService($regis, $regis->account, $vault, gender: $gender);
+    }
+
+    /** @test */
+    public function it_creates_a_contact_with_pronoun(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_MANAGE, $vault);
+        $pronoun = Pronoun::factory()->create([
+            'account_id' => $regis->account_id,
+        ]);
+
+        $this->executeService($regis, $regis->account, $vault, pronoun: $pronoun);
+    }
+
+    /** @test */
+    public function it_creates_a_contact_with_template(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_MANAGE, $vault);
+        $template = Template::factory()->create([
+            'account_id' => $regis->account_id,
+        ]);
+
+        $this->executeService($regis, $regis->account, $vault, template: $template);
     }
 
     /** @test */
@@ -76,7 +118,7 @@ class CreateContactTest extends TestCase
         $this->executeService($regis, $regis->account, $vault);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault): void
+    private function executeService(User $author, Account $account, Vault $vault, ?Gender $gender = null, ?Pronoun $pronoun = null, ?Template $template = null): void
     {
         Queue::fake();
 
@@ -86,6 +128,9 @@ class CreateContactTest extends TestCase
             'author_id' => $author->id,
             'first_name' => 'Ross',
             'listed' => false,
+            'gender_id' => optional($gender)->id,
+            'pronoun_id' => optional($pronoun)->id,
+            'template_id' => optional($template)->id,
         ];
 
         $contact = (new CreateContact())->execute($request);
@@ -94,6 +139,9 @@ class CreateContactTest extends TestCase
             'id' => $contact->id,
             'vault_id' => $vault->id,
             'first_name' => 'Ross',
+            'gender_id' => optional($gender)->id,
+            'pronoun_id' => optional($pronoun)->id,
+            'template_id' => optional($template)->id,
         ]);
 
         $this->assertInstanceOf(

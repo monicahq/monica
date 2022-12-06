@@ -52,7 +52,7 @@ class DestroyGoal extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->goal = Goal::where('contact_id', $data['contact_id'])
+        $this->goal = $this->contact->goals()
             ->findOrFail($data['goal_id']);
 
         $this->goal->delete();

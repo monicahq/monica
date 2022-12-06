@@ -10,21 +10,19 @@ class ModuleContactInformationViewHelper
 {
     public static function data(Contact $contact, User $user): array
     {
-        $infos = $contact->contactInformation()->with('contactInformationType')->get();
+        $infos = $contact->contactInformations()
+            ->with('contactInformationType')
+            ->get();
 
-        $infosCollection = $infos->map(function ($info) use ($contact) {
-            return self::dto($contact, $info);
-        });
+        $infosCollection = $infos->map(fn ($info) => self::dto($contact, $info));
 
         $infoTypesCollection = $user->account
             ->contactInformationTypes()
             ->get()
-            ->map(function ($contactInformationType) {
-                return [
-                    'id' => $contactInformationType->id,
-                    'name' => $contactInformationType->name,
-                ];
-            });
+            ->map(fn ($contactInformationType) => [
+                'id' => $contactInformationType->id,
+                'name' => $contactInformationType->name,
+            ]);
 
         return [
             'contact_information' => $infosCollection,

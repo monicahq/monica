@@ -7,6 +7,7 @@ use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactInformationType;
+use App\Models\Emotion;
 use App\Models\Note;
 use App\Models\User;
 use App\Models\Vault;
@@ -32,6 +33,24 @@ class UpdateNoteTest extends TestCase
         ]);
 
         $this->executeService($regis, $regis->account, $vault, $contact, $note);
+    }
+
+    /** @test */
+    public function it_updates_a_note_with_emotion(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $note = Note::factory()->create([
+            'contact_id' => $contact->id,
+            'author_id' => $regis->id,
+        ]);
+        $emotion = Emotion::factory()->create([
+            'account_id' => $regis->account->id,
+        ]);
+
+        $this->executeService($regis, $regis->account, $vault, $contact, $note, $emotion);
     }
 
     /** @test */
@@ -114,7 +133,7 @@ class UpdateNoteTest extends TestCase
         $this->executeService($regis, $regis->account, $vault, $contact, $note);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Note $note): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Note $note, ?Emotion $emotion = null): void
     {
         $request = [
             'account_id' => $account->id,
@@ -126,6 +145,10 @@ class UpdateNoteTest extends TestCase
             'body' => 'super body',
         ];
 
+        if ($emotion !== null) {
+            $request['emotion_id'] = $emotion->id;
+        }
+
         $note = (new UpdateNote())->execute($request);
 
         $this->assertDatabaseHas('notes', [
@@ -134,6 +157,7 @@ class UpdateNoteTest extends TestCase
             'author_id' => $author->id,
             'title' => 'super title',
             'body' => 'super body',
+            'emotion_id' => optional($emotion)->id,
         ]);
     }
 }

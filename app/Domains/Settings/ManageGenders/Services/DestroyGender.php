@@ -3,7 +3,6 @@
 namespace App\Domains\Settings\ManageGenders\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Gender;
 use App\Services\BaseService;
 
 class DestroyGender extends BaseService implements ServiceInterface
@@ -44,7 +43,7 @@ class DestroyGender extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $gender = Gender::where('account_id', $data['account_id'])
+        $gender = $this->account()->genders()
             ->findOrFail($data['gender_id']);
 
         $gender->delete();

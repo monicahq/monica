@@ -55,7 +55,7 @@ class UpdateContactTask extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->task = ContactTask::where('contact_id', $data['contact_id'])
+        $this->task = $this->contact->tasks()
             ->findOrFail($data['contact_task_id']);
 
         $this->task->label = $data['label'];

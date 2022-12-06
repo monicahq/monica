@@ -3,9 +3,7 @@
 namespace App\Domains\Settings\ManageGroupTypes\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\GroupType;
 use App\Models\GroupTypeRole;
-use App\Models\User;
 use App\Services\BaseService;
 
 class UpdateGroupTypeRole extends BaseService implements ServiceInterface
@@ -62,10 +60,10 @@ class UpdateGroupTypeRole extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        GroupType::where('account_id', $this->data['account_id'])
+        $groupType = $this->account()->groupTypes()
             ->findOrFail($this->data['group_type_id']);
 
-        $this->groupTypeRole = GroupTypeRole::where('group_type_id', $this->data['group_type_id'])
+        $this->groupTypeRole = $groupType->groupTypeRoles()
             ->findOrFail($this->data['group_type_role_id']);
     }
 

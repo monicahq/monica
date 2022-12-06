@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\CallReason;
 use App\Models\CallReasonType;
 use App\Models\Contact;
+use App\Models\Emotion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -35,6 +36,26 @@ class CreateCallTest extends TestCase
         ]);
 
         $this->executeService($regis, $regis->account, $vault, $contact, $callReason);
+    }
+
+    /** @test */
+    public function it_creates_a_call_with_emotion(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $type = CallReasonType::factory()->create([
+            'account_id' => $regis->account->id,
+        ]);
+        $callReason = CallReason::factory()->create([
+            'call_reason_type_id' => $type->id,
+        ]);
+        $emotion = Emotion::factory()->create([
+            'account_id' => $regis->account->id,
+        ]);
+
+        $this->executeService($regis, $regis->account, $vault, $contact, $callReason, $emotion);
     }
 
     /** @test */
@@ -106,7 +127,7 @@ class CreateCallTest extends TestCase
         $this->executeService($regis, $regis->account, $vault, $contact, $callReason);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, CallReason $reason): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, CallReason $reason, ?Emotion $emotion = null): void
     {
         Queue::fake();
 
@@ -123,6 +144,10 @@ class CreateCallTest extends TestCase
             'who_initiated' => 'contact',
         ];
 
+        if ($emotion !== null) {
+            $request['emotion_id'] = $emotion->id;
+        }
+
         $call = (new CreateCall())->execute($request);
 
         $this->assertDatabaseHas('calls', [
@@ -133,6 +158,7 @@ class CreateCallTest extends TestCase
             'type' => 'audio',
             'answered' => true,
             'who_initiated' => 'contact',
+            'emotion_id' => optional($emotion)->id,
         ]);
     }
 }

@@ -73,7 +73,7 @@ class UpdateContactReminder extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->reminder = ContactReminder::where('contact_id', $this->data['contact_id'])
+        $this->reminder = $this->contact->reminders()
             ->findOrFail($this->data['contact_reminder_id']);
     }
 

@@ -3,7 +3,6 @@
 namespace App\Domains\Vault\ManageJournals\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Journal;
 use App\Models\Post;
 use App\Services\BaseService;
 
@@ -63,10 +62,10 @@ class IncrementPostReadCounter extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        Journal::where('vault_id', $this->data['vault_id'])
+        $journal = $this->vault->journals()
             ->findOrFail($this->data['journal_id']);
 
-        $this->post = Post::where('journal_id', $this->data['journal_id'])
+        $this->post = $journal->posts()
             ->findOrFail($this->data['post_id']);
     }
 

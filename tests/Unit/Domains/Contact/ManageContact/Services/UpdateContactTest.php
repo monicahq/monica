@@ -6,6 +6,8 @@ use App\Domains\Contact\ManageContact\Services\UpdateContact;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\Gender;
+use App\Models\Pronoun;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -25,6 +27,34 @@ class UpdateContactTest extends TestCase
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
         $this->executeService($regis, $regis->account, $vault, $contact);
+    }
+
+    /** @test */
+    public function it_updates_a_contact_with_pronoun(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $pronoun = Pronoun::factory()->create([
+            'account_id' => $regis->account_id,
+        ]);
+
+        $this->executeService($regis, $regis->account, $vault, $contact, pronoun: $pronoun);
+    }
+
+    /** @test */
+    public function it_updates_a_contact_with_gender(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $gender = Gender::factory()->create([
+            'account_id' => $regis->account_id,
+        ]);
+
+        $this->executeService($regis, $regis->account, $vault, $contact, gender: $gender);
     }
 
     /** @test */
@@ -78,7 +108,7 @@ class UpdateContactTest extends TestCase
         $this->executeService($regis, $regis->account, $vault, $contact);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ?Gender $gender = null, ?Pronoun $pronoun = null): void
     {
         $request = [
             'account_id' => $account->id,
@@ -86,6 +116,8 @@ class UpdateContactTest extends TestCase
             'author_id' => $author->id,
             'contact_id' => $contact->id,
             'first_name' => 'Ross',
+            'gender_id' => optional($gender)->id,
+            'pronoun_id' => optional($pronoun)->id,
         ];
 
         $contact = (new UpdateContact())->execute($request);
@@ -94,6 +126,8 @@ class UpdateContactTest extends TestCase
             'id' => $contact->id,
             'vault_id' => $vault->id,
             'first_name' => 'Ross',
+            'gender_id' => optional($gender)->id,
+            'pronoun_id' => optional($pronoun)->id,
         ]);
     }
 }

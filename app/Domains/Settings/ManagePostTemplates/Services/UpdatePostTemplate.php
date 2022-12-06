@@ -48,7 +48,7 @@ class UpdatePostTemplate extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->postTemplate = PostTemplate::where('account_id', $data['account_id'])
+        $this->postTemplate = $this->account()->postTemplates()
             ->findOrFail($data['post_template_id']);
 
         $this->postTemplate->label = $data['label'];

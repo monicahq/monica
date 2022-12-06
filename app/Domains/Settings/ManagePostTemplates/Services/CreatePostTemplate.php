@@ -4,7 +4,6 @@ namespace App\Domains\Settings\ManagePostTemplates\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\PostTemplate;
-use App\Models\Template;
 use App\Services\BaseService;
 
 class CreatePostTemplate extends BaseService implements ServiceInterface
@@ -50,7 +49,7 @@ class CreatePostTemplate extends BaseService implements ServiceInterface
         $this->validateRules($data);
 
         // determine the new position of the template page
-        $newPosition = PostTemplate::where('account_id', $data['account_id'])
+        $newPosition = $this->account()->postTemplates()
             ->max('position');
         $newPosition++;
 

@@ -95,12 +95,12 @@ class UpdateContact extends BaseService implements ServiceInterface
         $this->validateRules($this->data);
 
         if ($this->valueOrNull($this->data, 'gender_id')) {
-            $this->gender = Gender::where('account_id', $this->data['account_id'])
+            $this->gender = $this->account()->genders()
                 ->findOrFail($this->data['gender_id']);
         }
 
         if ($this->valueOrNull($this->data, 'pronoun_id')) {
-            $this->pronoun = Pronoun::where('account_id', $this->data['account_id'])
+            $this->pronoun = $this->account()->pronouns()
                 ->findOrFail($this->data['pronoun_id']);
         }
     }

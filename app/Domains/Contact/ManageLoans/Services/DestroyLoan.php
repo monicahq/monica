@@ -51,7 +51,8 @@ class DestroyLoan extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->loan = Loan::where('vault_id', $data['vault_id'])->findOrFail($data['loan_id']);
+        $this->loan = $this->vault->loans()
+            ->findOrFail($data['loan_id']);
 
         $this->loan->delete();
 

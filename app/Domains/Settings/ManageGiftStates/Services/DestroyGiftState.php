@@ -4,9 +4,7 @@ namespace App\Domains\Settings\ManageGiftStates\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\GiftState;
-use App\Models\User;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 
 class DestroyGiftState extends BaseService implements ServiceInterface
 {
@@ -48,7 +46,7 @@ class DestroyGiftState extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->giftState = GiftState::where('account_id', $data['account_id'])
+        $this->giftState = $this->account()->giftStates()
             ->findOrFail($data['gift_state_id']);
 
         $this->giftState->delete();
@@ -58,6 +56,8 @@ class DestroyGiftState extends BaseService implements ServiceInterface
 
     private function repositionEverything(): void
     {
-        DB::table('gift_states')->where('position', '>', $this->giftState->position)->decrement('position');
+        $this->account()->giftStates()
+            ->where('position', '>', $this->giftState->position)
+            ->decrement('position');
     }
 }

@@ -4,7 +4,6 @@ namespace App\Domains\Settings\ManageTemplates\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Module;
-use App\Models\Template;
 use App\Models\TemplatePage;
 use App\Services\BaseService;
 
@@ -53,13 +52,13 @@ class RemoveModuleFromTemplatePage extends BaseService implements ServiceInterfa
     {
         $this->validateRules($data);
 
-        $this->module = Module::where('account_id', $data['account_id'])
+        $this->module = $this->account()->modules()
             ->findOrFail($data['module_id']);
 
-        Template::where('account_id', $data['account_id'])
+        $template = $this->account()->templates()
             ->findOrFail($data['template_id']);
 
-        $this->templatePage = TemplatePage::where('template_id', $data['template_id'])
+        $this->templatePage = $template->pages()
             ->findOrFail($data['template_page_id']);
 
         $this->templatePage->modules()->toggle([

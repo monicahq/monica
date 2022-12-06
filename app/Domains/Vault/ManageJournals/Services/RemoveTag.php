@@ -3,8 +3,6 @@
 namespace App\Domains\Vault\ManageJournals\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Journal;
-use App\Models\Post;
 use App\Models\Tag;
 use App\Services\BaseService;
 
@@ -51,13 +49,13 @@ class RemoveTag extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        Journal::where('vault_id', $data['vault_id'])
+        $journal = $this->vault->journals()
             ->findOrFail($data['journal_id']);
 
-        $post = Post::where('journal_id', $data['journal_id'])
+        $post = $journal->posts()
             ->findOrFail($data['post_id']);
 
-        $tag = Tag::where('vault_id', $data['vault_id'])
+        $tag = $this->vault->tags()
             ->findOrFail($data['tag_id']);
 
         $post->tags()->detach($tag);

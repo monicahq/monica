@@ -3,7 +3,6 @@
 namespace App\Domains\Settings\ManageNotificationChannels\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Services\BaseService;
 use Carbon\Carbon;
@@ -61,7 +60,7 @@ class VerifyUserNotificationChannelEmailAddress extends BaseService implements S
     {
         $this->validateRules($this->data);
 
-        $this->userNotificationChannel = UserNotificationChannel::where('user_id', $this->data['author_id'])
+        $this->userNotificationChannel = $this->author->notificationChannels()
             ->findOrFail($this->data['user_notification_channel_id']);
     }
 

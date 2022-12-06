@@ -105,6 +105,31 @@ class UpdatePostTemplatePositionTest extends TestCase
             'position' => 3,
         ]);
 
+        $request['new_position'] = 2;
+
+        $postTemplate = (new UpdatePostTemplatePosition())->execute($request);
+
+        $this->assertDatabaseHas('post_templates', [
+            'id' => $postTemplate1->id,
+            'account_id' => $account->id,
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('post_templates', [
+            'id' => $postTemplate3->id,
+            'account_id' => $account->id,
+            'position' => 3,
+        ]);
+        $this->assertDatabaseHas('post_templates', [
+            'id' => $postTemplate4->id,
+            'account_id' => $account->id,
+            'position' => 4,
+        ]);
+        $this->assertDatabaseHas('post_templates', [
+            'id' => $postTemplate->id,
+            'account_id' => $account->id,
+            'position' => 2,
+        ]);
+
         $this->assertInstanceOf(
             PostTemplate::class,
             $postTemplate

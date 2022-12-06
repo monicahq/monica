@@ -9,6 +9,7 @@ use App\Models\Call;
 use App\Models\CallReason;
 use App\Models\CallReasonType;
 use App\Models\Contact;
+use App\Models\Emotion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -38,6 +39,29 @@ class UpdateCallTest extends TestCase
         ]);
 
         $this->executeService($regis, $regis->account, $vault, $contact, $call, $callReason);
+    }
+
+    /** @test */
+    public function it_updates_a_task_with_emotion(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $call = Call::factory()->create([
+            'contact_id' => $contact->id,
+        ]);
+        $type = CallReasonType::factory()->create([
+            'account_id' => $regis->account_id,
+        ]);
+        $callReason = CallReason::factory()->create([
+            'call_reason_type_id' => $type->id,
+        ]);
+        $emotion = Emotion::factory()->create([
+            'account_id' => $regis->account->id,
+        ]);
+
+        $this->executeService($regis, $regis->account, $vault, $contact, $call, $callReason, emotion: $emotion);
     }
 
     /** @test */
@@ -145,7 +169,7 @@ class UpdateCallTest extends TestCase
         $this->executeService($regis, $regis->account, $vault, $contact, $call, $callReason);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Call $call, CallReason $reason): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Call $call, CallReason $reason, ?Emotion $emotion = null): void
     {
         $request = [
             'account_id' => $account->id,
@@ -161,6 +185,10 @@ class UpdateCallTest extends TestCase
             'who_initiated' => 'contact',
         ];
 
+        if ($emotion !== null) {
+            $request['emotion_id'] = $emotion->id;
+        }
+
         $call = (new UpdateCall())->execute($request);
 
         $this->assertDatabaseHas('calls', [
@@ -171,6 +199,7 @@ class UpdateCallTest extends TestCase
             'type' => 'audio',
             'answered' => true,
             'who_initiated' => 'contact',
+            'emotion_id' => optional($emotion)->id,
         ]);
     }
 }

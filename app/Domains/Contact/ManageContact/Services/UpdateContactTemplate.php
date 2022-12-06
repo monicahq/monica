@@ -4,7 +4,6 @@ namespace App\Domains\Contact\ManageContact\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Contact;
-use App\Models\Template;
 use App\Services\BaseService;
 use Carbon\Carbon;
 
@@ -64,7 +63,7 @@ class UpdateContactTemplate extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        Template::where('account_id', $this->data['account_id'])
+        $this->account()->templates()
             ->findOrFail($this->data['template_id']);
     }
 

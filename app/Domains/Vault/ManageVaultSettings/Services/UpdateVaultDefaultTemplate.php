@@ -3,7 +3,6 @@
 namespace App\Domains\Vault\ManageVaultSettings\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Template;
 use App\Models\Vault;
 use App\Services\BaseService;
 
@@ -49,7 +48,7 @@ class UpdateVaultDefaultTemplate extends BaseService implements ServiceInterface
         $this->validateRules($data);
 
         if ($this->valueOrNull($data, 'template_id')) {
-            Template::where('account_id', $data['account_id'])
+            $this->account()->templates()
                 ->findOrFail($data['template_id']);
         }
 

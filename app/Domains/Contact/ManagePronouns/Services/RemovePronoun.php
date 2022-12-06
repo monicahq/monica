@@ -3,7 +3,6 @@
 namespace App\Domains\Contact\ManagePronouns\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Pronoun;
 use App\Services\BaseService;
 use Carbon\Carbon;
 

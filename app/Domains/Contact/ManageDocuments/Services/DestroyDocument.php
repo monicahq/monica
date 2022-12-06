@@ -63,7 +63,7 @@ class DestroyDocument extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->file = File::where('contact_id', $this->contact->id)
+        $this->file = $this->contact->files()
             ->where('type', File::TYPE_DOCUMENT)
             ->findOrFail($this->data['file_id']);
     }

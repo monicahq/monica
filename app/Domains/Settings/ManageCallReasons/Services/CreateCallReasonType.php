@@ -4,7 +4,6 @@ namespace App\Domains\Settings\ManageCallReasons\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\CallReasonType;
-use App\Models\User;
 use App\Services\BaseService;
 
 class CreateCallReasonType extends BaseService implements ServiceInterface

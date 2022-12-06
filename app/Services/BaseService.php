@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
+use App\Models\Account;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
@@ -43,6 +44,16 @@ abstract class BaseService
     public function permissions(): array
     {
         return [];
+    }
+
+    /**
+     * Get author's account.
+     *
+     * @return Account
+     */
+    public function account(): Account
+    {
+        return $this->author->account;
     }
 
     /**
@@ -145,7 +156,7 @@ abstract class BaseService
      */
     public function validateContactBelongsToVault(array $data): void
     {
-        $this->contact = Contact::where('vault_id', $data['vault_id'])
+        $this->contact = $this->vault->contacts()
             ->findOrFail($data['contact_id']);
     }
 

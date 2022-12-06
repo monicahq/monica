@@ -47,7 +47,7 @@ class UpdateContactInformationType extends BaseService implements ServiceInterfa
     {
         $this->validateRules($data);
 
-        $type = ContactInformationType::where('account_id', $data['account_id'])
+        $type = $this->account()->contactInformationTypes()
             ->findOrFail($data['contact_information_type_id']);
 
         $type->name = $data['name'];

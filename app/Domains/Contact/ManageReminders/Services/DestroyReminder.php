@@ -51,7 +51,7 @@ class DestroyReminder extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->reminder = ContactReminder::where('contact_id', $data['contact_id'])
+        $this->reminder = $this->contact->reminders()
             ->findOrFail($data['contact_reminder_id']);
 
         $this->reminder->delete();

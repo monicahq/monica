@@ -5,7 +5,6 @@ namespace App\Domains\Settings\ManagePostTemplates\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\PostTemplate;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 
 class UpdatePostTemplatePosition extends BaseService implements ServiceInterface
 {
@@ -62,7 +61,7 @@ class UpdatePostTemplatePosition extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->postTemplate = PostTemplate::where('account_id', $this->data['account_id'])
+        $this->postTemplate = $this->account()->postTemplates()
             ->findOrFail($this->data['post_template_id']);
 
         $this->pastPosition = $this->postTemplate->position;
@@ -76,9 +75,7 @@ class UpdatePostTemplatePosition extends BaseService implements ServiceInterface
             $this->updateDescendingPosition();
         }
 
-        DB::table('post_templates')
-            ->where('account_id', $this->data['account_id'])
-            ->where('id', $this->postTemplate->id)
+        $this->postTemplate
             ->update([
                 'position' => $this->data['new_position'],
             ]);
@@ -86,8 +83,7 @@ class UpdatePostTemplatePosition extends BaseService implements ServiceInterface
 
     private function updateAscendingPosition(): void
     {
-        DB::table('post_templates')
-            ->where('account_id', $this->data['account_id'])
+        $this->account()->postTemplates()
             ->where('position', '>', $this->pastPosition)
             ->where('position', '<=', $this->data['new_position'])
             ->decrement('position');
@@ -95,8 +91,7 @@ class UpdatePostTemplatePosition extends BaseService implements ServiceInterface
 
     private function updateDescendingPosition(): void
     {
-        DB::table('post_templates')
-            ->where('account_id', $this->data['account_id'])
+        $this->account()->postTemplates()
             ->where('position', '>=', $this->data['new_position'])
             ->where('position', '<', $this->pastPosition)
             ->increment('position');

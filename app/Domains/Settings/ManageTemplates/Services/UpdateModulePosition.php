@@ -6,7 +6,6 @@ use App\Interfaces\ServiceInterface;
 use App\Models\Module;
 use App\Models\TemplatePage;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
 
 class UpdateModulePosition extends BaseService implements ServiceInterface
 {
@@ -67,14 +66,13 @@ class UpdateModulePosition extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $template = $this->author->account->templates()
+        $template = $this->account()->templates()
             ->findOrFail($this->data['template_id']);
 
         $this->templatePage = $template->pages()
             ->findOrFail($this->data['template_page_id']);
 
         $this->module = $this->templatePage->modules()
-            ->wherePivot('template_page_id', $this->templatePage->id)
             ->withPivot('position')
             ->findOrFail($this->data['module_id']);
 
@@ -89,9 +87,7 @@ class UpdateModulePosition extends BaseService implements ServiceInterface
             $this->updateDescendingPosition();
         }
 
-        DB::table('module_template_page')
-            ->where('template_page_id', $this->templatePage->id)
-            ->where('module_id', $this->module->id)
+        $this->module->pivot
             ->update([
                 'position' => $this->data['new_position'],
             ]);
@@ -99,19 +95,19 @@ class UpdateModulePosition extends BaseService implements ServiceInterface
 
     private function updateAscendingPosition(): void
     {
-        DB::table('module_template_page')
-            ->where('template_page_id', $this->templatePage->id)
-            ->where('position', '>', $this->pastPosition)
-            ->where('position', '<=', $this->data['new_position'])
+        $this->templatePage->modules()
+            ->wherePivot('position', '>', $this->pastPosition)
+            ->wherePivot('position', '<=', $this->data['new_position'])
+            ->newPivotQuery()
             ->decrement('position');
     }
 
     private function updateDescendingPosition(): void
     {
-        DB::table('module_template_page')
-            ->where('template_page_id', $this->templatePage->id)
-            ->where('position', '>=', $this->data['new_position'])
-            ->where('position', '<', $this->pastPosition)
+        $this->templatePage->modules()
+            ->wherePivot('position', '>=', $this->data['new_position'])
+            ->wherePivot('position', '<', $this->pastPosition)
+            ->newPivotQuery()
             ->increment('position');
     }
 }

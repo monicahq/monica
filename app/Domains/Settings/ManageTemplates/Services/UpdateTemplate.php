@@ -48,7 +48,7 @@ class UpdateTemplate extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->template = Template::where('account_id', $data['account_id'])
+        $this->template = $this->account()->templates()
             ->findOrFail($data['template_id']);
 
         $this->template->name = $data['name'];

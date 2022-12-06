@@ -4,7 +4,6 @@ namespace App\Domains\Contact\ManageGroups\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Group;
-use App\Models\GroupType;
 use App\Services\BaseService;
 
 class CreateGroup extends BaseService implements ServiceInterface
@@ -67,7 +66,7 @@ class CreateGroup extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        GroupType::where('account_id', $this->data['account_id'])
+        $this->account()->groupTypes()
             ->findOrFail($this->data['group_type_id']);
     }
 }

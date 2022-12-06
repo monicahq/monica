@@ -3,7 +3,6 @@
 namespace App\Domains\Contact\ManageGroups\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Group;
 use App\Services\BaseService;
 
 class DestroyGroup extends BaseService implements ServiceInterface
@@ -46,7 +45,7 @@ class DestroyGroup extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $group = Group::where('vault_id', $data['vault_id'])
+        $group = $this->vault->groups()
             ->findOrFail($data['group_id']);
 
         $group->delete();

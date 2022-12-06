@@ -104,6 +104,31 @@ class UpdateGiftStatePositionTest extends TestCase
             'position' => 3,
         ]);
 
+        $request['new_position'] = 2;
+
+        $giftState = (new UpdateGiftStatePosition())->execute($request);
+
+        $this->assertDatabaseHas('gift_states', [
+            'id' => $giftState1->id,
+            'account_id' => $account->id,
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('gift_states', [
+            'id' => $giftState3->id,
+            'account_id' => $account->id,
+            'position' => 3,
+        ]);
+        $this->assertDatabaseHas('gift_states', [
+            'id' => $giftState4->id,
+            'account_id' => $account->id,
+            'position' => 4,
+        ]);
+        $this->assertDatabaseHas('gift_states', [
+            'id' => $giftState->id,
+            'account_id' => $account->id,
+            'position' => 2,
+        ]);
+
         $this->assertInstanceOf(
             GiftState::class,
             $giftState

@@ -52,7 +52,7 @@ class DestroyPet extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->pet = Pet::where('contact_id', $data['contact_id'])
+        $this->pet = $this->contact->pets()
             ->findOrFail($data['pet_id']);
 
         $this->pet->delete();

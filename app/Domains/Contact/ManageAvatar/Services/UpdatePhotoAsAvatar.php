@@ -69,7 +69,7 @@ class UpdatePhotoAsAvatar extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->file = File::where('contact_id', $this->data['contact_id'])
+        $this->file = $this->contact->files()
             ->where('type', File::TYPE_AVATAR)
             ->findOrFail($this->data['file_id']);
     }

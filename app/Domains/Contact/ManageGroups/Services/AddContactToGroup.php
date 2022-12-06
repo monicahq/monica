@@ -3,10 +3,8 @@
 namespace App\Domains\Contact\ManageGroups\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Contact;
 use App\Models\ContactFeedItem;
 use App\Models\Group;
-use App\Models\GroupType;
 use App\Models\GroupTypeRole;
 use App\Services\BaseService;
 use Carbon\Carbon;
@@ -80,13 +78,13 @@ class AddContactToGroup extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->group = Group::where('vault_id', $this->data['vault_id'])
+        $this->group = $this->vault->groups()
             ->findOrFail($this->data['group_id']);
 
         if ($this->data['group_type_role_id'] != 0) {
             $role = GroupTypeRole::findOrFail($this->data['group_type_role_id']);
 
-            GroupType::where('account_id', $this->data['account_id'])
+            $this->account()->groupTypes()
                 ->findOrFail($role->group_type_id);
         }
     }

@@ -53,7 +53,7 @@ class DestroyNote extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->note = Note::where('contact_id', $data['contact_id'])
+        $this->note = $this->contact->notes()
             ->findOrFail($data['note_id']);
 
         $this->createFeedItem();

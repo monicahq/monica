@@ -5,7 +5,6 @@ namespace App\Domains\Contact\ManageContactInformation\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactFeedItem;
 use App\Models\ContactInformation;
-use App\Models\ContactInformationType;
 use App\Services\BaseService;
 use Carbon\Carbon;
 
@@ -69,10 +68,10 @@ class UpdateContactInformation extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        ContactInformationType::where('account_id', $this->data['account_id'])
+        $this->account()->contactInformationTypes()
             ->findOrFail($this->data['contact_information_type_id']);
 
-        $this->contactInformation = ContactInformation::where('contact_id', $this->contact->id)
+        $this->contactInformation = $this->contact->contactInformations()
             ->findOrFail($this->data['contact_information_id']);
     }
 

@@ -4,7 +4,6 @@ namespace App\Domains\Settings\ManageLifeEventCategories\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\LifeEventCategory;
-use App\Models\User;
 use App\Services\BaseService;
 
 class CreateLifeEventCategory extends BaseService implements ServiceInterface

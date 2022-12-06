@@ -3,9 +3,7 @@
 namespace App\Domains\Vault\ManageJournals\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Journal;
 use App\Models\Post;
-use App\Models\PostSection;
 use App\Services\BaseService;
 
 class UpdatePost extends BaseService implements ServiceInterface
@@ -68,10 +66,10 @@ class UpdatePost extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        Journal::where('vault_id', $this->data['vault_id'])
+        $journal = $this->vault->journals()
             ->findOrFail($this->data['journal_id']);
 
-        $this->post = Post::where('journal_id', $this->data['journal_id'])
+        $this->post = $journal->posts()
             ->findOrFail($this->data['post_id']);
     }
 
@@ -95,8 +93,8 @@ class UpdatePost extends BaseService implements ServiceInterface
                 continue;
             }
 
-            PostSection::where('post_id', $this->post->id)
-                ->where('id', $section['id'])
+            $this->post->postSections()
+                ->find($section['id'])
                 ->update([
                     'content' => $section['content'],
                 ]);

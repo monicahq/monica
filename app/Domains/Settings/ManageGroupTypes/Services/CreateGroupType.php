@@ -4,7 +4,6 @@ namespace App\Domains\Settings\ManageGroupTypes\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\GroupType;
-use App\Models\User;
 use App\Services\BaseService;
 
 class CreateGroupType extends BaseService implements ServiceInterface
@@ -64,7 +63,7 @@ class CreateGroupType extends BaseService implements ServiceInterface
     private function create(): void
     {
         // determine the new position of the template page
-        $newPosition = GroupType::where('account_id', $this->data['account_id'])
+        $newPosition = $this->account()->groupTypes()
             ->max('position');
         $newPosition++;
 
