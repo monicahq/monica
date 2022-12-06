@@ -57,7 +57,7 @@
     ],
     "**/*.php": [
       "php artisan ide-helper:models --nowrite",
-      "vendor/bin/pint --preset laravel"
+      "vendor/bin/pint"
     ]
   },
   "husky": {

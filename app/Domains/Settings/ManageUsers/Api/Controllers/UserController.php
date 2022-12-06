@@ -6,9 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Knuckles\Scribe\Attributes\QueryParam;
-use Knuckles\Scribe\Attributes\Response;
-use Knuckles\Scribe\Attributes\ResponseFromApiResource;
+use Knuckles\Scribe\Attributes\{QueryParam,Response,ResponseFromApiResource};
 
 /**
  * @group Account management

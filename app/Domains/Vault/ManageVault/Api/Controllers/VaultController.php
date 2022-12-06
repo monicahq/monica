@@ -9,10 +9,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Resources\VaultResource;
 use App\Models\Vault;
 use Illuminate\Http\Request;
-use Knuckles\Scribe\Attributes\BodyParam;
-use Knuckles\Scribe\Attributes\QueryParam;
-use Knuckles\Scribe\Attributes\Response;
-use Knuckles\Scribe\Attributes\ResponseFromApiResource;
+use Knuckles\Scribe\Attributes\{BodyParam,QueryParam,Response,ResponseFromApiResource};
 
 /**
  * @group Vault management
