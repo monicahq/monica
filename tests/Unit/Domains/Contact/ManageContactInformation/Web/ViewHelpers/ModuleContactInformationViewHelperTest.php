@@ -78,7 +78,9 @@ class ModuleContactInformationViewHelperTest extends TestCase
             [
                 'id' => $info->id,
                 'label' => 'Facebook shit',
-                'data' => 'mailto:'.$info->data,
+                'protocol' => 'mailto:',
+                'data' => $info->data,
+                'data_with_protocol' => 'mailto:'.$info->data,
                 'contact_information_type' => [
                     'id' => $type->id,
                     'name' => 'Facebook shit',
