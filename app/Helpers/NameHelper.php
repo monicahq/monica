@@ -27,6 +27,11 @@ class NameHelper
         $variableFound = false;
         $variableName = '';
         $completeName = '';
+
+        if ($contact->prefix) {
+            $completeName = $contact->prefix.' ';
+        }
+
         foreach ($allCharacters as $char) {
             if ($char === '%' && ! $variableFound) {
                 // a variable has been found
@@ -54,6 +59,10 @@ class NameHelper
         // from being displayed
         $completeName = str_replace('()', '', $completeName);
         $completeName = Str::of($completeName)->rtrim();
+
+        if ($contact->suffix) {
+            $completeName = $completeName.' '.$contact->suffix;
+        }
 
         if (trim($completeName) === '') {
             $completeName = trans('app.unknown_name');

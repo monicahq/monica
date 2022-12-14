@@ -27,31 +27,31 @@ class NameHelperTest extends TestCase
         ]);
 
         $this->assertEquals(
-            'James',
+            'Dr. James III',
             NameHelper::formatContactName($user, $contact)
         );
 
         $user->update(['name_order' => '%last_name%']);
         $this->assertEquals(
-            'Bond',
+            'Dr. Bond III',
             NameHelper::formatContactName($user, $contact)
         );
 
         $user->update(['name_order' => '%first_name% %last_name%']);
         $this->assertEquals(
-            'James Bond',
+            'Dr. James Bond III',
             NameHelper::formatContactName($user, $contact)
         );
 
         $user->update(['name_order' => '%first_name% (%maiden_name%) %last_name%']);
         $this->assertEquals(
-            'James (Muller) Bond',
+            'Dr. James (Muller) Bond III',
             NameHelper::formatContactName($user, $contact)
         );
 
         $user->update(['name_order' => '%last_name% (%maiden_name%)  || (%nickname%) || %first_name%']);
         $this->assertEquals(
-            'Bond (Muller)  || (007) || James',
+            'Dr. Bond (Muller)  || (007) || James III',
             NameHelper::formatContactName($user, $contact)
         );
     }

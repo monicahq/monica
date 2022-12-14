@@ -124,6 +124,26 @@
               :placeholder="$t('app.choose_value')"
               :dropdown-class="'block w-full'"
               :label="'Pronoun'" />
+
+            <!-- prefix -->
+            <text-input
+              :id="'prefix'"
+              v-model="form.prefix"
+              :div-outer-class="'mb-5'"
+              :input-class="'block w-full'"
+              :required="false"
+              :maxlength="255"
+              :label="'Prefix'" />
+
+            <!-- suffix -->
+            <text-input
+              :id="'suffix'"
+              v-model="form.suffix"
+              :div-outer-class="'mb-5'"
+              :input-class="'block w-full'"
+              :required="false"
+              :maxlength="255"
+              :label="'Prefix'" />
           </div>
 
           <div class="flex justify-between p-5">
@@ -179,6 +199,8 @@ export default {
         middle_name: '',
         nickname: '',
         maiden_name: '',
+        prefix: '',
+        suffix: '',
         gender_id: '',
         pronoun_id: '',
         errors: [],
@@ -194,6 +216,8 @@ export default {
     this.form.maiden_name = this.data.contact.maiden_name;
     this.form.gender_id = this.data.contact.gender_id;
     this.form.pronoun_id = this.data.contact.pronoun_id;
+    this.form.suffix = this.data.contact.suffix;
+    this.form.prefix = this.data.contact.prefix;
   },
 
   methods: {

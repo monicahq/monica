@@ -29,6 +29,8 @@ class ContactFactory extends Factory
             'first_name' => 'Regis',
             'last_name' => 'Troyat',
             'can_be_deleted' => true,
+            'prefix' => 'Dr.',
+            'suffix' => 'III',
             'company_id' => Company::factory(),
             'gender_id' => fn (array $properties) => Gender::factory()->create([
                 'account_id' => Vault::find($properties['vault_id'])->account_id,

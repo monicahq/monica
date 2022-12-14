@@ -298,31 +298,31 @@ class ContactTest extends TestCase
         ]);
 
         $this->assertEquals(
-            'James',
+            'Dr. James III',
             $contact->name
         );
 
         $user->update(['name_order' => '%last_name%']);
         $this->assertEquals(
-            'Bond',
+            'Dr. Bond III',
             $contact->name
         );
 
         $user->update(['name_order' => '%first_name% %last_name%']);
         $this->assertEquals(
-            'James Bond',
+            'Dr. James Bond III',
             $contact->name
         );
 
         $user->update(['name_order' => '%first_name% (%maiden_name%) %last_name%']);
         $this->assertEquals(
-            'James (Muller) Bond',
+            'Dr. James (Muller) Bond III',
             $contact->name
         );
 
         $user->update(['name_order' => '%last_name% (%maiden_name%)  || (%nickname%) || %first_name%']);
         $this->assertEquals(
-            'Bond (Muller)  || (007) || James',
+            'Dr. Bond (Muller)  || (007) || James III',
             $contact->name
         );
     }

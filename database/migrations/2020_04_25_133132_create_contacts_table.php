@@ -25,6 +25,8 @@ return new class() extends Migration
             $table->string('last_name')->nullable();
             $table->string('nickname')->nullable();
             $table->string('maiden_name')->nullable();
+            $table->string('suffix')->nullable();
+            $table->string('prefix')->nullable();
             $table->string('job_position')->nullable();
             $table->boolean('can_be_deleted')->default(true);
             $table->boolean('listed')->default(true);

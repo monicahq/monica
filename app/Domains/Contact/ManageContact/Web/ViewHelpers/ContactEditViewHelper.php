@@ -41,6 +41,8 @@ class ContactEditViewHelper
                 'maiden_name' => $contact->maiden_name,
                 'gender_id' => $contact->gender_id,
                 'pronoun_id' => $contact->pronoun_id,
+                'prefix' => $contact->prefix,
+                'suffix' => $contact->suffix,
             ],
             'genders' => $genderCollection,
             'pronouns' => $pronounCollection,

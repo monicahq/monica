@@ -58,6 +58,8 @@ class Contact extends Model
         'religion_id',
         'vcard',
         'distant_etag',
+        'prefix',
+        'suffix',
     ];
 
     /**

@@ -54,6 +54,8 @@ class ContactEditViewHelperTest extends TestCase
                 'maiden_name' => $contact->maiden_name,
                 'gender_id' => $contact->gender_id,
                 'pronoun_id' => $contact->pronoun_id,
+                'suffix' => $contact->suffix,
+                'prefix' => $contact->prefix,
             ],
             $array['contact']
         );
