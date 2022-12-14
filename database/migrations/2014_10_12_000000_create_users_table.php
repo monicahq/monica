@@ -44,6 +44,10 @@ return new class() extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->unsignedBigInteger('default_template_id')->nullable();
+            $table->boolean('show_group_tab')->default(true);
+            $table->boolean('show_tasks_tab')->default(true);
+            $table->boolean('show_files_tab')->default(true);
+            $table->boolean('show_journal_tab')->default(true);
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('default_template_id')->references('id')->on('templates')->onDelete('set null');

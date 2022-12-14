@@ -43,6 +43,12 @@ class VaultIndexViewHelperTest extends TestCase
                     'at_least_editor' => true,
                     'at_least_manager' => false,
                 ],
+                'visibility' => [
+                    'show_group_tab' => false,
+                    'show_tasks_tab' => false,
+                    'show_files_tab' => false,
+                    'show_journal_tab' => false,
+                ],
                 'url' => [
                     'dashboard' => env('APP_URL').'/vaults/'.$vault->id,
                     'contacts' => env('APP_URL').'/vaults/'.$vault->id.'/contacts',

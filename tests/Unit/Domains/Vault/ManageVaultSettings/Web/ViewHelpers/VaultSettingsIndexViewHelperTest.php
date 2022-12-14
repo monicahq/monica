@@ -35,7 +35,7 @@ class VaultSettingsIndexViewHelperTest extends TestCase
         $vault->refresh();
         $array = VaultSettingsIndexViewHelper::data($vault);
         $this->assertCount(
-            8,
+            9,
             $array
         );
         $this->assertArrayHasKey('templates', $array);
@@ -54,6 +54,15 @@ class VaultSettingsIndexViewHelperTest extends TestCase
                 ],
             ],
             $array['templates']->toArray()
+        );
+        $this->assertEquals(
+            [
+                'show_group_tab' => true,
+                'show_tasks_tab' => true,
+                'show_files_tab' => true,
+                'show_journal_tab' => true,
+            ],
+            $array['visibility']
         );
         $this->assertEquals(
             [
@@ -91,6 +100,7 @@ class VaultSettingsIndexViewHelperTest extends TestCase
                 'tag_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/tags',
                 'contact_date_important_date_type_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/contactImportantDateTypes',
                 'update' => env('APP_URL').'/vaults/'.$vault->id.'/settings',
+                'update_tab_visibility' => env('APP_URL').'/vaults/'.$vault->id.'/settings/visibility',
                 'destroy' => env('APP_URL').'/vaults/'.$vault->id,
             ],
             $array['url']

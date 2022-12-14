@@ -4,6 +4,8 @@
       <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <users :layout-data="layoutData" :data="data" />
 
+        <tab-visibility :layout-data="layoutData" :data="data" />
+
         <default-template :data="data" />
 
         <labels :data="data" />
@@ -25,6 +27,7 @@ import DefaultTemplate from '@/Pages/Vault/Settings/Partials/DefaultTemplate.vue
 import Labels from '@/Pages/Vault/Settings/Partials/Labels.vue';
 import Tags from '@/Pages/Vault/Settings/Partials/Tags.vue';
 import Users from '@/Pages/Vault/Settings/Partials/Users.vue';
+import TabVisibility from '@/Pages/Vault/Settings/Partials/TabVisibility.vue';
 import ContactImportantDateTypes from '@/Pages/Vault/Settings/Partials/ContactImportantDateTypes.vue';
 
 export default {
@@ -35,6 +38,7 @@ export default {
     Labels,
     Tags,
     Users,
+    TabVisibility,
     ContactImportantDateTypes,
   },
 

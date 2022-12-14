@@ -22,7 +22,7 @@
       v-if="addModuleModalShown"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <li
-        class="item-list border-b border-gray-200 bg-slate-50 py-2 pl-2 pr-5 text-sm dark:border-gray-700 dark:bg-slate-900 dark:bg-slate-900">
+        class="item-list border-b border-gray-200 bg-slate-50 py-2 pl-2 pr-5 text-sm dark:border-gray-700 dark:bg-slate-900">
         {{ $t('settings.personalize_template_show_module_available_modules') }}
       </li>
       <li

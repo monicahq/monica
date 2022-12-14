@@ -31,6 +31,12 @@ class VaultIndexViewHelper
                     'at_least_editor' => VaultHelper::getPermission(Auth::user(), $vault) <= Vault::PERMISSION_EDIT,
                     'at_least_manager' => VaultHelper::getPermission(Auth::user(), $vault) <= Vault::PERMISSION_MANAGE,
                 ],
+                'visibility' => [
+                    'show_group_tab' => $vault->show_group_tab,
+                    'show_tasks_tab' => $vault->show_tasks_tab,
+                    'show_files_tab' => $vault->show_files_tab,
+                    'show_journal_tab' => $vault->show_journal_tab,
+                ],
                 'url' => [
                     'dashboard' => route('vault.show', [
                         'vault' => $vault->id,

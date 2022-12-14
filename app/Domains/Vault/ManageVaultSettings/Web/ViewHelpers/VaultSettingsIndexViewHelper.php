@@ -86,6 +86,12 @@ class VaultSettingsIndexViewHelper
             'label_colors' => $labelColorsCollection,
             'tags' => $tagsCollection,
             'contact_important_date_types' => $dateTypesCollection,
+            'visibility' => [
+                'show_group_tab' => $vault->show_group_tab,
+                'show_tasks_tab' => $vault->show_tasks_tab,
+                'show_files_tab' => $vault->show_files_tab,
+                'show_journal_tab' => $vault->show_journal_tab,
+            ],
             'url' => [
                 'template_update' => route('vault.settings.template.update', [
                     'vault' => $vault->id,
@@ -103,6 +109,9 @@ class VaultSettingsIndexViewHelper
                     'vault' => $vault->id,
                 ]),
                 'update' => route('vault.settings.update', [
+                    'vault' => $vault->id,
+                ]),
+                'update_tab_visibility' => route('vault.settings.tab.update', [
                     'vault' => $vault->id,
                 ]),
                 'destroy' => route('vault.settings.destroy', [

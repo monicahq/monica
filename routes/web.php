@@ -101,6 +101,7 @@ use App\Domains\Vault\ManageVault\Web\Controllers\VaultReminderController;
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsContactImportantDateTypeController;
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsController;
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsLabelController;
+use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsTabVisibilityController;
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsTagController;
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsTemplateController;
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsUserController;
@@ -372,6 +373,9 @@ Route::middleware([
                 Route::post('settings/contactImportantDateTypes', [VaultSettingsContactImportantDateTypeController::class, 'store'])->name('vault.settings.important_date_type.store');
                 Route::put('settings/contactImportantDateTypes/{type}', [VaultSettingsContactImportantDateTypeController::class, 'update'])->name('vault.settings.important_date_type.update');
                 Route::delete('settings/contactImportantDateTypes/{type}', [VaultSettingsContactImportantDateTypeController::class, 'destroy'])->name('vault.settings.important_date_type.destroy');
+
+                // tab visibility
+                Route::put('settings/visibility', [VaultSettingsTabVisibilityController::class, 'update'])->name('vault.settings.tab.update');
             });
 
             // global search in the vault
