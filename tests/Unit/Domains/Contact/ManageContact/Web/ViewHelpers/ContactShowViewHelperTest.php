@@ -85,6 +85,7 @@ class ContactShowViewHelperTest extends TestCase
                 'update_template' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/update-template',
                 'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id,
                 'update_avatar' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/avatar',
+                'move_contact' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/move',
                 'destroy_avatar' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/avatar',
             ],
             $array['url']

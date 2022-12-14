@@ -6,6 +6,7 @@ use App\Domains\Contact\ManageContact\Web\Controllers\ContactArchiveController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactFavoriteController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactLabelController;
+use App\Domains\Contact\ManageContact\Web\Controllers\ContactMoveController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactNoTemplateController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactPageController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactTemplateController;
@@ -187,6 +188,10 @@ Route::middleware([
                     // toggle archive/favorite
                     Route::put('/toggle', [ContactArchiveController::class, 'update'])->name('contact.archive.update');
                     Route::put('/toggle-favorite', [ContactFavoriteController::class, 'update'])->name('contact.favorite.update');
+
+                    // move contact to another vault
+                    Route::get('/move', [ContactMoveController::class, 'show'])->name('contact.move.show');
+                    Route::post('/move', [ContactMoveController::class, 'store'])->name('contact.move.store');
 
                     // template
                     Route::get('update-template', [ContactNoTemplateController::class, 'show'])->name('contact.blank');

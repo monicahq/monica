@@ -250,6 +250,12 @@ const destroyAvatar = () => {
                   {{ $t('contact.contact_change_template_cta') }}
                 </Link>
               </li>
+              <!-- move contact to another vault -->
+              <li class="mb-2">
+                <Link :href="data.url.move_contact" class="cursor-pointer text-blue-500 hover:underline">
+                  {{ $t('contact.contact_move_contact_cta') }}
+                </Link>
+              </li>
               <!-- delete contact -->
               <li v-if="data.options.can_be_deleted">
                 <span class="cursor-pointer text-blue-500 hover:underline" @click="deletingContact = true">
