@@ -87,6 +87,7 @@ class Contact extends Model
      * Get the indexable data array for the model.
      *
      * @return array
+     *
      * @codeCoverageIgnore
      */
     #[SearchUsingPrefix(['id', 'vault_id'])]

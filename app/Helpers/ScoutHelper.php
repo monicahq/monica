@@ -8,6 +8,7 @@ class ScoutHelper
      * When updating a model, this method determines if we should update the search index.
      *
      * @return bool
+     *
      * @codeCoverageIgnore
      */
     public static function activated()

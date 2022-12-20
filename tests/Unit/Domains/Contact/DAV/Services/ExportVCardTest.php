@@ -19,6 +19,7 @@ class ExportVCardTest extends TestCase
 
     /**
      * @group dav
+     *
      * @test
      */
     public function it_exports_a_contact()
@@ -40,6 +41,7 @@ class ExportVCardTest extends TestCase
 
     /**
      * @group dav
+     *
      * @test
      */
     public function it_exports_a_contact_with_vcard()

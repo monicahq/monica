@@ -16,6 +16,7 @@ class AddressBookRoot extends BaseAddressBookRoot
      *
      * @param  array  $principal
      * @return \Sabre\DAV\INode
+     *
      * @psalm-suppress ParamNameMismatch
      */
     public function getChildForPrincipal(array $principal): INode

@@ -15,6 +15,7 @@ class CardDAVTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_propfind_addressbooks()
@@ -32,6 +33,7 @@ class CardDAVTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_propfind_addressbooks_user()
@@ -51,6 +53,7 @@ class CardDAVTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_propfind_contacts()
@@ -104,6 +107,7 @@ class CardDAVTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_propfind_one_contact()
@@ -123,6 +127,7 @@ class CardDAVTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_propfind_one_contact_without_extension()

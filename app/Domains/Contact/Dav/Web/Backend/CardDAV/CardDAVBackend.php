@@ -27,6 +27,7 @@ use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
 
 /**
  * @template TValue of ?Contact
+ *
  * @implements IDAVBackend<TValue>
  */
 class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport

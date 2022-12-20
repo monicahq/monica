@@ -11,6 +11,7 @@ class DAVServerTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_dav_propfind_base()
@@ -30,6 +31,7 @@ class DAVServerTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_dav_propfind_principals()
@@ -47,6 +49,7 @@ class DAVServerTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_dav_propfind_principals_user()
@@ -63,6 +66,7 @@ class DAVServerTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_dav_ensure_browser_plugin_not_enabled()
@@ -78,6 +82,7 @@ class DAVServerTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_propfind_groupmemberset()
@@ -121,6 +126,7 @@ class DAVServerTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_report_propertysearch()
@@ -163,6 +169,7 @@ class DAVServerTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     // public function test_caldav_propfind()
@@ -180,6 +187,7 @@ class DAVServerTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     // public function test_caldav_propfind_calendars_user()

@@ -17,6 +17,7 @@ class ExportNamesTest extends TestCase
 
     /**
      * @group dav
+     *
      * @test
      */
     public function it_adds_names_in_vcard()
@@ -40,6 +41,7 @@ class ExportNamesTest extends TestCase
 
     /**
      * @group dav
+     *
      * @test
      */
     public function it_adds_nickname_in_vcard()

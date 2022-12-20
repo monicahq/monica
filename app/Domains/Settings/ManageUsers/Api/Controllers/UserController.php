@@ -10,6 +10,7 @@ use Knuckles\Scribe\Attributes\{QueryParam,Response,ResponseFromApiResource};
 
 /**
  * @group Account management
+ *
  * @subgroup Users
  */
 class UserController extends ApiController

@@ -13,6 +13,7 @@ use Knuckles\Scribe\Attributes\{BodyParam,QueryParam,Response,ResponseFromApiRes
 
 /**
  * @group Vault management
+ *
  * @subgroup Vaults
  */
 class VaultController extends ApiController

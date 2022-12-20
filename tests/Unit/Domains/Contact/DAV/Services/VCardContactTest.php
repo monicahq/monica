@@ -16,6 +16,7 @@ class VCardContactTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_get_one_contact()
@@ -37,6 +38,7 @@ class VCardContactTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_put_one_contact()
@@ -65,6 +67,7 @@ class VCardContactTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_update_existing_contact_base()
@@ -92,6 +95,7 @@ class VCardContactTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_update_existing_contact_if_modified()
@@ -123,6 +127,7 @@ class VCardContactTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_update_existing_contact_if_modified_not_modified()
@@ -154,6 +159,7 @@ class VCardContactTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_update_existing_contact_if_unmodified()
@@ -185,6 +191,7 @@ class VCardContactTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_update_existing_contact_if_unmodified_error()
@@ -217,6 +224,7 @@ class VCardContactTest extends TestCase
 
     /**
      * @test
+     *
      * @group dav
      */
     public function test_carddav_update_existing_contact_no_modify()
@@ -368,6 +376,7 @@ class VCardContactTest extends TestCase
 
     /**
      * @group dav
+     *
      * @test
      */
     public function carddav_delete_one_contact()
