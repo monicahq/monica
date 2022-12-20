@@ -154,10 +154,10 @@ return [
 
     'relationship_type_date' => '约会对象',
     'relationship_type_date_female' => '约会对象',
-    'relationship_type_date_male' => 'date',
+    'relationship_type_date_male' => '约会对象',
     'relationship_type_date_with_name' => ':name的约会对象',
     'relationship_type_date_female_with_name' => ':name的约会对象',
-    'relationship_type_date_male_with_name' => ':name’s date',
+    'relationship_type_date_male_with_name' => ':name的约会对象',
 
     'relationship_type_lover' => '情人',
     'relationship_type_lover_female' => '情人',
@@ -168,10 +168,10 @@ return [
 
     'relationship_type_inlovewith' => '喜欢的人',
     'relationship_type_inlovewith_female' => '喜欢的人',
-    'relationship_type_inlovewith_male' => 'in love with',
+    'relationship_type_inlovewith_male' => '喜欢的人',
     'relationship_type_inlovewith_with_name' => ':name喜欢的人',
     'relationship_type_inlovewith_female_with_name' => ':name喜欢的人',
-    'relationship_type_inlovewith_male_with_name' => 'someone :name is in love with',
+    'relationship_type_inlovewith_male_with_name' => ':name喜欢的人',
 
     'relationship_type_lovedby' => '追求者',
     'relationship_type_lovedby_female' => '追求者',
@@ -238,10 +238,10 @@ return [
 
     'relationship_type_uncle' => '叔叔',
     'relationship_type_uncle_female' => '阿姨',
-    'relationship_type_uncle_male' => 'uncle',
+    'relationship_type_uncle_male' => '叔叔',
     'relationship_type_uncle_with_name' => ':name的叔叔',
     'relationship_type_uncle_female_with_name' => ':name的阿姨',
-    'relationship_type_uncle_male_with_name' => ':name’s uncle',
+    'relationship_type_uncle_male_with_name' => ':name的叔叔',
 
     'relationship_type_nephew' => '外甥',
     'relationship_type_nephew_female' => '外甥女',
