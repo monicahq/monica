@@ -172,6 +172,7 @@ COPY --from=yarn --chown=www-data:www-data /var/www/html/public/build ./public/b
 
 COPY --chown=www-data:www-data scripts/docker/.env.production .env
 COPY scripts/docker/entrypoint.sh \
+    scripts/docker/entrypoint-unittests.sh \
     scripts/docker/cron.sh \
     scripts/docker/queue.sh \
     /usr/local/bin/
