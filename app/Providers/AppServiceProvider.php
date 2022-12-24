@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (App::environment('testing') && class_exists(TestResponse::class)) {
+        if (App::environment('testing') && class_exists(TestResponseMacros::class)) {
             TestResponse::mixin(new TestResponseMacros);
         }
     }
