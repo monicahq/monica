@@ -6,13 +6,11 @@ use App\Models\User;
 use App\Models\UserToken;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\UserToken>
+ */
 class UserTokenFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
-     */
     protected $model = UserToken::class;
 
     /**

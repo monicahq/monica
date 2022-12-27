@@ -6,13 +6,11 @@ use App\Models\UserNotificationChannel;
 use App\Models\UserNotificationSent;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\UserNotificationSent>
+ */
 class UserNotificationSentFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
-     */
     protected $model = UserNotificationSent::class;
 
     /**

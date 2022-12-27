@@ -6,13 +6,11 @@ use App\Models\Contact;
 use App\Models\ContactReminder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ContactReminder>
+ */
 class ContactReminderFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
-     */
     protected $model = ContactReminder::class;
 
     /**

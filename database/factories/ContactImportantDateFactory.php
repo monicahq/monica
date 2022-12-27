@@ -7,13 +7,11 @@ use App\Models\ContactImportantDate;
 use App\Models\ContactImportantDateType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ContactImportantDate>
+ */
 class ContactImportantDateFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
-     */
     protected $model = ContactImportantDate::class;
 
     /**

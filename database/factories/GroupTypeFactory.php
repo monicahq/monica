@@ -6,13 +6,11 @@ use App\Models\Account;
 use App\Models\GroupType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\GroupType>
+ */
 class GroupTypeFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
-     */
     protected $model = GroupType::class;
 
     /**

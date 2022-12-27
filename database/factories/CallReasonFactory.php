@@ -6,13 +6,11 @@ use App\Models\CallReason;
 use App\Models\CallReasonType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CallReason>
+ */
 class CallReasonFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
-     */
     protected $model = CallReason::class;
 
     /**

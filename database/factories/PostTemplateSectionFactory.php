@@ -6,13 +6,11 @@ use App\Models\PostTemplate;
 use App\Models\PostTemplateSection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PostTemplateSection>
+ */
 class PostTemplateSectionFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
-     */
     protected $model = PostTemplateSection::class;
 
     /**
