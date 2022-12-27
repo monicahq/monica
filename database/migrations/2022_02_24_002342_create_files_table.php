@@ -15,7 +15,9 @@ return new class() extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('contact_id');
+            $table->unsignedBigInteger('vault_id');
+            $table->unsignedBigInteger('fileable_id')->nullable();
+            $table->string('fileable_type')->nullable();
             $table->string('uuid');
             $table->string('original_url')->nullable();
             $table->string('cdn_url')->nullable();
@@ -24,7 +26,7 @@ return new class() extends Migration
             $table->string('type');
             $table->integer('size');
             $table->timestamps();
-            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+            $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
         });
 
         Schema::table('contacts', function (Blueprint $table) {

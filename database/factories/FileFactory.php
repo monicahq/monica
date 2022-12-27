@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Contact;
 use App\Models\File;
+use App\Models\Vault;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +21,7 @@ class FileFactory extends Factory
     public function definition()
     {
         return [
-            'contact_id' => Contact::factory(),
+            'vault_id' => Vault::factory(),
             'uuid' => $this->faker->uuid,
             'original_url' => $this->faker->url,
             'cdn_url' => $this->faker->url,

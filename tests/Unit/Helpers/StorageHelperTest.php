@@ -4,7 +4,6 @@ namespace Tests\Unit\Helpers;
 
 use App\Helpers\StorageHelper;
 use App\Models\Account;
-use App\Models\Contact;
 use App\Models\File;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -26,11 +25,8 @@ class StorageHelperTest extends TestCase
         $vault = Vault::factory()->create([
             'account_id' => $account->id,
         ]);
-        $contact = Contact::factory()->create([
-            'vault_id' => $vault->id,
-        ]);
         File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $vault->id,
             'size' => 1024 * 1024,
         ]);
 

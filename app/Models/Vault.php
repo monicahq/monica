@@ -198,4 +198,14 @@ class Vault extends Model
     {
         return $this->hasMany(Loan::class);
     }
+
+    /**
+     * Get the files associated with the vault.
+     *
+     * @return HasMany
+     */
+    public function files(): HasMany
+    {
+        return $this->hasMany(File::class);
+    }
 }

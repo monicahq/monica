@@ -20,7 +20,7 @@ class ContactPhotoController extends Controller
         $vault = Vault::findOrFail($vaultId);
         $contact = Contact::findOrFail($contactId);
 
-        $files = File::where('contact_id', $contactId)
+        $files = File::where('fileable_id', $contactId)
             ->where('type', File::TYPE_PHOTO)
             ->orderBy('created_at', 'desc')
             ->paginate(30);
@@ -37,7 +37,7 @@ class ContactPhotoController extends Controller
         $vault = Vault::findOrFail($vaultId);
         $contact = Contact::findOrFail($contactId);
 
-        $photo = File::where('contact_id', $contactId)
+        $photo = File::where('fileable_id', $contactId)
             ->where('type', File::TYPE_PHOTO)
             ->findOrFail($photoId);
 

@@ -6,6 +6,7 @@ use App\Domains\Contact\ManageDocuments\Events\FileDeleted;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class File extends Model
 {
@@ -28,7 +29,9 @@ class File extends Model
      * @var array<string>
      */
     protected $fillable = [
-        'contact_id',
+        'vault_id',
+        'fileable_id',
+        'fileable_type',
         'uuid',
         'original_url',
         'cdn_url',
@@ -48,12 +51,22 @@ class File extends Model
     ];
 
     /**
-     * Get the contact associated with the file.
+     * Get the vault associated with the file.
      *
      * @return BelongsTo
      */
-    public function contact(): BelongsTo
+    public function vault(): BelongsTo
     {
-        return $this->belongsTo(Contact::class);
+        return $this->belongsTo(Vault::class);
+    }
+
+    /**
+     * Get the parent model that matches this file.
+     *
+     * @return MorphTo
+     */
+    public function fileable(): MorphTo
+    {
+        return $this->morphTo();
     }
 }

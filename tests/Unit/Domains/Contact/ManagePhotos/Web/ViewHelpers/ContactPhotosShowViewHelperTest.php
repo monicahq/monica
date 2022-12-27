@@ -17,10 +17,11 @@ class ContactPhotosShowViewHelperTest extends TestCase
     {
         $contact = Contact::factory()->create();
         $file = File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $contact->vault_id,
             'size' => 123,
             'uuid' => 123,
         ]);
+        $contact->files()->save($file);
 
         $array = ContactPhotosShowViewHelper::data($file, $contact);
 

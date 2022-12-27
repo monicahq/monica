@@ -27,7 +27,7 @@ class UpdatePhotoAsAvatarTest extends TestCase
         $vault = $this->setPermissionInVault($user, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
         $file = File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $vault->id,
             'type' => File::TYPE_AVATAR,
         ]);
 
@@ -56,7 +56,7 @@ class UpdatePhotoAsAvatarTest extends TestCase
         $vault = $this->setPermissionInVault($user, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
         $file = File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $vault->id,
             'type' => File::TYPE_AVATAR,
         ]);
 
@@ -73,7 +73,7 @@ class UpdatePhotoAsAvatarTest extends TestCase
         $vault = $this->setPermissionInVault($user, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create();
         $file = File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $vault->id,
             'type' => File::TYPE_AVATAR,
         ]);
 
@@ -90,7 +90,7 @@ class UpdatePhotoAsAvatarTest extends TestCase
         $vault = $this->setPermissionInVault($user, Vault::PERMISSION_VIEW, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
         $file = File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $vault->id,
             'type' => File::TYPE_AVATAR,
         ]);
 
@@ -114,6 +114,11 @@ class UpdatePhotoAsAvatarTest extends TestCase
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
             'file_id' => $file->id,
+        ]);
+
+        $this->assertDatabaseHas('files', [
+            'id' => $file->id,
+            'vault_id' => $vault->id,
         ]);
     }
 }

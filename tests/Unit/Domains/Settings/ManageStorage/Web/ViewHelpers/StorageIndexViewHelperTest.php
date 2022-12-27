@@ -4,7 +4,6 @@ namespace Tests\Unit\Domains\Settings\ManageStorage\Web\ViewHelpers;
 
 use App\Domains\Settings\ManageStorage\Web\ViewHelpers\StorageIndexViewHelper;
 use App\Models\Account;
-use App\Models\Contact;
 use App\Models\File;
 use App\Models\Vault;
 use function env;
@@ -24,21 +23,18 @@ class StorageIndexViewHelperTest extends TestCase
         $vault = Vault::factory()->create([
             'account_id' => $account->id,
         ]);
-        $contact = Contact::factory()->create([
-            'vault_id' => $vault->id,
-        ]);
         File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $vault->id,
             'size' => 1024 * 1024,
             'type' => File::TYPE_AVATAR,
         ]);
         File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $vault->id,
             'size' => 1024 * 1024,
             'type' => File::TYPE_DOCUMENT,
         ]);
         File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $vault->id,
             'size' => 1024 * 1024,
             'type' => File::TYPE_PHOTO,
         ]);

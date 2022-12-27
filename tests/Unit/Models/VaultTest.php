@@ -5,6 +5,7 @@ namespace Tests\Unit\Models;
 use App\Models\Company;
 use App\Models\Contact;
 use App\Models\ContactImportantDateType;
+use App\Models\File;
 use App\Models\Group;
 use App\Models\Journal;
 use App\Models\Label;
@@ -128,5 +129,16 @@ class VaultTest extends TestCase
         ]);
 
         $this->assertTrue($vault->tags()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_files(): void
+    {
+        $vault = Vault::factory()->create();
+        File::factory()->count(2)->create([
+            'vault_id' => $vault->id,
+        ]);
+
+        $this->assertTrue($vault->files()->exists());
     }
 }

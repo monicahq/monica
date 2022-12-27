@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Scout\Attributes\SearchUsingFullText;
@@ -337,11 +338,11 @@ class Contact extends Model
     /**
      * Get the files associated with the contact.
      *
-     * @return HasMany
+     * @return MorphMany
      */
-    public function files(): HasMany
+    public function files(): MorphMany
     {
-        return $this->hasMany(File::class);
+        return $this->morphMany(File::class, 'fileable');
     }
 
     /**

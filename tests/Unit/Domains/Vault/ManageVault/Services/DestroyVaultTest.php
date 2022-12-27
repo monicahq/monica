@@ -5,7 +5,6 @@ namespace Tests\Unit\Domains\Vault\ManageVault\Services;
 use App\Domains\Vault\ManageVault\Services\DestroyVault;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
-use App\Models\Contact;
 use App\Models\File;
 use App\Models\User;
 use App\Models\Vault;
@@ -27,9 +26,8 @@ class DestroyVaultTest extends TestCase
         $vault = $this->createVault($ross->account);
         $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_MANAGE, $vault);
 
-        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
         $file = File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $vault->id,
         ]);
 
         $this->executeService($ross, $ross->account, $vault, $file);

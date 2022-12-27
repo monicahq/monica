@@ -4,7 +4,6 @@ namespace App\Domains\Settings\ManageStorage\Web\ViewHelpers;
 
 use App\Helpers\FileHelper;
 use App\Models\Account;
-use App\Models\Contact;
 use App\Models\File;
 
 class StorageIndexViewHelper
@@ -12,31 +11,30 @@ class StorageIndexViewHelper
     public static function data(Account $account): array
     {
         $vaultIds = $account->vaults()->select('id')->get()->toArray();
-        $contactIds = Contact::whereIn('vault_id', $vaultIds)->select('id')->get()->toArray();
 
-        $totalSizeDocumentInBytes = File::whereIn('contact_id', $contactIds)
+        $totalSizeDocumentInBytes = File::whereIn('vault_id', $vaultIds)
             ->where('type', File::TYPE_DOCUMENT)
             ->sum('size');
 
-        $totalSizeAvatarInBytes = File::whereIn('contact_id', $contactIds)
+        $totalSizeAvatarInBytes = File::whereIn('vault_id', $vaultIds)
             ->where('type', File::TYPE_AVATAR)
             ->sum('size');
 
-        $totalSizePhotosInBytes = File::whereIn('contact_id', $contactIds)
+        $totalSizePhotosInBytes = File::whereIn('vault_id', $vaultIds)
             ->where('type', File::TYPE_PHOTO)
             ->sum('size');
 
         $totalSizeInBytes = $totalSizeDocumentInBytes + $totalSizeAvatarInBytes + $totalSizePhotosInBytes;
 
-        $totalNumberOfPhotos = File::whereIn('contact_id', $contactIds)
+        $totalNumberOfPhotos = File::whereIn('vault_id', $vaultIds)
             ->where('type', File::TYPE_PHOTO)
             ->count();
 
-        $totalNumberOfDocuments = File::whereIn('contact_id', $contactIds)
+        $totalNumberOfDocuments = File::whereIn('vault_id', $vaultIds)
             ->where('type', File::TYPE_DOCUMENT)
             ->count();
 
-        $totalNumberOfAvatars = File::whereIn('contact_id', $contactIds)
+        $totalNumberOfAvatars = File::whereIn('vault_id', $vaultIds)
             ->where('type', File::TYPE_AVATAR)
             ->count();
 

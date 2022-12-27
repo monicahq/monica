@@ -18,9 +18,10 @@ class ModulePhotosViewHelperTest extends TestCase
         config(['services.uploadcare.public_key' => '123']);
 
         $contact = Contact::factory()->create();
-        File::factory()->create([
-            'contact_id' => $contact->id,
+        $file = File::factory()->create([
+            'vault_id' => $contact->vault_id,
         ]);
+        $contact->files()->save($file);
 
         $array = ModulePhotosViewHelper::data($contact);
 
@@ -53,7 +54,7 @@ class ModulePhotosViewHelperTest extends TestCase
     {
         $contact = Contact::factory()->create();
         $file = File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $contact->vault_id,
             'size' => 123,
             'uuid' => 123,
         ]);

@@ -232,7 +232,8 @@ class ContactTest extends TestCase
     {
         $contact = Contact::factory()->create();
         File::factory()->count(2)->create([
-            'contact_id' => $contact->id,
+            'fileable_id' => $contact->id,
+            'fileable_type' => Contact::class,
         ]);
 
         $this->assertTrue($contact->files()->exists());
@@ -242,9 +243,7 @@ class ContactTest extends TestCase
     public function it_has_one_file(): void
     {
         $contact = Contact::factory()->create();
-        $file = File::factory()->create([
-            'contact_id' => $contact->id,
-        ]);
+        $file = File::factory()->create();
         $contact->file_id = $file->id;
         $contact->save();
 

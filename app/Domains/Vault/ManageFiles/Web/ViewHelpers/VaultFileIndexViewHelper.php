@@ -15,31 +15,18 @@ class VaultFileIndexViewHelper
     {
         $filesCollection = collect();
         foreach ($files as $file) {
-            $contact = $file->contact;
-
             $filesCollection->push([
                 'id' => $file->id,
                 'name' => $file->name,
                 'mime_type' => $file->mime_type,
                 'size' => FileHelper::formatFileSize($file->size),
                 'created_at' => DateHelper::format($file->created_at, $user),
-                'contact' => [
-                    'id' => $contact->id,
-                    'name' => $contact->name,
-                    'avatar' => $contact->avatar,
-                    'url' => [
-                        'show' => route('contact.show', [
-                            'vault' => $contact->vault_id,
-                            'contact' => $contact->id,
-                        ]),
-                    ],
-                ],
+                'object' => self::getObjectDetails($file),
                 'url' => [
                     'download' => $file->cdn_url,
-                    'destroy' => route('contact.document.destroy', [
-                        'vault' => $contact->vault_id,
-                        'contact' => $contact->id,
-                        'document' => $file->id,
+                    'destroy' => route('vault.files.destroy', [
+                        'vault' => $file->vault_id,
+                        'file' => $file->id,
                     ]),
                 ],
             ]);
@@ -53,17 +40,15 @@ class VaultFileIndexViewHelper
 
     public static function statistics(Vault $vault): array
     {
-        $contactIds = Contact::where('vault_id', $vault->id)->select('id')->get()->toArray();
-
-        $totalNumberOfPhotos = File::whereIn('contact_id', $contactIds)
+        $totalNumberOfPhotos = File::where('vault_id', $vault->id)
             ->where('type', File::TYPE_PHOTO)
             ->count();
 
-        $totalNumberOfDocuments = File::whereIn('contact_id', $contactIds)
+        $totalNumberOfDocuments = File::where('vault_id', $vault->id)
             ->where('type', File::TYPE_DOCUMENT)
             ->count();
 
-        $totalNumberOfAvatars = File::whereIn('contact_id', $contactIds)
+        $totalNumberOfAvatars = File::where('vault_id', $vault->id)
             ->where('type', File::TYPE_AVATAR)
             ->count();
 
@@ -89,5 +74,24 @@ class VaultFileIndexViewHelper
                 ]),
             ],
         ];
+    }
+
+    public static function getObjectDetails(File $file): array
+    {
+        return match ($file->fileable_type) {
+            Contact::class => [
+                'type' => 'contact',
+                'id' => $file->fileable->id,
+                'name' => $file->fileable->name,
+                'avatar' => $file->fileable->avatar,
+                'url' => [
+                    'show' => route('contact.show', [
+                        'vault' => $file->fileable->vault_id,
+                        'contact' => $file->fileable->id,
+                    ]),
+                ],
+            ],
+            default => [],
+        };
     }
 }

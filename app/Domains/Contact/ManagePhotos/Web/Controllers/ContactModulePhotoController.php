@@ -2,8 +2,8 @@
 
 namespace App\Domains\Contact\ManagePhotos\Web\Controllers;
 
+use App\Domains\Contact\ManageDocuments\Services\DestroyFile;
 use App\Domains\Contact\ManageDocuments\Services\UploadFile;
-use App\Domains\Contact\ManagePhotos\Services\DestroyPhoto;
 use App\Domains\Contact\ManagePhotos\Web\ViewHelpers\ModulePhotosViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
@@ -19,7 +19,6 @@ class ContactModulePhotoController extends Controller
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,
-            'contact_id' => $contactId,
             'uuid' => $request->input('uuid'),
             'name' => $request->input('name'),
             'original_url' => $request->input('original_url'),
@@ -31,7 +30,9 @@ class ContactModulePhotoController extends Controller
 
         $file = (new UploadFile())->execute($data);
 
-        $contact = Contact::findOrFail($contactId);
+        $contact = Contact::where('vault_id', $vaultId)->findOrFail($contactId);
+
+        $contact->files()->save($file);
 
         return response()->json([
             'data' => ModulePhotosViewHelper::dto($file, $contact),
@@ -44,11 +45,10 @@ class ContactModulePhotoController extends Controller
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,
-            'contact_id' => $contactId,
             'file_id' => $fileId,
         ];
 
-        (new DestroyPhoto())->execute($data);
+        (new DestroyFile())->execute($data);
 
         return response()->json([
             'data' => route('contact.photo.index', [

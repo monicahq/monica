@@ -3,11 +3,12 @@
 namespace App\Domains\Contact\ManageDocuments\Services;
 
 use App\Interfaces\ServiceInterface;
+use App\Models\Contact;
 use App\Models\File;
 use App\Services\BaseService;
 use Carbon\Carbon;
 
-class DestroyDocument extends BaseService implements ServiceInterface
+class DestroyFile extends BaseService implements ServiceInterface
 {
     private File $file;
 
@@ -24,7 +25,6 @@ class DestroyDocument extends BaseService implements ServiceInterface
             'account_id' => 'required|integer|exists:accounts,id',
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
-            'contact_id' => 'required|integer|exists:contacts,id',
             'file_id' => 'required|integer|exists:files,id',
         ];
     }
@@ -39,15 +39,15 @@ class DestroyDocument extends BaseService implements ServiceInterface
         return [
             'author_must_belong_to_account',
             'vault_must_belong_to_account',
-            'contact_must_belong_to_vault',
             'author_must_be_vault_editor',
         ];
     }
 
     /**
-     * Destroy a file of the document type.
+     * Destroy a file.
      *
      * @param  array  $data
+     * @return void
      */
     public function execute(array $data): void
     {
@@ -63,14 +63,15 @@ class DestroyDocument extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->file = $this->contact->files()
-            ->where('type', File::TYPE_DOCUMENT)
+        $this->file = $this->vault->files()
             ->findOrFail($this->data['file_id']);
     }
 
     private function updateLastEditedDate(): void
     {
-        $this->contact->last_updated_at = Carbon::now();
-        $this->contact->save();
+        if ($this->file->fileable_type == Contact::class) {
+            $this->file->fileable->last_updated_at = Carbon::now();
+            $this->file->fileable->save();
+        }
     }
 }

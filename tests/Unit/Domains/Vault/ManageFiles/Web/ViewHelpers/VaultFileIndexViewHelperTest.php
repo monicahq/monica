@@ -28,7 +28,9 @@ class VaultFileIndexViewHelperTest extends TestCase
             'vault_id' => $vault->id,
         ]);
         $file = File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $vault->id,
+            'fileable_id' => $contact->id,
+            'fileable_type' => Contact::class,
             'type' => File::TYPE_DOCUMENT,
             'created_at' => '2022-01-01',
             'size' => '12345',
@@ -49,7 +51,8 @@ class VaultFileIndexViewHelperTest extends TestCase
                     'mime_type' => $file->mime_type,
                     'size' => '12.06kB',
                     'created_at' => 'Jan 01, 2022',
-                    'contact' => [
+                    'object' => [
+                        'type' => 'contact',
                         'id' => $contact->id,
                         'name' => $contact->name,
                         'avatar' => [
@@ -62,7 +65,7 @@ class VaultFileIndexViewHelperTest extends TestCase
                     ],
                     'url' => [
                         'download' => $file->cdn_url,
-                        'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/documents/'.$file->id,
+                        'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/files/'.$file->id,
                     ],
                 ],
             ],

@@ -25,7 +25,7 @@ class CancelAccountTest extends TestCase
         $vault = $this->createVault($user->account);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
         $file = File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $contact->vault_id,
         ]);
 
         $this->executeService($user->account, $user, $file);

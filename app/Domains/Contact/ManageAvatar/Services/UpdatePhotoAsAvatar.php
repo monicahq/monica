@@ -69,7 +69,7 @@ class UpdatePhotoAsAvatar extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->file = $this->contact->files()
+        $this->file = $this->vault->files()
             ->where('type', File::TYPE_AVATAR)
             ->findOrFail($this->data['file_id']);
     }
@@ -85,6 +85,8 @@ class UpdatePhotoAsAvatar extends BaseService implements ServiceInterface
     {
         $this->contact->file_id = $this->file->id;
         $this->contact->save();
+
+        $this->contact->files()->save($this->file);
     }
 
     private function updateLastEditedDate(): void

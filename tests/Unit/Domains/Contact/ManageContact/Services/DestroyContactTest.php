@@ -30,9 +30,10 @@ class DestroyContactTest extends TestCase
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
 
-        File::factory()->create([
-            'contact_id' => $contact->id,
+        $file = File::factory()->create([
+            'vault_id' => $vault->id,
         ]);
+        $contact->files()->save($file);
 
         $this->executeService($regis, $regis->account, $vault, $contact);
     }
@@ -125,7 +126,7 @@ class DestroyContactTest extends TestCase
         ]);
 
         $this->assertDatabaseMissing('files', [
-            'contact_id' => $contact->id,
+            'fileable_id' => $contact->id,
         ]);
     }
 }

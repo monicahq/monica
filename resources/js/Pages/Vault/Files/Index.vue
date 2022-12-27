@@ -61,7 +61,7 @@
                 :key="file.id"
                 class="items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800 sm:flex">
                 <!-- left part -->
-                <div class="mb-4 block sm:mb-0 sm:flex">
+                <div class="mb-4 block items-center sm:mb-0 sm:flex">
                   <!-- created at -->
                   <p class="mr-2 text-sm text-gray-400">
                     {{ file.created_at }}
@@ -79,10 +79,10 @@
                   </p>
 
                   <!-- avatar -->
-                  <div class="flex items-center">
-                    <avatar :data="file.contact.avatar" :classes="'rounded-full mr-2 h-4 w-4'" />
-                    <inertia-link :href="file.contact.url.show" class="text-sm text-blue-500 hover:underline">
-                      {{ file.contact.name }}
+                  <div v-if="file.object.type == 'contact'" class="flex items-center">
+                    <avatar :data="file.object.avatar" :classes="'rounded-full mr-2 h-4 w-4'" />
+                    <inertia-link :href="file.object.url.show" class="text-sm text-blue-500 hover:underline">
+                      {{ file.object.name }}
                     </inertia-link>
                   </div>
                 </div>

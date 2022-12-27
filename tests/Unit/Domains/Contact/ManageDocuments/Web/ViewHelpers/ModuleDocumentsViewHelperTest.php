@@ -19,7 +19,7 @@ class ModuleDocumentsViewHelperTest extends TestCase
 
         $contact = Contact::factory()->create();
         File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $contact->vault_id,
         ]);
 
         $array = ModuleDocumentsViewHelper::data($contact);
@@ -52,7 +52,7 @@ class ModuleDocumentsViewHelperTest extends TestCase
     {
         $contact = Contact::factory()->create();
         $file = File::factory()->create([
-            'contact_id' => $contact->id,
+            'vault_id' => $contact->vault_id,
             'size' => 123,
         ]);
 

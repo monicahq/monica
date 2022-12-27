@@ -19,7 +19,6 @@ class ModuleAvatarController extends Controller
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,
-            'contact_id' => $contactId,
             'uuid' => $request->input('uuid'),
             'name' => $request->input('name'),
             'original_url' => $request->input('original_url'),

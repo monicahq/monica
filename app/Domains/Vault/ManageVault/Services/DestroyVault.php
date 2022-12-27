@@ -45,11 +45,9 @@ class DestroyVault extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $contactIds = $this->vault->contacts()
-            ->pluck('id')
-            ->toArray();
-
-        File::whereIn('contact_id', $contactIds)->chunk(100, function ($files) {
+        // we need to delete all the files in the vault this way, so the event
+        // FileDeleted is called and delete the file from storage
+        File::where('vault_id', $data['vault_id'])->chunk(100, function ($files) {
             $files->each(function ($file) {
                 $file->delete();
             });

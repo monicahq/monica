@@ -6,7 +6,6 @@ use App\Domains\Contact\ManageDocuments\Services\UploadFile;
 use App\Exceptions\EnvVariablesNotSetException;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
-use App\Models\Contact;
 use App\Models\File;
 use App\Models\User;
 use App\Models\Vault;
@@ -28,9 +27,8 @@ class UploadFileTest extends TestCase
         $regis = $this->createUser();
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
 
-        $this->executeService($regis, $regis->account, $vault, $contact);
+        $this->executeService($regis, $regis->account, $vault);
     }
 
     /** @test */
@@ -56,17 +54,16 @@ class UploadFileTest extends TestCase
         $regis = $this->createUser();
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
 
         $this->expectException(EnvVariablesNotSetException::class);
-        $this->executeService($regis, $regis->account, $vault, $contact);
+        $this->executeService($regis, $regis->account, $vault);
 
         config(['services.uploadcare.public_key' => 'test']);
         $this->expectException(EnvVariablesNotSetException::class);
-        $this->executeService($regis, $regis->account, $vault, $contact);
+        $this->executeService($regis, $regis->account, $vault);
 
         config(['services.uploadcare.private_key' => 'test']);
-        $this->executeService($regis, $regis->account, $vault, $contact);
+        $this->executeService($regis, $regis->account, $vault);
     }
 
     /** @test */
@@ -81,25 +78,8 @@ class UploadFileTest extends TestCase
         $account = Account::factory()->create();
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
 
-        $this->executeService($regis, $account, $vault, $contact);
-    }
-
-    /** @test */
-    public function it_fails_if_contact_doesnt_belong_to_vault(): void
-    {
-        config(['services.uploadcare.public_key' => 'test']);
-        config(['services.uploadcare.private_key' => 'test']);
-
-        $this->expectException(ModelNotFoundException::class);
-
-        $regis = $this->createUser();
-        $vault = $this->createVault($regis->account);
-        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
-        $contact = Contact::factory()->create();
-
-        $this->executeService($regis, $regis->account, $vault, $contact);
+        $this->executeService($regis, $account, $vault);
     }
 
     /** @test */
@@ -113,18 +93,16 @@ class UploadFileTest extends TestCase
         $regis = $this->createUser();
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_VIEW, $vault);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
 
-        $this->executeService($regis, $regis->account, $vault, $contact);
+        $this->executeService($regis, $regis->account, $vault);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact): void
+    private function executeService(User $author, Account $account, Vault $vault): void
     {
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
             'author_id' => $author->id,
-            'contact_id' => $contact->id,
             'uuid' => '017162da-e83b-46fc-89fc-3a7740db0a81',
             'name' => 'Twitter post.png',
             'original_url' => 'https://ucarecdn.com/5c8b9cea-62e5-4c8b-bc4c-47c0ddae62eee/',
@@ -143,7 +121,7 @@ class UploadFileTest extends TestCase
 
         $this->assertDatabaseHas('files', [
             'id' => $file->id,
-            'contact_id' => $contact->id,
+            'vault_id' => $vault->id,
             'uuid' => '017162da-e83b-46fc-89fc-3a7740db0a81',
             'name' => 'Twitter post.png',
             'original_url' => 'https://ucarecdn.com/5c8b9cea-62e5-4c8b-bc4c-47c0ddae62eee/',
