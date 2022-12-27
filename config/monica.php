@@ -85,7 +85,7 @@ return [
     |
     */
 
-    'help_center_url' => 'https://regis-freyd.gitbook.io/docs/',
+    'help_center_url' => 'https://docs.monicahq.com/',
 
     /*
     |--------------------------------------------------------------------------
