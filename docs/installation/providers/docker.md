@@ -15,13 +15,13 @@ and run a Monica image, complete with a self-contained MySQL database.
 This has the nice properties that you don't have to install lots of software directly onto your system, and you can be up and running
 quickly with a known working environment.
 
-For any help about how to install Docker, see their [documentation](https://docs.docker.com/install/)
+For any help about how to install Docker, see their [documentation](https://docs.docker.com/get-docker/).
 
 ## Use Monica docker image
 
 The [standard `monica` image](https://hub.docker.com/_/monica/) can be run with the latest release of Monica.
 
-Run the container with:
+Run the container with the command below (don't change the username/password):
 
 ```sh
 mysqlCid="$(docker run -d \
