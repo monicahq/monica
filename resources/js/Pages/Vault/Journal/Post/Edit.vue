@@ -16,17 +16,23 @@ const props = defineProps({
 
 const form = useForm({
   title: '',
+  date: '',
   sections: [],
   contacts: [],
 });
 
 const saveInProgress = ref(false);
 const statistics = ref([]);
+const modelConfig = ref({
+  type: 'string',
+  mask: 'YYYY-MM-DD',
+});
 
 onMounted(() => {
   form.title = props.data.title;
   statistics.value = props.data.statistics;
   form.contacts = props.data.contacts;
+  form.date = props.data.editable_date;
 
   props.data.sections.forEach((section) => {
     form.sections.push({
@@ -48,6 +54,13 @@ watch(
   () => form.title,
   () => {
     debouncedWatch(form.title);
+  },
+);
+
+watch(
+  () => form.date,
+  () => {
+    debouncedWatch(form.date);
   },
 );
 
@@ -217,6 +230,19 @@ const destroy = () => {
               </div>
             </div>
 
+            <!-- written at -->
+            <p class="mb-2 flex items-center font-bold">
+              <span>Written on</span>
+            </p>
+            <v-date-picker v-model="form.date" :model-config="modelConfig" class="mb-6 inline-block">
+              <template v-slot="{ inputValue, inputEvents }">
+                <input
+                  class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                  :value="inputValue"
+                  v-on="inputEvents" />
+              </template>
+            </v-date-picker>
+
             <!-- contacts -->
             <p class="mb-2 flex items-center font-bold">
               <span>Contacts in this post</span>
@@ -352,5 +378,23 @@ const destroy = () => {
   100% {
     transform: translateX(-466%) rotate(45deg) scale(0);
   }
+}
+
+.ant-calendar-picker {
+  -tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+  border-radius: 0.375rem;
+  padding-top: 0.5rem;
+  padding-right: 0.75rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  border-width: 1px;
+  appearance: none;
+  background-color: #fff;
 }
 </style>

@@ -107,7 +107,7 @@ class PostController extends Controller
 
         return Inertia::render('Vault/Journal/Post/Edit', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
-            'data' => PostEditViewHelper::data($journal, $post),
+            'data' => PostEditViewHelper::data($journal, $post, Auth::user()),
         ]);
     }
 
@@ -123,7 +123,7 @@ class PostController extends Controller
             'post_id' => $postId,
             'title' => $request->input('title'),
             'sections' => $request->input('sections'),
-            'written_at' => Carbon::now()->format('Y-m-d'),
+            'written_at' => Carbon::parse($request->input('date'))->format('Y-m-d'),
         ]);
 
         $post->contacts()->detach();

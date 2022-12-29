@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\Journal;
 use App\Models\Post;
 use App\Models\PostSection;
+use App\Models\User;
 use App\Models\Vault;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -19,6 +20,7 @@ class PostEditViewHelperTest extends TestCase
     /** @test */
     public function it_gets_the_data_needed_for_the_view(): void
     {
+        $user = User::factory()->create();
         $vault = Vault::factory()->create();
         $journal = Journal::factory()->create([
             'vault_id' => $vault->id,
@@ -34,9 +36,9 @@ class PostEditViewHelperTest extends TestCase
         ]);
         $post->contacts()->attach($contact);
 
-        $array = PostEditViewHelper::data($journal, $post);
+        $array = PostEditViewHelper::data($journal, $post, $user);
 
-        $this->assertCount(9, $array);
+        $this->assertCount(11, $array);
         $this->assertEquals(
             $post->id,
             $array['id']

@@ -24,7 +24,7 @@ class JournalIndexViewHelper
                 'id' => $journal->id,
                 'name' => $journal->name,
                 'description' => $journal->description,
-                'last_updated' => $latestPost ? DateHelper::formatDate($latestPost->written_at, $user->timezone) : null,
+                'last_updated' => $latestPost ? DateHelper::format($latestPost->written_at, $user) : null,
                 'url' => [
                     'show' => route('journal.show', [
                         'vault' => $vault->id,
