@@ -4,6 +4,7 @@ import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import Tags from '@/Pages/Vault/Journal/Post/Partials/Tags.vue';
+import SlicesOfLife from '@/Pages/Vault/Journal/Post/Partials/SlicesOfLife.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { onMounted, watch, ref } from 'vue';
 import { debounce } from 'lodash';
@@ -256,7 +257,10 @@ const destroy = () => {
               :required="true"
               :div-outer-class="'flex-1 border-gray-200 dark:border-gray-700 mb-6'" />
 
-            <!-- categories -->
+            <!-- slices of life -->
+            <slices-of-life :data="data" />
+
+            <!-- tags -->
             <tags :data="data" />
 
             <!-- stats -->

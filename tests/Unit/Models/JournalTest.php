@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Journal;
 use App\Models\Post;
+use App\Models\SliceOfLife;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -28,5 +29,16 @@ class JournalTest extends TestCase
         ]);
 
         $this->assertTrue($journal->posts()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_slices_of_life(): void
+    {
+        $journal = Journal::factory()->create();
+        SliceOfLife::factory()->create([
+            'journal_id' => $journal->id,
+        ]);
+
+        $this->assertTrue($journal->slicesOfLife()->exists());
     }
 }

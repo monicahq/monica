@@ -33,7 +33,7 @@ class ModulePostsViewHelper
                     ]),
                 ],
             ],
-            'written_at' => DateHelper::formatDate($post->written_at, $user->timezone),
+            'written_at' => DateHelper::format($post->written_at, $user),
             'url' => [
                 'show' => route('post.show', [
                     'vault' => $post->journal->vault_id,

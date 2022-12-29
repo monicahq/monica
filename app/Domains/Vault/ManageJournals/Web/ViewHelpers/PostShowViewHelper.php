@@ -4,6 +4,7 @@ namespace App\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
 use App\Helpers\ContactCardHelper;
 use App\Helpers\DateHelper;
+use App\Helpers\SliceOfLifeHelper;
 use App\Models\Contact;
 use App\Models\Post;
 use App\Models\PostSection;
@@ -34,7 +35,7 @@ class PostShowViewHelper
 
         $contacts = $post->contacts()
             ->get()
-            ->map(fn (Contact $contact) => ContactCardHelper::data($contact, $user));
+            ->map(fn (Contact $contact) => ContactCardHelper::data($contact));
 
         return [
             'id' => $post->id,
@@ -54,6 +55,18 @@ class PostShowViewHelper
                     ]),
                 ],
             ],
+            'sliceOfLife' => $post->sliceOfLife ? [
+                'id' => $post->sliceOfLife->id,
+                'name' => $post->sliceOfLife->name,
+                'date_range' => SliceOfLifeHelper::getDateRange($post->sliceOfLife),
+                'url' => [
+                    'show' => route('slices.show', [
+                        'vault' => $post->journal->vault_id,
+                        'journal' => $post->journal->id,
+                        'slice' => $post->sliceOfLife->id,
+                    ]),
+                ],
+            ] : null,
             'url' => [
                 'edit' => route('post.edit', [
                     'vault' => $post->journal->vault_id,

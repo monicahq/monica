@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Journal extends Model
+class SliceOfLife extends Model
 {
     use HasFactory;
 
-    protected $table = 'journals';
+    protected $table = 'slices_of_life';
 
     /**
      * The attributes that are mass assignable.
@@ -19,23 +19,24 @@ class Journal extends Model
      * @var array<string>
      */
     protected $fillable = [
-        'vault_id',
+        'journal_id',
+        'file_cover_image_id',
         'name',
         'description',
     ];
 
     /**
-     * Get the vault associated with the journal.
+     * Get the journal associated with the slice of life.
      *
      * @return BelongsTo
      */
-    public function vault(): BelongsTo
+    public function journal(): BelongsTo
     {
-        return $this->belongsTo(Vault::class);
+        return $this->belongsTo(Journal::class);
     }
 
     /**
-     * Get the posts associated with the journal.
+     * Get the posts associated with the slice of life.
      *
      * @return HasMany
      */
@@ -45,12 +46,13 @@ class Journal extends Model
     }
 
     /**
-     * Get the slices of life associated with the journal.
+     * Get the file associated with the slice of life.
+     * If it exists, it's the header image.
      *
-     * @return HasMany
+     * @return BelongsTo
      */
-    public function slicesOfLife(): HasMany
+    public function file(): BelongsTo
     {
-        return $this->hasMany(SliceOfLife::class);
+        return $this->belongsTo(File::class, 'file_cover_image_id');
     }
 }

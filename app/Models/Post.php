@@ -24,6 +24,7 @@ class Post extends Model
      */
     protected $fillable = [
         'journal_id',
+        'slice_of_life_id',
         'title',
         'view_count',
         'published',
@@ -58,6 +59,16 @@ class Post extends Model
     public function journal(): BelongsTo
     {
         return $this->belongsTo(Journal::class);
+    }
+
+    /**
+     * Get the slice of life associated with the post.
+     *
+     * @return BelongsTo
+     */
+    public function sliceOfLife(): BelongsTo
+    {
+        return $this->belongsTo(SliceOfLife::class);
     }
 
     /**

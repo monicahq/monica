@@ -95,33 +95,33 @@ defineProps({
           <div class="">
             <!-- contacts -->
             <div v-if="data.contacts.length > 0" class="mb-4">
-              <p class="mb-2 font-bold">{{ $t('vault.journal_show_contacts') }}</p>
+              <p class="mb-2 text-sm font-semibold">{{ $t('vault.journal_show_contacts') }}</p>
 
               <div v-for="contact in data.contacts" :key="contact.id" class="mb-2 block">
                 <contact-card :contact="contact" :avatarClasses="'h-5 w-5 rounded-full mr-2'" :displayName="true" />
               </div>
             </div>
 
+            <!-- slice of life -->
+            <div v-if="data.sliceOfLife" class="mb-4">
+              <p class="mb-2 text-sm font-semibold">Slice of life</p>
+              <div class="mb-6 last:mb-0">
+                <div
+                  class="rounded border-b border-t border-r border-l border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
+                  :class="data.sliceOfLife.cover_image ? '' : 'border-t'">
+                  <inertia-link :href="data.sliceOfLife.url.show" class="font-semibold">{{
+                    data.sliceOfLife.name
+                  }}</inertia-link>
+                  <p class="text-xs text-gray-600">{{ data.sliceOfLife.date_range }}</p>
+                </div>
+              </div>
+            </div>
+
             <!-- options -->
-            <p class="mb-2 font-bold">{{ $t('vault.journal_show_options') }}</p>
+            <p class="mb-2 text-sm font-semibold">{{ $t('vault.journal_show_options') }}</p>
             <ul class="mb-6 text-sm">
               <li class="flex items-center">
-                <svg
-                  class="mr-2 h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495" />
-                </svg>
-
-                <inertia-link :href="data.url.edit" class="text-blue-500 hover:underline">{{
-                  $t('app.edit')
-                }}</inertia-link>
+                <inertia-link :href="data.url.edit" class="text-blue-500 hover:underline">Edit post</inertia-link>
               </li>
             </ul>
           </div>

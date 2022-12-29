@@ -34,7 +34,7 @@ class ContactCardHelperTest extends TestCase
             'year' => 1981,
         ]);
 
-        $array = ContactCardHelper::data($contact, $user);
+        $array = ContactCardHelper::data($contact);
 
         $this->assertEquals(
             $contact->id,

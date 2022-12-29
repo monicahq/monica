@@ -5,6 +5,7 @@ namespace Tests\Unit\Models;
 use App\Models\Contact;
 use App\Models\Post;
 use App\Models\PostSection;
+use App\Models\SliceOfLife;
 use App\Models\Tag;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -19,6 +20,16 @@ class PostTest extends TestCase
         $post = Post::factory()->create();
 
         $this->assertTrue($post->journal()->exists());
+    }
+
+    /** @test */
+    public function it_has_one_slice_of_life()
+    {
+        $post = Post::factory()->create([
+            'slice_of_life_id' => SliceOfLife::factory()->create()->id,
+        ]);
+
+        $this->assertTrue($post->sliceOfLife()->exists());
     }
 
     /** @test */

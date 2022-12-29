@@ -7,6 +7,7 @@ use App\Http\Middleware\CheckContactAccess;
 use App\Http\Middleware\CheckGroupAccess;
 use App\Http\Middleware\CheckJournalAccess;
 use App\Http\Middleware\CheckPostAccess;
+use App\Http\Middleware\CheckSliceOfLifeAccess;
 use App\Http\Middleware\CheckVaultAccess;
 use App\Http\Middleware\CheckVaultPermissionAtLeastEditor;
 use App\Http\Middleware\CheckVaultPermissionAtLeastManager;
@@ -79,6 +80,7 @@ class Kernel extends HttpKernel
         'contact' => CheckContactAccess::class,
         'group' => CheckGroupAccess::class,
         'journal' => CheckJournalAccess::class,
+        'slice' => CheckSliceOfLifeAccess::class,
         'post' => CheckPostAccess::class,
         'administrator' => CheckAdministratorPrivilege::class,
         'atLeastVaultEditor' => CheckVaultPermissionAtLeastEditor::class,

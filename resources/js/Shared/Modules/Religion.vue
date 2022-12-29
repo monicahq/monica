@@ -81,7 +81,7 @@ const showEditModal = () => {
         <div class="border-b border-gray-200 p-2 dark:border-gray-700">
           <errors :errors="form.errors" />
 
-          <!-- companies -->
+          <!-- religions -->
           <dropdown
             v-model="form.religion_id"
             :data="localReligions"
