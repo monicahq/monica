@@ -2,6 +2,7 @@
 
 namespace App\Domains\Contact\ManageJobInformation\Web\Controllers;
 
+use App\Domains\Contact\ManageJobInformation\Services\ResetJobInformation;
 use App\Domains\Contact\ManageJobInformation\Services\UpdateJobInformation;
 use App\Domains\Contact\ManageJobInformation\Web\ViewHelpers\ModuleCompanyViewHelper;
 use App\Domains\Vault\ManageCompanies\Services\CreateCompany;
@@ -28,9 +29,10 @@ class ContactModuleJobInformationController extends Controller
 
     public function update(Request $request, int $vaultId, int $contactId)
     {
-        $company = 0;
+        $companyId = 0;
         if ($request->input('company_id')) {
             $company = Company::findOrFail($request->input('company_id'));
+            $companyId = $company->id;
         }
 
         if ($request->input('company_name')) {
@@ -43,6 +45,7 @@ class ContactModuleJobInformationController extends Controller
             ];
 
             $company = (new CreateCompany())->execute($data);
+            $companyId = $company->id;
         }
 
         (new UpdateJobInformation())->execute([
@@ -50,8 +53,24 @@ class ContactModuleJobInformationController extends Controller
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
-            'company_id' => $company->id,
+            'company_id' => $companyId,
             'job_position' => $request->input('job_position'),
+        ]);
+
+        $contact = Contact::findOrFail($contactId);
+
+        return response()->json([
+            'data' => ModuleCompanyViewHelper::data($contact),
+        ], 200);
+    }
+
+    public function destroy(Request $request, int $vaultId, int $contactId)
+    {
+        (new ResetJobInformation())->execute([
+            'account_id' => Auth::user()->account_id,
+            'author_id' => Auth::id(),
+            'vault_id' => $vaultId,
+            'contact_id' => $contactId,
         ]);
 
         $contact = Contact::findOrFail($contactId);

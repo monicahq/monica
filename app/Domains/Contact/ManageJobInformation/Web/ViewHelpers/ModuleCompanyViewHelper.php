@@ -25,6 +25,10 @@ class ModuleCompanyViewHelper
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
                 ]),
+                'destroy' => route('contact.job_information.destroy', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
             ],
         ];
     }

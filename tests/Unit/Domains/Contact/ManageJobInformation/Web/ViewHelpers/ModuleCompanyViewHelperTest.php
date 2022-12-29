@@ -43,6 +43,7 @@ class ModuleCompanyViewHelperTest extends TestCase
                 'url' => [
                     'index' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/companies/list',
                     'update' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/jobInformation',
+                    'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/jobInformation',
                 ],
             ],
             $array

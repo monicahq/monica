@@ -46,6 +46,7 @@ class Vault extends Model
         'show_tasks_tab',
         'show_files_tab',
         'show_journal_tab',
+        'show_companies_tab',
     ];
 
     /**
@@ -58,6 +59,7 @@ class Vault extends Model
         'show_tasks_tab' => 'boolean',
         'show_files_tab' => 'boolean',
         'show_journal_tab' => 'boolean',
+        'show_companies_tab' => 'boolean',
     ];
 
     /**

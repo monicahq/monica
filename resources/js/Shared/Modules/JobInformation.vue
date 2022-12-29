@@ -61,7 +61,7 @@
             :type="'text'"
             :autofocus="true"
             :input-class="'block w-full'"
-            :required="true"
+            :required="false"
             :autocomplete="false"
             :maxlength="255" />
         </div>
@@ -74,7 +74,7 @@
             :type="'text'"
             :autofocus="true"
             :input-class="'block w-full'"
-            :required="true"
+            :required="false"
             :autocomplete="false"
             :maxlength="255" />
         </div>
@@ -87,6 +87,10 @@
             :state="loadingState"
             :icon="'check'"
             :classes="'save'" />
+        </div>
+
+        <div class="border-t border-gray-200 p-2 dark:border-gray-700">
+          <p class="cursor-pointer text-sm text-blue-500 hover:underline" @click="reset()">Or reset the fields</p>
         </div>
       </form>
     </div>
@@ -206,6 +210,18 @@ export default {
         })
         .catch((error) => {
           this.loadingState = '';
+          this.form.errors = error.response.data;
+        });
+    },
+
+    reset() {
+      axios
+        .delete(this.data.url.destroy)
+        .then(() => {
+          this.editJobInformation = false;
+          this.company_name = '';
+        })
+        .catch((error) => {
           this.form.errors = error.response.data;
         });
     },

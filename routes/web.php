@@ -90,6 +90,7 @@ use App\Domains\Settings\ManageUserPreferences\Web\Controllers\PreferencesNameOr
 use App\Domains\Settings\ManageUserPreferences\Web\Controllers\PreferencesNumberFormatController;
 use App\Domains\Settings\ManageUserPreferences\Web\Controllers\PreferencesTimezoneController;
 use App\Domains\Settings\ManageUsers\Web\Controllers\UserController;
+use App\Domains\Vault\ManageCompanies\Web\Controllers\VaultCompanyController;
 use App\Domains\Vault\ManageFiles\Web\Controllers\VaultFileController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\JournalController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\PostController;
@@ -260,6 +261,7 @@ Route::middleware([
                     // job information
                     Route::get('companies/list', [ContactModuleJobInformationController::class, 'index'])->name('contact.companies.list.index');
                     Route::put('jobInformation', [ContactModuleJobInformationController::class, 'update'])->name('contact.job_information.update');
+                    Route::delete('jobInformation', [ContactModuleJobInformationController::class, 'destroy'])->name('contact.job_information.destroy');
 
                     // religion
                     Route::put('religion', [ContactModuleReligionController::class, 'update'])->name('contact.religion.update');
@@ -347,6 +349,12 @@ Route::middleware([
                 Route::get('avatars', [VaultFileController::class, 'avatars'])->name('avatars');
 
                 Route::delete('{file}', [VaultFileController::class, 'destroy'])->name('destroy');
+            });
+
+            // companies
+            Route::prefix('companies')->name('vault.companies.')->group(function () {
+                Route::get('', [VaultCompanyController::class, 'index'])->name('index');
+                Route::get('{company}', [VaultCompanyController::class, 'show'])->name('show');
             });
 
             // vault settings

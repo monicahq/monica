@@ -91,6 +91,7 @@ class VaultSettingsIndexViewHelper
                 'show_tasks_tab' => $vault->show_tasks_tab,
                 'show_files_tab' => $vault->show_files_tab,
                 'show_journal_tab' => $vault->show_journal_tab,
+                'show_companies_tab' => $vault->show_companies_tab,
             ],
             'url' => [
                 'template_update' => route('vault.settings.template.update', [

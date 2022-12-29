@@ -23,6 +23,7 @@ class UpdateVaultTabVisibility extends BaseService implements ServiceInterface
             'show_tasks_tab' => 'required|boolean',
             'show_files_tab' => 'required|boolean',
             'show_journal_tab' => 'required|boolean',
+            'show_companies_tab' => 'required|boolean',
         ];
     }
 
@@ -54,6 +55,7 @@ class UpdateVaultTabVisibility extends BaseService implements ServiceInterface
         $this->vault->show_tasks_tab = $data['show_tasks_tab'];
         $this->vault->show_files_tab = $data['show_files_tab'];
         $this->vault->show_journal_tab = $data['show_journal_tab'];
+        $this->vault->show_companies_tab = $data['show_companies_tab'];
         $this->vault->save();
 
         return $this->vault;
