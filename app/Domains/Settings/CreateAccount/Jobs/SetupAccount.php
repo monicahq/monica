@@ -1644,7 +1644,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         DB::table('religions')->insert([
             [
                 'account_id' => $this->author->account_id,
-                'translation_key' => 'account.religion_christian',
+                'translation_key' => 'account.religion_christianity',
                 'position' => 1,
             ],
             [
@@ -1664,7 +1664,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
             ],
             [
                 'account_id' => $this->author->account_id,
-                'translation_key' => 'account.religion_shinto',
+                'translation_key' => 'account.religion_shintoism',
                 'position' => 5,
             ],
             [
