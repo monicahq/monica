@@ -26,3 +26,4 @@ npm-debug.log
 .phpstorm.meta.php
 .phpunit.result.cache
 yarn-error.log
+monica.db
