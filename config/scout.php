@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Contact;
+use App\Models\Note;
+
 return [
 
     /*
@@ -132,6 +135,20 @@ return [
     'meilisearch' => [
         'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
         'key' => env('MEILISEARCH_KEY', null),
+        'index-settings' => [
+            Contact::class => [
+                'filterableAttributes' => ['id', 'vault_id'],
+                'sortableAttributes' => ['updated_at'],
+            ],
+            Note::class => [
+                'filterableAttributes' => ['id', 'vault_id', 'contact_id'],
+                'sortableAttributes' => ['updated_at'],
+            ],
+            Group::class => [
+                'filterableAttributes' => ['id', 'vault_id'],
+                'sortableAttributes' => ['updated_at'],
+            ],
+        ],
     ],
 
 ];

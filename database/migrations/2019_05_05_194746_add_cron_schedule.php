@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('crons', function (Blueprint $table) {
             $table->increments('id');
             $table->string('command')->unique();
-            $table->timestamp('last_run_at');
+            $table->timestamp('last_run_at')->nullable();
             $table->timestamps();
         });
     }

@@ -7,7 +7,6 @@ use App\Models\Group;
 use App\Models\Note;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
-use MeiliSearch\Client;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -50,28 +49,16 @@ class SetupScout extends Command
     protected function scout(): void
     {
         if (config('scout.driver') !== null) {
-            $this->artisan('☐ Flush search engine', 'scout:flush', ['model' => Note::class]);
-            $this->artisan('☐ Flush search engine', 'scout:flush', ['model' => Contact::class]);
-            $this->artisan('☐ Flush search engine', 'scout:flush', ['model' => Group::class]);
+            $this->artisan('☐ Flush search engine', 'scout:flush', ['model' => Note::class, '--verbose' => true]);
+            $this->artisan('☐ Flush search engine', 'scout:flush', ['model' => Contact::class, '--verbose' => true]);
+            $this->artisan('☐ Flush search engine', 'scout:flush', ['model' => Group::class, '--verbose' => true]);
         }
 
-        if (config('scout.driver') === 'meilisearch' && ($host = config('scout.meilisearch.host')) !== '') {
-            $this->info('-> Creating indexes on Meilisearch. Make sure Meilisearch is running.');
-
-            $config = [
-                'contacts' => ['id', 'vault_id'],
-                'notes' => ['id', 'vault_id', 'contact_id'],
-                'groups' => ['id', 'vault_id'],
-            ];
-
-            $client = new Client($host, config('scout.meilisearch.key'));
-            foreach ($config as $name => $fields) {
-                $index = $client->index($name);
-                $index->updateFilterableAttributes($fields);
-            }
-
-            $this->info('✓ Indexes created');
+        if (config('scout.driver') === 'meilisearch' && (config('scout.meilisearch.host')) !== '') {
+            $this->artisan('☐ Creating indexes on Meilisearch', 'scout:sync-index-settings', ['--verbose' => true]);
         }
+
+        $this->info('✓ Indexes created');
     }
 
     private function artisan(string $message, string $command, array $options = [])
