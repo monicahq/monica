@@ -91,8 +91,9 @@ const reload = () => {
       <AuthenticationCardLogo />
     </div>
 
-    <div class="mt-6 flex w-full overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:max-w-4xl sm:rounded-lg">
-      <img :src="wallpaperUrl" class="w-10/12 sm:invisible md:visible" :alt="'Wallpaper'" />
+    <div
+      class="mt-6 flex w-full flex-col overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:max-w-4xl sm:rounded-lg md:flex-row">
+      <img :src="wallpaperUrl" class="w-full sm:invisible sm:w-10/12 md:visible" :alt="'Wallpaper'" />
       <div class="w-full">
         <div class="border-b border-gray-200 px-6 pt-8 pb-6 dark:border-gray-700">
           <h1 class="mb-4 text-center text-xl text-gray-800 dark:text-gray-200">
