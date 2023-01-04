@@ -29,7 +29,7 @@ class CreateUserNotificationChannel extends BaseService implements ServiceInterf
             'type' => 'required|string|max:255',
             'content' => 'required|string|max:65535',
             'verify_email' => 'nullable|boolean',
-            'preferred_time' => 'nullable|date_format:H:i',
+            'preferred_time' => 'nullable',
         ];
     }
 
