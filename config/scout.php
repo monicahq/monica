@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\Note;
 
 return [
