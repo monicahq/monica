@@ -1,0 +1,20 @@
+name: Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    environment: deploy
+
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          event-type: ${{ secrets.EVENT_TYPE }}
+          repository: ${{ secrets.REPO_URL }}
