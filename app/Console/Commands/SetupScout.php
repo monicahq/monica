@@ -2,9 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Contact;
-use App\Models\Group;
-use App\Models\Note;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,6 +19,8 @@ class SetupScout extends Command
      * @var string
      */
     protected $signature = 'scout:setup
+                            {--flush : Flush the indexes.}
+                            {--import : Import the models into the search index.}
                             {--force : Force the operation to run when in production.}';
 
     /**
@@ -37,7 +36,9 @@ class SetupScout extends Command
     public function handle(): void
     {
         if ($this->confirmToProceed()) {
-            $this->scout();
+            $this->scoutConfigure();
+            $this->scoutFlush();
+            $this->scoutImport();
         }
     }
 
@@ -46,19 +47,45 @@ class SetupScout extends Command
      *
      * @return void
      */
-    protected function scout(): void
+    protected function scoutConfigure(): void
     {
-        if (config('scout.driver') !== null) {
-            $this->artisan('☐ Flush search engine', 'scout:flush', ['model' => Note::class, '--verbose' => true]);
-            $this->artisan('☐ Flush search engine', 'scout:flush', ['model' => Contact::class, '--verbose' => true]);
-            $this->artisan('☐ Flush search engine', 'scout:flush', ['model' => Group::class, '--verbose' => true]);
-        }
-
         if (config('scout.driver') === 'meilisearch' && (config('scout.meilisearch.host')) !== '') {
-            $this->artisan('☐ Creating indexes on Meilisearch', 'scout:sync-index-settings', ['--verbose' => true]);
+            $this->artisan('☐ Updating indexes on Meilisearch', 'scout:sync-index-settings', ['--verbose' => true]);
         }
+    }
 
-        $this->info('✓ Indexes created');
+    /**
+     * Import models.
+     *
+     * @return void
+     */
+    protected function scoutFlush(): void
+    {
+        if (config('scout.driver') !== null && $this->option('flush')) {
+            foreach (config('scout.meilisearch.index-settings') as $index => $settings) {
+                $name = (new $index)->getTable();
+                $this->artisan("☐ Flush {$name} index", 'scout:flush', ['model' => $index, '--verbose' => true]);
+            }
+
+            $this->info('✓ Indexes flushed');
+        }
+    }
+
+    /**
+     * Import models.
+     *
+     * @return void
+     */
+    protected function scoutImport(): void
+    {
+        if (config('scout.driver') !== null && $this->option('import')) {
+            foreach (config('scout.meilisearch.index-settings') as $index => $settings) {
+                $name = (new $index)->getTable();
+                $this->artisan("☐ Import {$name}", 'scout:import', ['model' => $index, '--verbose' => true]);
+            }
+
+            $this->info('✓ Indexes imported');
+        }
     }
 
     private function artisan(string $message, string $command, array $options = [])
