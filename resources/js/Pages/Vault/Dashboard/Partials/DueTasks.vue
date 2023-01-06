@@ -20,7 +20,7 @@
     </h3>
 
     <!-- list of tasks -->
-    <div v-if="data.tasks">
+    <div v-if="data.tasks.length > 0">
       <ul class="mb-4 rounded-lg border border-gray-200 dark:border-gray-800 dark:bg-gray-900">
         <li
           v-for="task in data.tasks"
