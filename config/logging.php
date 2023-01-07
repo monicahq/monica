@@ -50,8 +50,8 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
-            'ignore_exceptions' => false,
+            'channels' => explode(',', env('LOG_STACK_CHANNELS', 'single')),
+            'ignore_exceptions' => env('LOG_STACK_IGNORE_EXCEPTIONS', false),
         ],
 
         'single' => [
@@ -83,6 +83,12 @@ return [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
             ],
+        ],
+
+        'sentry' => [
+            'driver' => 'sentry',
+            'level' => 'debug',
+            'bubble' => true,
         ],
 
         'stderr' => [
