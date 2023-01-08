@@ -30,8 +30,6 @@ class PersonalizeIndexViewHelperTest extends TestCase
                     'manage_modules' => env('APP_URL').'/settings/personalize/modules',
                     'manage_currencies' => env('APP_URL').'/settings/personalize/currencies',
                     'manage_call_reasons' => env('APP_URL').'/settings/personalize/callReasonTypes',
-                    'manage_activity_types' => env('APP_URL').'/settings/personalize/activityTypes',
-                    'manage_life_event_categories' => env('APP_URL').'/settings/personalize/lifeEventCategories',
                     'manage_gift_occasions' => env('APP_URL').'/settings/personalize/giftOccasions',
                     'manage_gift_states' => env('APP_URL').'/settings/personalize/giftStates',
                     'manage_group_types' => env('APP_URL').'/settings/personalize/groupTypes',

@@ -15,39 +15,26 @@ class LifeEventCategory extends Model
     protected $table = 'life_event_categories';
 
     /**
-     * Possible types.
-     */
-    public const TYPE_WORK_EDUCATION = 'work_education';
-
-    public const TYPE_FAMILY_RELATIONSHIPS = 'family_relationships';
-
-    public const TYPE_HOME_LIVING = 'home_living';
-
-    public const TYPE_TRAVEL_EXPERIENCES = 'travel_experiences';
-
-    public const TYPE_HEALTH_WELLNESS = 'health_wellness';
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array<string>
      */
     protected $fillable = [
-        'account_id',
+        'vault_id',
         'label',
         'label_translation_key',
         'can_be_deleted',
-        'type',
+        'position',
     ];
 
     /**
-     * Get the account associated with the life event category.
+     * Get the vault associated with the life event category.
      *
      * @return BelongsTo
      */
-    public function account(): BelongsTo
+    public function vault(): BelongsTo
     {
-        return $this->belongsTo(Account::class);
+        return $this->belongsTo(Vault::class);
     }
 
     /**

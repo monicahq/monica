@@ -9,6 +9,8 @@ use App\Models\File;
 use App\Models\Group;
 use App\Models\Journal;
 use App\Models\Label;
+use App\Models\LifeEvent;
+use App\Models\LifeEventCategory;
 use App\Models\Tag;
 use App\Models\Template;
 use App\Models\User;
@@ -140,5 +142,27 @@ class VaultTest extends TestCase
         ]);
 
         $this->assertTrue($vault->files()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_life_event_categories(): void
+    {
+        $vault = Vault::factory()->create();
+        LifeEventCategory::factory()->count(2)->create([
+            'vault_id' => $vault->id,
+        ]);
+
+        $this->assertTrue($vault->lifeEventCategories()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_life_events(): void
+    {
+        $vault = Vault::factory()->create();
+        LifeEvent::factory()->count(2)->create([
+            'vault_id' => $vault->id,
+        ]);
+
+        $this->assertTrue($vault->lifeEvents()->exists());
     }
 }

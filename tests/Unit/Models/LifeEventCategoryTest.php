@@ -12,10 +12,10 @@ class LifeEventCategoryTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function it_belongs_to_an_account()
+    public function it_belongs_to_a_vault()
     {
         $lifeEventCategory = LifeEventCategory::factory()->create();
-        $this->assertTrue($lifeEventCategory->account()->exists());
+        $this->assertTrue($lifeEventCategory->vault()->exists());
     }
 
     /** @test */

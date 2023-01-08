@@ -190,4 +190,11 @@ return [
     'settings_delete_cta' => 'Delete the vault',
     'settings_delete_cta_confirmation' => 'Are you sure? This will delete all the data inside this vault.',
     'settings_delete_destroy_success' => 'The vault has been deleted',
+
+    'settings_life_event_category_transportation' => 'Transportation',
+    'settings_life_event_type_transportation_bike' => 'Rode a bike',
+    'settings_life_event_type_transportation_car' => 'Drove',
+    'settings_life_event_type_transportation_walk' => 'Walked',
+    'settings_life_event_type_transportation_bus' => 'Took the bus',
+    'settings_life_event_type_transportation_metro' => 'Took the metro',
 ];

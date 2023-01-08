@@ -16,6 +16,7 @@ use App\Models\Gender;
 use App\Models\Goal;
 use App\Models\Group;
 use App\Models\Label;
+use App\Models\LifeEvent;
 use App\Models\Loan;
 use App\Models\Note;
 use App\Models\Pet;
@@ -279,6 +280,17 @@ class ContactTest extends TestCase
         $contact->save();
 
         $this->assertTrue($contact->religion()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_life_events(): void
+    {
+        $contact = Contact::factory()->create();
+        $lifeEvent = LifeEvent::factory()->create();
+
+        $contact->lifeEvents()->sync([$lifeEvent->id]);
+
+        $this->assertTrue($contact->lifeEvents()->exists());
     }
 
     /** @test */

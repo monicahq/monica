@@ -387,13 +387,13 @@ class Contact extends Model
     }
 
     /**
-     * Get the religion associated with the contact.
+     * Get the life events associated with the contact.
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
-    public function contactLifeEvents(): HasMany
+    public function lifeEvents(): BelongsToMany
     {
-        return $this->hasMany(ContactLifeEvent::class);
+        return $this->belongsToMany(LifeEvent::class, 'life_event_participants', 'contact_id', 'life_event_id');
     }
 
     /**

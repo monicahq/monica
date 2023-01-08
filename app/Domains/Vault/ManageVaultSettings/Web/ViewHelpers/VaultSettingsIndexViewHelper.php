@@ -5,6 +5,8 @@ namespace App\Domains\Vault\ManageVaultSettings\Web\ViewHelpers;
 use App\Domains\Vault\ManageVaultImportantDateTypes\Web\ViewHelpers\VaultImportantDateTypesViewHelper;
 use App\Helpers\VaultHelper;
 use App\Models\Label;
+use App\Models\LifeEventCategory;
+use App\Models\LifeEventType;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Vault;
@@ -78,6 +80,13 @@ class VaultSettingsIndexViewHelper
 
         $tagsCollection = $tags->map(fn ($tag) => self::dtoTag($tag));
 
+        // life event categories
+        $lifeEventCategories = $vault->lifeEventCategories()
+            ->with('lifeEventTypes')
+            ->orderBy('position', 'asc')
+            ->get()
+            ->map(fn (LifeEventCategory $lifeEventCategory) => self::dtoLifeEventCategory($lifeEventCategory));
+
         return [
             'templates' => $templatesCollection,
             'users_in_vault' => $usersInVaultCollection,
@@ -86,6 +95,7 @@ class VaultSettingsIndexViewHelper
             'label_colors' => $labelColorsCollection,
             'tags' => $tagsCollection,
             'contact_important_date_types' => $dateTypesCollection,
+            'life_event_categories' => $lifeEventCategories,
             'visibility' => [
                 'show_group_tab' => $vault->show_group_tab,
                 'show_tasks_tab' => $vault->show_tasks_tab,
@@ -107,6 +117,9 @@ class VaultSettingsIndexViewHelper
                     'vault' => $vault->id,
                 ]),
                 'contact_date_important_date_type_store' => route('vault.settings.important_date_type.store', [
+                    'vault' => $vault->id,
+                ]),
+                'life_event_category_store' => route('vault.settings.life_event_categories.store', [
                     'vault' => $vault->id,
                 ]),
                 'update' => route('vault.settings.update', [
@@ -176,6 +189,67 @@ class VaultSettingsIndexViewHelper
                 'destroy' => route('vault.settings.tag.destroy', [
                     'vault' => $tag->vault_id,
                     'tag' => $tag->id,
+                ]),
+            ],
+        ];
+    }
+
+    public static function dtoLifeEventCategory(LifeEventCategory $category): array
+    {
+        $lifeEventTypesCollection = $category->lifeEventTypes()
+            ->orderBy('position', 'asc')
+            ->get();
+
+        return [
+            'id' => $category->id,
+            'label' => $category->label,
+            'position' => $category->position,
+            'can_be_deleted' => $category->can_be_deleted,
+            'life_event_types' => $lifeEventTypesCollection->map(fn (LifeEventType $type) => self::dtoType($category, $type)),
+            'url' => [
+                'store' => route('vault.settings.life_event_types.store', [
+                    'vault' => $category->vault_id,
+                    'lifeEventCategory' => $category->id,
+                ]),
+                'position' => route('vault.settings.life_event_categories.order.update', [
+                    'vault' => $category->vault_id,
+                    'lifeEventCategory' => $category->id,
+                ]),
+                'update' => route('vault.settings.life_event_categories.update', [
+                    'vault' => $category->vault_id,
+                    'lifeEventCategory' => $category->id,
+                ]),
+                'destroy' => route('vault.settings.life_event_categories.destroy', [
+                    'vault' => $category->vault_id,
+                    'lifeEventCategory' => $category->id,
+                ]),
+            ],
+        ];
+    }
+
+    public static function dtoType(LifeEventCategory $category, LifeEventType $type): array
+    {
+        return [
+            'id' => $type->id,
+            'label' => $type->label,
+            'can_be_deleted' => $type->can_be_deleted,
+            'life_event_category_id' => $category->id,
+            'position' => $type->position,
+            'url' => [
+                'position' => route('vault.settings.life_event_types.order.update', [
+                    'vault' => $category->vault_id,
+                    'lifeEventCategory' => $category->id,
+                    'lifeEventType' => $type->id,
+                ]),
+                'update' => route('vault.settings.life_event_types.update', [
+                    'vault' => $category->vault_id,
+                    'lifeEventCategory' => $category->id,
+                    'lifeEventType' => $type->id,
+                ]),
+                'destroy' => route('vault.settings.life_event_types.destroy', [
+                    'vault' => $category->vault_id,
+                    'lifeEventCategory' => $category->id,
+                    'lifeEventType' => $type->id,
                 ]),
             ],
         ];
