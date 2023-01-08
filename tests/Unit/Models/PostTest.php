@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Contact;
+use App\Models\File;
 use App\Models\Post;
 use App\Models\PostSection;
 use App\Models\SliceOfLife;
@@ -63,6 +64,18 @@ class PostTest extends TestCase
         $post->tags()->sync([$tag->id]);
 
         $this->assertTrue($post->tags()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_files(): void
+    {
+        $post = Post::factory()->create();
+        File::factory()->count(2)->create([
+            'fileable_id' => $post->id,
+            'fileable_type' => Post::class,
+        ]);
+
+        $this->assertTrue($post->files()->exists());
     }
 
     /** @test */

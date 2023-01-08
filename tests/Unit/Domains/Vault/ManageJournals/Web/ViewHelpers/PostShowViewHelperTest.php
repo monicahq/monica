@@ -3,6 +3,7 @@
 namespace Tests\Unit\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
 use App\Domains\Vault\ManageJournals\Web\ViewHelpers\PostShowViewHelper;
+use App\Models\File;
 use App\Models\Journal;
 use App\Models\Post;
 use App\Models\PostSection;
@@ -39,10 +40,18 @@ class PostShowViewHelperTest extends TestCase
             'name' => 'super',
         ]);
         $post->tags()->attach($tag->id);
+        $file = File::factory()->create([
+            'vault_id' => $vault->id,
+            'size' => 123,
+            'type' => File::TYPE_PHOTO,
+        ]);
+        $file->fileable_id = $post->id;
+        $file->fileable_type = Post::class;
+        $file->save();
 
         $array = PostShowViewHelper::data($post, $user);
 
-        $this->assertCount(11, $array);
+        $this->assertCount(12, $array);
         $this->assertEquals(
             $post->id,
             $array['id']
@@ -81,6 +90,18 @@ class PostShowViewHelperTest extends TestCase
                 ],
             ],
             $array['journal']
+        );
+        $this->assertEquals(
+            [
+                0 => [
+                    'id' => $file->id,
+                    'name' => $file->name,
+                    'url' => [
+                        'display' => 'https://ucarecdn.com/'.$file->uuid.'/-/scale_crop/100x100/smart/-/format/auto/-/quality/smart_retina/',
+                    ],
+                ],
+            ],
+            $array['photos']->toArray()
         );
         $this->assertEquals(
             [

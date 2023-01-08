@@ -4,6 +4,7 @@ namespace Tests\Unit\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
 use App\Domains\Vault\ManageJournals\Web\ViewHelpers\PostEditViewHelper;
 use App\Models\Contact;
+use App\Models\File;
 use App\Models\Journal;
 use App\Models\Post;
 use App\Models\PostSection;
@@ -21,6 +22,8 @@ class PostEditViewHelperTest extends TestCase
     /** @test */
     public function it_gets_the_data_needed_for_the_view(): void
     {
+        config(['services.uploadcare.public_key' => '123']);
+
         $user = User::factory()->create();
         $vault = Vault::factory()->create();
         $journal = Journal::factory()->create([
@@ -41,10 +44,18 @@ class PostEditViewHelperTest extends TestCase
             'vault_id' => $vault->id,
         ]);
         $post->contacts()->attach($contact);
+        $file = File::factory()->create([
+            'vault_id' => $contact->vault_id,
+            'size' => 123,
+            'type' => File::TYPE_PHOTO,
+        ]);
+        $file->fileable_id = $post->id;
+        $file->fileable_type = Post::class;
+        $file->save();
 
         $array = PostEditViewHelper::data($journal, $post, $user);
 
-        $this->assertCount(13, $array);
+        $this->assertCount(16, $array);
         $this->assertEquals(
             $post->id,
             $array['id']
@@ -70,6 +81,13 @@ class PostEditViewHelperTest extends TestCase
             $array['journal']
         );
         $this->assertEquals(
+            '123',
+            $array['uploadcarePublicKey']
+        );
+        $this->assertTrue(
+            $array['canUploadFile']
+        );
+        $this->assertEquals(
             [
                 0 => [
                     'id' => $slice->id,
@@ -77,6 +95,21 @@ class PostEditViewHelperTest extends TestCase
                 ],
             ],
             $array['slices']->toArray()
+        );
+        $this->assertEquals(
+            [
+                0 => [
+                    'id' => $file->id,
+                    'name' => $file->name,
+                    'size' => '123B',
+                    'mime_type' => 'avatar',
+                    'url' => [
+                        'show' => 'https://ucarecdn.com/'.$file->uuid.'/-/scale_crop/75x75/smart/-/format/auto/-/quality/smart_retina/',
+                        'destroy' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$post->id.'/photos/'.$file->id,
+                    ],
+                ],
+            ],
+            $array['photos']->toArray()
         );
         $this->assertEquals(
             [
@@ -98,6 +131,7 @@ class PostEditViewHelperTest extends TestCase
                 'slice_store' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$post->id.'/slices',
                 'slice_reset' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$post->id.'/slices',
                 'tag_store' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$post->id.'/tags',
+                'upload_photo' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$post->id.'/photos',
                 'back' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id,
                 'destroy' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$post->id,
             ],

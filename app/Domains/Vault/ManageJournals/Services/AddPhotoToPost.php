@@ -3,14 +3,17 @@
 namespace App\Domains\Vault\ManageJournals\Services;
 
 use App\Interfaces\ServiceInterface;
+use App\Models\File;
 use App\Models\Post;
 use App\Services\BaseService;
 
-class DestroyPost extends BaseService implements ServiceInterface
+class AddPhotoToPost extends BaseService implements ServiceInterface
 {
+    private Post $post;
+
     private array $data;
 
-    private Post $post;
+    private File $file;
 
     /**
      * Get the validation rules that apply to the service.
@@ -24,7 +27,8 @@ class DestroyPost extends BaseService implements ServiceInterface
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
             'journal_id' => 'required|integer|exists:journals,id',
-            'post_id' => 'required|integer|exists:posts,id',
+            'post_id' => 'nullable|integer|exists:posts,id',
+            'file_id' => 'required|integer|exists:files,id',
         ];
     }
 
@@ -43,18 +47,22 @@ class DestroyPost extends BaseService implements ServiceInterface
     }
 
     /**
-     * Delete a journal.
+     * Add an image to a post.
      *
      * @param  array  $data
-     * @return void
+     * @return Post
      */
-    public function execute(array $data): void
+    public function execute(array $data): Post
     {
         $this->data = $data;
-
         $this->validate();
-        $this->destroyFiles();
-        $this->post->delete();
+
+        $this->file->fileable_id = $this->post->id;
+        $this->file->fileable_type = Post::class;
+        $this->file->type = File::TYPE_PHOTO;
+        $this->file->save();
+
+        return $this->post;
     }
 
     private function validate(): void
@@ -66,13 +74,8 @@ class DestroyPost extends BaseService implements ServiceInterface
 
         $this->post = $journal->posts()
             ->findOrFail($this->data['post_id']);
-    }
 
-    private function destroyFiles(): void
-    {
-        $files = $this->post->files;
-        foreach ($files as $file) {
-            $file->delete();
-        }
+        $this->file = $this->vault->files()
+            ->findOrFail($this->data['file_id']);
     }
 }

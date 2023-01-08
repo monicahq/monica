@@ -3,8 +3,11 @@
 namespace App\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
 use App\Helpers\DateHelper;
+use App\Helpers\FileHelper;
 use App\Helpers\PostHelper;
+use App\Helpers\StorageHelper;
 use App\Models\Contact;
+use App\Models\File;
 use App\Models\Journal;
 use App\Models\Post;
 use App\Models\PostSection;
@@ -50,6 +53,11 @@ class PostEditViewHelper
             'name' => $slice->name,
         ]);
 
+        $photos = $post->files()
+            ->where('type', File::TYPE_PHOTO)
+            ->get()
+            ->map(fn (File $file) => self::dtoPhoto($journal, $post, $file));
+
         return [
             'id' => $post->id,
             'title' => $post->title,
@@ -57,11 +65,14 @@ class PostEditViewHelper
             'editable_date' => $post->written_at->format('Y-m-d'),
             'sections' => $sectionsCollection,
             'contacts' => $contacts,
+            'photos' => $photos,
             'slice' => $post->sliceOfLife ? self::dtoSlice($journal, $post->sliceOfLife) : null,
             'slices' => $slices,
             'statistics' => PostHelper::statistics($post),
             'tags_in_post' => $tagsAssociatedWithPostCollection,
             'tags_in_vault' => $tagsInVaultCollection,
+            'uploadcarePublicKey' => config('services.uploadcare.public_key'),
+            'canUploadFile' => StorageHelper::canUploadFile($journal->vault->account),
             'journal' => [
                 'name' => $journal->name,
             ],
@@ -87,6 +98,11 @@ class PostEditViewHelper
                     'post' => $post->id,
                 ]),
                 'slice_reset' => route('post.slices.destroy', [
+                    'vault' => $journal->vault_id,
+                    'journal' => $journal->id,
+                    'post' => $post->id,
+                ]),
+                'upload_photo' => route('post.photos.store', [
                     'vault' => $journal->vault_id,
                     'journal' => $journal->id,
                     'post' => $post->id,
@@ -152,6 +168,25 @@ class PostEditViewHelper
                     'vault' => $journal->vault_id,
                     'journal' => $journal->id,
                     'slice' => $slice->id,
+                ]),
+            ],
+        ];
+    }
+
+    public static function dtoPhoto(Journal $journal, Post $post, File $file): array
+    {
+        return [
+            'id' => $file->id,
+            'name' => $file->name,
+            'size' => FileHelper::formatFileSize($file->size),
+            'mime_type' => $file->mime_type,
+            'url' => [
+                'show' => 'https://ucarecdn.com/'.$file->uuid.'/-/scale_crop/75x75/smart/-/format/auto/-/quality/smart_retina/',
+                'destroy' => route('post.photos.destroy', [
+                    'vault' => $journal->vault_id,
+                    'journal' => $journal->id,
+                    'post' => $post->id,
+                    'photo' => $file->id,
                 ]),
             ],
         ];

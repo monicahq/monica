@@ -6,6 +6,7 @@ use App\Helpers\ContactCardHelper;
 use App\Helpers\DateHelper;
 use App\Helpers\SliceOfLifeHelper;
 use App\Models\Contact;
+use App\Models\File;
 use App\Models\Post;
 use App\Models\PostSection;
 use App\Models\Tag;
@@ -37,6 +38,17 @@ class PostShowViewHelper
             ->get()
             ->map(fn (Contact $contact) => ContactCardHelper::data($contact));
 
+        $photos = $post->files()
+            ->where('type', File::TYPE_PHOTO)
+            ->get()
+            ->map(fn (File $file) => [
+                'id' => $file->id,
+                'name' => $file->name,
+                'url' => [
+                    'display' => 'https://ucarecdn.com/'.$file->uuid.'/-/scale_crop/100x100/smart/-/format/auto/-/quality/smart_retina/',
+                ],
+            ]);
+
         return [
             'id' => $post->id,
             'title' => $post->title,
@@ -46,6 +58,7 @@ class PostShowViewHelper
             'sections' => $sections,
             'tags' => $tags,
             'contacts' => $contacts,
+            'photos' => $photos,
             'journal' => [
                 'name' => $post->journal->name,
                 'url' => [

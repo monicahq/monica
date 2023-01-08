@@ -89,6 +89,7 @@ use App\Domains\Vault\ManageCompanies\Web\Controllers\VaultCompanyController;
 use App\Domains\Vault\ManageFiles\Web\Controllers\VaultFileController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\JournalController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\PostController;
+use App\Domains\Vault\ManageJournals\Web\Controllers\PostPhotoController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\PostSliceOfLifeController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\PostTagController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\SliceOfLifeController;
@@ -333,6 +334,8 @@ Route::middleware([
                         Route::get('', [PostController::class, 'show'])->name('post.show');
                         Route::get('edit', [PostController::class, 'edit'])->name('post.edit');
                         Route::put('update', [PostController::class, 'update'])->name('post.update');
+                        Route::post('photos', [PostPhotoController::class, 'store'])->name('post.photos.store');
+                        Route::delete('photos/{photo}', [PostPhotoController::class, 'destroy'])->name('post.photos.destroy');
                         Route::delete('', [PostController::class, 'destroy'])->name('post.destroy');
 
                         // tags

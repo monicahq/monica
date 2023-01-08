@@ -5,10 +5,14 @@ import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import Tags from '@/Pages/Vault/Journal/Post/Partials/Tags.vue';
 import SlicesOfLife from '@/Pages/Vault/Journal/Post/Partials/SlicesOfLife.vue';
+import Uploadcare from '@/Components/Uploadcare.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { onMounted, watch, ref } from 'vue';
 import { debounce } from 'lodash';
 import ContactSelector from '@/Shared/Form/ContactSelector.vue';
+import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
+import JetDangerButton from '@/Components/Jetstream/DangerButton.vue';
+import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
 
 const props = defineProps({
   layoutData: Object,
@@ -20,10 +24,20 @@ const form = useForm({
   date: '',
   sections: [],
   contacts: [],
+  uuid: null,
+  name: null,
+  original_url: null,
+  cdn_url: null,
+  mime_type: null,
+  size: null,
 });
 
 const saveInProgress = ref(false);
 const statistics = ref([]);
+const deletePhotoModalShown = ref(false);
+const photoToDelete = ref(null);
+const processPhotoDeletion = ref(false);
+const localPhotos = ref([]);
 const modelConfig = ref({
   type: 'string',
   mask: 'YYYY-MM-DD',
@@ -34,6 +48,7 @@ onMounted(() => {
   statistics.value = props.data.statistics;
   form.contacts = props.data.contacts;
   form.date = props.data.editable_date;
+  localPhotos.value = props.data.photos;
 
   props.data.sections.forEach((section) => {
     form.sections.push({
@@ -75,6 +90,52 @@ watch(
 const debouncedWatch = debounce(() => {
   update();
 }, 500);
+
+const onSuccess = (file) => {
+  form.uuid = file.uuid;
+  form.name = file.name;
+  form.original_url = file.originalUrl;
+  form.cdn_url = file.cdnUrl;
+  form.mime_type = file.mimeType;
+  form.size = file.size;
+
+  upload();
+};
+
+const showDeletePhotoModal = (file) => {
+  photoToDelete.value = file;
+  deletePhotoModalShown.value = true;
+};
+
+const upload = () => {
+  saveInProgress.value = true;
+
+  axios
+    .post(props.data.url.upload_photo, form)
+    .then((response) => {
+      saveInProgress.value = false;
+      localPhotos.value.push(response.data.data);
+    })
+    .catch((error) => {
+      form.errors = error.response.data;
+    });
+};
+
+const destroyPhoto = () => {
+  processPhotoDeletion.value = true;
+
+  axios
+    .delete(photoToDelete.value.url.destroy)
+    .then(() => {
+      processPhotoDeletion.value = false;
+      var id = localPhotos.value.findIndex((x) => x.id === photoToDelete.value.id);
+      localPhotos.value.splice(id, 1);
+      deletePhotoModalShown.value = false;
+    })
+    .catch((error) => {
+      form.errors = error.response.data;
+    });
+};
 
 const update = () => {
   saveInProgress.value = true;
@@ -164,7 +225,92 @@ const destroy = () => {
       <div class="mx-auto max-w-6xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
           <!-- left -->
-          <div class="">
+          <div>
+            <!-- photos -->
+            <div>
+              <!-- list of existing photos -->
+              <ul
+                v-if="localPhotos.length > 0"
+                class="mb-2 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+                <li
+                  v-for="photo in localPhotos"
+                  :key="photo.id"
+                  class="item-list flex items-center justify-between border-b border-gray-200 p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                  <div class="flex">
+                    <img :src="photo.url.show" class="mr-4" width="75" height="75" />
+
+                    <ul>
+                      <li class="mb-2 text-sm">{{ photo.name }}</li>
+                      <li class="font-mono text-xs">{{ photo.size }}</li>
+                    </ul>
+                  </div>
+
+                  <span
+                    class="inline cursor-pointer text-red-500 hover:text-red-900"
+                    @click="showDeletePhotoModal(photo)">
+                    {{ $t('app.delete') }}
+                  </span>
+                </li>
+              </ul>
+
+              <!-- upload component -->
+              <uploadcare
+                v-if="data.uploadcarePublicKey && data.canUploadFile"
+                :public-key="data.uploadcarePublicKey"
+                :tabs="'file'"
+                :multiple="false"
+                :preview-step="false"
+                @success="onSuccess"
+                @error="onError">
+                <!-- case when there are no photos yet -->
+                <div
+                  v-if="localPhotos.length === 0"
+                  class="mb-6 flex cursor-pointer flex-col items-center rounded-lg border border-gray-200 bg-white p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="mb-2 h-8 w-8 text-gray-500">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                  </svg>
+
+                  <p class="text-sm text-gray-500">Add photos</p>
+                </div>
+
+                <!-- case when there are photos -->
+                <div v-else class="mb-6 flex items-center">
+                  <p
+                    class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300">
+                    + Add another photo
+                  </p>
+                </div>
+              </uploadcare>
+
+              <!-- uploadcare api key not set -->
+              <div
+                v-if="!data.uploadcarePublicKey"
+                class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+                <p class="p-5 text-center">
+                  {{ $t('contact.photos_key_missing') }}
+                </p>
+              </div>
+
+              <!-- not enough storage -->
+              <div
+                v-if="!data.canUploadFile"
+                class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+                <p class="bg-gray-100 p-3 text-center">
+                  <span class="mr-1">⚠️</span> {{ $t('contact.photos_not_enough_storage') }}
+                </p>
+              </div>
+            </div>
+
+            <!-- post body -->
             <div class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
               <div class="border-gray-200 p-5 dark:border-gray-700">
                 <!-- title -->
@@ -323,10 +469,51 @@ const destroy = () => {
         </div>
       </div>
     </main>
+
+    <!-- delete photo confirmation modal -->
+    <JetConfirmationModal :show="deletePhotoModalShown" @close="deletePhotoModalShown = false">
+      <template #title>
+        {{ $t('Delete the photo') }}
+      </template>
+
+      <template #content>
+        {{ $t('Are you sure? The photo will be deleted immediately.') }}
+      </template>
+
+      <template #footer>
+        <JetSecondaryButton @click="deletePhotoModalShown = false">
+          {{ $t('Cancel') }}
+        </JetSecondaryButton>
+
+        <JetDangerButton
+          class="ml-3"
+          :class="{ 'opacity-25': processPhotoDeletion }"
+          :disabled="processPhotoDeletion"
+          @click="destroyPhoto(file)">
+          {{ $t('Delete') }}
+        </JetDangerButton>
+      </template>
+    </JetConfirmationModal>
   </layout>
 </template>
 
 <style lang="scss" scoped>
+.item-list {
+  &:hover:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+
 .special-grid {
   grid-template-columns: 1fr 300px;
 }
