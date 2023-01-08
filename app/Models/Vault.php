@@ -60,6 +60,7 @@ class Vault extends Model
         'show_files_tab' => 'boolean',
         'show_journal_tab' => 'boolean',
         'show_companies_tab' => 'boolean',
+        'show_reports_tab' => 'boolean',
     ];
 
     /**

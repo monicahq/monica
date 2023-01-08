@@ -37,6 +37,7 @@ class VaultIndexViewHelper
                     'show_files_tab' => $vault->show_files_tab,
                     'show_journal_tab' => $vault->show_journal_tab,
                     'show_companies_tab' => $vault->show_companies_tab,
+                    'show_reports_tab' => $vault->show_reports_tab,
                 ],
                 'url' => [
                     'dashboard' => route('vault.show', [
@@ -58,6 +59,9 @@ class VaultIndexViewHelper
                         'vault' => $vault->id,
                     ]),
                     'files' => route('vault.files.index', [
+                        'vault' => $vault->id,
+                    ]),
+                    'reports' => route('vault.reports.index', [
                         'vault' => $vault->id,
                     ]),
                     'settings' => route('vault.settings.index', [

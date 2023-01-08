@@ -49,6 +49,7 @@ class VaultIndexViewHelperTest extends TestCase
                     'show_files_tab' => false,
                     'show_journal_tab' => false,
                     'show_companies_tab' => false,
+                    'show_reports_tab' => false,
                 ],
                 'url' => [
                     'dashboard' => env('APP_URL').'/vaults/'.$vault->id,
@@ -58,6 +59,7 @@ class VaultIndexViewHelperTest extends TestCase
                     'companies' => env('APP_URL').'/vaults/'.$vault->id.'/companies',
                     'tasks' => env('APP_URL').'/vaults/'.$vault->id.'/tasks',
                     'files' => env('APP_URL').'/vaults/'.$vault->id.'/files',
+                    'reports' => env('APP_URL').'/vaults/'.$vault->id.'/reports',
                     'settings' => env('APP_URL').'/vaults/'.$vault->id.'/settings',
                     'search' => env('APP_URL').'/vaults/'.$vault->id.'/search',
                     'get_most_consulted_contacts' => env('APP_URL').'/vaults/'.$vault->id.'/search/user/contact/mostConsulted',

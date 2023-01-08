@@ -94,6 +94,7 @@ use App\Domains\Vault\ManageJournals\Web\Controllers\PostSliceOfLifeController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\PostTagController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\SliceOfLifeController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\SliceOfLifeCoverImageController;
+use App\Domains\Vault\ManageReports\Web\Controllers\ReportImportantDateSummaryController;
 use App\Domains\Vault\ManageTasks\Web\Controllers\VaultTaskController;
 use App\Domains\Vault\ManageVault\Web\Controllers\VaultController;
 use App\Domains\Vault\ManageVault\Web\Controllers\VaultFeedController;
@@ -172,6 +173,12 @@ Route::middleware([
 
             // tasks
             Route::get('tasks', [VaultTaskController::class, 'index'])->name('vault.tasks.index');
+
+            // reports
+            Route::prefix('reports')->group(function () {
+                Route::get('', [ReportImportantDateSummaryController::class, 'index'])->name('vault.reports.index');
+                Route::get('importantDates', [ReportImportantDateSummaryController::class, 'index'])->name('vault.reports.important_dates.index');
+            });
 
             // vault contacts
             Route::prefix('contacts')->group(function () {

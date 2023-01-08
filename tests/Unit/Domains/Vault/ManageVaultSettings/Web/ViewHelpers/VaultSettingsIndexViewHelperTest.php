@@ -65,6 +65,7 @@ class VaultSettingsIndexViewHelperTest extends TestCase
                 'show_files_tab' => true,
                 'show_journal_tab' => true,
                 'show_companies_tab' => true,
+                'show_reports_tab' => true,
             ],
             $array['visibility']
         );

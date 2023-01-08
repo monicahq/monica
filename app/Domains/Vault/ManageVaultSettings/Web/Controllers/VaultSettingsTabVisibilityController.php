@@ -20,6 +20,7 @@ class VaultSettingsTabVisibilityController extends Controller
             'show_files_tab' => $request->boolean('show_files_tab'),
             'show_journal_tab' => $request->boolean('show_journal_tab'),
             'show_companies_tab' => $request->boolean('show_companies_tab'),
+            'show_reports_tab' => $request->boolean('show_reports_tab'),
         ];
 
         (new UpdateVaultTabVisibility())->execute($data);

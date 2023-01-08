@@ -63,7 +63,7 @@
       </template>
 
       <!-- default state -->
-      <div class="inline-flex items-center text-sm">
+      <div class="inline-flex items-center">
         <!-- avatar -->
         <div class="img relative">
           <inertia-link :href="contact.url">

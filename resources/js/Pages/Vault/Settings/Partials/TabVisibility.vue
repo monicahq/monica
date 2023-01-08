@@ -12,6 +12,7 @@ const form = useForm({
   show_files_tab: false,
   show_journal_tab: false,
   show_companies_tab: false,
+  show_reports_tab: false,
 });
 
 onMounted(() => {
@@ -20,6 +21,7 @@ onMounted(() => {
   form.show_files_tab = props.data.visibility.show_files_tab;
   form.show_journal_tab = props.data.visibility.show_journal_tab;
   form.show_companies_tab = props.data.visibility.show_companies_tab;
+  form.show_reports_tab = props.data.visibility.show_reports_tab;
 });
 
 const update = () => {
@@ -108,6 +110,20 @@ const update = () => {
             <div
               class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
             <span class="ml-3 dark:text-gray-300"> Show Tasks tab </span>
+          </label>
+        </li>
+        <li
+          class="item-list border-b border-gray-200 p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          <label for="toggle-reports" class="relative inline-flex cursor-pointer items-center">
+            <input
+              id="toggle-reports"
+              v-model="form.show_reports_tab"
+              type="checkbox"
+              class="peer sr-only"
+              @change="update" />
+            <div
+              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
+            <span class="ml-3 dark:text-gray-300"> Show Reports tab </span>
           </label>
         </li>
         <li
