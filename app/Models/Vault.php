@@ -213,6 +213,16 @@ class Vault extends Model
     }
 
     /**
+     * Get the mood tracking parameters associated with the vault.
+     *
+     * @return HasMany
+     */
+    public function moodTrackingParameters(): HasMany
+    {
+        return $this->hasMany(MoodTrackingParameter::class);
+    }
+
+    /**
      * Get the life event categories associated with the vault.
      *
      * @return HasMany

@@ -45,7 +45,7 @@
               :value="color.bg_color"
               name="name-order"
               type="radio"
-              class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700 dark:border-gray-700"
+              class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700"
               @click="form.text_color = color.text_color" />
             <label
               :for="color.bg_color"
@@ -129,7 +129,7 @@
                   :value="color.bg_color"
                   name="name-order"
                   type="radio"
-                  class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700 dark:border-gray-700"
+                  class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700"
                   @click="form.text_color = color.text_color" />
                 <label
                   :for="color.bg_color"

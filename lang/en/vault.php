@@ -191,6 +191,11 @@ return [
     'settings_delete_cta_confirmation' => 'Are you sure? This will delete all the data inside this vault.',
     'settings_delete_destroy_success' => 'The vault has been deleted',
 
+    'settings_mood_tracking_parameters_awesome' => 'Awesome',
+    'settings_mood_tracking_parameters_good' => 'Good',
+    'settings_mood_tracking_parameters_meh' => 'Meh',
+    'settings_mood_tracking_parameters_bad' => 'Bad',
+    'settings_mood_tracking_parameters_awful' => 'Awful',
     'settings_life_event_category_transportation' => 'Transportation',
     'settings_life_event_type_transportation_bike' => 'Rode a bike',
     'settings_life_event_type_transportation_car' => 'Drove',

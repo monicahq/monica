@@ -14,6 +14,8 @@
 
         <tags :data="data" />
 
+        <mood-tracking-parameters :data="data" />
+
         <life-event-types-and-categories :data="data" />
 
         <delete :data="data" />
@@ -31,6 +33,7 @@ import Tags from '@/Pages/Vault/Settings/Partials/Tags.vue';
 import Users from '@/Pages/Vault/Settings/Partials/Users.vue';
 import TabVisibility from '@/Pages/Vault/Settings/Partials/TabVisibility.vue';
 import ContactImportantDateTypes from '@/Pages/Vault/Settings/Partials/ContactImportantDateTypes.vue';
+import MoodTrackingParameters from '@/Pages/Vault/Settings/Partials/MoodTrackingParameters.vue';
 import LifeEventTypesAndCategories from '@/Pages/Vault/Settings/Partials/LifeEventTypesAndCategories.vue';
 
 export default {
@@ -43,6 +46,7 @@ export default {
     Users,
     TabVisibility,
     ContactImportantDateTypes,
+    MoodTrackingParameters,
     LifeEventTypesAndCategories,
   },
 

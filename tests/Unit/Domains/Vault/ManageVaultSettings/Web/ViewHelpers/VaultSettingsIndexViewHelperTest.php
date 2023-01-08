@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\Label;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
+use App\Models\MoodTrackingParameter;
 use App\Models\Tag;
 use App\Models\Template;
 use App\Models\User;
@@ -33,11 +34,16 @@ class VaultSettingsIndexViewHelperTest extends TestCase
             'account_id' => $template->account_id,
         ]);
         $vault->users()->sync([$userInVault->id => ['permission' => 100, 'contact_id' => Contact::factory()->create()->id]]);
+        MoodTrackingParameter::factory()->create([
+            'vault_id' => $vault->id,
+            'label' => 'test',
+            'position' => 2,
+        ]);
 
         $vault->refresh();
         $array = VaultSettingsIndexViewHelper::data($vault);
         $this->assertCount(
-            10,
+            12,
             $array
         );
         $this->assertArrayHasKey('templates', $array);
@@ -47,6 +53,8 @@ class VaultSettingsIndexViewHelperTest extends TestCase
         $this->assertArrayHasKey('labels', $array);
         $this->assertArrayHasKey('label_colors', $array);
         $this->assertArrayHasKey('tags', $array);
+        $this->assertArrayHasKey('mood_tracking_parameters', $array);
+        $this->assertArrayHasKey('mood_tracking_parameter_colors', $array);
         $this->assertArrayHasKey('life_event_categories', $array);
         $this->assertEquals(
             [
@@ -104,6 +112,7 @@ class VaultSettingsIndexViewHelperTest extends TestCase
                 'label_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/labels',
                 'tag_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/tags',
                 'contact_date_important_date_type_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/contactImportantDateTypes',
+                'mood_tracking_parameter_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/moodTrackingParameters',
                 'life_event_category_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/lifeEventCategories',
                 'update' => env('APP_URL').'/vaults/'.$vault->id.'/settings',
                 'update_tab_visibility' => env('APP_URL').'/vaults/'.$vault->id.'/settings/visibility',
@@ -153,6 +162,33 @@ class VaultSettingsIndexViewHelperTest extends TestCase
                 'url' => [
                     'update' => env('APP_URL').'/vaults/'.$vault->id.'/settings/tags/'.$tag->id,
                     'destroy' => env('APP_URL').'/vaults/'.$vault->id.'/settings/tags/'.$tag->id,
+                ],
+            ],
+            $array
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_data_needed_for_the_mood_tracking_parameter(): void
+    {
+        $vault = Vault::factory()->create();
+        $moodTrackingParameter = MoodTrackingParameter::factory()->create([
+            'vault_id' => $vault->id,
+            'label' => 'test',
+            'hex_color' => '3243',
+            'position' => 2,
+        ]);
+        $array = VaultSettingsIndexViewHelper::dtoMoodTrackingParameter($moodTrackingParameter);
+        $this->assertEquals(
+            [
+                'id' => $moodTrackingParameter->id,
+                'label' => 'test',
+                'hex_color' => '3243',
+                'position' => 2,
+                'url' => [
+                    'position' => env('APP_URL').'/vaults/'.$vault->id.'/settings/moodTrackingParameters/'.$moodTrackingParameter->id.'/order',
+                    'update' => env('APP_URL').'/vaults/'.$vault->id.'/settings/moodTrackingParameters/'.$moodTrackingParameter->id,
+                    'destroy' => env('APP_URL').'/vaults/'.$vault->id.'/settings/moodTrackingParameters/'.$moodTrackingParameter->id,
                 ],
             ],
             $array
