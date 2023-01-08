@@ -5,10 +5,6 @@
 
     RewriteEngine On
 
-    # Redirect to https
-    RewriteCond %{HTTP:X-Forwarded-Proto} !=https
-    RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,N]
-
     <IfModule mod_headers.c>
         # Activate HSTS
         Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload;"
@@ -27,12 +23,27 @@
         </filesMatch>
     </IfModule>
 
+    # Redirect to https
+    RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+    RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,N]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
+    # Redirect .well-known urls (https://en.wikipedia.org/wiki/List_of_/.well-known/_services_offered_by_webservers)
+    RewriteCond %{REQUEST_URI} .well-known/carddav
+    RewriteRule ^ /dav/ [L,R=301,N]
+
+    RewriteCond %{REQUEST_URI} .well-known/caldav
+    RewriteRule ^ /dav/ [L,R=301,N]
+
+    RewriteCond %{REQUEST_URI} .well-known/security.txt
+    RewriteRule ^ /security.txt [L,R=301,N]
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !dav/*
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
