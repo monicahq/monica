@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Domains\Contact\DAV\Services;
+namespace Tests\Unit\Domains\Settings\ManageGenders\Dav;
 
 use App\Domains\Settings\ManageGenders\Dav\ExportGender;
 use App\Models\Contact;

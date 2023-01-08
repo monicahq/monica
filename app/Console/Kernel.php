@@ -34,7 +34,9 @@ class Kernel extends ConsoleKernel
     {
         $this->scheduleCommand($schedule, 'model:prune', 'daily');
         $this->scheduleCommand($schedule, 'queue:prune-batches', 'daily');
-        $this->scheduleCommand($schedule, 'telescope:prune', 'daily');
+        if (config('telescope.enabled')) {
+            $this->scheduleCommand($schedule, 'telescope:prune', 'daily');
+        }
         $this->scheduleJob($schedule, ProcessScheduledContactReminders::class, 'minutes', 1);
         $this->scheduleJob($schedule, CleanSyncToken::class, 'daily');
     }

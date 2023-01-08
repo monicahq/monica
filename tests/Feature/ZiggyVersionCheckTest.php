@@ -24,6 +24,6 @@ class ZiggyVersionCheckTest extends TestCase
 
         $yarnVersion = Str::of($yarnJson->data->trees[0]->name)->replace('ziggy-js@', '');
 
-        $this->assertEquals($composerVersion, $yarnVersion);
+        $this->assertEquals($composerVersion, $yarnVersion, 'Ziggy version for composer and yarn are not the same');
     }
 }

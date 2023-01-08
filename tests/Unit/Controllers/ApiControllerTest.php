@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Api;
+namespace Tests\Unit\Controllers;
 
 use App\Http\Controllers\ApiController;
 use Laravel\Sanctum\Sanctum;

@@ -45,7 +45,7 @@
     "vue": "^3.2.36",
     "vue-clipboard3": "^2.0.0",
     "vuedraggable": "^4.1.0",
-    "ziggy-js": "^1.4.6"
+    "ziggy-js": "1.5.0"
   },
   "lint-staged": {
     "*.js|resources/**/*.{vue,js}": [
