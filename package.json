@@ -5,6 +5,7 @@
     "build": "vite build",
     "lint": "eslint --ext .js,.vue *.js resources",
     "format": "prettier --write '**/*.{js,vue,css,scss}'",
+    "prepare": "husky install",
     "pretest": "DB_CONNECTION=testing php artisan migrate:fresh && DB_CONNECTION=testing php artisan db:seed",
     "posttest": "vendor/bin/phpstan analyse && vendor/bin/psalm",
     "test": "vendor/bin/phpunit",
@@ -18,33 +19,33 @@
     "@sentry/tracing": "^7.11.1",
     "@sentry/vue": "^7.11.1",
     "@tailwindcss/forms": "^0.5.2",
-    "@vitejs/plugin-basic-ssl": "^0.1.1",
-    "@vitejs/plugin-vue": "^3.0.1",
+    "@vitejs/plugin-basic-ssl": "^1.0.1",
+    "@vitejs/plugin-vue": "^4.0.0",
     "ant-design-vue": "^3.2.5",
     "autoprefixer": "^10.4.7",
-    "axios": "^0.27.2",
+    "axios": "^1.2.2",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-vue": "^9.1.0",
-    "husky": "^4.3.0",
-    "laravel-vite-plugin": "^0.5.0",
+    "husky": "^8.0.0",
+    "laravel-vite-plugin": "^0.7.0",
     "laravel-vue-i18n": "^2.1.0",
-    "lint-staged": "^12.5.0",
+    "lint-staged": "^13.1.0",
     "lodash": "^4.17.19",
     "mitt": "^3.0.0",
     "postcss": "^8.4.14",
-    "postcss-import": "^14.1.0",
+    "postcss-import": "^15.1.0",
     "prettier": "^2.6.2",
-    "prettier-plugin-tailwindcss": "^0.1.11",
+    "prettier-plugin-tailwindcss": "^0.2.1",
     "sass": "^1.52.1",
     "tailwindcss": "^3.0.24",
     "tiny-emitter": "^2.1.0",
     "uploadcare-vue": "^1.0.0",
     "v-calendar": "^3.0.0-alpha.8",
-    "vite": "^3.0.2",
+    "vite": "^4.0.4",
     "vue": "^3.2.36",
     "vue-clipboard3": "^2.0.0",
-    "vuedraggable": "^4.1.0",
+    "vuedraggable-es": "^4.1.0",
     "ziggy-js": "1.5.0"
   },
   "lint-staged": {
@@ -59,11 +60,6 @@
       "php artisan ide-helper:models --nowrite",
       "vendor/bin/pint"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.7"

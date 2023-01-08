@@ -1,5 +1,5 @@
 <script setup>
-import draggable from 'vuedraggable';
+import draggable from 'vuedraggable-es';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
