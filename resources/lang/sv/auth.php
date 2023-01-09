@@ -31,7 +31,7 @@ return [
     '2fa_wrong_validation' => 'Den tvåfaktorsautentiseringen har misslyckats.',
     '2fa_one_time_password' => 'Tvåfaktorsautentiseringskod',
     '2fa_recuperation_code' => 'Ange en tvåfaktorsåterställningskod',
-    '2fa_one_time_or_recuperation' => 'Enter a two factor authentication code or a recovery code',
+    '2fa_one_time_or_recuperation' => 'Ange en auktoriseringskod eller återställningskod',
     '2fa_otp_help' => 'Öppna din tvåfaktorsautentisering mobilapp och kopiera koden',
 
     'login_to_account' => 'Logga in på ditt konto',
