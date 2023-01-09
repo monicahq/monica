@@ -83,19 +83,19 @@ return [
     'edit_contact_information' => 'Redigera kontaktinformation',
     'contact_archive' => 'Arkivera kontakt',
     'contact_unarchive' => 'Avarkivera kontakt',
-    'contact_archive_help' => 'Archived contacts are not be shown on the contact list, but still appear in search results.',
+    'contact_archive_help' => 'Arkiverade kontakter visas inte på kontaktlistan, men visas fortfarande i sökresultaten.',
     'call_button' => 'Logga ett samtal',
     'set_favorite' => 'Favoritkontakter placeras högst upp i kontaktlistan',
 
     // Stay in touch
     'stay_in_touch' => 'Håll kontakten',
     'stay_in_touch_frequency' => 'Håll kontakten varje dag|Håll kontakten var {count} dag',
-    'stay_in_touch_next_date' => 'Next due: {date}',
+    'stay_in_touch_next_date' => 'Nästa tillfälle: {date}',
     'stay_in_touch_invalid' => 'Frekvensen måste vara större än 0.',
     'stay_in_touch_premium' => 'Du måste uppgradera ditt konto för att använda denna funktion',
     'stay_in_touch_modal_title' => 'Håll kontakten',
     'stay_in_touch_modal_desc' => 'Vi kan påminna dig via e-post om att hålla kontakten med {firstname} med ett regelbundet intervall.',
-    'stay_in_touch_modal_label' => 'Send me an email every… {count} day|Send me an email every… {count} days',
+    'stay_in_touch_modal_label' => 'Skicka ett mail var… {count} dag|Skicka ett mail varje… {count} dagar',
 
     // Calls
     'modal_call_title' => 'Registrera samtal',
@@ -115,7 +115,7 @@ return [
     'call_emotions' => 'Känslor:',
 
     // Conversation
-    'conversation_blank' => 'Record conversations you have with :name on social media, SMS…',
+    'conversation_blank' => 'Registrera samtal du har med :name på sociala media, SMS…',
     'conversation_delete_link' => 'Ta bort konversationen',
     'conversation_edit_title' => 'Redigera konversation',
     'conversation_edit_delete' => 'Är du säker på att du vill ta bort denna konversation? Borttagning är permanent.',
@@ -124,7 +124,7 @@ return [
     'conversation_delete_success' => 'Konversationen har tagits bort.',
     'conversation_add_title' => 'Spela in en ny konversation',
     'conversation_add_when' => 'När hade du den här konversationen?',
-    'conversation_add_who_wrote' => 'Who sent this message?',
+    'conversation_add_who_wrote' => 'Vem har skickat detta meddelande?',
     'conversation_add_how' => 'Hur kommunicerade du?',
     'conversation_add_you' => 'Du',
     'conversation_add_content' => 'Skriv ner vad som sades',
@@ -137,14 +137,14 @@ return [
     'conversation_list_cta' => 'Logga konversation',
 
     // age - birthday
-    'birthdate_not_set' => 'Birthday is not set',
+    'birthdate_not_set' => 'Födelsedatum är inte satt',
     'age_approximate_in_years' => 'runt :age år gammal',
     'age_exact_in_years' => ':age år gammal',
     'age_exact_birthdate' => 'född :date',
 
     // Last called
     'last_called' => 'Senast anropad: :date',
-    'last_talked_to' => 'Last called: {date}',
+    'last_talked_to' => 'Senast uppringd: {date}',
     'last_called_empty' => 'Senast anropad: okänd',
     'last_activity_date' => 'Senaste aktiviteten tillsammans: :date',
     'last_activity_date_empty' => 'Senaste aktiviteten tillsammans: okänd',
@@ -155,7 +155,7 @@ return [
     'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'Förnamn',
-    'information_edit_lastname' => 'Last name (optional)',
+    'information_edit_lastname' => 'Efternamn (valfritt)',
     'information_edit_description' => 'Description (optional)',
     'information_edit_description_help' => 'Används på kontaktlistan för att vid behov lägga till lite kontext.',
     'information_edit_unknown' => 'Jag känner inte till personens ålder',
