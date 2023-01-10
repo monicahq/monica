@@ -1,19 +1,18 @@
-import Emitter from 'tiny-emitter';
-const emitter = new Emitter();
+import emitter from 'tiny-emitter/instance';
+
+/**
+ * Flash a message.
+ *
+ * @param {string} message
+ * @param {string} level
+ */
+export const flash = (message, level = 'success') => {
+  emitter.emit('flash', { message, level });
+};
 
 export default {
-  /**
-   * Flash a message.
-   *
-   * @param {string} message
-   * @param {string} level
-   */
-  flash(message, level = 'success') {
-    this.$emitt('flash', { message, level });
-  },
-
+  flash,
   $on: (...args) => emitter.on(...args),
   $once: (...args) => emitter.once(...args),
   $off: (...args) => emitter.off(...args),
-  $emitt: (...args) => emitter.emit(...args),
 };
