@@ -34,7 +34,15 @@ class ReminderTriggered extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail', 'telegram'];
+        if ($this->channel->type === UserNotificationChannel::TYPE_EMAIL) {
+            return ['mail'];
+        }
+
+        if ($this->channel->type === UserNotificationChannel::TYPE_TELEGRAM) {
+            return ['telegram'];
+        }
+
+        return [];
     }
 
     /**

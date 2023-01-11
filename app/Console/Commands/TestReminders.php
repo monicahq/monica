@@ -46,15 +46,19 @@ class TestReminders extends Command
 
         foreach ($scheduledContactReminders as $scheduledReminder) {
             $channel = UserNotificationChannel::findOrFail($scheduledReminder->user_notification_channel_id);
+            $contactReminder = ContactReminder::findOrFail($scheduledReminder->contact_reminder_id);
 
             if ($channel->type == UserNotificationChannel::TYPE_EMAIL && $channel->active) {
-                $contactReminder = ContactReminder::findOrFail($scheduledReminder->contact_reminder_id);
-
                 $contact = $contactReminder->contact;
                 $contactName = NameHelper::formatContactName($channel->user, $contact);
 
                 Notification::route('mail', $channel->content)
                     ->notify(new ReminderTriggered($channel, $contactReminder->label, $contactName));
+            }
+
+            if ($channel->type === UserNotificationChannel::TYPE_TELEGRAM) {
+                Notification::route('telegram', $channel->content)
+                    ->notify(new ReminderTriggered($channel, $contactReminder->label, ''));
             }
 
             try {
