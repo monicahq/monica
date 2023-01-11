@@ -143,7 +143,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="'Prefix'" />
+              :label="'Suffix'" />
           </div>
 
           <div class="flex justify-between p-5">
