@@ -7,7 +7,7 @@ import JetDropdown from '@/Components/Dropdown.vue';
 import JetDropdownLink from '@/Components/DropdownLink.vue';
 import JetNavLink from '@/Components/NavLink.vue';
 import JetResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import Footer from '@/Layouts/Footer.vue';
+import FooterLayout from '@/Layouts/FooterLayout.vue';
 
 defineProps({
   title: String,
@@ -201,7 +201,7 @@ const logout = () => {
         <slot />
       </main>
 
-      <Footer />
+      <FooterLayout />
     </div>
   </div>
 </template>

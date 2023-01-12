@@ -322,13 +322,7 @@
       <slot />
     </main>
 
-    <footer class="mb-10 text-center text-xs">
-      <ul class="dark:text-gray-300">
-        <li class="mr-4 mb-2 sm:mb-0 sm:inline">
-          {{ $t('app.layout_footer_monica') }}
-        </li>
-      </ul>
-    </footer>
+    <FooterLayout />
   </div>
 
   <toaster />
@@ -336,10 +330,12 @@
 
 <script>
 import Toaster from '@/Shared/Toaster.vue';
+import FooterLayout from '@/Layouts/FooterLayout.vue';
 
 export default {
   components: {
     Toaster,
+    FooterLayout,
   },
 
   props: {

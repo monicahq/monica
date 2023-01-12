@@ -4,6 +4,28 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Version of the application
+    |--------------------------------------------------------------------------
+    |
+    | This value returns the current version of the application.
+    |
+    */
+
+    'app_version' => trim(is_file(__DIR__.'/.version') ? file_get_contents(__DIR__.'/.version') : (is_dir(__DIR__.'/../.git') ? (($v = trim(exec('git --git-dir '.base_path('.git').' describe --abbrev=0 --tags'))) != '' ? $v : '0.0.0') : '')),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Commit hash of the application
+    |--------------------------------------------------------------------------
+    |
+    | This value returns the current commit hash of the application sources.
+    |
+    */
+
+    'commit' => trim(is_file(__DIR__.'/.commit') ? file_get_contents(__DIR__.'/.commit') : (is_dir(__DIR__.'/../.git') ? trim(exec('git --git-dir '.base_path('.git').' log --pretty="%H" -n1')) : '')),
+
+    /*
+    |--------------------------------------------------------------------------
     | DEFAULT STORAGE LIMIT IN MB
     |--------------------------------------------------------------------------
     |

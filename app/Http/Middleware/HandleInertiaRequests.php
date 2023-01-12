@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -41,6 +42,11 @@ class HandleInertiaRequests extends Middleware
             ],
             'help_links' => fn () => config('monica.help_links'),
             'help_url' => fn () => config('monica.help_center_url'),
+            'footer' => Str::markdownExternalLink(__('Version :version — commit [:short](:url).', [
+                'version' => config('monica.app_version'),
+                'short' => substr(config('monica.commit'), 0, 7),
+                'url' => 'https://github.com/monicahq/chandler/commit/'.config('monica.commit'),
+            ]), 'underline text-xs dark:text-gray-100 hover:text-gray-900 hover:dark:text-gray-200'),
         ]);
     }
 }
