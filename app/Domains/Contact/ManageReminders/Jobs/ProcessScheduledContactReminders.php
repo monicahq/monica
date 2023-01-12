@@ -57,24 +57,16 @@ class ProcessScheduledContactReminders implements ShouldQueue
 
             $this->updateScheduledContactReminderTriggeredAt($scheduledReminder);
             $this->updateNumberOfTimesTriggered($scheduledReminder->contact_reminder_id);
-
-            $this->appendToChain(
-                new RescheduleContactReminderForChannel([
-                    'contact_reminder_id' => $scheduledReminder->contact_reminder_id,
-                    'user_notification_channel_id' => $scheduledReminder->user_notification_channel_id,
-                    'contact_reminder_scheduled_id' => $scheduledReminder->id,
-                ])
-            );
         }
     }
 
     private function updateScheduledContactReminderTriggeredAt($scheduledReminder): void
     {
-        (new RescheduleContactReminderForChannel([
+        (new RescheduleContactReminderForChannel())->execute([
             'contact_reminder_id' => $scheduledReminder->contact_reminder_id,
             'user_notification_channel_id' => $scheduledReminder->user_notification_channel_id,
             'contact_reminder_scheduled_id' => $scheduledReminder->id,
-        ]))->handle();
+        ]);
     }
 
     private function updateNumberOfTimesTriggered(int $id): void
