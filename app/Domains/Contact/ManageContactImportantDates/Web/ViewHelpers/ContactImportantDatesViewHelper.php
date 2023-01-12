@@ -26,6 +26,11 @@ class ContactImportantDatesViewHelper
                     'name' => $type->label,
                 ];
             });
+        // we add an empty field so the dropdown field can be nullified
+        $dateTypesCollection->prepend([
+            'id' => null,
+            'name' => '',
+        ]);
 
         return [
             'contact' => [
