@@ -57,16 +57,20 @@ class ProcessScheduledContactReminders implements ShouldQueue
 
             $this->updateScheduledContactReminderTriggeredAt($scheduledReminder);
             $this->updateNumberOfTimesTriggered($scheduledReminder->contact_reminder_id);
+
+            (new RescheduleContactReminderForChannel())->execute([
+                'contact_reminder_id' => $scheduledReminder->contact_reminder_id,
+                'user_notification_channel_id' => $scheduledReminder->user_notification_channel_id,
+                'contact_reminder_scheduled_id' => $scheduledReminder->id,
+            ]);
         }
     }
 
     private function updateScheduledContactReminderTriggeredAt($scheduledReminder): void
     {
-        (new RescheduleContactReminderForChannel())->execute([
-            'contact_reminder_id' => $scheduledReminder->contact_reminder_id,
-            'user_notification_channel_id' => $scheduledReminder->user_notification_channel_id,
-            'contact_reminder_scheduled_id' => $scheduledReminder->id,
-        ]);
+        DB::table('contact_reminder_scheduled')
+            ->where('id', $scheduledReminder->id)
+            ->update(['triggered_at' => Carbon::now()]);
     }
 
     private function updateNumberOfTimesTriggered(int $id): void

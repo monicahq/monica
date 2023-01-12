@@ -57,6 +57,8 @@ class RescheduleContactReminderForChannel extends BaseService implements Service
 
         if ($this->contactReminder->type !== ContactReminder::TYPE_ONE_TIME) {
             $this->schedule();
+        } else {
+            $this->contactReminder->delete();
         }
     }
 
