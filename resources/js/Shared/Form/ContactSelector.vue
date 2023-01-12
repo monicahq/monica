@@ -80,9 +80,8 @@
             v-for="contact in mostConsultedContacts"
             :key="contact.id"
             class="item-list flex items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-            <inertia-link :href="contact.url" class="text-blue-500 hover:underline">
-              {{ contact.name }}
-            </inertia-link>
+            {{ contact.name }}
+
             <!-- actions -->
             <ul class="text-sm">
               <li class="inline cursor-pointer text-blue-500 hover:underline" @click="add(contact)">Add</li>
@@ -114,9 +113,7 @@
             v-for="contact in searchResults"
             :key="contact.id"
             class="item-list flex items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-            <inertia-link :href="contact.url">
-              {{ contact.name }}
-            </inertia-link>
+            {{ contact.name }}
 
             <!-- actions -->
             <ul class="text-sm">
