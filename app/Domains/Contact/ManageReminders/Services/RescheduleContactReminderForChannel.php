@@ -58,7 +58,9 @@ class RescheduleContactReminderForChannel extends BaseService implements Service
         if ($this->contactReminder->type !== ContactReminder::TYPE_ONE_TIME) {
             $this->schedule();
         } else {
-            $this->contactReminder->delete();
+            DB::table('contact_reminder_scheduled')
+                ->where('id', $this->data['contact_reminder_scheduled_id'])
+                ->delete();
         }
     }
 
