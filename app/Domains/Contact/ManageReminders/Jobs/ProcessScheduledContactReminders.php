@@ -40,18 +40,17 @@ class ProcessScheduledContactReminders implements ShouldQueue
             $userNotificationChannel = UserNotificationChannel::findOrFail($scheduledReminder->user_notification_channel_id);
 
             $contactReminder = ContactReminder::find($scheduledReminder->contact_reminder_id);
+            $contact = $contactReminder->contact;
+            $contactName = NameHelper::formatContactName($userNotificationChannel->user, $contact);
 
             if ($userNotificationChannel->type === UserNotificationChannel::TYPE_EMAIL) {
-                $contact = $contactReminder->contact;
-                $contactName = NameHelper::formatContactName($userNotificationChannel->user, $contact);
-
                 Notification::route('mail', $userNotificationChannel->content)
                     ->notify(new ReminderTriggered($userNotificationChannel, $contactReminder->label, $contactName));
             }
 
             if ($userNotificationChannel->type === UserNotificationChannel::TYPE_TELEGRAM) {
                 Notification::route('telegram', $userNotificationChannel->content)
-                    ->notify(new ReminderTriggered($userNotificationChannel, $contactReminder->label, ''));
+                    ->notify(new ReminderTriggered($userNotificationChannel, $contactReminder->label, $contactName));
             }
 
             $this->updateScheduledContactReminderTriggeredAt($scheduledReminder);
