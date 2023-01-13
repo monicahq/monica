@@ -76,9 +76,15 @@ class ReminderTriggered extends Notification
             'subject_line' => $this->content,
         ]);
 
+        // content contains the label of the ContactReminder object
+        $content = '🔔 Reminder:'.'\n'.
+            $this->content.'\n'.
+            trans('email.reminder_triggered_for').'\n'.
+            $this->contactName;
+
         return TelegramMessage::create()
             ->to($this->channel->content)
-            ->content($this->content);
+            ->content($content);
     }
 
     /**
