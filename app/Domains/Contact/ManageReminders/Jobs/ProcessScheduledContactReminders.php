@@ -34,7 +34,6 @@ class ProcessScheduledContactReminders implements ShouldQueue
 
         $scheduledContactReminders = DB::table('contact_reminder_scheduled')
             ->where('scheduled_at', '<=', $currentDate)
-            ->where('triggered_at', null)
             ->get();
 
         foreach ($scheduledContactReminders as $scheduledReminder) {
