@@ -30,7 +30,8 @@ class UpdateContactAddress extends BaseService implements ServiceInterface
             'contact_id' => 'required|integer|exists:contacts,id',
             'address_id' => 'required|integer|exists:addresses,id',
             'address_type_id' => 'nullable|integer|exists:address_types,id',
-            'street' => 'nullable|string|max:255',
+            'line_1' => 'nullable|string|max:255',
+            'line_2' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
             'province' => 'nullable|string|max:255',
             'postal_code' => 'nullable|string|max:255',
@@ -89,7 +90,8 @@ class UpdateContactAddress extends BaseService implements ServiceInterface
     private function update(): void
     {
         $this->address->address_type_id = $this->valueOrNull($this->data, 'address_type_id');
-        $this->address->street = $this->valueOrNull($this->data, 'street');
+        $this->address->line_1 = $this->valueOrNull($this->data, 'line_1');
+        $this->address->line_2 = $this->valueOrNull($this->data, 'line_2');
         $this->address->city = $this->valueOrNull($this->data, 'city');
         $this->address->province = $this->valueOrNull($this->data, 'province');
         $this->address->postal_code = $this->valueOrNull($this->data, 'postal_code');

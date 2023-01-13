@@ -46,8 +46,12 @@ class MapHelper
     {
         $sentence = '';
 
-        if (! is_null($address->street)) {
-            $sentence = $address->street;
+        if (! is_null($address->line_1)) {
+            $sentence = $address->line_1;
+        }
+
+        if (! is_null($address->line_2)) {
+            $sentence .= ' '.$address->line_2;
         }
 
         if (! is_null($address->city)) {

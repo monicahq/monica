@@ -51,12 +51,27 @@
               :label="$t('contact.addresses_address_type')" />
           </div>
 
-          <!-- street + city -->
+          <!-- street  -->
+          <div class="grid gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
+            <text-input
+              :ref="'line_1'"
+              v-model="form.line_1"
+              :label="$t('contact.addresses_line_1')"
+              :type="'text'"
+              :autofocus="true"
+              :input-class="'w-full mr-2'"
+              :required="false"
+              :autocomplete="false"
+              :maxlength="255"
+              @esc-key-pressed="createAddressModalShown = false" />
+          </div>
+
+          <!-- apartment + city -->
           <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
             <text-input
-              :ref="'street'"
-              v-model="form.street"
-              :label="$t('contact.addresses_street')"
+              :ref="'line_2'"
+              v-model="form.line_2"
+              :label="$t('contact.addresses_line_2')"
               :type="'text'"
               :autofocus="true"
               :input-class="'w-full mr-2'"
@@ -148,9 +163,10 @@
                 {{ address.type.name }}
               </p>
               <div>
-                <p v-if="address.street">
-                  {{ address.street }}
+                <p v-if="address.line_1">
+                  {{ address.line_1 }}
                 </p>
+                <p v-if="address.line_2">{{ address.line_2 }}</p>
                 <p v-if="address.postal_code || address.city">{{ address.postal_code }} {{ address.city }}</p>
                 <p v-if="address.country">
                   {{ address.country }}
@@ -191,12 +207,27 @@
                   :label="$t('contact.addresses_address_type')" />
               </div>
 
-              <!-- street + city -->
+              <!-- street  -->
+              <div class="grid gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
+                <text-input
+                  :ref="'line_1'"
+                  v-model="form.line_1"
+                  :label="$t('contact.addresses_line_1')"
+                  :type="'text'"
+                  :autofocus="true"
+                  :input-class="'w-full mr-2'"
+                  :required="false"
+                  :autocomplete="false"
+                  :maxlength="255"
+                  @esc-key-pressed="createAddressModalShown = false" />
+              </div>
+
+              <!-- apartment + city -->
               <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
                 <text-input
-                  :ref="'street'"
-                  v-model="form.street"
-                  :label="$t('contact.addresses_street')"
+                  :ref="'line_2'"
+                  v-model="form.line_2"
+                  :label="$t('contact.addresses_line_2')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full mr-2'"
@@ -308,8 +339,11 @@
                 {{ address.type.name }}
               </p>
               <div>
-                <p v-if="address.street">
-                  {{ address.street }}
+                <p v-if="address.line_1">
+                  {{ address.line_1 }}
+                </p>
+                <p v-if="address.line_2">
+                  {{ address.line_2 }}
                 </p>
                 <p v-if="address.postal_code || address.city">{{ address.postal_code }} {{ address.city }}</p>
                 <p v-if="address.country">
@@ -351,12 +385,27 @@
                   :label="$t('contact.addresses_address_type')" />
               </div>
 
-              <!-- street + city -->
+              <!-- street  -->
+              <div class="grid gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
+                <text-input
+                  :ref="'line_1'"
+                  v-model="form.line_1"
+                  :label="$t('contact.addresses_line_1')"
+                  :type="'text'"
+                  :autofocus="true"
+                  :input-class="'w-full mr-2'"
+                  :required="false"
+                  :autocomplete="false"
+                  :maxlength="255"
+                  @esc-key-pressed="createAddressModalShown = false" />
+              </div>
+
+              <!-- apartment + city -->
               <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
                 <text-input
-                  :ref="'street'"
-                  v-model="form.street"
-                  :label="$t('contact.addresses_street')"
+                  :ref="'line_2'"
+                  v-model="form.line_2"
+                  :label="$t('contact.addresses_line_2')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full mr-2'"
@@ -478,7 +527,8 @@ export default {
         type: '',
         address_type_id: 0,
         is_past_address: false,
-        street: '',
+        line_1: '',
+        line_2: '',
         city: '',
         province: '',
         postal_code: '',
@@ -499,7 +549,8 @@ export default {
 
       this.form.is_past_address = false;
       this.form.address_type_id = 0;
-      this.form.street = '';
+      this.form.line_1 = '';
+      this.form.line_2 = '';
       this.form.city = '';
       this.form.province = '';
       this.form.postal_code = '';
@@ -507,7 +558,7 @@ export default {
       this.createAddressModalShown = true;
 
       this.$nextTick(() => {
-        this.$refs.street.focus();
+        this.$refs.line_1.focus();
       });
     },
 
@@ -520,7 +571,8 @@ export default {
       this.form.errors = [];
       this.form.is_past_address = address.is_past_address;
       this.form.address_type_id = address.type ? address.type.id : 0;
-      this.form.street = address.street;
+      this.form.line_1 = address.line_1;
+      this.form.line_2 = address.line_2;
       this.form.city = address.city;
       this.form.province = address.province;
       this.form.postal_code = address.postal_code;

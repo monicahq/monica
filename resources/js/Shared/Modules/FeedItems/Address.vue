@@ -22,8 +22,11 @@
           {{ data.address.object.type.name }}
         </p>
         <div>
-          <p v-if="data.address.object.street">
-            {{ data.address.object.street }}
+          <p v-if="data.address.object.line_1">
+            {{ data.address.object.line_1 }}
+          </p>
+          <p v-if="data.address.object.line_2">
+            {{ data.address.object.line_2 }}
           </p>
           <p v-if="data.address.object.postal_code || data.address.object.city">
             {{ data.address.object.postal_code }} {{ data.address.object.city }}

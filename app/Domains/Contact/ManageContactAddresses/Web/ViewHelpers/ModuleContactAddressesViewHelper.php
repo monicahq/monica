@@ -53,7 +53,8 @@ class ModuleContactAddressesViewHelper
         return [
             'id' => $address->id,
             'is_past_address' => $address->is_past_address,
-            'street' => $address->street,
+            'line_1' => $address->line_1,
+            'line_2' => $address->line_2,
             'city' => $address->city,
             'province' => $address->province,
             'postal_code' => $address->postal_code,

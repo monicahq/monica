@@ -19,7 +19,8 @@ class MapHelperTest extends TestCase
             'default_map_site' => User::MAPS_SITE_GOOGLE_MAPS,
         ]);
         $address = Address::factory()->create([
-            'street' => '123 main st',
+            'line_1' => '123 main st',
+            'line_2' => 'Apartment 4',
             'city' => 'montreal',
             'province' => 'quebec',
             'postal_code' => 'h1k 12k',
@@ -27,7 +28,7 @@ class MapHelperTest extends TestCase
         ]);
 
         $this->assertEquals(
-            'https://www.google.com/maps/place/123+main+st+montreal+quebec+h1k+12k+Canada',
+            'https://www.google.com/maps/place/123+main+st+Apartment+4+montreal+quebec+h1k+12k+Canada',
             MapHelper::getMapLink($address, $user)
         );
 
@@ -35,7 +36,7 @@ class MapHelperTest extends TestCase
             'default_map_site' => User::MAPS_SITE_OPEN_STREET_MAPS,
         ]);
         $this->assertEquals(
-            'https://www.openstreetmap.org/search?query=123+main+st+montreal+quebec+h1k+12k+Canada',
+            'https://www.openstreetmap.org/search?query=123+main+st+Apartment+4+montreal+quebec+h1k+12k+Canada',
             MapHelper::getMapLink($address, $user)
         );
     }
@@ -44,7 +45,8 @@ class MapHelperTest extends TestCase
     public function it_gets_the_address_as_a_string(): void
     {
         $address = Address::factory()->create([
-            'street' => '123 main st',
+            'line_1' => '123 main st',
+            'line_2' => 'Apartment 4',
             'city' => 'montreal',
             'province' => 'quebec',
             'postal_code' => 'h1k 12k',
@@ -52,7 +54,7 @@ class MapHelperTest extends TestCase
         ]);
 
         $this->assertEquals(
-            '123 main st montreal quebec h1k 12k Canada',
+            '123 main st Apartment 4 montreal quebec h1k 12k Canada',
             MapHelper::getAddressAsString($address)
         );
     }

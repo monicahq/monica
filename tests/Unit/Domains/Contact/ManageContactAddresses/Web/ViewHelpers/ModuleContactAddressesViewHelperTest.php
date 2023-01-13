@@ -88,7 +88,8 @@ class ModuleContactAddressesViewHelperTest extends TestCase
         ]);
 
         $activeAddress = Address::factory()->create([
-            'street' => '123 main st',
+            'line_1' => '123 main st',
+            'line_2' => 'Apartment 4',
             'city' => 'montreal',
             'province' => 'quebec',
             'postal_code' => 'h1k 12k',
@@ -103,7 +104,8 @@ class ModuleContactAddressesViewHelperTest extends TestCase
             [
                 'id' => $activeAddress->id,
                 'is_past_address' => false,
-                'street' => '123 main st',
+                'line_1' => '123 main st',
+                'line_2' => 'Apartment 4',
                 'city' => 'montreal',
                 'province' => 'quebec',
                 'postal_code' => 'h1k 12k',
@@ -113,7 +115,7 @@ class ModuleContactAddressesViewHelperTest extends TestCase
                     'name' => 'super type',
                 ],
                 'url' => [
-                    'show' => 'https://www.google.com/maps/place/123+main+st+montreal+quebec+h1k+12k+Canada',
+                    'show' => 'https://www.google.com/maps/place/123+main+st+Apartment+4+montreal+quebec+h1k+12k+Canada',
                     'update' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/addresses/'.$activeAddress->id,
                     'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/addresses/'.$activeAddress->id,
                 ],

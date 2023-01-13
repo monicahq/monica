@@ -24,7 +24,8 @@ class AddressFactory extends Factory
         return [
             'contact_id' => Contact::factory(),
             'address_type_id' => AddressType::factory(),
-            'street' => $this->faker->streetAddress(),
+            'line_1' => $this->faker->streetAddress(),
+            'line_2' => $this->faker->streetAddress(),
             'city' => $this->faker->city(),
             'province' => $this->faker->name(),
             'postal_code' => $this->faker->postcode(),

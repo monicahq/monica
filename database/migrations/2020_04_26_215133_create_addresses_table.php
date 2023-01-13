@@ -17,7 +17,8 @@ return new class() extends Migration
             $table->unsignedBigInteger('contact_id');
             $table->unsignedBigInteger('address_type_id')->nullable();
             $table->boolean('is_past_address')->default(false);
-            $table->string('street')->nullable();
+            $table->string('line_1')->nullable();
+            $table->string('line_2')->nullable();
             $table->string('city')->nullable();
             $table->string('province')->nullable();
             $table->string('postal_code')->nullable();

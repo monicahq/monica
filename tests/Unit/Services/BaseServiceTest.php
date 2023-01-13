@@ -34,7 +34,7 @@ class BaseServiceTest extends TestCase
     public function it_validates_rules(): void
     {
         $rules = [
-            'street' => 'nullable|string|max:255',
+            'line_1' => 'nullable|string|max:255',
         ];
 
         $stub = $this->getMockForAbstractClass(BaseService::class);
@@ -42,7 +42,7 @@ class BaseServiceTest extends TestCase
 
         $this->assertTrue(
             $stub->validateRules([
-                'street' => 'la rue du bonheur',
+                'line_1' => 'la rue du bonheur',
             ])
         );
     }

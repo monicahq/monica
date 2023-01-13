@@ -67,7 +67,7 @@ class GetGPSCoordinateTest extends TestCase
         config(['monica.location_iq_api_key' => 'test']);
 
         $address = Address::factory()->create([
-            'street' => '',
+            'line_1' => '',
             'city' => 'sieklopekznqqq',
             'postal_code' => '',
         ]);
@@ -93,7 +93,7 @@ class GetGPSCoordinateTest extends TestCase
         ]);
 
         $address = Address::factory()->create([
-            'street' => '',
+            'line_1' => '',
             'city' => 'sieklopekznqqq',
             'postal_code' => '',
         ]);
