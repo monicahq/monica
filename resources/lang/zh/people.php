@@ -124,7 +124,7 @@ return [
     'conversation_delete_success' => '对话成功删除',
     'conversation_add_title' => '记录一个新对话',
     'conversation_add_when' => '你们何时进行的对话？',
-    'conversation_add_who_wrote' => 'Who sent this message?',
+    'conversation_add_who_wrote' => '谁发的这条消息？',
     'conversation_add_how' => '你们怎么交流？',
     'conversation_add_you' => '您',
     'conversation_add_content' => '写下你们说的话',
