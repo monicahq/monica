@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'app_version' => trim(is_file(__DIR__.'/.version') ? file_get_contents(__DIR__.'/.version') : (is_dir(__DIR__.'/../.git') ? (($v = trim(exec('git --git-dir '.base_path('.git').' describe --abbrev=0 --tags'))) != '' ? $v : '0.0.0') : '')),
+    'app_version' => trim(is_file(__DIR__.'/.version') ? file_get_contents(__DIR__.'/.version') : (is_dir(__DIR__.'/../.git') ? (($v = trim(exec('git --git-dir '.base_path('.git').' describe --abbrev=0 --tags 2>/dev/null'))) != '' ? $v : '0.0.0') : '0.0.0')),
 
     /*
     |--------------------------------------------------------------------------
