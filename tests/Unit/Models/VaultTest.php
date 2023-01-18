@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use App\Models\Address;
 use App\Models\Company;
 use App\Models\Contact;
 use App\Models\ContactImportantDateType;
@@ -176,5 +177,16 @@ class VaultTest extends TestCase
         ]);
 
         $this->assertTrue($vault->lifeEvents()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_addresses(): void
+    {
+        $vault = Vault::factory()->create();
+        Address::factory()->count(2)->create([
+            'vault_id' => $vault->id,
+        ]);
+
+        $this->assertTrue($vault->addresses()->exists());
     }
 }

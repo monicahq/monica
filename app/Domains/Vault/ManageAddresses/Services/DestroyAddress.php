@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Domains\Contact\ManageContactAddresses\Services;
+namespace App\Domains\Vault\ManageAddresses\Services;
 
-use App\Helpers\MapHelper;
 use App\Interfaces\ServiceInterface;
 use App\Models\Address;
-use App\Models\ContactFeedItem;
 use App\Services\BaseService;
-use Carbon\Carbon;
 
-class DestroyContactAddress extends BaseService implements ServiceInterface
+class DestroyAddress extends BaseService implements ServiceInterface
 {
     private Address $address;
 
@@ -24,7 +21,6 @@ class DestroyContactAddress extends BaseService implements ServiceInterface
             'account_id' => 'required|integer|exists:accounts,id',
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
-            'contact_id' => 'required|integer|exists:contacts,id',
             'address_id' => 'required|integer|exists:addresses,id',
         ];
     }
@@ -39,13 +35,12 @@ class DestroyContactAddress extends BaseService implements ServiceInterface
         return [
             'author_must_belong_to_account',
             'vault_must_belong_to_account',
-            'contact_must_belong_to_vault',
             'author_must_be_vault_editor',
         ];
     }
 
     /**
-     * Delete a contact address.
+     * Delete an address.
      *
      * @param  array  $data
      */
@@ -53,24 +48,9 @@ class DestroyContactAddress extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->address = $this->contact->addresses()
+        $this->address = $this->vault->addresses()
             ->findOrFail($data['address_id']);
 
         $this->address->delete();
-
-        $this->createFeedItem();
-
-        $this->contact->last_updated_at = Carbon::now();
-        $this->contact->save();
-    }
-
-    private function createFeedItem(): void
-    {
-        ContactFeedItem::create([
-            'author_id' => $this->author->id,
-            'contact_id' => $this->contact->id,
-            'action' => ContactFeedItem::ACTION_CONTACT_ADDRESS_DESTROYED,
-            'description' => MapHelper::getAddressAsString($this->address),
-        ]);
     }
 }

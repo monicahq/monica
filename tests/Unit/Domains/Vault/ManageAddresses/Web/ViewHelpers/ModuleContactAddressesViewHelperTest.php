@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Domains\Contact\ManageContactAddresses\Web\ViewHelpers;
+namespace Tests\Unit\Domains\Vault\ManageContactAddresses\Web\ViewHelpers;
 
 use App\Domains\Contact\ManageContactAddresses\Web\ViewHelpers\ModuleContactAddressesViewHelper;
 use App\Models\Address;
@@ -21,14 +21,10 @@ class ModuleContactAddressesViewHelperTest extends TestCase
         $contact = Contact::factory()->create();
         $user = User::factory()->create();
 
-        Address::factory()->create([
-            'contact_id' => $contact->id,
-            'is_past_address' => false,
-        ]);
-        Address::factory()->create([
-            'contact_id' => $contact->id,
-            'is_past_address' => true,
-        ]);
+        $address = Address::factory()->create();
+        $address->contacts()->attach($contact, ['is_past_address' => true]);
+        $address = Address::factory()->create();
+        $address->contacts()->attach($contact, ['is_past_address' => false]);
 
         $addressType = AddressType::factory()->create([
             'account_id' => $contact->vault->account_id,
@@ -94,15 +90,17 @@ class ModuleContactAddressesViewHelperTest extends TestCase
             'province' => 'quebec',
             'postal_code' => 'h1k 12k',
             'country' => 'Canada',
-            'is_past_address' => false,
             'address_type_id' => $addressType->id,
         ]);
 
-        $collection = ModuleContactAddressesViewHelper::dto($contact, $activeAddress, $user);
+        $activeAddress->contacts()->attach($contact, ['is_past_address' => false]);
+        $address = $contact->addresses()->where('address_id', $activeAddress->id)->first();
+
+        $collection = ModuleContactAddressesViewHelper::dto($contact, $address, $user);
 
         $this->assertEquals(
             [
-                'id' => $activeAddress->id,
+                'id' => $address->id,
                 'is_past_address' => false,
                 'line_1' => '123 main st',
                 'line_2' => 'Apartment 4',

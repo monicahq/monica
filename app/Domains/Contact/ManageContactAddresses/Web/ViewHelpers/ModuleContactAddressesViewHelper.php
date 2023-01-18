@@ -4,6 +4,7 @@ namespace App\Domains\Contact\ManageContactAddresses\Web\ViewHelpers;
 
 use App\Helpers\MapHelper;
 use App\Models\Address;
+use App\Models\AddressType;
 use App\Models\Contact;
 use App\Models\User;
 
@@ -11,29 +12,24 @@ class ModuleContactAddressesViewHelper
 {
     public static function data(Contact $contact, User $user): array
     {
-        $activeAddressesCollection = $contact->addresses()->where('is_past_address', false)->get();
-        $inactiveAddressesCollection = $contact->addresses()->where('is_past_address', true)->get();
+        $activeAddressesCollection = $contact->addresses()
+            ->wherePivot('is_past_address', false)
+            ->get()
+            ->map(fn (Address $address) => self::dto($contact, $address, $user));
 
-        // get collections
-        $activeAddressesCollection = $activeAddressesCollection->map(function ($address) use ($contact, $user) {
-            return self::dto($contact, $address, $user);
-        });
-        $inactiveAddressesCollection = $inactiveAddressesCollection->map(function ($address) use ($contact, $user) {
-            return self::dto($contact, $address, $user);
-        });
+        $inactiveAddressesCollection = $contact->addresses()
+            ->wherePivot('is_past_address', true)
+            ->get()
+            ->map(fn (Address $address) => self::dto($contact, $address, $user));
 
-        $addressTypes = $contact->vault->account
+        $addressTypesCollection = $contact->vault->account
             ->addressTypes()
-            ->get();
-
-        $addressTypesCollection = collect();
-        foreach ($addressTypes as $addressType) {
-            $addressTypesCollection->push([
+            ->get()
+            ->map(fn (AddressType $addressType) => [
                 'id' => $addressType->id,
                 'name' => $addressType->name,
                 'selected' => false,
             ]);
-        }
 
         return [
             'active_addresses' => $activeAddressesCollection,
@@ -52,7 +48,7 @@ class ModuleContactAddressesViewHelper
     {
         return [
             'id' => $address->id,
-            'is_past_address' => $address->is_past_address,
+            'is_past_address' => (bool) $address->pivot->is_past_address,
             'line_1' => $address->line_1,
             'line_2' => $address->line_2,
             'city' => $address->city,

@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Domains\Contact\ManageContactAddresses\Services;
+namespace App\Domains\Vault\ManageAddresses\Services;
 
-use App\Domains\Contact\ManageContactAddresses\Jobs\FetchAddressGeocoding;
-use App\Helpers\MapHelper;
+use App\Domains\Vault\ManageAddresses\Jobs\FetchAddressGeocoding;
 use App\Interfaces\ServiceInterface;
 use App\Models\Address;
-use App\Models\ContactFeedItem;
 use App\Services\BaseService;
-use Carbon\Carbon;
 
-class UpdateContactAddress extends BaseService implements ServiceInterface
+class UpdateAddress extends BaseService implements ServiceInterface
 {
     private Address $address;
 
@@ -27,7 +24,6 @@ class UpdateContactAddress extends BaseService implements ServiceInterface
             'account_id' => 'required|integer|exists:accounts,id',
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
-            'contact_id' => 'required|integer|exists:contacts,id',
             'address_id' => 'required|integer|exists:addresses,id',
             'address_type_id' => 'nullable|integer|exists:address_types,id',
             'line_1' => 'nullable|string|max:255',
@@ -38,9 +34,6 @@ class UpdateContactAddress extends BaseService implements ServiceInterface
             'country' => 'nullable|string|max:255',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
-            'lived_from_at' => 'nullable|date_format:Y-m-d',
-            'lived_until_at' => 'nullable|date_format:Y-m-d',
-            'is_past_address' => 'nullable|boolean',
         ];
     }
 
@@ -54,13 +47,12 @@ class UpdateContactAddress extends BaseService implements ServiceInterface
         return [
             'author_must_belong_to_account',
             'vault_must_belong_to_account',
-            'contact_must_belong_to_vault',
             'author_must_be_vault_editor',
         ];
     }
 
     /**
-     * Update a contact address.
+     * Update an address.
      *
      * @param  array  $data
      * @return Address
@@ -83,7 +75,7 @@ class UpdateContactAddress extends BaseService implements ServiceInterface
                 ->findOrFail($this->data['address_type_id']);
         }
 
-        $this->address = $this->contact->addresses()
+        $this->address = $this->vault->addresses()
             ->findOrFail($this->data['address_id']);
     }
 
@@ -98,33 +90,13 @@ class UpdateContactAddress extends BaseService implements ServiceInterface
         $this->address->country = $this->valueOrNull($this->data, 'country');
         $this->address->latitude = $this->valueOrNull($this->data, 'latitude');
         $this->address->longitude = $this->valueOrNull($this->data, 'longitude');
-        $this->address->lived_from_at = $this->valueOrNull($this->data, 'lived_from_at');
-        $this->address->lived_until_at = $this->valueOrNull($this->data, 'lived_until_at');
-        $this->address->is_past_address = $this->valueOrFalse($this->data, 'is_past_address');
         $this->address->save();
 
         $this->geocodeAddress();
-
-        $this->createFeedItem();
-
-        $this->contact->last_updated_at = Carbon::now();
-        $this->contact->save();
     }
 
     private function geocodeAddress(): void
     {
         FetchAddressGeocoding::dispatch($this->address)->onQueue('low');
-    }
-
-    private function createFeedItem(): void
-    {
-        $feedItem = ContactFeedItem::create([
-            'author_id' => $this->author->id,
-            'contact_id' => $this->contact->id,
-            'action' => ContactFeedItem::ACTION_CONTACT_ADDRESS_UPDATED,
-            'description' => MapHelper::getAddressAsString($this->address),
-        ]);
-
-        $this->address->feedItem()->save($feedItem);
     }
 }

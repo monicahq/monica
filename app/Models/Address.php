@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Address extends Model
@@ -19,7 +20,7 @@ class Address extends Model
      * @var array<string>
      */
     protected $fillable = [
-        'contact_id',
+        'vault_id',
         'address_type_id',
         'line_1',
         'line_2',
@@ -29,38 +30,16 @@ class Address extends Model
         'country',
         'latitude',
         'longitude',
-        'lived_from_at',
-        'lived_until_at',
-        'is_past_address',
     ];
 
     /**
-     * The attributes that should be mutated to dates.
+     * Get the contacts associated with the address.
      *
-     * @var array
+     * @return BelongsToMany
      */
-    protected $dates = [
-        'lived_from_at',
-        'lived_until_at',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'is_past_address' => 'boolean',
-    ];
-
-    /**
-     * Get the contact associated with the address.
-     *
-     * @return BelongsTo
-     */
-    public function contact(): BelongsTo
+    public function contacts(): BelongsToMany
     {
-        return $this->belongsTo(Contact::class);
+        return $this->belongsToMany(Contact::class, 'contact_address')->withPivot('is_past_address');
     }
 
     /**

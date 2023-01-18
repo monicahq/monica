@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Contact\ManageContactAddresses\Services;
+namespace App\Domains\Vault\ManageAddresses\Services;
 
 use App\Exceptions\EnvVariablesNotSetException;
 use App\Helpers\MapHelper;

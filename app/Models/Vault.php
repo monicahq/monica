@@ -241,4 +241,14 @@ class Vault extends Model
     {
         return $this->hasMany(LifeEvent::class);
     }
+
+    /**
+     * Get the address records associated with the vault.
+     *
+     * @return HasMany
+     */
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Address::class);
+    }
 }

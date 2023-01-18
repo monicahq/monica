@@ -35,7 +35,6 @@ class ActionFeedAddressTest extends TestCase
             'province' => 'quebec',
             'postal_code' => 'h1k 12k',
             'country' => 'Canada',
-            'is_past_address' => false,
             'address_type_id' => $addressType->id,
             'longitude' => '-74.005941',
             'latitude' => '40.712784',

@@ -13,10 +13,8 @@ return new class() extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid')->nullable();
-            $table->unsignedBigInteger('contact_id');
+            $table->unsignedBigInteger('vault_id');
             $table->unsignedBigInteger('address_type_id')->nullable();
-            $table->boolean('is_past_address')->default(false);
             $table->string('line_1')->nullable();
             $table->string('line_2')->nullable();
             $table->string('city')->nullable();
@@ -25,11 +23,18 @@ return new class() extends Migration
             $table->string('country')->nullable();
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();
-            $table->datetime('lived_from_at')->nullable();
-            $table->datetime('lived_until_at')->nullable();
+            $table->timestamps();
+            $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
+            $table->foreign('address_type_id')->references('id')->on('address_types')->onDelete('set null');
+        });
+
+        Schema::create('contact_address', function (Blueprint $table) {
+            $table->unsignedBigInteger('contact_id');
+            $table->unsignedBigInteger('address_id');
+            $table->boolean('is_past_address')->default(false);
             $table->timestamps();
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
-            $table->foreign('address_type_id')->references('id')->on('address_types')->onDelete('set null');
+            $table->foreign('address_id')->references('id')->on('addresses')->onDelete('cascade');
         });
     }
 
@@ -39,5 +44,6 @@ return new class() extends Migration
     public function down()
     {
         Schema::dropIfExists('addresses');
+        Schema::dropIfExists('contact_address');
     }
 };
