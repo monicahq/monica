@@ -131,6 +131,15 @@
             "
             :data="feedItem.data"
             :contact-view-mode="contactViewMode" />
+
+          <mood-tracking-event
+            v-if="
+              feedItem.action === 'mood_tracking_event_added' ||
+              feedItem.action === 'mood_tracking_event_updated' ||
+              feedItem.action === 'mood_tracking_event_deleted'
+            "
+            :data="feedItem.data"
+            :contact-view-mode="contactViewMode" />
         </div>
 
         <!-- details -->
@@ -175,6 +184,7 @@ import Addresses from '@/Shared/Modules/FeedItems/Address.vue';
 import ContactInformation from '@/Shared/Modules/FeedItems/ContactInformation.vue';
 import Pet from '@/Shared/Modules/FeedItems/Pet.vue';
 import Goal from '@/Shared/Modules/FeedItems/Goal.vue';
+import MoodTrackingEvent from '@/Shared/Modules/FeedItems/MoodTrackingEvent.vue';
 
 export default {
   components: {
@@ -186,6 +196,7 @@ export default {
     ContactInformation,
     Pet,
     Goal,
+    MoodTrackingEvent,
   },
 
   props: {

@@ -25,6 +25,7 @@ use App\Domains\Contact\ManageJobInformation\Web\Controllers\ContactModuleJobInf
 use App\Domains\Contact\ManageLabels\Web\Controllers\ContactModuleLabelController;
 use App\Domains\Contact\ManageLoans\Web\Controllers\ContactModuleLoanController;
 use App\Domains\Contact\ManageLoans\Web\Controllers\ContactModuleToggleLoanController;
+use App\Domains\Contact\ManageMoodTrackingEvents\Web\Controllers\ContactMoodTrackingEventsController;
 use App\Domains\Contact\ManageNotes\Web\Controllers\ContactModuleNoteController;
 use App\Domains\Contact\ManageNotes\Web\Controllers\ContactNotesController;
 use App\Domains\Contact\ManagePets\Web\Controllers\ContactModulePetController;
@@ -95,6 +96,8 @@ use App\Domains\Vault\ManageJournals\Web\Controllers\PostTagController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\SliceOfLifeController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\SliceOfLifeCoverImageController;
 use App\Domains\Vault\ManageReports\Web\Controllers\ReportImportantDateSummaryController;
+use App\Domains\Vault\ManageReports\Web\Controllers\ReportIndexController;
+use App\Domains\Vault\ManageReports\Web\Controllers\ReportMoodTrackingEventController;
 use App\Domains\Vault\ManageTasks\Web\Controllers\VaultTaskController;
 use App\Domains\Vault\ManageVault\Web\Controllers\VaultController;
 use App\Domains\Vault\ManageVault\Web\Controllers\VaultFeedController;
@@ -178,7 +181,12 @@ Route::middleware([
 
             // reports
             Route::prefix('reports')->group(function () {
-                Route::get('', [ReportImportantDateSummaryController::class, 'index'])->name('vault.reports.index');
+                Route::get('', [ReportIndexController::class, 'index'])->name('vault.reports.index');
+
+                // mood tracking event
+                Route::get('moodTrackingEvents', [ReportMoodTrackingEventController::class, 'index'])->name('vault.reports.mood_tracking_events.index');
+
+                // important date summary
                 Route::get('importantDates', [ReportImportantDateSummaryController::class, 'index'])->name('vault.reports.important_dates.index');
             });
 
@@ -313,6 +321,9 @@ Route::middleware([
                     // groups
                     Route::post('groups', [ContactModuleGroupController::class, 'store'])->name('contact.group.store');
                     Route::delete('groups/{group}', [ContactModuleGroupController::class, 'destroy'])->name('contact.group.destroy');
+
+                    // mood tracking events
+                    Route::post('moodTrackingEvents', [ContactMoodTrackingEventsController::class, 'store'])->name('contact.mood_tracking_event.store');
                 });
             });
 

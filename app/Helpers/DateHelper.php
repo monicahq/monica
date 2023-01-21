@@ -149,6 +149,17 @@ class DateHelper
     }
 
     /**
+     * Return the first letter of the month, like "Jan" for January.
+     *
+     * @param    $date
+     * @return string
+     */
+    public static function formatMonthNumber($date): string
+    {
+        return $date->isoFormat(trans('format.short_month'));
+    }
+
+    /**
      * Return a collection of months.
      *
      * @return Collection

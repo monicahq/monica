@@ -126,6 +126,17 @@ class DateHelperTest extends TestCase
     }
 
     /** @test */
+    public function it_gets_a_short_month(): void
+    {
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', '1978-10-01 17:56:03');
+
+        $this->assertEquals(
+            'Oct',
+            DateHelper::formatMonthNumber($date)
+        );
+    }
+
+    /** @test */
     public function it_gets_a_short_month_and_year(): void
     {
         $date = Carbon::createFromFormat('Y-m-d H:i:s', '1978-10-01 17:56:03');

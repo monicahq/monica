@@ -34,31 +34,37 @@ class ReportImportantDateSummaryIndexViewHelperTest extends TestCase
             'label' => 'stop it',
         ]);
 
-        $collection = ReportImportantDateSummaryIndexViewHelper::data($vault, $user);
+        $array = ReportImportantDateSummaryIndexViewHelper::data($vault, $user);
 
         $this->assertEquals(
             0,
-            $collection->toArray()[0]['id']
+            $array['months']->toArray()[0]['id']
         );
         $this->assertEquals(
             'Oct 2022',
-            $collection->toArray()[0]['month']
+            $array['months']->toArray()[0]['month']
         );
         $this->assertEquals(
             [],
-            $collection->toArray()[0]['important_dates']->toArray()
+            $array['months']->toArray()[0]['important_dates']->toArray()
         );
         $this->assertEquals(
             $importantDate->id,
-            $collection->toArray()[5]['important_dates']->toArray()[0]['id']
+            $array['months']->toArray()[5]['important_dates']->toArray()[0]['id']
         );
         $this->assertEquals(
             'stop it',
-            $collection->toArray()[5]['important_dates']->toArray()[0]['label']
+            $array['months']->toArray()[5]['important_dates']->toArray()[0]['label']
         );
         $this->assertEquals(
             'Mar 12, 2024',
-            $collection->toArray()[5]['important_dates']->toArray()[0]['happened_at']
+            $array['months']->toArray()[5]['important_dates']->toArray()[0]['happened_at']
+        );
+        $this->assertEquals(
+            [
+                'reports' => env('APP_URL').'/vaults/'.$vault->id.'/reports',
+            ],
+            $array['url']
         );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use App\Models\MoodTrackingEvent;
 use App\Models\MoodTrackingParameter;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -30,6 +31,17 @@ class MoodTrackingParameterTest extends TestCase
             'mood_label.label',
             $parameter->label
         );
+    }
+
+    /** @test */
+    public function it_has_many_events(): void
+    {
+        $parameter = MoodTrackingParameter::factory()->create();
+        MoodTrackingEvent::factory()->count(2)->create([
+            'mood_tracking_parameter_id' => $parameter->id,
+        ]);
+
+        $this->assertTrue($parameter->moodTrackingEvents()->exists());
     }
 
     /** @test */

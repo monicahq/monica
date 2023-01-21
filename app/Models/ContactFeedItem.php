@@ -64,18 +64,6 @@ class ContactFeedItem extends Model
 
     public const ACTION_CONTACT_ADDRESS_DESTROYED = 'address_destroyed';
 
-    public const ACTION_CONTACT_EVENT_CREATED = 'added an event';
-
-    public const ACTION_CONTACT_EVENT_UPDATED = 'updated an event';
-
-    public const ACTION_CONTACT_EVENT_DESTROYED = 'deleted an event';
-
-    public const ACTION_CONTACT_ACTIVITY_CREATED = 'added an activity';
-
-    public const ACTION_CONTACT_ACTIVITY_UPDATED = 'updated an activity';
-
-    public const ACTION_CONTACT_ACTIVITY_DESTROYED = 'deleted an activity';
-
     public const ACTION_LOAN_CREATED = 'loan_created';
 
     public const ACTION_LOAN_UPDATED = 'loan_updated';
@@ -97,6 +85,12 @@ class ContactFeedItem extends Model
     public const ACTION_UNFAVORITED_CONTACT = 'unfavorited';
 
     public const ACTION_CHANGE_AVATAR = 'changed_avatar';
+
+    public const ACTION_MOOD_TRACKING_EVENT_CREATED = 'mood_tracking_event_added';
+
+    public const ACTION_MOOD_TRACKING_EVENT_UPDATED = 'mood_tracking_event_updated';
+
+    public const ACTION_MOOD_TRACKING_EVENT_DESTROYED = 'mood_tracking_event_deleted';
 
     /**
      * The attributes that are mass assignable.

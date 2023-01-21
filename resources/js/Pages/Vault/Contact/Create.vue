@@ -156,49 +156,49 @@
             <div class="flex flex-wrap text-xs">
               <span
                 v-if="!showMiddleNameField"
-                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:text-gray-900"
+                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displayMiddleNameField">
                 {{ $t('vault.create_contact_add_middle_name') }}
               </span>
               <span
                 v-if="!showPrefixField"
-                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:text-gray-900"
+                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displayPrefixField">
                 {{ $t('vault.create_contact_add_prefix') }}
               </span>
               <span
                 v-if="!showSuffixField"
-                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:text-gray-900"
+                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displaySuffixField">
                 {{ $t('vault.create_contact_add_suffix') }}
               </span>
               <span
                 v-if="!showNicknameField"
-                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:text-gray-900"
+                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displayNicknameField">
                 {{ $t('vault.create_contact_add_nickname') }}
               </span>
               <span
                 v-if="!showMaidenNameField"
-                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:text-gray-900"
+                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displayMaidenNameField">
                 {{ $t('vault.create_contact_add_maiden_name') }}
               </span>
               <span
                 v-if="data.genders.length > 0 && !showGenderField"
-                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:text-gray-900"
+                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displayGenderField">
                 {{ $t('vault.create_contact_add_gender') }}
               </span>
               <span
                 v-if="data.pronouns.length > 0 && !showPronounField"
-                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:text-gray-900"
+                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displayPronounField">
                 {{ $t('vault.create_contact_add_pronoun') }}
               </span>
               <span
                 v-if="data.templates.length > 0 && !showTemplateField"
-                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:text-gray-900"
+                class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displayTemplateField">
                 {{ $t('vault.create_contact_add_change_template') }}
               </span>

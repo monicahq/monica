@@ -81,7 +81,7 @@
     <!-- blank state -->
     <div
       v-if="data.tasks.length == 0"
-      class="mb-6 flex items-center rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-800 dark:bg-gray-900">
+      class="mb-2 flex items-center rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-800 dark:bg-gray-900">
       <img src="/img/dashboard_blank_tasks.svg" :alt="$t('Tasks')" class="mr-2 h-14 w-14" />
       <p class="px-5 text-center">
         {{ $t('vault.dashboard_due_tasks_blank') }}

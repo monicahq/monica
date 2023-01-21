@@ -6,6 +6,8 @@ use App\Domains\Vault\ManageVault\Web\ViewHelpers\VaultShowViewHelper;
 use App\Models\Contact;
 use App\Models\ContactReminder;
 use App\Models\ContactTask;
+use App\Models\MoodTrackingEvent;
+use App\Models\MoodTrackingParameter;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
 use App\Models\Vault;
@@ -243,6 +245,69 @@ class VaultShowViewHelperTest extends TestCase
                 ],
             ],
             $array['tasks']->toArray()
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_mood_tracking_parameters(): void
+    {
+        $ross = $this->createAdministrator();
+        $vault = $this->createVault($ross->account);
+        $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_MANAGE, $vault);
+        $moodTrackingParameter = MoodTrackingParameter::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        $contact = $ross->getContactInVault($vault);
+
+        Carbon::setTestNow(Carbon::create(2018, 1, 1));
+        $array = VaultShowViewHelper::moodTrackingEvents($vault, $ross);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'id' => $moodTrackingParameter->id,
+                    'label' => $moodTrackingParameter->label,
+                    'hex_color' => $moodTrackingParameter->hex_color,
+                ],
+            ],
+            $array['mood_tracking_parameters']->toArray()
+        );
+        $this->assertEquals(
+            '2018-01-01',
+            $array['current_date']
+        );
+        $this->assertEquals(
+            [
+                'history' => env('APP_URL').'/vaults/'.$vault->id.'/reports/moodTrackingEvents',
+                'store' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/'.$contact->id.'/moodTrackingEvents',
+            ],
+            $array['url']
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_dto_for_mood_tracking_event(): void
+    {
+        $user = User::factory()->create();
+        $moodTrackingParameter = MoodTrackingParameter::factory()->create();
+        $moodTrackingEvent = MoodTrackingEvent::factory()->create([
+            'mood_tracking_parameter_id' => $moodTrackingParameter->id,
+            'rated_at' => '2018-01-01 00:00:00',
+            'note' => 'note',
+            'number_of_hours_slept' => 8,
+        ]);
+
+        $array = VaultShowViewHelper::dtoMoodTrackingEvent($moodTrackingEvent, $user);
+
+        $this->assertEquals(
+            [
+                'id' => $moodTrackingEvent->id,
+                'label' => $moodTrackingEvent->moodTrackingParameter->label,
+                'rated_at' => 'Jan 01, 2018',
+                'note' => 'note',
+                'number_of_hours_slept' => 8,
+            ],
+            $array
         );
     }
 }

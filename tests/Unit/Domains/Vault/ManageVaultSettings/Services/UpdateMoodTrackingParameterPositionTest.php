@@ -20,7 +20,6 @@ class UpdateMoodTrackingParameterPositionTest extends TestCase
     public function it_updates_a_mood_tracking_parameter_position(): void
     {
         $ross = $this->createAdministrator();
-        $ross = $this->createAdministrator();
         $vault = $this->createVault($ross->account);
         $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_MANAGE, $vault);
         $moodTrackingParameter = MoodTrackingParameter::factory()->create([

@@ -4,7 +4,7 @@
       <span class="relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-400 dark:text-gray-700 dark:text-gray-300 hover:dark:text-gray-400"
+          class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-400 hover:dark:text-gray-400"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor">

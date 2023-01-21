@@ -53,6 +53,7 @@ return [
     'feed_item_favorited' => 'added the contact to the favorites',
     'feed_item_unfavorited' => 'removed the contact from the favorites',
     'feed_item_changed_avatar' => 'updated the avatar of the contact',
+    'feed_item_mood_tracking_event_added' => 'logged the mood',
 
     /***************************************************************
      * MODULE: GROUP

@@ -58,6 +58,7 @@ class VaultController extends Controller
             'upcomingReminders' => VaultShowViewHelper::upcomingReminders($vault, Auth::user()),
             'favorites' => VaultShowViewHelper::favorites($vault, Auth::user()),
             'dueTasks' => VaultShowViewHelper::dueTasks($vault, Auth::user()),
+            'moodTrackingEvents' => VaultShowViewHelper::moodTrackingEvents($vault, Auth::user()),
             'loadFeedUrl' => route('vault.feed.show', [
                 'vault' => $vaultId,
             ]),

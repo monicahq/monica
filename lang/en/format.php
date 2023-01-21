@@ -25,6 +25,9 @@ return [
     /* short month and the year in a format like "July 2020" - see https://carbon.nesbot.com/docs/#iso-format-available-replacements */
     'long_month_year' => 'MMMM Y',
 
+    /* month as a string like "Jul" - see https://carbon.nesbot.com/docs/#iso-format-available-replacements */
+    'short_month' => 'MMM',
+
     /* day and month in a format like "July 29th" - see https://carbon.nesbot.com/docs/#iso-format-available-replacements */
     'long_month_day' => 'MMMM Do',
 

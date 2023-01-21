@@ -1,6 +1,5 @@
 <script setup>
 import Layout from '@/Shared/Layout.vue';
-import ContactCard from '@/Shared/ContactCard.vue';
 
 defineProps({
   layoutData: Object,
@@ -57,41 +56,21 @@ defineProps({
               </svg>
             </span>
 
-            The important dates in the next 12 months
+            Your mood this year
           </div>
         </div>
 
         <!-- iteration over the month -->
-        <div v-for="month in data.months" :key="month.id" class="mb-6">
-          <h2 class="font-bold">{{ month.month }}</h2>
+        <div class="flex justify-center">
+          <div v-for="month in data.months" :key="month.id" class="mb-6 flex flex-col text-center">
+            <h2 class="mr-2 mb-1 font-mono text-sm font-bold">{{ month.month_word }}</h2>
 
-          <!-- important dates -->
-          <ul
-            v-if="month.important_dates.length > 0"
-            class="mb-2 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-            <li
-              v-for="date in month.important_dates"
-              :key="date.id"
-              class="item-list flex items-center justify-between border-b border-gray-200 p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-              <div>
-                <span class="mr-3 font-mono text-xs text-gray-600">{{ date.happened_at }}</span>
-                <span>{{ date.label }}</span>
+            <div v-for="day in month.days" :key="day.id">
+              <div v-if="day.event" class="mr-2 inline-block h-4 w-4 rounded-full" :class="day.event.hex_color" />
+              <div v-else class="mr-2 inline-block h-4 w-4 rounded-full">
+                <div class="mr-2 inline-block h-4 w-4 rounded-full bg-slate-100" />
               </div>
-
-              <div>
-                <contact-card
-                  :contact="date.contact"
-                  :avatarClasses="'h-5 w-5 rounded-full mr-2'"
-                  :displayName="true" />
-              </div>
-            </li>
-          </ul>
-
-          <!-- no date in month -->
-          <div
-            v-else
-            class="rounded-lg border border-gray-200 bg-gray-100 p-3 text-center text-sm text-gray-500 dark:border-gray-700 dark:bg-gray-900">
-            No dates in this month
+            </div>
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedCont
 use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedGenericContactInformation;
 use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedGoal;
 use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedLabelAssigned;
+use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedMoodTrackingEvent;
 use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedPet;
 use App\Helpers\DateHelper;
 use App\Helpers\UserHelper;
@@ -91,6 +92,11 @@ class ModuleFeedViewHelper
             case 'goal_updated':
             case 'goal_destroyed':
                 return ActionFeedGoal::data($item);
+
+            case 'mood_tracking_event_added':
+            case 'mood_tracking_event_updated':
+            case 'mood_tracking_event_deleted':
+                return ActionFeedMoodTrackingEvent::data($item, $user);
 
             default:
                 return ActionFeedGenericContactInformation::data($item);

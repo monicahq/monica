@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class MoodTrackingParameter extends Model
 {
@@ -34,6 +35,16 @@ class MoodTrackingParameter extends Model
     public function vault(): BelongsTo
     {
         return $this->belongsTo(Vault::class);
+    }
+
+    /**
+     * Get the mood tracking events associated with the mood tracking parameter.
+     *
+     * @return HasMany
+     */
+    public function moodTrackingEvents(): HasMany
+    {
+        return $this->hasMany(MoodTrackingEvent::class);
     }
 
     /**

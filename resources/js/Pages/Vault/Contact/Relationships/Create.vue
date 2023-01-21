@@ -172,25 +172,25 @@
                     <div class="mb-4 flex flex-wrap text-xs">
                       <span
                         v-if="!showLastNameField"
-                        class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:text-gray-900"
+                        class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                         @click="displayLastNameField">
                         + last name
                       </span>
                       <span
                         v-if="!showMiddleNameField"
-                        class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:text-gray-900"
+                        class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                         @click="displayMiddleNameField">
                         + middle name
                       </span>
                       <span
                         v-if="!showNicknameField"
-                        class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:text-gray-900"
+                        class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                         @click="displayNicknameField">
                         + nickname
                       </span>
                       <span
                         v-if="!showMaidenNameField"
-                        class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:text-gray-900"
+                        class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                         @click="displayMaidenNameField">
                         + maiden name
                       </span>
@@ -288,13 +288,13 @@
               <div class="flex flex-wrap text-xs">
                 <span
                   v-if="data.genders.length > 0 && !showGenderField"
-                  class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:text-gray-900"
+                  class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                   @click="displayGenderField">
                   + gender
                 </span>
                 <span
                   v-if="data.pronouns.length > 0 && !showPronounField"
-                  class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:text-gray-900"
+                  class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                   @click="displayPronounField">
                   + pronoun
                 </span>

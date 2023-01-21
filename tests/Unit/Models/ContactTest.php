@@ -18,6 +18,7 @@ use App\Models\Group;
 use App\Models\Label;
 use App\Models\LifeEvent;
 use App\Models\Loan;
+use App\Models\MoodTrackingEvent;
 use App\Models\Note;
 use App\Models\Pet;
 use App\Models\Post;
@@ -280,6 +281,17 @@ class ContactTest extends TestCase
         $contact->lifeEvents()->sync([$lifeEvent->id]);
 
         $this->assertTrue($contact->lifeEvents()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_mood_tracking_events(): void
+    {
+        $contact = Contact::factory()->create();
+        MoodTrackingEvent::factory()->count(2)->create([
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($contact->moodTrackingEvents()->exists());
     }
 
     /** @test */
