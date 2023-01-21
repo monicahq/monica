@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Domains\Vault\ManageContactAddresses\Web\ViewHelpers;
+namespace Tests\Unit\Domains\Vault\ManageAddresses\Web\ViewHelpers;
 
 use App\Domains\Contact\ManageContactAddresses\Web\ViewHelpers\ModuleContactAddressesViewHelper;
 use App\Models\Address;
