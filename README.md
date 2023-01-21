@@ -1,3 +1,7 @@
+## Warning - alpha version - do not use
+
+Chandler is currently in alpha state which means it's like a teenager, full of potential but also prone to mood swings and unexpected outbursts. So, please use it at your own risk, we don't want you to end up with spaghetti code for breakfast. We're working hard to make sure it grows into a stable and reliable adult, but for now, it's best to think of it as a pet rock. It may not do much, but it's fun to play with. So, let's have fun testing it together!
+
 ## Local development
 
 1. Install PHP and a web server like Nginx. If you are on macOS, we recommend [Valet](https://laravel.com/docs/9.x/valet)
