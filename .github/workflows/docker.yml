@@ -63,6 +63,10 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
 
       - name: Prune images
-        run: scripts/docker/prune.py --container ${{ env.package-name }} -o ${{ github.repository_owner }} --prune-age 15 -v
-        env:
-          GHCR_TOKEN: ${{ secrets.CR_PAT }}
+        uses: vlaurin/action-ghcr-prune@v0.5.0
+        with:
+          token: ${{ secrets.CR_PAT }}
+          organization: ${{ github.repository_owner }}
+          container: ${{ env.package-name }}
+          keep-younger-than: 15
+          prune-untagged: true
