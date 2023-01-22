@@ -9,6 +9,8 @@ concurrency:
   group: Docker ${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  package-name: monica-next
 
 jobs:
   docker-run:
@@ -28,7 +30,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v4
         with:
-          images: ghcr.io/monicahq/monica-next
+          images: ghcr.io/${{ github.repository_owner }}/${{ env.package-name }}
           tag-sha: true
 
       - name: Set up Docker Buildx
@@ -52,10 +54,15 @@ jobs:
         with:
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
-          cache-from: type=registry,ref=ghcr.io/monicahq/monica-next:main
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/${{ env.package-name }}:main
           labels: ${{ steps.docker_meta.outputs.labels }}
           file: scripts/docker/Dockerfile
           context: .
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+
+      - name: Prune images
+        run: scripts/docker/prune.py --container ${{ env.package-name }} -o ${{ github.repository_owner }} --prune-age 15 -v
+        env:
+          GHCR_TOKEN: ${{ secrets.CR_PAT }}
