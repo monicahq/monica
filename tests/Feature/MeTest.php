@@ -95,7 +95,7 @@ class MeTest extends FeatureTestCase
         $user->me_contact_id = $contact->id;
         $user->save();
 
-        $response = $this->json('DELETE', '/contacts/' . $contact->id);
+        $response = $this->json('DELETE', '/contacts/'.$contact->id);
 
         $response->assertStatus(200);
 
