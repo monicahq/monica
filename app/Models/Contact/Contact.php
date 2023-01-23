@@ -173,10 +173,8 @@ class Contact extends Model
      */
     protected static function booted()
     {
-        static::deleted(function ($contact) 
-        {
-            if ($contact->isMe() === true)
-            {
+        static::deleted(function ($contact) {
+            if ($contact->isMe() === true) {
                 app(DeleteMeContact::class)->execute([
                     'account_id' => $contact->id,
                     'user_id' => auth()->user()->id,
