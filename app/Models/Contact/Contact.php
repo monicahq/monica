@@ -32,6 +32,7 @@ use LaravelAdorable\Facades\LaravelAdorable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use App\Services\Contact\Contact\DeleteMeContact;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -166,6 +167,22 @@ class Contact extends Model
      * @var string
      */
     protected $nameOrder = 'firstname_lastname';
+
+    /**
+     * Boot all the event observers for the model.
+     */
+    protected static function booted()
+    {
+        static::deleted(function ($contact) {
+            if ($contact->isMe() === true)
+            {
+                app(DeleteMeContact::class)->execute([
+                    'account_id' => $contact->id,
+                    'user_id' => auth()->user()->id,
+                ]);
+            }
+        });
+    }
 
     /**
      * Get the user associated with the contact.

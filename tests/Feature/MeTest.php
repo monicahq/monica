@@ -84,4 +84,24 @@ class MeTest extends FeatureTestCase
             'me_contact_id' => null,
         ]);
     }
+
+    /** @test */
+    public function it_deletes_me_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $user->me_contact_id = $contact->id;
+        $user->save();
+
+        $response = $this->json('DELETE', '/contacts/' . $contact->id);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'me_contact_id' => null,
+        ]);
+    }
 }
