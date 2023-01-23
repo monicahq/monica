@@ -15740,16 +15740,16 @@
         },
         {
             "name": "psalm/plugin-laravel",
-            "version": "v2.3.1",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/psalm-plugin-laravel.git",
-                "reference": "294c30f5883f37d425117474bd5406eb0c3ed8fe"
+                "reference": "e6eaed7d935663acce940fc70ca2c7bd2ddb2d8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/psalm-plugin-laravel/zipball/294c30f5883f37d425117474bd5406eb0c3ed8fe",
-                "reference": "294c30f5883f37d425117474bd5406eb0c3ed8fe",
+                "url": "https://api.github.com/repos/psalm/psalm-plugin-laravel/zipball/e6eaed7d935663acce940fc70ca2c7bd2ddb2d8e",
+                "reference": "e6eaed7d935663acce940fc70ca2c7bd2ddb2d8e",
                 "shasum": ""
             },
             "require": {
@@ -15804,9 +15804,9 @@
             "homepage": "https://github.com/psalm/psalm-plugin-laravel",
             "support": {
                 "issues": "https://github.com/psalm/psalm-plugin-laravel/issues",
-                "source": "https://github.com/psalm/psalm-plugin-laravel/tree/v2.3.1"
+                "source": "https://github.com/psalm/psalm-plugin-laravel/tree/v2.4.0"
             },
-            "time": "2023-01-22T16:53:12+00:00"
+            "time": "2023-01-23T16:54:33+00:00"
         },
         {
             "name": "psy/psysh",
