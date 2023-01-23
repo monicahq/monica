@@ -23,7 +23,7 @@ class FileNotFoundException extends FileNotFoundExceptionBase
         parent::__construct();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return 'File not found: '.$this->fileName;
     }
