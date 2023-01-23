@@ -10,6 +10,7 @@ trait Hasher
 {
     /**
      * @psalm-suppress MethodSignatureMustProvideReturnType
+     *
      * @return string
      */
     public function getRouteKey()
