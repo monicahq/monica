@@ -38,6 +38,7 @@ return new class extends Migration
             $table->unsignedBigInteger('journal_id');
             $table->boolean('published')->default(false);
             $table->string('title')->nullable();
+            $table->integer('view_count')->default(0);
             $table->datetime('written_at');
             $table->timestamps();
             $table->foreign('journal_id')->references('id')->on('journals')->onDelete('cascade');
