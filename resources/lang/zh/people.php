@@ -249,7 +249,7 @@ return [
     'activity_type_category_food' => '食物',
     'activity_type_category_cultural_activities' => '文化',
     'activity_type_just_hung_out' => '约会',
-    'activity_type_watched_movie_at_home' => '看电影',
+    'activity_type_watched_movie_at_home' => '在家看电影',
     'activity_type_talked_at_home' => '谈心',
     'activity_type_did_sport_activities_together' => '一起打球',
     'activity_type_ate_at_his_place' => '在对方家里做客',
