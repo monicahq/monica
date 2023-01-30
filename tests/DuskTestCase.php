@@ -76,7 +76,7 @@ abstract class DuskTestCase extends BaseTestCase
     /**
      * Return the default user to authenticate.
      *
-     * @return \App\User|int|null
+     * @return \App\Models\User\User
      */
     protected function user()
     {
