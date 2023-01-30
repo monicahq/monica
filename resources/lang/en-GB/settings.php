@@ -8,7 +8,7 @@
 
 return [
     'sidebar_settings' => 'Account settings',
-    'sidebar_personalization' => 'Personalization',
+    'sidebar_personalization' => 'Personalisation',
     'sidebar_settings_storage' => 'Storage',
     'sidebar_settings_export' => 'Export data',
     'sidebar_settings_users' => 'Users',
@@ -367,14 +367,14 @@ return [
     'api_oauth_redirecturl' => 'Redirect URL',
     'api_oauth_redirecturl_help' => 'Your application’s authorization callback URL.',
 
-    'api_authorized_clients' => 'List of authorized clients',
+    'api_authorized_clients' => 'List of authorised clients',
     'api_authorized_clients_desc' => 'This section lists all the clients you’ve authorised to access your application data. You can revoke this authorisation at any time.',
-    'api_authorized_clients_title' => 'Authorized Applications',
+    'api_authorized_clients_title' => 'Authorised Applications',
     'api_authorized_clients_none' => 'There are no authorised clients yet.',
     'api_authorized_clients_name' => 'Name',
     'api_authorized_clients_scopes' => 'Scopes',
 
-    'personalization_tab_title' => 'Personalize your account',
+    'personalization_tab_title' => 'Personalise your account',
 
     'personalization_title' => 'Here you will find different settings to configure your account. These features are intended for “power users” who want maximum control over Monica.',
     'personalization_contact_field_type_title' => 'Contact field types',
