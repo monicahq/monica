@@ -7,6 +7,7 @@ use Mockery\MockInterface;
 use App\Models\User\SyncToken;
 use App\Models\Account\AddressBookSubscription;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
 use App\Services\DavClient\UpdateSubscriptionLocalSyncToken;
 
 class UpdateSubscriptionLocalSyncTokenTest extends TestCase

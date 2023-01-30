@@ -79,7 +79,7 @@
         "roave/security-advisories": "dev-master",
         "spatie/laravel-ignition": "^1.0",
         "thecodingmachine/phpstan-safe-rule": "^1.0",
-        "vimeo/psalm": "^4.0"
+        "vimeo/psalm": "^5.5"
     },
     "suggest": {
         "ext-apcu": "*"
