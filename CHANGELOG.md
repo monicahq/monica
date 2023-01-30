@@ -1,3 +1,40 @@
+## [4.0.0](https://github.com/monicahq/monica/compare/v3.7.0...v4.0.0) (2023-01-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* switch to php 8.1+ dependency (#6250)
+* drop php 7.4 support (#6246)
+
+### Features
+
+* add DB_TESTING_PORT in database config ([#6201](https://github.com/monicahq/monica/issues/6201)) ([fefa799](https://github.com/monicahq/monica/commit/fefa79968cc1257372df433e9234a283b75f5b5a))
+* add disallow in robots.txt ([#6268](https://github.com/monicahq/monica/issues/6268)) ([be2e280](https://github.com/monicahq/monica/commit/be2e28070c4f9eaf65bf260a731b606d0de48010))
+* add name to user resource ([#6174](https://github.com/monicahq/monica/issues/6174)) ([8465803](https://github.com/monicahq/monica/commit/84658036a5dad7fc4e68b3d112b7a5cd9c0c6954))
+* check male translation and fall back to generic ([#6039](https://github.com/monicahq/monica/issues/6039)) ([4ba9062](https://github.com/monicahq/monica/commit/4ba9062f95b4c17bef770eb698bf381f9a1de19b))
+* drop php 7.4 support ([#6246](https://github.com/monicahq/monica/issues/6246)) ([84d0232](https://github.com/monicahq/monica/commit/84d0232095c4178be64076d1c52f7dc2e2a8caeb))
+* focus tags input box ([#6392](https://github.com/monicahq/monica/issues/6392)) ([2d75053](https://github.com/monicahq/monica/commit/2d7505368c9e87cdfb5c9ed2301c705b09a562c7))
+* load more activities ([#5973](https://github.com/monicahq/monica/issues/5973)) ([117fe19](https://github.com/monicahq/monica/commit/117fe19545e433163600e45704ea901935a5aa4a))
+* switch to php 8.1+ dependency ([#6250](https://github.com/monicahq/monica/issues/6250)) ([6a7f49f](https://github.com/monicahq/monica/commit/6a7f49fd90becc39cdf480e38e269a67f5b2215f))
+
+
+### Bug Fixes
+
+* allow configuring port for test database ([#6236](https://github.com/monicahq/monica/issues/6236)) ([aeffb71](https://github.com/monicahq/monica/commit/aeffb7184e95ce6e5a68187b5a8528fbcc95bac6)), closes [#6200](https://github.com/monicahq/monica/issues/6200)
+* allow empty completed_at task date ([#6025](https://github.com/monicahq/monica/issues/6025)) ([d4504e3](https://github.com/monicahq/monica/commit/d4504e3267ceb01e3e46b65a8e09b0d88e461170))
+* change APP_TRUST_PROXIES to APP_TRUSTED_PROXIES  ([#6095](https://github.com/monicahq/monica/issues/6095)) ([5f63bed](https://github.com/monicahq/monica/commit/5f63bed75d53b6f35b9b3fc20a24d449a1bcfebf))
+* Continuously pressing enter shows empty tags ([#6314](https://github.com/monicahq/monica/issues/6314)) ([2386096](https://github.com/monicahq/monica/commit/23860966acb284c8bb46be282668932437070865)), closes [#6235](https://github.com/monicahq/monica/issues/6235)
+* fix avatar not being loaded on dashboard ([#6224](https://github.com/monicahq/monica/issues/6224)) ([7c8105c](https://github.com/monicahq/monica/commit/7c8105c338e4c1f9a3111c2e22b5974cd13e0736))
+* fix blurry modals from sweet-modal-vue ([#6026](https://github.com/monicahq/monica/issues/6026)) ([4cc1d8f](https://github.com/monicahq/monica/commit/4cc1d8f251fcc5fb23c3db0a03cf436389a140d5))
+* fix Journal sidebar width on mobile ([#6027](https://github.com/monicahq/monica/issues/6027)) ([d690bf6](https://github.com/monicahq/monica/commit/d690bf6019fdf21e3ecbbcc7a1fcef34a2b8ab82))
+* fix laravel cloudflare proxy ([#6264](https://github.com/monicahq/monica/issues/6264)) ([d0b50fe](https://github.com/monicahq/monica/commit/d0b50fec143dee5572c814cc8dbbf6eb8ddc6400))
+* life event creation with unknown month/day ([#6046](https://github.com/monicahq/monica/issues/6046)) ([d81123b](https://github.com/monicahq/monica/commit/d81123b5ac8a9ffc70b01967b81013be5c15384d))
+* only include real contacts in carddav sync ([#6014](https://github.com/monicahq/monica/issues/6014)) ([626f078](https://github.com/monicahq/monica/commit/626f078e73ad65b330b5a35156a9d7885e6ce10f))
+* **php8.1:** deprecated trim with null value ([#6374](https://github.com/monicahq/monica/issues/6374)) ([b4c1c03](https://github.com/monicahq/monica/commit/b4c1c0385059068290c501c63b560b7b411f38f9))
+* skip version check if current version is empty ([#6137](https://github.com/monicahq/monica/issues/6137)) ([4e1e4ee](https://github.com/monicahq/monica/commit/4e1e4ee1e9c0bca573e71b447aedcb2cd019d819))
+* typo in french translation of nephew ([#6074](https://github.com/monicahq/monica/issues/6074)) ([ad11e01](https://github.com/monicahq/monica/commit/ad11e01de971b6cc2bf88322437cab1c454263f9))
+* vcard bday export format with unknown year ([#6087](https://github.com/monicahq/monica/issues/6087)) ([f0db671](https://github.com/monicahq/monica/commit/f0db6716d6f2fc0b74705768e1092bd9516136ab))
+
 # [3.7.0](https://github.com/monicahq/monica/compare/v3.6.1...v3.7.0) (2022-02-06)
 
 
