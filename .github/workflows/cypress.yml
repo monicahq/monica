@@ -115,7 +115,7 @@ jobs:
 
       - name: Find google-chrome
         run: which google-chrome || true
-      - uses: cypress-io/github-action@v4
+      - uses: cypress-io/github-action@v5
         id: cypress
         continue-on-error: true
         with:
