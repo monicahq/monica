@@ -31,7 +31,7 @@ class ActivityStatisticService
      * the contact.
      *
      * @param  Contact  $contact
-     * @return \Illuminate\Database\Eloquent\Collection<\App\Models\Account\ActivityStatistic>
+     * @return \Illuminate\Database\Eloquent\Collection<array-key, \App\Models\Account\ActivityStatistic>
      */
     public function activitiesPerYearWithContact(Contact $contact)
     {

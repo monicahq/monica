@@ -50,7 +50,10 @@ class SearchableTest extends TestCase
         $this->assertTrue($searchResults->contains($contact));
     }
 
-    /** @test */
+    /**
+     * @test
+     * @psalm-suppress UndefinedFunction
+     */
     public function testFailingSearchContacts()
     {
         $contact = factory(Contact::class)->create(['first_name' => 'TestShouldFail']);
