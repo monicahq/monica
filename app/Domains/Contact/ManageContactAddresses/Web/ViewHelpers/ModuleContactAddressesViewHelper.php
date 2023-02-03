@@ -48,7 +48,7 @@ class ModuleContactAddressesViewHelper
     {
         return [
             'id' => $address->id,
-            'is_past_address' => (bool) $address->pivot->is_past_address,
+            'is_past_address' => $address->pivot ? (bool) $address->pivot->is_past_address : false,
             'line_1' => $address->line_1,
             'line_2' => $address->line_2,
             'city' => $address->city,
