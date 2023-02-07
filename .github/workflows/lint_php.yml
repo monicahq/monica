@@ -4,11 +4,6 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-  workflow_run:
-    workflows: [Javascript linting]
-    types: [completed]
-    branches-ignore: [main]
-
 concurrency:
   group: Lint php ${{ github.ref }}
   cancel-in-progress: true
@@ -23,36 +18,15 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v3
-        if: env.GH_TOKEN != ''
-        with:
-          fetch-depth: 0
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.GH_TOKEN }}
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
-      - uses: actions/checkout@v3
-        if: env.GH_TOKEN == ''
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Checkout sources
+        uses: actions/checkout@v3
 
       - name: laravel-pint
         uses: aglipanci/laravel-pint-action@1.0.0
         with:
           preset: laravel
 
-      - name: Commit changes
-        if: env.GH_TOKEN != ''
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: 'chore: php linting with pint'
-          skip_fetch: true
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
       - name: Check if there is any file update needed
-        if: env.GH_TOKEN == ''
         run: |
           status=$(git status --porcelain)
           if [ -n "$status" ]; then
@@ -60,5 +34,3 @@ jobs:
             echo "::error::Laravel pint found fixes. Please run 'vendor/bin/pint' prior to your next commit."
             exit -1
           fi
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}

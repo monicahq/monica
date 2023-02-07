@@ -6,11 +6,6 @@ on:
   release:
     types: [created]
 
-  workflow_run:
-    workflows: [PHP linting (Pint), Javascript linting]
-    types: [completed]
-    branches-ignore: [main]
-
 env:
   node-version: 18
 
