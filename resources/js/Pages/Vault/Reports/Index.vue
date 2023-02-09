@@ -16,6 +16,11 @@ defineProps({
         <div class="mb-12 rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
           <ul>
             <li class="mb-2 flex justify-start">
+              <Link :href="data.url.addresses" class="text-blue-500 hover:underline">
+                List of addresses of the contacts in the vault
+              </Link>
+            </li>
+            <li class="mb-2 flex justify-start">
               <Link :href="data.url.mood_tracking_events" class="text-blue-500 hover:underline">
                 Mood tracking events
               </Link>

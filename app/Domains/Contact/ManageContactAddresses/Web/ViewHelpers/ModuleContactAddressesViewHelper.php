@@ -12,12 +12,12 @@ class ModuleContactAddressesViewHelper
 {
     public static function data(Contact $contact, User $user): array
     {
-        $activeAddressesCollection = $contact->addresses()
+        $contactActiveAddressesCollection = $contact->addresses()
             ->wherePivot('is_past_address', false)
             ->get()
             ->map(fn (Address $address) => self::dto($contact, $address, $user));
 
-        $inactiveAddressesCollection = $contact->addresses()
+        $contactInactiveAddressesCollection = $contact->addresses()
             ->wherePivot('is_past_address', true)
             ->get()
             ->map(fn (Address $address) => self::dto($contact, $address, $user));
@@ -31,10 +31,18 @@ class ModuleContactAddressesViewHelper
                 'selected' => false,
             ]);
 
+        $vaultAddressesCollection = $contact->vault->addresses()
+            ->get()
+            ->map(fn (Address $address) => [
+                'id' => $address->id,
+                'address' => MapHelper::getAddressAsString($address),
+            ]);
+
         return [
-            'active_addresses' => $activeAddressesCollection,
-            'inactive_addresses' => $inactiveAddressesCollection,
+            'active_addresses' => $contactActiveAddressesCollection,
+            'inactive_addresses' => $contactInactiveAddressesCollection,
             'address_types' => $addressTypesCollection,
+            'addresses_in_vault' => $vaultAddressesCollection,
             'url' => [
                 'store' => route('contact.address.store', [
                     'vault' => $contact->vault_id,

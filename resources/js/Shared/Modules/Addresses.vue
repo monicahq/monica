@@ -1,3 +1,159 @@
+<script setup>
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrettySpan from '@/Shared/Form/PrettySpan.vue';
+import TextInput from '@/Shared/Form/TextInput.vue';
+import Errors from '@/Shared/Form/Errors.vue';
+import Dropdown from '@/Shared/Form/Dropdown.vue';
+import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
+import JetDangerButton from '@/Components/Jetstream/DangerButton.vue';
+import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
+import { onMounted, ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+
+const props = defineProps({
+  layoutData: Object,
+  data: Object,
+});
+
+const loadingState = ref('');
+const createAddressModalShown = ref(false);
+const inactiveAddressesShown = ref(false);
+const localActiveAddresses = ref([]);
+const localInactiveAddresses = ref([]);
+const editedAddressId = ref(0);
+const choiceChooseExisting = ref(true);
+const deleteAddressModalShown = ref(false);
+const processAddressDeletion = ref(false);
+const addressToDelete = ref(null);
+
+const form = useForm({
+  existing_address: false,
+  existing_address_id: 0,
+  type: '',
+  address_type_id: 0,
+  is_past_address: false,
+  line_1: '',
+  line_2: '',
+  city: '',
+  province: '',
+  postal_code: '',
+  country: '',
+  errors: [],
+});
+
+onMounted(() => {
+  localActiveAddresses.value = props.data.active_addresses;
+  localInactiveAddresses.value = props.data.inactive_addresses;
+  if (props.data.active_addresses.length > 0) {
+    choiceChooseExisting.value = true;
+  } else {
+    choiceChooseExisting.value = false;
+  }
+});
+
+const showCreateAddressModal = () => {
+  form.errors = [];
+  form.is_past_address = false;
+  form.address_type_id = 0;
+  form.line_1 = '';
+  form.line_2 = '';
+  form.city = '';
+  form.province = '';
+  form.postal_code = '';
+  form.country = '';
+  createAddressModalShown.value = true;
+};
+
+const toggleInactiveAdresses = () => {
+  inactiveAddressesShown.value = !inactiveAddressesShown.value;
+};
+
+const showEditAddressModal = (address) => {
+  editedAddressId.value = address.id;
+  form.errors = [];
+  form.is_past_address = address.is_past_address;
+  form.address_type_id = address.type ? address.type.id : 0;
+  form.line_1 = address.line_1;
+  form.line_2 = address.line_2;
+  form.city = address.city;
+  form.province = address.province;
+  form.postal_code = address.postal_code;
+  form.country = address.country;
+};
+
+const showDeleteAddressModal = (address) => {
+  addressToDelete.value = address;
+  deleteAddressModalShown.value = true;
+};
+
+const submit = () => {
+  loadingState.value = 'loading';
+  form.existing_address = choiceChooseExisting.value;
+
+  axios
+    .post(props.data.url.store, form)
+    .then((response) => {
+      if (form.is_past_address) {
+        localInactiveAddresses.value.unshift(response.data.data);
+      } else {
+        localActiveAddresses.value.unshift(response.data.data);
+      }
+
+      loadingState.value = '';
+      createAddressModalShown.value = false;
+    })
+    .catch((error) => {
+      loadingState.value = '';
+      form.errors = error.response.data;
+    });
+};
+
+const update = (address) => {
+  loadingState.value = 'loading';
+
+  axios
+    .put(address.url.update, form)
+    .then((response) => {
+      loadingState.value = '';
+
+      if (form.is_past_address) {
+        localInactiveAddresses.value[localInactiveAddresses.value.findIndex((x) => x.id === address.id)] =
+          response.data.data;
+      } else {
+        localActiveAddresses.value[localActiveAddresses.value.findIndex((x) => x.id === address.id)] =
+          response.data.data;
+      }
+      editedAddressId.value = 0;
+    })
+    .catch((error) => {
+      loadingState.value = '';
+      form.errors = error.response.data;
+    });
+};
+
+const destroy = () => {
+  processAddressDeletion.value = true;
+
+  axios
+    .delete(addressToDelete.value.url.destroy)
+    .then(() => {
+      processAddressDeletion.value = false;
+      if (addressToDelete.value.is_past_address) {
+        const id = localInactiveAddresses.value.findIndex((x) => x.id === addressToDelete.value.id);
+        localInactiveAddresses.value.splice(id, 1);
+      } else {
+        const id2 = localActiveAddresses.value.findIndex((x) => x.id === addressToDelete.value.id);
+        localActiveAddresses.value.splice(id2, 1);
+      }
+      deleteAddressModalShown.value = false;
+    })
+    .catch((error) => {
+      loadingState.value = null;
+      form.errors = error.response.data;
+    });
+};
+</script>
+
 <template>
   <div class="mb-10">
     <!-- title + cta -->
@@ -36,7 +192,73 @@
         v-if="createAddressModalShown"
         class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900"
         @submit.prevent="submit()">
-        <div class="border-b border-gray-200 dark:border-gray-700">
+        <!-- radio button: choose existing or create new address -->
+        <div
+          v-if="props.data.addresses_in_vault.length > 0"
+          class="mb-2 border-b border-gray-200 p-5 dark:border-gray-700">
+          <div class="mb-2 flex items-center">
+            <input
+              id="chooseExisting"
+              :checked="choiceChooseExisting"
+              @change="choiceChooseExisting = true"
+              name="exist"
+              type="radio"
+              class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+            <label
+              for="chooseExisting"
+              class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+              Choose an existing address
+            </label>
+          </div>
+
+          <div class="flex items-center">
+            <input
+              id="createNew"
+              :checked="!choiceChooseExisting"
+              @change="choiceChooseExisting = false"
+              name="exist"
+              type="radio"
+              class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+            <label
+              for="createNew"
+              class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+              Create a new address
+            </label>
+          </div>
+        </div>
+
+        <!-- existing addresses -->
+        <div
+          v-if="choiceChooseExisting && props.data.addresses_in_vault.length > 0"
+          class="h-40 overflow-auto border-b border-gray-200 p-3 dark:border-gray-700">
+          <ul class="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+            <li
+              v-for="address in props.data.addresses_in_vault"
+              :key="address.id"
+              class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+              <!-- detail of the address type -->
+              <div class="flex items-center">
+                <input
+                  :id="'address-' + address.id"
+                  v-model="form.existing_address_id"
+                  :value="address.id"
+                  name="date-format"
+                  type="radio"
+                  class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+                <label
+                  :for="'address-' + address.id"
+                  class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                  {{ address.address }}
+                </label>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- create new address -->
+        <div
+          v-if="!choiceChooseExisting || props.data.addresses_in_vault.length == 0"
+          class="border-b border-gray-200 dark:border-gray-700">
           <div v-if="form.errors.length > 0" class="p-5">
             <errors :errors="form.errors" />
           </div>
@@ -184,7 +406,9 @@
               <li class="inline cursor-pointer text-blue-500 hover:underline" @click="showEditAddressModal(address)">
                 {{ $t('app.edit') }}
               </li>
-              <li class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(address)">
+              <li
+                class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
+                @click="showDeleteAddressModal(address)">
                 {{ $t('app.delete') }}
               </li>
             </ul>
@@ -484,172 +708,33 @@
         </div>
       </div>
     </div>
+
+    <!-- delete modal -->
+    <JetConfirmationModal :show="deleteAddressModalShown" @close="deleteAddressModalShown = false">
+      <template #title>
+        {{ $t('Delete the address') }}
+      </template>
+
+      <template #content>
+        {{ $t('Are you sure? The address will be deleted immediately.') }}
+      </template>
+
+      <template #footer>
+        <JetSecondaryButton @click="deleteAddressModalShown = false">
+          {{ $t('Cancel') }}
+        </JetSecondaryButton>
+
+        <JetDangerButton
+          class="ml-3"
+          :class="{ 'opacity-25': processAddressDeletion }"
+          :disabled="processAddressDeletion"
+          @click="destroy()">
+          {{ $t('Delete') }}
+        </JetDangerButton>
+      </template>
+    </JetConfirmationModal>
   </div>
 </template>
-
-<script>
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
-import PrettySpan from '@/Shared/Form/PrettySpan.vue';
-import TextInput from '@/Shared/Form/TextInput.vue';
-import Errors from '@/Shared/Form/Errors.vue';
-import Dropdown from '@/Shared/Form/Dropdown.vue';
-
-export default {
-  components: {
-    PrettyButton,
-    PrettySpan,
-    TextInput,
-    Errors,
-    Dropdown,
-  },
-
-  props: {
-    layoutData: {
-      type: Object,
-      default: null,
-    },
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-
-  data() {
-    return {
-      loadingState: '',
-      createAddressModalShown: false,
-      inactiveAddressesShown: false,
-      localActiveAddresses: [],
-      localInactiveAddresses: [],
-      editedAddressId: 0,
-      warning: '',
-      form: {
-        type: '',
-        address_type_id: 0,
-        is_past_address: false,
-        line_1: '',
-        line_2: '',
-        city: '',
-        province: '',
-        postal_code: '',
-        country: '',
-        errors: [],
-      },
-    };
-  },
-
-  created() {
-    this.localActiveAddresses = this.data.active_addresses;
-    this.localInactiveAddresses = this.data.inactive_addresses;
-  },
-
-  methods: {
-    showCreateAddressModal() {
-      this.form.errors = [];
-
-      this.form.is_past_address = false;
-      this.form.address_type_id = 0;
-      this.form.line_1 = '';
-      this.form.line_2 = '';
-      this.form.city = '';
-      this.form.province = '';
-      this.form.postal_code = '';
-      this.form.country = '';
-      this.createAddressModalShown = true;
-
-      this.$nextTick(() => {
-        this.$refs.line_1.focus();
-      });
-    },
-
-    toggleInactiveAdresses() {
-      this.inactiveAddressesShown = !this.inactiveAddressesShown;
-    },
-
-    showEditAddressModal(address) {
-      this.editedAddressId = address.id;
-      this.form.errors = [];
-      this.form.is_past_address = address.is_past_address;
-      this.form.address_type_id = address.type ? address.type.id : 0;
-      this.form.line_1 = address.line_1;
-      this.form.line_2 = address.line_2;
-      this.form.city = address.city;
-      this.form.province = address.province;
-      this.form.postal_code = address.postal_code;
-      this.form.country = address.country;
-    },
-
-    submit() {
-      this.loadingState = 'loading';
-
-      axios
-        .post(this.data.url.store, this.form)
-        .then((response) => {
-          this.flash(this.$t('contact.addresses_new_success'), 'success');
-
-          if (this.form.is_past_address) {
-            this.localInactiveAddresses.unshift(response.data.data);
-          } else {
-            this.localActiveAddresses.unshift(response.data.data);
-          }
-
-          this.loadingState = '';
-          this.createAddressModalShown = false;
-        })
-        .catch((error) => {
-          this.loadingState = '';
-          this.form.errors = error.response.data;
-        });
-    },
-
-    update(address) {
-      this.loadingState = 'loading';
-
-      axios
-        .put(address.url.update, this.form)
-        .then((response) => {
-          this.loadingState = '';
-          this.flash(this.$t('contact.addresses_edit_success'), 'success');
-
-          if (this.form.is_past_address) {
-            this.localInactiveAddresses[this.localInactiveAddresses.findIndex((x) => x.id === address.id)] =
-              response.data.data;
-          } else {
-            this.localActiveAddresses[this.localActiveAddresses.findIndex((x) => x.id === address.id)] =
-              response.data.data;
-          }
-          this.editedAddressId = 0;
-        })
-        .catch((error) => {
-          this.loadingState = '';
-          this.form.errors = error.response.data;
-        });
-    },
-
-    destroy(address) {
-      if (confirm(this.$t('contact.addresses_delete_confirm'))) {
-        axios
-          .delete(address.url.destroy)
-          .then(() => {
-            this.flash(this.$t('contact.addresses_delete_success'), 'success');
-
-            if (address.is_past_address) {
-              const id = this.localInactiveAddresses.findIndex((x) => x.id === address.id);
-              this.localInactiveAddresses.splice(id, 1);
-            } else {
-              const id2 = this.localActiveAddresses.findIndex((x) => x.id === address.id);
-              this.localActiveAddresses.splice(id2, 1);
-            }
-          })
-          .catch((error) => {
-            this.loadingState = null;
-            this.form.errors = error.response.data;
-          });
-      }
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .icon-sidebar {

@@ -8,6 +8,7 @@ use App\Domains\Contact\ManageContactAddresses\Web\ViewHelpers\ModuleContactAddr
 use App\Domains\Vault\ManageAddresses\Services\CreateAddress;
 use App\Domains\Vault\ManageAddresses\Services\UpdateAddress;
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,12 @@ class ContactModuleAddressController extends Controller
             'longitude' => null,
         ];
 
-        $address = (new CreateAddress())->execute($data);
+        if (! $request->input('existing_address')) {
+            $address = (new CreateAddress())->execute($data);
+        } else {
+            $address = Address::where('vault_id', $vaultId)
+                ->findOrFail($request->input('existing_address_id'));
+        }
 
         (new AssociateAddressToContact())->execute([
             'account_id' => Auth::user()->account_id,

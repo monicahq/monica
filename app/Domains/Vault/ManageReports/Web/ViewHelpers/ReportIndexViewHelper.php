@@ -10,6 +10,9 @@ class ReportIndexViewHelper
     {
         return [
             'url' => [
+                'addresses' => route('vault.reports.addresses.index', [
+                    'vault' => $vault->id,
+                ]),
                 'mood_tracking_events' => route('vault.reports.mood_tracking_events.index', [
                     'vault' => $vault->id,
                 ]),

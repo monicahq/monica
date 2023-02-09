@@ -20,6 +20,7 @@ class ReportIndexViewHelperTest extends TestCase
         $this->assertEquals(
             [
                 'url' => [
+                    'addresses' => env('APP_URL').'/vaults/'.$vault->id.'/reports/addresses',
                     'mood_tracking_events' => env('APP_URL').'/vaults/'.$vault->id.'/reports/moodTrackingEvents',
                     'important_date_summary' => env('APP_URL').'/vaults/'.$vault->id.'/reports/importantDates',
                 ],

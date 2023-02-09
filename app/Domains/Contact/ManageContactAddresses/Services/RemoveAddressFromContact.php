@@ -72,6 +72,10 @@ class RemoveAddressFromContact extends BaseService implements ServiceInterface
     private function remove(): void
     {
         $this->contact->addresses()->detach($this->address);
+
+        if ($this->address->contacts()->count() === 0) {
+            $this->address->delete();
+        }
     }
 
     private function createFeedItem(): void

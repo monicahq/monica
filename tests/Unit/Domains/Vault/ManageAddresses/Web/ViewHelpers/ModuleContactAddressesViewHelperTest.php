@@ -3,6 +3,7 @@
 namespace Tests\Unit\Domains\Vault\ManageAddresses\Web\ViewHelpers;
 
 use App\Domains\Contact\ManageContactAddresses\Web\ViewHelpers\ModuleContactAddressesViewHelper;
+use App\Helpers\MapHelper;
 use App\Models\Address;
 use App\Models\AddressType;
 use App\Models\Contact;
@@ -21,10 +22,14 @@ class ModuleContactAddressesViewHelperTest extends TestCase
         $contact = Contact::factory()->create();
         $user = User::factory()->create();
 
-        $address = Address::factory()->create();
+        $address = Address::factory()->create([
+            'vault_id' => $contact->vault_id,
+        ]);
         $address->contacts()->attach($contact, ['is_past_address' => true]);
-        $address = Address::factory()->create();
-        $address->contacts()->attach($contact, ['is_past_address' => false]);
+        $otherAddress = Address::factory()->create([
+            'vault_id' => $contact->vault_id,
+        ]);
+        $otherAddress->contacts()->attach($contact, ['is_past_address' => false]);
 
         $addressType = AddressType::factory()->create([
             'account_id' => $contact->vault->account_id,
@@ -34,13 +39,14 @@ class ModuleContactAddressesViewHelperTest extends TestCase
         $array = ModuleContactAddressesViewHelper::data($contact, $user);
 
         $this->assertEquals(
-            4,
+            5,
             count($array)
         );
 
         $this->assertArrayHasKey('active_addresses', $array);
         $this->assertArrayHasKey('inactive_addresses', $array);
         $this->assertArrayHasKey('address_types', $array);
+        $this->assertArrayHasKey('addresses_in_vault', $array);
         $this->assertArrayHasKey('url', $array);
 
         $this->assertEquals(
@@ -62,6 +68,20 @@ class ModuleContactAddressesViewHelperTest extends TestCase
         $this->assertEquals(
             1,
             $array['inactive_addresses']->count()
+        );
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'id' => $address->id,
+                    'address' => MapHelper::getAddressAsString($address),
+                ],
+                1 => [
+                    'id' => $otherAddress->id,
+                    'address' => MapHelper::getAddressAsString($otherAddress),
+                ],
+            ],
+            $array['addresses_in_vault']->toArray()
         );
 
         $this->assertEquals(
