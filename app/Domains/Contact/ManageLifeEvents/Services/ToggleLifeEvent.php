@@ -4,14 +4,11 @@ namespace App\Domains\Contact\ManageLifeEvents\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\LifeEvent;
-use App\Models\TimelineEvent;
 use App\Services\BaseService;
 
-class DestroyLifeEvent extends BaseService implements ServiceInterface
+class ToggleLifeEvent extends BaseService implements ServiceInterface
 {
     private LifeEvent $lifeEvent;
-
-    private TimelineEvent $timelineEvent;
 
     private array $data;
 
@@ -46,38 +43,34 @@ class DestroyLifeEvent extends BaseService implements ServiceInterface
     }
 
     /**
-     * Destroy a life event.
+     * Toggle a life event.
      *
      * @param  array  $data
+     * @return LifeEvent
      */
-    public function execute(array $data): void
+    public function execute(array $data): LifeEvent
     {
         $this->data = $data;
         $this->validate();
+        $this->update();
 
-        $this->lifeEvent->delete();
-
-        $this->deleteTimelineEvent();
+        return $this->lifeEvent;
     }
 
     private function validate(): void
     {
         $this->validateRules($this->data);
 
-        $this->timelineEvent = $this->vault->timelineEvents()
+        $timelineEvent = $this->vault->timelineEvents()
             ->findOrFail($this->data['timeline_event_id']);
 
-        $this->lifeEvent = $this->timelineEvent->lifeEvents()
+        $this->lifeEvent = $timelineEvent->lifeEvents()
             ->findOrFail($this->data['life_event_id']);
     }
 
-    private function deleteTimelineEvent(): void
+    private function update(): void
     {
-        // a LifeEvent is always associated with a timeline event
-        // if we delete the last life event of the timeline event, we need to
-        // delete the timeline event as well
-        if ($this->timelineEvent->lifeEvents()->count() === 0) {
-            $this->timelineEvent->delete();
-        }
+        $this->lifeEvent->collapsed = ! $this->lifeEvent->collapsed;
+        $this->lifeEvent->save();
     }
 }

@@ -14,6 +14,7 @@ use App\Domains\Contact\ManageGroups\Web\ViewHelpers\GroupsViewHelper;
 use App\Domains\Contact\ManageGroups\Web\ViewHelpers\ModuleGroupsViewHelper;
 use App\Domains\Contact\ManageJobInformation\Web\ViewHelpers\ModuleCompanyViewHelper;
 use App\Domains\Contact\ManageLabels\Web\ViewHelpers\ModuleLabelViewHelper;
+use App\Domains\Contact\ManageLifeEvents\Web\ViewHelpers\ModuleLifeEventViewHelper;
 use App\Domains\Contact\ManageLoans\Web\ViewHelpers\ModuleLoanViewHelper;
 use App\Domains\Contact\ManageNotes\Web\ViewHelpers\ModuleNotesViewHelper;
 use App\Domains\Contact\ManagePets\Web\ViewHelpers\ModulePetsViewHelper;
@@ -238,7 +239,7 @@ class ContactShowViewHelper
             }
 
             if ($module->type == Module::TYPE_FEED) {
-                // this is the only module where the data is loaded asynchroniously
+                // this module loads data asynchroniously
                 // so it needs an URL to load the data from
                 $data = route('contact.feed.show', [
                     'vault' => $contact->vault_id,
@@ -296,6 +297,10 @@ class ContactShowViewHelper
 
             if ($module->type == Module::TYPE_POSTS) {
                 $data = ModulePostsViewHelper::data($contact, $user);
+            }
+
+            if ($module->type == Module::TYPE_LIFE_EVENTS) {
+                $data = ModuleLifeEventViewHelper::data($contact, $user);
             }
 
             $modulesCollection->push([

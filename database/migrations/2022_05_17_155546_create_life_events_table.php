@@ -43,15 +43,33 @@ return new class() extends Migration
             $table->foreign('life_event_category_id')->references('id')->on('life_event_categories')->onDelete('cascade');
         });
 
-        Schema::create('life_events', function (Blueprint $table) {
+        Schema::create('timeline_events', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('vault_id');
+            $table->date('started_at');
+            $table->string('label')->nullable();
+            $table->boolean('collapsed')->default(true);
+            $table->timestamps();
+            $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
+        });
+
+        Schema::create('timeline_event_participants', function (Blueprint $table) {
+            $table->unsignedBigInteger('contact_id');
+            $table->unsignedBigInteger('timeline_event_id');
+            $table->timestamps();
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+            $table->foreign('timeline_event_id')->references('id')->on('timeline_events')->onDelete('cascade');
+        });
+
+        Schema::create('life_events', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('timeline_event_id');
             $table->unsignedBigInteger('life_event_type_id');
             $table->unsignedBigInteger('emotion_id')->nullable();
+            $table->date('happened_at');
             $table->boolean('collapsed')->default(false);
             $table->string('summary')->nullable();
             $table->text('description')->nullable();
-            $table->date('happened_at');
             $table->integer('costs')->nullable();
             $table->unsignedBigInteger('currency_id')->nullable();
             $table->unsignedBigInteger('paid_by_contact_id')->nullable();
@@ -61,7 +79,7 @@ return new class() extends Migration
             $table->string('to_place')->nullable();
             $table->string('place')->nullable();
             $table->timestamps();
-            $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
+            $table->foreign('timeline_event_id')->references('id')->on('timeline_events')->onDelete('cascade');
             $table->foreign('life_event_type_id')->references('id')->on('life_event_types')->onDelete('cascade');
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('set null');
             $table->foreign('paid_by_contact_id')->references('id')->on('contacts')->onDelete('set null');

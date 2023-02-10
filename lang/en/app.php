@@ -66,6 +66,7 @@ return [
     'search' => 'Search',
     'choose' => 'Choose',
     'remove' => 'Remove',
+    'change' => 'Change',
     'publish' => 'Publish',
     'yes' => 'Yes',
     'no' => 'No',
@@ -94,7 +95,7 @@ return [
     'default_template_page_social' => 'Social',
     'default_template_page_feed' => 'Feed',
     'default_template_page_information' => 'Information',
-    'default_template_page_life_events' => 'Life events & goals',
+    'default_template_page_life_events' => 'Life & goals',
     'default_template_page_contact' => 'Ways to connect',
 
     'module_names' => 'Contact name',
@@ -120,6 +121,7 @@ return [
     'module_photos' => 'Photos',
     'module_posts' => 'Posts about the contact',
     'module_religions' => 'Religions',
+    'module_life_events' => 'Life',
 
     'module_option_default_number_of_items_to_display' => 'Default number of items to display',
 

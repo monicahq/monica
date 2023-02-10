@@ -23,6 +23,10 @@ use App\Domains\Contact\ManageGroups\Web\Controllers\ContactModuleGroupControlle
 use App\Domains\Contact\ManageGroups\Web\Controllers\GroupController;
 use App\Domains\Contact\ManageJobInformation\Web\Controllers\ContactModuleJobInformationController;
 use App\Domains\Contact\ManageLabels\Web\Controllers\ContactModuleLabelController;
+use App\Domains\Contact\ManageLifeEvents\Web\Controllers\ContactModuleLifeEventController;
+use App\Domains\Contact\ManageLifeEvents\Web\Controllers\ContactModuleTimelineEventController;
+use App\Domains\Contact\ManageLifeEvents\Web\Controllers\ToggleLifeEventController;
+use App\Domains\Contact\ManageLifeEvents\Web\Controllers\ToggleTimelineEventController;
 use App\Domains\Contact\ManageLoans\Web\Controllers\ContactModuleLoanController;
 use App\Domains\Contact\ManageLoans\Web\Controllers\ContactModuleToggleLoanController;
 use App\Domains\Contact\ManageMoodTrackingEvents\Web\Controllers\ContactMoodTrackingEventsController;
@@ -103,6 +107,7 @@ use App\Domains\Vault\ManageReports\Web\Controllers\ReportIndexController;
 use App\Domains\Vault\ManageReports\Web\Controllers\ReportMoodTrackingEventController;
 use App\Domains\Vault\ManageTasks\Web\Controllers\VaultTaskController;
 use App\Domains\Vault\ManageVault\Web\Controllers\VaultController;
+use App\Domains\Vault\ManageVault\Web\Controllers\VaultDefaultTabOnDashboardController;
 use App\Domains\Vault\ManageVault\Web\Controllers\VaultFeedController;
 use App\Domains\Vault\ManageVault\Web\Controllers\VaultReminderController;
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsContactImportantDateTypeController;
@@ -172,6 +177,9 @@ Route::middleware([
 
         Route::middleware(['vault'])->prefix('{vault}')->group(function () {
             Route::get('', [VaultController::class, 'show'])->name('vault.show');
+
+            // update dashboard's default tab
+            Route::put('defaultTab', [VaultDefaultTabOnDashboardController::class, 'update'])->name('vault.default_tab.update');
 
             // reminders
             Route::get('reminders', [VaultReminderController::class, 'index'])->name('vault.reminder.index');
@@ -329,6 +337,15 @@ Route::middleware([
                     // groups
                     Route::post('groups', [ContactModuleGroupController::class, 'store'])->name('contact.group.store');
                     Route::delete('groups/{group}', [ContactModuleGroupController::class, 'destroy'])->name('contact.group.destroy');
+
+                    // timeline events (which contain life events)
+                    Route::get('timelineEvents', [ContactModuleTimelineEventController::class, 'index'])->name('contact.timeline_event.index');
+                    Route::post('timelineEvents', [ContactModuleTimelineEventController::class, 'store'])->name('contact.timeline_event.store');
+                    Route::post('timelineEvents/{timelineEvent}/toggle', [ToggleTimelineEventController::class, 'store'])->name('contact.timeline_event.toggle');
+                    Route::post('timelineEvents/{timelineEvent}', [ContactModuleLifeEventController::class, 'store'])->name('contact.life_event.store');
+                    Route::delete('timelineEvents/{timelineEvent}', [ContactModuleTimelineEventController::class, 'destroy'])->name('contact.timeline_event.destroy');
+                    Route::post('timelineEvents/{timelineEvent}/lifeEvents/{lifeEvent}/toggle', [ToggleLifeEventController::class, 'store'])->name('contact.life_event.toggle');
+                    Route::delete('timelineEvents/{timelineEvent}/lifeEvents/{lifeEvent}', [ContactModuleLifeEventController::class, 'destroy'])->name('contact.life_event.destroy');
 
                     // mood tracking events
                     Route::post('moodTrackingEvents', [ContactMoodTrackingEventsController::class, 'store'])->name('contact.mood_tracking_event.store');

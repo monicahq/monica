@@ -3,14 +3,11 @@
 namespace App\Domains\Contact\ManageLifeEvents\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\LifeEvent;
 use App\Models\TimelineEvent;
 use App\Services\BaseService;
 
-class DestroyLifeEvent extends BaseService implements ServiceInterface
+class CreateTimelineEvent extends BaseService implements ServiceInterface
 {
-    private LifeEvent $lifeEvent;
-
     private TimelineEvent $timelineEvent;
 
     private array $data;
@@ -26,8 +23,8 @@ class DestroyLifeEvent extends BaseService implements ServiceInterface
             'account_id' => 'required|integer|exists:accounts,id',
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
-            'timeline_event_id' => 'required|integer|exists:timeline_events,id',
-            'life_event_id' => 'required|integer|exists:life_events,id',
+            'label' => 'nullable|string|max:255',
+            'started_at' => 'required|date|date_format:Y-m-d',
         ];
     }
 
@@ -46,38 +43,33 @@ class DestroyLifeEvent extends BaseService implements ServiceInterface
     }
 
     /**
-     * Destroy a life event.
+     * Create a timeline event.
+     * A timeline event is a part of one or more contacts lives, and is itself
+     * composed of one or more life events.
      *
      * @param  array  $data
+     * @return TimelineEvent
      */
-    public function execute(array $data): void
+    public function execute(array $data): TimelineEvent
     {
         $this->data = $data;
         $this->validate();
+        $this->store();
 
-        $this->lifeEvent->delete();
-
-        $this->deleteTimelineEvent();
+        return $this->timelineEvent;
     }
 
     private function validate(): void
     {
         $this->validateRules($this->data);
-
-        $this->timelineEvent = $this->vault->timelineEvents()
-            ->findOrFail($this->data['timeline_event_id']);
-
-        $this->lifeEvent = $this->timelineEvent->lifeEvents()
-            ->findOrFail($this->data['life_event_id']);
     }
 
-    private function deleteTimelineEvent(): void
+    private function store(): void
     {
-        // a LifeEvent is always associated with a timeline event
-        // if we delete the last life event of the timeline event, we need to
-        // delete the timeline event as well
-        if ($this->timelineEvent->lifeEvents()->count() === 0) {
-            $this->timelineEvent->delete();
-        }
+        $this->timelineEvent = TimelineEvent::create([
+            'vault_id' => $this->data['vault_id'],
+            'label' => $this->valueOrNull($this->data, 'summary'),
+            'started_at' => $this->data['started_at'],
+        ]);
     }
 }

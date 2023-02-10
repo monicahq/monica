@@ -2,10 +2,9 @@
 
 namespace Tests\Unit\Domains\Contact\ManageLifeEvents\Services;
 
-use App\Domains\Contact\ManageLifeEvents\Services\DestroyLifeEvent;
+use App\Domains\Contact\ManageLifeEvents\Services\DestroyTimelineEvent;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
-use App\Models\LifeEvent;
 use App\Models\TimelineEvent;
 use App\Models\User;
 use App\Models\Vault;
@@ -14,23 +13,21 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
-class DestroyLifeEventTest extends TestCase
+class DestroyTimelineEventTest extends TestCase
 {
     use DatabaseTransactions;
 
     /** @test */
-    public function it_destroys_a_contact_life_event(): void
+    public function it_destroys_a_timeline_event(): void
     {
         $user = $this->createUser();
         $vault = $this->createVault($user->account);
         $vault = $this->setPermissionInVault($user, Vault::PERMISSION_EDIT, $vault);
-        $timelineEvent = TimelineEvent::factory()->create(['vault_id' => $vault->id]);
-
-        $lifeEvent = LifeEvent::factory()->create([
-            'timeline_event_id' => $timelineEvent->id,
+        $timelineEvent = TimelineEvent::factory()->create([
+            'vault_id' => $vault->id,
         ]);
 
-        $this->executeService($user, $user->account, $vault, $lifeEvent, $timelineEvent);
+        $this->executeService($user, $user->account, $vault, $timelineEvent);
     }
 
     /** @test */
@@ -41,7 +38,7 @@ class DestroyLifeEventTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyLifeEvent())->execute($request);
+        (new DestroyTimelineEvent())->execute($request);
     }
 
     /** @test */
@@ -53,13 +50,11 @@ class DestroyLifeEventTest extends TestCase
         $account = Account::factory()->create();
         $vault = $this->createVault($user->account);
         $vault = $this->setPermissionInVault($user, Vault::PERMISSION_EDIT, $vault);
-        $timelineEvent = TimelineEvent::factory()->create(['vault_id' => $vault->id]);
-
-        $lifeEvent = LifeEvent::factory()->create([
-            'timeline_event_id' => $timelineEvent->id,
+        $timelineEvent = TimelineEvent::factory()->create([
+            'vault_id' => $vault->id,
         ]);
 
-        $this->executeService($user, $account, $vault, $lifeEvent, $timelineEvent);
+        $this->executeService($user, $account, $vault, $timelineEvent);
     }
 
     /** @test */
@@ -71,13 +66,11 @@ class DestroyLifeEventTest extends TestCase
         $account = Account::factory()->create();
         $vault = $this->createVault($account);
         $vault = $this->setPermissionInVault($user, Vault::PERMISSION_EDIT, $vault);
-        $timelineEvent = TimelineEvent::factory()->create(['vault_id' => $vault->id]);
-
-        $lifeEvent = LifeEvent::factory()->create([
-            'timeline_event_id' => $timelineEvent->id,
+        $timelineEvent = TimelineEvent::factory()->create([
+            'vault_id' => $vault->id,
         ]);
 
-        $this->executeService($user, $user->account, $vault, $lifeEvent, $timelineEvent);
+        $this->executeService($user, $user->account, $vault, $timelineEvent);
     }
 
     /** @test */
@@ -88,13 +81,11 @@ class DestroyLifeEventTest extends TestCase
         $user = $this->createUser();
         $vault = $this->createVault($user->account);
         $vault = $this->setPermissionInVault($user, Vault::PERMISSION_VIEW, $vault);
-        $timelineEvent = TimelineEvent::factory()->create(['vault_id' => $vault->id]);
-
-        $lifeEvent = LifeEvent::factory()->create([
-            'timeline_event_id' => $timelineEvent->id,
+        $timelineEvent = TimelineEvent::factory()->create([
+            'vault_id' => $vault->id,
         ]);
 
-        $this->executeService($user, $user->account, $vault, $lifeEvent, $timelineEvent);
+        $this->executeService($user, $user->account, $vault, $timelineEvent);
     }
 
     /** @test */
@@ -107,43 +98,19 @@ class DestroyLifeEventTest extends TestCase
         $vault = $this->setPermissionInVault($user, Vault::PERMISSION_EDIT, $vault);
         $timelineEvent = TimelineEvent::factory()->create([]);
 
-        $lifeEvent = LifeEvent::factory()->create([
-            'timeline_event_id' => $timelineEvent->id,
-        ]);
-
-        $this->executeService($user, $user->account, $vault, $lifeEvent, $timelineEvent);
+        $this->executeService($user, $user->account, $vault, $timelineEvent);
     }
 
-    /** @test */
-    public function it_fails_if_life_events_doesn_belong_to_timeline_event(): void
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $user = $this->createUser();
-        $vault = $this->createVault($user->account);
-        $vault = $this->setPermissionInVault($user, Vault::PERMISSION_EDIT, $vault);
-        $timelineEvent = TimelineEvent::factory()->create(['vault_id' => $vault->id]);
-
-        $lifeEvent = LifeEvent::factory()->create([]);
-
-        $this->executeService($user, $user->account, $vault, $lifeEvent, $timelineEvent);
-    }
-
-    private function executeService(User $user, Account $account, Vault $vault, LifeEvent $lifeEvent, TimelineEvent $timelineEvent): void
+    private function executeService(User $user, Account $account, Vault $vault, TimelineEvent $timelineEvent): void
     {
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
             'author_id' => $user->id,
             'timeline_event_id' => $timelineEvent->id,
-            'life_event_id' => $lifeEvent->id,
         ];
 
-        (new DestroyLifeEvent)->execute($request);
-
-        $this->assertDatabaseMissing('life_events', [
-            'id' => $lifeEvent->id,
-        ]);
+        (new DestroyTimelineEvent)->execute($request);
 
         $this->assertDatabaseMissing('timeline_events', [
             'id' => $timelineEvent->id,

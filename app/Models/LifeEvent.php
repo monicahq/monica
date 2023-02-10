@@ -19,8 +19,10 @@ class LifeEvent extends Model
      * @var array<string>
      */
     protected $fillable = [
-        'vault_id',
+        'timeline_event_id',
         'life_event_type_id',
+        'emotion_id',
+        'collapsed',
         'summary',
         'description',
         'happened_at',
@@ -44,13 +46,22 @@ class LifeEvent extends Model
     ];
 
     /**
-     * Get the vault associated with the life event.
+     * The attributes that should be cast to native types.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'collapsed' => 'boolean',
+    ];
+
+    /**
+     * Get the timeline event associated with the life event.
      *
      * @return BelongsTo
      */
-    public function vault(): BelongsTo
+    public function timelineEvent(): BelongsTo
     {
-        return $this->belongsTo(Vault::class);
+        return $this->belongsTo(TimelineEvent::class);
     }
 
     /**
@@ -71,6 +82,16 @@ class LifeEvent extends Model
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    /**
+     * Get the emotion associated with the life event.
+     *
+     * @return BelongsTo
+     */
+    public function emotion(): BelongsTo
+    {
+        return $this->belongsTo(Emotion::class);
     }
 
     /**

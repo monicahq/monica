@@ -32,6 +32,7 @@ import Documents from '@/Shared/Modules/Documents.vue';
 import Photos from '@/Shared/Modules/Photos.vue';
 import Religion from '@/Shared/Modules/Religion.vue';
 import Posts from '@/Shared/Modules/Posts.vue';
+import LifeEvent from '@/Shared/Modules/LifeEvent.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
 
 const props = defineProps({
@@ -333,6 +334,8 @@ const destroyAvatar = () => {
                 <Photos v-else-if="module.type == 'photos'" :data="module.data" />
 
                 <Posts v-else-if="module.type == 'posts'" :data="module.data" />
+
+                <Life-Event v-else-if="module.type == 'life_events'" :data="module.data" :layout-data="layoutData" />
               </div>
             </div>
           </div>

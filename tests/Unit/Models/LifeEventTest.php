@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Contact;
 use App\Models\Currency;
+use App\Models\Emotion;
 use App\Models\LifeEvent;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -13,11 +14,11 @@ class LifeEventTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function it_has_one_vault()
+    public function it_has_one_timeline_event()
     {
         $lifeEvent = LifeEvent::factory()->create();
 
-        $this->assertTrue($lifeEvent->vault()->exists());
+        $this->assertTrue($lifeEvent->timelineEvent()->exists());
     }
 
     /** @test */
@@ -37,6 +38,17 @@ class LifeEventTest extends TestCase
         ]);
 
         $this->assertTrue($lifeEvent->currency()->exists());
+    }
+
+    /** @test */
+    public function it_has_one_emotion()
+    {
+        $emotion = Emotion::factory()->create();
+        $lifeEvent = LifeEvent::factory()->create([
+            'emotion_id' => $emotion->id,
+        ]);
+
+        $this->assertTrue($lifeEvent->emotion()->exists());
     }
 
     /** @test */

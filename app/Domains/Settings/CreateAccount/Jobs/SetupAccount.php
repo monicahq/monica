@@ -419,6 +419,22 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'can_be_deleted' => true,
         ]);
 
+        // life events
+        $module = (new CreateModule())->execute([
+            'account_id' => $this->author->account_id,
+            'author_id' => $this->author->id,
+            'name' => trans('app.module_life_events'),
+            'type' => Module::TYPE_LIFE_EVENTS,
+            'can_be_deleted' => false,
+        ]);
+        (new AssociateModuleToTemplatePage())->execute([
+            'account_id' => $this->author->account_id,
+            'author_id' => $this->author->id,
+            'template_id' => $this->template->id,
+            'template_page_id' => $templatePageSocial->id,
+            'module_id' => $module->id,
+        ]);
+
         // goals
         $module = (new CreateModule())->execute([
             'account_id' => $this->author->account_id,

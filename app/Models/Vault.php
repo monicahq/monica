@@ -42,6 +42,7 @@ class Vault extends Model
         'name',
         'description',
         'default_template_id',
+        'show_activity_tab_on_dashboard',
         'show_group_tab',
         'show_tasks_tab',
         'show_files_tab',
@@ -61,6 +62,7 @@ class Vault extends Model
         'show_journal_tab' => 'boolean',
         'show_companies_tab' => 'boolean',
         'show_reports_tab' => 'boolean',
+        'show_activity_tab_on_dashboard' => 'boolean',
     ];
 
     /**
@@ -233,13 +235,13 @@ class Vault extends Model
     }
 
     /**
-     * Get the life events associated with the vault.
+     * Get the timeline events associated with the vault.
      *
      * @return HasMany
      */
-    public function lifeEvents(): HasMany
+    public function timelineEvents(): HasMany
     {
-        return $this->hasMany(LifeEvent::class);
+        return $this->hasMany(TimelineEvent::class);
     }
 
     /**

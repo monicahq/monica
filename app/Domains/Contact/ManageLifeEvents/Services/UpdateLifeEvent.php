@@ -6,6 +6,7 @@ use App\Interfaces\ServiceInterface;
 use App\Models\Contact;
 use App\Models\LifeEvent;
 use App\Models\LifeEventType;
+use App\Models\TimelineEvent;
 use App\Services\BaseService;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -13,6 +14,8 @@ use Illuminate\Support\Collection;
 class UpdateLifeEvent extends BaseService implements ServiceInterface
 {
     private LifeEvent $lifeEvent;
+
+    private TimelineEvent $timelineEvent;
 
     private Collection $partipantsCollection;
 
@@ -29,6 +32,7 @@ class UpdateLifeEvent extends BaseService implements ServiceInterface
             'account_id' => 'required|integer|exists:accounts,id',
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
+            'timeline_event_id' => 'required|integer|exists:timeline_events,id',
             'life_event_type_id' => 'required|integer|exists:life_event_types,id',
             'life_event_id' => 'required|integer|exists:life_events,id',
             'summary' => 'nullable|string|max:255',
@@ -81,10 +85,13 @@ class UpdateLifeEvent extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->lifeEvent = $this->vault->lifeEvents()
-            ->findOrFail($this->data['life_event_id']);
+        $this->timelineEvent = $this->vault->timelineEvents()
+            ->findOrFail($this->data['timeline_event_id']);
 
         $lifeEventType = LifeEventType::findOrFail($this->data['life_event_type_id']);
+
+        $this->lifeEvent = $this->timelineEvent->lifeEvents()
+            ->findOrFail($this->data['life_event_id']);
 
         $this->vault->lifeEventCategories()
             ->findOrFail($lifeEventType->lifeEventCategory->id);
@@ -105,6 +112,7 @@ class UpdateLifeEvent extends BaseService implements ServiceInterface
 
     private function update(): void
     {
+        $this->lifeEvent->timeline_event_id = $this->data['timeline_event_id'];
         $this->lifeEvent->life_event_type_id = $this->data['life_event_type_id'];
         $this->lifeEvent->summary = $this->valueOrNull($this->data, 'summary');
         $this->lifeEvent->description = $this->valueOrNull($this->data, 'description');
@@ -132,6 +140,7 @@ class UpdateLifeEvent extends BaseService implements ServiceInterface
     {
         foreach ($this->partipantsCollection as $participant) {
             $participant->lifeEvents()->attach($this->lifeEvent->id);
+            $participant->timelineEvents()->syncWithoutDetaching($this->timelineEvent->id);
         }
     }
 }
