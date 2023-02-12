@@ -8,6 +8,7 @@ use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedGene
 use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedGoal;
 use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedLabelAssigned;
 use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedMoodTrackingEvent;
+use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedNote;
 use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedPet;
 use App\Helpers\DateHelper;
 use App\Helpers\UserHelper;
@@ -87,6 +88,11 @@ class ModuleFeedViewHelper
             case 'pet_updated':
             case 'pet_destroyed':
                 return ActionFeedPet::data($item);
+
+            case 'note_created':
+            case 'note_updated':
+            case 'note_destroyed':
+                return ActionFeedNote::data($item);
 
             case 'goal_created':
             case 'goal_updated':
