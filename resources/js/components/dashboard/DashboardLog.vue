@@ -99,9 +99,7 @@
               <a :href="'people/' + note.contact.id">
                 {{ note.name }}
               </a>
-              <p>
-                {{ note.body }}
-              </p>
+              <p v-html="compiledMarkdown(note.body)"></p>
             </div>
           </div>
         </template>
@@ -334,33 +332,33 @@ export default {
       this.saveTab(view);
 
       switch (view) {
-      case 'calls':
-        if (! this.callsAlreadyLoaded) {
-          this.getCalls();
-          this.callsAlreadyLoaded = true;
-        }
-        break;
+        case 'calls':
+          if (! this.callsAlreadyLoaded) {
+            this.getCalls();
+            this.callsAlreadyLoaded = true;
+          }
+          break;
 
-      case 'notes':
-        if (! this.notesAlreadyLoaded) {
-          this.getNotes();
-          this.notesAlreadyLoaded = true;
-        }
-        break;
+        case 'notes':
+          if (! this.notesAlreadyLoaded) {
+            this.getNotes();
+            this.notesAlreadyLoaded = true;
+          }
+          break;
 
-      case 'debts':
-        if (! this.debtsAlreadyLoaded) {
-          this.getDebts();
-          this.debtsAlreadyLoaded = true;
-        }
-        break;
+        case 'debts':
+          if (! this.debtsAlreadyLoaded) {
+            this.getDebts();
+            this.debtsAlreadyLoaded = true;
+          }
+          break;
 
-      case 'tasks':
-        if (! this.tasksAlreadyLoaded) {
-          this.getTasks();
-          this.tasksAlreadyLoaded = true;
-        }
-        break;
+        case 'tasks':
+          if (! this.tasksAlreadyLoaded) {
+            this.getTasks();
+            this.tasksAlreadyLoaded = true;
+          }
+          break;
       }
     },
 
@@ -449,7 +447,11 @@ export default {
         .then(response => {
           this.tasks.splice(this.tasks.indexOf(task), 1);
         });
-    }
+    },
+
+    compiledMarkdown (text) {
+      return text !== undefined && text !== null ? marked(text, { sanitize: true }) : '';
+    },
   }
 };
 </script>
