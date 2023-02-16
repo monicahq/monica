@@ -26,7 +26,7 @@
         "guzzlehttp/psr7": "^2.1",
         "intervention/image": "^2.3",
         "laravel/cashier": "^13.0",
-        "laravel/framework": "^9.0",
+        "laravel/framework": "^9.0|^10.0",
         "laravel/passport": "^11.0",
         "laravel/socialite": "^5.0",
         "laravel/ui": "^4.0",
