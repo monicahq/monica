@@ -1523,6 +1523,16 @@ class Contact extends Model
     }
 
     /**
+     * Reset the notification date from current time
+     *
+     * @return void
+     */
+    public function resetStayInTouchTriggerDate()
+    {
+        $this->setStayInTouchTriggerDate($this->stay_in_touch_frequency ?? 0);
+    }
+
+    /**
      * Get the weather information for this contact, based on the first address
      * on the profile.
      *

@@ -56,6 +56,11 @@ class AttachContactToActivity extends BaseService
         /** @var Activity */
         $activity = Activity::find($data['activity_id']);
 
+        // Reset and update stay in touch trigger date
+        foreach ($data['contacts'] as $contactId) {
+            Contact::find($contactId)->resetStayInTouchTriggerDate();
+        }
+
         $this->attach($data, $activity);
 
         return $activity;

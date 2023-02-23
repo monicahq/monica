@@ -47,7 +47,10 @@ class CreateCall extends BaseService
 
         $this->updateLastCallInfo($contact, $call);
 
-        if (! empty($data['emotions'])) {
+        // Reset and update stay in touch trigger date
+        Contact::find($data['contact_id'])->resetStayInTouchTriggerDate();
+
+        if (!empty($data['emotions'])) {
             if ($data['emotions'] != '') {
                 $this->addEmotions($data['emotions'], $call);
             }

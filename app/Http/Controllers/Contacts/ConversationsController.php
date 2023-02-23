@@ -103,6 +103,9 @@ class ConversationsController extends Controller
                 ->withErrors($result);
         }
 
+        // Reset and update stay in touch trigger date
+        Contact::find($data['contact_id'])->resetStayInTouchTriggerDate();
+
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.conversation_add_success'));
     }
