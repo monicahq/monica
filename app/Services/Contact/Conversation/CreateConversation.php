@@ -47,6 +47,9 @@ class CreateConversation extends BaseService
         ContactFieldType::where('account_id', $data['account_id'])
                         ->findOrFail($data['contact_field_type_id']);
 
+        // Reset and update stay in touch trigger date
+        Contact::find($data['contact_id'])->resetStayInTouchTriggerDate();
+
         return Conversation::create($data);
     }
 }
