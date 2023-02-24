@@ -114,11 +114,8 @@ class Reminder extends Model
             $date = $this->initial_date;
         }
 
-        while ($date->isPast()) {
-            $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
-        }
-
-        if ($date->isToday()) {
+        // Only schedule reminders week/month/year out IF it is in the past
+        while ($date->isPast() && !$date->isToday()) {
             $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
         }
 
