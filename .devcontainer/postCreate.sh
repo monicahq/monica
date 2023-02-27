@@ -8,9 +8,9 @@ setenv() {
 
 set_apache() {
     chgrp -R www-data storage && chmod -R g+w storage
-    chmod a+x /root && sudo rm -rf /var/www/html && sudo ln -s "$(pwd)/public" /var/www/html
-    a2enmod rewrite
-    service apache2 restart
+    sudo rm -rf /var/www/html && sudo ln -s "$(pwd)/public" /var/www/html
+    sudo a2enmod rewrite
+    sudo service apache2 restart
 }
 
 set_database() {

@@ -11,6 +11,7 @@
   "license": "AGPL-3.0-or-later",
   "require": {
     "php": "^8.1",
+    "ext-fileinfo": "*",
     "asbiin/laravel-webauthn": "^3.2",
     "fruitcake/laravel-cors": "^2.2",
     "guzzlehttp/guzzle": "^7.4",
