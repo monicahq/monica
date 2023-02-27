@@ -13,6 +13,7 @@
     "php": "^8.1",
     "ext-fileinfo": "*",
     "asbiin/laravel-webauthn": "^3.2",
+    "codezero/laravel-localizer": "^1.7",
     "fruitcake/laravel-cors": "^2.2",
     "guzzlehttp/guzzle": "^7.4",
     "http-interop/http-factory-guzzle": "^1.2",
@@ -38,8 +39,7 @@
     "socialiteproviders/microsoft-azure": "^5.1",
     "socialiteproviders/twitter": "^4.1",
     "tightenco/ziggy": "1.5.0",
-    "uploadcare/uploadcare-php": "^3.2",
-    "vluzrmos/language-detector": "^2.3"
+    "uploadcare/uploadcare-php": "^3.2"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.7",
