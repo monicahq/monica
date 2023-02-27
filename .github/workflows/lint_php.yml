@@ -21,10 +21,16 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v3
 
+      - name: Get pint version
+        id: pint
+        run: |
+          echo "version=$(composer show laravel/pint --locked --format=json | jq -r '.versions[0]' | sed 's/v//')" >> $GITHUB_OUTPUT
+
       - name: laravel-pint
-        uses: aglipanci/laravel-pint-action@1.0.0
+        uses: aglipanci/laravel-pint-action@2.1.0
         with:
-          preset: laravel
+          configPath: pint.json
+          pintVersion: ${{ steps.pint.outputs.version }}
 
       - name: Check if there is any file update needed
         run: |

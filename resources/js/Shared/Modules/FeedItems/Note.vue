@@ -26,9 +26,8 @@ const props = defineProps({
 
     <div class="px-3 pt-2 pb-2">
       <!-- the note still exists in the system -->
-      <div
-        v-if="props.data.note.object">
-        <div v-if="props.data.note.object.title" class="block mb-2">{{ props.data.note.object.title }}</div>
+      <div v-if="props.data.note.object">
+        <div v-if="props.data.note.object.title" class="mb-2 block">{{ props.data.note.object.title }}</div>
         <div>{{ props.data.note.object.body }}</div>
       </div>
 

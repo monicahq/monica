@@ -1,5 +1,4 @@
-public/js
-public/css
+public/build
 storage
 vendor
 node_modules

@@ -6,8 +6,6 @@ use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedNote
 use App\Models\Contact;
 use App\Models\ContactFeedItem;
 use App\Models\Note;
-use App\Models\Pet;
-use App\Models\PetCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
