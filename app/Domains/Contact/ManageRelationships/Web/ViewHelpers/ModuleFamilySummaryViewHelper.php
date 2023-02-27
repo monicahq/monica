@@ -16,10 +16,6 @@ class ModuleFamilySummaryViewHelper
      * Get a summary of the family of the contact:
      * - spouse or partner
      * - children.
-     *
-     * @param  Contact  $contact
-     * @param  User  $user
-     * @return array
      */
     public static function data(Contact $contact, User $user): array
     {

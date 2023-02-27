@@ -10,8 +10,6 @@ class UserTokenController extends BaseController
     /**
      * Destroy user token.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $driver
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request, string $driver)

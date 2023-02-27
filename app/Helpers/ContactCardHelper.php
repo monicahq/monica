@@ -10,9 +10,6 @@ class ContactCardHelper
     /**
      * Get all the information about a contact needed to display the contact card
      * component.
-     *
-     * @param  Contact  $contact
-     * @return array
      */
     public static function data(Contact $contact): array
     {

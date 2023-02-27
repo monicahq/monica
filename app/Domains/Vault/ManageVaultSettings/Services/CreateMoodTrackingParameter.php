@@ -12,8 +12,6 @@ class CreateMoodTrackingParameter extends BaseService implements ServiceInterfac
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -28,8 +26,6 @@ class CreateMoodTrackingParameter extends BaseService implements ServiceInterfac
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -42,9 +38,6 @@ class CreateMoodTrackingParameter extends BaseService implements ServiceInterfac
 
     /**
      * Create a mood tracking parameter.
-     *
-     * @param  array  $data
-     * @return MoodTrackingParameter
      */
     public function execute(array $data): MoodTrackingParameter
     {

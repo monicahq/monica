@@ -41,8 +41,6 @@ class ModuleRowField extends Model
 
     /**
      * Get the module row associated with the module.
-     *
-     * @return BelongsTo
      */
     public function row(): BelongsTo
     {

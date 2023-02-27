@@ -15,10 +15,6 @@ class NameHelper
      * %first_name%, %last_name%, %middle_name%, %nickname%, %maiden_name%, and
      * so on). We need to parse this string and replace the variables with the
      * appropriate values.
-     *
-     * @param  User  $user
-     * @param  Contact  $contact
-     * @return string
      */
     public static function formatContactName(User $user, Contact $contact): string
     {

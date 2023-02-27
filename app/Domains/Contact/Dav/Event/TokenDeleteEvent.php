@@ -13,7 +13,6 @@ class TokenDeleteEvent
     /**
      * Create a new event instance.
      *
-     * @param  SyncToken  $token
      * @return void
      *
      * @codeCoverageIgnore

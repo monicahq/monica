@@ -12,8 +12,6 @@ class UpdateTemplate extends BaseService implements ServiceInterface
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -27,8 +25,6 @@ class UpdateTemplate extends BaseService implements ServiceInterface
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -40,9 +36,6 @@ class UpdateTemplate extends BaseService implements ServiceInterface
 
     /**
      * Update a template.
-     *
-     * @param  array  $data
-     * @return Template
      */
     public function execute(array $data): Template
     {

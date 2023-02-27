@@ -11,16 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class CleanSyncToken extends QueuableService implements ServiceInterface
 {
-    /**
-     * @var Carbon
-     */
     private Carbon $timefix;
 
     /**
      * Clean token list.
-     *
-     * @param  array  $data
-     * @return void
      */
     public function execute(array $data): void
     {
@@ -39,11 +33,6 @@ class CleanSyncToken extends QueuableService implements ServiceInterface
 
     /**
      * Handle tokens for a user.
-     *
-     * @param  int  $userId
-     * @param  string  $tokenName
-     * @param  string  $timestamp
-     * @return void
      */
     private function handleUserToken(int $userId, string $tokenName, string $timestamp): void
     {

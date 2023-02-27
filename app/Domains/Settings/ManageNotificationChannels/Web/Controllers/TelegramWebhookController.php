@@ -13,7 +13,6 @@ class TelegramWebhookController extends Controller
     /**
      * Store Telegram Chat ID from telegram webhook message.
      *
-     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)

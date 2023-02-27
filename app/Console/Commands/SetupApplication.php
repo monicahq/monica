@@ -48,8 +48,6 @@ class SetupApplication extends Command
 
     /**
      * Clear or rebuild all cache.
-     *
-     * @return void
      */
     protected function resetCache(): void
     {
@@ -60,8 +58,6 @@ class SetupApplication extends Command
 
     /**
      * Clear configuration.
-     *
-     * @return void
      */
     protected function clearConfig(): void
     {
@@ -78,8 +74,6 @@ class SetupApplication extends Command
 
     /**
      * Cache configuration.
-     *
-     * @return void
      */
     protected function cacheConfig(): void
     {
@@ -92,8 +86,6 @@ class SetupApplication extends Command
 
     /**
      * Symlink storage to public.
-     *
-     * @return void
      */
     protected function symlink(): void
     {
@@ -106,8 +98,6 @@ class SetupApplication extends Command
 
     /**
      * Run migrations.
-     *
-     * @return void
      */
     protected function migrate(): void
     {
@@ -116,8 +106,6 @@ class SetupApplication extends Command
 
     /**
      * Configure scout.
-     *
-     * @return void
      */
     protected function scout(): void
     {
@@ -126,8 +114,6 @@ class SetupApplication extends Command
 
     /**
      * Regenerate api documentation.
-     *
-     * @return void
      */
     protected function documentation(): void
     {

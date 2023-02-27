@@ -30,8 +30,6 @@ class Label extends Model
 
     /**
      * Get the vault associated with the label.
-     *
-     * @return BelongsTo
      */
     public function vault(): BelongsTo
     {
@@ -40,8 +38,6 @@ class Label extends Model
 
     /**
      * Get the contacts associated with the label.
-     *
-     * @return BelongsToMany
      */
     public function contacts(): BelongsToMany
     {
@@ -50,8 +46,6 @@ class Label extends Model
 
     /**
      * Get the label's feed item.
-     *
-     * @return MorphOne
      */
     public function feedItem(): MorphOne
     {

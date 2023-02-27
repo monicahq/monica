@@ -13,9 +13,6 @@ trait SyncDAVBackend
      *
      * If null is returned from this function, the plugin assumes there's no
      * sync information available.
-     *
-     * @param  string|null  $collectionId
-     * @return SyncToken|null
      */
     public function getCurrentSyncToken(?string $collectionId): ?SyncToken
     {
@@ -30,9 +27,6 @@ trait SyncDAVBackend
 
     /**
      * Create or refresh the token if a change happened.
-     *
-     * @param  string|null  $collectionId
-     * @return SyncToken
      */
     public function refreshSyncToken(?string $collectionId): SyncToken
     {
@@ -47,10 +41,6 @@ trait SyncDAVBackend
 
     /**
      * Get SyncToken by token id.
-     *
-     * @param  string|null  $collectionId
-     * @param  string  $syncToken
-     * @return SyncToken|null
      */
     protected function getSyncToken(?string $collectionId, string $syncToken): ?SyncToken
     {
@@ -65,9 +55,6 @@ trait SyncDAVBackend
 
     /**
      * Create a token with now timestamp.
-     *
-     * @param  string|null  $collectionId
-     * @return SyncToken
      */
     private function createSyncTokenNow(?string $collectionId): SyncToken
     {
@@ -81,9 +68,6 @@ trait SyncDAVBackend
 
     /**
      * Returns the last modification date.
-     *
-     * @param  string|null  $collectionId
-     * @return \Carbon\Carbon|null
      */
     public function getLastModified(?string $collectionId): ?Carbon
     {
@@ -141,10 +125,6 @@ trait SyncDAVBackend
      * return null.
      *
      * The limit is 'suggestive'. You are free to ignore it.
-     *
-     * @param  string  $collectionId
-     * @param  string|null  $syncToken
-     * @return array|null
      */
     public function getChanges(string $collectionId, ?string $syncToken): ?array
     {
@@ -173,10 +153,6 @@ trait SyncDAVBackend
 
     /**
      * Get the added objects.
-     *
-     * @param  \Illuminate\Support\Collection  $objs
-     * @param  \Carbon\Carbon|null  $timestamp
-     * @return array
      */
     private function getAdded(Collection $objs, ?Carbon $timestamp): array
     {
@@ -190,10 +166,6 @@ trait SyncDAVBackend
 
     /**
      * Get the modified objects.
-     *
-     * @param  \Illuminate\Support\Collection  $objs
-     * @param  \Carbon\Carbon|null  $timestamp
-     * @return array
      */
     private function getModified(Collection $objs, ?Carbon $timestamp): array
     {
@@ -212,10 +184,6 @@ trait SyncDAVBackend
 
     /**
      * Get the deleted objects.
-     *
-     * @param  string  $collectionId
-     * @param  \Carbon\Carbon|null  $timestamp
-     * @return array
      */
     private function getDeleted(string $collectionId, ?Carbon $timestamp): array
     {
@@ -240,9 +208,6 @@ trait SyncDAVBackend
 
     /**
      * Returns the contact uuid for the specific uri.
-     *
-     * @param  string  $uri
-     * @return string
      */
     public function getUuid(string $uri): string
     {
@@ -252,8 +217,6 @@ trait SyncDAVBackend
     /**
      * Returns the contact for the specific uri.
      *
-     * @param  string|null  $collectionId
-     * @param  string  $uri
      * @return mixed
      */
     public function getObject(?string $collectionId, string $uri)
@@ -268,25 +231,17 @@ trait SyncDAVBackend
     /**
      * Returns the object for the specific uuid.
      *
-     * @param  string|null  $collectionId
-     * @param  string  $uuid
      * @return mixed
      */
     abstract public function getObjectUuid(?string $collectionId, string $uuid);
 
     /**
      * Returns the collection of objects.
-     *
-     * @param  string|null  $collectionId
-     * @return \Illuminate\Support\Collection
      */
     abstract public function getObjects(?string $collectionId): Collection;
 
     /**
      * Returns the collection of objects.
-     *
-     * @param  string|null  $collectionId
-     * @return \Illuminate\Support\Collection
      */
     abstract public function getDeletedObjects(?string $collectionId): Collection;
 
@@ -296,7 +251,6 @@ trait SyncDAVBackend
      * Get the new exported version of the object.
      *
      * @param  mixed  $obj
-     * @return string
      */
     abstract protected function refreshObject($obj): string;
 }

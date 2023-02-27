@@ -8,8 +8,6 @@ class AddressBook extends BaseAddressBook
 {
     /**
      * Returns the last modification date.
-     *
-     * @return int|null
      */
     public function getLastModified(): ?int
     {
@@ -30,8 +28,6 @@ class AddressBook extends BaseAddressBook
      *
      * If null is returned from this function, the plugin assumes there's no
      * sync information available.
-     *
-     * @return string|null
      */
     public function getSyncToken(): ?string
     {

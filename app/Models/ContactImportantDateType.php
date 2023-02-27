@@ -35,8 +35,6 @@ class ContactImportantDateType extends Model
 
     /**
      * Get the vault associated with the contact date type.
-     *
-     * @return BelongsTo
      */
     public function vault(): BelongsTo
     {

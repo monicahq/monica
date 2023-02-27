@@ -19,8 +19,6 @@ class SocialiteCallbackController extends Controller
     /**
      * Handle socalite login.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $driver
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function login(Request $request, string $driver)
@@ -41,10 +39,6 @@ class SocialiteCallbackController extends Controller
 
     /**
      * Handle socalite callback.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $driver
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function callback(Request $request, string $driver): RedirectResponse
     {
@@ -62,9 +56,6 @@ class SocialiteCallbackController extends Controller
 
     /**
      * Get the authentication pipeline instance.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Pipeline\Pipeline
      */
     protected function loginPipeline(Request $request): Pipeline
     {
@@ -76,10 +67,6 @@ class SocialiteCallbackController extends Controller
 
     /**
      * Check for errors.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $driver
-     * @return void
      */
     private function checkForErrors(Request $request, string $driver): void
     {
@@ -92,8 +79,6 @@ class SocialiteCallbackController extends Controller
 
     /**
      * Check if the driver is activated.
-     *
-     * @param  string  $driver
      */
     private function checkProvider(string $driver): void
     {

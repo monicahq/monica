@@ -6,9 +6,6 @@ class FileHelper
 {
     /**
      * Formats the file size to a human readable size.
-     *
-     * @param  int  $bytes
-     * @return string|null
      */
     public static function formatFileSize(int $bytes): ?string
     {

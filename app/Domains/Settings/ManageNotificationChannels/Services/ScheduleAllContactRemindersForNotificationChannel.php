@@ -16,8 +16,6 @@ class ScheduleAllContactRemindersForNotificationChannel extends BaseService impl
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -30,8 +28,6 @@ class ScheduleAllContactRemindersForNotificationChannel extends BaseService impl
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -45,9 +41,6 @@ class ScheduleAllContactRemindersForNotificationChannel extends BaseService impl
      * notification channel.
      * This is useful when we create a new user notification channel, or when
      * we activate a formerly inactive user notification channel.
-     *
-     * @param  array  $data
-     * @return UserNotificationChannel
      */
     public function execute(array $data): UserNotificationChannel
     {

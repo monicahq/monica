@@ -22,8 +22,6 @@ class Pronoun extends Model
 
     /**
      * Get the account associated with the gender.
-     *
-     * @return BelongsTo
      */
     public function account(): BelongsTo
     {

@@ -45,10 +45,6 @@ class JournalShowViewHelper
     /**
      * Get all the posts in the given year, ordered by month descending.
      *
-     * @param  Journal  $journal
-     * @param  int  $year
-     * @param  User  $user
-     * @return Collection
      *
      * @psalm-suppress NoValue
      */
@@ -129,9 +125,6 @@ class JournalShowViewHelper
 
     /**
      * Get all the years that have posts in the journal.
-     *
-     * @param  Journal  $journal
-     * @return Collection
      */
     public static function yearsOfContentInJournal(Journal $journal): Collection
     {

@@ -12,8 +12,6 @@ class GoalHelper
     /**
      * Get the information about the contact linked to the given user, in the
      * given vault.
-     *
-     * @return null|array
      */
     public static function getStreakData(Goal $goal): ?array
     {

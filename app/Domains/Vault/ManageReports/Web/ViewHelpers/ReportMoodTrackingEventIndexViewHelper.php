@@ -24,11 +24,6 @@ class ReportMoodTrackingEventIndexViewHelper
 
     /**
      * Get all the mood tracking events for the given year
-     *
-     * @param  Vault  $vault
-     * @param  User  $user
-     * @param  int  $year
-     * @return Collection
      */
     private static function year(Vault $vault, User $user, int $year): Collection
     {

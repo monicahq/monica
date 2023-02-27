@@ -11,7 +11,6 @@ class LoginListener
     /**
      * Handle Login webhooks.
      *
-     * @param  \Illuminate\Auth\Events\Login  $event
      * @return void
      */
     public function handle(Login $event)

@@ -15,16 +15,11 @@ class AuthBackend implements BackendInterface
      *
      * The realm is often displayed by browser clients when showing the
      * authentication dialog.
-     *
-     * @var string
      */
     protected string $realm = 'sabre/dav';
 
     /**
      * Sets the authentication realm for this backend.
-     *
-     * @param  string  $realm
-     * @return void
      */
     public function setRealm(string $realm): void
     {
@@ -33,10 +28,6 @@ class AuthBackend implements BackendInterface
 
     /**
      * Check Laravel authentication.
-     *
-     * @param  RequestInterface  $request
-     * @param  ResponseInterface  $response
-     * @return array
      */
     public function check(RequestInterface $request, ResponseInterface $response): array
     {
@@ -63,10 +54,6 @@ class AuthBackend implements BackendInterface
      * WWW-Authenticate headers may already have been set, and you'll want to
      * append your own WWW-Authenticate header instead of overwriting the
      * existing one.
-     *
-     * @param  RequestInterface  $request
-     * @param  ResponseInterface  $response
-     * @return void
      */
     public function challenge(RequestInterface $request, ResponseInterface $response): void
     {

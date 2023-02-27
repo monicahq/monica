@@ -45,8 +45,6 @@ class ContactImportantDate extends Model
 
     /**
      * Get the contact associated with the contact date.
-     *
-     * @return BelongsTo
      */
     public function contact(): BelongsTo
     {
@@ -55,8 +53,6 @@ class ContactImportantDate extends Model
 
     /**
      * Get the important date type associated with the contact date.
-     *
-     * @return BelongsTo
      */
     public function contactImportantDateType(): BelongsTo
     {
@@ -65,8 +61,6 @@ class ContactImportantDate extends Model
 
     /**
      * Get the important date's feed item.
-     *
-     * @return MorphOne
      */
     public function feedItem(): MorphOne
     {

@@ -16,10 +16,6 @@ class ReportImportantDateSummaryIndexViewHelper
     /**
      * Get all the important dates for a given contact.
      * This screen will list all the important dates for the next 12 months.
-     *
-     * @param  Vault  $vault
-     * @param  User  $user
-     * @return array
      */
     public static function data(Vault $vault, User $user): array
     {

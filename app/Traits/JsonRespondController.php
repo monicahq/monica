@@ -44,8 +44,6 @@ trait JsonRespondController
     /**
      * Sends a response not found (404) to the request.
      * Error Code = 31.
-     *
-     * @return JsonResponse
      */
     public function respondNotFound(): JsonResponse
     {
@@ -57,9 +55,6 @@ trait JsonRespondController
     /**
      * Sends an error when the validator failed.
      * Error Code = 32.
-     *
-     * @param  Validator  $validator
-     * @return JsonResponse
      */
     public function respondValidatorFailed(Validator $validator): JsonResponse
     {
@@ -72,9 +67,6 @@ trait JsonRespondController
      * Sends an error when the query didn't have the right parameters for
      * creating an object.
      * Error Code = 33.
-     *
-     * @param  string|null  $message
-     * @return JsonResponse
      */
     public function respondNotTheRightParameters(string $message = null): JsonResponse
     {
@@ -86,9 +78,6 @@ trait JsonRespondController
     /**
      * Sends a response invalid query (http 500) to the request.
      * Error Code = 40.
-     *
-     * @param  string|null  $message
-     * @return JsonResponse
      */
     public function respondInvalidQuery(string $message = null): JsonResponse
     {
@@ -100,9 +89,6 @@ trait JsonRespondController
     /**
      * Sends an error when the query contains invalid parameters.
      * Error Code = 41.
-     *
-     * @param  string|null  $message
-     * @return JsonResponse
      */
     public function respondInvalidParameters(string $message = null): JsonResponse
     {
@@ -114,9 +100,6 @@ trait JsonRespondController
     /**
      * Sends a response unauthorized (401) to the request.
      * Error Code = 42.
-     *
-     * @param  string|null  $message
-     * @return JsonResponse
      */
     public function respondUnauthorized(string $message = null): JsonResponse
     {
@@ -127,9 +110,6 @@ trait JsonRespondController
 
     /**
      * Sends a response with error.
-     *
-     * @param  array|string|null  $message
-     * @return JsonResponse
      */
     public function respondWithError(array|string $message = null): JsonResponse
     {
@@ -144,9 +124,6 @@ trait JsonRespondController
     /**
      * Sends a response that the object has been deleted, and also indicates
      * the id of the object that has been deleted.
-     *
-     * @param  int  $id
-     * @return JsonResponse
      */
     public function respondObjectDeleted(int $id): JsonResponse
     {

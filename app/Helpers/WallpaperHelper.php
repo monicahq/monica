@@ -8,8 +8,6 @@ class WallpaperHelper
      * Get a random wallpaper for the login page.
      *
      * The images come from Unsplash.com, and are all MIT licensed.
-     *
-     * @return string
      */
     public static function getRandomWallpaper(): string
     {

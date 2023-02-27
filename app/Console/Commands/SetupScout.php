@@ -44,8 +44,6 @@ class SetupScout extends Command
 
     /**
      * Configure scout.
-     *
-     * @return void
      */
     protected function scoutConfigure(): void
     {
@@ -56,8 +54,6 @@ class SetupScout extends Command
 
     /**
      * Import models.
-     *
-     * @return void
      */
     protected function scoutFlush(): void
     {
@@ -73,8 +69,6 @@ class SetupScout extends Command
 
     /**
      * Import models.
-     *
-     * @return void
      */
     protected function scoutImport(): void
     {

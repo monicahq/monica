@@ -35,8 +35,6 @@ class PostTemplateSection extends Model
 
     /**
      * Get the post type associated with the post type section.
-     *
-     * @return BelongsTo
      */
     public function postTemplate(): BelongsTo
     {

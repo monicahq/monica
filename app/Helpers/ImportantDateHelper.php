@@ -10,9 +10,6 @@ class ImportantDateHelper
 {
     /**
      * Get the age represented by a Contact Important Date.
-     *
-     * @param  ContactImportantDate  $date
-     * @return int|null
      */
     public static function getAge(ContactImportantDate $date): ?int
     {
@@ -43,10 +40,6 @@ class ImportantDateHelper
     /**
      * Get the date as a string, based on the prefered date format of the given
      * user.
-     *
-     * @param  ContactImportantDate  $date
-     * @param  User  $user
-     * @return string|null
      */
     public static function formatDate(ContactImportantDate $date, User $user): ?string
     {
@@ -86,9 +79,6 @@ class ImportantDateHelper
      * - fullDate
      * - monthDay
      * - year.
-     *
-     * @param  ContactImportantDate  $date
-     * @return string|null
      */
     public static function determineType(ContactImportantDate $date): ?string
     {

@@ -9,9 +9,6 @@ class PostHelper
 {
     /**
      * Get the statistics of the post.
-     *
-     * @param  Post  $post
-     * @return array
      */
     public static function statistics(Post $post): array
     {

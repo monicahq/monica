@@ -11,10 +11,6 @@ use Sabre\VObject\Component\VCard;
 #[Order(1)]
 class ExportNames extends Exporter implements ExportVCardResource
 {
-    /**
-     * @param  Contact  $contact
-     * @param  VCard  $vcard
-     */
     public function export(Contact $contact, VCard $vcard): void
     {
         $vcard->remove('FN');

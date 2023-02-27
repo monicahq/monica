@@ -17,8 +17,6 @@ class DestroyUser extends BaseService implements ServiceInterface
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -31,8 +29,6 @@ class DestroyUser extends BaseService implements ServiceInterface
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -45,9 +41,6 @@ class DestroyUser extends BaseService implements ServiceInterface
     /**
      * Destroy the given user.
      * The user who calls the service can't delete himself.
-     *
-     * @param  array  $data
-     * @return void
      */
     public function execute(array $data): void
     {
@@ -75,8 +68,6 @@ class DestroyUser extends BaseService implements ServiceInterface
     /**
      * We will destroy all the vaults the user is the manager of, IF there are
      * no other managers of the vault.
-     *
-     * @return void
      */
     private function destroyAllVaults(): void
     {

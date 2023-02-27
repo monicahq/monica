@@ -17,8 +17,6 @@ abstract class QueuableService extends BaseService implements ShouldQueue
 
     /**
      * The number of times the job may be attempted.
-     *
-     * @var int
      */
     public int $tries = 1;
 
@@ -35,8 +33,6 @@ abstract class QueuableService extends BaseService implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
     public function handle(): void
     {
@@ -45,17 +41,11 @@ abstract class QueuableService extends BaseService implements ShouldQueue
 
     /**
      * Execute the service.
-     *
-     * @param  array  $data
-     * @return void
      */
     abstract public function execute(array $data): void;
 
     /**
      * Handle a job failure.
-     *
-     * @param  \Throwable  $exception
-     * @return void
      */
     public function failed(Throwable $exception): void
     {

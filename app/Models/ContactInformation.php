@@ -27,8 +27,6 @@ class ContactInformation extends Model
 
     /**
      * Get the contact associated with the contact information.
-     *
-     * @return BelongsTo
      */
     public function contact(): BelongsTo
     {
@@ -37,8 +35,6 @@ class ContactInformation extends Model
 
     /**
      * Get the contact information type associated with the contact information.
-     *
-     * @return BelongsTo
      */
     public function contactInformationType(): BelongsTo
     {
@@ -69,8 +65,6 @@ class ContactInformation extends Model
 
     /**
      * Get the contact information's feed item.
-     *
-     * @return MorphOne
      */
     public function feedItem(): MorphOne
     {

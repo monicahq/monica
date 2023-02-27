@@ -12,8 +12,6 @@ class StoreNameOrderPreference extends BaseService implements ServiceInterface
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -26,8 +24,6 @@ class StoreNameOrderPreference extends BaseService implements ServiceInterface
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -38,9 +34,6 @@ class StoreNameOrderPreference extends BaseService implements ServiceInterface
 
     /**
      * Store name order preference for the given user.
-     *
-     * @param  array  $data
-     * @return User
      */
     public function execute(array $data): User
     {

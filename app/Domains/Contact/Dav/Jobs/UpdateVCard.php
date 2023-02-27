@@ -19,8 +19,6 @@ class UpdateVCard extends QueuableService implements ServiceInterface
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -43,8 +41,6 @@ class UpdateVCard extends QueuableService implements ServiceInterface
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -57,9 +53,6 @@ class UpdateVCard extends QueuableService implements ServiceInterface
 
     /**
      * Update or create a contact using the VCard data.
-     *
-     * @param  array  $data
-     * @return void
      */
     public function execute(array $data): void
     {
@@ -86,7 +79,6 @@ class UpdateVCard extends QueuableService implements ServiceInterface
      *
      * @param  string  $cardUri
      * @param  string  $cardData
-     * @return string|null
      */
     private function updateCard($cardUri, $cardData): ?string
     {

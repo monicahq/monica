@@ -15,9 +15,6 @@ class AvatarHelper
      * However, contacts can be created in Monica without a name. When this case
      * happens, we'll generate a fake name for the contact, and generate an avatar
      * based on that name.
-     *
-     * @param  Contact  $contact
-     * @return string
      */
     public static function generateRandomAvatar(Contact $contact): string
     {

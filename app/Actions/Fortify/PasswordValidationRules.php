@@ -9,9 +9,6 @@ trait PasswordValidationRules
 {
     /**
      * Get the validation rules used to validate passwords.
-     *
-     * @param  bool  $confirmed
-     * @return array
      */
     protected function passwordRules(bool $confirmed = true): array
     {

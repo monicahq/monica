@@ -10,8 +10,6 @@ class UpdateVaultDashboardDefaultTab extends BaseService implements ServiceInter
 {
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -25,8 +23,6 @@ class UpdateVaultDashboardDefaultTab extends BaseService implements ServiceInter
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -39,9 +35,6 @@ class UpdateVaultDashboardDefaultTab extends BaseService implements ServiceInter
 
     /**
      * Update a vault's default tab displayed on the dashboard.
-     *
-     * @param  array  $data
-     * @return Vault
      */
     public function execute(array $data): Vault
     {

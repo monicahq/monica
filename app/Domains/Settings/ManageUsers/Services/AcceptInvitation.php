@@ -18,8 +18,6 @@ class AcceptInvitation extends BaseService implements ServiceInterface
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -33,9 +31,6 @@ class AcceptInvitation extends BaseService implements ServiceInterface
 
     /**
      * Accept invitation.
-     *
-     * @param  array  $data
-     * @return User
      */
     public function execute(array $data): User
     {

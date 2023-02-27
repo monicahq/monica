@@ -19,8 +19,6 @@ class UpdateGroupTypeRolePosition extends BaseService implements ServiceInterfac
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -35,8 +33,6 @@ class UpdateGroupTypeRolePosition extends BaseService implements ServiceInterfac
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -48,9 +44,6 @@ class UpdateGroupTypeRolePosition extends BaseService implements ServiceInterfac
 
     /**
      * Update the group type role's position.
-     *
-     * @param  array  $data
-     * @return GroupTypeRole
      */
     public function execute(array $data): GroupTypeRole
     {

@@ -14,8 +14,6 @@ class UploadFile extends BaseService
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -35,8 +33,6 @@ class UploadFile extends BaseService
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -54,9 +50,6 @@ class UploadFile extends BaseService
      * However, we abstract uploads by the File object. This service here takes
      * the payload that Uploadcare sends us back, and map it into a File object
      * that the clients will consume.
-     *
-     * @param  array  $data
-     * @return File
      */
     public function execute(array $data): File
     {

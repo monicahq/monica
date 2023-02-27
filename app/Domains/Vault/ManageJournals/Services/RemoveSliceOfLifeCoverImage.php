@@ -14,8 +14,6 @@ class RemoveSliceOfLifeCoverImage extends BaseService implements ServiceInterfac
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -30,8 +28,6 @@ class RemoveSliceOfLifeCoverImage extends BaseService implements ServiceInterfac
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -44,9 +40,6 @@ class RemoveSliceOfLifeCoverImage extends BaseService implements ServiceInterfac
 
     /**
      * Remove the slice of life cover image.
-     *
-     * @param  array  $data
-     * @return SliceOfLife
      */
     public function execute(array $data): SliceOfLife
     {

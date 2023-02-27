@@ -29,8 +29,6 @@ class LifeEventCategory extends Model
 
     /**
      * Get the vault associated with the life event category.
-     *
-     * @return BelongsTo
      */
     public function vault(): BelongsTo
     {
@@ -39,8 +37,6 @@ class LifeEventCategory extends Model
 
     /**
      * Get the life event types associated with the life event category.
-     *
-     * @return HasMany
      */
     public function lifeEventTypes(): HasMany
     {

@@ -26,8 +26,6 @@ class GroupType extends Model
 
     /**
      * Get the account record associated with the group type.
-     *
-     * @return BelongsTo
      */
     public function account(): BelongsTo
     {
@@ -36,8 +34,6 @@ class GroupType extends Model
 
     /**
      * Get the group type roles associated with the group type.
-     *
-     * @return HasMany
      */
     public function groupTypeRoles(): HasMany
     {

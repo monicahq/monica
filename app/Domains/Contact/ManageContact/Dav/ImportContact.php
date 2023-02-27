@@ -26,10 +26,6 @@ class ImportContact extends Importer implements ImportVCardResource
 
     /**
      * Import Contact
-     *
-     * @param  Contact|null  $contact
-     * @param  VCard  $vcard
-     * @return Contact
      */
     public function import(?Contact $contact, VCard $vcard): Contact
     {
@@ -52,9 +48,6 @@ class ImportContact extends Importer implements ImportVCardResource
 
     /**
      * Get contact data.
-     *
-     * @param  Contact|null  $contact
-     * @return array
      */
     private function getContactData(?Contact $contact): array
     {
@@ -78,10 +71,6 @@ class ImportContact extends Importer implements ImportVCardResource
 
     /**
      * Import names of the contact.
-     *
-     * @param  array  $contactData
-     * @param  VCard  $entry
-     * @return array
      */
     public function importNames(array $contactData, VCard $entry): array
     {
@@ -98,38 +87,21 @@ class ImportContact extends Importer implements ImportVCardResource
         return $contactData;
     }
 
-    /**
-     * @param  VCard  $entry
-     * @return bool
-     */
     private function hasFirstnameInN(VCard $entry): bool
     {
         return $entry->N !== null && ! empty(Arr::get($entry->N->getParts(), '1'));
     }
 
-    /**
-     * @param  VCard  $entry
-     * @return bool
-     */
     private function hasNICKNAME(VCard $entry): bool
     {
         return ! empty((string) $entry->NICKNAME);
     }
 
-    /**
-     * @param  VCard  $entry
-     * @return bool
-     */
     private function hasFN(VCard $entry): bool
     {
         return ! empty((string) $entry->FN);
     }
 
-    /**
-     * @param  array  $contactData
-     * @param  VCard  $entry
-     * @return array
-     */
     private function importNameFromN(array $contactData, VCard $entry): array
     {
         $parts = $entry->N->getParts();
@@ -147,11 +119,6 @@ class ImportContact extends Importer implements ImportVCardResource
         return $contactData;
     }
 
-    /**
-     * @param  array  $contactData
-     * @param  VCard  $entry
-     * @return array
-     */
     private function importNameFromNICKNAME(array $contactData, VCard $entry): array
     {
         $contactData['first_name'] = $this->formatValue($entry->NICKNAME);
@@ -159,11 +126,6 @@ class ImportContact extends Importer implements ImportVCardResource
         return $contactData;
     }
 
-    /**
-     * @param  array  $contactData
-     * @param  VCard  $entry
-     * @return array
-     */
     private function importNameFromFN(array $contactData, VCard $entry): array
     {
         $fullnameParts = preg_split('/\s+/', $entry->FN, 2);
@@ -191,10 +153,6 @@ class ImportContact extends Importer implements ImportVCardResource
 
     /**
      * Import uid of the contact.
-     *
-     * @param  array  $contactData
-     * @param  VCard  $entry
-     * @return array
      */
     private function importUid(array $contactData, VCard $entry): array
     {
@@ -207,10 +165,6 @@ class ImportContact extends Importer implements ImportVCardResource
 
     /**
      * Import gender of the contact.
-     *
-     * @param  array  $contactData
-     * @param  VCard  $entry
-     * @return array
      */
     private function importGender(array $contactData, VCard $entry): array
     {
@@ -224,9 +178,6 @@ class ImportContact extends Importer implements ImportVCardResource
     /**
      * Get or create the gender called "Vcard" that is associated with all
      * imported contacts.
-     *
-     * @param  string  $genderCode
-     * @return Gender
      */
     private function getGender(string $genderCode): Gender
     {
@@ -262,9 +213,6 @@ class ImportContact extends Importer implements ImportVCardResource
 
     /**
      * Get the gender by name.
-     *
-     * @param  string  $name
-     * @return Gender|null
      */
     private function getGenderByName(string $name): ?Gender
     {
@@ -275,9 +223,6 @@ class ImportContact extends Importer implements ImportVCardResource
 
     /**
      * Get the gender by type.
-     *
-     * @param  string  $type
-     * @return Gender|null
      */
     private function getGenderByType(string $type): ?Gender
     {

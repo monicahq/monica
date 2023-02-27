@@ -15,22 +15,16 @@ class DeleteFileInStorage
 {
     /**
      * The file instance.
-     *
-     * @var File
      */
     public File $file;
 
     /**
      * The file in Uploadcare instance.
-     *
-     * @var FileInfoInterface
      */
     public FileInfoInterface $fileInUploadcare;
 
     /**
      * The API used to query Uploadcare.
-     *
-     * @var Api
      */
     public Api $api;
 
@@ -43,8 +37,6 @@ class DeleteFileInStorage
 
     /**
      * Handle the event.
-     *
-     * @param  FileDeleted  $event
      */
     public function handle(FileDeleted $event)
     {

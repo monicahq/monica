@@ -11,10 +11,6 @@ class ContactReminderHelper
     /**
      * Get the date as a string, based on the preferred date format of the given
      * user.
-     *
-     * @param  ContactReminder  $reminder
-     * @param  User  $user
-     * @return string|null
      */
     public static function formatDate(ContactReminder $reminder, User $user): ?string
     {

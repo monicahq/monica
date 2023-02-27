@@ -19,8 +19,6 @@ class UpdatePostTemplateSectionPosition extends BaseService implements ServiceIn
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -35,8 +33,6 @@ class UpdatePostTemplateSectionPosition extends BaseService implements ServiceIn
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -48,9 +44,6 @@ class UpdatePostTemplateSectionPosition extends BaseService implements ServiceIn
 
     /**
      * Update the post type section position.
-     *
-     * @param  array  $data
-     * @return PostTemplateSection
      */
     public function execute(array $data): PostTemplateSection
     {

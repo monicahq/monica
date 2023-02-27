@@ -29,8 +29,6 @@ class AttemptToAuthenticateSocialite
     /**
      * Create a new action instance.
      *
-     * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
-     * @param  \Laravel\Fortify\LoginRateLimiter  $limiter
      * @return void
      */
     public function __construct(
@@ -42,8 +40,6 @@ class AttemptToAuthenticateSocialite
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  callable  $next
      * @return mixed
      */
     public function handle(Request $request, callable $next)
@@ -65,9 +61,6 @@ class AttemptToAuthenticateSocialite
 
     /**
      * Get the provider.
-     *
-     * @param  string  $driver
-     * @return \Laravel\Socialite\Contracts\Provider
      */
     private function getSocialiteProvider(string $driver): Provider
     {
@@ -82,11 +75,6 @@ class AttemptToAuthenticateSocialite
 
     /**
      * Authenticate the user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $driver
-     * @param  \Laravel\Socialite\Contracts\User  $socialite
-     * @return User
      */
     private function authenticateUser(Request $request, string $driver, SocialiteUser $socialite): User
     {
@@ -111,11 +99,6 @@ class AttemptToAuthenticateSocialite
 
     /**
      * Check if the user is logged in and if the user is the same as the one.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @param  string  $driver
-     * @return void
      */
     private function checkUserAssociation(Request $request, User $user, string $driver): void
     {
@@ -126,9 +109,6 @@ class AttemptToAuthenticateSocialite
 
     /**
      * Get authenticated user.
-     *
-     * @param  SocialiteUser  $socialite
-     * @return User
      */
     private function getUserOrCreate(SocialiteUser $socialite): User
     {
@@ -141,9 +121,6 @@ class AttemptToAuthenticateSocialite
 
     /**
      * Create new user.
-     *
-     * @param  SocialiteUser  $socialite
-     * @return User
      */
     private function createUser(SocialiteUser $socialite): User
     {
@@ -163,11 +140,6 @@ class AttemptToAuthenticateSocialite
 
     /**
      * Create the user token register.
-     *
-     * @param  User  $user
-     * @param  string  $driver
-     * @param  SocialiteUser  $socialite
-     * @return UserToken
      */
     private function createUserToken(User $user, string $driver, SocialiteUser $socialite): UserToken
     {
@@ -197,10 +169,7 @@ class AttemptToAuthenticateSocialite
     /**
      * Throw a failed authentication validation exception.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $driver
      * @param  string  $message
-     * @return void
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -217,10 +186,6 @@ class AttemptToAuthenticateSocialite
 
     /**
      * Fire the failed authentication attempt event with the given arguments.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  User|null  $user
-     * @return void
      */
     protected function fireFailedEvent(Request $request, ?User $user = null): void
     {
@@ -231,10 +196,6 @@ class AttemptToAuthenticateSocialite
 
     /**
      * Get the two factor authentication enabled response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  User|null  $user
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function twoFactorChallengeResponse(Request $request, ?User $user): Response
     {

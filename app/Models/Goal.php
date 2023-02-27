@@ -34,8 +34,6 @@ class Goal extends Model
 
     /**
      * Get the contact associated with the goal.
-     *
-     * @return BelongsTo
      */
     public function contact(): BelongsTo
     {
@@ -44,8 +42,6 @@ class Goal extends Model
 
     /**
      * Get the streaks associated with the goal.
-     *
-     * @return HasMany
      */
     public function streaks(): HasMany
     {
@@ -54,8 +50,6 @@ class Goal extends Model
 
     /**
      * Get the goal's feed item.
-     *
-     * @return MorphOne
      */
     public function feedItem(): MorphOne
     {

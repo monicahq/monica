@@ -17,8 +17,6 @@ class AssociateModuleToTemplatePage extends BaseService implements ServiceInterf
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -33,8 +31,6 @@ class AssociateModuleToTemplatePage extends BaseService implements ServiceInterf
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -46,9 +42,6 @@ class AssociateModuleToTemplatePage extends BaseService implements ServiceInterf
 
     /**
      * Associate a module with a template page.
-     *
-     * @param  array  $data
-     * @return Module
      */
     public function execute(array $data): Module
     {

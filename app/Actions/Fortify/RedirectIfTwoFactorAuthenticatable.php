@@ -17,8 +17,6 @@ class RedirectIfTwoFactorAuthenticatable
     /**
      * Create a new action instance.
      *
-     * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
-     * @param  \Laravel\Fortify\LoginRateLimiter  $limiter
      * @return void
      */
     public function __construct(
@@ -30,8 +28,6 @@ class RedirectIfTwoFactorAuthenticatable
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -48,9 +44,6 @@ class RedirectIfTwoFactorAuthenticatable
 
     /**
      * Attempt to validate the incoming credentials.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return User|null
      */
     protected function validateCredentials(Request $request): ?User
     {
@@ -66,8 +59,6 @@ class RedirectIfTwoFactorAuthenticatable
     /**
      * Throw a failed authentication validation exception.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -82,10 +73,6 @@ class RedirectIfTwoFactorAuthenticatable
 
     /**
      * Fire the failed authentication attempt event with the given arguments.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  User|null  $user
-     * @return void
      */
     protected function fireFailedEvent(Request $request, ?User $user = null): void
     {
@@ -98,8 +85,6 @@ class RedirectIfTwoFactorAuthenticatable
     /**
      * Get the two factor authentication enabled response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  User|null  $user
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function twoFactorChallengeResponse(Request $request, ?User $user)

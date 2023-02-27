@@ -14,8 +14,6 @@ class ToggleUserNotificationChannel extends BaseService implements ServiceInterf
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -28,8 +26,6 @@ class ToggleUserNotificationChannel extends BaseService implements ServiceInterf
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -40,9 +36,6 @@ class ToggleUserNotificationChannel extends BaseService implements ServiceInterf
 
     /**
      * Mark the given user notification channel active or inactive.
-     *
-     * @param  array  $data
-     * @return UserNotificationChannel
      */
     public function execute(array $data): UserNotificationChannel
     {
@@ -72,8 +65,6 @@ class ToggleUserNotificationChannel extends BaseService implements ServiceInterf
      * upcoming scheduled reminders for that channel.
      * If the notification channel is reactivated, we need to reschedule all
      * the contact reminders for this channel specifically.
-     *
-     * @return void
      */
     private function updateScheduledReminders(): void
     {

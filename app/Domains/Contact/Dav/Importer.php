@@ -11,9 +11,6 @@ abstract class Importer implements ImportVCardResource
 
     /**
      * Set context.
-     *
-     * @param  ImportVCard  $context
-     * @return ImportVCardResource
      */
     public function setContext(ImportVCard $context): ImportVCardResource
     {
@@ -24,8 +21,6 @@ abstract class Importer implements ImportVCardResource
 
     /**
      * Get the account.
-     *
-     * @return Account
      */
     protected function account(): Account
     {
@@ -34,9 +29,6 @@ abstract class Importer implements ImportVCardResource
 
     /**
      * Formats and returns a string for DAV Card/Cal.
-     *
-     * @param  null|string  $value
-     * @return null|string
      */
     protected function formatValue(?string $value): ?string
     {

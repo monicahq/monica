@@ -15,10 +15,6 @@ class VaultReminderIndexViewHelper
 {
     /**
      * Get all the reminders planned in the next 12 months.
-     *
-     * @param  Vault  $vault
-     * @param  User  $user
-     * @return Collection
      */
     public static function data(Vault $vault, User $user): Collection
     {

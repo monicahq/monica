@@ -24,8 +24,6 @@ class AddressType extends Model
 
     /**
      * Get the account associated with the contact information type.
-     *
-     * @return BelongsTo
      */
     public function account(): BelongsTo
     {

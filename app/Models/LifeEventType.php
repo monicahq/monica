@@ -29,8 +29,6 @@ class LifeEventType extends Model
 
     /**
      * Get the life event category associated with the life event type.
-     *
-     * @return BelongsTo
      */
     public function lifeEventCategory(): BelongsTo
     {
@@ -39,8 +37,6 @@ class LifeEventType extends Model
 
     /**
      * Get the life events associated with the life event type.
-     *
-     * @return HasMany
      */
     public function lifeEvents(): HasMany
     {

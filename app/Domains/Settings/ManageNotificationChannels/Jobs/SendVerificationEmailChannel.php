@@ -27,7 +27,6 @@ class SendVerificationEmailChannel implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  UserNotificationChannel  $channel
      * @return void
      */
     public function __construct(UserNotificationChannel $channel)

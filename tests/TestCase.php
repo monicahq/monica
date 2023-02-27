@@ -16,8 +16,6 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Create an User in an account.
-     *
-     * @return User
      */
     public function createUser($abilities = ['read', 'write']): User
     {
@@ -28,8 +26,6 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Create an User with the administrator privilege in an account.
-     *
-     * @return User
      */
     public function createAdministrator(): User
     {
@@ -38,8 +34,6 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Create an account.
-     *
-     * @return Account
      */
     public function createAccount(): Account
     {
@@ -48,9 +42,6 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Create a vault.
-     *
-     * @param  Account  $account
-     * @return Vault
      */
     public function createVault(Account $account): Vault
     {
@@ -63,7 +54,6 @@ abstract class TestCase extends BaseTestCase
      * Create a vault.
      *
      * @param  Account  $account
-     * @return Vault
      */
     public function createVaultUser(User $user, int $permission = Vault::PERMISSION_VIEW): Vault
     {
@@ -74,8 +64,6 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Set the user with the given permission in the given vault.
-     *
-     * @return Vault
      */
     public function setPermissionInVault(User $user, int $permission, Vault $vault): Vault
     {
@@ -92,11 +80,6 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Call protected/private method of a class.
-     *
-     * @param  object  &$object
-     * @param  string  $methodName
-     * @param  array  $parameters
-     * @return mixed
      */
     #[ReturnTypeWillChange]
     public function invokePrivateMethod(object &$object, string $methodName, array $parameters = []): mixed
@@ -110,11 +93,6 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Set protected/private property of a class.
-     *
-     * @param  object  &$object
-     * @param  string  $propertyName
-     * @param  mixed  $value
-     * @return void
      */
     public function setPrivateValue(object &$object, string $propertyName, mixed $value): void
     {

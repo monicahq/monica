@@ -34,8 +34,6 @@ class Emotion extends Model
 
     /**
      * Get the account associated with the emotion.
-     *
-     * @return BelongsTo
      */
     public function account(): BelongsTo
     {

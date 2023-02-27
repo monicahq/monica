@@ -11,9 +11,6 @@ class GroupsViewHelper
      * Gets the summary about the groups the contact belongs to.
      * This information is displayed at the top of the contact, if this
      * information exists.
-     *
-     * @param  Contact  $contact
-     * @return Collection
      */
     public static function summary(Contact $contact): Collection
     {

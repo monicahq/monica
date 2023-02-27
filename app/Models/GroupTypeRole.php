@@ -25,8 +25,6 @@ class GroupTypeRole extends Model
 
     /**
      * Get the group type record associated with the group type role.
-     *
-     * @return BelongsTo
      */
     public function groupType(): BelongsTo
     {

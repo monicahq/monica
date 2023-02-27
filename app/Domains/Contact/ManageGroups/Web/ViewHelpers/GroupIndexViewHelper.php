@@ -11,9 +11,6 @@ class GroupIndexViewHelper
 {
     /**
      * Gets the list of groups in the vault.
-     *
-     * @param  Vault  $vault
-     * @return Collection
      */
     public static function data(Vault $vault): Collection
     {

@@ -35,9 +35,6 @@ class CronEvent
 
     /**
      * Get the command.
-     *
-     * @param  string  $command
-     * @return self
      */
     public static function command(string $command): self
     {
@@ -59,8 +56,6 @@ class CronEvent
 
     /**
      * Run the command once per hour.
-     *
-     * @return self
      */
     public function hourly(): self
     {
@@ -72,8 +67,6 @@ class CronEvent
 
     /**
      * Run the command once per day.
-     *
-     * @return self
      */
     public function daily(): self
     {
@@ -85,8 +78,6 @@ class CronEvent
 
     /**
      * Run the command once a week.
-     *
-     * @return self
      */
     public function weekly(): self
     {
@@ -98,9 +89,6 @@ class CronEvent
 
     /**
      * Run the command every $minutes.
-     *
-     * @param  int  $minutes
-     * @return self
      */
     public function minutes(int $minutes): self
     {
@@ -112,8 +100,6 @@ class CronEvent
 
     /**
      * Test if the command is due to run.
-     *
-     * @return bool
      */
     public function isDue(): bool
     {

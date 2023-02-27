@@ -25,18 +25,16 @@ class UserNotificationSent extends Model
     ];
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
-    protected $dates = [
-        'sent_at',
+    protected $casts = [
+        'sent_at' => 'datetime',
     ];
 
     /**
      * Get the user notification channel associated with the user notification sent.
-     *
-     * @return BelongsTo
      */
     public function notificationChannel(): BelongsTo
     {

@@ -22,8 +22,6 @@ class RescheduleContactReminderForChannel extends BaseService implements Service
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -39,9 +37,6 @@ class RescheduleContactReminderForChannel extends BaseService implements Service
      * previous iteration has been sent, for the given channel.
      * Before sending this occurence, we need to make the user notification
      * channel is still active.
-     *
-     * @param  array  $data
-     * @return void
      */
     public function execute(array $data): void
     {

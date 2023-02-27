@@ -35,8 +35,6 @@ class GuzzleMock extends Assert
 
     /**
      * Get current client.
-     *
-     * @return Client
      */
     public function getClient(): Client
     {

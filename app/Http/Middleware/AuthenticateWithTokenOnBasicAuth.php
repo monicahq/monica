@@ -20,7 +20,6 @@ class AuthenticateWithTokenOnBasicAuth
     /**
      * Create a new middleware instance.
      *
-     * @param  \Illuminate\Contracts\Auth\Factory  $auth
      * @return void
      */
     public function __construct(
@@ -31,8 +30,6 @@ class AuthenticateWithTokenOnBasicAuth
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -46,9 +43,6 @@ class AuthenticateWithTokenOnBasicAuth
 
     /**
      * Try Bearer authentication, with token in 'password' field on basic auth.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return bool
      */
     private function basicAuth(Request $request): bool
     {
@@ -63,9 +57,6 @@ class AuthenticateWithTokenOnBasicAuth
 
     /**
      * Authenticate user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return User|null
      */
     private function sanctumUser(Request $request): ?User
     {
@@ -84,8 +75,6 @@ class AuthenticateWithTokenOnBasicAuth
 
     /**
      * Get sanctum guard.
-     *
-     * @return \Illuminate\Auth\RequestGuard
      */
     protected function sanctum(): RequestGuard
     {
@@ -98,7 +87,6 @@ class AuthenticateWithTokenOnBasicAuth
     /**
      * Get the response for basic authentication.
      *
-     * @return void
      *
      * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
      */

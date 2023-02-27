@@ -9,10 +9,6 @@ class UserProfile
 {
     /**
      * Get user profile data.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  array  $data
-     * @return array
      */
     public function __invoke(Request $request, array $data): array
     {

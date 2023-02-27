@@ -11,10 +11,6 @@ class UserHelper
     /**
      * Get the information about the contact linked to the given user, in the
      * given vault.
-     *
-     * @param  User  $user
-     * @param  Vault  $vault
-     * @return null|array
      */
     public static function getInformationAboutContact(User $user, Vault $vault): ?array
     {

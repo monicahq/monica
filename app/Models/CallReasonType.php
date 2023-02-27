@@ -25,8 +25,6 @@ class CallReasonType extends Model
 
     /**
      * Get the account associated with the call reason type.
-     *
-     * @return BelongsTo
      */
     public function account(): BelongsTo
     {
@@ -35,8 +33,6 @@ class CallReasonType extends Model
 
     /**
      * Get the call reasons associated with the call reason type.
-     *
-     * @return HasMany
      */
     public function callReasons(): HasMany
     {

@@ -15,10 +15,6 @@ class GroupShowViewHelper
      * Contacts can be assigned to roles, but it's not mandatory.
      * So we need to group contacts by roles if they exist, or list them
      * alphabetically otherwise.
-     *
-     * @param  Group  $group
-     * @param  User  $user
-     * @return array
      */
     public static function data(Group $group, User $user): array
     {

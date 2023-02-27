@@ -27,8 +27,6 @@ class Tag extends Model
 
     /**
      * Get the vault associated with the journal tag.
-     *
-     * @return BelongsTo
      */
     public function vault(): BelongsTo
     {
@@ -37,8 +35,6 @@ class Tag extends Model
 
     /**
      * Get the posts associated with the journal tag.
-     *
-     * @return BelongsToMany
      */
     public function posts(): BelongsToMany
     {
@@ -47,8 +43,6 @@ class Tag extends Model
 
     /**
      * Get the journal tag's feed item.
-     *
-     * @return MorphOne
      */
     public function feedItem(): MorphOne
     {

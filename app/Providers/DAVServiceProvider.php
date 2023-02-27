@@ -34,8 +34,6 @@ class DAVServiceProvider extends ServiceProvider
 
     /**
      * List of nodes for DAV Collection.
-     *
-     * @return array
      */
     private function nodes(): array
     {

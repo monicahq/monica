@@ -30,7 +30,6 @@ class ImportVCard extends BaseService implements ServiceInterface
     /** @var string */
     public const BEHAVIOUR_REPLACE = 'behaviour_replace';
 
-    /** @var array */
     protected array $errorResults = [
         'ERROR_PARSER' => 'import_vcard_parse_error',
         'ERROR_CONTACT_EXIST' => 'import_vcard_contact_exist',
@@ -49,15 +48,11 @@ class ImportVCard extends BaseService implements ServiceInterface
 
     /**
      * The Account id.
-     *
-     * @var int
      */
     public int $accountId = 0;
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -84,8 +79,6 @@ class ImportVCard extends BaseService implements ServiceInterface
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -104,9 +97,6 @@ class ImportVCard extends BaseService implements ServiceInterface
 
     /**
      * Import one VCard.
-     *
-     * @param  array  $data
-     * @return array
      */
     public function execute(array $data): array
     {
@@ -123,8 +113,6 @@ class ImportVCard extends BaseService implements ServiceInterface
 
     /**
      * Clear data.
-     *
-     * @return void
      */
     private function clear(): void
     {
@@ -134,8 +122,6 @@ class ImportVCard extends BaseService implements ServiceInterface
     /**
      * Process data importation.
      *
-     * @param  array  $data
-     * @param  Contact|null  $contact
      * @return array<string,mixed>
      */
     private function process(array $data, ?Contact $contact): array
@@ -164,9 +150,6 @@ class ImportVCard extends BaseService implements ServiceInterface
 
     /**
      * Read the entry and return a VCard object.
-     *
-     * @param  array  $data
-     * @return array
      */
     private function getEntry(array $data): array
     {
@@ -190,10 +173,6 @@ class ImportVCard extends BaseService implements ServiceInterface
     /**
      * Process entry importation.
      *
-     * @param  array  $data
-     * @param  Contact|null  $contact
-     * @param  VCard  $entry
-     * @param  string  $vcard
      * @return array<string,mixed>
      */
     private function processEntry(array $data, ?Contact $contact, VCard $entry, string $vcard): array
@@ -216,10 +195,6 @@ class ImportVCard extends BaseService implements ServiceInterface
     /**
      * Process entry importation.
      *
-     * @param  array  $data
-     * @param  Contact|null  $contact
-     * @param  VCard  $entry
-     * @param  string  $vcard
      * @return array<string,mixed>
      */
     private function processEntryContact(array $data, ?Contact $contact, VCard $entry, string $vcard): array
@@ -256,7 +231,6 @@ class ImportVCard extends BaseService implements ServiceInterface
      * Only used for report display.
      *
      * @param  VCard  $entry
-     * @return string
      */
     private function name($entry): string
     {
@@ -279,9 +253,6 @@ class ImportVCard extends BaseService implements ServiceInterface
     /**
      * Check whether a contact has a first name or a nickname. If not, contact
      * can not be imported.
-     *
-     * @param  VCard  $entry
-     * @return bool
      */
     private function canImportCurrentEntry(VCard $entry): bool
     {
@@ -291,28 +262,16 @@ class ImportVCard extends BaseService implements ServiceInterface
             $this->hasFN($entry);
     }
 
-    /**
-     * @param  VCard  $entry
-     * @return bool
-     */
     private function hasFirstnameInN(VCard $entry): bool
     {
         return $entry->N !== null && ! empty(Arr::get($entry->N->getParts(), '1'));
     }
 
-    /**
-     * @param  VCard  $entry
-     * @return bool
-     */
     private function hasNICKNAME(VCard $entry): bool
     {
         return ! empty((string) $entry->NICKNAME);
     }
 
-    /**
-     * @param  VCard  $entry
-     * @return bool
-     */
     private function hasFN(VCard $entry): bool
     {
         return ! empty((string) $entry->FN);
@@ -320,9 +279,6 @@ class ImportVCard extends BaseService implements ServiceInterface
 
     /**
      * Check whether the contact already exists in the database.
-     *
-     * @param  VCard  $entry
-     * @return Contact|null
      */
     private function getExistingContact(VCard $entry): ?Contact
     {
@@ -337,9 +293,6 @@ class ImportVCard extends BaseService implements ServiceInterface
 
     /**
      * Search with uuid.
-     *
-     * @param  VCard  $entry
-     * @return Contact|null
      */
     private function existingUuid(VCard $entry): ?Contact
     {
@@ -353,12 +306,6 @@ class ImportVCard extends BaseService implements ServiceInterface
 
     /**
      * Create the Contact object matching the current entry.
-     *
-     * @param  Contact|null  $contact
-     * @param  VCard  $entry
-     * @param  string  $vcard
-     * @param  string|null  $etag
-     * @return Contact
      */
     private function importEntry(?Contact $contact, VCard $entry, string $vcard, ?string $etag): Contact
     {

@@ -16,8 +16,6 @@ class AttemptToAuthenticateWebauthn
     /**
      * Create a new controller instance.
      *
-     * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
-     * @param  \LaravelWebauthn\Services\LoginRateLimiter  $limiter
      * @return void
      */
     public function __construct(
@@ -29,7 +27,6 @@ class AttemptToAuthenticateWebauthn
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  callable  $next
      * @return mixed
      */
@@ -47,10 +44,6 @@ class AttemptToAuthenticateWebauthn
 
     /**
      * Attempt to log the user into the application.
-     *
-     * @param  array  $challenge
-     * @param  bool  $remember
-     * @return bool
      */
     protected function attemptLogin(array $challenge, bool $remember = false): bool
     {
@@ -59,9 +52,6 @@ class AttemptToAuthenticateWebauthn
 
     /**
      * Attempt to validate assertion for authenticated user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return bool
      */
     protected function attemptValidateAssertion(Request $request): bool
     {
@@ -87,7 +77,6 @@ class AttemptToAuthenticateWebauthn
     /**
      * Throw a failed authentication validation exception.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return void
      *
      * @throws \Illuminate\Validation\ValidationException
@@ -104,8 +93,6 @@ class AttemptToAuthenticateWebauthn
     /**
      * Fire the failed authentication attempt event with the given arguments.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Contracts\Auth\Authenticatable|null  $user
      * @return void
      */
     protected function fireFailedEvent(Request $request, ?Authenticatable $user = null)
@@ -119,9 +106,6 @@ class AttemptToAuthenticateWebauthn
 
     /**
      * Get array of webauthn credentials.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
     protected function filterCredentials(Request $request): array
     {

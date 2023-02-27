@@ -24,9 +24,6 @@ class PrincipalBackend extends AbstractBackend
 
     /**
      * Get the principal for user.
-     *
-     * @param  User  $user
-     * @return string
      */
     public static function getPrincipalUser(User $user): string
     {
@@ -58,7 +55,6 @@ class PrincipalBackend extends AbstractBackend
      *     you have an email address, use this property.
      *
      * @param  string  $prefixPath
-     * @return array
      */
     public function getPrincipalsByPrefix($prefixPath): array
     {
@@ -73,7 +69,6 @@ class PrincipalBackend extends AbstractBackend
      * getPrincipalsByPrefix.
      *
      * @param  string  $path
-     * @return array
      */
     public function getPrincipalByPath($path): array
     {
@@ -100,7 +95,6 @@ class PrincipalBackend extends AbstractBackend
      *
      * @param  string  $path
      * @param  \Sabre\DAV\PropPatch  $propPatch
-     * @return void
      */
     public function updatePrincipal($path, DAV\PropPatch $propPatch): void
     {
@@ -133,7 +127,6 @@ class PrincipalBackend extends AbstractBackend
      * @param  string  $prefixPath
      * @param  array  $searchProperties
      * @param  string  $test
-     * @return array
      */
     public function searchPrincipals($prefixPath, $searchProperties, $test = 'allof'): array
     {
@@ -165,7 +158,6 @@ class PrincipalBackend extends AbstractBackend
      * Returns the list of members for a group-principal.
      *
      * @param  string  $principal
-     * @return array
      */
     public function getGroupMemberSet($principal): array
     {
@@ -183,7 +175,6 @@ class PrincipalBackend extends AbstractBackend
      * Returns the list of groups a principal is a member of.
      *
      * @param  string  $principal
-     * @return array
      */
     public function getGroupMembership($principal): array
     {
@@ -196,8 +187,6 @@ class PrincipalBackend extends AbstractBackend
      * The principals should be passed as a list of uri's.
      *
      * @param  string  $principal
-     * @param  array  $members
-     * @return void
      */
     public function setGroupMemberSet($principal, array $members): void
     {

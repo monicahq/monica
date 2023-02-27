@@ -16,9 +16,6 @@ class Order
 
     /**
      * Get order value from a reflection class.
-     *
-     * @param  ReflectionClass  $class
-     * @return int
      */
     public static function get(ReflectionClass $class): int
     {

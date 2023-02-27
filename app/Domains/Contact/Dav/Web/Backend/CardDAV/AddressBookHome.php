@@ -8,8 +8,6 @@ class AddressBookHome extends BaseAddressBookHome
 {
     /**
      * Principal uri.
-     *
-     * @return string
      */
     private function getPrincipalUri(): string
     {
@@ -21,8 +19,6 @@ class AddressBookHome extends BaseAddressBookHome
 
     /**
      * Returns a list of addressbooks.
-     *
-     * @return array
      */
     public function getChildren(): array
     {

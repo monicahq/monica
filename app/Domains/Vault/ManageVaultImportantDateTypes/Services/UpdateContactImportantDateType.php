@@ -10,8 +10,6 @@ class UpdateContactImportantDateType extends BaseService implements ServiceInter
 {
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -28,8 +26,6 @@ class UpdateContactImportantDateType extends BaseService implements ServiceInter
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -42,9 +38,6 @@ class UpdateContactImportantDateType extends BaseService implements ServiceInter
 
     /**
      * Update a contact important date type.
-     *
-     * @param  array  $data
-     * @return ContactImportantDateType
      */
     public function execute(array $data): ContactImportantDateType
     {

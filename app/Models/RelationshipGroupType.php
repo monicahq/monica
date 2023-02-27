@@ -43,8 +43,6 @@ class RelationshipGroupType extends Model
 
     /**
      * Get the account associated with the relationship type.
-     *
-     * @return BelongsTo
      */
     public function account(): BelongsTo
     {
@@ -53,8 +51,6 @@ class RelationshipGroupType extends Model
 
     /**
      * Get the account associated with the relationship type.
-     *
-     * @return HasMany
      */
     public function types(): HasMany
     {

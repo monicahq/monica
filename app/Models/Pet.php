@@ -26,8 +26,6 @@ class Pet extends Model
 
     /**
      * Get the pet category associated with the pet.
-     *
-     * @return BelongsTo
      */
     public function petCategory(): BelongsTo
     {
@@ -36,8 +34,6 @@ class Pet extends Model
 
     /**
      * Get the contact associated with the pet.
-     *
-     * @return BelongsTo
      */
     public function contact(): BelongsTo
     {
@@ -46,8 +42,6 @@ class Pet extends Model
 
     /**
      * Get the pet's feed item.
-     *
-     * @return MorphOne
      */
     public function feedItem(): MorphOne
     {

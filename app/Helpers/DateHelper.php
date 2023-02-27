@@ -11,10 +11,6 @@ class DateHelper
     /**
      * Return a date according to the timezone of the user, and the format
      * stored in the preferences for this user.
-     *
-     * @param  Carbon  $date
-     * @param  User  $user
-     * @return string
      */
     public static function format(Carbon $date, User $user): string
     {
@@ -25,9 +21,7 @@ class DateHelper
      * Return a date according to the timezone of the user, in a
      * short format like "Oct 29, 1981".
      *
-     * @param  Carbon  $date
      * @param  string  $timezone
-     * @return string
      */
     public static function formatDate(Carbon $date, string $timezone = null): string
     {
@@ -42,9 +36,7 @@ class DateHelper
      * Return a date and the time according to the timezone of the user, in a
      * short format like "Oct 29, 1981 19:32".
      *
-     * @param  Carbon  $date
      * @param  string  $timezone
-     * @return string
      */
     public static function formatShortDateWithTime(Carbon $date, string $timezone = null): string
     {
@@ -57,9 +49,6 @@ class DateHelper
 
     /**
      * Return the day and the month in a format like "July 29th".
-     *
-     * @param  Carbon  $date
-     * @return string
      */
     public static function formatMonthAndDay(Carbon $date): string
     {
@@ -68,9 +57,6 @@ class DateHelper
 
     /**
      * Return the short month and the year in a format like "Jul 2020".
-     *
-     * @param  Carbon  $date
-     * @return string
      */
     public static function formatMonthAndYear(Carbon $date): string
     {
@@ -79,9 +65,6 @@ class DateHelper
 
     /**
      * Return the long month and the year in a format like "September 2020".
-     *
-     * @param  Carbon  $date
-     * @return string
      */
     public static function formatLongMonthAndYear(Carbon $date): string
     {
@@ -90,9 +73,6 @@ class DateHelper
 
     /**
      * Return the day and the month in a format like "Jul 29".
-     *
-     * @param  Carbon  $date
-     * @return string
      */
     public static function formatShortMonthAndDay(Carbon $date): string
     {
@@ -101,9 +81,6 @@ class DateHelper
 
     /**
      * Return the day in a format like "Mon".
-     *
-     * @param  Carbon  $date
-     * @return string
      */
     public static function formatShortDay(Carbon $date): string
     {
@@ -113,9 +90,7 @@ class DateHelper
     /**
      * Return the day and the month in a format like "Monday (July 29th)".
      *
-     * @param  Carbon  $date
      * @param  string  $timezone
-     * @return string
      */
     public static function formatDayAndMonthInParenthesis(Carbon $date, string $timezone = null): string
     {
@@ -128,9 +103,6 @@ class DateHelper
 
     /**
      * Return the complete date like "Monday, July 29th 2020".
-     *
-     * @param  Carbon  $date
-     * @return string
      */
     public static function formatFullDate(Carbon $date): string
     {
@@ -139,9 +111,6 @@ class DateHelper
 
     /**
      * Return the day as a number, like "03".
-     *
-     * @param  Carbon  $date
-     * @return string
      */
     public static function formatDayNumber(Carbon $date): string
     {
@@ -150,9 +119,6 @@ class DateHelper
 
     /**
      * Return the first letter of the month, like "Jan" for January.
-     *
-     * @param    $date
-     * @return string
      */
     public static function formatMonthNumber($date): string
     {
@@ -161,8 +127,6 @@ class DateHelper
 
     /**
      * Return a collection of months.
-     *
-     * @return Collection
      */
     public static function getMonths(): Collection
     {
@@ -180,8 +144,6 @@ class DateHelper
 
     /**
      * Return a collection of days.
-     *
-     * @return Collection
      */
     public static function getDays(): Collection
     {
@@ -198,9 +160,6 @@ class DateHelper
 
     /**
      * Return the date as timestamp.
-     *
-     * @param  Carbon|null  $date
-     * @return string
      */
     public static function getTimestamp(?Carbon $date): string
     {

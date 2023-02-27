@@ -8,9 +8,6 @@ class PaginatorHelper
 {
     /**
      * Provide an array of all the data needed to display a pagination.
-     *
-     * @param  LengthAwarePaginator  $paginator
-     * @return array
      */
     public static function getData(LengthAwarePaginator $paginator): array
     {

@@ -44,8 +44,6 @@ class RelationshipType extends Model
 
     /**
      * Get the group type associated with the relationship type.
-     *
-     * @return BelongsTo
      */
     public function groupType(): BelongsTo
     {

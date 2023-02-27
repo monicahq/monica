@@ -28,8 +28,6 @@ abstract class BaseService
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -38,8 +36,6 @@ abstract class BaseService
 
     /**
      * Get the permissions that users need to execute the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -48,8 +44,6 @@ abstract class BaseService
 
     /**
      * Get author's account.
-     *
-     * @return Account
      */
     public function account(): Account
     {
@@ -58,9 +52,6 @@ abstract class BaseService
 
     /**
      * Validate an array against a set of rules.
-     *
-     * @param  array  $data
-     * @return bool
      */
     public function validateRules(array $data): bool
     {
@@ -99,8 +90,6 @@ abstract class BaseService
 
     /**
      * Validate that the author of the action belongs to the account.
-     *
-     * @param  array  $data
      */
     private function validateAuthorBelongsToAccount(array $data): void
     {
@@ -122,8 +111,6 @@ abstract class BaseService
 
     /**
      * Validate that the vault belongs to the account.
-     *
-     * @param  array  $data
      */
     private function validateVaultExists(array $data): void
     {
@@ -134,8 +121,6 @@ abstract class BaseService
     /**
      * Validate that the user has the right to do what he's supposed to do in
      * the given vault.
-     *
-     * @param  int  $permission
      */
     public function validateUserPermissionInVault(int $permission): void
     {
@@ -151,8 +136,6 @@ abstract class BaseService
 
     /**
      * Validate that the contact belongs to the account.
-     *
-     * @param  array  $data
      */
     public function validateContactBelongsToVault(array $data): void
     {

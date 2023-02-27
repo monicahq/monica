@@ -37,27 +37,17 @@ class TimelineEvent extends Model
     ];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'started_at',
-    ];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
     protected $casts = [
         'collapsed' => 'boolean',
+        'started_at' => 'datetime',
     ];
 
     /**
      * Get the vault associated with the timeline event.
-     *
-     * @return BelongsTo
      */
     public function vault(): BelongsTo
     {
@@ -66,8 +56,6 @@ class TimelineEvent extends Model
 
     /**
      * Get the life events associated with the timeline event.
-     *
-     * @return HasMany
      */
     public function lifeEvents(): HasMany
     {
@@ -76,8 +64,6 @@ class TimelineEvent extends Model
 
     /**
      * Get the contact records the timeline event is with.
-     *
-     * @return BelongsToMany
      */
     public function participants(): BelongsToMany
     {

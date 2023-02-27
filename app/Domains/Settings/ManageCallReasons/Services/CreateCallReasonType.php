@@ -10,8 +10,6 @@ class CreateCallReasonType extends BaseService implements ServiceInterface
 {
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -24,8 +22,6 @@ class CreateCallReasonType extends BaseService implements ServiceInterface
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -37,9 +33,6 @@ class CreateCallReasonType extends BaseService implements ServiceInterface
 
     /**
      * Create a call reason type.
-     *
-     * @param  array  $data
-     * @return CallReasonType
      */
     public function execute(array $data): CallReasonType
     {

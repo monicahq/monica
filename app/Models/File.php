@@ -52,8 +52,6 @@ class File extends Model
 
     /**
      * Get the vault associated with the file.
-     *
-     * @return BelongsTo
      */
     public function vault(): BelongsTo
     {
@@ -62,8 +60,6 @@ class File extends Model
 
     /**
      * Get the parent model that matches this file.
-     *
-     * @return MorphTo
      */
     public function fileable(): MorphTo
     {

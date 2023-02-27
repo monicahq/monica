@@ -10,18 +10,11 @@ interface ImportVCardResource
 {
     /**
      * Set context.
-     *
-     * @param  ImportVCard  $context
-     * @return self
      */
     public function setContext(ImportVCard $context): self;
 
     /**
      * Import Contact.
-     *
-     * @param  Contact|null  $contact
-     * @param  VCard  $vcard
-     * @return Contact
      */
     public function import(?Contact $contact, VCard $vcard): Contact;
 }

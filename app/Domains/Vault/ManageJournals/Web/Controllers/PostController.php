@@ -41,11 +41,6 @@ class PostController extends Controller
      * The post will be created upon visiting the page.
      * This will create the post as a draft, with all the post sections
      * populated from the post template.
-     *
-     * @param  Request  $request
-     * @param  int  $vaultId
-     * @param  int  $journalId
-     * @param  int  $templateId
      */
     public function store(Request $request, int $vaultId, int $journalId, int $templateId)
     {

@@ -26,8 +26,6 @@ class PostSection extends Model
 
     /**
      * Get the post associated with the post section.
-     *
-     * @return BelongsTo
      */
     public function post(): BelongsTo
     {

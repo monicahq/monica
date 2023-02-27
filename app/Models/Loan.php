@@ -40,22 +40,14 @@ class Loan extends Model
     ];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'loaned_at',
-        'settled_at',
-    ];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
     protected $casts = [
         'settled' => 'boolean',
+        'loaned_at' => 'datetime',
+        'settled_at' => 'datetime',
     ];
 
     /**
@@ -70,8 +62,6 @@ class Loan extends Model
 
     /**
      * Get the vault associated with the loan.
-     *
-     * @return BelongsTo
      */
     public function vault(): BelongsTo
     {
@@ -80,8 +70,6 @@ class Loan extends Model
 
     /**
      * Get the currency associated with the loan.
-     *
-     * @return BelongsTo
      */
     public function currency(): BelongsTo
     {
@@ -90,8 +78,6 @@ class Loan extends Model
 
     /**
      * Get the contact that did the loan.
-     *
-     * @return BelongsToMany
      */
     public function loaners(): BelongsToMany
     {
@@ -100,8 +86,6 @@ class Loan extends Model
 
     /**
      * Get the contact records the loan was made to.
-     *
-     * @return BelongsToMany
      */
     public function loanees(): BelongsToMany
     {

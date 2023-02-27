@@ -29,8 +29,6 @@ class MoodTrackingParameter extends Model
 
     /**
      * Get the vault associated with the mood tracking parameter.
-     *
-     * @return BelongsTo
      */
     public function vault(): BelongsTo
     {
@@ -39,8 +37,6 @@ class MoodTrackingParameter extends Model
 
     /**
      * Get the mood tracking events associated with the mood tracking parameter.
-     *
-     * @return HasMany
      */
     public function moodTrackingEvents(): HasMany
     {

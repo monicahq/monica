@@ -8,9 +8,6 @@ class SQLHelper
 {
     /**
      * Extract the year.
-     *
-     * @param  string  $dateColumnName
-     * @return string
      */
     public static function year(string $dateColumnName): string
     {

@@ -23,8 +23,6 @@ class Template extends Model
 
     /**
      * Get the account associated with the template.
-     *
-     * @return BelongsTo
      */
     public function account(): BelongsTo
     {
@@ -33,8 +31,6 @@ class Template extends Model
 
     /**
      * Get the template page records associated with the template.
-     *
-     * @return HasMany
      */
     public function pages(): HasMany
     {
@@ -43,8 +39,6 @@ class Template extends Model
 
     /**
      * Get the contacts associated with the template.
-     *
-     * @return HasMany
      */
     public function contacts(): HasMany
     {

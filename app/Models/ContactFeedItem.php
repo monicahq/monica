@@ -108,8 +108,6 @@ class ContactFeedItem extends Model
 
     /**
      * Get the user associated with the contact feed item.
-     *
-     * @return BelongsTo
      */
     public function author(): BelongsTo
     {
@@ -118,8 +116,6 @@ class ContactFeedItem extends Model
 
     /**
      * Get the contact associated with the contact feed item.
-     *
-     * @return BelongsTo
      */
     public function contact(): BelongsTo
     {
@@ -128,8 +124,6 @@ class ContactFeedItem extends Model
 
     /**
      * Get the contact information type associated with the contact feed item.
-     *
-     * @return MorphTo
      */
     public function feedable(): MorphTo
     {

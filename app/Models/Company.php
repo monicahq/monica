@@ -35,8 +35,6 @@ class Company extends Model
 
     /**
      * Get the vault associated with the company.
-     *
-     * @return BelongsTo
      */
     public function vault(): BelongsTo
     {
@@ -45,8 +43,6 @@ class Company extends Model
 
     /**
      * Get the contacts associated with the company.
-     *
-     * @return HasMany
      */
     public function contacts(): HasMany
     {

@@ -43,8 +43,6 @@ class SetupAccount extends QueuableService implements ServiceInterface
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -56,8 +54,6 @@ class SetupAccount extends QueuableService implements ServiceInterface
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -68,9 +64,6 @@ class SetupAccount extends QueuableService implements ServiceInterface
 
     /**
      * Execute the service.
-     *
-     * @param  array  $data
-     * @return void
      */
     public function execute(array $data): void
     {
@@ -90,8 +83,6 @@ class SetupAccount extends QueuableService implements ServiceInterface
 
     /**
      * Populate currencies in the account.
-     *
-     * @return void
      */
     private function populateCurrencies(): void
     {
@@ -103,8 +94,6 @@ class SetupAccount extends QueuableService implements ServiceInterface
 
     /**
      * Add the first notification channel based on the email address of the user.
-     *
-     * @return void
      */
     private function addNotificationChannel(): void
     {

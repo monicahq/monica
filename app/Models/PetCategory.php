@@ -24,8 +24,6 @@ class PetCategory extends Model
 
     /**
      * Get the account associated with the pet category.
-     *
-     * @return BelongsTo
      */
     public function account(): BelongsTo
     {

@@ -11,8 +11,6 @@ class StoreHelpPreference extends BaseService
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -25,8 +23,6 @@ class StoreHelpPreference extends BaseService
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -39,9 +35,6 @@ class StoreHelpPreference extends BaseService
      * Saves the help preferences.
      * If it's set to true, it will show an help button next to the main features
      * on the screen.
-     *
-     * @param  array  $data
-     * @return User
      */
     public function execute(array $data): User
     {

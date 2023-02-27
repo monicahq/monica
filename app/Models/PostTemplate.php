@@ -36,8 +36,6 @@ class PostTemplate extends Model
 
     /**
      * Get the account associated with the post type.
-     *
-     * @return BelongsTo
      */
     public function account(): BelongsTo
     {
@@ -46,8 +44,6 @@ class PostTemplate extends Model
 
     /**
      * Get the post type section records associated with the post type.
-     *
-     * @return HasMany
      */
     public function postTemplateSections(): HasMany
     {

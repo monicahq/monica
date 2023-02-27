@@ -15,8 +15,6 @@ class CreateCall extends BaseService implements ServiceInterface
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -38,8 +36,6 @@ class CreateCall extends BaseService implements ServiceInterface
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -53,9 +49,6 @@ class CreateCall extends BaseService implements ServiceInterface
 
     /**
      * Create a call.
-     *
-     * @param  array  $data
-     * @return Call
      */
     public function execute(array $data): Call
     {

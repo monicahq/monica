@@ -21,8 +21,6 @@ class ScheduleContactReminderForUser extends BaseService implements ServiceInter
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -37,9 +35,6 @@ class ScheduleContactReminderForUser extends BaseService implements ServiceInter
      * For each user in the vault, a scheduled reminder is created.
      * This service SHOULD NOT BE CALLED FROM THE CLIENTS, ever.
      * It is called by other services.
-     *
-     * @param  array  $data
-     * @return void
      */
     public function execute(array $data): void
     {
@@ -60,8 +55,6 @@ class ScheduleContactReminderForUser extends BaseService implements ServiceInter
      * A ContactReminder can be either a complete date, or only a day/month.
      * If it is only a day/month, we need to add a fake year so we can still
      * manipulate the date as a Carbon object.
-     *
-     * @return void
      */
     private function getDate(): void
     {

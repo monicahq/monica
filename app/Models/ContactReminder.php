@@ -42,18 +42,16 @@ class ContactReminder extends Model
     ];
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
-    protected $dates = [
-        'last_triggered_at',
+    protected $casts = [
+        'last_triggered_at' => 'datetime',
     ];
 
     /**
      * Get the contact associated with the contact reminder.
-     *
-     * @return BelongsTo
      */
     public function contact(): BelongsTo
     {
@@ -62,8 +60,6 @@ class ContactReminder extends Model
 
     /**
      * Get the user notification channel records associated with the contact reminder.
-     *
-     * @return BelongsToMany
      */
     public function userNotificationChannels(): BelongsToMany
     {

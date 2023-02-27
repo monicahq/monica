@@ -10,9 +10,6 @@ class VaultHelper
 {
     /**
      * Get the friendly name of a vault permission.
-     *
-     * @param  int  $permission
-     * @return string
      */
     public static function getPermissionFriendlyName(int $permission): string
     {
@@ -39,10 +36,6 @@ class VaultHelper
 
     /**
      * Get the permission for the given user in the given vault.
-     *
-     * @param  User  $user
-     * @param  Vault  $vault
-     * @return int|null
      */
     public static function getPermission(User $user, Vault $vault): ?int
     {

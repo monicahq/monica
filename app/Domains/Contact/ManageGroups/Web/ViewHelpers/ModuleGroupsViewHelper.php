@@ -10,9 +10,6 @@ class ModuleGroupsViewHelper
 {
     /**
      * All the groups associated with the contact.
-     *
-     * @param  Contact  $contact
-     * @return array
      */
     public static function data(Contact $contact): array
     {
@@ -54,11 +51,6 @@ class ModuleGroupsViewHelper
 
     /**
      * Gets the details of a given group.
-     *
-     * @param  Contact  $contact
-     * @param  Group  $group
-     * @param  bool  $taken
-     * @return array
      */
     public static function dto(Contact $contact, Group $group, bool $taken = false): array
     {

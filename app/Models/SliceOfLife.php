@@ -27,8 +27,6 @@ class SliceOfLife extends Model
 
     /**
      * Get the journal associated with the slice of life.
-     *
-     * @return BelongsTo
      */
     public function journal(): BelongsTo
     {
@@ -37,8 +35,6 @@ class SliceOfLife extends Model
 
     /**
      * Get the posts associated with the slice of life.
-     *
-     * @return HasMany
      */
     public function posts(): HasMany
     {
@@ -48,8 +44,6 @@ class SliceOfLife extends Model
     /**
      * Get the file associated with the slice of life.
      * If it exists, it's the header image.
-     *
-     * @return BelongsTo
      */
     public function file(): BelongsTo
     {

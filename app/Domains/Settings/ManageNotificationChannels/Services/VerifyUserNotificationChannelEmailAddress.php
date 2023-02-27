@@ -15,8 +15,6 @@ class VerifyUserNotificationChannelEmailAddress extends BaseService implements S
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -30,8 +28,6 @@ class VerifyUserNotificationChannelEmailAddress extends BaseService implements S
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -42,9 +38,6 @@ class VerifyUserNotificationChannelEmailAddress extends BaseService implements S
 
     /**
      * Verify the email address for the given user notification channel.
-     *
-     * @param  array  $data
-     * @return UserNotificationChannel
      */
     public function execute(array $data): UserNotificationChannel
     {

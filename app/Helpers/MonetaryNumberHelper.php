@@ -13,10 +13,6 @@ class MonetaryNumberHelper
      * We also don't use the Money library because it requires the intl PHP
      * extension and we want to keep the software as far away as dependencies
      * as possible.
-     *
-     * @param  User  $user
-     * @param  int  $number
-     * @return string
      */
     public static function format(User $user, int $number): string
     {

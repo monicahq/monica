@@ -19,8 +19,6 @@ class UpdateLifeEventTypePosition extends BaseService implements ServiceInterfac
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -35,8 +33,6 @@ class UpdateLifeEventTypePosition extends BaseService implements ServiceInterfac
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -49,9 +45,6 @@ class UpdateLifeEventTypePosition extends BaseService implements ServiceInterfac
 
     /**
      * Update the life event type's position.
-     *
-     * @param  array  $data
-     * @return LifeEventType
      */
     public function execute(array $data): LifeEventType
     {

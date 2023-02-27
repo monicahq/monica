@@ -23,8 +23,6 @@ class Currency extends Model
 
     /**
      * Get the account records that have the currency.
-     *
-     * @return BelongsToMany
      */
     public function accounts(): BelongsToMany
     {

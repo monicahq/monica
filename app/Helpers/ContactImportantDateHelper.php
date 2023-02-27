@@ -10,8 +10,6 @@ class ContactImportantDateHelper
 {
     /**
      * Get the important date type from the vault.
-     *
-     * @return null|ContactImportantDateType
      */
     public static function getImportantDateType(string $type, int $vault_id): ?ContactImportantDateType
     {

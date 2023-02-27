@@ -34,28 +34,18 @@ class Post extends Model
     ];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'written_at',
-        'updated_at',
-    ];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
     protected $casts = [
         'published' => 'boolean',
+        'written_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /**
      * Get the journal associated with the post.
-     *
-     * @return BelongsTo
      */
     public function journal(): BelongsTo
     {
@@ -64,8 +54,6 @@ class Post extends Model
 
     /**
      * Get the slice of life associated with the post.
-     *
-     * @return BelongsTo
      */
     public function sliceOfLife(): BelongsTo
     {
@@ -74,8 +62,6 @@ class Post extends Model
 
     /**
      * Get the post sections associated with the post.
-     *
-     * @return HasMany
      */
     public function postSections(): HasMany
     {
@@ -84,8 +70,6 @@ class Post extends Model
 
     /**
      * Get the contacts associated with the post.
-     *
-     * @return BelongsToMany
      */
     public function contacts(): BelongsToMany
     {
@@ -94,8 +78,6 @@ class Post extends Model
 
     /**
      * Get the post's feed item.
-     *
-     * @return MorphOne
      */
     public function feedItem(): MorphOne
     {
@@ -104,8 +86,6 @@ class Post extends Model
 
     /**
      * Get the tags associated with the post.
-     *
-     * @return BelongsToMany
      */
     public function tags(): BelongsToMany
     {
@@ -114,8 +94,6 @@ class Post extends Model
 
     /**
      * Get the files associated with the post.
-     *
-     * @return MorphMany
      */
     public function files(): MorphMany
     {

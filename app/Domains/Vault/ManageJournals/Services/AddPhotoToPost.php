@@ -17,8 +17,6 @@ class AddPhotoToPost extends BaseService implements ServiceInterface
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -34,8 +32,6 @@ class AddPhotoToPost extends BaseService implements ServiceInterface
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -48,9 +44,6 @@ class AddPhotoToPost extends BaseService implements ServiceInterface
 
     /**
      * Add an image to a post.
-     *
-     * @param  array  $data
-     * @return Post
      */
     public function execute(array $data): Post
     {

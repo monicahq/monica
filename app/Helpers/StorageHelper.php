@@ -10,9 +10,6 @@ class StorageHelper
     /**
      * Indicate if the account can accept another file, depending on the account's
      * limits.
-     *
-     * @param  Account  $account
-     * @return bool
      */
     public static function canUploadFile(Account $account): bool
     {

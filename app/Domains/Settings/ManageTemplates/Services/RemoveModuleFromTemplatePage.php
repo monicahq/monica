@@ -15,8 +15,6 @@ class RemoveModuleFromTemplatePage extends BaseService implements ServiceInterfa
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -31,8 +29,6 @@ class RemoveModuleFromTemplatePage extends BaseService implements ServiceInterfa
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -44,9 +40,6 @@ class RemoveModuleFromTemplatePage extends BaseService implements ServiceInterfa
 
     /**
      * Remove a module from a template page.
-     *
-     * @param  array  $data
-     * @return Module
      */
     public function execute(array $data): Module
     {

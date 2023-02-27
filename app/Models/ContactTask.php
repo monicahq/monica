@@ -35,22 +35,12 @@ class ContactTask extends Model
      */
     protected $casts = [
         'completed' => 'boolean',
-    ];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'completed_at',
-        'due_at',
+        'completed_at' => 'datetime',
+        'due_at' => 'datetime',
     ];
 
     /**
      * Get the contact associated with the contact task.
-     *
-     * @return BelongsTo
      */
     public function contact(): BelongsTo
     {
@@ -59,8 +49,6 @@ class ContactTask extends Model
 
     /**
      * Get the author associated with the contact task.
-     *
-     * @return BelongsTo
      */
     public function author(): BelongsTo
     {

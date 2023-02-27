@@ -13,7 +13,6 @@ class SanctumSetUser
     /**
      * Create a new middleware instance.
      *
-     * @param  \Illuminate\Contracts\Auth\Factory  $auth
      * @return void
      */
     public function __construct(
@@ -24,8 +23,6 @@ class SanctumSetUser
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -37,8 +34,6 @@ class SanctumSetUser
 
     /**
      * Get sanctum guard.
-     *
-     * @return \Illuminate\Auth\RequestGuard
      */
     protected function sanctum(): RequestGuard
     {

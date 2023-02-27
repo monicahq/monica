@@ -18,8 +18,6 @@ class CreatePost extends BaseService implements ServiceInterface
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -37,8 +35,6 @@ class CreatePost extends BaseService implements ServiceInterface
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -51,9 +47,6 @@ class CreatePost extends BaseService implements ServiceInterface
 
     /**
      * Create a post.
-     *
-     * @param  array  $data
-     * @return Post
      */
     public function execute(array $data): Post
     {
@@ -98,8 +91,6 @@ class CreatePost extends BaseService implements ServiceInterface
      * The post sections are defined by the post template that was chosen upon
      * the creation of the post
      * All these post sections will be blank until the user fills them.
-     *
-     * @return void
      */
     private function createPostSections(): void
     {

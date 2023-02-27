@@ -89,8 +89,6 @@ class Module extends Model
 
     /**
      * Get the account associated with the template.
-     *
-     * @return BelongsTo
      */
     public function account(): BelongsTo
     {
@@ -99,8 +97,6 @@ class Module extends Model
 
     /**
      * Get the module rows associated with the module.
-     *
-     * @return HasMany
      */
     public function rows(): HasMany
     {
@@ -109,8 +105,6 @@ class Module extends Model
 
     /**
      * Get the template pages associated with the module.
-     *
-     * @return BelongsToMany
      */
     public function templatePages(): BelongsToMany
     {

@@ -16,9 +16,6 @@ class LoginController extends Controller
 {
     /**
      * Display the login view.
-     *
-     * @param  Request  $request
-     * @return \Inertia\Response
      */
     public function __invoke(Request $request): Response
     {

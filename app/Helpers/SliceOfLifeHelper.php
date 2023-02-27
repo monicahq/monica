@@ -9,9 +9,6 @@ class SliceOfLifeHelper
     /**
      * Get the date range of the given slice of life.
      * ie: the oldest and newest posts in the slice.
-     *
-     * @param  SliceOfLife  $sliceOfLife
-     * @return string|null
      */
     public static function getDateRange(SliceOfLife $sliceOfLife): ?string
     {

@@ -24,8 +24,6 @@ class CallReason extends Model
 
     /**
      * Get the call reason type associated with call reason.
-     *
-     * @return BelongsTo
      */
     public function callReasonType(): BelongsTo
     {

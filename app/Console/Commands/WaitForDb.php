@@ -24,9 +24,6 @@ class WaitForDb extends Command
 
     /**
      * Execute the console command.
-     *
-     * @param  \Illuminate\Database\Connectors\ConnectionFactory  $factory
-     * @return int
      */
     public function handle(ConnectionFactory $factory): int
     {

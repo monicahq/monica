@@ -25,8 +25,6 @@ class GiftState extends Model
 
     /**
      * Get the account associated with the gift occasion.
-     *
-     * @return BelongsTo
      */
     public function account(): BelongsTo
     {

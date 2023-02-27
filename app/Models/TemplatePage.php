@@ -46,8 +46,6 @@ class TemplatePage extends Model
 
     /**
      * Get the account associated with the template page.
-     *
-     * @return BelongsTo
      */
     public function template(): BelongsTo
     {
@@ -56,8 +54,6 @@ class TemplatePage extends Model
 
     /**
      * Get the modules associated with the template page.
-     *
-     * @return BelongsToMany
      */
     public function modules(): BelongsToMany
     {

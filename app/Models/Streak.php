@@ -21,18 +21,16 @@ class Streak extends Model
     ];
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
-    protected $dates = [
-        'happened_at',
+    protected $casts = [
+        'happened_at' => 'datetime',
     ];
 
     /**
      * Get the goal associated with the streak.
-     *
-     * @return BelongsTo
      */
     public function goal(): BelongsTo
     {

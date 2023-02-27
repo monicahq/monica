@@ -11,9 +11,6 @@ class WikipediaHelper
      * Return the information about the given city or country from Wikipedia.
      * All API calls are documented here:
      * https://www.mediawiki.org/w/api.php?action=help&modules=query.
-     *
-     * @param  string  $topic
-     * @return array
      */
     public static function getInformation(string $topic): array
     {

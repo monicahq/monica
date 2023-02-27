@@ -34,8 +34,6 @@ class Address extends Model
 
     /**
      * Get the contacts associated with the address.
-     *
-     * @return BelongsToMany
      */
     public function contacts(): BelongsToMany
     {
@@ -44,8 +42,6 @@ class Address extends Model
 
     /**
      * Get the address type object associated with the address.
-     *
-     * @return BelongsTo
      */
     public function addressType(): BelongsTo
     {
@@ -54,8 +50,6 @@ class Address extends Model
 
     /**
      * Get the address's feed item.
-     *
-     * @return MorphOne
      */
     public function feedItem(): MorphOne
     {

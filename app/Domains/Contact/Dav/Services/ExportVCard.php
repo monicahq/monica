@@ -20,8 +20,6 @@ class ExportVCard extends BaseService implements ServiceInterface
 {
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -35,8 +33,6 @@ class ExportVCard extends BaseService implements ServiceInterface
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -55,9 +51,6 @@ class ExportVCard extends BaseService implements ServiceInterface
 
     /**
      * Export one VCard.
-     *
-     * @param  array  $data
-     * @return VCard
      */
     public function execute(array $data): VCard
     {
@@ -74,9 +67,6 @@ class ExportVCard extends BaseService implements ServiceInterface
 
     /**
      * Export the contact.
-     *
-     * @param  Contact  $contact
-     * @return VCard
      */
     private function export(Contact $contact): VCard
     {

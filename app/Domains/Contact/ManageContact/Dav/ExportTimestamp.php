@@ -10,10 +10,6 @@ use Sabre\VObject\Component\VCard;
 #[Order(1000)]
 class ExportTimestamp implements ExportVCardResource
 {
-    /**
-     * @param  Contact  $contact
-     * @param  VCard  $vcard
-     */
     public function export(Contact $contact, VCard $vcard): void
     {
         $vcard->remove('REV');

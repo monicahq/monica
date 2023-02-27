@@ -42,8 +42,6 @@ class SetupDocumentation extends Command
 
     /**
      * Regenerate api documentation.
-     *
-     * @return void
      */
     protected function documentation(): void
     {

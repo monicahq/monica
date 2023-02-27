@@ -13,8 +13,6 @@ class SetRelationship extends BaseService implements ServiceInterface
 {
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -30,8 +28,6 @@ class SetRelationship extends BaseService implements ServiceInterface
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -47,8 +43,6 @@ class SetRelationship extends BaseService implements ServiceInterface
      * Set a relationship between two contacts.
      * When a relationship is created (father -> son), we need to create
      * the inverse relationship (son -> father) as well.
-     *
-     * @param  array  $data
      */
     public function execute(array $data): void
     {

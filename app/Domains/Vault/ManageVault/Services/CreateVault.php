@@ -20,8 +20,6 @@ class CreateVault extends BaseService implements ServiceInterface
 
     /**
      * Get the validation rules that apply to the service.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -37,8 +35,6 @@ class CreateVault extends BaseService implements ServiceInterface
 
     /**
      * Get the permissions that apply to the user calling the service.
-     *
-     * @return array
      */
     public function permissions(): array
     {
@@ -49,9 +45,6 @@ class CreateVault extends BaseService implements ServiceInterface
 
     /**
      * Create a vault.
-     *
-     * @param  array  $data
-     * @return Vault
      */
     public function execute(array $data): Vault
     {

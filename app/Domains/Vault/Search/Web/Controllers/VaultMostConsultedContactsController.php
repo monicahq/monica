@@ -14,10 +14,6 @@ class VaultMostConsultedContactsController extends Controller
     /**
      * Get the list of the most consulted contacts by the given user in the
      * current vault.
-     *
-     * @param  Request  $request
-     * @param  int  $vaultId
-     * @return JsonResponse
      */
     public function index(Request $request, int $vaultId): JsonResponse
     {

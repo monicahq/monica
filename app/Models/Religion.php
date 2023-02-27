@@ -25,8 +25,6 @@ class Religion extends Model
 
     /**
      * Get the account associated with the religion.
-     *
-     * @return BelongsTo
      */
     public function account(): BelongsTo
     {

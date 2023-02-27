@@ -25,8 +25,6 @@ class ModuleRow extends Model
 
     /**
      * Get the module associated with the module.
-     *
-     * @return BelongsTo
      */
     public function module(): BelongsTo
     {
@@ -35,8 +33,6 @@ class ModuleRow extends Model
 
     /**
      * Get the module row fields associated with the module.
-     *
-     * @return HasMany
      */
     public function fields(): HasMany
     {
