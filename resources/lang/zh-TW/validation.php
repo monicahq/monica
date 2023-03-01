@@ -156,11 +156,11 @@ return [
 
     'vue' => [
         'max' => [
-            'numeric' => '{field} may not be greater than {max}.',
-            'string' => '{field} may not be greater than {max} characters.',
+            'numeric' => '{field}不能大於{max}',
+            'string' => '{field}不能超過{max}個字元',
         ],
-        'required' => '{field} is required.',
-        'url' => '{field} is not a valid URL.',
+        'required' => '{field} 必填',
+        'url' => '{field} 的網址不正確',
     ],
 
 ];

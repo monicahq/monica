@@ -7,10 +7,10 @@
  */
 
 return [
-    'message' => 'Thanks for signing up! Please check your emails to confirm your email address.',
-    'success' => 'You have successfully verified your account! You can now login.',
-    'again' => 'You must verify your email before you can access the site.
-                <br/>If you have not received the confirmation email check your spam folder.
-                <br/>To get a new confirmation email please <a href=":url" class="alert-link">click here</a>.',
-    'resend' => 'A confirmation message has been sent. Please check your mailbox.'
+    'message' => '您已註冊完成，請至Email信箱點選確認以驗證信箱地址。',
+    'success' => '帳戶驗證成功！請登入後開始使用',
+    'again' => '您必須先確認信箱地址正確。
+                <br/>若尚未收到驗證信，請檢查垃圾信件匣。
+                <br/>或<a href=":url" class="alert-link">重新發送驗證信</a>。',
+    'resend' => '信箱驗證信已寄出，請檢查您的收件匣。'
 ];

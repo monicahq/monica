@@ -258,7 +258,7 @@ php artisan passport:client --personal --no-interaction
 ```
 
 This command will generate encryption keys in the `storage` directory.
-Be sure to backup the `oauth-private.key` and `oauth-public.key` files to maintain futur access.
+Be sure to backup the `oauth-private.key` and `oauth-public.key` files to maintain future access.
 
 #### Optional: Save the encryption keys as variable
 

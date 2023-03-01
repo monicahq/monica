@@ -12,5 +12,5 @@ return [
     'type_lunch' => '與此人共進午餐',
     'type_hangout' => '與此人約會',
     'type_email' => '電子郵件',
-    'type_birthday_kid' => 'Wish happy birthday to the child of',
+    'type_birthday_kid' => '祝此人的孩子生日快樂',
 ];

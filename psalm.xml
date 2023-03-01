@@ -7,12 +7,12 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
-        <directory name="database/seeds" />
         <directory name="app" />
+        <directory name="database/seeds" />
         <directory name="routes" />
+        <directory name="tests" />
         <ignoreFiles>
             <directory name="vendor" />
-            <file name="app/Helpers/helpers.php" />
         </ignoreFiles>
     </projectFiles>
 
