@@ -238,7 +238,7 @@ return [
 
     'relationship_type_uncle' => '叔叔',
     'relationship_type_uncle_female' => '阿姨',
-    'relationship_type_uncle_male' => 'uncle',
+    'relationship_type_uncle_male' => '叔叔',
     'relationship_type_uncle_with_name' => ':name的叔叔',
     'relationship_type_uncle_female_with_name' => ':name的阿姨',
     'relationship_type_uncle_male_with_name' => ':name’s uncle',
