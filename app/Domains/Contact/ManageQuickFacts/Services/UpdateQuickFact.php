@@ -1,19 +1,21 @@
 <?php
 
-namespace App\Domains\Contact\ManageGroups\Services;
+namespace App\Domains\Contact\ManageQuickFacts\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Group;
+use App\Models\QuickFact;
 use App\Services\BaseService;
 
-class CreateGroup extends BaseService implements ServiceInterface
+class UpdateQuickFact extends BaseService implements ServiceInterface
 {
-    private Group $group;
+    private QuickFact $quickFact;
 
     private array $data;
 
     /**
      * Get the validation rules that apply to the service.
+     *
+     * @return array
      */
     public function rules(): array
     {
@@ -21,13 +23,16 @@ class CreateGroup extends BaseService implements ServiceInterface
             'account_id' => 'required|integer|exists:accounts,id',
             'vault_id' => 'required|integer|exists:vaults,id',
             'author_id' => 'required|integer|exists:users,id',
-            'group_type_id' => 'required|integer|exists:group_types,id',
-            'name' => 'nullable|string|max:255',
+            'contact_id' => 'required|integer|exists:contacts,id',
+            'quick_fact_id' => 'required|integer|exists:quick_facts,id',
+            'content' => 'required|string|max:255',
         ];
     }
 
     /**
      * Get the permissions that apply to the user calling the service.
+     *
+     * @return array
      */
     public function permissions(): array
     {
@@ -35,31 +40,32 @@ class CreateGroup extends BaseService implements ServiceInterface
             'author_must_belong_to_account',
             'vault_must_belong_to_account',
             'author_must_be_vault_editor',
+            'contact_must_belong_to_vault',
         ];
     }
 
     /**
-     * Create a group.
+     * Update a quick fact.
+     *
+     * @param  array  $data
+     * @return QuickFact
      */
-    public function execute(array $data): Group
+    public function execute(array $data): QuickFact
     {
         $this->data = $data;
         $this->validate();
 
-        $this->group = Group::create([
-            'group_type_id' => $data['group_type_id'],
-            'vault_id' => $data['vault_id'],
-            'name' => $this->valueOrNull($data, 'name'),
-        ]);
+        $this->quickFact->content = $this->data['content'];
+        $this->quickFact->save();
 
-        return $this->group;
+        return $this->quickFact;
     }
 
     private function validate(): void
     {
         $this->validateRules($this->data);
 
-        $this->account()->groupTypes()
-            ->findOrFail($this->data['group_type_id']);
+        $this->quickFact = $this->contact->quickFacts()
+            ->findOrFail($this->data['quick_fact_id']);
     }
 }

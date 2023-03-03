@@ -11,6 +11,7 @@ use App\Models\MoodTrackingParameter;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Vault;
+use App\Models\VaultQuickFactTemplate;
 
 class VaultSettingsIndexViewHelper
 {
@@ -126,6 +127,12 @@ class VaultSettingsIndexViewHelper
             ->get()
             ->map(fn (LifeEventCategory $lifeEventCategory) => self::dtoLifeEventCategory($lifeEventCategory));
 
+        // quick fact templates
+        $quickFactTemplates = $vault->quickFactsTemplateEntries()
+            ->orderBy('position', 'asc')
+            ->get()
+            ->map(fn (VaultQuickFactTemplate $vaultQuickFactTemplate) => self::dtoQuickFactTemplateEntry($vaultQuickFactTemplate));
+
         return [
             'templates' => $templatesCollection,
             'users_in_vault' => $usersInVaultCollection,
@@ -137,6 +144,7 @@ class VaultSettingsIndexViewHelper
             'mood_tracking_parameters' => $moodTrackingParameters,
             'mood_tracking_parameter_colors' => $moodTrackingParameterColorsCollection,
             'life_event_categories' => $lifeEventCategories,
+            'quick_fact_templates' => $quickFactTemplates,
             'visibility' => [
                 'show_group_tab' => $vault->show_group_tab,
                 'show_tasks_tab' => $vault->show_tasks_tab,
@@ -165,6 +173,9 @@ class VaultSettingsIndexViewHelper
                     'vault' => $vault->id,
                 ]),
                 'life_event_category_store' => route('vault.settings.life_event_categories.store', [
+                    'vault' => $vault->id,
+                ]),
+                'quick_fact_templates_store' => route('vault.settings.quick_fact_templates.store', [
                     'vault' => $vault->id,
                 ]),
                 'update' => route('vault.settings.update', [
@@ -319,6 +330,29 @@ class VaultSettingsIndexViewHelper
                     'vault' => $category->vault_id,
                     'lifeEventCategory' => $category->id,
                     'lifeEventType' => $type->id,
+                ]),
+            ],
+        ];
+    }
+
+    public static function dtoQuickFactTemplateEntry(VaultQuickFactTemplate $template): array
+    {
+        return [
+            'id' => $template->id,
+            'label' => $template->label,
+            'position' => $template->position,
+            'url' => [
+                'position' => route('vault.settings.quick_fact_templates.order.update', [
+                    'vault' => $template->vault_id,
+                    'template' => $template->id,
+                ]),
+                'update' => route('vault.settings.quick_fact_templates.update', [
+                    'vault' => $template->vault_id,
+                    'template' => $template->id,
+                ]),
+                'destroy' => route('vault.settings.quick_fact_templates.destroy', [
+                    'vault' => $template->vault_id,
+                    'template' => $template->id,
                 ]),
             ],
         ];

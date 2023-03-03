@@ -12,6 +12,7 @@ use App\Models\Tag;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
+use App\Models\VaultQuickFactTemplate;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -43,7 +44,7 @@ class VaultSettingsIndexViewHelperTest extends TestCase
         $vault->refresh();
         $array = VaultSettingsIndexViewHelper::data($vault);
         $this->assertCount(
-            12,
+            13,
             $array
         );
         $this->assertArrayHasKey('templates', $array);
@@ -56,6 +57,7 @@ class VaultSettingsIndexViewHelperTest extends TestCase
         $this->assertArrayHasKey('mood_tracking_parameters', $array);
         $this->assertArrayHasKey('mood_tracking_parameter_colors', $array);
         $this->assertArrayHasKey('life_event_categories', $array);
+        $this->assertArrayHasKey('quick_fact_templates', $array);
         $this->assertEquals(
             [
                 0 => [
@@ -114,6 +116,7 @@ class VaultSettingsIndexViewHelperTest extends TestCase
                 'contact_date_important_date_type_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/contactImportantDateTypes',
                 'mood_tracking_parameter_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/moodTrackingParameters',
                 'life_event_category_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/lifeEventCategories',
+                'quick_fact_templates_store' => env('APP_URL').'/vaults/'.$vault->id.'/settings/quickFactTemplates',
                 'update' => env('APP_URL').'/vaults/'.$vault->id.'/settings',
                 'update_tab_visibility' => env('APP_URL').'/vaults/'.$vault->id.'/settings/visibility',
                 'destroy' => env('APP_URL').'/vaults/'.$vault->id,
@@ -253,6 +256,31 @@ class VaultSettingsIndexViewHelperTest extends TestCase
                     'position' => env('APP_URL').'/vaults/'.$lifeEventCategory->vault_id.'/settings/lifeEventCategories/'.$lifeEventCategory->id.'/lifeEventTypes/'.$lifeEventType->id.'/order',
                     'update' => env('APP_URL').'/vaults/'.$lifeEventCategory->vault_id.'/settings/lifeEventCategories/'.$lifeEventCategory->id.'/lifeEventTypes/'.$lifeEventType->id,
                     'destroy' => env('APP_URL').'/vaults/'.$lifeEventCategory->vault_id.'/settings/lifeEventCategories/'.$lifeEventCategory->id.'/lifeEventTypes/'.$lifeEventType->id,
+                ],
+            ],
+            $array
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_dto_for_quick_fact_template(): void
+    {
+        $template = VaultQuickFactTemplate::factory()->create();
+
+        $array = VaultSettingsIndexViewHelper::dtoQuickFactTemplateEntry($template);
+        $this->assertEquals(
+            4,
+            count($array)
+        );
+        $this->assertEquals(
+            [
+                'id' => $template->id,
+                'label' => $template->label,
+                'position' => 1,
+                'url' => [
+                    'position' => env('APP_URL').'/vaults/'.$template->vault_id.'/settings/quickFactTemplates/'.$template->id.'/order',
+                    'update' => env('APP_URL').'/vaults/'.$template->vault_id.'/settings/quickFactTemplates/'.$template->id,
+                    'destroy' => env('APP_URL').'/vaults/'.$template->vault_id.'/settings/quickFactTemplates/'.$template->id,
                 ],
             ],
             $array

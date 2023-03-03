@@ -221,4 +221,14 @@ class Vault extends Model
     {
         return $this->hasMany(Address::class);
     }
+
+    /**
+     * Get the quick fact template entries records associated with the vault.
+     *
+     * @return HasMany
+     */
+    public function quickFactsTemplateEntries(): HasMany
+    {
+        return $this->hasMany(VaultQuickFactTemplate::class);
+    }
 }

@@ -35,6 +35,8 @@ use App\Domains\Contact\ManageNotes\Web\Controllers\ContactNotesController;
 use App\Domains\Contact\ManagePets\Web\Controllers\ContactModulePetController;
 use App\Domains\Contact\ManagePhotos\Web\Controllers\ContactModulePhotoController;
 use App\Domains\Contact\ManagePhotos\Web\Controllers\ContactPhotoController;
+use App\Domains\Contact\ManageQuickFacts\Web\Controllers\ContactQuickFactController;
+use App\Domains\Contact\ManageQuickFacts\Web\Controllers\ContactQuickFactToggleController;
 use App\Domains\Contact\ManageRelationships\Web\Controllers\ContactRelationshipsController;
 use App\Domains\Contact\ManageReligion\Web\Controllers\ContactModuleReligionController;
 use App\Domains\Contact\ManageReminders\Web\Controllers\ContactModuleReminderController;
@@ -119,6 +121,8 @@ use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsLifeEvent
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsLifeEventTypesPositionController;
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsMoodTrackingParameterController;
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsMoodTrackingParameterPositionController;
+use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsQuickFactTemplateController;
+use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsQuickFactTemplatePositionController;
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsTabVisibilityController;
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsTagController;
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsTemplateController;
@@ -222,6 +226,13 @@ Route::middleware([
                     Route::get('/edit', [ContactController::class, 'edit'])->name('contact.edit');
                     Route::post('', [ContactController::class, 'update'])->name('contact.update');
                     Route::delete('', [ContactController::class, 'destroy'])->name('contact.destroy');
+
+                    // quick facts
+                    Route::get('/quickFacts/{template}', [ContactQuickFactController::class, 'show'])->name('contact.quick_fact.show');
+                    Route::post('/quickFacts/{template}', [ContactQuickFactController::class, 'store'])->name('contact.quick_fact.store');
+                    Route::put('/quickFacts/toggle', [ContactQuickFactToggleController::class, 'update'])->name('contact.quick_fact.toggle');
+                    Route::put('/quickFacts/{template}/{quickFact}', [ContactQuickFactController::class, 'update'])->name('contact.quick_fact.update');
+                    Route::delete('/quickFacts/{template}/{quickFact}', [ContactQuickFactController::class, 'destroy'])->name('contact.quick_fact.destroy');
 
                     // toggle archive/favorite
                     Route::put('/toggle', [ContactArchiveController::class, 'update'])->name('contact.archive.update');
@@ -471,6 +482,12 @@ Route::middleware([
                 Route::put('settings/lifeEventCategories/{lifeEventCategory}/lifeEventTypes/{lifeEventType}', [VaultSettingsLifeEventTypesController::class, 'update'])->name('vault.settings.life_event_types.update');
                 Route::delete('settings/lifeEventCategories/{lifeEventCategory}/lifeEventTypes/{lifeEventType}', [VaultSettingsLifeEventTypesController::class, 'destroy'])->name('vault.settings.life_event_types.destroy');
                 Route::post('settings/lifeEventCategories/{lifeEventCategory}/lifeEventTypes/{lifeEventType}/order', [VaultSettingsLifeEventTypesPositionController::class, 'update'])->name('vault.settings.life_event_types.order.update');
+
+                // quick fact templates
+                Route::post('settings/quickFactTemplates', [VaultSettingsQuickFactTemplateController::class, 'store'])->name('vault.settings.quick_fact_templates.store');
+                Route::put('settings/quickFactTemplates/{template}', [VaultSettingsQuickFactTemplateController::class, 'update'])->name('vault.settings.quick_fact_templates.update');
+                Route::put('settings/quickFactTemplates/{template}/order', [VaultSettingsQuickFactTemplatePositionController::class, 'update'])->name('vault.settings.quick_fact_templates.order.update');
+                Route::delete('settings/quickFactTemplates/{template}', [VaultSettingsQuickFactTemplateController::class, 'destroy'])->name('vault.settings.quick_fact_templates.destroy');
             });
 
             // global search in the vault

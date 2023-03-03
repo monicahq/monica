@@ -33,6 +33,7 @@ import Photos from '@/Shared/Modules/Photos.vue';
 import Religion from '@/Shared/Modules/Religion.vue';
 import Posts from '@/Shared/Modules/Posts.vue';
 import LifeEvent from '@/Shared/Modules/LifeEvent.vue';
+import QuickFacts from '@/Shared/Modules/QuickFacts.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
 
 const props = defineProps({
@@ -144,6 +145,10 @@ const destroyAvatar = () => {
 
 .group-list-item:not(:last-child):after {
   content: ',';
+}
+
+.icon-sidebar {
+  color: #646b76;
 }
 </style>
 
@@ -268,6 +273,11 @@ const destroyAvatar = () => {
 
           <!-- right -->
           <div class="p-3 sm:px-3 sm:py-0">
+            <!-- quick facts -->
+            <Quick-facts
+              v-if="data.quick_fact_template_entries.templates.length > 0"
+              :data="data.quick_fact_template_entries" />
+
             <!-- family summary -->
             <div v-if="data.group_summary_information.length > 0">
               <div class="mb-6 flex rounded border border-gray-200 p-3 dark:border-gray-700">

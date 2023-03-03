@@ -40,7 +40,7 @@ class UpdateGroup extends BaseService implements ServiceInterface
     }
 
     /**
-     * Update a family.
+     * Update a group.
      */
     public function execute(array $data): Group
     {

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('note')->nullable();
             $table->integer('number_of_hours_slept')->nullable();
             $table->timestamps();
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
             $table->foreign('mood_tracking_parameter_id')->references('id')->on('mood_tracking_parameters')->onDelete('cascade');
         });
     }

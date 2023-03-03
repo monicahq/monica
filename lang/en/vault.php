@@ -224,4 +224,7 @@ return [
     'settings_life_event_type_work_quit' => 'Quit job',
     'settings_life_event_type_work_fired' => 'Got fired',
     'settings_life_event_type_sport_promotion' => 'Had a promotion',
+
+    'settings_quick_fact_template_entry_hobbies' => 'Hobbies',
+    'settings_quick_fact_template_entry_food' => 'Food preferencies',
 ];

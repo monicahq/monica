@@ -20,6 +20,7 @@ use App\Domains\Contact\ManageNotes\Web\ViewHelpers\ModuleNotesViewHelper;
 use App\Domains\Contact\ManagePets\Web\ViewHelpers\ModulePetsViewHelper;
 use App\Domains\Contact\ManagePhotos\Web\ViewHelpers\ModulePhotosViewHelper;
 use App\Domains\Contact\ManagePronouns\Web\ViewHelpers\ModuleGenderPronounViewHelper;
+use App\Domains\Contact\ManageQuickFacts\Web\ViewHelpers\ContactModuleQuickFactViewHelper;
 use App\Domains\Contact\ManageRelationships\Web\ViewHelpers\ModuleFamilySummaryViewHelper;
 use App\Domains\Contact\ManageRelationships\Web\ViewHelpers\ModuleRelationshipViewHelper;
 use App\Domains\Contact\ManageReligion\Web\ViewHelpers\ModuleReligionViewHelper;
@@ -31,6 +32,7 @@ use App\Models\Contact;
 use App\Models\Module;
 use App\Models\TemplatePage;
 use App\Models\User;
+use App\Models\VaultQuickFactTemplate;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 
@@ -57,6 +59,7 @@ class ContactShowViewHelper
             'template_pages' => $templatesPagesCollection,
             'contact_information' => self::getContactInformation($templatePages, $contact, $user),
             'group_summary_information' => GroupsViewHelper::summary($contact),
+            'quick_fact_template_entries' => self::quickFacts($contact),
             'modules' => $firstPage ? self::modules($firstPage, $contact, $user) : [],
             'avatar' => [
                 'uploadcarePublicKey' => config('services.uploadcare.public_key'),
@@ -106,6 +109,7 @@ class ContactShowViewHelper
             'template_pages' => self::getTemplatePagesList($templatePages, $contact, $templatePage),
             'contact_information' => self::getContactInformation($templatePages, $contact, $user),
             'group_summary_information' => GroupsViewHelper::summary($contact),
+            'quick_fact_template_entries' => self::quickFacts($contact),
             'modules' => self::modules($templatePage, $contact, $user),
             'avatar' => [
                 'uploadcarePublicKey' => config('services.uploadcare.public_key'),
@@ -311,5 +315,44 @@ class ContactShowViewHelper
         }
 
         return $modulesCollection;
+    }
+
+    public static function quickFacts(Contact $contact): array
+    {
+        $quickFactsTemplateEntries = $contact
+            ->vault
+            ->quickFactsTemplateEntries()
+            ->get()
+            ->map(fn (VaultQuickFactTemplate $template) => [
+                'id' => $template->id,
+                'label' => $template->label,
+                'url' => [
+                    'show' => route('contact.quick_fact.show', [
+                        'vault' => $contact->vault->id,
+                        'contact' => $contact->id,
+                        'template' => $template->id,
+                    ]),
+                ],
+            ]);
+
+        // get the quick facts of the first template
+        $firstTemplate = $contact
+            ->vault
+            ->quickFactsTemplateEntries()
+            ->first();
+
+        $quickFacts = $firstTemplate ? ContactModuleQuickFactViewHelper::data($contact, $firstTemplate) : null;
+
+        return [
+            'show_quick_facts' => $contact->show_quick_facts,
+            'templates' => $quickFactsTemplateEntries,
+            'quick_facts' => $quickFacts,
+            'url' => [
+                'toggle' => route('contact.quick_fact.toggle', [
+                    'vault' => $contact->vault->id,
+                    'contact' => $contact->id,
+                ]),
+            ],
+        ];
     }
 }

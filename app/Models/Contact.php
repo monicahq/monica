@@ -50,6 +50,7 @@ class Contact extends Model
         'nickname',
         'maiden_name',
         'can_be_deleted',
+        'show_quick_facts',
         'template_id',
         'last_updated_at',
         'company_id',
@@ -71,6 +72,7 @@ class Contact extends Model
     protected $casts = [
         'can_be_deleted' => 'boolean',
         'listed' => 'boolean',
+        'show_quick_facts' => 'boolean',
         'last_updated_at' => 'datetime',
     ];
 
@@ -358,6 +360,16 @@ class Contact extends Model
     public function addresses(): BelongsToMany
     {
         return $this->belongsToMany(Address::class, 'contact_address', 'contact_id')->withPivot('is_past_address')->withTimestamps();
+    }
+
+    /**
+     * Get the quick facts associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function quickFacts(): HasMany
+    {
+        return $this->hasMany(QuickFact::class);
     }
 
     /**

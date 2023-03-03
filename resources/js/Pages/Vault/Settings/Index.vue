@@ -18,6 +18,8 @@
 
         <life-event-types-and-categories :data="data" />
 
+        <quick-fact-template :data="data" />
+
         <delete :data="data" />
       </div>
     </main>
@@ -35,6 +37,7 @@ import TabVisibility from '@/Pages/Vault/Settings/Partials/TabVisibility.vue';
 import ContactImportantDateTypes from '@/Pages/Vault/Settings/Partials/ContactImportantDateTypes.vue';
 import MoodTrackingParameters from '@/Pages/Vault/Settings/Partials/MoodTrackingParameters.vue';
 import LifeEventTypesAndCategories from '@/Pages/Vault/Settings/Partials/LifeEventTypesAndCategories.vue';
+import QuickFactTemplate from '@/Pages/Vault/Settings/Partials/QuickFactTemplate.vue';
 
 export default {
   components: {
@@ -48,6 +51,7 @@ export default {
     ContactImportantDateTypes,
     MoodTrackingParameters,
     LifeEventTypesAndCategories,
+    QuickFactTemplate,
   },
 
   props: {

@@ -17,6 +17,7 @@ use App\Models\Template;
 use App\Models\TimelineEvent;
 use App\Models\User;
 use App\Models\Vault;
+use App\Models\VaultQuickFactTemplate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -188,5 +189,16 @@ class VaultTest extends TestCase
         ]);
 
         $this->assertTrue($vault->addresses()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_quick_fact_template_entries(): void
+    {
+        $vault = Vault::factory()->create();
+        VaultQuickFactTemplate::factory()->count(2)->create([
+            'vault_id' => $vault->id,
+        ]);
+
+        $this->assertTrue($vault->quickFactsTemplateEntries()->exists());
     }
 }
