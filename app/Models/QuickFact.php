@@ -25,8 +25,6 @@ class QuickFact extends Model
 
     /**
      * Get the contact associated with the quick fact.
-     *
-     * @return BelongsTo
      */
     public function contact(): BelongsTo
     {
@@ -35,8 +33,6 @@ class QuickFact extends Model
 
     /**
      * Get the quick fact template associated with the quick fact.
-     *
-     * @return BelongsTo
      */
     public function vaultQuickFactTemplate(): BelongsTo
     {

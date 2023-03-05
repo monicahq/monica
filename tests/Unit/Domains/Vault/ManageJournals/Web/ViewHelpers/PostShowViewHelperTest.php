@@ -31,6 +31,11 @@ class PostShowViewHelperTest extends TestCase
             'title' => 'this is a title',
             'written_at' => '2022-01-01 00:00:00',
         ]);
+        $previousPost = Post::factory()->create([
+            'journal_id' => $journal->id,
+            'title' => 'this is a title',
+            'written_at' => '2010-01-01 00:00:00',
+        ]);
         $section = PostSection::factory()->create([
             'post_id' => $post->id,
             'label' => 'super',
@@ -51,7 +56,7 @@ class PostShowViewHelperTest extends TestCase
 
         $array = PostShowViewHelper::data($post, $user);
 
-        $this->assertCount(12, $array);
+        $this->assertCount(14, $array);
         $this->assertEquals(
             $post->id,
             $array['id']
@@ -81,6 +86,20 @@ class PostShowViewHelperTest extends TestCase
                 ],
             ],
             $array['tags']->toArray()
+        );
+        $this->assertEquals(
+            [
+                'id' => $previousPost->id,
+                'title' => $previousPost->title,
+                'title_exists' => true,
+                'url' => [
+                    'show' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$previousPost->id,
+                ],
+            ],
+            $array['previousPost']
+        );
+        $this->assertNull(
+            $array['nextPost']
         );
         $this->assertEquals(
             [

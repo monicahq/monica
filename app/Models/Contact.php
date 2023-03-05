@@ -364,8 +364,6 @@ class Contact extends Model
 
     /**
      * Get the quick facts associated with the contact.
-     *
-     * @return HasMany
      */
     public function quickFacts(): HasMany
     {

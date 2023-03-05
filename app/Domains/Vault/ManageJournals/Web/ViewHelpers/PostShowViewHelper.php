@@ -49,6 +49,18 @@ class PostShowViewHelper
                 ],
             ]);
 
+        $previousPost = $post->journal
+            ->posts()
+            ->whereDate('written_at', '<', $post->written_at)
+            ->orderBy('written_at', 'desc')
+            ->first();
+
+        $nextPost = $post->journal
+            ->posts()
+            ->whereDate('written_at', '>', $post->written_at)
+            ->orderBy('written_at', 'asc')
+            ->first();
+
         return [
             'id' => $post->id,
             'title' => $post->title,
@@ -59,6 +71,30 @@ class PostShowViewHelper
             'tags' => $tags,
             'contacts' => $contacts,
             'photos' => $photos,
+            'previousPost' => $previousPost ? [
+                'id' => $previousPost->id,
+                'title' => $previousPost->title,
+                'title_exists' => $previousPost->title === trans('app.undefined') ? false : true,
+                'url' => [
+                    'show' => route('post.show', [
+                        'vault' => $post->journal->vault_id,
+                        'journal' => $post->journal->id,
+                        'post' => $previousPost->id,
+                    ]),
+                ],
+            ] : null,
+            'nextPost' => $nextPost ? [
+                'id' => $nextPost->id,
+                'title' => $nextPost->title,
+                'title_exists' => $nextPost->title === trans('app.undefined') ? false : true,
+                'url' => [
+                    'show' => route('post.show', [
+                        'vault' => $post->journal->vault_id,
+                        'journal' => $post->journal->id,
+                        'post' => $nextPost->id,
+                    ]),
+                ],
+            ] : null,
             'journal' => [
                 'name' => $post->journal->name,
                 'url' => [

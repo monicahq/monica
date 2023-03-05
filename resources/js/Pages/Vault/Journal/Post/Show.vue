@@ -61,9 +61,54 @@ defineProps({
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
           <!-- left -->
           <div class="mr-8">
+            <!-- post previous/next -->
+            <div class="mb-4 flex justify-between">
+              <!-- previous post -->
+              <div v-if="data.previousPost" class="flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="mr-1 h-4 w-4 text-gray-400">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+                </svg>
+
+                <inertia-link
+                  v-if="data.previousPost"
+                  :href="data.previousPost.url.show"
+                  class="text-sm text-gray-400 hover:underline">
+                  {{ data.previousPost.title }}
+                </inertia-link>
+              </div>
+
+              <!-- next post -->
+              <div v-if="data.nextPost" class="flex items-center">
+                <inertia-link
+                  v-if="data.nextPost"
+                  :href="data.nextPost.url.show"
+                  class="text-sm text-gray-400 hover:underline">
+                  {{ data.nextPost.title }}
+                </inertia-link>
+
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="ml-1 h-4 w-4 text-gray-400">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                </svg>
+              </div>
+            </div>
+
             <div class="post relative rounded bg-white">
+              <!-- date of the post -->
               <p class="mb-2 text-sm text-gray-400">{{ data.written_at }}</p>
 
+              <!-- tags -->
               <ul v-if="data.tags" class="p0 list mb-3">
                 <li
                   v-for="tag in data.tags"
@@ -73,6 +118,7 @@ defineProps({
                 </li>
               </ul>
 
+              <!-- title -->
               <h1 v-if="data.title_exists" class="mb-4 text-2xl font-medium">{{ data.title }}</h1>
 
               <!-- photos -->

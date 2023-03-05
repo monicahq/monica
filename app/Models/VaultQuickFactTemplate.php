@@ -27,8 +27,6 @@ class VaultQuickFactTemplate extends Model
 
     /**
      * Get the vault associated with the quick fact template.
-     *
-     * @return BelongsTo
      */
     public function vault(): BelongsTo
     {

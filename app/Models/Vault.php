@@ -224,8 +224,6 @@ class Vault extends Model
 
     /**
      * Get the quick fact template entries records associated with the vault.
-     *
-     * @return HasMany
      */
     public function quickFactsTemplateEntries(): HasMany
     {
