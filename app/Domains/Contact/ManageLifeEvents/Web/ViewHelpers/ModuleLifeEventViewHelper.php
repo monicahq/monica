@@ -4,6 +4,7 @@ namespace App\Domains\Contact\ManageLifeEvents\Web\ViewHelpers;
 
 use App\Helpers\ContactCardHelper;
 use App\Helpers\DateHelper;
+use App\Helpers\DistanceHelper;
 use App\Models\Contact;
 use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
@@ -113,7 +114,8 @@ class ModuleLifeEventViewHelper
             'currency_id' => $lifeEvent->currency_id,
             'paid_by_contact_id' => $lifeEvent->paid_by_contact_id,
             'duration_in_minutes' => $lifeEvent->duration_in_minutes,
-            'distance_in_km' => $lifeEvent->distance_in_km,
+            'distance' => $lifeEvent->distance && $lifeEvent->distance_unit ? DistanceHelper::format($user, $lifeEvent->distance, $lifeEvent->distance_unit) : null,
+            'distance_unit' => $lifeEvent->distance_unit,
             'from_place' => $lifeEvent->from_place,
             'to_place' => $lifeEvent->to_place,
             'place' => $lifeEvent->place,

@@ -17,6 +17,7 @@ class UserPreferencesIndexViewHelper
             'date_format' => self::dtoDateFormat($user),
             'timezone' => self::dtoTimezone($user),
             'number_format' => self::dtoNumberFormat($user),
+            'distance_format' => self::dtoDistanceFormat($user),
             'maps' => self::dtoMapsPreferences($user),
             'locale' => self::dtoLocale($user),
             'url' => [
@@ -127,6 +128,16 @@ class UserPreferencesIndexViewHelper
             'number_format' => $user->number_format,
             'url' => [
                 'store' => route('settings.preferences.number.store'),
+            ],
+        ];
+    }
+
+    public static function dtoDistanceFormat(User $user): array
+    {
+        return [
+            'number_format' => $user->distance_format,
+            'url' => [
+                'store' => route('settings.preferences.distance.store'),
             ],
         ];
     }

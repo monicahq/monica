@@ -24,7 +24,7 @@ class UserPreferencesIndexViewHelperTest extends TestCase
         $array = UserPreferencesIndexViewHelper::data($user);
 
         $this->assertEquals(
-            8,
+            9,
             count($array)
         );
 
@@ -34,6 +34,7 @@ class UserPreferencesIndexViewHelperTest extends TestCase
         $this->assertArrayHasKey('timezone', $array);
         $this->assertArrayHasKey('url', $array);
         $this->assertArrayHasKey('number_format', $array);
+        $this->assertArrayHasKey('distance_format', $array);
         $this->assertArrayHasKey('maps', $array);
         $this->assertArrayHasKey('locale', $array);
 

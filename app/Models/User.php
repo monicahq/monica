@@ -41,6 +41,13 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     public const MAPS_SITE_OPEN_STREET_MAPS = 'open_street_maps';
 
     /**
+     * Possible distance unit.
+     */
+    public const DISTANCE_UNIT_MILES = 'mi';
+
+    public const DISTANCE_UNIT_KM = 'km';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<string>
@@ -58,6 +65,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         'name_order',
         'date_format',
         'number_format',
+        'distance_format',
         'timezone',
         'default_map_site',
         'locale',

@@ -40,7 +40,8 @@ class UpdateLifeEvent extends BaseService implements ServiceInterface
             'currency_id' => 'nullable|integer|exists:currencies,id',
             'paid_by_contact_id' => 'nullable|integer|exists:contacts,id',
             'duration_in_minutes' => 'nullable|integer',
-            'distance_in_km' => 'nullable|integer',
+            'distance' => 'nullable|integer',
+            'distance_unit' => 'nullable|string|max:255',
             'from_place' => 'nullable|string|max:255',
             'to_place' => 'nullable|string|max:255',
             'place' => 'nullable|string|max:255',
@@ -114,7 +115,8 @@ class UpdateLifeEvent extends BaseService implements ServiceInterface
         $this->lifeEvent->currency_id = $this->valueOrNull($this->data, 'currency_id');
         $this->lifeEvent->paid_by_contact_id = $this->valueOrNull($this->data, 'paid_by_contact_id');
         $this->lifeEvent->duration_in_minutes = $this->valueOrNull($this->data, 'duration_in_minutes');
-        $this->lifeEvent->distance_in_km = $this->valueOrNull($this->data, 'distance_in_km');
+        $this->lifeEvent->distance = $this->valueOrNull($this->data, 'distance');
+        $this->lifeEvent->distance_unit = $this->valueOrNull($this->data, 'distance_unit');
         $this->lifeEvent->from_place = $this->valueOrNull($this->data, 'from_place');
         $this->lifeEvent->to_place = $this->valueOrNull($this->data, 'to_place');
         $this->lifeEvent->place = $this->valueOrNull($this->data, 'place');

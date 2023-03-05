@@ -74,7 +74,8 @@ return new class() extends Migration
             $table->unsignedBigInteger('currency_id')->nullable();
             $table->unsignedBigInteger('paid_by_contact_id')->nullable();
             $table->integer('duration_in_minutes')->nullable();
-            $table->integer('distance_in_km')->nullable();
+            $table->integer('distance')->nullable();
+            $table->char('distance_unit', 2)->nullable();
             $table->string('from_place')->nullable();
             $table->string('to_place')->nullable();
             $table->string('place')->nullable();

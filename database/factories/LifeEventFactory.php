@@ -32,7 +32,7 @@ class LifeEventFactory extends Factory
             'currency_id' => null,
             'paid_by_contact_id' => Contact::factory(),
             'duration_in_minutes' => $this->faker->randomNumber(),
-            'distance_in_km' => $this->faker->randomNumber(),
+            'distance' => $this->faker->randomNumber(),
             'from_place' => $this->faker->city(),
             'to_place' => $this->faker->city(),
             'place' => $this->faker->city(),

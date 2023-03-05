@@ -25,6 +25,8 @@ const form = useForm({
   participants: [],
   summary: null,
   description: null,
+  distance: 0,
+  distance_unit: 'km',
 });
 
 const loadingState = ref(false);
@@ -34,8 +36,10 @@ const editDate = ref(false);
 const modalShown = ref(false);
 const addSummaryFieldShown = ref(false);
 const addDescriptionFieldShown = ref(false);
+const addDistanceFieldShown = ref(false);
 const summaryField = ref(null);
 const descriptionField = ref(null);
+const distanceField = ref(null);
 
 watch(
   () => props.openModal,
@@ -55,8 +59,10 @@ const resetModal = () => {
 
   form.summary = null;
   form.description = null;
+  form.distance = 0;
   addSummaryFieldShown.value = false;
   addDescriptionFieldShown.value = false;
+  addDistanceFieldShown.value = false;
 };
 
 const loadTypes = (category) => {
@@ -89,6 +95,15 @@ const showAddDescriptionField = () => {
 
   nextTick(() => {
     descriptionField.value.focus();
+  });
+};
+
+const showAddDistanceField = () => {
+  form.distance = null;
+  addDistanceFieldShown.value = true;
+
+  nextTick(() => {
+    distanceField.value.focus();
   });
 };
 
@@ -278,6 +293,57 @@ const store = () => {
           :textarea-class="'block w-full'" />
       </div>
 
+      <!-- description -->
+      <div
+        v-if="selectedLifeEventType && addDistanceFieldShown"
+        class="flex items-center border-b border-gray-200 pt-3 pb-1 pr-3 pl-3 dark:border-gray-700">
+        <text-input
+          ref="distanceField"
+          v-model="form.distance"
+          :label="'Distance'"
+          :type="'number'"
+          :autofocus="true"
+          :input-class="'mr-2'"
+          :required="false"
+          :autocomplete="false"
+          :help="'Enter a number from 0 to 100000. No decimals.'"
+          :min="0"
+          :max="100000"
+          @esc-key-pressed="addDistanceFieldShown = false" />
+
+        <ul>
+          <li class="mr-5 inline-block">
+            <div class="flex items-center">
+              <input
+                id="km"
+                v-model="form.distance_unit"
+                value="km"
+                name="distance_unit"
+                type="radio"
+                class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+              <label for="km" class="ml-1 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                km
+              </label>
+            </div>
+          </li>
+
+          <li class="inline-block">
+            <div class="flex items-center">
+              <input
+                id="miles"
+                v-model="form.distance_unit"
+                value="miles"
+                name="distance_unit"
+                type="radio"
+                class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+              <label for="miles" class="ml-1 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                miles
+              </label>
+            </div>
+          </li>
+        </ul>
+      </div>
+
       <!-- options -->
       <div v-if="selectedLifeEventType" class="flex flex-wrap border-b border-gray-200 p-3 dark:border-gray-700">
         <!-- summary -->
@@ -295,6 +361,15 @@ const store = () => {
             class="mr-2 mb-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:text-gray-900"
             @click="showAddDescriptionField"
             >+ description
+          </span>
+        </div>
+
+        <!-- distance -->
+        <div v-if="!addDistanceFieldShown">
+          <span
+            class="mr-2 mb-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:text-gray-900"
+            @click="showAddDistanceField"
+            >+ distance
           </span>
         </div>
       </div>

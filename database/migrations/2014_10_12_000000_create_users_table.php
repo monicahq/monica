@@ -25,6 +25,7 @@ return new class() extends Migration
             $table->string('timezone')->nullable();
             $table->string('number_format')->default(User::NUMBER_FORMAT_TYPE_COMMA_THOUSANDS_DOT_DECIMAL);
             $table->string('default_map_site')->default(User::MAPS_SITE_OPEN_STREET_MAPS);
+            $table->string('distance_format')->default(User::DISTANCE_UNIT_MILES);
             $table->string('password')->nullable();
             $table->boolean('is_account_administrator')->default(false);
             $table->boolean('help_shown')->default(true);

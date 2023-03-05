@@ -193,7 +193,7 @@ class ModuleLifeEventViewHelperTest extends TestCase
         $array = ModuleLifeEventViewHelper::dtoLifeEvent($lifeEvent, $user, $contact);
 
         $this->assertEquals(
-            18,
+            19,
             count($array)
         );
 
@@ -207,7 +207,8 @@ class ModuleLifeEventViewHelperTest extends TestCase
         $this->assertArrayHasKey('currency_id', $array);
         $this->assertArrayHasKey('paid_by_contact_id', $array);
         $this->assertArrayHasKey('duration_in_minutes', $array);
-        $this->assertArrayHasKey('distance_in_km', $array);
+        $this->assertArrayHasKey('distance', $array);
+        $this->assertArrayHasKey('distance_unit', $array);
         $this->assertArrayHasKey('from_place', $array);
         $this->assertArrayHasKey('to_place', $array);
         $this->assertArrayHasKey('place', $array);
