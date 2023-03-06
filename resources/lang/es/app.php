@@ -140,7 +140,7 @@ return [
 
     'relationship_type_partner' => 'pareja',
     'relationship_type_partner_female' => 'pareja',
-    'relationship_type_partner_male' => 'significant other',
+    'relationship_type_partner_male' => 'pareja',
     'relationship_type_partner_with_name' => 'la pareja de :name',
     'relationship_type_partner_female_with_name' => 'la pareja de :name',
     'relationship_type_partner_male_with_name' => ':name’s significant other',
