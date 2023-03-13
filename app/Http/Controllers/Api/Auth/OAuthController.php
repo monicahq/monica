@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Models\User\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use function Safe\json_decode;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
@@ -18,6 +17,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Symfony\Component\HttpFoundation\Response;
+
+use function Safe\json_decode;
 
 class OAuthController extends Controller
 {

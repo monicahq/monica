@@ -3,10 +3,11 @@
 namespace App\Console\Commands\Tests;
 
 use Illuminate\Support\Str;
-use function Safe\json_decode;
-use function Safe\json_encode;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+
+use function Safe\json_decode;
+use function Safe\json_encode;
 
 /**
  * @codeCoverageIgnore

@@ -124,7 +124,7 @@ class UpdateDeceasedInformation extends BaseService
     {
         $specialDate = $contact->setSpecialDate(
             'deceased_date',
-            (is_null($data['year']) ? 0 : $data['year']),
+            is_null($data['year']) ? 0 : $data['year'],
             $data['month'],
             $data['day']
         );

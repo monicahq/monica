@@ -3,11 +3,12 @@
 namespace App\Models\Instance;
 
 use App\Models\User\User;
-use function Safe\json_decode;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+use function Safe\json_decode;
 
 class AuditLog extends Model
 {

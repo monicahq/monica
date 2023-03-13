@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands\Helpers;
 
-use function Safe\exec;
 use Illuminate\Console\Command;
 use Illuminate\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use function Safe\exec;
 
 class CommandCaller implements CommandCallerContract
 {
