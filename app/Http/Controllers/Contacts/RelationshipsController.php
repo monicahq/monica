@@ -62,7 +62,6 @@ class RelationshipsController extends Controller
         if ($request->input('relationship_type') == 'existing') {
             $partnerId = $request->input('existing_contact_id');
         } else {
-
             // case of creating a new contact
             $datas = $this->validateAndGetDatas($request);
 

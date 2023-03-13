@@ -5,12 +5,13 @@ namespace Tests\Unit\Services\DavClient;
 use Tests\TestCase;
 use App\Models\User\User;
 use Mockery\MockInterface;
-use function Safe\json_encode;
 use App\Models\Account\AddressBook;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\AddressBookGetter;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\DavClient\CreateAddressBookSubscription;
+
+use function Safe\json_encode;
 
 class AddAddressBookTest extends TestCase
 {

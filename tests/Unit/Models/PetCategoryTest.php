@@ -16,8 +16,8 @@ class PetCategoryTest extends TestCase
         $petCategory = new PetCategory;
 
         $this->assertEquals(
-          3,
-          $petCategory->common()->count()
+            3,
+            $petCategory->common()->count()
         );
     }
 
@@ -28,8 +28,8 @@ class PetCategoryTest extends TestCase
         $petCategory->name = 'Rgis';
 
         $this->assertEquals(
-          'Rgis',
-          $petCategory->name
+            'Rgis',
+            $petCategory->name
         );
     }
 }
