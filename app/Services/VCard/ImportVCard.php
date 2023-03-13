@@ -14,7 +14,6 @@ use App\Helpers\VCardHelper;
 use App\Models\Contact\Note;
 use App\Helpers\LocaleHelper;
 use App\Services\BaseService;
-use function Safe\preg_split;
 use App\Helpers\AccountHelper;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
@@ -41,6 +40,8 @@ use App\Services\Contact\Contact\UpdateWorkInformation;
 use App\Services\Contact\ContactField\CreateContactField;
 use App\Services\Contact\ContactField\UpdateContactField;
 use App\Services\Contact\ContactField\DestroyContactField;
+
+use function Safe\preg_split;
 
 class ImportVCard extends BaseService
 {
@@ -478,9 +479,9 @@ class ImportVCard extends BaseService
             //  - if no address book selected
             //  - if the address book match the contact's contact field address book
             if ($contactField && (
-                    ! $this->addressBook
-                    || $contactField->contact->address_book_id === $this->addressBook->id
-                )) {
+                ! $this->addressBook
+                || $contactField->contact->address_book_id === $this->addressBook->id
+            )) {
                 return $contactField->contact;
             }
         }

@@ -14,7 +14,6 @@ class RemoveGiftsEncryption extends Migration
     {
         $gifts = Gift::all();
         foreach ($gifts as $gift) {
-
             // Uncomment the line below if you need to debug which row poses problem
             //echo $gift->id;
             if (! is_null($gift->name)) {
