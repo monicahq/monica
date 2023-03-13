@@ -88,6 +88,7 @@ class CountryHelperTest extends FeatureTestCase
 
     /**
      * @dataProvider timezoneFromLocaleProvider
+     *
      * @test
      */
     public function it_get_default_timezone($locale, $expect)

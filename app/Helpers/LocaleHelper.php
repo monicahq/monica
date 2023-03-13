@@ -5,13 +5,14 @@ namespace App\Helpers;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Matriphe\ISO639\ISO639;
-use function Safe\preg_match;
-use function Safe\preg_split;
 use Illuminate\Support\Facades\App;
 use libphonenumber\PhoneNumberUtil;
 use Illuminate\Support\Facades\Auth;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\NumberParseException;
+
+use function Safe\preg_match;
+use function Safe\preg_split;
 
 class LocaleHelper
 {
