@@ -59,7 +59,7 @@ class UpdateAvatar extends BaseService
         $contact->avatar_source = $data['source'];
         switch ($contact->avatar_source) {
             case 'photo':
-            // in case of a photo, set the photo as the avatar
+                // in case of a photo, set the photo as the avatar
                 $contact->avatar_photo_id = $this->nullOrValue($data, 'photo_id');
                 $contact->photos()->syncWithoutDetaching([$this->nullOrValue($data, 'photo_id')]);
                 break;

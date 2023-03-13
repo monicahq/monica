@@ -6,15 +6,16 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Models\Account\Photo;
 use App\Services\BaseService;
-use function Safe\finfo_open;
-use function Safe\preg_match;
 use App\Helpers\StorageHelper;
 use App\Models\Contact\Contact;
-use function Safe\base64_decode;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Exception\NotReadableException;
+
+use function Safe\finfo_open;
+use function Safe\preg_match;
+use function Safe\base64_decode;
 
 class UploadPhoto extends BaseService
 {

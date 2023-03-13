@@ -52,6 +52,7 @@ class SearchableTest extends TestCase
 
     /**
      * @test
+     *
      * @psalm-suppress UndefinedFunction
      */
     public function testFailingSearchContacts()
