@@ -229,16 +229,16 @@ END:VCALENDAR
            '</d:propstat>'.
           '</d:response>', false);
         $response->assertSee(
-          '<d:response>'.
-            "<d:href>/dav/calendars/{$user->email}/tasks/{$task2->uuid}.ics</d:href>".
-            '<d:propstat>'.
-              '<d:prop>'.
-                "<d:getetag>&quot;{$this->getEtag($task2)}&quot;</d:getetag>".
-                "<cal:calendar-data>{$this->getVTodo($task2)}</cal:calendar-data>".
-               '</d:prop>'.
-               '<d:status>HTTP/1.1 200 OK</d:status>'.
-             '</d:propstat>'.
-            '</d:response>'.
-          '</d:multistatus>', false);
+            '<d:response>'.
+              "<d:href>/dav/calendars/{$user->email}/tasks/{$task2->uuid}.ics</d:href>".
+              '<d:propstat>'.
+                '<d:prop>'.
+                  "<d:getetag>&quot;{$this->getEtag($task2)}&quot;</d:getetag>".
+                  "<cal:calendar-data>{$this->getVTodo($task2)}</cal:calendar-data>".
+                 '</d:prop>'.
+                 '<d:status>HTTP/1.1 200 OK</d:status>'.
+               '</d:propstat>'.
+              '</d:response>'.
+            '</d:multistatus>', false);
     }
 }

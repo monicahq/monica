@@ -159,7 +159,7 @@ class UpdateBirthdayInformation extends BaseService
     {
         $specialDate = $contact->setSpecialDate(
             'birthdate',
-            (is_null($data['year']) ? 0 : $data['year']),
+            is_null($data['year']) ? 0 : $data['year'],
             $data['month'],
             $data['day']
         );
@@ -188,8 +188,8 @@ class UpdateBirthdayInformation extends BaseService
             'frequency_type' => 'year',
             'frequency_number' => 1,
             'title' => trans(
-                ($data['is_deceased'] ?
-                    'people.people_add_birthday_reminder_deceased' : 'people.people_add_birthday_reminder'),
+                $data['is_deceased'] ?
+                    'people.people_add_birthday_reminder_deceased' : 'people.people_add_birthday_reminder',
                 ['name' => $contact->first_name]
             ),
             'delible' => false,
