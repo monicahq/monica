@@ -455,21 +455,22 @@ class VCardContactTest extends ApiTestCase
            '</d:propstat>'.
           '</d:response>', false);
         $response->assertSee(
-          '<d:response>'.
-            "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact2->uuid}.vcf</d:href>".
-            '<d:propstat>'.
-              '<d:prop>'.
-                "<d:getetag>&quot;{$this->getEtag($contact2)}&quot;</d:getetag>".
-                "<card:address-data>{$vcard2}</card:address-data>".
-               '</d:prop>'.
-               '<d:status>HTTP/1.1 200 OK</d:status>'.
-             '</d:propstat>'.
-            '</d:response>'.
-          '</d:multistatus>', false);
+            '<d:response>'.
+              "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact2->uuid}.vcf</d:href>".
+              '<d:propstat>'.
+                '<d:prop>'.
+                  "<d:getetag>&quot;{$this->getEtag($contact2)}&quot;</d:getetag>".
+                  "<card:address-data>{$vcard2}</card:address-data>".
+                 '</d:prop>'.
+                 '<d:status>HTTP/1.1 200 OK</d:status>'.
+               '</d:propstat>'.
+              '</d:response>'.
+            '</d:multistatus>', false);
     }
 
     /**
      * @group dav
+     *
      * @test
      */
     public function carddav_delete_one_contact()

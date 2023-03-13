@@ -4,7 +4,6 @@ namespace Tests\Unit\Services\Contact\Contact;
 
 use Tests\TestCase;
 use App\Models\User\User;
-use function Safe\json_encode;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Queue;
 use App\Jobs\AuditLog\LogAccountAudit;
@@ -12,6 +11,8 @@ use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateWorkInformation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+use function Safe\json_encode;
 
 class UpdateWorkInformationTest extends TestCase
 {

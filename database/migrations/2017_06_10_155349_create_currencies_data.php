@@ -31,8 +31,8 @@ class CreateCurrenciesData extends Migration
         Schema::table('users', function (Blueprint $table) {
             $dollarResult = DB::table('currencies')->select('id')->where('iso', '=', 'USD')->value('id');
             $table->integer('currency_id')->after('timezone')->default(
-            $dollarResult
-          );
+                $dollarResult
+            );
         });
     }
 }
