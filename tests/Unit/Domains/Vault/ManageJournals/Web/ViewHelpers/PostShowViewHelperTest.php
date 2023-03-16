@@ -56,7 +56,7 @@ class PostShowViewHelperTest extends TestCase
 
         $array = PostShowViewHelper::data($post, $user);
 
-        $this->assertCount(14, $array);
+        $this->assertCount(15, $array);
         $this->assertEquals(
             $post->id,
             $array['id']

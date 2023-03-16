@@ -122,6 +122,7 @@ return [
     'journal_show_options' => 'Options',
     'journal_show_blank' => 'The journal lets you document your life with your own words.',
     'journal_post_edit_tags' => 'Tags',
+    'journal_show_mood' => 'Your mood that you logged at this date',
 
     /***************************************************************
      * VAULT SETTINGS

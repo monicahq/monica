@@ -7,47 +7,26 @@ use App\Helpers\DateHelper;
 use App\Helpers\SliceOfLifeHelper;
 use App\Models\Contact;
 use App\Models\File;
+use App\Models\MoodTrackingEvent;
 use App\Models\Post;
 use App\Models\PostSection;
 use App\Models\Tag;
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 class PostShowViewHelper
 {
     public static function data(Post $post, User $user): array
     {
-        $sections = $post->postSections()
-            ->orderBy('position')
-            ->whereNotNull('content')
-            ->get()
-            ->map(fn (PostSection $section) => [
-                'id' => $section->id,
-                'label' => $section->label,
-                'content' => $section->content,
-            ]);
+        $sections = self::getSections($post);
 
-        $tags = $post->tags()
-            ->orderBy('name')
-            ->get()
-            ->map(fn (Tag $tag) => [
-                'id' => $tag->id,
-                'name' => $tag->name,
-            ]);
+        $tags = self::getTags($post);
 
         $contacts = $post->contacts()
             ->get()
             ->map(fn (Contact $contact) => ContactCardHelper::data($contact));
 
-        $photos = $post->files()
-            ->where('type', File::TYPE_PHOTO)
-            ->get()
-            ->map(fn (File $file) => [
-                'id' => $file->id,
-                'name' => $file->name,
-                'url' => [
-                    'display' => 'https://ucarecdn.com/'.$file->uuid.'/-/scale_crop/100x100/smart/-/format/auto/-/quality/smart_retina/',
-                ],
-            ]);
+        $photos = self::getPhotos($post);
 
         $previousPost = $post->journal
             ->posts()
@@ -61,6 +40,8 @@ class PostShowViewHelper
             ->orderBy('written_at', 'asc')
             ->first();
 
+        $moodTrackingEvents = self::getMood($user, $post);
+
         return [
             'id' => $post->id,
             'title' => $post->title,
@@ -71,6 +52,7 @@ class PostShowViewHelper
             'tags' => $tags,
             'contacts' => $contacts,
             'photos' => $photos,
+            'moodTrackingEvents' => $moodTrackingEvents,
             'previousPost' => $previousPost ? [
                 'id' => $previousPost->id,
                 'title' => $previousPost->title,
@@ -128,5 +110,66 @@ class PostShowViewHelper
                 ]),
             ],
         ];
+    }
+
+    private static function getSections(Post $post): Collection
+    {
+        return $post->postSections()
+            ->orderBy('position')
+            ->whereNotNull('content')
+            ->get()
+            ->map(fn (PostSection $section) => [
+                'id' => $section->id,
+                'label' => $section->label,
+                'content' => $section->content,
+            ]);
+    }
+
+    private static function getTags(Post $post): Collection
+    {
+        return $post->tags()
+            ->orderBy('name')
+            ->get()
+            ->map(fn (Tag $tag) => [
+                'id' => $tag->id,
+                'name' => $tag->name,
+            ]);
+    }
+
+    private static function getPhotos(Post $post): Collection
+    {
+        return $post->files()
+            ->where('type', File::TYPE_PHOTO)
+            ->get()
+            ->map(fn (File $file) => [
+                'id' => $file->id,
+                'name' => $file->name,
+                'url' => [
+                    'display' => 'https://ucarecdn.com/'.$file->uuid.'/-/scale_crop/100x100/smart/-/format/auto/-/quality/smart_retina/',
+                ],
+            ]);
+    }
+
+    private static function getMood(User $user, Post $post): ?Collection
+    {
+        $contact = $user->getContactInVault($post->journal->vault);
+
+        if (! $contact) {
+            return null;
+        }
+
+        return MoodTrackingEvent::where('contact_id', $contact->id)
+            ->whereDate('rated_at', $post->written_at)
+            ->with('moodTrackingParameter')
+            ->get()
+            ->map(fn (MoodTrackingEvent $mood) => [
+                'id' => $mood->id,
+                'note' => $mood->note,
+                'number_of_hours_slept' => $mood->number_of_hours_slept,
+                'mood_tracking_parameter' => [
+                    'id' => $mood->moodTrackingParameter->id,
+                    'label' => $mood->moodTrackingParameter->label,
+                ],
+            ]);
     }
 }
