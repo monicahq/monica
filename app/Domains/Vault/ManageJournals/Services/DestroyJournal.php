@@ -37,9 +37,6 @@ class DestroyJournal extends BaseService implements ServiceInterface
         ];
     }
 
-    /**
-     * Delete a journal.
-     */
     public function execute(array $data): void
     {
         $this->data = $data;

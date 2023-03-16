@@ -381,6 +381,9 @@ Route::middleware([
                 Route::prefix('{journal}')->middleware(['journal'])->group(function () {
                     Route::get('', [JournalController::class, 'show'])->name('journal.show');
                     Route::get('years/{year}', [JournalController::class, 'year'])->name('journal.year');
+                    Route::get('edit', [JournalController::class, 'edit'])->name('journal.edit');
+                    Route::put('', [JournalController::class, 'update'])->name('journal.update');
+                    Route::delete('', [JournalController::class, 'destroy'])->name('journal.destroy');
 
                     // posts
                     Route::get('posts/create', [PostController::class, 'create'])->name('post.create');

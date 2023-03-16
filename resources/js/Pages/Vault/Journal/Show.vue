@@ -1,11 +1,22 @@
 <script setup>
 import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
+import { useForm } from '@inertiajs/inertia-vue3';
 
-defineProps({
+const props = defineProps({
   layoutData: Object,
   data: Object,
 });
+
+const form = useForm({});
+
+const destroy = () => {
+  if (confirm('Are you sure? This will delete the journal, and the entries, permanently.')) {
+    form.delete(props.data.url.destroy, {
+      onFinish: () => {},
+    });
+  }
+};
 </script>
 
 <template>
@@ -43,7 +54,9 @@ defineProps({
 
     <main class="sm:mt-18 relative">
       <div class="mx-auto max-w-6xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
-        <h1 class="mb-8 text-2xl">{{ data.name }}</h1>
+        <h1 class="text-2xl" :class="data.description ? 'mb-4' : 'mb-8'">{{ data.name }}</h1>
+
+        <p v-if="data.description" class="mb-8">{{ data.description }}</p>
 
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
           <!-- left -->
@@ -63,12 +76,19 @@ defineProps({
             <p v-if="data.tags.length > 0" class="mb-2 font-medium">
               <span class="mr-1"> ⚡ </span> {{ $t('vault.journal_show_tags') }}
             </p>
-            <ul v-if="data.tags.length > 0">
+            <ul v-if="data.tags.length > 0" class="">
               <li v-for="tag in data.tags" :key="tag.id" class="mb-2 flex items-center justify-between">
                 <span>{{ tag.name }}</span>
                 <span class="text-sm text-gray-400">{{ tag.count }}</span>
               </li>
             </ul>
+
+            <inertia-link :href="data.url.edit" class="mt-6 mb-2 block text-sm text-blue-500 hover:underline"
+              >Edit journal</inertia-link
+            >
+            <span @click="destroy()" class="block cursor-pointer text-sm text-blue-500 hover:underline"
+              >Delete journal</span
+            >
           </div>
 
           <!-- middle -->
@@ -122,6 +142,8 @@ defineProps({
             <!-- blank state -->
             <div v-else class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
               <p class="p-5 text-center">
+                <img src="/img/journal_blank_index.svg" class="mx-auto block h-32 w-32 py-6" />
+
                 {{ $t('vault.journal_show_blank') }}
               </p>
             </div>
@@ -140,20 +162,22 @@ defineProps({
 
             <!-- slices of life -->
             <p class="mb-2 font-medium"><span class="mr-1"> 🍕 </span> Slices of life</p>
-            <div v-for="slice in data.slices" :key="slice.id" class="mb-6 last:mb-0">
-              <img v-if="slice.cover_image" class="h-32 w-full rounded-t" :src="slice.cover_image" alt="" />
-              <div
-                class="rounded-b border-b border-r border-l border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
-                :class="slice.cover_image ? '' : 'border-t'">
-                <inertia-link :href="slice.url.show" class="font-semibold">{{ slice.name }}</inertia-link>
-                <p class="text-xs text-gray-600">{{ slice.date_range }}</p>
+            <div v-if="data.slices.length > 0" class="mb-2">
+              <div v-for="slice in data.slices" :key="slice.id" class="mb-6 last:mb-0">
+                <img v-if="slice.cover_image" class="h-32 w-full rounded-t" :src="slice.cover_image" alt="" />
+                <div
+                  class="rounded-b border-b border-r border-l border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
+                  :class="slice.cover_image ? '' : 'border-t'">
+                  <inertia-link :href="slice.url.show" class="font-semibold">{{ slice.name }}</inertia-link>
+                  <p class="text-xs text-gray-600">{{ slice.date_range }}</p>
+                </div>
               </div>
             </div>
 
             <!-- no slices of life yet -->
             <div
               v-if="data.slices.length == 0"
-              class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+              class="mb-1 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
               <img src="/img/journal_slice_of_life_blank.svg" :alt="$t('Journal')" class="mx-auto mt-4 h-14 w-14" />
               <p class="px-5 pb-5 pt-2 text-center">Group journal entries together with slices of life.</p>
             </div>

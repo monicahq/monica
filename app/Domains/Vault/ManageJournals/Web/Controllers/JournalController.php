@@ -3,7 +3,10 @@
 namespace App\Domains\Vault\ManageJournals\Web\Controllers;
 
 use App\Domains\Vault\ManageJournals\Services\CreateJournal;
+use App\Domains\Vault\ManageJournals\Services\DestroyJournal;
+use App\Domains\Vault\ManageJournals\Services\UpdateJournal;
 use App\Domains\Vault\ManageJournals\Web\ViewHelpers\JournalCreateViewHelper;
+use App\Domains\Vault\ManageJournals\Web\ViewHelpers\JournalEditViewHelper;
 use App\Domains\Vault\ManageJournals\Web\ViewHelpers\JournalIndexViewHelper;
 use App\Domains\Vault\ManageJournals\Web\ViewHelpers\JournalShowViewHelper;
 use App\Domains\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
@@ -75,6 +78,52 @@ class JournalController extends Controller
         return Inertia::render('Vault/Journal/Show', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
             'data' => JournalShowViewHelper::data($journal, $year, Auth::user()),
+        ]);
+    }
+
+    public function edit(Request $request, int $vaultId, int $journalId)
+    {
+        $vault = Vault::findOrFail($vaultId);
+        $journal = Journal::findOrFail($journalId);
+
+        return Inertia::render('Vault/Journal/Edit', [
+            'layoutData' => VaultIndexViewHelper::layoutData($vault),
+            'data' => JournalEditViewHelper::data($vault, $journal),
+        ]);
+    }
+
+    public function update(Request $request, int $vaultId, int $journalId)
+    {
+        $data = [
+            'account_id' => Auth::user()->account_id,
+            'author_id' => Auth::id(),
+            'vault_id' => $vaultId,
+            'journal_id' => $journalId,
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+        ];
+
+        $journal = (new UpdateJournal())->execute($data);
+
+        return Redirect::route('journal.show', [
+            'vault' => $vaultId,
+            'journal' => $journal,
+        ]);
+    }
+
+    public function destroy(Request $request, int $vaultId, int $journalId)
+    {
+        $data = [
+            'account_id' => Auth::user()->account_id,
+            'author_id' => Auth::id(),
+            'vault_id' => $vaultId,
+            'journal_id' => $journalId,
+        ];
+
+        (new DestroyJournal())->execute($data);
+
+        return Redirect::route('journal.index', [
+            'vault' => $vaultId,
         ]);
     }
 }

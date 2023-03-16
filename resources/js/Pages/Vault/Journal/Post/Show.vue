@@ -192,7 +192,6 @@ defineProps({
             </div>
 
             <!-- options -->
-            <p class="mb-2 text-sm font-semibold">{{ $t('vault.journal_show_options') }}</p>
             <ul class="mb-6 text-sm">
               <li class="flex items-center">
                 <inertia-link :href="data.url.edit" class="text-blue-500 hover:underline">Edit post</inertia-link>

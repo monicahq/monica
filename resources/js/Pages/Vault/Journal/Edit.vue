@@ -21,13 +21,16 @@ const form = useForm({
 const nameField = ref(null);
 
 onMounted(() => {
+  form.name = props.data.name;
+  form.description = props.data.description;
+
   nextTick(() => {
     nameField.value.focus();
   });
 });
 
 const submit = () => {
-  form.post(props.data.url.store, {
+  form.put(props.data.url.update, {
     onFinish: () => {},
   });
 };
@@ -58,9 +61,20 @@ const submit = () => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">
-              {{ $t('app.breadcrumb_journal_create') }}
+            <li class="mr-2 inline">
+              <inertia-link :href="data.url.back" class="text-blue-500 hover:underline">{{ data.name }}</inertia-link>
             </li>
+            <li class="relative mr-2 inline">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon-breadcrumb relative inline h-3 w-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </li>
+            <li class="inline">Edit journal</li>
           </ul>
         </div>
       </div>
