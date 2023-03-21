@@ -65,7 +65,7 @@ const reset = () => {
       <span>Slices of life</span>
 
       <span
-        v-if="!editSlicesModalShown"
+        v-if="!editSlicesModalShown && localSlices.length > 0"
         class="relative cursor-pointer text-xs text-gray-600 dark:text-gray-400"
         @click="showSliceModal">
         {{ $t('app.edit') }}
@@ -82,7 +82,7 @@ const reset = () => {
 
     <!-- edit slice of life -->
     <div
-      v-if="editSlicesModalShown"
+      v-if="editSlicesModalShown && localSlices.length > 0"
       class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
       <form @submit.prevent="update()">
         <div class="border-b border-gray-200 p-2 dark:border-gray-700">
