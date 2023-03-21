@@ -39,7 +39,7 @@ class PostShowViewHelperTest extends TestCase
         $section = PostSection::factory()->create([
             'post_id' => $post->id,
             'label' => 'super',
-            'content' => 'this is a content',
+            'content' => '# this is a content',
         ]);
         $tag = Tag::factory()->create([
             'name' => 'super',
@@ -69,14 +69,16 @@ class PostShowViewHelperTest extends TestCase
             $array['title_exists']
         );
         $this->assertEquals(
-            [
-                0 => [
-                    'id' => $section->id,
-                    'label' => 'super',
-                    'content' => 'this is a content',
-                ],
-            ],
-            $array['sections']->toArray()
+            $section->id,
+            $array['sections']->toArray()[0]['id']
+        );
+        $this->assertEquals(
+            'super',
+            $array['sections']->toArray()[0]['label']
+        );
+        $this->assertEquals(
+            '<h1>this is a content</h1>',
+            trim($array['sections']->toArray()[0]['content'])
         );
         $this->assertEquals(
             [

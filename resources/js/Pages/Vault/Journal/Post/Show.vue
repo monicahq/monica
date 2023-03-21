@@ -138,7 +138,7 @@ defineProps({
                     {{ section.label }}
                   </div>
 
-                  <div class="mb-6">{{ section.content }}</div>
+                  <div class="mb-6" v-html="section.content"></div>
                 </div>
               </div>
 

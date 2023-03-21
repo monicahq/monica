@@ -13,6 +13,7 @@ use App\Models\PostSection;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class PostShowViewHelper
 {
@@ -121,7 +122,10 @@ class PostShowViewHelper
             ->map(fn (PostSection $section) => [
                 'id' => $section->id,
                 'label' => $section->label,
-                'content' => $section->content,
+                'content' => (string) Str::of($section->content)->markdown([
+                    'html_input' => 'strip',
+                    'allow_unsafe_links' => false,
+                ]),
             ]);
     }
 

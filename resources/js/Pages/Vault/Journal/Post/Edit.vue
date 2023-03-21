@@ -325,14 +325,15 @@ const destroy = () => {
                   :maxlength="255"
                   @esc-key-pressed="createNoteModalShown = false" />
 
-                <div v-for="section in form.sections" :key="section.id">
+                <div v-for="section in form.sections" :key="section.id" class="mb-8">
                   <text-area
                     v-model="section.content"
                     :label="section.label"
                     :rows="10"
                     :required="true"
                     :maxlength="65535"
-                    :textarea-class="'block w-full mb-8'" />
+                    :markdown="true"
+                    :textarea-class="'block w-full'" />
                 </div>
               </div>
             </div>
