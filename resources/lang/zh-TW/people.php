@@ -42,11 +42,11 @@ return [
     'people_list_account_upgrade_cta' => '立即升級',
     'people_list_untagged' => '檢視未加標籤的聯絡人',
     'people_list_filter_untag' => '所有未加標籤的聯絡人',
-    'archived_contact_readonly' => 'Archived contact can’t be edited, please unarchive it first.',
+    'archived_contact_readonly' => '已存檔的聯絡人無法編輯，請先取消存檔',
 
     // people add
     'people_add_title' => '新增一位新的聯絡人',
-    'people_add_missing' => 'No person found – add a new one now',
+    'people_add_missing' => '目前尚無聯絡人，現在新增一個',
     'people_add_firstname' => '名字',
     'people_add_middlename' => '中間名 (選填)',
     'people_add_lastname' => '姓氏 (選填)',
@@ -64,7 +64,7 @@ return [
     'people_add_import' => '是否要 <a href=":url">匯入您的聯絡人</a>？',
     'people_edit_email_error' => '您的聯絡人中已經有人使用此電子郵件，請更換一個',
     'people_export' => '匯出為 vCard',
-    'people_add_reminder_for_birthday' => 'Create an annual birthday reminder',
+    'people_add_reminder_for_birthday' => '建立一個生日提醒',
 
     // show
     'section_contact_information' => '聯絡人資訊',
@@ -83,14 +83,14 @@ return [
     'edit_contact_information' => '編輯聯絡人資訊',
     'contact_archive' => '存檔聯絡人',
     'contact_unarchive' => '取消存檔',
-    'contact_archive_help' => 'Archived contacts are not be shown on the contact list, but still appear in search results.',
+    'contact_archive_help' => '已存檔的聯絡人將不會顯示在聯絡人列表中, 但仍會顯示在搜尋結果中。',
     'call_button' => '記錄通話',
     'set_favorite' => '您收藏的聯絡人將在聯絡人列表置頂顯示。',
 
     // Stay in touch
     'stay_in_touch' => '常聯絡*',
     'stay_in_touch_frequency' => '常聯絡*提醒頻率：每天|常聯絡*提醒頻率：每 {count} 天',
-    'stay_in_touch_next_date' => 'Next due: {date}',
+    'stay_in_touch_next_date' => '下次到期日',
     'stay_in_touch_invalid' => '頻率必須大於0。',
     'stay_in_touch_premium' => '您需要升級到高階賬戶來使用這個功能！',
     'stay_in_touch_modal_title' => '常聯絡*',
@@ -115,7 +115,7 @@ return [
     'call_emotions' => '情緒：',
 
     // Conversation
-    'conversation_blank' => 'Record conversations you have with :name on social media, SMS…',
+    'conversation_blank' => '記錄您與通過簡訊或社交媒體 :name的對話記錄',
     'conversation_delete_link' => '刪除對話',
     'conversation_edit_title' => '編輯對話',
     'conversation_edit_delete' => '您是否要刪除這個對話？操作無法撤銷。',
@@ -124,7 +124,7 @@ return [
     'conversation_delete_success' => '對話成功刪除',
     'conversation_add_title' => '記錄一個新對話',
     'conversation_add_when' => '你們何時進行的對話？',
-    'conversation_add_who_wrote' => 'Who sent this message?',
+    'conversation_add_who_wrote' => '誰發送的訊息？',
     'conversation_add_how' => '你們怎麼交流？',
     'conversation_add_you' => '您',
     'conversation_add_content' => '寫下你們說的話',
@@ -156,7 +156,7 @@ return [
     'information_edit_max_size2' => '最大 {size} Kb',
     'information_edit_firstname' => '名字',
     'information_edit_lastname' => '姓氏 (選填)',
-    'information_edit_description' => 'Description (optional)',
+    'information_edit_description' => '簡介(選填)',
     'information_edit_description_help' => '用於在聯絡人列表中新增一些元素（如有必要）',
     'information_edit_unknown' => '我不知道具體年齡',
     'information_edit_probably' => '年齡大概...歲',
@@ -166,7 +166,7 @@ return [
     'information_no_work_defined' => '未定義工作資訊',
     'information_work_at' => '在 :company工作',
     'work_add_cta' => '更新工作資訊',
-    'work_edit_success' => 'Work information updated',
+    'work_edit_success' => '工作資訊更新了',
     'work_edit_title' => '更新:name的工作資訊',
     'work_edit_job' => '職位名稱 (可選)',
     'work_edit_company' => '公司 (可選)',
@@ -185,7 +185,7 @@ return [
     'reminders_blank_title' => '您有什麼關於:name的提醒嗎？',
     'reminders_blank_add_activity' => '新增提醒',
     'reminders_add_title' => '你需要關於:name的提醒嗎？',
-    'reminders_add_description' => 'Please remind me to…',
+    'reminders_add_description' => '請稍候提醒我去',
     'reminders_add_next_time' => '您希望下一次關於這個的提醒的時間是？',
     'reminders_add_once' => '僅一次',
     'reminders_add_recurrent' => '每',
@@ -207,7 +207,7 @@ return [
     'reminders_delete_cta' => '刪除',
     'reminders_next_expected_date' => '在',
     'reminders_cta' => '新增提醒',
-    'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen. Reminders automatically added for birthdays can not be deleted. If you want to change those dates, edit the birthday of the contacts.',
+    'reminders_description' => '我們會為以下每條提醒發送一封電子郵件。排定時程的每天早上都會​​發送。自動添加的生日提醒無法刪除。但如果您想更改日期，請編輯聯絡人的生日。',
     'reminders_one_time' => '一次性',
     'reminders_type_week' => '周',
     'reminders_type_month' => '月',
@@ -423,7 +423,7 @@ return [
 
     // life events
     'life_event_list_tab_life_events' => '生活事件',
-    'life_event_list_tab_other' => 'Notes, reminders, …',
+    'life_event_list_tab_other' => '便條、提醒..',
     'life_event_list_title' => '生活事件',
     'life_event_blank' => '記錄在{name} 身上發生的事情以供將來參考',
     'life_event_list_cta' => '新增生活事件',
