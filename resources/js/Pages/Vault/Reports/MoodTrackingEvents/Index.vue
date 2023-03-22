@@ -30,7 +30,7 @@ defineProps({
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">List of all important dates</li>
+            <li class="inline">Mood in the year</li>
           </ul>
         </div>
       </div>
