@@ -56,7 +56,7 @@ defineProps({
       </div>
     </nav>
 
-    <main class="relative sm:mt-16">
+    <main class="relative sm:mt-8">
       <div class="mx-auto max-w-6xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
           <!-- left -->
@@ -82,6 +82,7 @@ defineProps({
                   {{ data.previousPost.title }}
                 </inertia-link>
               </div>
+              <div v-else>&nbsp;</div>
 
               <!-- next post -->
               <div v-if="data.nextPost" class="flex items-center">
@@ -102,6 +103,7 @@ defineProps({
                   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                 </svg>
               </div>
+              <div v-else>&nbsp;</div>
             </div>
 
             <div class="post relative rounded bg-white">
