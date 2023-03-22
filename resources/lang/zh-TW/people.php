@@ -440,7 +440,7 @@ return [
     'life_event_delete_success' => '事件已刪除',
     'life_event_date_it_happened' => '發生日期',
     'life_event_category_work_education' => '工作 & 教育',
-    'life_event_category_family_relationships' => 'Family & relationships',
+    'life_event_category_family_relationships' => '家庭關係',
     'life_event_category_home_living' => '居家生活',
     'life_event_category_health_wellness' => 'Health & wellness',
     'life_event_category_travel_experiences' => '旅行與經歷',
