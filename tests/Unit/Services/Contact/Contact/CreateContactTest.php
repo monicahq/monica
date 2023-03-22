@@ -5,7 +5,6 @@ namespace Tests\Unit\Services\Contact\Contact;
 use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Contact\Gender;
-use function Safe\json_encode;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Queue;
@@ -14,6 +13,8 @@ use App\Models\Contact\ContactFieldType;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+use function Safe\json_encode;
 
 class CreateContactTest extends TestCase
 {
