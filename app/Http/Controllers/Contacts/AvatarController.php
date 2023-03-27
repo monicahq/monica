@@ -58,10 +58,10 @@ class AvatarController extends Controller
 
                 $data['photo_id'] = $photo->id;
                 $data['source'] = 'photo';
-            break;
+                break;
             case 'photo':
                 $data['photo_id'] = $contact->avatar_photo_id;
-            break;
+                break;
         }
 
         app(UpdateAvatar::class)->execute($data);

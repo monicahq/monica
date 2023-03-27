@@ -134,7 +134,7 @@ class Reminder extends Model
     {
         $date = $this->initial_date;
         $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0,
-                    DateHelper::getTimezone() ?? config('app.timezone'));
+            DateHelper::getTimezone() ?? config('app.timezone'));
 
         return $this->calculateNextExpectedDate($date);
     }
