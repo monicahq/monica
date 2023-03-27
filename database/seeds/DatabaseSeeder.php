@@ -15,12 +15,12 @@ class DatabaseSeeder extends Seeder
         switch (App::environment()) {
             case 'local':
                 $this->call(FakeUserTableSeeder::class);
-            break;
+                break;
             case 'testing':
                 $this->call(FakeUserTableSeeder::class);
-            break;
+                break;
             case 'production':
-            break;
+                break;
         }
     }
 }

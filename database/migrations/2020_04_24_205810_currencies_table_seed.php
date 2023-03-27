@@ -1,9 +1,10 @@
 <?php
 
-use function Safe\json_decode;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
+
+use function Safe\json_decode;
 
 class CurrenciesTableSeed extends Migration
 {
