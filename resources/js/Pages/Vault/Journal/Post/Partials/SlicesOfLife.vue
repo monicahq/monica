@@ -125,24 +125,4 @@ const reset = () => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-.icon-sidebar {
-  top: -2px;
-}
-
-.tag-list {
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-
-  li:last-child {
-    border-bottom: 0;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-
-  li:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

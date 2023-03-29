@@ -396,10 +396,6 @@ export default {
   top: 8px;
 }
 
-.sha {
-  padding: 0.2em 0.4em;
-}
-
 .icon-cog {
   top: -1px;
 }

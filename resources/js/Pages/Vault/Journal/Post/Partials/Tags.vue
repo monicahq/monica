@@ -201,10 +201,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.icon-sidebar {
-  top: -2px;
-}
-
 .tag-list {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;

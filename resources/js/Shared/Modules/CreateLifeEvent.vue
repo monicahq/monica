@@ -387,15 +387,6 @@ const store = () => {
 </template>
 
 <style lang="scss" scoped>
-.icon-sidebar {
-  top: -2px;
-}
-
-.icon-search {
-  left: 8px;
-  top: 8px;
-}
-
 .grid-skeleton {
   grid-template-columns: 1fr 2fr;
 }

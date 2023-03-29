@@ -146,10 +146,6 @@ const destroyAvatar = () => {
 .group-list-item:not(:last-child):after {
   content: ',';
 }
-
-.icon-sidebar {
-  color: #646b76;
-}
 </style>
 
 <template>

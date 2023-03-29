@@ -61,8 +61,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.icon-sidebar {
-  top: -2px;
-}
-</style>
+<style lang="scss" scoped></style>
