@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+
 use function Safe\json_decode;
 
 $config = [
