@@ -17,7 +17,6 @@ use App\Models\Account\Account;
 use App\Models\Account\Weather;
 use App\Models\Account\Activity;
 use App\Models\Instance\AuditLog;
-use function Safe\preg_match_all;
 use Illuminate\Support\Collection;
 use App\Models\Account\AddressBook;
 use App\Models\Instance\SpecialDate;
@@ -38,6 +37,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+
+use function Safe\preg_match_all;
 
 /**
  * @method static \Illuminate\Database\Eloquent\Builder search()
@@ -1560,6 +1561,7 @@ class Contact extends Model
      * Get the prunable model query.
      *
      * @return \Illuminate\Database\Eloquent\Builder
+     *
      * @codeCoverageIgnore
      */
     public function prunable()
@@ -1571,6 +1573,7 @@ class Contact extends Model
      * Prepare the model for pruning.
      *
      * @return void
+     *
      * @codeCoverageIgnore
      */
     protected function pruning()

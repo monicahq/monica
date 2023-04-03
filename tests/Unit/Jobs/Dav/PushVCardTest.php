@@ -23,6 +23,7 @@ class PushVCardTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modes
      */
     public function it_push_card($mode, $ifmatch)
