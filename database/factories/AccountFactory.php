@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
+
 use function Safe\json_decode;
 
 $factory->define(App\Models\Account\Account::class, function (Faker\Generator $faker) {

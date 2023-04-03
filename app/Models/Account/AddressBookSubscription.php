@@ -4,13 +4,14 @@ namespace App\Models\Account;
 
 use App\Traits\HasUuid;
 use App\Models\User\User;
-use function safe\json_decode;
-use function safe\json_encode;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+use function safe\json_decode;
+use function safe\json_encode;
 
 class AddressBookSubscription extends Model
 {

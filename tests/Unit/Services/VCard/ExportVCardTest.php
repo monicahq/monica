@@ -459,6 +459,7 @@ class ExportVCardTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider socialProfileProvider
      */
     public function vcard_add_social_profile($name, $type, $data, $result)
@@ -502,6 +503,7 @@ class ExportVCardTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider contactUrlProvider
      */
     public function vcard_add_contact_url($name, $protocol, $data, $result)

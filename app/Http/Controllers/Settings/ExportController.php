@@ -114,11 +114,11 @@ class ExportController extends Controller
         $disk = StorageHelper::disk($job->location);
 
         return $disk->response($job->filename,
-                "monica.{$job->type}",
-                [
-                    'Content-Type' => "application/{$job->type}; charset=utf-8",
-                    'Content-Disposition' => "attachment; filename=monica.{$job->type}",
-                ]
-            );
+            "monica.{$job->type}",
+            [
+                'Content-Type' => "application/{$job->type}; charset=utf-8",
+                'Content-Disposition' => "attachment; filename=monica.{$job->type}",
+            ]
+        );
     }
 }
