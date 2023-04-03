@@ -25,7 +25,6 @@ class CheckVersion
             $currentVersion = new Version($instance->current_version ?? '0.0.0');
 
             if ($latestVersion == $appVersion && $currentVersion != $latestVersion) {
-
                 // The instance has been updated to the latest version. We reset
                 // the ping data.
 

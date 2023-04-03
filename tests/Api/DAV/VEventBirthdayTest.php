@@ -123,16 +123,16 @@ class VEventBirthdayTest extends ApiTestCase
            '</d:propstat>'.
           '</d:response>', false);
         $response->assertSee(
-          '<d:response>'.
-            "<d:href>/dav/calendars/{$user->email}/birthdays/{$specialDate2->uuid}.ics</d:href>".
-            '<d:propstat>'.
-              '<d:prop>'.
-                "<d:getetag>&quot;{$this->getEtag($specialDate2)}&quot;</d:getetag>".
-                "<cal:calendar-data>{$this->getCal($specialDate2)}</cal:calendar-data>".
-               '</d:prop>'.
-               '<d:status>HTTP/1.1 200 OK</d:status>'.
-             '</d:propstat>'.
-            '</d:response>'.
-          '</d:multistatus>', false);
+            '<d:response>'.
+              "<d:href>/dav/calendars/{$user->email}/birthdays/{$specialDate2->uuid}.ics</d:href>".
+              '<d:propstat>'.
+                '<d:prop>'.
+                  "<d:getetag>&quot;{$this->getEtag($specialDate2)}&quot;</d:getetag>".
+                  "<cal:calendar-data>{$this->getCal($specialDate2)}</cal:calendar-data>".
+                 '</d:prop>'.
+                 '<d:status>HTTP/1.1 200 OK</d:status>'.
+               '</d:propstat>'.
+              '</d:response>'.
+            '</d:multistatus>', false);
     }
 }
