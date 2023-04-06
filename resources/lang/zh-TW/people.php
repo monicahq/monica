@@ -10,13 +10,13 @@ return [
 
     //index
     'people_not_found' => '聯絡人未找到',
-    'people_list_number_kids' => ':count child|:count children',
+    'people_list_number_kids' => ':count 個孩子|:count 個孩子',
     'people_list_last_updated' => '最近更新:',
-    'people_list_number_reminders' => ':count reminder|:count reminders',
+    'people_list_number_reminders' => ':count 個提醒|:count 個提醒',
     'people_list_blank_title' => '您還沒有任何聯絡人',
     'people_list_blank_cta' => '新增某人',
     'people_list_sort' => '排序',
-    'people_list_stats' => ':count contact|:count contacts',
+    'people_list_stats' => ':count 個聯絡人|:count 個聯絡人',
     'people_list_firstnameAZ' => '以名字A → Z排序',
     'people_list_firstnameZA' => '以名字 Z → A排序',
     'people_list_lastnameAZ' => '以姓A → Z排序',
@@ -25,7 +25,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => '依最後活動日期，由遠到近排序',
     'people_list_filter_tag' => '擁有以下標籤的聯絡人：',
     'people_list_clear_filter' => '清除篩選',
-    'people_list_contacts_per_tags' => ':{count} 個聯絡人|{count} 個聯絡人',
+    'people_list_contacts_per_tags' => ':count 個聯絡人|:count 個聯絡人',
     'people_list_show_dead' => '顯示已故人員 (:count)',
     'people_list_hide_dead' => '隱藏已故人員 (:count)',
     'people_search' => '搜尋聯絡人',
@@ -144,7 +144,7 @@ return [
 
     // Last called
     'last_called' => '最近通話: :date',
-    'last_talked_to' => '最近通話：(date)',
+    'last_talked_to' => '最近通話：{date}',
     'last_called_empty' => '最近通話: 未知',
     'last_activity_date' => '最近一起的活動: :date',
     'last_activity_date_empty' => '最近一起的活動: 未知',
