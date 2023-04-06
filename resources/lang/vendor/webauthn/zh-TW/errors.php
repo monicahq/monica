@@ -7,9 +7,9 @@
  */
 
 return [
-    'user_unauthenticated' => 'You need to log in before doing a Webauthn authentication',
-    'auth_data_not_found' => 'Authentication data not found',
-    'create_data_not_found' => 'Register data not found',
-    'object_not_found' => 'Object not found',
+    'user_unauthenticated' => '需要登入才能驗證Webauthn',
+    'auth_data_not_found' => '找不到驗證的資料',
+    'create_data_not_found' => '找不到註冊的資料',
+    'object_not_found' => '找不到物件',
 
 ];
