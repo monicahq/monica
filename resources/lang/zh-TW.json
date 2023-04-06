@@ -1,7 +1,7 @@
 {
-    "The :attribute must contain at least one uppercase and one lowercase letter.": "The :attribute must contain at least one uppercase and one lowercase letter.",
-    "The :attribute must contain at least one letter.": "The :attribute must contain at least one letter.",
-    "The :attribute must contain at least one symbol.": "The :attribute must contain at least one symbol.",
-    "The :attribute must contain at least one number.": "The :attribute must contain at least one number.",
-    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": "The given :attribute has appeared in a data leak. Please choose a different :attribute."
+    "The :attribute must contain at least one uppercase and one lowercase letter.": ":attribute 必須包含一個大寫字母與一個小寫字母",
+    "The :attribute must contain at least one letter.": ":attribute 必須包含一個字母.",
+    "The :attribute must contain at least one symbol.": ":attribute 必須包含一個符號。",
+    "The :attribute must contain at least one number.": ":attribute 必須包含一個數字。",
+    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": "輸入的 :attribute 有數據洩漏的風險，請嘗試一個新的 :attribute 。"
 }
