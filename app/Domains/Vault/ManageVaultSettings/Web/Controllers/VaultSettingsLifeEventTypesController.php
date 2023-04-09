@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class VaultSettingsLifeEventTypesController extends Controller
 {
-    public function store(Request $request, int $vaultId, int $lifeEventCategoryId)
+    public function store(Request $request, string $vaultId, int $lifeEventCategoryId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -30,7 +30,7 @@ class VaultSettingsLifeEventTypesController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $lifeEventCategoryId, int $lifeEventTypeId)
+    public function update(Request $request, string $vaultId, int $lifeEventCategoryId, int $lifeEventTypeId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -49,7 +49,7 @@ class VaultSettingsLifeEventTypesController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $lifeEventCategoryId, int $lifeEventTypeId)
+    public function destroy(Request $request, string $vaultId, int $lifeEventCategoryId, int $lifeEventTypeId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

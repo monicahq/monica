@@ -70,19 +70,12 @@ class Contact extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'vault_id' => 'string',
         'can_be_deleted' => 'boolean',
         'listed' => 'boolean',
         'show_quick_facts' => 'boolean',
         'last_updated_at' => 'datetime',
     ];
-
-    /**
-     * Get the columns that should receive a unique identifier.
-     */
-    public function uniqueIds(): array
-    {
-        return ['uuid'];
-    }
 
     /**
      * Get the indexable data array for the model.
@@ -294,7 +287,7 @@ class Contact extends Model
      */
     public function files(): MorphMany
     {
-        return $this->morphMany(File::class, 'fileable');
+        return $this->morphMany(File::class, 'ufileable', 'fileable_type');
     }
 
     /**

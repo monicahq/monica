@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\SliceOfLife;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('slices_of_life', function (Blueprint $table) {
+        Schema::create('slice_of_lives', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('journal_id');
             $table->unsignedBigInteger('file_cover_image_id')->nullable();
@@ -25,8 +26,7 @@ return new class extends Migration
         });
 
         Schema::table('posts', function (Blueprint $table) {
-            $table->unsignedBigInteger('slice_of_life_id')->nullable()->after('journal_id');
-            $table->foreign('slice_of_life_id')->references('id')->on('slices_of_life')->onDelete('set null');
+            $table->foreignIdFor(SliceOfLife::class)->nullable()->after('journal_id')->constrained()->nullOnDelete();
         });
     }
 
@@ -37,7 +37,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('slices_of_life');
+        Schema::dropIfExists('slice_of_lives');
         Schema::table('posts', function (Blueprint $table) {
             $table->dropColumn('slice_of_life_id');
         });

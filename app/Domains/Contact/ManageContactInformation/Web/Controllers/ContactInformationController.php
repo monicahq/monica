@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactInformationController extends Controller
 {
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, string $vaultId, string $contactId)
     {
         $info = (new CreateContactInformation())->execute([
             'account_id' => Auth::user()->account_id,
@@ -31,7 +31,7 @@ class ContactInformationController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $contactId, int $infoId)
+    public function update(Request $request, string $vaultId, string $contactId, int $infoId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -51,7 +51,7 @@ class ContactInformationController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $infoId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $infoId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Response;
 
 class ContactModuleAddressImageController extends Controller
 {
-    public function show(Request $request, int $vaultId, int $contactId, int $addressId, int $width, int $height)
+    public function show(Request $request, string $vaultId, string $contactId, int $addressId, int $width, int $height)
     {
         $address = Address::where('contact_id', $contactId)
             ->findOrFail($addressId);

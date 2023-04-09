@@ -128,7 +128,7 @@ class UpdateSliceOfLifeTest extends TestCase
 
         $sliceOfLife = (new UpdateSliceOfLife())->execute($request);
 
-        $this->assertDatabaseHas('slices_of_life', [
+        $this->assertDatabaseHas('slice_of_lives', [
             'id' => $sliceOfLife->id,
             'journal_id' => $journal->id,
             'name' => 'name',

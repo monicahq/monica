@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Account;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -20,13 +21,12 @@ return new class() extends Migration
             $table->timestamps();
         });
 
-        Schema::create('account_currencies', function (Blueprint $table) {
+        Schema::create('account_currency', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('currency_id');
-            $table->unsignedBigInteger('account_id');
+            $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
             $table->boolean('active')->default(true);
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('cascade');
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -206,6 +206,6 @@ return new class() extends Migration
     public function down()
     {
         Schema::dropIfExists('currencies');
-        Schema::dropIfExists('account_currencies');
+        Schema::dropIfExists('account_currency');
     }
 };

@@ -66,14 +66,6 @@ class Vault extends Model
     ];
 
     /**
-     * Get the columns that should receive a unique identifier.
-     */
-    public function uniqueIds(): array
-    {
-        return ['uuid'];
-    }
-
-    /**
      * Used to delete related objects from Meilisearch/Algolia instance.
      */
     protected static function boot(): void

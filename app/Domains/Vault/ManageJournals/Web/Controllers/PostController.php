@@ -26,7 +26,7 @@ use Redirect;
 
 class PostController extends Controller
 {
-    public function create(Request $request, int $vaultId, int $journalId)
+    public function create(Request $request, string $vaultId, int $journalId)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = Journal::findOrFail($journalId);
@@ -42,7 +42,7 @@ class PostController extends Controller
      * This will create the post as a draft, with all the post sections
      * populated from the post template.
      */
-    public function store(Request $request, int $vaultId, int $journalId, int $templateId)
+    public function store(Request $request, string $vaultId, int $journalId, int $templateId)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = Journal::findOrFail($journalId);
@@ -75,7 +75,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function show(Request $request, int $vaultId, int $journalId, int $postId)
+    public function show(Request $request, string $vaultId, int $journalId, int $postId)
     {
         $vault = Vault::findOrFail($vaultId);
         $post = Post::findOrFail($postId);
@@ -94,7 +94,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function edit(Request $request, int $vaultId, int $journalId, int $postId)
+    public function edit(Request $request, string $vaultId, int $journalId, int $postId)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = Journal::findOrFail($journalId);
@@ -106,7 +106,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function update(Request $request, int $vaultId, int $journalId, int $postId)
+    public function update(Request $request, string $vaultId, int $journalId, int $postId)
     {
         Vault::findOrFail($vaultId);
 
@@ -145,7 +145,7 @@ class PostController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $journalId, int $postId)
+    public function destroy(Request $request, string $vaultId, int $journalId, int $postId)
     {
         (new DestroyPost())->execute([
             'account_id' => Auth::user()->account_id,

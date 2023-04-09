@@ -19,8 +19,8 @@ class VerifyUserNotificationChannelEmailAddress extends BaseService implements S
     public function rules(): array
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
-            'author_id' => 'required|integer|exists:users,id',
+            'account_id' => 'required|uuid|exists:accounts,id',
+            'author_id' => 'required|uuid|exists:users,id',
             'user_notification_channel_id' => 'required|integer|exists:user_notification_channels,id',
             'uuid' => 'required|uuid',
         ];

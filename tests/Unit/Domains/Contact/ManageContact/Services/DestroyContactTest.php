@@ -126,7 +126,7 @@ class DestroyContactTest extends TestCase
         ]);
 
         $this->assertDatabaseMissing('files', [
-            'fileable_id' => $contact->id,
+            'ufileable_id' => $contact->id,
         ]);
     }
 }

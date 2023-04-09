@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactModuleReminderController extends Controller
 {
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, string $vaultId, string $contactId)
     {
         if ($request->input('choice') == 'full_date') {
             $carbonDate = Carbon::parse($request->input('date'));
@@ -57,7 +57,7 @@ class ContactModuleReminderController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $contactId, int $reminderId)
+    public function update(Request $request, string $vaultId, string $contactId, int $reminderId)
     {
         if ($request->input('choice') == 'full_date') {
             $carbonDate = Carbon::parse($request->input('date'));
@@ -100,7 +100,7 @@ class ContactModuleReminderController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $reminderId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $reminderId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

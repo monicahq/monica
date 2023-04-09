@@ -11,8 +11,6 @@ class SliceOfLife extends Model
 {
     use HasFactory;
 
-    protected $table = 'slices_of_life';
-
     /**
      * The attributes that are mass assignable.
      *

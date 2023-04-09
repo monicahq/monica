@@ -19,7 +19,7 @@ use Inertia\Inertia;
 
 class ContactImportantDatesController extends Controller
 {
-    public function index(Request $request, int $vaultId, int $contactId)
+    public function index(Request $request, string $vaultId, string $contactId)
     {
         $vault = Vault::findOrFail($vaultId);
         $contact = Contact::findOrFail($contactId);
@@ -30,7 +30,7 @@ class ContactImportantDatesController extends Controller
         ]);
     }
 
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, string $vaultId, string $contactId)
     {
         $day = '';
         $month = '';
@@ -88,7 +88,7 @@ class ContactImportantDatesController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $contactId, int $dateId)
+    public function update(Request $request, string $vaultId, string $contactId, int $dateId)
     {
         $day = '';
         $month = '';
@@ -134,7 +134,7 @@ class ContactImportantDatesController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $dateId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $dateId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

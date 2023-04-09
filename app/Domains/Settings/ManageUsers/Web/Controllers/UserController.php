@@ -48,7 +48,7 @@ class UserController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $userId)
+    public function update(Request $request, string $userId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -67,7 +67,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $userId)
+    public function destroy(Request $request, string $userId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

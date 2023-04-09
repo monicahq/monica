@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ToggleTimelineEventController
 {
-    public function store(Request $request, int $vaultId, int $contactId, int $timelineEventId)
+    public function store(Request $request, string $vaultId, string $contactId, int $timelineEventId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

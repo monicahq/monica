@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactMoodTrackingEventsController extends Controller
 {
-    public function store(Request $request, int $vaultId, int $contactId): JsonResponse
+    public function store(Request $request, string $vaultId, string $contactId): JsonResponse
     {
         $carbonDate = Carbon::parse($request->input('date'))->format('Y-m-d');
 

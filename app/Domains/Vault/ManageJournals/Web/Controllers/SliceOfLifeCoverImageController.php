@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class SliceOfLifeCoverImageController extends Controller
 {
-    public function update(Request $request, int $vaultId, int $journalId, int $sliceId)
+    public function update(Request $request, string $vaultId, int $journalId, int $sliceId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -45,7 +45,7 @@ class SliceOfLifeCoverImageController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $journalId, int $sliceId)
+    public function destroy(Request $request, string $vaultId, int $journalId, int $sliceId)
     {
         (new RemoveSliceOfLifeCoverImage())->execute([
             'account_id' => Auth::user()->account_id,

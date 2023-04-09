@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class VaultSettingsMoodTrackingParameterPositionController extends Controller
 {
-    public function update(Request $request, int $vaultId, int $moodTrackingParameterId)
+    public function update(Request $request, string $vaultId, int $moodTrackingParameterId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

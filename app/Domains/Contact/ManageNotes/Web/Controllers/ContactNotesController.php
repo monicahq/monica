@@ -14,7 +14,7 @@ use Inertia\Inertia;
 
 class ContactNotesController extends Controller
 {
-    public function index(Request $request, int $vaultId, int $contactId)
+    public function index(Request $request, string $vaultId, string $contactId)
     {
         $vault = Vault::findOrFail($vaultId);
         $contact = Contact::findOrFail($contactId);

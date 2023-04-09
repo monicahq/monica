@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactModuleDocumentController extends Controller
 {
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, string $vaultId, string $contactId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -39,7 +39,7 @@ class ContactModuleDocumentController extends Controller
         ], 201);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $fileId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $fileId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactModuleGoalController extends Controller
 {
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, string $vaultId, string $contactId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

@@ -15,12 +15,12 @@ use Inertia\Inertia;
 
 class ContactPhotoController extends Controller
 {
-    public function index(Request $request, int $vaultId, int $contactId)
+    public function index(Request $request, string $vaultId, string $contactId)
     {
         $vault = Vault::findOrFail($vaultId);
         $contact = Contact::findOrFail($contactId);
 
-        $files = File::where('fileable_id', $contactId)
+        $files = File::where('ufileable_id', $contactId)
             ->where('type', File::TYPE_PHOTO)
             ->orderBy('created_at', 'desc')
             ->paginate(30);
@@ -32,12 +32,12 @@ class ContactPhotoController extends Controller
         ]);
     }
 
-    public function show(Request $request, int $vaultId, int $contactId, int $photoId)
+    public function show(Request $request, string $vaultId, string $contactId, int $photoId)
     {
         $vault = Vault::findOrFail($vaultId);
         $contact = Contact::findOrFail($contactId);
 
-        $photo = File::where('fileable_id', $contactId)
+        $photo = File::where('ufileable_id', $contactId)
             ->where('type', File::TYPE_PHOTO)
             ->findOrFail($photoId);
 

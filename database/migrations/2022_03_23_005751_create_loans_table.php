@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Contact;
+use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +17,7 @@ return new class() extends Migration
     {
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('vault_id');
+            $table->foreignIdFor(Vault::class)->constrained()->cascadeOnDelete();
             $table->string('type');
             $table->string('name');
             $table->text('description')->nullable();
@@ -25,18 +27,15 @@ return new class() extends Migration
             $table->boolean('settled')->default(false);
             $table->datetime('settled_at')->nullable();
             $table->timestamps();
-            $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('set null');
         });
 
         Schema::create('contact_loan', function (Blueprint $table) {
             $table->unsignedBigInteger('loan_id');
-            $table->unsignedBigInteger('loaner_id');
-            $table->unsignedBigInteger('loanee_id');
+            $table->foreignIdFor(Contact::class, 'loaner_id')->constrained('contacts')->cascadeOnDelete();
+            $table->foreignIdFor(Contact::class, 'loanee_id')->constrained('contacts')->cascadeOnDelete();
             $table->timestamps();
             $table->foreign('loan_id')->references('id')->on('loans')->onDelete('cascade');
-            $table->foreign('loaner_id')->references('id')->on('contacts')->onDelete('cascade');
-            $table->foreign('loanee_id')->references('id')->on('contacts')->onDelete('cascade');
         });
     }
 

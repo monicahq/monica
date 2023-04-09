@@ -172,6 +172,6 @@ class ImportContactTest extends TestCase
 
         $contact = $this->invokePrivateMethod($importContact, 'importUid', [$contact, $vcard]);
 
-        $this->assertEquals('31fdc242-c974-436e-98de-6b21624d6e34', $contact['uuid']);
+        $this->assertEquals('31fdc242-c974-436e-98de-6b21624d6e34', $contact['id']);
     }
 }

@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+/**
+ * @property string $fileable_type
+ * @property int $fileable_id
+ */
 class File extends Model
 {
     use HasFactory;
@@ -32,6 +36,7 @@ class File extends Model
         'vault_id',
         'fileable_id',
         'fileable_type',
+        'ufileable_id',
         'uuid',
         'original_url',
         'cdn_url',
@@ -64,5 +69,13 @@ class File extends Model
     public function fileable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Get the parent model that matches this file.
+     */
+    public function ufileable(): MorphTo
+    {
+        return $this->morphTo(type: 'fileable_type');
     }
 }

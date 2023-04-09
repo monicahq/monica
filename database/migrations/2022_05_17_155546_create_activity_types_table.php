@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Account;
+use App\Models\Contact;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,13 +17,12 @@ return new class() extends Migration
     {
         Schema::create('life_event_categories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('account_id');
+            $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
             $table->string('label')->nullable();
             $table->string('label_translation_key')->nullable();
             $table->boolean('can_be_deleted')->default(false);
             $table->string('type')->nullable();
             $table->timestamps();
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
 
         Schema::create('life_event_types', function (Blueprint $table) {
@@ -38,22 +39,20 @@ return new class() extends Migration
 
         Schema::create('contact_life_events', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('contact_id');
+            $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
             $table->unsignedBigInteger('life_event_type_id');
             $table->string('summary');
             $table->date('started_at');
             $table->date('ended_at');
             $table->timestamps();
-            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
             $table->foreign('life_event_type_id')->references('id')->on('life_event_types')->onDelete('cascade');
         });
 
         Schema::create('activity_types', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('account_id');
+            $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
             $table->string('label');
             $table->timestamps();
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
 
         Schema::create('activities', function (Blueprint $table) {
@@ -80,10 +79,9 @@ return new class() extends Migration
         });
 
         Schema::create('contact_activity_participants', function (Blueprint $table) {
-            $table->unsignedBigInteger('contact_id');
+            $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
             $table->unsignedBigInteger('contact_activity_id');
             $table->timestamps();
-            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
             $table->foreign('contact_activity_id')->references('id')->on('contact_life_event_activities')->onDelete('cascade');
         });
     }

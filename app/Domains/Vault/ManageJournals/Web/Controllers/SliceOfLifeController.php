@@ -18,7 +18,7 @@ use Redirect;
 
 class SliceOfLifeController extends Controller
 {
-    public function index(Request $request, int $vaultId, int $journalId)
+    public function index(Request $request, string $vaultId, int $journalId)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = $vault->journals()->findOrFail($journalId);
@@ -29,7 +29,7 @@ class SliceOfLifeController extends Controller
         ]);
     }
 
-    public function store(Request $request, int $vaultId, int $journalId)
+    public function store(Request $request, string $vaultId, int $journalId)
     {
         $vault = Vault::findOrFail($vaultId);
         $vault->journals()->findOrFail($journalId);
@@ -49,7 +49,7 @@ class SliceOfLifeController extends Controller
         ], 201);
     }
 
-    public function show(Request $request, int $vaultId, int $journalId, int $sliceOfLifeId)
+    public function show(Request $request, string $vaultId, int $journalId, int $sliceOfLifeId)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = $vault->journals()->findOrFail($journalId);
@@ -61,7 +61,7 @@ class SliceOfLifeController extends Controller
         ]);
     }
 
-    public function edit(Request $request, int $vaultId, int $journalId, int $sliceOfLifeId)
+    public function edit(Request $request, string $vaultId, int $journalId, int $sliceOfLifeId)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = $vault->journals()->findOrFail($journalId);
@@ -73,7 +73,7 @@ class SliceOfLifeController extends Controller
         ]);
     }
 
-    public function update(Request $request, int $vaultId, int $journalId, int $sliceOfLifeId)
+    public function update(Request $request, string $vaultId, int $journalId, int $sliceOfLifeId)
     {
         $vault = Vault::findOrFail($vaultId);
         $vault->journals()->findOrFail($journalId);
@@ -97,7 +97,7 @@ class SliceOfLifeController extends Controller
         ]);
     }
 
-    public function destroy(Request $request, int $vaultId, int $journalId, int $sliceOfLifeId)
+    public function destroy(Request $request, string $vaultId, int $journalId, int $sliceOfLifeId)
     {
         $vault = Vault::findOrFail($vaultId);
         $vault->journals()->findOrFail($journalId);

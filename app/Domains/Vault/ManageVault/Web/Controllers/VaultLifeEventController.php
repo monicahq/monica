@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class VaultLifeEventController extends Controller
 {
-    public function show(Request $request, int $vaultId)
+    public function show(Request $request, string $vaultId)
     {
         $vault = Vault::findOrFail($vaultId);
         $contact = Auth::user()->getContactInVault($vault);

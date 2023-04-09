@@ -19,7 +19,7 @@ use Inertia\Inertia;
 
 class ContactRelationshipsController extends Controller
 {
-    public function create(Request $request, int $vaultId, int $contactId)
+    public function create(Request $request, string $vaultId, string $contactId)
     {
         $vault = Vault::findOrFail($vaultId);
         $contact = Contact::findOrFail($contactId);
@@ -30,7 +30,7 @@ class ContactRelationshipsController extends Controller
         ]);
     }
 
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, string $vaultId, string $contactId)
     {
         // This is a complex controller method, sorry about that, future reader
         // It's complex because the form is really complex and can lead to
@@ -84,7 +84,7 @@ class ContactRelationshipsController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, int $vaultId, int $contactId, int $relationshipId)
+    public function update(Request $request, string $vaultId, string $contactId, int $relationshipId)
     {
         $relationship = DB::table('relationships')->where('id', $relationshipId)->first();
 

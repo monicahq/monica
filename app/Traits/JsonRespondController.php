@@ -125,7 +125,7 @@ trait JsonRespondController
      * Sends a response that the object has been deleted, and also indicates
      * the id of the object that has been deleted.
      */
-    public function respondObjectDeleted(int $id): JsonResponse
+    public function respondObjectDeleted(string $id): JsonResponse
     {
         return $this->respond([
             'deleted' => true,

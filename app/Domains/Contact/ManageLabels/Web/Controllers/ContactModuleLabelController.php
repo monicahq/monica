@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactModuleLabelController extends Controller
 {
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, string $vaultId, string $contactId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -44,7 +44,7 @@ class ContactModuleLabelController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $contactId, int $labelId)
+    public function update(Request $request, string $vaultId, string $contactId, int $labelId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -62,7 +62,7 @@ class ContactModuleLabelController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $labelId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $labelId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

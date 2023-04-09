@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PostSliceOfLifeController extends Controller
 {
-    public function update(Request $request, int $vaultId, int $journalId, int $postId)
+    public function update(Request $request, string $vaultId, int $journalId, int $postId)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = $vault->journals()->findOrFail($journalId);
@@ -34,7 +34,7 @@ class PostSliceOfLifeController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $journalId, int $postId)
+    public function destroy(Request $request, string $vaultId, int $journalId, int $postId)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = $vault->journals()->findOrFail($journalId);

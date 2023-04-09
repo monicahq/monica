@@ -17,9 +17,9 @@ class CreateLabel extends BaseService implements ServiceInterface
     public function rules(): array
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
-            'author_id' => 'required|integer|exists:users,id',
-            'vault_id' => 'required|integer|exists:vaults,id',
+            'account_id' => 'required|uuid|exists:accounts,id',
+            'author_id' => 'required|uuid|exists:users,id',
+            'vault_id' => 'required|uuid|exists:vaults,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:65535',
             'bg_color' => 'string|max:255',

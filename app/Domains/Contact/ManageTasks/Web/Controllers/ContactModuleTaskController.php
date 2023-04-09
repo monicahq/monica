@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactModuleTaskController extends Controller
 {
-    public function index(Request $request, int $vaultId, int $contactId)
+    public function index(Request $request, string $vaultId, string $contactId)
     {
         $contact = Contact::find($contactId);
 
@@ -24,7 +24,7 @@ class ContactModuleTaskController extends Controller
         ], 200);
     }
 
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, string $vaultId, string $contactId)
     {
         $dueAt = '';
         if ($request->input('due_at')) {
@@ -49,7 +49,7 @@ class ContactModuleTaskController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $contactId, int $taskId)
+    public function update(Request $request, string $vaultId, string $contactId, int $taskId)
     {
         $dueAt = '';
         if ($request->input('due_at_checked')) {
@@ -75,7 +75,7 @@ class ContactModuleTaskController extends Controller
         ], 200);
     }
 
-    public function toggle(Request $request, int $vaultId, int $contactId, int $taskId)
+    public function toggle(Request $request, string $vaultId, string $contactId, int $taskId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -95,7 +95,7 @@ class ContactModuleTaskController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $taskId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $taskId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

@@ -40,7 +40,7 @@ class UserController extends ApiController
      * Get a specific user object.
      */
     #[ResponseFromApiResource(UserResource::class, User::class)]
-    public function show(Request $request, int $userId)
+    public function show(Request $request, string $userId)
     {
         $user = $request->user()->account->users()
             ->findOrFail($userId);

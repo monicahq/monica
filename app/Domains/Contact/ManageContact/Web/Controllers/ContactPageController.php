@@ -15,7 +15,7 @@ use Inertia\Inertia;
 
 class ContactPageController extends Controller
 {
-    public function show(Request $request, int $vaultId, int $contactId, string $slug)
+    public function show(Request $request, string $vaultId, string $contactId, string $slug)
     {
         $vault = Vault::findOrFail($vaultId);
         $contact = Contact::with([

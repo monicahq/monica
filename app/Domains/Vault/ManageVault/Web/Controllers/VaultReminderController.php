@@ -12,7 +12,7 @@ use Inertia\Inertia;
 
 class VaultReminderController extends Controller
 {
-    public function index(Request $request, int $vaultId)
+    public function index(Request $request, string $vaultId)
     {
         $vault = Vault::findOrFail($vaultId);
 

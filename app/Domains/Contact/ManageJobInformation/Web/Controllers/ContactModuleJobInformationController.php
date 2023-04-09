@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactModuleJobInformationController extends Controller
 {
-    public function index(Request $request, int $vaultId, int $contactId): JsonResponse
+    public function index(Request $request, string $vaultId, string $contactId): JsonResponse
     {
         $vault = Vault::findOrFail($vaultId);
         $contact = Contact::findOrFail($contactId);
@@ -27,7 +27,7 @@ class ContactModuleJobInformationController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, int $vaultId, int $contactId)
+    public function update(Request $request, string $vaultId, string $contactId)
     {
         $companyId = 0;
         if ($request->input('company_id')) {
@@ -64,7 +64,7 @@ class ContactModuleJobInformationController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId)
+    public function destroy(Request $request, string $vaultId, string $contactId)
     {
         (new ResetJobInformation())->execute([
             'account_id' => Auth::user()->account_id,

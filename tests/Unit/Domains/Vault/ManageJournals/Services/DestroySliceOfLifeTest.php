@@ -145,7 +145,7 @@ class DestroySliceOfLifeTest extends TestCase
 
         (new DestroySliceOfLife())->execute($request);
 
-        $this->assertDatabaseMissing('slices_of_life', [
+        $this->assertDatabaseMissing('slice_of_lives', [
             'id' => $sliceOfLife->id,
         ]);
     }

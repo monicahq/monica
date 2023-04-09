@@ -40,7 +40,7 @@ class JournalController extends Controller
         ]);
     }
 
-    public function store(Request $request, int $vaultId)
+    public function store(Request $request, string $vaultId)
     {
         Gate::authorize('vault-editor', $vaultId);
 
@@ -60,7 +60,7 @@ class JournalController extends Controller
         ]);
     }
 
-    public function show(Request $request, int $vaultId, int $journalId)
+    public function show(Request $request, string $vaultId, int $journalId)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = Journal::findOrFail($journalId);
@@ -71,7 +71,7 @@ class JournalController extends Controller
         ]);
     }
 
-    public function year(Request $request, int $vaultId, int $journalId, int $year)
+    public function year(Request $request, string $vaultId, int $journalId, int $year)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = Journal::findOrFail($journalId);
@@ -82,7 +82,7 @@ class JournalController extends Controller
         ]);
     }
 
-    public function edit(Request $request, int $vaultId, int $journalId)
+    public function edit(Request $request, string $vaultId, int $journalId)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = Journal::findOrFail($journalId);
@@ -93,7 +93,7 @@ class JournalController extends Controller
         ]);
     }
 
-    public function update(Request $request, int $vaultId, int $journalId)
+    public function update(Request $request, string $vaultId, int $journalId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -112,7 +112,7 @@ class JournalController extends Controller
         ]);
     }
 
-    public function destroy(Request $request, int $vaultId, int $journalId)
+    public function destroy(Request $request, string $vaultId, int $journalId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('webauthn_keys', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
 
             $table->string('name')->default('key');
             $table->string('credentialId', 768);
@@ -28,7 +29,6 @@ return new class extends Migration
             $table->bigInteger('counter')->unsigned();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->index('credentialId');
         });
     }

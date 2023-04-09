@@ -15,7 +15,7 @@ use Inertia\Inertia;
 
 class JournalPhotoController extends Controller
 {
-    public function index(Request $request, int $vaultId, int $journalId)
+    public function index(Request $request, string $vaultId, int $journalId)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = Journal::findOrFail($journalId);
@@ -26,7 +26,7 @@ class JournalPhotoController extends Controller
         ]);
     }
 
-    public function show(Request $request, int $vaultId, int $journalId)
+    public function show(Request $request, string $vaultId, int $journalId)
     {
         $vault = Vault::findOrFail($vaultId);
         $journal = Journal::findOrFail($journalId);

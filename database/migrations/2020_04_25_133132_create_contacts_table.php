@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Contact;
+use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -13,9 +16,9 @@ return new class() extends Migration
     public function up()
     {
         Schema::create('contacts', function (Blueprint $table) {
-            $table->id();
-            $table->uuid('uuid')->nullable();
-            $table->unsignedBigInteger('vault_id');
+            $table->uuid('id');
+            $table->primary('id');
+            $table->foreignIdFor(Vault::class)->constrained()->cascadeOnDelete();
             $table->unsignedBigInteger('gender_id')->nullable();
             $table->unsignedBigInteger('pronoun_id')->nullable();
             $table->unsignedBigInteger('template_id')->nullable();
@@ -38,13 +41,12 @@ return new class() extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
             $table->foreign('gender_id')->references('id')->on('genders')->onDelete('set null');
             $table->foreign('pronoun_id')->references('id')->on('pronouns')->onDelete('set null');
             $table->foreign('template_id')->references('id')->on('templates')->onDelete('set null');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('set null');
 
-            $table->index(['vault_id', 'uuid']);
+            $table->index(['vault_id', 'id']);
 
             if (config('scout.driver') === 'database' && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
                 $table->fullText('first_name');
@@ -56,26 +58,20 @@ return new class() extends Migration
         });
 
         Schema::create('user_vault', function (Blueprint $table) {
-            $table->unsignedBigInteger('vault_id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('contact_id');
+            $table->foreignIdFor(Vault::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
             $table->integer('permission');
             $table->timestamps();
-            $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
         });
 
         Schema::create('contact_vault_user', function (Blueprint $table) {
-            $table->unsignedBigInteger('contact_id');
-            $table->unsignedBigInteger('vault_id');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Vault::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->integer('number_of_views');
             $table->boolean('is_favorite')->default(false);
             $table->timestamps();
-            $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
         });
     }
 

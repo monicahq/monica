@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactModuleToggleLoanController extends Controller
 {
-    public function update(Request $request, int $vaultId, int $contactId, int $loanId)
+    public function update(Request $request, string $vaultId, string $contactId, int $loanId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

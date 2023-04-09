@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class VaultDefaultTabOnDashboardController extends Controller
 {
-    public function update(Request $request, int $vaultId)
+    public function update(Request $request, string $vaultId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

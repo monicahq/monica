@@ -198,7 +198,7 @@ trait SyncDAVBackend
 
     protected function encodeUri($obj): string
     {
-        return urlencode($obj->uuid.$this->getExtension());
+        return urlencode($obj->id.$this->getExtension());
     }
 
     private function decodeUri(string $uri): string

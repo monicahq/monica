@@ -21,8 +21,8 @@ class AssociateModuleToTemplatePage extends BaseService implements ServiceInterf
     public function rules(): array
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
-            'author_id' => 'required|integer|exists:users,id',
+            'account_id' => 'required|uuid|exists:accounts,id',
+            'author_id' => 'required|uuid|exists:users,id',
             'template_id' => 'required|integer|exists:templates,id',
             'template_page_id' => 'required|integer|exists:template_pages,id',
             'module_id' => 'required|integer|exists:modules,id',

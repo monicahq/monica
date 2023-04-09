@@ -2,34 +2,33 @@
 
 namespace Tests\Unit\Domains\Vault\ManageJournals\Services;
 
-use App\Domains\Vault\ManageJournals\Services\RemoveSliceOfLifeCoverImage;
+use App\Domains\Vault\ManageJournals\Services\CreatePost;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
-use App\Models\File;
 use App\Models\Journal;
-use App\Models\SliceOfLife;
+use App\Models\PostTemplate;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
-class RemoveSliceOfLifeCoverImageTest extends TestCase
+class CreatePostTest extends TestCase
 {
     use DatabaseTransactions;
 
     /** @test */
-    public function it_removes_a_cover_image(): void
+    public function it_creates_a_post(): void
     {
         $regis = $this->createUser();
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
-        $journal = Journal::factory()->create(['vault_id' => $vault->id]);
-        $slice = SliceOfLife::factory()->create(['journal_id' => $journal->id]);
+        $journal = Journal::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
 
-        $this->executeService($regis, $regis->account, $vault, $journal, $slice);
+        $this->executeService($regis, $regis->account, $vault, $journal);
     }
 
     /** @test */
@@ -40,7 +39,7 @@ class RemoveSliceOfLifeCoverImageTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new RemoveSliceOfLifeCoverImage())->execute($request);
+        (new CreatePost())->execute($request);
     }
 
     /** @test */
@@ -52,10 +51,11 @@ class RemoveSliceOfLifeCoverImageTest extends TestCase
         $account = Account::factory()->create();
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
-        $journal = Journal::factory()->create(['vault_id' => $vault->id]);
-        $slice = SliceOfLife::factory()->create(['journal_id' => $journal->id]);
+        $journal = Journal::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
 
-        $this->executeService($regis, $account, $vault, $journal, $slice);
+        $this->executeService($regis, $account, $vault, $journal);
     }
 
     /** @test */
@@ -67,23 +67,22 @@ class RemoveSliceOfLifeCoverImageTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $journal = Journal::factory()->create();
-        $slice = SliceOfLife::factory()->create(['journal_id' => $journal->id]);
 
-        $this->executeService($regis, $regis->account, $vault, $journal, $slice);
+        $this->executeService($regis, $regis->account, $vault, $journal);
     }
 
     /** @test */
-    public function it_fails_if_slice_doesnt_belong_to_journal(): void
+    public function it_fails_if_post_template_doesnt_belong_to_account(): void
     {
         $this->expectException(ModelNotFoundException::class);
 
         $regis = $this->createUser();
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
-        $journal = Journal::factory()->create(['vault_id' => $vault->id]);
-        $slice = SliceOfLife::factory()->create();
+        $journal = Journal::factory()->create();
+        $postTemplate = PostTemplate::factory()->create();
 
-        $this->executeService($regis, $regis->account, $vault, $journal, $slice);
+        $this->executeService($regis, $regis->account, $vault, $journal, $postTemplate);
     }
 
     /** @test */
@@ -94,40 +93,36 @@ class RemoveSliceOfLifeCoverImageTest extends TestCase
         $regis = $this->createUser();
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_VIEW, $vault);
-        $journal = Journal::factory()->create(['vault_id' => $vault->id]);
-        $slice = SliceOfLife::factory()->create(['journal_id' => $journal->id]);
-
-        $this->executeService($regis, $regis->account, $vault, $journal, $slice);
-    }
-
-    private function executeService(User $author, Account $account, Vault $vault, Journal $journal, SliceOfLife $slice): void
-    {
-        Event::fake();
-
-        $file = File::factory()->create([
+        $journal = Journal::factory()->create([
             'vault_id' => $vault->id,
         ]);
 
-        $slice->file_cover_image_id = $file->id;
-        $slice->save();
+        $this->executeService($regis, $regis->account, $vault, $journal);
+    }
+
+    private function executeService(User $author, Account $account, Vault $vault, Journal $journal, PostTemplate $postTemplate = null): void
+    {
+        $postTemplate = $postTemplate ?? PostTemplate::factory()->create([
+            'account_id' => $account->id,
+        ]);
 
         $request = [
             'account_id' => $account->id,
-            'author_id' => $author->id,
             'vault_id' => $vault->id,
+            'author_id' => $author->id,
             'journal_id' => $journal->id,
-            'slice_of_life_id' => $slice->id,
+            'post_template_id' => $postTemplate->id,
+            'title' => 'title',
+            'published' => true,
+            'written_at' => null,
         ];
 
-        (new RemoveSliceOfLifeCoverImage())->execute($request);
+        $post = (new CreatePost())->execute($request);
 
-        $this->assertDatabaseHas('slice_of_lives', [
-            'id' => $slice->id,
-            'file_cover_image_id' => null,
-        ]);
-
-        $this->assertDatabaseMissing('files', [
-            'id' => $file->id,
+        $this->assertDatabaseHas('posts', [
+            'id' => $post->id,
+            'journal_id' => $journal->id,
+            'title' => 'title',
         ]);
     }
 }

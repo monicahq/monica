@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class VaultSettingsTagController extends Controller
 {
-    public function store(Request $request, int $vaultId)
+    public function store(Request $request, string $vaultId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -28,7 +28,7 @@ class VaultSettingsTagController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $tagId)
+    public function update(Request $request, string $vaultId, int $tagId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -45,7 +45,7 @@ class VaultSettingsTagController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $tagId)
+    public function destroy(Request $request, string $vaultId, int $tagId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

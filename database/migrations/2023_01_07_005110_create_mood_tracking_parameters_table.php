@@ -17,13 +17,12 @@ return new class extends Migration
     {
         Schema::create('mood_tracking_parameters', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('vault_id');
+            $table->foreignIdFor(Vault::class)->constrained()->cascadeOnDelete();
             $table->string('label')->nullable();
             $table->string('label_translation_key')->nullable();
             $table->string('hex_color');
             $table->integer('position')->nullable();
             $table->timestamps();
-            $table->foreign('vault_id')->references('id')->on('vaults')->onDelete('cascade');
         });
 
         Vault::chunk(200, function ($vaults) {

@@ -11,7 +11,7 @@ use Inertia\Inertia;
 
 class VaultSearchController extends Controller
 {
-    public function index(Request $request, int $vaultId)
+    public function index(Request $request, string $vaultId)
     {
         $vault = Vault::findOrFail($vaultId);
 
@@ -21,7 +21,7 @@ class VaultSearchController extends Controller
         ]);
     }
 
-    public function show(Request $request, int $vaultId)
+    public function show(Request $request, string $vaultId)
     {
         $vault = Vault::findOrFail($vaultId);
 

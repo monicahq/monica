@@ -49,7 +49,7 @@ class ImportVCard extends BaseService implements ServiceInterface
     /**
      * The Account id.
      */
-    public int $accountId = 0;
+    public ?string $accountId = null;
 
     /**
      * Get the validation rules that apply to the service.
@@ -57,10 +57,10 @@ class ImportVCard extends BaseService implements ServiceInterface
     public function rules(): array
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
-            'author_id' => 'required|integer|exists:users,id',
-            'vault_id' => 'required|integer|exists:vaults,id',
-            'contact_id' => 'nullable|integer|exists:contacts,id',
+            'account_id' => 'required|uuid|exists:accounts,id',
+            'author_id' => 'required|uuid|exists:users,id',
+            'vault_id' => 'required|uuid|exists:vaults,id',
+            'contact_id' => 'nullable|uuid|exists:contacts,id',
             'entry' => [
                 'required',
                 function (string $attribute, mixed $value, Closure $fail) {
@@ -116,7 +116,7 @@ class ImportVCard extends BaseService implements ServiceInterface
      */
     private function clear(): void
     {
-        $this->accountId = 0;
+        $this->accountId = null;
     }
 
     /**
@@ -299,7 +299,7 @@ class ImportVCard extends BaseService implements ServiceInterface
         return ! empty($uuid = (string) $entry->UID) && Uuid::isValid($uuid)
             ? Contact::where([
                 'vault_id' => $this->vault->id,
-                'uuid' => $uuid,
+                'id' => $uuid,
             ])->first()
             : null;
     }

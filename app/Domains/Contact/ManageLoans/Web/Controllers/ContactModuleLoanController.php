@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactModuleLoanController extends Controller
 {
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, string $vaultId, string $contactId)
     {
         $loaners = collect($request->input('loaners'))->pluck('id');
         $loanees = collect($request->input('loanees'))->pluck('id');
@@ -42,7 +42,7 @@ class ContactModuleLoanController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $contactId, int $loanId)
+    public function update(Request $request, string $vaultId, string $contactId, int $loanId)
     {
         $loaners = collect($request->input('loaners'))->pluck('id');
         $loanees = collect($request->input('loanees'))->pluck('id');
@@ -71,7 +71,7 @@ class ContactModuleLoanController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $loanId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $loanId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

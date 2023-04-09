@@ -13,7 +13,7 @@ use Inertia\Inertia;
 
 class ContactLabelController extends Controller
 {
-    public function index(Request $request, int $vaultId, int $labelId)
+    public function index(Request $request, string $vaultId, int $labelId)
     {
         $vault = Vault::findOrFail($vaultId);
 

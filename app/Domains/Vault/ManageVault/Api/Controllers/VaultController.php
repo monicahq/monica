@@ -70,7 +70,7 @@ class VaultController extends ApiController
      * Get a specific vault object.
      */
     #[ResponseFromApiResource(VaultResource::class, Vault::class)]
-    public function show(Request $request, int $vaultId)
+    public function show(Request $request, string $vaultId)
     {
         $vault = $request->user()->account->vaults()
             ->findOrFail($vaultId);
@@ -89,7 +89,7 @@ class VaultController extends ApiController
     #[BodyParam('name', description: 'The name of the vault. Max 255 characters.')]
     #[BodyParam('description', description: 'The description of the vault. Max 65535 characters.', required: false)]
     #[ResponseFromApiResource(VaultResource::class, Vault::class)]
-    public function update(Request $request, int $vaultId)
+    public function update(Request $request, string $vaultId)
     {
         $data = [
             'account_id' => $request->user()->account_id,
@@ -111,7 +111,7 @@ class VaultController extends ApiController
      * Warning: everything in the vault will be immediately deleted.
      */
     #[Response(['deleted' => true, 'id' => 1])]
-    public function destroy(Request $request, int $vaultId)
+    public function destroy(Request $request, string $vaultId)
     {
         $data = [
             'account_id' => $request->user()->account_id,

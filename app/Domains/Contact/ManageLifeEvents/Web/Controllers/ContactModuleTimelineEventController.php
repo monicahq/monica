@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactModuleTimelineEventController extends Controller
 {
-    public function index(Request $request, int $vaultId, int $contactId)
+    public function index(Request $request, string $vaultId, string $contactId)
     {
         $contact = Contact::where('vault_id', $vaultId)->findOrFail($contactId);
 
@@ -30,7 +30,7 @@ class ContactModuleTimelineEventController extends Controller
         ], 200);
     }
 
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, string $vaultId, string $contactId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -83,7 +83,7 @@ class ContactModuleTimelineEventController extends Controller
         ], 201);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $timelineEventId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $timelineEventId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

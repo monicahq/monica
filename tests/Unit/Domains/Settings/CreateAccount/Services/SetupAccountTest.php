@@ -28,7 +28,7 @@ class SetupAccountTest extends TestCase
 
         $currency = Currency::first();
 
-        $this->assertDatabaseHas('account_currencies', [
+        $this->assertDatabaseHas('account_currency', [
             'currency_id' => $currency->id,
             'account_id' => $user->account_id,
         ]);

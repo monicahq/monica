@@ -67,7 +67,7 @@ class ToggleCurrencyTest extends TestCase
 
         (new ToggleCurrency())->execute($request);
 
-        $this->assertDatabaseHas('account_currencies', [
+        $this->assertDatabaseHas('account_currency', [
             'account_id' => $account->id,
             'currency_id' => $currency->id,
             'active' => true,

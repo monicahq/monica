@@ -15,9 +15,7 @@ class ModulePhotosViewHelper
             ->where('type', File::TYPE_PHOTO)
             ->take(6)
             ->get()
-            ->map(function (File $file) use ($contact) {
-                return self::dto($file, $contact);
-            });
+            ->map(fn (File $file) => self::dto($file, $contact));
 
         return [
             'photos' => $photosCollection,

@@ -74,10 +74,10 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
 
     private function getAddressBookDetails(Vault $vault): array
     {
-        $token = $this->getCurrentSyncToken($vault->uuid);
+        $token = $this->getCurrentSyncToken($vault->id);
 
         $des = [
-            'id' => $vault->uuid,
+            'id' => $vault->id,
             'uri' => $vault->name,
             'principaluri' => PrincipalBackend::getPrincipalUser($this->user),
             '{DAV:}displayname' => __('Contacts'),
@@ -222,16 +222,15 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
     public function getObjectUuid(?string $collectionId, string $uuid): ?Contact
     {
         $vault = $this->user->vaults()
-            ->where('uuid', $collectionId)
             ->wherePivot('permission', '<=', Vault::PERMISSION_VIEW)
-            ->first();
+            ->find($collectionId);
 
         if (! $vault) {
             throw new NotEnoughPermissionException();
         }
 
         return Contact::where([
-            'uuid' => $uuid,
+            'id' => $uuid,
             'vault_id' => $vault->id,
         ])->first();
     }
@@ -247,7 +246,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
             ->wherePivot('permission', '<=', Vault::PERMISSION_VIEW);
 
         if ($collectionId !== null) {
-            $vaults = $vaults->where('uuid', $collectionId);
+            $vaults = $vaults->where('id', $collectionId);
         }
 
         return $vaults->get()
@@ -269,7 +268,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
             ->wherePivot('permission', '<=', Vault::PERMISSION_VIEW);
 
         if ($collectionId !== null) {
-            $vaults = $vaults->where('uuid', $collectionId);
+            $vaults = $vaults->where('id', $collectionId);
         }
 
         return $vaults->get()
@@ -386,8 +385,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
     {
         $vault = $this->user->vaults()
             ->wherePivot('permission', '<=', Vault::PERMISSION_EDIT)
-            ->where('uuid', $addressBookId)
-            ->firstOrFail();
+            ->findOrFail($addressBookId);
 
         $job = new UpdateVCard([
             'account_id' => $this->user->account_id,

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('user_tokens', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string('driver_id', 256);
             $table->string('driver', 50);
             $table->char('format', 6);
@@ -24,7 +25,6 @@ return new class extends Migration
             $table->unsignedBigInteger('expires_in')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->index(['driver', 'driver_id']);
         });
     }

@@ -18,8 +18,8 @@ class CreateGiftState extends BaseService implements ServiceInterface
     public function rules(): array
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
-            'author_id' => 'required|integer|exists:users,id',
+            'account_id' => 'required|uuid|exists:accounts,id',
+            'author_id' => 'required|uuid|exists:users,id',
             'label' => 'required|string|max:255',
         ];
     }

@@ -11,7 +11,7 @@ use Inertia\Inertia;
 
 class ReportAddressesController extends Controller
 {
-    public function index(Request $request, int $vaultId)
+    public function index(Request $request, string $vaultId)
     {
         $vault = Vault::findOrFail($vaultId);
 

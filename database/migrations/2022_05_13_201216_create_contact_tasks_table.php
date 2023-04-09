@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Contact;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,8 +17,8 @@ return new class() extends Migration
     {
         Schema::create('contact_tasks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('contact_id');
-            $table->unsignedBigInteger('author_id')->nullable();
+            $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class, 'author_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('author_name');
             $table->string('label');
             $table->text('description')->nullable();
@@ -24,8 +26,6 @@ return new class() extends Migration
             $table->datetime('completed_at')->nullable();
             $table->datetime('due_at')->nullable();
             $table->timestamps();
-            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
-            $table->foreign('author_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

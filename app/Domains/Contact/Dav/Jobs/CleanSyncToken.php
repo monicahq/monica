@@ -34,7 +34,7 @@ class CleanSyncToken extends QueuableService implements ServiceInterface
     /**
      * Handle tokens for a user.
      */
-    private function handleUserToken(int $userId, string $tokenName, string $timestamp): void
+    private function handleUserToken(string $userId, string $tokenName, string $timestamp): void
     {
         $tokens = SyncToken::where([
             ['user_id', $userId],

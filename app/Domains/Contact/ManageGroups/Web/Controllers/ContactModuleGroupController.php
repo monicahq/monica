@@ -22,7 +22,7 @@ class ContactModuleGroupController extends Controller
      * 2) the group already exists, and the contact needs to be associated
      * with it.
      */
-    public function store(Request $request, int $vaultId, int $contactId): JsonResponse
+    public function store(Request $request, string $vaultId, string $contactId): JsonResponse
     {
         // case if we need to create the group
         // the current way to know if we need to create the group is if the
@@ -59,7 +59,7 @@ class ContactModuleGroupController extends Controller
         ], 201);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $groupId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $groupId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class VaultSettingsMoodTrackingParameterController extends Controller
 {
-    public function store(Request $request, int $vaultId)
+    public function store(Request $request, string $vaultId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -29,7 +29,7 @@ class VaultSettingsMoodTrackingParameterController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $moodTrackingParameterId)
+    public function update(Request $request, string $vaultId, int $moodTrackingParameterId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -47,7 +47,7 @@ class VaultSettingsMoodTrackingParameterController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $moodTrackingParameterId)
+    public function destroy(Request $request, string $vaultId, int $moodTrackingParameterId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

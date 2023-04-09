@@ -27,9 +27,9 @@ class UpdateLifeEvent extends BaseService implements ServiceInterface
     public function rules(): array
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
-            'vault_id' => 'required|integer|exists:vaults,id',
-            'author_id' => 'required|integer|exists:users,id',
+            'account_id' => 'required|uuid|exists:accounts,id',
+            'vault_id' => 'required|uuid|exists:vaults,id',
+            'author_id' => 'required|uuid|exists:users,id',
             'timeline_event_id' => 'required|integer|exists:timeline_events,id',
             'life_event_type_id' => 'required|integer|exists:life_event_types,id',
             'life_event_id' => 'required|integer|exists:life_events,id',
@@ -38,7 +38,7 @@ class UpdateLifeEvent extends BaseService implements ServiceInterface
             'happened_at' => 'required|date|date_format:Y-m-d',
             'costs' => 'nullable|integer',
             'currency_id' => 'nullable|integer|exists:currencies,id',
-            'paid_by_contact_id' => 'nullable|integer|exists:contacts,id',
+            'paid_by_contact_id' => 'nullable|uuid|exists:contacts,id',
             'duration_in_minutes' => 'nullable|integer',
             'distance' => 'nullable|integer',
             'distance_unit' => 'nullable|string|max:255',
@@ -101,7 +101,7 @@ class UpdateLifeEvent extends BaseService implements ServiceInterface
         }
 
         $this->partipantsCollection = collect($this->data['participant_ids'])
-            ->map(fn (int $participantId): Contact => $this->vault->contacts()->findOrFail($participantId));
+            ->map(fn (string $participantId): Contact => $this->vault->contacts()->findOrFail($participantId));
     }
 
     private function update(): void

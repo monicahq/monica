@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactModuleAddressController extends Controller
 {
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, string $vaultId, string $contactId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -55,7 +55,7 @@ class ContactModuleAddressController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $contactId, int $addressId)
+    public function update(Request $request, string $vaultId, string $contactId, int $addressId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -89,7 +89,7 @@ class ContactModuleAddressController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $addressId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $addressId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

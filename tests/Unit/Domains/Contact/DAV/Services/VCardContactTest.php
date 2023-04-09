@@ -26,7 +26,7 @@ class VCardContactTest extends TestCase
         $vaultname = rawurlencode($vault->name);
         $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
 
-        $response = $this->get("/dav/addressbooks/{$user->email}/$vaultname/{$contact->uuid}.vcf", [
+        $response = $this->get("/dav/addressbooks/{$user->email}/$vaultname/{$contact->id}.vcf", [
             'HTTP_ACCEPT' => 'text/vcard; version=4.0',
         ]);
 
@@ -58,7 +58,7 @@ class VCardContactTest extends TestCase
         $response->assertHeaderMissing('ETag');
 
         $this->assertDatabaseHas('contacts', [
-            'uuid' => $uuid,
+            'id' => $uuid,
             'vault_id' => $vault->id,
             'first_name' => 'John',
             'last_name' => 'Doe',
@@ -77,7 +77,7 @@ class VCardContactTest extends TestCase
         $vaultname = rawurlencode($vault->name);
         $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
 
-        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/$vaultname/{$contact->uuid}.vcf", [], [], [],
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/$vaultname/{$contact->id}.vcf", [], [], [],
             ['content-type' => 'application/xml; charset=utf-8'],
             "BEGIN:VCARD\nVERSION:4.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
         );
@@ -104,7 +104,7 @@ class VCardContactTest extends TestCase
         $vault = $this->createVaultUser($user, Vault::PERMISSION_EDIT);
         $vaultname = rawurlencode($vault->name);
         $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
-        $filename = urlencode($contact->uuid.'.vcf');
+        $filename = urlencode($contact->id.'.vcf');
 
         $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/$vaultname/$filename", [], [], [],
             [
@@ -136,7 +136,7 @@ class VCardContactTest extends TestCase
         $vault = $this->createVaultUser($user, Vault::PERMISSION_EDIT);
         $vaultname = rawurlencode($vault->name);
         $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
-        $filename = urlencode($contact->uuid.'.vcf');
+        $filename = urlencode($contact->id.'.vcf');
 
         $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/$vaultname/$filename", [], [], [],
             [
@@ -168,7 +168,7 @@ class VCardContactTest extends TestCase
         $vault = $this->createVaultUser($user, Vault::PERMISSION_EDIT);
         $vaultname = rawurlencode($vault->name);
         $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
-        $filename = urlencode($contact->uuid.'.vcf');
+        $filename = urlencode($contact->id.'.vcf');
 
         $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/$vaultname/$filename", [], [], [],
             [
@@ -200,7 +200,7 @@ class VCardContactTest extends TestCase
         $vault = $this->createVaultUser($user, Vault::PERMISSION_EDIT);
         $vaultname = rawurlencode($vault->name);
         $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
-        $filename = urlencode($contact->uuid.'.vcf');
+        $filename = urlencode($contact->id.'.vcf');
 
         $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/$vaultname/$filename", [], [], [],
             [
@@ -233,7 +233,7 @@ class VCardContactTest extends TestCase
         $vault = $this->createVaultUser($user, Vault::PERMISSION_EDIT);
         $vaultname = rawurlencode($vault->name);
         $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
-        $filename = urlencode($contact->uuid.'.vcf');
+        $filename = urlencode($contact->id.'.vcf');
 
         $response = $this->get("/dav/addressbooks/{$user->email}/$vaultname/$filename");
         $data = $response->getContent();
@@ -274,7 +274,7 @@ class VCardContactTest extends TestCase
         $vcard = mb_ereg_replace("\n", "&#13;\n", $this->getCard($contact));
 
         $response->assertSee('<d:response>'.
-          "<d:href>/dav/addressbooks/{$user->email}/$vaultname/{$contact->uuid}.vcf</d:href>".
+          "<d:href>/dav/addressbooks/{$user->email}/$vaultname/{$contact->id}.vcf</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
               "<d:getetag>&quot;{$this->getEtag($contact)}&quot;</d:getetag>".
@@ -312,7 +312,7 @@ class VCardContactTest extends TestCase
         $vcard = mb_ereg_replace("\n", "&#13;\n", $vcard);
 
         $response->assertSee('<d:response>'.
-          "<d:href>/dav/addressbooks/{$user->email}/$vaultname/{$contact->uuid}.vcf</d:href>".
+          "<d:href>/dav/addressbooks/{$user->email}/$vaultname/{$contact->id}.vcf</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
               "<d:getetag>&quot;{$this->getEtag($contact)}&quot;</d:getetag>".
@@ -340,8 +340,8 @@ class VCardContactTest extends TestCase
                  <d:getetag />
                  <card:address-data content-type=\"text/vcard\" version=\"4.0\" />
                </d:prop>
-               <d:href>/dav/addressbooks/{$user->email}/$vaultname/{$contact1->uuid}.vcf</d:href>
-               <d:href>/dav/addressbooks/{$user->email}/$vaultname/{$contact2->uuid}.vcf</d:href>
+               <d:href>/dav/addressbooks/{$user->email}/$vaultname/{$contact1->id}.vcf</d:href>
+               <d:href>/dav/addressbooks/{$user->email}/$vaultname/{$contact2->id}.vcf</d:href>
              </card:addressbook-multiget>"
         );
 
@@ -352,7 +352,7 @@ class VCardContactTest extends TestCase
         $vcard2 = mb_ereg_replace("\n", "&#13;\n", $this->getCard($contact2));
 
         $response->assertSee('<d:response>'.
-          "<d:href>/dav/addressbooks/{$user->email}/$vaultname/{$contact1->uuid}.vcf</d:href>".
+          "<d:href>/dav/addressbooks/{$user->email}/$vaultname/{$contact1->id}.vcf</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
               "<d:getetag>&quot;{$this->getEtag($contact1)}&quot;</d:getetag>".
@@ -362,7 +362,7 @@ class VCardContactTest extends TestCase
            '</d:propstat>'.
           '</d:response>', false);
         $response->assertSee('<d:response>'.
-            "<d:href>/dav/addressbooks/{$user->email}/$vaultname/{$contact2->uuid}.vcf</d:href>".
+            "<d:href>/dav/addressbooks/{$user->email}/$vaultname/{$contact2->id}.vcf</d:href>".
             '<d:propstat>'.
               '<d:prop>'.
                 "<d:getetag>&quot;{$this->getEtag($contact2)}&quot;</d:getetag>".
@@ -386,7 +386,7 @@ class VCardContactTest extends TestCase
         $vaultname = rawurlencode($vault->name);
         $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
 
-        $response = $this->call('DELETE', "/dav/addressbooks/{$user->email}/$vaultname/{$contact->uuid}.vcf");
+        $response = $this->call('DELETE', "/dav/addressbooks/{$user->email}/$vaultname/{$contact->id}.vcf");
 
         $response->assertStatus(204);
         $response->assertHeader('X-Sabre-Version');

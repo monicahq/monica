@@ -15,7 +15,7 @@ class VaultMostConsultedContactsController extends Controller
      * Get the list of the most consulted contacts by the given user in the
      * current vault.
      */
-    public function index(Request $request, int $vaultId): JsonResponse
+    public function index(Request $request, string $vaultId): JsonResponse
     {
         $vault = Vault::findOrFail($vaultId);
 

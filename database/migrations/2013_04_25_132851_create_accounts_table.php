@@ -12,8 +12,8 @@ return new class() extends Migration
     public function up()
     {
         Schema::create('accounts', function (Blueprint $table) {
-            $table->id();
-            $table->uuid('uuid')->nullable();
+            $table->uuid('id');
+            $table->primary('id');
             $table->integer('storage_limit_in_mb')->default(0);
             $table->timestamps();
         });

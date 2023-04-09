@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactModuleLifeEventController extends Controller
 {
-    public function store(Request $request, int $vaultId, int $contactId, int $timelineEventId)
+    public function store(Request $request, string $vaultId, string $contactId, int $timelineEventId)
     {
         // we need to add the current contact to the list of participants
         // finally, just so we are sure that we don't have the same participant
@@ -56,7 +56,7 @@ class ContactModuleLifeEventController extends Controller
         ], 201);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $timelineEventId, int $lifeEventId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $timelineEventId, int $lifeEventId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

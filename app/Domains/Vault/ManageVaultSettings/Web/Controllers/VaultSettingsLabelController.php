@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class VaultSettingsLabelController extends Controller
 {
-    public function store(Request $request, int $vaultId)
+    public function store(Request $request, string $vaultId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -31,7 +31,7 @@ class VaultSettingsLabelController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $labelId)
+    public function update(Request $request, string $vaultId, int $labelId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -51,7 +51,7 @@ class VaultSettingsLabelController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $labelId)
+    public function destroy(Request $request, string $vaultId, int $labelId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

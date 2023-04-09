@@ -12,7 +12,7 @@ use Inertia\Inertia;
 
 class ContactNoTemplateController extends Controller
 {
-    public function show(Request $request, int $vaultId, int $contactId)
+    public function show(Request $request, string $vaultId, string $contactId)
     {
         $vault = Vault::findOrFail($vaultId);
         $contact = Contact::findOrFail($contactId);

@@ -29,7 +29,7 @@ class VaultFileIndexViewHelperTest extends TestCase
         ]);
         $file = File::factory()->create([
             'vault_id' => $vault->id,
-            'fileable_id' => $contact->id,
+            'ufileable_id' => $contact->id,
             'fileable_type' => Contact::class,
             'type' => File::TYPE_DOCUMENT,
             'created_at' => '2022-01-01',

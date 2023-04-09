@@ -16,7 +16,7 @@ use Inertia\Inertia;
 
 class ContactGoalController extends Controller
 {
-    public function show(Request $request, int $vaultId, int $contactId, int $goalId)
+    public function show(Request $request, string $vaultId, string $contactId, int $goalId)
     {
         $vault = Vault::findOrFail($vaultId);
         $contact = Contact::findOrFail($contactId);
@@ -28,7 +28,7 @@ class ContactGoalController extends Controller
         ]);
     }
 
-    public function update(Request $request, int $vaultId, int $contactId, int $goalId)
+    public function update(Request $request, string $vaultId, string $contactId, int $goalId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -51,7 +51,7 @@ class ContactGoalController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $goalId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $goalId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

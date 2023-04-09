@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactModuleNoteController extends Controller
 {
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, string $vaultId, string $contactId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -34,7 +34,7 @@ class ContactModuleNoteController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $contactId, int $noteId)
+    public function update(Request $request, string $vaultId, string $contactId, int $noteId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -56,7 +56,7 @@ class ContactModuleNoteController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $noteId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $noteId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

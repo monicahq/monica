@@ -11,11 +11,11 @@ class ContactImportantDateHelper
     /**
      * Get the important date type from the vault.
      */
-    public static function getImportantDateType(string $type, int $vault_id): ?ContactImportantDateType
+    public static function getImportantDateType(string $type, string $vaultId): ?ContactImportantDateType
     {
-        return Cache::store('array')->remember("ImportantDateType:{$vault_id}:{$type}", 5,
+        return Cache::store('array')->remember("ImportantDateType:{$vaultId}:{$type}", 5,
             fn () => ContactImportantDateType::where([
-                'vault_id' => $vault_id,
+                'vault_id' => $vaultId,
                 'internal_type' => $type,
             ])
             ->first()

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactQuickFactController extends Controller
 {
-    public function show(Request $request, int $vaultId, int $contactId, int $templateId): JsonResponse
+    public function show(Request $request, string $vaultId, string $contactId, int $templateId): JsonResponse
     {
         $contact = Contact::find($contactId);
         $template = $contact->vault->quickFactsTemplateEntries()->findOrFail($templateId);
@@ -24,7 +24,7 @@ class ContactQuickFactController extends Controller
         ], 200);
     }
 
-    public function store(Request $request, int $vaultId, int $contactId, int $templateId): JsonResponse
+    public function store(Request $request, string $vaultId, string $contactId, int $templateId): JsonResponse
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -42,7 +42,7 @@ class ContactQuickFactController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $contactId, int $templateId, int $quickFactId): JsonResponse
+    public function update(Request $request, string $vaultId, string $contactId, int $templateId, int $quickFactId): JsonResponse
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -60,7 +60,7 @@ class ContactQuickFactController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $templateId, int $quickFactId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $templateId, int $quickFactId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

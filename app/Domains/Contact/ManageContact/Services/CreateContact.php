@@ -18,10 +18,10 @@ class CreateContact extends BaseService implements ServiceInterface
     public function rules(): array
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
-            'uuid' => 'nullable|string',
-            'vault_id' => 'required|integer|exists:vaults,id',
-            'author_id' => 'required|integer|exists:users,id',
+            'account_id' => 'required|uuid|exists:accounts,id',
+            'id' => 'nullable|string',
+            'vault_id' => 'required|uuid|exists:vaults,id',
+            'author_id' => 'required|uuid|exists:users,id',
             'first_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
             'middle_name' => 'nullable|string|max:255',
@@ -107,8 +107,8 @@ class CreateContact extends BaseService implements ServiceInterface
             'last_updated_at' => Carbon::now(),
             'listed' => $this->valueOrTrue($this->data, 'listed'),
         ]);
-        if (($uuid = $this->valueOrNull($this->data, 'uuid')) !== null) {
-            $this->contact->uuid = $uuid;
+        if (($id = $this->valueOrNull($this->data, 'id')) !== null) {
+            $this->contact->id = $id;
         }
     }
 

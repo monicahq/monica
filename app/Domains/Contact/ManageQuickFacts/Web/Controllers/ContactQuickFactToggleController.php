@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactQuickFactToggleController extends Controller
 {
-    public function update(Request $request, int $vaultId, int $contactId): JsonResponse
+    public function update(Request $request, string $vaultId, string $contactId): JsonResponse
     {
         $data = [
             'account_id' => Auth::user()->account_id,

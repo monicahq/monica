@@ -14,7 +14,7 @@ use Inertia\Inertia;
 
 class GroupController extends Controller
 {
-    public function index(Request $request, int $vaultId)
+    public function index(Request $request, string $vaultId)
     {
         $vault = Vault::findOrFail($vaultId);
 
@@ -24,7 +24,7 @@ class GroupController extends Controller
         ]);
     }
 
-    public function show(Request $request, int $vaultId, int $groupId)
+    public function show(Request $request, string $vaultId, int $groupId)
     {
         $vault = Vault::findOrFail($vaultId);
         $group = Group::with([

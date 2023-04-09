@@ -81,13 +81,13 @@ class VaultFileIndexViewHelper
         return match ($file->fileable_type) {
             Contact::class => [
                 'type' => 'contact',
-                'id' => $file->fileable->id,
-                'name' => $file->fileable->name,
-                'avatar' => $file->fileable->avatar,
+                'id' => $file->ufileable->id,
+                'name' => $file->ufileable->name,
+                'avatar' => $file->ufileable->avatar,
                 'url' => [
                     'show' => route('contact.show', [
-                        'vault' => $file->fileable->vault_id,
-                        'contact' => $file->fileable->id,
+                        'vault' => $file->ufileable->vault_id,
+                        'contact' => $file->ufileable->id,
                     ]),
                 ],
             ],

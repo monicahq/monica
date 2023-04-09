@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Http\Controllers\Profile\WebauthnDestroyResponse;
 use App\Http\Controllers\Profile\WebauthnUpdateResponse;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Database\Schema\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\RateLimiter;
@@ -56,6 +57,8 @@ class AppServiceProvider extends ServiceProvider
 
             return $result;
         });
+
+        Builder::defaultMorphKeyType('uuid');
     }
 
     /**

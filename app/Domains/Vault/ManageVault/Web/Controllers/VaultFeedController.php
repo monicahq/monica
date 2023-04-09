@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class VaultFeedController extends Controller
 {
-    public function show(Request $request, int $vaultId)
+    public function show(Request $request, string $vaultId)
     {
         $vault = Vault::findOrFail($vaultId);
 

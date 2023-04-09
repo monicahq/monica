@@ -15,7 +15,7 @@ use Inertia\Inertia;
 
 class VaultFileController extends Controller
 {
-    public function index(Request $request, int $vaultId)
+    public function index(Request $request, string $vaultId)
     {
         $vault = Vault::findOrFail($vaultId);
 
@@ -31,7 +31,7 @@ class VaultFileController extends Controller
         ]);
     }
 
-    public function photos(Request $request, int $vaultId)
+    public function photos(Request $request, string $vaultId)
     {
         $vault = Vault::findOrFail($vaultId);
 
@@ -48,7 +48,7 @@ class VaultFileController extends Controller
         ]);
     }
 
-    public function documents(Request $request, int $vaultId)
+    public function documents(Request $request, string $vaultId)
     {
         $vault = Vault::findOrFail($vaultId);
 
@@ -65,7 +65,7 @@ class VaultFileController extends Controller
         ]);
     }
 
-    public function avatars(Request $request, int $vaultId)
+    public function avatars(Request $request, string $vaultId)
     {
         $vault = Vault::findOrFail($vaultId);
 
@@ -82,7 +82,7 @@ class VaultFileController extends Controller
         ]);
     }
 
-    public function destroy(Request $request, int $vaultId, int $fileId)
+    public function destroy(Request $request, string $vaultId, int $fileId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

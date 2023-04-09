@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactModuleReligionController extends Controller
 {
-    public function update(Request $request, int $vaultId, int $contactId)
+    public function update(Request $request, string $vaultId, string $contactId)
     {
         (new UpdateReligion())->execute([
             'account_id' => Auth::user()->account_id,

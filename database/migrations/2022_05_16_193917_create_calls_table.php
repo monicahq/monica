@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Contact;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,9 +17,9 @@ return new class() extends Migration
     {
         Schema::create('calls', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('contact_id');
+            $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
             $table->unsignedBigInteger('call_reason_id')->nullable();
-            $table->unsignedBigInteger('author_id')->nullable();
+            $table->foreignIdFor(User::class, 'author_id')->nullable()->constrained('users')->nullOnDelete();
             $table->unsignedBigInteger('emotion_id')->nullable();
             $table->string('author_name');
             $table->datetime('called_at');
@@ -27,9 +29,7 @@ return new class() extends Migration
             $table->boolean('answered')->default(true);
             $table->string('who_initiated');
             $table->timestamps();
-            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
             $table->foreign('call_reason_id')->references('id')->on('call_reasons')->onDelete('cascade');
-            $table->foreign('author_id')->references('id')->on('users')->onDelete('set null');
             $table->foreign('emotion_id')->references('id')->on('emotions')->onDelete('set null');
         });
     }

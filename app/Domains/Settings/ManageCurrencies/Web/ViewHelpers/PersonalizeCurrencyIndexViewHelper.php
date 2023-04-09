@@ -32,7 +32,7 @@ class PersonalizeCurrencyIndexViewHelper
 
     public static function dtoCurrency(Currency $currency, Account $account): array
     {
-        $record = DB::table('account_currencies')
+        $record = DB::table('account_currency')
             ->where('account_id', $account->id)
             ->where('currency_id', $currency->id)
             ->first();

@@ -31,29 +31,45 @@ trait CardEtag
         $sabreversion = \Sabre\VObject\Version::VERSION;
         $timestamp = $contact->updated_at->format('Ymd\THis\Z');
 
-        $data = "BEGIN:VCARD
-VERSION:4.0
-PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN
-UID:{$contact->uuid}
-SOURCE:{$url}
-FN:{$contact->name}
-N:{$contact->last_name};{$contact->first_name};{$contact->middle_name};;
-";
+        $data = $this->append('BEGIN:VCARD');
+        $data = $this->append('VERSION:4.0', $data);
+        $data = $this->append("PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN", $data);
+        $data = $this->append("UID:{$contact->id}", $data);
+        $data = $this->append("SOURCE:{$url}", $data);
+        $data = $this->append("FN:{$contact->name}", $data);
+        $data = $this->append("N:{$contact->last_name};{$contact->first_name};{$contact->middle_name};;", $data);
 
         if ($contact->nickname) {
-            $data .= "NICKNAME:{$contact->nickname}\n";
+            $data = $this->append("NICKNAME:{$contact->nickname}", $data);
         }
 
         if ($contact->gender) {
-            $data .= "GENDER:{$contact->gender->type}\n";
+            $data = $this->append("GENDER:{$contact->gender->type}", $data);
         }
 
-        $data .= "REV:{$timestamp}\n";
-        $data .= "END:VCARD\n";
+        $data = $this->append("REV:{$timestamp}", $data);
+        $data = $this->append('END:VCARD', $data);
 
         if ($realFormat) {
             $data = mb_ereg_replace("\n", "\r\n", $data);
         }
+
+        return $data;
+    }
+
+    /**
+     * Append content to the vcf, and split if the line is greater than 76 characters.
+     */
+    protected function append(string $content, string $data = ''): string
+    {
+        $tab = '';
+        while (mb_strlen($content) > 75) {
+            $chunk = mb_substr($content, 0, 75);
+            $content = mb_substr($content, 75);
+            $data .= $tab.$chunk."\n";
+            $tab = ' ';
+        }
+        $data .= $tab.$content."\n";
 
         return $data;
     }

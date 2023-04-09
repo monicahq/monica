@@ -157,7 +157,7 @@ class ImportContact extends Importer implements ImportVCardResource
     private function importUid(array $contactData, VCard $entry): array
     {
         if (! empty($uuid = (string) $entry->UID) && Uuid::isValid($uuid)) {
-            $contactData['uuid'] = $uuid;
+            $contactData['id'] = $uuid;
         }
 
         return $contactData;

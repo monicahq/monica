@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class VaultSettingsQuickFactTemplatePositionController extends Controller
 {
-    public function update(Request $request, int $vaultId, int $quickFactId)
+    public function update(Request $request, string $vaultId, int $quickFactId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

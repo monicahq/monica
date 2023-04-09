@@ -20,8 +20,8 @@ class UpdateLifeEventCategoryPosition extends BaseService implements ServiceInte
     public function rules(): array
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
-            'author_id' => 'required|integer|exists:users,id',
+            'account_id' => 'required|uuid|exists:accounts,id',
+            'author_id' => 'required|uuid|exists:users,id',
             'life_event_category_id' => 'required|integer|exists:life_event_categories,id',
             'new_position' => 'required|integer',
         ];

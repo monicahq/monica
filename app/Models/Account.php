@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Account extends Model
 {
     use HasFactory;
+    use HasUuids;
 
     /**
      * The attributes that are mass assignable.
@@ -115,7 +117,7 @@ class Account extends Model
      */
     public function currencies(): BelongsToMany
     {
-        return $this->belongsToMany(Currency::class, 'account_currencies', 'account_id', 'currency_id')
+        return $this->belongsToMany(Currency::class)
             ->withPivot('active')
             ->withTimestamps();
     }

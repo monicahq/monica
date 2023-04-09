@@ -65,7 +65,7 @@ class EnableAllCurrenciesTest extends TestCase
 
         (new EnableAllCurrencies())->execute($request);
 
-        $this->assertDatabaseHas('account_currencies', [
+        $this->assertDatabaseHas('account_currency', [
             'account_id' => $account->id,
             'active' => true,
         ]);

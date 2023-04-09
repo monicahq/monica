@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PostTagController extends Controller
 {
-    public function store(Request $request, int $vaultId, int $journalId, int $postId)
+    public function store(Request $request, string $vaultId, int $journalId, int $postId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -43,7 +43,7 @@ class PostTagController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $journalId, int $postId, int $tagId)
+    public function update(Request $request, string $vaultId, int $journalId, int $postId, int $tagId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -63,7 +63,7 @@ class PostTagController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $journalId, int $postId, int $tagId)
+    public function destroy(Request $request, string $vaultId, int $journalId, int $postId, int $tagId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

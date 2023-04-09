@@ -14,8 +14,8 @@ class ToggleCurrency extends BaseService implements ServiceInterface
     public function rules(): array
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
-            'author_id' => 'required|integer|exists:users,id',
+            'account_id' => 'required|uuid|exists:accounts,id',
+            'author_id' => 'required|uuid|exists:users,id',
             'currency_id' => 'required|integer|exists:currencies,id',
         ];
     }
@@ -38,7 +38,7 @@ class ToggleCurrency extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        DB::table('account_currencies')
+        DB::table('account_currency')
             ->where('account_id', $data['account_id'])
             ->where('currency_id', $data['currency_id'])
             ->update([

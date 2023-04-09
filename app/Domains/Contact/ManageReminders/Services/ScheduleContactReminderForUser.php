@@ -26,7 +26,7 @@ class ScheduleContactReminderForUser extends BaseService implements ServiceInter
     {
         return [
             'contact_reminder_id' => 'required|integer|exists:contact_reminders,id',
-            'user_id' => 'required|integer|exists:users,id',
+            'user_id' => 'required|uuid|exists:users,id',
         ];
     }
 

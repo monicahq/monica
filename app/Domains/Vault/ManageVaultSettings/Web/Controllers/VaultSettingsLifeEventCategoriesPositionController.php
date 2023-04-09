@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class VaultSettingsLifeEventCategoriesPositionController extends Controller
 {
-    public function update(Request $request, int $vaultId, int $lifeEventCategoryId)
+    public function update(Request $request, string $vaultId, int $lifeEventCategoryId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

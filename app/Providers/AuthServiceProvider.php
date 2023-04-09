@@ -111,6 +111,6 @@ class AuthServiceProvider extends ServiceProvider
 
     protected static function id($model)
     {
-        return is_subclass_of($model, Model::class) ? $model->getKey() : (int) $model;
+        return is_subclass_of($model, Model::class) ? $model->getKey() : $model;
     }
 }

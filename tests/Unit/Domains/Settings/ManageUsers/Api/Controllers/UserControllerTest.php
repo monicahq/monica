@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Domains\Settings\ManageUsers\Api\Controllers;
 
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Str;
 use Tests\ApiTestCase;
 
 class UserControllerTest extends ApiTestCase
@@ -89,9 +89,9 @@ class UserControllerTest extends ApiTestCase
     {
         $this->createUser(['read']);
 
-        $user = User::factory()->create();
+        $uuid = (string) Str::orderedUuid();
 
-        $response = $this->get('/api/vaults/'.$user->id);
+        $response = $this->get("/api/users/$uuid");
 
         $response->assertResourceNotFound();
     }

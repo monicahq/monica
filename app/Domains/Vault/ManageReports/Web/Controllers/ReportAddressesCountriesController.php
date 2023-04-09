@@ -11,7 +11,7 @@ use Inertia\Inertia;
 
 class ReportAddressesCountriesController extends Controller
 {
-    public function show(Request $request, int $vaultId, string $country)
+    public function show(Request $request, string $vaultId, string $country)
     {
         $vault = Vault::findOrFail($vaultId);
         $country = utf8_decode(urldecode($country));

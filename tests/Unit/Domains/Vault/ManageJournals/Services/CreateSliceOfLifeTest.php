@@ -100,7 +100,7 @@ class CreateSliceOfLifeTest extends TestCase
 
         $sliceOfLife = (new CreateSliceOfLife())->execute($request);
 
-        $this->assertDatabaseHas('slices_of_life', [
+        $this->assertDatabaseHas('slice_of_lives', [
             'id' => $sliceOfLife->id,
             'journal_id' => $journal->id,
             'name' => 'this is a title',

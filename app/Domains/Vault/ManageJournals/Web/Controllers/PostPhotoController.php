@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PostPhotoController extends Controller
 {
-    public function store(Request $request, int $vaultId, int $journalId, int $postId)
+    public function store(Request $request, string $vaultId, int $journalId, int $postId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -44,7 +44,7 @@ class PostPhotoController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $journalId, int $postId, int $fileId)
+    public function destroy(Request $request, string $vaultId, int $journalId, int $postId, int $fileId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

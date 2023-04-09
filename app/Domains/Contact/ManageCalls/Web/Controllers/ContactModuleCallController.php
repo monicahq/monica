@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactModuleCallController extends Controller
 {
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, string $vaultId, string $contactId)
     {
         $carbonDate = Carbon::parse($request->input('called_at'));
         $answered = false;
@@ -65,7 +65,7 @@ class ContactModuleCallController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, int $vaultId, int $contactId, int $callId)
+    public function update(Request $request, string $vaultId, string $contactId, int $callId)
     {
         $carbonDate = Carbon::parse($request->input('called_at'));
         $answered = false;
@@ -120,7 +120,7 @@ class ContactModuleCallController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId, int $callId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $callId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

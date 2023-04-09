@@ -15,7 +15,7 @@ use Redirect;
 
 class ContactMoveController extends Controller
 {
-    public function show(Request $request, int $vaultId, int $contactId)
+    public function show(Request $request, string $vaultId, string $contactId)
     {
         $vault = Vault::findOrFail($vaultId);
         $contact = Contact::findOrFail($contactId);
@@ -26,7 +26,7 @@ class ContactMoveController extends Controller
         ]);
     }
 
-    public function store(Request $request, int $vaultId, int $contactId)
+    public function store(Request $request, string $vaultId, string $contactId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

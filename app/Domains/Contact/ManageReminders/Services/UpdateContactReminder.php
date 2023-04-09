@@ -19,10 +19,10 @@ class UpdateContactReminder extends BaseService implements ServiceInterface
     public function rules(): array
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
-            'vault_id' => 'required|integer|exists:vaults,id',
-            'author_id' => 'required|integer|exists:users,id',
-            'contact_id' => 'required|integer|exists:contacts,id',
+            'account_id' => 'required|uuid|exists:accounts,id',
+            'vault_id' => 'required|uuid|exists:vaults,id',
+            'author_id' => 'required|uuid|exists:users,id',
+            'contact_id' => 'required|uuid|exists:contacts,id',
             'contact_reminder_id' => 'required|integer|exists:contact_reminders,id',
             'label' => 'required|string|max:255',
             'day' => 'nullable|integer',

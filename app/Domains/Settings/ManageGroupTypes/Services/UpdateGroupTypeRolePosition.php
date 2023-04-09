@@ -23,8 +23,8 @@ class UpdateGroupTypeRolePosition extends BaseService implements ServiceInterfac
     public function rules(): array
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
-            'author_id' => 'required|integer|exists:users,id',
+            'account_id' => 'required|uuid|exists:accounts,id',
+            'author_id' => 'required|uuid|exists:users,id',
             'group_type_id' => 'required|integer|exists:group_types,id',
             'group_type_role_id' => 'required|integer|exists:group_type_roles,id',
             'new_position' => 'required|integer',

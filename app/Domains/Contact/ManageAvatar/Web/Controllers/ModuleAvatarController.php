@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ModuleAvatarController extends Controller
 {
-    public function update(Request $request, int $vaultId, int $contactId)
+    public function update(Request $request, string $vaultId, string $contactId)
     {
         // first we upload the file
         $data = [
@@ -48,7 +48,7 @@ class ModuleAvatarController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, int $vaultId, int $contactId)
+    public function destroy(Request $request, string $vaultId, string $contactId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,

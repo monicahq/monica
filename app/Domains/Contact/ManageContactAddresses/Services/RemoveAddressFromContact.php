@@ -21,10 +21,10 @@ class RemoveAddressFromContact extends BaseService implements ServiceInterface
     public function rules(): array
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
-            'vault_id' => 'required|integer|exists:vaults,id',
-            'author_id' => 'required|integer|exists:users,id',
-            'contact_id' => 'required|integer|exists:contacts,id',
+            'account_id' => 'required|uuid|exists:accounts,id',
+            'vault_id' => 'required|uuid|exists:vaults,id',
+            'author_id' => 'required|uuid|exists:users,id',
+            'contact_id' => 'required|uuid|exists:contacts,id',
             'address_id' => 'required|integer|exists:addresses,id',
         ];
     }
