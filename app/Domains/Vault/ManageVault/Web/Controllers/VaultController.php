@@ -16,6 +16,16 @@ use Inertia\Inertia;
 
 class VaultController extends Controller
 {
+    /**
+     * Create the controller instance.
+     *
+     * @see \App\Policies\VaultPolicy
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Vault::class, 'vault');
+    }
+
     public function index()
     {
         return Inertia::render('Vault/Index', [
@@ -49,10 +59,8 @@ class VaultController extends Controller
         ], 201);
     }
 
-    public function show(Request $request, int $vaultId)
+    public function show(Request $request, Vault $vault)
     {
-        $vault = Vault::find($vaultId);
-
         $contact = Auth::user()->getContactInVault($vault);
 
         return Inertia::render('Vault/Dashboard/Index', [
@@ -66,21 +74,21 @@ class VaultController extends Controller
             'lifeEvents' => ModuleLifeEventViewHelper::data($contact, Auth::user()),
             'url' => [
                 'feed' => route('vault.feed.show', [
-                    'vault' => $vaultId,
+                    'vault' => $vault,
                 ]),
                 'default_tab' => route('vault.default_tab.update', [
-                    'vault' => $vaultId,
+                    'vault' => $vault,
                 ]),
             ],
         ]);
     }
 
-    public function destroy(Request $request, int $vaultId)
+    public function destroy(Request $request, Vault $vault)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
-            'vault_id' => $vaultId,
+            'vault_id' => $vault->id,
         ];
 
         (new DestroyVault())->execute($data);

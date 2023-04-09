@@ -17,14 +17,13 @@ use App\Models\Contact;
 use App\Models\Vault;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class ContactController extends Controller
 {
-    public function index(Request $request, int $vaultId)
+    public function index(Request $request, Vault $vault)
     {
-        $vault = Vault::findOrFail($vaultId);
-
         $contacts = Contact::where('vault_id', $request->route()->parameter('vault'))
             ->where('listed', true)
             ->orderBy('created_at', 'asc')
@@ -37,9 +36,9 @@ class ContactController extends Controller
         ]);
     }
 
-    public function create(Request $request, int $vaultId)
+    public function create(Request $request, Vault $vault)
     {
-        $vault = Vault::findOrFail($vaultId);
+        Gate::authorize('vault-editor', $vault);
 
         return Inertia::render('Vault/Contact/Create', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
@@ -49,6 +48,8 @@ class ContactController extends Controller
 
     public function store(Request $request, int $vaultId)
     {
+        Gate::authorize('vault-editor', $vaultId);
+
         $data = [
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),

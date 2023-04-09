@@ -180,10 +180,10 @@ Route::middleware([
         Route::get('', [VaultController::class, 'index'])->name('vault.index');
         Route::get('create', [VaultController::class, 'create'])->name('vault.create');
         Route::post('', [VaultController::class, 'store'])->name('vault.store');
+        Route::get('{vault}', [VaultController::class, 'show'])->name('vault.show');
+        Route::delete('{vault}', [VaultController::class, 'destroy'])->name('vault.destroy');
 
-        Route::middleware(['vault'])->prefix('{vault}')->group(function () {
-            Route::get('', [VaultController::class, 'show'])->name('vault.show');
-
+        Route::middleware('can:vault-viewer,vault')->prefix('{vault}')->group(function () {
             // update dashboard's default tab
             Route::put('defaultTab', [VaultDefaultTabOnDashboardController::class, 'update'])->name('vault.default_tab.update');
 
@@ -218,11 +218,11 @@ Route::middleware([
                 Route::get('labels/{label}', [ContactLabelController::class, 'index'])->name('contact.label.index');
 
                 // create a contact
-                Route::middleware(['atLeastVaultEditor'])->get('create', [ContactController::class, 'create'])->name('contact.create');
-                Route::middleware(['atLeastVaultEditor'])->post('', [ContactController::class, 'store'])->name('contact.store');
+                Route::get('create', [ContactController::class, 'create'])->name('contact.create');
+                Route::post('', [ContactController::class, 'store'])->name('contact.store');
 
                 // contact page
-                Route::middleware(['contact'])->prefix('{contact}')->group(function () {
+                Route::middleware('can:contact-owner,vault,contact')->prefix('{contact}')->group(function () {
                     // general page information
                     Route::get('', [ContactController::class, 'show'])->name('contact.show');
                     Route::get('/edit', [ContactController::class, 'edit'])->name('contact.edit');
@@ -367,7 +367,7 @@ Route::middleware([
 
             // group page
             Route::get('groups', [GroupController::class, 'index'])->name('group.index');
-            Route::prefix('groups')->middleware(['group'])->group(function () {
+            Route::middleware('can:group-owner,vault,group')->prefix('groups')->group(function () {
                 Route::get('{group}', [GroupController::class, 'show'])->name('group.show');
             });
 
@@ -376,10 +376,10 @@ Route::middleware([
                 Route::get('', [JournalController::class, 'index'])->name('journal.index');
 
                 // create a journal
-                Route::middleware(['atLeastVaultEditor'])->get('/create', [JournalController::class, 'create'])->name('journal.create');
-                Route::middleware(['atLeastVaultEditor'])->post('', [JournalController::class, 'store'])->name('journal.store');
+                Route::get('/create', [JournalController::class, 'create'])->name('journal.create');
+                Route::post('', [JournalController::class, 'store'])->name('journal.store');
 
-                Route::prefix('{journal}')->middleware(['journal'])->group(function () {
+                Route::middleware('can:journal-owner,vault,journal')->prefix('{journal}')->group(function () {
                     Route::get('', [JournalController::class, 'show'])->name('journal.show');
                     Route::get('photos', [JournalPhotoController::class, 'index'])->name('journal.photo.index');
                     Route::get('years/{year}', [JournalController::class, 'year'])->name('journal.year');
@@ -392,7 +392,7 @@ Route::middleware([
                     Route::get('posts/template/{template}', [PostController::class, 'store'])->name('post.store');
 
                     // details of a post
-                    Route::prefix('posts/{post}')->middleware(['post'])->group(function () {
+                    Route::middleware('can:post-owner,journal,post')->prefix('posts/{post}')->group(function () {
                         Route::get('', [PostController::class, 'show'])->name('post.show');
                         Route::get('edit', [PostController::class, 'edit'])->name('post.edit');
                         Route::put('update', [PostController::class, 'update'])->name('post.update');
@@ -414,7 +414,7 @@ Route::middleware([
                     Route::get('slices', [SliceOfLifeController::class, 'index'])->name('slices.index');
                     Route::post('slices', [SliceOfLifeController::class, 'store'])->name('slices.store');
 
-                    Route::prefix('slices/{slice}')->middleware(['slice'])->group(function () {
+                    Route::middleware('can:slice-owner,journal,slice')->prefix('slices/{slice}')->group(function () {
                         Route::get('', [SliceOfLifeController::class, 'show'])->name('slices.show');
                         Route::get('edit', [SliceOfLifeController::class, 'edit'])->name('slices.edit');
                         Route::put('', [SliceOfLifeController::class, 'update'])->name('slices.update');
@@ -442,14 +442,13 @@ Route::middleware([
             });
 
             // vault settings
-            Route::middleware(['atLeastVaultManager'])->group(function () {
+            Route::middleware('can:vault-manager,vault')->group(function () {
                 Route::get('settings', [VaultSettingsController::class, 'index'])->name('vault.settings.index');
                 Route::put('settings', [VaultSettingsController::class, 'update'])->name('vault.settings.update');
                 Route::put('settings/template', [VaultSettingsTemplateController::class, 'update'])->name('vault.settings.template.update');
                 Route::post('settings/users', [VaultSettingsUserController::class, 'store'])->name('vault.settings.user.store');
                 Route::put('settings/users/{user}', [VaultSettingsUserController::class, 'update'])->name('vault.settings.user.update');
                 Route::delete('settings/users/{user}', [VaultSettingsUserController::class, 'destroy'])->name('vault.settings.user.destroy');
-                Route::delete('', [VaultController::class, 'destroy'])->name('vault.settings.destroy');
 
                 // labels
                 Route::get('settings/labels', [VaultSettingsLabelController::class, 'index'])->name('vault.settings.label.index');
@@ -538,7 +537,7 @@ Route::middleware([
         });
 
         // only for administrators
-        Route::middleware(['administrator'])->group(function () {
+        Route::middleware('can:administrator')->group(function () {
             // users
             Route::prefix('users')->name('user.')->group(function () {
                 Route::get('', [UserController::class, 'index'])->name('index');

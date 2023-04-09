@@ -155,37 +155,37 @@ class VaultSettingsIndexViewHelper
             ],
             'url' => [
                 'template_update' => route('vault.settings.template.update', [
-                    'vault' => $vault->id,
+                    'vault' => $vault,
                 ]),
                 'user_store' => route('vault.settings.user.store', [
-                    'vault' => $vault->id,
+                    'vault' => $vault,
                 ]),
                 'label_store' => route('vault.settings.label.store', [
-                    'vault' => $vault->id,
+                    'vault' => $vault,
                 ]),
                 'tag_store' => route('vault.settings.tag.store', [
-                    'vault' => $vault->id,
+                    'vault' => $vault,
                 ]),
                 'contact_date_important_date_type_store' => route('vault.settings.important_date_type.store', [
-                    'vault' => $vault->id,
+                    'vault' => $vault,
                 ]),
                 'mood_tracking_parameter_store' => route('vault.settings.mood_tracking_parameter.store', [
-                    'vault' => $vault->id,
+                    'vault' => $vault,
                 ]),
                 'life_event_category_store' => route('vault.settings.life_event_categories.store', [
-                    'vault' => $vault->id,
+                    'vault' => $vault,
                 ]),
                 'quick_fact_templates_store' => route('vault.settings.quick_fact_templates.store', [
-                    'vault' => $vault->id,
+                    'vault' => $vault,
                 ]),
                 'update' => route('vault.settings.update', [
-                    'vault' => $vault->id,
+                    'vault' => $vault,
                 ]),
                 'update_tab_visibility' => route('vault.settings.tab.update', [
-                    'vault' => $vault->id,
+                    'vault' => $vault,
                 ]),
-                'destroy' => route('vault.settings.destroy', [
-                    'vault' => $vault->id,
+                'destroy' => route('vault.destroy', [
+                    'vault' => $vault,
                 ]),
             ],
         ];
@@ -199,12 +199,12 @@ class VaultSettingsIndexViewHelper
             'permission' => VaultHelper::getPermission($user, $vault),
             'url' => [
                 'update' => route('vault.settings.user.update', [
-                    'vault' => $vault->id,
-                    'user' => $user->id,
+                    'vault' => $vault,
+                    'user' => $user,
                 ]),
                 'destroy' => route('vault.settings.user.destroy', [
-                    'vault' => $vault->id,
-                    'user' => $user->id,
+                    'vault' => $vault,
+                    'user' => $user,
                 ]),
             ],
         ];

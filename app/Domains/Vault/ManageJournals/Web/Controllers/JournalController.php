@@ -16,24 +16,23 @@ use App\Models\Vault;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Redirect;
 
 class JournalController extends Controller
 {
-    public function index(Request $request, int $vaultId)
+    public function index(Request $request, Vault $vault)
     {
-        $vault = Vault::findOrFail($vaultId);
-
         return Inertia::render('Vault/Journal/Index', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
             'data' => JournalIndexViewHelper::data($vault, Auth::user()),
         ]);
     }
 
-    public function create(Request $request, int $vaultId)
+    public function create(Request $request, Vault $vault)
     {
-        $vault = Vault::findOrFail($vaultId);
+        Gate::authorize('vault-editor', $vault);
 
         return Inertia::render('Vault/Journal/Create', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
@@ -43,6 +42,8 @@ class JournalController extends Controller
 
     public function store(Request $request, int $vaultId)
     {
+        Gate::authorize('vault-editor', $vaultId);
+
         $data = [
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
