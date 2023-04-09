@@ -165,8 +165,7 @@ jobs:
 
       - name: Merge junit files
         run: |
-          yarn global add junit-merge
-          $(yarn global bin)/junit-merge --recursive --dir results/${{ env.coverage-with }}/junit --out results/results.xml
+          yarn dlx junit-merge --recursive --dir results/${{ env.coverage-with }}/junit --out results/results.xml
 
       - name: Set version parameter
         id: version

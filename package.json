@@ -5,9 +5,9 @@
     "build": "vite build",
     "lint": "eslint --ext .js,.vue *.js resources",
     "format": "prettier --write '**/*.{js,vue,css,scss}'",
-    "prepare": "husky install",
-    "pretest": "DB_CONNECTION=testing php artisan migrate:fresh && DB_CONNECTION=testing php artisan db:seed",
+    "pretest": "php artisan migrate:fresh --database=testing && php artisan db:seed --database=testing",
     "posttest": "vendor/bin/phpstan analyse && vendor/bin/psalm",
+    "postinstall": "husky install",
     "test": "vendor/bin/phpunit",
     "docker:build": "docker build --cache-from monica-next -t monica-next -f scripts/docker/Dockerfile . && docker image prune -f",
     "docker:run": "docker run --name monica -p 8080:80 monica-next"
@@ -16,9 +16,11 @@
     "@inertiajs/inertia": "^0.11.0",
     "@inertiajs/inertia-vue3": "^0.6.0",
     "@inertiajs/progress": "^0.2.6",
+    "@popperjs/core": "^2.11.7",
     "@sentry/tracing": "^7.11.1",
     "@sentry/vue": "^7.11.1",
     "@tailwindcss/forms": "^0.5.2",
+    "@tailwindcss/typography": "^0.5.7",
     "@vitejs/plugin-basic-ssl": "^1.0.1",
     "@vitejs/plugin-vue": "^4.0.0",
     "ant-design-vue": "^3.2.5",
@@ -57,11 +59,8 @@
       "prettier --write --ignore-unknown"
     ],
     "**/*.php": [
-      "php artisan ide-helper:models --nowrite",
       "vendor/bin/pint"
     ]
   },
-  "dependencies": {
-    "@tailwindcss/typography": "^0.5.7"
-  }
+  "packageManager": "yarn@3.5.0"
 }

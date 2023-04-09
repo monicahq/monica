@@ -14,6 +14,13 @@
 /.scribe
 /tests/Features/screenshots/
 /tests/Features/videos/
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 _ide_helper.php
 _ide_helper_models.php
 .env
