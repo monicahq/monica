@@ -122,7 +122,7 @@ const destroy = () => {
     </nav>
 
     <main class="sm:mt-18 relative">
-      <div class="mx-auto max-w-4xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-4xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <div>
           <!-- header image -->
           <uploadcare
@@ -180,10 +180,10 @@ const destroy = () => {
             <h1 class="text-2xl">{{ localSlice.name }}</h1>
 
             <!-- slice description -->
-            <p v-if="localSlice.description" class="mt-2 mb-8">{{ localSlice.description }}</p>
+            <p v-if="localSlice.description" class="mb-8 mt-2">{{ localSlice.description }}</p>
 
             <!-- number of posts -->
-            <p class="mt-8 mb-6 flex items-center text-sm">
+            <p class="mb-6 mt-8 flex items-center text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

@@ -296,7 +296,7 @@ const store = () => {
       <!-- description -->
       <div
         v-if="selectedLifeEventType && addDistanceFieldShown"
-        class="flex items-center border-b border-gray-200 pt-3 pb-1 pr-3 pl-3 dark:border-gray-700">
+        class="flex items-center border-b border-gray-200 pb-1 pl-3 pr-3 pt-3 dark:border-gray-700">
         <text-input
           ref="distanceField"
           v-model="form.distance"
@@ -349,7 +349,7 @@ const store = () => {
         <!-- summary -->
         <div v-if="!addSummaryFieldShown">
           <span
-            class="mr-2 mb-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:text-gray-900"
+            class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:text-gray-900"
             @click="showAddSummaryField"
             >+ summary
           </span>
@@ -358,7 +358,7 @@ const store = () => {
         <!-- description -->
         <div v-if="!addDescriptionFieldShown">
           <span
-            class="mr-2 mb-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:text-gray-900"
+            class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:text-gray-900"
             @click="showAddDescriptionField"
             >+ description
           </span>
@@ -367,7 +367,7 @@ const store = () => {
         <!-- distance -->
         <div v-if="!addDistanceFieldShown">
           <span
-            class="mr-2 mb-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:text-gray-900"
+            class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:text-gray-900"
             @click="showAddDistanceField"
             >+ distance
           </span>

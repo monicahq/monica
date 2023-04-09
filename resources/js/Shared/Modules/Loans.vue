@@ -31,7 +31,7 @@
         @submit.prevent="submit()">
         <div class="border-b border-gray-200 dark:border-gray-700">
           <!-- loan options -->
-          <div class="border-b border-gray-200 px-5 pt-5 pb-3 dark:border-gray-700">
+          <div class="border-b border-gray-200 px-5 pb-3 pt-5 dark:border-gray-700">
             <ul class="">
               <li class="mr-5 inline-block">
                 <div class="flex items-center">
@@ -253,7 +253,7 @@
           @submit.prevent="update(loan)">
           <div class="border-b border-gray-200 dark:border-gray-700">
             <!-- loan options -->
-            <div class="border-b border-gray-200 px-5 pt-5 pb-3 dark:border-gray-700">
+            <div class="border-b border-gray-200 px-5 pb-3 pt-5 dark:border-gray-700">
               <ul class="">
                 <li class="mr-5 inline-block">
                   <div class="flex items-center">

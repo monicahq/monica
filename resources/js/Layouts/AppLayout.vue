@@ -61,7 +61,7 @@ const logout = () => {
                         {{ $page.props.user.name }}
 
                         <svg
-                          class="ml-2 -mr-0.5 h-4 w-4"
+                          class="-mr-0.5 ml-2 h-4 w-4"
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
                           fill="currentColor">
@@ -135,14 +135,14 @@ const logout = () => {
 
         <!-- Responsive Navigation Menu -->
         <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }" class="sm:hidden">
-          <div class="space-y-1 pt-2 pb-3">
+          <div class="space-y-1 pb-3 pt-2">
             <JetResponsiveNavLink :href="route('vault.index')" :active="route().current('vault.index')">
               {{ $t('Home') }}
             </JetResponsiveNavLink>
           </div>
 
           <!-- Responsive Settings Options -->
-          <div class="border-t border-gray-200 pt-4 pb-1 dark:border-gray-800">
+          <div class="border-t border-gray-200 pb-1 pt-4 dark:border-gray-800">
             <div class="flex items-center px-4">
               <div v-if="$page.props.jetstream.managesProfilePhotos" class="mr-3 shrink-0">
                 <img
@@ -191,7 +191,7 @@ const logout = () => {
 
       <!-- Page Heading -->
       <header v-if="$slots.header" class="bg-white shadow dark:bg-gray-900 dark:shadow-gray-700">
-        <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <slot name="header" />
         </div>
       </header>

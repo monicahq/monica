@@ -104,7 +104,7 @@ const clearPhotoFileInput = () => {
             :style="'background-image: url(\'' + photoPreview + '\');'" />
         </div>
 
-        <JetSecondaryButton class="mt-2 mr-2" type="button" @click.prevent="selectNewPhoto">
+        <JetSecondaryButton class="mr-2 mt-2" type="button" @click.prevent="selectNewPhoto">
           {{ $t('Select A New Photo') }}
         </JetSecondaryButton>
 

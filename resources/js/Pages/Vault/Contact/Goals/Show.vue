@@ -47,7 +47,7 @@
     </nav>
 
     <main class="sm:mt-18 relative">
-      <div class="mx-auto max-w-5xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-5xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
           <!-- left -->
           <div>

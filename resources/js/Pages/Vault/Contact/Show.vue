@@ -182,7 +182,7 @@ const destroyAvatar = () => {
     </nav>
 
     <main class="sm:mt-18 relative">
-      <div class="mx-auto max-w-6xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-6xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <!-- banner if contact is archived -->
         <!-- this is based on the `listed` boolean on the contact object -->
         <div v-if="!data.listed" class="mb-8 rounded-lg border border-gray-300 px-3 py-2 text-center">

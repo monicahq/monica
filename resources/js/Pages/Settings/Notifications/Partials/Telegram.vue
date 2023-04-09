@@ -31,7 +31,7 @@
 
           <select
             v-model="form.hours"
-            class="mr-1 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
+            class="mr-1 rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
             :required="required">
             <option v-for="n in 24" :key="n" :value="n - 1">
               {{ String(n - 1).padStart(2, '0') }}
@@ -42,7 +42,7 @@
 
           <select
             v-model="form.minutes"
-            class="mr-1 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
+            class="mr-1 rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
             :required="required">
             <option v-for="n in 12" :key="n" :value="(n - 1) * 5">
               {{ String((n - 1) * 5).padStart(2, '0') }}

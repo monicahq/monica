@@ -45,7 +45,7 @@
     </nav>
 
     <main class="relative sm:mt-16">
-      <div class="mx-auto max-w-6xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-6xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <!-- title + cta -->
         <div class="mb-6 mt-8 sm:mt-0">
           <h3 class="mb-4 text-center text-xl sm:mb-2">All the modules in the account</h3>
@@ -87,7 +87,7 @@
             <div>
               <!-- search a module -->
               <div
-                class="module-list rounded-t-md border-t border-r border-l border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                class="module-list rounded-t-md border-l border-r border-t border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
                 <text-input
                   v-model="form.search"
                   :type="'text'"

@@ -41,7 +41,7 @@ defineProps({
     </nav>
 
     <main class="sm:mt-18 relative">
-      <div class="mx-auto max-w-6xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-6xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <h1 class="text-2xl" :class="data.description ? 'mb-4' : 'mb-8'">{{ data.name }}</h1>
 
         <p v-if="data.description" class="mb-8">{{ data.description }}</p>
@@ -70,7 +70,7 @@ defineProps({
             </inertia-link>
 
             <inertia-link
-              class="inline-flex items-center rounded-r-md border-t border-b border-r border-gray-200 bg-gray-100 bg-white px-4 py-2 text-sm font-medium text-blue-700 text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-400 dark:bg-gray-700 dark:font-bold dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
+              class="inline-flex items-center rounded-r-md border-b border-r border-t border-gray-200 bg-gray-100 bg-white px-4 py-2 text-sm font-medium text-blue-700 text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-400 dark:bg-gray-700 dark:font-bold dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

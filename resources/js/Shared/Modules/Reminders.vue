@@ -70,7 +70,7 @@
               I know the exact date, including the year
             </label>
           </div>
-          <div v-if="form.choice == 'full_date'" class="ml-6 mb-4">
+          <div v-if="form.choice == 'full_date'" class="mb-4 ml-6">
             <v-date-picker v-model="form.date" class="inline-block h-full" :model-config="modelConfig">
               <template #default="{ inputValue, inputEvents }">
                 <input
@@ -96,7 +96,7 @@
               I only know the day and month, not the year
             </label>
           </div>
-          <div v-if="form.choice == 'month_day'" class="mt-2 ml-6 flex">
+          <div v-if="form.choice == 'month_day'" class="ml-6 mt-2 flex">
             <dropdown
               v-model="form.month"
               :data="data.months"
@@ -124,7 +124,7 @@
             If the date is in the past, the next occurence of the date will be next year.
           </p>
 
-          <div class="mt-4 ml-4">
+          <div class="ml-4 mt-4">
             <div class="mb-2 flex items-center">
               <input
                 id="one_time"
@@ -156,7 +156,7 @@
                 <select
                   :id="id"
                   v-model="form.frequencyNumber"
-                  class="mr-2 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
+                  class="mr-2 rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
                   :required="required"
                   @change="change">
                   <option v-for="n in 10" :key="n" :value="n">
@@ -167,7 +167,7 @@
                 <select
                   :id="id"
                   v-model="form.frequencyType"
-                  class="mr-2 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
+                  class="mr-2 rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
                   :required="required"
                   @change="change">
                   <option value="recurring_day">day</option>
@@ -269,7 +269,7 @@
                     I know the exact date, including the year
                   </label>
                 </div>
-                <div v-if="form.choice == 'full_date'" class="ml-6 mb-4">
+                <div v-if="form.choice == 'full_date'" class="mb-4 ml-6">
                   <v-date-picker v-model="form.date" class="inline-block h-full" :model-config="modelConfig">
                     <template #default="{ inputValue, inputEvents }">
                       <input
@@ -295,7 +295,7 @@
                     I only know the day and month, not the year
                   </label>
                 </div>
-                <div v-if="form.choice == 'month_day'" class="mt-2 ml-6 flex">
+                <div v-if="form.choice == 'month_day'" class="ml-6 mt-2 flex">
                   <dropdown
                     v-model="form.month"
                     :data="data.months"
@@ -322,7 +322,7 @@
                   If the date is in the past, the next occurence of the date will be next year.
                 </p>
 
-                <div class="mt-4 ml-4">
+                <div class="ml-4 mt-4">
                   <div class="mb-2 flex items-center">
                     <input
                       id="one_time"
@@ -354,7 +354,7 @@
                       <select
                         :id="id"
                         v-model="form.frequencyNumber"
-                        class="mr-2 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
+                        class="mr-2 rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
                         :required="required"
                         @change="change">
                         <option v-for="n in 10" :key="n" :value="n">
@@ -365,7 +365,7 @@
                       <select
                         :id="id"
                         v-model="form.frequencyType"
-                        class="mr-2 rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
+                        class="mr-2 rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
                         :required="required"
                         @change="change">
                         <option value="recurring_day">day</option>

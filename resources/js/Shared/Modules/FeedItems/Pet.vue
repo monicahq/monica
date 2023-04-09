@@ -23,7 +23,7 @@
       </div>
 
       <!-- the pet was deleted -->
-      <span v-else class="mr-2 mb-2">
+      <span v-else class="mb-2 mr-2">
         <span>{{ data.pet.description }}</span>
       </span>
     </div>

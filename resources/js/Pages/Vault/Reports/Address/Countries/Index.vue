@@ -55,7 +55,7 @@ defineProps({
     </nav>
 
     <main class="sm:mt-18 relative">
-      <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
           <!-- left -->
           <div>
@@ -78,7 +78,7 @@ defineProps({
               <li
                 v-for="address in data.addresses"
                 :key="address.id"
-                class="item-list border-b border-gray-200 px-3 pt-3 pb-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                class="item-list border-b border-gray-200 px-3 pb-2 pt-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
                 <span class="mb-1 block">{{ address.address }}</span>
                 <ul class="list">
                   <li v-for="contact in address.contacts" :key="contact.id" class="mr-3 inline">

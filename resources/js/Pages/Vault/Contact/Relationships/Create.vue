@@ -45,7 +45,7 @@
     </nav>
 
     <main class="relative sm:mt-16">
-      <div class="mx-auto max-w-lg px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-lg px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <form
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
           @submit.prevent="submit()">
@@ -61,7 +61,7 @@
               id="types"
               v-model="form.relationship_type_id"
               name="types"
-              class="w-full rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
+              class="w-full rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
               @change="load()">
               <optgroup v-for="group in data.relationship_group_types" :key="group.id" :label="group.name">
                 <option v-for="type in group.types" :key="type.id" :value="type.id">
@@ -172,25 +172,25 @@
                     <div class="mb-4 flex flex-wrap text-xs">
                       <span
                         v-if="!showLastNameField"
-                        class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
+                        class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                         @click="displayLastNameField">
                         + last name
                       </span>
                       <span
                         v-if="!showMiddleNameField"
-                        class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
+                        class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                         @click="displayMiddleNameField">
                         + middle name
                       </span>
                       <span
                         v-if="!showNicknameField"
-                        class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
+                        class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                         @click="displayNicknameField">
                         + nickname
                       </span>
                       <span
                         v-if="!showMaidenNameField"
-                        class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
+                        class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                         @click="displayMaidenNameField">
                         + maiden name
                       </span>
@@ -288,13 +288,13 @@
               <div class="flex flex-wrap text-xs">
                 <span
                   v-if="data.genders.length > 0 && !showGenderField"
-                  class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
+                  class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                   @click="displayGenderField">
                   + gender
                 </span>
                 <span
                   v-if="data.pronouns.length > 0 && !showPronounField"
-                  class="mr-2 mb-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
+                  class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                   @click="displayPronounField">
                   + pronoun
                 </span>

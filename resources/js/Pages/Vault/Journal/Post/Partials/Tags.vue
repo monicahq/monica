@@ -84,7 +84,7 @@
       <span
         v-for="tag in localTags"
         :key="tag.id"
-        class="mr-2 inline-block rounded bg-neutral-200 py-1 px-2 text-xs font-semibold text-neutral-500 last:mr-0">
+        class="mr-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-500 last:mr-0">
         <inertia-link :href="tag.url.show">{{ tag.name }}</inertia-link>
       </span>
     </div>

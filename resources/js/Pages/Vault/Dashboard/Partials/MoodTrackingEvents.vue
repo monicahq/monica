@@ -154,7 +154,7 @@ const submit = () => {
 
         <!-- date picker -->
         <div v-if="datePickerFieldShown">
-          <p class="mt-2 mb-2 block text-sm dark:text-gray-100">Change date</p>
+          <p class="mb-2 mt-2 block text-sm dark:text-gray-100">Change date</p>
           <v-date-picker v-model="form.date" :timezone="'UTC'" class="inline-block h-full" :model-config="modelConfig">
             <template #default="{ inputValue, inputEvents }">
               <input

@@ -58,7 +58,7 @@
         </div>
 
         <!-- task options -->
-        <div v-if="form.due_at_checked" class="mt-4 ml-4">
+        <div v-if="form.due_at_checked" class="ml-4 mt-4">
           <v-date-picker v-model="form.due_at" class="inline-block h-full" :model-config="modelConfig">
             <template #default="{ inputValue, inputEvents }">
               <input
@@ -152,7 +152,7 @@
             </div>
 
             <!-- task options -->
-            <div v-if="form.due_at_checked" class="mt-4 ml-4">
+            <div v-if="form.due_at_checked" class="ml-4 mt-4">
               <v-date-picker v-model="form.due_at" class="inline-block h-full" :model-config="modelConfig">
                 <template #default="{ inputValue, inputEvents }">
                   <input

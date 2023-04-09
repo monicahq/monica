@@ -11,7 +11,7 @@ defineProps({
 <template>
   <Layout :layout-data="layoutData" :inside-vault="true">
     <main class="relative sm:mt-20">
-      <div class="mx-auto max-w-md px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-md px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <h2 class="mb-6 text-center text-lg">All the reports</h2>
         <div class="mb-12 rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
           <ul>

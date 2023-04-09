@@ -61,7 +61,7 @@
       </div>
 
       <!-- the mood tracking event was deleted -->
-      <span v-else class="mr-2 mb-2">
+      <span v-else class="mb-2 mr-2">
         <span>{{ data.mood_tracking_event.description }}</span>
       </span>
     </div>

@@ -14,7 +14,7 @@ watch(message, async () => {
 <template>
   <div>
     <div v-if="show && message" :class="{ 'bg-indigo-500': style == 'success', 'bg-red-700': style == 'danger' }">
-      <div class="mx-auto max-w-screen-xl py-2 px-3 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-screen-xl px-3 py-2 sm:px-6 lg:px-8">
         <div class="flex flex-wrap items-center justify-between">
           <div class="flex w-0 min-w-0 flex-1 items-center">
             <span

@@ -170,7 +170,7 @@
             id="types"
             v-model="form.call_reason_id"
             name="types"
-            class="w-full rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
+            class="w-full rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
             <optgroup
               v-for="callReasonType in data.call_reason_types"
               :key="callReasonType.id"
@@ -280,12 +280,12 @@
             <!-- who called -->
             <span
               v-if="call.who_initiated == 'me'"
-              class="mr-2 rounded border border-neutral-200 py-1 px-2 text-xs font-semibold text-neutral-800">
+              class="mr-2 rounded border border-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800">
               I called
             </span>
             <span
               v-else
-              class="mr-2 rounded border border-neutral-200 py-1 px-2 text-xs font-semibold text-neutral-800">
+              class="mr-2 rounded border border-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800">
               {{ data.contact_name }} called
             </span>
 
@@ -445,7 +445,7 @@
                 id="types"
                 v-model="form.call_reason_id"
                 name="types"
-                class="w-full rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
+                class="w-full rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
                 <optgroup
                   v-for="callReasonType in data.call_reason_types"
                   :key="callReasonType.id"

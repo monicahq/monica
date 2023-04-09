@@ -45,7 +45,7 @@
     </nav>
 
     <main class="relative sm:mt-20">
-      <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <!-- title + cta -->
         <div class="mb-6 mt-8 items-center justify-between sm:mt-0 sm:flex">
           <h3 class="mb-4 sm:mb-0">
@@ -134,7 +134,7 @@
                   </ul>
                 </div>
 
-                <div class="state-list-icon ml-3 mb-3">👇</div>
+                <div class="state-list-icon mb-3 ml-3">👇</div>
               </div>
 
               <form

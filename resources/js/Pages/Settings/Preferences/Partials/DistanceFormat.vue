@@ -31,7 +31,7 @@
       <div class="border-b border-gray-200 px-5 py-2 dark:border-gray-700">
         <errors :errors="form.errors" />
 
-        <div class="mt-2 mb-2 flex items-center">
+        <div class="mb-2 mt-2 flex items-center">
           <input
             id="km"
             v-model="form.distanceFormat"

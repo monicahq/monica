@@ -154,7 +154,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
             <div>
               <span class="mr-2 text-gray-500">{{ timelineEvent.happened_at }}</span>
 
-              <span class="ml-3 whitespace-nowrap rounded-lg bg-slate-100 py-0.5 px-2 text-sm text-slate-400">{{
+              <span class="ml-3 whitespace-nowrap rounded-lg bg-slate-100 px-2 py-0.5 text-sm text-slate-400">{{
                 timelineEvent.life_events.length
               }}</span>
             </div>
@@ -199,7 +199,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
               v-for="lifeEvent in timelineEvent.life_events"
               :key="lifeEvent.id"
               :class="!lifeEvent.collapsed ? 'border' : ''"
-              class="ml-6 mb-2 rounded-lg border-gray-200">
+              class="mb-2 ml-6 rounded-lg border-gray-200">
               <!-- name of life event -->
               <div
                 :class="lifeEvent.collapsed ? 'rounded-lg border' : ''"
@@ -316,7 +316,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
             </div>
 
             <!-- add a new life event to the timeline -->
-            <div class="ml-6 mb-2">
+            <div class="mb-2 ml-6">
               <span
                 @click="showAddLifeEventModalForTimelineEventId = timelineEvent.id"
                 v-if="showAddLifeEventModalForTimelineEventId != timelineEvent.id"

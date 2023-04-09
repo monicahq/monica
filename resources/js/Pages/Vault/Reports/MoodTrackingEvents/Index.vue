@@ -37,7 +37,7 @@ defineProps({
     </nav>
 
     <main class="sm:mt-18 relative">
-      <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <!-- title -->
         <div class="mb-5 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
           <div class="mb-2 sm:mb-0">
@@ -63,7 +63,7 @@ defineProps({
         <!-- iteration over the month -->
         <div class="flex justify-center">
           <div v-for="month in data.months" :key="month.id" class="mb-6 flex flex-col text-center">
-            <h2 class="mr-2 mb-1 font-mono text-sm font-bold">{{ month.month_word }}</h2>
+            <h2 class="mb-1 mr-2 font-mono text-sm font-bold">{{ month.month_word }}</h2>
 
             <div v-for="day in month.days" :key="day.id">
               <div v-if="day.event" class="mr-2 inline-block h-4 w-4 rounded-full" :class="day.event.hex_color" />

@@ -32,7 +32,7 @@
         <select
           v-model="form.locale"
           name="locale"
-          class="rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
+          class="rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
           <option value="en">
             {{ $t('settings.user_preferences_locale_en') }}
           </option>

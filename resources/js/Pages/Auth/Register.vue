@@ -92,7 +92,7 @@ const policy = () => {
           autocomplete="new-password" />
       </div>
 
-      <div class="mt-4 mb-8">
+      <div class="mb-8 mt-4">
         <JetLabel for="password_confirmation" value="Confirm Password" />
         <JetInput
           id="password_confirmation"

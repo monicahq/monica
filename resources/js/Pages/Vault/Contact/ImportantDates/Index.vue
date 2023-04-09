@@ -45,7 +45,7 @@
     </nav>
 
     <main class="relative sm:mt-20">
-      <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <!-- title + cta -->
         <div class="mb-6 mt-8 items-center justify-between sm:mt-0 sm:flex">
           <h3 class="mb-4 sm:mb-0">
@@ -108,7 +108,7 @@
                   I know the exact date, including the year
                 </label>
               </div>
-              <div v-if="form.choice == 'full_date'" class="ml-6 mb-4">
+              <div v-if="form.choice == 'full_date'" class="mb-4 ml-6">
                 <v-date-picker v-model="form.date" class="inline-block h-full" :model-config="modelConfig">
                   <template #default="{ inputValue, inputEvents }">
                     <input
@@ -200,7 +200,7 @@
               </div>
 
               <!-- reminder options -->
-              <div v-if="form.reminder" class="mt-4 ml-4">
+              <div v-if="form.reminder" class="ml-4 mt-4">
                 <div class="mb-2 flex items-center">
                   <input
                     id="recurring_year"
@@ -255,7 +255,7 @@
 
                 <span
                   v-if="date.type"
-                  class="ml-2 inline-block rounded bg-neutral-200 py-0 px-1 text-xs text-neutral-500 last:mr-0">
+                  class="ml-2 inline-block rounded bg-neutral-200 px-1 py-0 text-xs text-neutral-500 last:mr-0">
                   {{ date.type.label }}
                 </span>
               </span>
@@ -321,7 +321,7 @@
                       I know the exact date, including the year
                     </label>
                   </div>
-                  <div v-if="form.choice == 'full_date'" class="ml-6 mb-4">
+                  <div v-if="form.choice == 'full_date'" class="mb-4 ml-6">
                     <v-date-picker
                       v-model="form.date"
                       class="inline-block h-full"

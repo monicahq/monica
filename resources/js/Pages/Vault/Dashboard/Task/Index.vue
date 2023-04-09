@@ -1,7 +1,7 @@
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
     <main class="relative sm:mt-24">
-      <div class="mx-auto max-w-3xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <!-- title -->
         <div class="mb-5 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
           <div class="mb-2 sm:mb-0">

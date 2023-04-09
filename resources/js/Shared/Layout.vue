@@ -5,14 +5,14 @@
       <nav
         class="max-w-8xl mx-auto flex h-10 items-center justify-between border-b bg-gray-50 px-3 dark:border-slate-600 dark:bg-gray-800 dark:text-slate-200 sm:px-6">
         <div
-          class="dark:highlight-white/5 items-center rounded-lg border border-gray-200 bg-white px-2 py-1 text-sm dark:border-0 dark:border-gray-700 dark:bg-gray-900 dark:bg-gray-400/20 sm:flex">
+          class="dark:highlight-white/5 items-center rounded-lg border border-gray-200 bg-white px-2 py-1 text-sm dark:border-0 dark:border-gray-700 dark:bg-gray-400/20 dark:bg-gray-900 sm:flex">
           <inertia-link :href="layoutData.url.vaults" class="flex-shrink-0 dark:text-sky-400">
             {{ layoutData.user.name }}
           </inertia-link>
 
           <!-- information about the current vault -->
           <div v-if="layoutData.vault">
-            <span class="relative mr-1 ml-1">
+            <span class="relative ml-1 mr-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="relative inline h-3 w-3"
@@ -59,7 +59,7 @@
                   class="peer sr-only"
                   @click="toggleStyle" />
                 <div
-                  class="peer mr-2 h-4 w-7 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-3 after:w-3 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
+                  class="peer mr-2 h-4 w-7 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-3 after:w-3 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
                 <svg
                   v-if="!style.checked"
                   xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +163,7 @@
               <inertia-link :href="layoutData.url.settings" class="relative inline">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="icon-cog relative mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-400 dark:text-gray-300 sm:h-4 sm:w-4"
+                  class="icon-cog relative mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-300 dark:text-gray-400 sm:h-4 sm:w-4"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor">
@@ -186,7 +186,7 @@
               <inertia-link class="inline" method="post" :href="route('logout')" as="button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-400 dark:text-gray-300 sm:h-4 sm:w-4"
+                  class="mr-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-300 dark:text-gray-400 sm:h-4 sm:w-4"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor">
@@ -312,13 +312,13 @@
     </div>
 
     <!-- Page Heading -->
-    <header v-if="$slots.header" class="relative mt-10 mb-8 bg-white dark:bg-gray-900 sm:border-b">
+    <header v-if="$slots.header" class="relative mb-8 mt-10 bg-white dark:bg-gray-900 sm:border-b">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <slot name="header" />
       </div>
     </header>
 
-    <main class="relative mt-10 mb-8">
+    <main class="relative mb-8 mt-10">
       <slot />
     </main>
 

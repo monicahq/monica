@@ -57,7 +57,7 @@ defineProps({
     </nav>
 
     <main class="relative sm:mt-8">
-      <div class="mx-auto max-w-6xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-6xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
           <!-- left -->
           <div class="mr-8">
@@ -115,7 +115,7 @@ defineProps({
                 <li
                   v-for="tag in data.tags"
                   :key="tag.id"
-                  class="mr-2 inline-block rounded bg-neutral-200 py-1 px-2 text-xs font-semibold text-neutral-500 last:mr-0">
+                  class="mr-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-500 last:mr-0">
                   {{ tag.name }}
                 </li>
               </ul>
@@ -165,7 +165,7 @@ defineProps({
               <p class="mb-2 text-sm font-semibold">Slice of life</p>
               <div class="mb-6 last:mb-0">
                 <div
-                  class="rounded border-b border-t border-r border-l border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
+                  class="rounded border-b border-l border-r border-t border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
                   :class="data.sliceOfLife.cover_image ? '' : 'border-t'">
                   <inertia-link :href="data.sliceOfLife.url.show" class="font-semibold">{{
                     data.sliceOfLife.name

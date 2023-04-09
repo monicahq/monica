@@ -24,7 +24,7 @@ const props = defineProps({
       </div>
     </div>
 
-    <div class="px-3 pt-2 pb-2">
+    <div class="px-3 pb-2 pt-2">
       <!-- the note still exists in the system -->
       <div v-if="props.data.note.object">
         <div v-if="props.data.note.object.title" class="mb-2 block">{{ props.data.note.object.title }}</div>
@@ -34,7 +34,7 @@ const props = defineProps({
       <!-- the note was deleted -->
       <span
         v-else
-        class="mr-2 mb-2 inline-block rounded bg-neutral-200 py-1 px-2 text-xs font-semibold text-neutral-800 last:mr-0">
+        class="mb-2 mr-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800 last:mr-0">
         <span>{{ props.data.note.description }}</span>
       </span>
     </div>

@@ -15,11 +15,11 @@
       </div>
     </div>
 
-    <div class="px-3 pt-2 pb-0">
+    <div class="px-3 pb-0 pt-2">
       <!-- the label still exists in the system -->
       <span
         v-if="data.label.object"
-        class="mr-2 mb-2 inline-block rounded py-1 px-2 text-xs font-semibold last:mr-0"
+        class="mb-2 mr-2 inline-block rounded px-2 py-1 text-xs font-semibold last:mr-0"
         :class="data.label.object.bg_color + ' ' + data.label.object.text_color">
         <inertia-link :href="data.label.object.url">{{ data.label.object.name }}</inertia-link>
       </span>
@@ -27,7 +27,7 @@
       <!-- the label was deleted -->
       <span
         v-else
-        class="mr-2 mb-2 inline-block rounded bg-neutral-200 py-1 px-2 text-xs font-semibold text-neutral-800 last:mr-0">
+        class="mb-2 mr-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800 last:mr-0">
         <span>{{ data.label.description }}</span>
       </span>
     </div>

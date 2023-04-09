@@ -74,7 +74,7 @@
               <div
                 v-for="streak in goal.last_7_days"
                 :key="streak.id"
-                class="mr-0 flex flex-row items-center justify-between border-b border-gray-200 p-3 text-center dark:border-gray-700 sm:mr-7 sm:mb-0 sm:w-9 sm:flex-col sm:border-0 sm:p-0"
+                class="mr-0 flex flex-row items-center justify-between border-b border-gray-200 p-3 text-center dark:border-gray-700 sm:mb-0 sm:mr-7 sm:w-9 sm:flex-col sm:border-0 sm:p-0"
                 :class="{ 'text-gray-500': !streak.active }">
                 <div>
                   <span class="mb-0 mr-2 block text-xs font-semibold sm:mr-0">
@@ -99,7 +99,7 @@
                   class="mr-2 cursor-pointer text-center text-2xl sm:mr-0"
                   @click="toggleStreak(goal, streak)">
                   <div
-                    class="rounded-md border border-gray-200 bg-slate-100 py-1 px-2 dark:border-gray-700 dark:bg-slate-900">
+                    class="rounded-md border border-gray-200 bg-slate-100 px-2 py-1 dark:border-gray-700 dark:bg-slate-900">
                     <svg
                       class="z-50"
                       width="18"

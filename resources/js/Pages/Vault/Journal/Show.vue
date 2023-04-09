@@ -53,7 +53,7 @@ const destroy = () => {
     </nav>
 
     <main class="sm:mt-18 relative">
-      <div class="mx-auto max-w-6xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-6xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <h1 class="text-2xl" :class="data.description ? 'mb-4' : 'mb-8'">{{ data.name }}</h1>
 
         <p v-if="data.description" class="mb-8">{{ data.description }}</p>
@@ -83,7 +83,7 @@ const destroy = () => {
             <inertia-link
               :href="data.url.photo_index"
               :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': defaultTab === 'life_events' }"
-              class="inline-flex items-center rounded-r-md border-t border-b border-r border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
+              class="inline-flex items-center rounded-r-md border-b border-r border-t border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -127,7 +127,7 @@ const destroy = () => {
               </li>
             </ul>
 
-            <inertia-link :href="data.url.edit" class="mt-6 mb-2 block text-sm text-blue-500 hover:underline"
+            <inertia-link :href="data.url.edit" class="mb-2 mt-6 block text-sm text-blue-500 hover:underline"
               >Edit journal</inertia-link
             >
             <span @click="destroy()" class="block cursor-pointer text-sm text-blue-500 hover:underline"
@@ -210,7 +210,7 @@ const destroy = () => {
               <div v-for="slice in data.slices" :key="slice.id" class="mb-6 last:mb-0">
                 <img v-if="slice.cover_image" class="h-32 w-full rounded-t" :src="slice.cover_image" alt="" />
                 <div
-                  class="rounded-b border-b border-r border-l border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
+                  class="rounded-b border-b border-l border-r border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
                   :class="slice.cover_image ? '' : 'border-t'">
                   <inertia-link :href="slice.url.show" class="font-semibold">{{ slice.name }}</inertia-link>
                   <p class="text-xs text-gray-600">{{ slice.date_range }}</p>

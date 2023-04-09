@@ -28,7 +28,7 @@ const close = () => {
     <div class="bg-white dark:bg-gray-900">
       <div>
         <!-- title -->
-        <div class="flex items-center px-4 pt-5 pb-4">
+        <div class="flex items-center px-4 pb-4 pt-5">
           <div
             class="mx-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900 sm:mx-0 sm:h-6 sm:w-6">
             <svg class="h-4 w-4 text-red-600 dark:text-red-400" stroke="currentColor" fill="none" viewBox="0 0 24 24">

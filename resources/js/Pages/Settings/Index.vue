@@ -26,7 +26,7 @@ defineProps({
     </nav>
 
     <main class="relative sm:mt-20">
-      <div class="mx-auto max-w-md px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-md px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <!-- user settings -->
         <h2 class="mb-6 text-center text-lg">
           {{ $t('settings.user_settings') }}

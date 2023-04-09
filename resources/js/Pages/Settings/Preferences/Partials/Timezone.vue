@@ -52,7 +52,7 @@
         <select
           v-model="form.timezone"
           name="timezone"
-          class="rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
+          class="rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
           <optgroup label="General">
             <option value="GMT">GMT timezone</option>
             <option value="UTC">UTC timezone</option>

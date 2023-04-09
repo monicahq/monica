@@ -95,7 +95,7 @@ const reload = () => {
       class="mt-6 flex w-full flex-col overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:max-w-4xl sm:rounded-lg md:flex-row">
       <img :src="wallpaperUrl" class="w-full sm:invisible sm:w-10/12 md:visible" :alt="'Wallpaper'" />
       <div class="w-full">
-        <div class="border-b border-gray-200 px-6 pt-8 pb-6 dark:border-gray-700">
+        <div class="border-b border-gray-200 px-6 pb-6 pt-8 dark:border-gray-700">
           <h1 class="mb-4 text-center text-xl text-gray-800 dark:text-gray-200">
             <span class="mr-2"> 👋 </span>
             Sign in to your account
@@ -173,7 +173,7 @@ const reload = () => {
                 <JetSecondaryButton
                   v-for="(provider, id) in providers"
                   :key="id"
-                  class="mr-2 mb-2 inline w-32 align-middle"
+                  class="mb-2 mr-2 inline w-32 align-middle"
                   :href="route('login.provider', { driver: id })"
                   @click.prevent="open(id)">
                   <img :src="provider.logo" :alt="provider.name" class="relative mr-2 h-4 w-4 align-middle" />

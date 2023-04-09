@@ -42,7 +42,7 @@ defineProps({
     </nav>
 
     <main class="sm:mt-18 relative">
-      <div class="mx-auto max-w-6xl px-2 py-2 sm:py-6 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-6xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <!-- group title -->
         <h1 class="mb-2 text-center text-2xl">{{ data.name }}</h1>
 
@@ -89,7 +89,7 @@ defineProps({
         <div v-for="role in data.roles" :key="role.id" class="mb-8">
           <p
             v-if="role.contacts.length > 0"
-            class="mr-2 mb-2 inline-block rounded bg-neutral-200 py-1 px-2 text-xs font-semibold text-neutral-800 last:mr-0">
+            class="mb-2 mr-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800 last:mr-0">
             {{ role.label }}
           </p>
 
