@@ -24,7 +24,7 @@ class ContactController extends Controller
 {
     public function index(Request $request, Vault $vault)
     {
-        $contacts = Contact::where('vault_id', $request->route()->parameter('vault'))
+        $contacts = Contact::where('vault_id', $vault->id)
             ->where('listed', true)
             ->orderBy('created_at', 'asc')
             ->paginate(25);
