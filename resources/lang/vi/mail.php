@@ -46,8 +46,8 @@ return [
     'invitation_button' => 'Chấp nhận lời mời',
     'invitation_expiration' => 'Liên kết này sẽ hết hạn trong :count days.',
 
-    'export_title' => 'Your export is ready',
-    'export_description' => 'You requested a data export on :date. It is now ready to download.',
-    'export_download' => 'Download export',
+    'export_title' => 'File xuất của bạn đã sẵn sàng',
+    'export_description' => 'Bạn đã yêu cầu xuất dữ liệu vào :date. Bây giờ nó đã sẵn sàng để tải xuống.',
+    'export_download' => 'Tải file xuất',
 
 ];
