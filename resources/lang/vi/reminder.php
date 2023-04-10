@@ -12,5 +12,5 @@ return [
     'type_lunch' => 'Ăn trưa với',
     'type_hangout' => 'Đi chơi với',
     'type_email' => 'Email',
-    'type_birthday_kid' => 'Wish happy birthday to the child of',
+    'type_birthday_kid' => 'Chúc mừng sinh nhật tới những đứa con của',
 ];
