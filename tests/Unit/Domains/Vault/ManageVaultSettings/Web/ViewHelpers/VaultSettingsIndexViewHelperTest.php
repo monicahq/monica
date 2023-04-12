@@ -12,7 +12,7 @@ use App\Models\Tag;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -265,7 +265,7 @@ class VaultSettingsIndexViewHelperTest extends TestCase
     /** @test */
     public function it_gets_the_dto_for_quick_fact_template(): void
     {
-        $template = VaultQuickFactTemplate::factory()->create();
+        $template = VaultQuickFactsTemplate::factory()->create();
 
         $array = VaultSettingsIndexViewHelper::dtoQuickFactTemplateEntry($template);
         $this->assertEquals(

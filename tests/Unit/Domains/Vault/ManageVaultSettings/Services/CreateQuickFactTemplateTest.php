@@ -7,7 +7,7 @@ use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;
@@ -90,7 +90,7 @@ class CreateQuickFactTemplateTest extends TestCase
         ]);
 
         $this->assertInstanceOf(
-            VaultQuickFactTemplate::class,
+            VaultQuickFactsTemplate::class,
             $quickFactTemplateEntry
         );
     }

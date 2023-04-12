@@ -6,7 +6,7 @@ use App\Domains\Vault\ManageVaultSettings\Services\UpdateQuickFactTemplatePositi
 use App\Models\Account;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;
@@ -22,7 +22,7 @@ class UpdateQuickFactTemplatePositionTest extends TestCase
         $ross = $this->createAdministrator();
         $vault = $this->createVault($ross->account);
         $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_MANAGE, $vault);
-        $quickFactTemplateEntry = VaultQuickFactTemplate::factory()->create([
+        $quickFactTemplateEntry = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
         ]);
         $this->executeService($ross, $ross->account, $vault, $quickFactTemplateEntry);
@@ -48,7 +48,7 @@ class UpdateQuickFactTemplatePositionTest extends TestCase
         $account = $this->createAccount();
         $vault = $this->createVault($ross->account);
         $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_MANAGE, $vault);
-        $quickFactTemplateEntry = VaultQuickFactTemplate::factory()->create([
+        $quickFactTemplateEntry = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
         ]);
         $this->executeService($ross, $account, $vault, $quickFactTemplateEntry);
@@ -62,21 +62,21 @@ class UpdateQuickFactTemplatePositionTest extends TestCase
         $ross = $this->createAdministrator();
         $vault = $this->createVault($ross->account);
         $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_MANAGE, $vault);
-        $quickFactTemplateEntry = VaultQuickFactTemplate::factory()->create();
+        $quickFactTemplateEntry = VaultQuickFactsTemplate::factory()->create();
         $this->executeService($ross, $ross->account, $vault, $quickFactTemplateEntry);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, VaultQuickFactTemplate $quickFactTemplateEntry): void
+    private function executeService(User $author, Account $account, Vault $vault, VaultQuickFactsTemplate $quickFactTemplateEntry): void
     {
-        $quickFactTemplateEntry1 = VaultQuickFactTemplate::factory()->create([
+        $quickFactTemplateEntry1 = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
             'position' => 1,
         ]);
-        $quickFactTemplateEntry3 = VaultQuickFactTemplate::factory()->create([
+        $quickFactTemplateEntry3 = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
             'position' => 3,
         ]);
-        $quickFactTemplateEntry4 = VaultQuickFactTemplate::factory()->create([
+        $quickFactTemplateEntry4 = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
             'position' => 4,
         ]);
@@ -138,7 +138,7 @@ class UpdateQuickFactTemplatePositionTest extends TestCase
         ]);
 
         $this->assertInstanceOf(
-            VaultQuickFactTemplate::class,
+            VaultQuickFactsTemplate::class,
             $quickFactTemplateEntry
         );
     }

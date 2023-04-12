@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Address;
+use App\Models\AddressType;
 use App\Models\Contact;
 use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
@@ -16,7 +18,7 @@ return new class() extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Vault::class)->constrained()->cascadeOnDelete();
-            $table->unsignedBigInteger('address_type_id')->nullable();
+            $table->foreignIdFor(AddressType::class)->nullable()->constrained()->nullOnDelete();
             $table->string('line_1')->nullable();
             $table->string('line_2')->nullable();
             $table->string('city')->nullable();
@@ -26,15 +28,13 @@ return new class() extends Migration
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();
             $table->timestamps();
-            $table->foreign('address_type_id')->references('id')->on('address_types')->onDelete('set null');
         });
 
         Schema::create('contact_address', function (Blueprint $table) {
             $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
-            $table->unsignedBigInteger('address_id');
+            $table->foreignIdFor(Address::class)->constrained()->cascadeOnDelete();
             $table->boolean('is_past_address')->default(false);
             $table->timestamps();
-            $table->foreign('address_id')->references('id')->on('addresses')->onDelete('cascade');
         });
     }
 
@@ -43,7 +43,7 @@ return new class() extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('addresses');
         Schema::dropIfExists('contact_address');
+        Schema::dropIfExists('addresses');
     }
 };

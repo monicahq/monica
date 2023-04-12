@@ -3,12 +3,12 @@
 namespace App\Domains\Vault\ManageVaultSettings\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use App\Services\BaseService;
 
 class UpdateQuickFactTemplatePosition extends BaseService implements ServiceInterface
 {
-    private VaultQuickFactTemplate $quickFactTemplate;
+    private VaultQuickFactsTemplate $quickFactTemplate;
 
     private int $pastPosition;
 
@@ -43,7 +43,7 @@ class UpdateQuickFactTemplatePosition extends BaseService implements ServiceInte
     /**
      * Update the quick fact template parameter's position.
      */
-    public function execute(array $data): VaultQuickFactTemplate
+    public function execute(array $data): VaultQuickFactsTemplate
     {
         $this->data = $data;
         $this->validate();

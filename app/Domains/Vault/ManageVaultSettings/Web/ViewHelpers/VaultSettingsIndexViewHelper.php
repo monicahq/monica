@@ -11,7 +11,7 @@ use App\Models\MoodTrackingParameter;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 
 class VaultSettingsIndexViewHelper
 {
@@ -131,7 +131,7 @@ class VaultSettingsIndexViewHelper
         $quickFactTemplates = $vault->quickFactsTemplateEntries()
             ->orderBy('position', 'asc')
             ->get()
-            ->map(fn (VaultQuickFactTemplate $vaultQuickFactTemplate) => self::dtoQuickFactTemplateEntry($vaultQuickFactTemplate));
+            ->map(fn (VaultQuickFactsTemplate $vaultQuickFactTemplate) => self::dtoQuickFactTemplateEntry($vaultQuickFactTemplate));
 
         return [
             'templates' => $templatesCollection,
@@ -335,7 +335,7 @@ class VaultSettingsIndexViewHelper
         ];
     }
 
-    public static function dtoQuickFactTemplateEntry(VaultQuickFactTemplate $template): array
+    public static function dtoQuickFactTemplateEntry(VaultQuickFactsTemplate $template): array
     {
         return [
             'id' => $template->id,

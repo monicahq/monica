@@ -1,6 +1,10 @@
 <?php
 
+use App\Models\Company;
 use App\Models\Contact;
+use App\Models\Gender;
+use App\Models\Pronoun;
+use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
@@ -19,10 +23,10 @@ return new class() extends Migration
             $table->uuid('id');
             $table->primary('id');
             $table->foreignIdFor(Vault::class)->constrained()->cascadeOnDelete();
-            $table->unsignedBigInteger('gender_id')->nullable();
-            $table->unsignedBigInteger('pronoun_id')->nullable();
-            $table->unsignedBigInteger('template_id')->nullable();
-            $table->unsignedBigInteger('company_id')->nullable();
+            $table->foreignIdFor(Gender::class)->nullable()->constrained()->nullOnDelete();
+            $table->foreignIdFor(Pronoun::class)->nullable()->constrained()->nullOnDelete();
+            $table->foreignIdFor(Template::class)->nullable()->constrained()->nullOnDelete();
+            $table->foreignIdFor(Company::class)->nullable()->constrained()->nullOnDelete();
             $table->string('first_name')->nullable();
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
@@ -40,11 +44,6 @@ return new class() extends Migration
             $table->datetime('last_updated_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('gender_id')->references('id')->on('genders')->onDelete('set null');
-            $table->foreign('pronoun_id')->references('id')->on('pronouns')->onDelete('set null');
-            $table->foreign('template_id')->references('id')->on('templates')->onDelete('set null');
-            $table->foreign('company_id')->references('id')->on('companies')->onDelete('set null');
 
             $table->index(['vault_id', 'id']);
 
@@ -80,8 +79,8 @@ return new class() extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contacts');
-        Schema::dropIfExists('user_vault');
         Schema::dropIfExists('contact_vault_user');
+        Schema::dropIfExists('user_vault');
+        Schema::dropIfExists('contacts');
     }
 };

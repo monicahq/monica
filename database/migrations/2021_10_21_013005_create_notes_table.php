@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Contact;
+use App\Models\Emotion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
@@ -20,12 +21,10 @@ return new class() extends Migration
             $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Vault::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class, 'author_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->unsignedBigInteger('emotion_id')->nullable();
+            $table->foreignIdFor(Emotion::class)->nullable()->constrained()->nullOnDelete();
             $table->string('title')->nullable();
             $table->text('body');
             $table->timestamps();
-
-            $table->foreign('emotion_id')->references('id')->on('emotions')->onDelete('set null');
 
             if (config('scout.driver') === 'database' && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
                 $table->fullText('title');

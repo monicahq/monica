@@ -3,15 +3,15 @@
 namespace Database\Factories;
 
 use App\Models\Vault;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\VaultQuickFactTemplate>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\VaultQuickFactsTemplate>
  */
-class VaultQuickFactTemplateFactory extends Factory
+class VaultQuickFactsTemplateFactory extends Factory
 {
-    protected $model = VaultQuickFactTemplate::class;
+    protected $model = VaultQuickFactsTemplate::class;
 
     /**
      * Define the model's default state.

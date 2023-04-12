@@ -2,6 +2,7 @@
 
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\PetCategory;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,10 +25,9 @@ return new class() extends Migration
             $table->id();
             $table->uuid('uuid')->nullable();
             $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
-            $table->unsignedBigInteger('pet_category_id');
+            $table->foreignIdFor(PetCategory::class)->constrained()->cascadeOnDelete();
             $table->string('name')->nullable();
             $table->timestamps();
-            $table->foreign('pet_category_id')->references('id')->on('pet_categories')->onDelete('cascade');
         });
     }
 
@@ -36,7 +36,7 @@ return new class() extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pet_categories');
         Schema::dropIfExists('pets');
+        Schema::dropIfExists('pet_categories');
     }
 };

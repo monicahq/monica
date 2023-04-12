@@ -3,7 +3,7 @@
 namespace App\Domains\Vault\ManageVaultSettings\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use App\Services\BaseService;
 
 class UpdateQuickFactTemplate extends BaseService implements ServiceInterface
@@ -37,7 +37,7 @@ class UpdateQuickFactTemplate extends BaseService implements ServiceInterface
     /**
      * Update a quick fact template entry.
      */
-    public function execute(array $data): VaultQuickFactTemplate
+    public function execute(array $data): VaultQuickFactsTemplate
     {
         $this->validateRules($data);
 

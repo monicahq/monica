@@ -8,7 +8,7 @@ use App\Models\Account;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;
@@ -27,7 +27,7 @@ class CreateQuickFactTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
         ]);
-        $vaultTemplate = VaultQuickFactTemplate::factory()->create([
+        $vaultTemplate = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
         ]);
 
@@ -57,7 +57,7 @@ class CreateQuickFactTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
         ]);
-        $vaultTemplate = VaultQuickFactTemplate::factory()->create([
+        $vaultTemplate = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
         ]);
 
@@ -75,7 +75,7 @@ class CreateQuickFactTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
         ]);
-        $vaultTemplate = VaultQuickFactTemplate::factory()->create([
+        $vaultTemplate = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
         ]);
 
@@ -93,7 +93,7 @@ class CreateQuickFactTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
         ]);
-        $vaultTemplate = VaultQuickFactTemplate::factory()->create();
+        $vaultTemplate = VaultQuickFactsTemplate::factory()->create();
 
         $this->executeService($regis, $regis->account, $contact, $vault, $vaultTemplate);
     }
@@ -107,14 +107,14 @@ class CreateQuickFactTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create();
-        $vaultTemplate = VaultQuickFactTemplate::factory()->create([
+        $vaultTemplate = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
         ]);
 
         $this->executeService($regis, $regis->account, $contact, $vault, $vaultTemplate);
     }
 
-    private function executeService(User $author, Account $account, Contact $contact, Vault $vault, VaultQuickFactTemplate $vaultTemplate): void
+    private function executeService(User $author, Account $account, Contact $contact, Vault $vault, VaultQuickFactsTemplate $vaultTemplate): void
     {
         $request = [
             'account_id' => $account->id,

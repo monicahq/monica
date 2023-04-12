@@ -7,7 +7,7 @@ use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;
@@ -23,7 +23,7 @@ class UpdateQuickFactTemplateTest extends TestCase
         $ross = $this->createAdministrator();
         $vault = $this->createVault($ross->account);
         $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_MANAGE, $vault);
-        $quickFactTemplateEntry = VaultQuickFactTemplate::factory()->create([
+        $quickFactTemplateEntry = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
         ]);
         $this->executeService($ross, $ross->account, $vault, $quickFactTemplateEntry);
@@ -49,7 +49,7 @@ class UpdateQuickFactTemplateTest extends TestCase
         $account = Account::factory()->create();
         $vault = $this->createVault($ross->account);
         $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_MANAGE, $vault);
-        $quickFactTemplateEntry = VaultQuickFactTemplate::factory()->create([
+        $quickFactTemplateEntry = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
         ]);
         $this->executeService($ross, $account, $vault, $quickFactTemplateEntry);
@@ -63,7 +63,7 @@ class UpdateQuickFactTemplateTest extends TestCase
         $ross = $this->createAdministrator();
         $vault = $this->createVault($ross->account);
         $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_MANAGE, $vault);
-        $quickFactTemplateEntry = VaultQuickFactTemplate::factory()->create();
+        $quickFactTemplateEntry = VaultQuickFactsTemplate::factory()->create();
         $this->executeService($ross, $ross->account, $vault, $quickFactTemplateEntry);
     }
 
@@ -75,13 +75,13 @@ class UpdateQuickFactTemplateTest extends TestCase
         $ross = $this->createUser();
         $vault = $this->createVault($ross->account);
         $vault = $this->setPermissionInVault($ross, Vault::PERMISSION_VIEW, $vault);
-        $quickFactTemplateEntry = VaultQuickFactTemplate::factory()->create([
+        $quickFactTemplateEntry = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
         ]);
         $this->executeService($ross, $ross->account, $vault, $quickFactTemplateEntry);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, VaultQuickFactTemplate $quickFactTemplateEntry): void
+    private function executeService(User $author, Account $account, Vault $vault, VaultQuickFactsTemplate $quickFactTemplateEntry): void
     {
         $request = [
             'account_id' => $account->id,

@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Contact;
 use App\Models\QuickFact;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +22,7 @@ class QuickFactFactory extends Factory
     public function definition()
     {
         return [
-            'vault_quick_facts_template_id' => VaultQuickFactTemplate::factory(),
+            'vault_quick_facts_template_id' => VaultQuickFactsTemplate::factory(),
             'contact_id' => Contact::factory(),
             'content' => 'birthdate',
         ];

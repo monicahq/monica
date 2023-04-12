@@ -2,18 +2,18 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
-class VaultQuickFactTemplateTest extends TestCase
+class VaultQuickFactsTemplateTest extends TestCase
 {
     use DatabaseTransactions;
 
     /** @test */
     public function it_has_one_vault()
     {
-        $quickFactTemplate = VaultQuickFactTemplate::factory()->create();
+        $quickFactTemplate = VaultQuickFactsTemplate::factory()->create();
 
         $this->assertTrue($quickFactTemplate->vault()->exists());
     }
@@ -21,7 +21,7 @@ class VaultQuickFactTemplateTest extends TestCase
     /** @test */
     public function it_gets_the_default_label()
     {
-        $quickFactTemplate = VaultQuickFactTemplate::factory()->create([
+        $quickFactTemplate = VaultQuickFactsTemplate::factory()->create([
             'label' => null,
             'label_translation_key' => 'template.label',
         ]);
@@ -35,7 +35,7 @@ class VaultQuickFactTemplateTest extends TestCase
     /** @test */
     public function it_gets_the_custom_label_if_defined()
     {
-        $quickFactTemplate = VaultQuickFactTemplate::factory()->create([
+        $quickFactTemplate = VaultQuickFactsTemplate::factory()->create([
             'label' => 'this is the real name',
             'label_translation_key' => 'template.label',
         ]);

@@ -9,7 +9,7 @@ use App\Models\Contact;
 use App\Models\QuickFact;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
@@ -29,7 +29,7 @@ class UpdateQuickFactTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
         ]);
-        $vaultTemplate = VaultQuickFactTemplate::factory()->create([
+        $vaultTemplate = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
         ]);
         $quickFact = QuickFact::factory()->create([
@@ -63,7 +63,7 @@ class UpdateQuickFactTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
         ]);
-        $vaultTemplate = VaultQuickFactTemplate::factory()->create([
+        $vaultTemplate = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
         ]);
         $quickFact = QuickFact::factory()->create([
@@ -85,7 +85,7 @@ class UpdateQuickFactTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
         ]);
-        $vaultTemplate = VaultQuickFactTemplate::factory()->create([
+        $vaultTemplate = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
         ]);
         $quickFact = QuickFact::factory()->create([
@@ -105,7 +105,7 @@ class UpdateQuickFactTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create();
-        $vaultTemplate = VaultQuickFactTemplate::factory()->create([
+        $vaultTemplate = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
         ]);
         $quickFact = QuickFact::factory()->create([
@@ -125,7 +125,7 @@ class UpdateQuickFactTest extends TestCase
         $vault = $this->createVault($regis->account);
         $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
         $contact = Contact::factory()->create();
-        $vaultTemplate = VaultQuickFactTemplate::factory()->create([
+        $vaultTemplate = VaultQuickFactsTemplate::factory()->create([
             'vault_id' => $vault->id,
         ]);
         $quickFact = QuickFact::factory()->create([
@@ -135,7 +135,7 @@ class UpdateQuickFactTest extends TestCase
         $this->executeService($regis, $regis->account, $vault, $contact, $quickFact, $vaultTemplate);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, QuickFact $quickFact, VaultQuickFactTemplate $vaultTemplate): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, QuickFact $quickFact, VaultQuickFactsTemplate $vaultTemplate): void
     {
         Queue::fake();
 

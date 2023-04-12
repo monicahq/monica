@@ -34,8 +34,8 @@ class QuickFact extends Model
     /**
      * Get the quick fact template associated with the quick fact.
      */
-    public function vaultQuickFactTemplate(): BelongsTo
+    public function vaultQuickFactsTemplate(): BelongsTo
     {
-        return $this->belongsTo(VaultQuickFactTemplate::class, 'vault_quick_facts_template_id');
+        return $this->belongsTo(VaultQuickFactsTemplate::class);
     }
 }

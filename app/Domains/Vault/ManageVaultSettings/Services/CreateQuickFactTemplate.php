@@ -3,12 +3,12 @@
 namespace App\Domains\Vault\ManageVaultSettings\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use App\Services\BaseService;
 
 class CreateQuickFactTemplate extends BaseService implements ServiceInterface
 {
-    private VaultQuickFactTemplate $quickFactTemplateEntry;
+    private VaultQuickFactsTemplate $quickFactTemplateEntry;
 
     /**
      * Get the validation rules that apply to the service.
@@ -38,7 +38,7 @@ class CreateQuickFactTemplate extends BaseService implements ServiceInterface
     /**
      * Create a quick fact template entry.
      */
-    public function execute(array $data): VaultQuickFactTemplate
+    public function execute(array $data): VaultQuickFactsTemplate
     {
         $this->validateRules($data);
 
@@ -47,7 +47,7 @@ class CreateQuickFactTemplate extends BaseService implements ServiceInterface
             ->max('position');
         $newPosition++;
 
-        $this->quickFactTemplateEntry = VaultQuickFactTemplate::create([
+        $this->quickFactTemplateEntry = VaultQuickFactsTemplate::create([
             'vault_id' => $data['vault_id'],
             'label' => $data['label'],
             'position' => $newPosition,

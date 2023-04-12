@@ -60,7 +60,7 @@ class LifeEvent extends Model
      */
     public function lifeEventType(): BelongsTo
     {
-        return $this->belongsTo(LifeEventType::class, 'life_event_type_id');
+        return $this->belongsTo(LifeEventType::class);
     }
 
     /**

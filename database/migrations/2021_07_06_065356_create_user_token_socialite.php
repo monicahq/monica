@@ -28,4 +28,12 @@ return new class extends Migration
             $table->index(['driver', 'driver_id']);
         });
     }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down()
+    {
+        Schema::dropIfExists('user_tokens');
+    }
 };

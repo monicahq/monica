@@ -73,7 +73,7 @@ class Call extends Model
      */
     public function callReason(): BelongsTo
     {
-        return $this->belongsTo(CallReason::class, 'call_reason_id');
+        return $this->belongsTo(CallReason::class);
     }
 
     /**

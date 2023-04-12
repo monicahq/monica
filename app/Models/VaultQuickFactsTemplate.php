@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class VaultQuickFactTemplate extends Model
+class VaultQuickFactsTemplate extends Model
 {
     use HasFactory;
 

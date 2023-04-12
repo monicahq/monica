@@ -23,6 +23,6 @@ class QuickFactTest extends TestCase
     {
         $quickFact = QuickFact::factory()->create();
 
-        $this->assertTrue($quickFact->vaultQuickFactTemplate()->exists());
+        $this->assertTrue($quickFact->vaultQuickFactsTemplate()->exists());
     }
 }

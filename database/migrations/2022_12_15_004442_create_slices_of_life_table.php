@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\File;
+use App\Models\Journal;
 use App\Models\SliceOfLife;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,13 +18,11 @@ return new class extends Migration
     {
         Schema::create('slice_of_lives', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('journal_id');
-            $table->unsignedBigInteger('file_cover_image_id')->nullable();
+            $table->foreignIdFor(Journal::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(File::class, 'file_cover_image_id')->nullable()->constrained('files')->nullOnDelete();
             $table->string('name');
             $table->string('description')->nullable();
             $table->timestamps();
-            $table->foreign('journal_id')->references('id')->on('journals')->onDelete('cascade');
-            $table->foreign('file_cover_image_id')->references('id')->on('files')->onDelete('set null');
         });
 
         Schema::table('posts', function (Blueprint $table) {
@@ -37,9 +37,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('slice_of_lives');
         Schema::table('posts', function (Blueprint $table) {
+            $table->dropForeign(['slice_of_life_id']);
             $table->dropColumn('slice_of_life_id');
         });
+        Schema::dropIfExists('slice_of_lives');
     }
 };

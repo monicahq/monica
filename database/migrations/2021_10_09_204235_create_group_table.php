@@ -2,6 +2,9 @@
 
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\Group;
+use App\Models\GroupType;
+use App\Models\GroupTypeRole;
 use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -27,22 +30,19 @@ return new class() extends Migration
 
         Schema::create('group_type_roles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('group_type_id');
+            $table->foreignIdFor(GroupType::class)->constrained()->cascadeOnDelete();
             $table->string('label');
             $table->integer('position')->nullable();
             $table->timestamps();
-            $table->foreign('group_type_id')->references('id')->on('group_types')->onDelete('cascade');
         });
 
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->nullable();
             $table->foreignIdFor(Vault::class)->constrained()->cascadeOnDelete();
-            $table->unsignedBigInteger('group_type_id');
+            $table->foreignIdFor(GroupType::class)->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->timestamps();
-
-            $table->foreign('group_type_id')->references('id')->on('group_types')->onDelete('cascade');
 
             if (config('scout.driver') === 'database' && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
                 $table->fullText('name');
@@ -50,12 +50,10 @@ return new class() extends Migration
         });
 
         Schema::create('contact_group', function (Blueprint $table) {
-            $table->unsignedBigInteger('group_id');
+            $table->foreignIdFor(Group::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
-            $table->unsignedBigInteger('group_type_role_id')->nullable();
+            $table->foreignIdFor(GroupTypeRole::class)->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
-            $table->foreign('group_type_role_id')->references('id')->on('group_type_roles')->onDelete('set null');
         });
     }
 
@@ -64,9 +62,9 @@ return new class() extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('group_types');
-        Schema::dropIfExists('group_type_roles');
-        Schema::dropIfExists('groups');
         Schema::dropIfExists('contact_group');
+        Schema::dropIfExists('groups');
+        Schema::dropIfExists('group_type_roles');
+        Schema::dropIfExists('group_types');
     }
 };

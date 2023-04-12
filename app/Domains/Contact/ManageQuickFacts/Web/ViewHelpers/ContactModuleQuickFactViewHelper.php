@@ -4,11 +4,11 @@ namespace App\Domains\Contact\ManageQuickFacts\Web\ViewHelpers;
 
 use App\Models\Contact;
 use App\Models\QuickFact;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 
 class ContactModuleQuickFactViewHelper
 {
-    public static function data(Contact $contact, VaultQuickFactTemplate $template): array
+    public static function data(Contact $contact, VaultQuickFactsTemplate $template): array
     {
         $quickFacts = $contact->quickFacts()
             ->where('vault_quick_facts_template_id', $template->id)

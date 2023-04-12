@@ -32,7 +32,7 @@ use App\Models\Contact;
 use App\Models\Module;
 use App\Models\TemplatePage;
 use App\Models\User;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 
@@ -323,7 +323,7 @@ class ContactShowViewHelper
             ->vault
             ->quickFactsTemplateEntries()
             ->get()
-            ->map(fn (VaultQuickFactTemplate $template) => [
+            ->map(fn (VaultQuickFactsTemplate $template) => [
                 'id' => $template->id,
                 'label' => $template->label,
                 'url' => [

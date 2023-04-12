@@ -5,7 +5,7 @@ namespace Tests\Unit\Domains\Contact\ManageQuickFacts\Web\ViewHelpers;
 use App\Domains\Contact\ManageQuickFacts\Web\ViewHelpers\ContactModuleQuickFactViewHelper;
 use App\Models\Contact;
 use App\Models\QuickFact;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -17,7 +17,7 @@ class ContactModuleQuickFactViewHelperTest extends TestCase
     public function it_gets_the_data_needed_for_the_view(): void
     {
         $contact = Contact::factory()->create();
-        $template = VaultQuickFactTemplate::factory()->create();
+        $template = VaultQuickFactsTemplate::factory()->create();
 
         $array = ContactModuleQuickFactViewHelper::data($contact, $template);
 
@@ -42,7 +42,7 @@ class ContactModuleQuickFactViewHelperTest extends TestCase
     public function it_gets_the_data_transfer_object(): void
     {
         $contact = Contact::factory()->create();
-        $template = VaultQuickFactTemplate::factory()->create();
+        $template = VaultQuickFactsTemplate::factory()->create();
         $quickFact = QuickFact::factory()->create([
             'vault_quick_facts_template_id' => $template->id,
             'contact_id' => $contact->id,

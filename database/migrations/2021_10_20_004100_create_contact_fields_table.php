@@ -2,6 +2,7 @@
 
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\ContactInformationType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,10 +27,9 @@ return new class() extends Migration
         Schema::create('contact_information', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
-            $table->unsignedBigInteger('type_id');
+            $table->foreignIdFor(ContactInformationType::class, 'type_id')->constrained('contact_information_types')->cascadeOnDelete();
             $table->string('data');
             $table->timestamps();
-            $table->foreign('type_id')->references('id')->on('contact_information_types')->onDelete('cascade');
         });
     }
 
@@ -38,7 +38,7 @@ return new class() extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contact_information_types');
         Schema::dropIfExists('contact_information');
+        Schema::dropIfExists('contact_information_types');
     }
 };

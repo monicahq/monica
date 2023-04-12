@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Account;
+use App\Models\CallReasonType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,10 +24,9 @@ return new class() extends Migration
 
         Schema::create('call_reasons', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('call_reason_type_id');
+            $table->foreignIdFor(CallReasonType::class)->constrained()->cascadeOnDelete();
             $table->string('label');
             $table->timestamps();
-            $table->foreign('call_reason_type_id')->references('id')->on('call_reason_types')->onDelete('cascade');
         });
     }
 
@@ -37,7 +37,7 @@ return new class() extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('call_reason_types');
         Schema::dropIfExists('call_reasons');
+        Schema::dropIfExists('call_reason_types');
     }
 };

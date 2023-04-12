@@ -2,6 +2,7 @@
 
 use App\Models\Contact;
 use App\Models\Vault;
+use App\Models\VaultQuickFactsTemplate;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,11 +27,10 @@ return new class extends Migration
 
         Schema::create('quick_facts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('vault_quick_facts_template_id');
+            $table->foreignIdFor(VaultQuickFactsTemplate::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
             $table->string('content');
             $table->timestamps();
-            $table->foreign('vault_quick_facts_template_id')->references('id')->on('vault_quick_facts_templates')->onDelete('cascade');
         });
 
         Schema::table('contacts', function (Blueprint $table) {
@@ -45,7 +45,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vault_quick_facts_templates');
+        Schema::table('contacts', function (Blueprint $table) {
+            $table->dropColumn('show_quick_facts');
+        });
         Schema::dropIfExists('quick_facts');
+        Schema::dropIfExists('vault_quick_facts_templates');
     }
 };

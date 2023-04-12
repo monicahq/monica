@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\File;
 use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -33,8 +34,7 @@ return new class() extends Migration
         });
 
         Schema::table('contacts', function (Blueprint $table) {
-            $table->unsignedBigInteger('file_id')->nullable()->after('company_id');
-            $table->foreign('file_id')->references('id')->on('files')->onDelete('set null');
+            $table->foreignIdFor(File::class)->nullable()->after('company_id')->constrained()->nullOnDelete();
         });
     }
 
@@ -45,9 +45,10 @@ return new class() extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('files');
         Schema::table('contacts', function (Blueprint $table) {
+            $table->dropForeign(['file_id']);
             $table->dropColumn('file_id');
         });
+        Schema::dropIfExists('files');
     }
 };

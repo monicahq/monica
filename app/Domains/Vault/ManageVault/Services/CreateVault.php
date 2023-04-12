@@ -10,7 +10,7 @@ use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
 use App\Models\MoodTrackingParameter;
 use App\Models\Vault;
-use App\Models\VaultQuickFactTemplate;
+use App\Models\VaultQuickFactsTemplate;
 use App\Services\BaseService;
 
 class CreateVault extends BaseService implements ServiceInterface
@@ -335,13 +335,13 @@ class CreateVault extends BaseService implements ServiceInterface
 
     private function populateDefaultQuickVaultTemplateEntries(): void
     {
-        VaultQuickFactTemplate::create([
+        VaultQuickFactsTemplate::create([
             'vault_id' => $this->vault->id,
             'label_translation_key' => 'vault.settings_quick_fact_template_entry_hobbies',
             'position' => 1,
         ]);
 
-        VaultQuickFactTemplate::create([
+        VaultQuickFactsTemplate::create([
             'vault_id' => $this->vault->id,
             'label_translation_key' => 'vault.settings_quick_fact_template_entry_food',
             'position' => 2,

@@ -304,7 +304,7 @@ class Contact extends Model
      */
     public function groups(): BelongsToMany
     {
-        return $this->belongsToMany(Group::class, 'contact_group');
+        return $this->belongsToMany(Group::class);
     }
 
     /**
@@ -312,7 +312,7 @@ class Contact extends Model
      */
     public function posts(): BelongsToMany
     {
-        return $this->belongsToMany(Post::class, 'contact_post');
+        return $this->belongsToMany(Post::class);
     }
 
     /**
@@ -352,7 +352,9 @@ class Contact extends Model
      */
     public function addresses(): BelongsToMany
     {
-        return $this->belongsToMany(Address::class, 'contact_address', 'contact_id')->withPivot('is_past_address')->withTimestamps();
+        return $this->belongsToMany(Address::class, 'contact_address')
+            ->withPivot('is_past_address')
+            ->withTimestamps();
     }
 
     /**

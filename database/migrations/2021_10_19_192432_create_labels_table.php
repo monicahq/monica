@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Contact;
+use App\Models\Label;
 use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -25,10 +26,9 @@ return new class() extends Migration
         });
 
         Schema::create('contact_label', function (Blueprint $table) {
-            $table->unsignedBigInteger('label_id');
+            $table->foreignIdFor(Label::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
-            $table->foreign('label_id')->references('id')->on('labels')->onDelete('cascade');
         });
     }
 
@@ -37,7 +37,7 @@ return new class() extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('labels');
         Schema::dropIfExists('contact_label');
+        Schema::dropIfExists('labels');
     }
 };
