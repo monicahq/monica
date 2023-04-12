@@ -78,7 +78,7 @@ defineProps({
 
             <!-- blank state -->
             <div
-              v-if="data.countries.length == 0"
+              v-if="data.cities.length == 0"
               class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
               <p class="p-5 text-center">No cities have been added yet in any contact's addresses.</p>
             </div>
