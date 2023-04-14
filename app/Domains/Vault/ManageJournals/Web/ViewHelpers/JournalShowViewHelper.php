@@ -62,18 +62,16 @@ class JournalShowViewHelper
      */
     public static function postsInYear(Journal $journal, int $year, User $user): Collection
     {
+        $posts = $journal->posts()
+            ->orderBy('written_at', 'desc')
+            ->whereYear('written_at', (string) $year)
+            ->get()
+            ->groupBy(fn (Post $post) => $post->written_at->month);
+
         $monthsCollection = collect();
         for ($month = 12; $month > 0; $month--) {
-            $postsCollection = collect();
-
-            $posts = $journal->posts()
-                ->orderBy('written_at', 'desc')
-                ->whereYear('written_at', (string) $year)
-                ->whereMonth('written_at', (string) $month)
-                ->get();
-
-            foreach ($posts as $post) {
-                $postsCollection->push([
+            $postsCollection = $posts->get($month, collect())
+                ->map(fn ($post) => [
                     'id' => $post->id,
                     'title' => $post->title,
                     'excerpt' => $post->excerpt,
@@ -83,18 +81,18 @@ class JournalShowViewHelper
                         'show' => route('post.show', [
                             'vault' => $journal->vault_id,
                             'journal' => $journal->id,
-                            'post' => $post->id,
+                            'post' => $post,
                         ]),
                     ],
                 ]);
-            }
 
             $monthsCollection->push([
                 'id' => $month,
                 'month' => Str::upper(Carbon::createFromDate($year, $month, 1)->format('M')),
                 'month_human_format' => DateHelper::formatLongMonthAndYear(Carbon::createFromDate($year, $month, 1)),
                 'posts' => $postsCollection,
-                'color' => 'bg-green-',
+                'count' => $postsCollection->count(),
+                'color' => 'bg-gray-50 dark:bg-gray-900',
             ]);
         }
 
@@ -104,32 +102,31 @@ class JournalShowViewHelper
         $maxPostsInMonth = 0;
         $maxPosts = 0;
         foreach ($monthsCollection as $month) {
-            if ($month['posts']->count() > $maxPostsInMonth) {
-                $maxPostsInMonth = $month['posts']->count();
+            if ($month['count'] > $maxPostsInMonth) {
+                $maxPostsInMonth = $month['count'];
             }
 
-            $maxPosts = $maxPosts + $month['posts']->count();
+            $maxPosts = $maxPosts + $month['count'];
         }
 
         foreach ($monthsCollection as $month) {
-            if ($month['posts']->count() === 0) {
-                $color = 'bg-gray-50';
-            } else {
-                $percent = round(($month['posts']->count() / $maxPostsInMonth) * 100);
+            if ($month['count'] > 0) {
+                $percent = round(($month['count'] / $maxPostsInMonth) * 100);
                 // now we round to the nearest 100
                 $round = $percent - ($percent % 100 - 100);
-                $color = 'bg-green-'.(string) $round;
+                $dark = 1000 - $round;
+                $color = "bg-green-$round dark:bg-green-$dark";
+
+                // a really barbaric piece of code so we replace the current collection
+                // value with the proper value
+                $monthsCollection->transform(function ($item, $key) use ($month, $color) {
+                    if ($item['id'] === $month['id']) {
+                        $item['color'] = $color;
+                    }
+
+                    return $item;
+                });
             }
-
-            // a really barbaric piece of code so we replace the current collection
-            // value with the proper value
-            $monthsCollection->transform(function ($item, $key) use ($month, $color) {
-                if ($item['id'] === $month['id']) {
-                    $item['color'] = $color;
-                }
-
-                return $item;
-            });
         }
 
         return $monthsCollection;

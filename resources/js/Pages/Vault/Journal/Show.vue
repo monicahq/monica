@@ -142,7 +142,7 @@ const destroy = () => {
               <div v-for="month in data.months" :key="month.id" class="text-center">
                 <div class="mb-1 text-xs">{{ month.month }}</div>
 
-                <div :class="month.color" class="h-3 rounded-md border border-gray-200"></div>
+                <div :class="month.color" class="h-3 rounded-md border border-gray-200 dark:border-gray-700"></div>
               </div>
             </div>
 
@@ -153,7 +153,8 @@ const destroy = () => {
               <!-- loop on months -->
               <li v-for="month in data.months" :key="month.id">
                 <div v-if="month.posts.length > 0">
-                  <div class="border-b border-gray-200 bg-gray-100 px-5 py-2 text-sm font-semibold">
+                  <div
+                    class="border-b border-gray-200 bg-gray-100 px-5 py-2 text-sm font-semibold dark:border-gray-700 dark:bg-gray-900">
                     {{ month.month_human_format }}
                   </div>
 
