@@ -173,7 +173,7 @@ class UpdateContactIntroduction extends BaseService
     {
         $specialDate = $contact->setSpecialDate(
             'first_met',
-            (is_null($data['year']) ? 0 : $data['year']),
+            is_null($data['year']) ? 0 : $data['year'],
             $data['month'],
             $data['day']
         );

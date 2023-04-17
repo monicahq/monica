@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use function Safe\exec;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Carbon;
@@ -31,6 +30,8 @@ use App\Services\Contact\Contact\UpdateBirthdayInformation;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
 use App\Services\Account\Activity\Activity\AttachContactToActivity;
+
+use function Safe\exec;
 
 class SetupTest extends Command
 {
@@ -497,7 +498,6 @@ class SetupTest extends Command
     public function populateContactFields()
     {
         if (rand(1, 3) == 1) {
-
             // Fetch number of types
             $numberOfTypes = ContactFieldType::where('account_id', $this->account->id)->count();
 

@@ -4,12 +4,13 @@ namespace App\Services\DavClient;
 
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
-use function Safe\preg_replace;
 use App\Models\Account\AddressBook;
 use App\Models\Account\AddressBookSubscription;
 use App\Services\DavClient\Utils\Dav\DavClient;
 use App\Services\DavClient\Utils\AddressBookGetter;
 use App\Services\DavClient\Utils\Dav\DavClientException;
+
+use function Safe\preg_replace;
 
 class CreateAddressBookSubscription extends BaseService
 {
