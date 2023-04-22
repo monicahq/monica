@@ -160,7 +160,7 @@ defineProps({
               </div>
             </div>
 
-            <!-- slice of life -->
+            <!-- slices of life -->
             <div v-if="data.sliceOfLife" class="mb-4">
               <p class="mb-2 text-sm font-semibold">Slice of life</p>
               <div class="mb-6 last:mb-0">
@@ -172,6 +172,32 @@ defineProps({
                   }}</inertia-link>
                   <p class="text-xs text-gray-600">{{ data.sliceOfLife.date_range }}</p>
                 </div>
+              </div>
+            </div>
+
+            <!-- post metrics -->
+            <div v-if="data.journalMetrics.length > 0" class="mb-4">
+              <p class="mb-2 text-sm font-semibold">Post metrics</p>
+              <div v-for="journalMetric in data.journalMetrics" :key="journalMetric.id">
+                <div class="mb-1 flex items-center justify-between font-semibold">
+                  <span>{{ journalMetric.label }}</span>
+
+                  <span class="font-mono text-sm">{{ journalMetric.total }}</span>
+                </div>
+                <ul
+                  v-if="journalMetric.post_metrics.length > 0"
+                  class="mb-2 rounded border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+                  <li
+                    v-for="postMetric in journalMetric.post_metrics"
+                    :key="postMetric.id"
+                    class="item-list flex items-center justify-between border-b border-gray-200 px-3 py-1 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                    <span class="italic">{{ postMetric.label }}</span>
+
+                    <div class="flex items-center">
+                      <span class="font-mono text-sm">{{ postMetric.value }}</span>
+                    </div>
+                  </li>
+                </ul>
               </div>
             </div>
 

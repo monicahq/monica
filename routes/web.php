@@ -96,8 +96,10 @@ use App\Domains\Settings\ManageUsers\Web\Controllers\UserController;
 use App\Domains\Vault\ManageCompanies\Web\Controllers\VaultCompanyController;
 use App\Domains\Vault\ManageFiles\Web\Controllers\VaultFileController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\JournalController;
+use App\Domains\Vault\ManageJournals\Web\Controllers\JournalMetricController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\JournalPhotoController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\PostController;
+use App\Domains\Vault\ManageJournals\Web\Controllers\PostMetricController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\PostPhotoController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\PostSliceOfLifeController;
 use App\Domains\Vault\ManageJournals\Web\Controllers\PostTagController;
@@ -408,6 +410,10 @@ Route::middleware([
                         // slices of life
                         Route::put('slices', [PostSliceOfLifeController::class, 'update'])->name('post.slices.update');
                         Route::delete('slices', [PostSliceOfLifeController::class, 'destroy'])->name('post.slices.destroy');
+
+                        // post metrics
+                        Route::post('metrics', [PostMetricController::class, 'store'])->name('post.metrics.store');
+                        Route::delete('metrics/{metric}', [PostMetricController::class, 'destroy'])->name('post.metrics.destroy');
                     });
 
                     // slices of life
@@ -422,6 +428,11 @@ Route::middleware([
                         Route::delete('cover', [SliceOfLifeCoverImageController::class, 'destroy'])->name('slices.cover.destroy');
                         Route::delete('', [SliceOfLifeController::class, 'destroy'])->name('slices.destroy');
                     });
+
+                    //  journal metrics
+                    Route::get('metrics', [JournalMetricController::class, 'index'])->name('journal_metrics.index');
+                    Route::post('metrics', [JournalMetricController::class, 'store'])->name('journal_metrics.store');
+                    Route::delete('metrics/{metric}', [JournalMetricController::class, 'destroy'])->name('journal_metrics.destroy');
                 });
             });
 

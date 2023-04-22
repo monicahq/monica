@@ -127,8 +127,11 @@ const destroy = () => {
               </li>
             </ul>
 
-            <inertia-link :href="data.url.edit" class="mb-2 mt-6 block text-sm text-blue-500 hover:underline"
-              >Edit journal</inertia-link
+            <inertia-link :href="data.url.journal_metrics" class="mt-6 mb-2 block text-sm text-blue-500 hover:underline"
+              >Edit journal metrics</inertia-link
+            >
+            <inertia-link :href="data.url.edit" class="mb-2 block text-sm text-blue-500 hover:underline"
+              >Edit journal information</inertia-link
             >
             <span @click="destroy()" class="block cursor-pointer text-sm text-blue-500 hover:underline"
               >Delete journal</span

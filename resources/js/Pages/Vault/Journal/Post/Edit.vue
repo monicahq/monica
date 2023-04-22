@@ -5,6 +5,7 @@ import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import Tags from '@/Pages/Vault/Journal/Post/Partials/Tags.vue';
 import SlicesOfLife from '@/Pages/Vault/Journal/Post/Partials/SlicesOfLife.vue';
+import PostMetrics from '@/Pages/Vault/Journal/Post/Partials/PostMetrics.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { onMounted, watch, ref } from 'vue';
@@ -406,6 +407,9 @@ const destroy = () => {
 
             <!-- slices of life -->
             <slices-of-life :data="data" />
+
+            <!-- post metrics -->
+            <post-metrics :data="data" />
 
             <!-- tags -->
             <tags :data="data" />

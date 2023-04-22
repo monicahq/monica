@@ -5,6 +5,7 @@ namespace Tests\Unit\Models;
 use App\Models\Contact;
 use App\Models\File;
 use App\Models\Post;
+use App\Models\PostMetric;
 use App\Models\PostSection;
 use App\Models\SliceOfLife;
 use App\Models\Tag;
@@ -76,6 +77,17 @@ class PostTest extends TestCase
         ]);
 
         $this->assertTrue($post->files()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_post_metrics(): void
+    {
+        $post = Post::factory()->create();
+        PostMetric::factory()->count(2)->create([
+            'post_id' => $post->id,
+        ]);
+
+        $this->assertTrue($post->postMetrics()->exists());
     }
 
     /** @test */

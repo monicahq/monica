@@ -47,4 +47,12 @@ class Journal extends Model
     {
         return $this->hasMany(SliceOfLife::class);
     }
+
+    /**
+     * Get the journal metrics associated with the journal.
+     */
+    public function journalMetrics(): HasMany
+    {
+        return $this->hasMany(JournalMetric::class);
+    }
 }

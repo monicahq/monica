@@ -10,10 +10,12 @@ use App\Models\Contact;
 use App\Models\File;
 use App\Models\Journal;
 use App\Models\Post;
+use App\Models\PostMetric;
 use App\Models\PostSection;
 use App\Models\SliceOfLife;
 use App\Models\Tag;
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 class PostEditViewHelper
 {
@@ -71,6 +73,7 @@ class PostEditViewHelper
             'statistics' => PostHelper::statistics($post),
             'tags_in_post' => $tagsAssociatedWithPostCollection,
             'tags_in_vault' => $tagsInVaultCollection,
+            'journal_metrics' => self::journalMetrics($post),
             'uploadcarePublicKey' => config('services.uploadcare.public_key'),
             'canUploadFile' => StorageHelper::canUploadFile($journal->vault->account),
             'journal' => [
@@ -187,6 +190,51 @@ class PostEditViewHelper
                     'journal' => $journal->id,
                     'post' => $post->id,
                     'photo' => $file->id,
+                ]),
+            ],
+        ];
+    }
+
+    public static function journalMetrics(Post $post): Collection
+    {
+        $journalMetrics = $post->journal->journalMetrics;
+
+        $collection = collect([]);
+        foreach ($journalMetrics as $journalMetric) {
+            $postMetrics = $post->postMetrics()
+                ->where('journal_metric_id', $journalMetric->id)
+                ->get()
+                ->map(fn (PostMetric $postMetric) => self::dtoPostMetric($postMetric));
+
+            $collection->push([
+                'id' => $journalMetric->id,
+                'label' => $journalMetric->label,
+                'post_metrics' => $postMetrics,
+                'url' => [
+                    'store' => route('post.metrics.store', [
+                        'vault' => $post->journal->vault_id,
+                        'journal' => $post->journal_id,
+                        'post' => $post->id,
+                    ]),
+                ],
+            ]);
+        }
+
+        return $collection;
+    }
+
+    public static function dtoPostMetric(PostMetric $postMetric): array
+    {
+        return [
+            'id' => $postMetric->id,
+            'value' => $postMetric->value,
+            'label' => $postMetric->label,
+            'url' => [
+                'destroy' => route('post.metrics.destroy', [
+                    'vault' => $postMetric->post->journal->vault_id,
+                    'journal' => $postMetric->post->journal_id,
+                    'post' => $postMetric->post->id,
+                    'metric' => $postMetric->id,
                 ]),
             ],
         ];

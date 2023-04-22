@@ -9,6 +9,7 @@ use App\Models\Contact;
 use App\Models\File;
 use App\Models\MoodTrackingEvent;
 use App\Models\Post;
+use App\Models\PostMetric;
 use App\Models\PostSection;
 use App\Models\Tag;
 use App\Models\User;
@@ -42,6 +43,7 @@ class PostShowViewHelper
             ->first();
 
         $moodTrackingEvents = self::getMood($user, $post);
+        $journalMetrics = self::getMetrics($post);
 
         return [
             'id' => $post->id,
@@ -54,6 +56,7 @@ class PostShowViewHelper
             'contacts' => $contacts,
             'photos' => $photos,
             'moodTrackingEvents' => $moodTrackingEvents,
+            'journalMetrics' => $journalMetrics,
             'previousPost' => $previousPost ? [
                 'id' => $previousPost->id,
                 'title' => $previousPost->title,
@@ -175,5 +178,38 @@ class PostShowViewHelper
                     'label' => $mood->moodTrackingParameter->label,
                 ],
             ]);
+    }
+
+    private static function getMetrics(Post $post): Collection
+    {
+        $journalMetrics = $post->journal->journalMetrics;
+
+        $collection = collect([]);
+        foreach ($journalMetrics as $journalMetric) {
+            $postMetrics = $post->postMetrics()
+                ->where('journal_metric_id', $journalMetric->id)
+                ->get()
+                ->map(fn (PostMetric $postMetric) => [
+                    'id' => $postMetric->id,
+                    'value' => $postMetric->value,
+                    'label' => $postMetric->label,
+                ]);
+
+            $collection->push([
+                'id' => $journalMetric->id,
+                'label' => $journalMetric->label,
+                'total' => $postMetrics->sum('value'),
+                'post_metrics' => $postMetrics,
+                'url' => [
+                    'store' => route('post.metrics.store', [
+                        'vault' => $post->journal->vault_id,
+                        'journal' => $post->journal_id,
+                        'post' => $post->id,
+                    ]),
+                ],
+            ]);
+        }
+
+        return $collection;
     }
 }

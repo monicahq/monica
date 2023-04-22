@@ -6,7 +6,9 @@ use App\Domains\Vault\ManageJournals\Web\ViewHelpers\PostEditViewHelper;
 use App\Models\Contact;
 use App\Models\File;
 use App\Models\Journal;
+use App\Models\JournalMetric;
 use App\Models\Post;
+use App\Models\PostMetric;
 use App\Models\PostSection;
 use App\Models\SliceOfLife;
 use App\Models\User;
@@ -55,7 +57,7 @@ class PostEditViewHelperTest extends TestCase
 
         $array = PostEditViewHelper::data($journal, $post, $user);
 
-        $this->assertCount(16, $array);
+        $this->assertCount(17, $array);
         $this->assertEquals(
             $post->id,
             $array['id']
@@ -136,6 +138,41 @@ class PostEditViewHelperTest extends TestCase
                 'destroy' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$post->id,
             ],
             $array['url']
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_details_of_the_post_metric(): void
+    {
+        $vault = Vault::factory()->create();
+        $journal = Journal::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        $post = Post::factory()->create([
+            'journal_id' => $journal->id,
+        ]);
+        $journalMetric = JournalMetric::factory()->create([
+            'journal_id' => $journal->id,
+        ]);
+        $postMetric = PostMetric::factory()->create([
+            'post_id' => $post->id,
+            'value' => 123,
+            'label' => 'label',
+            'journal_metric_id' => $journalMetric->id,
+        ]);
+
+        $array = PostEditViewHelper::dtoPostMetric($postMetric);
+
+        $this->assertEquals(
+            [
+                'id' => $postMetric->id,
+                'value' => 123,
+                'label' => 'label',
+                'url' => [
+                    'destroy' => env('APP_URL').'/vaults/'.$vault->id.'/journals/'.$journal->id.'/posts/'.$post->id.'/metrics/'.$postMetric->id,
+                ],
+            ],
+            $array
         );
     }
 }

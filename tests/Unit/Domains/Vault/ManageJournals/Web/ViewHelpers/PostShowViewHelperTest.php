@@ -5,7 +5,9 @@ namespace Tests\Unit\Domains\Vault\ManageJournals\Web\ViewHelpers;
 use App\Domains\Vault\ManageJournals\Web\ViewHelpers\PostShowViewHelper;
 use App\Models\File;
 use App\Models\Journal;
+use App\Models\JournalMetric;
 use App\Models\Post;
+use App\Models\PostMetric;
 use App\Models\PostSection;
 use App\Models\Tag;
 use App\Models\User;
@@ -54,9 +56,19 @@ class PostShowViewHelperTest extends TestCase
         $file->fileable_type = Post::class;
         $file->save();
 
+        $journalMetric = JournalMetric::factory()->create([
+            'journal_id' => $journal->id,
+        ]);
+        PostMetric::factory()->create([
+            'post_id' => $post->id,
+            'value' => 123,
+            'label' => 'label',
+            'journal_metric_id' => $journalMetric->id,
+        ]);
+
         $array = PostShowViewHelper::data($post, $user);
 
-        $this->assertCount(15, $array);
+        $this->assertCount(16, $array);
         $this->assertEquals(
             $post->id,
             $array['id']
