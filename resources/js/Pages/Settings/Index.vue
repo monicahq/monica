@@ -77,7 +77,7 @@ defineProps({
               <li class="mb-2 flex justify-start">
                 <span class="mr-2">🎃</span>
                 <Link :href="data.url.personalize.index" class="text-blue-500 hover:underline">
-                  {{ $t('Personalize your contacts data') }}
+                  {{ $t('Personalize your account') }}
                 </Link>
               </li>
               <li class="mb-2 flex justify-start">
