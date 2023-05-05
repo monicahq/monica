@@ -69,7 +69,7 @@ defineProps({
           <div class="mb-6 rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
             <ul>
               <li class="mb-2 flex justify-start">
-                <span class="mr-2">🥸</span>
+                <span class="mr-2">😀</span>
                 <Link :href="data.url.users.index" class="text-blue-500 hover:underline">
                   {{ $t('Manage users') }}
                 </Link>

@@ -51,7 +51,7 @@
               </inertia-link>
             </li> -->
             <li class="mb-2 flex">
-              <span class="mr-2">🥸</span>
+              <span class="mr-2">👥</span>
               <inertia-link :href="data.url.manage_relationships" class="text-blue-500 hover:underline">
                 {{ $t('Manage relationship types') }}
               </inertia-link>
