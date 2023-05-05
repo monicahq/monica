@@ -42,7 +42,7 @@ class Vault extends Model
         'name',
         'description',
         'default_template_id',
-        'show_activity_tab_on_dashboard',
+        'default_activity_tab',
         'show_group_tab',
         'show_tasks_tab',
         'show_files_tab',
@@ -62,7 +62,6 @@ class Vault extends Model
         'show_journal_tab' => 'boolean',
         'show_companies_tab' => 'boolean',
         'show_reports_tab' => 'boolean',
-        'show_activity_tab_on_dashboard' => 'boolean',
     ];
 
     /**
@@ -220,5 +219,13 @@ class Vault extends Model
     public function quickFactsTemplateEntries(): HasMany
     {
         return $this->hasMany(VaultQuickFactsTemplate::class);
+    }
+
+    /**
+     * Get the life metric records associated with the vault.
+     */
+    public function lifeMetrics(): HasMany
+    {
+        return $this->hasMany(LifeMetric::class);
     }
 }

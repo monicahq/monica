@@ -366,6 +366,14 @@ class Contact extends Model
     }
 
     /**
+     * Get the life metrics associated with the contact.
+     */
+    public function lifeMetrics(): BelongsToMany
+    {
+        return $this->belongsToMany(LifeMetric::class, 'contact_life_metric', 'contact_id', 'life_metric_id')->withTimestamps();
+    }
+
+    /**
      * Get the name of the contact, according to the user preference.
      *
      * @return Attribute<string,never>

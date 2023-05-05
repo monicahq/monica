@@ -1040,6 +1040,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"charts.css@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "charts.css@npm:0.9.0"
+  checksum: efade87167f66adfdc19d6f624ddf69fd4f09c5c3c5ee703da6f4ce1933698ec304a3207746275af88f234a35b455798cc120b6bc73863b898e4387489c2950c
+  languageName: node
+  linkType: hard
+
 "chokidar@npm:>=3.0.0 <4.0.0, chokidar@npm:^3.5.3":
   version: 3.5.3
   resolution: "chokidar@npm:3.5.3"
@@ -3293,6 +3300,7 @@ __metadata:
     ant-design-vue: ^3.2.5
     autoprefixer: ^10.4.7
     axios: ^1.2.2
+    charts.css: ^0.9.0
     eslint: ^8.19.0
     eslint-config-prettier: ^8.5.0
     eslint-plugin-vue: ^9.1.0

@@ -17,6 +17,7 @@ use App\Models\Goal;
 use App\Models\Group;
 use App\Models\Label;
 use App\Models\LifeEvent;
+use App\Models\LifeMetric;
 use App\Models\Loan;
 use App\Models\MoodTrackingEvent;
 use App\Models\Note;
@@ -325,6 +326,17 @@ class ContactTest extends TestCase
         QuickFact::factory()->create(['contact_id' => $contact->id]);
 
         $this->assertTrue($contact->quickFacts()->exists());
+    }
+
+    /** @test */
+    public function it_has_many_life_metrics(): void
+    {
+        $contact = Contact::factory()->create([]);
+        $lifeMetric = LifeMetric::factory()->create();
+
+        $contact->lifeMetrics()->sync([$lifeMetric->id]);
+
+        $this->assertTrue($contact->lifeMetrics()->exists());
     }
 
     /** @test */

@@ -15,7 +15,7 @@ class VaultDefaultTabOnDashboardController extends Controller
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,
-            'show_activity_tab_on_dashboard' => $request->input('show_activity_tab_on_dashboard'),
+            'default_activity_tab' => $request->input('default_activity_tab'),
         ];
 
         (new UpdateVaultDashboardDefaultTab())->execute($data);

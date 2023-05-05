@@ -3,6 +3,7 @@
 namespace App\Domains\Vault\ManageVault\Web\Controllers;
 
 use App\Domains\Contact\ManageLifeEvents\Web\ViewHelpers\ModuleLifeEventViewHelper;
+use App\Domains\Vault\ManageLifeMetrics\Web\ViewHelpers\VaultLifeMetricsViewHelper;
 use App\Domains\Vault\ManageVault\Services\CreateVault;
 use App\Domains\Vault\ManageVault\Services\DestroyVault;
 use App\Domains\Vault\ManageVault\Web\ViewHelpers\VaultCreateViewHelper;
@@ -10,6 +11,7 @@ use App\Domains\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Domains\Vault\ManageVault\Web\ViewHelpers\VaultShowViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Vault;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -70,8 +72,9 @@ class VaultController extends Controller
             'favorites' => VaultShowViewHelper::favorites($vault, Auth::user()),
             'dueTasks' => VaultShowViewHelper::dueTasks($vault, Auth::user()),
             'moodTrackingEvents' => VaultShowViewHelper::moodTrackingEvents($vault, Auth::user()),
-            'activityTabShown' => $vault->show_activity_tab_on_dashboard,
+            'defaultTab' => $vault->default_activity_tab,
             'lifeEvents' => ModuleLifeEventViewHelper::data($contact, Auth::user()),
+            'lifeMetrics' => VaultLifeMetricsViewHelper::data($vault, Auth::user(), Carbon::now()->year),
             'url' => [
                 'feed' => route('vault.feed.show', [
                     'vault' => $vault,

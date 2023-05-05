@@ -24,6 +24,7 @@
     "ant-design-vue": "^3.2.5",
     "autoprefixer": "^10.4.7",
     "axios": "^1.2.2",
+    "charts.css": "^0.9.0",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-vue": "^9.1.0",

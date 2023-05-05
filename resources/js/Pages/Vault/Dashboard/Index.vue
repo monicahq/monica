@@ -4,6 +4,7 @@ import LastUpdated from '@/Pages/Vault/Dashboard/Partials/LastUpdated.vue';
 import UpcomingReminders from '@/Pages/Vault/Dashboard/Partials/UpcomingReminders.vue';
 import Favorites from '@/Pages/Vault/Dashboard/Partials/Favorites.vue';
 import DueTasks from '@/Pages/Vault/Dashboard/Partials/DueTasks.vue';
+import LifeMetrics from '@/Pages/Vault/Dashboard/Partials/LifeMetrics.vue';
 import MoodTrackingEvents from '@/Pages/Vault/Dashboard/Partials/MoodTrackingEvents.vue';
 import Feed from '@/Shared/Modules/Feed.vue';
 import LifeEvent from '@/Shared/Modules/LifeEvent.vue';
@@ -20,31 +21,23 @@ const props = defineProps({
   dueTasks: Object,
   moodTrackingEvents: Object,
   lifeEvents: Object,
-  activityTabShown: String,
+  lifeMetrics: Object,
+  defaultTab: String,
 });
 
-const defaultTab = ref('activity');
+const currentTab = ref('');
 
 const form = useForm({
-  show_activity_tab_on_dashboard: null,
+  default_activity_tab: null,
 });
 
 onMounted(() => {
-  if (props.activityTabShown) {
-    defaultTab.value = 'activity';
-  } else {
-    defaultTab.value = 'life_events';
-  }
+  currentTab.value = props.defaultTab;
 });
 
 const changeTab = (tab) => {
-  defaultTab.value = tab;
-
-  if (defaultTab.value === 'activity') {
-    form.show_activity_tab_on_dashboard = 1;
-  } else {
-    form.show_activity_tab_on_dashboard = 0;
-  }
+  currentTab.value = tab;
+  form.default_activity_tab = tab;
 
   axios.put(props.url.default_tab, form);
 };
@@ -69,10 +62,11 @@ const changeTab = (tab) => {
             <!-- tabs -->
             <div class="flex justify-center">
               <div class="mb-8 inline-flex rounded-md shadow-sm">
+                <!-- Activity in the vault -->
                 <button
                   @click="changeTab('activity')"
                   type="button"
-                  :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': defaultTab === 'activity' }"
+                  :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': currentTab === 'activity' }"
                   class="inline-flex items-center rounded-l-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -90,11 +84,12 @@ const changeTab = (tab) => {
                   {{ $t('Activity in this vault') }}
                 </button>
 
+                <!-- Your life events -->
                 <button
                   @click="changeTab('life_events')"
                   type="button"
-                  :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': defaultTab === 'life_events' }"
-                  class="inline-flex items-center rounded-r-md border-b border-r border-t border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                  :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': currentTab === 'life_events' }"
+                  class="inline-flex items-center border-b border-r border-t border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -113,15 +108,41 @@ const changeTab = (tab) => {
                   </svg>
                   {{ $t('Your life events') }}
                 </button>
+
+                <!-- Your life metrics -->
+                <button
+                  @click="changeTab('life_metrics')"
+                  type="button"
+                  :class="{
+                    'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': currentTab === 'life_metrics',
+                  }"
+                  class="inline-flex items-center rounded-r-md border-t border-b border-r border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="mr-2 h-4 w-4">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+                  </svg>
+
+                  {{ $t('Life metrics') }}
+                </button>
               </div>
             </div>
 
-            <life-event v-if="defaultTab == 'life_events'" :data="lifeEvents" :layout-data="layoutData" />
-
             <!-- feed tab -->
-            <div v-if="defaultTab == 'activity'">
-              <feed :url="url.feed" :contact-view-mode="false" />
-            </div>
+            <feed v-if="currentTab == 'activity'" :url="url.feed" :contact-view-mode="false" />
+
+            <!-- life events -->
+            <life-event v-if="currentTab == 'life_events'" :data="lifeEvents" :layout-data="layoutData" />
+
+            <!-- life metrics tab -->
+            <life-metrics v-if="currentTab === 'life_metrics'" :data="lifeMetrics" />
           </div>
 
           <!-- right -->

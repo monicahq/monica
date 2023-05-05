@@ -64,7 +64,7 @@ class UpdateVaultDashboardDefaultTabTest extends TestCase
             'account_id' => $account->id,
             'author_id' => $author->id,
             'vault_id' => $vault->id,
-            'show_activity_tab_on_dashboard' => true,
+            'default_activity_tab' => 'activity',
         ];
 
         $vault = (new UpdateVaultDashboardDefaultTab())->execute($request);
@@ -72,7 +72,7 @@ class UpdateVaultDashboardDefaultTabTest extends TestCase
         $this->assertDatabaseHas('vaults', [
             'id' => $vault->id,
             'account_id' => $account->id,
-            'show_activity_tab_on_dashboard' => true,
+            'default_activity_tab' => 'activity',
         ]);
     }
 }

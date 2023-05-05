@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Domains\Vault\ManageVault\Services;
+namespace App\Domains\Vault\ManageLifeMetrics\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Vault;
+use App\Models\LifeMetric;
 use App\Services\BaseService;
 
-class UpdateVaultDashboardDefaultTab extends BaseService implements ServiceInterface
+class CreateLifeMetric extends BaseService implements ServiceInterface
 {
     /**
      * Get the validation rules that apply to the service.
@@ -15,9 +15,9 @@ class UpdateVaultDashboardDefaultTab extends BaseService implements ServiceInter
     {
         return [
             'account_id' => 'required|uuid|exists:accounts,id',
-            'author_id' => 'required|uuid|exists:users,id',
             'vault_id' => 'required|uuid|exists:vaults,id',
-            'default_activity_tab' => 'required|string',
+            'author_id' => 'required|uuid|exists:users,id',
+            'label' => 'required|string|max:255',
         ];
     }
 
@@ -28,21 +28,21 @@ class UpdateVaultDashboardDefaultTab extends BaseService implements ServiceInter
     {
         return [
             'author_must_belong_to_account',
+            'author_must_be_vault_editor',
             'vault_must_belong_to_account',
-            'author_must_be_in_vault',
         ];
     }
 
     /**
-     * Update a vault's default tab displayed on the dashboard.
+     * Create a life metric.
      */
-    public function execute(array $data): Vault
+    public function execute(array $data): LifeMetric
     {
         $this->validateRules($data);
 
-        $this->vault->default_activity_tab = $data['default_activity_tab'];
-        $this->vault->save();
-
-        return $this->vault;
+        return LifeMetric::create([
+            'vault_id' => $data['vault_id'],
+            'label' => $data['label'],
+        ]);
     }
 }
