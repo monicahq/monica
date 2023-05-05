@@ -290,7 +290,7 @@ return [
     'relationship_type_colleague_male' => 'đồng nghiệp',
     'relationship_type_colleague_with_name' => 'dồng nghiệp của :name',
     'relationship_type_colleague_female_with_name' => 'dồng nghiệp của :name',
-    'relationship_type_colleague_male_with_name' => 'dồng nghiệp của :name',
+    'relationship_type_colleague_male_with_name' => 'đồng nghiệp của :name',
 
     'relationship_type_boss' => 'sếp',
     'relationship_type_boss_female' => 'sếp',
