@@ -33,6 +33,7 @@ module.exports = {
     'bg-red-400',
     'bg-stone-400',
     'bg-stone-700',
+    'bg-slate-900',
     'dark:bg-green-100',
     'dark:bg-green-200',
     'dark:bg-green-300',

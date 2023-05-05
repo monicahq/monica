@@ -233,6 +233,14 @@
               </inertia-link>
 
               <inertia-link
+                :href="layoutData.vault.url.calendar"
+                v-if="layoutData.vault.visibility.show_calendar_tab"
+                :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Calendar') }"
+                class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
+                {{ $t('Calendar') }}
+              </inertia-link>
+
+              <inertia-link
                 :href="layoutData.vault.url.journals"
                 v-if="layoutData.vault.visibility.show_journal_tab"
                 :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Journal') }"

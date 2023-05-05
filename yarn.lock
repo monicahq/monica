@@ -3318,7 +3318,7 @@ __metadata:
     tailwindcss: ^3.0.24
     tiny-emitter: ^2.1.0
     uploadcare-vue: ^1.0.0
-    v-calendar: ^3.0.0-alpha.8
+    v-calendar: next
     vite: ^4.0.4
     vue: ^3.2.36
     vue-clipboard3: ^2.0.0
@@ -3821,9 +3821,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"v-calendar@npm:^3.0.0-alpha.8":
-  version: 3.0.0-alpha.8
-  resolution: "v-calendar@npm:3.0.0-alpha.8"
+"v-calendar@npm:next":
+  version: 3.0.3
+  resolution: "v-calendar@npm:3.0.3"
   dependencies:
     "@popperjs/core": 2.4.0
     "@types/lodash": ^4.14.165
@@ -3832,7 +3832,7 @@ __metadata:
     lodash: ^4.17.20
   peerDependencies:
     vue: ^3.1.0
-  checksum: 5829c1065916cdd88f5d13d806078724a80124182a411e6f7d8dad9a6d468f237929cc69d1ddf857c4650cbb73235b50482959bd28fdd58c22357237388fbf43
+  checksum: 92e36c99c5642334b872b56c4fbe8e8d6fce6614ae02666fd0413157f71ce9a53afa0910a92b3fc83d347a5319605edce306b8c6fa927b123b36bb474f346cda
   languageName: node
   linkType: hard
 

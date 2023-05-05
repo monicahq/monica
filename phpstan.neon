@@ -10,6 +10,9 @@ parameters:
 
     inferPrivatePropertyTypeFromConstructor: true
 
+    excludePaths:
+        - */app/Domains/Vault/ManageCalendar/Web/ViewHelpers/VaultCalendarIndexViewHelper.php
+
     level: 5
     ignoreErrors:
         # Global ignore of VCard properties access

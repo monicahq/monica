@@ -48,6 +48,7 @@ class Vault extends Model
         'show_files_tab',
         'show_journal_tab',
         'show_companies_tab',
+        'show_calendar_tab',
     ];
 
     /**
@@ -57,6 +58,7 @@ class Vault extends Model
      */
     protected $casts = [
         'show_group_tab' => 'boolean',
+        'show_calendar_tab' => 'boolean',
         'show_tasks_tab' => 'boolean',
         'show_files_tab' => 'boolean',
         'show_journal_tab' => 'boolean',
