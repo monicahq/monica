@@ -16,7 +16,7 @@
         </svg>
       </span>
 
-      {{ $t('vault.dashboard_reminders_title') }}
+      {{ $t('Reminders for the next 30 days') }}
     </h3>
 
     <!-- list of reminders -->
@@ -51,7 +51,7 @@
       class="mb-4 flex items-center rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/dashboard_blank_reminders.svg" :alt="$t('Reminders')" class="mr-2 h-14 w-14" />
       <p class="px-5 text-center">
-        {{ $t('vault.dashboard_reminders_blank') }}
+        {{ $t('No upcoming reminders.') }}
       </p>
     </div>
 
@@ -59,7 +59,7 @@
       <inertia-link
         :href="data.url.index"
         class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
-        {{ $t('app.view_all') }}
+        {{ $t('View all') }}
       </inertia-link>
     </div>
   </div>

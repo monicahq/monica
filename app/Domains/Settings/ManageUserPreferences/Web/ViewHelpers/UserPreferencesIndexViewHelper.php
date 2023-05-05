@@ -147,21 +147,27 @@ class UserPreferencesIndexViewHelper
         $collection = collect();
         $collection->push([
             'id' => 1,
-            'type' => trans('settings.user_preferences_map_site_google_maps'),
-            'description' => trans('settings.user_preferences_map_site_google_maps_description'),
+            'type' => trans('Google Maps'),
+            'description' => trans('Google Maps offers the best accuracy and details, but it is not ideal from a privacy standpoint.'),
             'value' => User::MAPS_SITE_GOOGLE_MAPS,
         ]);
         $collection->push([
             'id' => 2,
-            'type' => trans('settings.user_preferences_map_site_open_street_maps'),
-            'description' => trans('settings.user_preferences_map_site_open_street_maps_description'),
+            'type' => trans('Open Street Maps'),
+            'description' => trans('Open Street Maps is a great privacy alternative, but offers less details.'),
             'value' => User::MAPS_SITE_OPEN_STREET_MAPS,
         ]);
+
+        $i18n = match ($user->default_map_site) {
+            User::MAPS_SITE_GOOGLE_MAPS => trans('Google Maps'),
+            User::MAPS_SITE_OPEN_STREET_MAPS => trans('Open Street Maps'),
+            default => trans('Google Maps'),
+        };
 
         return [
             'types' => $collection,
             'default_map_site' => $user->default_map_site,
-            'default_map_site_i18n' => trans('settings.user_preferences_map_site_'.$user->default_map_site),
+            'default_map_site_i18n' => $i18n,
             'url' => [
                 'store' => route('settings.preferences.maps.store'),
             ],
@@ -172,10 +178,18 @@ class UserPreferencesIndexViewHelper
     {
         return [
             'locale' => $user->locale,
-            'locale_i18n' => trans('settings.user_preferences_locale_'.$user->locale),
+            'locale_i18n' => self::language($user->locale),
+            'languages' => collect(config('localizer.supported-locales'))->mapWithKeys(fn ($locale) => [
+                $locale => self::language($locale),
+            ])->sortBy(fn ($value) => $value),
             'url' => [
                 'store' => route('settings.preferences.locale.store'),
             ],
         ];
+    }
+
+    public static function language(?string $code): string
+    {
+        return $code !== null ? trans('auth.lang', locale: $code) : '';
     }
 }

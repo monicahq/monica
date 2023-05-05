@@ -68,7 +68,7 @@ class AcceptInvitation extends BaseService implements ServiceInterface
         $channel = (new CreateUserNotificationChannel())->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
-            'label' => trans('app.notification_channel_email'),
+            'label' => 'Email address',
             'type' => UserNotificationChannel::TYPE_EMAIL,
             'content' => $this->user->email,
             'verify_email' => false,

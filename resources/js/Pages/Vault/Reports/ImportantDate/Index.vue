@@ -16,10 +16,12 @@ defineProps({
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.reports" class="text-blue-500 hover:underline">Reports</inertia-link>
+              <inertia-link :href="data.url.reports" class="text-blue-500 hover:underline">{{
+                $t('Reports')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -31,7 +33,7 @@ defineProps({
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">List of all important dates</li>
+            <li class="inline">{{ $t('List of all important dates') }}</li>
           </ul>
         </div>
       </div>
@@ -57,7 +59,7 @@ defineProps({
               </svg>
             </span>
 
-            The important dates in the next 12 months
+            {{ $t('The important dates in the next 12 months') }}
           </div>
         </div>
 
@@ -91,7 +93,7 @@ defineProps({
           <div
             v-else
             class="rounded-lg border border-gray-200 bg-gray-100 p-3 text-center text-sm text-gray-500 dark:border-gray-700 dark:bg-gray-900">
-            No dates in this month
+            {{ $t('No dates in this month.') }}
           </div>
         </div>
       </div>

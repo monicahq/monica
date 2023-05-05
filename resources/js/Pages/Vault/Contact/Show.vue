@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue';
 import { Link, useForm } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
 import { trans } from 'laravel-vue-i18n';
+import { flash } from '@/methods.js';
 import JetDialogModal from '@/Components/Jetstream/DialogModal.vue';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 import JetButton from '@/Components/Button.vue';
@@ -70,7 +71,7 @@ const destroy = () => {
     .then((response) => {
       deleteContactForm.processing = false;
 
-      localStorage.success = trans('contact.contact_delete_success');
+      localStorage.success = trans('The contact has been deleted');
       Inertia.visit(response.data.data);
     })
     .catch((error) => {
@@ -87,7 +88,7 @@ const toggleArchive = () => {
     .then((response) => {
       toggleArchiveForm.processing = false;
 
-      localStorage.success = trans('app.notification_flash_changes_saved');
+      localStorage.success = trans('Changes saved');
       Inertia.visit(response.data.data);
     })
     .catch((error) => {
@@ -112,7 +113,7 @@ const upload = () => {
     .put(props.data.url.update_avatar, form)
     .then((response) => {
       Inertia.visit(response.data.data);
-      flash(trans('contact.photos_new_success'), 'success');
+      flash(trans('The photo has been added'), 'success');
     })
     .catch((error) => {
       form.errors = error.response.data;
@@ -124,7 +125,7 @@ const destroyAvatar = () => {
     .delete(props.data.url.destroy_avatar)
     .then((response) => {
       Inertia.visit(response.data.data);
-      localStorage.success = trans('app.notification_flash_changes_saved');
+      flash(trans('Changes saved'), 'success');
     })
     .catch((error) => {
       form.errors = error.response.data;
@@ -156,11 +157,11 @@ const destroyAvatar = () => {
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <Link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_contact_index') }}
+                {{ $t('Contacts') }}
               </Link>
             </li>
             <li class="relative mr-2 inline">
@@ -174,7 +175,7 @@ const destroyAvatar = () => {
               </svg>
             </li>
             <li class="inline">
-              {{ $t('app.breadcrumb_contact_show', { name: data.contact_name.name }) }}
+              {{ $t('Profile of :name', { name: data.contact_name.name }) }}
             </li>
           </ul>
         </div>
@@ -187,7 +188,7 @@ const destroyAvatar = () => {
         <!-- this is based on the `listed` boolean on the contact object -->
         <div v-if="!data.listed" class="mb-8 rounded-lg border border-gray-300 px-3 py-2 text-center">
           <span class="mr-4"> 🕸️ </span>
-          {{ $t('contact.contact_archived') }}
+          {{ $t('The contact is archived') }}
           <span class="ml-4"> 🕷️ </span>
         </div>
 
@@ -218,7 +219,7 @@ const destroyAvatar = () => {
               <!-- remove avatar -->
               <li v-if="data.avatar.hasFile" class="mb-2">
                 <span @click.prevent="destroyAvatar()" class="cursor-pointer text-blue-500 hover:underline">
-                  Remove avatar
+                  {{ $t('Remove avatar') }}
                 </span>
               </li>
               <!-- upload new avatar -->
@@ -231,37 +232,37 @@ const destroyAvatar = () => {
                   :preview-step="false"
                   @success="onSuccess"
                   @error="onError">
-                  <span class="cursor-pointer text-blue-500 hover:underline"> Upload photo as avatar </span>
+                  <span class="cursor-pointer text-blue-500 hover:underline"> {{ $t('Upload photo as avatar') }} </span>
                 </Uploadcare>
               </li>
               <!-- archive contact -->
               <li v-if="data.listed && data.options.can_be_archived" class="mb-2">
                 <span class="cursor-pointer text-blue-500 hover:underline" @click="togglingArchive = true">
-                  {{ $t('contact.contact_archive_cta') }}
+                  {{ $t('Archive contact') }}
                 </span>
               </li>
               <!-- unarchive contact -->
               <li v-if="!data.listed" class="mb-2">
                 <span class="cursor-pointer text-blue-500 hover:underline" @click="togglingArchive = true">
-                  {{ $t('contact.contact_unarchive_cta') }}
+                  {{ $t('Unarchive contact') }}
                 </span>
               </li>
               <!-- change template -->
               <li class="mb-2">
                 <Link :href="data.url.update_template" class="cursor-pointer text-blue-500 hover:underline">
-                  {{ $t('contact.contact_change_template_cta') }}
+                  {{ $t('Change template') }}
                 </Link>
               </li>
               <!-- move contact to another vault -->
               <li class="mb-2">
                 <Link :href="data.url.move_contact" class="cursor-pointer text-blue-500 hover:underline">
-                  {{ $t('contact.contact_move_contact_cta') }}
+                  {{ $t('Move contact') }}
                 </Link>
               </li>
               <!-- delete contact -->
               <li v-if="data.options.can_be_deleted">
                 <span class="cursor-pointer text-blue-500 hover:underline" @click="deletingContact = true">
-                  {{ $t('contact.contact_delete_cta') }}
+                  {{ $t('Delete contact') }}
                 </span>
               </li>
             </ul>
@@ -279,7 +280,7 @@ const destroyAvatar = () => {
               <div class="mb-6 flex rounded border border-gray-200 p-3 dark:border-gray-700">
                 <img src="/img/group.svg" class="mr-2 h-6 w-6" />
                 <ul>
-                  <li class="mr-2 inline">Part of</li>
+                  <li class="mr-2 inline">{{ $t('Part of') }}</li>
                   <li
                     v-for="group in data.group_summary_information"
                     :key="group.id"

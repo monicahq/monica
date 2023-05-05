@@ -1,7 +1,7 @@
 <template>
   <div class="mb-4">
     <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
-      <div class="mb-2 text-xs sm:mb-0">Labels</div>
+      <div class="mb-2 text-xs sm:mb-0">{{ $t('Labels') }}</div>
       <span v-if="!editLabelModalShown" class="relative cursor-pointer" @click="showEditModal">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -22,7 +22,7 @@
         v-if="editLabelModalShown"
         class="cursor-pointer text-xs text-gray-600 dark:text-gray-400"
         @click="editLabelModalShown = false">
-        Close
+        {{ $t('Close') }}
       </span>
     </div>
 
@@ -38,7 +38,7 @@
           :ref="'label'"
           v-model="form.search"
           :type="'text'"
-          :placeholder="'Filter list or create a new label'"
+          :placeholder="$t('Filter list or create a new label')"
           :autofocus="true"
           :input-class="'block w-full'"
           :required="true"
@@ -74,14 +74,14 @@
           v-if="filteredLabels.length == 0 && form.search.length != ''"
           class="cursor-pointer border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
           @click="store()">
-          Create new label <span class="italic">"{{ form.search }}"</span>
+          {{ $t('Create new label') }} <span class="italic">"{{ form.search }}"</span>
         </li>
 
         <!-- blank state when there is no label at all -->
         <li
           v-if="filteredLabels.length == 0 && form.search.length == ''"
           class="border-b border-gray-200 px-3 py-2 text-sm text-gray-600 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400 hover:dark:bg-slate-800">
-          Please type a few characters to create a new label.
+          {{ $t('Please type a few characters to create a new label.') }}
         </li>
       </ul>
     </div>
@@ -98,7 +98,7 @@
     </div>
 
     <!-- blank state -->
-    <p v-if="localLabels.length == 0" class="text-sm text-gray-600 dark:text-gray-400">Not set</p>
+    <p v-if="localLabels.length == 0" class="text-sm text-gray-600 dark:text-gray-400">{{ $t('Not set') }}</p>
   </div>
 </template>
 
@@ -164,7 +164,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash('The label has been added', 'success');
+          this.flash(this.$t('The label has been added'), 'success');
           this.form.search = '';
           this.localLabelsInVault.push(response.data.data);
           this.localLabels.push(response.data.data);

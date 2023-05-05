@@ -16,13 +16,13 @@ defineProps({
         <div class="mb-6 flex items-center justify-between">
           <h3>
             <span class="mr-1"> ✍️ </span>
-            {{ $t('vault.journal_index_title') }}
+            {{ $t('All the journals') }}
           </h3>
 
           <pretty-link
             v-if="layoutData.vault.permission.at_least_editor"
             :href="data.url.create"
-            :text="$t('vault.journal_index_create')"
+            :text="$t('Create a journal')"
             :icon="'plus'" />
         </div>
 
@@ -55,7 +55,7 @@ defineProps({
                     </svg>
                   </span>
 
-                  {{ $t('vault.journal_index_last_updated', { date: journal.last_updated }) }}
+                  {{ $t('Updated on :date', { date: journal.last_updated }) }}
                 </div>
               </div>
 
@@ -70,7 +70,7 @@ defineProps({
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <img src="/img/journal_blank.svg" :alt="$t('Journal')" class="mx-auto mt-4 h-44 w-44" />
           <p class="px-5 pb-5 pt-2 text-center">
-            {{ $t('vault.journal_index_blank') }}
+            {{ $t('Create a journal to document your life.') }}
           </p>
         </div>
       </div>

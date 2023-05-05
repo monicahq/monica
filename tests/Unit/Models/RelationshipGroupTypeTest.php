@@ -29,4 +29,32 @@ class RelationshipGroupTypeTest extends TestCase
 
         $this->assertTrue($groupType->types()->exists());
     }
+
+    /** @test */
+    public function it_gets_the_default_name()
+    {
+        $groupType = RelationshipGroupType::factory()->create([
+            'name' => null,
+            'name_translation_key' => 'template.label',
+        ]);
+
+        $this->assertEquals(
+            'template.label',
+            $groupType->name
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_custom_name_if_defined()
+    {
+        $groupType = RelationshipGroupType::factory()->create([
+            'name' => 'this is the real name',
+            'name_translation_key' => 'template.label',
+        ]);
+
+        $this->assertEquals(
+            'this is the real name',
+            $groupType->name
+        );
+    }
 }

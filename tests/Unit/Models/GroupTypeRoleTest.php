@@ -17,4 +17,32 @@ class GroupTypeRoleTest extends TestCase
 
         $this->assertTrue($groupTypeRole->groupType()->exists());
     }
+
+    /** @test */
+    public function it_gets_the_default_label()
+    {
+        $groupTypeRole = GroupTypeRole::factory()->create([
+            'label' => null,
+            'label_translation_key' => 'template.label',
+        ]);
+
+        $this->assertEquals(
+            'template.label',
+            $groupTypeRole->label
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_custom_label_if_defined()
+    {
+        $groupTypeRole = GroupTypeRole::factory()->create([
+            'label' => 'this is the real name',
+            'label_translation_key' => 'template.label',
+        ]);
+
+        $this->assertEquals(
+            'this is the real name',
+            $groupTypeRole->label
+        );
+    }
 }

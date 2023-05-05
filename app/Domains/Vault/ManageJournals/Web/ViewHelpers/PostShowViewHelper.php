@@ -48,7 +48,7 @@ class PostShowViewHelper
         return [
             'id' => $post->id,
             'title' => $post->title,
-            'title_exists' => $post->title === trans('app.undefined') ? false : true,
+            'title_exists' => $post->title === trans('Undefined') ? false : true,
             'written_at' => DateHelper::format($post->written_at, $user),
             'published' => $post->published,
             'sections' => $sections,
@@ -60,7 +60,7 @@ class PostShowViewHelper
             'previousPost' => $previousPost ? [
                 'id' => $previousPost->id,
                 'title' => $previousPost->title,
-                'title_exists' => $previousPost->title === trans('app.undefined') ? false : true,
+                'title_exists' => $previousPost->title === trans('Undefined') ? false : true,
                 'url' => [
                     'show' => route('post.show', [
                         'vault' => $post->journal->vault_id,
@@ -72,7 +72,7 @@ class PostShowViewHelper
             'nextPost' => $nextPost ? [
                 'id' => $nextPost->id,
                 'title' => $nextPost->title,
-                'title_exists' => $nextPost->title === trans('app.undefined') ? false : true,
+                'title_exists' => $nextPost->title === trans('Undefined') ? false : true,
                 'url' => [
                     'show' => route('post.show', [
                         'vault' => $post->journal->vault_id,

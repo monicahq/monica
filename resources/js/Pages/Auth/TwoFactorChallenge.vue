@@ -79,7 +79,7 @@ defineProps({
 
       <form @submit.prevent="submit">
         <div v-if="!recovery">
-          <JetLabel for="code" value="Code" />
+          <JetLabel for="code" :value="$t('Code')" />
           <JetInput
             id="code"
             ref="codeInput"
@@ -92,7 +92,7 @@ defineProps({
         </div>
 
         <div v-else>
-          <JetLabel for="recovery_code" value="Recovery Code" />
+          <JetLabel for="recovery_code" :value="$t('Recovery Code')" />
           <JetInput
             id="recovery_code"
             ref="recoveryCodeInput"

@@ -18,7 +18,8 @@ class CreatePostTemplate extends BaseService implements ServiceInterface
         return [
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
-            'label' => 'required|string|max:255',
+            'label' => 'nullable|string|max:255',
+            'label_translation_key' => 'nullable|string|max:255',
             'can_be_deleted' => 'required|boolean',
         ];
     }
@@ -48,7 +49,8 @@ class CreatePostTemplate extends BaseService implements ServiceInterface
 
         $this->postTemplate = PostTemplate::create([
             'account_id' => $data['account_id'],
-            'label' => $data['label'],
+            'label' => $data['label'] ?? null,
+            'label_translation_key' => $data['label_translation_key'] ?? null,
             'position' => $newPosition,
             'can_be_deleted' => $this->valueOrTrue($data, 'can_be_deleted'),
         ]);

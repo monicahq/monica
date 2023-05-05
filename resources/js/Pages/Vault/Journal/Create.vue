@@ -41,11 +41,11 @@ const submit = () => {
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.back" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_journal_index') }}
+                {{ $t('Journals') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -59,7 +59,7 @@ const submit = () => {
               </svg>
             </li>
             <li class="inline">
-              {{ $t('app.breadcrumb_journal_create') }}
+              {{ $t('Create a journal') }}
             </li>
           </ul>
         </div>
@@ -73,7 +73,7 @@ const submit = () => {
           @submit.prevent="submit()">
           <div class="section-head border-b border-gray-200 bg-blue-50 p-5 dark:border-gray-700 dark:bg-blue-900">
             <h1 class="text-center text-2xl font-medium">
-              {{ $t('vault.journal_create_title') }}
+              {{ $t('Create a journal') }}
             </h1>
           </div>
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
@@ -87,19 +87,19 @@ const submit = () => {
               :input-class="'block w-full'"
               :required="true"
               :maxlength="255"
-              :label="$t('vault.journal_create_name')" />
+              :label="$t('Name')" />
 
             <text-area
               v-model="form.description"
-              :label="$t('vault.journal_create_description')"
+              :label="$t('Description')"
               :maxlength="255"
               :textarea-class="'block w-full'" />
           </div>
 
           <!-- actions -->
           <div class="flex justify-between p-5">
-            <pretty-link :href="data.url.back" :text="$t('app.cancel')" :classes="'mr-3'" />
-            <pretty-button :text="$t('app.add')" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-link :href="data.url.back" :text="$t('Cancel')" :classes="'mr-3'" />
+            <pretty-button :text="$t('Add')" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>
       </div>

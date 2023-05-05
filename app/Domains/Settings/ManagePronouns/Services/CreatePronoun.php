@@ -16,7 +16,8 @@ class CreatePronoun extends BaseService implements ServiceInterface
         return [
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
+            'name_translation_key' => 'nullable|string|max:255',
         ];
     }
 
@@ -40,7 +41,8 @@ class CreatePronoun extends BaseService implements ServiceInterface
 
         $pronoun = Pronoun::create([
             'account_id' => $data['account_id'],
-            'name' => $data['name'],
+            'name' => $data['name'] ?? null,
+            'name_translation_key' => $data['name_translation_key'] ?? null,
         ]);
 
         return $pronoun;

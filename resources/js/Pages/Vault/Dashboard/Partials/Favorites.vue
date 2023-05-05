@@ -16,7 +16,7 @@
         </svg>
       </span>
 
-      {{ $t('vault.dashboard_favorites_title') }}
+      {{ $t('Favorites') }}
     </h3>
 
     <!-- list of reminders -->

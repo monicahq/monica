@@ -5,6 +5,7 @@ import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
+import { trans } from 'laravel-vue-i18n';
 import { onMounted, ref, nextTick } from 'vue';
 
 const props = defineProps({
@@ -50,7 +51,7 @@ const submit = () => {
 };
 
 const destroy = (metric) => {
-  if (confirm('Are you sure? This can not be undone.')) {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
     axios
       .delete(metric.url.destroy)
       .then(() => {
@@ -73,11 +74,11 @@ const destroy = (metric) => {
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_journal_index') }}
+                {{ $t('Journals') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -105,7 +106,7 @@ const destroy = (metric) => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Journal metrics</li>
+            <li class="inline">{{ $t('Journal metrics') }}</li>
           </ul>
         </div>
       </div>
@@ -117,13 +118,13 @@ const destroy = (metric) => {
         <div class="mb-6 flex items-center justify-between">
           <h3>
             <span class="mr-1"> 📊 </span>
-            All journal metrics in {{ data.journal.name }}
+            {{ $t('All journal metrics in :name', { name: data.journal.name }) }}
           </h3>
 
           <pretty-button
             v-if="!createJournalMetricModalShown"
             @click="showJournalMetricModal"
-            :text="'Create a journal metric'"
+            :text="$t('Create a journal metric')"
             :icon="'plus'" />
         </div>
 
@@ -138,7 +139,7 @@ const destroy = (metric) => {
             <text-input
               ref="newJournalMetric"
               v-model="form.label"
-              :label="'Name'"
+              :label="$t('Name')"
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -149,8 +150,8 @@ const destroy = (metric) => {
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createJournalMetricModalShown = false" />
-            <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createJournalMetricModalShown = false" />
+            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
           </div>
         </form>
 
@@ -165,7 +166,7 @@ const destroy = (metric) => {
               <!-- actions -->
               <ul class="text-sm">
                 <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(metric)">
-                  {{ $t('app.delete') }}
+                  {{ $t('Delete') }}
                 </li>
               </ul>
             </li>
@@ -177,7 +178,9 @@ const destroy = (metric) => {
           v-if="localMetrics.length == 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <img src="/img/journal_blank_index.svg" :alt="$t('Journal')" class="mx-auto mt-4 h-44 w-44" />
-          <p class="px-5 pb-5 pt-2 text-center">Journal metrics let you track data accross all your journal entries.</p>
+          <p class="px-5 pb-5 pt-2 text-center">
+            {{ $t('Journal metrics let you track data accross all your journal entries.') }}
+          </p>
         </div>
       </div>
     </main>
@@ -198,16 +201,6 @@ const destroy = (metric) => {
   li:hover:last-child {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-  }
-}
-
-.special-grid {
-  grid-template-columns: 150px 1fr 200px;
-}
-
-@media (max-width: 480px) {
-  .special-grid {
-    grid-template-columns: 1fr;
   }
 }
 </style>

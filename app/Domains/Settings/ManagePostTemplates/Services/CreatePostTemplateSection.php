@@ -19,7 +19,8 @@ class CreatePostTemplateSection extends BaseService implements ServiceInterface
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
             'post_template_id' => 'required|integer|exists:post_templates,id',
-            'label' => 'required|string|max:255',
+            'label' => 'nullable|string|max:255',
+            'label_translation_key' => 'nullable|string|max:255',
             'can_be_deleted' => 'required|boolean',
         ];
     }
@@ -52,7 +53,8 @@ class CreatePostTemplateSection extends BaseService implements ServiceInterface
 
         $this->postTemplateSection = PostTemplateSection::create([
             'post_template_id' => $data['post_template_id'],
-            'label' => $data['label'],
+            'label' => $data['label'] ?? null,
+            'label_translation_key' => $data['label_translation_key'] ?? null,
             'position' => $newPosition,
             'can_be_deleted' => $this->valueOrTrue($data, 'can_be_deleted'),
         ]);

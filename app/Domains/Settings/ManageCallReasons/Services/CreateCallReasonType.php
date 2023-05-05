@@ -16,7 +16,8 @@ class CreateCallReasonType extends BaseService implements ServiceInterface
         return [
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
-            'label' => 'required|string|max:255',
+            'label' => 'nullable|string|max:255',
+            'label_translation_key' => 'nullable|string|max:255',
         ];
     }
 
@@ -40,7 +41,8 @@ class CreateCallReasonType extends BaseService implements ServiceInterface
 
         $type = CallReasonType::create([
             'account_id' => $data['account_id'],
-            'label' => $data['label'],
+            'label' => $data['label'] ?? null,
+            'label_translation_key' => $data['label_translation_key'] ?? null,
         ]);
 
         return $type;

@@ -18,9 +18,13 @@
           </svg>
         </span>
 
-        <span class="font-semibold"> Tasks </span>
+        <span class="font-semibold"> {{ $t('Tasks') }} </span>
       </div>
-      <pretty-button :text="'Add a task'" :icon="'plus'" :classes="'sm:w-fit w-full'" @click="showCreateTaskModal()" />
+      <pretty-button
+        :text="$t('Add a task')"
+        :icon="'plus'"
+        :classes="'sm:w-fit w-full'"
+        @click="showCreateTaskModal()" />
     </div>
 
     <!-- add a task modal -->
@@ -35,7 +39,7 @@
         <text-input
           :ref="'label'"
           v-model="form.label"
-          :label="'Title'"
+          :label="$t('Title')"
           :type="'text'"
           :input-class="'block w-full mb-3'"
           :required="true"
@@ -54,7 +58,9 @@
             type="checkbox"
             class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
             @click="toggleDueDateModal" />
-          <label for="reminder" class="ml-2 block cursor-pointer text-sm text-gray-900"> Add a due date </label>
+          <label for="reminder" class="ml-2 block cursor-pointer text-sm text-gray-900">
+            {{ $t('Add a due date') }}
+          </label>
         </div>
 
         <!-- task options -->
@@ -71,8 +77,8 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createTaskModalShown = false" />
-        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createTaskModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
       </div>
     </form>
 
@@ -113,7 +119,7 @@
                     stroke-linejoin="round"
                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <span class="">{{ task.due_at }}</span>
+                <span>{{ task.due_at }}</span>
               </span>
             </label>
           </div>
@@ -129,7 +135,7 @@
             <text-input
               :ref="'update' + task.id"
               v-model="form.label"
-              :label="'Title'"
+              :label="$t('Title')"
               :type="'text'"
               :input-class="'block w-full'"
               :required="true"
@@ -148,7 +154,9 @@
                 type="checkbox"
                 class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
                 @click="toggleDueDateModal" />
-              <label for="reminder" class="ml-2 block cursor-pointer text-sm text-gray-900"> Add a due date </label>
+              <label for="reminder" class="ml-2 block cursor-pointer text-sm text-gray-900">
+                {{ $t('Add a due date') }}
+              </label>
             </div>
 
             <!-- task options -->
@@ -165,8 +173,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedTaskId = 0" />
-            <pretty-button :text="'Update'" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedTaskId = 0" />
+            <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>
       </li>
@@ -177,7 +185,7 @@
       v-if="data.completed_tasks_count > 0 && !showCompletedTasks"
       class="mx-4 mb-6 cursor-pointer text-xs text-blue-500 hover:underline"
       @click="getCompleted()">
-      Show completed tasks ({{ data.completed_tasks_count }})
+      {{ $t('Show completed tasks (:count)', { count: data.completed_tasks_count }) }}
     </p>
 
     <!-- list of completed tasks -->
@@ -237,7 +245,7 @@
       v-if="localTasks.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/dashboard_blank_tasks.svg" :alt="$t('Tasks')" class="mx-auto mt-4 h-14 w-14" />
-      <p class="px-5 pb-5 pt-2 text-center">There are no tasks yet.</p>
+      <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no tasks yet.') }}</p>
     </div>
   </div>
 </template>
@@ -329,7 +337,7 @@ export default {
         .post(this.data.url.store, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash('The task has been created', 'success');
+          this.flash(this.$t('The task has been created'), 'success');
           this.localTasks.unshift(response.data.data);
           this.createTaskModalShown = false;
         })
@@ -346,7 +354,7 @@ export default {
         .put(task.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash('The task has been edited', 'success');
+          this.flash(this.$t('The task has been edited'), 'success');
           this.localTasks[this.localTasks.findIndex((x) => x.id === task.id)] = response.data.data;
           this.editedTaskId = 0;
         })
@@ -363,11 +371,11 @@ export default {
     },
 
     destroy(task) {
-      if (confirm('Are you sure?')) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(task.url.destroy)
           .then(() => {
-            this.flash('The task has been deleted', 'success');
+            this.flash(this.$t('The task has been deleted'), 'success');
             var id = this.localTasks.findIndex((x) => x.id === task.id);
             this.localTasks.splice(id, 1);
           })

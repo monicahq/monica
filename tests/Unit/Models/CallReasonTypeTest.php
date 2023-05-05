@@ -28,4 +28,32 @@ class CallReasonTypeTest extends TestCase
 
         $this->assertTrue($callReasonType->callReasons()->exists());
     }
+
+    /** @test */
+    public function it_gets_the_default_label()
+    {
+        $callReasonType = CallReasonType::factory()->create([
+            'label' => null,
+            'label_translation_key' => 'template.label',
+        ]);
+
+        $this->assertEquals(
+            'template.label',
+            $callReasonType->label
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_custom_label_if_defined()
+    {
+        $callReasonType = CallReasonType::factory()->create([
+            'label' => 'this is the real label',
+            'label_translation_key' => 'template.label',
+        ]);
+
+        $this->assertEquals(
+            'this is the real label',
+            $callReasonType->label
+        );
+    }
 }

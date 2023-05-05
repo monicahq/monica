@@ -1,12 +1,8 @@
 <template>
   <div>
     <div class="mb-4 mt-8 items-center justify-between border-b pb-3 sm:mt-0 sm:flex">
-      <h3>{{ $t('settings.personalize_template_show_page_title') }}</h3>
-      <pretty-button
-        v-if="!createPageModalShown"
-        :text="$t('settings.personalize_template_show_page_cta')"
-        :icon="'plus'"
-        @click="showPageModal" />
+      <h3>{{ $t('Pages') }}</h3>
+      <pretty-button v-if="!createPageModalShown" :text="$t('Add a page')" :icon="'plus'" @click="showPageModal" />
     </div>
 
     <!-- contact information page | can't be removed -->
@@ -22,7 +18,7 @@
 
         <ul class="text-xs text-gray-400">
           <li class="inline">
-            {{ $t('settings.personalize_template_show_page_cant_moved') }}
+            {{ $t('Can’t be moved or deleted') }}
           </li>
         </ul>
       </div>
@@ -76,11 +72,11 @@
             </div>
 
             <ul class="text-xs">
-              <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="renamePageModal(element)">
-                {{ $t('app.rename') }}
+              <li class="mr-4 inline cursor-pointer" @click="renamePageModal(element)">
+                <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
               </li>
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">
-                {{ $t('app.delete') }}
+                {{ $t('Delete') }}
               </li>
             </ul>
           </div>
@@ -97,7 +93,7 @@
             <text-input
               :ref="'rename' + element.id"
               v-model="form.name"
-              :label="$t('settings.personalize_template_show_page_new_name')"
+              :label="$t('Name')"
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -108,8 +104,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click.prevent="renamePageModalShownId = 0" />
-            <pretty-button :text="$t('app.rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="renamePageModalShownId = 0" />
+            <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>
       </template>
@@ -126,7 +122,7 @@
         <text-input
           :ref="'newPage'"
           v-model="form.name"
-          :label="$t('settings.personalize_template_show_page_new_name')"
+          :label="$t('Name')"
           :type="'text'"
           :autofocus="true"
           :input-class="'block w-full'"
@@ -137,15 +133,15 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createPageModalShown = false" />
-        <pretty-button :text="$t('app.add')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createPageModalShown = false" />
+        <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
     <!-- blank state -->
     <div v-if="localPages.length == 0">
       <p class="rounded-lg border border-gray-200 bg-white p-5 text-center dark:border-gray-700 dark:bg-gray-900">
-        {{ $t('settings.personalize_template_show_page_blank') }}
+        {{ $t('Create at least one page to display contact’s data.') }}
       </p>
     </div>
   </div>
@@ -231,7 +227,7 @@ export default {
       axios
         .post(this.data.url.template_page_store, this.form)
         .then((response) => {
-          this.flash('The page has been added', 'success');
+          this.flash(this.$t('The page has been added'), 'success');
           this.localPages.push(response.data.data);
           this.loadingState = null;
           this.createPageModalShown = false;
@@ -248,7 +244,7 @@ export default {
       axios
         .put(page.url.update, this.form)
         .then((response) => {
-          this.flash('The page has been updated', 'success');
+          this.flash(this.$t('The page has been updated'), 'success');
           this.localPages[this.localPages.findIndex((x) => x.id === page.id)] = response.data.data;
           this.loadingState = null;
           this.renamePageModalShownId = 0;
@@ -260,13 +256,11 @@ export default {
     },
 
     destroy(page) {
-      if (
-        confirm("Are you sure? This will remove the pages from all contacts, but won't delete the contacts themselves.")
-      ) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(page.url.destroy)
           .then(() => {
-            this.flash('The page has been deleted', 'success');
+            this.flash(this.$t('The page has been deleted'), 'success');
             var id = this.localPages.findIndex((x) => x.id === page.id);
             this.localPages.splice(id, 1);
           })
@@ -285,7 +279,7 @@ export default {
       axios
         .post(event.moved.element.url.order, this.form)
         .then(() => {
-          this.flash('The order has been saved', 'success');
+          this.flash(this.$t('The position has been saved'), 'success');
         })
         .catch((error) => {
           this.loadingState = null;

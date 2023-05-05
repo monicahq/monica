@@ -25,7 +25,7 @@ defineProps({
         <slot name="help" />
       </h3>
 
-      <PrettyButton v-if="!editMode" :text="$t('app.edit')" @click="$emit('edit')" />
+      <PrettyButton v-if="!editMode" :text="$t('Edit')" @click="$emit('edit')" />
     </div>
 
     <!-- help text -->

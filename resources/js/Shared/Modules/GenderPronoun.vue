@@ -3,7 +3,7 @@
     <!-- gender -->
     <div>
       <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
-        <div class="mb-2 text-xs sm:mb-0">Gender</div>
+        <div class="mb-2 text-xs sm:mb-0">{{ $t('Gender') }}</div>
         <inertia-link :href="data.url.edit" class="relative">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -23,13 +23,13 @@
       <p v-if="data.gender" class="text-sm">
         {{ data.gender }}
       </p>
-      <p v-else class="text-sm text-gray-600 dark:text-gray-400">Not set</p>
+      <p v-else class="text-sm text-gray-600 dark:text-gray-400">{{ $t('Not set') }}</p>
     </div>
 
     <!-- pronoun -->
     <div>
       <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
-        <div class="mb-2 text-xs sm:mb-0">Pronoun</div>
+        <div class="mb-2 text-xs sm:mb-0">{{ $t('Pronoun') }}</div>
         <inertia-link :href="data.url.edit" class="relative">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@
       <p v-if="data.pronoun" class="text-sm">
         {{ data.pronoun }}
       </p>
-      <p v-else class="text-sm text-gray-600 dark:text-gray-400">Not set</p>
+      <p v-else class="text-sm text-gray-600 dark:text-gray-400">{{ $t('Not set') }}</p>
     </div>
   </div>
 </template>

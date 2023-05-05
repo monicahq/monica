@@ -36,7 +36,7 @@ class UserInvited extends Mailable implements ShouldQueue
         ]);
 
         return $this->markdown('emails.user.invitation')
-            ->subject(__('You are invited to join Monica'))
+            ->subject(trans('You are invited to join Monica'))
             ->with('userName', $this->user->name)
             ->with('url', $invitationRoute);
     }

@@ -3,7 +3,7 @@
     <label v-if="label" class="mb-2 block text-sm dark:text-gray-100" :for="id">
       {{ label }}
       <span v-if="!required" class="optional-badge text-xs">
-        {{ $t('app.optional') }}
+        {{ $t('optional') }}
       </span>
     </label>
 
@@ -27,14 +27,14 @@
       </span>
     </div>
     <p v-if="markdown" class="rounded-b-lg bg-slate-100 px-3 py-2 text-xs">
-      We
+      <span>{{ $t('We support Markdown to format the text (bold, lists, headings, etc…).') }}</span>
+
       <a
         href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"
         target="_blank"
         class="text-blue-500 hover:underline"
-        >support Markdown</a
+        >{{ $t('(Help)') }}</a
       >
-      to format the text (bold, lists, headings, etc...).
     </p>
 
     <p v-if="help" class="f7 mb3 lh-title">

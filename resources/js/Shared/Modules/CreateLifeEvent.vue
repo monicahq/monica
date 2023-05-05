@@ -151,7 +151,7 @@ const store = () => {
         <div class="grid-skeleton grid grid-cols-2 justify-center gap-2 p-3">
           <!-- choose a life event type -->
           <div>
-            <p class="mb-1 text-xs font-semibold">Categories</p>
+            <p class="mb-1 text-xs font-semibold">{{ $t('Categories') }}</p>
             <ul class="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
               <li
                 @click="loadTypes(category)"
@@ -194,7 +194,7 @@ const store = () => {
                 @click="chooseType(lifeEventType)"
                 class="item-list flex cursor-pointer justify-between border-b border-gray-200 px-3 py-1 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
                 <span>{{ lifeEventType.label }}</span>
-                <span class="text-sm text-blue-500 hover:underline">{{ $t('app.choose') }}</span>
+                <span class="text-sm text-blue-500 hover:underline">{{ $t('Choose') }}</span>
               </li>
             </ul>
           </div>
@@ -204,28 +204,30 @@ const store = () => {
       <!-- type has been selected -->
       <div v-else class="flex items-center justify-between border-b border-gray-200 p-3 dark:border-gray-700">
         <div>
-          <span class="text-sm">Chosen type:</span>
+          <span class="text-sm">{{ $t('Chosen type:') }}</span>
           <span class="rounded border bg-white px-2 py-1 font-mono text-sm">{{ selectedLifeEventCategory.label }}</span>
           > <span class="rounded border bg-white px-2 py-1 font-mono text-sm">{{ selectedLifeEventType.label }}</span>
         </div>
 
-        <p @click="resetType()" class="cursor-pointer text-sm text-blue-500 hover:underline">{{ $t('app.change') }}</p>
+        <p @click="resetType()" class="cursor-pointer text-sm text-blue-500 hover:underline">{{ $t('Change') }}</p>
       </div>
 
       <!-- date of the event -->
       <div v-if="selectedLifeEventType" class="border-b border-gray-200 p-3 dark:border-gray-700">
         <!-- default date -->
         <div v-if="!editDate" class="flex items-center justify-between">
-          <div><span class="text-sm">Date of the event:</span> {{ props.data.current_date_human_format }}</div>
+          <div>
+            <span class="text-sm">{{ $t('Date of the event:') }}</span> {{ props.data.current_date_human_format }}
+          </div>
 
           <p @click="editDate = true" class="cursor-pointer text-sm text-blue-500 hover:underline">
-            {{ $t('app.change') }}
+            {{ $t('Change') }}
           </p>
         </div>
 
         <!-- customize date -->
         <div v-if="editDate">
-          <p class="mb-2 block text-sm dark:text-gray-100">Date of the event</p>
+          <p class="mb-2 block text-sm dark:text-gray-100">{{ $t('Date of the event') }}</p>
           <v-date-picker
             v-model="form.started_at"
             :timezone="'UTC'"
@@ -243,7 +245,7 @@ const store = () => {
 
       <!-- participants -->
       <div v-if="selectedLifeEventType" class="border-b border-gray-200 p-3 dark:border-gray-700">
-        <p class="mb-2 block text-sm dark:text-gray-100">Participants</p>
+        <p class="mb-2 block text-sm dark:text-gray-100">{{ $t('Participants') }}</p>
 
         <!-- current contact -->
         <div class="mb-4 flex items-center">
@@ -270,7 +272,7 @@ const store = () => {
         <text-input
           ref="summaryField"
           v-model="form.summary"
-          :label="'Summary'"
+          :label="$t('Summary')"
           :type="'text'"
           :autofocus="true"
           :input-class="'block w-full'"
@@ -287,7 +289,7 @@ const store = () => {
         <text-area
           ref="descriptionField"
           v-model="form.description"
-          :label="'Description'"
+          :label="$t('Description')"
           @esc-key-pressed="addDescriptionFieldShown = false"
           :maxlength="65535"
           :textarea-class="'block w-full'" />
@@ -300,13 +302,13 @@ const store = () => {
         <text-input
           ref="distanceField"
           v-model="form.distance"
-          :label="'Distance'"
+          :label="$t('Distance')"
           :type="'number'"
           :autofocus="true"
           :input-class="'mr-2'"
           :required="false"
           :autocomplete="false"
-          :help="'Enter a number from 0 to 100000. No decimals.'"
+          :help="$t('Enter a number from 0 to 100000. No decimals.')"
           :min="0"
           :max="100000"
           @esc-key-pressed="addDistanceFieldShown = false" />
@@ -322,7 +324,7 @@ const store = () => {
                 type="radio"
                 class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
               <label for="km" class="ml-1 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                km
+                {{ $t('km') }}
               </label>
             </div>
           </li>
@@ -337,7 +339,7 @@ const store = () => {
                 type="radio"
                 class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
               <label for="miles" class="ml-1 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                miles
+                {{ $t('miles') }}
               </label>
             </div>
           </li>
@@ -351,7 +353,7 @@ const store = () => {
           <span
             class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:text-gray-900"
             @click="showAddSummaryField"
-            >+ summary
+            >{{ $t('+ add summary') }}
           </span>
         </div>
 
@@ -360,7 +362,7 @@ const store = () => {
           <span
             class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:text-gray-900"
             @click="showAddDescriptionField"
-            >+ description
+            >{{ $t('+ add description') }}
           </span>
         </div>
 
@@ -369,15 +371,15 @@ const store = () => {
           <span
             class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:text-gray-900"
             @click="showAddDistanceField"
-            >+ distance
+            >{{ $t('+ add distance') }}
           </span>
         </div>
       </div>
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="$emit('closeModal')" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="$emit('closeModal')" />
         <pretty-button
           v-if="selectedLifeEventType"
-          :text="$t('app.save')"
+          :text="$t('Save')"
           :state="loadingState"
           :icon="'plus'"
           :classes="'save'" />

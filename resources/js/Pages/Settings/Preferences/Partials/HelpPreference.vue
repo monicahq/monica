@@ -5,7 +5,7 @@
       <h3 class="mb-4 flex font-semibold sm:mb-0">
         <span class="mr-1"> ⁉️ </span>
         <span class="mr-2">
-          {{ $t('settings.user_preferences_help_title') }}
+          {{ $t('Help') }}
         </span>
 
         <help :url="$page.props.help_links.settings_preferences_help" :top="'5px'" />
@@ -18,7 +18,7 @@
         <div
           class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
         <span class="ml-3 dark:text-gray-300">
-          {{ $t('settings.user_preferences_help_current_language') }}
+          {{ $t('Display help links in the interface to help you (English only)') }}
         </span>
       </label>
     </div>
@@ -58,7 +58,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then(() => {
-          this.flash(this.$t('app.notification_flash_changes_saved'), 'success');
+          this.flash(this.$t('Changes saved'), 'success');
           this.$page.props.auth.user.help_shown = this.form.checked;
         })
         .catch((error) => {
@@ -68,11 +68,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-select {
-  padding-left: 8px;
-  padding-right: 20px;
-  background-position: right 3px center;
-}
-</style>

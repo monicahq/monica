@@ -5,6 +5,7 @@ import ContactCard from '@/Shared/ContactCard.vue';
 import HoverMenu from '@/Shared/HoverMenu.vue';
 import CreateLifeEvent from '@/Shared/Modules/CreateLifeEvent.vue';
 import { onMounted, ref } from 'vue';
+import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
   layoutData: Object,
@@ -50,7 +51,7 @@ const loadMore = () => {
 };
 
 const destroy = (timelineEvent) => {
-  if (confirm('Are you sure? This will delete the event permanently.')) {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
     axios
       .delete(timelineEvent.url.destroy)
       .then(() => {
@@ -62,7 +63,7 @@ const destroy = (timelineEvent) => {
 };
 
 const destroyLifeEvent = (timelineEvent, lifeEvent) => {
-  if (confirm('Are you sure? This will delete the event permanently.')) {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
     axios
       .delete(lifeEvent.url.destroy)
       .then(() => {
@@ -124,10 +125,10 @@ const toggleLifeEventVisibility = (lifeEvent) => {
           </svg>
         </span>
 
-        <span class="font-semibold"> Life events </span>
+        <span class="font-semibold"> {{ $t('Life events') }} </span>
       </div>
       <pretty-button
-        :text="'Add a life event'"
+        :text="$t('Add a life event')"
         :icon="'plus'"
         :classes="'sm:w-fit w-full'"
         @click="showCreateLifeEventModal" />
@@ -321,7 +322,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                 @click="showAddLifeEventModalForTimelineEventId = timelineEvent.id"
                 v-if="showAddLifeEventModalForTimelineEventId != timelineEvent.id"
                 class="cursor-pointer text-sm text-blue-500 hover:underline">
-                Add another life event
+                {{ $t('Add another life event') }}
               </span>
 
               <create-life-event
@@ -341,7 +342,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
           <span
             @click="loadMore()"
             class="cursor-pointer rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
-            {{ $t('app.view_older') }}
+            {{ $t('Load previous entries') }}
           </span>
         </div>
       </div>
@@ -356,7 +357,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
         v-if="localTimelines.length == 0"
         class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <img src="/img/contact_blank_life_event.svg" :alt="$t('Life events')" class="mx-auto mt-4 h-20 w-20" />
-        <p class="px-5 pb-5 pt-2 text-center">Life events let you document what happened in your life.</p>
+        <p class="px-5 pb-5 pt-2 text-center">{{ $t('Life events let you document what happened in your life.') }}</p>
       </div>
     </div>
   </div>

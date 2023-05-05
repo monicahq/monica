@@ -1,6 +1,7 @@
 <script setup>
 import { useForm } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
+import { trans } from 'laravel-vue-i18n';
 import JetButton from '@/Components/Button.vue';
 import JetGuestLayout from '@/Shared/Guest.vue';
 import JetInput from '@/Components/Input.vue';
@@ -22,7 +23,7 @@ const form = useForm({
 const submit = () => {
   form.post(props.data.url.store, {
     onSuccess: (response) => {
-      localStorage.success = 'Your account has been created';
+      localStorage.success = trans('Your account has been created');
       Inertia.visit(response.data.data);
     },
   });
@@ -36,12 +37,12 @@ const submit = () => {
     <form @submit.prevent="submit">
       <h1 class="mb-3 text-center text-xl">
         <span class="mr-2"> 👋 </span>
-        Welcome to Monica.
+        {{ $t('Welcome to Monica.') }}
       </h1>
-      <p class="mb-4 text-center">Please complete this form to finalize your account.</p>
+      <p class="mb-4 text-center">{{ $t('Please complete this form to finalize your account.') }}'</p>
 
       <div>
-        <JetLabel for="first_name" value="First name" />
+        <JetLabel for="first_name" ::value="$t('First name')" />
         <JetInput
           id="first_name"
           v-model="form.first_name"
@@ -53,7 +54,7 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <JetLabel for="last_name" value="Last name" />
+        <JetLabel for="last_name" :value="$t('Last name')" />
         <JetInput
           id="last_name"
           v-model="form.last_name"
@@ -64,7 +65,7 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <JetLabel for="password" value="Password" />
+        <JetLabel for="password" :value="$t('Password')" />
         <JetInput
           id="password"
           v-model="form.password"
@@ -75,7 +76,7 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <JetLabel for="password_confirmation" value="Confirm Password" />
+        <JetLabel for="password_confirmation" :value="$t('Confirm Password')" />
         <JetInput
           id="password_confirmation"
           v-model="form.password_confirmation"
@@ -87,7 +88,7 @@ const submit = () => {
 
       <div class="mt-4 flex items-center justify-end">
         <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-          Create account
+          {{ $t('Create account') }}
         </JetButton>
       </div>
     </form>

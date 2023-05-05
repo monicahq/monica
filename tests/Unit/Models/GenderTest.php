@@ -17,4 +17,32 @@ class GenderTest extends TestCase
 
         $this->assertTrue($gender->account()->exists());
     }
+
+    /** @test */
+    public function it_gets_the_default_label()
+    {
+        $gender = Gender::factory()->create([
+            'name' => null,
+            'name_translation_key' => 'bla',
+        ]);
+
+        $this->assertEquals(
+            'bla',
+            $gender->name
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_custom_label_if_defined()
+    {
+        $gender = Gender::factory()->create([
+            'name' => 'this is the real name',
+            'name_translation_key' => 'bla',
+        ]);
+
+        $this->assertEquals(
+            'this is the real name',
+            $gender->name
+        );
+    }
 }

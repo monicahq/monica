@@ -29,9 +29,13 @@
           </svg>
         </span>
 
-        <span class="font-semibold"> Notes </span>
+        <span class="font-semibold"> {{ $t('Notes') }} </span>
       </div>
-      <pretty-button :text="'Add a note'" :icon="'plus'" :classes="'sm:w-fit w-full'" @click="showCreateNoteModal" />
+      <pretty-button
+        :text="$t('Add a note')"
+        :icon="'plus'"
+        :classes="'sm:w-fit w-full'"
+        @click="showCreateNoteModal" />
     </div>
 
     <!-- add a note modal -->
@@ -44,7 +48,7 @@
 
         <text-area
           v-model="form.body"
-          :label="'Body'"
+          :label="$t('Body')"
           :rows="10"
           :required="true"
           :maxlength="65535"
@@ -55,7 +59,7 @@
           v-if="titleFieldShown"
           :ref="'newTitle'"
           v-model="form.title"
-          :label="'Title'"
+          :label="$t('Title')"
           :type="'text'"
           :input-class="'block w-full mb-3'"
           :required="false"
@@ -65,7 +69,7 @@
 
         <!-- emotion -->
         <div v-if="emotionFieldShown" class="mt-2 block w-full">
-          <p class="mb-2">How did you feel?</p>
+          <p class="mb-2">{{ $t('How did you feel?') }}</p>
           <div v-for="emotion in data.emotions" :key="emotion.id" class="mb-2 flex items-center">
             <input
               :id="emotion.type"
@@ -85,7 +89,7 @@
           v-if="!titleFieldShown"
           class="mr-2 inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300 dark:border-gray-700 dark:bg-slate-800 hover:dark:bg-slate-700"
           @click="showTitleField">
-          + add title
+          {{ $t('+ add title') }}
         </span>
 
         <!-- cta to add emotion -->
@@ -93,13 +97,13 @@
           v-if="!emotionFieldShown"
           class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300 dark:border-gray-700 dark:bg-slate-800 hover:dark:bg-slate-700"
           @click="showEmotionField">
-          + add emotion
+          {{ $t('+ add emotion') }}
         </span>
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createNoteModalShown = false" />
-        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createNoteModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
       </div>
     </form>
 
@@ -120,7 +124,9 @@
           <!-- excerpt, if it exists -->
           <div v-if="!note.show_full_content && note.body_excerpt" class="p-3">
             {{ note.body_excerpt }}
-            <span class="cursor-pointer text-blue-500 hover:underline" @click="showFullBody(note)"> View all </span>
+            <span class="cursor-pointer text-blue-500 hover:underline" @click="showFullBody(note)">
+              {{ $t('View all') }}
+            </span>
           </div>
           <!-- full body -->
           <div v-else class="p-3">
@@ -178,7 +184,7 @@
 
             <text-area
               v-model="form.body"
-              :label="'Body'"
+              :label="$t('Body')"
               :rows="10"
               :required="true"
               :maxlength="65535"
@@ -188,7 +194,7 @@
             <text-input
               :ref="'newTitle'"
               v-model="form.title"
-              :label="'Title'"
+              :label="$t('Title')"
               :type="'text'"
               :input-class="'block w-full'"
               :required="false"
@@ -215,8 +221,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedNoteId = 0" />
-            <pretty-button :text="'Update'" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedNoteId = 0" />
+            <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>
       </div>
@@ -226,7 +232,7 @@
         <inertia-link
           :href="data.url.index"
           class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
-          {{ $t('app.view_all') }}
+          {{ $t('View all') }}
         </inertia-link>
       </div>
 
@@ -239,7 +245,7 @@
       v-if="localNotes.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_note.svg" :alt="$t('Notes')" class="mx-auto mt-4 h-14 w-14" />
-      <p class="px-5 pb-5 pt-2 text-center">There are no notes yet.</p>
+      <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no notes yet.') }}</p>
     </div>
   </div>
 </template>
@@ -341,7 +347,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash('The note has been created', 'success');
+          this.flash(this.$t('The note has been created'), 'success');
           this.localNotes.unshift(response.data.data);
           this.loadingState = '';
           this.createNoteModalShown = false;
@@ -359,7 +365,7 @@ export default {
         .put(note.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash('The note has been edited', 'success');
+          this.flash($t('The note has been edited'), 'success');
           this.localNotes[this.localNotes.findIndex((x) => x.id === note.id)] = response.data.data;
           this.editedNoteId = 0;
         })
@@ -370,11 +376,11 @@ export default {
     },
 
     destroy(note) {
-      if (confirm('Are you sure? This will delete the note permanently.')) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(note.url.destroy)
           .then(() => {
-            this.flash('The note has been deleted', 'success');
+            this.flash(this.$t('The note has been deleted'), 'success');
             var id = this.localNotes.findIndex((x) => x.id === note.id);
             this.localNotes.splice(id, 1);
           })

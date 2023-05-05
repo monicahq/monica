@@ -4,6 +4,7 @@ import ContactCard from '@/Shared/ContactCard.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { onMounted, ref } from 'vue';
+import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
   layoutData: Object,
@@ -52,7 +53,7 @@ const destroyCoverImage = () => {
 };
 
 const destroy = () => {
-  if (confirm('Are you sure?')) {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
     form.delete(props.data.slice.url.destroy);
   }
 };
@@ -66,11 +67,11 @@ const destroy = () => {
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_journal_index') }}
+                {{ $t('Journals') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -99,9 +100,9 @@ const destroy = () => {
               </svg>
             </li>
             <li class="relative mr-2 inline">
-              <inertia-link :href="data.url.slices_index" class="text-blue-500 hover:underline"
-                >Slices of life</inertia-link
-              >
+              <inertia-link :href="data.url.slices_index" class="text-blue-500 hover:underline">{{
+                $t('Slices of life')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -148,7 +149,7 @@ const destroy = () => {
                   d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
               </svg>
 
-              <p class="text-sm text-gray-500">Add a header image</p>
+              <p class="text-sm text-gray-500">{{ $t('Add a header image') }}</p>
             </div>
           </uploadcare>
 
@@ -157,7 +158,7 @@ const destroy = () => {
             v-if="!data.uploadcarePublicKey"
             class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
             <p class="p-5 text-center">
-              {{ $t('contact.photos_key_missing') }}
+              {{ $t('The keys to manage uploads have not been set in this Monica instance.') }}
             </p>
           </div>
 
@@ -166,7 +167,7 @@ const destroy = () => {
             v-if="!data.canUploadFile"
             class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
             <p class="bg-gray-100 p-3 text-center">
-              <span class="mr-1">⚠️</span> {{ $t('contact.photos_not_enough_storage') }}
+              <span class="mr-1">⚠️</span> {{ $t('You don’t have enough space left in your account.') }}
             </p>
           </div>
 
@@ -197,7 +198,7 @@ const destroy = () => {
                   d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
               </svg>
 
-              <span>{{ data.posts.length }} posts</span>
+              <span>{{ $tChoice(':count post|:count posts', data.posts.length, { count: data.posts.length }) }}</span>
             </p>
 
             <!-- date range -->
@@ -220,7 +221,7 @@ const destroy = () => {
 
             <!-- contacts -->
             <div v-if="data.contacts.length > 0">
-              <p class="mb-2 text-sm font-bold">Contacts in this slice</p>
+              <p class="mb-2 text-sm font-bold">{{ $t('Contacts in this slice') }}</p>
               <ul class="mb-6">
                 <li v-for="contact in data.contacts" :key="contact.id">
                   <contact-card :contact="contact" :avatarClasses="'h-5 w-5 rounded-full mr-2'" :displayName="true" />
@@ -231,20 +232,20 @@ const destroy = () => {
             <ul class="text-xs">
               <!-- destroy slice -->
               <li class="mb-2">
-                <inertia-link :href="data.slice.url.edit" class="cursor-pointer text-blue-500 hover:underline"
-                  >Edit</inertia-link
-                >
+                <inertia-link :href="data.slice.url.edit" class="cursor-pointer text-blue-500 hover:underline">{{
+                  $t('Edit')
+                }}</inertia-link>
               </li>
               <!-- remove cover image -->
               <li v-if="localSlice.cover_image" class="mb-2">
                 <span @click.prevent="destroyCoverImage()" class="cursor-pointer text-blue-500 hover:underline">
-                  Remove cover image
+                  {{ $t('Remove cover image') }}
                 </span>
               </li>
               <!-- destroy slice -->
               <li class="mb-2">
                 <span @click.prevent="destroy()" class="cursor-pointer text-blue-500 hover:underline">
-                  Delete the slice
+                  {{ $t('Delete the slice') }}
                 </span>
               </li>
             </ul>
@@ -281,8 +282,11 @@ const destroy = () => {
             <!-- blank state -->
             <div v-else class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
               <p class="p-5 text-center">
-                A slice of life lets you group posts by something meaningful to you. Add a slice of life in a post to
-                see it here.
+                {{
+                  $t(
+                    'A slice of life lets you group posts by something meaningful to you. Add a slice of life in a post to see it here.',
+                  )
+                }}
               </p>
             </div>
           </div>

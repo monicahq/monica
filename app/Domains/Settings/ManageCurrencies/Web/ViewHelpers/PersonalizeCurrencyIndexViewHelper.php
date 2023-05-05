@@ -40,7 +40,7 @@ class PersonalizeCurrencyIndexViewHelper
         return [
             'id' => $currency->id,
             'code' => $currency->code,
-            'name' => trans('currencies.'.$currency->code),
+            'name' => __('currencies.'.$currency->code),
             'active' => $record->active,
             'url' => [
                 'update' => route('settings.personalize.currency.update', [

@@ -17,6 +17,10 @@ class DistanceHelper
             $distance = round($distance / 1.609344, 2);
         }
 
-        return trans('app.distance_format_'.$user->distance_format, ['distance' => $distance]);
+        return match ($user->distance_format) {
+            'mi' => trans(':distance miles', ['distance' => $distance]),
+            'km' => trans(':distance km', ['distance' => $distance]),
+            default => trans(':distance miles', ['distance' => $distance]),
+        };
     }
 }

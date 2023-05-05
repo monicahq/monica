@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings') }}
+                {{ $t('Settings') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -25,7 +25,7 @@
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings_personalize') }}
+                {{ $t('Personalize your account') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -38,7 +38,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">{{ $t('app.breadcrumb_settings_personalize_post_templates') }}</li>
+            <li class="inline">{{ $t('Post templates') }}</li>
           </ul>
         </div>
       </div>
@@ -50,11 +50,11 @@
         <div class="mb-6 mt-8 items-center justify-between sm:mt-0 sm:flex">
           <h3 class="mb-4 sm:mb-0">
             <span class="mr-1"> 📮 </span>
-            {{ $t('settings.personalize_post_templates_title') }}
+            {{ $t('Post templates') }}
           </h3>
           <pretty-button
             v-if="!createPostTemplateModalShown"
-            :text="$t('settings.personalize_post_templates_cta')"
+            :text="$t('Add a post template')"
             :icon="'plus'"
             @click="showCreatePostTemplateModal" />
         </div>
@@ -75,7 +75,13 @@
           </svg>
 
           <div>
-            <p>{{ $t('settings.personalize_post_templates_help') }}</p>
+            <p>
+              {{
+                $t(
+                  'A post template defines how the content of a post should be displayed. You can define as many templates as you want, and choose which template should be used on which post.',
+                )
+              }}
+            </p>
           </div>
         </div>
 
@@ -90,7 +96,7 @@
             <text-input
               :ref="'newPostTemplate'"
               v-model="form.label"
-              :label="'Name'"
+              :label="$t('Name')"
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -101,8 +107,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createPostTemplateModalShown = false" />
-            <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createPostTemplateModalShown = false" />
+            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
           </div>
         </form>
 
@@ -144,16 +150,14 @@
 
                     <!-- actions -->
                     <ul class="text-sm">
-                      <li
-                        class="inline cursor-pointer text-blue-500 hover:underline"
-                        @click="renamePostTemplateModal(element)">
-                        {{ $t('app.rename') }}
+                      <li class="inline cursor-pointer" @click="renamePostTemplateModal(element)">
+                        <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                       </li>
                       <li
                         v-if="element.can_be_deleted"
                         class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
                         @click="destroy(element)">
-                        {{ $t('app.delete') }}
+                        {{ $t('Delete') }}
                       </li>
                     </ul>
                   </div>
@@ -201,13 +205,13 @@
                                 <li
                                   class="inline cursor-pointer text-blue-500 hover:underline"
                                   @click="renameSectionModal(id, element)">
-                                  {{ $t('app.rename') }}
+                                  <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                                 </li>
                                 <li
                                   v-if="element.can_be_deleted"
                                   class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
                                   @click="destroySection(element)">
-                                  {{ $t('app.delete') }}
+                                  {{ $t('Delete') }}
                                 </li>
                               </ul>
                             </div>
@@ -225,7 +229,7 @@
                             <text-input
                               :ref="'newSection'"
                               v-model="form.label"
-                              :label="'Name'"
+                              :label="$t('Name')"
                               :type="'text'"
                               :autofocus="true"
                               :input-class="'block w-full'"
@@ -236,9 +240,9 @@
                           </div>
 
                           <div class="flex justify-between p-5">
-                            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="postTemplateId = 0" />
+                            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="postTemplateId = 0" />
                             <pretty-button
-                              :text="$t('app.rename')"
+                              :text="$t('Rename')"
                               :state="loadingState"
                               :icon="'check'"
                               :classes="'save'" />
@@ -256,7 +260,7 @@
                       "
                       class="inline cursor-pointer text-sm text-blue-500 hover:underline"
                       @click="showCreateSectionModal(element)"
-                      >add a section</span
+                      >{{ $t('add a section') }}</span
                     >
 
                     <!-- form: create new section -->
@@ -270,7 +274,7 @@
                         <text-input
                           :ref="'newSection'"
                           v-model="form.label"
-                          :label="'Name'"
+                          :label="$t('Name')"
                           :type="'text'"
                           :autofocus="true"
                           :input-class="'block w-full'"
@@ -281,11 +285,8 @@
                       </div>
 
                       <div class="flex justify-between p-5">
-                        <pretty-span
-                          :text="$t('app.cancel')"
-                          :classes="'mr-3'"
-                          @click="createSectionModalShown = false" />
-                        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+                        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createSectionModalShown = false" />
+                        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
                       </div>
                     </form>
 
@@ -298,11 +299,12 @@
                       "
                       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                       <p class="p-5 text-center">
-                        No roles yet.
+                        {{ $t('No roles yet.') }}
+
                         <span
                           class="block cursor-pointer text-sm text-blue-500 hover:underline"
                           @click="showCreateSectionModal(element)"
-                          >add a section</span
+                          >{{ $t('add a section') }}</span
                         >
                       </p>
                     </div>
@@ -320,7 +322,7 @@
                   <text-input
                     :ref="'rename' + element.id"
                     v-model="form.label"
-                    :label="'Name'"
+                    :label="$t('Name')"
                     :type="'text'"
                     :autofocus="true"
                     :input-class="'block w-full'"
@@ -331,8 +333,8 @@
                 </div>
 
                 <div class="flex justify-between p-5">
-                  <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click.prevent="editPostTemplateId = 0" />
-                  <pretty-button :text="$t('app.rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
+                  <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="editPostTemplateId = 0" />
+                  <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
                 </div>
               </form>
             </template>
@@ -432,7 +434,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash('The post template has been created', 'success');
+          this.flash(this.$t('The post template has been created'), 'success');
           this.localPostTemplates.push(response.data.data);
           this.loadingState = null;
           this.createPostTemplateModalShown = false;
@@ -449,7 +451,7 @@ export default {
       axios
         .put(postTemplate.url.update, this.form)
         .then((response) => {
-          this.flash('The post template has been updated', 'success');
+          this.flash(this.$t('The post template has been updated'), 'success');
           this.localPostTemplates[this.localPostTemplates.findIndex((x) => x.id === postTemplate.id)] =
             response.data.data;
           this.loadingState = null;
@@ -462,11 +464,11 @@ export default {
     },
 
     destroy(postTemplate) {
-      if (confirm('Are you sure? This can not be undone.')) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(postTemplate.url.destroy)
           .then(() => {
-            this.flash('The post template has been deleted', 'success');
+            this.flash(this.$t('The post template has been deleted'), 'success');
             var id = this.localPostTemplates.findIndex((x) => x.id === postTemplate.id);
             this.localPostTemplates.splice(id, 1);
           })
@@ -484,7 +486,7 @@ export default {
       axios
         .post(event.moved.element.url.position, this.form)
         .then(() => {
-          this.flash('The order has been saved', 'success');
+          this.flash(this.$t('The position has been saved'), 'success');
         })
         .catch((error) => {
           this.loadingState = null;
@@ -498,7 +500,7 @@ export default {
       axios
         .post(postTemplate.url.store, this.form)
         .then((response) => {
-          this.flash('The section has been created', 'success');
+          this.flash(this.$t('The section has been created'), 'success');
           var id = this.localPostTemplates.findIndex((x) => x.id === postTemplate.id);
           this.localPostTemplates[id].post_template_sections.push(response.data.data);
           this.loadingState = null;
@@ -517,7 +519,7 @@ export default {
       axios
         .put(section.url.update, this.form)
         .then((response) => {
-          this.flash('The section has been updated', 'success');
+          this.flash(this.$t('The section has been updated'), 'success');
 
           var postTemplateId = this.localPostTemplates.findIndex((x) => x.id === section.post_template_id);
           var sectionId = this.localPostTemplates[postTemplateId].post_template_sections.findIndex(
@@ -536,11 +538,11 @@ export default {
     },
 
     destroySection(section) {
-      if (confirm('Are you sure? This can not be undone.')) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(section.url.destroy)
           .then(() => {
-            this.flash('The section has been deleted', 'success');
+            this.flash(this.$t('The section has been deleted'), 'success');
 
             var postTemplateId = this.localPostTemplates.findIndex((x) => x.id === section.post_template_id);
             var sectionId = this.localPostTemplates[postTemplateId].post_template_sections.findIndex(

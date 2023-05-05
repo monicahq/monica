@@ -19,14 +19,16 @@ return new class() extends Migration
         Schema::create('templates', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
-            $table->string('name');
+            $table->string('name')->nullable();
+            $table->string('name_translation_key')->nullable();
             $table->timestamps();
         });
 
         Schema::create('template_pages', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Template::class)->constrained()->cascadeOnDelete();
-            $table->string('name');
+            $table->string('name')->nullable();
+            $table->string('name_translation_key')->nullable();
             $table->string('slug');
             $table->integer('position')->nullable();
             $table->string('type')->nullable();
@@ -37,7 +39,8 @@ return new class() extends Migration
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
-            $table->string('name');
+            $table->string('name')->nullable();
+            $table->string('name_translation_key')->nullable();
             $table->string('type')->nullable();
             $table->boolean('reserved_to_contact_information')->default(false);
             $table->boolean('can_be_deleted')->default(true);

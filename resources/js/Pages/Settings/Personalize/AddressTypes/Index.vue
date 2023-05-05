@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings') }}
+                {{ $t('Settings') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -25,7 +25,7 @@
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings_personalize') }}
+                {{ $t('Personalize your account') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -38,7 +38,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Address types</li>
+            <li class="inline">{{ $t('Address types') }}</li>
           </ul>
         </div>
       </div>
@@ -50,11 +50,11 @@
         <div class="mb-6 mt-8 items-center justify-between sm:mt-0 sm:flex">
           <h3 class="mb-4 sm:mb-0">
             <span class="mr-1"> 🏖 </span>
-            All the address types
+            {{ $t('All the address types') }}
           </h3>
           <pretty-button
             v-if="!createAddressTypeModalShown"
-            :text="'Add an address type'"
+            :text="$t('Add an address type')"
             :icon="'plus'"
             @click="showAddressTypeModal" />
         </div>
@@ -70,7 +70,7 @@
             <text-input
               :ref="'newAddressType'"
               v-model="form.name"
-              :label="'Name'"
+              :label="$t('Name')"
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -81,8 +81,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createAddressTypeModalShown = false" />
-            <pretty-button :text="'Create address type'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createAddressTypeModalShown = false" />
+            <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :classes="'save'" />
           </div>
         </form>
 
@@ -102,13 +102,11 @@
 
               <!-- actions -->
               <ul class="text-sm">
-                <li
-                  class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
-                  @click="updateAdressTypeModal(addressType)">
-                  Rename
+                <li class="mr-4 inline cursor-pointer" @click="updateAdressTypeModal(addressType)">
+                  <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                 </li>
                 <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(addressType)">
-                  Delete
+                  {{ $t('Delete') }}
                 </li>
               </ul>
             </div>
@@ -124,7 +122,7 @@
                 <text-input
                   :ref="'rename' + addressType.id"
                   v-model="form.name"
-                  :label="'Name'"
+                  :label="$t('Name')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'block w-full'"
@@ -136,10 +134,10 @@
 
               <div class="flex justify-between p-5">
                 <pretty-span
-                  :text="$t('app.cancel')"
+                  :text="$t('Cancel')"
                   :classes="'mr-3'"
                   @click.prevent="renameAddressTypeModalShownId = 0" />
-                <pretty-button :text="$t('app.rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
+                <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
               </div>
             </form>
           </li>
@@ -149,7 +147,7 @@
         <div
           v-if="localAddressTypes.length == 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-          <p class="p-5 text-center">Address types let you classify contact addresses.</p>
+          <p class="p-5 text-center">{{ $t('Address types let you classify contact addresses.') }}</p>
         </div>
       </div>
     </main>
@@ -225,7 +223,7 @@ export default {
       axios
         .post(this.data.url.address_type_store, this.form)
         .then((response) => {
-          this.flash('The address type has been created', 'success');
+          this.flash(this.$t('The address type has been created'), 'success');
           this.localAddressTypes.unshift(response.data.data);
           this.loadingState = null;
           this.createAddressTypeModalShown = false;
@@ -242,7 +240,7 @@ export default {
       axios
         .put(addressType.url.update, this.form)
         .then((response) => {
-          this.flash('The address type has been updated', 'success');
+          this.flash(this.$t('The address type has been updated'), 'success');
           this.localAddressTypes[this.localAddressTypes.findIndex((x) => x.id === addressType.id)] = response.data.data;
           this.loadingState = null;
           this.renameAddressTypeModalShownId = 0;
@@ -256,13 +254,15 @@ export default {
     destroy(addressType) {
       if (
         confirm(
-          "Are you sure? This will remove the address types from all contacts, but won't delete the contacts themselves.",
+          this.$t(
+            'Are you sure? This will remove the address types from all contacts, but won’t delete the contacts themselves.',
+          ),
         )
       ) {
         axios
           .delete(addressType.url.destroy)
           .then(() => {
-            this.flash('The address type has been deleted', 'success');
+            this.flash(this.$t('The address type has been deleted'), 'success');
             var id = this.localAddressTypes.findIndex((x) => x.id === addressType.id);
             this.localAddressTypes.splice(id, 1);
           })

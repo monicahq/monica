@@ -27,7 +27,7 @@ class PersonalizeRelationshipController extends Controller
         $data = [
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
-            'name' => $request->input('groupTypeName'),
+            'name' => $request->input('relationshipGroupTypeName'),
             'can_be_deleted' => true,
         ];
 
@@ -44,7 +44,7 @@ class PersonalizeRelationshipController extends Controller
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'relationship_group_type_id' => $groupTypeId,
-            'name' => $request->input('groupTypeName'),
+            'name' => $request->input('relationshipGroupTypeName'),
         ];
 
         $groupType = (new UpdateRelationshipGroupType())->execute($data);

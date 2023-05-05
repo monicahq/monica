@@ -36,7 +36,44 @@ class ModuleFeedViewHelper
 
     private static function getSentence(ContactFeedItem $item): mixed
     {
-        return trans('contact.feed_item_'.$item->action);
+        return match ($item->action) {
+            'contact_created' => trans('created the contact'),
+            'author_deleted' => trans('Deleted author'),
+            'information_updated' => trans('updated the contact information'),
+            'important_date_created' => trans('added an important date'),
+            'important_date_updated' => trans('updated an important date'),
+            'important_date_destroyed' => trans('deleted an important date'),
+            'address_created' => trans('added an address'),
+            'address_updated' => trans('updated an address'),
+            'address_destroyed' => trans('deleted an address'),
+            'pet_created' => trans('added a pet'),
+            'pet_updated' => trans('updated a pet'),
+            'pet_destroyed' => trans('deleted a pet'),
+            'contact_information_created' => trans('added a contact information'),
+            'contact_information_updated' => trans('updated a contact information'),
+            'contact_information_destroyed' => trans('deleted a contact information'),
+            'label_assigned' => trans('assigned a label'),
+            'label_removed' => trans('removed a label'),
+            'note_created' => trans('wrote a note'),
+            'note_updated' => trans('edited a note'),
+            'note_destroyed' => trans('deleted a note'),
+            'job_information_updated' => trans('updated the job information'),
+            'religion_updated' => trans('updated the religion'),
+            'goal_created' => trans('created a goal'),
+            'goal_updated' => trans('updated a goal'),
+            'goal_destroyed' => trans('deleted a goal'),
+            'added_to_group' => trans('added the contact to a group'),
+            'removed_from_group' => trans('removed the contact from a group'),
+            'added_to_post' => trans('added the contact to a post'),
+            'removed_from_post' => trans('removed the contact from a post'),
+            'archived' => trans('archived the contact'),
+            'unarchived' => trans('unarchived the contact'),
+            'favorited' => trans('added the contact to the favorites'),
+            'unfavorited' => trans('removed the contact from the favorites'),
+            'changed_avatar' => trans('updated the avatar of the contact'),
+            'mood_tracking_event_added' => trans('logged the mood'),
+            default => trans('unknown action'),
+        };
     }
 
     private static function getAuthor(ContactFeedItem $item, Vault $vault): ?array
@@ -58,7 +95,7 @@ class ModuleFeedViewHelper
             </svg>';
 
             return [
-                'name' => trans('contact.feed_item_author_deleted'),
+                'name' => trans('Deleted author'),
                 'avatar' => $monicaSvg,
                 'url' => null,
             ];

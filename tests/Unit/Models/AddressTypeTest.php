@@ -17,4 +17,32 @@ class AddressTypeTest extends TestCase
 
         $this->assertTrue($type->account()->exists());
     }
+
+    /** @test */
+    public function it_gets_the_default_name()
+    {
+        $type = AddressType::factory()->create([
+            'name' => null,
+            'name_translation_key' => 'template.label',
+        ]);
+
+        $this->assertEquals(
+            'template.label',
+            $type->name
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_custom_name_if_defined()
+    {
+        $type = AddressType::factory()->create([
+            'name' => 'this is the real name',
+            'name_translation_key' => 'template.label',
+        ]);
+
+        $this->assertEquals(
+            'this is the real name',
+            $type->name
+        );
+    }
 }

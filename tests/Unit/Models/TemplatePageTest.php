@@ -29,4 +29,32 @@ class TemplatePageTest extends TestCase
 
         $this->assertTrue($templatePage->modules()->exists());
     }
+
+    /** @test */
+    public function it_gets_the_default_label()
+    {
+        $templatePage = TemplatePage::factory()->create([
+            'name' => null,
+            'name_translation_key' => 'bla',
+        ]);
+
+        $this->assertEquals(
+            'bla',
+            $templatePage->name
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_custom_label_if_defined()
+    {
+        $templatePage = TemplatePage::factory()->create([
+            'name' => 'this is the real name',
+            'name_translation_key' => 'bla',
+        ]);
+
+        $this->assertEquals(
+            'this is the real name',
+            $templatePage->name
+        );
+    }
 }

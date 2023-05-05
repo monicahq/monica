@@ -19,7 +19,7 @@
         </span>
 
         <span class="font-semibold">
-          {{ $t('contact.photos_title') }}
+          {{ $t('Photos') }}
         </span>
       </div>
       <uploadcare
@@ -30,7 +30,7 @@
         :preview-step="false"
         @success="onSuccess"
         @error="onError">
-        <pretty-button :text="$t('contact.photos_cta')" :icon="'plus'" :classes="'sm:w-fit w-full'" />
+        <pretty-button :text="$t('Add a photo')" :icon="'plus'" :classes="'sm:w-fit w-full'" />
       </uploadcare>
     </div>
 
@@ -39,7 +39,7 @@
       v-if="!data.canUploadFile"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="bg-gray-100 p-3 text-center">
-        <span class="mr-1">⚠️</span> {{ $t('contact.photos_not_enough_storage') }}
+        <span class="mr-1">⚠️</span> {{ $t('You don’t have enough space left in your account.') }}
       </p>
     </div>
 
@@ -59,7 +59,7 @@
         <inertia-link
           :href="data.url.index"
           class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
-          {{ $t('app.view_all') }}
+          {{ $t('View all') }}
         </inertia-link>
       </div>
     </div>
@@ -70,7 +70,7 @@
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_photo.svg" :alt="$t('Photos')" class="mx-auto mt-4 h-16 w-16" />
       <p class="px-5 pb-5 pt-2 text-center">
-        {{ $t('contact.photos_blank') }}
+        {{ $t('There are no photos yet.') }}
       </p>
     </div>
 
@@ -79,7 +79,7 @@
       v-if="!data.uploadcarePublicKey"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">
-        {{ $t('contact.photos_key_missing') }}
+        {{ $t('The keys to manage uploads have not been set in this Monica instance.') }}
       </p>
     </div>
   </div>
@@ -139,7 +139,7 @@ export default {
         .post(this.data.url.store, this.form)
         .then((response) => {
           this.localPhotos.unshift(response.data.data);
-          this.flash(this.$t('contact.photos_new_success'), 'success');
+          this.flash(this.$t('The photo has been added'), 'success');
         })
         .catch((error) => {
           this.form.errors = error.response.data;
@@ -147,11 +147,11 @@ export default {
     },
 
     destroy(photo) {
-      if (confirm(this.$t('contact.photos_delete_confirm'))) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(photo.url.destroy)
           .then(() => {
-            this.flash(this.$t('contact.photos_delete_success'), 'success');
+            this.flash(this.$t('The photo has been deleted'), 'success');
             var id = this.localPhotos.findIndex((x) => x.id === photo.id);
             this.localPhotos.splice(id, 1);
           })

@@ -1,7 +1,7 @@
 <template>
   <div class="mb-4">
     <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
-      <div class="mb-2 text-xs sm:mb-0">Important dates</div>
+      <div class="mb-2 text-xs sm:mb-0">{{ $t('Important dates') }}</div>
       <inertia-link :href="data.url.edit" class="relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +29,7 @@
     </ul>
 
     <!-- blank state -->
-    <p v-if="data.dates.length == 0" class="text-sm text-gray-600 dark:text-gray-400">Not set</p>
+    <p v-if="data.dates.length == 0" class="text-sm text-gray-600 dark:text-gray-400">{{ $t('Not set') }}</p>
   </div>
 </template>
 

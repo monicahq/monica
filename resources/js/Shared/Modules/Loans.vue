@@ -18,9 +18,13 @@
           </svg>
         </span>
 
-        <span class="font-semibold"> Loans </span>
+        <span class="font-semibold"> {{ $t('Loans') }} </span>
       </div>
-      <pretty-button :text="'Record a loan'" :icon="'plus'" :classes="'sm:w-fit w-full'" @click="showCreateLoanModal" />
+      <pretty-button
+        :text="$t('Record a loan')"
+        :icon="'plus'"
+        :classes="'sm:w-fit w-full'"
+        @click="showCreateLoanModal" />
     </div>
 
     <div>
@@ -45,7 +49,7 @@
                   <label
                     for="object"
                     class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    The loan is an object
+                    {{ $t('The loan is an object') }}
                   </label>
                 </div>
               </li>
@@ -62,7 +66,7 @@
                   <label
                     for="monetary"
                     class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    The loan is monetary
+                    {{ $t('The loan is monetary') }}
                   </label>
                 </div>
               </li>
@@ -74,7 +78,7 @@
             <text-input
               :ref="'name'"
               v-model="form.name"
-              :label="'What is the loan?'"
+              :label="$t('What is the loan?')"
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -89,8 +93,8 @@
             <text-input
               :ref="'label'"
               v-model="form.amount_lent"
-              :label="'How much money was lent?'"
-              :help="'Write the amount with a dot if you need decimals, like 100.50'"
+              :label="$t('How much money was lent?')"
+              :help="$t('Write the amount with a dot if you need decimals, like 100.50')"
               :type="'number'"
               :autofocus="true"
               :input-class="'w-full'"
@@ -105,14 +109,14 @@
               :data="localCurrencies"
               :required="false"
               :div-outer-class="'ml-3 mb-5'"
-              :placeholder="$t('app.choose_value')"
+              :placeholder="$t('Choose a value')"
               :dropdown-class="'block'"
-              :label="'Currency'" />
+              :label="$t('Currency')" />
           </div>
 
           <!-- loaned at -->
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-            <p class="mb-2 block text-sm">When was the loan made?</p>
+            <p class="mb-2 block text-sm">{{ $t('When was the loan made?') }}</p>
 
             <v-date-picker v-model="form.loaned_at" class="inline-block h-full" :model-config="modelConfig">
               <template #default="{ inputValue, inputEvents }">
@@ -131,7 +135,7 @@
               :search-url="layoutData.vault.url.search_contacts_only"
               :most-consulted-contacts-url="layoutData.vault.url.get_most_consulted_contacts"
               :display-most-consulted-contacts="false"
-              :label="'Who makes the loan?'"
+              :label="$t('Who makes the loan?')"
               :add-multiple-contacts="true"
               :required="true"
               :div-outer-class="'p-5 flex-1 border-r border-gray-200 dark:border-gray-700'" />
@@ -141,7 +145,7 @@
               :search-url="layoutData.vault.url.search_contacts_only"
               :most-consulted-contacts-url="layoutData.vault.url.get_most_consulted_contacts"
               :display-most-consulted-contacts="true"
-              :label="'Who the loan is for?'"
+              :label="$t('Who the loan is for?')"
               :add-multiple-contacts="true"
               :required="true"
               :div-outer-class="'p-5 flex-1'" />
@@ -151,7 +155,7 @@
           <div class="p-5">
             <text-area
               v-model="form.description"
-              :label="'Description'"
+              :label="$t('Description')"
               :maxlength="255"
               :textarea-class="'block w-full'" />
           </div>
@@ -164,8 +168,8 @@
         <div v-if="warning != ''" class="border-b p-3">⚠️ {{ warning }}</div>
 
         <div class="flex justify-between p-5">
-          <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createLoanModalShown = false" />
-          <pretty-button :text="'Add loan'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+          <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createLoanModalShown = false" />
+          <pretty-button :text="$t('Add loan')" :state="loadingState" :icon="'plus'" :classes="'save'" />
         </div>
       </form>
 
@@ -227,20 +231,20 @@
                 v-if="!loan.settled"
                 class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
                 @click="toggle(loan)">
-                Settle
+                {{ $t('Settle') }}
               </li>
               <li v-else class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="toggle(loan)">
-                Revert
+                {{ $t('Revert') }}
               </li>
 
               <!-- edit -->
               <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="showEditLoanModal(loan)">
-                Edit
+                {{ $t('Edit') }}
               </li>
 
               <!-- delete -->
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(loan)">
-                {{ $t('app.delete') }}
+                {{ $t('Delete') }}
               </li>
             </ul>
           </div>
@@ -267,7 +271,7 @@
                     <label
                       for="object"
                       class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                      The loan is an object
+                      {{ $t('The loan is an object') }}
                     </label>
                   </div>
                 </li>
@@ -284,7 +288,7 @@
                     <label
                       for="monetary"
                       class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                      The loan is monetary
+                      {{ $t('The loan is monetary') }}
                     </label>
                   </div>
                 </li>
@@ -296,7 +300,7 @@
               <text-input
                 :ref="'name'"
                 v-model="form.name"
-                :label="'What is the loan?'"
+                :label="$t('What is the loan?')"
                 :type="'text'"
                 :autofocus="true"
                 :input-class="'block w-full'"
@@ -311,8 +315,8 @@
               <text-input
                 :ref="'label'"
                 v-model="form.amount_lent"
-                :label="'How much money was lent?'"
-                :help="'Write the amount with a dot if you need decimals, like 100.50'"
+                :label="$t('How much was lent?')"
+                :help="$t('Write the amount with a dot if you need decimals, like 100.50')"
                 :type="'number'"
                 :autofocus="true"
                 :input-class="'w-full'"
@@ -327,14 +331,14 @@
                 :data="localCurrencies"
                 :required="false"
                 :div-outer-class="'ml-3 mb-5'"
-                :placeholder="$t('app.choose_value')"
+                :placeholder="$t('Choose a value')"
                 :dropdown-class="'block'"
-                :label="'Currency'" />
+                :label="$t('Currency')" />
             </div>
 
             <!-- loaned at -->
             <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-              <p class="mb-2 block text-sm">When was the loan made?</p>
+              <p class="mb-2 block text-sm">{{ $t('When was the loan made?') }}</p>
 
               <v-date-picker v-model="form.loaned_at" class="inline-block h-full" :model-config="modelConfig">
                 <template #default="{ inputValue, inputEvents }">
@@ -353,7 +357,7 @@
                 :search-url="layoutData.vault.url.search_contacts_only"
                 :most-consulted-contacts-url="layoutData.vault.url.get_most_consulted_contacts"
                 :display-most-consulted-contacts="false"
-                :label="'Who makes the loan?'"
+                :label="$t('Who makes the loan?')"
                 :add-multiple-contacts="true"
                 :required="true"
                 :div-outer-class="'p-5 flex-1 border-r border-gray-200 dark:border-gray-700'" />
@@ -363,7 +367,7 @@
                 :search-url="layoutData.vault.url.search_contacts_only"
                 :most-consulted-contacts-url="layoutData.vault.url.get_most_consulted_contacts"
                 :display-most-consulted-contacts="true"
-                :label="'Who the loan is for?'"
+                :label="$t('Who the loan is for?')"
                 :add-multiple-contacts="true"
                 :required="true"
                 :div-outer-class="'p-5 flex-1'" />
@@ -373,7 +377,7 @@
             <div class="p-5">
               <text-area
                 v-model="form.description"
-                :label="'Description'"
+                :label="$t('Description')"
                 :maxlength="255"
                 :textarea-class="'block w-full'" />
             </div>
@@ -386,8 +390,8 @@
           <div v-if="warning != ''" class="border-b p-3">⚠️ {{ warning }}</div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedLoanId = 0" />
-            <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedLoanId = 0" />
+            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
           </div>
         </form>
       </div>
@@ -398,7 +402,7 @@
       v-if="localLoans.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_loan.svg" :alt="$t('Loans')" class="mx-auto mt-4 h-14 w-14" />
-      <p class="px-5 pb-5 pt-2 text-center">There are no loans yet.</p>
+      <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no loans yet.') }}</p>
     </div>
   </div>
 </template>
@@ -508,7 +512,7 @@ export default {
 
     submit() {
       if (this.form.loaners.length == 0 || this.form.loanees.length == 0) {
-        this.warning = 'Please indicate the contacts.';
+        this.warning = this.$t('Please indicate the contacts');
         return;
       }
 
@@ -517,7 +521,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash('The loan has been created', 'success');
+          this.flash($t('The loan has been created'), 'success');
           this.localLoans.unshift(response.data.data);
           this.loadingState = '';
           this.createLoanModalShown = false;
@@ -535,7 +539,7 @@ export default {
         .put(loan.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash('The loan has been edited', 'success');
+          this.flash($t('The loan has been edited'), 'success');
           this.localLoans[this.localLoans.findIndex((x) => x.id === loan.id)] = response.data.data;
           this.editedLoanId = 0;
         })
@@ -546,11 +550,11 @@ export default {
     },
 
     destroy(loan) {
-      if (confirm('Are you sure? This will delete the loan permanently.')) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(loan.url.destroy)
           .then(() => {
-            this.flash('The loan has been deleted', 'success');
+            this.flash(this.$t('The loan has been deleted'), 'success');
             var id = this.localLoans.findIndex((x) => x.id === loan.id);
             this.localLoans.splice(id, 1);
           })
@@ -565,7 +569,7 @@ export default {
       axios
         .put(loan.url.toggle, this.form)
         .then((response) => {
-          this.flash('The loan has been settled', 'success');
+          this.flash(this.$t('The loan has been settled'), 'success');
           this.localLoans[this.localLoans.findIndex((x) => x.id === loan.id)] = response.data.data;
         })
         .catch((error) => {

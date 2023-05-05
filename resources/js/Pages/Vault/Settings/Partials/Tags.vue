@@ -4,13 +4,9 @@
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0">
         <span class="mr-1"> ⚡ </span>
-        {{ $t('vault.settings_tags_title') }}
+        {{ $t('All the tags used in the vault') }}
       </h3>
-      <pretty-button
-        v-if="!createTagModalShown"
-        :text="$t('vault.settings_tags_cta')"
-        :icon="'plus'"
-        @click="showLabelModal" />
+      <pretty-button v-if="!createTagModalShown" :text="$t('Add a tag')" :icon="'plus'" @click="showLabelModal" />
     </div>
 
     <!-- modal to create a new label -->
@@ -24,7 +20,7 @@
         <text-input
           :ref="'newTag'"
           v-model="form.name"
-          :label="$t('vault.settings_tags_create_name')"
+          :label="$t('Name')"
           :type="'text'"
           :autofocus="true"
           :input-class="'block w-full'"
@@ -36,12 +32,8 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createTagModalShown = false" />
-        <pretty-button
-          :text="$t('vault.settings_tags_create_cta')"
-          :state="loadingState"
-          :icon="'plus'"
-          :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createTagModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -58,19 +50,19 @@
           <span class="flex items-center text-base">
             <span class="mr-2">{{ tag.name }}</span>
             <span v-if="tag.count > 0" class="text-xs text-gray-500"
-              >({{ $t('vault.settings_tags_count', { count: tag.count }) }})</span
+              >({{ $tChoice(':count post|:count posts', tag.count, { count: tag.count }) }})</span
             >
           </span>
 
           <!-- actions -->
           <ul class="text-sm">
-            <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="updateTagModal(tag)">
-              {{ $t('app.edit') }}
+            <li class="mr-4 inline cursor-pointer" @click="updateTagModal(tag)">
+              <span class="text-blue-500 hover:underline">{{ $t('Edit') }}</span>
             </li>
             <li
               class="inline cursor-pointer text-red-500 hover:text-red-900 hover:dark:text-red-100"
               @click="destroy(tag)">
-              {{ $t('app.delete') }}
+              {{ $t('Delete') }}
             </li>
           </ul>
         </div>
@@ -86,7 +78,7 @@
             <text-input
               :ref="'rename' + tag.id"
               v-model="form.name"
-              :label="$t('vault.settings_tags_create_name')"
+              :label="$t('Name')"
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -98,8 +90,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click.prevent="editTagModalShownId = 0" />
-            <pretty-button :text="$t('app.rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="editTagModalShownId = 0" />
+            <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>
       </li>
@@ -110,7 +102,7 @@
       v-if="localTags.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">
-        {{ $t('vault.settings_tags_blank') }}
+        {{ $t('Tags let you classify journal posts using a system that matters to you.') }}
       </p>
     </div>
   </div>
@@ -179,7 +171,7 @@ export default {
       axios
         .post(this.data.url.tag_store, this.form)
         .then((response) => {
-          this.flash(this.$t('vault.settings_tags_create_success'), 'success');
+          this.flash(this.$t('The tag has been created'), 'success');
           this.localTags.unshift(response.data.data);
           this.loadingState = null;
           this.createTagModalShown = false;
@@ -196,7 +188,7 @@ export default {
       axios
         .put(tag.url.update, this.form)
         .then((response) => {
-          this.flash(this.$t('vault.settings_tags_update_success'), 'success');
+          this.flash(this.$t('The tag has been updated'), 'success');
           this.localTags[this.localTags.findIndex((x) => x.id === tag.id)] = response.data.data;
           this.loadingState = null;
           this.editTagModalShownId = 0;
@@ -208,11 +200,11 @@ export default {
     },
 
     destroy(tag) {
-      if (confirm(this.$t('vault.settings_tags_destroy_confirmation'))) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(tag.url.destroy)
           .then(() => {
-            this.flash(this.$t('vault.settings_tags_destroy_success'), 'success');
+            this.flash(this.$t('The tag has been deleted'), 'success');
             var id = this.localTags.findIndex((x) => x.id === tag.id);
             this.localTags.splice(id, 1);
           })

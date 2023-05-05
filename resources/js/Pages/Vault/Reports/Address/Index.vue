@@ -16,12 +16,12 @@ defineProps({
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="layoutData.vault.url.reports" class="text-blue-500 hover:underline"
-                >Reports</inertia-link
-              >
+              <inertia-link :href="layoutData.vault.url.reports" class="text-blue-500 hover:underline">{{
+                $t('Reports')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -33,7 +33,7 @@ defineProps({
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">List of addresses</li>
+            <li class="inline">{{ $t('List of addresses') }}</li>
           </ul>
         </div>
       </div>
@@ -44,7 +44,7 @@ defineProps({
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
           <!-- left -->
           <div>
-            <p class="mb-2 font-semibold"><span class="mr-1">🌍</span> All the countries</p>
+            <p class="mb-2 font-semibold"><span class="mr-1">🌍</span> {{ $t('All the countries') }}</p>
 
             <!-- list of countries -->
             <ul v-if="data.countries.length > 0">
@@ -59,13 +59,13 @@ defineProps({
             <div
               v-if="data.countries.length == 0"
               class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-              <p class="p-5 text-center">No countries have been added yet in any contact's addresses.</p>
+              <p class="p-5 text-center">{{ $t('No countries have been added yet in any contact’s addresses.') }}</p>
             </div>
           </div>
 
           <!-- right -->
           <div class="p-3 sm:px-3 sm:py-0">
-            <p class="mb-2 font-semibold"><span class="mr-1">🏙️</span> All the cities</p>
+            <p class="mb-2 font-semibold"><span class="mr-1">🏙️</span> {{ $t('All the cities') }}</p>
 
             <!-- list of cities -->
             <ul v-if="data.cities.length > 0">
@@ -80,7 +80,7 @@ defineProps({
             <div
               v-if="data.cities.length == 0"
               class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-              <p class="p-5 text-center">No cities have been added yet in any contact's addresses.</p>
+              <p class="p-5 text-center">{{ $t('No cities have been added yet in any contact’s addresses.') }}</p>
             </div>
           </div>
         </div>
@@ -90,22 +90,6 @@ defineProps({
 </template>
 
 <style lang="scss" scoped>
-.item-list {
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-
 .special-grid {
   grid-template-columns: 1fr 1fr;
 }

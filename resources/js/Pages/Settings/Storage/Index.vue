@@ -9,7 +9,7 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link
@@ -17,7 +17,7 @@
                 class="text-blue-500 hover:underline"
               >
                 {{
-                  $t('app.breadcrumb_settings')
+                  $t('Settings')
                 }}
               </inertia-link>
             </li>
@@ -38,7 +38,7 @@
               </svg>
             </li>
             <li class="inline">
-              {{ $t('app.breadcrumb_settings_storage') }}
+              {{ $t('Storage') }}
             </li>
           </ul>
         </div>
@@ -53,7 +53,7 @@
             <span class="mr-1">
               📸
             </span>
-            {{ $t('settings.storage_title') }}
+            {{ $t('Storage') }}
           </h3>
         </div>
 
@@ -61,7 +61,7 @@
         <div class="border border-gray-200 dark:border-gray-700 rounded-lg grid grid-cols-2 mb-8">
           <!-- account limit -->
           <div class="flex justify-between p-3 border-r border-gray-200 dark:border-gray-700">
-            <p>{{ $t('settings.storage_account_limit') }}</p>
+            <p>{{ $t('Your account limits') }}</p>
             <p class="font-bold">
               {{ data.account_limit }}
             </p>
@@ -69,7 +69,7 @@
 
           <!-- current usage -->
           <div class="flex justify-between p-3">
-            <p>{{ $t('settings.storage_account_current_usage') }}</p>
+            <p>{{ $t('Your account current usage') }}</p>
             <p class="font-bold">
               {{ data.statistics.total }} <span class="text-gray-500 font-normal text-sm">({{ data.statistics.total_percent }}%)</span>
             </p>
@@ -78,19 +78,19 @@
 
         <!-- detail breakdown -->
         <p class="mb-2">
-          <span class="mr-1">🔽</span> Breakdown of the current usage
+          <span class="mr-1">🔽</span> {{ $t('Breakdown of the current usage') }}
         </p>
         <ul class="user-list mb-6 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
           <li class="border-b border-gray-200 dark:border-gray-700 hover:bg-slate-50 hover:dark:bg-slate-800 dark:bg-slate-900 flex justify-between p-3">
-            <p>{{ $t('settings.storage_type_photo') }}</p>
+            <p>{{ $t('Photos') }}</p>
             <p>{{ data.statistics.photo.total }} <span class="text-gray-500 font-normal text-sm">({{ data.statistics.photo.size }} - {{ data.statistics.photo.total_percent }}%)</span></p>
           </li>
           <li class="border-b border-gray-200 dark:border-gray-700 hover:bg-slate-50 hover:dark:bg-slate-800 dark:bg-slate-900 flex justify-between p-3">
-            <p>{{ $t('settings.storage_type_document') }}</p>
+            <p>{{ $t('Documents') }}</p>
             <p>{{ data.statistics.document.total }} <span class="text-gray-500 font-normal text-sm">({{ data.statistics.document.size }} - {{ data.statistics.document.total_percent }}%)</span></p>
           </li>
           <li class="border-b border-gray-200 dark:border-gray-700 hover:bg-slate-50 hover:dark:bg-slate-800 dark:bg-slate-900 flex justify-between p-3">
-            <p>{{ $t('settings.storage_type_avatar') }}</p>
+            <p>{{ $t('Avatars') }}</p>
             <p>{{ data.statistics.avatar.total }} <span class="text-gray-500 font-normal text-sm">({{ data.statistics.avatar.size }} - {{ data.statistics.avatar.total_percent }}%)</span></p>
           </li>
         </ul>

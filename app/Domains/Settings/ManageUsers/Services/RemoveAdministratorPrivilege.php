@@ -42,7 +42,7 @@ class RemoveAdministratorPrivilege extends BaseService implements ServiceInterfa
             ->findOrFail($data['user_id']);
 
         if ($user->id === $this->author->id) {
-            throw new \Exception(trans('account.exception_remove_your_own_permission'));
+            throw new \Exception(trans('You cannot remove your own administrator privilege.'));
         }
 
         $user->is_account_administrator = false;

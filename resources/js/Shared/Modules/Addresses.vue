@@ -176,11 +176,11 @@ const destroy = () => {
         </span>
 
         <span class="font-semibold">
-          {{ $t('contact.addresses_title') }}
+          {{ $t('Addresses') }}
         </span>
       </div>
       <pretty-button
-        :text="$t('contact.addresses_cta')"
+        :text="$t('Add an address')"
         :icon="'plus'"
         :classes="'sm:w-fit w-full'"
         @click="showCreateAddressModal" />
@@ -207,7 +207,7 @@ const destroy = () => {
             <label
               for="chooseExisting"
               class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-              Choose an existing address
+              {{ $t('Choose an existing address') }}
             </label>
           </div>
 
@@ -222,7 +222,7 @@ const destroy = () => {
             <label
               for="createNew"
               class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-              Create a new address
+              {{ $t('Create a new address') }}
             </label>
           </div>
         </div>
@@ -268,9 +268,9 @@ const destroy = () => {
               v-model="form.address_type_id"
               :data="data.address_types"
               :required="false"
-              :placeholder="$t('app.choose_value')"
+              :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
-              :label="$t('contact.addresses_address_type')" />
+              :label="$t('Address type')" />
           </div>
 
           <!-- street  -->
@@ -278,7 +278,7 @@ const destroy = () => {
             <text-input
               :ref="'line_1'"
               v-model="form.line_1"
-              :label="$t('contact.addresses_line_1')"
+              :label="$t('Address')"
               :type="'text'"
               :autofocus="true"
               :input-class="'w-full mr-2'"
@@ -293,7 +293,7 @@ const destroy = () => {
             <text-input
               :ref="'line_2'"
               v-model="form.line_2"
-              :label="$t('contact.addresses_line_2')"
+              :label="$t('Apartment, suite, etc…')"
               :type="'text'"
               :autofocus="true"
               :input-class="'w-full mr-2'"
@@ -304,7 +304,7 @@ const destroy = () => {
 
             <text-input
               v-model="form.city"
-              :label="$t('contact.addresses_city')"
+              :label="$t('City')"
               :type="'text'"
               :autofocus="true"
               :input-class="'w-full'"
@@ -318,7 +318,7 @@ const destroy = () => {
           <div class="grid grid-cols-3 gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
             <text-input
               v-model="form.province"
-              :label="$t('contact.addresses_province')"
+              :label="$t('Province')"
               :type="'text'"
               :autofocus="true"
               :input-class="'w-full mr-2'"
@@ -329,7 +329,7 @@ const destroy = () => {
 
             <text-input
               v-model="form.postal_code"
-              :label="$t('contact.addresses_postal_code')"
+              :label="$t('Postal code')"
               :type="'text'"
               :autofocus="true"
               :input-class="'w-full'"
@@ -340,7 +340,7 @@ const destroy = () => {
 
             <text-input
               v-model="form.country"
-              :label="$t('contact.addresses_country')"
+              :label="$t('Country')"
               :type="'text'"
               :autofocus="true"
               :input-class="'w-full'"
@@ -359,14 +359,14 @@ const destroy = () => {
               type="checkbox"
               class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600" />
             <label :for="form.is_past_address" class="ml-2 cursor-pointer text-gray-900 dark:text-gray-100">
-              {{ $t('contact.addresses_inactive') }}
+              {{ $t('This address is not active anymore') }}
             </label>
           </div>
         </div>
 
         <div class="flex justify-between p-5">
-          <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createAddressModalShown = false" />
-          <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+          <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createAddressModalShown = false" />
+          <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
         </div>
       </form>
 
@@ -400,16 +400,16 @@ const destroy = () => {
             <ul class="text-sm">
               <li class="mr-2 inline">
                 <a :href="address.url.show" target="_blank" class="mr-2 text-sm text-blue-500 hover:underline">{{
-                  $t('app.view_map')
+                  $t('View on map')
                 }}</a>
               </li>
               <li class="inline cursor-pointer text-blue-500 hover:underline" @click="showEditAddressModal(address)">
-                {{ $t('app.edit') }}
+                {{ $t('Edit') }}
               </li>
               <li
                 class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
                 @click="showDeleteAddressModal(address)">
-                {{ $t('app.delete') }}
+                {{ $t('Delete') }}
               </li>
             </ul>
           </div>
@@ -426,9 +426,9 @@ const destroy = () => {
                   v-model="form.address_type_id"
                   :data="data.address_types"
                   :required="false"
-                  :placeholder="$t('app.choose_value')"
+                  :placeholder="$t('Choose a value')"
                   :dropdown-class="'block w-full'"
-                  :label="$t('contact.addresses_address_type')" />
+                  :label="$t('Address type')" />
               </div>
 
               <!-- street  -->
@@ -436,7 +436,7 @@ const destroy = () => {
                 <text-input
                   :ref="'line_1'"
                   v-model="form.line_1"
-                  :label="$t('contact.addresses_line_1')"
+                  :label="$t('Address')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full mr-2'"
@@ -451,7 +451,7 @@ const destroy = () => {
                 <text-input
                   :ref="'line_2'"
                   v-model="form.line_2"
-                  :label="$t('contact.addresses_line_2')"
+                  :label="$t('Apartment, suite, etc…')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full mr-2'"
@@ -462,7 +462,7 @@ const destroy = () => {
 
                 <text-input
                   v-model="form.city"
-                  :label="$t('contact.addresses_city')"
+                  :label="$t('City')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full'"
@@ -476,7 +476,7 @@ const destroy = () => {
               <div class="grid grid-cols-3 gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
                 <text-input
                   v-model="form.province"
-                  :label="$t('contact.addresses_province')"
+                  :label="$t('Province')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full mr-2'"
@@ -487,7 +487,7 @@ const destroy = () => {
 
                 <text-input
                   v-model="form.postal_code"
-                  :label="$t('contact.addresses_postal_code')"
+                  :label="$t('Postal code')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full'"
@@ -498,7 +498,7 @@ const destroy = () => {
 
                 <text-input
                   v-model="form.country"
-                  :label="$t('contact.addresses_country')"
+                  :label="$t('Country')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full'"
@@ -517,14 +517,14 @@ const destroy = () => {
                   type="checkbox"
                   class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600" />
                 <label :for="form.is_past_address" class="ml-2 cursor-pointer text-gray-900 dark:text-gray-100">
-                  {{ $t('contact.addresses_inactive') }}
+                  {{ $t('This address is not active anymore') }}
                 </label>
               </div>
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedAddressId = 0" />
-              <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+              <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedAddressId = 0" />
+              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
             </div>
           </form>
         </div>
@@ -536,7 +536,7 @@ const destroy = () => {
         class="mb-2 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <img src="/img/contact_blank_address.svg" :alt="$t('Addresses')" class="mx-auto mt-4 h-14 w-14" />
         <p class="px-5 pb-5 pt-2 text-center">
-          {{ $t('contact.addresses_blank') }}
+          {{ $t('There are no active addresses yet.') }}
         </p>
       </div>
 
@@ -545,7 +545,7 @@ const destroy = () => {
         v-if="localInactiveAddresses.length > 0"
         class="mx-4 mb-2 cursor-pointer text-xs text-blue-500 hover:underline"
         @click="toggleInactiveAdresses">
-        {{ $t('contact.addresses_previous') }} ({{ localInactiveAddresses.length }})
+        {{ $t('Previous addresses') }} ({{ localInactiveAddresses.length }})
       </p>
 
       <!-- list of previous addresses -->
@@ -580,14 +580,14 @@ const destroy = () => {
             <ul class="text-sm">
               <li class="mr-2 inline">
                 <a :href="address.url.show" target="_blank" class="mr-2 text-sm text-blue-500 hover:underline">{{
-                  $t('app.view_map')
+                  $t('View on map')
                 }}</a>
               </li>
               <li class="inline cursor-pointer text-blue-500 hover:underline" @click="showEditAddressModal(address)">
-                {{ $t('app.edit') }}
+                {{ $t('Edit') }}
               </li>
               <li class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(address)">
-                {{ $t('app.delete') }}
+                {{ $t('Delete') }}
               </li>
             </ul>
           </div>
@@ -604,9 +604,9 @@ const destroy = () => {
                   v-model="form.address_type_id"
                   :data="data.address_types"
                   :required="false"
-                  :placeholder="$t('app.choose_value')"
+                  :placeholder="$t('Choose a value')"
                   :dropdown-class="'block w-full'"
-                  :label="$t('contact.addresses_address_type')" />
+                  :label="$t('Address type')" />
               </div>
 
               <!-- street  -->
@@ -614,7 +614,7 @@ const destroy = () => {
                 <text-input
                   :ref="'line_1'"
                   v-model="form.line_1"
-                  :label="$t('contact.addresses_line_1')"
+                  :label="$t('Address')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full mr-2'"
@@ -629,7 +629,7 @@ const destroy = () => {
                 <text-input
                   :ref="'line_2'"
                   v-model="form.line_2"
-                  :label="$t('contact.addresses_line_2')"
+                  :label="$t('Apartment, suite, etc…')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full mr-2'"
@@ -640,7 +640,7 @@ const destroy = () => {
 
                 <text-input
                   v-model="form.city"
-                  :label="$t('contact.addresses_city')"
+                  :label="$t('City')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full'"
@@ -654,7 +654,7 @@ const destroy = () => {
               <div class="grid grid-cols-3 gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
                 <text-input
                   v-model="form.province"
-                  :label="$t('contact.addresses_province')"
+                  :label="$t('Province')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full mr-2'"
@@ -665,7 +665,7 @@ const destroy = () => {
 
                 <text-input
                   v-model="form.postal_code"
-                  :label="$t('contact.addresses_postal_code')"
+                  :label="$t('Postal code')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full'"
@@ -676,7 +676,7 @@ const destroy = () => {
 
                 <text-input
                   v-model="form.country"
-                  :label="$t('contact.addresses_country')"
+                  :label="$t('Country')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'w-full'"
@@ -695,14 +695,14 @@ const destroy = () => {
                   type="checkbox"
                   class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600" />
                 <label for="is_past_address" class="ml-2 cursor-pointer text-gray-900 dark:text-gray-100">
-                  {{ $t('contact.addresses_inactive') }}
+                  {{ $t('This address is not active anymore') }}
                 </label>
               </div>
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedAddressId = 0" />
-              <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+              <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedAddressId = 0" />
+              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
             </div>
           </form>
         </div>

@@ -121,7 +121,7 @@ class Post extends Model
                     return $value;
                 }
 
-                return trans('app.undefined');
+                return trans('Undefined');
             },
             set: fn ($value) => $value,
         );

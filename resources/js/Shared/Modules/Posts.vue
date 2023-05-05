@@ -24,7 +24,7 @@ const props = defineProps({
           </svg>
         </span>
 
-        <span class="font-semibold"> Posts </span>
+        <span class="font-semibold"> {{ $t('Posts') }} </span>
       </div>
     </div>
 
@@ -74,7 +74,7 @@ const props = defineProps({
       v-if="props.data.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_posts.svg" :alt="$t('Notes')" class="mx-auto mt-4 h-20 w-20" />
-      <p class="px-5 pb-5 pt-2 text-center">There are no posts yet.</p>
+      <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no posts yet.') }}</p>
     </div>
   </div>
 </template>

@@ -48,7 +48,9 @@ const showEditModal = () => {
 <template>
   <div class="mb-4">
     <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
-      <div class="mb-2 text-xs sm:mb-0">{{ $t('contact.religions_title') }}</div>
+      <!-- title -->
+      <div class="mb-2 text-xs sm:mb-0">{{ $t('Religion') }}</div>
+
       <span v-if="!editReligion" class="relative cursor-pointer" @click="showEditModal()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +71,7 @@ const showEditModal = () => {
         v-if="editReligion"
         class="cursor-pointer text-xs text-gray-600 dark:text-gray-400"
         @click="editReligion = false">
-        {{ $t('app.close') }}
+        {{ $t('Close') }}
       </span>
     </div>
 
@@ -87,15 +89,15 @@ const showEditModal = () => {
             :data="localReligions"
             :required="false"
             :div-outer-class="'mb-2'"
-            :placeholder="$t('app.choose_value')"
+            :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'" />
         </div>
 
         <div class="flex justify-between p-2">
-          <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editReligion = false" />
+          <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editReligion = false" />
           <pretty-button
             :href="'data.url.vault.create'"
-            :text="$t('app.save')"
+            :text="$t('Save')"
             :state="loadingState"
             :icon="'check'"
             :classes="'save'" />
@@ -104,7 +106,7 @@ const showEditModal = () => {
     </div>
 
     <!-- blank state -->
-    <p v-if="!religion" class="text-sm text-gray-600 dark:text-gray-400">Not set</p>
+    <p v-if="!religion" class="text-sm text-gray-600 dark:text-gray-400">{{ $t('Not set') }}</p>
 
     <p v-else>
       {{ religion }}

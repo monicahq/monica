@@ -19,7 +19,7 @@
         </span>
 
         <span class="font-semibold">
-          {{ $t('contact.documents_title') }}
+          {{ $t('Documents') }}
         </span>
       </div>
       <uploadcare
@@ -39,7 +39,7 @@
       v-if="!data.canUploadFile"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="bg-gray-100 p-3 text-center">
-        <span class="mr-1">⚠️</span> {{ $t('contact.documents_not_enough_storage') }}
+        <span class="mr-1">⚠️</span> {{ $t('You don’t have enough space left in your account. Please upgrade.') }}
       </p>
     </div>
 
@@ -63,10 +63,10 @@
             <!-- actions -->
             <ul class="text-sm">
               <li class="mr-4 inline">
-                <a :href="document.url.download" class="text-blue-500 hover:underline">{{ $t('app.download') }}</a>
+                <a :href="document.url.download" class="text-blue-500 hover:underline">{{ $t('Download') }}</a>
               </li>
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(document)">
-                {{ $t('app.delete') }}
+                {{ $t('Delete') }}
               </li>
             </ul>
           </div>
@@ -80,7 +80,7 @@
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_document.svg" :alt="$t('Documents')" class="mx-auto mt-4 h-16 w-16" />
       <p class="px-5 pb-5 pt-2 text-center">
-        {{ $t('contact.documents_blank') }}
+        {{ $t('There are no documents yet.') }}
       </p>
     </div>
 
@@ -89,7 +89,7 @@
       v-if="!data.uploadcarePublicKey"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">
-        {{ $t('contact.documents_key_missing') }}
+        {{ $t('The keys to manage uploads have not been set in this Monica instance.') }}
       </p>
     </div>
   </div>
@@ -148,7 +148,7 @@ export default {
         .post(this.data.url.store, this.form)
         .then((response) => {
           this.localDocuments.unshift(response.data.data);
-          this.flash(this.$t('contact.documents_new_success'), 'success');
+          this.flash(this.$t('The document has been added'), 'success');
         })
         .catch((error) => {
           this.form.errors = error.response.data;
@@ -160,7 +160,7 @@ export default {
         axios
           .delete(document.url.destroy)
           .then(() => {
-            this.flash(this.$t('contact.documents_delete_success'), 'success');
+            this.flash(this.$t('Are you sure? This will delete the document permanently.'), 'success');
             var id = this.localDocuments.findIndex((x) => x.id === document.id);
             this.localDocuments.splice(id, 1);
           })

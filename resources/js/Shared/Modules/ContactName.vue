@@ -1,7 +1,7 @@
 <template>
   <div class="mb-4">
     <div class="mb-1 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
-      <div class="mb-2 text-xs sm:mb-0">Name</div>
+      <div class="mb-2 text-xs sm:mb-0">{{ $t('Name') }}</div>
       <inertia-link :href="data.url.edit" class="relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +27,7 @@
       <a-tooltip
         v-if="!localData.is_favorite"
         placement="topLeft"
-        title="Set as favorite"
+        :title="$t('Set as favorite')"
         arrow-point-at-center
         @click.prevent="toggleFavorite">
         <svg
@@ -83,7 +83,7 @@ export default {
       axios
         .put(this.data.url.toggle_favorite)
         .then((response) => {
-          this.flash(this.$t('app.notification_flash_changes_saved'), 'success');
+          this.flash(this.$t('Changes saved'), 'success');
           this.localData = response.data.data;
         })
         .catch((error) => {

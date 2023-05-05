@@ -4,6 +4,7 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\AttemptToAuthenticateWebauthn;
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use LaravelWebauthn\Facades\Webauthn;
@@ -11,6 +12,8 @@ use Tests\TestCase;
 
 class AttemptToAuthenticateWebauthnTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
      * @test
      */

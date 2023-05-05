@@ -16,11 +16,11 @@ defineProps({
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_journal_index') }}
+                {{ $t('Journals') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -49,7 +49,7 @@ defineProps({
               </svg>
             </li>
             <li class="inline">
-              {{ $t('app.breadcrumb_post_create_template') }}
+              {{ $t('Choose a template') }}
             </li>
           </ul>
         </div>
@@ -58,7 +58,7 @@ defineProps({
 
     <main class="relative sm:mt-16">
       <div class="mx-auto max-w-lg px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
-        <h3 class="mb-4">Please choose a template for this new post</h3>
+        <h3 class="mb-4">{{ $t('Please choose a template for this new post') }}</h3>
         <ul class="mb-6 rounded-lg border border-gray-200 dark:border-gray-800 dark:bg-gray-900">
           <li
             v-for="template in data.templates"
@@ -67,14 +67,20 @@ defineProps({
             <div class="flex items-center justify-between">
               <div>
                 <p class="font-semibold">{{ template.label }}</p>
-                <p class="text-sm text-gray-500">{{ template.sections.length }} template sections</p>
+                <p class="text-sm text-gray-500">
+                  {{
+                    $tChoice(':count template section|:count template sections', template.sections.length, {
+                      count: template.sections.length,
+                    })
+                  }}
+                </p>
               </div>
 
               <!-- choose button -->
               <pretty-link
                 v-if="layoutData.vault.permission.at_least_editor"
                 :href="template.url.create"
-                :text="$t('app.choose')"
+                :text="$t('Choose')"
                 :icon="'plus'" />
             </div>
           </li>

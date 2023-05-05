@@ -27,14 +27,14 @@ const linkClasses =
       <span
         v-if="items.currentPage === 1"
         :class="[commonClasses, 'rounded-md', 'text-gray-500', 'dark:bg-gray-900', 'cursor-default']">
-        <span v-html="$t('pagination.previous')"></span>
+        <span v-html="$t('Previous')"></span>
       </span>
       <Link
         v-else
         :href="items.previousPageUrl"
         preserve-scroll
         :class="[commonClasses, linkClasses, 'rounded-md', 'text-gray-700', 'dark:text-gray-300', 'dark:bg-gray-900']">
-        <span v-html="$t('pagination.previous')"></span>
+        <span v-html="$t('Previous')"></span>
       </Link>
 
       <Link
@@ -50,12 +50,12 @@ const linkClasses =
           'dark:text-gray-300',
           'dark:bg-gray-900',
         ]">
-        <span v-html="$t('pagination.next')"></span>
+        <span v-html="$t('Next')"></span>
       </Link>
       <span
         v-else
         :class="[commonClasses, 'ml-3', 'rounded-md', 'text-gray-500', 'cursor-default', 'dark:bg-gray-900']">
-        <span v-html="$t('pagination.next')"></span>
+        <span v-html="$t('Next')"></span>
       </span>
     </div>
 
@@ -92,7 +92,7 @@ const linkClasses =
             'cursor-default',
             'dark:bg-gray-900',
           ]"
-          :aria-label="$t('pagination.previous')"
+          :aria-label="$t('Previous')"
           aria-hidden="true"
           aria-disabled="true">
           <ChevronLeft />
@@ -114,7 +114,7 @@ const linkClasses =
             'hover:dark:text-gray-600',
             'focus:z-10',
           ]"
-          :aria-label="$t('pagination.previous')">
+          :aria-label="$t('Previous')">
           <ChevronLeft />
         </Link>
 
@@ -173,7 +173,7 @@ const linkClasses =
             'hover:dark:text-gray-600',
             'focus:z-10',
           ]"
-          :aria-label="$t('pagination.next')">
+          :aria-label="$t('Next')">
           <ChevronRight />
         </Link>
         <span
@@ -189,7 +189,7 @@ const linkClasses =
             'focus:z-10',
             'cursor-default',
           ]"
-          :aria-label="$t('pagination.next')"
+          :aria-label="$t('Next')"
           aria-hidden="true"
           aria-disabled="true">
           <ChevronRight />

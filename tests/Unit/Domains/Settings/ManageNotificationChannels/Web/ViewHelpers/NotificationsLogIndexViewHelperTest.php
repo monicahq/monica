@@ -51,7 +51,7 @@ class NotificationsLogIndexViewHelperTest extends TestCase
         $this->assertEquals(
             [
                 'id' => $channel->id,
-                'type' => 'Email',
+                'type' => 'Email address',
                 'label' => 'my label',
             ],
             $array['channel']

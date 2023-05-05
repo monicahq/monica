@@ -18,9 +18,13 @@
           </svg>
         </span>
 
-        <span class="font-semibold"> Goals </span>
+        <span class="font-semibold"> {{ $t('Goals') }} </span>
       </div>
-      <pretty-button :text="'Add a goal'" :icon="'plus'" :classes="'sm:w-fit w-full'" @click="showCreateGoalModal" />
+      <pretty-button
+        :text="$t('Add a goal')"
+        :icon="'plus'"
+        :classes="'sm:w-fit w-full'"
+        @click="showCreateGoalModal" />
     </div>
 
     <!-- add a note modal -->
@@ -34,7 +38,7 @@
         <text-input
           :ref="'newName'"
           v-model="form.name"
-          :label="'Name'"
+          :label="$t('Name')"
           :type="'text'"
           :input-class="'block w-full mb-3'"
           :required="true"
@@ -44,8 +48,8 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createGoalModalShown = false" />
-        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createGoalModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
       </div>
     </form>
 
@@ -63,7 +67,7 @@
 
             <div>
               <inertia-link :href="goal.url.show" class="text-sm text-blue-500 hover:underline">
-                View details
+                {{ $t('View details') }}
               </inertia-link>
             </div>
           </div>
@@ -128,13 +132,13 @@
             <!-- stats -->
             <div class="flex justify-between p-3">
               <div class="mr-6 flex items-center">
-                <div class="mr-3 w-14 text-right text-sm text-gray-500">Current streak</div>
+                <div class="mr-3 w-14 text-right text-sm text-gray-500">{{ $t('Current streak') }}</div>
                 <div class="text-4xl">
                   {{ goal.streaks_statistics.current_streak }}
                 </div>
               </div>
               <div class="flex items-center">
-                <div class="mr-3 w-14 text-right text-sm text-gray-500">Longest streak</div>
+                <div class="mr-3 w-14 text-right text-sm text-gray-500">{{ $t('Longest streak') }}</div>
                 <div class="text-4xl">
                   {{ goal.streaks_statistics.max_streak }}
                 </div>
@@ -150,7 +154,7 @@
       v-if="localGoals.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_goal.svg" :alt="$t('Goals')" class="mx-auto mt-4 h-14 w-14" />
-      <p class="px-5 pb-5 pt-2 text-center">There are no goals yet.</p>
+      <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no goals yet.') }}</p>
     </div>
   </div>
 </template>
@@ -213,7 +217,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash('The goal has been created', 'success');
+          this.flash($t('The goal has been created'), 'success');
           this.localGoals.unshift(response.data.data);
           this.createGoalModalShown = false;
         })
@@ -228,7 +232,7 @@ export default {
       axios
         .put(goal.url.streak_update, this.form)
         .then((response) => {
-          this.flash('The goal has been edited', 'success');
+          this.flash($t('The goal has been edited'), 'success');
           this.localGoals[this.localGoals.findIndex((x) => x.id === goal.id)] = response.data.data;
           this.editedGoalId = 0;
         })
@@ -238,11 +242,11 @@ export default {
     },
 
     destroy(goal) {
-      if (confirm('Are you sure? This will delete the goal permanently.')) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(goal.url.destroy)
           .then(() => {
-            this.flash('The goal has been deleted', 'success');
+            this.flash(this.$t('The goal has been deleted'), 'success');
             var id = this.localGoals.findIndex((x) => x.id === goal.id);
             this.localGoals.splice(id, 1);
           })

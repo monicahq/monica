@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_contact_index') }}
+                {{ $t('Contacts') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -25,7 +25,7 @@
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.show" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_contact_show', { name: data.contact.name }) }}
+                {{ $t('Profile of :name', { name: data.contact.name }) }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -39,7 +39,7 @@
               </svg>
             </li>
             <li class="inline">
-              {{ $t('app.breadcrumb_contact_photo') }}
+              {{ $t('All the photos') }}
             </li>
           </ul>
         </div>
@@ -77,7 +77,7 @@
               </svg>
             </span>
 
-            <span class="font-semibold"> Photos </span>
+            <span class="font-semibold"> {{ $t('Photos') }} </span>
           </div>
 
           <!-- upload -->
@@ -113,7 +113,7 @@
           v-if="localPhotos.length == 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">
-            {{ $t('contact.photos_blank') }}
+            {{ $t('There are no photos yet.') }}
           </p>
         </div>
       </div>
@@ -185,7 +185,7 @@ export default {
         .post(this.data.url.store, this.form)
         .then((response) => {
           this.localPhotos.unshift(response.data.data);
-          this.flash(this.$t('contact.photos_new_success'), 'success');
+          this.flash(this.$t('The photo has been added'), 'success');
         })
         .catch((error) => {
           this.form.errors = error.response.data;

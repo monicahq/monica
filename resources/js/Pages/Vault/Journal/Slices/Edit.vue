@@ -42,11 +42,11 @@ const submit = () => {
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_journal_index') }}
+                {{ $t('Journals') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -75,9 +75,9 @@ const submit = () => {
               </svg>
             </li>
             <li class="relative mr-2 inline">
-              <inertia-link :href="data.url.slices_index" class="text-blue-500 hover:underline"
-                >Slices of life</inertia-link
-              >
+              <inertia-link :href="data.url.slices_index" class="text-blue-500 hover:underline">{{
+                $t('Slices of life')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -104,7 +104,7 @@ const submit = () => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Edit slice of life</li>
+            <li class="inline">{{ $t('Edit slice of life') }}</li>
           </ul>
         </div>
       </div>
@@ -116,7 +116,7 @@ const submit = () => {
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
           @submit.prevent="submit()">
           <div class="section-head border-b border-gray-200 bg-blue-50 p-5 dark:border-gray-700 dark:bg-blue-900">
-            <h1 class="text-center text-2xl font-medium">Edit the slice of life</h1>
+            <h1 class="text-center text-2xl font-medium">{{ $t('Edit the slice of life') }}</h1>
           </div>
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <errors :errors="form.errors" />
@@ -128,19 +128,19 @@ const submit = () => {
               :input-class="'block w-full'"
               :required="true"
               :maxlength="255"
-              :label="'Name'" />
+              :label="$t('Name')" />
 
             <text-area
               v-model="form.description"
-              :label="$t('vault.journal_create_description')"
+              :label="$t('Description')"
               :maxlength="255"
               :textarea-class="'block w-full'" />
           </div>
 
           <!-- actions -->
           <div class="flex justify-between p-5">
-            <pretty-link :href="data.url.back" :text="$t('app.cancel')" :classes="'mr-3'" />
-            <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-link :href="data.url.back" :text="$t('Cancel')" :classes="'mr-3'" />
+            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>
       </div>

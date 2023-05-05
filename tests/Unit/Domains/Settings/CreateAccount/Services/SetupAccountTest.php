@@ -39,7 +39,7 @@ class SetupAccountTest extends TestCase
 
         $this->assertDatabaseHas('user_notification_channels', [
             'user_id' => $user->id,
-            'label' => trans('app.notification_channel_email'),
+            'label' => 'Email address',
             'type' => 'email',
             'content' => $user->email,
             'active' => true,
@@ -47,374 +47,208 @@ class SetupAccountTest extends TestCase
 
         $this->assertDatabaseHas('templates', [
             'account_id' => $user->account_id,
-            'name' => 'Default template',
+            'name_translation_key' => 'Default template',
         ]);
         $this->assertDatabaseHas('template_pages', [
-            'name' => trans('app.default_template_page_contact_information'),
+            'name_translation_key' => 'Contact information',
             'can_be_deleted' => false,
         ]);
         $this->assertDatabaseHas('template_pages', [
-            'name' => trans('app.default_template_page_life_events'),
+            'name_translation_key' => 'Life & goals',
             'can_be_deleted' => true,
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_notes'),
+            'name_translation_key' => 'Notes',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_names'),
+            'name_translation_key' => 'Contact name',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_avatar'),
+            'name_translation_key' => 'Avatar',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_feed'),
+            'name_translation_key' => 'Contact feed',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_gender_pronoun'),
+            'name_translation_key' => 'Gender and pronoun',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_labels'),
+            'name_translation_key' => 'Labels',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_reminders'),
+            'name_translation_key' => 'Reminders',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_loans'),
+            'name_translation_key' => 'Loans',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_companies'),
+            'name_translation_key' => 'Job information',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_religions'),
+            'name_translation_key' => 'Religions',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_tasks'),
+            'name_translation_key' => 'Tasks',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_calls'),
+            'name_translation_key' => 'Calls',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_pets'),
+            'name_translation_key' => 'Pets',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_goals'),
+            'name_translation_key' => 'Goals',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_life_events'),
+            'name_translation_key' => 'Life',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_family_summary'),
+            'name_translation_key' => 'Family summary',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_addresses'),
+            'name_translation_key' => 'Addresses',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_groups'),
+            'name_translation_key' => 'Groups',
         ]);
         $this->assertDatabaseHas('modules', [
             'account_id' => $user->account_id,
-            'name' => trans('app.module_posts'),
+            'name_translation_key' => 'Posts',
         ]);
 
         $this->assertDatabaseHas('relationship_group_types', [
-            'name' => trans('account.relationship_type_love'),
+            'name_translation_key' => 'Love',
             'can_be_deleted' => false,
             'type' => RelationshipGroupType::TYPE_LOVE,
         ]);
         $this->assertDatabaseHas('relationship_group_types', [
-            'name' => trans('account.relationship_type_family'),
+            'name_translation_key' => 'Family',
             'can_be_deleted' => false,
             'type' => RelationshipGroupType::TYPE_FAMILY,
         ]);
         $this->assertDatabaseHas('relationship_group_types', [
-            'name' => trans('account.relationship_type_work'),
+            'name_translation_key' => 'Work',
             'can_be_deleted' => true,
         ]);
         $this->assertDatabaseHas('relationship_group_types', [
-            'name' => trans('account.relationship_type_friend_title'),
+            'name_translation_key' => 'Friend',
             'can_be_deleted' => true,
         ]);
 
         $this->assertDatabaseHas('genders', [
             'account_id' => $user->account_id,
-            'name' => trans('account.gender_male'),
+            'name_translation_key' => 'Male',
         ]);
         $this->assertDatabaseHas('genders', [
             'account_id' => $user->account_id,
-            'name' => trans('account.gender_other'),
+            'name_translation_key' => 'Other',
         ]);
         $this->assertDatabaseHas('genders', [
             'account_id' => $user->account_id,
-            'name' => trans('account.gender_female'),
+            'name_translation_key' => 'Female',
         ]);
 
         $this->assertDatabaseHas('pronouns', [
             'account_id' => $user->account_id,
-            'name' => trans('account.pronoun_he_him'),
+            'name_translation_key' => 'he/him',
         ]);
         $this->assertDatabaseHas('pronouns', [
             'account_id' => $user->account_id,
-            'name' => trans('account.pronoun_she_her'),
+            'name_translation_key' => 'she/her',
         ]);
         $this->assertDatabaseHas('pronouns', [
             'account_id' => $user->account_id,
-            'name' => trans('account.pronoun_they_them'),
+            'name_translation_key' => 'they/them',
         ]);
         $this->assertDatabaseHas('pronouns', [
             'account_id' => $user->account_id,
-            'name' => trans('account.pronoun_per_per'),
+            'name_translation_key' => 'per/per',
         ]);
         $this->assertDatabaseHas('pronouns', [
             'account_id' => $user->account_id,
-            'name' => trans('account.pronoun_ve_ver'),
+            'name_translation_key' => 've/ver',
         ]);
         $this->assertDatabaseHas('pronouns', [
             'account_id' => $user->account_id,
-            'name' => trans('account.pronoun_xe_xem'),
+            'name_translation_key' => 'xe/xem',
         ]);
         $this->assertDatabaseHas('pronouns', [
             'account_id' => $user->account_id,
-            'name' => trans('account.pronoun_ze_hir'),
+            'name_translation_key' => 'ze/hir',
         ]);
 
         $this->assertDatabaseHas('contact_information_types', [
             'account_id' => $user->account_id,
-            'name' => trans('account.contact_information_type_email'),
+            'name_translation_key' => 'Email address',
             'protocol' => 'mailto:',
         ]);
         $this->assertDatabaseHas('contact_information_types', [
             'account_id' => $user->account_id,
-            'name' => trans('account.contact_information_type_phone'),
+            'name_translation_key' => 'Phone',
             'protocol' => 'tel:',
         ]);
-        $this->assertDatabaseHas('contact_information_types', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.contact_information_type_facebook'),
-        ]);
-        $this->assertDatabaseHas('contact_information_types', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.contact_information_type_twitter'),
-        ]);
-        $this->assertDatabaseHas('contact_information_types', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.contact_information_type_whatsapp'),
-        ]);
-        $this->assertDatabaseHas('contact_information_types', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.contact_information_type_telegram'),
-        ]);
-        $this->assertDatabaseHas('contact_information_types', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.contact_information_type_hangouts'),
-        ]);
-        $this->assertDatabaseHas('contact_information_types', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.contact_information_type_linkedin'),
-        ]);
-        $this->assertDatabaseHas('contact_information_types', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.contact_information_type_instagram'),
-        ]);
 
         $this->assertDatabaseHas('address_types', [
             'account_id' => $user->account_id,
-            'name' => trans('account.address_type_home'),
-        ]);
-        $this->assertDatabaseHas('address_types', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.address_type_secondary_residence'),
-        ]);
-        $this->assertDatabaseHas('address_types', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.address_type_work'),
-        ]);
-        $this->assertDatabaseHas('address_types', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.address_type_chalet'),
+            'name_translation_key' => '🏡 Home',
         ]);
 
         $this->assertDatabaseHas('pet_categories', [
             'account_id' => $user->account_id,
-            'name' => trans('account.pets_dog'),
-        ]);
-        $this->assertDatabaseHas('pet_categories', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.pets_cat'),
-        ]);
-        $this->assertDatabaseHas('pet_categories', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.pets_bird'),
-        ]);
-        $this->assertDatabaseHas('pet_categories', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.pets_fish'),
-        ]);
-        $this->assertDatabaseHas('pet_categories', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.pets_hamster'),
-        ]);
-        $this->assertDatabaseHas('pet_categories', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.pets_horse'),
-        ]);
-        $this->assertDatabaseHas('pet_categories', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.pets_rabbit'),
-        ]);
-        $this->assertDatabaseHas('pet_categories', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.pets_rat'),
-        ]);
-        $this->assertDatabaseHas('pet_categories', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.pets_reptile'),
-        ]);
-        $this->assertDatabaseHas('pet_categories', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.pets_small_animal'),
-        ]);
-        $this->assertDatabaseHas('pet_categories', [
-            'account_id' => $user->account_id,
-            'name' => trans('account.pets_other'),
+            'name_translation_key' => 'Dog',
         ]);
 
         $this->assertDatabaseHas('call_reason_types', [
             'account_id' => $user->account_id,
-            'label' => trans('account.default_call_reason_types_personal'),
+            'label_translation_key' => 'Personal',
         ]);
         $this->assertDatabaseHas('call_reason_types', [
             'account_id' => $user->account_id,
-            'label' => trans('account.default_call_reason_types_business'),
-        ]);
-        $this->assertDatabaseHas('call_reasons', [
-            'label' => trans('account.default_call_reason_business_purchases'),
-        ]);
-        $this->assertDatabaseHas('call_reasons', [
-            'label' => trans('account.default_call_reason_business_partnership'),
-        ]);
-        $this->assertDatabaseHas('call_reasons', [
-            'label' => trans('account.default_call_reason_personal_advice'),
-        ]);
-        $this->assertDatabaseHas('call_reasons', [
-            'label' => trans('account.default_call_reason_personal_say_hello'),
-        ]);
-        $this->assertDatabaseHas('call_reasons', [
-            'label' => trans('account.default_call_reason_personal_need_anything'),
-        ]);
-        $this->assertDatabaseHas('call_reasons', [
-            'label' => trans('account.default_call_reason_personal_respect'),
-        ]);
-        $this->assertDatabaseHas('call_reasons', [
-            'label' => trans('account.default_call_reason_personal_story'),
-        ]);
-        $this->assertDatabaseHas('call_reasons', [
-            'label' => trans('account.default_call_reason_personal_love'),
+            'label_translation_key' => 'Business',
         ]);
 
         $this->assertDatabaseHas('gift_occasions', [
-            'label' => 'Birthday',
+            'label_translation_key' => 'Birthday',
             'position' => 1,
         ]);
         $this->assertDatabaseHas('gift_occasions', [
-            'label' => 'Anniversary',
+            'label_translation_key' => 'Anniversary',
             'position' => 2,
         ]);
         $this->assertDatabaseHas('gift_occasions', [
-            'label' => 'Christmas',
+            'label_translation_key' => 'Christmas',
             'position' => 3,
         ]);
         $this->assertDatabaseHas('gift_occasions', [
-            'label' => 'Just because',
+            'label_translation_key' => 'Just because',
             'position' => 4,
         ]);
         $this->assertDatabaseHas('gift_occasions', [
-            'label' => 'Wedding',
-            'position' => 5,
-        ]);
-
-        $this->assertDatabaseHas('gift_states', [
-            'label' => trans('account.gift_state_idea'),
-            'position' => 1,
-        ]);
-        $this->assertDatabaseHas('gift_states', [
-            'label' => trans('account.gift_state_searched'),
-            'position' => 2,
-        ]);
-        $this->assertDatabaseHas('gift_states', [
-            'label' => trans('account.gift_state_found'),
-            'position' => 3,
-        ]);
-        $this->assertDatabaseHas('gift_states', [
-            'label' => trans('account.gift_state_bought'),
-            'position' => 4,
-        ]);
-        $this->assertDatabaseHas('gift_states', [
-            'label' => trans('account.gift_state_offered'),
-            'position' => 5,
-        ]);
-
-        $this->assertDatabaseHas('post_templates', [
-            'label' => trans('settings.personalize_post_templates_default_template'),
-            'position' => 1,
-        ]);
-        $this->assertDatabaseHas('post_templates', [
-            'label' => trans('settings.personalize_post_templates_default_template_inspirational'),
-            'position' => 2,
-        ]);
-        $this->assertDatabaseHas('post_template_sections', [
-            'label' => trans('settings.personalize_post_templates_default_template_section'),
-            'position' => 1,
-        ]);
-        $this->assertDatabaseHas('post_template_sections', [
-            'label' => trans('settings.personalize_post_templates_default_template_section_grateful'),
-            'position' => 1,
-        ]);
-        $this->assertDatabaseHas('post_template_sections', [
-            'label' => trans('settings.personalize_post_templates_default_template_section_daily_affirmation'),
-            'position' => 2,
-        ]);
-        $this->assertDatabaseHas('post_template_sections', [
-            'label' => trans('settings.personalize_post_templates_default_template_section_better'),
-            'position' => 3,
-        ]);
-        $this->assertDatabaseHas('post_template_sections', [
-            'label' => trans('settings.personalize_post_templates_default_template_section_day'),
-            'position' => 4,
-        ]);
-        $this->assertDatabaseHas('post_template_sections', [
-            'label' => trans('settings.personalize_post_templates_default_template_section_three_things'),
+            'label_translation_key' => 'Wedding',
             'position' => 5,
         ]);
 
         $this->assertDatabaseHas('religions', [
-            'translation_key' => 'account.religion_christianity',
+            'translation_key' => 'Christian',
             'position' => 1,
-        ]);
-        $this->assertDatabaseHas('religions', [
-            'translation_key' => 'account.religion_islam',
-            'position' => 2,
-        ]);
-        $this->assertDatabaseHas('religions', [
-            'translation_key' => 'account.religion_hinduism',
-            'position' => 3,
         ]);
     }
 }

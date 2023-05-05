@@ -16,7 +16,7 @@
         </svg>
       </span>
 
-      Groups
+      {{ $t('Groups') }}
     </div>
     <ul
       v-if="data.length > 0"
@@ -34,7 +34,7 @@
     <div
       v-else
       class="mb-6 rounded-lg border border-gray-200 bg-white p-5 text-center text-gray-500 dark:border-gray-700 dark:bg-gray-900">
-      No groups found.
+      {{ $t('No groups found.') }}
     </div>
   </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <div v-if="data.love_relationships.length != 0 || data.family_relationships.length != 0" class="mb-4">
     <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
-      <div class="mb-1 text-xs">Family summary</div>
+      <div class="mb-1 text-xs">{{ $t('Family summary') }}</div>
     </div>
 
     <!-- love relationships -->
@@ -60,5 +60,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>

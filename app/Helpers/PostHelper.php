@@ -13,6 +13,7 @@ class PostHelper
     public static function statistics(Post $post): array
     {
         $wordCount = 0;
+        $duration = 0;
 
         $postSections = $post->postSections()
             ->whereNotNull('content')

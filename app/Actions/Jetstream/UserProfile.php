@@ -16,7 +16,7 @@ class UserProfile
             ->filter(fn ($provider) => ! empty($provider))
             ->mapWithKeys(fn ($provider) => [
                 $provider => [
-                    'name' => config("services.$provider.name") ?? __("auth.login_provider_{$provider}"),
+                    'name' => config("services.$provider.name") ?? trans_ignore("auth.login_provider_{$provider}"),
                     'logo' => config("services.$provider.logo") ?? "/img/auth/$provider.svg",
                 ],
             ]);

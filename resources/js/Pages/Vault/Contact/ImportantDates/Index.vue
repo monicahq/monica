@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
-                Contacts
+                {{ $t('Contacts') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -25,7 +25,7 @@
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.contact" class="text-blue-500 hover:underline">
-                Profile of {{ data.contact.name }}
+                {{ $t('Profile of :name', { name: data.contact.name }) }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -38,7 +38,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">All the important dates</li>
+            <li class="inline">{{ $t('All the important dates') }}</li>
           </ul>
         </div>
       </div>
@@ -50,9 +50,13 @@
         <div class="mb-6 mt-8 items-center justify-between sm:mt-0 sm:flex">
           <h3 class="mb-4 sm:mb-0">
             <span class="mr-1"> 🗓 </span>
-            All the important dates
+            {{ $t('All the important dates') }}
           </h3>
-          <pretty-button v-if="!createDateModalShown" :text="'Add a date'" :icon="'plus'" @click="showCreateModal" />
+          <pretty-button
+            v-if="!createDateModalShown"
+            :text="$t('Add a date')"
+            :icon="'plus'"
+            @click="showCreateModal" />
         </div>
 
         <!-- modal to create a new date -->
@@ -70,7 +74,7 @@
               <text-input
                 :ref="'label'"
                 v-model="form.label"
-                :label="'Name of the date'"
+                :label="$t('Name')"
                 :type="'text'"
                 :autofocus="true"
                 :input-class="'block w-full'"
@@ -86,10 +90,10 @@
                 v-model="form.contact_important_date_type_id"
                 :data="data.date_types"
                 :required="false"
-                :placeholder="$t('app.choose_value')"
+                :placeholder="$t('Choose a value')"
                 :dropdown-class="'block w-full'"
-                :help="'Some dates have a special type that we will use in the software to calculate an age.'"
-                :label="'Date type'" />
+                :help="$('Some dates have a special type that we will use in the software to calculate an age.')"
+                :label="$t('Date type')" />
             </div>
 
             <div class="p-5">
@@ -105,7 +109,7 @@
                 <label
                   for="full_date"
                   class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                  I know the exact date, including the year
+                  {{ $t('I know the exact date, including the year') }}
                 </label>
               </div>
               <div v-if="form.choice == 'full_date'" class="mb-4 ml-6">
@@ -131,7 +135,7 @@
                 <label
                   for="month_day"
                   class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                  I only know the day and month, not the year
+                  {{ $t('I only know the day and month, not the year') }}
                 </label>
               </div>
               <div v-if="form.choice == 'month_day'" class="ml-6 flex">
@@ -140,18 +144,18 @@
                   :data="data.months"
                   :required="true"
                   :div-outer-class="'mb-5 mr-2'"
-                  :placeholder="$t('app.choose_value')"
+                  :placeholder="$t('Choose a value')"
                   :dropdown-class="'block w-full'"
-                  :label="'Month'" />
+                  :label="$t('Month')" />
 
                 <dropdown
                   v-model="form.day"
                   :data="data.days"
                   :required="true"
                   :div-outer-class="'mb-5'"
-                  :placeholder="$t('app.choose_value')"
+                  :placeholder="$t('Choose a value')"
                   :dropdown-class="'block w-full'"
-                  :label="'Day'" />
+                  :label="$t('Day')" />
               </div>
 
               <!-- case: I know the age -->
@@ -167,7 +171,7 @@
                 <label
                   for="year"
                   class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                  I only know a number of years (an age, for example)
+                  {{ $t('I only know a number of years (an age, for example)') }}
                 </label>
               </div>
               <div v-if="form.choice == 'year'" class="ml-6">
@@ -195,7 +199,7 @@
                   class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
                   @click="showReminderOptions" />
                 <label for="reminder" class="ml-2 block cursor-pointer text-sm text-gray-900">
-                  Create a reminder
+                  {{ $t('Create a reminder') }}
                 </label>
               </div>
 
@@ -212,7 +216,7 @@
                   <label
                     for="recurring_year"
                     class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Remind me about this date every year
+                    {{ $t('Remind me about this date every year') }}
                   </label>
                 </div>
 
@@ -227,7 +231,7 @@
                   <label
                     for="one_time"
                     class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Remind me about this date just once, in one year from now
+                    {{ $t('Remind me about this date just once, in one year from now') }}
                   </label>
                 </div>
               </div>
@@ -235,8 +239,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createDateModalShown = false" />
-            <pretty-button :text="'Add date'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createDateModalShown = false" />
+            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
           </div>
         </form>
 
@@ -262,11 +266,11 @@
 
               <!-- actions -->
               <ul class="text-sm">
-                <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="updateDateModal(date)">
-                  Edit
+                <li class="mr-4 inline cursor-pointer" @click="updateDateModal(date)">
+                  <span class="text-blue-500 hover:underline">{{ $t('Edit') }}</span>
                 </li>
                 <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(date)">
-                  {{ $t('app.delete') }}
+                  {{ $t('Delete') }}
                 </li>
               </ul>
             </div>
@@ -283,7 +287,7 @@
                   <text-input
                     :ref="'label'"
                     v-model="form.label"
-                    :label="'Name of the date'"
+                    :label="$t('Name')"
                     :type="'text'"
                     :autofocus="true"
                     :input-class="'block w-full'"
@@ -299,9 +303,9 @@
                     v-model="form.contact_important_date_type_id"
                     :data="data.date_types"
                     :required="false"
-                    :placeholder="$t('app.choose_value')"
+                    :placeholder="$t('Choose a value')"
                     :dropdown-class="'block w-full'"
-                    :help="'Some dates have a special type that we will use in the software to calculate an age.'"
+                    :help="$t('Some dates have a special type that we will use in the software to calculate an age.')"
                     :label="'Date type'" />
                 </div>
 
@@ -318,7 +322,7 @@
                     <label
                       for="full_date"
                       class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                      I know the exact date, including the year
+                      {{ $t('I know the exact date, including the year') }}
                     </label>
                   </div>
                   <div v-if="form.choice == 'full_date'" class="mb-4 ml-6">
@@ -348,7 +352,7 @@
                     <label
                       for="month_day"
                       class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                      I only know the day and month, not the year
+                      {{ $t('I only know the day and month, not the year') }}
                     </label>
                   </div>
                   <div v-if="form.choice == 'month_day'" class="ml-6 flex">
@@ -357,18 +361,18 @@
                       :data="data.months"
                       :required="true"
                       :div-outer-class="'mb-5 mr-2'"
-                      :placeholder="$t('app.choose_value')"
+                      :placeholder="$t('Choose a value')"
                       :dropdown-class="'block w-full'"
-                      :label="'Month'" />
+                      :label="$t('Month')" />
 
                     <dropdown
                       v-model="form.day"
                       :data="data.days"
                       :required="true"
                       :div-outer-class="'mb-5'"
-                      :placeholder="$t('app.choose_value')"
+                      :placeholder="$t('Choose a value')"
                       :dropdown-class="'block w-full'"
-                      :label="'Day'" />
+                      :label="$t('Day')" />
                   </div>
 
                   <!-- case: I know the age -->
@@ -384,7 +388,7 @@
                     <label
                       for="year"
                       class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                      I only know a number of years (an age, for example)
+                      {{ $t('I only know a number of years (an age, for example)') }}
                     </label>
                   </div>
                   <div v-if="form.choice == 'year'" class="ml-6">
@@ -403,8 +407,8 @@
               </div>
 
               <div class="flex justify-between p-5">
-                <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedDateId = 0" />
-                <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+                <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedDateId = 0" />
+                <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
               </div>
             </form>
           </li>
@@ -415,8 +419,11 @@
           v-if="localDates.length == 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">
-            Add an important date to remember what matters to you about this person, like a birthdate or a deceased
-            date.
+            {{
+              $t(
+                'Add an important date to remember what matters to you about this person, like a birthdate or a deceased date.',
+              )
+            }}
           </p>
         </div>
       </div>
@@ -525,7 +532,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash('The date has been added', 'success');
+          this.flash(this.$t('The date has been added'), 'success');
           this.localDates.unshift(response.data.data);
           this.loadingState = null;
           this.createDateModalShown = false;
@@ -542,7 +549,7 @@ export default {
       axios
         .put(date.url.update, this.form)
         .then((response) => {
-          this.flash('The date has been updated', 'success');
+          this.flash(this.$t('The date has been updated'), 'success');
           this.localDates[this.localDates.findIndex((x) => x.id === date.id)] = response.data.data;
           this.loadingState = null;
           this.editedDateId = 0;
@@ -554,11 +561,11 @@ export default {
     },
 
     destroy(date) {
-      if (confirm('Are you sure? This is permanent.')) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(date.url.destroy)
           .then(() => {
-            this.flash('The date has been deleted', 'success');
+            this.flash(this.$t('The date has been deleted'), 'success');
             var id = this.localDates.findIndex((x) => x.id === date.id);
             this.localDates.splice(id, 1);
           })

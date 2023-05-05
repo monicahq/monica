@@ -22,10 +22,10 @@ class ExportGender implements ExportVCardResource
         $gender = $contact->gender->type;
         if (empty($gender)) {
             switch ($contact->gender->name) {
-                case trans('account.gender_male'):
+                case trans('Male'):
                     $gender = Gender::MALE;
                     break;
-                case trans('account.gender_female'):
+                case trans('Female'):
                     $gender = Gender::FEMALE;
                     break;
                 default:

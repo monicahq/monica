@@ -85,7 +85,7 @@ class AcceptInvitationTest extends TestCase
 
         $this->assertDatabaseHas('user_notification_channels', [
             'user_id' => $user->id,
-            'label' => trans('app.notification_channel_email'),
+            'label' => 'Email address',
             'type' => 'email',
             'content' => $user->email,
             'active' => true,

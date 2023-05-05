@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import mitt from 'mitt';
+import emitter from 'tiny-emitter/instance';
 
 export default {
   props: {
@@ -31,8 +31,6 @@ export default {
   },
 
   created() {
-    const emitter = mitt();
-
     if (this.level) {
       this.levelClass = 'is-' + this.level;
     }

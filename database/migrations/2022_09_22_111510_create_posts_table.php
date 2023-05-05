@@ -23,7 +23,8 @@ return new class extends Migration
         Schema::create('post_templates', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
-            $table->string('label');
+            $table->string('label')->nullable();
+            $table->string('label_translation_key')->nullable();
             $table->integer('position');
             $table->boolean('can_be_deleted')->default(true);
             $table->timestamps();
@@ -32,7 +33,8 @@ return new class extends Migration
         Schema::create('post_template_sections', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(PostTemplate::class)->constrained()->cascadeOnDelete();
-            $table->string('label');
+            $table->string('label')->nullable();
+            $table->string('label_translation_key')->nullable();
             $table->integer('position');
             $table->boolean('can_be_deleted')->default(true);
             $table->timestamps();

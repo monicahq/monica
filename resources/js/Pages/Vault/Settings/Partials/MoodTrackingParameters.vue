@@ -6,6 +6,7 @@ import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { onMounted, ref, nextTick } from 'vue';
+import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
   data: Object,
@@ -83,7 +84,7 @@ const update = (moodTrackingParameter) => {
 };
 
 const destroy = (moodTrackingParameter) => {
-  if (confirm('Are you sure? This can not be undone.')) {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
     axios
       .delete(moodTrackingParameter.url.destroy)
       .then(() => {
@@ -114,11 +115,11 @@ const updatePosition = (event) => {
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0">
         <span class="mr-1"> 🤭 </span>
-        Mood tracking parameters
+        {{ $t('Mood tracking parameters') }}
       </h3>
       <pretty-button
         v-if="!createMoodTrackingParametersModalShown"
-        :text="'Add a parameter'"
+        :text="$t('Add a parameter')"
         :icon="'plus'"
         @click="showMoodTrackingParameterModal" />
     </div>
@@ -134,7 +135,7 @@ const updatePosition = (event) => {
         <text-input
           ref="newMoodTrackingParameter"
           v-model="form.label"
-          :label="'Name'"
+          :label="$t('Name')"
           :type="'text'"
           :autofocus="true"
           :input-class="'block w-full mb-4'"
@@ -144,7 +145,7 @@ const updatePosition = (event) => {
           @esc-key-pressed="createMoodTrackingParametersModalShown = false" />
 
         <p class="mb-2 block text-sm">
-          {{ $t('vault.settings_labels_create_color') }}
+          {{ $t('Choose a color') }}
         </p>
         <div class="grid grid-cols-8 gap-4">
           <div v-for="color in data.mood_tracking_parameter_colors" :key="color.hex_color" class="flex items-center">
@@ -166,11 +167,8 @@ const updatePosition = (event) => {
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span
-          :text="$t('app.cancel')"
-          :classes="'mr-3'"
-          @click="createMoodTrackingParametersModalShown = false" />
-        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createMoodTrackingParametersModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -185,7 +183,7 @@ const updatePosition = (event) => {
       </svg>
 
       <div>
-        <p>You can customize the criteria that let you track your mood.</p>
+        <p>{{ $t('You can customize the criteria that let you track your mood.') }}</p>
       </div>
     </div>
 
@@ -232,10 +230,10 @@ const updatePosition = (event) => {
               <li
                 class="inline cursor-pointer text-blue-500 hover:underline"
                 @click="renameMoodTrackingParameterModal(element)">
-                {{ $t('app.rename') }}
+                {{ $t('Rename') }}
               </li>
               <li class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">
-                {{ $t('app.delete') }}
+                {{ $t('Delete') }}
               </li>
             </ul>
           </div>
@@ -250,7 +248,7 @@ const updatePosition = (event) => {
               <text-input
                 ref="newMoodTrackingParameter"
                 v-model="form.label"
-                :label="'Name'"
+                :label="$t('Name')"
                 :type="'text'"
                 :autofocus="true"
                 :input-class="'block w-full mb-4'"
@@ -260,7 +258,7 @@ const updatePosition = (event) => {
                 @esc-key-pressed="editMoodTrackingParameterId = 0" />
 
               <p class="mb-2 block text-sm">
-                {{ $t('vault.settings_labels_create_color') }}
+                {{ $t('Choose a color') }}
               </p>
               <div class="grid grid-cols-8 gap-4">
                 <div
@@ -285,11 +283,8 @@ const updatePosition = (event) => {
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span
-                :text="$t('app.cancel')"
-                :classes="'mr-3'"
-                @click.prevent="editMoodTrackingParameterId = 0" />
-              <pretty-button :text="$t('app.rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
+              <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="editMoodTrackingParameterId = 0" />
+              <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
             </div>
           </form>
         </template>

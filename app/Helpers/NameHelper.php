@@ -61,7 +61,7 @@ class NameHelper
         }
 
         if (trim($completeName) === '') {
-            $completeName = trans('app.unknown_name');
+            $completeName = trans('Unknown name');
         }
 
         return $completeName;

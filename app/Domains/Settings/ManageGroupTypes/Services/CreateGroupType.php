@@ -20,7 +20,8 @@ class CreateGroupType extends BaseService implements ServiceInterface
         return [
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
-            'label' => 'required|string|max:255',
+            'label' => 'nullable|string|max:255',
+            'label_translation_key' => 'nullable|string|max:255',
         ];
     }
 
@@ -62,7 +63,8 @@ class CreateGroupType extends BaseService implements ServiceInterface
 
         $this->groupType = GroupType::create([
             'account_id' => $this->data['account_id'],
-            'label' => $this->data['label'],
+            'label' => $this->data['label'] ?? null,
+            'label_translation_key' => $this->data['label_translation_key'] ?? null,
             'position' => $newPosition,
         ]);
     }

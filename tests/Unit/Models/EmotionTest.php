@@ -17,4 +17,32 @@ class EmotionTest extends TestCase
 
         $this->assertTrue($emotion->account()->exists());
     }
+
+    /** @test */
+    public function it_gets_the_default_name()
+    {
+        $emotion = Emotion::factory()->create([
+            'name' => null,
+            'name_translation_key' => 'template.label',
+        ]);
+
+        $this->assertEquals(
+            'template.label',
+            $emotion->name
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_custom_name_if_defined()
+    {
+        $emotion = Emotion::factory()->create([
+            'name' => 'this is the real name',
+            'name_translation_key' => 'template.label',
+        ]);
+
+        $this->assertEquals(
+            'this is the real name',
+            $emotion->name
+        );
+    }
 }

@@ -18,7 +18,8 @@ return new class() extends Migration
         Schema::create('relationship_group_types', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
-            $table->string('name');
+            $table->string('name')->nullable();
+            $table->string('name_translation_key')->nullable();
             $table->string('type')->nullable();
             $table->boolean('can_be_deleted')->default(true);
             $table->timestamps();
@@ -27,9 +28,11 @@ return new class() extends Migration
         Schema::create('relationship_types', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(RelationshipGroupType::class)->constrained()->cascadeOnDelete();
-            $table->string('name');
+            $table->string('name')->nullable();
+            $table->string('name_translation_key')->nullable();
+            $table->string('name_reverse_relationship')->nullable();
+            $table->string('name_reverse_relationship_translation_key')->nullable();
             $table->string('type')->nullable();
-            $table->string('name_reverse_relationship');
             $table->boolean('can_be_deleted')->default(true);
             $table->timestamps();
         });

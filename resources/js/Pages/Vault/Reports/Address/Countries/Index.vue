@@ -16,12 +16,12 @@ defineProps({
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="layoutData.vault.url.reports" class="text-blue-500 hover:underline"
-                >Reports</inertia-link
-              >
+              <inertia-link :href="layoutData.vault.url.reports" class="text-blue-500 hover:underline">{{
+                $t('Reports')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -34,9 +34,9 @@ defineProps({
               </svg>
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.addresses" class="text-blue-500 hover:underline"
-                >List of addresses</inertia-link
-              >
+              <inertia-link :href="data.url.addresses" class="text-blue-500 hover:underline">{{
+                $t('List of addresses')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -68,7 +68,9 @@ defineProps({
 
               <img :src="data.wikipedia.thumbnail" :alt="'Image of ' + data.country" class="mb-2 rounded" />
 
-              <p class="text-xs"><a :href="data.wikipedia.url" target="_blank">Information from Wikipedia</a></p>
+              <p class="text-xs">
+                <a :href="data.wikipedia.url" target="_blank">{{ $t('Information from Wikipedia') }}</a>
+              </p>
             </div>
           </div>
 

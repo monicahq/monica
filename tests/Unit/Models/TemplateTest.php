@@ -43,4 +43,32 @@ class TemplateTest extends TestCase
 
         $this->assertTrue($template->contacts()->exists());
     }
+
+    /** @test */
+    public function it_gets_the_default_label()
+    {
+        $template = Template::factory()->create([
+            'name' => null,
+            'name_translation_key' => 'bla',
+        ]);
+
+        $this->assertEquals(
+            'bla',
+            $template->name
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_custom_label_if_defined()
+    {
+        $template = Template::factory()->create([
+            'name' => 'this is the real name',
+            'name_translation_key' => 'bla',
+        ]);
+
+        $this->assertEquals(
+            'this is the real name',
+            $template->name
+        );
+    }
 }

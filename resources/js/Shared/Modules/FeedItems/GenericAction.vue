@@ -11,7 +11,7 @@
         data.name
       }}</inertia-link>
       <span v-if="data.age" class="text-gray-500">{{ data.age }}</span>
-      <span v-else class="text-xs text-gray-500">Unknown age</span>
+      <span v-else class="text-xs text-gray-500">{{ $t('Unknown age') }}</span>
     </div>
   </div>
 </template>

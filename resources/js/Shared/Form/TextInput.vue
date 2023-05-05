@@ -3,7 +3,7 @@
     <label v-if="label" class="mb-2 block text-sm dark:text-gray-100" :for="id">
       {{ label }}
       <span v-if="!required" class="optional-badge text-xs">
-        {{ $t('app.optional') }}
+        {{ $t('optional') }}
       </span>
     </label>
 

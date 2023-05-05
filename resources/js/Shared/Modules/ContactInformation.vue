@@ -19,11 +19,11 @@
         </span>
 
         <span class="font-semibold">
-          {{ $t('contact.contact_information_title') }}
+          {{ $t('Contact information') }}
         </span>
       </div>
       <pretty-button
-        :text="$t('contact.contact_information_cta')"
+        :text="$t('Add a contact information')"
         :icon="'plus'"
         :classes="'sm:w-fit w-full'"
         @click="showCreateContactInformationModal" />
@@ -44,7 +44,7 @@
           <text-input
             :ref="'newData'"
             v-model="form.data"
-            :label="$t('contact.contact_information_name')"
+            :label="$t('Content')"
             :type="'text'"
             :autofocus="true"
             :input-class="'block w-full'"
@@ -60,15 +60,15 @@
             v-model="form.contact_information_type_id"
             :data="data.contact_information_types"
             :required="true"
-            :placeholder="$t('app.choose_value')"
+            :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
             :label="$t('contact.contact_information_type')" />
         </div>
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="addContactInformationModalShown = false" />
-        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="addContactInformationModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -91,10 +91,10 @@
               <li
                 class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
                 @click="showEditContactInformationModal(info)">
-                {{ $t('app.edit') }}
+                {{ $t('Edit') }}
               </li>
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(info)">
-                {{ $t('app.delete') }}
+                {{ $t('Delete') }}
               </li>
             </ul>
           </div>
@@ -111,7 +111,7 @@
                 <text-input
                   :ref="'newData'"
                   v-model="form.data"
-                  :label="$t('contact.contact_information_name')"
+                  :label="$t('Content')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'block w-full'"
@@ -127,15 +127,15 @@
                   v-model="form.contact_information_type_id"
                   :data="data.contact_information_types"
                   :required="true"
-                  :placeholder="$t('app.choose_value')"
+                  :placeholder="$t('Choose a value')"
                   :dropdown-class="'block w-full'"
                   :label="$t('contact.contact_information_type')" />
               </div>
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedContactInformationId = 0" />
-              <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+              <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedContactInformationId = 0" />
+              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
             </div>
           </form>
         </li>
@@ -148,7 +148,7 @@
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_contact.svg" :alt="$t('Contact informations')" class="mx-auto mt-4 h-20 w-20" />
       <p class="px-5 pb-5 pt-2 text-center">
-        {{ $t('contact.contact_information_blank') }}
+        {{ $t('There are no contact information yet.') }}
       </p>
     </div>
   </div>
@@ -220,7 +220,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash(this.$t('contact.contact_information_new_success'), 'success');
+          this.flash(this.$t('The contact information has been created'), 'success');
           this.localContactInformation.unshift(response.data.data);
           this.loadingState = '';
           this.addContactInformationModalShown = false;
@@ -238,7 +238,7 @@ export default {
         .put(info.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash(this.$t('contact.contact_information_edit_success'), 'success');
+          this.flash(this.$t('The contact information has been edited'), 'success');
           this.localContactInformation[this.localContactInformation.findIndex((x) => x.id === info.id)] =
             response.data.data;
           this.editedContactInformationId = 0;
@@ -250,11 +250,11 @@ export default {
     },
 
     destroy(info) {
-      if (confirm(this.$t('contact.contact_information_delete_confirm'))) {
+      if (confirm(this.$t('Are you sure? This will delete the contact information permanently.'))) {
         axios
           .delete(info.url.destroy)
           .then(() => {
-            this.flash(this.$t('contact.contact_information_delete_success'), 'success');
+            this.flash(this.$t('The contact information has been deleted'), 'success');
             var id = this.localContactInformation.findIndex((x) => x.id === info.id);
             this.localContactInformation.splice(id, 1);
           })

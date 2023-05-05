@@ -30,4 +30,32 @@ class PostTemplateTest extends TestCase
 
         $this->assertTrue($postTemplate->postTemplateSections()->exists());
     }
+
+    /** @test */
+    public function it_gets_the_default_label()
+    {
+        $postTemplate = PostTemplate::factory()->create([
+            'label' => null,
+            'label_translation_key' => 'template.label',
+        ]);
+
+        $this->assertEquals(
+            'template.label',
+            $postTemplate->label
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_custom_label_if_defined()
+    {
+        $postTemplate = PostTemplate::factory()->create([
+            'label' => 'this is the real name',
+            'label_translation_key' => 'template.label',
+        ]);
+
+        $this->assertEquals(
+            'this is the real name',
+            $postTemplate->label
+        );
+    }
 }

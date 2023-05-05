@@ -5,11 +5,14 @@ namespace Tests\Unit\Actions\Jetstream;
 use App\Actions\Jetstream\UserProfile;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 use Tests\TestCase;
 
 class UserProfileTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
      * @test
      */

@@ -15,10 +15,12 @@ defineProps({
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
-              <inertia-link :href="data.url.reports" class="text-blue-500 hover:underline">Reports</inertia-link>
+              <inertia-link :href="data.url.reports" class="text-blue-500 hover:underline">{{
+                $t('Reports')
+              }}</inertia-link>
             </li>
             <li class="relative mr-2 inline">
               <svg
@@ -30,7 +32,7 @@ defineProps({
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Mood in the year</li>
+            <li class="inline">{{ $t('Mood in the year') }}</li>
           </ul>
         </div>
       </div>
@@ -56,7 +58,7 @@ defineProps({
               </svg>
             </span>
 
-            Your mood this year
+            {{ $t('Your mood this year') }}
           </div>
         </div>
 

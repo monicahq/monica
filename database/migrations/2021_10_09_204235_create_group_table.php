@@ -23,7 +23,8 @@ return new class() extends Migration
         Schema::create('group_types', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
-            $table->string('label');
+            $table->string('label')->nullable();
+            $table->string('label_translation_key')->nullable();
             $table->integer('position');
             $table->timestamps();
         });
@@ -31,7 +32,8 @@ return new class() extends Migration
         Schema::create('group_type_roles', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(GroupType::class)->constrained()->cascadeOnDelete();
-            $table->string('label');
+            $table->string('label')->nullable();
+            $table->string('label_translation_key')->nullable();
             $table->integer('position')->nullable();
             $table->timestamps();
         });

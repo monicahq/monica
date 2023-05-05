@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_contact_index') }}
+                {{ $t('Contacts') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -25,7 +25,7 @@
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.contact" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_contact_show', { name: data.contact.name }) }}
+                {{ $t('Profile of :name', { name: data.contact.name }) }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -39,7 +39,7 @@
               </svg>
             </li>
             <li class="inline">
-              {{ $t('app.breadcrumb_contact_note_index') }}
+              {{ $t('All the notes') }}
             </li>
           </ul>
         </div>
@@ -84,5 +84,3 @@ export default {
   methods: {},
 };
 </script>
-
-<style lang="scss" scoped></style>

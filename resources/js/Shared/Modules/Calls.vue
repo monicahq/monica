@@ -18,9 +18,13 @@
           </svg>
         </span>
 
-        <span class="font-semibold"> Calls </span>
+        <span class="font-semibold"> {{ $t('Calls') }} </span>
       </div>
-      <pretty-button :text="'Log a call'" :icon="'plus'" :classes="'sm:w-fit w-full'" @click="showCreateCallModal()" />
+      <pretty-button
+        :text="$t('Log a call')"
+        :icon="'plus'"
+        :classes="'sm:w-fit w-full'"
+        @click="showCreateCallModal()" />
     </div>
 
     <!-- add a call modal -->
@@ -36,7 +40,7 @@
         <!-- date -->
         <div class="flex border-b border-gray-200 dark:border-gray-700">
           <div class="p-5">
-            <p class="mb-2 block text-sm">When did the call happened?</p>
+            <p class="mb-2 block text-sm">{{ $t('When did the call happened?') }}</p>
             <v-date-picker v-model="form.called_at" class="inline-block h-full" :model-config="modelConfig">
               <template #default="{ inputValue, inputEvents }">
                 <input
@@ -49,7 +53,7 @@
 
           <!-- audio or video -->
           <div class="border-l border-gray-200 p-5 dark:border-gray-700">
-            <p class="mb-2 block text-sm">Nature of the call</p>
+            <p class="mb-2 block text-sm">{{ $t('Nature of the call') }}</p>
 
             <div class="flex">
               <div class="mr-6 flex items-center">
@@ -63,7 +67,7 @@
                 <label
                   for="audio"
                   class="ml-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                  This was an audio-only call
+                  {{ $t('Audio-only call') }}
                 </label>
               </div>
 
@@ -78,7 +82,7 @@
                 <label
                   for="video"
                   class="ml-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                  This was a video call
+                  {{ $t('Video call') }}
                 </label>
               </div>
             </div>
@@ -87,7 +91,7 @@
 
         <!-- who called -->
         <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-          <p class="mb-2 block text-sm">Who called?</p>
+          <p class="mb-2 block text-sm">{{ $t('Who called?') }}</p>
 
           <div class="mb-4 flex">
             <div class="mr-6 flex items-center">
@@ -99,7 +103,7 @@
                 type="radio"
                 class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
               <label for="me" class="ml-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                I called
+                {{ $t('I called') }}
               </label>
             </div>
 
@@ -114,7 +118,7 @@
               <label
                 for="me_not_answered"
                 class="ml-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                I called, but {{ data.contact_name }} didn't answer
+                {{ $t('I called, but :name didn’t answer', { name: data.contact_name }) }}
               </label>
             </div>
           </div>
@@ -131,7 +135,7 @@
               <label
                 for="contact"
                 class="ml-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                {{ data.contact_name }} called
+                {{ $t(':name called', { name: data.contact_name }) }}
               </label>
             </div>
 
@@ -146,7 +150,7 @@
               <label
                 for="contact_not_answered"
                 class="ml-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                {{ data.contact_name }} called, but I didn't answer
+                {{ $t(':name called, but I didn’t answer', { name: data.contact_name }) }}
               </label>
             </div>
           </div>
@@ -156,7 +160,7 @@
         <div v-if="descriptionFieldShown" class="border-b border-gray-200 p-5 dark:border-gray-700">
           <text-area
             v-model="form.description"
-            :label="'Description'"
+            :label="$t('Description')"
             :rows="10"
             :required="false"
             :maxlength="65535"
@@ -165,7 +169,7 @@
 
         <!-- reason field -->
         <div v-if="reasonFieldShown" class="border-b border-gray-200 p-5 dark:border-gray-700">
-          <p class="mb-2 block text-sm">Was there a reason for the call?</p>
+          <p class="mb-2 block text-sm">{{ $t('Was there a reason for the call?') }}</p>
           <select
             id="types"
             v-model="form.call_reason_id"
@@ -184,7 +188,7 @@
 
         <!-- emotion -->
         <div v-if="emotionFieldShown" class="border-b border-gray-200 p-5 dark:border-gray-700">
-          <p class="mb-2">How did you feel?</p>
+          <p class="mb-2">{{ $t('How did you feel?') }}</p>
           <div v-for="emotion in data.emotions" :key="emotion.id" class="mb-2 flex items-center">
             <input
               :id="emotion.type"
@@ -206,7 +210,7 @@
             v-if="!descriptionFieldShown"
             class="mr-2 inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
             @click="showDescriptionField">
-            + add description
+            {{ $t('+ add description') }}
           </span>
 
           <!-- cta to add a reason -->
@@ -214,7 +218,7 @@
             v-if="!reasonFieldShown"
             class="mr-2 inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
             @click="showReasonField">
-            + add reason
+            {{ $t('+ add reason') }}
           </span>
 
           <!-- cta to add emotion -->
@@ -222,14 +226,14 @@
             v-if="!emotionFieldShown"
             class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
             @click="showEmotionField">
-            + add emotion
+            {{ $t('+ add emotion') }}
           </span>
         </div>
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createCallModalShown = false" />
-        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createCallModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -281,12 +285,12 @@
             <span
               v-if="call.who_initiated == 'me'"
               class="mr-2 rounded border border-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800">
-              I called
+              {{ $t('I called') }}
             </span>
             <span
               v-else
               class="mr-2 rounded border border-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800">
-              {{ data.contact_name }} called
+              {{ $t(':name called', { name: data.contact_name }) }}
             </span>
 
             <!-- reason, if defined -->
@@ -322,7 +326,7 @@
 
               <!-- audio or video -->
               <div class="border-l border-gray-200 p-5 dark:border-gray-700">
-                <p class="mb-2 block text-sm">Nature of the call</p>
+                <p class="mb-2 block text-sm">{{ $t('Nature of the call') }}</p>
 
                 <div class="flex">
                   <div class="mr-6 flex items-center">
@@ -336,7 +340,7 @@
                     <label
                       for="audio"
                       class="ml-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                      This was an audio-only call
+                      {{ $t('Audio-only call') }}
                     </label>
                   </div>
 
@@ -351,7 +355,7 @@
                     <label
                       for="video"
                       class="ml-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                      This was a video call
+                      {{ $t('Video call') }}
                     </label>
                   </div>
                 </div>
@@ -360,7 +364,7 @@
 
             <!-- who called -->
             <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-              <p class="mb-2 block text-sm">Who called?</p>
+              <p class="mb-2 block text-sm">{{ $t('Who called?') }}</p>
 
               <div class="mb-4 flex">
                 <div class="mr-6 flex items-center">
@@ -374,7 +378,7 @@
                   <label
                     for="me"
                     class="ml-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    I called
+                    {{ $t('I called') }}
                   </label>
                 </div>
 
@@ -389,7 +393,7 @@
                   <label
                     for="me_not_answered"
                     class="ml-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    I called, but {{ data.contact_name }} didn't answer
+                    {{ $t('I called, but :name didn’t answer', { name: data.contact_name }) }}
                   </label>
                 </div>
               </div>
@@ -406,7 +410,7 @@
                   <label
                     for="contact"
                     class="ml-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {{ data.contact_name }} called
+                    {{ $t(':name called', { name: data.contact_name }) }}
                   </label>
                 </div>
 
@@ -421,7 +425,7 @@
                   <label
                     for="contact_not_answered"
                     class="ml-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {{ data.contact_name }} called, but I didn't answer
+                    {{ $t(':name called, but I didn’t answer', { name: data.contact_name }) }}
                   </label>
                 </div>
               </div>
@@ -431,7 +435,7 @@
             <div v-if="descriptionFieldShown" class="border-b border-gray-200 p-5 dark:border-gray-700">
               <text-area
                 v-model="form.description"
-                :label="'Description'"
+                :label="$t('Description')"
                 :rows="10"
                 :required="false"
                 :maxlength="65535"
@@ -440,7 +444,7 @@
 
             <!-- reason field -->
             <div v-if="reasonFieldShown" class="border-b border-gray-200 p-5 dark:border-gray-700">
-              <p class="mb-2 block text-sm">Was there a reason for the call?</p>
+              <p class="mb-2 block text-sm">{{ $t('Was there a reason for the call?') }}</p>
               <select
                 id="types"
                 v-model="form.call_reason_id"
@@ -459,7 +463,7 @@
 
             <!-- emotion -->
             <div v-if="emotionFieldShown" class="border-b border-gray-200 p-5 dark:border-gray-700">
-              <p class="mb-2">How did you feel?</p>
+              <p class="mb-2">{{ $t('How did you feel?') }}</p>
               <div v-for="emotion in data.emotions" :key="emotion.id" class="mb-2 flex items-center">
                 <input
                   :id="emotion.type"
@@ -483,7 +487,7 @@
                 v-if="!descriptionFieldShown"
                 class="mr-2 inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
                 @click="showDescriptionField">
-                + add description
+                {{ $t('+ add description') }}
               </span>
 
               <!-- cta to add a reason -->
@@ -491,7 +495,7 @@
                 v-if="!reasonFieldShown"
                 class="mr-2 inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
                 @click="showReasonField">
-                + add reason
+                {{ $t('+ add reason') }}
               </span>
 
               <!-- cta to add emotion -->
@@ -499,14 +503,14 @@
                 v-if="!emotionFieldShown"
                 class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
                 @click="showEmotionField">
-                + add emotion
+                {{ $t('+ add emotion') }}
               </span>
             </div>
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedCallId = 0" />
-            <pretty-button :text="'Update'" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedCallId = 0" />
+            <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>
       </li>
@@ -517,7 +521,7 @@
       v-if="localCalls.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_call.svg" :alt="$t('Calls')" class="mx-auto mt-4 h-20 w-20" />
-      <p class="px-5 pb-5 pt-2 text-center">There are no calls logged yet.</p>
+      <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no calls logged yet.') }}</p>
     </div>
   </div>
 </template>
@@ -644,7 +648,7 @@ export default {
         .post(this.data.url.store, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash('The call has been created', 'success');
+          this.flash(this.$t('The call has been created'), 'success');
           this.localCalls.unshift(response.data.data);
           this.createCallModalShown = false;
         })
@@ -661,7 +665,7 @@ export default {
         .put(call.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash('The call has been edited', 'success');
+          this.flash(this.$t('The call has been edited'), 'success');
           this.localCalls[this.localCalls.findIndex((x) => x.id === call.id)] = response.data.data;
           this.editedCallId = 0;
         })
@@ -672,11 +676,11 @@ export default {
     },
 
     destroy(call) {
-      if (confirm('Are you sure?')) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(call.url.destroy)
           .then(() => {
-            this.flash('The call has been deleted', 'success');
+            this.flash(this.$t('The call has been deleted'), 'success');
             var id = this.localCalls.findIndex((x) => x.id === call.id);
             this.localCalls.splice(id, 1);
           })

@@ -43,12 +43,12 @@ const policy = () => {
   <JetGuestLayout>
     <JetValidationErrors class="mb-4" />
 
-    <p class="mb-2 text-lg font-bold">Sign up for an account</p>
-    <p class="mb-8 text-sm text-gray-500">Your name here will be used to add yourself as a contact.</p>
+    <p class="mb-2 text-lg font-bold">{{ $t('Sign up for an account') }}</p>
+    <p class="mb-8 text-sm text-gray-500">{{ $t('Your name here will be used to add yourself as a contact.') }}'</p>
 
     <form @submit.prevent="submit">
       <div>
-        <JetLabel for="first_name" value="First name" />
+        <JetLabel for="first_name" :value="$t('First name')" />
         <JetInput
           id="first_name"
           v-model="form.first_name"
@@ -60,7 +60,7 @@ const policy = () => {
       </div>
 
       <div class="mt-4">
-        <JetLabel for="last_name" value="Last name" />
+        <JetLabel for="last_name" :value="$t('Last name')" />
         <JetInput
           id="last_name"
           v-model="form.last_name"
@@ -71,7 +71,7 @@ const policy = () => {
       </div>
 
       <div class="mt-4">
-        <JetLabel for="email" value="Email" />
+        <JetLabel for="email" :value="$t('Email')" />
         <JetInput
           id="email"
           v-model="form.email"
@@ -82,7 +82,7 @@ const policy = () => {
       </div>
 
       <div class="mt-4">
-        <JetLabel for="password" value="Password" />
+        <JetLabel for="password" :value="$t('Password')" />
         <JetInput
           id="password"
           v-model="form.password"
@@ -93,7 +93,7 @@ const policy = () => {
       </div>
 
       <div class="mb-8 mt-4">
-        <JetLabel for="password_confirmation" value="Confirm Password" />
+        <JetLabel for="password_confirmation" :value="$t('Confirm Password')" />
         <JetInput
           id="password_confirmation"
           v-model="form.password_confirmation"
@@ -117,10 +117,10 @@ const policy = () => {
 
       <div class="mt-4 flex items-center justify-end">
         <Link :href="route('login')" class="mr-4 text-sm text-blue-500 hover:underline dark:text-gray-400">
-          Already registered?
+          {{ $t('Already registered?') }}
         </Link>
 
-        <PrettyButton :text="'Register'" :state="loadingState" :classes="'save'" />
+        <PrettyButton :text="$t('Register')" :state="loadingState" :classes="'save'" />
       </div>
     </form>
   </JetGuestLayout>

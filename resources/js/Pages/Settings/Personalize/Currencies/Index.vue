@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings') }}
+                {{ $t('Settings') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -25,7 +25,7 @@
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings_personalize') }}
+                {{ $t('Personalize your account') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -38,7 +38,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Currencies</li>
+            <li class="inline">{{ $t('Currencies') }}</li>
           </ul>
         </div>
       </div>
@@ -50,7 +50,7 @@
         <div class="mb-6 mt-8 items-center justify-between sm:mt-0 sm:flex">
           <h3 class="mb-4 sm:mb-0">
             <span class="mr-1"> 💵 </span>
-            All the currencies
+            {{ $t('All the currencies') }}
           </h3>
         </div>
 
@@ -71,19 +71,23 @@
 
           <div>
             <p class="mb-2">
-              You can choose which currencies should be enabled in your account, and which one shouldn't.
+              {{ $t('You can choose which currencies should be enabled in your account, and which one shouldn’t.') }}
             </p>
-            <p>You can change that at any time.</p>
+            <p>{{ $t('You can change that at any time.') }}</p>
           </div>
         </div>
 
         <div class="mb-3 text-right">
           <ul>
             <li class="mr-2 inline">
-              <span class="inline cursor-pointer text-blue-500 hover:underline" @click="enableAll"> Enable all </span>
+              <span class="inline cursor-pointer text-blue-500 hover:underline" @click="enableAll">
+                {{ $t('Enable all') }}
+              </span>
             </li>
             <li class="inline">
-              <span class="inline cursor-pointer text-blue-500 hover:underline" @click="disableAll"> Disable all </span>
+              <span class="inline cursor-pointer text-blue-500 hover:underline" @click="disableAll">
+                {{ $t('Disable all') }}
+              </span>
             </li>
           </ul>
         </div>
@@ -107,12 +111,12 @@
                 v-if="!currency.active"
                 class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
                 @click="update(currency)">
-                Enable
+                {{ $t('Enable') }}
               </span>
 
               <!-- disable -->
               <span v-else class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="update(currency)">
-                Disable
+                {{ $t('Disable') }}
               </span>
             </div>
           </li>
@@ -122,7 +126,7 @@
         <div
           v-if="localCurrencies.length == 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-          <p class="p-5 text-center">There is no currencies in this account.</p>
+          <p class="p-5 text-center">{{ $t('There is no currencies in this account.') }}</p>
         </div>
       </div>
     </main>
@@ -167,7 +171,7 @@ export default {
       axios
         .put(currency.url.update, this.form)
         .then(() => {
-          this.flash('The currency has been updated', 'success');
+          this.flash(this.$t('The currency has been updated'), 'success');
           this.localCurrencies[this.localCurrencies.findIndex((x) => x.id === currency.id)].active = !currency.active;
         })
         .catch((error) => {
@@ -179,7 +183,7 @@ export default {
       axios
         .post(this.data.url.enable_all)
         .then(() => {
-          this.flash('The currencies have been updated', 'success');
+          this.flash(this.$t('The currencies have been updated'), 'success');
           this.localCurrencies.forEach((entry) => {
             entry.active = true;
           });
@@ -193,7 +197,7 @@ export default {
       axios
         .delete(this.data.url.disable_all)
         .then(() => {
-          this.flash('The currencies have been updated', 'success');
+          this.flash(this.$t('The currencies have been updated'), 'success');
           this.localCurrencies.forEach((entry) => {
             entry.active = false;
           });

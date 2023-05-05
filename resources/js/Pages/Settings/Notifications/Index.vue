@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings') }}
+                {{ $t('Settings') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -24,7 +24,7 @@
               </svg>
             </li>
             <li class="inline">
-              {{ $t('app.breadcrumb_settings_notification_channels') }}
+              {{ $t('Notification channels') }}
             </li>
           </ul>
         </div>
@@ -37,7 +37,7 @@
         <div class="mb-3 mt-8 sm:mt-0">
           <h3 class="mb-4 sm:mb-0">
             <span class="mr-1"> 🛰️ </span>
-            {{ $t('settings.notification_channels_title') }}
+            {{ $t('Configure how we should notify you') }}
           </h3>
         </div>
 
@@ -57,7 +57,13 @@
           </svg>
 
           <div>
-            <p>{{ $t('settings.notification_channels_description') }}</p>
+            <p>
+              {{
+                $t(
+                  'You can be notified through different channels: emails, a Telegram message, on Facebook. You decide.',
+                )
+              }}
+            </p>
           </div>
         </div>
 

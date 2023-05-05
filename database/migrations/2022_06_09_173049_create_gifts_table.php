@@ -20,7 +20,8 @@ return new class() extends Migration
         Schema::create('gift_occasions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
-            $table->string('label');
+            $table->string('label')->nullable();
+            $table->string('label_translation_key')->nullable();
             $table->integer('position')->nullable();
             $table->timestamps();
         });
@@ -28,7 +29,8 @@ return new class() extends Migration
         Schema::create('gift_states', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
-            $table->string('label');
+            $table->string('label')->nullable();
+            $table->string('label_translation_key')->nullable();
             $table->integer('position')->nullable();
             $table->timestamps();
         });

@@ -43,7 +43,7 @@ class Religion extends Model
         return Attribute::make(
             get: function ($value, $attributes) {
                 if (is_null($attributes['name'])) {
-                    return trans($attributes['translation_key']);
+                    return __($attributes['translation_key']);
                 }
 
                 return $attributes['name'];

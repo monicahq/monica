@@ -186,10 +186,10 @@ class ImportContact extends Importer implements ImportVCardResource
             if (! $gender) {
                 switch ($genderCode) {
                     case 'M':
-                        $gender = $this->getGenderByName(trans('account.gender_male')) ?? $this->getGenderByName(config('dav.default_gender'));
+                        $gender = $this->getGenderByName(trans('Male')) ?? $this->getGenderByName(config('dav.default_gender'));
                         break;
                     case 'F':
-                        $gender = $this->getGenderByName(trans('account.gender_female')) ?? $this->getGenderByName(config('dav.default_gender'));
+                        $gender = $this->getGenderByName(trans('Female')) ?? $this->getGenderByName(config('dav.default_gender'));
                         break;
                     default:
                         $gender = $this->getGenderByName(config('dav.default_gender'));

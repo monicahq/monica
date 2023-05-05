@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.back" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_vault_index') }}
+                {{ $t('All the vaults') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -24,7 +24,7 @@
               </svg>
             </li>
             <li class="inline dark:text-slate-200">
-              {{ $t('app.breadcrumb_vault_create') }}
+              {{ $t('Add a vault') }}
             </li>
           </ul>
         </div>
@@ -39,12 +39,12 @@
           <div
             class="section-head border-b border-gray-200 bg-blue-50 p-3 dark:border-gray-700 dark:bg-blue-900 sm:p-5">
             <h1 class="mb-1 flex justify-center text-2xl font-medium">
-              <span>{{ $t('vault.create_title') }}</span>
+              <span>{{ $t('Create a vault') }}</span>
 
               <help :url="$page.props.help_links.vault_create" :top="'9px'" :classes="'ml-2'" />
             </h1>
             <p class="text-center text-sm">
-              {{ $t('vault.create_description') }}
+              {{ $t('Vaults contain all your contacts data.') }}
             </p>
           </div>
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
@@ -56,19 +56,19 @@
               :input-class="'block w-full'"
               :required="true"
               :maxlength="255"
-              :label="$t('vault.create_vault_name')" />
+              :label="$t('Name')" />
             <text-area
               v-model="form.description"
-              :label="$t('vault.create_vault_description')"
+              :label="$t('Description')"
               :maxlength="255"
               :textarea-class="'block w-full'" />
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-link :href="data.url.back" :text="$t('app.cancel')" :classes="'mr-3'" />
+            <pretty-link :href="data.url.back" :text="$t('Cancel')" :classes="'mr-3'" />
             <pretty-button
               :href="'data.url.vault.create'"
-              :text="$t('app.add')"
+              :text="$t('Add')"
               :state="loadingState"
               :icon="'check'"
               :classes="'save'" />
@@ -131,7 +131,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          localStorage.success = this.$t('vault.create_success');
+          localStorage.success = this.$t('The vault has been created');
           this.$inertia.visit(response.data.data);
         })
         .catch(() => {

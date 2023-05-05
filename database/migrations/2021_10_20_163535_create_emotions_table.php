@@ -17,7 +17,8 @@ return new class() extends Migration
         Schema::create('emotions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
-            $table->string('name');
+            $table->string('name')->nullable();
+            $table->string('name_translation_key')->nullable();
             $table->string('type');
             $table->timestamps();
         });

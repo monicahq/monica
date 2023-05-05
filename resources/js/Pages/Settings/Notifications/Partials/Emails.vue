@@ -2,12 +2,12 @@
   <div class="mb-8">
     <div class="mb-3 flex items-center justify-between">
       <span class="dark:text-gray-200">
-        {{ $t('settings.notification_channels_email_title') }}
+        {{ $t('You haven’t received a notification in this channel yet.') }}
       </span>
 
       <pretty-button
         v-if="!addEmailModalShown"
-        :text="$t('settings.notification_channels_email_cta')"
+        :text="$t('Add an email address')"
         :icon="'plus'"
         @click="showAddEmailModal" />
     </div>
@@ -24,7 +24,7 @@
         <text-input
           :ref="'content'"
           v-model="form.content"
-          :label="$t('settings.notification_channels_email_field')"
+          :label="$t('Which email address should we send the notification to?')"
           :type="'email'"
           :autofocus="true"
           :input-class="'block w-full'"
@@ -37,7 +37,7 @@
         <!-- label -->
         <text-input
           v-model="form.label"
-          :label="$t('settings.notification_channels_email_name')"
+          :label="$t('Give this email address a name')"
           :type="'text'"
           :autofocus="true"
           :input-class="'block w-full'"
@@ -49,11 +49,11 @@
 
         <!-- preferred time -->
         <p class="mb-2 block text-sm">
-          {{ $t('settings.notification_channels_email_at') }}
+          {{ $t('At which time should we send the notification, when the reminder occurs?') }}
         </p>
         <div class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
           <span class="mr-2">
-            {{ $t('settings.notification_channels_email_at_word') }}
+            {{ $t('At') }}
           </span>
 
           <select
@@ -81,12 +81,19 @@
       </div>
 
       <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-        <p class="flex"><span class="mr-2">⚠️</span> {{ $t('settings.notification_channels_email_help') }}</p>
+        <p class="flex">
+          <span class="mr-2">⚠️</span>
+          {{
+            $t(
+              'We’ll send an email to this email address that you will need to confirm before we can send notifications to this address.',
+            )
+          }}
+        </p>
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click.prevent="addEmailModalShown = false" />
-        <pretty-button :text="$t('app.add')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="addEmailModalShown = false" />
+        <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -122,7 +129,7 @@
                 {{ email.label }}
               </li>
               <li class="inline">
-                {{ $t('settings.notification_channels_email_sent_at', { time: email.preferred_time }) }}
+                {{ $t('Sent at :time', { time: email.preferred_time }) }}
               </li>
             </ul>
           </div>
@@ -135,13 +142,13 @@
             v-if="email.active"
             class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
             @click="toggle(email)">
-            {{ $t('settings.notification_channels_email_deactivate') }}
+            {{ $t('Deactivate') }}
           </li>
           <li
             v-if="!email.active"
             class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
             @click="toggle(email)">
-            {{ $t('settings.notification_channels_email_activate') }}
+            {{ $t('Activate') }}
           </li>
 
           <!-- link to send a test email, if not already sent -->
@@ -149,36 +156,36 @@
             v-if="testEmailSentId != email.id"
             class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
             @click="sendTest(email)">
-            {{ $t('settings.notification_channels_email_send_test') }}
+            {{ $t('Send test') }}
           </li>
 
           <!-- text saying that the email has been sent -->
           <li v-if="testEmailSentId == email.id" class="mr-4 inline">
-            {{ $t('settings.notification_channels_email_send_success') }}
+            {{ $t('Test email sent!') }}
           </li>
 
           <!-- view log -->
           <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline">
             <inertia-link :href="email.url.logs" class="text-blue-500 hover:underline">
-              {{ $t('settings.notification_channels_email_log') }}
+              {{ $t('View log') }}
             </inertia-link>
           </li>
 
           <!-- delete email -->
           <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(email)">
-            {{ $t('app.delete') }}
+            {{ $t('Delete') }}
           </li>
         </ul>
 
         <!-- actions when the email has NOT been verified -->
         <ul v-else class="text-sm">
           <li class="mr-4 inline">
-            {{ $t('settings.notification_channels_verif_email_sent') }}
+            {{ $t('Verification email sent') }}
           </li>
 
           <!-- delete email -->
           <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(email)">
-            {{ $t('app.delete') }}
+            {{ $t('Delete') }}
           </li>
         </ul>
       </li>
@@ -187,7 +194,7 @@
     <!-- blank state -->
     <div v-else class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">
-        {{ $t('settings.notification_channels_blank') }}
+        {{ $t('Add an email to be notified when a reminder occurs.') }}
       </p>
     </div>
   </div>
@@ -251,7 +258,7 @@ export default {
       axios
         .post(channel.url.send_test)
         .then(() => {
-          this.flash(this.$t('settings.notification_channels_success_email'), 'success');
+          this.flash(this.$t('The test email has been sent'), 'success');
           this.testEmailSentId = channel.id;
         })
         .catch((error) => {
@@ -263,7 +270,7 @@ export default {
       axios
         .put(channel.url.toggle)
         .then((response) => {
-          this.flash(this.$t('settings.notification_channels_success_channel'), 'success');
+          this.flash(this.$t('The channel has been updated'), 'success');
           this.localEmails[this.localEmails.findIndex((x) => x.id === channel.id)] = response.data.data;
         })
         .catch((error) => {
@@ -277,7 +284,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash(this.$t('settings.notification_channels_email_added'), 'success');
+          this.flash(this.$t('The email has been added'), 'success');
           this.localEmails.unshift(response.data.data);
           this.loadingState = null;
           this.addEmailModalShown = false;
@@ -289,11 +296,11 @@ export default {
     },
 
     destroy(channel) {
-      if (confirm(this.$t('settings.notification_channels_email_destroy_confirm'))) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(channel.url.destroy)
           .then(() => {
-            this.flash(this.$t('settings.notification_channels_email_destroy_success'), 'success');
+            this.flash(this.$t('The email address has been deleted'), 'success');
             var id = this.localEmails.findIndex((x) => x.id === channel.id);
             this.localEmails.splice(id, 1);
           })

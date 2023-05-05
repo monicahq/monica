@@ -19,9 +19,9 @@
           </span>
         </span>
 
-        <span class="font-semibold"> Pets </span>
+        <span class="font-semibold"> {{ $t('Pets') }} </span>
       </div>
-      <pretty-button :text="'Add a pet'" :icon="'plus'" :classes="'sm:w-fit w-full'" @click="showCreatePetModal" />
+      <pretty-button :text="$t('Add a pet')" :icon="'plus'" :classes="'sm:w-fit w-full'" @click="showCreatePetModal" />
     </div>
 
     <!-- add a pet modal -->
@@ -39,7 +39,7 @@
           <text-input
             :ref="'newName'"
             v-model="form.name"
-            :label="'Name of the pet'"
+            :label="$t('Name of the pet')"
             :type="'text'"
             :autofocus="true"
             :input-class="'block w-full'"
@@ -55,15 +55,15 @@
             v-model="form.pet_category_id"
             :data="data.pet_categories"
             :required="true"
-            :placeholder="$t('app.choose_value')"
+            :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
-            :label="'Pet category'" />
+            :label="$t('Pet category')" />
         </div>
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="addPetModalShown = false" />
-        <pretty-button :text="'Add pet'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="addPetModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -83,11 +83,11 @@
 
             <!-- actions -->
             <ul class="text-sm">
-              <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="showEditPetModal(pet)">
-                Edit
+              <li class="mr-4 inline" @click="showEditPetModal(pet)">
+                <span class="cursor-pointer text-blue-500 hover:underline">{{ $t('Edit') }}</span>
               </li>
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(pet)">
-                {{ $t('app.delete') }}
+                {{ $t('Delete') }}
               </li>
             </ul>
           </div>
@@ -104,7 +104,7 @@
                 <text-input
                   :ref="'label'"
                   v-model="form.name"
-                  :label="'Name of the pet'"
+                  :label="$t('Name of the pet')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'block w-full'"
@@ -120,15 +120,15 @@
                   v-model="form.pet_category_id"
                   :data="data.pet_categories"
                   :required="true"
-                  :placeholder="$t('app.choose_value')"
+                  :placeholder="$t('Choose a value')"
                   :dropdown-class="'block w-full'"
-                  :label="'Pet category'" />
+                  :label="$t('Pet category')" />
               </div>
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedPetId = 0" />
-              <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+              <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedPetId = 0" />
+              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
             </div>
           </form>
         </li>
@@ -140,7 +140,7 @@
       v-if="localPets.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_pet.svg" :alt="$t('Pets')" class="mx-auto mt-4 h-16 w-16" />
-      <p class="px-5 pb-5 pt-2 text-center">There are no pets yet.</p>
+      <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no pets yet.') }}</p>
     </div>
   </div>
 </template>
@@ -211,7 +211,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash('The pet has been added', 'success');
+          this.flash($t('The pet has been added'), 'success');
           this.localPets.unshift(response.data.data);
           this.loadingState = '';
           this.addPetModalShown = false;
@@ -229,7 +229,7 @@ export default {
         .put(pet.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash('The pet has been edited', 'success');
+          this.flash($t('The pet has been edited'), 'success');
           this.localPets[this.localPets.findIndex((x) => x.id === pet.id)] = response.data.data;
           this.editedPetId = 0;
         })
@@ -240,11 +240,11 @@ export default {
     },
 
     destroy(pet) {
-      if (confirm('Are you sure? This will delete the pet permanently.')) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(pet.url.destroy)
           .then(() => {
-            this.flash('The pet has been deleted', 'success');
+            this.flash(this.$t('The pet has been deleted'), 'success');
             var id = this.localPets.findIndex((x) => x.id === pet.id);
             this.localPets.splice(id, 1);
           })

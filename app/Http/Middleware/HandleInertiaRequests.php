@@ -40,7 +40,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'help_links' => fn () => config('monica.help_links'),
             'help_url' => fn () => config('monica.help_center_url'),
-            'footer' => Str::markdownExternalLink(__('Version :version — commit [:short](:url).', [
+            'footer' => Str::markdownExternalLink(trans('Version :version — commit [:short](:url).', [
                 'version' => config('monica.app_version'),
                 'short' => substr(config('monica.commit'), 0, 7),
                 'url' => 'https://github.com/monicahq/chandler/commit/'.config('monica.commit'),

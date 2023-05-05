@@ -4,13 +4,9 @@
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0">
         <span class="mr-1"> 🏷 </span>
-        {{ $t('vault.settings_labels_title') }}
+        {{ $t('All the labels used in the vault') }}
       </h3>
-      <pretty-button
-        v-if="!createlabelModalShown"
-        :text="$t('vault.settings_labels_cta')"
-        :icon="'plus'"
-        @click="showLabelModal" />
+      <pretty-button v-if="!createlabelModalShown" :text="$t('Add a label')" :icon="'plus'" @click="showLabelModal" />
     </div>
 
     <!-- modal to create a new label -->
@@ -24,7 +20,7 @@
         <text-input
           :ref="'newLabel'"
           v-model="form.name"
-          :label="$t('vault.settings_labels_create_name')"
+          :label="$t('Name')"
           :type="'text'"
           :autofocus="true"
           :input-class="'block w-full'"
@@ -35,7 +31,7 @@
           @esc-key-pressed="createlabelModalShown = false" />
 
         <p class="mb-2 block text-sm">
-          {{ $t('vault.settings_labels_create_color') }}
+          {{ $t('Choose a color') }}
         </p>
         <div class="grid grid-cols-8 gap-4">
           <div v-for="color in data.label_colors" :key="color.bg_color" class="flex items-center">
@@ -57,12 +53,8 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createlabelModalShown = false" />
-        <pretty-button
-          :text="$t('vault.settings_labels_create_cta')"
-          :state="loadingState"
-          :icon="'plus'"
-          :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createlabelModalShown = false" />
+        <pretty-button :text="$t('Create label')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -80,19 +72,19 @@
             <div class="mr-2 inline-block h-4 w-4 rounded-full" :class="label.bg_color" />
             <span class="mr-2">{{ label.name }}</span>
             <span v-if="label.count > 0" class="text-xs text-gray-500"
-              >({{ $tChoice('vault.settings_labels_count', label.count, { count: label.count }) }})</span
+              >({{ $tChoice(':count contact|:count contacts', label.count, { count: label.count }) }})</span
             >
           </span>
 
           <!-- actions -->
           <ul class="text-sm">
-            <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="updateLabelModal(label)">
-              {{ $t('app.edit') }}
+            <li class="mr-4 inline cursor-pointer" @click="updateLabelModal(label)">
+              <span class="text-blue-500 hover:underline">{{ $t('Edit') }}</span>
             </li>
             <li
               class="inline cursor-pointer text-red-500 hover:text-red-900 hover:dark:text-red-100"
               @click="destroy(label)">
-              {{ $t('app.delete') }}
+              {{ $t('Delete') }}
             </li>
           </ul>
         </div>
@@ -108,7 +100,7 @@
             <text-input
               :ref="'rename' + label.id"
               v-model="form.name"
-              :label="$t('vault.settings_labels_create_name')"
+              :label="$t('Name')"
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -119,7 +111,7 @@
               @esc-key-pressed="editLabelModalShownId = 0" />
 
             <p class="mb-2 block text-sm">
-              {{ $t('vault.settings_labels_create_color') }}
+              {{ $t('Choose a color') }}
             </p>
             <div class="grid grid-cols-8 gap-4">
               <div v-for="color in data.label_colors" :key="color.bg_color" class="flex items-center">
@@ -141,8 +133,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click.prevent="editLabelModalShownId = 0" />
-            <pretty-button :text="$t('app.rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="editLabelModalShownId = 0" />
+            <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
           </div>
         </form>
       </li>
@@ -153,7 +145,7 @@
       v-if="localLabels.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">
-        {{ $t('vault.settings_labels_blank') }}
+        {{ $t('Labels let you classify contacts using a system that matters to you.') }}
       </p>
     </div>
   </div>
@@ -229,7 +221,7 @@ export default {
       axios
         .post(this.data.url.label_store, this.form)
         .then((response) => {
-          this.flash(this.$t('vault.settings_labels_create_success'), 'success');
+          this.flash(this.$t('The label has been created'), 'success');
           this.localLabels.unshift(response.data.data);
           this.loadingState = null;
           this.createlabelModalShown = false;
@@ -246,7 +238,7 @@ export default {
       axios
         .put(label.url.update, this.form)
         .then((response) => {
-          this.flash(this.$t('vault.settings_labels_update_success'), 'success');
+          this.flash(this.$t('The label has been updated'), 'success');
           this.localLabels[this.localLabels.findIndex((x) => x.id === label.id)] = response.data.data;
           this.loadingState = null;
           this.editLabelModalShownId = 0;
@@ -258,11 +250,11 @@ export default {
     },
 
     destroy(label) {
-      if (confirm(this.$t('vault.settings_labels_destroy_confirmation'))) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(label.url.destroy)
           .then(() => {
-            this.flash(this.$t('vault.settings_labels_destroy_success'), 'success');
+            this.flash(this.$t('The label has been deleted'), 'success');
             var id = this.localLabels.findIndex((x) => x.id === label.id);
             this.localLabels.splice(id, 1);
           })

@@ -9,17 +9,17 @@
             <div>
               <div class="mb-3 border-b border-gray-200 dark:border-gray-700">
                 <span class="mr-1"> 🏷️ </span>
-                {{ $t('vault.show_contacts_labels') }}
+                {{ $t('Labels') }}
               </div>
               <ul v-if="data.labels.length > 0">
                 <li class="mb-1">
                   <div v-if="data.current_label">
                     <inertia-link :href="data.url.contact.index" class="text-blue-500 hover:underline">
-                      {{ $t('app.view_all') }}
+                      {{ $t('View all') }}
                     </inertia-link>
                   </div>
                   <div v-if="!data.current_label">
-                    {{ $t('app.view_all') }}
+                    {{ $t('View all') }}
                   </div>
                 </li>
                 <li v-for="label in data.labels" :key="label.id" class="mb-1">
@@ -36,7 +36,7 @@
               </ul>
 
               <p v-else class="text-sm text-gray-500">
-                {{ $t('vault.show_contacts_labels_blank') }}
+                {{ $t('No labels yet.') }}
               </p>
             </div>
           </div>
@@ -47,12 +47,12 @@
             <div class="mb-6 flex items-center justify-between">
               <h3>
                 <span class="mr-1"> 🥸 </span>
-                {{ $t('vault.show_contacts_index') }}
+                {{ $t('All contacts in the vault') }}
               </h3>
               <pretty-link
                 v-if="layoutData.vault.permission.at_least_editor"
                 :href="data.url.contact.create"
-                :text="$t('vault.show_contacts_cta')"
+                :text="$t('Add a contact')"
                 :icon="'plus'" />
             </div>
 

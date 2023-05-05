@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="dataerror || exception" class="border-red mb-3 rounded border p-3" v-bind="$attrs">
-      <p class="mb-2 text-sm">Oops! Something went wrong.</p>
+      <p class="mb-2 text-sm">{{ $t('Oops! Something went wrong.') }}</p>
       <template v-if="dataerror">
         <p v-if="flatten[0] != 'The given data was invalid.'" class="mb0">
           {{ flatten[0] }}
@@ -19,10 +19,15 @@
           {{ errors.message }}
         </p>
         <p>
-          <a href="" @click.prevent="toggle">More errors</a>
+          <a href="" @click.prevent="toggle">
+            {{ $t('More errors') }}
+          </a>
         </p>
         <p v-show="traces">
-          <span class="mb0"> Exception {{ errors.exception }} </span>
+          <span class="mb0">
+            {{ $t('Exception:') }}
+            {{ errors.exception }}
+          </span>
           <br />
           <span v-for="trace in errors.trace" :key="trace.id">
             {{ trace.class }}{{ trace.type }}{{ trace.function }}<br />

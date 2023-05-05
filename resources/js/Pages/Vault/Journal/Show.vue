@@ -2,6 +2,7 @@
 import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
+import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
   layoutData: Object,
@@ -11,9 +12,11 @@ const props = defineProps({
 const form = useForm({});
 
 const destroy = () => {
-  if (confirm('Are you sure? This will delete the journal, and the entries, permanently.')) {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
     form.delete(props.data.url.destroy, {
-      onFinish: () => {},
+      onFinish: () => {
+        localStorage.success = trans('Changes saved');
+      },
     });
   }
 };
@@ -27,11 +30,11 @@ const destroy = () => {
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_journal_index') }}
+                {{ $t('Journals') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -77,7 +80,7 @@ const destroy = () => {
                   d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
               </svg>
 
-              Journal entries
+              {{ $t('Journal entries') }}
             </inertia-link>
 
             <inertia-link
@@ -97,7 +100,7 @@ const destroy = () => {
                   d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
               </svg>
 
-              Photos
+              {{ $t('Photos') }}
             </inertia-link>
           </div>
         </div>
@@ -107,7 +110,7 @@ const destroy = () => {
           <div class="p-3 sm:p-0">
             <!-- years -->
             <p v-if="data.years.length > 0" class="mb-2 font-medium">
-              <span class="mr-1"> 📆 </span> {{ $t('vault.journal_show_years') }}
+              <span class="mr-1"> 📆 </span> {{ $t('Years') }}
             </p>
             <ul v-if="data.years.length > 0" class="mb-8">
               <li v-for="year in data.years" :key="year.year" class="mb-2 flex items-center justify-between last:mb-0">
@@ -118,7 +121,7 @@ const destroy = () => {
 
             <!-- tags -->
             <p v-if="data.tags.length > 0" class="mb-2 font-medium">
-              <span class="mr-1"> ⚡ </span> {{ $t('vault.journal_show_tags') }}
+              <span class="mr-1"> ⚡ </span> {{ $t('All tags') }}
             </p>
             <ul v-if="data.tags.length > 0" class="">
               <li v-for="tag in data.tags" :key="tag.id" class="mb-2 flex items-center justify-between">
@@ -127,15 +130,17 @@ const destroy = () => {
               </li>
             </ul>
 
-            <inertia-link :href="data.url.journal_metrics" class="mt-6 mb-2 block text-sm text-blue-500 hover:underline"
-              >Edit journal metrics</inertia-link
+            <inertia-link
+              :href="data.url.journal_metrics"
+              class="mt-6 mb-2 block text-sm text-blue-500 hover:underline"
+              >{{ $t('Edit journal metrics') }}</inertia-link
             >
-            <inertia-link :href="data.url.edit" class="mb-2 block text-sm text-blue-500 hover:underline"
-              >Edit journal information</inertia-link
-            >
-            <span @click="destroy()" class="block cursor-pointer text-sm text-blue-500 hover:underline"
-              >Delete journal</span
-            >
+            <inertia-link :href="data.url.edit" class="mb-2 block text-sm text-blue-500 hover:underline">{{
+              $t('Edit journal information')
+            }}</inertia-link>
+            <span @click="destroy()" class="block cursor-pointer text-sm text-blue-500 hover:underline">{{
+              $t('Delete journal')
+            }}</span>
           </div>
 
           <!-- middle -->
@@ -179,7 +184,7 @@ const destroy = () => {
                             post.title
                           }}</inertia-link></span
                         >
-                        <p v-if="post.excerpt" class="">{{ post.excerpt }}</p>
+                        <p v-if="post.excerpt">{{ post.excerpt }}</p>
                       </div>
                     </li>
                   </ul>
@@ -192,7 +197,7 @@ const destroy = () => {
               <p class="p-5 text-center">
                 <img src="/img/journal_blank_index.svg" class="mx-auto block h-32 w-32 py-6" />
 
-                {{ $t('vault.journal_show_blank') }}
+                {{ $t('The journal lets you document your life with your own words.') }}
               </p>
             </div>
           </div>
@@ -204,12 +209,12 @@ const destroy = () => {
               <pretty-link
                 v-if="layoutData.vault.permission.at_least_editor"
                 :href="data.url.create"
-                :text="$t('vault.journal_show_cta')"
+                :text="$t('Create a post')"
                 :icon="'plus'" />
             </div>
 
             <!-- slices of life -->
-            <p class="mb-2 font-medium"><span class="mr-1"> 🍕 </span> Slices of life</p>
+            <p class="mb-2 font-medium"><span class="mr-1"> 🍕 </span> {{ $t('Slices of life') }}</p>
             <div v-if="data.slices.length > 0" class="mb-2">
               <div v-for="slice in data.slices" :key="slice.id" class="mb-6 last:mb-0">
                 <img v-if="slice.cover_image" class="h-32 w-full rounded-t" :src="slice.cover_image" alt="" />
@@ -227,13 +232,13 @@ const destroy = () => {
               v-if="data.slices.length == 0"
               class="mb-1 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
               <img src="/img/journal_slice_of_life_blank.svg" :alt="$t('Journal')" class="mx-auto mt-4 h-14 w-14" />
-              <p class="px-5 pb-5 pt-2 text-center">Group journal entries together with slices of life.</p>
+              <p class="px-5 pb-5 pt-2 text-center">{{ $t('Group journal entries together with slices of life.') }}</p>
             </div>
 
             <div>
-              <inertia-link :href="data.url.slice_index" class="text-sm text-blue-500 hover:underline"
-                >View all slices</inertia-link
-              >
+              <inertia-link :href="data.url.slice_index" class="text-sm text-blue-500 hover:underline">{{
+                $t('View all')
+              }}</inertia-link>
             </div>
           </div>
         </div>

@@ -93,12 +93,12 @@ const reload = () => {
 
     <div
       class="mt-6 flex w-full flex-col overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:max-w-4xl sm:rounded-lg md:flex-row">
-      <img :src="wallpaperUrl" class="w-full sm:invisible sm:w-10/12 md:visible" :alt="'Wallpaper'" />
+      <img :src="wallpaperUrl" class="w-full sm:invisible sm:w-10/12 md:visible" :alt="$t('Wallpaper')" />
       <div class="w-full">
         <div class="border-b border-gray-200 px-6 pb-6 pt-8 dark:border-gray-700">
           <h1 class="mb-4 text-center text-xl text-gray-800 dark:text-gray-200">
             <span class="mr-2"> 👋 </span>
-            Sign in to your account
+            {{ $t('Sign in to your account') }}
           </h1>
 
           <JetValidationErrors class="mb-2" />
@@ -126,7 +126,7 @@ const reload = () => {
             <div class="mb-3">
               <TextInput
                 v-model="form.email"
-                :label="'Email'"
+                :label="$t('Email')"
                 :type="'email'"
                 :autofocus="true"
                 :input-class="'block w-full'"
@@ -138,7 +138,7 @@ const reload = () => {
             <div class="mb-3">
               <TextInput
                 v-model="form.password"
-                :label="'Password'"
+                :label="$t('Password')"
                 :type="'password'"
                 :autofocus="true"
                 :input-class="'block w-full'"
@@ -150,7 +150,9 @@ const reload = () => {
             <div class="mb-3 block">
               <label class="flex items-center">
                 <JetCheckbox v-model:checked="form.remember" name="remember" />
-                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"> Remember me </span>
+                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">
+                  {{ $t('Remember me') }}
+                </span>
               </label>
             </div>
 
@@ -159,10 +161,10 @@ const reload = () => {
                 v-if="canResetPassword"
                 :href="route('password.request')"
                 class="text-sm text-blue-500 hover:underline">
-                Forgot password?
+                {{ $t('Forgot password?') }}
               </Link>
 
-              <PrettyButton :text="'Log in'" :state="loadingState" :classes="'save ml-4'" />
+              <PrettyButton :text="$t('Log in')" :state="loadingState" :classes="'save ml-4'" />
             </div>
 
             <div class="mt-3 block">
@@ -193,8 +195,10 @@ const reload = () => {
         </div>
 
         <div class="px-6 py-6 text-sm dark:text-gray-50">
-          New to Monica?
-          <Link :href="route('register')" class="text-blue-500 hover:underline"> Create an account </Link>
+          {{ $t('New to Monica?') }}
+          <Link :href="route('register')" class="text-blue-500 hover:underline">
+            {{ $t('Create an account') }}
+          </Link>
         </div>
       </div>
     </div>

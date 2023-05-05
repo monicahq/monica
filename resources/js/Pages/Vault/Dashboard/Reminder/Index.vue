@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.dashboard" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_dashboard_index') }}
+                {{ $t('Dashboard') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -24,7 +24,7 @@
               </svg>
             </li>
             <li class="inline">
-              {{ $t('app.breadcrumb_dashboard_reminders') }}
+              {{ $t('All the planned reminders') }}
             </li>
           </ul>
         </div>
@@ -63,7 +63,7 @@
             </span>
 
             <span class="font-semibold">
-              {{ $t('vault.reminders_title') }}
+              {{ $t('Reminders for the next 30 days') }}
             </span>
           </div>
         </div>
@@ -104,7 +104,7 @@
           </ul>
 
           <p v-else class="text-sm text-gray-500">
-            {{ $t('vault.reminders_blank') }}
+            {{ $t('No upcoming reminders.') }}
           </p>
         </div>
       </div>

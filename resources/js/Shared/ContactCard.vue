@@ -29,7 +29,7 @@
               </svg>
 
               <span v-if="contact.age">{{ contact.age }}</span>
-              <span v-else class="text-sm italic text-gray-600">Unknown</span>
+              <span v-else class="text-sm italic text-gray-600">{{ $t('Unknown') }}</span>
             </p>
 
             <!-- groups -->

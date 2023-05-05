@@ -18,14 +18,16 @@ return new class() extends Migration
         Schema::create('call_reason_types', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
-            $table->string('label');
+            $table->string('label')->nullable();
+            $table->string('label_translation_key')->nullable();
             $table->timestamps();
         });
 
         Schema::create('call_reasons', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(CallReasonType::class)->constrained()->cascadeOnDelete();
-            $table->string('label');
+            $table->string('label')->nullable();
+            $table->string('label_translation_key')->nullable();
             $table->timestamps();
         });
     }

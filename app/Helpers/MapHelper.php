@@ -20,17 +20,12 @@ class MapHelper
         }
 
         $encodedAddress = urlencode($addressAsString);
-        $url = '';
 
-        if ($user->default_map_site == User::MAPS_SITE_GOOGLE_MAPS) {
-            $url = "https://www.google.com/maps/place/{$encodedAddress}";
-        }
-
-        if ($user->default_map_site == User::MAPS_SITE_OPEN_STREET_MAPS) {
-            $url = "https://www.openstreetmap.org/search?query={$encodedAddress}";
-        }
-
-        return $url;
+        return match ($user->default_map_site) {
+            User::MAPS_SITE_GOOGLE_MAPS => "https://www.google.com/maps/place/{$encodedAddress}",
+            User::MAPS_SITE_OPEN_STREET_MAPS => "https://www.openstreetmap.org/search?query={$encodedAddress}",
+            default => "https://www.google.com/maps/place/{$encodedAddress}",
+        };
     }
 
     /**

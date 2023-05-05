@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
-                Contacts
+                {{ $t('Contacts') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -33,7 +33,7 @@
 
     <main class="relative sm:mt-24">
       <div class="mx-auto max-w-3xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
-        <h2 class="mb-6 text-center text-lg">Profile page of {{ data.contact.name }}</h2>
+        <h2 class="mb-6 text-center text-lg">{{ $t('Profile page of :name', { name: data.contact.name }) }}</h2>
         <div class="mb-6 rounded border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <!-- help -->
           <div
@@ -53,12 +53,18 @@
 
             <div>
               <p v-if="data.templates.length > 0" class="mb-2">
-                Please choose one template below to tell Monica how this contact should be displayed. Templates let you
-                define which data should be diplayed on the contact page.
+                {{
+                  $t(
+                    'Please choose one template below to tell Monica how this contact should be displayed. Templates let you define which data should be displayed on the contact page.',
+                  )
+                }}
               </p>
               <p v-else>
-                It seems that there are no templates in the account yet. Please add at least template to your account
-                first, then associate this template with this contact.
+                {{
+                  $t(
+                    'It seems that there are no templates in the account yet. Please add at least template to your account first, then associate this template with this contact.',
+                  )
+                }}
               </p>
             </div>
           </div>
@@ -73,7 +79,9 @@
 
                 <!-- actions -->
                 <ul class="text-sm">
-                  <li class="inline cursor-pointer text-blue-500 hover:underline" @click="submit(template)">Use</li>
+                  <li class="inline cursor-pointer text-blue-500 hover:underline" @click="submit(template)">
+                    {{ $t('Use') }}
+                  </li>
                 </ul>
               </div>
             </li>
@@ -119,7 +127,7 @@ export default {
       axios
         .put(this.data.url.update, this.form)
         .then((response) => {
-          localStorage.success = 'The template has been set';
+          localStorage.success = this.$t('The template has been set');
           this.$inertia.visit(response.data.data);
         })
         .catch((error) => {

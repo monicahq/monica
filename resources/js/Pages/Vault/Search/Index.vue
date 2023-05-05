@@ -5,9 +5,8 @@
         <form
           class="mb-8 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
           @submit.prevent="search">
-          <div
-            class="section-head border-b border-gray-200 bg-blue-50 p-5 dark:border-gray-700 dark:bg-blue-900 dark:bg-blue-900">
-            <h1 class="text-center text-2xl font-medium">Search something in the vault</h1>
+          <div class="section-head border-b border-gray-200 bg-blue-50 p-5 dark:border-gray-700 dark:bg-blue-900">
+            <h1 class="text-center text-2xl font-medium">{{ $t('Search something in the vault') }}</h1>
           </div>
           <div class="p-5">
             <text-input
@@ -16,7 +15,7 @@
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"
-              :placeholder="'Type something'"
+              :placeholder="$t('Type something')"
               :required="true"
               :autocomplete="false"
               :maxlength="255"
@@ -44,7 +43,7 @@
         <div
           v-if="form.searchTerm.length < 3"
           class="mb-6 rounded-lg border border-gray-200 bg-white p-6 text-center text-gray-500 dark:border-gray-700 dark:bg-gray-900">
-          <p>Please enter at least 3 characters to initiate a search.</p>
+          <p>{{ $t('Please enter at least 3 characters to initiate a search.') }}</p>
         </div>
       </div>
     </main>
@@ -117,5 +116,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>

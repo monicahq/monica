@@ -120,7 +120,7 @@ const destroy = (quickFact) => {
             d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
         </svg>
 
-        <p class="text-sm font-bold">Quick facts</p>
+        <p class="text-sm font-bold">{{ $t('Quick facts') }}</p>
       </div>
 
       <!-- chevrons -->
@@ -207,7 +207,7 @@ const destroy = (quickFact) => {
               <text-input
                 ref="contentField"
                 v-model="form.content"
-                :label="'Content'"
+                :label="$t('Content')"
                 :type="'text'"
                 :autofocus="true"
                 :input-class="'block w-full'"
@@ -218,25 +218,26 @@ const destroy = (quickFact) => {
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedQuickFactId = 0" />
-              <pretty-button :text="'Save'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+              <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedQuickFactId = 0" />
+              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
             </div>
           </form>
         </li>
         <li v-if="!createQuickFactModalShown" class="ml-2 mt-1">
-          <span @click="showCreateQuickFactModal()" class="cursor-pointer text-blue-500 hover:underline"
-            >+ add another</span
-          >
+          <span @click="showCreateQuickFactModal()" class="cursor-pointer text-blue-500 hover:underline">{{
+            $t('+ add another')
+          }}</span>
         </li>
       </ul>
 
       <!-- blank state -->
       <div v-if="localQuickFacts.length == 0 && !loading && !createQuickFactModalShown" class="mb-2">
         <p class="px-5 pb-2 text-center">
-          There are no quick facts here yet.
-          <span @click="showCreateQuickFactModal" class="cursor-pointer text-blue-500 hover:underline"
-            >Add one now</span
-          >
+          {{ $t('There are no quick facts here yet.') }}
+
+          <span @click="showCreateQuickFactModal" class="cursor-pointer text-blue-500 hover:underline">{{
+            $t('Add one now')
+          }}</span>
         </p>
         <img src="/img/contact_blank_quick_facts.svg" :alt="$t('Activity feed')" class="mx-auto h-20 w-20" />
       </div>
@@ -257,7 +258,7 @@ const destroy = (quickFact) => {
           <text-input
             ref="contentField"
             v-model="form.content"
-            :label="'Content'"
+            :label="$t('Content')"
             :type="'text'"
             :autofocus="true"
             :input-class="'block w-full'"
@@ -268,8 +269,8 @@ const destroy = (quickFact) => {
         </div>
 
         <div class="flex justify-between p-5">
-          <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createQuickFactModalShown = false" />
-          <pretty-button :text="'Save'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+          <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createQuickFactModalShown = false" />
+          <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
         </div>
       </form>
     </div>

@@ -16,7 +16,8 @@ class CreateContactInformationType extends BaseService implements ServiceInterfa
         return [
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
+            'name_translation_key' => 'nullable|string|max:255',
             'protocol' => 'nullable|string|max:255',
         ];
     }
@@ -41,7 +42,8 @@ class CreateContactInformationType extends BaseService implements ServiceInterfa
 
         $type = ContactInformationType::create([
             'account_id' => $data['account_id'],
-            'name' => $data['name'],
+            'name' => $data['name'] ?? null,
+            'name_translation_key' => $data['name_translation_key'] ?? null,
             'protocol' => $this->valueOrNull($data, 'protocol'),
         ]);
 

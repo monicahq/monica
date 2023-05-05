@@ -251,14 +251,14 @@ class UserPreferencesIndexViewHelperTest extends TestCase
             [
                 0 => [
                     'id' => 1,
-                    'type' => trans('settings.user_preferences_map_site_google_maps'),
-                    'description' => trans('settings.user_preferences_map_site_google_maps_description'),
+                    'type' => 'Google Maps',
+                    'description' => trans('Google Maps offers the best accuracy and details, but it is not ideal from a privacy standpoint.'),
                     'value' => User::MAPS_SITE_GOOGLE_MAPS,
                 ],
                 1 => [
                     'id' => 2,
-                    'type' => trans('settings.user_preferences_map_site_open_street_maps'),
-                    'description' => trans('settings.user_preferences_map_site_open_street_maps_description'),
+                    'type' => 'Open Street Maps',
+                    'description' => trans('Open Street Maps is a great privacy alternative, but offers less details.'),
                     'value' => User::MAPS_SITE_OPEN_STREET_MAPS,
                 ],
             ],
@@ -273,15 +273,10 @@ class UserPreferencesIndexViewHelperTest extends TestCase
             'locale' => 'fr',
         ]);
         $array = UserPreferencesIndexViewHelper::dtoLocale($user);
-        $this->assertEquals(
-            [
-                'locale' => 'fr',
-                'locale_i18n' => 'French',
-                'url' => [
-                    'store' => env('APP_URL').'/settings/preferences/locale',
-                ],
-            ],
-            $array
-        );
+        $this->assertEquals('fr', $array['locale']);
+        $this->assertEquals('Français', $array['locale_i18n']);
+        $this->assertEquals([
+            'store' => env('APP_URL').'/settings/preferences/locale',
+        ], $array['url']);
     }
 }

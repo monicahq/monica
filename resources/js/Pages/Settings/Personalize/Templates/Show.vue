@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings') }}
+                {{ $t('Settings') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -25,7 +25,7 @@
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings_personalize') }}
+                {{ $t('Personalize your account') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -40,7 +40,7 @@
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.templates" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings_personalize_templates') }}
+                {{ $t('Templates') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -87,13 +87,21 @@
 
           <div>
             <p class="mb-1">
-              {{ $t('settings.personalize_template_show_title') }}
+              {{ $t('This template will define what information are displayed on a contact page.') }}
             </p>
             <p class="mb-1">
-              {{ $t('settings.personalize_template_show_description') }}
+              {{
+                $t(
+                  'A template is made of pages, and in each page, there are modules. How data is displayed is entirely up to you.',
+                )
+              }}
             </p>
             <p>
-              {{ $t('settings.personalize_template_show_description_2') }}
+              {{
+                $t(
+                  'Note that removing a module from a page will not delete the actual data on your contact pages. It will simply hide it.',
+                )
+              }}
             </p>
           </div>
         </div>

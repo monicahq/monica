@@ -14,7 +14,7 @@ defineProps({
       <div class="mx-auto max-w-4xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <h3 class="mb-6 font-semibold">
           <span class="mr-1"> 👥 </span>
-          {{ $t('vault.show_groups_index') }}
+          {{ $t('All groups in the vault') }}
         </h3>
 
         <div v-if="data.length != 0">
@@ -42,7 +42,7 @@ defineProps({
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <img src="/img/group_blank.svg" :alt="$t('Groups')" class="mx-auto mt-4 h-36 w-36" />
           <p class="px-5 pb-5 pt-2 text-center">
-            {{ $t('vault.show_groups_blank') }}
+            {{ $t('Groups let you put your contacts together in a single place.') }}
           </p>
         </div>
       </div>

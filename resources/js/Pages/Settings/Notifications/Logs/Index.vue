@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings') }}
+                {{ $t('Settings') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -25,7 +25,7 @@
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.channels" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings_notification_channels') }}
+                {{ $t('Notification channels') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -39,7 +39,7 @@
               </svg>
             </li>
             <li class="inline">
-              {{ $t('app.breadcrumb_settings_notification_channels_log_details') }}
+              {{ $t('Log details') }}
             </li>
           </ul>
         </div>
@@ -51,15 +51,15 @@
         <!-- title + cta -->
         <div class="mb-3 mt-8 sm:mt-0">
           <h3 class="mb-4 text-center sm:mb-0">
-            {{ $t('settings.notification_channels_log_title') }}
+            {{ $t('History of the notification sent') }}
           </h3>
           <ul class="bulleted-list text-center">
             <li class="mr-2 inline">
-              <span class="text-gray-500">{{ $t('settings.notification_channels_log_type') }}</span>
+              <span class="text-gray-500">{{ $t('Type:') }}</span>
               {{ data.channel.type }}
             </li>
             <li class="inline">
-              <span class="text-gray-500">{{ $t('settings.notification_channels_log_label') }}</span>
+              <span class="text-gray-500">{{ $t('Label:') }}</span>
               {{ data.channel.label }}
             </li>
           </ul>
@@ -82,7 +82,11 @@
 
           <div>
             <p>
-              {{ $t('settings.notification_channels_log_help') }}
+              {{
+                $t(
+                  'This page shows all the notifications that have been sent in this channel in the past. It primarily serves as a way to debug in case you don’t receive the notification you’ve set up.',
+                )
+              }}
             </p>
           </div>
         </div>
@@ -104,7 +108,7 @@
           v-if="data.notifications.length == 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">
-            {{ $t('settings.notification_channels_log_blank') }}
+            {{ $t('You haven’t received a notification in this channel yet.') }}
           </p>
         </div>
       </div>

@@ -17,4 +17,32 @@ class GiftStateTest extends TestCase
 
         $this->assertTrue($state->account()->exists());
     }
+
+    /** @test */
+    public function it_gets_the_default_label()
+    {
+        $giftState = GiftState::factory()->create([
+            'label' => null,
+            'label_translation_key' => 'template.label',
+        ]);
+
+        $this->assertEquals(
+            'template.label',
+            $giftState->label
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_custom_label_if_defined()
+    {
+        $giftState = GiftState::factory()->create([
+            'label' => 'this is the real label',
+            'label_translation_key' => 'template.label',
+        ]);
+
+        $this->assertEquals(
+            'this is the real label',
+            $giftState->label
+        );
+    }
 }

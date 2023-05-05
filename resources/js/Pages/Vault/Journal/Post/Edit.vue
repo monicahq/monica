@@ -8,8 +8,9 @@ import SlicesOfLife from '@/Pages/Vault/Journal/Post/Partials/SlicesOfLife.vue';
 import PostMetrics from '@/Pages/Vault/Journal/Post/Partials/PostMetrics.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
-import { onMounted, watch, ref } from 'vue';
+import { onBeforeMount, onMounted, watch, ref } from 'vue';
 import { debounce } from 'lodash';
+import { trans } from 'laravel-vue-i18n';
 import ContactSelector from '@/Shared/Form/ContactSelector.vue';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 import JetDangerButton from '@/Components/Jetstream/DangerButton.vue';
@@ -34,7 +35,7 @@ const form = useForm({
 });
 
 const saveInProgress = ref(false);
-const statistics = ref([]);
+const statistics = ref(null);
 const deletePhotoModalShown = ref(false);
 const photoToDelete = ref(null);
 const processPhotoDeletion = ref(false);
@@ -44,9 +45,13 @@ const modelConfig = ref({
   mask: 'YYYY-MM-DD',
 });
 
+// if this code is inside onMounted, it will not work, and I don't know why
+
+onBeforeMount(() => {
+  statistics.value = props.data.statistics;
+});
 onMounted(() => {
   form.title = props.data.title;
-  statistics.value = props.data.statistics;
   form.contacts = props.data.contacts;
   form.date = props.data.editable_date;
   localPhotos.value = props.data.photos;
@@ -151,7 +156,7 @@ const update = () => {
 };
 
 const destroy = () => {
-  if (confirm('Are you sure you want to delete this post?')) {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
     form.delete(props.data.url.destroy, {
       onFinish: () => {},
     });
@@ -167,11 +172,11 @@ const destroy = () => {
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_journal_index') }}
+                {{ $t('Journals') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -215,7 +220,7 @@ const destroy = () => {
               </svg>
             </li>
             <li class="relative inline">
-              {{ $t('app.breadcrumb_post_edit') }}
+              {{ $t('Edit a post') }}
             </li>
           </ul>
         </div>
@@ -249,7 +254,7 @@ const destroy = () => {
                   <span
                     class="inline cursor-pointer text-red-500 hover:text-red-900"
                     @click="showDeletePhotoModal(photo)">
-                    {{ $t('app.delete') }}
+                    {{ $t('Delete') }}
                   </span>
                 </li>
               </ul>
@@ -280,14 +285,14 @@ const destroy = () => {
                       d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                   </svg>
 
-                  <p class="text-sm text-gray-500">Add photos</p>
+                  <p class="text-sm text-gray-500">{{ $t('Add photos') }}</p>
                 </div>
 
                 <!-- case when there are photos -->
                 <div v-else class="mb-6 flex items-center">
                   <p
                     class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300">
-                    + Add another photo
+                    {{ $t('+ Add another photo') }}
                   </p>
                 </div>
               </uploadcare>
@@ -297,7 +302,7 @@ const destroy = () => {
                 v-if="!data.uploadcarePublicKey"
                 class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                 <p class="p-5 text-center">
-                  {{ $t('contact.photos_key_missing') }}
+                  {{ $t('The keys to manage uploads have not been set in this Monica instance.') }}
                 </p>
               </div>
 
@@ -306,7 +311,7 @@ const destroy = () => {
                 v-if="!data.canUploadFile"
                 class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                 <p class="bg-gray-100 p-3 text-center">
-                  <span class="mr-1">⚠️</span> {{ $t('contact.photos_not_enough_storage') }}
+                  <span class="mr-1">⚠️</span> {{ $t('You don’t have enough space left in your account.') }}
                 </p>
               </div>
             </div>
@@ -318,7 +323,7 @@ const destroy = () => {
                 <text-input
                   :ref="'newTitle'"
                   v-model="form.title"
-                  :label="'Title'"
+                  :label="$t('Title')"
                   :type="'text'"
                   :input-class="'block w-full mb-6'"
                   :required="true"
@@ -345,7 +350,7 @@ const destroy = () => {
             <!-- Publish action -->
             <div class="mb-2 rounded-lg border border-gray-200 text-center dark:border-gray-700 dark:bg-gray-900">
               <div class="bg-form rounded-b-lg p-5">
-                <pretty-link :href="data.url.show" :text="'Close'" :icon="'exit'" />
+                <pretty-link :href="data.url.show" :text="$t('Close')" :icon="'exit'" />
               </div>
             </div>
 
@@ -365,7 +370,7 @@ const destroy = () => {
                     d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
                 </svg>
 
-                <span>Auto saved a few seconds ago</span>
+                <span>{{ $t('Auto saved a few seconds ago') }}</span>
               </div>
 
               <div v-if="saveInProgress" class="flex items-center justify-center">
@@ -375,13 +380,13 @@ const destroy = () => {
                   <div class="dot"></div>
                 </div>
 
-                <span>Saving in progress</span>
+                <span>{{ $t('Saving in progress') }}</span>
               </div>
             </div>
 
             <!-- written at -->
             <p class="mb-2 flex items-center font-bold">
-              <span>Written on</span>
+              <span>{{ $t('Written on') }}</span>
             </p>
             <v-date-picker v-model="form.date" :model-config="modelConfig" class="mb-6 inline-block">
               <template v-slot="{ inputValue, inputEvents }">
@@ -394,7 +399,7 @@ const destroy = () => {
 
             <!-- contacts -->
             <p class="mb-2 flex items-center font-bold">
-              <span>Contacts in this post</span>
+              <span>{{ $t('Contacts in this post') }}</span>
             </p>
             <contact-selector
               v-model="form.contacts"
@@ -415,7 +420,7 @@ const destroy = () => {
             <tags :data="data" />
 
             <!-- stats -->
-            <p class="mb-2 font-bold">Statistics</p>
+            <p class="mb-2 font-bold">{{ $t('Statistics') }}</p>
             <ul class="mb-6 text-sm">
               <li class="mb-2 flex items-center">
                 <svg
@@ -431,7 +436,9 @@ const destroy = () => {
                     d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
                 </svg>
 
-                <span>{{ statistics.word_count }} words</span>
+                <span>{{
+                  $tChoice(':count word|:count words', statistics.word_count, { count: statistics.word_count })
+                }}</span>
               </li>
               <li class="mb-2 flex items-center">
                 <svg
@@ -447,7 +454,11 @@ const destroy = () => {
                     d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
 
-                <span>{{ statistics.time_to_read_in_minute }} min read</span>
+                <span>{{
+                  $tChoice(':count min read', statistics.time_to_read_in_minute, {
+                    count: statistics.time_to_read_in_minute,
+                  })
+                }}</span>
               </li>
               <li class="flex items-center">
                 <svg
@@ -464,12 +475,16 @@ const destroy = () => {
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
 
-                <span>Read {{ statistics.view_count }} times</span>
+                <span>{{
+                  $tChoice('Read :count time|Read :count times', statistics.view_count, {
+                    count: statistics.view_count,
+                  })
+                }}</span>
               </li>
             </ul>
 
             <!-- delete -->
-            <div @click="destroy" class="cursor-pointer text-red-500 hover:text-red-900">{{ $t('app.delete') }}</div>
+            <div @click="destroy" class="cursor-pointer text-red-500 hover:text-red-900">{{ $t('Delete') }}</div>
           </div>
         </div>
       </div>
@@ -482,7 +497,7 @@ const destroy = () => {
       </template>
 
       <template #content>
-        {{ $t('Are you sure? The photo will be deleted immediately.') }}
+        {{ $t('Are you sure? This action cannot be undone.') }}
       </template>
 
       <template #footer>

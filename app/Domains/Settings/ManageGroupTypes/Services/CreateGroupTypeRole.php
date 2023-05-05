@@ -21,7 +21,8 @@ class CreateGroupTypeRole extends BaseService implements ServiceInterface
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
             'group_type_id' => 'required|integer|exists:group_types,id',
-            'label' => 'required|string|max:255',
+            'label' => 'nullable|string|max:255',
+            'label_translation_key' => 'nullable|string|max:255',
         ];
     }
 
@@ -66,7 +67,8 @@ class CreateGroupTypeRole extends BaseService implements ServiceInterface
 
         $this->groupTypeRole = GroupTypeRole::create([
             'group_type_id' => $this->data['group_type_id'],
-            'label' => $this->data['label'],
+            'label' => $this->data['label'] ?? null,
+            'label_translation_key' => $this->data['label_translation_key'] ?? null,
             'position' => $newPosition,
         ]);
     }

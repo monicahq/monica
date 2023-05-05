@@ -16,7 +16,8 @@ class CreateRelationshipGroupType extends BaseService implements ServiceInterfac
         return [
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
+            'name_translation_key' => 'nullable|string|max:255',
             'type' => 'nullable|string|max:255',
             'can_be_deleted' => 'required|boolean',
         ];
@@ -42,7 +43,8 @@ class CreateRelationshipGroupType extends BaseService implements ServiceInterfac
 
         $type = RelationshipGroupType::create([
             'account_id' => $data['account_id'],
-            'name' => $data['name'],
+            'name' => $data['name'] ?? null,
+            'name_translation_key' => $data['name_translation_key'] ?? null,
             'type' => $this->valueOrNull($data, 'type'),
             'can_be_deleted' => $data['can_be_deleted'],
         ]);

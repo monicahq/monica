@@ -20,10 +20,10 @@
           </svg>
         </span>
 
-        <span class="font-semibold"> Reminders </span>
+        <span class="font-semibold"> {{ $t('Reminders') }} </span>
       </div>
       <pretty-button
-        :text="'Add a reminder'"
+        :text="$t('Add a reminder')"
         :icon="'plus'"
         :classes="'sm:w-fit w-full'"
         @click="showCreateReminderModal" />
@@ -44,7 +44,7 @@
           <text-input
             :ref="'label'"
             v-model="form.label"
-            :label="'Name of the reminder'"
+            :label="$t('Name of the reminder')"
             :type="'text'"
             :autofocus="true"
             :input-class="'block w-full'"
@@ -67,7 +67,7 @@
             <label
               for="full_date"
               class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-              I know the exact date, including the year
+              {{ $t('I know the exact date, including the year') }}
             </label>
           </div>
           <div v-if="form.choice == 'full_date'" class="mb-4 ml-6">
@@ -93,7 +93,7 @@
             <label
               for="month_day"
               class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-              I only know the day and month, not the year
+              {{ $t('I only know the day and month, not the year') }}
             </label>
           </div>
           <div v-if="form.choice == 'month_day'" class="ml-6 mt-2 flex">
@@ -102,26 +102,26 @@
               :data="data.months"
               :required="true"
               :div-outer-class="'mb-5 mr-2'"
-              :placeholder="$t('app.choose_value')"
+              :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
-              :label="'Month'" />
+              :label="$t('Month')" />
 
             <dropdown
               v-model="form.day"
               :data="data.days"
               :required="true"
               :div-outer-class="'mb-5'"
-              :placeholder="$t('app.choose_value')"
+              :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
-              :label="'Day'" />
+              :label="$t('Day')" />
           </div>
         </div>
 
         <!-- reminder options -->
         <div class="p-5">
-          <p class="mb-1">How often should we remind you about this date?</p>
+          <p class="mb-1">{{ $t('How often should we remind you about this date?') }}</p>
           <p class="mb-1 text-sm text-gray-600 dark:text-gray-400">
-            If the date is in the past, the next occurence of the date will be next year.
+            {{ $t('If the date is in the past, the next occurence of the date will be next year.') }}
           </p>
 
           <div class="ml-4 mt-4">
@@ -136,7 +136,7 @@
               <label
                 for="one_time"
                 class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                Only once, when the next occurence of the date occurs.
+                {{ $t('Only once, when the next occurence of the date occurs.') }}
               </label>
             </div>
 
@@ -183,8 +183,8 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="addReminderModalShown = false" />
-        <pretty-button :text="'Add date'" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="addReminderModalShown = false" />
+        <pretty-button :text="$t('Add date')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -223,10 +223,10 @@
               <li
                 class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
                 @click="showEditReminderModal(reminder)">
-                {{ $t('app.edit') }}
+                {{ $t('Edit') }}
               </li>
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(reminder)">
-                {{ $t('app.delete') }}
+                {{ $t('Delete') }}
               </li>
             </ul>
           </div>
@@ -243,7 +243,7 @@
                 <text-input
                   :ref="'label' + reminder.id"
                   v-model="form.label"
-                  :label="'Name of the reminder'"
+                  :label="$t('Name of the reminder')"
                   :type="'text'"
                   :autofocus="true"
                   :input-class="'block w-full'"
@@ -266,7 +266,7 @@
                   <label
                     for="full_date"
                     class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    I know the exact date, including the year
+                    {{ $t('I know the exact date, including the year') }}
                   </label>
                 </div>
                 <div v-if="form.choice == 'full_date'" class="mb-4 ml-6">
@@ -292,7 +292,7 @@
                   <label
                     for="month_day"
                     class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    I only know the day and month, not the year
+                    {{ $t('I only know the day and month, not the year') }}
                   </label>
                 </div>
                 <div v-if="form.choice == 'month_day'" class="ml-6 mt-2 flex">
@@ -301,25 +301,25 @@
                     :data="data.months"
                     :required="true"
                     :div-outer-class="'mr-2'"
-                    :placeholder="$t('app.choose_value')"
+                    :placeholder="$t('Choose a value')"
                     :dropdown-class="'block w-full'"
-                    :label="'Month'" />
+                    :label="$t('Month')" />
 
                   <dropdown
                     v-model="form.day"
                     :data="data.days"
                     :required="true"
-                    :placeholder="$t('app.choose_value')"
+                    :placeholder="$t('Choose a value')"
                     :dropdown-class="'block w-full'"
-                    :label="'Day'" />
+                    :label="$t('Day')" />
                 </div>
               </div>
 
               <!-- reminder options -->
               <div class="p-5">
-                <p class="mb-1">How often should we remind you about this date?</p>
+                <p class="mb-1">{{ $t('How often should we remind you about this date?') }}</p>
                 <p class="mb-1 text-sm text-gray-600 dark:text-gray-400">
-                  If the date is in the past, the next occurence of the date will be next year.
+                  {{ $t('If the date is in the past, the next occurence of the date will be next year.') }}
                 </p>
 
                 <div class="ml-4 mt-4">
@@ -334,7 +334,7 @@
                     <label
                       for="one_time"
                       class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Only once, when the next occurence of the date occurs.
+                      {{ $t('Only once, when the next occurence of the date occurs.') }}
                     </label>
                   </div>
 
@@ -381,8 +381,8 @@
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editedReminderId = 0" />
-              <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+              <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedReminderId = 0" />
+              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
             </div>
           </form>
         </li>
@@ -394,7 +394,7 @@
       v-if="localReminders.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/dashboard_blank_reminders.svg" :alt="$t('Reminders')" class="mx-auto mt-4 h-14 w-14" />
-      <p class="px-5 pb-5 pt-2 text-center">There are no reminders yet.</p>
+      <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no reminders yet.') }}</p>
     </div>
   </div>
 </template>
@@ -485,7 +485,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash('The reminder has been created', 'success');
+          this.flash(this.$t('The reminder has been created'), 'success');
           this.localReminders.unshift(response.data.data);
           this.loadingState = '';
           this.addReminderModalShown = false;
@@ -503,7 +503,7 @@ export default {
         .put(reminder.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash('The reminder has been edited', 'success');
+          this.flash(this.$t('The reminder has been edited'), 'success');
           this.localReminders[this.localReminders.findIndex((x) => x.id === reminder.id)] = response.data.data;
           this.editedReminderId = 0;
         })
@@ -514,11 +514,11 @@ export default {
     },
 
     destroy(reminder) {
-      if (confirm('Are you sure? This will delete the reminder permanently.')) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(reminder.url.destroy)
           .then(() => {
-            this.flash('The reminder has been deleted', 'success');
+            this.flash(this.$t('The reminder has been deleted'), 'success');
             var id = this.localReminders.findIndex((x) => x.id === reminder.id);
             this.localReminders.splice(id, 1);
           })

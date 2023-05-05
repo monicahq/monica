@@ -17,7 +17,8 @@ return new class() extends Migration
         Schema::create('contact_information_types', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
-            $table->string('name');
+            $table->string('name')->nullable();
+            $table->string('name_translation_key')->nullable();
             $table->string('protocol')->nullable();
             $table->boolean('can_be_deleted')->default(true);
             $table->string('type')->nullable();

@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_contact_index') }}
+                {{ $t('Contacts') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -25,7 +25,7 @@
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.show" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_contact_show', { name: data.contact.name }) }}
+                {{ $t('Profile of :name', { name: data.contact.name }) }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -40,7 +40,7 @@
             </li>
             <li class="inline">
               <inertia-link :href="data.url.index" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_contact_photo') }}
+                {{ $t('All the photos') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -98,7 +98,7 @@
           </div>
 
           <span class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(data)">
-            {{ $t('app.delete') }}
+            {{ $t('Delete') }}
           </span>
         </div>
 
@@ -131,11 +131,11 @@ export default {
 
   methods: {
     destroy(photo) {
-      if (confirm(this.$t('contact.documents_delete_confirm'))) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(photo.url.destroy)
           .then((response) => {
-            localStorage.success = this.$t('contact.photos_delete_success');
+            localStorage.success = this.$t('The photo has been deleted');
             this.$inertia.visit(response.data.data);
           })
           .catch((error) => {

@@ -1,12 +1,12 @@
 @component('mail::message')
-# Please join Monica
+# @lang('Please join Monica')
 
-{{ $userName }} invites you to join Monica, an open source personal CRM, designed to help you document your relationships.
+@lang(':userName invites you to join Monica, an open source personal CRM, designed to help you document your relationships.', ['userName' => $userName])
 
 @component('mail::button', ['url' => $url])
-Accept invitation and create your account
+@lang('Accept invitation and create your account')
 @endcomponent
 
-Thanks,<br>
+@lang('Thanks,')<br>
 {{ config('app.name') }}
 @endcomponent

@@ -20,7 +20,7 @@
               </svg>
             </span>
 
-            {{ $t('vault.tasks_title') }}
+            {{ $t('Due and upcoming tasks') }}
           </div>
         </div>
 
@@ -88,7 +88,7 @@
           v-if="data.length <= 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">
-            {{ $t('vault.tasks_blank') }}
+            {{ $t('No tasks.') }}
           </p>
         </div>
       </div>

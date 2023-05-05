@@ -43,4 +43,32 @@ class ModuleTest extends TestCase
 
         $this->assertTrue($module->templatePages()->exists());
     }
+
+    /** @test */
+    public function it_gets_the_default_label()
+    {
+        $module = Module::factory()->create([
+            'name' => null,
+            'name_translation_key' => 'bla',
+        ]);
+
+        $this->assertEquals(
+            'bla',
+            $module->name
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_custom_label_if_defined()
+    {
+        $module = Module::factory()->create([
+            'name' => 'this is the real name',
+            'name_translation_key' => 'bla',
+        ]);
+
+        $this->assertEquals(
+            'this is the real name',
+            $module->name
+        );
+    }
 }

@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.settings.index" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings') }}
+                {{ $t('Settings') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -24,7 +24,7 @@
               </svg>
             </li>
             <li class="inline">
-              {{ $t('app.breadcrumb_settings_users') }}
+              {{ $t('Users') }}
             </li>
           </ul>
         </div>
@@ -37,9 +37,9 @@
         <div class="mb-6 flex items-center justify-between">
           <h3>
             <span class="mr-1"> 🥸 </span>
-            {{ $t('settings.users_management_title') }}
+            {{ $t('All users in this account') }}
           </h3>
-          <pretty-link :href="data.url.users.create" :text="$t('settings.users_management_cta')" :icon="'plus'" />
+          <pretty-link :href="data.url.users.create" :text="$t('Invite a new user')" :icon="'plus'" />
         </div>
 
         <!-- list of users -->
@@ -59,7 +59,7 @@
                   <span
                     v-if="user.is_account_administrator"
                     class="ml-2 rounded bg-neutral-200 px-2 py-1 text-xs text-neutral-500"
-                    >{{ $t('settings.users_management_administrator') }}</span
+                    >{{ $t('Administrator') }}</span
                   >
                 </span>
 
@@ -78,7 +78,7 @@
                       d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
 
-                  {{ $t('settings.users_management_invitation_sent') }}
+                  {{ $t('Invitation sent') }}
                 </span>
               </div>
             </div>
@@ -92,7 +92,7 @@
                   <span
                     v-if="user.is_account_administrator"
                     class="ml-2 rounded bg-neutral-200 px-2 py-1 text-xs text-neutral-500"
-                    >{{ $t('settings.users_management_administrator') }}</span
+                    >{{ $t('Administrator') }}</span
                   >
                 </span>
 
@@ -101,11 +101,11 @@
 
               <!-- actions -->
               <ul v-if="!user.is_logged_user" class="text-sm">
-                <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="showEditModal(user)">
-                  {{ $t('app.edit') }}
+                <li class="mr-4 inline cursor-pointer" @click="showEditModal(user)">
+                  <span class="text-blue-500 hover:underline">{{ $t('Edit') }}</span>
                 </li>
                 <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(user)">
-                  {{ $t('app.delete') }}
+                  {{ $t('Delete') }}
                 </li>
               </ul>
             </div>
@@ -116,7 +116,7 @@
                 <errors :errors="form.errors" />
 
                 <p class="mb-2 block text-sm">
-                  {{ $t('settings.users_management_permission', { name: user.name }) }}
+                  {{ $t('What permission should :name have?', { name: user.name }) }}
                 </p>
                 <div class="mb-2 flex items-start">
                   <input
@@ -129,7 +129,7 @@
                   <label
                     for="viewer"
                     class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {{ $t('settings.users_management_regular_user') }}
+                    {{ $t('Regular user') }}
                   </label>
                 </div>
 
@@ -145,17 +145,21 @@
                   <label
                     for="manager"
                     class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {{ $t('settings.users_management_administrator_role') }}
+                    {{ $t('Administrator') }}
                     <span class="ml-4 font-normal text-gray-500">
-                      {{ $t('settings.users_management_administrator_role_help') }}
+                      {{
+                        $t(
+                          'Can do everything, including adding or removing other users, managing billing and closing the account.',
+                        )
+                      }}
                     </span>
                   </label>
                 </div>
               </div>
 
               <div class="flex justify-between p-5">
-                <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click.prevent="editModalshownId = 0" />
-                <pretty-button :text="$t('app.update')" :state="loadingState" :icon="'check'" :classes="'save'" />
+                <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="editModalshownId = 0" />
+                <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :classes="'save'" />
               </div>
             </form>
           </li>
@@ -221,7 +225,7 @@ export default {
         .put(user.url.update, this.form)
         .then((response) => {
           this.editModalshownId = 0;
-          this.flash(this.$t('settings.users_management_update_success'), 'success');
+          this.flash(this.$t('The user has been updated'), 'success');
           this.localUsers[this.localUsers.findIndex((x) => x.id === user.id)] = response.data.data;
           this.loadingState = null;
         })
@@ -232,9 +236,9 @@ export default {
     },
 
     destroy(user) {
-      if (confirm(this.$t('settings.users_management_delete_confirmation'))) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios.delete(user.url.destroy).then(() => {
-          this.flash(this.$t('settings.users_management_delete_success'), 'success');
+          this.flash(this.$t('The user has been deleted'), 'success');
           var id = this.localUsers.findIndex((x) => x.id === user.id);
           this.localUsers.splice(id, 1);
         });

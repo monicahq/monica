@@ -90,7 +90,7 @@ const clearPhotoFileInput = () => {
         <!-- Profile Photo File Input -->
         <input ref="photoInput" type="file" class="hidden" @change="updatePhotoPreview" />
 
-        <JetLabel for="photo" value="Photo" />
+        <JetLabel for="photo" ::value="$t('Photo')" />
 
         <!-- Current Profile Photo -->
         <div v-show="!photoPreview" class="mt-2">
@@ -117,7 +117,7 @@ const clearPhotoFileInput = () => {
 
       <!-- First Name -->
       <div class="col-span-6 mb-4 sm:col-span-4">
-        <JetLabel for="first_name" value="First name" />
+        <JetLabel for="first_name" :value="$t('First name')" />
         <JetInput
           id="first_name"
           v-model="form.first_name"
@@ -129,7 +129,7 @@ const clearPhotoFileInput = () => {
 
       <!-- Last Name -->
       <div class="col-span-6 mb-4 sm:col-span-4">
-        <JetLabel for="last_name" value="Last name" />
+        <JetLabel for="last_name" :value="$t('Last name')" />
         <JetInput
           id="last_name"
           v-model="form.last_name"
@@ -141,7 +141,7 @@ const clearPhotoFileInput = () => {
 
       <!-- Email -->
       <div class="col-span-6 mb-4 sm:col-span-4">
-        <JetLabel for="email" value="Email" />
+        <JetLabel for="email" :value="$t('Email')" />
         <JetInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" autocomplete="email" />
         <JetInputError :message="form.errors.email" class="mt-2" />
       </div>

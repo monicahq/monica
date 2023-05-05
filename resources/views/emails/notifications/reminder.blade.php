@@ -1,14 +1,14 @@
 @component('mail::message')
-# Hi {{ $name }}
+# @lang('Hi :name', ['name' => $name])
 
-You wanted to be reminded of the following:
+@lang('You wanted to be reminded of the following:')
 
 {{ $reason }}
 
-For:
+@lang('For:')
 
 {{ $contactName }}
 
-Have a great day,<br>
+@lang('Have a great day,')<br>
 {{ config('app.name') }}
 @endcomponent

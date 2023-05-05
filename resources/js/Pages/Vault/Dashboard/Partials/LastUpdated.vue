@@ -14,7 +14,7 @@
       </span>
 
       <span class="mr-2 inline">
-        {{ $t('vault.dashboard_last_updated_contacts_title') }}
+        {{ $t('Last updated') }}
       </span>
 
       <help :url="$page.props.help_links.last_updated_contacts" :top="'4px'" />

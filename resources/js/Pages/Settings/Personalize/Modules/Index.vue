@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings') }}
+                {{ $t('Settings') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -25,7 +25,7 @@
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings_personalize') }}
+                {{ $t('Personalize your account') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -95,7 +95,7 @@
                   :input-class="'block w-full'"
                   :required="true"
                   :autocomplete="false"
-                  :placeholder="'Filter'"
+                  :placeholder="$t('Filter')"
                   :maxlength="255" />
               </div>
 
@@ -265,10 +265,10 @@
 
             <!-- actions -->
             <div class="flex justify-between p-5">
-              <pretty-link :href="data.url.back" :text="$t('app.cancel')" :classes="'mr-3'" />
+              <pretty-link :href="data.url.back" :text="$t('Cancel')" :classes="'mr-3'" />
               <pretty-button
                 :href="'data.url.vault.create'"
-                :text="$t('app.add')"
+                :text="$t('Add')"
                 :state="loadingState"
                 :icon="'check'"
                 :classes="'save'" />

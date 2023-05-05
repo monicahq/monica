@@ -6,6 +6,7 @@ import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { onMounted, ref, nextTick } from 'vue';
+import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
   data: Object,
@@ -105,7 +106,7 @@ const update = (lifeEventCategory) => {
 };
 
 const destroy = (lifeEventCategory) => {
-  if (confirm('Are you sure? This can not be undone.')) {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
     axios
       .delete(lifeEventCategory.url.destroy)
       .then(() => {
@@ -174,7 +175,7 @@ const updateLifeEventType = (lifeEventType) => {
 };
 
 const destroyLifeEventType = (lifeEventType) => {
-  if (confirm('Are you sure? This can not be undone.')) {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
     axios
       .delete(lifeEventType.url.destroy)
       .then(() => {
@@ -200,16 +201,16 @@ const destroyLifeEventType = (lifeEventType) => {
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0">
         <span class="mr-1"> 👩‍🍼 </span>
-        Life event types and categories
+        {{ $t('Life event types and categories') }}
       </h3>
       <pretty-button
         v-if="!createLifeEventCategoryModalShown"
-        :text="'Add a life event category'"
+        :text="$t('Add a life event category')"
         :icon="'plus'"
         @click="showCreateLifeEventCategoryModal" />
     </div>
 
-    <!-- modal to create a post template -->
+    <!-- modal to create a life event category -->
     <form
       v-if="createLifeEventCategoryModalShown"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
@@ -220,7 +221,7 @@ const destroyLifeEventType = (lifeEventType) => {
         <text-input
           ref="newLifeEventCategory"
           v-model="form.label"
-          :label="'Name'"
+          :label="$t('Name')"
           :type="'text'"
           :autofocus="true"
           :input-class="'block w-full'"
@@ -231,8 +232,8 @@ const destroyLifeEventType = (lifeEventType) => {
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createLifeEventCategoryModalShown = false" />
-        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createLifeEventCategoryModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -274,20 +275,18 @@ const destroyLifeEventType = (lifeEventType) => {
 
                 <!-- actions -->
                 <ul class="text-sm">
-                  <li
-                    class="inline cursor-pointer text-blue-500 hover:underline"
-                    @click="renameLifeEventCategoryModal(element)">
-                    {{ $t('app.rename') }}
+                  <li class="inline cursor-pointer" @click="renameLifeEventCategoryModal(element)">
+                    <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                   </li>
                   <li class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">
-                    {{ $t('app.delete') }}
+                    {{ $t('Delete') }}
                   </li>
                 </ul>
               </div>
 
               <!-- available life event types -->
               <div class="ml-8">
-                <p class="mb-1 text-sm text-gray-500">Life event types:</p>
+                <p class="mb-1 text-sm text-gray-500">{{ $t('Life event types:') }}</p>
 
                 <draggable
                   :list="element.life_event_types"
@@ -325,15 +324,13 @@ const destroyLifeEventType = (lifeEventType) => {
 
                           <!-- actions -->
                           <ul class="text-sm">
-                            <li
-                              class="inline cursor-pointer text-blue-500 hover:underline"
-                              @click="renameLifeEventTypeModal(id, element)">
-                              {{ $t('app.rename') }}
+                            <li class="inline cursor-pointer" @click="renameLifeEventTypeModal(id, element)">
+                              <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                             </li>
                             <li
                               class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
                               @click="destroyLifeEventType(element)">
-                              {{ $t('app.delete') }}
+                              {{ $t('Delete') }}
                             </li>
                           </ul>
                         </div>
@@ -351,7 +348,7 @@ const destroyLifeEventType = (lifeEventType) => {
                         <text-input
                           :ref="'newLifeEventType'"
                           v-model="form.label"
-                          :label="'Name'"
+                          :label="$t('Name')"
                           :type="'text'"
                           :autofocus="true"
                           :input-class="'block w-full'"
@@ -362,12 +359,8 @@ const destroyLifeEventType = (lifeEventType) => {
                       </div>
 
                       <div class="flex justify-between p-5">
-                        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="lifeEventCategoryId = 0" />
-                        <pretty-button
-                          :text="$t('app.rename')"
-                          :state="loadingState"
-                          :icon="'check'"
-                          :classes="'save'" />
+                        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="lifeEventCategoryId = 0" />
+                        <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
                       </div>
                     </form>
                   </template>
@@ -382,7 +375,7 @@ const destroyLifeEventType = (lifeEventType) => {
                   "
                   class="inline cursor-pointer text-sm text-blue-500 hover:underline"
                   @click="showCreateLifeEventTypeModal(element)"
-                  >add a life event type</span
+                  >{{ $t('add a life event type') }}</span
                 >
 
                 <!-- form: create new life event type -->
@@ -396,7 +389,7 @@ const destroyLifeEventType = (lifeEventType) => {
                     <text-input
                       :ref="'newLifeEventType'"
                       v-model="form.label"
-                      :label="'Name'"
+                      :label="$t('Name')"
                       :type="'text'"
                       :autofocus="true"
                       :input-class="'block w-full'"
@@ -408,10 +401,10 @@ const destroyLifeEventType = (lifeEventType) => {
 
                   <div class="flex justify-between p-5">
                     <pretty-span
-                      :text="$t('app.cancel')"
+                      :text="$t('Cancel')"
                       :classes="'mr-3'"
                       @click="createLifeEventTypeModalShown = false" />
-                    <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+                    <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
                   </div>
                 </form>
 
@@ -424,11 +417,12 @@ const destroyLifeEventType = (lifeEventType) => {
                   "
                   class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                   <p class="p-5 text-center">
-                    No life event types yet.
+                    {{ $t('No life event types yet.') }}
+
                     <span
                       class="block cursor-pointer text-sm text-blue-500 hover:underline"
                       @click="showCreateLifeEventTypeModal(element)"
-                      >add a life event type</span
+                      >{{ $t('add a life event type') }}</span
                     >
                   </p>
                 </div>
@@ -446,7 +440,7 @@ const destroyLifeEventType = (lifeEventType) => {
               <text-input
                 ref="newLifeEventCategory"
                 v-model="form.label"
-                :label="'Name'"
+                :label="$t('Name')"
                 :type="'text'"
                 :autofocus="true"
                 :input-class="'block w-full'"
@@ -457,8 +451,8 @@ const destroyLifeEventType = (lifeEventType) => {
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click.prevent="editLifeEventCategoryId = 0" />
-              <pretty-button :text="$t('app.rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
+              <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="editLifeEventCategoryId = 0" />
+              <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
             </div>
           </form>
         </template>

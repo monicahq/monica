@@ -15,15 +15,15 @@ class VaultHelper
     {
         switch ($permission) {
             case Vault::PERMISSION_MANAGE:
-                $friendlyType = trans('account.vault_permission_manage');
+                $friendlyType = 'Manager';
                 break;
 
             case Vault::PERMISSION_EDIT:
-                $friendlyType = trans('account.vault_permission_edit');
+                $friendlyType = 'Editor';
                 break;
 
             case Vault::PERMISSION_VIEW:
-                $friendlyType = trans('account.vault_permission_view');
+                $friendlyType = 'Viewer';
                 break;
 
             default:

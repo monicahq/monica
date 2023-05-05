@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_settings') }}
+                {{ $t('Settings') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -23,7 +23,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Cancel account</li>
+            <li class="inline">{{ $t('Cancel account') }}</li>
           </ul>
         </div>
       </div>
@@ -37,18 +37,21 @@
           <!-- title -->
           <div class="section-head border-b border-gray-200 bg-blue-50 p-5 dark:border-gray-700 dark:bg-blue-900">
             <h1 class="mb-4 flex justify-center text-2xl font-medium">
-              <span>Cancel your account</span>
+              <span>{{ $t('Cancel your account') }}</span>
 
               <help :url="$page.props.help_links.settings_account_deletion" :top="'9px'" :classes="'ml-3'" />
             </h1>
-            <p class="mb-2">Thanks for giving Monica a try.</p>
-            <p class="mb-2">Once you cancel,</p>
+            <p class="mb-2">{{ $t('Thanks for giving Monica a try.') }}</p>
+            <p class="mb-2">{{ $t('Once you cancel,') }}</p>
             <ul class="list-disc pl-6">
-              <li>Your account will be closed immediately,</li>
-              <li>All users and vaults will be deleted immediately,</li>
+              <li>{{ $t('Your account will be closed immediately,') }}</li>
+              <li>{{ $t('All users and vaults will be deleted immediately,') }}</li>
               <li>
-                The account's data will be permanently deleted from our servers within 30 days and from all backups
-                within 60 days.
+                {{
+                  $t(
+                    'The account’s data will be permanently deleted from our servers within 30 days and from all backups within 60 days.',
+                  )
+                }}
               </li>
             </ul>
           </div>
@@ -59,7 +62,7 @@
 
             <text-input
               v-model="form.password"
-              :label="'Please enter your password to cancel the account'"
+              :label="$t('Please enter your password to cancel the account')"
               :type="'password'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -69,10 +72,10 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-link :href="data.url.back" :text="'Go back'" :classes="'mr-3'" />
+            <pretty-link :href="data.url.back" :text="$t('Go back')" :classes="'mr-3'" />
             <pretty-button
               :href="'data.url.vault.create'"
-              :text="'Cancel account'"
+              :text="$t('Cancel account')"
               :state="loadingState"
               :icon="'arrow'"
               :classes="'save'" />

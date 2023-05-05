@@ -247,7 +247,7 @@ class ImportVCard extends BaseService implements ServiceInterface
             return (string) $entry->NICKNAME;
         }
 
-        return (string) __('Unknown contact name');
+        return (string) trans('Unknown contact name');
     }
 
     /**
@@ -337,7 +337,7 @@ class ImportVCard extends BaseService implements ServiceInterface
         $namespace = $this->app->getNamespace();
         $appPath = app_path();
 
-        foreach ((new Finder)->files()->in($appPath)->name('*.php') as $file) {
+        foreach ((new Finder)->files()->in($appPath)->name('*.php')->notName('helpers.php') as $file) {
             $file = $namespace.str_replace(
                 ['/', '.php'],
                 ['\\', ''],

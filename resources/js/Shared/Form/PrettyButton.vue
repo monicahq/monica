@@ -1,6 +1,6 @@
 <template>
   <button :class="buttonClasses" :disabled="state == 'loading' || state == 'disabled'" type="submit">
-    <span v-if="state == 'loading'"> Loading… </span>
+    <span v-if="state == 'loading'"> {{ $t('Loading…') }} </span>
 
     <!-- + icon -->
     <svg

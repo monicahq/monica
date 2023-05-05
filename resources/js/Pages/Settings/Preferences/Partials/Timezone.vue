@@ -5,12 +5,12 @@
       <h3 class="mb-4 flex font-semibold sm:mb-0">
         <span class="mr-1"> 🗓 </span>
         <span class="mr-2">
-          {{ $t('settings.user_preferences_timezone_title') }}
+          {{ $t('Timezone') }}
         </span>
 
         <help :url="$page.props.help_links.settings_preferences_timezone" :top="'5px'" />
       </h3>
-      <pretty-button v-if="!editMode" :text="$t('app.edit')" @click="enableEditMode" />
+      <pretty-button v-if="!editMode" :text="$t('Edit')" @click="enableEditMode" />
     </div>
 
     <!-- help text -->
@@ -29,14 +29,14 @@
       </svg>
 
       <div>
-        <p>{{ $t('settings.user_preferences_timezone_description') }}</p>
+        <p>{{ $t('Regardless of where you are located in the world, have dates displayed in your own timezone.') }}</p>
       </div>
     </div>
 
     <!-- normal mode -->
     <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="px-5 py-2">
-        <span class="mb-2 block">{{ $t('settings.user_preferences_timezone_current') }}</span>
+        <span class="mb-2 block">{{ $t('Current timezone:') }}</span>
         <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{ localTimezone }}</span>
       </p>
     </div>
@@ -501,8 +501,8 @@
 
       <!-- actions -->
       <div class="flex justify-between p-5">
-        <pretty-link :text="$t('app.cancel')" :classes="'mr-3'" @click="editMode = false" />
-        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+        <pretty-link :text="$t('Cancel')" :classes="'mr-3'" @click="editMode = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
       </div>
     </form>
   </div>
@@ -557,7 +557,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash(this.$t('app.notification_flash_changes_saved'), 'success');
+          this.flash(this.$t('Changes saved'), 'success');
           this.localTimezone = response.data.data.timezone;
           this.editMode = false;
           this.loadingState = null;

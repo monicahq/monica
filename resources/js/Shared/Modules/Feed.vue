@@ -164,7 +164,7 @@
 
     <!-- blank state -->
     <div v-if="feed.length == 0 && !loading">
-      <p class="p-5 text-center">There is no activity yet.</p>
+      <p class="p-5 text-center">{{ $t('There is no activity yet.') }}</p>
       <img src="/img/dashboard_blank_activity_feed.svg" :alt="$t('Activity feed')" class="mx-auto h-96 w-96" />
     </div>
 
@@ -178,7 +178,7 @@
       <span
         @click="load()"
         class="cursor-pointer rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
-        {{ $t('app.view_older') }}
+        {{ $t('Load previous entries') }}
       </span>
     </div>
   </div>

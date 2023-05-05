@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
-                Contacts
+                {{ $t('Contacts') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -25,7 +25,7 @@
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.contact" class="text-blue-500 hover:underline">
-                Profile of {{ data.contact.name }}
+                {{ $t('Profile of :name', { name: data.contact.name }) }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -38,7 +38,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="inline">Add a relationship</li>
+            <li class="inline">{{ $t('Add a relationship') }}</li>
           </ul>
         </div>
       </div>
@@ -49,14 +49,16 @@
         <form
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
           @submit.prevent="submit()">
+          <!-- header -->
           <div class="section-head border-b border-gray-200 bg-blue-50 p-5 dark:border-gray-700 dark:bg-blue-900">
-            <h1 class="text-center text-2xl font-medium">Add a relationship</h1>
+            <h1 class="text-center text-2xl font-medium">{{ $t('Add a relationship') }}</h1>
           </div>
+
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <errors :errors="form.errors" />
 
             <!-- relationship type -->
-            <label for="types" class="mb-2 block text-sm"> Select a relationship type </label>
+            <label for="types" class="mb-2 block text-sm"> {{ $t('Select a relationship type') }} </label>
             <select
               id="types"
               v-model="form.relationship_type_id"
@@ -104,7 +106,7 @@
                       stroke-linejoin="round"
                       d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                   </svg>
-                  <span class="text-xs"> Switch role </span>
+                  <span class="text-xs"> {{ $t('Switch role') }} </span>
                 </div>
               </div>
 
@@ -127,7 +129,7 @@
                     <label
                       for="unknown"
                       class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                      I don't know the name
+                      {{ $t('I don’t know the name') }}
                     </label>
                   </div>
 
@@ -144,7 +146,7 @@
                     <label
                       for="name"
                       class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                      I know the name
+                      {{ $t('I know the name') }}
                     </label>
                   </div>
 
@@ -167,32 +169,32 @@
                       :input-class="'block w-full'"
                       :required="false"
                       :maxlength="255"
-                      :label="'Last name'" />
+                      :label="$t('Last name')" />
 
                     <div class="mb-4 flex flex-wrap text-xs">
                       <span
                         v-if="!showLastNameField"
-                        class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
+                        class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900"
                         @click="displayLastNameField">
-                        + last name
+                        {{ $t('+ last name') }}
                       </span>
                       <span
                         v-if="!showMiddleNameField"
-                        class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
+                        class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900"
                         @click="displayMiddleNameField">
-                        + middle name
+                        {{ $t('+ middle name') }}
                       </span>
                       <span
                         v-if="!showNicknameField"
-                        class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
+                        class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900"
                         @click="displayNicknameField">
-                        + nickname
+                        {{ $t('+ nickname') }}
                       </span>
                       <span
                         v-if="!showMaidenNameField"
-                        class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
+                        class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900"
                         @click="displayMaidenNameField">
-                        + maiden name
+                        {{ $t('+ maiden name') }}
                       </span>
                     </div>
                   </div>
@@ -210,7 +212,7 @@
                     <label
                       for="contact"
                       class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Choose an existing contact
+                      {{ $t('Choose an existing contact') }}
                     </label>
                   </div>
 
@@ -238,7 +240,7 @@
                 :input-class="'block w-full'"
                 :required="false"
                 :maxlength="255"
-                :label="'Middle name'" />
+                :label="$t('Middle name')" />
 
               <!-- nickname -->
               <text-input
@@ -249,7 +251,7 @@
                 :input-class="'block w-full'"
                 :required="false"
                 :maxlength="255"
-                :label="'Nickname'" />
+                :label="$t('Nickname')" />
 
               <!-- nickname -->
               <text-input
@@ -260,7 +262,7 @@
                 :input-class="'block w-full'"
                 :required="false"
                 :maxlength="255"
-                :label="'Maiden name'" />
+                :label="$t('Maiden name')" />
 
               <!-- genders -->
               <dropdown
@@ -269,9 +271,9 @@
                 :data="data.genders"
                 :required="false"
                 :div-outer-class="'mb-5'"
-                :placeholder="$t('app.choose_value')"
+                :placeholder="$t('Choose a value')"
                 :dropdown-class="'block w-full'"
-                :label="'Gender'" />
+                :label="$('Gender')" />
 
               <!-- pronouns -->
               <dropdown
@@ -280,23 +282,23 @@
                 :data="data.pronouns"
                 :required="false"
                 :div-outer-class="'mb-5'"
-                :placeholder="$t('app.choose_value')"
+                :placeholder="$t('Choose a value')"
                 :dropdown-class="'block w-full'"
-                :label="'Pronoun'" />
+                :label="$t('Pronoun')" />
 
               <!-- other fields -->
               <div class="flex flex-wrap text-xs">
                 <span
                   v-if="data.genders.length > 0 && !showGenderField"
-                  class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
+                  class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900"
                   @click="displayGenderField">
-                  + gender
+                  {{ $t('+ gender') }}
                 </span>
                 <span
                   v-if="data.pronouns.length > 0 && !showPronounField"
-                  class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
+                  class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900"
                   @click="displayPronounField">
-                  + pronoun
+                  {{ $t('+ pronoun') }}
                 </span>
               </div>
             </div>
@@ -311,7 +313,7 @@
                   type="checkbox"
                   class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600" />
                 <label for="create-contact" class="ml-2 block cursor-pointer text-sm text-gray-900">
-                  Create a contact entry for this person
+                  {{ $t('Create a contact entry for this person') }}
                 </label>
               </div>
             </div>
@@ -319,10 +321,10 @@
 
           <!-- actions -->
           <div class="flex justify-between p-5">
-            <pretty-link :href="data.url.back" :text="$t('app.cancel')" :classes="'mr-3'" />
+            <pretty-link :href="data.url.back" :text="$t('Cancel')" :classes="'mr-3'" />
             <pretty-button
               :href="'data.url.vault.create'"
-              :text="$t('app.add')"
+              :text="$t('Add')"
               :state="loadingState"
               :icon="'check'"
               :classes="'save'" />
@@ -469,7 +471,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          localStorage.success = 'The relationship has been added';
+          localStorage.success = this.$t('The relationship has been added');
           this.$inertia.visit(response.data.data);
         })
         .catch((error) => {

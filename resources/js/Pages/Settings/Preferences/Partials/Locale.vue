@@ -1,3 +1,56 @@
+<script setup>
+import { onMounted, ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+import { loadLanguageAsync, getActiveLanguage, trans } from 'laravel-vue-i18n';
+import { flash } from '@/methods.js';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrettyLink from '@/Shared/Form/PrettyLink.vue';
+import Errors from '@/Shared/Form/Errors.vue';
+import Help from '@/Shared/Help.vue';
+
+const props = defineProps({
+  data: Object,
+});
+
+const loadingState = ref('');
+const editMode = ref(false);
+const localLocaleI18n = ref('');
+const form = useForm({
+  locale: '',
+  errors: [],
+});
+
+onMounted(() => {
+  localLocaleI18n.value = props.data.locale_i18n;
+  form.locale = props.data.locale;
+});
+
+const enableEditMode = () => {
+  editMode.value = true;
+};
+
+const submit = () => {
+  loadingState.value = 'loading';
+
+  axios
+    .post(props.data.url.store, form.data())
+    .then((response) => {
+      flash(trans('Changes saved'), 'success');
+      localLocaleI18n.value = response.data.data.locale_i18n;
+      editMode.value = false;
+      loadingState.value = null;
+
+      if (getActiveLanguage() !== form.locale) {
+        loadLanguageAsync(response.data.data.locale);
+      }
+    })
+    .catch((error) => {
+      loadingState.value = null;
+      form.errors = error.response.data;
+    });
+};
+</script>
+
 <template>
   <div class="mb-16">
     <!-- title + cta -->
@@ -5,18 +58,18 @@
       <h3 class="mb-4 flex font-semibold sm:mb-0">
         <span class="mr-1"> 🗓 </span>
         <span class="mr-2">
-          {{ $t('settings.user_preferences_locale_title') }}
+          {{ $t('Language of the application') }}
         </span>
 
         <help :url="$page.props.help_links.settings_preferences_language" :top="'5px'" />
       </h3>
-      <pretty-button v-if="!editMode" :text="$t('app.edit')" @click="enableEditMode" />
+      <pretty-button v-if="!editMode" :text="$t('Edit')" @click="enableEditMode" />
     </div>
 
     <!-- normal mode -->
     <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="px-5 py-2">
-        <span class="mb-2 block">{{ $t('settings.user_preferences_locale_current_language') }}</span>
+        <span class="mb-2 block">{{ $t('Current language:') }}</span>
         <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{ localLocaleI18n }}</span>
       </p>
     </div>
@@ -33,99 +86,25 @@
           v-model="form.locale"
           name="locale"
           class="rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
-          <option value="en">
-            {{ $t('settings.user_preferences_locale_en') }}
-          </option>
-          <option value="fr">
-            {{ $t('settings.user_preferences_locale_fr') }}
+          <option v-for="(value, key) in props.data.languages" :key="key" :value="key">
+            {{ value }}
           </option>
         </select>
       </div>
 
       <!-- actions -->
       <div class="flex justify-between p-5">
-        <pretty-link :text="$t('app.cancel')" :classes="'mr-3'" @click="editMode = false" />
-        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+        <pretty-link :text="$t('Cancel')" :classes="'mr-3'" @click="editMode = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
       </div>
     </form>
   </div>
 </template>
 
-<script>
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
-import PrettyLink from '@/Shared/Form/PrettyLink.vue';
-import Errors from '@/Shared/Form/Errors.vue';
-import Help from '@/Shared/Help.vue';
-import { loadLanguageAsync, getActiveLanguage } from 'laravel-vue-i18n';
-
-export default {
-  components: {
-    PrettyButton,
-    PrettyLink,
-    Errors,
-    Help,
-  },
-
-  props: {
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-
-  data() {
-    return {
-      loadingState: '',
-      editMode: false,
-      localLocale: '',
-      localLocaleI18n: '',
-      form: {
-        locale: '',
-        errors: [],
-      },
-    };
-  },
-
-  mounted() {
-    this.localLocale = this.data.locale;
-    this.localLocaleI18n = this.data.locale_i18n;
-    this.form.locale = this.data.locale;
-  },
-
-  methods: {
-    enableEditMode() {
-      this.editMode = true;
-    },
-
-    submit() {
-      this.loadingState = 'loading';
-
-      axios
-        .post(this.data.url.store, this.form)
-        .then((response) => {
-          this.flash(this.$t('app.notification_flash_changes_saved'), 'success');
-          this.localLocale = response.data.data.locale;
-          this.localLocaleI18n = response.data.data.locale_i18n;
-          this.editMode = false;
-          this.loadingState = null;
-
-          if (getActiveLanguage() !== this.form.locale) {
-            loadLanguageAsync(response.data.data.locale);
-          }
-        })
-        .catch((error) => {
-          this.loadingState = null;
-          this.form.errors = error.response.data;
-        });
-    },
-  },
-};
-</script>
-
 <style lang="scss" scoped>
 select {
   padding-left: 8px;
-  padding-right: 20px;
+  padding-right: 30px;
   background-position: right 3px center;
 }
 </style>

@@ -19,7 +19,8 @@ class CreateTemplate extends BaseService implements ServiceInterface
         return [
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
+            'name_translation_key' => 'nullable|string|max:255',
         ];
     }
 
@@ -43,7 +44,8 @@ class CreateTemplate extends BaseService implements ServiceInterface
 
         $this->template = Template::create([
             'account_id' => $data['account_id'],
-            'name' => $data['name'],
+            'name' => $data['name'] ?? null,
+            'name_translation_key' => $data['name_translation_key'] ?? null,
         ]);
 
         // A template has at least one page: the Contact information page.
@@ -51,7 +53,7 @@ class CreateTemplate extends BaseService implements ServiceInterface
             'account_id' => $data['account_id'],
             'author_id' => $data['author_id'],
             'template_id' => $this->template->id,
-            'name' => trans('app.default_template_page_contact_information'),
+            'name_translation_key' => trans_key('Contact information'),
             'can_be_deleted' => false,
             'type' => TemplatePage::TYPE_CONTACT,
         ];

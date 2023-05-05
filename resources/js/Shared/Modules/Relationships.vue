@@ -18,9 +18,13 @@
           </svg>
         </span>
 
-        <span class="font-semibold"> Relationships </span>
+        <span class="font-semibold"> {{ $t('Relationships') }} </span>
       </div>
-      <pretty-link :text="'Add a relationship'" :icon="'plus'" :href="data.url.create" :classes="'sm:w-fit w-full'" />
+      <pretty-link
+        :text="$t('Add a relationship')"
+        :icon="'plus'"
+        :href="data.url.create"
+        :classes="'sm:w-fit w-full'" />
     </div>
 
     <!-- relationships -->
@@ -65,7 +69,7 @@
             <!-- actions -->
             <ul class="text-sm">
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(relationshipType)">
-                {{ $t('app.remove') }}
+                {{ $t('Remove') }}
               </li>
             </ul>
           </li>
@@ -78,7 +82,7 @@
       v-if="data.number_of_defined_relations == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_relationship.svg" :alt="$t('Relationships')" class="mx-auto mt-4 h-14 w-14" />
-      <p class="px-5 pb-5 pt-2 text-center">There are no relationships yet.</p>
+      <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no relationships yet.') }}</p>
     </div>
   </div>
 </template>
@@ -112,11 +116,11 @@ export default {
 
   methods: {
     destroy(relationshipType) {
-      if (confirm('Are you sure? This will delete the relationship.')) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .put(relationshipType.url.update)
           .then((response) => {
-            this.flash('The relationship has been deleted', 'success');
+            this.flash(this.$t('The relationship has been deleted'), 'success');
             this.localRelationships = response.data.data.relationship_group_types;
           })
           .catch((error) => {

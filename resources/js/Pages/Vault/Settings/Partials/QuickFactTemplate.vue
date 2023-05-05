@@ -108,9 +108,13 @@ const updatePosition = (event) => {
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0">
         <span class="mr-1"> 🧑‍🏭 </span>
-        Quick facts template
+        {{ $t('Quick facts template') }}
       </h3>
-      <pretty-button v-if="!createEntryModalShown" :text="'Add an entry'" :icon="'plus'" @click="showAddEntryModal" />
+      <pretty-button
+        v-if="!createEntryModalShown"
+        :text="$t('Add an entry')"
+        :icon="'plus'"
+        @click="showAddEntryModal" />
     </div>
 
     <!-- modal to create a quick fact template entry -->
@@ -124,7 +128,7 @@ const updatePosition = (event) => {
         <text-input
           ref="newEntry"
           v-model="form.label"
-          :label="$t('settings.religion_name')"
+          :label="$t('Name')"
           :type="'text'"
           :autofocus="true"
           :input-class="'block w-full'"
@@ -135,8 +139,8 @@ const updatePosition = (event) => {
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createEntryModalShown = false" />
-        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createEntryModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -179,11 +183,11 @@ const updatePosition = (event) => {
 
             <!-- actions -->
             <ul class="text-sm">
-              <li class="inline cursor-pointer text-blue-500 hover:underline" @click="renameEntryModal(element)">
-                {{ $t('app.rename') }}
+              <li class="inline cursor-pointer" @click="renameEntryModal(element)">
+                <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
               </li>
               <li class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">
-                {{ $t('app.delete') }}
+                {{ $t('Delete') }}
               </li>
             </ul>
           </div>
@@ -198,7 +202,7 @@ const updatePosition = (event) => {
               <text-input
                 ref="newEntry"
                 v-model="form.label"
-                :label="$t('settings.religion_name')"
+                :label="$t('Name')"
                 :type="'text'"
                 :autofocus="true"
                 :input-class="'block w-full'"
@@ -209,8 +213,8 @@ const updatePosition = (event) => {
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click.prevent="editEntryId = 0" />
-              <pretty-button :text="$t('app.rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
+              <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="editEntryId = 0" />
+              <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
             </div>
           </form>
         </template>
@@ -219,7 +223,7 @@ const updatePosition = (event) => {
 
     <!-- blank state -->
     <div v-if="localEntries.length == 0">
-      <p class="p-5 text-center">Quick facts let you document interesting facts about a contact.</p>
+      <p class="p-5 text-center">{{ $t('Quick facts let you document interesting facts about a contact.') }}</p>
     </div>
   </div>
 </template>

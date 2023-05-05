@@ -62,13 +62,13 @@ const reset = () => {
 <template>
   <div class="mb-8">
     <p class="mb-2 flex items-center justify-between font-bold">
-      <span>Slices of life</span>
+      <span>{{ $t('Slices of life') }}</span>
 
       <span
         v-if="!editSlicesModalShown && localSlices.length > 0"
         class="relative cursor-pointer text-xs text-gray-600 dark:text-gray-400"
         @click="showSliceModal">
-        {{ $t('app.edit') }}
+        {{ $t('Edit') }}
       </span>
 
       <!-- close button -->
@@ -76,7 +76,7 @@ const reset = () => {
         v-if="editSlicesModalShown"
         class="cursor-pointer text-xs text-gray-600 dark:text-gray-400"
         @click="editSlicesModalShown = false">
-        {{ $t('app.close') }}
+        {{ $t('Close') }}
       </span>
     </p>
 
@@ -94,28 +94,30 @@ const reset = () => {
             :data="localSlices"
             :required="false"
             :div-outer-class="'mb-2'"
-            :placeholder="$t('app.choose_value')"
+            :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'" />
         </div>
 
         <div class="flex justify-between p-2">
-          <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editSlicesModalShown = false" />
+          <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editSlicesModalShown = false" />
           <pretty-button
             :href="'data.url.vault.create'"
-            :text="$t('app.save')"
+            :text="$t('Save')"
             :state="loadingState"
             :icon="'check'"
             :classes="'save'" />
         </div>
 
         <div v-if="slice" class="border-t border-gray-200 p-2 dark:border-gray-700">
-          <p class="cursor-pointer text-sm text-blue-500 hover:underline" @click="reset()">Or remove the slice</p>
+          <p class="cursor-pointer text-sm text-blue-500 hover:underline" @click="reset()">
+            {{ $t('Or remove the slice') }}
+          </p>
         </div>
       </form>
     </div>
 
     <!-- blank state -->
-    <p v-if="!slice" class="text-sm text-gray-600 dark:text-gray-400">Not set</p>
+    <p v-if="!slice" class="text-sm text-gray-600 dark:text-gray-400">{{ $t('Not set') }}</p>
 
     <div v-else>
       <inertia-link :href="slice.url.show" class="text-blue-500 hover:underline">
@@ -124,5 +126,3 @@ const reset = () => {
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped></style>

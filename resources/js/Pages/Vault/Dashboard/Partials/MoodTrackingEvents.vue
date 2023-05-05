@@ -84,7 +84,7 @@ const submit = () => {
         </svg>
       </span>
 
-      Record your mood
+      {{ $t('Record your mood') }}
     </h3>
 
     <!-- cta -->
@@ -93,8 +93,8 @@ const submit = () => {
       class="mb-4 flex items-center rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/dashboard_blank_how_are_you.svg" :alt="$t('Reminders')" class="mr-2 h-14 w-14" />
       <div class="mb-2 flex flex-col px-5">
-        <p class="mb-2">How are you?</p>
-        <pretty-button :text="'Record your mood'" @click="showMoodEventModal" />
+        <p class="mb-2">{{ $t('How are you?') }}</p>
+        <pretty-button :text="$t('Record your mood')" @click="showMoodEventModal" />
       </div>
     </div>
 
@@ -109,7 +109,7 @@ const submit = () => {
         </div>
 
         <!-- mood tracking parameters -->
-        <p class="mb-2 block text-sm dark:text-gray-100">How do you feel right now?</p>
+        <p class="mb-2 block text-sm dark:text-gray-100">{{ $t('How do you feel right now?') }}</p>
         <ul class="mb-4">
           <li v-for="parameter in props.data.mood_tracking_parameters" :key="parameter.id" class="flex">
             <input
@@ -134,21 +134,21 @@ const submit = () => {
             v-if="!datePickerFieldShown"
             class="mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:bg-slate-500 dark:text-white"
             @click="showDatePickerField">
-            + change date
+            {{ $t('+ change date') }}
           </span>
 
           <span
             v-if="!noteFieldShown"
             class="mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:bg-slate-500 dark:text-white"
             @click="showNoteField">
-            + note
+            {{ $t('+ note') }}
           </span>
 
           <span
             v-if="!hoursSleptFieldShown"
             class="mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:bg-slate-500 dark:text-white"
             @click="showHoursSleptField">
-            + number of hours slept
+            {{ $t('+ number of hours slept') }}
           </span>
         </div>
 
@@ -174,7 +174,7 @@ const submit = () => {
         <div v-if="hoursSleptFieldShown" class="mt-4">
           <text-input
             v-model="form.hours"
-            :label="'Number of hours slept'"
+            :label="$t('Number of hours slept')"
             :autofocus="true"
             :input-class="'block w-full'"
             :type="'number'"
@@ -186,8 +186,8 @@ const submit = () => {
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="createMoodEventModalShown = false" />
-        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createMoodEventModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -197,10 +197,10 @@ const submit = () => {
       class="mb-4 flex items-center rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/dashboard_blank_how_are_you.svg" :alt="$t('Reminders')" class="mr-2 h-14 w-14" />
       <div class="flex flex-col px-5">
-        <p class="mb-2"><span class="mr-1">🎉</span> Your mood has been recorded!</p>
-        <inertia-link :href="data.url.history" class="text-center text-blue-500 hover:underline"
-          >View history</inertia-link
-        >
+        <p class="mb-2"><span class="mr-1">🎉</span> {{ $t('Your mood has been recorded!') }}</p>
+        <inertia-link :href="data.url.history" class="text-center text-blue-500 hover:underline">{{
+          $t('View history')
+        }}</inertia-link>
       </div>
     </div>
   </div>
@@ -210,21 +210,5 @@ const submit = () => {
 .icon-sidebar {
   color: #737e8d;
   top: -2px;
-}
-
-.item-list {
-  &:hover:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  &:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
 }
 </style>

@@ -23,7 +23,7 @@ class ModuleGroupsViewHelper
         });
         $availableGroupsCollection->prepend([
             'id' => 0,
-            'name' => trans('contact.group_create'),
+            'name' => trans('+ Create a group'),
             'selected' => false,
         ]);
 

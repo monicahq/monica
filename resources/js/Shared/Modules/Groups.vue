@@ -18,9 +18,13 @@
           </svg>
         </span>
 
-        <span class="font-semibold"> Groups </span>
+        <span class="font-semibold"> {{ $t('Groups') }} </span>
       </div>
-      <pretty-button :text="'Add to group'" :icon="'plus'" :classes="'sm:w-fit w-full'" @click="addGroupMode = true" />
+      <pretty-button
+        :text="$t('Add to group')"
+        :icon="'plus'"
+        :classes="'sm:w-fit w-full'"
+        @click="addGroupMode = true" />
     </div>
 
     <form
@@ -38,9 +42,9 @@
             v-model="form.group_id"
             :data="localAvailableGroups"
             :required="true"
-            :placeholder="$t('app.choose_value')"
+            :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
-            :label="'Select a group or create a new one'"
+            :label="$t('Select a group or create a new one')"
             @change="toggleCreateGroup()" />
         </div>
 
@@ -49,7 +53,7 @@
           <text-input
             :ref="'newName'"
             v-model="form.name"
-            :label="'Name'"
+            :label="$t('Name')"
             :type="'text'"
             :autofocus="true"
             :input-class="'block w-full'"
@@ -65,9 +69,9 @@
             v-model="form.group_type_id"
             :data="data.group_types"
             :required="true"
-            :placeholder="$t('app.choose_value')"
+            :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
-            :label="'Group type'"
+            :label="$t('Group type')"
             @change="loadGroupTypeRoles()" />
         </div>
 
@@ -77,15 +81,15 @@
             v-model="form.group_type_role_id"
             :data="localGroupTypeRoles"
             :required="false"
-            :placeholder="$t('app.choose_value')"
+            :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
-            :label="'Role'" />
+            :label="$t('Role')" />
         </div>
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="addGroupMode = false" />
-        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="addGroupMode = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -110,11 +114,11 @@
         <!-- actions -->
         <ul class="text-sm">
           <li class="mr-4 inline cursor-pointer">
-            <inertia-link :href="group.url.show" class="text-blue-500 hover:underline">{{
-              $t('app.view')
-            }}</inertia-link>
+            <inertia-link :href="group.url.show" class="text-blue-500 hover:underline">{{ $t('View') }}</inertia-link>
           </li>
-          <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(group)">Leave</li>
+          <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(group)">
+            {{ $t('Leave') }}
+          </li>
         </ul>
       </li>
     </ul>
@@ -124,7 +128,7 @@
       v-if="localGroups.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_group.svg" :alt="$t('Groups')" class="mx-auto mt-4 h-14 w-14" />
-      <p class="px-5 pb-5 pt-2 text-center">The contact does not belong to any group yet.</p>
+      <p class="px-5 pb-5 pt-2 text-center">{{ $t('The contact does not belong to any group yet.') }}</p>
     </div>
   </div>
 </template>
@@ -230,7 +234,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash('The group has been added', 'success');
+          this.flash(this.$t('The group has been added'), 'success');
           this.localGroups.unshift(response.data.data);
           this.loadingState = null;
           this.addGroupMode = false;
@@ -242,11 +246,11 @@ export default {
     },
 
     destroy(group) {
-      if (confirm('Are you sure?')) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(group.url.destroy)
           .then(() => {
-            this.flash('The contact has been removed from the group', 'success');
+            this.flash(this.$t('The contact has been removed from the group'), 'success');
             var id = this.localGroups.findIndex((x) => x.id === group.id);
             this.localGroups.splice(id, 1);
           })

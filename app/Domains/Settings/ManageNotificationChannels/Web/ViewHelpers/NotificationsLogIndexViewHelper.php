@@ -20,10 +20,16 @@ class NotificationsLogIndexViewHelper
             ];
         });
 
+        $i18n = match ($channel->type) {
+            'email' => trans('Email address'),
+            'telegram' => trans('Telegram'),
+            default => trans('Email'),
+        };
+
         return [
             'channel' => [
                 'id' => $channel->id,
-                'type' => trans('settings.notification_channel_type_'.$channel->type),
+                'type' => $i18n,
                 'label' => $channel->label,
             ],
             'notifications' => $notificationsCollection,

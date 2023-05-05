@@ -16,7 +16,7 @@
         </svg>
       </span>
 
-      Contacts
+      {{ $t('Contacts') }}
     </div>
     <ul
       v-if="data.length > 0"
@@ -34,7 +34,7 @@
     <div
       v-else
       class="mb-6 rounded-lg border border-gray-200 bg-white p-5 text-center text-gray-500 dark:border-gray-700 dark:bg-gray-900">
-      No contacts found.
+      {{ $t('No contacts found.') }}
     </div>
   </div>
 </template>

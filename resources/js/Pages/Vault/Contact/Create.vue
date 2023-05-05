@@ -6,11 +6,11 @@
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="data.url.back" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_contact_index') }}
+                {{ $t('Contacts') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -24,7 +24,7 @@
               </svg>
             </li>
             <li class="inline">
-              {{ $t('app.breadcrumb_contact_create') }}
+              {{ $t('Create a contact') }}
             </li>
           </ul>
         </div>
@@ -38,7 +38,7 @@
           @submit.prevent="submit()">
           <div class="section-head border-b border-gray-200 bg-blue-50 p-5 dark:border-gray-700 dark:bg-blue-900">
             <h1 class="text-center text-2xl font-medium">
-              {{ $t('vault.create_contact_title') }}
+              {{ $t('Add a contact') }}
             </h1>
           </div>
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
@@ -53,7 +53,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="$t('vault.create_contact_prefix')" />
+              :label="$t('Prefix')" />
 
             <!-- first name -->
             <text-input
@@ -63,7 +63,7 @@
               :input-class="'block w-full'"
               :required="true"
               :maxlength="255"
-              :label="$t('vault.create_contact_first_name')" />
+              :label="$t('First name')" />
 
             <!-- last name -->
             <text-input
@@ -73,7 +73,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="$t('vault.create_contact_last_name')" />
+              :label="$t('Last name')" />
 
             <!-- middle name -->
             <text-input
@@ -84,7 +84,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="$t('vault.create_contact_middle_name')" />
+              :label="$t('Middle name')" />
 
             <!-- nickname -->
             <text-input
@@ -95,7 +95,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="$t('vault.create_contact_nickname')" />
+              :label="$t('Nickname')" />
 
             <!-- maiden name -->
             <text-input
@@ -106,7 +106,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="$t('vault.create_contact_maiden_name')" />
+              :label="$t('Maiden name')" />
 
             <!-- suffix -->
             <text-input
@@ -117,7 +117,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="$t('vault.create_contact_suffix')" />
+              :label="$t('Suffix')" />
 
             <!-- genders -->
             <dropdown
@@ -126,9 +126,9 @@
               :data="data.genders"
               :required="false"
               :div-outer-class="'mb-5'"
-              :placeholder="$t('app.choose_value')"
+              :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
-              :label="$t('vault.create_contact_gender')" />
+              :label="$t('Gender')" />
 
             <!-- pronouns -->
             <dropdown
@@ -137,9 +137,9 @@
               :data="data.pronouns"
               :required="false"
               :div-outer-class="'mb-5'"
-              :placeholder="$t('app.choose_value')"
+              :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
-              :label="$t('vault.create_contact_pronoun')" />
+              :label="$t('Pronoun')" />
 
             <!-- templates -->
             <dropdown
@@ -148,9 +148,9 @@
               :data="data.templates"
               :required="false"
               :div-outer-class="'mb-5'"
-              :placeholder="$t('app.choose_value')"
+              :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
-              :label="$t('vault.create_contact_template')" />
+              :label="$t('Use the following template for this contact')" />
 
             <!-- other fields -->
             <div class="flex flex-wrap text-xs">
@@ -158,59 +158,59 @@
                 v-if="!showMiddleNameField"
                 class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displayMiddleNameField">
-                {{ $t('vault.create_contact_add_middle_name') }}
+                {{ $t('+ middle name') }}
               </span>
               <span
                 v-if="!showPrefixField"
                 class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displayPrefixField">
-                {{ $t('vault.create_contact_add_prefix') }}
+                {{ $t('+ prefix') }}
               </span>
               <span
                 v-if="!showSuffixField"
                 class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displaySuffixField">
-                {{ $t('vault.create_contact_add_suffix') }}
+                {{ $t('+ suffix') }}
               </span>
               <span
                 v-if="!showNicknameField"
                 class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displayNicknameField">
-                {{ $t('vault.create_contact_add_nickname') }}
+                {{ $t('+ nickname') }}
               </span>
               <span
                 v-if="!showMaidenNameField"
                 class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displayMaidenNameField">
-                {{ $t('vault.create_contact_add_maiden_name') }}
+                {{ $t('+ maiden name') }}
               </span>
               <span
                 v-if="data.genders.length > 0 && !showGenderField"
                 class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displayGenderField">
-                {{ $t('vault.create_contact_add_gender') }}
+                {{ $t('+ gender') }}
               </span>
               <span
                 v-if="data.pronouns.length > 0 && !showPronounField"
                 class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displayPronounField">
-                {{ $t('vault.create_contact_add_pronoun') }}
+                {{ $t('+ pronoun') }}
               </span>
               <span
                 v-if="data.templates.length > 0 && !showTemplateField"
                 class="mb-2 mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 hover:bg-slate-300 dark:bg-slate-500 dark:text-gray-900 dark:text-white"
                 @click="displayTemplateField">
-                {{ $t('vault.create_contact_add_change_template') }}
+                {{ $t('+ change template') }}
               </span>
             </div>
           </div>
 
           <!-- actions -->
           <div class="flex justify-between p-5">
-            <pretty-link :href="data.url.back" :text="$t('app.cancel')" :classes="'mr-3'" />
+            <pretty-link :href="data.url.back" :text="$t('Cancel')" :classes="'mr-3'" />
             <pretty-button
               :href="'data.url.vault.create'"
-              :text="$t('app.add')"
+              :text="$t('Add')"
               :state="loadingState"
               :icon="'check'"
               :classes="'save'" />
@@ -316,7 +316,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          localStorage.success = this.$t('vault.create_contact_success');
+          localStorage.success = this.$t('The contact has been added');
           this.$inertia.visit(response.data.data);
         })
         .catch((error) => {

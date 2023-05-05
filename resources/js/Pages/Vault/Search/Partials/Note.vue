@@ -27,7 +27,7 @@
         </svg>
       </span>
 
-      Notes
+      {{ $t('Notes') }}
     </div>
     <ul v-if="localNotes.length > 0">
       <li
@@ -41,7 +41,7 @@
         </div>
         <div v-if="!note.show_full_content" class="p-3">
           {{ note.body_excerpt }}
-          <span class="cursor-pointer text-blue-500 hover:underline" @click="showFull(note)">View all</span>
+          <span class="cursor-pointer text-blue-500 hover:underline" @click="showFull(note)">{{ $t('View all') }}</span>
         </div>
         <div v-else class="p-3">
           {{ note.body }}
@@ -90,7 +90,7 @@
     <div
       v-else
       class="mb-6 rounded-lg border border-gray-200 bg-white p-5 text-center text-gray-500 dark:border-gray-700 dark:bg-gray-900">
-      No notes found.
+      {{ $t('No notes found.') }}
     </div>
   </div>
 </template>

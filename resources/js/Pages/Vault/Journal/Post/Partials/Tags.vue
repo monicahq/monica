@@ -1,13 +1,13 @@
 <template>
   <div class="mb-8">
     <p class="mb-2 flex items-center justify-between font-bold">
-      <span>{{ $t('vault.journal_post_edit_tags') }}</span>
+      <span>{{ $t('Tags') }}</span>
 
       <span
         v-if="!editTagModalShown"
         class="relative cursor-pointer text-xs text-gray-600 dark:text-gray-400"
         @click="showEditModal">
-        {{ $t('app.edit') }}
+        {{ $t('Edit') }}
       </span>
 
       <!-- close button -->
@@ -15,7 +15,7 @@
         v-if="editTagModalShown"
         class="cursor-pointer text-xs text-gray-600 dark:text-gray-400"
         @click="editTagModalShown = false">
-        {{ $t('app.close') }}
+        {{ $t('Close') }}
       </span>
     </p>
 
@@ -31,7 +31,7 @@
           :ref="'tag'"
           v-model="form.search"
           :type="'text'"
-          :placeholder="'Filter list or create a new tag'"
+          :placeholder="$t('Filter list or create a new tag')"
           :autofocus="true"
           :input-class="'block w-full'"
           :required="true"
@@ -67,14 +67,14 @@
           v-if="filteredTags.length == 0 && form.search.length != ''"
           class="cursor-pointer border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
           @click="store()">
-          Create new tag <span class="italic">"{{ form.search }}"</span>
+          {{ $t('Create new tag') }} <span class="italic">"{{ form.search }}"</span>
         </li>
 
         <!-- blank state when there is no tag at all -->
         <li
           v-if="filteredTags.length == 0 && form.search.length == ''"
           class="border-b border-gray-200 px-3 py-2 text-sm text-gray-600 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400 hover:dark:bg-slate-800">
-          Please type a few characters to create a new tag.
+          {{ $t('Please type a few characters to create a new tag.') }}
         </li>
       </ul>
     </div>
@@ -90,7 +90,7 @@
     </div>
 
     <!-- blank state -->
-    <p v-if="localTags.length == 0" class="text-sm text-gray-600 dark:text-gray-400">Not set</p>
+    <p v-if="localTags.length == 0" class="text-sm text-gray-600 dark:text-gray-400">{{ $t('Not set') }}</p>
   </div>
 </template>
 
@@ -156,7 +156,7 @@ export default {
       axios
         .post(this.data.url.tag_store, this.form)
         .then((response) => {
-          this.flash('The tag has been added', 'success');
+          this.flash(this.$t('The tag has been added'), 'success');
           this.form.search = '';
           this.localTagsInVault.push(response.data.data);
           this.localTags.push(response.data.data);

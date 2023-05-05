@@ -5,12 +5,12 @@
       <h3 class="mb-4 flex font-semibold sm:mb-0">
         <span class="mr-1"> 👉 </span>
         <span class="mr-2">
-          {{ $t('settings.user_preferences_name_order_title') }}
+          {{ $t('Customize how contacts should be displayed') }}
         </span>
 
         <help :url="$page.props.help_links.settings_preferences_contact_names" :top="'5px'" />
       </h3>
-      <pretty-button v-if="!editMode" :text="$t('app.edit')" @click="enableEditMode" />
+      <pretty-button v-if="!editMode" :text="$t('Edit')" @click="enableEditMode" />
     </div>
 
     <!-- help text -->
@@ -30,7 +30,11 @@
 
       <div>
         <p>
-          {{ $t('settings.user_preferences_name_order_description') }}
+          {{
+            $t(
+              'You can customize how contacts should be displayed according to your own taste/culture. Perhaps you would want to use James Bond instead of Bond James. Here, you can define it at will.',
+            )
+          }}
         </p>
       </div>
     </div>
@@ -38,11 +42,11 @@
     <!-- normal mode -->
     <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="border-b border-gray-200 px-5 py-2 dark:border-gray-700">
-        <span class="mb-2 block">{{ $t('settings.user_preferences_name_order_current') }}</span>
+        <span class="mb-2 block">{{ $t('Current way of displaying contact names:') }}</span>
         <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{ localNameOrder }}</span>
       </p>
       <p class="example bg-orange-50 px-5 py-2 text-sm font-medium dark:bg-orange-900">
-        <span class="font-light">{{ $t('settings.user_preferences_name_order_example') }}</span> {{ localNameExample }}
+        <span class="font-light">{{ $t('Contacts will be shown as follow:') }}</span> {{ localNameExample }}
       </p>
     </div>
 
@@ -65,7 +69,7 @@
           <label
             for="first_name_last_name"
             class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-            {{ $t('settings.user_preferences_name_order_first_name_last_name') }}
+            {{ $t('First name Last name') }}
             <span class="ml-4 font-normal text-gray-500"> James Bond </span>
           </label>
         </div>
@@ -80,7 +84,7 @@
           <label
             for="last_name_first_name"
             class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-            {{ $t('settings.user_preferences_name_order_last_name_first_name') }}
+            {{ $t('Last name First name') }}
 
             <span class="ml-4 font-normal text-gray-500"> Bond James </span>
           </label>
@@ -96,7 +100,7 @@
           <label
             for="first_name_last_name_nickname"
             class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-            {{ $t('settings.user_preferences_name_order_first_name_last_name_nickname') }}
+            {{ $t('First name Last name (nickname)') }}
             <span class="ml-4 font-normal text-gray-500"> James Bond (007) </span>
           </label>
         </div>
@@ -109,7 +113,7 @@
             type="radio"
             class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
           <label for="nickname" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-            {{ $t('settings.user_preferences_name_order_nickname') }}
+            {{ $t('nickname') }}
             <span class="ml-4 font-normal text-gray-500"> 007 </span>
           </label>
         </div>
@@ -121,7 +125,7 @@
             class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700"
             @click="focusNameOrder" />
           <label for="custom" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-            {{ $t('settings.user_preferences_name_order_custom') }}
+            {{ $t('Custom name order') }}
           </label>
         </div>
         <div class="ml-8">
@@ -137,22 +141,26 @@
             :maxlength="255" />
 
           <p class="mb-4 text-sm">
-            Please read
-            <a
-              href="https://www.notion.so/monicahq/Customize-your-account-8e015b7488c143abab9eb8a6e2fbca77#b3fd57def37445f4a9cf234e373c52ca"
+            <span class="mr-1">{{
+              $t(
+                'Please read our documentation to know more about this feature, and which variables you have access to',
+              )
+            }}</span>
+
+            (<a
+              href="https://docs.monicahq.com/user-and-account-settings/manage-preferences#customize-contact-names"
               target="_blank"
               class="text-blue-500 hover:underline"
-              >our documentation</a
-            >
-            to know more about this feature, and which variables you have access to.
+              >{{ $t('Link to documentation') }}</a
+            >)
           </p>
         </div>
       </div>
 
       <!-- actions -->
       <div class="flex justify-between p-5">
-        <pretty-link :text="$t('app.cancel')" :classes="'mr-3'" @click="editMode = false" />
-        <pretty-button :text="$t('app.save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+        <pretty-link :text="$t('Cancel')" :classes="'mr-3'" @click="editMode = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
       </div>
     </form>
   </div>
@@ -226,7 +234,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash(this.$t('app.notification_flash_changes_saved'), 'success');
+          this.flash(this.$t('Changes saved'), 'success');
           this.localNameOrder = this.form.nameOrder;
           this.localNameExample = response.data.data.name_example;
           this.choice = this.form.nameOrder;

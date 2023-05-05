@@ -1,7 +1,7 @@
 <template>
   <div class="mb-4">
     <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
-      <div class="mb-2 text-xs sm:mb-0">Job information</div>
+      <div class="mb-2 text-xs sm:mb-0">{{ $t('Job information') }}</div>
       <span v-if="!editJobInformation" class="relative cursor-pointer" @click="showEditModal">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -22,7 +22,7 @@
         v-if="editJobInformation"
         class="cursor-pointer text-xs text-gray-600 dark:text-gray-400"
         @click="editJobInformation = false">
-        Close
+        {{ $t('Close') }}
       </span>
     </div>
 
@@ -41,15 +41,15 @@
             :data="localCompanies"
             :required="false"
             :div-outer-class="'mb-2'"
-            :placeholder="$t('app.choose_value')"
+            :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
-            :label="'Existing company'" />
+            :label="$t('Existing company')" />
 
           <p
             v-if="showCreateCompanyLink"
             class="cursor-pointer text-sm text-blue-500 hover:underline"
             @click="showCreateCompany()">
-            Or create a new one
+            {{ $t('Or create a new one') }}
           </p>
 
           <!-- create a new company -->
@@ -57,7 +57,7 @@
             v-if="showCreateCompanyField"
             :ref="'name'"
             v-model="form.company_name"
-            :label="'Company name'"
+            :label="$t('Company name')"
             :type="'text'"
             :autofocus="true"
             :input-class="'block w-full'"
@@ -70,7 +70,7 @@
           <!-- job position -->
           <text-input
             v-model="form.job_position"
-            :label="'Job position'"
+            :label="$t('Job position')"
             :type="'text'"
             :autofocus="true"
             :input-class="'block w-full'"
@@ -80,28 +80,32 @@
         </div>
 
         <div class="flex justify-between p-2">
-          <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click="editJobInformation = false" />
+          <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editJobInformation = false" />
           <pretty-button
             :href="'data.url.vault.create'"
-            :text="$t('app.save')"
+            :text="$t('Save')"
             :state="loadingState"
             :icon="'check'"
             :classes="'save'" />
         </div>
 
         <div class="border-t border-gray-200 p-2 dark:border-gray-700">
-          <p class="cursor-pointer text-sm text-blue-500 hover:underline" @click="reset()">Or reset the fields</p>
+          <p class="cursor-pointer text-sm text-blue-500 hover:underline" @click="reset()">
+            {{ $t('Or reset the fields') }}
+          </p>
         </div>
       </form>
     </div>
 
     <!-- blank state -->
-    <p v-if="!form.job_position && !company_name" class="text-sm text-gray-600 dark:text-gray-400">Not set</p>
+    <p v-if="!form.job_position && !company_name" class="text-sm text-gray-600 dark:text-gray-400">
+      {{ $t('Not set') }}
+    </p>
 
     <p v-else>
       <span v-if="form.job_position">
         {{ form.job_position }}
-        <span v-if="company_name" class="text-sm text-gray-600 dark:text-gray-400">at </span>
+        <span v-if="company_name" class="text-sm text-gray-600 dark:text-gray-400">{{ $t('at ') }}</span>
       </span>
       <span v-if="company_name">{{ company_name }}</span>
     </p>
@@ -202,7 +206,7 @@ export default {
       axios
         .put(this.data.url.update, this.form)
         .then((response) => {
-          this.flash('The job information has been saved', 'success');
+          this.flash(this.$t('The job information has been saved'), 'success');
           this.editJobInformation = false;
           this.loadingState = '';
           this.company_name = response.data.data.company.name;
@@ -232,21 +236,5 @@ export default {
 <style lang="scss" scoped>
 .icon-sidebar {
   top: -2px;
-}
-
-.label-list {
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-
-  li:last-child {
-    border-bottom: 0;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-
-  li:hover:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
 }
 </style>

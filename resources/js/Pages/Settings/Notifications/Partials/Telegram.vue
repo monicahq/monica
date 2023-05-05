@@ -2,12 +2,12 @@
   <div>
     <div class="mb-3 flex items-center justify-between">
       <span class="dark:text-gray-200">
-        {{ $t('settings.notification_channels_telegram_title') }}
+        {{ $t('Via Telegram') }}
       </span>
 
       <pretty-button
         v-if="!setupTelegramModalShown && !localTelegram && envVariableSet"
-        :text="$t('settings.notification_channels_telegram_cta')"
+        :text="$t('Setup Telegram')"
         :icon="'plus'"
         @click="showSetupTelegramModal" />
     </div>
@@ -22,11 +22,11 @@
 
         <!-- preferred time -->
         <p class="mb-2 block text-sm">
-          {{ $t('settings.notification_channels_email_at') }}
+          {{ $t('At which time should we send the notification, when the reminder occurs?') }}
         </p>
         <div class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
           <span class="mr-2">
-            {{ $t('settings.notification_channels_email_at_word') }}
+            {{ $t('At') }}
           </span>
 
           <select
@@ -54,23 +54,31 @@
       </div>
 
       <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-        <p class="mb-4 font-semibold"><span class="mr-1">👋</span> What happens now?</p>
+        <p class="mb-4 font-semibold"><span class="mr-1">👋</span> {{ $t('What happens now?') }}</p>
         <ol class="ml-4 list-decimal">
           <li class="mb-2">
-            Once you click the Setup button below, you'll have to open Telegram with the button we'll provide you with.
-            This will locate the Monica Telegram bot for you.
+            {{
+              $t(
+                'Once you click the Setup button below, you’ll have to open Telegram with the button we’ll provide you with. This will locate the Monica Telegram bot for you.',
+              )
+            }}
           </li>
-          <li class="mb-2">Type anything in the conversation with the Monica bot. It can be "start" for instance.</li>
+          <li class="mb-2">
+            {{ $t('Type anything in the conversation with the Monica bot. It can be `start` for instance.') }}
+          </li>
           <li>
-            Wait a few seconds for Monica (the application) to recognize you. We'll send you a fake notification to see
-            if it works.
+            {{
+              $t(
+                'Wait a few seconds for Monica (the application) to recognize you. We’ll send you a fake notification to see if it works.',
+              )
+            }}
           </li>
         </ol>
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('app.cancel')" :classes="'mr-3'" @click.prevent="setupTelegramModalShown = false" />
-        <pretty-button :text="$t('app.add')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="setupTelegramModalShown = false" />
+        <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :classes="'save'" />
       </div>
     </form>
 
@@ -79,7 +87,7 @@
       v-if="!envVariableSet"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">
-        {{ $t('settings.notification_channels_telegram_not_set') }}
+        {{ $t('You have not setup Telegram in your environment variables yet.') }}
       </p>
     </div>
 
@@ -105,23 +113,21 @@
 
             <!-- telegram user id -->
             <div>
-              <span v-if="localTelegram.active" class="mb-0 block">{{
-                $t('settings.notification_channels_telegram_linked')
-              }}</span>
+              <span v-if="localTelegram.active" class="mb-0 block">{{ $t('Your account is linked') }}</span>
             </div>
           </div>
 
           <!-- actions when Telegram is not active -->
           <ul v-if="!localTelegram.active" class="text-sm">
             <li class="mr-4 inline">
-              <a :href="localTelegram.url.open" target="_blank" class="text-blue-500 hover:underline"
-                >Open Telegram to validate your identity</a
-              >
+              <a :href="localTelegram.url.open" target="_blank" class="text-blue-500 hover:underline">{{
+                $t('Open Telegram to validate your identity')
+              }}</a>
             </li>
 
             <!-- delete email -->
             <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy">
-              {{ $t('app.delete') }}
+              {{ $t('Delete') }}
             </li>
           </ul>
 
@@ -131,22 +137,22 @@
               v-if="!notificationSent"
               class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
               @click="sendTest">
-              {{ $t('settings.notification_channels_email_send_test') }}
+              {{ $t('Send test') }}
             </li>
             <li v-if="notificationSent" class="mr-4 inline">
-              {{ $t('settings.notification_channels_telegram_test_notification_sent') }}
+              {{ $t('Notification sent') }}
             </li>
 
             <!-- view log -->
             <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline">
               <inertia-link :href="localTelegram.url.logs" class="text-blue-500 hover:underline">
-                {{ $t('settings.notification_channels_email_log') }}
+                {{ $t('View log') }}
               </inertia-link>
             </li>
 
             <!-- delete email -->
             <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy">
-              {{ $t('app.delete') }}
+              {{ $t('Delete') }}
             </li>
           </ul>
         </div>
@@ -155,7 +161,7 @@
       <!-- blank state -->
       <div v-else class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <p class="p-5 text-center">
-          {{ $t('settings.notification_channels_telegram_blank') }}
+          {{ $t('You haven’t setup Telegram yet.') }}
         </p>
       </div>
     </div>
@@ -216,7 +222,7 @@ export default {
       axios
         .post(this.localTelegram.url.send_test)
         .then(() => {
-          this.flash(this.$t('settings.notification_channels_test_success_telegram'), 'success');
+          this.flash(this.$t('The notification has been sent'), 'success');
           this.notificationSent = true;
         })
         .catch((error) => {
@@ -228,7 +234,7 @@ export default {
       axios
         .put(channel.url.toggle)
         .then((response) => {
-          this.flash(this.$t('settings.notification_channels_success_channel'), 'success');
+          this.flash(this.$t('The channel has been updated'), 'success');
           this.localTelegram[this.localTelegram.findIndex((x) => x.id === channel.id)] = response.data.data;
         })
         .catch((error) => {
@@ -242,7 +248,7 @@ export default {
       axios
         .post(this.data.url.store_telegram, this.form)
         .then((response) => {
-          this.flash(this.$t('settings.notification_channels_email_added'), 'success');
+          this.flash(this.$t('The channel has been added'), 'success');
           this.localTelegram = response.data.data;
           this.loadingState = null;
           this.setupTelegramModalShown = false;
@@ -254,11 +260,11 @@ export default {
     },
 
     destroy() {
-      if (confirm(this.$t('settings.notification_channels_telegram_delete_confirm'))) {
+      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
         axios
           .delete(this.localTelegram.url.destroy)
           .then(() => {
-            this.flash(this.$t('settings.notification_channels_telegram_destroy_success'), 'success');
+            this.flash(this.$t('The Telegram channel has been deleted'), 'success');
             this.localTelegram = null;
           })
           .catch((error) => {

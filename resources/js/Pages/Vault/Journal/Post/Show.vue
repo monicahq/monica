@@ -16,11 +16,11 @@ defineProps({
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
             <li class="mr-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('app.breadcrumb_location') }}
+              {{ $t('You are here:') }}
             </li>
             <li class="mr-2 inline">
               <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
-                {{ $t('app.breadcrumb_journal_index') }}
+                {{ $t('Journals') }}
               </inertia-link>
             </li>
             <li class="relative mr-2 inline">
@@ -145,7 +145,7 @@ defineProps({
               </div>
 
               <!-- no section yet -->
-              <div v-else class="text-gray-400">This post has no content yet.</div>
+              <div v-else class="text-gray-400">{{ $t('This post has no content yet.') }}</div>
             </div>
           </div>
 
@@ -153,7 +153,7 @@ defineProps({
           <div class="">
             <!-- contacts -->
             <div v-if="data.contacts.length > 0" class="mb-4">
-              <p class="mb-2 text-sm font-semibold">{{ $t('vault.journal_show_contacts') }}</p>
+              <p class="mb-2 text-sm font-semibold">{{ $t('Contacts in this post') }}</p>
 
               <div v-for="contact in data.contacts" :key="contact.id" class="mb-2 block">
                 <contact-card :contact="contact" :avatarClasses="'h-5 w-5 rounded-full mr-2'" :displayName="true" />
@@ -162,7 +162,7 @@ defineProps({
 
             <!-- slices of life -->
             <div v-if="data.sliceOfLife" class="mb-4">
-              <p class="mb-2 text-sm font-semibold">Slice of life</p>
+              <p class="mb-2 text-sm font-semibold">{{ $t('Slice of life') }}</p>
               <div class="mb-6 last:mb-0">
                 <div
                   class="rounded border-b border-l border-r border-t border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
@@ -203,7 +203,7 @@ defineProps({
 
             <!-- mood tracking events -->
             <div v-if="data.moodTrackingEvents.length > 0">
-              <p class="mb-2 text-sm font-semibold">{{ $t('vault.journal_show_mood') }}</p>
+              <p class="mb-2 text-sm font-semibold">{{ $t('Your mood that you logged at this date') }}</p>
 
               <ul class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                 <li
@@ -211,9 +211,9 @@ defineProps({
                   :key="mood.id"
                   class="item-list border-b border-gray-200 p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
                   <span>{{ mood.mood_tracking_parameter.label }}</span>
-                  <span class="block text-sm" v-if="mood.number_of_hours_slept"
-                    >Slept {{ mood.number_of_hours_slept }} hours</span
-                  >
+                  <span class="block text-sm" v-if="mood.number_of_hours_slept">{{
+                    $t('Slept :count hours', { count: mood.number_of_hours_slept })
+                  }}</span>
                   <span v-if="mood.note" class="block text-sm">{{ mood.note }}</span>
                 </li>
               </ul>
@@ -222,7 +222,9 @@ defineProps({
             <!-- options -->
             <ul class="mb-6 text-sm">
               <li class="flex items-center">
-                <inertia-link :href="data.url.edit" class="text-blue-500 hover:underline">Edit post</inertia-link>
+                <inertia-link :href="data.url.edit" class="text-blue-500 hover:underline">{{
+                  $t('Edit post')
+                }}</inertia-link>
               </li>
             </ul>
           </div>
