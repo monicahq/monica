@@ -8,6 +8,7 @@ use App\Interfaces\ServiceInterface;
 use App\Models\Account;
 use App\Models\User;
 use App\Services\BaseService;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
 
 class CreateAccount extends BaseService implements ServiceInterface
@@ -56,6 +57,7 @@ class CreateAccount extends BaseService implements ServiceInterface
             'last_name' => $this->data['last_name'],
             'email' => $this->data['email'],
             'password' => isset($this->data['password']) ? Hash::make($this->data['password']) : null,
+            'locale' => App::getLocale(),
             'is_account_administrator' => true,
             'timezone' => 'UTC',
         ]);

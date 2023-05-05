@@ -10,5 +10,6 @@ return [
     'login_provider_linkedin' => 'LinkedIn',
     'login_provider_saml2' => 'Proveedor SAML 2.0',
     'login_provider_twitter' => 'Twitter',
-    'throttle' => 'Demasiados intentos de inicio de sesión. Por favor, inténtelo de nuevo en :seconds segundos.',
+    'password' => 'La contraseña es incorrecta.',
+    'throttle' => 'Demasiados intentos de acceso. Por favor intente nuevamente en :seconds segundos.',
 ];

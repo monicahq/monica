@@ -90,7 +90,7 @@
             <text-input
               :ref="'newCallReasonType'"
               v-model="form.callReasonTypeName"
-              :label="$('Name')"
+              :label="$t('Name')"
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"

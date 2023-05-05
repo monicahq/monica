@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'failed' => 'Diese Anmeldedaten stimmen nicht mit unseren Aufzeichnungen überein.',
+    'failed' => 'Diese Kombination aus Zugangsdaten wurde nicht in unserer Datenbank gefunden.',
     'lang' => 'Deutsch',
     'login_provider_azure' => 'Microsoft',
     'login_provider_facebook' => 'Facebook',
@@ -10,5 +10,6 @@ return [
     'login_provider_linkedin' => 'LinkedIn',
     'login_provider_saml2' => 'SAML 2.0-Anbieter',
     'login_provider_twitter' => 'Twitter',
-    'throttle' => 'Zu viele Anmeldeversuche. Bitte versuchen Sie es in :seconds Sekunden erneut.',
+    'password' => 'Das Passwort ist falsch.',
+    'throttle' => 'Zu viele Loginversuche. Versuchen Sie es bitte in :seconds Sekunden nochmal.',
 ];

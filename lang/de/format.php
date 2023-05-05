@@ -1,15 +1,15 @@
 <?php
 
 return [
-    'date' => '',
-    'day_month_parenthesis' => '',
-    'day_number' => '',
-    'full_date' => '',
-    'long_month_day' => '',
-    'long_month_year' => '',
-    'short_date' => '',
-    'short_date_year_time' => '',
-    'short_day' => '',
-    'short_month' => '',
-    'short_month_year' => '',
+    'date' => 'd. MMM YYYY',
+    'day_month_parenthesis' => 'dddd (d. MMM)',
+    'day_number' => 'DD',
+    'full_date' => 'dddd, d. MMM YYYY',
+    'long_month_day' => 'd. MMMM',
+    'long_month_year' => 'MMMM Y',
+    'short_date' => 'D MMM',
+    'short_date_year_time' => 'd. MMM YYYY H:mm',
+    'short_day' => 'ddd',
+    'short_month' => 'MMM',
+    'short_month_year' => 'MMM Y',
 ];

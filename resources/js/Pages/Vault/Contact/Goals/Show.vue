@@ -64,7 +64,7 @@
             <!-- edit modal form -->
             <form
               v-if="editMode"
-              class="bg-form mb-4 rounded-lg border border-gray-200 dark:border-gray-700"
+              class="bg-form mb-4 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900"
               @submit.prevent="update()">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />

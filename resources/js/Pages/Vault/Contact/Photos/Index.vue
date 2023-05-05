@@ -89,7 +89,7 @@
             :preview-step="false"
             @success="onSuccess"
             @error="onError">
-            <pretty-button :text="$t('contact.photos_cta')" :icon="'plus'" :classes="'sm:w-fit w-full'" />
+            <pretty-button :text="$t('Add a photo')" :icon="'plus'" :classes="'sm:w-fit w-full'" />
           </uploadcare>
         </div>
 

@@ -92,7 +92,7 @@
                 :required="false"
                 :placeholder="$t('Choose a value')"
                 :dropdown-class="'block w-full'"
-                :help="$('Some dates have a special type that we will use in the software to calculate an age.')"
+                :help="$t('Some dates have a special type that we will use in the software to calculate an age.')"
                 :label="$t('Date type')" />
             </div>
 

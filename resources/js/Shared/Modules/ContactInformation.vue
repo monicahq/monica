@@ -62,7 +62,7 @@
             :required="true"
             :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
-            :label="$t('contact.contact_information_type')" />
+            :label="$t('Type')" />
         </div>
       </div>
 
@@ -129,7 +129,7 @@
                   :required="true"
                   :placeholder="$t('Choose a value')"
                   :dropdown-class="'block w-full'"
-                  :label="$t('contact.contact_information_type')" />
+                  :label="$t('Type')" />
               </div>
             </div>
 

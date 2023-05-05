@@ -34,7 +34,7 @@ class PaginatorHelperTest extends TestCase
                 'links' => [
                     [
                         'url' => null,
-                        'label' => '&laquo; Previous',
+                        'label' => '❮ Previous',
                         'active' => false,
                     ],
                     [
@@ -54,7 +54,7 @@ class PaginatorHelperTest extends TestCase
                     ],
                     [
                         'url' => config('app.url').'?page=2',
-                        'label' => 'Next &raquo;',
+                        'label' => 'Next ❯',
                         'active' => false,
                     ],
                 ],

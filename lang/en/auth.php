@@ -1,10 +1,10 @@
 <?php
 
-return [
-    'lang' => 'English',
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+declare(strict_types=1);
 
+return [
+    'failed' => 'These credentials do not match our records.',
+    'lang' => 'English',
     'login_provider_azure' => 'Microsoft',
     'login_provider_facebook' => 'Facebook',
     'login_provider_github' => 'GitHub',
@@ -12,4 +12,6 @@ return [
     'login_provider_linkedin' => 'LinkedIn',
     'login_provider_saml2' => 'SAML 2.0 provider',
     'login_provider_twitter' => 'Twitter',
+    'password' => 'The password is incorrect.',
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 ];

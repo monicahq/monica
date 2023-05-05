@@ -29,7 +29,7 @@ class ApiTestCase extends TestCase
             'links' => [
                 0 => [
                     'url' => null,
-                    'label' => '&laquo; Previous',
+                    'label' => '❮ Previous',
                     'active' => false,
                 ],
                 1 => [
@@ -39,7 +39,7 @@ class ApiTestCase extends TestCase
                 ],
                 2 => [
                     'url' => null,
-                    'label' => 'Next &raquo;',
+                    'label' => 'Next ❯',
                     'active' => false,
                 ],
             ],

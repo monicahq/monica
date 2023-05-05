@@ -129,7 +129,6 @@ class AttemptToAuthenticateSocialite
             'email' => $socialite->getEmail(),
             'first_name' => $names[0],
             'last_name' => $names[1] ?? $names[0],
-            'locale' => App::getLocale(),
             'terms' => true,
         ];
 

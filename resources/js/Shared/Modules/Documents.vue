@@ -30,7 +30,7 @@
         :preview-step="false"
         @success="onSuccess"
         @error="onError">
-        <pretty-button :text="$t('contact.documents_cta')" :icon="'plus'" :classes="'sm:w-fit w-full'" />
+        <pretty-button :text="$t('Add a document')" :icon="'plus'" :classes="'sm:w-fit w-full'" />
       </uploadcare>
     </div>
 
@@ -156,7 +156,7 @@ export default {
     },
 
     destroy(document) {
-      if (confirm(this.$t('contact.documents_delete_confirm'))) {
+      if (confirm(this.$t('Are you sure? This will delete the document permanently.'))) {
         axios
           .delete(document.url.destroy)
           .then(() => {

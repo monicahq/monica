@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'failed' => 'Эти учетные данные не соответствуют нашим записям.',
+    'failed' => 'Неверное имя пользователя или пароль.',
     'lang' => 'Pусский',
     'login_provider_azure' => 'Microsoft',
     'login_provider_facebook' => 'Facebook',
@@ -10,5 +10,6 @@ return [
     'login_provider_linkedin' => 'LinkedIn',
     'login_provider_saml2' => 'Provedor SAML 2.0',
     'login_provider_twitter' => 'Twitter',
-    'throttle' => 'Слишком много попыток входа. Повторите попытку через :seconds секунд.',
+    'password' => 'Некорректный пароль.',
+    'throttle' => 'Слишком много попыток входа. Пожалуйста, попробуйте ещё раз через :seconds секунд.',
 ];

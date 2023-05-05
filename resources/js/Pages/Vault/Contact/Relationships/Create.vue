@@ -273,7 +273,7 @@
                 :div-outer-class="'mb-5'"
                 :placeholder="$t('Choose a value')"
                 :dropdown-class="'block w-full'"
-                :label="$('Gender')" />
+                :label="$t('Gender')" />
 
               <!-- pronouns -->
               <dropdown

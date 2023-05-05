@@ -46,6 +46,7 @@
     "barryvdh/laravel-ide-helper": "^2.12",
     "brianium/paratest": "^7.0",
     "fakerphp/faker": "^1.9",
+    "laravel-lang/common": "^3.1",
     "laravel/pint": "^1.1",
     "laravel/sail": "^1.14",
     "mockery/mockery": "^1.4",

@@ -133,7 +133,7 @@
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
-              :label="$('Prefix')" />
+              :label="$t('Prefix')" />
 
             <!-- suffix -->
             <text-input
