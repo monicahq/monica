@@ -44,6 +44,8 @@
 
           <!-- right -->
           <div class="p-3 sm:px-3 sm:py-0">
+            <errors :errors="errors" />
+
             <!-- title + cta -->
             <div class="mb-6 flex items-center justify-between">
               <h3>
@@ -121,12 +123,14 @@
 import Layout from '@/Shared/Layout.vue';
 import Avatar from '@/Shared/Avatar.vue';
 import Pagination from '@/Components/Pagination.vue';
+import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {
     Layout,
     Avatar,
     Pagination,
+    Errors,
   },
 
   props: {
@@ -151,6 +155,7 @@ export default {
   data() {
     return {
       localFiles: [],
+      errors: [],
     };
   },
 
@@ -161,6 +166,7 @@ export default {
   methods: {
     destroy(file) {
       if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
+        this.errors = [];
         axios
           .delete(file.url.destroy)
           .then(() => {
@@ -169,7 +175,7 @@ export default {
             this.localFiles.splice(id, 1);
           })
           .catch((error) => {
-            this.form.errors = error.response.data;
+            this.errors = error.response.data;
           });
       }
     },

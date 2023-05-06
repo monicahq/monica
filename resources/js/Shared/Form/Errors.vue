@@ -1,20 +1,8 @@
 <template>
   <div>
     <div v-if="dataerror || exception" class="border-red mb-3 rounded border p-3" v-bind="$attrs">
-      <p class="mb-2 text-sm">{{ $t('Oops! Something went wrong.') }}</p>
-      <template v-if="dataerror">
-        <p v-if="flatten[0] != 'The given data was invalid.'" class="mb0">
-          {{ flatten[0] }}
-        </p>
-        <template v-if="display(flatten[1])">
-          <p v-for="errorsList in flatten[1]" :key="errorsList.id">
-            <span v-for="error in errorsList" :key="error.id" class="mb0 mt2">
-              {{ error }}
-            </span>
-          </p>
-        </template>
-      </template>
-      <template v-else-if="exception">
+      <p class="mb-2">{{ $t('Oops! Something went wrong.') }}</p>
+      <template v-if="exception">
         <p class="mb0">
           {{ errors.message }}
         </p>
@@ -29,10 +17,29 @@
             {{ errors.exception }}
           </span>
           <br />
-          <span v-for="trace in errors.trace" :key="trace.id">
-            {{ trace.class }}{{ trace.type }}{{ trace.function }}<br />
+          <span v-for="trace in errors.trace" :key="trace.id" class="text-xs">
+            {{
+              $t(':file in :class at line :line', {
+                file: trace.file,
+                class: `${trace.class}${trace.type}${trace.function}`,
+                line: trace.line,
+              })
+            }}
+            <br />
           </span>
         </p>
+      </template>
+      <template v-else-if="dataerror">
+        <!-- <p v-if="flatten[0] !== $t('The given data was invalid.')" class="mb0">
+          {{ flatten[0] }}
+        </p> -->
+        <template v-if="display(flatten[1])">
+          <p v-for="errorsList in flatten[1]" :key="errorsList.id">
+            <span v-for="error in errorsList" :key="error.id" class="mb0 mt2 text-sm">
+              {{ error }}
+            </span>
+          </p>
+        </template>
       </template>
     </div>
   </div>
