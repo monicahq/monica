@@ -63,8 +63,8 @@ class DestroyFile extends BaseService implements ServiceInterface
     private function updateLastEditedDate(): void
     {
         if ($this->file->fileable_type == Contact::class) {
-            $this->file->fileable->last_updated_at = Carbon::now();
-            $this->file->fileable->save();
+            $this->file->ufileable->last_updated_at = Carbon::now();
+            $this->file->ufileable->save();
         }
     }
 }

@@ -17,6 +17,15 @@
             {{ errors.exception }}
           </span>
           <br />
+          <span class="text-xs">
+            {{
+              $t(':file at line :line', {
+                file: errors.file,
+                line: errors.line,
+              })
+            }}
+          </span>
+          <br />
           <span v-for="trace in errors.trace" :key="trace.id" class="text-xs">
             {{
               $t(':file in :class at line :line', {
