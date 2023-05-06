@@ -211,9 +211,13 @@ defineProps({
                   :key="mood.id"
                   class="item-list border-b border-gray-200 p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
                   <span>{{ mood.mood_tracking_parameter.label }}</span>
-                  <span class="block text-sm" v-if="mood.number_of_hours_slept">{{
-                    $t('Slept :count hours', { count: mood.number_of_hours_slept })
-                  }}</span>
+                  <span class="block text-sm" v-if="mood.number_of_hours_slept">
+                    {{
+                      $tChoice('Slept :count hour|Slept :count hours', mood.number_of_hours_slept, {
+                        count: mood.number_of_hours_slept,
+                      })
+                    }}
+                  </span>
                   <span v-if="mood.note" class="block text-sm">{{ mood.note }}</span>
                 </li>
               </ul>
@@ -222,9 +226,9 @@ defineProps({
             <!-- options -->
             <ul class="mb-6 text-sm">
               <li class="flex items-center">
-                <inertia-link :href="data.url.edit" class="text-blue-500 hover:underline">{{
-                  $t('Edit post')
-                }}</inertia-link>
+                <inertia-link :href="data.url.edit" class="text-blue-500 hover:underline">
+                  {{ $t('Edit post') }}
+                </inertia-link>
               </li>
             </ul>
           </div>
