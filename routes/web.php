@@ -385,6 +385,9 @@ Route::middleware([
             Route::get('groups', [GroupController::class, 'index'])->name('group.index');
             Route::middleware('can:group-owner,vault,group')->prefix('groups')->group(function () {
                 Route::get('{group}', [GroupController::class, 'show'])->name('group.show');
+                Route::get('{group}/edit', [GroupController::class, 'edit'])->name('group.edit');
+                Route::put('{group}', [GroupController::class, 'update'])->name('group.update');
+                Route::delete('{group}', [GroupController::class, 'destroy'])->name('group.destroy');
             });
 
             // journal page

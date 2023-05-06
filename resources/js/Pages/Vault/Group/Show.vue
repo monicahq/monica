@@ -1,11 +1,39 @@
 <script setup>
+import { ref, reactive } from 'vue';
 import Layout from '@/Shared/Layout.vue';
 import Avatar from '@/Shared/Avatar.vue';
+import { Inertia } from '@inertiajs/inertia';
+import { trans } from 'laravel-vue-i18n';
+import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
+import JetDangerButton from '@/Components/Jetstream/DangerButton.vue';
+import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
 
-defineProps({
+const props = defineProps({
   layoutData: Object,
   data: Object,
 });
+
+const deletingGroup = ref(false);
+const deleteGroupForm = reactive({
+  processing: false,
+});
+
+const destroy = () => {
+  deleteGroupForm.processing = true;
+
+  axios
+    .delete(props.data.url.destroy)
+    .then((response) => {
+      deleteGroupForm.processing = false;
+
+      localStorage.success = trans('The group has been deleted');
+      Inertia.visit(response.data.data);
+    })
+    .catch((error) => {
+      deleteGroupForm.processing = false;
+      form.errors = error.response.data;
+    });
+};
 </script>
 
 <template>
@@ -69,7 +97,7 @@ defineProps({
           </div>
 
           <!-- type -->
-          <div class="flex items-center">
+          <div class="mr-8 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -84,6 +112,20 @@ defineProps({
             </svg>
 
             <p class="text-center text-gray-600">{{ $t('Group type: :name', { name: data.type.label }) }}</p>
+          </div>
+
+          <!-- actions -->
+          <div class="flex items-center">
+            <ul class="list">
+              <li class="mr-4 inline">
+                <inertia-link :href="props.data.url.edit" class="text-blue-500 hover:underline">{{
+                  $t('Edit')
+                }}</inertia-link>
+              </li>
+              <li class="inline" @click="deletingGroup = true">
+                <span class="inline cursor-pointer text-red-500 hover:text-red-900">{{ $t('Delete') }}</span>
+              </li>
+            </ul>
           </div>
         </div>
 
@@ -108,6 +150,31 @@ defineProps({
             </div>
           </div>
         </div>
+
+        <!-- Delete Contact Confirmation Modal -->
+        <JetConfirmationModal :show="deletingGroup" @close="deletingGroup = false">
+          <template #title>
+            {{ $t('Delete group') }}
+          </template>
+
+          <template #content>
+            {{ $t('Are you sure? This action cannot be undone.') }}
+          </template>
+
+          <template #footer>
+            <JetSecondaryButton @click="deletingGroup = false">
+              {{ $t('Cancel') }}
+            </JetSecondaryButton>
+
+            <JetDangerButton
+              class="ml-3"
+              :class="{ 'opacity-25': deleteGroupForm.processing }"
+              :disabled="deleteGroupForm.processing"
+              @click="destroy">
+              {{ $t('Delete') }}
+            </JetDangerButton>
+          </template>
+        </JetConfirmationModal>
       </div>
     </main>
   </layout>

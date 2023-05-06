@@ -5,7 +5,6 @@ namespace App\Domains\Contact\ManageGroups\Web\ViewHelpers;
 use App\Models\Contact;
 use App\Models\Group;
 use App\Models\GroupTypeRole;
-use App\Models\User;
 
 class GroupShowViewHelper
 {
@@ -16,7 +15,7 @@ class GroupShowViewHelper
      * So we need to group contacts by roles if they exist, or list them
      * alphabetically otherwise.
      */
-    public static function data(Group $group, User $user): array
+    public static function data(Group $group): array
     {
         $rolesCollection = $group->groupType->groupTypeRoles()
             ->orderBy('position')
@@ -75,6 +74,16 @@ class GroupShowViewHelper
                 'label' => $group->groupType->label,
             ],
             'roles' => $rolesCollection,
+            'url' => [
+                'edit' => route('group.edit', [
+                    'vault' => $group->vault_id,
+                    'group' => $group->id,
+                ]),
+                'destroy' => route('group.destroy', [
+                    'vault' => $group->vault_id,
+                    'group' => $group->id,
+                ]),
+            ],
         ];
     }
 }

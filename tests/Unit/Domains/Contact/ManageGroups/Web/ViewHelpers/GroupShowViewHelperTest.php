@@ -39,10 +39,10 @@ class GroupShowViewHelperTest extends TestCase
             $otherContact->id => ['group_type_role_id' => $sisterRole->id],
         ]);
 
-        $array = GroupShowViewHelper::data($group, $user);
+        $array = GroupShowViewHelper::data($group);
 
         $this->assertCount(
-            5,
+            6,
             $array
         );
 
@@ -59,6 +59,14 @@ class GroupShowViewHelperTest extends TestCase
         $this->assertEquals(
             2,
             $array['contact_count']
+        );
+
+        $this->assertEquals(
+            [
+                'edit' => env('APP_URL').'/vaults/'.$contact->vault->id.'/groups/'.$group->id.'/edit',
+                'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/groups/'.$group->id,
+            ],
+            $array['url']
         );
     }
 }
