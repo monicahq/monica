@@ -219,7 +219,7 @@ const destroy = (quickFact) => {
 
             <div class="flex justify-between p-5">
               <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedQuickFactId = 0" />
-              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
             </div>
           </form>
         </li>
@@ -270,7 +270,7 @@ const destroy = (quickFact) => {
 
         <div class="flex justify-between p-5">
           <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createQuickFactModalShown = false" />
-          <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+          <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
         </div>
       </form>
     </div>

@@ -105,7 +105,7 @@
 
       <div class="flex justify-between p-5">
         <pretty-span :text="$t('Cancel')" @click="addUserModalShown = false" />
-        <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
       </div>
     </form>
 
@@ -202,7 +202,11 @@
 
             <div class="flex justify-between p-5">
               <pretty-span :text="$t('Cancel')" @click="editedUser = []" />
-              <pretty-button :text="$t('Change permission')" :state="loadingState" :icon="'check'" :classes="'save'" />
+              <pretty-button
+                :text="$t('Change permission')"
+                :state="loadingState"
+                :icon="'check'"
+                :classes="'save dark:save'" />
             </div>
           </form>
         </li>

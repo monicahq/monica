@@ -144,7 +144,7 @@ const store = () => {
   <div>
     <form
       v-if="modalShown"
-      class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900"
+      class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="store()">
       <!-- choose life event categories/types -->
       <div v-if="!selectedLifeEventType" class="border-b border-gray-200 dark:border-gray-700">
@@ -205,8 +205,13 @@ const store = () => {
       <div v-else class="flex items-center justify-between border-b border-gray-200 p-3 dark:border-gray-700">
         <div>
           <span class="text-sm">{{ $t('Chosen type:') }}</span>
-          <span class="rounded border bg-white px-2 py-1 font-mono text-sm">{{ selectedLifeEventCategory.label }}</span>
-          > <span class="rounded border bg-white px-2 py-1 font-mono text-sm">{{ selectedLifeEventType.label }}</span>
+          <span class="rounded border bg-white px-2 py-1 font-mono text-sm dark:bg-gray-800">{{
+            selectedLifeEventCategory.label
+          }}</span>
+          >
+          <span class="rounded border bg-white px-2 py-1 font-mono text-sm dark:bg-gray-800">{{
+            selectedLifeEventType.label
+          }}</span>
         </div>
 
         <p @click="resetType()" class="cursor-pointer text-sm text-blue-500 hover:underline">{{ $t('Change') }}</p>
@@ -351,7 +356,7 @@ const store = () => {
         <!-- summary -->
         <div v-if="!addSummaryFieldShown">
           <span
-            class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:text-gray-900"
+            class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 hover:dark:bg-slate-700"
             @click="showAddSummaryField"
             >{{ $t('+ add summary') }}
           </span>
@@ -360,7 +365,7 @@ const store = () => {
         <!-- description -->
         <div v-if="!addDescriptionFieldShown">
           <span
-            class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:text-gray-900"
+            class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 hover:dark:bg-slate-700"
             @click="showAddDescriptionField"
             >{{ $t('+ add description') }}
           </span>
@@ -369,7 +374,7 @@ const store = () => {
         <!-- distance -->
         <div v-if="!addDistanceFieldShown">
           <span
-            class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:text-gray-900"
+            class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 hover:dark:bg-slate-700"
             @click="showAddDistanceField"
             >{{ $t('+ add distance') }}
           </span>
@@ -382,7 +387,7 @@ const store = () => {
           :text="$t('Save')"
           :state="loadingState"
           :icon="'plus'"
-          :classes="'save'" />
+          :classes="'save dark:save'" />
       </div>
     </form>
   </div>

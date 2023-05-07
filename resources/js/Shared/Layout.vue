@@ -215,7 +215,7 @@
                   'bg-blue-700 text-white dark:bg-blue-300 dark:text-gray-900':
                     $page.component === 'Vault/Dashboard/Index',
                 }"
-                class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
+                class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                 {{ $t('Dashboard') }}
               </inertia-link>
 
@@ -271,7 +271,7 @@
                   'bg-blue-700 text-white dark:bg-blue-300 dark:text-gray-900':
                     $page.component.startsWith('Vault/Dashboard/Task'),
                 }"
-                class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
+                class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                 {{ $t('Tasks') }}
               </inertia-link>
 
@@ -282,7 +282,7 @@
                   'bg-blue-700 text-white dark:bg-blue-300 dark:text-gray-900':
                     $page.component.startsWith('Vault/Reports'),
                 }"
-                class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
+                class="mr-2 rounded-md px-2 py-1 text-sm font-medium hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                 {{ $t('Reports') }}
               </inertia-link>
 

@@ -4,7 +4,7 @@
     <div>
       <label v-if="label" class="mb-2 block text-sm" :for="id">
         {{ label }}
-        <span v-if="!required" class="optional-badge text-xs"> {{ $t('optional') }} </span>
+        <span v-if="!required" class="optional-badge dark:optional-badge text-xs"> {{ $t('optional') }} </span>
       </label>
 
       <!-- list of selected contacts -->
@@ -30,7 +30,7 @@
 
       <p
         v-if="displayAddContactButton"
-        class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300"
+        class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300 dark:border-gray-700 dark:bg-slate-500 dark:text-gray-900 hover:dark:bg-slate-700"
         @click="showAddContactMode">
         {{ labelCta }}
       </p>
@@ -139,6 +139,7 @@
 
 <script>
 import Errors from '@/Shared/Form/Errors.vue';
+import { trans } from 'laravel-vue-i18n';
 
 export default {
   components: {
@@ -160,7 +161,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: 'Find a contact in this vault',
+      default: () => trans('Find a contact in this vault'),
     },
     label: {
       type: String,
@@ -168,7 +169,7 @@ export default {
     },
     labelCta: {
       type: String,
-      default: '+ Add a contact',
+      default: () => trans('+ Add a contact'),
     },
     type: {
       type: String,
@@ -317,11 +318,9 @@ export default {
   padding: 1px 3px;
 }
 
-@media (prefers-color-scheme: dark) {
-  .optional-badge {
-    color: #d4d8dd;
-    background-color: #2f3031;
-  }
+.dark .dark\:optional-badge {
+  color: #d4d8dd;
+  background-color: #2f3031;
 }
 
 .icon-search {

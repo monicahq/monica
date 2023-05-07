@@ -317,7 +317,7 @@ const destroy = () => {
             </div>
 
             <!-- post body -->
-            <div class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+            <div class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900">
               <div class="border-gray-200 p-5 dark:border-gray-700">
                 <!-- title -->
                 <text-input
@@ -349,7 +349,7 @@ const destroy = () => {
           <div class="">
             <!-- Publish action -->
             <div class="mb-2 rounded-lg border border-gray-200 text-center dark:border-gray-700 dark:bg-gray-900">
-              <div class="bg-form rounded-b-lg p-5">
+              <div class="rounded-b-lg bg-gray-50 p-5 dark:bg-gray-900">
                 <pretty-link :href="data.url.show" :text="$t('Close')" :icon="'exit'" />
               </div>
             </div>
@@ -391,14 +391,14 @@ const destroy = () => {
             <v-date-picker v-model="form.date" :model-config="modelConfig" class="mb-6 inline-block">
               <template v-slot="{ inputValue, inputEvents }">
                 <input
-                  class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                  class="rounded border bg-white px-2 py-1 dark:border-gray-700 dark:bg-gray-900"
                   :value="inputValue"
                   v-on="inputEvents" />
               </template>
             </v-date-picker>
 
             <!-- contacts -->
-            <p class="mb-2 flex items-center font-bold">
+            <p class="mb-2 mt-6 flex items-center font-bold">
               <span>{{ $t('Contacts in this post') }}</span>
             </p>
             <contact-selector
@@ -408,7 +408,7 @@ const destroy = () => {
               :display-most-consulted-contacts="true"
               :add-multiple-contacts="true"
               :required="true"
-              :div-outer-class="'flex-1 border-gray-200 dark:border-gray-700 mb-6'" />
+              :div-outer-class="'flex-1 border-gray-200 dark:border-gray-700 mb-8'" />
 
             <!-- slices of life -->
             <slices-of-life :data="data" />

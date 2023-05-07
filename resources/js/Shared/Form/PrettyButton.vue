@@ -95,11 +95,9 @@ export default {
   background-color: #fcf27e;
 }
 
-@media (prefers-color-scheme: dark) {
-  .save {
-    background-color: #d0c10d;
-    color: rgb(31 41 55); // text-gray-800
-  }
+.dark .dark\:save {
+  background-color: #d0c10d;
+  color: rgb(31 41 55); // text-gray-800
 }
 
 button {

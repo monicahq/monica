@@ -43,7 +43,7 @@ const submit = () => {
     <!-- edit mode -->
     <form
       v-if="editMode"
-      class="bg-form mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
+      class="mb-6 rounded-lg border border-gray-200 bg-gray-50 bg-white dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="submit">
       <div class="border-b border-gray-200 px-5 py-4 dark:border-gray-700">
         <slot name="form" />

@@ -64,7 +64,7 @@
             <!-- edit modal form -->
             <form
               v-if="editMode"
-              class="bg-form mb-4 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900"
+              class="mb-4 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
               @submit.prevent="update()">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />
@@ -84,7 +84,7 @@
 
               <div class="flex justify-between p-5">
                 <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editMode = false" />
-                <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :classes="'save'" />
+                <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
               </div>
             </form>
 

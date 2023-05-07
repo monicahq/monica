@@ -30,7 +30,7 @@
     <!-- add a task modal -->
     <form
       v-if="createTaskModalShown"
-      class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900"
+      class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="submit()">
       <div class="border-b border-gray-200 p-5 dark:border-gray-700">
         <errors :errors="form.errors" />
@@ -78,7 +78,7 @@
 
       <div class="flex justify-between p-5">
         <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createTaskModalShown = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
       </div>
     </form>
 
@@ -128,7 +128,7 @@
         </div>
 
         <!-- edit task -->
-        <form v-if="editedTaskId === task.id" class="bg-form" @submit.prevent="update(task)">
+        <form v-if="editedTaskId === task.id" class="bg-gray-50 dark:bg-gray-900" @submit.prevent="update(task)">
           <errors :errors="form.errors" />
 
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
@@ -174,7 +174,7 @@
 
           <div class="flex justify-between p-5">
             <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedTaskId = 0" />
-            <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
           </div>
         </form>
       </li>

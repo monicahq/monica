@@ -30,7 +30,7 @@
     <!-- add a call modal -->
     <form
       v-if="createCallModalShown"
-      class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900"
+      class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="submit()">
       <div>
         <div v-if="form.errors.length > 0" class="p-5">
@@ -233,7 +233,7 @@
 
       <div class="flex justify-between p-5">
         <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createCallModalShown = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
       </div>
     </form>
 
@@ -306,7 +306,7 @@
         </div>
 
         <!-- edit call -->
-        <form v-if="editedCallId === call.id" class="bg-form" @submit.prevent="update(call)">
+        <form v-if="editedCallId === call.id" class="bg-gray-50 dark:bg-gray-900" @submit.prevent="update(call)">
           <errors :errors="form.errors" />
 
           <div class="border-b border-gray-200 dark:border-gray-700">
@@ -510,7 +510,7 @@
 
           <div class="flex justify-between p-5">
             <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedCallId = 0" />
-            <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
           </div>
         </form>
       </li>

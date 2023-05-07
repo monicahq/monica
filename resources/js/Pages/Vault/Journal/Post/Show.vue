@@ -106,7 +106,7 @@ defineProps({
               <div v-else>&nbsp;</div>
             </div>
 
-            <div class="post relative rounded bg-white">
+            <div class="post dark:post relative rounded bg-white dark:bg-gray-900">
               <!-- date of the post -->
               <p class="mb-2 text-sm text-gray-400">{{ data.written_at }}</p>
 
@@ -115,7 +115,7 @@ defineProps({
                 <li
                   v-for="tag in data.tags"
                   :key="tag.id"
-                  class="mr-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-500 last:mr-0">
+                  class="mr-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-500 last:mr-0 dark:bg-neutral-800">
                   {{ tag.name }}
                 </li>
               </ul>
@@ -177,7 +177,7 @@ defineProps({
 
             <!-- post metrics -->
             <div v-if="data.journalMetrics.length > 0" class="mb-4">
-              <p class="mb-2 text-sm font-semibold">Post metrics</p>
+              <p class="mb-2 text-sm font-semibold">{{ $t('Post metrics') }}</p>
               <div v-for="journalMetric in data.journalMetrics" :key="journalMetric.id">
                 <div class="mb-1 flex items-center justify-between font-semibold">
                   <span>{{ journalMetric.label }}</span>
@@ -274,6 +274,26 @@ defineProps({
   &:after {
     background: #f6f6f6;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    right: -3px;
+    top: 1px;
+    transform: rotate(1.4deg);
+  }
+}
+
+.dark .dark\:post {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+
+  &:before {
+    background: #09090b;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+    left: -5px;
+    top: 4px;
+    transform: rotate(-2.5deg);
+  }
+
+  &:after {
+    background: #171717;
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.1);
     right: -3px;
     top: 1px;
     transform: rotate(1.4deg);

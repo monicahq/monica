@@ -12,7 +12,7 @@
     <!-- modal to create a new label -->
     <form
       v-if="createlabelModalShown"
-      class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900"
+      class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="submit()">
       <div class="border-b border-gray-200 p-5 dark:border-gray-700">
         <errors :errors="form.errors" />
@@ -54,7 +54,7 @@
 
       <div class="flex justify-between p-5">
         <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createlabelModalShown = false" />
-        <pretty-button :text="$t('Create label')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-button :text="$t('Create label')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
       </div>
     </form>
 
@@ -92,7 +92,7 @@
         <!-- edit a label modal -->
         <form
           v-if="editLabelModalShownId == label.id"
-          class="item-list bg-form border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800 hover:dark:bg-slate-900"
+          class="item-list border-b border-gray-200 bg-gray-50 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:bg-slate-900 hover:dark:bg-slate-800 hover:dark:bg-slate-900"
           @submit.prevent="update(label)">
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <errors :errors="form.errors" />
@@ -134,7 +134,7 @@
 
           <div class="flex justify-between p-5">
             <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="editLabelModalShownId = 0" />
-            <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
           </div>
         </form>
       </li>

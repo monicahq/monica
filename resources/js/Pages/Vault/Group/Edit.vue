@@ -133,7 +133,7 @@ const update = () => {
           <!-- actions -->
           <div class="flex justify-between p-5">
             <pretty-link :href="props.data.url.back" :text="$t('Cancel')" :classes="'mr-3'" />
-            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
           </div>
         </form>
       </div>

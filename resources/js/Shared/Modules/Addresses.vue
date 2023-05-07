@@ -190,7 +190,7 @@ const destroy = () => {
       <!-- add an address modal -->
       <form
         v-if="createAddressModalShown"
-        class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900"
+        class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
         @submit.prevent="submit()">
         <!-- radio button: choose existing or create new address -->
         <div
@@ -366,7 +366,7 @@ const destroy = () => {
 
         <div class="flex justify-between p-5">
           <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createAddressModalShown = false" />
-          <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+          <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
         </div>
       </form>
 
@@ -415,7 +415,10 @@ const destroy = () => {
           </div>
 
           <!-- edit address -->
-          <form v-if="address.id === editedAddressId" class="bg-form" @submit.prevent="update(address)">
+          <form
+            v-if="address.id === editedAddressId"
+            class="bg-gray-50 dark:bg-gray-900"
+            @submit.prevent="update(address)">
             <div class="border-b border-gray-200 dark:border-gray-700">
               <div v-if="form.errors.length > 0" class="p-5">
                 <errors :errors="form.errors" />
@@ -524,7 +527,7 @@ const destroy = () => {
 
             <div class="flex justify-between p-5">
               <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedAddressId = 0" />
-              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
             </div>
           </form>
         </div>
@@ -593,7 +596,10 @@ const destroy = () => {
           </div>
 
           <!-- edit address -->
-          <form v-if="address.id === editedAddressId" class="bg-form" @submit.prevent="update(address)">
+          <form
+            v-if="address.id === editedAddressId"
+            class="bg-gray-50 dark:bg-gray-900"
+            @submit.prevent="update(address)">
             <div class="border-b border-gray-200 dark:border-gray-700">
               <div v-if="form.errors.length > 0" class="p-5">
                 <errors :errors="form.errors" />
@@ -702,7 +708,7 @@ const destroy = () => {
 
             <div class="flex justify-between p-5">
               <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedAddressId = 0" />
-              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
             </div>
           </form>
         </div>

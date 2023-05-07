@@ -78,7 +78,7 @@
               :text="$t('Cancel account')"
               :state="loadingState"
               :icon="'arrow'"
-              :classes="'save'" />
+              :classes="'save dark:save'" />
           </div>
         </form>
       </div>

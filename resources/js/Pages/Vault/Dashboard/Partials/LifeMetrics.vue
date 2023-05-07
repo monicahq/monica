@@ -145,7 +145,7 @@ const destroy = (lifeMetric) => {
     <!-- modal to create a quick fact -->
     <form
       v-if="createLifeMetricModalShown"
-      class="bg-form mt-2 mb-2 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
+      class="mt-2 mb-2 rounded-lg border border-gray-200 bg-gray-50 bg-white dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="store()">
       <div class="border-b border-gray-200 p-5 dark:border-gray-700">
         <errors :errors="form.errors" />
@@ -166,7 +166,7 @@ const destroy = (lifeMetric) => {
 
       <div class="flex justify-between p-5">
         <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createLifeMetricModalShown = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
       </div>
     </form>
 
@@ -247,7 +247,7 @@ const destroy = (lifeMetric) => {
           <!-- edit modal -->
           <form
             v-if="editedLifeMetricId === lifeMetric.id"
-            class="bg-form bg-white dark:border-gray-700 dark:bg-gray-900"
+            class="bg-gray-50 bg-white dark:border-gray-700 dark:bg-gray-900"
             @submit.prevent="update(lifeMetric)">
             <div class="border-b border-gray-200 p-5 dark:border-gray-700">
               <errors :errors="form.errors" />
@@ -267,7 +267,7 @@ const destroy = (lifeMetric) => {
 
             <div class="flex justify-between p-5">
               <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedLifeMetricId = 0" />
-              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
             </div>
           </form>
         </li>

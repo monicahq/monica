@@ -67,7 +67,7 @@ const changeTab = (tab) => {
                   @click="changeTab('activity')"
                   type="button"
                   :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': currentTab === 'activity' }"
-                  class="inline-flex items-center rounded-l-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                  class="inline-flex items-center rounded-l-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -89,7 +89,7 @@ const changeTab = (tab) => {
                   @click="changeTab('life_events')"
                   type="button"
                   :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': currentTab === 'life_events' }"
-                  class="inline-flex items-center border-b border-r border-t border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                  class="inline-flex items-center border-b border-r border-t border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -116,7 +116,7 @@ const changeTab = (tab) => {
                   :class="{
                     'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': currentTab === 'life_metrics',
                   }"
-                  class="inline-flex items-center rounded-r-md border-t border-b border-r border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                  class="inline-flex items-center rounded-r-md border-t border-b border-r border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

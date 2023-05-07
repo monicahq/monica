@@ -83,7 +83,7 @@ const reset = () => {
     <!-- edit slice of life -->
     <div
       v-if="editSlicesModalShown && localSlices.length > 0"
-      class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+      class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900">
       <form @submit.prevent="update()">
         <div class="border-b border-gray-200 p-2 dark:border-gray-700">
           <errors :errors="form.errors" />
@@ -105,7 +105,7 @@ const reset = () => {
             :text="$t('Save')"
             :state="loadingState"
             :icon="'check'"
-            :classes="'save'" />
+            :classes="'save dark:save'" />
         </div>
 
         <div v-if="slice" class="border-t border-gray-200 p-2 dark:border-gray-700">

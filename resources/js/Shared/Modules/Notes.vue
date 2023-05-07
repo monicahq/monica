@@ -41,7 +41,7 @@
     <!-- add a note modal -->
     <form
       v-if="createNoteModalShown"
-      class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900"
+      class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="submit()">
       <div class="border-b border-gray-200 p-5 dark:border-gray-700">
         <errors :errors="form.errors" />
@@ -103,7 +103,7 @@
 
       <div class="flex justify-between p-5">
         <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createNoteModalShown = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
       </div>
     </form>
 
@@ -178,7 +178,7 @@
         </div>
 
         <!-- edit modal form -->
-        <form v-if="editedNoteId === note.id" class="bg-form" @submit.prevent="update(note)">
+        <form v-if="editedNoteId === note.id" class="bg-gray-50 dark:bg-gray-900" @submit.prevent="update(note)">
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <errors :errors="form.errors" />
 
@@ -222,7 +222,7 @@
 
           <div class="flex justify-between p-5">
             <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedNoteId = 0" />
-            <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :classes="'save'" />
+            <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
           </div>
         </form>
       </div>

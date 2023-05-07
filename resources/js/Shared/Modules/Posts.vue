@@ -42,7 +42,7 @@ const props = defineProps({
           <div class="flex items-center text-sm">
             <!-- journal -->
             <p class="mr-2">
-              in
+              {{ $t('in') }}
               <inertia-link :href="post.journal.url.show" class="text-blue-500 hover:underline">{{
                 post.journal.name
               }}</inertia-link>

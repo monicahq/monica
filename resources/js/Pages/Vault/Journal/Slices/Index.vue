@@ -131,7 +131,7 @@ const submit = () => {
 
           <div class="flex justify-between p-5">
             <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createSliceOfLifeModalShown = false" />
-            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
           </div>
         </form>
 

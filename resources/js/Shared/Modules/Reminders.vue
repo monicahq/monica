@@ -32,7 +32,7 @@
     <!-- add a reminder modal -->
     <form
       v-if="addReminderModalShown"
-      class="bg-form mb-6 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900"
+      class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="submit()">
       <div class="border-b border-gray-200 dark:border-gray-700">
         <div v-if="form.errors.length > 0" class="p-5">
@@ -70,7 +70,7 @@
               {{ $t('I know the exact date, including the year') }}
             </label>
           </div>
-          <div v-if="form.choice == 'full_date'" class="mb-4 ml-6">
+          <div v-if="form.choice === 'full_date'" class="mb-4 ml-6">
             <v-date-picker v-model="form.date" class="inline-block h-full" :model-config="modelConfig">
               <template #default="{ inputValue, inputEvents }">
                 <input
@@ -96,7 +96,7 @@
               {{ $t('I only know the day and month, not the year') }}
             </label>
           </div>
-          <div v-if="form.choice == 'month_day'" class="ml-6 mt-2 flex">
+          <div v-if="form.choice === 'month_day'" class="ml-6 mt-2 flex">
             <dropdown
               v-model="form.month"
               :data="data.months"
@@ -151,7 +151,7 @@
               <label
                 for="recurring"
                 class="ml-3 block flex cursor-pointer items-center text-sm font-medium text-gray-700 dark:text-gray-300">
-                <span class="mr-2"> Every </span>
+                <span class="mr-2">{{ $t('Every') }}</span>
 
                 <select
                   :id="id"
@@ -170,12 +170,12 @@
                   class="mr-2 rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
                   :required="required"
                   @change="change">
-                  <option value="recurring_day">day</option>
-                  <option value="recurring_month">month</option>
-                  <option value="recurring_year">year</option>
+                  <option value="recurring_day">{{ $t('day') }}</option>
+                  <option value="recurring_month">{{ $t('month') }}</option>
+                  <option value="recurring_year">{{ $t('year') }}</option>
                 </select>
 
-                <span>after the next occurence of the date.</span>
+                <span>{{ $t('after the next occurence of the date.') }}</span>
               </label>
             </div>
           </div>
@@ -184,7 +184,7 @@
 
       <div class="flex justify-between p-5">
         <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="addReminderModalShown = false" />
-        <pretty-button :text="$t('Add date')" :state="loadingState" :icon="'plus'" :classes="'save'" />
+        <pretty-button :text="$t('Add date')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
       </div>
     </form>
 
@@ -232,7 +232,10 @@
           </div>
 
           <!-- edit reminder modal -->
-          <form v-if="editedReminderId == reminder.id" class="bg-form" @submit.prevent="update(reminder)">
+          <form
+            v-if="editedReminderId === reminder.id"
+            class="bg-gray-50 dark:bg-gray-900"
+            @submit.prevent="update(reminder)">
             <div class="border-b border-gray-200 dark:border-gray-700">
               <div v-if="form.errors.length > 0" class="p-5">
                 <errors :errors="form.errors" />
@@ -269,7 +272,7 @@
                     {{ $t('I know the exact date, including the year') }}
                   </label>
                 </div>
-                <div v-if="form.choice == 'full_date'" class="mb-4 ml-6">
+                <div v-if="form.choice === 'full_date'" class="mb-4 ml-6">
                   <v-date-picker v-model="form.date" class="inline-block h-full" :model-config="modelConfig">
                     <template #default="{ inputValue, inputEvents }">
                       <input
@@ -295,7 +298,7 @@
                     {{ $t('I only know the day and month, not the year') }}
                   </label>
                 </div>
-                <div v-if="form.choice == 'month_day'" class="ml-6 mt-2 flex">
+                <div v-if="form.choice === 'month_day'" class="ml-6 mt-2 flex">
                   <dropdown
                     v-model="form.month"
                     :data="data.months"
@@ -349,7 +352,7 @@
                     <label
                       for="recurring"
                       class="ml-3 block flex cursor-pointer items-center text-sm font-medium text-gray-700 dark:text-gray-300">
-                      <span class="mr-2">Every</span>
+                      <span class="mr-2">{{ $t('Every') }}</span>
 
                       <select
                         :id="id"
@@ -368,12 +371,12 @@
                         class="mr-2 rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
                         :required="required"
                         @change="change">
-                        <option value="recurring_day">day</option>
-                        <option value="recurring_month">month</option>
-                        <option value="recurring_year">year</option>
+                        <option value="recurring_day">{{ $t('day') }}</option>
+                        <option value="recurring_month">{{ $t('month') }}</option>
+                        <option value="recurring_year">{{ $t('year') }}</option>
                       </select>
 
-                      <span>after the next occurence of the date.</span>
+                      <span>{{ $t('after the next occurence of the date.') }}</span>
                     </label>
                   </div>
                 </div>
@@ -382,7 +385,7 @@
 
             <div class="flex justify-between p-5">
               <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedReminderId = 0" />
-              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save'" />
+              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
             </div>
           </form>
         </li>
@@ -391,7 +394,7 @@
 
     <!-- blank state -->
     <div
-      v-if="localReminders.length == 0"
+      v-if="localReminders.length === 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/dashboard_blank_reminders.svg" :alt="$t('Reminders')" class="mx-auto mt-4 h-14 w-14" />
       <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no reminders yet.') }}</p>
