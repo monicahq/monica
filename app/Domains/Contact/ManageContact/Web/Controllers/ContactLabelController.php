@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Label;
 use App\Models\Vault;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ContactLabelController extends Controller
@@ -26,7 +27,7 @@ class ContactLabelController extends Controller
 
         return Inertia::render('Vault/Contact/Index', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
-            'data' => ContactIndexViewHelper::data($contacts, $vault, $labelId),
+            'data' => ContactIndexViewHelper::data($contacts, $vault, $labelId, Auth::user()),
             'paginator' => PaginatorHelper::getData($contacts),
         ]);
     }

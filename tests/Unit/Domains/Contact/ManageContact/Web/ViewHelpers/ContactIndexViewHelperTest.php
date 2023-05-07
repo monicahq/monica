@@ -5,6 +5,7 @@ namespace Tests\Unit\Domains\Contact\ManageContact\Web\ViewHelpers;
 use App\Domains\Contact\ManageContact\Web\ViewHelpers\ContactIndexViewHelper;
 use App\Models\Contact;
 use App\Models\Label;
+use App\Models\User;
 use App\Models\Vault;
 use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -17,6 +18,7 @@ class ContactIndexViewHelperTest extends TestCase
     /** @test */
     public function it_gets_the_data_needed_for_the_view(): void
     {
+        $user = User::factory()->create();
         $vault = Vault::factory()->create();
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
@@ -32,10 +34,10 @@ class ContactIndexViewHelperTest extends TestCase
         $contact->labels()->attach($label);
 
         $contacts = Contact::all();
-        $array = ContactIndexViewHelper::data($contacts, $vault);
+        $array = ContactIndexViewHelper::data($contacts, $vault, null, $user);
 
         $this->assertEquals(
-            4,
+            6,
             count($array)
         );
 
@@ -80,6 +82,9 @@ class ContactIndexViewHelperTest extends TestCase
                 'contact' => [
                     'index' => env('APP_URL').'/vaults/'.$vault->id.'/contacts',
                     'create' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/create',
+                ],
+                'sort' => [
+                    'update' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/sort',
                 ],
             ],
             $array['url']

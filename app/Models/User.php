@@ -50,6 +50,15 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     public const DISTANCE_UNIT_KM = 'km';
 
     /**
+     * Possible contact sort order.
+     */
+    public const CONTACT_SORT_ORDER_ASC = 'asc';
+
+    public const CONTACT_SORT_ORDER_DESC = 'desc';
+
+    public const CONTACT_SORT_ORDER_LAST_UPDATED = 'last_updated';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<string>
@@ -72,6 +81,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         'default_map_site',
         'locale',
         'help_shown',
+        'contact_sort_order',
     ];
 
     /**

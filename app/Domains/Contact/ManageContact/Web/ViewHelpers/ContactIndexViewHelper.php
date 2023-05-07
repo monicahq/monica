@@ -3,11 +3,12 @@
 namespace App\Domains\Contact\ManageContact\Web\ViewHelpers;
 
 use App\Models\Label;
+use App\Models\User;
 use App\Models\Vault;
 
 class ContactIndexViewHelper
 {
-    public static function data($contacts, Vault $vault, int $labelId = null): array
+    public static function data($contacts, Vault $vault, int $labelId = null, User $user): array
     {
         $contactCollection = collect();
         foreach ($contacts as $contact) {
@@ -45,12 +46,32 @@ class ContactIndexViewHelper
             'contacts' => $contactCollection,
             'labels' => $labelsCollection,
             'current_label' => $labelId,
+            'user_contact_sort_order' => $user->contact_sort_order,
+            'contact_sort_orders' => collect([
+                [
+                    'id' => 'last_updated',
+                    'name' => trans_key('By last updated'),
+                ],
+                [
+                    'id' => 'asc',
+                    'name' => trans_key('From A to Z'),
+                ],
+                [
+                    'id' => 'desc',
+                    'name' => trans_key('From Z to A'),
+                ],
+            ]),
             'url' => [
                 'contact' => [
                     'index' => route('contact.index', [
                         'vault' => $vault->id,
                     ]),
                     'create' => route('contact.create', [
+                        'vault' => $vault->id,
+                    ]),
+                ],
+                'sort' => [
+                    'update' => route('contact.sort.update', [
                         'vault' => $vault->id,
                     ]),
                 ],

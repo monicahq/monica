@@ -9,6 +9,7 @@ use App\Domains\Contact\ManageContact\Web\Controllers\ContactLabelController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactMoveController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactNoTemplateController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactPageController;
+use App\Domains\Contact\ManageContact\Web\Controllers\ContactSortController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactTemplateController;
 use App\Domains\Contact\ManageContactAddresses\Web\Controllers\ContactModuleAddressController;
 use App\Domains\Contact\ManageContactAddresses\Web\Controllers\ContactModuleAddressImageController;
@@ -232,6 +233,7 @@ Route::middleware([
             Route::prefix('contacts')->group(function () {
                 Route::get('', [ContactController::class, 'index'])->name('contact.index');
                 Route::get('labels/{label}', [ContactLabelController::class, 'index'])->name('contact.label.index');
+                Route::put('sort', [ContactSortController::class, 'update'])->name('contact.sort.update');
 
                 // create a contact
                 Route::get('create', [ContactController::class, 'create'])->name('contact.create');
