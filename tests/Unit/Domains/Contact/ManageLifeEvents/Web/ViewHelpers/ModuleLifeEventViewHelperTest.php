@@ -160,7 +160,7 @@ class ModuleLifeEventViewHelperTest extends TestCase
         );
         $this->assertEquals(
             [
-                'store' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/timelineEvents/'.$timelineEvent->id,
+                'store' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/timelineEvents/'.$timelineEvent->id.'/lifeEvents',
                 'toggle' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/timelineEvents/'.$timelineEvent->id.'/toggle',
                 'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/timelineEvents/'.$timelineEvent->id,
             ],
@@ -193,7 +193,7 @@ class ModuleLifeEventViewHelperTest extends TestCase
         $array = ModuleLifeEventViewHelper::dtoLifeEvent($lifeEvent, $user, $contact);
 
         $this->assertEquals(
-            19,
+            20,
             count($array)
         );
 

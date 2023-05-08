@@ -110,6 +110,7 @@ class ModuleLifeEventViewHelper
             'summary' => $lifeEvent->summary,
             'description' => $lifeEvent->description,
             'happened_at' => DateHelper::format($lifeEvent->happened_at, $user),
+            'started_at' => $lifeEvent->happened_at->format('Y-m-d'),
             'costs' => $lifeEvent->costs,
             'currency_id' => $lifeEvent->currency_id,
             'paid_by_contact_id' => $lifeEvent->paid_by_contact_id,
@@ -133,6 +134,12 @@ class ModuleLifeEventViewHelper
             ],
             'url' => [
                 'toggle' => route('contact.life_event.toggle', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                    'timelineEvent' => $lifeEvent->timelineEvent->id,
+                    'lifeEvent' => $lifeEvent->id,
+                ]),
+                'edit' => route('contact.life_event.edit', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
                     'timelineEvent' => $lifeEvent->timelineEvent->id,

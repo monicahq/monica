@@ -14,6 +14,7 @@ const props = defineProps({
   openModal: Boolean,
   createTimelineEvent: Boolean,
   timelineEvent: Object,
+  lifeEvent: Object,
 });
 
 const emit = defineEmits(['closeModal', 'timelineEventCreated', 'lifeEventCreated']);
@@ -50,6 +51,28 @@ watch(
 
 onMounted(() => {
   resetModal();
+  if (props.lifeEvent) {
+    form.label = props.lifeEvent.label;
+    form.started_at = props.lifeEvent.started_at;
+    form.lifeEventTypeId = props.lifeEvent.life_event_type.id;
+    selectedLifeEventCategory.value = props.lifeEvent.life_event_type.category;
+    selectedLifeEventType.value = props.lifeEvent.life_event_type;
+    if (props.lifeEvent.summary) {
+      form.summary = props.lifeEvent.summary;
+      addSummaryFieldShown.value = true;
+    }
+    if (props.lifeEvent.description) {
+      form.description = props.lifeEvent.description;
+      addDescriptionFieldShown.value = true;
+    }
+    if (props.lifeEvent.distance) {
+      form.distance = props.lifeEvent.distance;
+      form.distance_unit = props.lifeEvent.distance_unit;
+      addDistanceFieldShown.value = true;
+    }
+    form.participants = props.lifeEvent.participants;
+    selectedLifeEventType.value = props.lifeEvent.life_event_type;
+  }
 });
 
 const resetModal = () => {
@@ -115,15 +138,19 @@ const store = () => {
   // this changes the url we post to as we need to pass the right info back to
   // the parent (ie. if it needs to refresh a specific timeline event, or the entire
   // timeline)
-  var url = '';
-  if (props.createTimelineEvent) {
-    url = props.data.url.store;
+  let request = {
+    method: 'post',
+    data: form,
+  };
+  if (props.lifeEvent) {
+    request.url = props.lifeEvent.url.edit;
+    request.method = 'put';
   } else {
-    url = props.timelineEvent.url.store;
+    request.url = props.createTimelineEvent ? props.data.url.store : props.timelineEvent.url.store;
   }
 
   axios
-    .post(url, form)
+    .request(request)
     .then((response) => {
       loadingState.value = '';
       emit('closeModal');
@@ -186,7 +213,7 @@ const store = () => {
 
           <!-- list of life event types -->
           <div>
-            <p class="mb-1 text-xs font-semibold">Types</p>
+            <p class="mb-1 text-xs font-semibold">{{ $t('Types') }}</p>
             <ul class="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
               <li
                 v-for="lifeEventType in selectedLifeEventCategory.life_event_types"
@@ -205,13 +232,13 @@ const store = () => {
       <div v-else class="flex items-center justify-between border-b border-gray-200 p-3 dark:border-gray-700">
         <div>
           <span class="text-sm">{{ $t('Chosen type:') }}</span>
-          <span class="rounded border bg-white px-2 py-1 font-mono text-sm dark:bg-gray-800">{{
-            selectedLifeEventCategory.label
-          }}</span>
+          <span class="rounded border bg-white px-2 py-1 font-mono text-sm dark:bg-gray-800">
+            {{ selectedLifeEventCategory.label }}
+          </span>
           >
-          <span class="rounded border bg-white px-2 py-1 font-mono text-sm dark:bg-gray-800">{{
-            selectedLifeEventType.label
-          }}</span>
+          <span class="rounded border bg-white px-2 py-1 font-mono text-sm dark:bg-gray-800">
+            {{ selectedLifeEventType.label }}
+          </span>
         </div>
 
         <p @click="resetType()" class="cursor-pointer text-sm text-blue-500 hover:underline">{{ $t('Change') }}</p>
@@ -222,7 +249,8 @@ const store = () => {
         <!-- default date -->
         <div v-if="!editDate" class="flex items-center justify-between">
           <div>
-            <span class="text-sm">{{ $t('Date of the event:') }}</span> {{ props.data.current_date_human_format }}
+            <span class="text-sm">{{ $t('Date of the event:') }}</span>
+            {{ props.lifeEvent ? props.lifeEvent.happened_at : props.data.current_date_human_format }}
           </div>
 
           <p @click="editDate = true" class="cursor-pointer text-sm text-blue-500 hover:underline">

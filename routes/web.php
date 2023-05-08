@@ -373,8 +373,9 @@ Route::middleware([
                     Route::get('timelineEvents', [ContactModuleTimelineEventController::class, 'index'])->name('contact.timeline_event.index');
                     Route::post('timelineEvents', [ContactModuleTimelineEventController::class, 'store'])->name('contact.timeline_event.store');
                     Route::post('timelineEvents/{timelineEvent}/toggle', [ToggleTimelineEventController::class, 'store'])->name('contact.timeline_event.toggle');
-                    Route::post('timelineEvents/{timelineEvent}', [ContactModuleLifeEventController::class, 'store'])->name('contact.life_event.store');
+                    Route::post('timelineEvents/{timelineEvent}/lifeEvents', [ContactModuleLifeEventController::class, 'store'])->name('contact.life_event.store');
                     Route::delete('timelineEvents/{timelineEvent}', [ContactModuleTimelineEventController::class, 'destroy'])->name('contact.timeline_event.destroy');
+                    Route::put('timelineEvents/{timelineEvent}/lifeEvents/{lifeEvent}', [ContactModuleLifeEventController::class, 'edit'])->name('contact.life_event.edit');
                     Route::post('timelineEvents/{timelineEvent}/lifeEvents/{lifeEvent}/toggle', [ToggleLifeEventController::class, 'store'])->name('contact.life_event.toggle');
                     Route::delete('timelineEvents/{timelineEvent}/lifeEvents/{lifeEvent}', [ContactModuleLifeEventController::class, 'destroy'])->name('contact.life_event.destroy');
 
