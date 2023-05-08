@@ -87,8 +87,25 @@ const reload = () => {
 
 <template>
   <div class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 dark:bg-gray-900 sm:justify-center sm:pt-0">
-    <div>
+    <div class="mb-2">
       <AuthenticationCardLogo />
+    </div>
+
+    <!-- beta mode-->
+    <div class="mb-4 rounded-lg border bg-amber-50 p-6">
+      <p class="mb-2 text-center font-bold">
+        <span class="mr-2">🚧</span> {{ $t('Chandler is in beta.') }} <span class="ml-2">🚧</span>
+      </p>
+      <p class="mb-2">{{ $t('Compared to Monica:') }}</p>
+      <ul class="list mb-2 pl-3">
+        <li class="list-disc">
+          {{ $t('it misses some of the features, the most important ones being the API and gift management,') }}
+        </li>
+        <li class="list-disc">{{ $t("you can't import any data from your current Monica account(yet),") }}</li>
+        <li class="list-disc">{{ $t("you can't even use your current username or password to sign in,") }}</li>
+        <li class="list-disc">{{ $t("however, there are many, many new features that didn't exist before.") }}</li>
+      </ul>
+      <p>{{ $t("We hope you'll like it.") }}</p>
     </div>
 
     <div

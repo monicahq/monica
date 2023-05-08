@@ -44,7 +44,7 @@ const policy = () => {
     <JetValidationErrors class="mb-4" />
 
     <p class="mb-2 text-lg font-bold">{{ $t('Sign up for an account') }}</p>
-    <p class="mb-8 text-sm text-gray-500">{{ $t('Your name here will be used to add yourself as a contact.') }}'</p>
+    <p class="mb-8 text-sm text-gray-500">{{ $t('Your name here will be used to add yourself as a contact.') }}</p>
 
     <form @submit.prevent="submit">
       <div>
@@ -103,7 +103,7 @@ const policy = () => {
           autocomplete="new-password" />
       </div>
 
-      <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4">
+      <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4 mb-4">
         <JetLabel for="terms">
           <div class="flex">
             <JetCheckbox id="terms" v-model:checked="form.terms" name="terms" />
@@ -113,6 +113,23 @@ const policy = () => {
               v-html="$t('I agree to the :terms and :policy', { terms: terms(), policy: policy() })"></div>
           </div>
         </JetLabel>
+      </div>
+
+      <!-- beta mode-->
+      <div class="mb-4 rounded-lg border bg-amber-50 p-6">
+        <p class="mb-2 text-center font-bold">
+          <span class="mr-2">🚧</span> {{ $t('Chandler is in beta.') }} <span class="ml-2">🚧</span>
+        </p>
+        <p class="mb-2">{{ $t('Compared to Monica:') }}</p>
+        <ul class="list mb-2 pl-3">
+          <li class="list-disc">
+            {{ $t('it misses some of the features, the most important ones being the API and gift management,') }}
+          </li>
+          <li class="list-disc">{{ $t("you can't import any data from your current Monica account(yet),") }}</li>
+          <li class="list-disc">{{ $t("you can't even use your current username or password to sign in,") }}</li>
+          <li class="list-disc">{{ $t("however, there are many, many new features that didn't exist before.") }}</li>
+        </ul>
+        <p>{{ $t("We hope you'll like it.") }}</p>
       </div>
 
       <div class="mt-4 flex items-center justify-end">
