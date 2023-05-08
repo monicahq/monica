@@ -195,8 +195,8 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     public function getContactInVault(Vault $vault): ?Contact
     {
         $entry = $this->vaults()
-                ->wherePivot('vault_id', $vault->id)
-                ->first();
+            ->wherePivot('vault_id', $vault->id)
+            ->first();
 
         if ($entry === null) {
             return null;

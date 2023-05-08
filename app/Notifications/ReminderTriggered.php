@@ -60,12 +60,12 @@ class ReminderTriggered extends Notification
         ]);
 
         return (new MailMessage())
-                    ->subject(trans('email.notification_reminder_email', ['name' => $this->contactName]))
-                    ->line(trans('email.reminder_triggered_intro'))
-                    ->line($this->content)
-                    ->line(trans('email.reminder_triggered_for'))
-                    ->line($this->contactName)
-                    ->line(trans('email.reminder_triggered_signature'));
+            ->subject(trans('email.notification_reminder_email', ['name' => $this->contactName]))
+            ->line(trans('email.reminder_triggered_intro'))
+            ->line($this->content)
+            ->line(trans('email.reminder_triggered_for'))
+            ->line($this->contactName)
+            ->line(trans('email.reminder_triggered_signature'));
     }
 
     public function toTelegram($notifiable)

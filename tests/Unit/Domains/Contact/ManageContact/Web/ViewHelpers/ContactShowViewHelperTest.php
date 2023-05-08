@@ -65,7 +65,7 @@ class ContactShowViewHelperTest extends TestCase
 
         $this->assertEquals(
             [
-                0 => [
+                1 => [
                     'id' => $templatePage->id,
                     'name' => $templatePage->name,
                     'selected' => true,

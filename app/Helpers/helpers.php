@@ -16,7 +16,7 @@ if (! function_exists('trans_ignore')) {
     /**
      * Translate the given message. It won't be extracted by monica:localize command.
      */
-    function trans_ignore(?string $key = null, array $replace = [], ?string $locale = null): ?string
+    function trans_ignore(?string $key = null, array $replace = [], ?string $locale = null): string
     {
         return __($key, $replace, $locale);
     }

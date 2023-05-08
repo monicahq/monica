@@ -103,7 +103,7 @@ const policy = () => {
           autocomplete="new-password" />
       </div>
 
-      <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4 mb-4">
+      <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mb-4 mt-4">
         <JetLabel for="terms">
           <div class="flex">
             <JetCheckbox id="terms" v-model:checked="form.terms" name="terms" />

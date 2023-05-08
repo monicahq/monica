@@ -18,7 +18,7 @@ class ContactImportantDateHelper
                 'vault_id' => $vaultId,
                 'internal_type' => $type,
             ])
-            ->first()
+                ->first()
         );
     }
 }

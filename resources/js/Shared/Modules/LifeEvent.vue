@@ -155,7 +155,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
         <div v-for="timelineEvent in localTimelines" :key="timelineEvent.id" class="mb-4">
           <!-- timeline event name -->
           <div
-            class="mb-2 flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 hover:dark:bg-slate-800"
+            class="mb-2 flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 hover:dark:bg-slate-900"
             @click="toggleTimelineEventVisibility(timelineEvent)">
             <!-- timeline date / label / number of events -->
             <div>
@@ -217,7 +217,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                 <!-- name of life event -->
                 <div
                   :class="lifeEvent.collapsed ? 'rounded-lg border' : ''"
-                  class="flex cursor-pointer items-center justify-between rounded-t-lg border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 hover:dark:bg-slate-800">
+                  class="flex cursor-pointer items-center justify-between rounded-t-lg border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 hover:dark:bg-slate-900">
                   <!-- title -->
                   <div @click="toggleLifeEventVisibility(lifeEvent)" class="flex items-center">
                     <p v-if="lifeEvent.summary" class="mr-4 text-sm font-bold">{{ lifeEvent.summary }}</p>

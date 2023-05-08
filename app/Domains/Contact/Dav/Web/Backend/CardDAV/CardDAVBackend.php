@@ -251,8 +251,8 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
 
         return $vaults->get()
             ->map(fn ($vault) => $vault->contacts()
-                    ->active()
-                    ->get()
+                ->active()
+                ->get()
             )
             ->flatten();
     }
@@ -273,8 +273,8 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
 
         return $vaults->get()
             ->map(fn ($vault) => $vault->contacts()
-                    ->onlyTrashed()
-                    ->get()
+                ->onlyTrashed()
+                ->get()
             )
             ->flatten();
     }

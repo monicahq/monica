@@ -33,7 +33,7 @@ class EnsureDavRequestsAreStateful
             ? $this->authenticated()
             : $this->authenticate()
         )
-        ->then(fn (Request $request) => $next($request));
+            ->then(fn (Request $request) => $next($request));
     }
 
     private function authenticated(): array

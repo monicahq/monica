@@ -36,6 +36,3 @@ parameters:
 
         # larastan needs to manage ->pivot properties
         - '#Access to an undefined property App\\Models\\[^:]*::\$pivot\.#'
-
-        # larastan needs to manage ->withCount() loads https://github.com/nunomaduro/larastan/issues/466
-        - '#Access to an undefined property App\\Models\\[^:]*::\$.*_count\.#'

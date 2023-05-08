@@ -9,10 +9,6 @@ import { ZiggyVue } from 'ziggy-js/src/js/vue.js';
 import { i18nVue } from 'laravel-vue-i18n';
 import { sentry } from './sentry';
 import Antd from 'ant-design-vue';
-import 'ant-design-vue/lib/popover/style/index.css';
-import 'ant-design-vue/lib/dropdown/style/index.css';
-import 'ant-design-vue/lib/tooltip/style/index.css';
-import 'v-calendar/dist/style.css';
 import VCalendar from 'v-calendar';
 import methods from './methods';
 

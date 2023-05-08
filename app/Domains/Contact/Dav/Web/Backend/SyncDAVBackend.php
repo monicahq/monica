@@ -72,8 +72,8 @@ trait SyncDAVBackend
     public function getLastModified(?string $collectionId): ?Carbon
     {
         return $this->getObjects($collectionId)
-                    ->map(fn ($object) => $object->updated_at)
-                    ->max();
+            ->map(fn ($object) => $object->updated_at)
+            ->max();
     }
 
     /**

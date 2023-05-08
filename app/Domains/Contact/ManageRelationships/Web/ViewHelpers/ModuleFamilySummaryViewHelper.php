@@ -54,7 +54,7 @@ class ModuleFamilySummaryViewHelper
                 ->join('contacts', 'relationships.contact_id', '=', 'contacts.id')
                 ->join('relationship_types', 'relationships.relationship_type_id', '=', 'relationship_types.id')
                 ->select('relationships.id as main_id', 'relationship_types.id', 'relationships.contact_id', 'relationships.related_contact_id')
-                ->where('relationships.relationship_type_id', $relationshipType->id)
+                ->where('relationships.relationship_type_id', $relationshipType->getKey())
                 ->where(function ($query) use ($contact) {
                     $query->where('relationships.contact_id', $contact->id)
                         ->orWhere('relationships.related_contact_id', $contact->id);

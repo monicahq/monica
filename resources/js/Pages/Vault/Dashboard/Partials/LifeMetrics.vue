@@ -145,7 +145,7 @@ const destroy = (lifeMetric) => {
     <!-- modal to create a quick fact -->
     <form
       v-if="createLifeMetricModalShown"
-      class="mt-2 mb-2 rounded-lg border border-gray-200 bg-gray-50 bg-white dark:border-gray-700 dark:bg-gray-900"
+      class="mb-2 mt-2 rounded-lg border border-gray-200 bg-gray-50 bg-white dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="store()">
       <div class="border-b border-gray-200 p-5 dark:border-gray-700">
         <errors :errors="form.errors" />
@@ -189,21 +189,21 @@ const destroy = (lifeMetric) => {
 
                     <a-tooltip placement="bottomLeft" :title="$t('Events this week')" arrow-point-at-center>
                       <span
-                        class="cursor-pointer whitespace-nowrap rounded-lg bg-slate-100 py-0.5 px-2 text-sm text-slate-400"
+                        class="cursor-pointer whitespace-nowrap rounded-lg bg-slate-100 px-2 py-0.5 text-sm text-slate-400"
                         >{{ lifeMetric.stats.weekly_events }}</span
                       >
                     </a-tooltip>
                     <span class="mx-1 text-gray-400">/</span>
                     <a-tooltip placement="bottomLeft" :title="$t('Events this month')" arrow-point-at-center>
                       <span
-                        class="cursor-pointer whitespace-nowrap rounded-lg bg-yellow-100 py-0.5 px-2 text-sm text-slate-400"
+                        class="cursor-pointer whitespace-nowrap rounded-lg bg-yellow-100 px-2 py-0.5 text-sm text-slate-400"
                         >{{ lifeMetric.stats.monthly_events }}</span
                       >
                     </a-tooltip>
                     <span class="mx-1 text-gray-400">/</span>
                     <a-tooltip placement="bottomLeft" :title="$t('Events this year')" arrow-point-at-center>
                       <span
-                        class="cursor-pointer whitespace-nowrap rounded-lg bg-green-100 py-0.5 px-2 text-sm text-slate-400"
+                        class="cursor-pointer whitespace-nowrap rounded-lg bg-green-100 px-2 py-0.5 text-sm text-slate-400"
                         >{{ lifeMetric.stats.yearly_events }}</span
                       >
                     </a-tooltip>
@@ -216,7 +216,7 @@ const destroy = (lifeMetric) => {
                 :text="'+ 1'"
                 :classes="'sm:w-fit w-full py-4 px-8'"
                 @click="increment(lifeMetric)" />
-              <span v-else class="w-full py-4 px-3 text-xl sm:w-fit">🤭</span>
+              <span v-else class="w-full px-3 py-4 text-xl sm:w-fit">🤭</span>
             </div>
 
             <!-- menu -->

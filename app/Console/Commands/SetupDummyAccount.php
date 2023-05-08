@@ -84,7 +84,7 @@ class SetupDummyAccount extends Command
 
     private function wipeAndMigrateDB(): void
     {
-        if ($this->hasOption('migrate') && $this->option('migrate')) {
+        if ($this->option('migrate')) {
             $this->artisan('☐ Migration of the database', 'migrate', ['--force' => true]);
         } else {
             $this->artisan('☐ Migration of the database', 'migrate:fresh', ['--force' => true]);

@@ -71,8 +71,8 @@ class RemoveVaultAccess extends BaseService implements ServiceInterface
     private function remove(): void
     {
         $vault = $this->user->vaults()
-             ->wherePivot('vault_id', $this->vault->id)
-             ->first();
+            ->wherePivot('vault_id', $this->vault->id)
+            ->first();
 
         if ($vault !== null) {
             Contact::find($vault->pivot->contact_id)->delete();
