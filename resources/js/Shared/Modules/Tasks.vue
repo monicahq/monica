@@ -65,14 +65,14 @@
 
         <!-- task options -->
         <div v-if="form.due_at_checked" class="ml-4 mt-4">
-          <v-date-picker v-model="form.due_at" class="inline-block h-full" :model-config="modelConfig">
+          <DatePicker v-model.string="form.due_at" class="inline-block h-full" :masks="masks" :is-dark="isDark()">
             <template #default="{ inputValue, inputEvents }">
               <input
                 class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
                 :value="inputValue"
                 v-on="inputEvents" />
             </template>
-          </v-date-picker>
+          </DatePicker>
         </div>
       </div>
 
@@ -161,14 +161,14 @@
 
             <!-- task options -->
             <div v-if="form.due_at_checked" class="ml-4 mt-4">
-              <v-date-picker v-model="form.due_at" class="inline-block h-full" :model-config="modelConfig">
+              <DatePicker v-model.string="form.due_at" class="inline-block h-full" :masks="masks" :is-dark="isDark()">
                 <template #default="{ inputValue, inputEvents }">
                   <input
                     class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
                     :value="inputValue"
                     v-on="inputEvents" />
                 </template>
-              </v-date-picker>
+              </DatePicker>
             </div>
           </div>
 
@@ -251,6 +251,8 @@
 </template>
 
 <script>
+import { DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
 import HoverMenu from '@/Shared/HoverMenu.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
@@ -259,6 +261,7 @@ import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {
+    DatePicker,
     HoverMenu,
     PrettyButton,
     PrettySpan,
@@ -282,6 +285,9 @@ export default {
       loadingState: '',
       editedTaskId: 0,
       dueDateShown: false,
+      masks: {
+        modelValue: 'YYYY-MM-DD',
+      },
       form: {
         label: '',
         due_at: '',

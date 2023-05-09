@@ -1,3 +1,110 @@
+<script setup>
+import { computed, ref } from 'vue';
+
+const props = defineProps({
+  id: {
+    type: String,
+    default: 'text-input-',
+  },
+  inputClass: {
+    type: String,
+    default: '',
+  },
+  divOuterClass: {
+    type: String,
+    default: '',
+  },
+  modelValue: {
+    type: [String, Number],
+    default: '',
+  },
+  type: {
+    type: String,
+    default: 'text',
+  },
+  name: {
+    type: String,
+    default: 'input',
+  },
+  placeholder: {
+    type: String,
+    default: '',
+  },
+  help: {
+    type: String,
+    default: '',
+  },
+  label: {
+    type: String,
+    default: '',
+  },
+  required: {
+    type: Boolean,
+    default: false,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  autofocus: {
+    type: Boolean,
+    default: false,
+  },
+  autocomplete: {
+    type: Boolean,
+    default: true,
+  },
+  maxlength: {
+    type: Number,
+    default: null,
+  },
+  min: {
+    type: Number,
+    default: null,
+  },
+  max: {
+    type: Number,
+    default: null,
+  },
+  step: {
+    type: String,
+    default: 'any',
+  },
+});
+const emit = defineEmits(['esc-key-pressed', 'update:modelValue']);
+
+const displayMaxLength = ref(false);
+const input = ref(null);
+
+const charactersLeft = computed(() => {
+  let char = 0;
+  if (props.modelValue) {
+    char = props.modelValue.length;
+  }
+
+  return `${props.maxlength - char} / ${props.maxlength}`;
+});
+
+const localInputClasses = computed(() => {
+  return [
+    'rounded-md shadow-sm',
+    'bg-white dark:bg-slate-900 dark:text-gray-100 border-gray-300 dark:border-gray-700',
+    'placeholder:text-gray-600 placeholder:dark:text-gray-400',
+    'focus:border-indigo-300 focus:dark:border-indigo-700 focus:ring focus:ring-indigo-200 focus:dark:ring-indigo-800 focus:ring-opacity-50 focus:dark:ring-opacity-900',
+    'disabled:bg-slate-50 disabled:dark:bg-slate-900',
+    props.inputClass,
+  ];
+});
+
+const sendEscKey = () => {
+  emit('esc-key-pressed');
+};
+
+defineExpose({
+  focus: () => input.value.focus(),
+});
+</script>
+
 <template>
   <div :class="divOuterClass">
     <label v-if="label" class="mb-2 block text-sm dark:text-gray-100" :for="id">
@@ -38,120 +145,6 @@
     </p>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    id: {
-      type: String,
-      default: 'text-input-',
-    },
-    inputClass: {
-      type: String,
-      default: '',
-    },
-    divOuterClass: {
-      type: String,
-      default: '',
-    },
-    modelValue: {
-      type: [String, Number],
-      default: '',
-    },
-    type: {
-      type: String,
-      default: 'text',
-    },
-    name: {
-      type: String,
-      default: 'input',
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    help: {
-      type: String,
-      default: '',
-    },
-    label: {
-      type: String,
-      default: '',
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    autofocus: {
-      type: Boolean,
-      default: false,
-    },
-    autocomplete: {
-      type: Boolean,
-      default: true,
-    },
-    maxlength: {
-      type: Number,
-      default: null,
-    },
-    min: {
-      type: Number,
-      default: null,
-    },
-    max: {
-      type: Number,
-      default: null,
-    },
-    step: {
-      type: String,
-      default: 'any',
-    },
-  },
-  emits: ['esc-key-pressed', 'update:modelValue'],
-
-  data() {
-    return {
-      displayMaxLength: false,
-    };
-  },
-
-  computed: {
-    charactersLeft() {
-      var char = 0;
-      if (this.modelValue) {
-        char = this.modelValue.length;
-      }
-
-      return `${this.maxlength - char} / ${this.maxlength}`;
-    },
-
-    localInputClasses() {
-      return [
-        'rounded-md shadow-sm',
-        'bg-white dark:bg-slate-900 dark:text-gray-100 border-gray-300 dark:border-gray-700',
-        'placeholder:text-gray-600 placeholder:dark:text-gray-400',
-        'focus:border-indigo-300 focus:dark:border-indigo-700 focus:ring focus:ring-indigo-200 focus:dark:ring-indigo-800 focus:ring-opacity-50 focus:dark:ring-opacity-900',
-        'disabled:bg-slate-50 disabled:dark:bg-slate-900',
-        this.inputClass,
-      ];
-    },
-  },
-
-  methods: {
-    focus() {
-      this.$refs.input.focus();
-    },
-
-    sendEscKey() {
-      this.$emit('esc-key-pressed');
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .optional-badge {

@@ -1,7 +1,8 @@
 <script setup>
+import { ref } from 'vue';
+import { Tooltip as ATooltip } from 'ant-design-vue';
 import Layout from '@/Shared/Layout.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
-import { ref } from 'vue';
 
 defineProps({
   layoutData: Object,

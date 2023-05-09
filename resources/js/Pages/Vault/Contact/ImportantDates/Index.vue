@@ -113,14 +113,14 @@
                 </label>
               </div>
               <div v-if="form.choice == 'full_date'" class="mb-4 ml-6">
-                <v-date-picker v-model="form.date" class="inline-block h-full" :model-config="modelConfig">
+                <DatePicker v-model.string="form.date" class="inline-block h-full" :masks="masks" :isDark="isDark">
                   <template #default="{ inputValue, inputEvents }">
                     <input
                       class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
                       :value="inputValue"
                       v-on="inputEvents" />
                   </template>
-                </v-date-picker>
+                </DatePicker>
               </div>
 
               <!-- case: date and month -->
@@ -326,10 +326,11 @@
                     </label>
                   </div>
                   <div v-if="form.choice == 'full_date'" class="mb-4 ml-6">
-                    <v-date-picker
-                      v-model="form.date"
+                    <DatePicker
+                      v-model.string="form.date"
                       class="inline-block h-full"
-                      :model-config="modelConfig"
+                      :masks="masks"
+                      :isDark="isDark"
                       :update-on-input="false">
                       <template #default="{ inputValue, inputEvents }">
                         <input
@@ -337,7 +338,7 @@
                           :value="inputValue"
                           v-on="inputEvents" />
                       </template>
-                    </v-date-picker>
+                    </DatePicker>
                   </div>
 
                   <!-- case: date and month -->
@@ -432,6 +433,8 @@
 </template>
 
 <script>
+import { DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
 import Layout from '@/Shared/Layout.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
@@ -441,6 +444,7 @@ import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {
+    DatePicker,
     Layout,
     PrettyButton,
     PrettySpan,
@@ -466,9 +470,8 @@ export default {
       editedDateId: 0,
       createDateModalShown: false,
       localDates: [],
-      modelConfig: {
-        type: 'string',
-        mask: 'YYYY-MM-DD',
+      masks: {
+        modelValue: 'YYYY-MM-DD',
       },
       form: {
         choice: '',

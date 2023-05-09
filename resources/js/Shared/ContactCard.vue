@@ -82,8 +82,12 @@
 </template>
 
 <script>
+import { Popover as APopover } from 'ant-design-vue';
+
 export default {
-  components: {},
+  components: {
+    APopover,
+  },
 
   props: {
     top: {

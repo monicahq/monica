@@ -8,8 +8,6 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from 'ziggy-js/src/js/vue.js';
 import { i18nVue } from 'laravel-vue-i18n';
 import { sentry } from './sentry';
-import Antd from 'ant-design-vue';
-import VCalendar from 'v-calendar';
 import methods from './methods';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
@@ -32,8 +30,6 @@ createInertiaApp({
       .use(i18nVue, {
         resolve: (lang) => resolvePageComponent(`../../lang/${lang}.json`, import.meta.glob('../../lang/*.json')),
       })
-      .use(Antd)
-      .use(VCalendar)
       .use(sentry, {
         ...sentryConfigVal,
         release: import.meta.env.VITE_SENTRY_RELEASE,

@@ -201,6 +201,7 @@
 </template>
 
 <script>
+import { Tooltip as ATooltip } from 'ant-design-vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
@@ -208,6 +209,7 @@ import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {
+    ATooltip,
     PrettyButton,
     PrettySpan,
     TextInput,

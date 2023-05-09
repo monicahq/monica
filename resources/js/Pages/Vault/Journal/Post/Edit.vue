@@ -1,4 +1,6 @@
 <script setup>
+import { DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
 import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
@@ -40,9 +42,8 @@ const deletePhotoModalShown = ref(false);
 const photoToDelete = ref(null);
 const processPhotoDeletion = ref(false);
 const localPhotos = ref([]);
-const modelConfig = ref({
-  type: 'string',
-  mask: 'YYYY-MM-DD',
+const masks = ref({
+  modelValue: 'YYYY-MM-DD',
 });
 
 // if this code is inside onMounted, it will not work, and I don't know why
@@ -388,14 +389,14 @@ const destroy = () => {
             <p class="mb-2 flex items-center font-bold">
               <span>{{ $t('Written on') }}</span>
             </p>
-            <v-date-picker v-model="form.date" :model-config="modelConfig" class="mb-6 inline-block">
+            <DatePicker v-model.string="form.date" :masks="masks" class="mb-6 inline-block">
               <template v-slot="{ inputValue, inputEvents }">
                 <input
                   class="rounded border bg-white px-2 py-1 dark:border-gray-700 dark:bg-gray-900"
                   :value="inputValue"
                   v-on="inputEvents" />
               </template>
-            </v-date-picker>
+            </DatePicker>
 
             <!-- contacts -->
             <p class="mb-2 mt-6 flex items-center font-bold">

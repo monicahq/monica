@@ -1,22 +1,15 @@
 <script setup>
-import { computed } from 'vue';
+import { Dropdown, Menu, MenuItem } from 'ant-design-vue';
 
 defineEmits(['edit', 'delete']);
 defineProps({
   showEdit: Boolean,
   showDelete: Boolean,
 });
-
-const theme = computed(() => {
-  return localStorage.theme === 'dark' ||
-    (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ? 'dark'
-    : 'light';
-});
 </script>
 
 <template>
-  <a-dropdown>
+  <Dropdown>
     <a class="ant-dropdown-link cursor-pointer" @click.prevent>
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path
@@ -27,16 +20,16 @@ const theme = computed(() => {
       </svg>
     </a>
     <template #overlay>
-      <a-menu :theme="theme">
-        <a-menu-item v-if="showEdit">
+      <Menu :theme="isDark() ? 'dark' : 'light'">
+        <MenuItem v-if="showEdit">
           <a href="" @click.prevent="$emit('edit', $event.target.value)">{{ $t('Edit') }}</a>
-        </a-menu-item>
-        <a-menu-item v-if="showDelete">
+        </MenuItem>
+        <MenuItem v-if="showDelete">
           <a href="" @click.prevent="$emit('delete', $event.target.value)">{{ $t('Delete') }}</a>
-        </a-menu-item>
-      </a-menu>
+        </MenuItem>
+      </Menu>
     </template>
-  </a-dropdown>
+  </Dropdown>
 </template>
 
 <style lang="scss" scoped>

@@ -118,14 +118,14 @@
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <p class="mb-2 block text-sm">{{ $t('When was the loan made?') }}</p>
 
-            <v-date-picker v-model="form.loaned_at" class="inline-block h-full" :model-config="modelConfig">
+            <DatePicker v-model.string="form.loaned_at" class="inline-block h-full" :masks="masks" :is-dark="isDark()">
               <template #default="{ inputValue, inputEvents }">
                 <input
                   class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
                   :value="inputValue"
                   v-on="inputEvents" />
               </template>
-            </v-date-picker>
+            </DatePicker>
           </div>
 
           <!-- loaned by or to -->
@@ -340,14 +340,18 @@
             <div class="border-b border-gray-200 p-5 dark:border-gray-700">
               <p class="mb-2 block text-sm">{{ $t('When was the loan made?') }}</p>
 
-              <v-date-picker v-model="form.loaned_at" class="inline-block h-full" :model-config="modelConfig">
+              <DatePicker
+                v-model.string="form.loaned_at"
+                class="inline-block h-full"
+                :masks="masks"
+                :is-dark="isDark()">
                 <template #default="{ inputValue, inputEvents }">
                   <input
                     class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
                     :value="inputValue"
                     v-on="inputEvents" />
                 </template>
-              </v-date-picker>
+              </DatePicker>
             </div>
 
             <!-- loaned by or to -->
@@ -408,6 +412,8 @@
 </template>
 
 <script>
+import { DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
@@ -419,6 +425,7 @@ import ContactCard from '@/Shared/ContactCard.vue';
 
 export default {
   components: {
+    DatePicker,
     PrettyButton,
     PrettySpan,
     TextInput,
@@ -459,9 +466,8 @@ export default {
         loanees: [],
         errors: [],
       },
-      modelConfig: {
-        type: 'string',
-        mask: 'YYYY-MM-DD',
+      masks: {
+        modelValue: 'YYYY-MM-DD',
       },
     };
   },

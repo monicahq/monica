@@ -1,4 +1,6 @@
 <script setup>
+import { DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
@@ -16,6 +18,10 @@ const datePickerFieldShown = ref(false);
 const noteFieldShown = ref(false);
 const hoursSleptFieldShown = ref(false);
 const successShown = ref(false);
+
+const masks = ref({
+  modelValue: 'YYYY-MM-DD',
+});
 
 const form = useForm({
   parameter_id: 0,
@@ -155,14 +161,19 @@ const submit = () => {
         <!-- date picker -->
         <div v-if="datePickerFieldShown">
           <p class="mb-2 mt-2 block text-sm dark:text-gray-100">Change date</p>
-          <v-date-picker v-model="form.date" :timezone="'UTC'" class="inline-block h-full" :model-config="modelConfig">
+          <DatePicker
+            v-model.string="form.date"
+            :timezone="'UTC'"
+            class="inline-block h-full"
+            :masks="masks"
+            :is-dark="isDark()">
             <template #default="{ inputValue, inputEvents }">
               <input
                 class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
                 :value="inputValue"
                 v-on="inputEvents" />
             </template>
-          </v-date-picker>
+          </DatePicker>
         </div>
 
         <!-- note -->

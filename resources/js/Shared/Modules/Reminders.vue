@@ -71,14 +71,14 @@
             </label>
           </div>
           <div v-if="form.choice === 'full_date'" class="mb-4 ml-6">
-            <v-date-picker v-model="form.date" class="inline-block h-full" :model-config="modelConfig">
+            <DatePicker v-model.string="form.date" class="inline-block h-full" :masks="masks" :is-dark="isDark()">
               <template #default="{ inputValue, inputEvents }">
                 <input
                   class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
                   :value="inputValue"
                   v-on="inputEvents" />
               </template>
-            </v-date-picker>
+            </DatePicker>
           </div>
 
           <!-- case: date and month -->
@@ -273,14 +273,14 @@
                   </label>
                 </div>
                 <div v-if="form.choice === 'full_date'" class="mb-4 ml-6">
-                  <v-date-picker v-model="form.date" class="inline-block h-full" :model-config="modelConfig">
+                  <DatePicker v-model.string="form.date" class="inline-block h-full" :masks="masks" :is-dark="isDark()">
                     <template #default="{ inputValue, inputEvents }">
                       <input
                         class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
                         :value="inputValue"
                         v-on="inputEvents" />
                     </template>
-                  </v-date-picker>
+                  </DatePicker>
                 </div>
 
                 <!-- case: date and month -->
@@ -403,6 +403,9 @@
 </template>
 
 <script>
+import { DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
+import { Tooltip as ATooltip } from 'ant-design-vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
@@ -411,6 +414,8 @@ import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {
+    DatePicker,
+    ATooltip,
     PrettyButton,
     PrettySpan,
     TextInput,
@@ -433,6 +438,9 @@ export default {
       addReminderModalShown: false,
       localReminders: [],
       editedReminderId: 0,
+      masks: {
+        modelValue: 'YYYY-MM-DD',
+      },
       form: {
         label: '',
         reminderChoice: '',

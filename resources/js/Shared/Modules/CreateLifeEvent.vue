@@ -1,4 +1,6 @@
 <script setup>
+import { DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import ContactSelector from '@/Shared/Form/ContactSelector.vue';
@@ -41,6 +43,9 @@ const addDistanceFieldShown = ref(false);
 const summaryField = ref(null);
 const descriptionField = ref(null);
 const distanceField = ref(null);
+const masks = ref({
+  modelValue: 'YYYY-MM-DD',
+});
 
 watch(
   () => props.openModal,
@@ -261,18 +266,19 @@ const store = () => {
         <!-- customize date -->
         <div v-if="editDate">
           <p class="mb-2 block text-sm dark:text-gray-100">{{ $t('Date of the event') }}</p>
-          <v-date-picker
-            v-model="form.started_at"
+          <DatePicker
+            v-model.string="form.started_at"
             :timezone="'UTC'"
             class="inline-block h-full"
-            :model-config="modelConfig">
+            :masks="masks"
+            :is-dark="isDark()">
             <template #default="{ inputValue, inputEvents }">
               <input
                 class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
                 :value="inputValue"
                 v-on="inputEvents" />
             </template>
-          </v-date-picker>
+          </DatePicker>
         </div>
       </div>
 

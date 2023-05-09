@@ -41,14 +41,14 @@
         <div class="flex border-b border-gray-200 dark:border-gray-700">
           <div class="p-5">
             <p class="mb-2 block text-sm">{{ $t('When did the call happened?') }}</p>
-            <v-date-picker v-model="form.called_at" class="inline-block h-full" :model-config="modelConfig">
+            <DatePicker v-model.string="form.called_at" class="inline-block h-full" :masks="masks" :is-dark="isDark()">
               <template #default="{ inputValue, inputEvents }">
                 <input
                   class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
                   :value="inputValue"
                   v-on="inputEvents" />
               </template>
-            </v-date-picker>
+            </DatePicker>
           </div>
 
           <!-- audio or video -->
@@ -314,14 +314,18 @@
             <div class="flex border-b border-gray-200 dark:border-gray-700">
               <div class="p-5">
                 <p class="mb-2 block text-sm">When did the call happened?</p>
-                <v-date-picker v-model="form.called_at" class="inline-block h-full" :model-config="modelConfig">
+                <DatePicker
+                  v-model.string="form.called_at"
+                  class="inline-block h-full"
+                  :masks="masks"
+                  :is-dark="isDark()">
                   <template #default="{ inputValue, inputEvents }">
                     <input
                       class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
                       :value="inputValue"
                       v-on="inputEvents" />
                   </template>
-                </v-date-picker>
+                </DatePicker>
               </div>
 
               <!-- audio or video -->
@@ -527,6 +531,8 @@
 </template>
 
 <script>
+import { DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
 import HoverMenu from '@/Shared/HoverMenu.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
@@ -535,6 +541,7 @@ import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {
+    DatePicker,
     HoverMenu,
     PrettyButton,
     PrettySpan,
@@ -558,6 +565,9 @@ export default {
       descriptionFieldShown: false,
       reasonFieldShown: false,
       emotionFieldShown: false,
+      masks: {
+        modelValue: 'YYYY-MM-DD',
+      },
       form: {
         called_at: '',
         call_reason_id: 0,
