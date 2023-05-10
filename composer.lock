@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d7d0a04240307bd55773da8d655a44d",
+    "content-hash": "23188496d30f378c09b29622bbde74a5",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -6212,16 +6212,16 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "3.3.3",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "8a72bb67e208687fbb2ebc8ca1bd229c26f28dd1"
+                "reference": "50ec5eae5d09d182d2d048981d0b45c24579a7f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/8a72bb67e208687fbb2ebc8ca1bd229c26f28dd1",
-                "reference": "8a72bb67e208687fbb2ebc8ca1bd229c26f28dd1",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/50ec5eae5d09d182d2d048981d0b45c24579a7f7",
+                "reference": "50ec5eae5d09d182d2d048981d0b45c24579a7f7",
                 "shasum": ""
             },
             "require": {
@@ -6231,9 +6231,6 @@
                 "sentry/sdk": "^3.3",
                 "sentry/sentry": "^3.16",
                 "symfony/psr-http-message-bridge": "^1.0 | ^2.0"
-            },
-            "conflict": {
-                "laravel/lumen-framework": "*"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.11",
@@ -6289,7 +6286,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-laravel/issues",
-                "source": "https://github.com/getsentry/sentry-laravel/tree/3.3.3"
+                "source": "https://github.com/getsentry/sentry-laravel/tree/3.4.0"
             },
             "funding": [
                 {
@@ -6301,7 +6298,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-04-18T09:01:41+00:00"
+            "time": "2023-05-08T14:15:56+00:00"
         },
         {
             "name": "shalvah/clara",
@@ -7003,6 +7000,86 @@
                 }
             ],
             "time": "2023-02-13T17:21:24+00:00"
+        },
+        {
+            "name": "stichoza/google-translate-php",
+            "version": "v5.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Stichoza/google-translate-php.git",
+                "reference": "7f528ab7e8dad78d0cfa261e4a4cac1b187f63df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Stichoza/google-translate-php/zipball/7f528ab7e8dad78d0cfa261e4a4cac1b187f63df",
+                "reference": "7f528ab7e8dad78d0cfa261e4a4cac1b187f63df",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "guzzlehttp/guzzle": "^7.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5.10"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Stichoza\\GoogleTranslate\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Levan Velijanashvili",
+                    "email": "me@stichoza.com"
+                }
+            ],
+            "description": "Free Google Translate API PHP Package",
+            "homepage": "https://github.com/Stichoza/google-translate-php",
+            "keywords": [
+                "google",
+                "php",
+                "translate",
+                "translating",
+                "translator"
+            ],
+            "support": {
+                "issues": "https://github.com/Stichoza/google-translate-php/issues",
+                "source": "https://github.com/Stichoza/google-translate-php/tree/v5.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://btc.com/bc1qc25j4x7yahghm8nnn6lypnw59nptylsw32nkfl",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.paypal.me/stichoza",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://ko-fi.com/stichoza",
+                    "type": "ko_fi"
+                },
+                {
+                    "url": "https://liberapay.com/stichoza",
+                    "type": "liberapay"
+                },
+                {
+                    "url": "https://opencollective.com/stichoza",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://www.patreon.com/stichoza",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2022-12-01T16:51:22+00:00"
         },
         {
             "name": "symfony/console",

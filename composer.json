@@ -37,6 +37,7 @@
     "socialiteproviders/linkedin": "^4.2",
     "socialiteproviders/microsoft-azure": "^5.1",
     "socialiteproviders/twitter": "^4.1",
+    "stichoza/google-translate-php": "^5.1",
     "tightenco/ziggy": "1.5.2",
     "uploadcare/uploadcare-php": "^3.2"
   },
