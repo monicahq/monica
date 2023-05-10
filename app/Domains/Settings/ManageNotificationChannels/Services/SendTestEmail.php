@@ -76,7 +76,7 @@ class SendTestEmail extends BaseService implements ServiceInterface
         UserNotificationSent::create([
             'user_notification_channel_id' => $this->userNotificationChannel->id,
             'sent_at' => Carbon::now(),
-            'subject_line' => trans('email.notification_test_email'),
+            'subject_line' => trans('Test email for Monica'),
         ]);
     }
 }

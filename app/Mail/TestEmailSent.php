@@ -29,7 +29,7 @@ class TestEmailSent extends Mailable
      */
     public function build()
     {
-        return $this->subject(trans('email.notification_test_email'))
+        return $this->subject(trans('Test email for Monica'))
             ->markdown('emails.notifications.test-notification');
     }
 }
