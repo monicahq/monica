@@ -165,6 +165,9 @@ const store = () => {
       } else {
         emit('lifeEventCreated', response.data.data);
       }
+
+      selectedLifeEventType.value = null;
+      resetModal();
     })
     .catch(() => {
       loadingState.value = '';
