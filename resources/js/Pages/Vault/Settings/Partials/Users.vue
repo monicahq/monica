@@ -175,7 +175,7 @@
                   class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                   {{ $t('Editor') }}
                   <span class="ml-4 font-normal text-gray-500">
-                    {{ $t('Peut modifier les données, mais ne peut pas gérer la voûte.') }}
+                    {{ $t('Can edit data, but can’t manage the vault.') }}
                   </span>
                 </label>
               </div>
