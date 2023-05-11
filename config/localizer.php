@@ -6,7 +6,7 @@ return [
      * The locales you wish to support.
      * English HAS TO be the first language of the array.
      */
-    'supported-locales' => ['en', 'bn', 'da', 'de', 'es', 'fr', 'he', 'hi', 'it', 'ja', 'ml', 'nl', 'pa', 'pl', 'pt', 'ro', 'ru', 'sv', 'tr', 'ur'],
+    'supported-locales' => ['en', 'bn', 'da', 'de', 'es', 'fr', 'he', 'hi', 'it', 'ja', 'ml', 'nl', 'no', 'pa', 'pl', 'pt', 'ro', 'ru', 'sv', 'tr', 'ur'],
 
     /**
      * The detectors to use to find a matching locale.
