@@ -18,7 +18,7 @@ RUN set -ex; \
 
 
 ## Image
-FROM php:8.1-apache
+FROM php:8.2-apache
 
 # entrypoint.sh dependencies
 RUN set -ex; \
