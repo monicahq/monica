@@ -50,15 +50,15 @@ class ContactIndexViewHelper
             'contact_sort_orders' => collect([
                 [
                     'id' => 'last_updated',
-                    'name' => trans_key('By last updated'),
+                    'name' => trans('By last updated'),
                 ],
                 [
                     'id' => 'asc',
-                    'name' => trans_key('From A to Z'),
+                    'name' => trans('From A to Z'),
                 ],
                 [
                     'id' => 'desc',
-                    'name' => trans_key('From Z to A'),
+                    'name' => trans('From Z to A'),
                 ],
             ]),
             'url' => [
