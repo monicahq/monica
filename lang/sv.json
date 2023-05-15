@@ -721,7 +721,7 @@
     "Please indicate the contacts": "Vänligen ange kontakterna",
     "Please join Monica": "Gå med Monica",
     "Please provide the email address of the person you would like to add to this team.": "Ange e-postadressen till den person du vill lägga till i detta team.",
-    "Please read our documentation to know more about this feature, and which variables you have access to": "Läs vår dokumentation för att veta mer om den här funktionen och vilka variabler du har tillgång till",
+    "Please read our <link>documentation<\/link> to know more about this feature, and which variables you have access to.": "Läs vår <link>dokumentation<\/link> för att veta mer om den här funktionen och vilka variabler du har tillgång till.",
     "Please select a page on the left to load modules.": "Välj en sida till vänster för att ladda moduler.",
     "Please type a few characters to create a new label.": "Skriv några tecken för att skapa en ny etikett.",
     "Please type a few characters to create a new tag.": "Skriv några tecken för att skapa en ny tagg.",

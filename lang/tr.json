@@ -721,7 +721,7 @@
     "Please indicate the contacts": "Lütfen kişileri belirtin",
     "Please join Monica": "Lütfen Monica'ya katılın",
     "Please provide the email address of the person you would like to add to this team.": "Lütfen bu ekibe eklemek istediğiniz kişinin e-posta adresini girin.",
-    "Please read our documentation to know more about this feature, and which variables you have access to": "Bu özellikle ilgili daha fazla bilgi edinmek ve hangi değişkenlere erişiminiz olduğunu öğrenmek için lütfen belgelerimizi okuyun.",
+    "Please read our <link>documentation<\/link> to know more about this feature, and which variables you have access to.": "Bu özellik ve hangi değişkenlere erişiminiz olduğu hakkında daha fazla bilgi edinmek için lütfen <link>belgelerimizi<\/link> okuyun.",
     "Please select a page on the left to load modules.": "Modülleri yüklemek için lütfen soldan bir sayfa seçin.",
     "Please type a few characters to create a new label.": "Yeni bir etiket oluşturmak için lütfen birkaç karakter girin.",
     "Please type a few characters to create a new tag.": "Yeni bir etiket oluşturmak için lütfen birkaç karakter girin.",

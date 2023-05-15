@@ -721,7 +721,7 @@
     "Please indicate the contacts": "পরিচিতি নির্দেশ করুন",
     "Please join Monica": "মনিকা যোগ দিন",
     "Please provide the email address of the person you would like to add to this team.": "আপনি এই দলে যোগ করতে চান এমন ব্যক্তির ইমেল ঠিকানা প্রদান করুন।",
-    "Please read our documentation to know more about this feature, and which variables you have access to": "এই বৈশিষ্ট্য সম্পর্কে আরও জানতে অনুগ্রহ করে আমাদের ডকুমেন্টেশন পড়ুন এবং কোন ভেরিয়েবলে আপনার অ্যাক্সেস আছে",
+    "Please read our <link>documentation<\/link> to know more about this feature, and which variables you have access to.": "এই বৈশিষ্ট্য সম্পর্কে আরও জানতে এবং কোন ভেরিয়েবলগুলিতে আপনার অ্যাক্সেস আছে অনুগ্রহ করে আমাদের <link>ডকুমেন্টেশন<\/link> পড়ুন।",
     "Please select a page on the left to load modules.": "মডিউল লোড করতে দয়া করে বাম দিকে একটি পৃষ্ঠা নির্বাচন করুন৷",
     "Please type a few characters to create a new label.": "একটি নতুন লেবেল তৈরি করতে অনুগ্রহ করে কয়েকটি অক্ষর টাইপ করুন৷",
     "Please type a few characters to create a new tag.": "একটি নতুন ট্যাগ তৈরি করতে অনুগ্রহ করে কয়েকটি অক্ষর টাইপ করুন৷",

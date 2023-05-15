@@ -721,7 +721,7 @@
     "Please indicate the contacts": "Пожалуйста, укажите контакты.",
     "Please join Monica": "Пожалуйста, присоединитесь к Монике.",
     "Please provide the email address of the person you would like to add to this team.": "Укажите электронный адрес человека, которого Вы хотите добавить в эту команду.",
-    "Please read our documentation to know more about this feature, and which variables you have access to": "Пожалуйста, ознакомьтесь с нашей документацией, чтобы узнать больше о данной функции и о переменных, к которым у вас есть доступ.",
+    "Please read our <link>documentation<\/link> to know more about this feature, and which variables you have access to.": "Прочтите нашу <link>документацию<\/link>, чтобы узнать больше об этой функции и о том, к каким переменным у вас есть доступ.",
     "Please select a page on the left to load modules.": "Пожалуйста, выберите страницу слева, чтобы загрузить модули.",
     "Please type a few characters to create a new label.": "Пожалуйста, введите несколько символов, чтобы создать новую метку.",
     "Please type a few characters to create a new tag.": "Пожалуйста, введите несколько символов, чтобы создать новый тег.",

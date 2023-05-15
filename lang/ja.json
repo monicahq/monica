@@ -1,7 +1,7 @@
 {
     "(and :count more error)": "(さらに :count more error)",
     "(and :count more errors)": "(そして :count more error)",
-    "(Help)": "（ヘルプ）",
+    "(Help)": "(ヘルプ)",
     "+ Add a contact": "+ 連絡先を追加",
     "+ add another": "+ 別のものを追加",
     "+ Add another photo": "+ 別の写真を追加",
@@ -721,7 +721,7 @@
     "Please indicate the contacts": "連絡先を教えてください",
     "Please join Monica": "モニカに参加してください",
     "Please provide the email address of the person you would like to add to this team.": "このチームに追加したい人のメールアドレスを入力してください。",
-    "Please read our documentation to know more about this feature, and which variables you have access to": "この機能の詳細とアクセスできる変数については、ドキュメントをお読みください。",
+    "Please read our <link>documentation<\/link> to know more about this feature, and which variables you have access to.": "この機能とアクセスできる変数の詳細については、<link>ドキュメント<\/link>をお読みください。",
     "Please select a page on the left to load modules.": "モジュールをロードするには、左側のページを選択してください。",
     "Please type a few characters to create a new label.": "新しいラベルを作成するには、数文字入力してください。",
     "Please type a few characters to create a new tag.": "新しいタグを作成するには、数文字入力してください。",

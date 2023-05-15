@@ -1,10 +1,31 @@
+<script setup>
+import { usePage } from '@inertiajs/inertia-vue3';
+import { Tooltip as ATooltip } from 'ant-design-vue';
+import { computed } from 'vue';
+
+const props = defineProps({
+  url: String,
+  top: {
+    type: String,
+    default: '3px',
+  },
+  classes: String,
+});
+
+const finalURL = computed(() => {
+  return usePage().props.help_url + props.url;
+});
+</script>
+
 <template>
-  <div
+  <a
     v-if="$page.props.auth.user.help_shown"
-    :class="svgClasses"
-    :data-url="finalURL"
+    :class="['relative inline cursor-pointer', classes]"
+    :href="finalURL"
     :style="'top:' + top"
-    @click="goTo()">
+    target="_blank"
+    lang="en"
+    rel="noopener noreferrer">
     <a-tooltip placement="topLeft" :title="$t('This link will open in a new tab')" arrow-point-at-center>
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -14,52 +35,5 @@
           fill="#96A3BD" />
       </svg>
     </a-tooltip>
-  </div>
+  </a>
 </template>
-
-<script>
-import { Tooltip as ATooltip } from 'ant-design-vue';
-
-export default {
-  components: {
-    ATooltip,
-  },
-
-  props: {
-    url: {
-      type: String,
-      default: '',
-    },
-    top: {
-      type: String,
-      default: '3px',
-    },
-    classes: {
-      type: String,
-      default: '',
-    },
-  },
-
-  data() {
-    return {
-      localUrl: this.$page.props.help_url,
-    };
-  },
-
-  computed: {
-    finalURL: function () {
-      return this.localUrl + this.url;
-    },
-
-    svgClasses() {
-      return ['relative inline cursor-pointer', this.classes];
-    },
-  },
-
-  methods: {
-    goTo() {
-      window.open(this.finalURL, '_blank');
-    },
-  },
-};
-</script>

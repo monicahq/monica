@@ -722,7 +722,7 @@
     "Please indicate the contacts": "请注明联系方式",
     "Please join Monica": "请加入莫妮卡",
     "Please provide the email address of the person you would like to add to this team.": "请提供您想添加到该团队的人员的电子邮件地址。",
-    "Please read our documentation to know more about this feature, and which variables you have access to": "请阅读我们的文档以了解有关此功能的更多信息，以及您可以访问哪些变量",
+    "Please read our <link>documentation<\/link> to know more about this feature, and which variables you have access to.": "请阅读我们的<link>文档<\/link>以了解有关此功能的更多信息，以及您可以访问哪些变量。",
     "Please select a page on the left to load modules.": "请在左侧选择一个页面以加载模块。",
     "Please type a few characters to create a new label.": "请键入几个字符以创建新标签。",
     "Please type a few characters to create a new tag.": "请键入几个字符以创建新标签。",

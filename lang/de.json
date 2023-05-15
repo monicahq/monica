@@ -721,7 +721,7 @@
     "Please indicate the contacts": "Bitte geben Sie die Kontakte an",
     "Please join Monica": "Bitte treten Sie Monica bei",
     "Please provide the email address of the person you would like to add to this team.": "Bitte geben Sie die E-Mail-Adresse der Person an, die Sie diesem Team hinzufügen möchten.",
-    "Please read our documentation to know more about this feature, and which variables you have access to": "Bitte lesen Sie unsere Dokumentation, um mehr über diese Funktion und die von Ihnen verwendbaren Variablen zu erfahren.",
+    "Please read our <link>documentation<\/link> to know more about this feature, and which variables you have access to.": "Bitte lesen Sie unsere <link>Dokumentation<\/link>, um mehr über diese Funktion zu erfahren und auf welche Variablen Sie Zugriff haben.",
     "Please select a page on the left to load modules.": "Bitte wählen Sie auf der linken Seite eine Seite aus, um Module zu laden.",
     "Please type a few characters to create a new label.": "Bitte geben Sie einige Zeichen ein, um ein neues Label zu erstellen.",
     "Please type a few characters to create a new tag.": "Bitte geben Sie einige Zeichen ein, um einen neuen Tag zu erstellen.",

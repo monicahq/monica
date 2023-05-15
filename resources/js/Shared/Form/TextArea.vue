@@ -32,9 +32,11 @@
       <a
         href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"
         target="_blank"
-        class="text-blue-500 hover:underline"
-        >{{ $t('(Help)') }}</a
-      >
+        lang="en"
+        rel="noopener noreferrer"
+        class="ms-1 text-blue-500 hover:underline">
+        {{ $t('(Help)') }}
+      </a>
     </p>
 
     <p v-if="help" class="f7 mb3 lh-title">

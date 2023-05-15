@@ -1,3 +1,81 @@
+<script setup>
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrettyLink from '@/Shared/Form/PrettyLink.vue';
+import TextInput from '@/Shared/Form/TextInput.vue';
+import Errors from '@/Shared/Form/Errors.vue';
+import Help from '@/Shared/Help.vue';
+import { onMounted, ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+import { trans } from 'laravel-vue-i18n';
+import { flash } from '@/methods';
+
+const props = defineProps({
+  data: Object,
+});
+
+const nameOrder = ref(null);
+const loadingState = ref('');
+const editMode = ref(false);
+const localNameOrder = ref('');
+const localNameExample = ref('');
+const disableNameOrder = ref(true);
+const form = useForm({
+  nameOrder: '',
+  choice: '',
+  errors: [],
+});
+
+onMounted(() => {
+  localNameOrder.value = props.data.name_order;
+  localNameExample.value = props.data.name_example;
+  form.nameOrder = props.data.name_order;
+});
+
+const enableEditMode = () => {
+  editMode.value = true;
+};
+const focusNameOrder = () => {
+  disableNameOrder.value = false;
+
+  nextTick(() => {
+    nameOrder.value.focus();
+  });
+};
+
+const helpDocumentation = () => {
+  let msg = trans(
+    'Please read our <link>documentation</link> to know more about this feature, and which variables you have access to.',
+  );
+  let link = 'https://docs.monicahq.com/user-and-account-settings/manage-preferences#customize-contact-names';
+
+  return msg
+    .replace(
+      '<link>',
+      `<a href="${link}" lang="en" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">`,
+    )
+    .replace('</link>', '</a>');
+};
+
+const submit = () => {
+  loadingState.value = 'loading';
+
+  axios
+    .post(props.data.url.store, form)
+    .then((response) => {
+      flash(trans('Changes saved'), 'success');
+      localNameOrder.value = form.nameOrder;
+      localNameExample.value = response.data.data.name_example;
+      form.choice.value = form.nameOrder;
+      editMode.value = false;
+      loadingState.value = null;
+    })
+    .catch((error) => {
+      loadingState.value = null;
+      form.errors = error.response.data;
+    });
+};
+</script>
+
 <template>
   <div class="mb-16">
     <!-- title + cta -->
@@ -141,18 +219,7 @@
             :maxlength="255" />
 
           <p class="mb-4 text-sm">
-            <span class="mr-1">{{
-              $t(
-                'Please read our documentation to know more about this feature, and which variables you have access to',
-              )
-            }}</span>
-
-            (<a
-              href="https://docs.monicahq.com/user-and-account-settings/manage-preferences#customize-contact-names"
-              target="_blank"
-              class="text-blue-500 hover:underline"
-              >{{ $t('Link to documentation') }}</a
-            >)
+            <span class="mr-1" v-html="helpDocumentation()"></span>
           </p>
         </div>
       </div>
@@ -166,96 +233,7 @@
   </div>
 </template>
 
-<script>
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
-import PrettyLink from '@/Shared/Form/PrettyLink.vue';
-import TextInput from '@/Shared/Form/TextInput.vue';
-import Errors from '@/Shared/Form/Errors.vue';
-import Help from '@/Shared/Help.vue';
-
-export default {
-  components: {
-    PrettyButton,
-    PrettyLink,
-    TextInput,
-    Errors,
-    Help,
-  },
-
-  props: {
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-
-  data() {
-    return {
-      loadingState: '',
-      editMode: false,
-      localNameOrder: '',
-      localNameExample: '',
-      disableNameOrder: true,
-      form: {
-        nameOrder: '',
-        choice: '',
-        errors: [],
-      },
-    };
-  },
-
-  mounted() {
-    this.localNameOrder = this.data.name_order;
-    this.localNameExample = this.data.name_example;
-    this.form.nameOrder = this.data.name_order;
-  },
-
-  methods: {
-    enableEditMode() {
-      this.editMode = true;
-    },
-
-    setNameOrder() {
-      this.disableNameOrder = true;
-      this.form.nameOrder = this.form.choice;
-    },
-
-    focusNameOrder() {
-      this.disableNameOrder = false;
-
-      this.$nextTick(() => {
-        this.$refs.nameOrder.focus();
-      });
-    },
-
-    submit() {
-      this.loadingState = 'loading';
-
-      axios
-        .post(this.data.url.store, this.form)
-        .then((response) => {
-          this.flash(this.$t('Changes saved'), 'success');
-          this.localNameOrder = this.form.nameOrder;
-          this.localNameExample = response.data.data.name_example;
-          this.choice = this.form.nameOrder;
-          this.editMode = false;
-          this.loadingState = null;
-        })
-        .catch((error) => {
-          this.loadingState = null;
-          this.form.errors = error.response.data;
-        });
-    },
-  },
-};
-</script>
-
 <style lang="scss" scoped>
-pre {
-  background-color: #1f2937;
-  color: #c9ef78;
-}
-
 .example {
   border-bottom-left-radius: 9px;
   border-bottom-right-radius: 9px;

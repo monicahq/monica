@@ -721,7 +721,7 @@
     "Please indicate the contacts": "Vă rugăm să indicați contactele",
     "Please join Monica": "Vă rog să vă alăturați Monicai",
     "Please provide the email address of the person you would like to add to this team.": "Vă rugăm să furnizați adresa de e-mail a persoanei pe care doriți să o adăugați în această echipă.",
-    "Please read our documentation to know more about this feature, and which variables you have access to": "Vă rugăm să citiți documentația noastră pentru a afla mai multe despre această caracteristică și la ce variabile aveți acces",
+    "Please read our <link>documentation<\/link> to know more about this feature, and which variables you have access to.": "Vă rugăm să citiți <link>documentația<\/link> pentru a afla mai multe despre această caracteristică și la ce variabile aveți acces.",
     "Please select a page on the left to load modules.": "Vă rugăm să selectați o pagină din stânga pentru a încărca modulele.",
     "Please type a few characters to create a new label.": "Vă rugăm să introduceți câteva caractere pentru a crea o nouă etichetă.",
     "Please type a few characters to create a new tag.": "Vă rugăm să introduceți câteva caractere pentru a crea o nouă etichetă.",
