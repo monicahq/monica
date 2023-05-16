@@ -3,7 +3,7 @@
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
-        <span class="relative mr-1">
+        <span class="relative me-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="icon-sidebar relative inline h-4 w-4"
@@ -23,7 +23,7 @@
       <pretty-button
         :text="$t('Add to group')"
         :icon="'plus'"
-        :classes="'sm:w-fit w-full'"
+        :class="'w-full sm:w-fit'"
         @click="addGroupMode = true" />
     </div>
 
@@ -88,8 +88,8 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="addGroupMode = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="addGroupMode = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
       </div>
     </form>
 
@@ -105,7 +105,7 @@
           <div v-if="group.contacts" class="relative flex -space-x-2 overflow-hidden py-1">
             <div v-for="contact in group.contacts" :key="contact.id" class="inline-block">
               <inertia-link :href="contact.url.show">
-                <avatar :data="contact.avatar" :classes="'h-8 w-8 rounded-full ring-2 ring-white'" />
+                <avatar :data="contact.avatar" :class="'h-8 w-8 rounded-full ring-2 ring-white'" />
               </inertia-link>
             </div>
           </div>
@@ -113,7 +113,7 @@
 
         <!-- actions -->
         <ul class="text-sm">
-          <li class="mr-4 inline cursor-pointer">
+          <li class="me-4 inline cursor-pointer">
             <inertia-link :href="group.url.show" class="text-blue-500 hover:underline">{{ $t('View') }}</inertia-link>
           </li>
           <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(group)">

@@ -172,15 +172,15 @@ const destroy = () => {
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
                 {{ $t('Journals') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -195,7 +195,7 @@ const destroy = () => {
                 {{ data.journal.name }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -205,12 +205,12 @@ const destroy = () => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.show" class="text-blue-500 hover:underline">
                 {{ data.title }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -244,7 +244,7 @@ const destroy = () => {
                   :key="photo.id"
                   class="item-list flex items-center justify-between border-b border-gray-200 p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
                   <div class="flex">
-                    <img :src="photo.url.show" class="mr-4" width="75" height="75" />
+                    <img :src="photo.url.show" class="me-4" width="75" height="75" />
 
                     <ul>
                       <li class="mb-2 text-sm">{{ photo.name }}</li>
@@ -312,7 +312,8 @@ const destroy = () => {
                 v-if="!data.canUploadFile"
                 class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                 <p class="bg-gray-100 p-3 text-center">
-                  <span class="mr-1">⚠️</span> {{ $t('You don’t have enough space left in your account.') }}
+                  <span class="me-1">⚠️</span>
+                  {{ $t('You don’t have enough space left in your account.') }}
                 </p>
               </div>
             </div>
@@ -359,7 +360,7 @@ const destroy = () => {
             <div class="mb-6 text-sm">
               <div v-if="!saveInProgress" class="flex items-center justify-center">
                 <svg
-                  class="mr-2 h-4 w-4 text-green-700"
+                  class="me-2 h-4 w-4 text-green-700"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -375,7 +376,7 @@ const destroy = () => {
               </div>
 
               <div v-if="saveInProgress" class="flex items-center justify-center">
-                <div class="saving-spinner mr-3">
+                <div class="saving-spinner me-3">
                   <div class="dot"></div>
                   <div class="dot"></div>
                   <div class="dot"></div>
@@ -389,7 +390,11 @@ const destroy = () => {
             <p class="mb-2 flex items-center font-bold">
               <span>{{ $t('Written on') }}</span>
             </p>
-            <DatePicker v-model.string="form.date" :masks="masks" class="mb-6 inline-block">
+            <DatePicker
+              v-model.string="form.date"
+              :masks="masks"
+              :locale="$attrs.user.locale"
+              class="mb-6 inline-block">
               <template v-slot="{ inputValue, inputEvents }">
                 <input
                   class="rounded border bg-white px-2 py-1 dark:border-gray-700 dark:bg-gray-900"
@@ -425,7 +430,7 @@ const destroy = () => {
             <ul class="mb-6 text-sm">
               <li class="mb-2 flex items-center">
                 <svg
-                  class="mr-2 h-4 w-4"
+                  class="me-2 h-4 w-4"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -443,7 +448,7 @@ const destroy = () => {
               </li>
               <li class="mb-2 flex items-center">
                 <svg
-                  class="mr-2 h-4 w-4"
+                  class="me-2 h-4 w-4"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -463,7 +468,7 @@ const destroy = () => {
               </li>
               <li class="flex items-center">
                 <svg
-                  class="mr-2 h-4 w-4"
+                  class="me-2 h-4 w-4"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -507,7 +512,7 @@ const destroy = () => {
         </JetSecondaryButton>
 
         <JetDangerButton
-          class="ml-3"
+          class="ms-3"
           :class="{ 'opacity-25': processPhotoDeletion }"
           :disabled="processPhotoDeletion"
           @click="destroyPhoto(file)">
@@ -560,12 +565,19 @@ const destroy = () => {
   height: 10px;
   width: 10px;
   background-color: #88d772;
-  left: calc(15px * 4);
   position: absolute;
   margin: 0 auto;
   border-radius: 2px;
   transform: translateY(0) rotate(45deg) scale(0);
   animation: saving-spinner-animation 2500ms linear infinite;
+}
+
+[dir='ltr'] .saving-spinner .dot {
+  left: calc(15px * 4);
+}
+
+[dir='rtl'] .saving-spinner .dot {
+  right: calc(15px * 4);
 }
 
 .saving-spinner .dot:nth-child(1) {

@@ -112,7 +112,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
-        <span class="relative mr-1">
+        <span class="relative me-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -136,7 +136,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
       <pretty-button
         :text="$t('Add a life event')"
         :icon="'plus'"
-        :classes="'sm:w-fit w-full'"
+        :class="'w-full sm:w-fit'"
         @click="showCreateLifeEventModal" />
     </div>
 
@@ -159,10 +159,10 @@ const toggleLifeEventVisibility = (lifeEvent) => {
             @click="toggleTimelineEventVisibility(timelineEvent)">
             <!-- timeline date / label / number of events -->
             <div>
-              <span class="mr-2 text-gray-500">{{ timelineEvent.happened_at }}</span>
+              <span class="me-2 text-gray-500">{{ timelineEvent.happened_at }}</span>
 
               <span
-                class="ml-3 whitespace-nowrap rounded-lg bg-slate-100 px-2 py-0.5 text-sm text-slate-400 dark:bg-slate-900">
+                class="ms-3 whitespace-nowrap rounded-lg bg-slate-100 px-2 py-0.5 text-sm text-slate-400 dark:bg-slate-900">
                 {{ timelineEvent.life_events.length }}
               </span>
             </div>
@@ -177,7 +177,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="mr-2 h-4 w-4 text-gray-400">
+                class="me-2 h-4 w-4 text-gray-400">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
               </svg>
 
@@ -188,7 +188,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="mr-2 h-4 w-4 text-gray-400">
+                class="me-2 h-4 w-4 text-gray-400">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
               </svg>
 
@@ -203,7 +203,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
               v-for="lifeEvent in timelineEvent.life_events"
               :key="lifeEvent.id"
               :class="!lifeEvent.collapsed ? 'border' : ''"
-              class="mb-2 ml-6 rounded-lg border-gray-200 dark:border-gray-700">
+              class="mb-2 ms-6 rounded-lg border-gray-200 dark:border-gray-700">
               <template v-if="lifeEvent.edit">
                 <create-life-event
                   :data="props.data"
@@ -220,7 +220,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                   class="flex cursor-pointer items-center justify-between rounded-t-lg border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 hover:dark:bg-slate-900">
                   <!-- title -->
                   <div @click="toggleLifeEventVisibility(lifeEvent)" class="flex items-center">
-                    <p v-if="lifeEvent.summary" class="mr-4 text-sm font-bold">{{ lifeEvent.summary }}</p>
+                    <p v-if="lifeEvent.summary" class="me-4 text-sm font-bold">{{ lifeEvent.summary }}</p>
                     <div>
                       <span
                         class="rounded border bg-white px-2 py-1 font-mono text-sm dark:border-gray-700 dark:bg-gray-800">
@@ -245,7 +245,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                       viewBox="0 0 24 24"
                       stroke-width="1.5"
                       stroke="currentColor"
-                      class="mr-2 h-4 w-4 text-gray-400">
+                      class="me-2 h-4 w-4 text-gray-400">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                     </svg>
 
@@ -257,7 +257,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                       viewBox="0 0 24 24"
                       stroke-width="1.5"
                       stroke="currentColor"
-                      class="mr-2 h-4 w-4 text-gray-400">
+                      class="me-2 h-4 w-4 text-gray-400">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
                     </svg>
 
@@ -282,14 +282,14 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                   v-if="!lifeEvent.collapsed"
                   class="flex items-center border-b border-gray-200 px-3 py-2 text-sm dark:border-gray-700">
                   <!-- date -->
-                  <div class="mr-4 flex items-center">
+                  <div class="me-4 flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke-width="1.5"
                       stroke="currentColor"
-                      class="mr-2 h-4 w-4 text-gray-500">
+                      class="me-2 h-4 w-4 text-gray-500">
                       <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
@@ -302,7 +302,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                   <!-- distance -->
                   <div v-if="lifeEvent.distance" class="flex items-center">
                     <svg
-                      class="mr-2 h-6 w-6 text-gray-500"
+                      class="me-2 h-6 w-6 text-gray-500"
                       viewBox="0 0 64 64"
                       xmlns="http://www.w3.org/2000/svg"
                       stroke-width="3"
@@ -327,15 +327,15 @@ const toggleLifeEventVisibility = (lifeEvent) => {
 
                 <!-- participants -->
                 <div v-if="!lifeEvent.collapsed" class="flex p-3 pb-1">
-                  <div v-for="contact in lifeEvent.participants" :key="contact.id" class="mr-4">
-                    <contact-card :contact="contact" :avatarClasses="'h-5 w-5 rounded-full mr-2'" :displayName="true" />
+                  <div v-for="contact in lifeEvent.participants" :key="contact.id" class="me-4">
+                    <contact-card :contact="contact" :avatarClasses="'h-5 w-5 rounded-full me-2'" :displayName="true" />
                   </div>
                 </div>
               </template>
             </div>
 
             <!-- add a new life event to the timeline -->
-            <div class="mb-2 ml-6">
+            <div class="mb-2 ms-6">
               <span
                 @click="showAddLifeEventModalForTimelineEventId = timelineEvent.id"
                 v-if="showAddLifeEventModalForTimelineEventId != timelineEvent.id"

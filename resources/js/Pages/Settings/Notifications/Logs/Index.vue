@@ -5,15 +5,15 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -23,12 +23,12 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.channels" class="text-blue-500 hover:underline">
                 {{ $t('Notification channels') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -54,7 +54,7 @@
             {{ $t('History of the notification sent') }}
           </h3>
           <ul class="bulleted-list text-center">
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <span class="text-gray-500">{{ $t('Type:') }}</span>
               {{ data.channel.type }}
             </li>
@@ -69,7 +69,7 @@
         <div class="mb-6 flex rounded border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 grow pr-2"
+            class="h-6 grow pe-2"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor">
@@ -98,7 +98,7 @@
             v-for="notification in data.notifications"
             :key="notification.id"
             class="item-list border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-            <span class="mr-2 text-sm text-gray-500">{{ notification.sent_at }}</span>
+            <span class="me-2 text-sm text-gray-500">{{ notification.sent_at }}</span>
             <span>{{ notification.subject_line }}</span>
           </li>
         </ul>

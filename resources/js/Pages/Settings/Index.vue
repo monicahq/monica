@@ -14,7 +14,7 @@ defineProps({
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               {{ $t('You are here:') }}
             </li>
             <li class="inline">
@@ -35,25 +35,25 @@ defineProps({
         <div class="mb-12 rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
           <ul>
             <li class="mb-2 flex justify-start">
-              <span class="mr-2">🥳</span>
+              <span class="me-2">🥳</span>
               <Link :href="data.url.preferences.index" class="text-blue-500 hover:underline">
                 {{ $t('User preferences') }}
               </Link>
             </li>
             <li class="mb-2 flex justify-start">
-              <span class="mr-2">📡</span>
+              <span class="me-2">📡</span>
               <Link :href="data.url.notifications.index" class="text-blue-500 hover:underline">
                 {{ $t('Notification channels') }}
               </Link>
             </li>
             <li class="mb-2 flex justify-start">
-              <span class="mr-2">🔐</span>
+              <span class="me-2">🔐</span>
               <Link :href="route('profile.show')" class="text-blue-500 hover:underline">
                 {{ $t('Profile and security') }}
               </Link>
             </li>
             <li class="flex justify-start">
-              <span class="mr-2">⚓</span>
+              <span class="me-2">⚓</span>
               <Link :href="route('api-tokens.index')" class="text-blue-500 hover:underline">
                 {{ $t('API Tokens') }}
               </Link>
@@ -69,25 +69,25 @@ defineProps({
           <div class="mb-6 rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
             <ul>
               <li class="mb-2 flex justify-start">
-                <span class="mr-2">😀</span>
+                <span class="me-2">😀</span>
                 <Link :href="data.url.users.index" class="text-blue-500 hover:underline">
                   {{ $t('Manage users') }}
                 </Link>
               </li>
               <li class="mb-2 flex justify-start">
-                <span class="mr-2">🎃</span>
+                <span class="me-2">🎃</span>
                 <Link :href="data.url.personalize.index" class="text-blue-500 hover:underline">
                   {{ $t('Personalize your account') }}
                 </Link>
               </li>
               <li class="mb-2 flex justify-start">
-                <span class="mr-2">📸</span>
+                <span class="me-2">📸</span>
                 <Link :href="data.url.storage.index" class="text-blue-500 hover:underline">
                   {{ $t('Manage storage') }}
                 </Link>
               </li>
               <li class="flex justify-start">
-                <span class="mr-2">💩</span>
+                <span class="me-2">💩</span>
                 <Link :href="data.url.cancel.index" class="text-blue-500 hover:underline">
                   {{ $t('Cancel your account') }}
                 </Link>

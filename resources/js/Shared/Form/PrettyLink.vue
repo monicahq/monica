@@ -1,5 +1,8 @@
 <template>
-  <inertia-link :class="linkClasses" :href="href" preserve-scroll>
+  <inertia-link
+    :class="'dark:box-s relative border-zinc-900 bg-white text-sm dark:border-zinc-100 dark:bg-gray-800 dark:text-gray-100'"
+    :href="href"
+    preserve-scroll>
     <!-- + icon -->
     <svg
       v-if="icon === 'plus'"
@@ -25,7 +28,7 @@
     <!-- door icon -->
     <svg
       v-else-if="icon === 'exit'"
-      class="icon relative mr-1 inline h-5 w-5"
+      class="icon relative me-1 inline h-5 w-5"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
@@ -60,20 +63,6 @@ export default {
       type: String,
       default: '',
     },
-    classes: {
-      type: String,
-      default: '',
-    },
-  },
-
-  computed: {
-    linkClasses() {
-      return [
-        'relative text-sm dark:text-gray-100 dark:box-s',
-        'bg-white dark:bg-gray-800 border-zinc-900 dark:border-zinc-100',
-        this.classes,
-      ];
-    },
   },
 };
 </script>
@@ -106,9 +95,7 @@ a {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  a {
-    --tw-shadow: 2px 2px 0 rgb(242, 242, 245) !important;
-  }
+.dark a {
+  --tw-shadow: 2px 2px 0 rgb(242, 242, 245) !important;
 }
 </style>

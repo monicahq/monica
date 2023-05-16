@@ -49,15 +49,15 @@ watch(message, async () => {
               </svg>
             </span>
 
-            <p class="ml-3 truncate text-sm font-medium text-white">
+            <p class="ms-3 truncate text-sm font-medium text-white">
               {{ message }}
             </p>
           </div>
 
-          <div class="shrink-0 sm:ml-3">
+          <div class="shrink-0 sm:ms-3">
             <button
               type="button"
-              class="-mr-1 flex rounded-md p-2 transition focus:outline-none sm:-mr-2"
+              class="-me-1 flex rounded-md p-2 transition focus:outline-none sm:-me-2"
               :class="{
                 'hover:bg-indigo-600 focus:bg-indigo-600': style == 'success',
                 'hover:bg-red-600 focus:bg-red-600': style == 'danger',

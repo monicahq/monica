@@ -5,15 +5,15 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -23,12 +23,12 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">
                 {{ $t('Personalize your account') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -55,7 +55,7 @@
         <div class="mb-10 flex rounded border bg-slate-50 px-3 py-2 text-sm dark:bg-slate-900">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 pr-2"
+            class="h-6 pe-2"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor">
@@ -87,7 +87,7 @@
             <div>
               <!-- search a module -->
               <div
-                class="module-list rounded-t-md border-l border-r border-t border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                class="module-list rounded-t-md border-x border-t border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
                 <text-input
                   v-model="form.search"
                   :type="'text'"
@@ -144,9 +144,9 @@
                   <!-- row options -->
                   <div class="flex justify-between border-b border-gray-200 px-3 py-1 text-xs dark:border-gray-700">
                     <div>
-                      <div class="relative mr-3 inline cursor-pointer">
+                      <div class="relative me-3 inline cursor-pointer">
                         <svg
-                          class="mr-1 inline h-3 w-3"
+                          class="me-1 inline h-3 w-3"
                           viewBox="0 0 24 24"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg">
@@ -162,9 +162,9 @@
                         <span>Add a field to the left</span>
                       </div>
 
-                      <div class="relative mr-2 inline cursor-pointer" @click="addFieldToRight(row)">
+                      <div class="relative me-2 inline cursor-pointer" @click="addFieldToRight(row)">
                         <svg
-                          class="mr-1 inline h-3 w-3"
+                          class="me-1 inline h-3 w-3"
                           viewBox="0 0 24 24"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg">
@@ -183,7 +183,7 @@
 
                     <div class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroyRow(row)">
                       <svg
-                        class="mr-1 inline h-3 w-3"
+                        class="me-1 inline h-3 w-3"
                         viewBox="0 0 24 24"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -205,13 +205,13 @@
                     <div
                       v-for="field in row.fields"
                       :key="field.id"
-                      class="border-r border-gray-200 last:border-r-0 dark:border-gray-700">
+                      class="border-e border-gray-200 last:border-e-0 dark:border-gray-700">
                       <!-- row options -->
                       <div class="flex justify-between border-b border-gray-200 px-3 py-1 text-xs dark:border-gray-700">
                         <div>
-                          <div class="relative mr-3 inline cursor-pointer">
+                          <div class="relative me-3 inline cursor-pointer">
                             <svg
-                              class="mr-1 inline h-3 w-3"
+                              class="me-1 inline h-3 w-3"
                               viewBox="0 0 24 24"
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg">
@@ -230,7 +230,7 @@
 
                         <div class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroyRow(row)">
                           <svg
-                            class="mr-1 inline h-3 w-3"
+                            class="me-1 inline h-3 w-3"
                             viewBox="0 0 24 24"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -265,13 +265,13 @@
 
             <!-- actions -->
             <div class="flex justify-between p-5">
-              <pretty-link :href="data.url.back" :text="$t('Cancel')" :classes="'mr-3'" />
+              <pretty-link :href="data.url.back" :text="$t('Cancel')" :class="'me-3'" />
               <pretty-button
                 :href="'data.url.vault.create'"
                 :text="$t('Add')"
                 :state="loadingState"
                 :icon="'check'"
-                :classes="'save dark:save'" />
+                :class="'save'" />
             </div>
 
             <!-- blank state -->

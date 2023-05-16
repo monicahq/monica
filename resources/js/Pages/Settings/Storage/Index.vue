@@ -8,10 +8,10 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link
                 :href="data.url.settings.index"
                 class="text-blue-500 hover:underline"
@@ -21,7 +21,7 @@
                 }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -50,7 +50,7 @@
         <!-- title + cta -->
         <div class="mb-6 flex items-center justify-between">
           <h3>
-            <span class="mr-1">
+            <span class="me-1">
               📸
             </span>
             {{ $t('Storage') }}
@@ -60,7 +60,7 @@
         <!-- stats -->
         <div class="border border-gray-200 dark:border-gray-700 rounded-lg grid grid-cols-2 mb-8">
           <!-- account limit -->
-          <div class="flex justify-between p-3 border-r border-gray-200 dark:border-gray-700">
+          <div class="flex justify-between p-3 border-e border-gray-200 dark:border-gray-700">
             <p>{{ $t('Your account limits') }}</p>
             <p class="font-bold">
               {{ data.account_limit }}
@@ -78,7 +78,7 @@
 
         <!-- detail breakdown -->
         <p class="mb-2">
-          <span class="mr-1">🔽</span> {{ $t('Breakdown of the current usage') }}
+          <span class="me-1">🔽</span> {{ $t('Breakdown of the current usage') }}
         </p>
         <ul class="user-list mb-6 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
           <li class="border-b border-gray-200 dark:border-gray-700 hover:bg-slate-50 hover:dark:bg-slate-800 dark:bg-slate-900 flex justify-between p-3">

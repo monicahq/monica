@@ -5,15 +5,15 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -39,11 +39,11 @@
             <h1 class="mb-4 flex justify-center text-2xl font-medium">
               <span>{{ $t('Cancel your account') }}</span>
 
-              <help :url="$page.props.help_links.settings_account_deletion" :top="'9px'" :classes="'ml-3'" />
+              <help :url="$page.props.help_links.settings_account_deletion" :top="'9px'" :class="'ms-3'" />
             </h1>
             <p class="mb-2">{{ $t('Thanks for giving Monica a try.') }}</p>
             <p class="mb-2">{{ $t('Once you cancel,') }}</p>
-            <ul class="list-disc pl-6">
+            <ul class="list-disc ps-6">
               <li>{{ $t('Your account will be closed immediately,') }}</li>
               <li>{{ $t('All users and vaults will be deleted immediately,') }}</li>
               <li>
@@ -72,13 +72,13 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-link :href="data.url.back" :text="$t('Go back')" :classes="'mr-3'" />
+            <pretty-link :href="data.url.back" :text="$t('Go back')" :class="'me-3'" />
             <pretty-button
               :href="'data.url.vault.create'"
               :text="$t('Cancel account')"
               :state="loadingState"
               :icon="'arrow'"
-              :classes="'save dark:save'" />
+              :class="'save'" />
           </div>
         </form>
       </div>

@@ -13,7 +13,7 @@ defineProps({
     <main class="relative sm:mt-24">
       <div class="mx-auto max-w-4xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <h3 class="mb-6 font-semibold">
-          <span class="mr-1"> 🏭 </span>
+          <span class="me-1"> 🏭 </span>
           {{ $t('All the companies') }}
         </h3>
 
@@ -28,7 +28,7 @@ defineProps({
               <div v-if="company.contacts" class="relative flex -space-x-2 overflow-hidden py-1">
                 <div v-for="contact in company.contacts" :key="contact.id" class="inline-block">
                   <inertia-link :href="contact.url.show">
-                    <avatar :data="contact.avatar" :classes="'h-8 w-8 rounded-full ring-2 ring-white'" />
+                    <avatar :data="contact.avatar" :class="'h-8 w-8 rounded-full ring-2 ring-white'" />
                   </inertia-link>
                 </div>
               </div>

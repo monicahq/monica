@@ -15,15 +15,15 @@ defineProps({
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.reports" class="text-blue-500 hover:underline">{{
                 $t('Reports')
               }}</inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -76,14 +76,14 @@ defineProps({
               :key="date.id"
               class="item-list flex items-center justify-between border-b border-gray-200 p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
               <div>
-                <span class="mr-3 font-mono text-xs text-gray-600">{{ date.happened_at }}</span>
+                <span class="me-3 font-mono text-xs text-gray-600">{{ date.happened_at }}</span>
                 <span>{{ date.label }}</span>
               </div>
 
               <div>
                 <contact-card
                   :contact="date.contact"
-                  :avatarClasses="'h-5 w-5 rounded-full mr-2'"
+                  :avatarClasses="'h-5 w-5 rounded-full me-2'"
                   :displayName="true" />
               </div>
             </li>

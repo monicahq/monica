@@ -3,7 +3,7 @@
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
-        <span class="relative mr-1">
+        <span class="relative me-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="icon-sidebar relative inline h-4 w-4"
@@ -23,7 +23,7 @@
       <pretty-button
         :text="$t('Add a task')"
         :icon="'plus'"
-        :classes="'sm:w-fit w-full'"
+        :class="'w-full sm:w-fit'"
         @click="showCreateTaskModal()" />
     </div>
 
@@ -58,14 +58,19 @@
             type="checkbox"
             class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
             @click="toggleDueDateModal" />
-          <label for="reminder" class="ml-2 block cursor-pointer text-sm text-gray-900">
+          <label for="reminder" class="ms-2 block cursor-pointer text-sm text-gray-900">
             {{ $t('Add a due date') }}
           </label>
         </div>
 
         <!-- task options -->
-        <div v-if="form.due_at_checked" class="ml-4 mt-4">
-          <DatePicker v-model.string="form.due_at" class="inline-block h-full" :masks="masks" :is-dark="isDark()">
+        <div v-if="form.due_at_checked" class="ms-4 mt-4">
+          <DatePicker
+            v-model.string="form.due_at"
+            class="inline-block h-full"
+            :masks="masks"
+            :locale="$attrs.user.locale"
+            :is-dark="isDark()">
             <template #default="{ inputValue, inputEvents }">
               <input
                 class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
@@ -77,8 +82,8 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createTaskModalShown = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createTaskModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
       </div>
     </form>
 
@@ -99,17 +104,17 @@
               type="checkbox"
               class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
               @change="toggle(task)" />
-            <label :for="task.id" class="ml-2 flex cursor-pointer text-gray-900">
+            <label :for="task.id" class="ms-2 flex cursor-pointer text-gray-900">
               {{ task.label }}
 
               <!-- due date -->
               <span
                 v-if="task.due_at"
                 :class="task.due_at_late ? 'bg-red-400/10 text-red-600' : 'bg-sky-400/10 text-sky-600'"
-                class="ml-2 flex items-center rounded-full px-2 py-0.5 text-xs font-medium leading-5 dark:text-sky-400">
+                class="ms-2 flex items-center rounded-full px-2 py-0.5 text-xs font-medium leading-5 dark:text-sky-400">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="mr-1 h-3 w-3"
+                  class="me-1 h-3 w-3"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -154,14 +159,19 @@
                 type="checkbox"
                 class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
                 @click="toggleDueDateModal" />
-              <label for="reminder" class="ml-2 block cursor-pointer text-sm text-gray-900">
+              <label for="reminder" class="ms-2 block cursor-pointer text-sm text-gray-900">
                 {{ $t('Add a due date') }}
               </label>
             </div>
 
             <!-- task options -->
-            <div v-if="form.due_at_checked" class="ml-4 mt-4">
-              <DatePicker v-model.string="form.due_at" class="inline-block h-full" :masks="masks" :is-dark="isDark()">
+            <div v-if="form.due_at_checked" class="ms-4 mt-4">
+              <DatePicker
+                v-model.string="form.due_at"
+                class="inline-block h-full"
+                :masks="masks"
+                :locale="$attrs.user.locale"
+                :is-dark="isDark()">
                 <template #default="{ inputValue, inputEvents }">
                   <input
                     class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
@@ -173,8 +183,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedTaskId = 0" />
-            <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="editedTaskId = 0" />
+            <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :class="'save'" />
           </div>
         </form>
       </li>
@@ -205,17 +215,17 @@
                 class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
                 @change="toggle(task)" />
 
-              <label :for="task.id" class="ml-2 flex cursor-pointer items-center text-gray-900">
+              <label :for="task.id" class="ms-2 flex cursor-pointer items-center text-gray-900">
                 {{ task.label }}
 
                 <!-- due date -->
                 <span
                   v-if="task.due_at"
                   :class="task.due_at_late ? 'bg-red-400/10' : ''"
-                  class="ml-2 flex items-center rounded-full bg-sky-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-sky-600 dark:text-sky-400">
+                  class="ms-2 flex items-center rounded-full bg-sky-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-sky-600 dark:text-sky-400">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="mr-1 h-3 w-3"
+                    class="me-1 h-3 w-3"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"

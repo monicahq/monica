@@ -114,7 +114,7 @@ const updatePosition = (event) => {
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0">
-        <span class="mr-1"> 🤭 </span>
+        <span class="me-1"> 🤭 </span>
         {{ $t('Mood tracking parameters') }}
       </h3>
       <pretty-button
@@ -159,7 +159,7 @@ const updatePosition = (event) => {
               @click="form.hex_color = color.hex_color" />
             <label
               :for="color.hex_color"
-              class="ml-2 inline-block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+              class="ms-2 inline-block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
               <div class="rounded p-4" :class="color.hex_color" />
             </label>
           </div>
@@ -167,14 +167,14 @@ const updatePosition = (event) => {
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createMoodTrackingParametersModalShown = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createMoodTrackingParametersModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
       </div>
     </form>
 
     <!-- help text -->
     <div class="mb-4 flex rounded border border-gray-200 bg-slate-50 px-3 py-2 dark:border-gray-700 dark:bg-slate-900">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 pr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 pe-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -200,11 +200,11 @@ const updatePosition = (event) => {
         <template #item="{ element }">
           <div
             v-if="editMoodTrackingParameterId != element.id"
-            class="item-list flex items-center justify-between border-b border-gray-200 py-2 pl-4 pr-5 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+            class="item-list flex items-center justify-between border-b border-gray-200 py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <!-- icon to move position -->
-            <div class="mr-2 flex items-center">
+            <div class="me-2 flex items-center">
               <svg
-                class="handle mr-2 cursor-move"
+                class="handle me-2 cursor-move"
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
@@ -221,8 +221,8 @@ const updatePosition = (event) => {
                 <path d="M17 15H15V17H17V15Z" fill="currentColor" />
               </svg>
 
-              <div class="mr-2 inline-block h-4 w-4 rounded-full" :class="element.hex_color" />
-              <span class="mr-2">{{ element.label }}</span>
+              <div class="me-2 inline-block h-4 w-4 rounded-full" :class="element.hex_color" />
+              <span class="me-2">{{ element.label }}</span>
             </div>
 
             <!-- actions -->
@@ -232,7 +232,7 @@ const updatePosition = (event) => {
                 @click="renameMoodTrackingParameterModal(element)">
                 {{ $t('Rename') }}
               </li>
-              <li class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">
+              <li class="ms-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">
                 {{ $t('Delete') }}
               </li>
             </ul>
@@ -275,7 +275,7 @@ const updatePosition = (event) => {
                     @click="form.hex_color = color.hex_color" />
                   <label
                     :for="color.hex_color"
-                    class="ml-2 inline-block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                    class="ms-2 inline-block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                     <div class="rounded p-4" :class="color.hex_color" />
                   </label>
                 </div>
@@ -283,8 +283,8 @@ const updatePosition = (event) => {
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="editMoodTrackingParameterId = 0" />
-              <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+              <pretty-span :text="$t('Cancel')" :class="'me-3'" @click.prevent="editMoodTrackingParameterId = 0" />
+              <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
             </div>
           </form>
         </template>

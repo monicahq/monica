@@ -1,12 +1,15 @@
 <template>
-  <button :class="buttonClasses" :disabled="state == 'loading' || state == 'disabled'" type="submit">
-    <span v-if="state == 'loading'"> {{ $t('Loading…') }} </span>
+  <button
+    :class="'dark:box-s relative border-zinc-900 bg-white text-sm dark:border-zinc-100 dark:bg-gray-800 dark:text-gray-100'"
+    :disabled="state === 'loading' || state === 'disabled'"
+    type="submit">
+    <span v-if="state === 'loading'"> {{ $t('Loading…') }} </span>
 
     <!-- + icon -->
     <svg
       v-if="icon === 'plus' && state != 'loading'"
       xmlns="http://www.w3.org/2000/svg"
-      class="icon relative mr-1 inline h-5 w-5"
+      class="icon relative me-1 inline h-5 w-5"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor">
@@ -17,7 +20,7 @@
     <svg
       v-if="icon === 'check' && state != 'loading'"
       xmlns="http://www.w3.org/2000/svg"
-      class="icon relative mr-1 inline h-5 w-5"
+      class="icon relative me-1 inline h-5 w-5"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor">
@@ -28,7 +31,7 @@
     <svg
       v-if="icon === 'minus' && state != 'loading'"
       xmlns="http://www.w3.org/2000/svg"
-      class="icon relative ml-1 mr-1 inline h-5 w-5"
+      class="icon relative mx-1 inline h-5 w-5"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -36,15 +39,15 @@
       <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
 
-    <span v-if="state != 'loading'">
+    <span v-if="state !== 'loading'">
       {{ text }}
     </span>
 
     <!-- arrow icon -->
     <svg
-      v-if="icon === 'arrow' && state != 'loading'"
+      v-if="icon === 'arrow' && state !== 'loading'"
       xmlns="http://www.w3.org/2000/svg"
-      class="icon relative ml-1 mr-1 inline h-5 w-5"
+      class="icon relative mx-1 inline h-5 w-5"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor">
@@ -68,20 +71,6 @@ export default {
       type: String,
       default: '',
     },
-    classes: {
-      type: String,
-      default: '',
-    },
-  },
-
-  computed: {
-    buttonClasses() {
-      return [
-        'relative text-sm dark:text-gray-100 dark:box-s',
-        'bg-white dark:bg-gray-800 border-zinc-900 dark:border-zinc-100',
-        this.classes,
-      ];
-    },
   },
 };
 </script>
@@ -95,9 +84,9 @@ export default {
   background-color: #fcf27e;
 }
 
-.dark .dark\:save {
-  background-color: #d0c10d;
-  color: rgb(31 41 55); // text-gray-800
+.dark .save {
+  background-color: #d0c10d !important;
+  color: rgb(31 41 55) !important; // text-gray-800
 }
 
 button {
@@ -128,9 +117,7 @@ button {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  button {
-    --tw-shadow: 2px 2px 0 rgb(242, 242, 245) !important;
-  }
+.dark button {
+  --tw-shadow: 2px 2px 0 rgb(242, 242, 245) !important;
 }
 </style>

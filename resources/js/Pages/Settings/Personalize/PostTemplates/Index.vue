@@ -5,15 +5,15 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -23,12 +23,12 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">
                 {{ $t('Personalize your account') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -49,7 +49,7 @@
         <!-- title + cta -->
         <div class="mb-6 mt-8 items-center justify-between sm:mt-0 sm:flex">
           <h3 class="mb-4 sm:mb-0">
-            <span class="mr-1"> 📮 </span>
+            <span class="me-1"> 📮 </span>
             {{ $t('Post templates') }}
           </h3>
           <pretty-button
@@ -63,7 +63,7 @@
         <div class="mb-6 flex rounded border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 grow pr-2"
+            class="h-6 grow pe-2"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor">
@@ -107,8 +107,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createPostTemplateModalShown = false" />
-            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createPostTemplateModalShown = false" />
+            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
           </div>
         </form>
 
@@ -123,12 +123,12 @@
             <template #item="{ element }">
               <div v-if="editPostTemplateId != element.id" class="">
                 <div
-                  class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pl-4 pr-5 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
+                  class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
                   <div class="mb-3 flex items-center justify-between">
                     <!-- icon to move position -->
-                    <div class="mr-2 flex">
+                    <div class="me-2 flex">
                       <svg
-                        class="handle mr-2 cursor-move"
+                        class="handle me-2 cursor-move"
                         width="24"
                         height="24"
                         viewBox="0 0 24 24"
@@ -155,7 +155,7 @@
                       </li>
                       <li
                         v-if="element.can_be_deleted"
-                        class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
+                        class="ms-4 inline cursor-pointer text-red-500 hover:text-red-900"
                         @click="destroy(element)">
                         {{ $t('Delete') }}
                       </li>
@@ -163,7 +163,7 @@
                   </div>
 
                   <!-- available sections -->
-                  <div class="ml-8">
+                  <div class="ms-8">
                     <p class="mb-1 text-sm text-gray-500">Sections:</p>
 
                     <draggable
@@ -175,12 +175,12 @@
                       <template #item="{ element, id }">
                         <div v-if="editSectionId != element.id" class="">
                           <div
-                            class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pl-4 pr-5 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
+                            class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
                             <div class="flex items-center justify-between">
                               <!-- icon to move position -->
-                              <div class="mr-2 flex">
+                              <div class="me-2 flex">
                                 <svg
-                                  class="handle mr-2 cursor-move"
+                                  class="handle me-2 cursor-move"
                                   width="24"
                                   height="24"
                                   viewBox="0 0 24 24"
@@ -209,7 +209,7 @@
                                 </li>
                                 <li
                                   v-if="element.can_be_deleted"
-                                  class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
+                                  class="ms-4 inline cursor-pointer text-red-500 hover:text-red-900"
                                   @click="destroySection(element)">
                                   {{ $t('Delete') }}
                                 </li>
@@ -240,12 +240,8 @@
                           </div>
 
                           <div class="flex justify-between p-5">
-                            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="postTemplateId = 0" />
-                            <pretty-button
-                              :text="$t('Rename')"
-                              :state="loadingState"
-                              :icon="'check'"
-                              :classes="'save dark:save'" />
+                            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="postTemplateId = 0" />
+                            <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
                           </div>
                         </form>
                       </template>
@@ -285,12 +281,8 @@
                       </div>
 
                       <div class="flex justify-between p-5">
-                        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createSectionModalShown = false" />
-                        <pretty-button
-                          :text="$t('Save')"
-                          :state="loadingState"
-                          :icon="'plus'"
-                          :classes="'save dark:save'" />
+                        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createSectionModalShown = false" />
+                        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
                       </div>
                     </form>
 
@@ -337,12 +329,8 @@
                 </div>
 
                 <div class="flex justify-between p-5">
-                  <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="editPostTemplateId = 0" />
-                  <pretty-button
-                    :text="$t('Rename')"
-                    :state="loadingState"
-                    :icon="'check'"
-                    :classes="'save dark:save'" />
+                  <pretty-span :text="$t('Cancel')" :class="'me-3'" @click.prevent="editPostTemplateId = 0" />
+                  <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
                 </div>
               </form>
             </template>

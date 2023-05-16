@@ -2,7 +2,7 @@
   <div class="mb3">
     <label v-if="label" class="mb-2 block text-sm dark:text-gray-100" :for="id">
       {{ label }}
-      <span v-if="!required" class="optional-badge dark:optional-badge text-xs">
+      <span v-if="!required" class="optional-badge rounded px-[3px] py-px text-xs">
         {{ $t('optional') }}
       </span>
     </label>
@@ -22,7 +22,9 @@
         @keydown.esc="sendEscKey"
         @focus="showMaxLength"
         @blur="displayMaxLength = false" />
-      <span v-if="maxlength && displayMaxLength" class="length dark:length absolute rounded text-xs dark:text-gray-100">
+      <span
+        v-if="maxlength && displayMaxLength"
+        class="length absolute end-2.5 top-2.5 rounded px-1 py-[3px] text-xs dark:text-gray-100">
         {{ charactersLeft }}
       </span>
     </div>
@@ -152,28 +154,18 @@ export default {
 
 <style lang="scss" scoped>
 .optional-badge {
-  border-radius: 4px;
   color: #283e59;
   background-color: #edf2f9;
-  padding: 1px 3px;
+}
+.dark .optional-badge {
+  color: #d4d8dd !important;
+  background-color: #2f3031 !important;
 }
 
 .length {
-  top: 10px;
-  right: 10px;
   background-color: #e5eeff;
-  padding: 3px 4px;
 }
-
-.dark .dark\:optional-badge {
-  color: #d4d8dd;
-  background-color: #2f3031;
-}
-.dark .dark\:length {
-  background-color: #2d2f33;
-}
-
-.counter {
-  padding-right: 64px;
+.dark .length {
+  background-color: #2d2f33 !important;
 }
 </style>

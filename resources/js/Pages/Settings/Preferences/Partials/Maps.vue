@@ -3,8 +3,8 @@
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 flex font-semibold sm:mb-0">
-        <span class="mr-1"> 🗺️ </span>
-        <span class="mr-2">
+        <span class="me-1"> 🗺️ </span>
+        <span class="me-2">
           {{ $t('What should we use to display maps?') }}
         </span>
 
@@ -36,7 +36,7 @@
             :value="mapType.value"
             name="date-format"
             type="radio"
-            class="relative mr-3 h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+            class="relative me-3 h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
           <div>
             <label
               :for="'input' + mapType.id"
@@ -52,8 +52,8 @@
 
       <!-- actions -->
       <div class="flex justify-between p-5">
-        <pretty-link :text="$t('Cancel')" :classes="'mr-3'" @click="editMode = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+        <pretty-link :text="$t('Cancel')" :class="'me-3'" @click="editMode = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
       </div>
     </form>
   </div>

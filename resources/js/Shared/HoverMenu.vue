@@ -41,9 +41,7 @@ defineProps({
   background-color: #f8fafc; // bg-slate-50
 }
 
-@media (prefers-color-scheme: dark) {
-  .ant-dropdown-menu-item:hover {
-    background-color: #020617; // bg-slate-950
-  }
+.dark .ant-dropdown-menu-item:hover {
+  background-color: #020617 !important; // bg-slate-950
 }
 </style>

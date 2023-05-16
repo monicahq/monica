@@ -66,15 +66,15 @@ const destroy = () => {
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
                 {{ $t('Journals') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -84,12 +84,12 @@ const destroy = () => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <inertia-link :href="data.journal.url.show" class="text-blue-500 hover:underline">{{
                 data.journal.name
               }}</inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -99,12 +99,12 @@ const destroy = () => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <inertia-link :href="data.url.slices_index" class="text-blue-500 hover:underline">{{
                 $t('Slices of life')
               }}</inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -167,7 +167,7 @@ const destroy = () => {
             v-if="!data.canUploadFile"
             class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
             <p class="bg-gray-100 p-3 text-center">
-              <span class="mr-1">⚠️</span> {{ $t('You don’t have enough space left in your account.') }}
+              <span class="me-1">⚠️</span> {{ $t('You don’t have enough space left in your account.') }}
             </p>
           </div>
 
@@ -191,7 +191,7 @@ const destroy = () => {
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="mr-0 h-4 pr-2">
+                class="me-0 h-4 pe-2">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -209,7 +209,7 @@ const destroy = () => {
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="mr-0 h-4 pr-2">
+                class="me-0 h-4 pe-2">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -224,7 +224,7 @@ const destroy = () => {
               <p class="mb-2 text-sm font-bold">{{ $t('Contacts in this slice') }}</p>
               <ul class="mb-6">
                 <li v-for="contact in data.contacts" :key="contact.id">
-                  <contact-card :contact="contact" :avatarClasses="'h-5 w-5 rounded-full mr-2'" :displayName="true" />
+                  <contact-card :contact="contact" :avatarClasses="'h-5 w-5 rounded-full me-2'" :displayName="true" />
                 </li>
               </ul>
             </div>
@@ -262,7 +262,7 @@ const destroy = () => {
                 :key="post.id"
                 class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
                 <!-- written at -->
-                <div class="mr-4 rounded-lg border border-gray-200 p-2 text-center leading-tight">
+                <div class="me-4 rounded-lg border border-gray-200 p-2 text-center leading-tight">
                   <span class="block text-xs uppercase">{{ post.written_at_day }}</span>
                   <span class="text-xl">{{ post.written_at_day_number }}</span>
                 </div>

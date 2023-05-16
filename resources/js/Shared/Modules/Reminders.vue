@@ -3,7 +3,7 @@
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
-        <span class="relative mr-1">
+        <span class="relative me-1">
           <svg
             class="icon-sidebar relative inline h-4 w-4"
             viewBox="0 0 24 24"
@@ -25,7 +25,7 @@
       <pretty-button
         :text="$t('Add a reminder')"
         :icon="'plus'"
-        :classes="'sm:w-fit w-full'"
+        :class="'w-full sm:w-fit'"
         @click="showCreateReminderModal" />
     </div>
 
@@ -66,12 +66,17 @@
               class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
             <label
               for="full_date"
-              class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+              class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
               {{ $t('I know the exact date, including the year') }}
             </label>
           </div>
-          <div v-if="form.choice === 'full_date'" class="mb-4 ml-6">
-            <DatePicker v-model.string="form.date" class="inline-block h-full" :masks="masks" :is-dark="isDark()">
+          <div v-if="form.choice === 'full_date'" class="mb-4 ms-6">
+            <DatePicker
+              v-model.string="form.date"
+              class="inline-block h-full"
+              :masks="masks"
+              :locale="$attrs.user.locale"
+              :is-dark="isDark()">
               <template #default="{ inputValue, inputEvents }">
                 <input
                   class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
@@ -92,21 +97,21 @@
               class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
             <label
               for="month_day"
-              class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+              class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
               {{ $t('I only know the day and month, not the year') }}
             </label>
           </div>
-          <div v-if="form.choice === 'month_day'" class="ml-6 mt-2 flex">
-            <dropdown
+          <div v-if="form.choice === 'month_day'" class="ms-6 mt-2 flex">
+            <Dropdown
               v-model="form.month"
               :data="data.months"
               :required="true"
-              :div-outer-class="'mb-5 mr-2'"
+              :div-outer-class="'mb-5 me-2'"
               :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
               :label="$t('Month')" />
 
-            <dropdown
+            <Dropdown
               v-model="form.day"
               :data="data.days"
               :required="true"
@@ -124,7 +129,7 @@
             {{ $t('If the date is in the past, the next occurence of the date will be next year.') }}
           </p>
 
-          <div class="ml-4 mt-4">
+          <div class="ms-4 mt-4">
             <div class="mb-2 flex items-center">
               <input
                 id="one_time"
@@ -135,7 +140,7 @@
                 class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
               <label
                 for="one_time"
-                class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                 {{ $t('Only once, when the next occurence of the date occurs.') }}
               </label>
             </div>
@@ -150,30 +155,26 @@
                 class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
               <label
                 for="recurring"
-                class="ml-3 block flex cursor-pointer items-center text-sm font-medium text-gray-700 dark:text-gray-300">
-                <span class="mr-2">{{ $t('Every') }}</span>
+                class="ms-3 block flex cursor-pointer items-center text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span class="me-2">{{ $t('Every') }}</span>
 
-                <select
-                  :id="id"
+                <Dropdown
+                  :id="'frequency-number'"
                   v-model="form.frequencyNumber"
-                  class="mr-2 rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
+                  dropdown-class="me-2"
                   :required="required"
-                  @change="change">
-                  <option v-for="n in 10" :key="n" :value="n">
-                    {{ n }}
-                  </option>
-                </select>
+                  :data="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" />
 
-                <select
-                  :id="id"
+                <Dropdown
+                  :id="'frequency-type'"
                   v-model="form.frequencyType"
-                  class="mr-2 rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
+                  dropdown-class="me-2"
                   :required="required"
-                  @change="change">
-                  <option value="recurring_day">{{ $t('day') }}</option>
-                  <option value="recurring_month">{{ $t('month') }}</option>
-                  <option value="recurring_year">{{ $t('year') }}</option>
-                </select>
+                  :data="[
+                    { id: 'recurring_day', name: $t('day') },
+                    { id: 'recurring_month', name: $t('month') },
+                    { id: 'recurring_year', name: $t('year') },
+                  ]" />
 
                 <span>{{ $t('after the next occurence of the date.') }}</span>
               </label>
@@ -183,8 +184,8 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="addReminderModalShown = false" />
-        <pretty-button :text="$t('Add date')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="addReminderModalShown = false" />
+        <pretty-button :text="$t('Add date')" :state="loadingState" :icon="'plus'" :class="'save'" />
       </div>
     </form>
 
@@ -198,8 +199,8 @@
           <!-- reminder -->
           <div class="flex items-center justify-between px-3 py-2">
             <div class="flex items-center">
-              <span class="mr-2 text-sm text-gray-500">{{ reminder.date }}</span>
-              <span class="mr-2">{{ reminder.label }}</span>
+              <span class="me-2 text-sm text-gray-500">{{ reminder.date }}</span>
+              <span class="me-2">{{ reminder.label }}</span>
 
               <!-- recurring icon -->
               <a-tooltip v-if="reminder.type != 'one_time'" placement="topLeft" title="Recurring" arrow-point-at-center>
@@ -221,7 +222,7 @@
             <!-- actions -->
             <ul class="text-sm">
               <li
-                class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
+                class="me-4 inline cursor-pointer text-blue-500 hover:underline"
                 @click="showEditReminderModal(reminder)">
                 {{ $t('Edit') }}
               </li>
@@ -268,12 +269,17 @@
                     class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                   <label
                     for="full_date"
-                    class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                    class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ $t('I know the exact date, including the year') }}
                   </label>
                 </div>
-                <div v-if="form.choice === 'full_date'" class="mb-4 ml-6">
-                  <DatePicker v-model.string="form.date" class="inline-block h-full" :masks="masks" :is-dark="isDark()">
+                <div v-if="form.choice === 'full_date'" class="mb-4 ms-6">
+                  <DatePicker
+                    v-model.string="form.date"
+                    class="inline-block h-full"
+                    :masks="masks"
+                    :locale="$attrs.user.locale"
+                    :is-dark="isDark()">
                     <template #default="{ inputValue, inputEvents }">
                       <input
                         class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
@@ -294,21 +300,21 @@
                     class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                   <label
                     for="month_day"
-                    class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                    class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ $t('I only know the day and month, not the year') }}
                   </label>
                 </div>
-                <div v-if="form.choice === 'month_day'" class="ml-6 mt-2 flex">
-                  <dropdown
+                <div v-if="form.choice === 'month_day'" class="ms-6 mt-2 flex">
+                  <Dropdown
                     v-model="form.month"
                     :data="data.months"
                     :required="true"
-                    :div-outer-class="'mr-2'"
+                    :div-outer-class="'me-2'"
                     :placeholder="$t('Choose a value')"
                     :dropdown-class="'block w-full'"
                     :label="$t('Month')" />
 
-                  <dropdown
+                  <Dropdown
                     v-model="form.day"
                     :data="data.days"
                     :required="true"
@@ -325,7 +331,7 @@
                   {{ $t('If the date is in the past, the next occurence of the date will be next year.') }}
                 </p>
 
-                <div class="ml-4 mt-4">
+                <div class="ms-4 mt-4">
                   <div class="mb-2 flex items-center">
                     <input
                       id="one_time"
@@ -336,7 +342,7 @@
                       class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                     <label
                       for="one_time"
-                      class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                      class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                       {{ $t('Only once, when the next occurence of the date occurs.') }}
                     </label>
                   </div>
@@ -351,30 +357,26 @@
                       class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                     <label
                       for="recurring"
-                      class="ml-3 block flex cursor-pointer items-center text-sm font-medium text-gray-700 dark:text-gray-300">
-                      <span class="mr-2">{{ $t('Every') }}</span>
+                      class="ms-3 block flex cursor-pointer items-center text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <span class="me-2">{{ $t('Every') }}</span>
 
-                      <select
-                        :id="id"
+                      <Dropdown
+                        :id="'frequency-number'"
                         v-model="form.frequencyNumber"
-                        class="mr-2 rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
+                        dropdown-class="me-2"
                         :required="required"
-                        @change="change">
-                        <option v-for="n in 10" :key="n" :value="n">
-                          {{ n }}
-                        </option>
-                      </select>
+                        :data="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" />
 
-                      <select
-                        :id="id"
+                      <Dropdown
+                        :id="'frequency-type'"
                         v-model="form.frequencyType"
-                        class="mr-2 rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
+                        dropdown-class="me-2"
                         :required="required"
-                        @change="change">
-                        <option value="recurring_day">{{ $t('day') }}</option>
-                        <option value="recurring_month">{{ $t('month') }}</option>
-                        <option value="recurring_year">{{ $t('year') }}</option>
-                      </select>
+                        :data="[
+                          { id: 'recurring_day', name: $t('day') },
+                          { id: 'recurring_month', name: $t('month') },
+                          { id: 'recurring_year', name: $t('year') },
+                        ]" />
 
                       <span>{{ $t('after the next occurence of the date.') }}</span>
                     </label>
@@ -384,8 +386,8 @@
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedReminderId = 0" />
-              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+              <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="editedReminderId = 0" />
+              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
             </div>
           </form>
         </li>
@@ -563,11 +565,5 @@ export default {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }
-}
-
-select {
-  padding-left: 8px;
-  padding-right: 20px;
-  background-position: right 3px center;
 }
 </style>

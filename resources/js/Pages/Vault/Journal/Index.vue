@@ -15,7 +15,7 @@ defineProps({
         <!-- title + cta -->
         <div class="mb-6 flex items-center justify-between">
           <h3>
-            <span class="mr-1"> ✍️ </span>
+            <span class="me-1"> ✍️ </span>
             {{ $t('All the journals') }}
           </h3>
 
@@ -34,13 +34,13 @@ defineProps({
               :key="journal.id"
               class="border-b border-gray-200 px-5 py-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800 sm:flex">
               <!-- name and date -->
-              <div class="sm:mr-8">
+              <div class="sm:me-8">
                 <inertia-link :href="journal.url.show" class="mb-1 block font-semibold text-blue-500 hover:underline">{{
                   journal.name
                 }}</inertia-link>
 
                 <div v-if="journal.last_updated" class="mb-2 flex items-center text-sm sm:mb-0">
-                  <span class="mr-1">
+                  <span class="me-1">
                     <svg
                       class="h-4 w-4 text-gray-500"
                       xmlns="http://www.w3.org/2000/svg"

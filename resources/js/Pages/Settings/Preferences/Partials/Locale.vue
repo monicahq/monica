@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { loadLanguageAsync, getActiveLanguage, trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods.js';
@@ -7,6 +7,7 @@ import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 import Help from '@/Shared/Help.vue';
+import Dropdown from '@/Shared/Form/Dropdown.vue';
 
 const props = defineProps({
   data: Object,
@@ -28,6 +29,12 @@ onMounted(() => {
 const enableEditMode = () => {
   editMode.value = true;
 };
+
+const locales = computed(() => {
+  return _.map(props.data.languages, (value, key) => {
+    return { id: key, name: value };
+  });
+});
 
 const submit = () => {
   loadingState.value = 'loading';
@@ -56,8 +63,8 @@ const submit = () => {
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 flex font-semibold sm:mb-0">
-        <span class="mr-1"> 🗓 </span>
-        <span class="mr-2">
+        <span class="me-1"> 🗓 </span>
+        <span class="me-2">
           {{ $t('Language of the application') }}
         </span>
 
@@ -82,29 +89,14 @@ const submit = () => {
       <div class="border-b border-gray-200 px-5 py-2 dark:border-gray-700">
         <errors :errors="form.errors" />
 
-        <select
-          v-model="form.locale"
-          name="locale"
-          class="rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
-          <option v-for="(value, key) in props.data.languages" :key="key" :value="key">
-            {{ value }}
-          </option>
-        </select>
+        <Dropdown v-model="form.locale" name="locale" :data="locales" />
       </div>
 
       <!-- actions -->
       <div class="flex justify-between p-5">
-        <pretty-link :text="$t('Cancel')" :classes="'mr-3'" @click="editMode = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+        <pretty-link :text="$t('Cancel')" :class="'me-3'" @click="editMode = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
       </div>
     </form>
   </div>
 </template>
-
-<style lang="scss" scoped>
-select {
-  padding-left: 8px;
-  padding-right: 30px;
-  background-position: right 3px center;
-}
-</style>

@@ -5,15 +5,15 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.back" class="text-blue-500 hover:underline">
                 {{ $t('All the vaults') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3 dark:text-slate-200"
@@ -41,7 +41,7 @@
             <h1 class="mb-1 flex justify-center text-2xl font-medium">
               <span>{{ $t('Create a vault') }}</span>
 
-              <help :url="$page.props.help_links.vault_create" :top="'9px'" :classes="'ml-2'" />
+              <help :url="$page.props.help_links.vault_create" :top="'9px'" :class="'ms-2'" />
             </h1>
             <p class="text-center text-sm">
               {{ $t('Vaults contain all your contacts data.') }}
@@ -65,13 +65,13 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-link :href="data.url.back" :text="$t('Cancel')" :classes="'mr-3'" />
+            <pretty-link :href="data.url.back" :text="$t('Cancel')" :class="'me-3'" />
             <pretty-button
               :href="'data.url.vault.create'"
               :text="$t('Add')"
               :state="loadingState"
               :icon="'check'"
-              :classes="'save dark:save'" />
+              :class="'save'" />
           </div>
         </form>
       </div>

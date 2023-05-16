@@ -5,15 +5,15 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -23,12 +23,12 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">
                 {{ $t('Personalize your account') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -49,7 +49,7 @@
         <!-- title + cta -->
         <div class="mb-6 mt-8 items-center justify-between sm:mt-0 sm:flex">
           <h3 class="mb-4 sm:mb-0">
-            <span class="mr-1"> 🎁 </span>
+            <span class="me-1"> 🎁 </span>
             {{ $t('All the gift states') }}
           </h3>
           <pretty-button
@@ -81,8 +81,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createGiftStateModalShown = false" />
-            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createGiftStateModalShown = false" />
+            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
           </div>
         </form>
 
@@ -97,11 +97,11 @@
             <template #item="{ element }">
               <div v-if="editGiftStateId != element.id" class="list-icon">
                 <div
-                  class="item-list mb-2 flex items-center justify-between rounded-lg border border-gray-200 bg-white py-2 pl-4 pr-5 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
+                  class="item-list mb-2 flex items-center justify-between rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
                   <!-- icon to move position -->
-                  <div class="mr-2 flex">
+                  <div class="me-2 flex">
                     <svg
-                      class="handle mr-2 cursor-move"
+                      class="handle me-2 cursor-move"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
@@ -126,13 +126,13 @@
                     <li class="inline cursor-pointer" @click="renameGiftStateModal(element)">
                       <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                     </li>
-                    <li class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">
+                    <li class="ms-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">
                       {{ $t('Delete') }}
                     </li>
                   </ul>
                 </div>
 
-                <div class="state-list-icon mb-3 ml-3">👇</div>
+                <div class="state-list-icon mb-3 ms-3">👇</div>
               </div>
 
               <form
@@ -156,12 +156,8 @@
                 </div>
 
                 <div class="flex justify-between p-5">
-                  <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="editGiftStateId = 0" />
-                  <pretty-button
-                    :text="$t('Rename')"
-                    :state="loadingState"
-                    :icon="'check'"
-                    :classes="'save dark:save'" />
+                  <pretty-span :text="$t('Cancel')" :class="'me-3'" @click.prevent="editGiftStateId = 0" />
+                  <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
                 </div>
               </form>
             </template>

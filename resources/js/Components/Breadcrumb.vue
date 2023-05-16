@@ -7,11 +7,11 @@ defineProps({
 <template>
   <div class="flex items-baseline justify-between space-x-6">
     <ul class="text-sm">
-      <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+      <li class="me-2 inline text-gray-600 dark:text-gray-400">
         {{ $t('You are here:') }}
       </li>
       <template v-for="(item, index) in items" :key="index">
-        <li v-if="index > 0" class="relative ml-2 inline">
+        <li v-if="index > 0" class="relative ms-2 inline">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="icon-breadcrumb relative inline h-3 w-3"
@@ -22,7 +22,7 @@ defineProps({
           </svg>
         </li>
 
-        <li class="inline" :class="{ 'ml-2': index > 0 }">
+        <li class="inline" :class="{ 'ms-2': index > 0 }">
           <inertia-link v-if="item.url" :href="item.url" class="text-blue-500 hover:underline">
             {{ item.name }}
           </inertia-link>

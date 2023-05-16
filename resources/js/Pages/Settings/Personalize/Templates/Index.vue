@@ -5,15 +5,15 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -23,12 +23,12 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">
                 {{ $t('Personalize your account') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -51,7 +51,7 @@
         <!-- title + cta -->
         <div class="mb-6 mt-8 items-center justify-between sm:mt-0 sm:flex">
           <h3 class="mb-4 sm:mb-0">
-            <span class="mr-1"> 📐 </span>
+            <span class="me-1"> 📐 </span>
             {{ $t('All the templates') }}
           </h3>
           <pretty-button
@@ -65,7 +65,7 @@
         <div class="mb-6 flex rounded border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 grow pr-2"
+            class="h-6 grow pe-2"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor">
@@ -116,8 +116,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createTemplateModalShown = false" />
-            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createTemplateModalShown = false" />
+            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
           </div>
         </form>
 
@@ -137,7 +137,7 @@
 
               <!-- actions -->
               <ul class="text-sm">
-                <li class="mr-4 inline cursor-pointer" @click="showUpdateTemplateModal(template)">
+                <li class="me-4 inline cursor-pointer" @click="showUpdateTemplateModal(template)">
                   <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                 </li>
                 <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(template)">
@@ -168,8 +168,8 @@
               </div>
 
               <div class="flex justify-between p-5">
-                <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="renameTemplateModalShownId = 0" />
-                <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+                <pretty-span :text="$t('Cancel')" :class="'me-3'" @click.prevent="renameTemplateModalShownId = 0" />
+                <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
               </div>
             </form>
           </li>

@@ -24,7 +24,7 @@
       <ul class="mb-4">
         <li v-for="favorite in data" :key="favorite.id">
           <div class="mb-2 flex items-center text-sm">
-            <avatar :data="favorite.avatar" :classes="'mr-2 h-5 w-5 rounded-full'" />
+            <avatar :data="favorite.avatar" :class="'me-2 h-5 w-5 rounded-full'" />
 
             <inertia-link :href="favorite.url.show" class="text-blue-500 hover:underline">
               {{ favorite.name }}

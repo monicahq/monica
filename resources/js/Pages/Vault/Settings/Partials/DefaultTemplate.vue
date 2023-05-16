@@ -3,7 +3,7 @@
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0">
-        <span class="mr-1"> 📐 </span>
+        <span class="me-1"> 📐 </span>
         {{ $t('Default template to display contacts') }}
       </h3>
     </div>
@@ -13,7 +13,7 @@
       <div class="flex rounded-t border-b border-gray-200 bg-slate-50 px-3 py-2 dark:border-gray-700 dark:bg-slate-900">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-6 grow pr-2"
+          class="h-6 grow pe-2"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor">

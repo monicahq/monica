@@ -1,5 +1,6 @@
 <template>
-  <span :class="spanClasses" class="relative cursor-pointer text-sm">
+  <span
+    :class="'relative cursor-pointer border-zinc-900 bg-white text-sm dark:border-zinc-100 dark:bg-gray-800 dark:text-gray-100'">
     {{ text }}
   </span>
 </template>
@@ -10,16 +11,6 @@ export default {
     text: {
       type: String,
       default: '',
-    },
-    classes: {
-      type: String,
-      default: '',
-    },
-  },
-
-  computed: {
-    spanClasses() {
-      return ['bg-white dark:bg-gray-800 dark:text-gray-100 border-zinc-900 dark:border-zinc-100', this.classes];
     },
   },
 };
@@ -49,9 +40,7 @@ span {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  span {
-    --tw-shadow: 2px 2px 0 rgb(242, 242, 245) !important;
-  }
+.dark span {
+  --tw-shadow: 2px 2px 0 rgb(242, 242, 245) !important;
 }
 </style>

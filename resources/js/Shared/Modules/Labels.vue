@@ -54,7 +54,7 @@
           class="flex cursor-pointer items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
           @click="set(label)">
           <div>
-            <span class="mr-2 inline-block h-4 w-4 rounded-full" :class="label.bg_color" />
+            <span class="me-2 inline-block h-4 w-4 rounded-full" :class="label.bg_color" />
             <span>{{ label.name }}</span>
           </div>
 
@@ -91,7 +91,7 @@
       <span
         v-for="label in localLabels"
         :key="label.id"
-        class="mb-2 mr-2 inline-block rounded px-2 py-1 text-xs font-semibold last:mr-0"
+        class="mb-2 me-2 inline-block rounded px-2 py-1 text-xs font-semibold last:me-0"
         :class="label.bg_color + ' ' + label.text_color">
         <inertia-link :href="label.url.show">{{ label.name }}</inertia-link>
       </span>

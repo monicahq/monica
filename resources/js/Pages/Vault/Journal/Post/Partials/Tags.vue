@@ -47,7 +47,7 @@
           class="flex cursor-pointer items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
           @click="set(tag)">
           <div>
-            <span class="mr-2 inline-block h-4 w-4 rounded-full" :class="tag.bg_color" />
+            <span class="me-2 inline-block h-4 w-4 rounded-full" :class="tag.bg_color" />
             <span>{{ tag.name }}</span>
           </div>
 
@@ -84,7 +84,7 @@
       <span
         v-for="tag in localTags"
         :key="tag.id"
-        class="mr-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-500 last:mr-0">
+        class="me-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-500 last:me-0">
         <inertia-link :href="tag.url.show">{{ tag.name }}</inertia-link>
       </span>
     </div>

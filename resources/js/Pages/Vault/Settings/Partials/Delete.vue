@@ -3,7 +3,7 @@
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0">
-        <span class="mr-1"> 🗑 </span>
+        <span class="me-1"> 🗑 </span>
         {{ $t('Delete the vault') }}
       </h3>
     </div>
@@ -14,7 +14,7 @@
         class="mb-2 flex rounded-t border-b border-gray-200 bg-slate-50 px-3 py-2 dark:border-gray-700 dark:bg-slate-900">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-6 grow pr-2"
+          class="h-6 grow pe-2"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor">
@@ -39,7 +39,7 @@
       <p class="mb-1 px-5 py-2 text-center">
         <pretty-link
           :text="$t('Delete the vault')"
-          :classes="'mr-3 text-red-600 dark:text-red-400 border-red-600 dark:border-red-400'"
+          :class="'me-3 border-red-600 text-red-600 dark:border-red-400 dark:text-red-400'"
           @click="destroy" />
       </p>
     </div>

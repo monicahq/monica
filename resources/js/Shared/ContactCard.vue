@@ -1,3 +1,20 @@
+<script setup>
+import { Popover as APopover } from 'ant-design-vue';
+
+defineProps({
+  contact: Object,
+  avatarClasses: String,
+  top: {
+    type: String,
+    default: '0px',
+  },
+  displayName: {
+    type: Boolean,
+    default: true,
+  },
+});
+</script>
+
 <template>
   <div class="relative inline" :style="'top: ' + top">
     <a-popover placement="bottomLeft">
@@ -5,7 +22,7 @@
       <template #content>
         <div class="flex">
           <!-- avatar -->
-          <div class="mr-2">
+          <div class="me-2">
             <div v-if="contact.avatar.type === 'svg'" class="h-16 w-16 rounded-full" v-html="contact.avatar.content" />
             <img v-else class="h-16 w-16 rounded-full" :src="contact.avatar.content" alt="avatar" />
           </div>
@@ -21,7 +38,7 @@
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="mr-1 h-4 w-4 text-gray-400">
+                class="me-1 h-4 w-4 text-gray-400">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -40,7 +57,7 @@
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="mr-2 h-4 w-4 text-gray-400">
+                class="me-2 h-4 w-4 text-gray-400">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -80,34 +97,3 @@
     </a-popover>
   </div>
 </template>
-
-<script>
-import { Popover as APopover } from 'ant-design-vue';
-
-export default {
-  components: {
-    APopover,
-  },
-
-  props: {
-    top: {
-      type: String,
-      default: '0px',
-    },
-    contact: {
-      type: Object,
-      default: null,
-    },
-    avatarClasses: {
-      type: String,
-      default: '',
-    },
-    displayName: {
-      type: Boolean,
-      default: true,
-    },
-  },
-};
-</script>
-
-<style lang="scss" scoped></style>

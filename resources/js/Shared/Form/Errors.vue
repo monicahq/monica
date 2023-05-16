@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="dataerror || exception" class="border-red dark:border-red mb-3 rounded border p-3" v-bind="$attrs">
+    <div v-if="dataerror || exception" class="border-red mb-3 rounded border p-3" v-bind="$attrs">
       <p class="mb-2">{{ $t('Oops! Something went wrong.') }}</p>
       <template v-if="exception">
         <p class="mb0">
@@ -101,9 +101,9 @@ export default {
   color: #c53030;
 }
 
-.dark .dark\:border-red {
-  background-color: #333131;
-  border-color: #4b2626;
-  color: #c53030;
+.dark .border-red {
+  background-color: #333131 !important;
+  border-color: #4b2626 !important;
+  color: #c53030 !important;
 }
 </style>

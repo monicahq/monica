@@ -44,7 +44,7 @@ const linkClasses =
         :class="[
           commonClasses,
           linkClasses,
-          'ml-3',
+          'ms-3',
           'rounded-md',
           'text-gray-700',
           'dark:text-gray-300',
@@ -54,7 +54,7 @@ const linkClasses =
       </Link>
       <span
         v-else
-        :class="[commonClasses, 'ml-3', 'rounded-md', 'text-gray-500', 'cursor-default', 'dark:bg-gray-900']">
+        :class="[commonClasses, 'ms-3', 'rounded-md', 'text-gray-500', 'cursor-default', 'dark:bg-gray-900']">
         <span v-html="$t('Next')"></span>
       </span>
     </div>
@@ -86,7 +86,7 @@ const linkClasses =
           :class="[
             commonClasses,
             'px-2',
-            'rounded-l-md',
+            'rounded-s-md',
             'text-gray-500',
             'focus:z-10',
             'cursor-default',
@@ -107,7 +107,7 @@ const linkClasses =
             commonClasses,
             linkClasses,
             'px-2',
-            'rounded-l-md',
+            'rounded-s-md',
             'text-gray-500',
             'dark:bg-gray-900',
             'hover:text-gray-400',
@@ -124,7 +124,7 @@ const linkClasses =
             aria-disabled="true"
             :class="[
               commonClasses,
-              '-ml-px',
+              '-ms-px',
               'text-gray-700',
               'dark:text-gray-500',
               'dark:bg-gray-900',
@@ -135,7 +135,7 @@ const linkClasses =
           <span
             v-else-if="link.active"
             aria-current="page"
-            :class="[commonClasses, '-ml-px', 'text-gray-500', 'bg-gray-100', 'dark:bg-gray-800', 'cursor-default']"
+            :class="[commonClasses, '-ms-px', 'text-gray-500', 'bg-gray-100', 'dark:bg-gray-800', 'cursor-default']"
             v-html="link.label">
           </span>
           <Link
@@ -145,7 +145,7 @@ const linkClasses =
             :class="[
               commonClasses,
               linkClasses,
-              '-ml-px',
+              '-ms-px',
               'text-gray-700',
               'dark:text-gray-300',
               'dark:bg-gray-900',
@@ -164,9 +164,9 @@ const linkClasses =
           :class="[
             commonClasses,
             linkClasses,
-            '-ml-px',
+            '-ms-px',
             'px-2',
-            'rounded-r-md',
+            'rounded-e-md',
             'text-gray-500',
             'dark:bg-gray-900',
             'hover:text-gray-400',
@@ -181,9 +181,9 @@ const linkClasses =
           :class="[
             commonClasses,
             linkClasses,
-            '-ml-px',
+            '-ms-px',
             'px-2',
-            'rounded-r-md',
+            'rounded-e-md',
             'text-gray-500',
             'dark:bg-gray-900',
             'focus:z-10',

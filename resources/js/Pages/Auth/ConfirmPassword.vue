@@ -39,7 +39,7 @@ const submit = () => {
       </div>
 
       <div class="mt-4 flex justify-end">
-        <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+        <JetButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
           {{ $t('Confirm') }}
         </JetButton>
       </div>

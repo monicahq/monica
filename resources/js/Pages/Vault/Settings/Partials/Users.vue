@@ -3,7 +3,7 @@
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0">
-        <span class="mr-1"> 🐱 </span>
+        <span class="me-1"> 🐱 </span>
         {{ $t('Users') }}
       </h3>
       <pretty-span v-if="!addUserModalShown" :text="$t('Add a user')" :icon="'plus'" @click="showAddUserModal" />
@@ -36,7 +36,7 @@
             class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
           <label
             :for="'user' + user.id"
-            class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+            class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
             {{ user.name }}
           </label>
         </div>
@@ -59,9 +59,9 @@
               name="permission"
               type="radio"
               class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
-            <label for="viewer" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label for="viewer" class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
               {{ $t('Viewer') }}
-              <span class="ml-4 font-normal text-gray-500">
+              <span class="ms-4 font-normal text-gray-500">
                 {{ $t('Can view data, but can’t edit it.') }}
               </span>
             </label>
@@ -76,9 +76,9 @@
               name="permission"
               type="radio"
               class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
-            <label for="editor" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label for="editor" class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
               {{ $t('Editor') }}
-              <span class="ml-4 font-normal text-gray-500">
+              <span class="ms-4 font-normal text-gray-500">
                 {{ $t('Can edit data, but can’t manage the vault.') }}
               </span>
             </label>
@@ -93,9 +93,9 @@
               name="permission"
               type="radio"
               class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
-            <label for="manager" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label for="manager" class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
               {{ $t('Manager') }}
-              <span class="ml-4 font-normal text-gray-500">
+              <span class="ms-4 font-normal text-gray-500">
                 {{ $t('Can do everything, including adding or removing other users.') }}
               </span>
             </label>
@@ -105,7 +105,7 @@
 
       <div class="flex justify-between p-5">
         <pretty-span :text="$t('Cancel')" @click="addUserModalShown = false" />
-        <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+        <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :class="'save'" />
       </div>
     </form>
 
@@ -128,7 +128,7 @@
 
             <!-- actions -->
             <ul v-if="user.id != layoutData.user.id" class="text-sm">
-              <li class="mr-4 inline cursor-pointer" @click="showChangePermissionModal(user)">
+              <li class="me-4 inline cursor-pointer" @click="showChangePermissionModal(user)">
                 <span class="text-blue-500 hover:underline">{{ $t('Change permission') }}</span>
               </li>
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(user)">
@@ -156,7 +156,7 @@
                   type="radio"
                   class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                 {{ $t('Viewer') }}
-                <span class="ml-4 font-normal text-gray-500">
+                <span class="ms-4 font-normal text-gray-500">
                   {{ $t('Can view data, but can’t edit it.') }}
                 </span>
               </div>
@@ -172,9 +172,9 @@
                   class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                 <label
                   for="editor"
-                  class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                  class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                   {{ $t('Editor') }}
-                  <span class="ml-4 font-normal text-gray-500">
+                  <span class="ms-4 font-normal text-gray-500">
                     {{ $t('Can edit data, but can’t manage the vault.') }}
                   </span>
                 </label>
@@ -191,9 +191,9 @@
                   class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                 <label
                   for="manager"
-                  class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                  class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                   {{ $t('Manager') }}
-                  <span class="ml-4 font-normal text-gray-500">
+                  <span class="ms-4 font-normal text-gray-500">
                     {{ $t('Can do everything, including adding or removing other users.') }}
                   </span>
                 </label>
@@ -202,11 +202,7 @@
 
             <div class="flex justify-between p-5">
               <pretty-span :text="$t('Cancel')" @click="editedUser = []" />
-              <pretty-button
-                :text="$t('Change permission')"
-                :state="loadingState"
-                :icon="'check'"
-                :classes="'save dark:save'" />
+              <pretty-button :text="$t('Change permission')" :state="loadingState" :icon="'check'" :class="'save'" />
             </div>
           </form>
         </li>

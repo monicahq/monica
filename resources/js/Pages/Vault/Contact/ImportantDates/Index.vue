@@ -5,15 +5,15 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 {{ $t('Contacts') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -23,12 +23,12 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.contact" class="text-blue-500 hover:underline">
                 {{ $t('Profile of :name', { name: data.contact.name }) }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -49,7 +49,7 @@
         <!-- title + cta -->
         <div class="mb-6 mt-8 items-center justify-between sm:mt-0 sm:flex">
           <h3 class="mb-4 sm:mb-0">
-            <span class="mr-1"> 🗓 </span>
+            <span class="me-1"> 🗓 </span>
             {{ $t('All the important dates') }}
           </h3>
           <pretty-button
@@ -108,12 +108,17 @@
                   class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                 <label
                   for="full_date"
-                  class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                  class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                   {{ $t('I know the exact date, including the year') }}
                 </label>
               </div>
-              <div v-if="form.choice == 'full_date'" class="mb-4 ml-6">
-                <DatePicker v-model.string="form.date" class="inline-block h-full" :masks="masks" :isDark="isDark">
+              <div v-if="form.choice == 'full_date'" class="mb-4 ms-6">
+                <DatePicker
+                  v-model.string="form.date"
+                  class="inline-block h-full"
+                  :masks="masks"
+                  :isDark="isDark"
+                  :locale="$attrs.user.locale">
                   <template #default="{ inputValue, inputEvents }">
                     <input
                       class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
@@ -134,16 +139,16 @@
                   class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                 <label
                   for="month_day"
-                  class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                  class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                   {{ $t('I only know the day and month, not the year') }}
                 </label>
               </div>
-              <div v-if="form.choice == 'month_day'" class="ml-6 flex">
+              <div v-if="form.choice == 'month_day'" class="ms-6 flex">
                 <dropdown
                   v-model="form.month"
                   :data="data.months"
                   :required="true"
-                  :div-outer-class="'mb-5 mr-2'"
+                  :div-outer-class="'mb-5 me-2'"
                   :placeholder="$t('Choose a value')"
                   :dropdown-class="'block w-full'"
                   :label="$t('Month')" />
@@ -170,11 +175,11 @@
                   @selected="showyear" />
                 <label
                   for="year"
-                  class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                  class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                   {{ $t('I only know a number of years (an age, for example)') }}
                 </label>
               </div>
-              <div v-if="form.choice == 'year'" class="ml-6">
+              <div v-if="form.choice == 'year'" class="ms-6">
                 <text-input
                   :ref="'age'"
                   v-model="form.age"
@@ -198,13 +203,13 @@
                   type="checkbox"
                   class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
                   @click="showReminderOptions" />
-                <label for="reminder" class="ml-2 block cursor-pointer text-sm text-gray-900">
+                <label for="reminder" class="ms-2 block cursor-pointer text-sm text-gray-900">
                   {{ $t('Create a reminder') }}
                 </label>
               </div>
 
               <!-- reminder options -->
-              <div v-if="form.reminder" class="ml-4 mt-4">
+              <div v-if="form.reminder" class="ms-4 mt-4">
                 <div class="mb-2 flex items-center">
                   <input
                     id="recurring_year"
@@ -215,7 +220,7 @@
                     class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                   <label
                     for="recurring_year"
-                    class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                    class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ $t('Remind me about this date every year') }}
                   </label>
                 </div>
@@ -230,7 +235,7 @@
                     class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                   <label
                     for="one_time"
-                    class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                    class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ $t('Remind me about this date just once, in one year from now') }}
                   </label>
                 </div>
@@ -239,8 +244,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createDateModalShown = false" />
-            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createDateModalShown = false" />
+            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
           </div>
         </form>
 
@@ -259,14 +264,14 @@
 
                 <span
                   v-if="date.type"
-                  class="ml-2 inline-block rounded bg-neutral-200 px-1 py-0 text-xs text-neutral-500 last:mr-0">
+                  class="ms-2 inline-block rounded bg-neutral-200 px-1 py-0 text-xs text-neutral-500 last:me-0">
                   {{ date.type.label }}
                 </span>
               </span>
 
               <!-- actions -->
               <ul class="text-sm">
-                <li class="mr-4 inline cursor-pointer" @click="updateDateModal(date)">
+                <li class="me-4 inline cursor-pointer" @click="updateDateModal(date)">
                   <span class="text-blue-500 hover:underline">{{ $t('Edit') }}</span>
                 </li>
                 <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(date)">
@@ -321,16 +326,17 @@
                       class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                     <label
                       for="full_date"
-                      class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                      class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                       {{ $t('I know the exact date, including the year') }}
                     </label>
                   </div>
-                  <div v-if="form.choice == 'full_date'" class="mb-4 ml-6">
+                  <div v-if="form.choice == 'full_date'" class="mb-4 ms-6">
                     <DatePicker
                       v-model.string="form.date"
                       class="inline-block h-full"
                       :masks="masks"
                       :isDark="isDark"
+                      :locale="$attrs.user.locale"
                       :update-on-input="false">
                       <template #default="{ inputValue, inputEvents }">
                         <input
@@ -352,16 +358,16 @@
                       class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                     <label
                       for="month_day"
-                      class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                      class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                       {{ $t('I only know the day and month, not the year') }}
                     </label>
                   </div>
-                  <div v-if="form.choice == 'month_day'" class="ml-6 flex">
+                  <div v-if="form.choice == 'month_day'" class="ms-6 flex">
                     <dropdown
                       v-model="form.month"
                       :data="data.months"
                       :required="true"
-                      :div-outer-class="'mb-5 mr-2'"
+                      :div-outer-class="'mb-5 me-2'"
                       :placeholder="$t('Choose a value')"
                       :dropdown-class="'block w-full'"
                       :label="$t('Month')" />
@@ -388,11 +394,11 @@
                       @selected="showAge" />
                     <label
                       for="year"
-                      class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                      class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                       {{ $t('I only know a number of years (an age, for example)') }}
                     </label>
                   </div>
-                  <div v-if="form.choice == 'year'" class="ml-6">
+                  <div v-if="form.choice == 'year'" class="ms-6">
                     <text-input
                       :ref="'age'"
                       v-model="form.age"
@@ -408,8 +414,8 @@
               </div>
 
               <div class="flex justify-between p-5">
-                <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedDateId = 0" />
-                <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+                <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="editedDateId = 0" />
+                <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
               </div>
             </form>
           </li>

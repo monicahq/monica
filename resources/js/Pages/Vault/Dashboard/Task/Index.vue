@@ -27,7 +27,7 @@
         <div v-for="task in data" :key="task.id" class="mb-6">
           <!-- person name -->
           <div class="mb-2 flex items-center">
-            <avatar :data="task.contact.avatar" :classes="'mr-2 h-5 w-5 rounded-full'" />
+            <avatar :data="task.contact.avatar" :class="'me-2 h-5 w-5 rounded-full'" />
 
             <inertia-link :href="task.contact.url.show" class="text-blue-500 hover:underline">
               {{ task.contact.name }}
@@ -51,7 +51,7 @@
 
                 <label
                   :for="currentTask.id"
-                  class="ml-2 flex cursor-pointer items-center text-gray-900 dark:text-gray-100">
+                  class="ms-2 flex cursor-pointer items-center text-gray-900 dark:text-gray-100">
                   {{ currentTask.label }}
 
                   <!-- due date -->
@@ -62,10 +62,10 @@
                         ? 'bg-red-400/10 text-red-600 dark:bg-red-600/10 dark:text-red-400'
                         : 'bg-sky-400/10 text-sky-600 dark:bg-sky-600/10 dark:text-sky-400'
                     "
-                    class="ml-2 flex items-center rounded-full px-2 py-0.5 text-xs font-medium leading-5">
+                    class="ms-2 flex items-center rounded-full px-2 py-0.5 text-xs font-medium leading-5">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="mr-1 h-3 w-3"
+                      class="me-1 h-3 w-3"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"

@@ -118,7 +118,7 @@ const destroy = (lifeMetric) => {
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
-        <span class="relative mr-1">
+        <span class="relative me-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -139,7 +139,7 @@ const destroy = (lifeMetric) => {
         v-if="!createLifeMetricModalShown"
         :text="$t('Track a new metric')"
         :icon="'plus'"
-        :classes="'sm:w-fit w-full'"
+        :class="'w-full sm:w-fit'"
         @click="showCreateLifeMetricModal" />
     </div>
 
@@ -166,8 +166,8 @@ const destroy = (lifeMetric) => {
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createLifeMetricModalShown = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createLifeMetricModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
       </div>
     </form>
 
@@ -181,7 +181,7 @@ const destroy = (lifeMetric) => {
           :key="lifeMetric.id"
           class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
           <div v-if="editedLifeMetricId !== lifeMetric.id" class="flex items-center justify-between p-3">
-            <div class="mr-8 flex w-full items-center justify-between">
+            <div class="me-8 flex w-full items-center justify-between">
               <div>
                 <p class="mb-1 text-lg font-semibold">{{ lifeMetric.label }}</p>
                 <ul @click="toggleGraph(lifeMetric)">
@@ -215,7 +215,7 @@ const destroy = (lifeMetric) => {
               <pretty-button
                 v-if="!lifeMetric.incremented"
                 :text="'+ 1'"
-                :classes="'sm:w-fit w-full py-4 px-8'"
+                :class="'w-full px-8 py-4 sm:w-fit'"
                 @click="increment(lifeMetric)" />
               <span v-else class="w-full px-3 py-4 text-xl sm:w-fit">🤭</span>
             </div>
@@ -267,8 +267,8 @@ const destroy = (lifeMetric) => {
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedLifeMetricId = 0" />
-              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+              <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="editedLifeMetricId = 0" />
+              <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
             </div>
           </form>
         </li>

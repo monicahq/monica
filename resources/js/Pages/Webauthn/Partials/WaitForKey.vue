@@ -28,7 +28,7 @@ defineEmits(['retry']);
         v-if="form.processing"
         class="mb-4 flex rounded-b border-t-4 border-teal-500 bg-teal-100 px-4 py-8 shadow-md dark:bg-teal-900 dark:shadow-gray-700"
         role="alert">
-        <div class="mr-2 text-teal-800 dark:text-teal-200">
+        <div class="me-2 text-teal-800 dark:text-teal-200">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -54,7 +54,7 @@ defineEmits(['retry']);
       <div
         v-else-if="!form.hasErrors"
         class="mb-4 flex rounded-b border-t-4 border-indigo-500 bg-indigo-100 px-4 py-8 shadow-md dark:bg-indigo-900 dark:shadow-gray-700">
-        <div class="mr-2 text-indigo-800 dark:text-indigo-200">
+        <div class="me-2 text-indigo-800 dark:text-indigo-200">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

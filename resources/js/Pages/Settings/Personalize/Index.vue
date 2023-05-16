@@ -5,15 +5,15 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -39,91 +39,91 @@
         <div class="rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
           <ul>
             <li class="mb-2 flex">
-              <span class="mr-2">📐</span>
+              <span class="me-2">📐</span>
               <inertia-link :href="data.url.manage_templates" class="text-blue-500 hover:underline">
                 {{ $t('Manage templates') }}
               </inertia-link>
             </li>
             <!-- <li class="mb-2 flex">
-              <span class="mr-2">🥪</span>
+              <span class="me-2">🥪</span>
               <inertia-link :href="data.url.manage_modules" class="text-blue-500 hover:underline">
                 {{ $t('Manage modules') }}
               </inertia-link>
             </li> -->
             <li class="mb-2 flex">
-              <span class="mr-2">👥</span>
+              <span class="me-2">👥</span>
               <inertia-link :href="data.url.manage_relationships" class="text-blue-500 hover:underline">
                 {{ $t('Manage relationship types') }}
               </inertia-link>
             </li>
             <li class="mb-2 flex">
-              <span class="mr-2">👥</span>
+              <span class="me-2">👥</span>
               <inertia-link :href="data.url.manage_group_types" class="text-blue-500 hover:underline">
                 {{ $t('Manage group types') }}
               </inertia-link>
             </li>
             <li class="mb-2 flex">
-              <span class="mr-2">👩‍🔬</span>
+              <span class="me-2">👩‍🔬</span>
               <inertia-link :href="data.url.manage_pronouns" class="text-blue-500 hover:underline">
                 {{ $t('Manage pronouns') }}
               </inertia-link>
             </li>
             <li class="mb-2 flex">
-              <span class="mr-2">🚻</span>
+              <span class="me-2">🚻</span>
               <inertia-link :href="data.url.manage_genders" class="text-blue-500 hover:underline">
                 {{ $t('Manage genders') }}
               </inertia-link>
             </li>
             <li class="mb-2 flex">
-              <span class="mr-2">🏖</span>
+              <span class="me-2">🏖</span>
               <inertia-link :href="data.url.manage_address_types" class="text-blue-500 hover:underline">
                 {{ $t('Manage address types') }}
               </inertia-link>
             </li>
             <li class="mb-2 flex">
-              <span class="mr-2">☎️</span>
+              <span class="me-2">☎️</span>
               <inertia-link :href="data.url.manage_contact_information_types" class="text-blue-500 hover:underline">
                 {{ $t('Manage contact information types') }}
               </inertia-link>
             </li>
             <li class="mb-2 flex">
-              <span class="mr-2">📲</span>
+              <span class="me-2">📲</span>
               <inertia-link :href="data.url.manage_call_reasons" class="text-blue-500 hover:underline">
                 {{ $t('Manage call reasons') }}
               </inertia-link>
             </li>
             <li class="mb-2 flex">
-              <span class="mr-2">🐱</span>
+              <span class="me-2">🐱</span>
               <inertia-link :href="data.url.manage_pet_categories" class="text-blue-500 hover:underline">
                 {{ $t('Manage pet categories') }}
               </inertia-link>
             </li>
             <li class="mb-2 flex">
-              <span class="mr-2">🎁</span>
+              <span class="me-2">🎁</span>
               <inertia-link :href="data.url.manage_gift_occasions" class="text-blue-500 hover:underline">
                 {{ $t('Manage gift occasions') }}
               </inertia-link>
             </li>
             <li class="mb-2 flex">
-              <span class="mr-2">🎁</span>
+              <span class="me-2">🎁</span>
               <inertia-link :href="data.url.manage_gift_states" class="text-blue-500 hover:underline">
                 {{ $t('Manage gift states') }}
               </inertia-link>
             </li>
             <li class="mb-2 flex">
-              <span class="mr-2">📮</span>
+              <span class="me-2">📮</span>
               <inertia-link :href="data.url.manage_post_templates" class="text-blue-500 hover:underline">
                 {{ $t('Manage post templates') }}
               </inertia-link>
             </li>
             <li class="mb-2 flex">
-              <span class="mr-2">💵</span>
+              <span class="me-2">💵</span>
               <inertia-link :href="data.url.manage_currencies" class="text-blue-500 hover:underline">
                 {{ $t('Manage currencies') }}
               </inertia-link>
             </li>
             <li class="flex">
-              <span class="mr-2">⛪</span>
+              <span class="me-2">⛪</span>
               <inertia-link :href="data.url.manage_religions" class="text-blue-500 hover:underline">
                 {{ $t('Manage religions') }}
               </inertia-link>

@@ -49,7 +49,7 @@
         <div
           class="flex border-t border-gray-200 px-3 py-2 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400 hover:dark:bg-slate-800">
           <!-- date -->
-          <div class="relative mr-3 inline">
+          <div class="relative me-3 inline">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="icon-note relative inline h-4 w-4 text-gray-400"
@@ -66,10 +66,10 @@
           </div>
 
           <!-- contact -->
-          <div class="relative mr-3 inline">
+          <div class="relative me-3 inline">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="icon-note relative mr-1 inline h-4 w-4 text-gray-400"
+              class="icon-note relative me-1 inline h-4 w-4 text-gray-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor">

@@ -43,15 +43,15 @@ const destroy = () => {
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="layoutData.vault.url.groups" class="text-blue-500 hover:underline">
                 {{ $t('Groups') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -77,14 +77,14 @@ const destroy = () => {
         <!-- group information -->
         <div class="mb-8 flex justify-center">
           <!-- number of contacts -->
-          <div class="mr-8 flex items-center">
+          <div class="me-8 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="mr-1 h-4 w-4">
+              class="me-1 h-4 w-4">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -97,14 +97,14 @@ const destroy = () => {
           </div>
 
           <!-- type -->
-          <div class="mr-8 flex items-center">
+          <div class="me-8 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="mr-1 h-4 w-4">
+              class="me-1 h-4 w-4">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -117,7 +117,7 @@ const destroy = () => {
           <!-- actions -->
           <div class="flex items-center">
             <ul class="list">
-              <li class="mr-4 inline">
+              <li class="me-4 inline">
                 <inertia-link :href="props.data.url.edit" class="text-blue-500 hover:underline">{{
                   $t('Edit')
                 }}</inertia-link>
@@ -133,7 +133,7 @@ const destroy = () => {
         <div v-for="role in data.roles" :key="role.id" class="mb-8">
           <p
             v-if="role.contacts.length > 0"
-            class="mb-2 mr-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800 last:mr-0">
+            class="mb-2 me-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800 last:me-0">
             {{ role.label }}
           </p>
 
@@ -142,11 +142,11 @@ const destroy = () => {
               v-for="contact in role.contacts"
               :key="contact.id"
               class="rounded-lg border border-gray-200 bg-white p-3 text-center hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
-              <avatar :data="contact.avatar" :classes="'inline-block rounded-full h-14 w-14'" />
+              <avatar :data="contact.avatar" :class="'inline-block h-14 w-14 rounded-full'" />
 
               <inertia-link :href="contact.url" class="text-blue-500 hover:underline">{{ contact.name }}</inertia-link>
 
-              <span v-if="contact.age" class="ml-1 text-xs text-gray-500">({{ contact.age }})</span>
+              <span v-if="contact.age" class="ms-1 text-xs text-gray-500">({{ contact.age }})</span>
             </div>
           </div>
         </div>
@@ -167,7 +167,7 @@ const destroy = () => {
             </JetSecondaryButton>
 
             <JetDangerButton
-              class="ml-3"
+              class="ms-3"
               :class="{ 'opacity-25': deleteGroupForm.processing }"
               :disabled="deleteGroupForm.processing"
               @click="destroy">

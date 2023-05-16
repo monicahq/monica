@@ -19,7 +19,7 @@
     </div>
 
     <h1 class="flex items-center justify-between text-xl font-bold">
-      <span class="mr-2">
+      <span class="me-2">
         {{ data.name }}
       </span>
 

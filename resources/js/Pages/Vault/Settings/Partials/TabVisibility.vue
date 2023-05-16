@@ -36,7 +36,7 @@ const update = () => {
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0">
-        <span class="mr-1"> 🎟️ </span>
+        <span class="me-1"> 🎟️ </span>
 
         {{ $t('Tabs visibility') }}
       </h3>
@@ -45,7 +45,7 @@ const update = () => {
     <div class="mb-6 rounded border text-sm">
       <!-- help text -->
       <div class="flex rounded-t border-b border-gray-200 bg-slate-50 px-3 py-2 dark:border-gray-700 dark:bg-slate-900">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 pr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 pe-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -65,11 +65,11 @@ const update = () => {
               id="toggle-files"
               v-model="form.show_calendar_tab"
               type="checkbox"
-              class="peer sr-only"
+              class="peer hidden"
               @change="update" />
             <div
-              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
-            <span class="ml-3 dark:text-gray-300"> {{ $t('Show Calendar tab') }} </span>
+              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:right-[22px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
+            <span class="ms-3 dark:text-gray-300"> {{ $t('Show Calendar tab') }} </span>
           </label>
         </li>
         <li
@@ -79,11 +79,11 @@ const update = () => {
               id="toggle-journal"
               v-model="form.show_journal_tab"
               type="checkbox"
-              class="peer sr-only"
+              class="peer hidden"
               @change="update" />
             <div
-              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
-            <span class="ml-3 dark:text-gray-300"> {{ $t('Show Journals tab') }} </span>
+              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:right-[22px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
+            <span class="ms-3 dark:text-gray-300"> {{ $t('Show Journals tab') }} </span>
           </label>
         </li>
         <li
@@ -93,11 +93,11 @@ const update = () => {
               id="toggle-group"
               v-model="form.show_group_tab"
               type="checkbox"
-              class="peer sr-only"
+              class="peer hidden"
               @change="update" />
             <div
-              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
-            <span class="ml-3 dark:text-gray-300"> {{ $t('Show Groups tab') }} </span>
+              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:right-[22px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
+            <span class="ms-3 dark:text-gray-300"> {{ $t('Show Groups tab') }} </span>
           </label>
         </li>
         <li
@@ -107,11 +107,11 @@ const update = () => {
               id="toggle-companies"
               v-model="form.show_companies_tab"
               type="checkbox"
-              class="peer sr-only"
+              class="peer hidden"
               @change="update" />
             <div
-              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
-            <span class="ml-3 dark:text-gray-300"> {{ $t('Show Companies tab') }} </span>
+              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:right-[22px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
+            <span class="ms-3 dark:text-gray-300"> {{ $t('Show Companies tab') }} </span>
           </label>
         </li>
         <li
@@ -121,11 +121,11 @@ const update = () => {
               id="toggle-tasks"
               v-model="form.show_tasks_tab"
               type="checkbox"
-              class="peer sr-only"
+              class="peer hidden"
               @change="update" />
             <div
-              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
-            <span class="ml-3 dark:text-gray-300"> {{ $t('Show Tasks tab') }} </span>
+              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:right-[22px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
+            <span class="ms-3 dark:text-gray-300"> {{ $t('Show Tasks tab') }} </span>
           </label>
         </li>
         <li
@@ -135,11 +135,11 @@ const update = () => {
               id="toggle-reports"
               v-model="form.show_reports_tab"
               type="checkbox"
-              class="peer sr-only"
+              class="peer hidden"
               @change="update" />
             <div
-              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
-            <span class="ml-3 dark:text-gray-300"> {{ $t('Show Reports tab') }} </span>
+              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:right-[22px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
+            <span class="ms-3 dark:text-gray-300"> {{ $t('Show Reports tab') }} </span>
           </label>
         </li>
         <li
@@ -149,11 +149,11 @@ const update = () => {
               id="toggle-files"
               v-model="form.show_files_tab"
               type="checkbox"
-              class="peer sr-only"
+              class="peer hidden"
               @change="update" />
             <div
-              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
-            <span class="ml-3 dark:text-gray-300"> {{ $t('Show Files tab') }} </span>
+              class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:right-[22px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
+            <span class="ms-3 dark:text-gray-300"> {{ $t('Show Files tab') }} </span>
           </label>
         </li>
       </ul>

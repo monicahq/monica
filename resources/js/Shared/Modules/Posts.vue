@@ -9,7 +9,7 @@ const props = defineProps({
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
-        <span class="relative mr-1">
+        <span class="relative me-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -41,7 +41,7 @@ const props = defineProps({
           }}</inertia-link>
           <div class="flex items-center text-sm">
             <!-- journal -->
-            <p class="mr-2">
+            <p class="me-2">
               {{ $t('in') }}
               <inertia-link :href="post.journal.url.show" class="text-blue-500 hover:underline">{{
                 post.journal.name
@@ -49,7 +49,7 @@ const props = defineProps({
             </p>
 
             <!-- date -->
-            <div class="relative mr-3 inline">
+            <div class="relative me-3 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-note relative inline h-3 w-3 text-gray-400"

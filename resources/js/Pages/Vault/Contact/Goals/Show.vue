@@ -5,15 +5,15 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 {{ $t('Contacts') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -23,12 +23,12 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.contact" class="text-blue-500 hover:underline">
                 {{ $t('Profile of :name', { name: data.contact.name }) }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -83,27 +83,27 @@
               </div>
 
               <div class="flex justify-between p-5">
-                <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editMode = false" />
-                <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+                <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="editMode = false" />
+                <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :class="'save'" />
               </div>
             </form>
 
             <!-- stats -->
             <div class="mb-6 flex justify-between rounded border border-gray-200 p-3 dark:border-gray-700">
-              <div class="mr-6 flex items-center">
-                <div class="mr-3 w-14 text-right text-sm text-gray-500">{{ $t('Total streaks') }}</div>
+              <div class="me-6 flex items-center">
+                <div class="me-3 w-14 text-right text-sm text-gray-500">{{ $t('Total streaks') }}</div>
                 <div class="text-4xl">
                   {{ localGoal.count }}
                 </div>
               </div>
-              <div class="mr-6 flex items-center">
-                <div class="mr-3 w-14 text-right text-sm text-gray-500">{{ $t('Current streak') }}</div>
+              <div class="me-6 flex items-center">
+                <div class="me-3 w-14 text-right text-sm text-gray-500">{{ $t('Current streak') }}</div>
                 <div class="text-4xl">
                   {{ localGoal.streaks_statistics.current_streak }}
                 </div>
               </div>
               <div class="flex items-center">
-                <div class="mr-3 w-14 text-right text-sm text-gray-500">{{ $t('Longest streak') }}</div>
+                <div class="me-3 w-14 text-right text-sm text-gray-500">{{ $t('Longest streak') }}</div>
                 <div class="text-4xl">
                   {{ localGoal.streaks_statistics.max_streak }}
                 </div>

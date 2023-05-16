@@ -104,7 +104,7 @@ const clearPhotoFileInput = () => {
             :style="'background-image: url(\'' + photoPreview + '\');'" />
         </div>
 
-        <JetSecondaryButton class="mr-2 mt-2" type="button" @click.prevent="selectNewPhoto">
+        <JetSecondaryButton class="me-2 mt-2" type="button" @click.prevent="selectNewPhoto">
           {{ $t('Select A New Photo') }}
         </JetSecondaryButton>
 
@@ -148,7 +148,7 @@ const clearPhotoFileInput = () => {
     </template>
 
     <template #actions>
-      <JetActionMessage :on="form.recentlySuccessful" class="mr-3">
+      <JetActionMessage :on="form.recentlySuccessful" class="me-3">
         {{ $t('Saved.') }}
       </JetActionMessage>
 

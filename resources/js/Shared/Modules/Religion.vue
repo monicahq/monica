@@ -94,13 +94,13 @@ const showEditModal = () => {
         </div>
 
         <div class="flex justify-between p-2">
-          <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editReligion = false" />
+          <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="editReligion = false" />
           <pretty-button
             :href="'data.url.vault.create'"
             :text="$t('Save')"
             :state="loadingState"
             :icon="'check'"
-            :classes="'save dark:save'" />
+            :class="'save'" />
         </div>
       </form>
     </div>

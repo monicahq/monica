@@ -85,7 +85,7 @@ const updatePassword = () => {
     </template>
 
     <template #actions>
-      <JetActionMessage :on="form.recentlySuccessful" class="mr-3">
+      <JetActionMessage :on="form.recentlySuccessful" class="me-3">
         {{ $t('Saved.') }}
       </JetActionMessage>
 

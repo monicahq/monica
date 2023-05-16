@@ -41,14 +41,14 @@ const get = (day) => {
                 <div class="inline-flex rounded-md shadow-sm">
                   <inertia-link
                     :href="data.url.previous"
-                    class="inline-flex items-center rounded-l-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                    class="inline-flex items-center rounded-s-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke-width="1.5"
                       stroke="currentColor"
-                      class="mr-2 h-4 w-4">
+                      class="me-2 h-4 w-4">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
 
@@ -57,7 +57,7 @@ const get = (day) => {
 
                   <inertia-link
                     :href="data.url.next"
-                    class="inline-flex items-center rounded-r-md border-b border-r border-t border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                    class="inline-flex items-center rounded-e-md border-y border-e border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
                     {{ data.next_month }}
 
                     <svg
@@ -66,7 +66,7 @@ const get = (day) => {
                       viewBox="0 0 24 24"
                       stroke-width="1.5"
                       stroke="currentColor"
-                      class="ml-2 h-4 w-4">
+                      class="ms-2 h-4 w-4">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                     </svg>
                   </inertia-link>
@@ -75,13 +75,25 @@ const get = (day) => {
             </div>
 
             <!-- days -->
-            <div class="grid grid-cols-7 rounded-t-lg border-l border-r border-t last:border-b dark:border-gray-700">
-              <div class="border-r p-2 text-center text-xs dark:border-gray-700">{{ $t('Monday') }}</div>
-              <div class="border-r p-2 text-center text-xs dark:border-gray-700">{{ $t('Tuesday') }}</div>
-              <div class="border-r p-2 text-center text-xs dark:border-gray-700">{{ $t('Wednesday') }}</div>
-              <div class="border-r p-2 text-center text-xs dark:border-gray-700">{{ $t('Thursday') }}</div>
-              <div class="border-r p-2 text-center text-xs dark:border-gray-700">{{ $t('Friday') }}</div>
-              <div class="border-r p-2 text-center text-xs dark:border-gray-700">{{ $t('Saturday') }}</div>
+            <div class="grid grid-cols-7 rounded-t-lg border-x border-t last:border-b dark:border-gray-700">
+              <div class="border-e p-2 text-center text-xs dark:border-gray-700">
+                {{ $t('Monday') }}
+              </div>
+              <div class="border-e p-2 text-center text-xs dark:border-gray-700">
+                {{ $t('Tuesday') }}
+              </div>
+              <div class="border-e p-2 text-center text-xs dark:border-gray-700">
+                {{ $t('Wednesday') }}
+              </div>
+              <div class="border-e p-2 text-center text-xs dark:border-gray-700">
+                {{ $t('Thursday') }}
+              </div>
+              <div class="border-e p-2 text-center text-xs dark:border-gray-700">
+                {{ $t('Friday') }}
+              </div>
+              <div class="border-e p-2 text-center text-xs dark:border-gray-700">
+                {{ $t('Saturday') }}
+              </div>
               <div class="p-2 text-center text-xs">{{ $t('Sunday') }}</div>
             </div>
 
@@ -89,12 +101,12 @@ const get = (day) => {
             <div
               v-for="week in data.weeks"
               :key="week.id"
-              class="grid grid-cols-7 border-l border-r border-t last:rounded-b-lg last:border-b dark:border-gray-700">
+              class="grid grid-cols-7 border-x border-t last:rounded-b-lg last:border-b dark:border-gray-700">
               <div
                 v-for="day in week"
                 :key="day.id"
                 @click="get(day)"
-                class="h-32 border-r p-2 last:border-r-0 dark:border-gray-700"
+                class="h-32 border-e p-2 last:border-e-0 dark:border-gray-700"
                 :class="day.is_in_month ? 'cursor-pointer' : 'bg-slate-50 dark:bg-slate-900'">
                 <!-- date of the day -->
                 <div class="flex items-center justify-between">
@@ -109,7 +121,7 @@ const get = (day) => {
                     <div v-for="mood in day.mood_events" :key="mood.id">
                       <a-tooltip placement="topLeft" :title="mood.mood_tracking_parameter.label" arrow-point-at-center>
                         <div
-                          class="mr-2 inline-block h-4 w-4 rounded-full"
+                          class="me-2 inline-block h-4 w-4 rounded-full"
                           :class="mood.mood_tracking_parameter.hex_color" />
                       </a-tooltip>
                     </div>
@@ -124,7 +136,7 @@ const get = (day) => {
                   <div v-for="date in day.important_dates" :key="date.id">
                     <contact-card
                       :contact="date.contact"
-                      :avatarClasses="'h-5 w-5 rounded-full mr-2'"
+                      :avatarClasses="'h-5 w-5 rounded-full me-2'"
                       :displayName="false" />
                   </div>
                 </div>
@@ -155,7 +167,7 @@ const get = (day) => {
                   <!-- mood tracking parameter -->
                   <div class="flex items-center">
                     <div
-                      class="mr-2 inline-block h-4 w-4 rounded-full"
+                      class="me-2 inline-block h-4 w-4 rounded-full"
                       :class="mood.mood_tracking_parameter.hex_color" />
                     <span>{{ mood.mood_tracking_parameter.label }}</span>
                   </div>
@@ -172,7 +184,7 @@ const get = (day) => {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="mr-1 h-4 w-4 text-gray-400">
+                        class="me-1 h-4 w-4 text-gray-400">
                         <path
                           stroke-linecap="round"
                           stroke-linejoin="round"
@@ -210,7 +222,7 @@ const get = (day) => {
                   <span
                     ><contact-card
                       :contact="importantDate.contact"
-                      :avatarClasses="'h-5 w-5 rounded-full mr-2'"
+                      :avatarClasses="'h-5 w-5 rounded-full me-2'"
                       :displayName="false"
                   /></span>
                 </li>

@@ -3,7 +3,7 @@
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
-        <span class="relative mr-1">
+        <span class="relative me-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="icon-sidebar relative inline h-4 w-4"
@@ -30,7 +30,7 @@
         :preview-step="false"
         @success="onSuccess"
         @error="onError">
-        <pretty-button :text="$t('Add a document')" :icon="'plus'" :classes="'sm:w-fit w-full'" />
+        <pretty-button :text="$t('Add a document')" :icon="'plus'" :class="'w-full sm:w-fit'" />
       </uploadcare>
     </div>
 
@@ -39,7 +39,8 @@
       v-if="!data.canUploadFile"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="bg-gray-100 p-3 text-center">
-        <span class="mr-1">⚠️</span> {{ $t('You don’t have enough space left in your account. Please upgrade.') }}
+        <span class="me-1">⚠️</span>
+        {{ $t('You don’t have enough space left in your account. Please upgrade.') }}
       </p>
     </div>
 
@@ -55,14 +56,14 @@
             <span class="flex items-center">
               <span class="max-w-sm truncate">{{ document.name }}</span>
 
-              <span class="ml-2 rounded border bg-blue-50 px-1 py-0 font-mono text-xs text-blue-500">
+              <span class="ms-2 rounded border bg-blue-50 px-1 py-0 font-mono text-xs text-blue-500">
                 {{ document.size }}
               </span>
             </span>
 
             <!-- actions -->
             <ul class="text-sm">
-              <li class="mr-4 inline">
+              <li class="me-4 inline">
                 <a :href="document.url.download" class="text-blue-500 hover:underline">{{ $t('Download') }}</a>
               </li>
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(document)">
@@ -193,11 +194,5 @@ export default {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }
-}
-
-select {
-  padding-left: 8px;
-  padding-right: 20px;
-  background-position: right 3px center;
 }
 </style>

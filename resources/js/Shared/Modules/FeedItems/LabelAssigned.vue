@@ -6,7 +6,7 @@
       class="flex items-center border-b border-gray-300 px-3 py-2 text-sm dark:border-gray-700">
       <avatar
         :data="data.contact.avatar"
-        :classes="'rounded-full border-gray-200 dark:border-gray-800 border relative h-5 w-5 mr-2'" />
+        :class="'relative me-2 h-5 w-5 rounded-full border border-gray-200 dark:border-gray-800'" />
 
       <div class="flex flex-col">
         <inertia-link :href="data.contact.url" class="text-gray-800 hover:underline dark:text-gray-200">{{
@@ -19,7 +19,7 @@
       <!-- the label still exists in the system -->
       <span
         v-if="data.label.object"
-        class="mb-2 mr-2 inline-block rounded px-2 py-1 text-xs font-semibold last:mr-0"
+        class="mb-2 me-2 inline-block rounded px-2 py-1 text-xs font-semibold last:me-0"
         :class="data.label.object.bg_color + ' ' + data.label.object.text_color">
         <inertia-link :href="data.label.object.url">{{ data.label.object.name }}</inertia-link>
       </span>
@@ -27,7 +27,7 @@
       <!-- the label was deleted -->
       <span
         v-else
-        class="mb-2 mr-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800 last:mr-0">
+        class="mb-2 me-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800 last:me-0">
         <span>{{ data.label.description }}</span>
       </span>
     </div>
@@ -54,10 +54,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.icon-avatar {
-  top: 3px;
-  left: -11px;
-}
-</style>

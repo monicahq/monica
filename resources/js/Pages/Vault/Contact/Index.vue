@@ -41,7 +41,7 @@ const update = () => {
             <!-- labels -->
             <div class="mb-8">
               <div class="mb-3 border-b border-gray-200 dark:border-gray-700">
-                <span class="mr-1"> 🏷️ </span>
+                <span class="me-1"> 🏷️ </span>
                 {{ $t('Labels') }}
               </div>
               <ul v-if="data.labels.length > 0">
@@ -79,7 +79,7 @@ const update = () => {
             <!-- title + cta -->
             <div class="mb-3 flex items-center justify-between">
               <h3>
-                <span class="mr-1"> 🥸 </span>
+                <span class="me-1"> 🥸 </span>
                 {{ $t('All contacts in the vault') }}
               </h3>
 
@@ -88,14 +88,14 @@ const update = () => {
                   v-model="form.sort_order"
                   :data="props.data.contact_sort_orders"
                   :required="false"
-                  :dropdown-class="'block w-full mr-2'"
+                  :dropdown-class="'block w-full me-2'"
                   @change="update()" />
 
                 <pretty-link
                   v-if="layoutData.vault.permission.at_least_editor"
                   :href="props.data.url.contact.create"
                   :text="$t('Add a contact')"
-                  class="ml-3"
+                  class="ms-3"
                   :icon="'plus'" />
               </div>
             </div>
@@ -107,7 +107,7 @@ const update = () => {
                 v-for="contact in data.contacts"
                 :key="contact.id"
                 class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-                <avatar :data="contact.avatar" :classes="'rounded-full mr-2 h-5 w-5'" />
+                <avatar :data="contact.avatar" :class="'me-2 h-5 w-5 rounded-full'" />
 
                 <inertia-link :href="contact.url.show" class="text-blue-500 hover:underline">
                   {{ contact.name }}

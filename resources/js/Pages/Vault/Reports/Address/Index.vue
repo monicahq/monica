@@ -15,15 +15,15 @@ defineProps({
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="layoutData.vault.url.reports" class="text-blue-500 hover:underline">{{
                 $t('Reports')
               }}</inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -44,7 +44,7 @@ defineProps({
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">
           <!-- left -->
           <div>
-            <p class="mb-2 font-semibold"><span class="mr-1">🌍</span> {{ $t('All the countries') }}</p>
+            <p class="mb-2 font-semibold"><span class="me-1">🌍</span> {{ $t('All the countries') }}</p>
 
             <!-- list of countries -->
             <ul v-if="data.countries.length > 0">
@@ -65,7 +65,7 @@ defineProps({
 
           <!-- right -->
           <div class="p-3 sm:px-3 sm:py-0">
-            <p class="mb-2 font-semibold"><span class="mr-1">🏙️</span> {{ $t('All the cities') }}</p>
+            <p class="mb-2 font-semibold"><span class="me-1">🏙️</span> {{ $t('All the cities') }}</p>
 
             <!-- list of cities -->
             <ul v-if="data.cities.length > 0">

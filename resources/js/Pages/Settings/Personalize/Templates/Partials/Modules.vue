@@ -22,13 +22,13 @@
       v-if="addModuleModalShown"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <li
-        class="item-list border-b border-gray-200 bg-slate-50 py-2 pl-2 pr-5 text-sm dark:border-gray-700 dark:bg-slate-900">
+        class="item-list border-b border-gray-200 bg-slate-50 py-2 pe-5 ps-2 text-sm dark:border-gray-700 dark:bg-slate-900">
         {{ $t('Available modules:') }}
       </li>
       <li
         v-for="module in localAllModules"
         :key="module.id"
-        class="item-list flex items-center justify-between border-b border-gray-200 py-2 pl-2 pr-5 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+        class="item-list flex items-center justify-between border-b border-gray-200 py-2 pe-5 ps-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
         <span>{{ module.name }}</span>
         <span
           v-if="!module.already_used"
@@ -37,7 +37,7 @@
           >{{ $t('Add') }}</span
         >
         <span v-if="module.already_used" class="text-xs"
-          ><span class="mr-1">✅</span> {{ $t('Already used on this page') }}</span
+          ><span class="me-1">✅</span> {{ $t('Already used on this page') }}</span
         >
       </li>
     </ul>
@@ -54,9 +54,9 @@
         @change="updatePosition">
         <template #item="{ element }">
           <div
-            class="item-list flex items-center border-b border-gray-200 py-2 pl-2 pr-5 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+            class="item-list flex items-center border-b border-gray-200 py-2 pe-5 ps-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <!-- anchor to move module -->
-            <div class="mr-2">
+            <div class="me-2">
               <svg
                 class="handle cursor-move"
                 width="24"

@@ -60,7 +60,7 @@ const closeModal = () => {
         </p>
 
         <p class="pt-5">{{ $t('This will immediately:') }}</p>
-        <ul class="mb-2 ml-5">
+        <ul class="mb-2 ms-5">
           <li>- {{ $t('Cancel all your active subscriptions') }},</li>
           <li>- {{ $t('Delete your account on https://customers.monicahq.com.') }}</li>
         </ul>
@@ -108,7 +108,7 @@ const closeModal = () => {
           </JetSecondaryButton>
 
           <JetDangerButton
-            class="ml-3"
+            class="ms-3"
             :class="{ 'opacity-25': form.processing }"
             :disabled="form.processing"
             @click="deleteUser">

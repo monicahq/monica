@@ -3,7 +3,7 @@
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0">
-        <span class="mr-1"> 📁 </span>
+        <span class="me-1"> 📁 </span>
         {{ $t('All the important date types used in the vault') }}
       </h3>
       <pretty-button v-if="!createTypeModalShown" :text="$t('Add a type')" :icon="'plus'" @click="showTypeModal" />
@@ -32,8 +32,8 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createTypeModalShown = false" />
-        <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createTypeModalShown = false" />
+        <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :class="'save'" />
       </div>
     </form>
 
@@ -51,7 +51,7 @@
             {{ type.label }}
             <span
               v-if="type.internal_type"
-              class="mr-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-500 last:mr-0"
+              class="me-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-500 last:me-0"
               >{{ type.internal_type }}</span
             >
           </span>
@@ -63,7 +63,7 @@
             </li>
             <li
               v-if="type.can_be_deleted"
-              class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900 hover:dark:text-red-100"
+              class="ms-4 inline cursor-pointer text-red-500 hover:text-red-900 hover:dark:text-red-100"
               @click="destroy(type)">
               {{ $t('Delete') }}
             </li>
@@ -93,8 +93,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="editTypeModalShownId = 0" />
-            <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click.prevent="editTypeModalShownId = 0" />
+            <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
           </div>
         </form>
       </li>

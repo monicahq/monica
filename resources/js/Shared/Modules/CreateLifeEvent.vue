@@ -274,6 +274,7 @@ const store = () => {
             :timezone="'UTC'"
             class="inline-block h-full"
             :masks="masks"
+            :locale="$attrs.user.locale"
             :is-dark="isDark()">
             <template #default="{ inputValue, inputEvents }">
               <input
@@ -291,7 +292,7 @@ const store = () => {
 
         <!-- current contact -->
         <div class="mb-4 flex items-center">
-          <avatar :data="props.data.contact.avatar" :classes="'mr-2 h-5 w-5'" />
+          <avatar :data="props.data.contact.avatar" :class="'me-2 h-5 w-5'" />
 
           <span>{{ props.data.contact.name }}</span>
         </div>
@@ -340,14 +341,14 @@ const store = () => {
       <!-- description -->
       <div
         v-if="selectedLifeEventType && addDistanceFieldShown"
-        class="flex items-center border-b border-gray-200 pb-1 pl-3 pr-3 pt-3 dark:border-gray-700">
+        class="flex items-center border-b border-gray-200 pb-1 pe-3 ps-3 pt-3 dark:border-gray-700">
         <text-input
           ref="distanceField"
           v-model="form.distance"
           :label="$t('Distance')"
           :type="'number'"
           :autofocus="true"
-          :input-class="'mr-2'"
+          :input-class="'me-2'"
           :required="false"
           :autocomplete="false"
           :help="$t('Enter a number from 0 to 100000. No decimals.')"
@@ -356,7 +357,7 @@ const store = () => {
           @esc-key-pressed="addDistanceFieldShown = false" />
 
         <ul>
-          <li class="mr-5 inline-block">
+          <li class="me-5 inline-block">
             <div class="flex items-center">
               <input
                 id="km"
@@ -365,7 +366,7 @@ const store = () => {
                 name="distance_unit"
                 type="radio"
                 class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
-              <label for="km" class="ml-1 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label for="km" class="ms-1 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                 {{ $t('km') }}
               </label>
             </div>
@@ -380,7 +381,7 @@ const store = () => {
                 name="distance_unit"
                 type="radio"
                 class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
-              <label for="miles" class="ml-1 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label for="miles" class="ms-1 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                 {{ $t('miles') }}
               </label>
             </div>
@@ -393,7 +394,7 @@ const store = () => {
         <!-- summary -->
         <div v-if="!addSummaryFieldShown">
           <span
-            class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 hover:dark:bg-slate-700"
+            class="mb-2 me-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 hover:dark:bg-slate-700"
             @click="showAddSummaryField"
             >{{ $t('+ add summary') }}
           </span>
@@ -402,7 +403,7 @@ const store = () => {
         <!-- description -->
         <div v-if="!addDescriptionFieldShown">
           <span
-            class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 hover:dark:bg-slate-700"
+            class="mb-2 me-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 hover:dark:bg-slate-700"
             @click="showAddDescriptionField"
             >{{ $t('+ add description') }}
           </span>
@@ -411,20 +412,20 @@ const store = () => {
         <!-- distance -->
         <div v-if="!addDistanceFieldShown">
           <span
-            class="mb-2 mr-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 hover:dark:bg-slate-700"
+            class="mb-2 me-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 hover:dark:bg-slate-700"
             @click="showAddDistanceField"
             >{{ $t('+ add distance') }}
           </span>
         </div>
       </div>
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="$emit('closeModal')" />
+        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="$emit('closeModal')" />
         <pretty-button
           v-if="selectedLifeEventType"
           :text="$t('Save')"
           :state="loadingState"
           :icon="'plus'"
-          :classes="'save dark:save'" />
+          :class="'save'" />
       </div>
     </form>
   </div>

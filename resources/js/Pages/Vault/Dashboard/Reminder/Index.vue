@@ -5,15 +5,15 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="layoutData.vault.url.dashboard" class="text-blue-500 hover:underline">
                 {{ $t('Dashboard') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -36,7 +36,7 @@
         <!-- title -->
         <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
           <div class="mb-2 sm:mb-0">
-            <span class="relative mr-1">
+            <span class="relative me-1">
               <svg
                 class="icon-sidebar relative inline h-4 w-4"
                 viewBox="0 0 24 24"
@@ -84,13 +84,13 @@
               :key="reminder.id"
               class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
               <div class="items-center sm:flex">
-                <p class="mr-3 text-gray-400">
+                <p class="me-3 text-gray-400">
                   {{ reminder.scheduled_at }}
                 </p>
-                <div class="mr-2 flex items-center">
+                <div class="me-2 flex items-center">
                   <avatar
                     :data="reminder.contact.avatar"
-                    :classes="'h-4 w-4 mr-2 rounded-full ring-2 ring-white dark:ring-gray-900'" />
+                    :class="'me-2 h-4 w-4 rounded-full ring-2 ring-white dark:ring-gray-900'" />
 
                   <inertia-link :href="reminder.contact.url.show" class="text-blue-500 hover:underline">
                     {{ reminder.contact.name }}

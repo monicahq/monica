@@ -14,15 +14,15 @@ defineProps({
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.reports" class="text-blue-500 hover:underline">{{
                 $t('Reports')
               }}</inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -65,12 +65,12 @@ defineProps({
         <!-- iteration over the month -->
         <div class="flex justify-center">
           <div v-for="month in data.months" :key="month.id" class="mb-6 flex flex-col text-center">
-            <h2 class="mb-1 mr-2 font-mono text-sm font-bold">{{ month.month_word }}</h2>
+            <h2 class="mb-1 me-2 font-mono text-sm font-bold">{{ month.month_word }}</h2>
 
             <div v-for="day in month.days" :key="day.id">
-              <div v-if="day.event" class="mr-2 inline-block h-4 w-4 rounded-full" :class="day.event.hex_color" />
-              <div v-else class="mr-2 inline-block h-4 w-4 rounded-full">
-                <div class="mr-2 inline-block h-4 w-4 rounded-full bg-slate-100" />
+              <div v-if="day.event" class="me-2 inline-block h-4 w-4 rounded-full" :class="day.event.hex_color" />
+              <div v-else class="me-2 inline-block h-4 w-4 rounded-full">
+                <div class="me-2 inline-block h-4 w-4 rounded-full bg-slate-100" />
               </div>
             </div>
           </div>

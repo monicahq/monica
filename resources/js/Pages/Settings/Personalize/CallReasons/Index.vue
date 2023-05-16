@@ -5,15 +5,15 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -23,12 +23,12 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">
                 {{ $t('Personalize your account') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -49,7 +49,7 @@
         <!-- title + cta -->
         <div class="mb-6 mt-8 items-center justify-between sm:mt-0 sm:flex">
           <h3 class="mb-4 sm:mb-0">
-            <span class="mr-1"> 📲 </span>
+            <span class="me-1"> 📲 </span>
             {{ $t('All the call reasons') }}
           </h3>
           <pretty-button
@@ -63,7 +63,7 @@
         <div class="mb-6 flex rounded border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 pr-2"
+            class="h-6 pe-2"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor">
@@ -101,8 +101,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createCallReasonTypeModalShown = false" />
-            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createCallReasonTypeModalShown = false" />
+            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
           </div>
         </form>
 
@@ -123,7 +123,7 @@
                   <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                 </li>
                 <li
-                  class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
+                  class="ms-4 inline cursor-pointer text-red-500 hover:text-red-900"
                   @click="destroyCallReasonType(callReasonType)">
                   {{ $t('Delete') }}
                 </li>
@@ -154,9 +154,9 @@
               <div class="flex justify-between p-5">
                 <pretty-span
                   :text="$t('Cancel')"
-                  :classes="'mr-3'"
+                  :class="'me-3'"
                   @click.prevent="renameCallReasonTypeModalShownId = 0" />
-                <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+                <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
               </div>
             </form>
 
@@ -166,7 +166,7 @@
               :key="reason.id"
               class="border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
               <!-- detail of the relationship type -->
-              <div v-if="renameReasonModalId != reason.id" class="flex items-center justify-between px-5 py-2 pl-6">
+              <div v-if="renameReasonModalId != reason.id" class="flex items-center justify-between px-5 py-2 ps-6">
                 <span>{{ reason.label }}</span>
 
                 <!-- actions -->
@@ -175,7 +175,7 @@
                     <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                   </li>
                   <li
-                    class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900"
+                    class="ms-4 inline cursor-pointer text-red-500 hover:text-red-900"
                     @click="destroyReason(callReasonType, reason)">
                     {{ $t('Delete') }}
                   </li>
@@ -206,12 +206,8 @@
                 </div>
 
                 <div class="flex justify-between p-5">
-                  <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="renameReasonModalId = 0" />
-                  <pretty-button
-                    :text="$t('Rename')"
-                    :state="loadingState"
-                    :icon="'check'"
-                    :classes="'save dark:save'" />
+                  <pretty-span :text="$t('Cancel')" :class="'me-3'" @click.prevent="renameReasonModalId = 0" />
+                  <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
                 </div>
               </form>
             </div>
@@ -219,7 +215,7 @@
             <!-- create a new reason -->
             <div
               v-if="createReasonModalId != callReasonType.id"
-              class="item-list border-b border-gray-200 px-5 py-2 pl-6 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+              class="item-list border-b border-gray-200 px-5 py-2 ps-6 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
               <span
                 class="cursor-pointer text-sm text-blue-500 hover:underline"
                 @click="showReasonModal(callReasonType)"
@@ -249,8 +245,8 @@
               </div>
 
               <div class="flex justify-between p-5">
-                <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="createReasonModalId = 0" />
-                <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+                <pretty-span :text="$t('Cancel')" :class="'me-3'" @click.prevent="createReasonModalId = 0" />
+                <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :class="'save'" />
               </div>
             </form>
           </li>

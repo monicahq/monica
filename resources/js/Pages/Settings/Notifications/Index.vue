@@ -5,15 +5,15 @@
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -36,7 +36,7 @@
         <!-- title + cta -->
         <div class="mb-3 mt-8 sm:mt-0">
           <h3 class="mb-4 sm:mb-0">
-            <span class="mr-1"> 🛰️ </span>
+            <span class="me-1"> 🛰️ </span>
             {{ $t('Configure how we should notify you') }}
           </h3>
         </div>
@@ -45,7 +45,7 @@
         <div class="mb-6 flex rounded border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 grow pr-2"
+            class="h-6 grow pe-2"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor">
@@ -119,5 +119,3 @@ export default {
   methods: {},
 };
 </script>
-
-<style lang="scss" scoped></style>

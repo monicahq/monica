@@ -6,7 +6,7 @@
       class="flex items-center border-b border-gray-300 px-3 py-2 text-sm dark:border-gray-700">
       <avatar
         :data="data.contact.avatar"
-        :classes="'rounded-full border-gray-200 dark:border-gray-800 border relative h-5 w-5 mr-2'" />
+        :class="'relative me-2 h-5 w-5 rounded-full border border-gray-200 dark:border-gray-800'" />
 
       <div class="flex flex-col">
         <inertia-link :href="data.contact.url" class="text-gray-800 hover:underline dark:text-gray-200">{{
@@ -18,12 +18,12 @@
     <div class="px-3 py-2">
       <!-- the pet still exists in the system -->
       <div v-if="data.pet.object" class="flex items-center">
-        <span class="mr-2 text-sm text-gray-500">{{ data.pet.object.pet_category.name }}</span>
-        <span class="mr-2">{{ data.pet.object.name }}</span>
+        <span class="me-2 text-sm text-gray-500">{{ data.pet.object.pet_category.name }}</span>
+        <span class="me-2">{{ data.pet.object.name }}</span>
       </div>
 
       <!-- the pet was deleted -->
-      <span v-else class="mb-2 mr-2">
+      <span v-else class="mb-2 me-2">
         <span>{{ data.pet.description }}</span>
       </span>
     </div>

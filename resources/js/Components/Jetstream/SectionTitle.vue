@@ -15,10 +15,10 @@ defineProps({
   <div>
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 flex font-semibold sm:mb-0">
-        <span v-if="$slots.icon" class="mr-1">
+        <span v-if="$slots.icon" class="me-1">
           <slot name="icon" />
         </span>
-        <span class="mr-2">
+        <span class="me-2">
           <slot name="title" />
         </span>
 
@@ -34,7 +34,7 @@ defineProps({
       class="mb-6 flex items-center rounded border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-6 flex-none pr-2"
+        class="h-6 flex-none pe-2"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor">

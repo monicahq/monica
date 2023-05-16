@@ -6,15 +6,15 @@ k
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -24,12 +24,12 @@ k
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="data.url.back" class="text-blue-500 hover:underline">
                 {{ $t('Users') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -100,7 +100,7 @@ k
                   class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                 <label
                   for="viewer"
-                  class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                  class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                   {{ $t('Regular user') }}
                 </label>
               </div>
@@ -116,9 +116,9 @@ k
                   class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                 <label
                   for="manager"
-                  class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                  class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                   {{ $t('Administrator') }}
-                  <span class="ml-4 font-normal text-gray-500">
+                  <span class="ms-4 font-normal text-gray-500">
                     {{
                       $t(
                         'Can do everything, including adding or removing other users, managing billing and closing the account.',
@@ -131,12 +131,8 @@ k
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-link :href="data.url.back" :text="$t('Cancel')" :classes="'mr-3'" />
-            <pretty-button
-              :text="$t('Send invitation')"
-              :state="loadingState"
-              :icon="'check'"
-              :classes="'save dark:save'" />
+            <pretty-link :href="data.url.back" :text="$t('Cancel')" :class="'me-3'" />
+            <pretty-button :text="$t('Send invitation')" :state="loadingState" :icon="'check'" :class="'save'" />
           </div>
         </form>
       </div>

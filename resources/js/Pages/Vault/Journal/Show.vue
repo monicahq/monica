@@ -29,15 +29,15 @@ const destroy = () => {
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
-            <li class="mr-2 inline text-gray-600 dark:text-gray-400">
+            <li class="me-2 inline text-gray-600 dark:text-gray-400">
               {{ $t('You are here:') }}
             </li>
-            <li class="mr-2 inline">
+            <li class="me-2 inline">
               <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
                 {{ $t('Journals') }}
               </inertia-link>
             </li>
-            <li class="relative mr-2 inline">
+            <li class="relative me-2 inline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon-breadcrumb relative inline h-3 w-3"
@@ -66,14 +66,14 @@ const destroy = () => {
           <div class="mb-8 inline-flex rounded-md shadow-sm">
             <inertia-link
               :href="data.url.show"
-              class="inline-flex items-center rounded-l-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-400 dark:font-bold dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
+              class="inline-flex items-center rounded-s-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-400 dark:font-bold dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="mr-2 h-4 w-4">
+                class="me-2 h-4 w-4">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -86,14 +86,14 @@ const destroy = () => {
             <inertia-link
               :href="data.url.photo_index"
               :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': defaultTab === 'life_events' }"
-              class="inline-flex items-center rounded-r-md border-b border-r border-t border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
+              class="inline-flex items-center rounded-e-md border-b border-s border-t border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="mr-2 h-4 w-4">
+                class="me-2 h-4 w-4">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -110,7 +110,7 @@ const destroy = () => {
           <div class="p-3 sm:p-0">
             <!-- years -->
             <p v-if="data.years.length > 0" class="mb-2 font-medium">
-              <span class="mr-1"> 📆 </span> {{ $t('Years') }}
+              <span class="me-1"> 📆 </span> {{ $t('Years') }}
             </p>
             <ul v-if="data.years.length > 0" class="mb-8">
               <li v-for="year in data.years" :key="year.year" class="mb-2 flex items-center justify-between last:mb-0">
@@ -121,7 +121,7 @@ const destroy = () => {
 
             <!-- tags -->
             <p v-if="data.tags.length > 0" class="mb-2 font-medium">
-              <span class="mr-1"> ⚡ </span> {{ $t('All tags') }}
+              <span class="me-1"> ⚡ </span> {{ $t('All tags') }}
             </p>
             <ul v-if="data.tags.length > 0" class="">
               <li v-for="tag in data.tags" :key="tag.id" class="mb-2 flex items-center justify-between">
@@ -172,7 +172,7 @@ const destroy = () => {
                       :key="post.id"
                       class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
                       <!-- written at -->
-                      <div class="mr-4 rounded-lg border border-gray-200 p-2 text-center leading-tight">
+                      <div class="me-4 rounded-lg border border-gray-200 p-2 text-center leading-tight">
                         <span class="block text-xs uppercase">{{ post.written_at_day }}</span>
                         <span class="text-xl">{{ post.written_at_day_number }}</span>
                       </div>
@@ -214,12 +214,12 @@ const destroy = () => {
             </div>
 
             <!-- slices of life -->
-            <p class="mb-2 font-medium"><span class="mr-1"> 🍕 </span> {{ $t('Slices of life') }}</p>
+            <p class="mb-2 font-medium"><span class="me-1"> 🍕 </span> {{ $t('Slices of life') }}</p>
             <div v-if="data.slices.length > 0" class="mb-2">
               <div v-for="slice in data.slices" :key="slice.id" class="mb-6 last:mb-0">
                 <img v-if="slice.cover_image" class="h-32 w-full rounded-t" :src="slice.cover_image" alt="" />
                 <div
-                  class="rounded-b border-b border-l border-r border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
+                  class="rounded-b border-b border-s border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
                   :class="slice.cover_image ? '' : 'border-t'">
                   <inertia-link :href="slice.url.show" class="font-semibold">{{ slice.name }}</inertia-link>
                   <p class="text-xs text-gray-600">{{ slice.date_range }}</p>

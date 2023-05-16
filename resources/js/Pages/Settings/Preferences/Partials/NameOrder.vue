@@ -81,8 +81,8 @@ const submit = () => {
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 flex font-semibold sm:mb-0">
-        <span class="mr-1"> 👉 </span>
-        <span class="mr-2">
+        <span class="me-1"> 👉 </span>
+        <span class="me-2">
           {{ $t('Customize how contacts should be displayed') }}
         </span>
 
@@ -95,7 +95,7 @@ const submit = () => {
     <div class="mb-6 flex rounded border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-6 grow pr-2"
+        class="h-6 grow pe-2"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor">
@@ -146,9 +146,9 @@ const submit = () => {
             class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
           <label
             for="first_name_last_name"
-            class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+            class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
             {{ $t('First name Last name') }}
-            <span class="ml-4 font-normal text-gray-500"> James Bond </span>
+            <span class="ms-4 font-normal text-gray-500"> James Bond </span>
           </label>
         </div>
         <div class="mb-2 flex items-center">
@@ -161,10 +161,10 @@ const submit = () => {
             class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
           <label
             for="last_name_first_name"
-            class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+            class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
             {{ $t('Last name First name') }}
 
-            <span class="ml-4 font-normal text-gray-500"> Bond James </span>
+            <span class="ms-4 font-normal text-gray-500"> Bond James </span>
           </label>
         </div>
         <div class="mb-2 flex items-center">
@@ -177,9 +177,9 @@ const submit = () => {
             class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
           <label
             for="first_name_last_name_nickname"
-            class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+            class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
             {{ $t('First name Last name (nickname)') }}
-            <span class="ml-4 font-normal text-gray-500"> James Bond (007) </span>
+            <span class="ms-4 font-normal text-gray-500"> James Bond (007) </span>
           </label>
         </div>
         <div class="mb-2 flex items-center">
@@ -190,9 +190,9 @@ const submit = () => {
             name="name-order"
             type="radio"
             class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
-          <label for="nickname" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label for="nickname" class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
             {{ $t('nickname') }}
-            <span class="ml-4 font-normal text-gray-500"> 007 </span>
+            <span class="ms-4 font-normal text-gray-500"> 007 </span>
           </label>
         </div>
         <div class="mb-2 flex items-center">
@@ -202,11 +202,11 @@ const submit = () => {
             type="radio"
             class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700"
             @click="focusNameOrder" />
-          <label for="custom" class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label for="custom" class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
             {{ $t('Custom name order') }}
           </label>
         </div>
-        <div class="ml-8">
+        <div class="ms-8">
           <text-input
             :ref="'nameOrder'"
             v-model="form.nameOrder"
@@ -226,8 +226,8 @@ const submit = () => {
 
       <!-- actions -->
       <div class="flex justify-between p-5">
-        <pretty-link :text="$t('Cancel')" :classes="'mr-3'" @click="editMode = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+        <pretty-link :text="$t('Cancel')" :class="'me-3'" @click="editMode = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
       </div>
     </form>
   </div>

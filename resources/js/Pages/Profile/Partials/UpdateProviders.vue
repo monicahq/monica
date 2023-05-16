@@ -37,15 +37,6 @@ defineProps({
 });
 </script>
 
-<style scoped>
-.auth-provider {
-  width: 15px;
-  height: 15px;
-  margin-right: 8px;
-  top: 2px;
-}
-</style>
-
 <template>
   <JetActionSection id="socialite">
     <template #title>
@@ -63,8 +54,8 @@ defineProps({
 
       <div class="mt-5 space-y-6">
         <div v-for="(provider, id) in providers" :key="id" class="flex items-center">
-          <img :src="provider.logo" :alt="provider.name" class="auth-provider relative" />
-          <span class="mr-3 text-sm text-gray-600 dark:text-gray-400">
+          <img :src="provider.logo" :alt="provider.name" class="relative top-0.5 me-2 h-[15px] w-[15px]" />
+          <span class="me-3 text-sm text-gray-600 dark:text-gray-400">
             {{ provider.name }}
           </span>
 
@@ -72,7 +63,7 @@ defineProps({
             <span class="text-sm text-green-600 dark:text-green-400">
               {{ $t('Connected') }}
             </span>
-            <JetSecondaryButton class="ml-3" @click.prevent="deleteProvider(id)">
+            <JetSecondaryButton class="ms-3" @click.prevent="deleteProvider(id)">
               {{ $t('Disconnect') }}
             </JetSecondaryButton>
 
@@ -80,7 +71,7 @@ defineProps({
           </template>
 
           <template v-else>
-            <JetButton class="ml-3" @click.prevent="open(id)">
+            <JetButton class="ms-3" @click.prevent="open(id)">
               {{ $t('Connect') }}
             </JetButton>
 

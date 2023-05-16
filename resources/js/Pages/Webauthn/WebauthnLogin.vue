@@ -114,7 +114,7 @@ const webauthnLoginCallback = (data) => {
 
       <JetInputError :message="authForm.errors.data" class="mt-2" />
 
-      <JetButton class="ml-2" @click="start()" v-show="!processing">
+      <JetButton class="ms-2" @click="start()" v-show="!processing">
         {{ $t('Retry') }}
       </JetButton>
     </div>

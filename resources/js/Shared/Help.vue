@@ -9,7 +9,6 @@ const props = defineProps({
     type: String,
     default: '3px',
   },
-  classes: String,
 });
 
 const finalURL = computed(() => {
@@ -20,8 +19,8 @@ const finalURL = computed(() => {
 <template>
   <a
     v-if="$page.props.auth.user.help_shown"
-    :class="['relative inline cursor-pointer', classes]"
-    :href="finalURL"
+    :class="'relative inline cursor-pointer'"
+    :data-url="finalURL"
     :style="'top:' + top"
     target="_blank"
     lang="en"

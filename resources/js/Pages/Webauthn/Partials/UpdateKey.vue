@@ -64,7 +64,7 @@ watch(
         {{ $t('Cancel') }}
       </JetSecondaryButton>
 
-      <JetButton class="ml-2" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+      <JetButton class="ms-2" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
         {{ $t('Update') }}
       </JetButton>
     </div>

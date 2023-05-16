@@ -97,7 +97,7 @@ const submit = () => {
     <div
       v-if="!createMoodEventModalShown && !successShown"
       class="mb-4 flex items-center rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-900">
-      <img src="/img/dashboard_blank_how_are_you.svg" :alt="$t('Reminders')" class="mr-2 h-14 w-14" />
+      <img src="/img/dashboard_blank_how_are_you.svg" :alt="$t('Reminders')" class="me-2 h-14 w-14" />
       <div class="mb-2 flex flex-col px-5">
         <p class="mb-2">{{ $t('How are you?') }}</p>
         <pretty-button :text="$t('Record your mood')" @click="showMoodEventModal" />
@@ -124,12 +124,12 @@ const submit = () => {
               :value="parameter.id"
               name="date-format"
               type="radio"
-              class="relative mr-3 h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+              class="relative me-3 h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
 
             <label
               :for="'input' + parameter.id"
               class="block cursor-pointer font-medium text-gray-700 dark:text-gray-300">
-              <div class="mr-2 inline-block h-4 w-4 rounded-full" :class="parameter.hex_color" />
+              <div class="me-2 inline-block h-4 w-4 rounded-full" :class="parameter.hex_color" />
               {{ parameter.label }}
             </label>
           </li>
@@ -138,21 +138,21 @@ const submit = () => {
         <div class="flex">
           <span
             v-if="!datePickerFieldShown"
-            class="mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:bg-slate-500 dark:text-white"
+            class="me-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:bg-slate-500 dark:text-white"
             @click="showDatePickerField">
             {{ $t('+ change date') }}
           </span>
 
           <span
             v-if="!noteFieldShown"
-            class="mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:bg-slate-500 dark:text-white"
+            class="me-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:bg-slate-500 dark:text-white"
             @click="showNoteField">
             {{ $t('+ note') }}
           </span>
 
           <span
             v-if="!hoursSleptFieldShown"
-            class="mr-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:bg-slate-500 dark:text-white"
+            class="me-2 flex cursor-pointer flex-wrap rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:bg-slate-500 dark:text-white"
             @click="showHoursSleptField">
             {{ $t('+ number of hours slept') }}
           </span>
@@ -160,12 +160,13 @@ const submit = () => {
 
         <!-- date picker -->
         <div v-if="datePickerFieldShown">
-          <p class="mb-2 mt-2 block text-sm dark:text-gray-100">Change date</p>
+          <p class="mb-2 mt-2 block text-sm dark:text-gray-100">{{ $t('Change date') }}</p>
           <DatePicker
             v-model.string="form.date"
             :timezone="'UTC'"
             class="inline-block h-full"
             :masks="masks"
+            :locale="$attrs.user.locale"
             :is-dark="isDark()">
             <template #default="{ inputValue, inputEvents }">
               <input
@@ -197,8 +198,8 @@ const submit = () => {
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createMoodEventModalShown = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createMoodEventModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
       </div>
     </form>
 
@@ -206,9 +207,9 @@ const submit = () => {
     <div
       v-if="successShown"
       class="mb-4 flex items-center rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-900">
-      <img src="/img/dashboard_blank_how_are_you.svg" :alt="$t('Reminders')" class="mr-2 h-14 w-14" />
+      <img src="/img/dashboard_blank_how_are_you.svg" :alt="$t('Reminders')" class="me-2 h-14 w-14" />
       <div class="flex flex-col px-5">
-        <p class="mb-2"><span class="mr-1">🎉</span> {{ $t('Your mood has been recorded!') }}</p>
+        <p class="mb-2"><span class="me-1">🎉</span> {{ $t('Your mood has been recorded!') }}</p>
         <inertia-link :href="data.url.history" class="text-center text-blue-500 hover:underline">{{
           $t('View history')
         }}</inertia-link>

@@ -107,7 +107,7 @@ const updatePosition = (event) => {
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0">
-        <span class="mr-1"> 🧑‍🏭 </span>
+        <span class="me-1"> 🧑‍🏭 </span>
         {{ $t('Quick facts template') }}
       </h3>
       <pretty-button
@@ -139,8 +139,8 @@ const updatePosition = (event) => {
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createEntryModalShown = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createEntryModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
       </div>
     </form>
 
@@ -157,11 +157,11 @@ const updatePosition = (event) => {
         <template #item="{ element }">
           <div
             v-if="editEntryId != element.id"
-            class="item-list flex items-center justify-between border-b border-gray-200 py-2 pl-4 pr-5 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+            class="item-list flex items-center justify-between border-b border-gray-200 py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <!-- icon to move position -->
-            <div class="mr-2 flex">
+            <div class="me-2 flex">
               <svg
-                class="handle mr-2 cursor-move"
+                class="handle me-2 cursor-move"
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
@@ -186,7 +186,7 @@ const updatePosition = (event) => {
               <li class="inline cursor-pointer" @click="renameEntryModal(element)">
                 <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
               </li>
-              <li class="ml-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">
+              <li class="ms-4 inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">
                 {{ $t('Delete') }}
               </li>
             </ul>
@@ -213,8 +213,8 @@ const updatePosition = (event) => {
             </div>
 
             <div class="flex justify-between p-5">
-              <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="editEntryId = 0" />
-              <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+              <pretty-span :text="$t('Cancel')" :class="'me-3'" @click.prevent="editEntryId = 0" />
+              <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
             </div>
           </form>
         </template>

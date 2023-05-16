@@ -42,10 +42,10 @@
         <div
           v-if="renamePageModalShownId != element.id"
           :class="isSelectedId == element.id ? 'border-2	bg-sky-100' : ''"
-          class="mb-2 flex items-center rounded-lg border border-gray-200 bg-white py-2 pl-2 pr-5 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800"
+          class="mb-2 flex items-center rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800"
           @click="selectPage(element)">
           <!-- icon to move position -->
-          <div class="mr-2">
+          <div class="me-2">
             <svg
               class="handle cursor-move"
               width="24"
@@ -72,7 +72,7 @@
             </div>
 
             <ul class="text-xs">
-              <li class="mr-4 inline cursor-pointer" @click="renamePageModal(element)">
+              <li class="me-4 inline cursor-pointer" @click="renamePageModal(element)">
                 <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
               </li>
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(element)">
@@ -104,8 +104,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="renamePageModalShownId = 0" />
-            <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click.prevent="renamePageModalShownId = 0" />
+            <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
           </div>
         </form>
       </template>
@@ -133,8 +133,8 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createPageModalShown = false" />
-        <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createPageModalShown = false" />
+        <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :class="'save'" />
       </div>
     </form>
 

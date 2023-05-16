@@ -3,7 +3,7 @@
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
-        <span class="relative mr-1">
+        <span class="relative me-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="icon-sidebar relative inline h-4 w-4"
@@ -23,7 +23,7 @@
       <pretty-button
         :text="$t('Record a loan')"
         :icon="'plus'"
-        :classes="'sm:w-fit w-full'"
+        :class="'w-full sm:w-fit'"
         @click="showCreateLoanModal" />
     </div>
 
@@ -37,7 +37,7 @@
           <!-- loan options -->
           <div class="border-b border-gray-200 px-5 pb-3 pt-5 dark:border-gray-700">
             <ul class="">
-              <li class="mr-5 inline-block">
+              <li class="me-5 inline-block">
                 <div class="flex items-center">
                   <input
                     id="object"
@@ -48,13 +48,13 @@
                     class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                   <label
                     for="object"
-                    class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                    class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ $t('The loan is an object') }}
                   </label>
                 </div>
               </li>
 
-              <li class="mr-5 inline-block">
+              <li class="me-5 inline-block">
                 <div class="flex items-center">
                   <input
                     id="monetary"
@@ -65,7 +65,7 @@
                     class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                   <label
                     for="monetary"
-                    class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                    class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ $t('The loan is monetary') }}
                   </label>
                 </div>
@@ -108,7 +108,7 @@
               v-model="form.currency_id"
               :data="localCurrencies"
               :required="false"
-              :div-outer-class="'ml-3 mb-5'"
+              :div-outer-class="'ms-3 mb-5'"
               :placeholder="$t('Choose a value')"
               :dropdown-class="'block'"
               :label="$t('Currency')" />
@@ -118,7 +118,12 @@
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <p class="mb-2 block text-sm">{{ $t('When was the loan made?') }}</p>
 
-            <DatePicker v-model.string="form.loaned_at" class="inline-block h-full" :masks="masks" :is-dark="isDark()">
+            <DatePicker
+              v-model.string="form.loaned_at"
+              class="inline-block h-full"
+              :masks="masks"
+              :locale="$attrs.user.locale"
+              :is-dark="isDark()">
               <template #default="{ inputValue, inputEvents }">
                 <input
                   class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
@@ -138,7 +143,7 @@
               :label="$t('Who makes the loan?')"
               :add-multiple-contacts="true"
               :required="true"
-              :div-outer-class="'p-5 flex-1 border-r border-gray-200 dark:border-gray-700'" />
+              :div-outer-class="'p-5 flex-1 border-e border-gray-200 dark:border-gray-700'" />
 
             <contact-selector
               v-model="form.loanees"
@@ -168,17 +173,17 @@
         <div v-if="warning != ''" class="border-b p-3">⚠️ {{ warning }}</div>
 
         <div class="flex justify-between p-5">
-          <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createLoanModalShown = false" />
-          <pretty-button :text="$t('Add loan')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+          <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createLoanModalShown = false" />
+          <pretty-button :text="$t('Add loan')" :state="loadingState" :icon="'plus'" :class="'save'" />
         </div>
       </form>
 
       <!-- list of loans -->
       <div v-for="loan in localLoans" :key="loan.id" class="mb-5 flex">
-        <div v-if="editedLoanId != loan.id" class="mr-3 flex items-center">
+        <div v-if="editedLoanId != loan.id" class="me-3 flex items-center">
           <div class="flex -space-x-2 overflow-hidden">
             <div v-for="loaner in loan.loaners" :key="loaner.id">
-              <contact-card :contact="loaner" :avatarClasses="'h-7 w-7 rounded-full mr-2'" :displayName="false" />
+              <contact-card :contact="loaner" :avatarClasses="'h-7 w-7 rounded-full me-2'" :displayName="false" />
             </div>
           </div>
 
@@ -193,7 +198,7 @@
           </svg>
 
           <div v-for="loanee in loan.loanees" :key="loanee.id">
-            <contact-card :contact="loanee" :avatarClasses="'h-7 w-7 rounded-full mr-2'" :displayName="false" />
+            <contact-card :contact="loanee" :avatarClasses="'h-7 w-7 rounded-full me-2'" :displayName="false" />
           </div>
         </div>
 
@@ -203,13 +208,13 @@
           <div class="border-b border-gray-200 px-3 py-2 dark:border-gray-700">
             <div class="flex items-center justify-between">
               <div>
-                <span class="mr-2 block">
-                  <span v-if="loan.amount_lent" class="mr-2">
-                    <span v-if="loan.currency_name" class="mr-1 text-gray-500">
+                <span class="me-2 block">
+                  <span v-if="loan.amount_lent" class="me-2">
+                    <span v-if="loan.currency_name" class="me-1 text-gray-500">
                       {{ loan.currency_name }}
                     </span>
                     {{ loan.amount_lent }}
-                    <span class="ml-2"> • </span>
+                    <span class="ms-2"> • </span>
                   </span>
                   {{ loan.name }}
                 </span>
@@ -217,7 +222,7 @@
                   {{ loan.description }}
                 </span>
               </div>
-              <span v-if="loan.loaned_at_human_format" class="mr-2 text-sm text-gray-500">{{
+              <span v-if="loan.loaned_at_human_format" class="me-2 text-sm text-gray-500">{{
                 loan.loaned_at_human_format
               }}</span>
             </div>
@@ -229,16 +234,16 @@
               <!-- settle -->
               <li
                 v-if="!loan.settled"
-                class="mr-4 inline cursor-pointer text-blue-500 hover:underline"
+                class="me-4 inline cursor-pointer text-blue-500 hover:underline"
                 @click="toggle(loan)">
                 {{ $t('Settle') }}
               </li>
-              <li v-else class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="toggle(loan)">
+              <li v-else class="me-4 inline cursor-pointer text-blue-500 hover:underline" @click="toggle(loan)">
                 {{ $t('Revert') }}
               </li>
 
               <!-- edit -->
-              <li class="mr-4 inline cursor-pointer text-blue-500 hover:underline" @click="showEditLoanModal(loan)">
+              <li class="me-4 inline cursor-pointer text-blue-500 hover:underline" @click="showEditLoanModal(loan)">
                 {{ $t('Edit') }}
               </li>
 
@@ -259,7 +264,7 @@
             <!-- loan options -->
             <div class="border-b border-gray-200 px-5 pb-3 pt-5 dark:border-gray-700">
               <ul class="">
-                <li class="mr-5 inline-block">
+                <li class="me-5 inline-block">
                   <div class="flex items-center">
                     <input
                       id="object"
@@ -270,13 +275,13 @@
                       class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                     <label
                       for="object"
-                      class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                      class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                       {{ $t('The loan is an object') }}
                     </label>
                   </div>
                 </li>
 
-                <li class="mr-5 inline-block">
+                <li class="me-5 inline-block">
                   <div class="flex items-center">
                     <input
                       id="monetary"
@@ -287,7 +292,7 @@
                       class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
                     <label
                       for="monetary"
-                      class="ml-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                      class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                       {{ $t('The loan is monetary') }}
                     </label>
                   </div>
@@ -330,7 +335,7 @@
                 v-model="form.currency_id"
                 :data="localCurrencies"
                 :required="false"
-                :div-outer-class="'ml-3 mb-5'"
+                :div-outer-class="'ms-3 mb-5'"
                 :placeholder="$t('Choose a value')"
                 :dropdown-class="'block'"
                 :label="$t('Currency')" />
@@ -364,7 +369,7 @@
                 :label="$t('Who makes the loan?')"
                 :add-multiple-contacts="true"
                 :required="true"
-                :div-outer-class="'p-5 flex-1 border-r border-gray-200 dark:border-gray-700'" />
+                :div-outer-class="'p-5 flex-1 border-e border-gray-200 dark:border-gray-700'" />
 
               <contact-selector
                 v-model="form.loanees"
@@ -394,8 +399,8 @@
           <div v-if="warning != ''" class="border-b p-3">⚠️ {{ warning }}</div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="editedLoanId = 0" />
-            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="editedLoanId = 0" />
+            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
           </div>
         </form>
       </div>

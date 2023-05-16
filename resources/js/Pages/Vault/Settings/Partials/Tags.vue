@@ -3,7 +3,7 @@
     <!-- title + cta -->
     <div class="mb-3 mt-8 items-center justify-between sm:mt-0 sm:flex">
       <h3 class="mb-4 sm:mb-0">
-        <span class="mr-1"> ⚡ </span>
+        <span class="me-1"> ⚡ </span>
         {{ $t('All the tags used in the vault') }}
       </h3>
       <pretty-button v-if="!createTagModalShown" :text="$t('Add a tag')" :icon="'plus'" @click="showLabelModal" />
@@ -32,8 +32,8 @@
       </div>
 
       <div class="flex justify-between p-5">
-        <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click="createTagModalShown = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :classes="'save dark:save'" />
+        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createTagModalShown = false" />
+        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
       </div>
     </form>
 
@@ -48,7 +48,7 @@
         <!-- detail of the tag -->
         <div v-if="editTagModalShownId != tag.id" class="flex items-center justify-between px-5 py-2">
           <span class="flex items-center text-base">
-            <span class="mr-2">{{ tag.name }}</span>
+            <span class="me-2">{{ tag.name }}</span>
             <span v-if="tag.count > 0" class="text-xs text-gray-500"
               >({{ $tChoice(':count post|:count posts', tag.count, { count: tag.count }) }})</span
             >
@@ -56,7 +56,7 @@
 
           <!-- actions -->
           <ul class="text-sm">
-            <li class="mr-4 inline cursor-pointer" @click="updateTagModal(tag)">
+            <li class="me-4 inline cursor-pointer" @click="updateTagModal(tag)">
               <span class="text-blue-500 hover:underline">{{ $t('Edit') }}</span>
             </li>
             <li
@@ -90,8 +90,8 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('Cancel')" :classes="'mr-3'" @click.prevent="editTagModalShownId = 0" />
-            <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :classes="'save dark:save'" />
+            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click.prevent="editTagModalShownId = 0" />
+            <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
           </div>
         </form>
       </li>

@@ -33,16 +33,16 @@ const logout = () => {
           <div class="flex h-16 justify-between">
             <div class="flex">
               <!-- Navigation Links -->
-              <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+              <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                 <JetNavLink :href="route('vault.index')" :active="route().current('vault.index')">
                   {{ $t('Home') }}
                 </JetNavLink>
               </div>
             </div>
 
-            <div class="hidden sm:ml-6 sm:flex sm:items-center">
+            <div class="hidden sm:ms-6 sm:flex sm:items-center">
               <!-- Settings Dropdown -->
-              <div class="relative ml-3">
+              <div class="relative ms-3">
                 <JetDropdown align="right" width="48">
                   <template #trigger>
                     <button
@@ -61,7 +61,7 @@ const logout = () => {
                         {{ $page.props.user.name }}
 
                         <svg
-                          class="-mr-0.5 ml-2 h-4 w-4"
+                          class="-me-0.5 ms-2 h-4 w-4"
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
                           fill="currentColor">
@@ -110,7 +110,7 @@ const logout = () => {
             </div>
 
             <!-- Hamburger -->
-            <div class="-mr-2 flex items-center sm:hidden">
+            <div class="-me-2 flex items-center sm:hidden">
               <button
                 class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none dark:text-gray-600 hover:dark:bg-gray-900 focus:dark:bg-gray-900"
                 @click="showingNavigationDropdown = !showingNavigationDropdown">
@@ -144,7 +144,7 @@ const logout = () => {
           <!-- Responsive Settings Options -->
           <div class="border-t border-gray-200 pb-1 pt-4 dark:border-gray-800">
             <div class="flex items-center px-4">
-              <div v-if="$page.props.jetstream.managesProfilePhotos" class="mr-3 shrink-0">
+              <div v-if="$page.props.jetstream.managesProfilePhotos" class="me-3 shrink-0">
                 <img
                   class="h-10 w-10 rounded-full object-cover"
                   :src="$page.props.user.profile_photo_url"
