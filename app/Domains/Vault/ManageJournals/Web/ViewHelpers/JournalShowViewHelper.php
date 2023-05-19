@@ -69,6 +69,7 @@ class JournalShowViewHelper
         $posts = $journal->posts()
             ->orderBy('written_at', 'desc')
             ->whereYear('written_at', (string) $year)
+            ->with('files')
             ->get()
             ->groupBy(fn (Post $post) => $post->written_at->month);
 
@@ -81,6 +82,12 @@ class JournalShowViewHelper
                     'excerpt' => $post->excerpt,
                     'written_at_day' => Str::upper(DateHelper::formatShortDay($post->written_at)),
                     'written_at_day_number' => DateHelper::formatDayNumber($post->written_at),
+                    'photo' => $post?->files?->first() ? [
+                        'id' => $post->files->first()->id,
+                        'url' => [
+                            'show' => 'https://ucarecdn.com/'.$post->files->first()->uuid.'/-/scale_crop/75x75/smart/-/format/auto/-/quality/smart_retina/',
+                        ],
+                    ] : null,
                     'url' => [
                         'show' => route('post.show', [
                             'vault' => $journal->vault_id,

@@ -4,6 +4,7 @@ namespace App\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
 use App\Models\File;
 use App\Models\Journal;
+use App\Models\Post;
 
 class JournalPhotoIndexViewHelper
 {
@@ -21,7 +22,7 @@ class JournalPhotoIndexViewHelper
         $photos = collect([]);
         foreach ($posts as $post) {
             foreach ($post->files as $photo) {
-                $photos->push(self::dto($photo));
+                $photos->push(self::dto($photo, $post));
             }
         }
 
@@ -39,12 +40,17 @@ class JournalPhotoIndexViewHelper
         ];
     }
 
-    public static function dto(File $file): array
+    public static function dto(File $file, Post $post): array
     {
         return [
             'id' => $file->id,
             'name' => $file->name,
             'url' => [
+                'post' => route('post.show', [
+                    'vault' => $post->journal->vault_id,
+                    'journal' => $post->journal->id,
+                    'post' => $post->id,
+                ]),
                 'display' => 'https://ucarecdn.com/'.$file->uuid.'/-/scale_crop/200x200/smart/-/format/auto/-/quality/smart_retina/',
             ],
         ];

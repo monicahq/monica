@@ -177,14 +177,24 @@ const destroy = () => {
                         <span class="text-xl">{{ post.written_at_day_number }}</span>
                       </div>
 
-                      <!-- content -->
-                      <div>
-                        <span
-                          ><inertia-link :href="post.url.show" class="text-blue-500 hover:underline">{{
-                            post.title
-                          }}</inertia-link></span
-                        >
-                        <p v-if="post.excerpt">{{ post.excerpt }}</p>
+                      <!-- title -->
+                      <div class="flex w-full items-center justify-between">
+                        <!-- title and excerpt -->
+                        <div>
+                          <span
+                            ><inertia-link :href="post.url.show" class="text-blue-500 hover:underline">{{
+                              post.title
+                            }}</inertia-link></span
+                          >
+                          <p v-if="post.excerpt">{{ post.excerpt }}</p>
+                        </div>
+
+                        <!-- photo -->
+                        <div
+                          v-if="post.photo"
+                          class="mr-2 rounded-md border border-gray-200 p-1 shadow-sm hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                          <img :src="post.photo.url.show" :alt="post.photo.id" />
+                        </div>
                       </div>
                     </li>
                   </ul>

@@ -54,6 +54,7 @@ class JournalPhotoIndexViewHelperTest extends TestCase
                     'id' => $file->id,
                     'name' => $file->name,
                     'url' => [
+                        'post' => env('APP_URL').'/vaults/'.$post->journal->vault_id.'/journals/'.$post->journal_id.'/posts/'.$post->id,
                         'display' => 'https://ucarecdn.com/'.$file->uuid.'/-/scale_crop/200x200/smart/-/format/auto/-/quality/smart_retina/',
                     ],
                 ],
@@ -69,20 +70,23 @@ class JournalPhotoIndexViewHelperTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_the_posts_in_the_given_year(): void
+    public function it_gets_the_photo_data_transfer_object(): void
     {
         $file = File::factory()->create([
             'size' => 123,
             'uuid' => 123,
         ]);
+        $post = Post::factory()->create();
+        $post->files()->save($file);
 
-        $array = JournalPhotoIndexViewHelper::dto($file);
+        $array = JournalPhotoIndexViewHelper::dto($file, $post);
 
         $this->assertEquals(
             [
                 'id' => $file->id,
                 'name' => $file->name,
                 'url' => [
+                    'post' => env('APP_URL').'/vaults/'.$post->journal->vault_id.'/journals/'.$post->journal_id.'/posts/'.$post->id,
                     'display' => 'https://ucarecdn.com/'.$file->uuid.'/-/scale_crop/200x200/smart/-/format/auto/-/quality/smart_retina/',
                 ],
             ],

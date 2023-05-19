@@ -93,8 +93,10 @@ defineProps({
           <div
             v-for="photo in data.photos"
             :key="photo.id"
-            class="me-2 cursor-pointer rounded-md border border-gray-200 p-2 shadow-sm hover:bg-slate-50 hover:shadow-lg dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-            <img :src="photo.url.display" :alt="photo.name" />
+            class="mr-2 cursor-pointer rounded-md border border-gray-200 p-2 shadow-sm hover:bg-slate-50 hover:shadow-lg dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+            <inertia-link :href="photo.url.post">
+              <img :src="photo.url.display" :alt="photo.name" />
+            </inertia-link>
           </div>
         </div>
 
