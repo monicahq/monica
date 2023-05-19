@@ -19,9 +19,9 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'not_authorized' => 'You are not authorized to execute this action',
+    'failed' => 'Такий обліковий запис не знайдено.',
+    'throttle' => 'Забагато невдалих спроб входу. Будь ласка, повторіть спробу через :seconds секунд.',
+    'not_authorized' => 'Ви не маєте права виконувати цю дію',
     'signup_disabled' => 'Registration is currently disabled',
     'signup_error' => 'An error occured trying to register the user',
     'back_homepage' => 'Back to homepage',
