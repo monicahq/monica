@@ -58,6 +58,7 @@ jobs:
           labels: ${{ steps.docker_meta.outputs.labels }}
           file: scripts/docker/Dockerfile
           context: .
+          platforms: linux/amd64,linux/arm64
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
