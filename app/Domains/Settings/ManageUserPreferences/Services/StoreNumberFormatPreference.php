@@ -5,6 +5,7 @@ namespace App\Domains\Settings\ManageUserPreferences\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\User;
 use App\Services\BaseService;
+use Illuminate\Validation\Rule;
 
 class StoreNumberFormatPreference extends BaseService implements ServiceInterface
 {
@@ -18,7 +19,11 @@ class StoreNumberFormatPreference extends BaseService implements ServiceInterfac
         return [
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
-            'number_format' => 'required|string|max:255',
+            'number_format' => [
+                'required',
+                'string',
+                Rule::in(User::NUMBER_FORMAT_TYPES),
+            ],
         ];
     }
 

@@ -25,7 +25,7 @@ return new class() extends Migration
             $table->string('name_order')->default('%first_name% %last_name%');
             $table->string('date_format')->default('MMM DD, YYYY');
             $table->string('timezone')->nullable();
-            $table->string('number_format')->default(User::NUMBER_FORMAT_TYPE_COMMA_THOUSANDS_DOT_DECIMAL);
+            $table->string('number_format', 8)->default(User::NUMBER_FORMAT_TYPE_LOCALE_DEFAULT);
             $table->string('default_map_site')->default(User::MAPS_SITE_OPEN_STREET_MAPS);
             $table->string('distance_format')->default(User::DISTANCE_UNIT_MILES);
             $table->boolean('is_account_administrator')->default(false);

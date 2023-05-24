@@ -50,7 +50,7 @@ class StoreNumberFormatPreferenceTest extends TestCase
         $request = [
             'account_id' => $account->id,
             'author_id' => $author->id,
-            'number_format' => 'Y',
+            'number_format' => User::NUMBER_FORMAT_TYPE_COMMA_THOUSANDS_DOT_DECIMAL,
         ];
 
         $user = (new StoreNumberFormatPreference())->execute($request);
@@ -58,7 +58,7 @@ class StoreNumberFormatPreferenceTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
             'account_id' => $account->id,
-            'number_format' => 'Y',
+            'number_format' => User::NUMBER_FORMAT_TYPE_COMMA_THOUSANDS_DOT_DECIMAL,
         ]);
 
         $this->assertInstanceOf(

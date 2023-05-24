@@ -209,11 +209,8 @@
             <div class="flex items-center justify-between">
               <div>
                 <span class="me-2 block">
-                  <span v-if="loan.amount_lent" class="me-2">
-                    <span v-if="loan.currency_name" class="me-1 text-gray-500">
-                      {{ loan.currency_name }}
-                    </span>
-                    {{ loan.amount_lent }}
+                  <span v-if="loan.amount_full" class="me-2">
+                    {{ loan.amount_full }}
                     <span class="ms-2"> • </span>
                   </span>
                   {{ loan.name }}
@@ -502,11 +499,11 @@ export default {
     showEditLoanModal(loan) {
       this.getCurrencies();
       this.form.errors = [];
-      this.form.type = loan.amount_lent ? 'monetary' : 'object';
+      this.form.type = loan.amount_lent_input ? 'monetary' : 'object';
       this.form.name = loan.name;
       this.form.description = loan.description;
       this.form.loaned_at = loan.loaned_at;
-      this.form.amount_lent = loan.amount_lent_int;
+      this.form.amount_lent = loan.amount_lent_input;
       this.form.currency_id = loan.currency_id;
       this.form.loaners = loan.loaners;
       this.form.loanees = loan.loanees;
@@ -532,7 +529,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash($t('The loan has been created'), 'success');
+          this.flash(this.$t('The loan has been created'), 'success');
           this.localLoans.unshift(response.data.data);
           this.loadingState = '';
           this.createLoanModalShown = false;
@@ -550,7 +547,7 @@ export default {
         .put(loan.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash($t('The loan has been edited'), 'success');
+          this.flash(this.$t('The loan has been edited'), 'success');
           this.localLoans[this.localLoans.findIndex((x) => x.id === loan.id)] = response.data.data;
           this.editedLoanId = 0;
         })

@@ -29,11 +29,28 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     /**
      * Possible number format types.
      */
+    /** Locale default */
+    public const NUMBER_FORMAT_TYPE_LOCALE_DEFAULT = 'locale';
+
+    /** English version */
     public const NUMBER_FORMAT_TYPE_COMMA_THOUSANDS_DOT_DECIMAL = '1,234.56';
 
+    /** French version */
     public const NUMBER_FORMAT_TYPE_SPACE_THOUSANDS_COMMA_DECIMAL = '1 234,56';
 
+    /** German version */
+    public const NUMBER_FORMAT_TYPE_DOT_THOUSANDS_COMMA_DECIMAL = '1.234,56';
+
+    /** Exchange version */
     public const NUMBER_FORMAT_TYPE_NO_SPACE_DOT_DECIMAL = '1234.56';
+
+    public const NUMBER_FORMAT_TYPES = [
+        self::NUMBER_FORMAT_TYPE_LOCALE_DEFAULT,
+        self::NUMBER_FORMAT_TYPE_COMMA_THOUSANDS_DOT_DECIMAL,
+        self::NUMBER_FORMAT_TYPE_SPACE_THOUSANDS_COMMA_DECIMAL,
+        self::NUMBER_FORMAT_TYPE_DOT_THOUSANDS_COMMA_DECIMAL,
+        self::NUMBER_FORMAT_TYPE_NO_SPACE_DOT_DECIMAL,
+    ];
 
     /**
      * Possible maps site.

@@ -28,6 +28,7 @@
     "laravel/telescope": "^4.9",
     "laravel/tinker": "^2.7",
     "meilisearch/meilisearch-php": "^1.0",
+    "moneyphp/money": "^4.1",
     "monicahq/laravel-sabre": "^1.6",
     "naugrim/laravel-sentry-tunnel": "^1.1",
     "sentry/sentry-laravel": "^3.0",
