@@ -82,7 +82,7 @@ class JournalShowViewHelper
                     'excerpt' => $post->excerpt,
                     'written_at_day' => Str::upper(DateHelper::formatShortDay($post->written_at)),
                     'written_at_day_number' => DateHelper::formatDayNumber($post->written_at),
-                    'photo' => $post?->files?->first() ? [
+                    'photo' => optional(optional($post)->files)->first() ? [
                         'id' => $post->files->first()->id,
                         'url' => [
                             'show' => 'https://ucarecdn.com/'.$post->files->first()->uuid.'/-/scale_crop/75x75/smart/-/format/auto/-/quality/smart_retina/',

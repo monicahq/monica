@@ -6795,21 +6795,21 @@
         },
         {
             "name": "socialiteproviders/twitter",
-            "version": "4.1.1",
+            "version": "4.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SocialiteProviders/Twitter.git",
-                "reference": "e5edf2b6e3f37e64be6488111629ed5e41e645ad"
+                "reference": "54ddc36c1475bbdc111a89edee1468e3c9cf1229"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SocialiteProviders/Twitter/zipball/e5edf2b6e3f37e64be6488111629ed5e41e645ad",
-                "reference": "e5edf2b6e3f37e64be6488111629ed5e41e645ad",
+                "url": "https://api.github.com/repos/SocialiteProviders/Twitter/zipball/54ddc36c1475bbdc111a89edee1468e3c9cf1229",
+                "reference": "54ddc36c1475bbdc111a89edee1468e3c9cf1229",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": "^7.2 || ^8.0",
+                "php": "^7.4 || ^8.0",
                 "socialiteproviders/manager": "~4.0"
             },
             "type": "library",
@@ -6829,10 +6829,19 @@
                 }
             ],
             "description": "Twitter OAuth1 Provider for Laravel Socialite",
+            "keywords": [
+                "laravel",
+                "oauth",
+                "provider",
+                "socialite",
+                "twitter"
+            ],
             "support": {
-                "source": "https://github.com/SocialiteProviders/Twitter/tree/4.1.1"
+                "docs": "https://socialiteproviders.com/twitter",
+                "issues": "https://github.com/socialiteproviders/providers/issues",
+                "source": "https://github.com/socialiteproviders/providers"
             },
-            "time": "2021-01-29T05:41:11+00:00"
+            "time": "2023-05-25T23:12:53+00:00"
         },
         {
             "name": "spatie/data-transfer-object",

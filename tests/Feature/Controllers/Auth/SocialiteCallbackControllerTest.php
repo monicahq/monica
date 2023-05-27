@@ -92,7 +92,7 @@ class SocialiteCallbackControllerTest extends TestCase
 
         $response = $this->get('/auth/test/callback?code=thecode&state=state');
         $response->assertStatus(302);
-        $response->assertRedirect(config('app.url').'/vaults');
+        $response->assertRedirect(config('app.url'));
 
         $mock->assertResponses();
 
@@ -123,7 +123,7 @@ class SocialiteCallbackControllerTest extends TestCase
 
         $response = $this->get('/auth/test/callback?code=thecode&state=state');
         $response->assertStatus(302);
-        $response->assertRedirect(config('app.url').'/vaults');
+        $response->assertRedirect(config('app.url'));
 
         $mock->assertResponses();
 

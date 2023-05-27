@@ -50,7 +50,7 @@ class AcceptInvitationController extends Controller
         Auth::login($user);
 
         return response()->json([
-            'data' => route('vault.index'),
+            'data' => route('home'),
         ], 200);
     }
 }

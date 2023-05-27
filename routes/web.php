@@ -151,7 +151,7 @@ Route::get('/', function () {
         return Redirect::route('login');
     }
     if (($vaults = Auth::user()->vaults)->count() === 1) {
-        return Redirect::route('vault.show', $vaults->first());
+        return Redirect::intended(route('vault.show', $vaults->first()));
     }
 
     return Redirect::intended(RouteServiceProvider::HOME);
