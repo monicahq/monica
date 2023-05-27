@@ -931,6 +931,7 @@
     "The document has been deleted": "ドキュメントは削除されました",
     "The email address has been deleted": "メールアドレスが削除されました",
     "The email has been added": "メールが追加されました",
+    "The email is already taken. Please choose another one.": "メールはすでに取得されています。別のものを選択してください。",
     "The gender has been created": "性別が作成されました",
     "The gender has been deleted": "性別は削除されました",
     "The gender has been updated": "性別を更新しました",

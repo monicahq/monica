@@ -931,6 +931,7 @@
     "The document has been deleted": "O documento foi excluído",
     "The email address has been deleted": "O endereço de e-mail foi excluído",
     "The email has been added": "O e-mail foi adicionado",
+    "The email is already taken. Please choose another one.": "O e-mail já está em uso. Por favor escolha outro.",
     "The gender has been created": "O gênero foi criado",
     "The gender has been deleted": "O gênero foi excluído",
     "The gender has been updated": "O gênero foi atualizado",

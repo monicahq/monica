@@ -931,6 +931,7 @@
     "The document has been deleted": "Dokumentet er slettet",
     "The email address has been deleted": "E-postadressen er slettet",
     "The email has been added": "E-posten er lagt til",
+    "The email is already taken. Please choose another one.": "E-posten er allerede tatt. Vennligst velg en annen.",
     "The gender has been created": "Kjønnet er skapt",
     "The gender has been deleted": "Kjønnet er slettet",
     "The gender has been updated": "Kjønn er oppdatert",

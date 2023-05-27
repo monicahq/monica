@@ -62,7 +62,7 @@ class CreateUserNotificationChannel extends BaseService implements ServiceInterf
             ->exists();
 
         if ($exists) {
-            throw new EmailAlreadyExistException('The email is already taken. Please choose another one.');
+            throw new EmailAlreadyExistException(trans('The email is already taken. Please choose another one.'));
         }
     }
 

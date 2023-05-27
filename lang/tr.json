@@ -931,6 +931,7 @@
     "The document has been deleted": "belge silindi",
     "The email address has been deleted": "E-posta adresi silindi",
     "The email has been added": "E-posta eklendi",
+    "The email is already taken. Please choose another one.": "E-posta zaten alınmış. Lütfen başka birini seçiniz.",
     "The gender has been created": "Cinsiyet oluşturuldu",
     "The gender has been deleted": "Cinsiyet silindi",
     "The gender has been updated": "Cinsiyet güncellendi",

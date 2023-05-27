@@ -931,6 +931,7 @@
     "The document has been deleted": "दस्तावेज़ हटा दिया गया है",
     "The email address has been deleted": "ईमेल पता हटा दिया गया है",
     "The email has been added": "ईमेल जोड़ा गया है",
+    "The email is already taken. Please choose another one.": "ईमेल पहले ही ले लिया गया है। कृपया करके दूसरा चुनो।",
     "The gender has been created": "लिंग बनाया गया है",
     "The gender has been deleted": "लिंग हटा दिया गया है",
     "The gender has been updated": "लिंग अद्यतन किया गया है",

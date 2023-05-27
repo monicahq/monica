@@ -931,6 +931,7 @@
     "The document has been deleted": "Документ был удален",
     "The email address has been deleted": "Адрес электронной почты был удален",
     "The email has been added": "Электронная почта была добавлена",
+    "The email is already taken. Please choose another one.": "Электронная почта уже занята. Пожалуйста, выберите другой.",
     "The gender has been created": "Пол был создан",
     "The gender has been deleted": "Пол был удален",
     "The gender has been updated": "Пол был обновлен",

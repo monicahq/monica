@@ -931,6 +931,7 @@
     "The document has been deleted": "El document s'ha suprimit",
     "The email address has been deleted": "S'ha suprimit l'adreça de correu electrònic",
     "The email has been added": "S'ha afegit el correu electrònic",
+    "The email is already taken. Please choose another one.": "El correu electrònic ja està pres. Si us plau, trieu-ne un altre.",
     "The gender has been created": "S'ha creat el gènere",
     "The gender has been deleted": "S'ha suprimit el gènere",
     "The gender has been updated": "S'ha actualitzat el gènere",

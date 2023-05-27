@@ -6,14 +6,8 @@ const props = defineProps({
     type: String,
     default: 'text-input-',
   },
-  inputClass: {
-    type: String,
-    default: '',
-  },
-  divOuterClass: {
-    type: String,
-    default: '',
-  },
+  inputClass: String,
+  divOuterClass: String,
   modelValue: {
     type: [String, Number],
     default: '',
@@ -26,46 +20,19 @@ const props = defineProps({
     type: String,
     default: 'input',
   },
-  placeholder: {
-    type: String,
-    default: '',
-  },
-  help: {
-    type: String,
-    default: '',
-  },
-  label: {
-    type: String,
-    default: '',
-  },
-  required: {
-    type: Boolean,
-    default: false,
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  autofocus: {
-    type: Boolean,
-    default: false,
-  },
+  placeholder: String,
+  help: String,
+  label: String,
+  required: Boolean,
+  disabled: Boolean,
+  autofocus: Boolean,
   autocomplete: {
     type: Boolean,
     default: true,
   },
-  maxlength: {
-    type: Number,
-    default: null,
-  },
-  min: {
-    type: Number,
-    default: null,
-  },
-  max: {
-    type: Number,
-    default: null,
-  },
+  maxlength: Number,
+  min: Number,
+  max: Number,
   step: {
     type: String,
     default: 'any',

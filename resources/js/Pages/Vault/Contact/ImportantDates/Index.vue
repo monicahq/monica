@@ -1,5 +1,78 @@
+<script setup>
+import { ref, onMounted, nextTick } from 'vue';
+import { trans } from 'laravel-vue-i18n';
+import { flash } from '@/methods.js';
+import Layout from '@/Shared/Layout.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import CreateOrEditImportantDate from './Partials/CreateOrEditImportantDate.vue';
+import Errors from '@/Shared/Form/Errors.vue';
+
+const props = defineProps({
+  layoutData: {
+    type: Object,
+    default: null,
+  },
+  data: {
+    type: Object,
+    default: null,
+  },
+});
+
+const editedDateId = ref(0);
+const createDateModalShown = ref(false);
+const localDates = ref([]);
+const createForm = ref(null);
+const editForm = ref([]);
+const errors = ref(null);
+
+onMounted(() => {
+  localDates.value = props.data.dates;
+});
+
+const showCreateModal = () => {
+  createDateModalShown.value = true;
+
+  nextTick(() => createForm.value.reset());
+};
+
+const updateDateModal = (date) => {
+  editedDateId.value = date.id;
+
+  nextTick(() => {
+    editForm.value[0].reset();
+  });
+};
+
+const created = (date) => {
+  flash(trans('The date has been added'), 'success');
+  localDates.value.unshift(date);
+  createDateModalShown.value = false;
+};
+
+const updated = (date) => {
+  flash(trans('The date has been updated'), 'success');
+  localDates.value[localDates.value.findIndex((x) => x.id === date.id)] = date;
+  editedDateId.value = 0;
+};
+
+const destroy = (date) => {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
+    axios
+      .delete(date.url.destroy)
+      .then(() => {
+        flash(trans('The date has been deleted'), 'success');
+        let id = localDates.value.findIndex((x) => x.id === date.id);
+        localDates.value.splice(id, 1);
+      })
+      .catch((error) => {
+        errors.value = error.response.data;
+      });
+  }
+};
+</script>
+
 <template>
-  <layout :layout-data="layoutData" :inside-vault="true">
+  <Layout :layout-data="layoutData" :inside-vault="true">
     <!-- breadcrumb -->
     <nav class="bg-white dark:bg-gray-900 sm:mt-20 sm:border-b">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
@@ -52,541 +125,78 @@
             <span class="me-1"> 🗓 </span>
             {{ $t('All the important dates') }}
           </h3>
-          <pretty-button
-            v-if="!createDateModalShown"
-            :text="$t('Add a date')"
-            :icon="'plus'"
-            @click="showCreateModal" />
+          <PrettyButton v-if="!createDateModalShown" :text="$t('Add a date')" :icon="'plus'" @click="showCreateModal" />
         </div>
 
+        <Errors :errors="errors" />
+
         <!-- modal to create a new date -->
-        <form
+        <CreateOrEditImportantDate
           v-if="createDateModalShown"
-          class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
-          @submit.prevent="submit()">
-          <div class="border-b border-gray-200 dark:border-gray-700">
-            <div v-if="form.errors.length > 0" class="p-5">
-              <errors :errors="form.errors" />
-            </div>
+          class="mb-6"
+          :ref="'createForm'"
+          :data="data"
+          @close="createDateModalShown = false"
+          @created="created" />
 
-            <!-- name -->
-            <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-              <text-input
-                :ref="'label'"
-                v-model="form.label"
-                :label="$t('Name')"
-                :type="'text'"
-                :autofocus="true"
-                :input-class="'block w-full'"
-                :required="true"
-                :autocomplete="false"
-                :maxlength="255"
-                @esc-key-pressed="createDateModalShown = false" />
-            </div>
+        <div v-else>
+          <!-- list of dates -->
+          <ul
+            v-if="localDates.length > 0"
+            class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+            <li
+              v-for="date in localDates"
+              :key="date.id"
+              class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+              <!-- detail of the important date -->
+              <div v-if="editedDateId === 0" class="flex items-center justify-between px-5 py-2">
+                <span class="text-base">
+                  {{ date.label }}: <span class="font-medium">{{ date.date }}</span>
 
-            <!-- type -->
-            <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-              <dropdown
-                v-model="form.contact_important_date_type_id"
-                :data="data.date_types"
-                :required="false"
-                :placeholder="$t('Choose a value')"
-                :dropdown-class="'block w-full'"
-                :help="$t('Some dates have a special type that we will use in the software to calculate an age.')"
-                :label="$t('Date type')" />
-            </div>
-
-            <div class="p-5">
-              <!-- case: I know the exact date -->
-              <div class="mb-2 flex items-center">
-                <input
-                  id="full_date"
-                  v-model="form.choice"
-                  value="full_date"
-                  name="date"
-                  type="radio"
-                  class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
-                <label
-                  for="full_date"
-                  class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {{ $t('I know the exact date, including the year') }}
-                </label>
-              </div>
-              <div v-if="form.choice == 'full_date'" class="mb-4 ms-6">
-                <DatePicker
-                  v-model.string="form.date"
-                  class="inline-block h-full"
-                  :masks="masks"
-                  :isDark="isDark"
-                  :locale="$attrs.user.locale">
-                  <template #default="{ inputValue, inputEvents }">
-                    <input
-                      class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
-                      :value="inputValue"
-                      v-on="inputEvents" />
-                  </template>
-                </DatePicker>
-              </div>
-
-              <!-- case: date and month -->
-              <div class="mb-2 flex items-center">
-                <input
-                  id="month_day"
-                  v-model="form.choice"
-                  value="month_day"
-                  name="date"
-                  type="radio"
-                  class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
-                <label
-                  for="month_day"
-                  class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {{ $t('I only know the day and month, not the year') }}
-                </label>
-              </div>
-              <div v-if="form.choice == 'month_day'" class="ms-6 flex">
-                <dropdown
-                  v-model="form.month"
-                  :data="data.months"
-                  :required="true"
-                  :div-outer-class="'mb-5 me-2'"
-                  :placeholder="$t('Choose a value')"
-                  :dropdown-class="'block w-full'"
-                  :label="$t('Month')" />
-
-                <dropdown
-                  v-model="form.day"
-                  :data="data.days"
-                  :required="true"
-                  :div-outer-class="'mb-5'"
-                  :placeholder="$t('Choose a value')"
-                  :dropdown-class="'block w-full'"
-                  :label="$t('Day')" />
-              </div>
-
-              <!-- case: I know the age -->
-              <div class="mb-2 flex items-center">
-                <input
-                  id="year"
-                  v-model="form.choice"
-                  value="year"
-                  name="date"
-                  type="radio"
-                  class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700"
-                  @selected="showyear" />
-                <label
-                  for="year"
-                  class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {{ $t('I only know a number of years (an age, for example)') }}
-                </label>
-              </div>
-              <div v-if="form.choice == 'year'" class="ms-6">
-                <text-input
-                  :ref="'age'"
-                  v-model="form.age"
-                  :type="'number'"
-                  :min="0"
-                  :max="120"
-                  :autofocus="true"
-                  :input-class="'block'"
-                  :required="true"
-                  :autocomplete="false" />
-              </div>
-            </div>
-
-            <!-- reminders -->
-            <div v-if="form.choice != 'year'" class="border-t border-gray-200 p-5 dark:border-gray-700">
-              <div class="flex items-center">
-                <input
-                  id="reminder"
-                  v-model="form.reminder"
-                  name="reminder"
-                  type="checkbox"
-                  class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
-                  @click="showReminderOptions" />
-                <label for="reminder" class="ms-2 block cursor-pointer text-sm text-gray-900">
-                  {{ $t('Create a reminder') }}
-                </label>
-              </div>
-
-              <!-- reminder options -->
-              <div v-if="form.reminder" class="ms-4 mt-4">
-                <div class="mb-2 flex items-center">
-                  <input
-                    id="recurring_year"
-                    v-model="form.reminderChoice"
-                    value="recurring_year"
-                    name="reminder-frequency"
-                    type="radio"
-                    class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
-                  <label
-                    for="recurring_year"
-                    class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {{ $t('Remind me about this date every year') }}
-                  </label>
-                </div>
-
-                <div class="flex items-center">
-                  <input
-                    id="one_time"
-                    v-model="form.reminderChoice"
-                    value="one_time"
-                    name="reminder-frequency"
-                    type="radio"
-                    class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
-                  <label
-                    for="one_time"
-                    class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {{ $t('Remind me about this date just once, in one year from now') }}
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex justify-between p-5">
-            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createDateModalShown = false" />
-            <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
-          </div>
-        </form>
-
-        <!-- list of dates -->
-        <ul
-          v-if="localDates.length > 0"
-          class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-          <li
-            v-for="date in localDates"
-            :key="date.id"
-            class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-            <!-- detail of the important date -->
-            <div v-if="editedDateId !== date.id" class="flex items-center justify-between px-5 py-2">
-              <span class="text-base">
-                {{ date.label }}: <span class="font-medium">{{ date.date }}</span>
-
-                <span
-                  v-if="date.type"
-                  class="ms-2 inline-block rounded bg-neutral-200 px-1 py-0 text-xs text-neutral-500 last:me-0">
-                  {{ date.type.label }}
+                  <span
+                    v-if="date.type"
+                    class="ms-2 inline-block rounded bg-neutral-200 px-1 py-0 text-xs text-neutral-500 last:me-0">
+                    {{ date.type.label }}
+                  </span>
                 </span>
-              </span>
 
-              <!-- actions -->
-              <ul class="text-sm">
-                <li class="me-4 inline cursor-pointer" @click="updateDateModal(date)">
-                  <span class="text-blue-500 hover:underline">{{ $t('Edit') }}</span>
-                </li>
-                <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(date)">
-                  {{ $t('Delete') }}
-                </li>
-              </ul>
-            </div>
-
-            <!-- edit date modal -->
-            <form v-if="editedDateId === date.id" class="bg-gray-50 dark:bg-gray-900" @submit.prevent="update(date)">
-              <div class="border-b border-gray-200 dark:border-gray-700">
-                <div v-if="form.errors.length > 0" class="p-5">
-                  <errors :errors="form.errors" />
-                </div>
-
-                <!-- name -->
-                <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-                  <text-input
-                    :ref="'label'"
-                    v-model="form.label"
-                    :label="$t('Name')"
-                    :type="'text'"
-                    :autofocus="true"
-                    :input-class="'block w-full'"
-                    :required="true"
-                    :autocomplete="false"
-                    :maxlength="255"
-                    @esc-key-pressed="createDateModalShown = false" />
-                </div>
-
-                <!-- type -->
-                <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-                  <dropdown
-                    v-model="form.contact_important_date_type_id"
-                    :data="data.date_types"
-                    :required="false"
-                    :placeholder="$t('Choose a value')"
-                    :dropdown-class="'block w-full'"
-                    :help="$t('Some dates have a special type that we will use in the software to calculate an age.')"
-                    :label="'Date type'" />
-                </div>
-
-                <div class="p-5">
-                  <!-- case: I know the exact date -->
-                  <div class="mb-2 flex items-center">
-                    <input
-                      id="full_date"
-                      v-model="form.choice"
-                      value="full_date"
-                      name="date"
-                      type="radio"
-                      class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
-                    <label
-                      for="full_date"
-                      class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {{ $t('I know the exact date, including the year') }}
-                    </label>
-                  </div>
-                  <div v-if="form.choice == 'full_date'" class="mb-4 ms-6">
-                    <DatePicker
-                      v-model.string="form.date"
-                      class="inline-block h-full"
-                      :masks="masks"
-                      :isDark="isDark"
-                      :locale="$attrs.user.locale"
-                      :update-on-input="false">
-                      <template #default="{ inputValue, inputEvents }">
-                        <input
-                          class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
-                          :value="inputValue"
-                          v-on="inputEvents" />
-                      </template>
-                    </DatePicker>
-                  </div>
-
-                  <!-- case: date and month -->
-                  <div class="mb-2 flex items-center">
-                    <input
-                      id="month_day"
-                      v-model="form.choice"
-                      value="month_day"
-                      name="date"
-                      type="radio"
-                      class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
-                    <label
-                      for="month_day"
-                      class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {{ $t('I only know the day and month, not the year') }}
-                    </label>
-                  </div>
-                  <div v-if="form.choice == 'month_day'" class="ms-6 flex">
-                    <dropdown
-                      v-model="form.month"
-                      :data="data.months"
-                      :required="true"
-                      :div-outer-class="'mb-5 me-2'"
-                      :placeholder="$t('Choose a value')"
-                      :dropdown-class="'block w-full'"
-                      :label="$t('Month')" />
-
-                    <dropdown
-                      v-model="form.day"
-                      :data="data.days"
-                      :required="true"
-                      :div-outer-class="'mb-5'"
-                      :placeholder="$t('Choose a value')"
-                      :dropdown-class="'block w-full'"
-                      :label="$t('Day')" />
-                  </div>
-
-                  <!-- case: I know the age -->
-                  <div class="mb-2 flex items-center">
-                    <input
-                      id="year"
-                      v-model="form.choice"
-                      value="year"
-                      name="date"
-                      type="radio"
-                      class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700"
-                      @selected="showAge" />
-                    <label
-                      for="year"
-                      class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {{ $t('I only know a number of years (an age, for example)') }}
-                    </label>
-                  </div>
-                  <div v-if="form.choice == 'year'" class="ms-6">
-                    <text-input
-                      :ref="'age'"
-                      v-model="form.age"
-                      :type="'number'"
-                      :min="0"
-                      :max="120"
-                      :autofocus="true"
-                      :input-class="'block'"
-                      :required="true"
-                      :autocomplete="false" />
-                  </div>
-                </div>
+                <!-- actions -->
+                <ul class="text-sm">
+                  <li class="me-4 inline cursor-pointer" @click="updateDateModal(date)">
+                    <span class="text-blue-500 hover:underline">{{ $t('Edit') }}</span>
+                  </li>
+                  <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(date)">
+                    {{ $t('Delete') }}
+                  </li>
+                </ul>
               </div>
 
-              <div class="flex justify-between p-5">
-                <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="editedDateId = 0" />
-                <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
-              </div>
-            </form>
-          </li>
-        </ul>
+              <!-- edit date modal -->
+              <CreateOrEditImportantDate
+                :ref="'editForm'"
+                :date="date"
+                v-if="editedDateId === date.id"
+                :data="data"
+                @close="editedDateId = 0"
+                @update:date="updated" />
+            </li>
+          </ul>
 
-        <!-- blank state -->
-        <div
-          v-if="localDates.length == 0"
-          class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-          <p class="p-5 text-center">
-            {{
-              $t(
-                'Add an important date to remember what matters to you about this person, like a birthdate or a deceased date.',
-              )
-            }}
-          </p>
+          <!-- blank state -->
+          <div v-else class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+            <p class="p-5 text-center">
+              {{
+                $t(
+                  'Add an important date to remember what matters to you about this person, like a birthdate or a deceased date.',
+                )
+              }}
+            </p>
+          </div>
         </div>
       </div>
     </main>
-  </layout>
+  </Layout>
 </template>
-
-<script>
-import { DatePicker } from 'v-calendar';
-import 'v-calendar/style.css';
-import Layout from '@/Shared/Layout.vue';
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
-import PrettySpan from '@/Shared/Form/PrettySpan.vue';
-import TextInput from '@/Shared/Form/TextInput.vue';
-import Dropdown from '@/Shared/Form/Dropdown.vue';
-import Errors from '@/Shared/Form/Errors.vue';
-
-export default {
-  components: {
-    DatePicker,
-    Layout,
-    PrettyButton,
-    PrettySpan,
-    Dropdown,
-    TextInput,
-    Errors,
-  },
-
-  props: {
-    layoutData: {
-      type: Object,
-      default: null,
-    },
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-
-  data() {
-    return {
-      loadingState: '',
-      editedDateId: 0,
-      createDateModalShown: false,
-      localDates: [],
-      masks: {
-        modelValue: 'YYYY-MM-DD',
-      },
-      form: {
-        choice: '',
-        month: '',
-        day: '',
-        label: '',
-        date: '',
-        age: '',
-        contact_important_date_type_id: null,
-        reminder: false,
-        reminderChoice: '',
-        errors: [],
-      },
-    };
-  },
-
-  mounted() {
-    this.localDates = this.data.dates;
-  },
-
-  methods: {
-    showCreateModal() {
-      this.form.label = '';
-      this.form.choice = 'full_date';
-      this.form.day = '';
-      this.form.month = '';
-      this.form.date = '';
-      this.form.age = '';
-      this.createDateModalShown = true;
-
-      this.$nextTick(() => {
-        this.$refs.label.focus();
-      });
-    },
-
-    updateDateModal(date) {
-      this.form.label = date.label;
-      this.form.choice = date.choice;
-      this.form.day = date.day;
-      this.form.month = date.month;
-      this.form.date = date.completeDate;
-      this.form.age = date.age;
-      this.form.contact_important_date_type_id = date.type ? date.type.id : 0;
-      this.editedDateId = date.id;
-    },
-
-    showAge() {
-      this.$nextTick(() => {
-        this.$refs.age.focus();
-      });
-    },
-
-    showReminderOptions() {
-      this.form.reminder = true;
-      this.form.reminderChoice = 'recurring_year';
-    },
-
-    submit() {
-      this.loadingState = 'loading';
-
-      axios
-        .post(this.data.url.store, this.form)
-        .then((response) => {
-          this.flash(this.$t('The date has been added'), 'success');
-          this.localDates.unshift(response.data.data);
-          this.loadingState = null;
-          this.createDateModalShown = false;
-        })
-        .catch((error) => {
-          this.loadingState = null;
-          this.form.errors = error.response.data;
-        });
-    },
-
-    update(date) {
-      this.loadingState = 'loading';
-
-      axios
-        .put(date.url.update, this.form)
-        .then((response) => {
-          this.flash(this.$t('The date has been updated'), 'success');
-          this.localDates[this.localDates.findIndex((x) => x.id === date.id)] = response.data.data;
-          this.loadingState = null;
-          this.editedDateId = 0;
-        })
-        .catch((error) => {
-          this.loadingState = null;
-          this.form.errors = error.response.data;
-        });
-    },
-
-    destroy(date) {
-      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
-        axios
-          .delete(date.url.destroy)
-          .then(() => {
-            this.flash(this.$t('The date has been deleted'), 'success');
-            var id = this.localDates.findIndex((x) => x.id === date.id);
-            this.localDates.splice(id, 1);
-          })
-          .catch((error) => {
-            this.loadingState = null;
-            this.form.errors = error.response.data;
-          });
-      }
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .item-list {

@@ -932,6 +932,7 @@
     "The document has been deleted": "文档已被删除",
     "The email address has been deleted": "电子邮件地址已被删除",
     "The email has been added": "邮箱已添加",
+    "The email is already taken. Please choose another one.": "电子邮件已被占用。请选择另一个。",
     "The gender has been created": "性别已创建",
     "The gender has been deleted": "性别已删除",
     "The gender has been updated": "性别已更新",

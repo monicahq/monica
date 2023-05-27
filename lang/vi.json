@@ -931,6 +931,7 @@
     "The document has been deleted": "Tài liệu đã bị xóa",
     "The email address has been deleted": "Địa chỉ email đã bị xóa",
     "The email has been added": "Email đã được thêm vào",
+    "The email is already taken. Please choose another one.": "Email đã được sử dụng. Vui lòng chọn cái khác.",
     "The gender has been created": "Giới tính đã được tạo",
     "The gender has been deleted": "Giới tính đã bị xóa",
     "The gender has been updated": "Giới tính đã được cập nhật",
