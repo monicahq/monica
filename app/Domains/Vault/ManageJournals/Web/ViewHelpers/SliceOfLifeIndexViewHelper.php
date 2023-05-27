@@ -11,8 +11,8 @@ class SliceOfLifeIndexViewHelper
     public static function data(Journal $journal): array
     {
         $slices = $journal->slicesOfLife()
-            ->orderBy('name')
             ->get()
+            ->sortByCollator('name')
             ->map(fn (SliceOfLife $slice) => self::dtoSlice($slice));
 
         return [

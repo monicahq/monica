@@ -12,16 +12,12 @@ class PersonalizeCallReasonsIndexViewHelper
     {
         $callReasonTypes = $account->callReasonTypes()
             ->with('callReasons')
-            ->orderBy('label', 'asc')
-            ->get();
-
-        $collection = collect();
-        foreach ($callReasonTypes as $type) {
-            $collection->push(self::dtoReasonType($type));
-        }
+            ->get()
+            ->sortByCollator('label')
+            ->map(fn (CallReasonType $type) => self::dtoReasonType($type));
 
         return [
-            'call_reason_types' => $collection,
+            'call_reason_types' => $callReasonTypes,
             'url' => [
                 'settings' => route('settings.index'),
                 'personalize' => route('settings.personalize.index'),

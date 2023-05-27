@@ -12,8 +12,8 @@ class ContactShowMoveViewHelper
     {
         $vaultsCollection = $user->vaults()
             ->withCount('contacts')
-            ->orderBy('name', 'asc')
             ->get()
+            ->sortByCollator('name')
             ->filter(fn (Vault $vault) => $vault->id !== $contact->vault_id)
             ->map(fn (Vault $vault) => [
                 'id' => $vault->id,

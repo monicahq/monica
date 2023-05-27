@@ -14,8 +14,8 @@ class VaultTasksIndexViewHelper
     public static function data(Vault $vault, User $user): Collection
     {
         $contacts = $vault->contacts()
-            ->orderBy('last_name', 'asc')
-            ->get();
+            ->get()
+            ->sortByCollator('last_name');
 
         $contactsCollection = collect();
         foreach ($contacts as $contact) {

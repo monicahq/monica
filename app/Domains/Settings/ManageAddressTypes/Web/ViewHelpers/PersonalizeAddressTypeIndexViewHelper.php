@@ -9,17 +9,13 @@ class PersonalizeAddressTypeIndexViewHelper
 {
     public static function data(Account $account): array
     {
-        $addressTypes = $account->addressTypes()
-            ->orderBy('name', 'asc')
-            ->get();
-
-        $collection = collect();
-        foreach ($addressTypes as $addressType) {
-            $collection->push(self::dtoAddressType($addressType));
-        }
+        $addresses = $account->addressTypes()
+            ->get()
+            ->sortByCollator('name')
+            ->map(fn (AddressType $addressType) => self::dtoAddressType($addressType));
 
         return [
-            'address_types' => $collection,
+            'address_types' => $addresses,
             'url' => [
                 'settings' => route('settings.index'),
                 'personalize' => route('settings.personalize.index'),

@@ -2,6 +2,7 @@
 
 namespace App\Domains\Vault\ManageReports\Web\ViewHelpers;
 
+use App\Models\Address;
 use App\Models\Vault;
 use Illuminate\Support\Str;
 
@@ -19,7 +20,7 @@ class ReportAddressIndexViewHelper
             ->withCount('contacts')
             ->distinct('city')
             ->get()
-            ->map(fn ($address) => [
+            ->map(fn (Address $address) => [
                 'id' => $address->id,
                 'name' => Str::ucfirst($address->city),
                 'contacts' => $address->contacts_count,
@@ -39,7 +40,7 @@ class ReportAddressIndexViewHelper
             ->withCount('contacts')
             ->distinct('country')
             ->get()
-            ->map(fn ($address) => [
+            ->map(fn (Address $address) => [
                 'id' => $address->id,
                 'name' => Str::ucfirst($address->country),
                 'contacts' => $address->contacts_count,

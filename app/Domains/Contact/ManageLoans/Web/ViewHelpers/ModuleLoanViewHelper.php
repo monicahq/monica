@@ -41,8 +41,8 @@ class ModuleLoanViewHelper
         $loaners = $loan->loaners->unique('id');
         $loanees = $loan->loanees->unique('id');
 
-        $loanersCollection = $loaners->map(fn ($loaner) => ContactCardHelper::data($loaner));
-        $loaneesCollection = $loanees->map(fn ($loanee) => ContactCardHelper::data($loanee));
+        $loanersCollection = $loaners->map(fn (Contact $loaner) => ContactCardHelper::data($loaner));
+        $loaneesCollection = $loanees->map(fn (Contact $loanee) => ContactCardHelper::data($loanee));
 
         $currency = optional($loan->currency)->code;
 

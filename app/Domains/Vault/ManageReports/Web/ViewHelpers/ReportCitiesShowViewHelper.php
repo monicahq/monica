@@ -5,6 +5,7 @@ namespace App\Domains\Vault\ManageReports\Web\ViewHelpers;
 use App\Helpers\ContactCardHelper;
 use App\Helpers\MapHelper;
 use App\Helpers\WikipediaHelper;
+use App\Models\Address;
 use App\Models\Contact;
 use App\Models\Vault;
 use Illuminate\Support\Str;
@@ -19,7 +20,7 @@ class ReportCitiesShowViewHelper
             ->orWhere('city', Str::lcfirst($city))
             ->with('contacts')
             ->get()
-            ->map(fn ($address) => [
+            ->map(fn (Address $address) => [
                 'id' => $address->id,
                 'name' => Str::ucfirst($address->city),
                 'address' => MapHelper::getAddressAsString($address),

@@ -10,16 +10,12 @@ class PersonalizeModuleIndexViewHelper
     public static function data(Account $account): array
     {
         $modules = $account->modules()
-            ->orderBy('name', 'asc')
-            ->get();
-
-        $collection = collect();
-        foreach ($modules as $module) {
-            $collection->push(self::dtoModule($module));
-        }
+            ->get()
+            ->sortByCollator('name')
+            ->map(fn (Module $module) => self::dtoModule($module));
 
         return [
-            'modules' => $collection,
+            'modules' => $modules,
             'url' => [
                 'settings' => route('settings.index'),
                 'personalize' => route('settings.personalize.index'),

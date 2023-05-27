@@ -76,7 +76,7 @@ class JournalShowViewHelper
         $monthsCollection = collect();
         for ($month = 12; $month > 0; $month--) {
             $postsCollection = $posts->get($month, collect())
-                ->map(fn ($post) => [
+                ->map(fn (Post $post) => [
                     'id' => $post->id,
                     'title' => $post->title,
                     'excerpt' => $post->excerpt,

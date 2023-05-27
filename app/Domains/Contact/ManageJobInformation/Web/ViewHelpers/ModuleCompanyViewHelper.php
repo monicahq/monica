@@ -35,12 +35,10 @@ class ModuleCompanyViewHelper
 
     public static function list(Vault $vault, Contact $contact): Collection
     {
-        $collection = $vault->companies()->orderBy('name', 'asc')
-            ->get()->map(function ($company) use ($contact) {
-                return self::dto($company, $contact);
-            });
-
-        return $collection;
+        return $vault->companies()
+            ->get()
+            ->sortByCollator('name')
+            ->map(fn (Company $company) => self::dto($company, $contact));
     }
 
     public static function dto(Company $company, Contact $contact): array

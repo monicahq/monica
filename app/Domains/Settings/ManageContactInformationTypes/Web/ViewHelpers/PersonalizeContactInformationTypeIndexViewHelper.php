@@ -10,16 +10,12 @@ class PersonalizeContactInformationTypeIndexViewHelper
     public static function data(Account $account): array
     {
         $types = $account->contactInformationTypes()
-            ->orderBy('name', 'asc')
-            ->get();
-
-        $collection = collect();
-        foreach ($types as $type) {
-            $collection->push(self::dtoContactInformationType($type));
-        }
+            ->get()
+            ->sortByCollator('name')
+            ->map(fn (ContactInformationType $type) => self::dtoContactInformationType($type));
 
         return [
-            'contact_information_types' => $collection,
+            'contact_information_types' => $types,
             'url' => [
                 'settings' => route('settings.index'),
                 'personalize' => route('settings.personalize.index'),

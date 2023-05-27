@@ -10,8 +10,8 @@ class JournalMetricIndexViewHelper
     public static function data(Journal $journal): array
     {
         $journalMetrics = $journal->journalMetrics()
-            ->orderBy('label')
             ->get()
+            ->sortByCollator('label')
             ->map(fn (JournalMetric $journalMetric) => self::dto($journalMetric));
 
         return [

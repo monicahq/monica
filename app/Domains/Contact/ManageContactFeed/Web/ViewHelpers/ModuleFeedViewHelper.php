@@ -20,7 +20,7 @@ class ModuleFeedViewHelper
 {
     public static function data($items, User $user, Vault $vault): array
     {
-        $itemsCollection = $items->map(fn ($item) => [
+        $itemsCollection = $items->map(fn (ContactFeedItem $item) => [
             'id' => $item->id,
             'action' => $item->action,
             'author' => self::getAuthor($item, $vault),

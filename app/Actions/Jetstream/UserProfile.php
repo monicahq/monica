@@ -4,6 +4,7 @@ namespace App\Actions\Jetstream;
 
 use App\Domains\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use Illuminate\Http\Request;
+use LaravelWebauthn\Models\WebauthnKey;
 
 class UserProfile
 {
@@ -22,7 +23,7 @@ class UserProfile
             ]);
 
         $webauthnKeys = $request->user()->webauthnKeys
-            ->map(fn ($key) => [
+            ->map(fn (WebauthnKey $key) => [
                 'id' => $key->id,
                 'name' => $key->name,
                 'type' => $key->type,
@@ -34,7 +35,7 @@ class UserProfile
         $data['userTokens'] = $request->user()->userTokens()->get();
         $data['webauthnKeys'] = $webauthnKeys;
 
-        $data['locales'] = collect(config('lang-detector.languages'))->map(fn ($locale) => [
+        $data['locales'] = collect(config('lang-detector.languages'))->map(fn (string $locale) => [
             'id' => $locale,
             'name' => __('auth.lang', [], $locale),
         ]);

@@ -10,15 +10,14 @@ class CompanyIndexViewHelper
 {
     public static function data(Vault $vault): array
     {
-        $collection = $vault->companies()->orderBy('name', 'asc')
+        $companies = $vault->companies()
             ->with('contacts')
             ->get()
-            ->map(function ($company) use ($vault) {
-                return self::dto($vault, $company);
-            });
+            ->sortByCollator('name')
+            ->map(fn (Company $company) => self::dto($vault, $company));
 
         return [
-            'companies' => $collection,
+            'companies' => $companies,
         ];
     }
 

@@ -10,16 +10,12 @@ class PersonalizePetCategoriesIndexViewHelper
     public static function data(Account $account): array
     {
         $categories = $account->petCategories()
-            ->orderBy('name', 'asc')
-            ->get();
-
-        $collection = collect();
-        foreach ($categories as $petCategory) {
-            $collection->push(self::dtoPetCategory($petCategory));
-        }
+            ->get()
+            ->sortByCollator('name')
+            ->map(fn (PetCategory $petCategory) => self::dtoPetCategory($petCategory));
 
         return [
-            'pet_categories' => $collection,
+            'pet_categories' => $categories,
             'url' => [
                 'settings' => route('settings.index'),
                 'personalize' => route('settings.personalize.index'),

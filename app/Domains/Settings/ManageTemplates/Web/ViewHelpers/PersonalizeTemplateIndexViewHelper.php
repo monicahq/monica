@@ -10,16 +10,12 @@ class PersonalizeTemplateIndexViewHelper
     public static function data(Account $account): array
     {
         $templates = $account->templates()
-            ->orderBy('name', 'asc')
-            ->get();
-
-        $collection = collect();
-        foreach ($templates as $template) {
-            $collection->push(self::dtoTemplate($template));
-        }
+            ->get()
+            ->sortByCollator('name')
+            ->map(fn (Template $template) => self::dtoTemplate($template));
 
         return [
-            'templates' => $collection,
+            'templates' => $templates,
             'url' => [
                 'settings' => route('settings.index'),
                 'personalize' => route('settings.personalize.index'),

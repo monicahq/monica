@@ -135,8 +135,8 @@ class PostShowViewHelper
     private static function getTags(Post $post): Collection
     {
         return $post->tags()
-            ->orderBy('name')
             ->get()
+            ->sortByCollator('name')
             ->map(fn (Tag $tag) => [
                 'id' => $tag->id,
                 'name' => $tag->name,

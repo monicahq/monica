@@ -23,7 +23,7 @@ class AddressBookHome extends BaseAddressBookHome
     public function getChildren(): array
     {
         return collect($this->carddavBackend->getAddressBooksForUser($this->getPrincipalUri()))
-            ->map(fn ($addressBookInfo) => new AddressBook($this->carddavBackend, $addressBookInfo))
+            ->map(fn (array $addressBookInfo) => new AddressBook($this->carddavBackend, $addressBookInfo))
             ->toArray();
     }
 }

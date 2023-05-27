@@ -12,16 +12,12 @@ class PersonalizeRelationshipIndexViewHelper
     {
         $relationshipGroupTypes = $account->relationshipGroupTypes()
             ->with('types')
-            ->orderBy('name', 'asc')
-            ->get();
-
-        $collection = collect();
-        foreach ($relationshipGroupTypes as $relationshipGroupType) {
-            $collection->push(self::dtoGroupType($relationshipGroupType));
-        }
+            ->get()
+            ->sortByCollator('name')
+            ->map(fn (RelationshipGroupType $relationshipGroupType) => self::dtoGroupType($relationshipGroupType));
 
         return [
-            'group_types' => $collection,
+            'group_types' => $relationshipGroupTypes,
             'url' => [
                 'settings' => route('settings.index'),
                 'personalize' => route('settings.personalize.index'),

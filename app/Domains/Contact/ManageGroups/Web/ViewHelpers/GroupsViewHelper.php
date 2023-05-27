@@ -3,6 +3,7 @@
 namespace App\Domains\Contact\ManageGroups\Web\ViewHelpers;
 
 use App\Models\Contact;
+use App\Models\Group;
 use Illuminate\Support\Collection;
 
 class GroupsViewHelper
@@ -14,10 +15,11 @@ class GroupsViewHelper
      */
     public static function summary(Contact $contact): Collection
     {
-        $groupsInContact = $contact->groups()->with('contacts')->orderBy('name')->get();
-
-        return $groupsInContact->map(function ($group) {
-            return [
+        return $contact->groups()
+            ->with('contacts')
+            ->get()
+            ->sortByCollator('name')
+            ->map(fn (Group $group) => [
                 'id' => $group->id,
                 'name' => $group->name,
                 'url' => [
@@ -26,7 +28,6 @@ class GroupsViewHelper
                         'group' => $group->id,
                     ]),
                 ],
-            ];
-        });
+            ]);
     }
 }

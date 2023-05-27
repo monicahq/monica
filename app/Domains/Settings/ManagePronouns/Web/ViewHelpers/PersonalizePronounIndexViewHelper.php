@@ -10,16 +10,12 @@ class PersonalizePronounIndexViewHelper
     public static function data(Account $account): array
     {
         $pronouns = $account->pronouns()
-            ->orderBy('name', 'asc')
-            ->get();
-
-        $collection = collect();
-        foreach ($pronouns as $pronoun) {
-            $collection->push(self::dtoPronoun($pronoun));
-        }
+            ->get()
+            ->sortByCollator('name')
+            ->map(fn (Pronoun $pronoun) => self::dtoPronoun($pronoun));
 
         return [
-            'pronouns' => $collection,
+            'pronouns' => $pronouns,
             'url' => [
                 'settings' => route('settings.index'),
                 'personalize' => route('settings.personalize.index'),

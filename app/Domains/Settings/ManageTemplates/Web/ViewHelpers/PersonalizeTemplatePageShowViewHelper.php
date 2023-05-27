@@ -11,8 +11,8 @@ class PersonalizeTemplatePageShowViewHelper
     {
         $allModules = $templatePage->template->account->modules()
             ->where('reserved_to_contact_information', $templatePage->type === TemplatePage::TYPE_CONTACT)
-            ->orderBy('name', 'asc')
-            ->get();
+            ->get()
+            ->sortByCollator('name');
 
         // if the current page is not about contact information, we should not
         // include the modules that should only on the contact information page
@@ -21,9 +21,8 @@ class PersonalizeTemplatePageShowViewHelper
             ->orderBy('position', 'asc')
             ->get();
 
-        $modulesInAccountCollection = collect();
-        foreach ($allModules as $module) {
-            $modulesInAccountCollection->push([
+        $modulesInAccountCollection = $allModules
+            ->map(fn (Module $module) => [
                 'id' => $module->id,
                 'name' => $module->name,
                 'already_used' => $modulesInPage->contains($module),
@@ -35,12 +34,8 @@ class PersonalizeTemplatePageShowViewHelper
                     ]),
                 ],
             ]);
-        }
 
-        $modulesIntemplateCollection = collect();
-        foreach ($modulesInPage as $module) {
-            $modulesIntemplateCollection->push(self::dtoModule($templatePage, $module));
-        }
+        $modulesIntemplateCollection = $modulesInPage->map(fn (Module $module) => self::dtoModule($templatePage, $module));
 
         return [
             'page' => [

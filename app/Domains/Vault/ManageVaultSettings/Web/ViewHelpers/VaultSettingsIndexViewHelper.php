@@ -9,6 +9,7 @@ use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
 use App\Models\MoodTrackingParameter;
 use App\Models\Tag;
+use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultQuickFactsTemplate;
@@ -17,14 +18,14 @@ class VaultSettingsIndexViewHelper
 {
     public static function data(Vault $vault): array
     {
-        $templates = $vault->account->templates()->orderBy('name', 'asc')->get();
-        $templatesCollection = $templates->map(function ($template) use ($vault) {
-            return [
+        $templates = $vault->account->templates()
+            ->get()
+            ->sortByCollator('name')
+            ->map(fn (Template $template) => [
                 'id' => $template->id,
                 'name' => $template->name,
                 'is_default' => $vault->default_template_id === $template->id,
-            ];
-        });
+            ]);
 
         // users
         $usersInAccount = $vault->account->users()->whereNotNull('email_verified_at')->get();
@@ -40,10 +41,9 @@ class VaultSettingsIndexViewHelper
         // labels
         $labels = $vault->labels()
             ->withCount('contacts')
-            ->orderBy('name', 'asc')
-            ->get();
-
-        $labelsCollection = $labels->map(fn ($label) => self::dtoLabel($label));
+            ->get()
+            ->sortByCollator('name')
+            ->map(fn (Label $label) => self::dtoLabel($label));
 
         $labelColorsCollection = collect();
         $labelColorsCollection->push([
@@ -77,10 +77,9 @@ class VaultSettingsIndexViewHelper
         // tags
         $tags = $vault->tags()
             ->withCount('posts')
-            ->orderBy('name', 'asc')
-            ->get();
-
-        $tagsCollection = $tags->map(fn ($tag) => self::dtoTag($tag));
+            ->get()
+            ->sortByCollator('name')
+            ->map(fn (Tag $tag) => self::dtoTag($tag));
 
         // mood tracking parameters
         $moodTrackingParameters = $vault->moodTrackingParameters()
@@ -134,12 +133,12 @@ class VaultSettingsIndexViewHelper
             ->map(fn (VaultQuickFactsTemplate $vaultQuickFactTemplate) => self::dtoQuickFactTemplateEntry($vaultQuickFactTemplate));
 
         return [
-            'templates' => $templatesCollection,
+            'templates' => $templates,
             'users_in_vault' => $usersInVaultCollection,
             'users_in_account' => $usersInAccountCollection,
-            'labels' => $labelsCollection,
+            'labels' => $labels,
             'label_colors' => $labelColorsCollection,
-            'tags' => $tagsCollection,
+            'tags' => $tags,
             'contact_important_date_types' => $dateTypesCollection,
             'mood_tracking_parameters' => $moodTrackingParameters,
             'mood_tracking_parameter_colors' => $moodTrackingParameterColorsCollection,

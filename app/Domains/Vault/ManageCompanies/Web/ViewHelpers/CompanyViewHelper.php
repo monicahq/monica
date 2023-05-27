@@ -9,13 +9,13 @@ class CompanyViewHelper
 {
     public static function data(Vault $vault): array
     {
-        $collection = $vault->companies()->orderBy('name', 'asc')
-            ->get()->map(function ($company) use ($vault) {
-                return self::dto($vault, $company);
-            });
+        $companies = $vault->companies()
+            ->get()
+            ->sortByCollator('name')
+            ->map(fn (Company $company) => self::dto($vault, $company));
 
         return [
-            'companies' => $collection,
+            'companies' => $companies,
         ];
     }
 

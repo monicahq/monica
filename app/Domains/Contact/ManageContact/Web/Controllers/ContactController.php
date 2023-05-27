@@ -25,7 +25,7 @@ class ContactController extends Controller
 {
     public function index(Request $request, Vault $vault)
     {
-        $contacts = Contact::where('vault_id', $vault->id)
+        $contacts = $vault->contacts()
             ->where('listed', true);
 
         switch (Auth::user()->contact_sort_order) {

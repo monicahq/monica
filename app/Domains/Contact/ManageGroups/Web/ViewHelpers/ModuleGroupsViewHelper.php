@@ -13,28 +13,28 @@ class ModuleGroupsViewHelper
      */
     public static function data(Contact $contact): array
     {
-        $groupsInVault = $contact->vault->groups()->with('contacts')->orderBy('name')->get();
-        $groupsInContact = $contact->groups()->with('contacts')->orderBy('name')->get();
+        $groupsInVault = $contact->vault->groups()
+            ->with('contacts')
+            ->get()
+            ->sortByCollator('name');
+        $groupsInContact = $contact->groups()
+            ->with('contacts')
+            ->get()
+            ->sortByCollator('name');
 
         $availableGroups = $groupsInVault->diff($groupsInContact);
 
-        $availableGroupsCollection = $availableGroups->map(function ($group) use ($contact) {
-            return self::dto($contact, $group);
-        });
+        $availableGroupsCollection = $availableGroups->map(fn (Group $group) => self::dto($contact, $group));
         $availableGroupsCollection->prepend([
             'id' => 0,
             'name' => trans('+ Create a group'),
             'selected' => false,
         ]);
 
-        $groupsInContactCollection = $groupsInContact->map(function ($group) use ($contact) {
-            return self::dto($contact, $group);
-        });
+        $groupsInContactCollection = $groupsInContact->map(fn (Group $group) => self::dto($contact, $group));
 
         $groupTypes = $contact->vault->account->groupTypes()->orderBy('position')->get();
-        $groupTypesCollection = $groupTypes->map(function ($groupType) {
-            return self::dtoGroupType($groupType);
-        });
+        $groupTypesCollection = $groupTypes->map(fn (GroupType $groupType) => self::dtoGroupType($groupType));
 
         return [
             'groups' => $groupsInContactCollection,
@@ -55,8 +55,8 @@ class ModuleGroupsViewHelper
     public static function dto(Contact $contact, Group $group, bool $taken = false): array
     {
         $contacts = $group->contacts()
-            ->orderBy('first_name')
             ->get()
+            ->sortByCollator('first_name')
             ->map(function ($contact) {
                 return [
                     'id' => $contact->id,

@@ -92,32 +92,31 @@ class VaultIndexViewHelper
         $vaults = $user->vaults()
             ->where('account_id', $user->account_id)
             ->with('contacts')
-            ->orderBy('name', 'asc')
-            ->get();
+            ->get()
+            ->sortByCollator('name')
+            ->map(function (Vault $vault): array {
+                $randomContactsCollection = self::getContacts($vault);
+                $totalContactNumber = $vault->contacts->count();
 
-        $vaultCollection = $vaults->map(function (Vault $vault): array {
-            $randomContactsCollection = self::getContacts($vault);
-            $totalContactNumber = $vault->contacts->count();
-
-            return [
-                'id' => $vault->id,
-                'name' => $vault->name,
-                'description' => $vault->description,
-                'contacts' => $randomContactsCollection,
-                'remaining_contacts' => $totalContactNumber - $randomContactsCollection->count(),
-                'url' => [
-                    'show' => route('vault.show', [
-                        'vault' => $vault,
-                    ]),
-                    'settings' => route('vault.settings.index', [
-                        'vault' => $vault->id,
-                    ]),
-                ],
-            ];
-        });
+                return [
+                    'id' => $vault->id,
+                    'name' => $vault->name,
+                    'description' => $vault->description,
+                    'contacts' => $randomContactsCollection,
+                    'remaining_contacts' => $totalContactNumber - $randomContactsCollection->count(),
+                    'url' => [
+                        'show' => route('vault.show', [
+                            'vault' => $vault,
+                        ]),
+                        'settings' => route('vault.settings.index', [
+                            'vault' => $vault->id,
+                        ]),
+                    ],
+                ];
+            });
 
         return [
-            'vaults' => $vaultCollection,
+            'vaults' => $vaults,
             'url' => [
                 'vault' => [
                     'create' => route('vault.create'),

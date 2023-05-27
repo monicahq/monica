@@ -26,9 +26,9 @@ class ContactIndexViewHelper
         }
 
         $labelsCollection = $vault->labels()
-            ->orderBy('name', 'asc')
             ->withCount('contacts')
             ->get()
+            ->sortByCollator('name')
             ->filter(fn (Label $label): bool => $label->contacts_count > 0)
             ->map(fn (Label $label) => [
                 'id' => $label->id,

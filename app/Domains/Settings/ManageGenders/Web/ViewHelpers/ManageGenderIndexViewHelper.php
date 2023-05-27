@@ -10,16 +10,12 @@ class ManageGenderIndexViewHelper
     public static function data(Account $account): array
     {
         $genders = $account->genders()
-            ->orderBy('name', 'asc')
-            ->get();
-
-        $collection = collect();
-        foreach ($genders as $gender) {
-            $collection->push(self::dtoGender($gender));
-        }
+            ->get()
+            ->sortByCollator('name')
+            ->map(fn (Gender $gender) => self::dtoGender($gender));
 
         return [
-            'genders' => $collection,
+            'genders' => $genders,
             'url' => [
                 'settings' => route('settings.index'),
                 'personalize' => route('settings.personalize.index'),

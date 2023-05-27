@@ -99,7 +99,7 @@ class VaultLifeMetricsViewHelper
             ->where('life_metric_id', $lifeMetric->id)
             ->get();
 
-        $yearsCollection = $events->map(fn ($lifeMetricEvent) => [
+        $yearsCollection = $events->map(fn (LifeMetric $lifeMetricEvent) => [
             'year' => (Carbon::parse($lifeMetricEvent->pivot->created_at))->year,
         ]);
 

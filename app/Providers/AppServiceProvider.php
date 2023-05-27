@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Helpers\CollectionHelper;
 use App\Http\Controllers\Profile\WebauthnDestroyResponse;
 use App\Http\Controllers\Profile\WebauthnUpdateResponse;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -33,30 +35,50 @@ class AppServiceProvider extends ServiceProvider
             TestResponse::mixin(new TestResponseMacros);
         }
 
-        Str::macro('markdownExternalLink', function (string $string, string $class = 'underline', bool $openInNewWindow = true): string {
-            $config = [
-                'external_link' => [
-                    'internal_hosts' => config('app.url'),
-                    'html_class' => $class,
-                    'open_in_new_window' => $openInNewWindow,
-                    'nofollow' => '',
-                    'noopener' => 'external',
-                    'noreferrer' => 'external',
-                ],
-            ];
-            $environment = new Environment($config);
-            $environment->addExtension(new CommonMarkCoreExtension());
-            $environment->addExtension(new GithubFlavoredMarkdownExtension());
-            $environment->addExtension(new ExternalLinkExtension());
+        if (! Str::hasMacro('markdownExternalLink')) {
+            Str::macro('markdownExternalLink', function (string $string, string $class = 'underline', bool $openInNewWindow = true): string {
+                $config = [
+                    'external_link' => [
+                        'internal_hosts' => config('app.url'),
+                        'html_class' => $class,
+                        'open_in_new_window' => $openInNewWindow,
+                        'nofollow' => '',
+                        'noopener' => 'external',
+                        'noreferrer' => 'external',
+                    ],
+                ];
+                $environment = new Environment($config);
+                $environment->addExtension(new CommonMarkCoreExtension());
+                $environment->addExtension(new GithubFlavoredMarkdownExtension());
+                $environment->addExtension(new ExternalLinkExtension());
 
-            $converter = new MarkdownConverter($environment);
+                $converter = new MarkdownConverter($environment);
 
-            $result = (string) $converter->convert($string);
-            $result = ltrim($result, '<p>');
-            $result = rtrim($result, '</p>');
+                $result = (string) $converter->convert($string);
+                $result = ltrim($result, '<p>');
+                $result = rtrim($result, '</p>');
 
-            return $result;
-        });
+                return $result;
+            });
+        }
+
+        if (! Collection::hasMacro('sortByCollator')) {
+            Collection::macro('sortByCollator', function (callable|string $callback) {
+                /** @var Collection */
+                $collect = $this;
+
+                return CollectionHelper::sortByCollator($collect, $callback);
+            });
+        }
+
+        if (! Collection::hasMacro('sortByCollatorDesc')) {
+            Collection::macro('sortByCollatorDesc', function (callable|string $callback) {
+                /** @var Collection */
+                $collect = $this;
+
+                return CollectionHelper::sortByCollator($collect, $callback, descending: true);
+            });
+        }
 
         Builder::defaultMorphKeyType('uuid');
     }

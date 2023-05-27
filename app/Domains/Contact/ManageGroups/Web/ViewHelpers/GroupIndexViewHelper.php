@@ -15,8 +15,8 @@ class GroupIndexViewHelper
     public static function data(Vault $vault): Collection
     {
         return $vault->groups()->with('contacts')
-            ->orderBy('name')
             ->get()
+            ->sortByCollator('name')
             ->map(function (Group $group) {
                 $contactsCollection = $group->contacts()
                     ->get()

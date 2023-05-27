@@ -4,6 +4,7 @@ namespace App\Domains\Contact\ManageContactInformation\Web\ViewHelpers;
 
 use App\Models\Contact;
 use App\Models\ContactInformation;
+use App\Models\ContactInformationType;
 use App\Models\User;
 
 class ModuleContactInformationViewHelper
@@ -12,21 +13,20 @@ class ModuleContactInformationViewHelper
     {
         $infos = $contact->contactInformations()
             ->with('contactInformationType')
-            ->get();
+            ->get()
+            ->map(fn (ContactInformation $info) => self::dto($contact, $info));
 
-        $infosCollection = $infos->map(fn ($info) => self::dto($contact, $info));
-
-        $infoTypesCollection = $user->account
+        $infoTypes = $user->account
             ->contactInformationTypes()
             ->get()
-            ->map(fn ($contactInformationType) => [
+            ->map(fn (ContactInformationType $contactInformationType) => [
                 'id' => $contactInformationType->id,
                 'name' => $contactInformationType->name,
             ]);
 
         return [
-            'contact_information' => $infosCollection,
-            'contact_information_types' => $infoTypesCollection,
+            'contact_information' => $infos,
+            'contact_information_types' => $infoTypes,
             'url' => [
                 'store' => route('contact.contact_information.store', [
                     'vault' => $contact->vault_id,
