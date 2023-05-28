@@ -38,7 +38,6 @@
     "socialiteproviders/linkedin": "^4.2",
     "socialiteproviders/microsoft-azure": "^5.1",
     "socialiteproviders/twitter": "^4.1",
-    "stichoza/google-translate-php": "^5.1",
     "tightenco/ziggy": "1.5.2",
     "uploadcare/uploadcare-php": "^3.2"
   },
@@ -57,7 +56,8 @@
     "phpunit/phpunit": "^10.0",
     "psalm/plugin-laravel": "^2.0",
     "roave/security-advisories": "dev-master",
-    "spatie/laravel-ignition": "^2.0"
+    "spatie/laravel-ignition": "^2.0",
+    "stichoza/google-translate-php": "^5.1"
   },
   "autoload": {
     "psr-4": {

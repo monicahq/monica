@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Local;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;

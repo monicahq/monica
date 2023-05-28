@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Local;
 
 use App\Domains\Contact\ManageContact\Services\CreateContact;
 use App\Domains\Contact\ManageContactImportantDates\Services\CreateContactImportantDate;
