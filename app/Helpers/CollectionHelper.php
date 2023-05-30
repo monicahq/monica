@@ -37,7 +37,7 @@ class CollectionHelper
             $results[$key] = $collect->get($key);
         }
 
-        return new Collection($results);
+        return new Collection(array_values($results));
     }
 
     /**
