@@ -27,7 +27,7 @@ jobs:
           echo "version=$(composer show laravel/pint --locked --format=json | jq -r '.versions[0]' | sed 's/v//')" >> $GITHUB_OUTPUT
 
       - name: laravel-pint
-        uses: aglipanci/laravel-pint-action@2.2.0
+        uses: aglipanci/laravel-pint-action@2.3.0
         with:
           configPath: pint.json
           pintVersion: ${{ steps.pint.outputs.version }}
