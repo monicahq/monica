@@ -1,8 +1,141 @@
+<script setup>
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+import { trans } from 'laravel-vue-i18n';
+import Errors from '@/Shared/Form/Errors.vue';
+
+const props = defineProps({
+  modelValue: {
+    type: [Array],
+    default: () => [],
+  },
+  inputClass: String,
+  placeholder: {
+    type: String,
+    default: () => trans('Find a contact in this vault'),
+  },
+  label: String,
+  labelCta: {
+    type: String,
+    default: () => trans('+ Add a contact'),
+  },
+  type: {
+    type: String,
+    default: 'text',
+  },
+  required: Boolean,
+  displayMostConsultedContacts: Boolean,
+  addMultipleContacts: Boolean,
+  searchUrl: String,
+  mostConsultedContactsUrl: String,
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const searchInput = ref(null);
+const addContactMode = ref(false);
+const processingSearch = ref(false);
+const localContacts = ref(props.modelValue);
+const mostConsultedContacts = ref([]);
+const searchResults = ref([]);
+const form = useForm({
+  searchTerm: '',
+  errors: [],
+});
+
+const displayAddContactButton = computed(() => {
+  if (!props.addMultipleContacts && props.localContacts.length >= 1) {
+    return false;
+  }
+
+  return !addContactMode.value;
+});
+
+const localInputClasses = computed(() => {
+  return [
+    'ps-8 w-full rounded-md shadow-sm',
+    'bg-white dark:bg-slate-900 border-gray-300 dark:border-gray-700',
+    'focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50',
+    'disabled:bg-slate-50 disabled:dark:bg-slate-900',
+    props.inputClass,
+  ];
+});
+
+onMounted(() => {
+  if (props.displayMostConsultedContacts) {
+    lookupMostConsultedContacts();
+  }
+});
+
+watch(
+  () => props.modelValue,
+  (value) => {
+    localContacts.value = value;
+  },
+);
+
+const showAddContactMode = () => {
+  addContactMode.value = true;
+  setTimeout(() => {
+    nextTick(() => searchInput.value.focus());
+  }, 100);
+};
+
+const sendEscKey = () => {
+  addContactMode.value = false;
+};
+
+const lookupMostConsultedContacts = () => {
+  axios.get(props.mostConsultedContactsUrl).then((response) => {
+    mostConsultedContacts.value = response.data.data;
+  });
+};
+
+const add = (contact) => {
+  let id = localContacts.value.findIndex((x) => x.id === contact.id);
+
+  if (id === -1) {
+    localContacts.value.push(contact);
+    form.searchTerm = '';
+    addContactMode.value = false;
+    emit('update:modelValue', localContacts.value);
+  }
+};
+
+const remove = (contact) => {
+  let id = localContacts.value.findIndex((x) => x.id === contact.id);
+  localContacts.value.splice(id, 1);
+
+  emit('update:modelValue', localContacts.value);
+};
+
+const search = _.debounce(() => {
+  if (form.searchTerm !== '' && form.searchTerm.length >= 3) {
+    processingSearch.value = true;
+
+    axios
+      .post(props.searchUrl, form)
+      .then((response) => {
+        searchResults.value = _.filter(response.data.data, (contact) =>
+          _.every(localContacts.value, (e) => contact.id !== e.id),
+        );
+        processingSearch.value = false;
+      })
+      .catch((error) => {
+        form.errors = error.response.data;
+        processingSearch.value = false;
+      });
+  } else {
+    searchResults.value = [];
+  }
+}, 300);
+</script>
+
 <template>
-  <div :class="divOuterClass">
+  <div>
     <!-- input -->
     <div>
-      <label v-if="label" class="mb-2 block text-sm" :for="id">
+      <label v-if="label" class="mb-2 block text-sm">
         {{ label }}
         <span v-if="!required" class="optional-badge rounded px-[3px] py-px text-xs">
           {{ $t('optional') }}
@@ -55,7 +188,7 @@
         </svg>
 
         <input
-          :ref="'search'"
+          :ref="'searchInput'"
           v-model="form.searchTerm"
           :class="localInputClasses"
           :type="type"
@@ -72,10 +205,10 @@
       <!-- blank state - case where we suggest most contacted contacts in the vault -->
       <div
         v-if="
-          localContacts.length == 0 &&
+          localContacts.length === 0 &&
           displayMostConsultedContacts &&
-          searchResults.length == 0 &&
-          form.searchTerm.length == 0
+          searchResults.length === 0 &&
+          form.searchTerm.length === 0
         "
         class="mb-6">
         <p class="mb-2 mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
@@ -105,13 +238,13 @@
 
       <!-- not enough characters -->
       <div
-        v-if="form.searchTerm.length < 3 && form.searchTerm.length != 0"
+        v-if="form.searchTerm.length < 3 && form.searchTerm.length !== 0"
         class="mb-6 rounded-lg border border-gray-200 bg-white p-6 text-center text-gray-500 dark:border-gray-700 dark:bg-gray-900">
         <p>{{ $t('Please enter at least 3 characters to initiate a search.') }}</p>
       </div>
 
       <!-- search results: results found -->
-      <div v-if="searchResults.length != 0 && form.searchTerm.length != 0" class="mb-3">
+      <div v-if="searchResults.length !== 0 && form.searchTerm.length !== 0" class="mb-3">
         <errors :errors="form.errors" />
 
         <ul class="mb-4 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
@@ -131,186 +264,13 @@
 
       <!-- search results: no results found -->
       <div
-        v-if="searchResults.length == 0 && form.searchTerm.length >= 3"
+        v-if="searchResults.length === 0 && form.searchTerm.length >= 3"
         class="mb-3 rounded-lg border border-gray-200 bg-white p-6 text-center text-gray-500 dark:border-gray-700 dark:bg-gray-900">
         <p>{{ $t('No results found') }}</p>
       </div>
     </div>
   </div>
 </template>
-
-<script>
-import Errors from '@/Shared/Form/Errors.vue';
-import { trans } from 'laravel-vue-i18n';
-
-export default {
-  components: {
-    Errors,
-  },
-
-  props: {
-    modelValue: {
-      type: [Array],
-      default: () => [],
-    },
-    inputClass: {
-      type: String,
-      default: '',
-    },
-    divOuterClass: {
-      type: String,
-      default: '',
-    },
-    placeholder: {
-      type: String,
-      default: () => trans('Find a contact in this vault'),
-    },
-    label: {
-      type: String,
-      default: '',
-    },
-    labelCta: {
-      type: String,
-      default: () => trans('+ Add a contact'),
-    },
-    type: {
-      type: String,
-      default: 'text',
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    displayMostConsultedContacts: {
-      type: Boolean,
-      default: false,
-    },
-    addMultipleContacts: {
-      type: Boolean,
-      default: false,
-    },
-    searchUrl: {
-      type: String,
-      default: '',
-    },
-    mostConsultedContactsUrl: {
-      type: String,
-      default: '',
-    },
-  },
-
-  emits: ['update:modelValue'],
-
-  data() {
-    return {
-      addContactMode: false,
-      processingSearch: false,
-      localContacts: [],
-      mostConsultedContacts: [],
-      searchResults: [],
-      form: {
-        searchTerm: '',
-        errors: [],
-      },
-    };
-  },
-
-  computed: {
-    displayAddContactButton: function () {
-      if (!this.addMultipleContacts && this.localContacts.length >= 1) {
-        return false;
-      }
-
-      return !this.addContactMode;
-    },
-    localInputClasses() {
-      return [
-        'ps-8 w-full rounded-md shadow-sm',
-        'bg-white dark:bg-slate-900 border-gray-300 dark:border-gray-700',
-        'focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50',
-        'disabled:bg-slate-50 disabled:dark:bg-slate-900',
-        this.inputClass,
-      ];
-    },
-  },
-
-  created() {
-    if (this.displayMostConsultedContacts) {
-      this.lookupMostConsultedContacts();
-    }
-  },
-
-  mounted() {
-    if (this.modelValue) {
-      this.localContacts = this.modelValue;
-    }
-  },
-
-  watch: {
-    modelValue: function (value) {
-      this.localContacts = value;
-    },
-  },
-
-  methods: {
-    showAddContactMode() {
-      this.addContactMode = true;
-      this.$nextTick(() => {
-        this.$refs.search.focus();
-      });
-    },
-
-    sendEscKey() {
-      this.addContactMode = false;
-    },
-
-    lookupMostConsultedContacts() {
-      axios.get(this.mostConsultedContactsUrl).then((response) => {
-        this.mostConsultedContacts = response.data.data;
-      });
-    },
-
-    add(contact) {
-      var id = this.localContacts.findIndex((x) => x.id === contact.id);
-
-      if (id == -1) {
-        this.localContacts.push(contact);
-        this.form.searchTerm = '';
-        this.addContactMode = false;
-        this.$emit('update:modelValue', this.localContacts);
-      }
-    },
-
-    remove(contact) {
-      const id = this.localContacts.findIndex((existingContact) => existingContact.id === contact.id);
-      this.localContacts.splice(id, 1);
-
-      this.$emit('update:modelValue', this.localContacts);
-    },
-
-    search: _.debounce(function () {
-      if (this.form.searchTerm != '' && this.form.searchTerm.length >= 3) {
-        this.processingSearch = true;
-
-        axios
-          .post(this.searchUrl, this.form)
-          .then((response) => {
-            this.searchResults = _.filter(response.data.data, (contact) =>
-              _.every(this.localContacts, (e) => contact.id !== e.id),
-            );
-            this.processingSearch = false;
-          })
-          .catch((error) => {
-            this.form.errors = error.response.data;
-            this.processingSearch = false;
-          });
-      } else {
-        this.searchResults = [];
-      }
-    }, 300),
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .optional-badge {

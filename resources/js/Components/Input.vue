@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 
 defineProps({
   modelValue: String,
@@ -8,14 +8,15 @@ defineProps({
 defineEmits(['update:modelValue']);
 
 const input = ref(null);
+const focus = () => nextTick(() => input.value.focus());
 
 onMounted(() => {
   if (input.value.hasAttribute('autofocus')) {
-    input.value.focus();
+    focus();
   }
 });
 
-defineExpose({ focus: () => input.value.focus() });
+defineExpose({ focus: focus });
 </script>
 
 <template>

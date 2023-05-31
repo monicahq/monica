@@ -27,7 +27,7 @@
           :required="true"
           :autocomplete="false"
           :maxlength="255"
-          :div-outer-class="'mb-4'"
+          :class="'mb-4'"
           @esc-key-pressed="createTagModalShown = false" />
       </div>
 
@@ -85,7 +85,7 @@
               :required="true"
               :autocomplete="false"
               :maxlength="255"
-              :div-outer-class="'mb-4'"
+              :class="'mb-4'"
               @esc-key-pressed="editTagModalShownId = 0" />
           </div>
 

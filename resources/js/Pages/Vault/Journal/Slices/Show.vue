@@ -1,17 +1,17 @@
 <script setup>
+import { ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+import { trans } from 'laravel-vue-i18n';
 import Layout from '@/Shared/Layout.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { onMounted, ref } from 'vue';
-import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
   layoutData: Object,
   data: Object,
 });
 
-const localSlice = ref([]);
+const localSlice = ref(props.data.slice);
 
 const form = useForm({
   uuid: null,
@@ -20,10 +20,6 @@ const form = useForm({
   cdn_url: null,
   mime_type: null,
   size: null,
-});
-
-onMounted(() => {
-  localSlice.value = props.data.slice;
 });
 
 const upload = () => {

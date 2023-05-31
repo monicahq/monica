@@ -31,8 +31,6 @@ const nameUpdate = computed(() =>
 );
 
 onMounted(() => {
-  errorMessage.value = '';
-
   if (!webauthn.webAuthnSupport()) {
     isSupported.value = false;
     errorMessage.value = notSupportedMessage();

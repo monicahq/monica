@@ -7,7 +7,6 @@ const props = defineProps({
     default: 'text-input-',
   },
   inputClass: String,
-  divOuterClass: String,
   modelValue: {
     type: [String, Number],
     default: '',
@@ -73,7 +72,7 @@ defineExpose({
 </script>
 
 <template>
-  <div :class="divOuterClass">
+  <div>
     <label v-if="label" class="mb-2 block text-sm dark:text-gray-100" :for="id">
       {{ label }}
       <span v-if="!required" class="optional-badge rounded px-[3px] py-px text-xs">

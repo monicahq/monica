@@ -166,6 +166,7 @@ defineExpose({
             v-model.string="form.date"
             class="inline-block h-full"
             :masks="masks"
+            :locale="$page.props.user.locale"
             :is-dark="isDark()"
             :update-on-input="false">
             <template #default="{ inputValue, inputEvents }">
@@ -197,7 +198,7 @@ defineExpose({
             v-model.number="form.month"
             :data="data.months"
             :required="true"
-            :div-outer-class="'mb-5 me-2'"
+            :class="'mb-5 me-2'"
             :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
             :label="$t('Month')" />
@@ -206,7 +207,7 @@ defineExpose({
             v-model.number="form.day"
             :data="data.days"
             :required="true"
-            :div-outer-class="'mb-5'"
+            :class="'mb-5'"
             :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
             :label="$t('Day')" />

@@ -40,7 +40,7 @@
             v-model="form.company_id"
             :data="localCompanies"
             :required="false"
-            :div-outer-class="'mb-2'"
+            :class="'mb-2'"
             :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
             :label="$t('Existing company')" />

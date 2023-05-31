@@ -274,7 +274,7 @@ const store = () => {
             :timezone="'UTC'"
             class="inline-block h-full"
             :masks="masks"
-            :locale="$attrs.user.locale"
+            :locale="$page.props.user.locale"
             :is-dark="isDark()">
             <template #default="{ inputValue, inputEvents }">
               <input
@@ -305,7 +305,7 @@ const store = () => {
           :display-most-consulted-contacts="true"
           :add-multiple-contacts="true"
           :required="true"
-          :div-outer-class="'flex-1 border-gray-200 dark:border-gray-700'" />
+          :class="'flex-1 border-gray-200 dark:border-gray-700'" />
       </div>
 
       <!-- summary -->

@@ -8,7 +8,6 @@ const props = defineProps({
   },
   data: Object,
   dropdownClass: String,
-  divOuterClass: String,
   modelValue: {
     type: [String, Number],
     default: '',
@@ -37,6 +36,7 @@ const localDropdownClasses = computed(() => {
     props.dropdownClass,
   ];
 });
+
 const localData = computed(() => {
   return _.map(props.data, (value) => {
     if (_.isObject(value)) {
@@ -64,7 +64,7 @@ defineExpose({
 </script>
 
 <template>
-  <div :class="divOuterClass">
+  <div>
     <label v-if="label" class="mb-2 block text-sm" :for="id">
       {{ label }}
       <span v-if="!required" class="optional-badge rounded px-[3px] py-px text-xs">

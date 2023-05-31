@@ -1,12 +1,12 @@
 <script setup>
+import { ref, nextTick } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
 import Loading from '@/Shared/Loading.vue';
 import HoverMenu from '@/Shared/HoverMenu.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { onMounted, ref, nextTick } from 'vue';
 
 const props = defineProps({
   data: Object,
@@ -19,17 +19,11 @@ const form = useForm({
 const loading = ref(false);
 const loadingState = ref(false);
 const createQuickFactModalShown = ref(false);
-const openState = ref(false);
-const localQuickFacts = ref([]);
-const localTemplate = ref([]);
+const openState = ref(props.data.show_quick_facts);
+const localQuickFacts = ref(props.data.quick_facts.quick_facts);
+const localTemplate = ref(props.data.quick_facts.template);
 const contentField = ref(null);
 const editedQuickFactId = ref(null);
-
-onMounted(() => {
-  openState.value = props.data.show_quick_facts;
-  localQuickFacts.value = props.data.quick_facts.quick_facts;
-  localTemplate.value = props.data.quick_facts.template;
-});
 
 const toggle = () => {
   axios.put(props.data.url.toggle).then(() => {

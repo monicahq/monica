@@ -1,19 +1,19 @@
 <script setup>
+import { ref, nextTick } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+import { trans } from 'laravel-vue-i18n';
 import draggable from 'vuedraggable-es';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { onMounted, ref, nextTick } from 'vue';
-import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
   data: Object,
 });
 
 const loadingState = ref('');
-const localMoodTrackingParameters = ref([]);
+const localMoodTrackingParameters = ref(props.data.mood_tracking_parameters);
 const createMoodTrackingParametersModalShown = ref(false);
 const editMoodTrackingParameterId = ref(0);
 const newMoodTrackingParameter = ref(null);
@@ -23,10 +23,6 @@ const form = useForm({
   hex_color: '',
   position: '',
   errors: [],
-});
-
-onMounted(() => {
-  localMoodTrackingParameters.value = props.data.mood_tracking_parameters;
 });
 
 const showMoodTrackingParameterModal = () => {

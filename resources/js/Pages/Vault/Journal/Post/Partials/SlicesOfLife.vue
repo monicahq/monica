@@ -1,35 +1,23 @@
 <script setup>
+import { ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
 import Errors from '@/Shared/Form/Errors.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import Dropdown from '@/Shared/Form/Dropdown.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { onMounted, ref } from 'vue';
 
 const props = defineProps({
   data: Object,
 });
 
 const form = useForm({
-  slice_of_life_id: '',
+  slice_of_life_id: props.data.slice?.id,
 });
 
 const loadingState = ref(false);
 const editSlicesModalShown = ref(false);
-const localSlices = ref([]);
-const slice = ref({
-  id: '',
-  name: '',
-  url: {
-    show: '',
-  },
-});
-
-onMounted(() => {
-  form.slice_of_life_id = props.data.slice ? props.data.slice.id : null;
-  slice.value = props.data.slice;
-  localSlices.value = props.data.slices;
-});
+const localSlices = ref(props.data.slices);
+const slice = ref(props.data.slice);
 
 const showSliceModal = () => {
   editSlicesModalShown.value = true;
@@ -93,7 +81,7 @@ const reset = () => {
             v-model="form.slice_of_life_id"
             :data="localSlices"
             :required="false"
-            :div-outer-class="'mb-2'"
+            :class="'mb-2'"
             :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'" />
         </div>

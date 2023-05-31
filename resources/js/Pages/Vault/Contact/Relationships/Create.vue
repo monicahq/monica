@@ -150,7 +150,7 @@
                       :ref="'contactName'"
                       v-model="form.first_name"
                       :autofocus="true"
-                      :div-outer-class="'mb-5'"
+                      :class="'mb-5'"
                       :input-class="'block w-full'"
                       :required="true"
                       :maxlength="255" />
@@ -160,7 +160,7 @@
                       v-if="showLastNameField"
                       :id="'last_name'"
                       v-model="form.last_name"
-                      :div-outer-class="'mb-5'"
+                      :class="'mb-5'"
                       :input-class="'block w-full'"
                       :required="false"
                       :maxlength="255"
@@ -219,7 +219,7 @@
                       :display-most-consulted-contacts="false"
                       :add-multiple-contacts="false"
                       :required="true"
-                      :div-outer-class="'flex-1 border-gray-200 dark:border-gray-700'" />
+                      :class="'flex-1 border-gray-200 dark:border-gray-700'" />
                   </div>
                 </div>
               </div>
@@ -231,7 +231,7 @@
                 v-if="showMiddleNameField"
                 :id="'middle_name'"
                 v-model="form.middle_name"
-                :div-outer-class="'mb-5'"
+                :class="'mb-5'"
                 :input-class="'block w-full'"
                 :required="false"
                 :maxlength="255"
@@ -242,7 +242,7 @@
                 v-if="showNicknameField"
                 :id="'nickname'"
                 v-model="form.nickname"
-                :div-outer-class="'mb-5'"
+                :class="'mb-5'"
                 :input-class="'block w-full'"
                 :required="false"
                 :maxlength="255"
@@ -253,7 +253,7 @@
                 v-if="showMaidenNameField"
                 :id="'maiden_name'"
                 v-model="form.maiden_name"
-                :div-outer-class="'mb-5'"
+                :class="'mb-5'"
                 :input-class="'block w-full'"
                 :required="false"
                 :maxlength="255"
@@ -265,7 +265,7 @@
                 v-model="form.gender_id"
                 :data="data.genders"
                 :required="false"
-                :div-outer-class="'mb-5'"
+                :class="'mb-5'"
                 :placeholder="$t('Choose a value')"
                 :dropdown-class="'block w-full'"
                 :label="$t('Gender')" />
@@ -276,7 +276,7 @@
                 v-model="form.pronoun_id"
                 :data="data.pronouns"
                 :required="false"
-                :div-outer-class="'mb-5'"
+                :class="'mb-5'"
                 :placeholder="$t('Choose a value')"
                 :dropdown-class="'block w-full'"
                 :label="$t('Pronoun')" />

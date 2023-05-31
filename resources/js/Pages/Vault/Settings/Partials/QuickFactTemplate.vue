@@ -1,11 +1,11 @@
 <script setup>
+import { ref, nextTick } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 import draggable from 'vuedraggable-es';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { onMounted, ref, nextTick } from 'vue';
 
 const props = defineProps({
   data: Object,
@@ -14,17 +14,13 @@ const props = defineProps({
 const loadingState = ref(false);
 const createEntryModalShown = ref(false);
 const editEntryId = ref(0);
-const localEntries = ref([]);
+const localEntries = ref(props.data.quick_fact_templates);
 const newEntry = ref(null);
 
 const form = useForm({
   label: '',
   position: '',
   errors: [],
-});
-
-onMounted(() => {
-  localEntries.value = props.data.quick_fact_templates;
 });
 
 const showAddEntryModal = () => {

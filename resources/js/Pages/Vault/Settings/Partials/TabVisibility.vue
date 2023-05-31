@@ -1,29 +1,18 @@
 <script setup>
 import { useForm } from '@inertiajs/inertia-vue3';
-import { onMounted } from 'vue';
 
 const props = defineProps({
   data: Object,
 });
 
 const form = useForm({
-  show_group_tab: false,
-  show_tasks_tab: false,
-  show_files_tab: false,
-  show_journal_tab: false,
-  show_companies_tab: false,
-  show_reports_tab: false,
-  show_calendar_tab: false,
-});
-
-onMounted(() => {
-  form.show_group_tab = props.data.visibility.show_group_tab;
-  form.show_tasks_tab = props.data.visibility.show_tasks_tab;
-  form.show_files_tab = props.data.visibility.show_files_tab;
-  form.show_journal_tab = props.data.visibility.show_journal_tab;
-  form.show_companies_tab = props.data.visibility.show_companies_tab;
-  form.show_reports_tab = props.data.visibility.show_reports_tab;
-  form.show_calendar_tab = props.data.visibility.show_calendar_tab;
+  show_group_tab: props.data.visibility.show_group_tab,
+  show_tasks_tab: props.data.visibility.show_tasks_tab,
+  show_files_tab: props.data.visibility.show_files_tab,
+  show_journal_tab: props.data.visibility.show_journal_tab,
+  show_companies_tab: props.data.visibility.show_companies_tab,
+  show_reports_tab: props.data.visibility.show_reports_tab,
+  show_calendar_tab: props.data.visibility.show_calendar_tab,
 });
 
 const update = () => {

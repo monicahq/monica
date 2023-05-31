@@ -1,11 +1,11 @@
 <script setup>
+import { onMounted, ref } from 'vue';
+import { trans } from 'laravel-vue-i18n';
 import Loading from '@/Shared/Loading.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
 import HoverMenu from '@/Shared/HoverMenu.vue';
 import CreateLifeEvent from '@/Shared/Modules/CreateLifeEvent.vue';
-import { onMounted, ref } from 'vue';
-import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
   layoutData: Object,
@@ -13,18 +13,12 @@ const props = defineProps({
 });
 
 const createLifeEventModalShown = ref(false);
-const loadingData = ref(false);
+const loadingData = ref(true);
 const paginator = ref([]);
 const localTimelines = ref([]);
 const showAddLifeEventModalForTimelineEventId = ref(0);
 
 onMounted(() => {
-  initialLoad();
-});
-
-const initialLoad = () => {
-  loadingData.value = true;
-
   axios
     .get(props.data.url.load)
     .then((response) => {
@@ -35,7 +29,7 @@ const initialLoad = () => {
       paginator.value = response.data.paginator;
     })
     .catch(() => {});
-};
+});
 
 const loadMore = () => {
   axios
@@ -366,7 +360,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
       </div>
 
       <!-- loading mode -->
-      <div v-if="loadingData" class="mb-5 rounded-lg border border-gray-200 p-20 text-center">
+      <div v-if="loadingData" class="mb-5 rounded-lg border border-gray-200 p-20 text-center dark:border-gray-700">
         <loading />
       </div>
 

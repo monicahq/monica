@@ -1,12 +1,12 @@
 <script setup>
+import { ref, nextTick } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+import { trans } from 'laravel-vue-i18n';
 import draggable from 'vuedraggable-es';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { onMounted, ref, nextTick } from 'vue';
-import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
   data: Object,
@@ -18,7 +18,7 @@ const createLifeEventTypeModalShown = ref(false);
 const lifeEventCategoryId = ref(0);
 const editLifeEventCategoryId = ref(0);
 const editLifeEventTypeId = ref(0);
-const localLifeEventCategories = ref([]);
+const localLifeEventCategories = ref(props.data.life_event_categories);
 const newLifeEventCategory = ref(null);
 const newLifeEventType = ref(null);
 
@@ -26,10 +26,6 @@ const form = useForm({
   label: '',
   position: '',
   errors: [],
-});
-
-onMounted(() => {
-  localLifeEventCategories.value = props.data.life_event_categories;
 });
 
 const showCreateLifeEventCategoryModal = () => {

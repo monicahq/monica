@@ -1,4 +1,6 @@
 <script setup>
+import { ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
@@ -7,8 +9,6 @@ import Dropdown from '@/Shared/Form/Dropdown.vue';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 import JetDangerButton from '@/Components/Jetstream/DangerButton.vue';
 import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
-import { onMounted, ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
 
 const props = defineProps({
   layoutData: Object,
@@ -18,10 +18,10 @@ const props = defineProps({
 const loadingState = ref('');
 const createAddressModalShown = ref(false);
 const inactiveAddressesShown = ref(false);
-const localActiveAddresses = ref([]);
-const localInactiveAddresses = ref([]);
+const localActiveAddresses = ref(props.data.active_addresses);
+const localInactiveAddresses = ref(props.data.inactive_addresses);
 const editedAddressId = ref(0);
-const choiceChooseExisting = ref(true);
+const choiceChooseExisting = ref(props.data.active_addresses.length > 0);
 const deleteAddressModalShown = ref(false);
 const processAddressDeletion = ref(false);
 const addressToDelete = ref(null);
@@ -39,16 +39,6 @@ const form = useForm({
   postal_code: '',
   country: '',
   errors: [],
-});
-
-onMounted(() => {
-  localActiveAddresses.value = props.data.active_addresses;
-  localInactiveAddresses.value = props.data.inactive_addresses;
-  if (props.data.active_addresses.length > 0) {
-    choiceChooseExisting.value = true;
-  } else {
-    choiceChooseExisting.value = false;
-  }
 });
 
 const showCreateAddressModal = () => {

@@ -1,3 +1,152 @@
+<script setup>
+import { ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+import { flash } from '@/methods';
+import { trans } from 'laravel-vue-i18n';
+import { DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
+import HoverMenu from '@/Shared/HoverMenu.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrettySpan from '@/Shared/Form/PrettySpan.vue';
+import TextArea from '@/Shared/Form/TextArea.vue';
+import Errors from '@/Shared/Form/Errors.vue';
+
+const props = defineProps({
+  data: Object,
+});
+
+const createCallModalShown = ref(false);
+const localCalls = ref(props.data.calls);
+const loadingState = ref('');
+const editedCallId = ref(0);
+const descriptionFieldShown = ref(false);
+const reasonFieldShown = ref(false);
+const emotionFieldShown = ref(false);
+const masks = ref({
+  modelValue: 'YYYY-MM-DD',
+});
+const form = useForm({
+  who_initiated: 'me',
+  called_at: '',
+  call_reason_id: 0,
+  description: '',
+  emotion_id: 0,
+  type: 'audio',
+  errors: [],
+});
+
+const showDescriptionField = () => {
+  descriptionFieldShown.value = true;
+  form.description = '';
+};
+
+const showReasonField = () => {
+  reasonFieldShown.value = true;
+  form.call_reason_id = '';
+};
+
+const showEmotionField = () => {
+  emotionFieldShown.value = true;
+  form.emotion_id = 1;
+};
+
+const showCreateCallModal = () => {
+  form.errors = [];
+  descriptionFieldShown.value = false;
+  reasonFieldShown.value = false;
+  createCallModalShown.value = true;
+};
+
+const showUpdateCallModal = (call) => {
+  form.errors = [];
+  form.description = call.description;
+
+  if (call.description) {
+    descriptionFieldShown.value = true;
+  }
+
+  form.type = call.type;
+
+  if (!call.answered && call.who_initiated === 'me') {
+    form.who_initiated = 'me_not_answered';
+  } else if (call.answered && call.who_initiated === 'me') {
+    form.who_initiated = 'me';
+  } else if (call.answered && call.who_initiated === 'contact') {
+    form.who_initiated = 'contact';
+  } else if (!call.answered && call.who_initiated === 'contact') {
+    form.who_initiated = 'contact_not_answered';
+  }
+
+  if (call.reason) {
+    form.call_reason_id = call.reason.id;
+    reasonFieldShown.value = true;
+  } else {
+    form.call_reason_id = 0;
+    reasonFieldShown.value = false;
+  }
+
+  if (call.emotion) {
+    form.emotion_id = call.emotion.id;
+    emotionFieldShown.value = true;
+  } else {
+    form.emotion_id = 0;
+    emotionFieldShown.value = false;
+  }
+
+  form.called_at = call.called_at;
+  editedCallId.value = call.id;
+};
+
+const submit = () => {
+  loadingState.value = 'loading';
+
+  axios
+    .post(props.data.url.store, form)
+    .then((response) => {
+      loadingState.value = '';
+      flash(trans('The call has been created'), 'success');
+      localCalls.value.unshift(response.data.data);
+      createCallModalShown.value = false;
+    })
+    .catch((error) => {
+      loadingState.value = '';
+      form.errors = error.response.data;
+    });
+};
+
+const update = (call) => {
+  loadingState.value = 'loading';
+
+  axios
+    .put(call.url.update, form)
+    .then((response) => {
+      loadingState.value = '';
+      flash(trans('The call has been edited'), 'success');
+      localCalls.value[localCalls.value.findIndex((x) => x.id === call.id)] = response.data.data;
+      editedCallId.value = 0;
+    })
+    .catch((error) => {
+      loadingState.value = '';
+      form.errors = error.response.data;
+    });
+};
+
+const destroy = (call) => {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
+    axios
+      .delete(call.url.destroy)
+      .then(() => {
+        flash(trans('The call has been deleted'), 'success');
+        let id = localCalls.value.findIndex((x) => x.id === call.id);
+        localCalls.value.splice(id, 1);
+      })
+      .catch((error) => {
+        form.errors = error.response.data;
+      });
+  }
+};
+</script>
+
 <template>
   <div class="mb-10">
     <!-- title + cta -->
@@ -45,7 +194,7 @@
               v-model.string="form.called_at"
               class="inline-block h-full"
               :masks="masks"
-              :locale="$attrs.user.locale"
+              :locale="$page.props.user.locale"
               :is-dark="isDark()">
               <template #default="{ inputValue, inputEvents }">
                 <input
@@ -288,7 +437,7 @@
 
             <!-- who called -->
             <span
-              v-if="call.who_initiated == 'me'"
+              v-if="call.who_initiated === 'me'"
               class="me-2 rounded border border-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800">
               {{ $t('I called') }}
             </span>
@@ -527,186 +676,13 @@
 
     <!-- blank state -->
     <div
-      v-if="localCalls.length == 0"
+      v-if="localCalls.length === 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_call.svg" :alt="$t('Calls')" class="mx-auto mt-4 h-20 w-20" />
       <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no calls logged yet.') }}</p>
     </div>
   </div>
 </template>
-
-<script>
-import { DatePicker } from 'v-calendar';
-import 'v-calendar/style.css';
-import HoverMenu from '@/Shared/HoverMenu.vue';
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
-import PrettySpan from '@/Shared/Form/PrettySpan.vue';
-import TextArea from '@/Shared/Form/TextArea.vue';
-import Errors from '@/Shared/Form/Errors.vue';
-
-export default {
-  components: {
-    DatePicker,
-    HoverMenu,
-    PrettyButton,
-    PrettySpan,
-    TextArea,
-    Errors,
-  },
-
-  props: {
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-
-  data() {
-    return {
-      createCallModalShown: false,
-      localCalls: [],
-      loadingState: '',
-      editedCallId: 0,
-      descriptionFieldShown: false,
-      reasonFieldShown: false,
-      emotionFieldShown: false,
-      masks: {
-        modelValue: 'YYYY-MM-DD',
-      },
-      form: {
-        called_at: '',
-        call_reason_id: 0,
-        description: '',
-        emotion_id: 0,
-        type: '',
-        errors: [],
-      },
-    };
-  },
-
-  mounted() {
-    this.localCalls = this.data.calls;
-    this.form.who_initiated = 'me';
-    this.form.type = 'audio';
-  },
-
-  methods: {
-    showDescriptionField() {
-      this.descriptionFieldShown = true;
-      this.form.description = '';
-    },
-
-    showReasonField() {
-      this.reasonFieldShown = true;
-      this.form.call_reason_id = '';
-    },
-
-    showEmotionField() {
-      this.emotionFieldShown = true;
-      this.form.emotion_id = 1;
-    },
-
-    showCreateCallModal() {
-      this.form.errors = [];
-      this.descriptionFieldShown = false;
-      this.reasonFieldShown = false;
-      this.createCallModalShown = true;
-    },
-
-    showUpdateCallModal(call) {
-      this.form.errors = [];
-      this.form.description = call.description;
-
-      if (call.description) {
-        this.descriptionFieldShown = true;
-      }
-
-      this.form.type = call.type;
-
-      if (!call.answered && call.who_initiated == 'me') {
-        this.form.who_initiated = 'me_not_answered';
-      }
-      if (call.answered && call.who_initiated == 'me') {
-        this.form.who_initiated = 'me';
-      }
-      if (call.answered && call.who_initiated == 'contact') {
-        this.form.who_initiated = 'contact';
-      }
-      if (!call.answered && call.who_initiated == 'contact') {
-        this.form.who_initiated = 'contact_not_answered';
-      }
-
-      if (call.reason) {
-        this.form.call_reason_id = call.reason.id;
-        this.reasonFieldShown = true;
-      } else {
-        this.form.call_reason_id = 0;
-        this.reasonFieldShown = false;
-      }
-
-      if (call.emotion) {
-        this.form.emotion_id = call.emotion.id;
-        this.emotionFieldShown = true;
-      } else {
-        this.form.emotion_id = 0;
-        this.emotionFieldShown = false;
-      }
-
-      this.form.called_at = call.called_at;
-      this.editedCallId = call.id;
-    },
-
-    submit() {
-      this.loadingState = 'loading';
-
-      axios
-        .post(this.data.url.store, this.form)
-        .then((response) => {
-          this.loadingState = '';
-          this.flash(this.$t('The call has been created'), 'success');
-          this.localCalls.unshift(response.data.data);
-          this.createCallModalShown = false;
-        })
-        .catch((error) => {
-          this.loadingState = '';
-          this.form.errors = error.response.data;
-        });
-    },
-
-    update(call) {
-      this.loadingState = 'loading';
-
-      axios
-        .put(call.url.update, this.form)
-        .then((response) => {
-          this.loadingState = '';
-          this.flash(this.$t('The call has been edited'), 'success');
-          this.localCalls[this.localCalls.findIndex((x) => x.id === call.id)] = response.data.data;
-          this.editedCallId = 0;
-        })
-        .catch((error) => {
-          this.loadingState = '';
-          this.form.errors = error.response.data;
-        });
-    },
-
-    destroy(call) {
-      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
-        axios
-          .delete(call.url.destroy)
-          .then(() => {
-            this.flash(this.$t('The call has been deleted'), 'success');
-            var id = this.localCalls.findIndex((x) => x.id === call.id);
-            this.localCalls.splice(id, 1);
-          })
-          .catch((error) => {
-            this.form.errors = error.response.data;
-          });
-      }
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .icon-sidebar {

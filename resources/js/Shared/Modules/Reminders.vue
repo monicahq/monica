@@ -1,3 +1,122 @@
+<script setup>
+import { nextTick, ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+import { flash } from '@/methods';
+import { trans } from 'laravel-vue-i18n';
+import { DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
+import { Tooltip as ATooltip } from 'ant-design-vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrettySpan from '@/Shared/Form/PrettySpan.vue';
+import TextInput from '@/Shared/Form/TextInput.vue';
+import Dropdown from '@/Shared/Form/Dropdown.vue';
+import Errors from '@/Shared/Form/Errors.vue';
+
+const props = defineProps({
+  data: Object,
+});
+
+const label = ref(null);
+const loadingState = ref('');
+const addReminderModalShown = ref(false);
+const localReminders = ref(props.data.reminders);
+const editedReminderId = ref(0);
+const masks = ref({
+  modelValue: 'YYYY-MM-DD',
+});
+const form = useForm({
+  label: '',
+  reminderChoice: '',
+  day: '',
+  month: '',
+  choice: '',
+  date: '',
+  frequencyType: '',
+  frequencyNumber: 0,
+  errors: [],
+});
+
+const showCreateReminderModal = () => {
+  form.errors = [];
+  form.label = '';
+  form.choice = 'full_date';
+  form.day = '';
+  form.month = '';
+  form.reminderChoice = 'recurring';
+  form.date = '';
+  form.frequencyType = 'recurring_year';
+  form.frequencyNumber = 1;
+  addReminderModalShown.value = true;
+
+  setTimeout(() => {
+    nextTick(() => label.value.focus());
+  }, 150);
+};
+
+const showEditReminderModal = (reminder) => {
+  form.errors = [];
+  editedReminderId.value = reminder.id;
+  form.label = reminder.label;
+  form.day = reminder.day;
+  form.month = reminder.month;
+  form.date = reminder.date;
+  form.reminderChoice = reminder.reminder_choice;
+  form.frequencyNumber = reminder.frequency_number;
+  form.frequencyType = reminder.type;
+  form.choice = reminder.choice;
+};
+
+const submit = () => {
+  loadingState.value = 'loading';
+
+  axios
+    .post(props.data.url.store, form)
+    .then((response) => {
+      flash(trans('The reminder has been created'), 'success');
+      localReminders.value.unshift(response.data.data);
+      loadingState.value = '';
+      addReminderModalShown.value = false;
+    })
+    .catch((error) => {
+      loadingState.value = '';
+      form.errors = error.response.data;
+    });
+};
+
+const update = (reminder) => {
+  loadingState.value = 'loading';
+
+  axios
+    .put(reminder.url.update, form)
+    .then((response) => {
+      loadingState.value = '';
+      flash(trans('The reminder has been edited'), 'success');
+      localReminders.value[localReminders.value.findIndex((x) => x.id === reminder.id)] = response.data.data;
+      editedReminderId.value = 0;
+    })
+    .catch((error) => {
+      loadingState.value = '';
+      form.errors = error.response.data;
+    });
+};
+
+const destroy = (reminder) => {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
+    axios
+      .delete(reminder.url.destroy)
+      .then(() => {
+        flash(trans('The reminder has been deleted'), 'success');
+        let id = localReminders.value.findIndex((x) => x.id === reminder.id);
+        localReminders.value.splice(id, 1);
+      })
+      .catch((error) => {
+        loadingState.value = null;
+        form.errors = error.response.data;
+      });
+  }
+};
+</script>
+
 <template>
   <div class="mb-10">
     <!-- title + cta -->
@@ -75,7 +194,7 @@
               v-model.string="form.date"
               class="inline-block h-full"
               :masks="masks"
-              :locale="$attrs.user.locale"
+              :locale="$page.props.user.locale"
               :is-dark="isDark()">
               <template #default="{ inputValue, inputEvents }">
                 <input
@@ -106,7 +225,7 @@
               v-model="form.month"
               :data="data.months"
               :required="true"
-              :div-outer-class="'mb-5 me-2'"
+              :class="'mb-5 me-2'"
               :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
               :label="$t('Month')" />
@@ -115,7 +234,7 @@
               v-model="form.day"
               :data="data.days"
               :required="true"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
               :label="$t('Day')" />
@@ -203,7 +322,11 @@
               <span class="me-2">{{ reminder.label }}</span>
 
               <!-- recurring icon -->
-              <a-tooltip v-if="reminder.type != 'one_time'" placement="topLeft" title="Recurring" arrow-point-at-center>
+              <a-tooltip
+                v-if="reminder.type !== 'one_time'"
+                placement="topLeft"
+                title="Recurring"
+                arrow-point-at-center>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="h-3 w-3"
@@ -278,7 +401,7 @@
                     v-model.string="form.date"
                     class="inline-block h-full"
                     :masks="masks"
-                    :locale="$attrs.user.locale"
+                    :locale="$page.props.user.locale"
                     :is-dark="isDark()">
                     <template #default="{ inputValue, inputEvents }">
                       <input
@@ -309,7 +432,7 @@
                     v-model="form.month"
                     :data="data.months"
                     :required="true"
-                    :div-outer-class="'me-2'"
+                    :class="'me-2'"
                     :placeholder="$t('Choose a value')"
                     :dropdown-class="'block w-full'"
                     :label="$t('Month')" />
@@ -403,147 +526,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import { DatePicker } from 'v-calendar';
-import 'v-calendar/style.css';
-import { Tooltip as ATooltip } from 'ant-design-vue';
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
-import PrettySpan from '@/Shared/Form/PrettySpan.vue';
-import TextInput from '@/Shared/Form/TextInput.vue';
-import Dropdown from '@/Shared/Form/Dropdown.vue';
-import Errors from '@/Shared/Form/Errors.vue';
-
-export default {
-  components: {
-    DatePicker,
-    ATooltip,
-    PrettyButton,
-    PrettySpan,
-    TextInput,
-    Dropdown,
-    Errors,
-  },
-
-  props: {
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-
-  data() {
-    return {
-      loadingState: '',
-      titleFieldShown: false,
-      emotionFieldShown: false,
-      addReminderModalShown: false,
-      localReminders: [],
-      editedReminderId: 0,
-      masks: {
-        modelValue: 'YYYY-MM-DD',
-      },
-      form: {
-        label: '',
-        reminderChoice: '',
-        day: '',
-        month: '',
-        choice: '',
-        date: '',
-        frequencyType: '',
-        frequencyNumber: 0,
-        errors: [],
-      },
-    };
-  },
-
-  created() {
-    this.localReminders = this.data.reminders;
-  },
-
-  methods: {
-    showCreateReminderModal() {
-      this.form.errors = [];
-      this.form.label = '';
-      this.form.choice = 'full_date';
-      this.form.day = '';
-      this.form.month = '';
-      this.form.reminderChoice = 'recurring';
-      this.form.date = '';
-      this.form.frequencyType = 'recurring_year';
-      this.form.frequencyNumber = 1;
-      this.addReminderModalShown = true;
-
-      this.$nextTick(() => {
-        this.$refs.label.focus();
-      });
-    },
-
-    showEditReminderModal(reminder) {
-      this.form.errors = [];
-      this.editedReminderId = reminder.id;
-      this.form.label = reminder.label;
-      this.form.day = reminder.day;
-      this.form.month = reminder.month;
-      this.form.date = reminder.date;
-      this.form.reminderChoice = reminder.reminder_choice;
-      this.form.frequencyNumber = reminder.frequency_number;
-      this.form.frequencyType = reminder.type;
-      this.form.choice = reminder.choice;
-    },
-
-    submit() {
-      this.loadingState = 'loading';
-
-      axios
-        .post(this.data.url.store, this.form)
-        .then((response) => {
-          this.flash(this.$t('The reminder has been created'), 'success');
-          this.localReminders.unshift(response.data.data);
-          this.loadingState = '';
-          this.addReminderModalShown = false;
-        })
-        .catch((error) => {
-          this.loadingState = '';
-          this.form.errors = error.response.data;
-        });
-    },
-
-    update(reminder) {
-      this.loadingState = 'loading';
-
-      axios
-        .put(reminder.url.update, this.form)
-        .then((response) => {
-          this.loadingState = '';
-          this.flash(this.$t('The reminder has been edited'), 'success');
-          this.localReminders[this.localReminders.findIndex((x) => x.id === reminder.id)] = response.data.data;
-          this.editedReminderId = 0;
-        })
-        .catch((error) => {
-          this.loadingState = '';
-          this.form.errors = error.response.data;
-        });
-    },
-
-    destroy(reminder) {
-      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
-        axios
-          .delete(reminder.url.destroy)
-          .then(() => {
-            this.flash(this.$t('The reminder has been deleted'), 'success');
-            var id = this.localReminders.findIndex((x) => x.id === reminder.id);
-            this.localReminders.splice(id, 1);
-          })
-          .catch((error) => {
-            this.loadingState = null;
-            this.form.errors = error.response.data;
-          });
-      }
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .icon-sidebar {

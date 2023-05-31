@@ -1,11 +1,11 @@
 <script setup>
+import { ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+import { trans } from 'laravel-vue-i18n';
 import Errors from '@/Shared/Form/Errors.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { onMounted, ref } from 'vue';
-import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
   data: Object,
@@ -18,14 +18,10 @@ const form = useForm({
 });
 
 const loadingState = ref(false);
-const localJournalMetrics = ref([]);
+const localJournalMetrics = ref(props.data.journal_metrics);
 const journalMetricModal = ref(0);
 const addModalShown = ref(false);
 const editModeJournalMetricId = ref(0);
-
-onMounted(() => {
-  localJournalMetrics.value = props.data.journal_metrics;
-});
 
 const showAddMetricModal = (journalMetric) => {
   journalMetricModal.value = journalMetric.id;
@@ -136,7 +132,7 @@ const destroy = (journalMetric, postMetric) => {
             <text-input
               v-model="form.value"
               :autofocus="true"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :input-class="'block w-full'"
               :required="true"
               :type="'number'"
@@ -147,7 +143,7 @@ const destroy = (journalMetric, postMetric) => {
 
             <text-input
               v-model="form.label"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"

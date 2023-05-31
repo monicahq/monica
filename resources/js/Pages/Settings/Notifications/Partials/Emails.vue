@@ -29,7 +29,7 @@
           :autofocus="true"
           :input-class="'block w-full'"
           :required="true"
-          :div-outer-class="'mb-4'"
+          :class="'mb-4'"
           :autocomplete="false"
           :maxlength="255"
           @esc-key-pressed="addEmailModalShown = false" />
@@ -41,7 +41,7 @@
           :type="'text'"
           :autofocus="true"
           :input-class="'block w-full'"
-          :div-outer-class="'mb-4'"
+          :class="'mb-4'"
           :required="true"
           :autocomplete="false"
           :maxlength="255"

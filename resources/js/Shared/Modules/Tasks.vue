@@ -1,3 +1,129 @@
+<script setup>
+import { nextTick, ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+import { flash } from '@/methods';
+import { trans } from 'laravel-vue-i18n';
+import { DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
+import HoverMenu from '@/Shared/HoverMenu.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrettySpan from '@/Shared/Form/PrettySpan.vue';
+import TextInput from '@/Shared/Form/TextInput.vue';
+import Errors from '@/Shared/Form/Errors.vue';
+
+const props = defineProps({
+  data: Object,
+});
+
+const labelInput = ref(null);
+const updateInput = ref([]);
+const createTaskModalShown = ref(false);
+const showCompletedTasks = ref(false);
+const localTasks = ref(props.data.tasks);
+const localCompletedTasks = ref([]);
+const loadingState = ref('');
+const editedTaskId = ref(0);
+const dueDateShown = ref(false);
+const masks = ref({
+  modelValue: 'YYYY-MM-DD',
+});
+const form = useForm({
+  label: '',
+  due_at: '',
+  due_at_checked: false,
+  errors: [],
+});
+
+const showCreateTaskModal = () => {
+  form.errors = [];
+  form.label = '';
+  createTaskModalShown.value = true;
+  form.due_at_checked = false;
+
+  setTimeout(() => {
+    nextTick(() => labelInput.value.focus());
+  }, 150);
+};
+
+const showUpdateTaskModal = (task) => {
+  form.errors = [];
+  form.label = task.label;
+  editedTaskId.value = task.id;
+  form.due_at = task.due_at;
+  form.due_at_checked = task.due_at !== '';
+
+  setTimeout(() => {
+    nextTick(() => updateInput.value.focus());
+  }, 150);
+};
+
+const toggleDueDateModal = () => {
+  dueDateShown.value = !dueDateShown.value;
+};
+
+const getCompleted = () => {
+  axios.get(props.data.url.completed).then((response) => {
+    localCompletedTasks.value = response.data.data;
+    showCompletedTasks.value = true;
+  });
+};
+
+const submit = () => {
+  loadingState.value = 'loading';
+
+  axios
+    .post(props.data.url.store, form)
+    .then((response) => {
+      loadingState.value = '';
+      flash(trans('The task has been created'), 'success');
+      localTasks.value.unshift(response.data.data);
+      createTaskModalShown.value = false;
+    })
+    .catch((error) => {
+      loadingState.value = '';
+      form.errors = error.response.data;
+    });
+};
+
+const update = (task) => {
+  loadingState.value = 'loading';
+
+  axios
+    .put(task.url.update, form)
+    .then((response) => {
+      loadingState.value = '';
+      flash(trans('The task has been edited'), 'success');
+      localTasks.value[localTasks.value.findIndex((x) => x.id === task.id)] = response.data.data;
+      editedTaskId.value = 0;
+    })
+    .catch((error) => {
+      loadingState.value = '';
+      form.errors = error.response.data;
+    });
+};
+
+const toggle = (task) => {
+  axios.put(task.url.toggle).catch((error) => {
+    form.errors = error.response.data;
+  });
+};
+
+const destroy = (task) => {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
+    axios
+      .delete(task.url.destroy)
+      .then(() => {
+        flash(trans('The task has been deleted'), 'success');
+        var id = localTasks.value.findIndex((x) => x.id === task.id);
+        localTasks.value.splice(id, 1);
+      })
+      .catch((error) => {
+        form.errors = error.response.data;
+      });
+  }
+};
+</script>
+
 <template>
   <div class="mb-10">
     <!-- title + cta -->
@@ -37,7 +163,7 @@
 
         <!-- title -->
         <text-input
-          :ref="'label'"
+          :ref="'labelInput'"
           v-model="form.label"
           :label="$t('Title')"
           :type="'text'"
@@ -69,7 +195,7 @@
             v-model.string="form.due_at"
             class="inline-block h-full"
             :masks="masks"
-            :locale="$attrs.user.locale"
+            :locale="$page.props.user.locale"
             :is-dark="isDark()">
             <template #default="{ inputValue, inputEvents }">
               <input
@@ -138,7 +264,7 @@
 
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <text-input
-              :ref="'update' + task.id"
+              :ref="'updateInput'"
               v-model="form.label"
               :label="$t('Title')"
               :type="'text'"
@@ -170,7 +296,7 @@
                 v-model.string="form.due_at"
                 class="inline-block h-full"
                 :masks="masks"
-                :locale="$attrs.user.locale"
+                :locale="$page.props.user.locale"
                 :is-dark="isDark()">
                 <template #default="{ inputValue, inputEvents }">
                   <input
@@ -259,150 +385,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import { DatePicker } from 'v-calendar';
-import 'v-calendar/style.css';
-import HoverMenu from '@/Shared/HoverMenu.vue';
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
-import PrettySpan from '@/Shared/Form/PrettySpan.vue';
-import TextInput from '@/Shared/Form/TextInput.vue';
-import Errors from '@/Shared/Form/Errors.vue';
-
-export default {
-  components: {
-    DatePicker,
-    HoverMenu,
-    PrettyButton,
-    PrettySpan,
-    TextInput,
-    Errors,
-  },
-
-  props: {
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-
-  data() {
-    return {
-      createTaskModalShown: false,
-      showCompletedTasks: false,
-      localTasks: [],
-      localCompletedTasks: [],
-      loadingState: '',
-      editedTaskId: 0,
-      dueDateShown: false,
-      masks: {
-        modelValue: 'YYYY-MM-DD',
-      },
-      form: {
-        label: '',
-        due_at: '',
-        due_at_checked: false,
-        errors: [],
-      },
-    };
-  },
-
-  mounted() {
-    this.localTasks = this.data.tasks;
-  },
-
-  methods: {
-    showCreateTaskModal() {
-      this.form.errors = [];
-      this.form.label = '';
-      this.createTaskModalShown = true;
-      this.form.due_at_checked = false;
-
-      this.$nextTick(() => {
-        this.$refs.label.focus();
-      });
-    },
-
-    showUpdateTaskModal(task) {
-      this.form.errors = [];
-      this.form.label = task.label;
-      this.editedTaskId = task.id;
-      this.form.due_at = task.due_at;
-      this.form.due_at_checked = task.due_at != '';
-
-      this.$nextTick(() => {
-        this.$refs[`update${task.id}`].focus();
-      });
-    },
-
-    toggleDueDateModal() {
-      this.dueDateShown = !this.dueDateShown;
-    },
-
-    getCompleted() {
-      axios.get(this.data.url.completed).then((response) => {
-        this.localCompletedTasks = response.data.data;
-        this.showCompletedTasks = true;
-      });
-    },
-
-    submit() {
-      this.loadingState = 'loading';
-
-      axios
-        .post(this.data.url.store, this.form)
-        .then((response) => {
-          this.loadingState = '';
-          this.flash(this.$t('The task has been created'), 'success');
-          this.localTasks.unshift(response.data.data);
-          this.createTaskModalShown = false;
-        })
-        .catch((error) => {
-          this.loadingState = '';
-          this.form.errors = error.response.data;
-        });
-    },
-
-    update(task) {
-      this.loadingState = 'loading';
-
-      axios
-        .put(task.url.update, this.form)
-        .then((response) => {
-          this.loadingState = '';
-          this.flash(this.$t('The task has been edited'), 'success');
-          this.localTasks[this.localTasks.findIndex((x) => x.id === task.id)] = response.data.data;
-          this.editedTaskId = 0;
-        })
-        .catch((error) => {
-          this.loadingState = '';
-          this.form.errors = error.response.data;
-        });
-    },
-
-    toggle(task) {
-      axios.put(task.url.toggle).catch((error) => {
-        this.form.errors = error.response.data;
-      });
-    },
-
-    destroy(task) {
-      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
-        axios
-          .delete(task.url.destroy)
-          .then(() => {
-            this.flash(this.$t('The task has been deleted'), 'success');
-            var id = this.localTasks.findIndex((x) => x.id === task.id);
-            this.localTasks.splice(id, 1);
-          })
-          .catch((error) => {
-            this.form.errors = error.response.data;
-          });
-      }
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .icon-sidebar {

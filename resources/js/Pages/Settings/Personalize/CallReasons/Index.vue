@@ -198,7 +198,7 @@
                     :autofocus="true"
                     :input-class="'block w-full'"
                     :required="true"
-                    :div-outer-class="'mb-4'"
+                    :class="'mb-4'"
                     :placeholder="$t('Wish good day')"
                     :autocomplete="false"
                     :maxlength="255"

@@ -1,29 +1,23 @@
 <script setup>
+import { ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
 import Errors from '@/Shared/Form/Errors.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import Dropdown from '@/Shared/Form/Dropdown.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { onMounted, ref } from 'vue';
 
 const props = defineProps({
   data: Object,
 });
 
 const form = useForm({
-  religion_id: '',
+  religion_id: props.data.religion?.id,
 });
 
 const loadingState = ref(false);
 const editReligion = ref(false);
-const localReligions = ref([]);
-const religion = ref('');
-
-onMounted(() => {
-  form.religion_id = props.data.religion ? props.data.religion.id : null;
-  religion.value = props.data.religion ? props.data.religion.name : null;
-  localReligions.value = props.data.religions;
-});
+const localReligions = ref(props.data.religions);
+const religion = ref(props.data.religion?.name);
 
 const update = () => {
   loadingState.value = 'loading';
@@ -88,7 +82,7 @@ const showEditModal = () => {
             v-model="form.religion_id"
             :data="localReligions"
             :required="false"
-            :div-outer-class="'mb-2'"
+            :class="'mb-2'"
             :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'" />
         </div>

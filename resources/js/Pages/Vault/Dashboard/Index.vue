@@ -1,4 +1,6 @@
 <script setup>
+import { ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
 import Layout from '@/Shared/Layout.vue';
 import LastUpdated from '@/Pages/Vault/Dashboard/Partials/LastUpdated.vue';
 import UpcomingReminders from '@/Pages/Vault/Dashboard/Partials/UpcomingReminders.vue';
@@ -8,8 +10,6 @@ import LifeMetrics from '@/Pages/Vault/Dashboard/Partials/LifeMetrics.vue';
 import MoodTrackingEvents from '@/Pages/Vault/Dashboard/Partials/MoodTrackingEvents.vue';
 import Feed from '@/Shared/Modules/Feed.vue';
 import LifeEvent from '@/Shared/Modules/LifeEvent.vue';
-import { onMounted, ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
 
 const props = defineProps({
   layoutData: Object,
@@ -25,14 +25,10 @@ const props = defineProps({
   defaultTab: String,
 });
 
-const currentTab = ref('');
+const currentTab = ref(props.defaultTab);
 
 const form = useForm({
   default_activity_tab: null,
-});
-
-onMounted(() => {
-  currentTab.value = props.defaultTab;
 });
 
 const changeTab = (tab) => {

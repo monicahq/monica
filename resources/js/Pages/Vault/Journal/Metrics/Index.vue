@@ -1,29 +1,25 @@
 <script setup>
+import { ref, nextTick } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+import { trans } from 'laravel-vue-i18n';
 import Layout from '@/Shared/Layout.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { trans } from 'laravel-vue-i18n';
-import { onMounted, ref, nextTick } from 'vue';
 
 const props = defineProps({
   layoutData: Object,
   data: Object,
 });
 
-const localMetrics = ref([]);
+const localMetrics = ref(props.data.journalMetrics);
 const loadingState = ref('');
 const newJournalMetric = ref(null);
 const createJournalMetricModalShown = ref(false);
 
 const form = useForm({
   label: '',
-});
-
-onMounted(() => {
-  localMetrics.value = props.data.journalMetrics;
 });
 
 const showJournalMetricModal = () => {

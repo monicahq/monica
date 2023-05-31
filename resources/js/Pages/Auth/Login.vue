@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, computed } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Link, useForm } from '@inertiajs/inertia-vue3';
 import { size } from 'lodash';
@@ -20,7 +20,7 @@ const props = defineProps({
   userName: String,
 });
 const webauthn = ref(true);
-const publicKeyRef = ref(null);
+const publicKeyRef = ref(props.publicKey);
 
 const form = useForm({
   email: '',
@@ -35,10 +35,6 @@ watch(
     publicKeyRef.value = value;
   },
 );
-
-onMounted(() => {
-  publicKeyRef.value = props.publicKey;
-});
 
 const providersExists = computed(() => size(props.providers) > 0);
 

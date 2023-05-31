@@ -16,13 +16,12 @@ const props = defineProps({
 const emit = defineEmits(['start', 'register', 'update:name']);
 
 const registering = ref(false);
-const error = ref('');
+const error = ref(props.errorMessage);
 const nameInput = ref(null);
 
 onMounted(() => {
-  error.value = props.errorMessage;
   props.form.reset();
-  nameInput.value.focus();
+  nextTick(() => nameInput.value.focus());
 });
 
 watch(

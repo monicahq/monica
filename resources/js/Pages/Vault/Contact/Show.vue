@@ -312,37 +312,37 @@ const destroyAvatar = () => {
             <!-- all the modules -->
             <div v-if="data.modules.length > 0">
               <div v-for="module in data.modules" :key="module.id">
-                <Notes v-if="module.type == 'notes'" :data="module.data" />
+                <Notes v-if="module.type === 'notes'" :data="module.data" />
 
-                <Reminders v-else-if="module.type == 'reminders'" :data="module.data" />
+                <Reminders v-else-if="module.type === 'reminders'" :data="module.data" />
 
-                <Feed v-else-if="module.type == 'feed'" :url="module.data" />
+                <Feed v-else-if="module.type === 'feed'" :url="module.data" />
 
-                <Loans v-else-if="module.type == 'loans'" :data="module.data" :layout-data="layoutData" />
+                <Loans v-else-if="module.type === 'loans'" :data="module.data" :layout-data="layoutData" />
 
-                <Relationships v-else-if="module.type == 'relationships'" :data="module.data" />
+                <Relationships v-else-if="module.type === 'relationships'" :data="module.data" />
 
-                <Tasks v-else-if="module.type == 'tasks'" :data="module.data" />
+                <Tasks v-else-if="module.type === 'tasks'" :data="module.data" />
 
-                <Calls v-else-if="module.type == 'calls'" :data="module.data" />
+                <Calls v-else-if="module.type === 'calls'" :data="module.data" />
 
-                <Pets v-else-if="module.type == 'pets'" :data="module.data" />
+                <Pets v-else-if="module.type === 'pets'" :data="module.data" />
 
-                <Goals v-else-if="module.type == 'goals'" :data="module.data" />
+                <Goals v-else-if="module.type === 'goals'" :data="module.data" />
 
-                <Addresses v-else-if="module.type == 'addresses'" :data="module.data" />
+                <Addresses v-else-if="module.type === 'addresses'" :data="module.data" />
 
-                <Groups v-else-if="module.type == 'groups'" :data="module.data" />
+                <Groups v-else-if="module.type === 'groups'" :data="module.data" />
 
-                <ContactInformation v-else-if="module.type == 'contact_information'" :data="module.data" />
+                <ContactInformation v-else-if="module.type === 'contact_information'" :data="module.data" />
 
-                <Documents v-else-if="module.type == 'documents'" :data="module.data" />
+                <Documents v-else-if="module.type === 'documents'" :data="module.data" />
 
-                <Photos v-else-if="module.type == 'photos'" :data="module.data" />
+                <Photos v-else-if="module.type === 'photos'" :data="module.data" />
 
-                <Posts v-else-if="module.type == 'posts'" :data="module.data" />
+                <Posts v-else-if="module.type === 'posts'" :data="module.data" />
 
-                <Life-Event v-else-if="module.type == 'life_events'" :data="module.data" :layout-data="layoutData" />
+                <Life-Event v-else-if="module.type === 'life_events'" :data="module.data" :layout-data="layoutData" />
               </div>
             </div>
           </div>

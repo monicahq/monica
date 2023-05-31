@@ -1,3 +1,151 @@
+<script setup>
+import { nextTick, ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+import { flash } from '@/methods';
+import { trans } from 'laravel-vue-i18n';
+import { DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrettySpan from '@/Shared/Form/PrettySpan.vue';
+import TextInput from '@/Shared/Form/TextInput.vue';
+import TextArea from '@/Shared/Form/TextArea.vue';
+import Errors from '@/Shared/Form/Errors.vue';
+import ContactSelector from '@/Shared/Form/ContactSelector.vue';
+import Dropdown from '@/Shared/Form/Dropdown.vue';
+import ContactCard from '@/Shared/ContactCard.vue';
+
+const props = defineProps({
+  layoutData: Object,
+  data: Object,
+});
+
+const nameInput = ref(null);
+const loadingState = ref('');
+const createLoanModalShown = ref(false);
+const localLoans = ref(props.data.loans);
+const localCurrencies = ref([]);
+const editedLoanId = ref(0);
+const warning = ref('');
+const form = useForm({
+  type: 'object',
+  name: '',
+  description: '',
+  loaned_at: props.data.current_date,
+  amount_lent: '',
+  currency_id: '',
+  loaners: [],
+  loanees: [],
+  errors: [],
+});
+const masks = ref({
+  modelValue: 'YYYY-MM-DD',
+});
+
+const showCreateLoanModal = () => {
+  getCurrencies();
+  form.errors = [];
+  form.type = 'object';
+  form.name = '';
+  form.description = '';
+  form.amount_lent = '';
+  form.currency_id = '';
+  createLoanModalShown.value = true;
+
+  setTimeout(() => {
+    nextTick(() => nameInput.value.focus());
+  }, 2500);
+};
+
+const showEditLoanModal = (loan) => {
+  getCurrencies();
+  form.errors = [];
+  form.type = loan.amount_lent_input ? 'monetary' : 'object';
+  form.name = loan.name;
+  form.description = loan.description;
+  form.loaned_at = loan.loaned_at;
+  form.amount_lent = loan.amount_lent_input;
+  form.currency_id = loan.currency_id;
+  form.loaners = loan.loaners;
+  form.loanees = loan.loanees;
+  editedLoanId.value = loan.id;
+};
+
+const getCurrencies = () => {
+  if (localCurrencies.value.length === 0) {
+    axios.get(props.data.url.currencies, form).then((response) => {
+      localCurrencies.value = response.data.data;
+    });
+  }
+};
+
+const submit = () => {
+  if (form.loaners.length === 0 || form.loanees.length === 0) {
+    warning.value = trans('Please indicate the contacts');
+    return;
+  }
+
+  loadingState.value = 'loading';
+
+  axios
+    .post(props.data.url.store, form)
+    .then((response) => {
+      flash(trans('The loan has been created'), 'success');
+      localLoans.value.unshift(response.data.data);
+      loadingState.value = '';
+      createLoanModalShown.value = false;
+    })
+    .catch((error) => {
+      loadingState.value = '';
+      form.errors = error.response.data;
+    });
+};
+
+const update = (loan) => {
+  loadingState.value = 'loading';
+
+  axios
+    .put(loan.url.update, form)
+    .then((response) => {
+      loadingState.value = '';
+      flash(trans('The loan has been edited'), 'success');
+      localLoans.value[localLoans.value.findIndex((x) => x.id === loan.id)] = response.data.data;
+      editedLoanId.value = 0;
+    })
+    .catch((error) => {
+      loadingState.value = '';
+      form.errors = error.response.data;
+    });
+};
+
+const destroy = (loan) => {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
+    axios
+      .delete(loan.url.destroy)
+      .then(() => {
+        flash(trans('The loan has been deleted'), 'success');
+        let id = localLoans.value.findIndex((x) => x.id === loan.id);
+        localLoans.value.splice(id, 1);
+      })
+      .catch((error) => {
+        loadingState.value = null;
+        form.errors = error.response.data;
+      });
+  }
+};
+
+const toggle = (loan) => {
+  axios
+    .put(loan.url.toggle, form)
+    .then((response) => {
+      flash(trans('The loan has been settled'), 'success');
+      localLoans.value[localLoans.value.findIndex((x) => x.id === loan.id)] = response.data.data;
+    })
+    .catch((error) => {
+      form.errors = error.response.data;
+    });
+};
+</script>
+
 <template>
   <div class="mb-10">
     <!-- title + cta -->
@@ -76,7 +224,7 @@
           <!-- name -->
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <text-input
-              :ref="'name'"
+              :ref="'nameInput'"
               v-model="form.name"
               :label="$t('What is the loan?')"
               :type="'text'"
@@ -108,7 +256,7 @@
               v-model="form.currency_id"
               :data="localCurrencies"
               :required="false"
-              :div-outer-class="'ms-3 mb-5'"
+              :class="'mb-5 ms-3'"
               :placeholder="$t('Choose a value')"
               :dropdown-class="'block'"
               :label="$t('Currency')" />
@@ -122,7 +270,7 @@
               v-model.string="form.loaned_at"
               class="inline-block h-full"
               :masks="masks"
-              :locale="$attrs.user.locale"
+              :locale="$page.props.user.locale"
               :is-dark="isDark()">
               <template #default="{ inputValue, inputEvents }">
                 <input
@@ -143,7 +291,7 @@
               :label="$t('Who makes the loan?')"
               :add-multiple-contacts="true"
               :required="true"
-              :div-outer-class="'p-5 flex-1 border-e border-gray-200 dark:border-gray-700'" />
+              :class="'flex-1 border-e border-gray-200 p-5 dark:border-gray-700'" />
 
             <contact-selector
               v-model="form.loanees"
@@ -153,7 +301,7 @@
               :label="$t('Who the loan is for?')"
               :add-multiple-contacts="true"
               :required="true"
-              :div-outer-class="'p-5 flex-1'" />
+              :class="'flex-1 p-5'" />
           </div>
 
           <!-- description -->
@@ -170,7 +318,7 @@
           <errors :errors="form.errors" />
         </div>
 
-        <div v-if="warning != ''" class="border-b p-3">⚠️ {{ warning }}</div>
+        <div v-if="warning !== ''" class="border-b p-3">⚠️ {{ warning }}</div>
 
         <div class="flex justify-between p-5">
           <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createLoanModalShown = false" />
@@ -180,7 +328,7 @@
 
       <!-- list of loans -->
       <div v-for="loan in localLoans" :key="loan.id" class="mb-5 flex">
-        <div v-if="editedLoanId != loan.id" class="me-3 flex items-center">
+        <div v-if="editedLoanId !== loan.id" class="me-3 flex items-center">
           <div class="flex -space-x-2 overflow-hidden">
             <div v-for="loaner in loan.loaners" :key="loaner.id">
               <contact-card :contact="loaner" :avatarClasses="'h-7 w-7 rounded-full me-2'" :displayName="false" />
@@ -203,7 +351,7 @@
         </div>
 
         <div
-          v-if="editedLoanId != loan.id"
+          v-if="editedLoanId !== loan.id"
           class="item-list w-full rounded-lg border border-gray-200 bg-white hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
           <div class="border-b border-gray-200 px-3 py-2 dark:border-gray-700">
             <div class="flex items-center justify-between">
@@ -332,7 +480,7 @@
                 v-model="form.currency_id"
                 :data="localCurrencies"
                 :required="false"
-                :div-outer-class="'ms-3 mb-5'"
+                :class="'mb-5 ms-3'"
                 :placeholder="$t('Choose a value')"
                 :dropdown-class="'block'"
                 :label="$t('Currency')" />
@@ -346,6 +494,7 @@
                 v-model.string="form.loaned_at"
                 class="inline-block h-full"
                 :masks="masks"
+                :locale="$page.props.user.locale"
                 :is-dark="isDark()">
                 <template #default="{ inputValue, inputEvents }">
                   <input
@@ -366,7 +515,7 @@
                 :label="$t('Who makes the loan?')"
                 :add-multiple-contacts="true"
                 :required="true"
-                :div-outer-class="'p-5 flex-1 border-e border-gray-200 dark:border-gray-700'" />
+                :class="'flex-1 border-e border-gray-200 p-5 dark:border-gray-700'" />
 
               <contact-selector
                 v-model="form.loanees"
@@ -376,7 +525,7 @@
                 :label="$t('Who the loan is for?')"
                 :add-multiple-contacts="true"
                 :required="true"
-                :div-outer-class="'p-5 flex-1'" />
+                :class="'flex-1 p-5'" />
             </div>
 
             <!-- description -->
@@ -393,7 +542,7 @@
             <errors :errors="form.errors" />
           </div>
 
-          <div v-if="warning != ''" class="border-b p-3">⚠️ {{ warning }}</div>
+          <div v-if="warning !== ''" class="border-b p-3">⚠️ {{ warning }}</div>
 
           <div class="flex justify-between p-5">
             <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="editedLoanId = 0" />
@@ -412,181 +561,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import { DatePicker } from 'v-calendar';
-import 'v-calendar/style.css';
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
-import PrettySpan from '@/Shared/Form/PrettySpan.vue';
-import TextInput from '@/Shared/Form/TextInput.vue';
-import TextArea from '@/Shared/Form/TextArea.vue';
-import Errors from '@/Shared/Form/Errors.vue';
-import ContactSelector from '@/Shared/Form/ContactSelector.vue';
-import Dropdown from '@/Shared/Form/Dropdown.vue';
-import ContactCard from '@/Shared/ContactCard.vue';
-
-export default {
-  components: {
-    DatePicker,
-    PrettyButton,
-    PrettySpan,
-    TextInput,
-    TextArea,
-    Errors,
-    Dropdown,
-    ContactSelector,
-    ContactCard,
-  },
-
-  props: {
-    layoutData: {
-      type: Object,
-      default: null,
-    },
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-
-  data() {
-    return {
-      loadingState: '',
-      createLoanModalShown: false,
-      localLoans: [],
-      localCurrencies: [],
-      editedLoanId: 0,
-      warning: '',
-      form: {
-        type: '',
-        name: '',
-        description: '',
-        loaned_at: null,
-        amount_lent: '',
-        currency_id: '',
-        loaners: [],
-        loanees: [],
-        errors: [],
-      },
-      masks: {
-        modelValue: 'YYYY-MM-DD',
-      },
-    };
-  },
-
-  created() {
-    this.localLoans = this.data.loans;
-    this.form.type = 'object';
-    this.form.loaned_at = this.data.current_date;
-  },
-
-  methods: {
-    showCreateLoanModal() {
-      this.getCurrencies();
-      this.form.errors = [];
-      this.form.type = 'object';
-      this.form.name = '';
-      this.form.description = '';
-      this.form.amount_lent = '';
-      this.form.currency_id = '';
-      this.createLoanModalShown = true;
-
-      this.$nextTick(() => {
-        this.$refs.name.focus();
-      });
-    },
-
-    showEditLoanModal(loan) {
-      this.getCurrencies();
-      this.form.errors = [];
-      this.form.type = loan.amount_lent_input ? 'monetary' : 'object';
-      this.form.name = loan.name;
-      this.form.description = loan.description;
-      this.form.loaned_at = loan.loaned_at;
-      this.form.amount_lent = loan.amount_lent_input;
-      this.form.currency_id = loan.currency_id;
-      this.form.loaners = loan.loaners;
-      this.form.loanees = loan.loanees;
-      this.editedLoanId = loan.id;
-    },
-
-    getCurrencies() {
-      if (this.localCurrencies.length == 0) {
-        axios.get(this.data.url.currencies, this.form).then((response) => {
-          this.localCurrencies = response.data.data;
-        });
-      }
-    },
-
-    submit() {
-      if (this.form.loaners.length == 0 || this.form.loanees.length == 0) {
-        this.warning = this.$t('Please indicate the contacts');
-        return;
-      }
-
-      this.loadingState = 'loading';
-
-      axios
-        .post(this.data.url.store, this.form)
-        .then((response) => {
-          this.flash(this.$t('The loan has been created'), 'success');
-          this.localLoans.unshift(response.data.data);
-          this.loadingState = '';
-          this.createLoanModalShown = false;
-        })
-        .catch((error) => {
-          this.loadingState = '';
-          this.form.errors = error.response.data;
-        });
-    },
-
-    update(loan) {
-      this.loadingState = 'loading';
-
-      axios
-        .put(loan.url.update, this.form)
-        .then((response) => {
-          this.loadingState = '';
-          this.flash(this.$t('The loan has been edited'), 'success');
-          this.localLoans[this.localLoans.findIndex((x) => x.id === loan.id)] = response.data.data;
-          this.editedLoanId = 0;
-        })
-        .catch((error) => {
-          this.loadingState = '';
-          this.form.errors = error.response.data;
-        });
-    },
-
-    destroy(loan) {
-      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
-        axios
-          .delete(loan.url.destroy)
-          .then(() => {
-            this.flash(this.$t('The loan has been deleted'), 'success');
-            var id = this.localLoans.findIndex((x) => x.id === loan.id);
-            this.localLoans.splice(id, 1);
-          })
-          .catch((error) => {
-            this.loadingState = null;
-            this.form.errors = error.response.data;
-          });
-      }
-    },
-
-    toggle(loan) {
-      axios
-        .put(loan.url.toggle, this.form)
-        .then((response) => {
-          this.flash(this.$t('The loan has been settled'), 'success');
-          this.localLoans[this.localLoans.findIndex((x) => x.id === loan.id)] = response.data.data;
-        })
-        .catch((error) => {
-          this.form.errors = error.response.data;
-        });
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .icon-sidebar {

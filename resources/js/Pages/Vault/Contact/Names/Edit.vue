@@ -59,7 +59,7 @@
             <text-input
               v-model="form.first_name"
               :autofocus="true"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :input-class="'block w-full'"
               :required="true"
               :maxlength="255"
@@ -69,7 +69,7 @@
             <text-input
               :id="'last_name'"
               v-model="form.last_name"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
@@ -79,7 +79,7 @@
             <text-input
               :id="'middle_name'"
               v-model="form.middle_name"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
@@ -89,7 +89,7 @@
             <text-input
               :id="'nickname'"
               v-model="form.nickname"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
@@ -99,7 +99,7 @@
             <text-input
               :id="'maiden_name'"
               v-model="form.maiden_name"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
@@ -110,7 +110,7 @@
               v-model="form.gender_id"
               :data="data.genders"
               :required="false"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
               :label="$t('Gender')" />
@@ -120,7 +120,7 @@
               v-model="form.pronoun_id"
               :data="data.pronouns"
               :required="false"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
               :label="$t('Pronoun')" />
@@ -129,7 +129,7 @@
             <text-input
               :id="'prefix'"
               v-model="form.prefix"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"
@@ -139,7 +139,7 @@
             <text-input
               :id="'suffix'"
               v-model="form.suffix"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :input-class="'block w-full'"
               :required="false"
               :maxlength="255"

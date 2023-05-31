@@ -1,14 +1,14 @@
 <script setup>
+import { ref, nextTick } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+import { trans } from 'laravel-vue-i18n';
+import { flash } from '@/methods.js';
 import { Tooltip as ATooltip } from 'ant-design-vue';
 import Errors from '@/Shared/Form/Errors.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import HoverMenu from '@/Shared/HoverMenu.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { onMounted, ref, nextTick } from 'vue';
-import { trans } from 'laravel-vue-i18n';
-import { flash } from '@/methods.js';
 
 const props = defineProps({
   data: Object,
@@ -21,13 +21,9 @@ const form = useForm({
 const createLifeMetricModalShown = ref(false);
 const labelField = ref(null);
 const loadingState = ref('');
-const localLifeMetrics = ref([]);
+const localLifeMetrics = ref(props.data.data);
 const editedLifeMetricId = ref(0);
 const graphLifeMetricId = ref(0);
-
-onMounted(() => {
-  localLifeMetrics.value = props.data.data;
-});
 
 const showCreateLifeMetricModal = () => {
   createLifeMetricModalShown.value = true;

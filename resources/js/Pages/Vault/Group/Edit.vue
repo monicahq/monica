@@ -1,14 +1,14 @@
 <script setup>
-import Layout from '@/Shared/Layout.vue';
-import { Inertia } from '@inertiajs/inertia';
+import { onMounted, nextTick, ref } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3';
+import { Inertia } from '@inertiajs/inertia';
+import { trans } from 'laravel-vue-i18n';
+import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Dropdown from '@/Shared/Form/Dropdown.vue';
 import Errors from '@/Shared/Form/Errors.vue';
-import { onMounted, nextTick, ref } from 'vue';
-import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
   layoutData: Object,
@@ -16,8 +16,8 @@ const props = defineProps({
 });
 
 const form = useForm({
-  name: '',
-  group_type_id: 0,
+  name: props.data.name,
+  group_type_id: props.data.group_type_id,
   errors: [],
 });
 
@@ -25,12 +25,7 @@ const loadingState = ref(null);
 const nameField = ref(null);
 
 onMounted(() => {
-  form.name = props.data.name;
-  form.group_type_id = props.data.group_type_id;
-
-  nextTick(() => {
-    nameField.value.focus();
-  });
+  nextTick(() => nameField.value.focus());
 });
 
 const update = () => {
@@ -112,7 +107,7 @@ const update = () => {
               v-model="form.name"
               :ref="'nameField'"
               :autofocus="true"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :input-class="'block w-full'"
               :required="true"
               :maxlength="255"

@@ -1,12 +1,12 @@
 <script setup>
+import { ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
 import { DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { onMounted, ref } from 'vue';
 
 const props = defineProps({
   data: Object,
@@ -25,13 +25,9 @@ const masks = ref({
 
 const form = useForm({
   parameter_id: 0,
-  date: null,
+  date: props.data.current_date,
   hours: null,
   note: null,
-});
-
-onMounted(() => {
-  form.date = props.data.current_date;
 });
 
 const showMoodEventModal = () => {
@@ -166,7 +162,7 @@ const submit = () => {
             :timezone="'UTC'"
             class="inline-block h-full"
             :masks="masks"
-            :locale="$attrs.user.locale"
+            :locale="$page.props.user.locale"
             :is-dark="isDark()">
             <template #default="{ inputValue, inputEvents }">
               <input

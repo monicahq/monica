@@ -1,13 +1,13 @@
 <script setup>
+import { ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
+import { trans } from 'laravel-vue-i18n';
+import { flash } from '@/methods';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 import Help from '@/Shared/Help.vue';
-import { onMounted, ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { trans } from 'laravel-vue-i18n';
-import { flash } from '@/methods';
 
 const props = defineProps({
   data: Object,
@@ -16,19 +16,13 @@ const props = defineProps({
 const nameOrder = ref(null);
 const loadingState = ref('');
 const editMode = ref(false);
-const localNameOrder = ref('');
-const localNameExample = ref('');
+const localNameOrder = ref(props.data.name_order);
+const localNameExample = ref(props.data.name_example);
 const disableNameOrder = ref(true);
 const form = useForm({
-  nameOrder: '',
+  nameOrder: props.data.name_order,
   choice: '',
   errors: [],
-});
-
-onMounted(() => {
-  localNameOrder.value = props.data.name_order;
-  localNameExample.value = props.data.name_example;
-  form.nameOrder = props.data.name_order;
 });
 
 const enableEditMode = () => {
@@ -213,7 +207,7 @@ const submit = () => {
             :type="'text'"
             :autofocus="true"
             :input-class="'block w-full'"
-            :div-outer-class="'block mb-2'"
+            :class="'mb-2 block'"
             :disabled="disableNameOrder"
             :autocomplete="false"
             :maxlength="255" />

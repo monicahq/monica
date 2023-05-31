@@ -1,4 +1,8 @@
 <script setup>
+import { useForm } from '@inertiajs/inertia-vue3';
+import { watch, ref } from 'vue';
+import { debounce } from 'lodash';
+import { trans } from 'laravel-vue-i18n';
 import { DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
 import Layout from '@/Shared/Layout.vue';
@@ -9,10 +13,6 @@ import Tags from '@/Pages/Vault/Journal/Post/Partials/Tags.vue';
 import SlicesOfLife from '@/Pages/Vault/Journal/Post/Partials/SlicesOfLife.vue';
 import PostMetrics from '@/Pages/Vault/Journal/Post/Partials/PostMetrics.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { onBeforeMount, onMounted, watch, ref } from 'vue';
-import { debounce } from 'lodash';
-import { trans } from 'laravel-vue-i18n';
 import ContactSelector from '@/Shared/Form/ContactSelector.vue';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 import JetDangerButton from '@/Components/Jetstream/DangerButton.vue';
@@ -24,10 +24,14 @@ const props = defineProps({
 });
 
 const form = useForm({
-  title: '',
-  date: '',
-  sections: [],
-  contacts: [],
+  title: props.data.title,
+  contacts: props.data.contacts,
+  date: props.data.editable_date,
+  sections: props.data.sections.map((section) => ({
+    id: section.id,
+    label: section.label,
+    content: section.content,
+  })),
   uuid: null,
   name: null,
   original_url: null,
@@ -37,33 +41,13 @@ const form = useForm({
 });
 
 const saveInProgress = ref(false);
-const statistics = ref(null);
+const statistics = ref(props.data.statistics);
 const deletePhotoModalShown = ref(false);
 const photoToDelete = ref(null);
 const processPhotoDeletion = ref(false);
-const localPhotos = ref([]);
+const localPhotos = ref(props.data.photos);
 const masks = ref({
   modelValue: 'YYYY-MM-DD',
-});
-
-// if this code is inside onMounted, it will not work, and I don't know why
-
-onBeforeMount(() => {
-  statistics.value = props.data.statistics;
-});
-onMounted(() => {
-  form.title = props.data.title;
-  form.contacts = props.data.contacts;
-  form.date = props.data.editable_date;
-  localPhotos.value = props.data.photos;
-
-  props.data.sections.forEach((section) => {
-    form.sections.push({
-      id: section.id,
-      label: section.label,
-      content: section.content,
-    });
-  });
 });
 
 watch(
@@ -393,7 +377,7 @@ const destroy = () => {
             <DatePicker
               v-model.string="form.date"
               :masks="masks"
-              :locale="$attrs.user.locale"
+              :locale="$page.props.user.locale"
               class="mb-6 inline-block">
               <template v-slot="{ inputValue, inputEvents }">
                 <input
@@ -414,7 +398,7 @@ const destroy = () => {
               :display-most-consulted-contacts="true"
               :add-multiple-contacts="true"
               :required="true"
-              :div-outer-class="'flex-1 border-gray-200 dark:border-gray-700 mb-8'" />
+              :class="'mb-8 flex-1 border-gray-200 dark:border-gray-700'" />
 
             <!-- slices of life -->
             <slices-of-life :data="data" />

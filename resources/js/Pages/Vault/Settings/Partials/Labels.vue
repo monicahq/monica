@@ -27,7 +27,7 @@
           :required="true"
           :autocomplete="false"
           :maxlength="255"
-          :div-outer-class="'mb-4'"
+          :class="'mb-4'"
           @esc-key-pressed="createlabelModalShown = false" />
 
         <p class="mb-2 block text-sm">
@@ -107,7 +107,7 @@
               :required="true"
               :autocomplete="false"
               :maxlength="255"
-              :div-outer-class="'mb-4'"
+              :class="'mb-4'"
               @esc-key-pressed="editLabelModalShownId = 0" />
 
             <p class="mb-2 block text-sm">

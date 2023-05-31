@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, nextTick } from 'vue';
 import { trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods.js';
 import Layout from '@/Shared/Layout.vue';
@@ -20,14 +20,10 @@ const props = defineProps({
 
 const editedDateId = ref(0);
 const createDateModalShown = ref(false);
-const localDates = ref([]);
+const localDates = ref(props.data.dates);
 const createForm = ref(null);
 const editForm = ref([]);
 const errors = ref(null);
-
-onMounted(() => {
-  localDates.value = props.data.dates;
-});
 
 const showCreateModal = () => {
   createDateModalShown.value = true;

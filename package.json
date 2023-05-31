@@ -44,7 +44,7 @@
     "uploadcare-vue": "^1.0.0",
     "v-calendar": "^3.0.3",
     "vite": "^4.3.5",
-    "vue": "^3.2.47",
+    "vue": "^3.3.4",
     "vue-clipboard3": "^2.0.0",
     "vuedraggable-es": "^4.1.1",
     "ziggy-js": "1.5.2"

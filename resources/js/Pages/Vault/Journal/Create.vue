@@ -1,12 +1,12 @@
 <script setup>
-import Layout from '@/Shared/Layout.vue';
+import { onMounted, nextTick, ref } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3';
+import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import Errors from '@/Shared/Form/Errors.vue';
-import { onMounted, nextTick, ref } from 'vue';
 
 const props = defineProps({
   layoutData: Object,
@@ -21,9 +21,7 @@ const form = useForm({
 const nameField = ref(null);
 
 onMounted(() => {
-  nextTick(() => {
-    nameField.value.focus();
-  });
+  nextTick(() => nameField.value.focus());
 });
 
 const submit = () => {
@@ -83,7 +81,7 @@ const submit = () => {
               v-model="form.name"
               :ref="'nameField'"
               :autofocus="true"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :input-class="'block w-full'"
               :required="true"
               :maxlength="255"

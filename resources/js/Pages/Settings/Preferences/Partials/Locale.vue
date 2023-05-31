@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, computed, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { loadLanguageAsync, getActiveLanguage, trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods.js';
@@ -15,15 +15,10 @@ const props = defineProps({
 
 const loadingState = ref('');
 const editMode = ref(false);
-const localLocaleI18n = ref('');
+const localLocaleI18n = ref(props.data.locale_i18n);
 const form = useForm({
-  locale: '',
+  locale: props.data.locale,
   errors: [],
-});
-
-onMounted(() => {
-  localLocaleI18n.value = props.data.locale_i18n;
-  form.locale = props.data.locale;
 });
 
 const enableEditMode = () => {

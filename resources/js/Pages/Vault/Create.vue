@@ -52,7 +52,7 @@
               :ref="'name'"
               v-model="form.name"
               :autofocus="true"
-              :div-outer-class="'mb-5'"
+              :class="'mb-5'"
               :input-class="'block w-full'"
               :required="true"
               :maxlength="255"

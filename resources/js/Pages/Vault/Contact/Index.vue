@@ -1,13 +1,12 @@
 <script setup>
-import Layout from '@/Shared/Layout.vue';
+import { useForm } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
+import { trans } from 'laravel-vue-i18n';
+import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import Avatar from '@/Shared/Avatar.vue';
 import Pagination from '@/Components/Pagination.vue';
 import Dropdown from '@/Shared/Form/Dropdown.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { trans } from 'laravel-vue-i18n';
-import { onMounted } from 'vue';
 
 const props = defineProps({
   layoutData: Object,
@@ -16,11 +15,7 @@ const props = defineProps({
 });
 
 const form = useForm({
-  sort_order: '',
-});
-
-onMounted(() => {
-  form.sort_order = props.data.user_contact_sort_order;
+  sort_order: props.data.user_contact_sort_order,
 });
 
 const update = () => {
