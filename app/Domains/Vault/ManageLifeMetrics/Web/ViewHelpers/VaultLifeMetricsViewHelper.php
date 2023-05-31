@@ -59,7 +59,7 @@ class VaultLifeMetricsViewHelper
                 $maxNumberOfEvents = $eventsCounter;
             }
 
-            $date = CarbonImmutable::now()->month($month)->day(1);
+            $date = CarbonImmutable::now()->day(1)->month($month);
             $eventsInMonthCollection->push([
                 'id' => $month,
                 'friendly_name' => DateHelper::formatMonthNumber($date),
