@@ -39,7 +39,7 @@ jobs:
             ${{ runner.os }}-yarn-v2-
 
       - name: Install yarn dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Run eslint
         run: yarn run lint --fix

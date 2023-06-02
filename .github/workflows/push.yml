@@ -18,3 +18,4 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           event-type: ${{ secrets.EVENT_TYPE }}
           repository: ${{ secrets.REPO_URL }}
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "repository": "${{ github.repository }}"}'

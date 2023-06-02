@@ -1,4 +1,7 @@
 /bootstrap/ssr
+/config/.commit
+/config/.release
+/config/.version
 /data.ms
 /lang/php_*.json
 /node_modules

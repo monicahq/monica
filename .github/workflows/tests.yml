@@ -180,15 +180,24 @@ jobs:
           SONAR_COVERAGE=$(ls -m --format=comma results/${{ env.coverage-with }}/coverage/coverage*.xml | sed -e ':a;N;$!ba;s/\n//g; s/ //g;')
           echo "list=$SONAR_COVERAGE" >> $GITHUB_OUTPUT
 
+      - name: Set project key
+        id: projectkey
+        run: |
+          if [[ "${{ github.repository }}" == "monicahq/chandler" ]]; then
+            echo "value=monicahq_chandler" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.repository }}" == "monicahq/monica" ]]; then
+            echo "value=monica" >> $GITHUB_OUTPUT
+          fi
+
       - name: SonarCloud Scan
         if: env.SONAR_TOKEN != ''
-        uses: SonarSource/sonarcloud-github-action@v1.8
+        uses: SonarSource/sonarcloud-github-action@v1.9
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: |
-            -Dsonar.projectKey=monicahq_chandler
+            -Dsonar.projectKey=${{ steps.projectkey.outputs.value }}
             -Dsonar.organization=monicahq
             -Dsonar.sources=app,bootstrap,config,database,public,resources,routes
             -Dsonar.exclusions=bootstrap/cache/*,public/vendor/**,resources/lang/**

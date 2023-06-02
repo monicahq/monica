@@ -2,8 +2,15 @@
 *.css linguist-vendored
 *.scss linguist-vendored
 *.js linguist-vendored
-CHANGELOG.md export-ignore
 /.yarn/**            linguist-vendored
 /.yarn/releases/*    binary
 /.yarn/plugins/**/*  binary
 /.pnp.*              binary linguist-generated
+/.github export-ignore
+/.platform export-ignore
+/.vscode export-ignore
+/tests export-ignore
+/scripts export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+.releaserc export-ignore

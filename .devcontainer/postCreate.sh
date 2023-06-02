@@ -34,7 +34,7 @@ composer_install() {
 }
 
 yarn_install() {
-    yarn install --frozen-lockfile
+    yarn install --immutable
     yarn run build
 }
 
