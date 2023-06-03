@@ -27,7 +27,7 @@ class VaultController extends ApiController
     }
 
     /**
-     * List all vaults
+     * List all vaults.
      *
      * Get all the vaults in the account.
      */
@@ -42,7 +42,7 @@ class VaultController extends ApiController
     }
 
     /**
-     * Create a vault
+     * Create a vault.
      *
      * Creates a vault object.
      */
@@ -65,7 +65,7 @@ class VaultController extends ApiController
     }
 
     /**
-     * Retrieve a vault
+     * Retrieve a vault.
      *
      * Get a specific vault object.
      */
@@ -79,7 +79,7 @@ class VaultController extends ApiController
     }
 
     /**
-     * Update a vault
+     * Update a vault.
      *
      * Updates a vault object.
      *
@@ -105,7 +105,7 @@ class VaultController extends ApiController
     }
 
     /**
-     * Delete a vault
+     * Delete a vault.
      *
      * Destroys a vault object.
      * Warning: everything in the vault will be immediately deleted.

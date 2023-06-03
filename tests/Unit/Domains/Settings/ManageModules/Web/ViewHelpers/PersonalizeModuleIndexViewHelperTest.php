@@ -4,9 +4,10 @@ namespace Tests\Unit\Domains\Settings\ManageModules\Web\ViewHelpers;
 
 use App\Domains\Settings\ManageModules\Web\ViewHelpers\PersonalizeModuleIndexViewHelper;
 use App\Models\Module;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
+use function env;
 
 class PersonalizeModuleIndexViewHelperTest extends TestCase
 {

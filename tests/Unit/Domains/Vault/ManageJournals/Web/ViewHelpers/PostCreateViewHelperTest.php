@@ -7,9 +7,10 @@ use App\Models\Journal;
 use App\Models\PostTemplate;
 use App\Models\PostTemplateSection;
 use App\Models\Vault;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
+use function env;
 
 class PostCreateViewHelperTest extends TestCase
 {

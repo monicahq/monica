@@ -23,7 +23,7 @@ class ReportMoodTrackingEventIndexViewHelper
     }
 
     /**
-     * Get all the mood tracking events for the given year
+     * Get all the mood tracking events for the given year.
      */
     private static function year(Vault $vault, User $user, int $year): Collection
     {

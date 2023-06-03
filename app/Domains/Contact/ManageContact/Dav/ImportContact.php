@@ -25,7 +25,7 @@ class ImportContact extends Importer implements ImportVCardResource
     protected array $genders = [];
 
     /**
-     * Import Contact
+     * Import Contact.
      */
     public function import(?Contact $contact, VCard $vcard): Contact
     {

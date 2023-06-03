@@ -4,9 +4,10 @@ namespace Tests\Unit\Domains\Settings\ManageContactInformationTypes\Web\ViewHelp
 
 use App\Domains\Settings\ManageContactInformationTypes\Web\ViewHelpers\PersonalizeContactInformationTypeIndexViewHelper;
 use App\Models\ContactInformationType;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
+use function env;
 
 class PersonalizeContactInformationTypeIndexViewHelperTest extends TestCase
 {

@@ -5,9 +5,10 @@ namespace Tests\Unit\Domains\Settings\ManageRelationshipTypes\Web\ViewHelpers;
 use App\Domains\Settings\ManageRelationshipTypes\Web\ViewHelpers\PersonalizeRelationshipIndexViewHelper;
 use App\Models\RelationshipGroupType;
 use App\Models\RelationshipType;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
+use function env;
 
 class PersonalizeRelationshipIndexViewHelperTest extends TestCase
 {

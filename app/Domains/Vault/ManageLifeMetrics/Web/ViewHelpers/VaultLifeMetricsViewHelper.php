@@ -50,7 +50,7 @@ class VaultLifeMetricsViewHelper
             $eventsCounter = 0;
 
             foreach ($monthlyEvents as $monthlyEvent) {
-                if ((CarbonImmutable::parse($monthlyEvent->pivot->created_at))->month === $month) {
+                if (CarbonImmutable::parse($monthlyEvent->pivot->created_at)->month === $month) {
                     $eventsCounter++;
                 }
             }
@@ -100,7 +100,7 @@ class VaultLifeMetricsViewHelper
             ->get();
 
         $yearsCollection = $events->map(fn (LifeMetric $lifeMetricEvent) => [
-            'year' => (Carbon::parse($lifeMetricEvent->pivot->created_at))->year,
+            'year' => Carbon::parse($lifeMetricEvent->pivot->created_at)->year,
         ]);
 
         return $yearsCollection->unique('year')->sortByDesc('year')->values();

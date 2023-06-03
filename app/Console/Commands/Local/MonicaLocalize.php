@@ -38,7 +38,7 @@ class MonicaLocalize extends Command
     }
 
     /**
-     * Heavily inspired by https://stevensteel.com/blog/automatically-find-translate-and-save-missing-translation-keys
+     * Heavily inspired by https://stevensteel.com/blog/automatically-find-translate-and-save-missing-translation-keys.
      */
     private function loadTranslations(array $locales): void
     {

@@ -9,7 +9,7 @@ return [
         /**
          * Short keys. This is the default for Laravel.
          * They are stored in PHP files inside folders name by their locale code.
-         * Laravel comes with default: auth.php, pagination.php, passwords.php and validation.php
+         * Laravel comes with default: auth.php, pagination.php, passwords.php and validation.php.
          */
         'default' => true,
 

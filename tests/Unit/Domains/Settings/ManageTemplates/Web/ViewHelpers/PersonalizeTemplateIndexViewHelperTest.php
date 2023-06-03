@@ -4,9 +4,10 @@ namespace Tests\Unit\Domains\Settings\ManageTemplates\Web\ViewHelpers;
 
 use App\Domains\Settings\ManageTemplates\Web\ViewHelpers\PersonalizeTemplateIndexViewHelper;
 use App\Models\Template;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
+use function env;
 
 class PersonalizeTemplateIndexViewHelperTest extends TestCase
 {

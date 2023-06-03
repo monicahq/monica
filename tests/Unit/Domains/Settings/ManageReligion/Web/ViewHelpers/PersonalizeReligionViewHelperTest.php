@@ -4,9 +4,10 @@ namespace Tests\Unit\Domains\Settings\ManageReligion\Web\ViewHelpers;
 
 use App\Domains\Settings\ManageReligion\Web\ViewHelpers\PersonalizeReligionViewHelper;
 use App\Models\Religion;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
+use function env;
 
 class PersonalizeReligionViewHelperTest extends TestCase
 {

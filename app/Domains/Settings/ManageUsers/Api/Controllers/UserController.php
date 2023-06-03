@@ -23,7 +23,7 @@ class UserController extends ApiController
     }
 
     /**
-     * Retrieve the authenticated user
+     * Retrieve the authenticated user.
      *
      * Get the authenticated user.
      */
@@ -35,7 +35,7 @@ class UserController extends ApiController
     }
 
     /**
-     * Retrieve a user
+     * Retrieve a user.
      *
      * Get a specific user object.
      */
@@ -49,7 +49,7 @@ class UserController extends ApiController
     }
 
     /**
-     * List all users
+     * List all users.
      *
      * Get all the users in the account.
      */

@@ -3,9 +3,10 @@
 namespace Tests\Unit\Domains\Settings\ManagePersonalization\Web\ViewHelpers;
 
 use App\Domains\Settings\ManagePersonalization\Web\ViewHelpers\PersonalizeIndexViewHelper;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
+use function env;
 
 class PersonalizeIndexViewHelperTest extends TestCase
 {

@@ -6,9 +6,10 @@ use App\Domains\Contact\ManageGoals\Web\ViewHelpers\ModuleGoalsViewHelper;
 use App\Models\Contact;
 use App\Models\Goal;
 use App\Models\User;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
+use function env;
 
 class ModuleGoalsViewHelperTest extends TestCase
 {

@@ -4,9 +4,10 @@ namespace Tests\Unit\Domains\Settings\ManagePronouns\Web\ViewHelpers;
 
 use App\Domains\Settings\ManagePronouns\Web\ViewHelpers\PersonalizePronounIndexViewHelper;
 use App\Models\Pronoun;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
+use function env;
 
 class PersonalizePronounIndexViewHelperTest extends TestCase
 {

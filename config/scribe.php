@@ -353,7 +353,7 @@ INTRO
      * Customize the "Last updated" value displayed in the docs by specifying tokens and formats.
      * Examples:
      * - {date:F j Y} => March 28, 2022
-     * - {git:short} => Short hash of the last Git commit
+     * - {git:short} => Short hash of the last Git commit.
      *
      * Available tokens are `{date:<format>}` and `{git:<format>}`.
      * The format you pass to `date` will be passed to PhP's `date()` function.
