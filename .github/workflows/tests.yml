@@ -2,7 +2,9 @@ name: Build and test
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - chandler
   pull_request:
     types: [opened, synchronize, reopened]
   release:
