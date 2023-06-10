@@ -1,6 +1,6 @@
 <script setup>
 import { ref, nextTick } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import Layout from '@/Shared/Layout.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
@@ -73,9 +73,9 @@ const destroy = (metric) => {
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
+              <Link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
                 {{ $t('Journals') }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -88,9 +88,7 @@ const destroy = (metric) => {
               </svg>
             </li>
             <li class="relative me-2 inline">
-              <inertia-link :href="data.journal.url.show" class="text-blue-500 hover:underline">{{
-                data.journal.name
-              }}</inertia-link>
+              <Link :href="data.journal.url.show" class="text-blue-500 hover:underline">{{ data.journal.name }}</Link>
             </li>
             <li class="relative me-2 inline">
               <svg

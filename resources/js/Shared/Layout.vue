@@ -6,9 +6,9 @@
         class="max-w-8xl mx-auto flex h-10 items-center justify-between border-b bg-gray-50 px-3 dark:border-slate-600 dark:bg-gray-800 dark:text-slate-200 sm:px-6">
         <div
           class="dark:highlight-white/5 items-center rounded-lg border border-gray-200 bg-white px-2 py-1 text-sm dark:border-0 dark:border-gray-700 dark:bg-gray-400/20 dark:bg-gray-900 sm:flex">
-          <inertia-link :href="layoutData.url.vaults" class="flex-shrink-0 dark:text-sky-400">
+          <InertiaLink :href="layoutData.url.vaults" class="flex-shrink-0 dark:text-sky-400">
             {{ layoutData.user.name }}
-          </inertia-link>
+          </InertiaLink>
 
           <!-- information about the current vault -->
           <div v-if="layoutData.vault">
@@ -160,7 +160,7 @@
               </label>
             </li>
             <li class="me-4 inline">
-              <inertia-link :href="layoutData.url.settings" class="relative inline">
+              <InertiaLink :href="layoutData.url.settings" class="relative inline">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="relative -top-px me-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-300 sm:h-4 sm:w-4"
@@ -180,10 +180,10 @@
                 </svg>
 
                 <span class="text-sm dark:text-sky-400">{{ $t('Settings') }}</span>
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="inline">
-              <inertia-link class="inline" method="post" :href="route('logout')" as="button">
+              <InertiaLink class="inline" method="post" :href="route('logout')" as="button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="me-1 inline-block h-4 w-4 cursor-pointer text-gray-600 dark:text-gray-300 sm:h-4 sm:w-4"
@@ -198,7 +198,7 @@
                 </svg>
 
                 <span class="text-sm dark:text-sky-400">{{ $t('Logout') }}</span>
-              </inertia-link>
+              </InertiaLink>
             </li>
           </ul>
         </div>
@@ -210,7 +210,7 @@
           <div class="flex items-baseline justify-between space-x-6">
             <ul class="list-none text-sm font-medium">
               <li class="inline">
-                <inertia-link
+                <InertiaLink
                   :href="layoutData.vault.url.dashboard"
                   :class="{
                     'bg-blue-700 text-white dark:bg-blue-300 dark:text-gray-900':
@@ -218,54 +218,54 @@
                   }"
                   class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('Dashboard') }}
-                </inertia-link>
+                </InertiaLink>
               </li>
               <li class="inline">
-                <inertia-link
+                <InertiaLink
                   :href="layoutData.vault.url.contacts"
                   :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Contact') }"
                   class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('Contacts') }}
-                </inertia-link>
+                </InertiaLink>
               </li>
               <li class="inline">
-                <inertia-link
+                <InertiaLink
                   :href="layoutData.vault.url.calendar"
                   v-if="layoutData.vault.visibility.show_calendar_tab"
                   :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Calendar') }"
                   class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('Calendar') }}
-                </inertia-link>
+                </InertiaLink>
               </li>
               <li class="inline">
-                <inertia-link
+                <InertiaLink
                   :href="layoutData.vault.url.journals"
                   v-if="layoutData.vault.visibility.show_journal_tab"
                   :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Journal') }"
                   class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('Journals') }}
-                </inertia-link>
+                </InertiaLink>
               </li>
               <li class="inline">
-                <inertia-link
+                <InertiaLink
                   :href="layoutData.vault.url.groups"
                   v-if="layoutData.vault.visibility.show_group_tab"
                   :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Group') }"
                   class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('Groups') }}
-                </inertia-link>
+                </InertiaLink>
               </li>
               <li class="inline">
-                <inertia-link
+                <InertiaLink
                   :href="layoutData.vault.url.companies"
                   v-if="layoutData.vault.visibility.show_companies_tab"
                   :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Companies') }"
                   class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('Companies') }}
-                </inertia-link>
+                </InertiaLink>
               </li>
               <li class="inline">
-                <inertia-link
+                <InertiaLink
                   :href="layoutData.vault.url.tasks"
                   v-if="layoutData.vault.visibility.show_tasks_tab"
                   :class="{
@@ -274,10 +274,10 @@
                   }"
                   class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('Tasks') }}
-                </inertia-link>
+                </InertiaLink>
               </li>
               <li class="inline">
-                <inertia-link
+                <InertiaLink
                   :href="layoutData.vault.url.reports"
                   v-if="layoutData.vault.visibility.show_reports_tab"
                   :class="{
@@ -286,25 +286,25 @@
                   }"
                   class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('Reports') }}
-                </inertia-link>
+                </InertiaLink>
               </li>
               <li class="inline">
-                <inertia-link
+                <InertiaLink
                   :href="layoutData.vault.url.files"
                   v-if="layoutData.vault.visibility.show_files_tab"
                   :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Files') }"
                   class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
                   {{ $t('Files') }}
-                </inertia-link>
+                </InertiaLink>
               </li>
               <li class="inline">
-                <inertia-link
+                <InertiaLink
                   v-if="layoutData.vault.permission.at_least_editor"
                   :href="layoutData.vault.url.settings"
                   :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Settings') }"
                   class="rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white">
                   {{ $t('Vault settings') }}
-                </inertia-link>
+                </InertiaLink>
               </li>
             </ul>
           </div>
@@ -330,11 +330,13 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Toaster from '@/Shared/Toaster.vue';
 import FooterLayout from '@/Layouts/FooterLayout.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Toaster,
     FooterLayout,
   },

@@ -1,5 +1,5 @@
 <script setup>
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link } from '@inertiajs/vue3';
 import ChevronLeft from '@/Components/ChevronLeft.vue';
 import ChevronRight from '@/Components/ChevronRight.vue';
 

@@ -1,7 +1,6 @@
 <script setup>
 import { ref, nextTick, watch, onMounted } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { Inertia } from '@inertiajs/inertia';
+import { router, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import JetInputError from '@/Components/InputError.vue';
 import JetButton from '@/Components/Button.vue';
@@ -66,7 +65,7 @@ const notSupportedMessage = () => {
 
 const start = () => {
   errorMessage.value = '';
-  Inertia.reload({ only: ['publicKey'] });
+  router.reload({ only: ['publicKey'] });
 };
 
 const stop = () => {

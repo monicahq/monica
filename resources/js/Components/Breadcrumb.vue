@@ -1,4 +1,6 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
+
 defineProps({
   items: Array,
 });
@@ -23,9 +25,9 @@ defineProps({
         </li>
 
         <li class="inline" :class="{ 'ms-2': index > 0 }">
-          <inertia-link v-if="item.url" :href="item.url" class="text-blue-500 hover:underline">
+          <Link v-if="item.url" :href="item.url" class="text-blue-500 hover:underline">
             {{ item.name }}
-          </inertia-link>
+          </Link>
           <template v-else>
             {{ item.name }}
           </template>

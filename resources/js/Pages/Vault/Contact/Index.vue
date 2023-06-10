@@ -1,6 +1,5 @@
 <script setup>
-import { useForm } from '@inertiajs/inertia-vue3';
-import { Inertia } from '@inertiajs/inertia';
+import { router, useForm, Link } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
@@ -21,7 +20,7 @@ const form = useForm({
 const update = () => {
   axios.put(props.data.url.sort.update, form).then((response) => {
     localStorage.success = trans('Changes saved');
-    Inertia.visit(response.data.data);
+    router.visit(response.data.data);
   });
 };
 </script>
@@ -42,9 +41,9 @@ const update = () => {
               <ul v-if="data.labels.length > 0">
                 <li class="mb-1">
                   <div v-if="data.current_label">
-                    <inertia-link :href="data.url.contact.index" class="text-blue-500 hover:underline">
+                    <Link :href="data.url.contact.index" class="text-blue-500 hover:underline">
                       {{ $t('View all') }}
-                    </inertia-link>
+                    </Link>
                   </div>
                   <div v-if="!data.current_label">
                     {{ $t('View all') }}
@@ -52,9 +51,9 @@ const update = () => {
                 </li>
                 <li v-for="label in data.labels" :key="label.id" class="mb-1">
                   <div v-if="label.id !== data.current_label">
-                    <inertia-link :href="label.url.show" class="text-blue-500 hover:underline">
+                    <Link :href="label.url.show" class="text-blue-500 hover:underline">
                       {{ label.name }}
-                    </inertia-link>
+                    </Link>
                     <span class="text-sm text-gray-500">({{ label.count }})</span>
                   </div>
                   <div v-if="label.id === data.current_label">
@@ -104,9 +103,9 @@ const update = () => {
                 class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
                 <avatar :data="contact.avatar" :class="'me-2 h-5 w-5 rounded-full'" />
 
-                <inertia-link :href="contact.url.show" class="text-blue-500 hover:underline">
+                <Link :href="contact.url.show" class="text-blue-500 hover:underline">
                   {{ contact.name }}
-                </inertia-link>
+                </Link>
               </li>
             </ul>
 

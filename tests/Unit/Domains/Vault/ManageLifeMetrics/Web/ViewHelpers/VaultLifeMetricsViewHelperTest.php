@@ -5,11 +5,10 @@ namespace Tests\Unit\Domains\Vault\ManageLifeMetrics\Web\ViewHelpers;
 use App\Domains\Vault\ManageLifeMetrics\Web\ViewHelpers\VaultLifeMetricsViewHelper;
 use App\Models\Contact;
 use App\Models\LifeMetric;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
-
-use function env;
 
 class VaultLifeMetricsViewHelperTest extends TestCase
 {

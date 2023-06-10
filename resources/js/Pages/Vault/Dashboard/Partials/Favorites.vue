@@ -26,9 +26,9 @@
           <div class="mb-2 flex items-center text-sm">
             <avatar :data="favorite.avatar" :class="'me-2 h-5 w-5 rounded-full'" />
 
-            <inertia-link :href="favorite.url.show" class="text-blue-500 hover:underline">
+            <InertiaLink :href="favorite.url.show" class="text-blue-500 hover:underline">
               {{ favorite.name }}
-            </inertia-link>
+            </InertiaLink>
           </div>
         </li>
       </ul>
@@ -37,10 +37,12 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Avatar from '@/Shared/Avatar.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Avatar,
   },
 

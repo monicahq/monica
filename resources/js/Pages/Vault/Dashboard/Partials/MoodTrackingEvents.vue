@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import { DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
@@ -206,9 +206,7 @@ const submit = () => {
       <img src="/img/dashboard_blank_how_are_you.svg" :alt="$t('Reminders')" class="me-2 h-14 w-14" />
       <div class="flex flex-col px-5">
         <p class="mb-2"><span class="me-1">🎉</span> {{ $t('Your mood has been recorded!') }}</p>
-        <inertia-link :href="data.url.history" class="text-center text-blue-500 hover:underline">{{
-          $t('View history')
-        }}</inertia-link>
+        <Link :href="data.url.history" class="text-center text-blue-500 hover:underline">{{ $t('View history') }}</Link>
       </div>
     </div>
   </div>

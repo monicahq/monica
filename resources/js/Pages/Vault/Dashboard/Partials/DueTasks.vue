@@ -68,9 +68,9 @@
               <div class="flex items-center">
                 <avatar :data="task.contact.avatar" :class="'me-2 h-5 w-5 rounded-full'" />
 
-                <inertia-link :href="task.contact.url.show" class="text-blue-500 hover:underline">
+                <InertiaLink :href="task.contact.url.show" class="text-blue-500 hover:underline">
                   {{ task.contact.name }}
-                </inertia-link>
+                </InertiaLink>
               </div>
             </div>
           </div>
@@ -89,20 +89,22 @@
     </div>
 
     <div class="text-center">
-      <inertia-link
+      <InertiaLink
         :href="data.url.index"
         class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
         {{ $t('View all') }}
-      </inertia-link>
+      </InertiaLink>
     </div>
   </div>
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Avatar from '@/Shared/Avatar.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Avatar,
   },
 

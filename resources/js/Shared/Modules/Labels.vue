@@ -93,7 +93,7 @@
         :key="label.id"
         class="mb-2 me-2 inline-block rounded px-2 py-1 text-xs font-semibold last:me-0"
         :class="label.bg_color + ' ' + label.text_color">
-        <inertia-link :href="label.url.show">{{ label.name }}</inertia-link>
+        <InertiaLink :href="label.url.show">{{ label.name }}</InertiaLink>
       </span>
     </div>
 
@@ -103,11 +103,13 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     TextInput,
     Errors,
   },

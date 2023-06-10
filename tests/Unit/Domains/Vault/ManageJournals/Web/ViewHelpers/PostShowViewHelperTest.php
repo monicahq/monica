@@ -12,10 +12,9 @@ use App\Models\PostSection;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Vault;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-
-use function env;
 
 class PostShowViewHelperTest extends TestCase
 {

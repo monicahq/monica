@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
-import { Inertia } from '@inertiajs/inertia';
-import { useForm, usePage } from '@inertiajs/inertia-vue3';
+import { router, usePage, useForm } from '@inertiajs/vue3';
 import JetActionSection from '@/Components/Jetstream/ActionSection.vue';
 import JetButton from '@/Components/Button.vue';
 import JetConfirmsPassword from '@/Components/Jetstream/ConfirmsPassword.vue';
@@ -26,7 +25,7 @@ const confirmationForm = useForm({
   code: '',
 });
 
-const twoFactorEnabled = computed(() => !enabling.value && usePage().props.value.user?.two_factor_enabled);
+const twoFactorEnabled = computed(() => !enabling.value && usePage().props.user?.two_factor_enabled);
 
 watch(twoFactorEnabled, () => {
   if (!twoFactorEnabled.value) {
@@ -38,10 +37,13 @@ watch(twoFactorEnabled, () => {
 const enableTwoFactorAuthentication = () => {
   enabling.value = true;
 
-  Inertia.post(
+  router.post(
     route('two-factor.enable'),
     {},
     {
+      headers: {
+        accept: 'application/json',
+      },
       preserveScroll: true,
       onSuccess: () => Promise.all([showQrCode(), showSetupKey(), showRecoveryCodes()]),
       onFinish: () => {
@@ -90,7 +92,7 @@ const regenerateRecoveryCodes = () => {
 const disableTwoFactorAuthentication = () => {
   disabling.value = true;
 
-  Inertia.delete(route('two-factor.disable'), {
+  router.delete(route('two-factor.disable'), {
     preserveScroll: true,
     onSuccess: () => {
       disabling.value = false;
@@ -188,7 +190,7 @@ const disableTwoFactorAuthentication = () => {
             </p>
           </div>
 
-          <div class="mt-4 grid max-w-xl gap-1 rounded-lg bg-gray-100 px-4 py-4 font-mono text-sm">
+          <div class="mt-4 grid max-w-xl gap-1 rounded-lg bg-gray-100 px-4 py-4 font-mono text-sm dark:bg-gray-950">
             <div v-for="code in recoveryCodes" :key="code">
               {{ code }}
             </div>

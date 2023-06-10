@@ -1,6 +1,6 @@
 <script setup>
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import Errors from '@/Shared/Form/Errors.vue';
 
@@ -150,9 +150,9 @@ const search = _.debounce(() => {
           v-for="contact in localContacts"
           :key="contact.id"
           class="item-list flex items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-          <inertia-link :href="contact.url">
+          <Link :href="contact.url">
             {{ contact.name }}
-          </inertia-link>
+          </Link>
 
           <!-- actions -->
           <ul class="text-sm">

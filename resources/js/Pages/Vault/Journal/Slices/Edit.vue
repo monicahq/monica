@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
@@ -40,9 +40,9 @@ const submit = () => {
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
+              <Link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
                 {{ $t('Journals') }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -55,9 +55,7 @@ const submit = () => {
               </svg>
             </li>
             <li class="relative me-2 inline">
-              <inertia-link :href="data.journal.url.show" class="text-blue-500 hover:underline">{{
-                data.journal.name
-              }}</inertia-link>
+              <Link :href="data.journal.url.show" class="text-blue-500 hover:underline">{{ data.journal.name }}</Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -70,9 +68,9 @@ const submit = () => {
               </svg>
             </li>
             <li class="relative me-2 inline">
-              <inertia-link :href="data.url.slices_index" class="text-blue-500 hover:underline">{{
+              <Link :href="data.url.slices_index" class="text-blue-500 hover:underline">{{
                 $t('Slices of life')
-              }}</inertia-link>
+              }}</Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -85,9 +83,7 @@ const submit = () => {
               </svg>
             </li>
             <li class="relative me-2 inline">
-              <inertia-link :href="data.slice.url.show" class="text-blue-500 hover:underline">{{
-                data.slice.name
-              }}</inertia-link>
+              <Link :href="data.slice.url.show" class="text-blue-500 hover:underline">{{ data.slice.name }}</Link>
             </li>
             <li class="relative me-2 inline">
               <svg

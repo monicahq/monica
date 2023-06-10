@@ -1,5 +1,5 @@
 <script setup>
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import { onMounted, nextTick, ref } from 'vue';
 import { DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';

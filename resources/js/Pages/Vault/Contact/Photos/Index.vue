@@ -9,9 +9,9 @@
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
+              <InertiaLink :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 {{ $t('Contacts') }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -24,9 +24,9 @@
               </svg>
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.show" class="text-blue-500 hover:underline">
+              <InertiaLink :href="data.url.show" class="text-blue-500 hover:underline">
                 {{ $t('Profile of :name', { name: data.contact.name }) }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -99,9 +99,9 @@
               v-for="photo in localPhotos"
               :key="photo.id"
               class="rounded-md border border-gray-200 p-2 shadow-sm hover:bg-slate-50 hover:shadow-lg dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-              <inertia-link :href="photo.url.show">
+              <InertiaLink :href="photo.url.show">
                 <img :src="photo.url.display" :alt="photo.name" />
-              </inertia-link>
+              </InertiaLink>
             </div>
           </div>
         </div>
@@ -122,6 +122,7 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import Pagination from '@/Components/Pagination.vue';
@@ -129,6 +130,7 @@ import Uploadcare from '@/Components/Uploadcare.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Layout,
     PrettyButton,
     Pagination,

@@ -9,9 +9,9 @@
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
+              <InertiaLink :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 {{ $t('Contacts') }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -24,9 +24,9 @@
               </svg>
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.contact" class="text-blue-500 hover:underline">
+              <InertiaLink :href="data.url.contact" class="text-blue-500 hover:underline">
                 {{ $t('Profile of :name', { name: data.contact.name }) }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -137,6 +137,7 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import { Tooltip as ATooltip } from 'ant-design-vue';
 import Layout from '@/Shared/Layout.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
@@ -145,6 +146,7 @@ import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     ATooltip,
     Layout,
     TextInput,

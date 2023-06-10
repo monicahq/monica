@@ -50,17 +50,17 @@
           v-for="photo in localPhotos"
           :key="photo.id"
           class="rounded-md border border-gray-200 p-2 shadow-sm hover:bg-slate-50 hover:shadow-lg dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-          <inertia-link :href="photo.url.show"><img :src="photo.url.display" :alt="photo.name" /></inertia-link>
+          <InertiaLink :href="photo.url.show"><img :src="photo.url.display" :alt="photo.name" /></InertiaLink>
         </div>
       </div>
 
       <!-- view all button -->
       <div class="text-center">
-        <inertia-link
+        <InertiaLink
           :href="data.url.index"
           class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
           {{ $t('View all') }}
-        </inertia-link>
+        </InertiaLink>
       </div>
     </div>
 
@@ -86,11 +86,13 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     PrettyButton,
     Uploadcare,
   },

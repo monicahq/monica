@@ -6,10 +6,9 @@ use App\Domains\Settings\ManageTemplates\Web\ViewHelpers\PersonalizeTemplatePage
 use App\Models\Module;
 use App\Models\Template;
 use App\Models\TemplatePage;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-
-use function env;
 
 class PersonalizeTemplatePageShowViewHelperTest extends TestCase
 {

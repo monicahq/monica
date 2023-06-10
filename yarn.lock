@@ -336,38 +336,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inertiajs/inertia-vue3@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "@inertiajs/inertia-vue3@npm:0.6.0"
+"@inertiajs/core@npm:1.0.7":
+  version: 1.0.7
+  resolution: "@inertiajs/core@npm:1.0.7"
   dependencies:
+    axios: ^1.2.0
+    deepmerge: ^4.0.0
+    nprogress: ^0.2.0
+    qs: ^6.9.0
+  checksum: 1a34cb7324c9f837665a462e89e9a2e1940630a5d7f32b9c2200677186fad16d23073b00b74ee62ef1fffeea6e70d53d38c1eef0453b265926f3f48822687b31
+  languageName: node
+  linkType: hard
+
+"@inertiajs/vue3@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "@inertiajs/vue3@npm:1.0.7"
+  dependencies:
+    "@inertiajs/core": 1.0.7
     lodash.clonedeep: ^4.5.0
     lodash.isequal: ^4.5.0
   peerDependencies:
-    "@inertiajs/inertia": ^0.11.0
     vue: ^3.0.0
-  checksum: 28fd185b68fdda0eb23c879996a58b6f40f83f67e3e7cefdb4ff51c3bb06abc9f28f78bc8365dc50d66a0fde970837c899f850984749e643d22b2807b4461bcc
-  languageName: node
-  linkType: hard
-
-"@inertiajs/inertia@npm:^0.11.0":
-  version: 0.11.1
-  resolution: "@inertiajs/inertia@npm:0.11.1"
-  dependencies:
-    axios: ^0.21.1
-    deepmerge: ^4.0.0
-    qs: ^6.9.0
-  checksum: 516f41e84216dc4ab483d0fd1cf86464dee9ef0605a01a894e9a02546ae169f9954cc4cc25234ac8817cf88b5c5558c1e8da9109dd443d3513d18e20647c1304
-  languageName: node
-  linkType: hard
-
-"@inertiajs/progress@npm:^0.2.6":
-  version: 0.2.7
-  resolution: "@inertiajs/progress@npm:0.2.7"
-  dependencies:
-    nprogress: ^0.2.0
-  peerDependencies:
-    "@inertiajs/inertia": ^0.6.0 || ^0.7.0 || ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0
-  checksum: 8c89d506b096000e5b621e3d3465fa7d07855ec45e275d9475a8f47b0431478439a838a860927c764e9d5d5600bd7f9f3bba4ccea2ef5f739d7d7f25caa96ca1
+  checksum: f38d4d29fa699f8af63ef85d2fb221346baddff1c4dd0ee682b6f679233f75a7d35cd2414f577b05e738d78b0274147c5edbb497714b91c4e6a22da94727d2c4
   languageName: node
   linkType: hard
 
@@ -1081,16 +1071,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.21.1":
-  version: 0.21.4
-  resolution: "axios@npm:0.21.4"
-  dependencies:
-    follow-redirects: ^1.14.0
-  checksum: 44245f24ac971e7458f3120c92f9d66d1fc695e8b97019139de5b0cc65d9b8104647db01e5f46917728edfc0cfd88eb30fc4c55e6053eef4ace76768ce95ff3c
-  languageName: node
-  linkType: hard
-
-"axios@npm:^1.4.0":
+"axios@npm:^1.2.0, axios@npm:^1.4.0":
   version: 1.4.0
   resolution: "axios@npm:1.4.0"
   dependencies:
@@ -1987,7 +1968,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.15.0":
+"follow-redirects@npm:^1.15.0":
   version: 1.15.2
   resolution: "follow-redirects@npm:1.15.2"
   peerDependenciesMeta:
@@ -3640,9 +3621,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@inertiajs/inertia": ^0.11.0
-    "@inertiajs/inertia-vue3": ^0.6.0
-    "@inertiajs/progress": ^0.2.6
+    "@inertiajs/vue3": ^1.0.7
     "@popperjs/core": ^2.11.7
     "@sentry/tracing": ^7.11.1
     "@sentry/vue": ^7.11.1

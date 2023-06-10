@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { Link } from '@inertiajs/vue3';
 import { Tooltip as ATooltip } from 'ant-design-vue';
 import Layout from '@/Shared/Layout.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
@@ -39,7 +40,7 @@ const get = (day) => {
               <!-- month next/previous -->
               <div class="flex justify-center">
                 <div class="inline-flex rounded-md shadow-sm">
-                  <inertia-link
+                  <Link
                     :href="data.url.previous"
                     class="inline-flex items-center rounded-s-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
                     <svg
@@ -53,9 +54,9 @@ const get = (day) => {
                     </svg>
 
                     {{ data.previous_month }}
-                  </inertia-link>
+                  </Link>
 
-                  <inertia-link
+                  <Link
                     :href="data.url.next"
                     class="inline-flex items-center rounded-e-md border-y border-e border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
                     {{ data.next_month }}
@@ -69,7 +70,7 @@ const get = (day) => {
                       class="ms-2 h-4 w-4">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                     </svg>
-                  </inertia-link>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -237,9 +238,7 @@ const get = (day) => {
               </h2>
               <ul class="p-3">
                 <li v-for="post in loadedDay.posts" :key="post.id" class="mb-2">
-                  <inertia-link :href="post.url.show" class="text-sm text-blue-500 hover:underline">{{
-                    post.title
-                  }}</inertia-link>
+                  <Link :href="post.url.show" class="text-sm text-blue-500 hover:underline">{{ post.title }}</Link>
                 </li>
               </ul>
             </div>

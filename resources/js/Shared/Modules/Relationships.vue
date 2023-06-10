@@ -44,12 +44,12 @@
                 <avatar :data="relationshipType.contact.avatar" :class="'me-2 h-5 w-5'" />
 
                 <!-- name -->
-                <inertia-link
+                <InertiaLink
                   v-if="relationshipType.contact.url.show"
                   :href="relationshipType.contact.url.show"
                   class="text-blue-500 hover:underline">
                   {{ relationshipType.contact.name }}
-                </inertia-link>
+                </InertiaLink>
                 <span v-else>{{ relationshipType.contact.name }}</span>
 
                 <!-- age -->
@@ -84,11 +84,13 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import Avatar from '@/Shared/Avatar.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     PrettyLink,
     Avatar,
   },

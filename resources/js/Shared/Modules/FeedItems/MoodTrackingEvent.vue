@@ -9,9 +9,9 @@
         :class="'relative me-2 h-5 w-5 rounded-full border border-gray-200 dark:border-gray-800'" />
 
       <div class="flex flex-col">
-        <inertia-link :href="data.contact.url" class="text-gray-800 hover:underline dark:text-gray-200">{{
+        <InertiaLink :href="data.contact.url" class="text-gray-800 hover:underline dark:text-gray-200">{{
           data.contact.name
-        }}</inertia-link>
+        }}</InertiaLink>
       </div>
     </div>
 
@@ -77,10 +77,12 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Avatar from '@/Shared/Avatar.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Avatar,
   },
 

@@ -1,3 +1,11 @@
+<script setup>
+import { Link } from '@inertiajs/vue3';
+
+defineProps({
+  data: Object,
+});
+</script>
+
 <template>
   <div>
     <div class="mb-2 sm:mb-1">
@@ -25,9 +33,9 @@
         v-for="group in data"
         :key="group.id"
         class="item-list border-b border-gray-200 p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-        <inertia-link :href="group.url" class="text-blue-500 hover:underline">
+        <Link :href="group.url" class="text-blue-500 hover:underline">
           {{ group.name }}
-        </inertia-link>
+        </Link>
       </li>
     </ul>
     <!-- blank state -->
@@ -38,17 +46,6 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .icon-sidebar {

@@ -1,3 +1,11 @@
+<script setup>
+import { Link } from '@inertiajs/vue3';
+
+defineProps({
+  data: Object,
+});
+</script>
+
 <template>
   <div v-if="data.love_relationships.length != 0 || data.family_relationships.length != 0" class="mb-4">
     <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
@@ -10,12 +18,12 @@
       <ul>
         <li v-for="relationship in data.love_relationships" :key="relationship.id" class="me-2 inline">
           <!-- name -->
-          <inertia-link
+          <Link
             v-if="relationship.contact.url.show"
             :href="relationship.contact.url.show"
             class="text-blue-500 hover:underline">
             {{ relationship.contact.name }}
-          </inertia-link>
+          </Link>
           <span v-else>{{ relationship.contact.name }}</span>
 
           <!-- age -->
@@ -32,12 +40,12 @@
       <ul>
         <li v-for="relationship in data.family_relationships" :key="relationship.id" class="me-2 inline">
           <!-- name -->
-          <inertia-link
+          <Link
             v-if="relationship.contact.url.show"
             :href="relationship.contact.url.show"
             class="text-blue-500 hover:underline">
             {{ relationship.contact.name }}
-          </inertia-link>
+          </Link>
           <span v-else>{{ relationship.contact.name }}</span>
 
           <!-- age -->
@@ -49,14 +57,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-};
-</script>

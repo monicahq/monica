@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import Errors from '@/Shared/Form/Errors.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
@@ -108,9 +108,9 @@ const reset = () => {
     <p v-if="!slice" class="text-sm text-gray-600 dark:text-gray-400">{{ $t('Not set') }}</p>
 
     <div v-else>
-      <inertia-link :href="slice.url.show" class="text-blue-500 hover:underline">
+      <Link :href="slice.url.show" class="text-blue-500 hover:underline">
         {{ slice.name }}
-      </inertia-link>
+      </Link>
     </div>
   </div>
 </template>

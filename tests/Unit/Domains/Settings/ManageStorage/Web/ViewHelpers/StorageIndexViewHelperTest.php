@@ -6,10 +6,9 @@ use App\Domains\Settings\ManageStorage\Web\ViewHelpers\StorageIndexViewHelper;
 use App\Models\Account;
 use App\Models\File;
 use App\Models\Vault;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-
-use function env;
 
 class StorageIndexViewHelperTest extends TestCase
 {

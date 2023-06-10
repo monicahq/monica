@@ -4,10 +4,9 @@ namespace Tests\Unit\Domains\Settings\ManageGenders\Web\ViewHelpers;
 
 use App\Domains\Settings\ManageGenders\Web\ViewHelpers\ManageGenderIndexViewHelper;
 use App\Models\Gender;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-
-use function env;
 
 class ManageGenderIndexViewHelperTest extends TestCase
 {

@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { Link, useForm } from '@inertiajs/inertia-vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import JetButton from '@/Components/Button.vue';
 import JetGuestLayout from '@/Shared/Guest.vue';
 

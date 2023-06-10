@@ -11,9 +11,7 @@
     "docker:run": "docker run --name monica -p 8080:80 monica-next"
   },
   "devDependencies": {
-    "@inertiajs/inertia": "^0.11.0",
-    "@inertiajs/inertia-vue3": "^0.6.0",
-    "@inertiajs/progress": "^0.2.6",
+    "@inertiajs/vue3": "^1.0.7",
     "@popperjs/core": "^2.11.7",
     "@sentry/tracing": "^7.11.1",
     "@sentry/vue": "^7.11.1",

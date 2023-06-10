@@ -22,19 +22,21 @@
     <div v-for="contact in data" :key="contact.id" class="mb-2 flex items-center text-sm">
       <avatar :data="contact.avatar" :class="'me-2 h-5 w-5 rounded-full'" />
 
-      <inertia-link :href="contact.url.show" class="text-blue-500 hover:underline">
+      <InertiaLink :href="contact.url.show" class="text-blue-500 hover:underline">
         {{ contact.name }}
-      </inertia-link>
+      </InertiaLink>
     </div>
   </div>
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Help from '@/Shared/Help.vue';
 import Avatar from '@/Shared/Avatar.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Help,
     Avatar,
   },

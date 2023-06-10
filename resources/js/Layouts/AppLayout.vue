@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { Inertia } from '@inertiajs/inertia';
-import { Head } from '@inertiajs/inertia-vue3';
+import { router, Head } from '@inertiajs/vue3';
 import JetBanner from '@/Components/Jetstream/Banner.vue';
 import JetDropdown from '@/Components/Dropdown.vue';
 import JetDropdownLink from '@/Components/DropdownLink.vue';
@@ -16,7 +15,7 @@ defineProps({
 const showingNavigationDropdown = ref(false);
 
 const logout = () => {
-  Inertia.post(route('logout'));
+  router.post(route('logout'));
 };
 </script>
 

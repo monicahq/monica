@@ -225,11 +225,11 @@
 
       <!-- view all button -->
       <div v-if="moduleMode" class="text-center">
-        <inertia-link
+        <InertiaLink
           :href="data.url.index"
           class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
           {{ $t('View all') }}
-        </inertia-link>
+        </InertiaLink>
       </div>
 
       <!-- pagination -->
@@ -247,6 +247,7 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import HoverMenu from '@/Shared/HoverMenu.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
@@ -258,6 +259,7 @@ import Pagination from '@/Components/Pagination.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     HoverMenu,
     PrettyButton,
     PrettySpan,

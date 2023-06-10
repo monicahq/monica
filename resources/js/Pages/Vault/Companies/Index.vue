@@ -1,4 +1,5 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import Avatar from '@/Shared/Avatar.vue';
 
@@ -27,9 +28,9 @@ defineProps({
 
               <div v-if="company.contacts" class="relative flex -space-x-2 overflow-hidden py-1">
                 <div v-for="contact in company.contacts" :key="contact.id" class="inline-block">
-                  <inertia-link :href="contact.url.show">
+                  <Link :href="contact.url.show">
                     <avatar :data="contact.avatar" :class="'h-8 w-8 rounded-full ring-2 ring-white'" />
-                  </inertia-link>
+                  </Link>
                 </div>
               </div>
             </li>

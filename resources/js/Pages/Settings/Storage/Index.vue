@@ -12,14 +12,14 @@
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link
+              <InertiaLink
                 :href="data.url.settings.index"
                 class="text-blue-500 hover:underline"
               >
                 {{
                   $t('Settings')
                 }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -100,10 +100,12 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Layout,
   },
 

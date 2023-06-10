@@ -1,4 +1,5 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
 
@@ -19,9 +20,7 @@ defineProps({
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.reports" class="text-blue-500 hover:underline">{{
-                $t('Reports')
-              }}</inertia-link>
+              <Link :href="data.url.reports" class="text-blue-500 hover:underline">{{ $t('Reports') }}</Link>
             </li>
             <li class="relative me-2 inline">
               <svg

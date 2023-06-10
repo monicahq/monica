@@ -1,6 +1,6 @@
 <script setup>
+import { Link, useForm } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
 
 const props = defineProps({
   layoutData: Object,
@@ -29,9 +29,9 @@ const move = (vault) => {
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
+              <Link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 {{ $t('Contacts') }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg

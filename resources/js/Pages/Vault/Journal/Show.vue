@@ -1,7 +1,7 @@
 <script setup>
+import { Link, useForm } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
 import { trans } from 'laravel-vue-i18n';
 
 const props = defineProps({
@@ -33,9 +33,9 @@ const destroy = () => {
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
+              <Link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
                 {{ $t('Journals') }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -64,7 +64,7 @@ const destroy = () => {
         <!-- tabs -->
         <div class="flex justify-center">
           <div class="mb-8 inline-flex rounded-md shadow-sm">
-            <inertia-link
+            <Link
               :href="data.url.show"
               class="inline-flex items-center rounded-s-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-400 dark:font-bold dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
               <svg
@@ -81,9 +81,9 @@ const destroy = () => {
               </svg>
 
               {{ $t('Journal entries') }}
-            </inertia-link>
+            </Link>
 
-            <inertia-link
+            <Link
               :href="data.url.photo_index"
               :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': defaultTab === 'life_events' }"
               class="inline-flex items-center rounded-e-md border-b border-s border-t border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
@@ -101,7 +101,7 @@ const destroy = () => {
               </svg>
 
               {{ $t('Photos') }}
-            </inertia-link>
+            </Link>
           </div>
         </div>
 
@@ -114,7 +114,7 @@ const destroy = () => {
             </p>
             <ul v-if="data.years.length > 0" class="mb-8">
               <li v-for="year in data.years" :key="year.year" class="mb-2 flex items-center justify-between last:mb-0">
-                <inertia-link :href="year.url.show" class="text-blue-500 hover:underline">{{ year.year }}</inertia-link>
+                <Link :href="year.url.show" class="text-blue-500 hover:underline">{{ year.year }}</Link>
                 <span class="text-sm text-gray-400">{{ year.posts }}</span>
               </li>
             </ul>
@@ -130,14 +130,12 @@ const destroy = () => {
               </li>
             </ul>
 
-            <inertia-link
-              :href="data.url.journal_metrics"
-              class="mb-2 mt-6 block text-sm text-blue-500 hover:underline"
-              >{{ $t('Edit journal metrics') }}</inertia-link
-            >
-            <inertia-link :href="data.url.edit" class="mb-2 block text-sm text-blue-500 hover:underline">{{
+            <Link :href="data.url.journal_metrics" class="mb-2 mt-6 block text-sm text-blue-500 hover:underline">{{
+              $t('Edit journal metrics')
+            }}</Link>
+            <Link :href="data.url.edit" class="mb-2 block text-sm text-blue-500 hover:underline">{{
               $t('Edit journal information')
-            }}</inertia-link>
+            }}</Link>
             <span @click="destroy()" class="block cursor-pointer text-sm text-blue-500 hover:underline">{{
               $t('Delete journal')
             }}</span>
@@ -182,9 +180,9 @@ const destroy = () => {
                         <!-- title and excerpt -->
                         <div>
                           <span
-                            ><inertia-link :href="post.url.show" class="text-blue-500 hover:underline">{{
+                            ><Link :href="post.url.show" class="text-blue-500 hover:underline">{{
                               post.title
-                            }}</inertia-link></span
+                            }}</Link></span
                           >
                           <p v-if="post.excerpt">{{ post.excerpt }}</p>
                         </div>
@@ -231,7 +229,7 @@ const destroy = () => {
                 <div
                   class="rounded-b border-b border-s border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
                   :class="slice.cover_image ? '' : 'border-t'">
-                  <inertia-link :href="slice.url.show" class="font-semibold">{{ slice.name }}</inertia-link>
+                  <Link :href="slice.url.show" class="font-semibold">{{ slice.name }}</Link>
                   <p class="text-xs text-gray-600">{{ slice.date_range }}</p>
                 </div>
               </div>
@@ -246,9 +244,9 @@ const destroy = () => {
             </div>
 
             <div>
-              <inertia-link :href="data.url.slice_index" class="text-sm text-blue-500 hover:underline">{{
+              <Link :href="data.url.slice_index" class="text-sm text-blue-500 hover:underline">{{
                 $t('View all')
-              }}</inertia-link>
+              }}</Link>
             </div>
           </div>
         </div>

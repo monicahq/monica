@@ -1,9 +1,9 @@
 <script setup>
 import { ref, reactive } from 'vue';
+import { Link, router } from '@inertiajs/vue3';
+import { trans } from 'laravel-vue-i18n';
 import Layout from '@/Shared/Layout.vue';
 import Avatar from '@/Shared/Avatar.vue';
-import { Inertia } from '@inertiajs/inertia';
-import { trans } from 'laravel-vue-i18n';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 import JetDangerButton from '@/Components/Jetstream/DangerButton.vue';
 import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
@@ -27,7 +27,7 @@ const destroy = () => {
       deleteGroupForm.processing = false;
 
       localStorage.success = trans('The group has been deleted');
-      Inertia.visit(response.data.data);
+      router.visit(response.data.data);
     })
     .catch((error) => {
       deleteGroupForm.processing = false;
@@ -47,9 +47,9 @@ const destroy = () => {
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.groups" class="text-blue-500 hover:underline">
+              <Link :href="layoutData.vault.url.groups" class="text-blue-500 hover:underline">
                 {{ $t('Groups') }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -118,9 +118,7 @@ const destroy = () => {
           <div class="flex items-center">
             <ul class="list">
               <li class="me-4 inline">
-                <inertia-link :href="props.data.url.edit" class="text-blue-500 hover:underline">{{
-                  $t('Edit')
-                }}</inertia-link>
+                <Link :href="props.data.url.edit" class="text-blue-500 hover:underline">{{ $t('Edit') }}</Link>
               </li>
               <li class="inline" @click="deletingGroup = true">
                 <span class="inline cursor-pointer text-red-500 hover:text-red-900">{{ $t('Delete') }}</span>
@@ -144,7 +142,7 @@ const destroy = () => {
               class="rounded-lg border border-gray-200 bg-white p-3 text-center hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
               <avatar :data="contact.avatar" :class="'inline-block h-14 w-14 rounded-full'" />
 
-              <inertia-link :href="contact.url" class="text-blue-500 hover:underline">{{ contact.name }}</inertia-link>
+              <Link :href="contact.url" class="text-blue-500 hover:underline">{{ contact.name }}</Link>
 
               <span v-if="contact.age" class="ms-1 text-xs text-gray-500">({{ contact.age }})</span>
             </div>
