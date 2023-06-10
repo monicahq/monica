@@ -9,9 +9,9 @@
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
+              <InertiaLink :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 {{ $t('Contacts') }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -93,10 +93,12 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Layout,
   },
 

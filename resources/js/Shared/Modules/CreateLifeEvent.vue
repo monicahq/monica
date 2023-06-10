@@ -7,7 +7,7 @@ import ContactSelector from '@/Shared/Form/ContactSelector.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import Avatar from '@/Shared/Avatar.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import { onMounted, ref, watch, nextTick } from 'vue';
 
 const props = defineProps({

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods.js';
 import useClipboard from 'vue-clipboard3';

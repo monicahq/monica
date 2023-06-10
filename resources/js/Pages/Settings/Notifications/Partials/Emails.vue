@@ -150,9 +150,9 @@
 
           <!-- view log -->
           <li class="me-4 inline cursor-pointer text-blue-500 hover:underline">
-            <inertia-link :href="email.url.logs" class="text-blue-500 hover:underline">
+            <InertiaLink :href="email.url.logs" class="text-blue-500 hover:underline">
               {{ $t('View log') }}
-            </inertia-link>
+            </InertiaLink>
           </li>
 
           <!-- delete email -->
@@ -185,6 +185,7 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import { Tooltip as ATooltip } from 'ant-design-vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
@@ -194,6 +195,7 @@ import Dropdown from '@/Shared/Form/Dropdown.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     ATooltip,
     PrettyButton,
     PrettySpan,

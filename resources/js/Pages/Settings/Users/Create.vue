@@ -10,9 +10,9 @@ k
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
+              <InertiaLink :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -25,9 +25,9 @@ k
               </svg>
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.back" class="text-blue-500 hover:underline">
+              <InertiaLink :href="data.url.back" class="text-blue-500 hover:underline">
                 {{ $t('Users') }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -141,6 +141,7 @@ k
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
@@ -149,6 +150,7 @@ import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Layout,
     PrettyLink,
     PrettyButton,

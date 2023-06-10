@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import Layout from '@/Shared/Layout.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
@@ -66,9 +66,9 @@ const destroy = () => {
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
+              <Link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
                 {{ $t('Journals') }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -81,9 +81,7 @@ const destroy = () => {
               </svg>
             </li>
             <li class="relative me-2 inline">
-              <inertia-link :href="data.journal.url.show" class="text-blue-500 hover:underline">{{
-                data.journal.name
-              }}</inertia-link>
+              <Link :href="data.journal.url.show" class="text-blue-500 hover:underline">{{ data.journal.name }}</Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -96,9 +94,9 @@ const destroy = () => {
               </svg>
             </li>
             <li class="relative me-2 inline">
-              <inertia-link :href="data.url.slices_index" class="text-blue-500 hover:underline">{{
+              <Link :href="data.url.slices_index" class="text-blue-500 hover:underline">{{
                 $t('Slices of life')
-              }}</inertia-link>
+              }}</Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -228,9 +226,9 @@ const destroy = () => {
             <ul class="text-xs">
               <!-- destroy slice -->
               <li class="mb-2">
-                <inertia-link :href="data.slice.url.edit" class="cursor-pointer text-blue-500 hover:underline">{{
+                <Link :href="data.slice.url.edit" class="cursor-pointer text-blue-500 hover:underline">{{
                   $t('Edit')
-                }}</inertia-link>
+                }}</Link>
               </li>
               <!-- remove cover image -->
               <li v-if="localSlice.cover_image" class="mb-2">
@@ -266,9 +264,7 @@ const destroy = () => {
                 <!-- content -->
                 <div>
                   <span
-                    ><inertia-link :href="post.url.show" class="text-blue-500 hover:underline">{{
-                      post.title
-                    }}</inertia-link></span
+                    ><Link :href="post.url.show" class="text-blue-500 hover:underline">{{ post.title }}</Link></span
                   >
                   <p v-if="post.excerpt" class="">{{ post.excerpt }}</p>
                 </div>

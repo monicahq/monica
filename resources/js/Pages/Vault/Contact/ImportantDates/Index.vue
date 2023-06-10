@@ -1,5 +1,6 @@
 <script setup>
 import { ref, nextTick } from 'vue';
+import { Link } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods.js';
 import Layout from '@/Shared/Layout.vue';
@@ -78,9 +79,9 @@ const destroy = (date) => {
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
+              <Link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
                 {{ $t('Contacts') }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -93,9 +94,9 @@ const destroy = (date) => {
               </svg>
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.contact" class="text-blue-500 hover:underline">
+              <Link :href="data.url.contact" class="text-blue-500 hover:underline">
                 {{ $t('Profile of :name', { name: data.contact.name }) }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg

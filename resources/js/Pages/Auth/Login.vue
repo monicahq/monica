@@ -1,7 +1,6 @@
 <script setup>
 import { ref, watch, computed } from 'vue';
-import { Inertia } from '@inertiajs/inertia';
-import { Link, useForm } from '@inertiajs/inertia-vue3';
+import { Link, router, useForm } from '@inertiajs/vue3';
 import { size } from 'lodash';
 import JetCheckbox from '@/Components/Checkbox.vue';
 import JetValidationErrors from '@/Components/ValidationErrors.vue';
@@ -66,7 +65,7 @@ const open = (provider) => {
 const reload = () => {
   publicKeyRef.value = null;
   webauthn.value = true;
-  Inertia.reload({ only: ['publicKey'] });
+  router.reload({ only: ['publicKey'] });
 };
 </script>
 

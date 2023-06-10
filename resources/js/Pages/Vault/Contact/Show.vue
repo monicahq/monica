@@ -1,7 +1,6 @@
 <script setup>
 import { ref, reactive } from 'vue';
-import { Link, useForm } from '@inertiajs/inertia-vue3';
-import { Inertia } from '@inertiajs/inertia';
+import { Link, router, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods.js';
 import JetDialogModal from '@/Components/Jetstream/DialogModal.vue';
@@ -72,7 +71,7 @@ const destroy = () => {
       deleteContactForm.processing = false;
 
       localStorage.success = trans('The contact has been deleted');
-      Inertia.visit(response.data.data);
+      router.visit(response.data.data);
     })
     .catch((error) => {
       deleteContactForm.processing = false;
@@ -89,7 +88,7 @@ const toggleArchive = () => {
       toggleArchiveForm.processing = false;
 
       localStorage.success = trans('Changes saved');
-      Inertia.visit(response.data.data);
+      router.visit(response.data.data);
     })
     .catch((error) => {
       toggleArchiveForm.processing = false;
@@ -112,7 +111,7 @@ const upload = () => {
   axios
     .put(props.data.url.update_avatar, form)
     .then((response) => {
-      Inertia.visit(response.data.data);
+      router.visit(response.data.data);
       flash(trans('The photo has been added'), 'success');
     })
     .catch((error) => {
@@ -124,7 +123,7 @@ const destroyAvatar = () => {
   axios
     .delete(props.data.url.destroy_avatar)
     .then((response) => {
-      Inertia.visit(response.data.data);
+      router.visit(response.data.data);
       flash(trans('Changes saved'), 'success');
     })
     .catch((error) => {

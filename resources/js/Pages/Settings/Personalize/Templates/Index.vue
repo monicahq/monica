@@ -9,9 +9,9 @@
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
+              <InertiaLink :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -24,9 +24,9 @@
               </svg>
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">
+              <InertiaLink :href="data.url.personalize" class="text-blue-500 hover:underline">
                 {{ $t('Personalize your account') }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -131,9 +131,9 @@
             class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <!-- detail of the template -->
             <div v-if="renameTemplateModalShownId != template.id" class="flex items-center justify-between px-5 py-2">
-              <inertia-link :href="template.url.show" class="text-blue-500 hover:underline">
+              <InertiaLink :href="template.url.show" class="text-blue-500 hover:underline">
                 {{ template.name }}
-              </inertia-link>
+              </InertiaLink>
 
               <!-- actions -->
               <ul class="text-sm">
@@ -189,6 +189,7 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
@@ -197,6 +198,7 @@ import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Layout,
     PrettyButton,
     PrettySpan,

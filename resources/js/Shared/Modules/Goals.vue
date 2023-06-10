@@ -62,9 +62,9 @@
             </div>
 
             <div>
-              <inertia-link :href="goal.url.show" class="text-sm text-blue-500 hover:underline">
+              <InertiaLink :href="goal.url.show" class="text-sm text-blue-500 hover:underline">
                 {{ $t('View details') }}
-              </inertia-link>
+              </InertiaLink>
             </div>
           </div>
 
@@ -156,6 +156,7 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
@@ -163,6 +164,7 @@ import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     PrettyButton,
     PrettySpan,
     TextInput,

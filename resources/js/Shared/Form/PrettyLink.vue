@@ -1,5 +1,5 @@
 <template>
-  <inertia-link
+  <InertiaLink
     :class="'dark:box-s relative border-zinc-900 bg-white text-sm dark:border-zinc-100 dark:bg-gray-800 dark:text-gray-100'"
     :href="href"
     preserve-scroll>
@@ -43,12 +43,16 @@
     <span>
       {{ text }}
     </span>
-  </inertia-link>
+  </InertiaLink>
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
+
 export default {
-  components: {},
+  components: {
+    InertiaLink: Link,
+  },
 
   props: {
     text: {

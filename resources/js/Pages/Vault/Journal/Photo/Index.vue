@@ -1,4 +1,5 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 
 defineProps({
@@ -18,9 +19,9 @@ defineProps({
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
+              <Link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
                 {{ $t('Journals') }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -49,7 +50,7 @@ defineProps({
         <!-- tabs -->
         <div class="flex justify-center">
           <div class="mb-8 inline-flex rounded-md shadow-sm">
-            <inertia-link
+            <Link
               :href="data.url.show"
               :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': defaultTab === 'activity' }"
               class="inline-flex items-center rounded-s-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
@@ -67,9 +68,9 @@ defineProps({
               </svg>
 
               {{ $t('Journal entries') }}
-            </inertia-link>
+            </Link>
 
-            <inertia-link
+            <Link
               class="inline-flex items-center rounded-e-md border-y border-e border-gray-200 bg-gray-100 bg-white px-4 py-2 text-sm font-medium text-blue-700 text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-400 dark:bg-gray-700 dark:font-bold dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +86,7 @@ defineProps({
               </svg>
 
               {{ $t('Photos') }}
-            </inertia-link>
+            </Link>
           </div>
         </div>
 
@@ -94,9 +95,9 @@ defineProps({
             v-for="photo in data.photos"
             :key="photo.id"
             class="mr-2 cursor-pointer rounded-md border border-gray-200 p-2 shadow-sm hover:bg-slate-50 hover:shadow-lg dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-            <inertia-link :href="photo.url.post">
+            <Link :href="photo.url.post">
               <img :src="photo.url.display" :alt="photo.name" />
-            </inertia-link>
+            </Link>
           </div>
         </div>
 

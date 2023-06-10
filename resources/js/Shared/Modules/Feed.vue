@@ -13,11 +13,11 @@
           <div class="flex w-full items-center justify-between">
             <p class="me-2 text-gray-400">
               <!-- author name + link to profile -->
-              <inertia-link
+              <InertiaLink
                 v-if="feedItem.author.url"
                 :href="feedItem.author.url"
                 class="font-medium text-gray-800 hover:underline dark:text-gray-200"
-                >{{ feedItem.author.name }}</inertia-link
+                >{{ feedItem.author.name }}</InertiaLink
               >
               <span v-else class="font-medium text-gray-800 dark:text-gray-200">{{ feedItem.author.name }}</span>
 
@@ -185,6 +185,7 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Loading from '@/Shared/Loading.vue';
 import Avatar from '@/Shared/Avatar.vue';
 import GenericAction from '@/Shared/Modules/FeedItems/GenericAction.vue';
@@ -198,6 +199,7 @@ import Note from '@/Shared/Modules/FeedItems/Note.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Loading,
     Avatar,
     GenericAction,

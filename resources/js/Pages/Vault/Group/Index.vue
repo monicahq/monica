@@ -1,4 +1,5 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import Avatar from '@/Shared/Avatar.vue';
 
@@ -23,13 +24,13 @@ defineProps({
               v-for="group in data"
               :key="group.id"
               class="flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-              <inertia-link :href="group.url.show" class="text-blue-500 hover:underline">{{ group.name }}</inertia-link>
+              <Link :href="group.url.show" class="text-blue-500 hover:underline">{{ group.name }}</Link>
 
               <div v-if="group.contacts" class="relative flex -space-x-2 overflow-hidden py-1">
                 <div v-for="contact in group.contacts" :key="contact.id" class="inline-block">
-                  <inertia-link :href="contact.url.show">
+                  <Link :href="contact.url.show">
                     <avatar :data="contact.avatar" :class="'h-8 w-8 rounded-full ring-2 ring-white'" />
-                  </inertia-link>
+                  </Link>
                 </div>
               </div>
             </li>

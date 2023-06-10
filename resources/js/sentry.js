@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/vue';
 import { BrowserTracing } from '@sentry/tracing';
 import { createTransport } from '@sentry/core';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/vue3';
 
 let activated = false;
 
@@ -48,7 +48,7 @@ const setContext = (vm) => {
     Sentry.setTag('page.component', vm.$page.component);
     vm.$once(
       'hook:destroyed',
-      Inertia.on('success', (event) => {
+      router.on('success', (event) => {
         Sentry.setTag('page.component', event.detail.page.component);
       }),
     );

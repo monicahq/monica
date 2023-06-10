@@ -9,9 +9,9 @@
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
+              <InertiaLink :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -24,9 +24,9 @@
               </svg>
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.personalize" class="text-blue-500 hover:underline">
+              <InertiaLink :href="data.url.personalize" class="text-blue-500 hover:underline">
                 {{ $t('Personalize your account') }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -39,9 +39,9 @@
               </svg>
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.templates" class="text-blue-500 hover:underline">
+              <InertiaLink :href="data.url.templates" class="text-blue-500 hover:underline">
                 {{ $t('Templates') }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -123,12 +123,14 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import Pages from '@/Pages/Settings/Personalize/Templates/Partials/Pages.vue';
 import Modules from '@/Pages/Settings/Personalize/Templates/Partials/Modules.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Layout,
     Pages,
     Modules,

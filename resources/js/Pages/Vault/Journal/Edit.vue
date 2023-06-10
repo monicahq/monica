@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, nextTick, ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
@@ -42,9 +42,9 @@ const submit = () => {
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.back" class="text-blue-500 hover:underline">
+              <Link :href="data.url.back" class="text-blue-500 hover:underline">
                 {{ $t('Journals') }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -57,7 +57,7 @@ const submit = () => {
               </svg>
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.back" class="text-blue-500 hover:underline">{{ data.name }}</inertia-link>
+              <Link :href="data.url.back" class="text-blue-500 hover:underline">{{ data.name }}</Link>
             </li>
             <li class="relative me-2 inline">
               <svg

@@ -1,6 +1,5 @@
 <script setup>
-import { useForm } from '@inertiajs/inertia-vue3';
-import { Inertia } from '@inertiajs/inertia';
+import { router, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import JetButton from '@/Components/Button.vue';
 import JetGuestLayout from '@/Shared/Guest.vue';
@@ -24,7 +23,7 @@ const submit = () => {
   form.post(props.data.url.store, {
     onSuccess: (response) => {
       localStorage.success = trans('Your account has been created');
-      Inertia.visit(response.data.data);
+      router.visit(response.data.data);
     },
   });
 };

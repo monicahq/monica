@@ -1,5 +1,5 @@
 <script setup>
-import { useForm } from '@inertiajs/inertia-vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import { watch, ref } from 'vue';
 import { debounce } from 'lodash';
 import { trans } from 'laravel-vue-i18n';
@@ -160,9 +160,9 @@ const destroy = () => {
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
+              <Link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
                 {{ $t('Journals') }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -175,9 +175,9 @@ const destroy = () => {
               </svg>
             </li>
             <li class="inline">
-              <inertia-link :href="data.url.back" class="text-blue-500 hover:underline">
+              <Link :href="data.url.back" class="text-blue-500 hover:underline">
                 {{ data.journal.name }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -190,9 +190,9 @@ const destroy = () => {
               </svg>
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.show" class="text-blue-500 hover:underline">
+              <Link :href="data.url.show" class="text-blue-500 hover:underline">
                 {{ data.title }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg

@@ -60,11 +60,11 @@
             :key="vault.id"
             class="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
             <div class="vault-detail grid">
-              <inertia-link
+              <InertiaLink
                 :href="vault.url.show"
                 class="border-b border-gray-200 px-3 py-1 text-lg font-medium hover:rounded-t-lg hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-300 hover:dark:bg-slate-800">
                 {{ vault.name }}
-              </inertia-link>
+              </InertiaLink>
 
               <!-- description -->
               <div>
@@ -91,7 +91,7 @@
 
               <!-- actions -->
               <div class="flex items-center justify-between border-t border-gray-200 px-3 py-2 dark:border-gray-700">
-                <inertia-link :href="vault.url.settings">
+                <InertiaLink :href="vault.url.settings">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="pointer h-5 w-5 text-gray-400 hover:text-gray-900 dark:text-gray-600 hover:dark:text-gray-100"
@@ -109,9 +109,9 @@
                       stroke-width="2"
                       d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                </inertia-link>
+                </InertiaLink>
 
-                <inertia-link :href="vault.url.show">
+                <InertiaLink :href="vault.url.show">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="pointer h-5 w-5 text-gray-400 hover:text-gray-900 dark:text-gray-600 hover:dark:text-gray-100"
@@ -124,7 +124,7 @@
                       stroke-width="2"
                       d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
-                </inertia-link>
+                </InertiaLink>
               </div>
             </div>
           </div>
@@ -135,12 +135,14 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import Avatar from '@/Shared/Avatar.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Layout,
     PrettyLink,
     Avatar,

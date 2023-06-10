@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted, nextTick, ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { Inertia } from '@inertiajs/inertia';
+import { Link, router, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
@@ -36,7 +35,7 @@ const update = () => {
     .then((response) => {
       loadingState.value = null;
       localStorage.success = trans('The group has been updated');
-      Inertia.visit(response.data.data);
+      router.visit(response.data.data);
     })
     .catch((error) => {
       form.errors = error.response.data;
@@ -56,9 +55,9 @@ const update = () => {
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.back" class="text-blue-500 hover:underline">
+              <Link :href="data.url.back" class="text-blue-500 hover:underline">
                 {{ $t('Groups') }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -71,7 +70,7 @@ const update = () => {
               </svg>
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.back" class="text-blue-500 hover:underline">{{ data.name }}</inertia-link>
+              <Link :href="data.url.back" class="text-blue-500 hover:underline">{{ data.name }}</Link>
             </li>
             <li class="relative me-2 inline">
               <svg

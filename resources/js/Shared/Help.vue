@@ -1,5 +1,5 @@
 <script setup>
-import { usePage } from '@inertiajs/inertia-vue3';
+import { usePage } from '@inertiajs/vue3';
 import { Tooltip as ATooltip } from 'ant-design-vue';
 import { computed } from 'vue';
 

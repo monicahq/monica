@@ -85,7 +85,7 @@
         v-for="tag in localTags"
         :key="tag.id"
         class="me-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-500 last:me-0">
-        <inertia-link :href="tag.url.show">{{ tag.name }}</inertia-link>
+        <InertiaLink :href="tag.url.show">{{ tag.name }}</InertiaLink>
       </span>
     </div>
 
@@ -95,11 +95,13 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     TextInput,
     Errors,
   },

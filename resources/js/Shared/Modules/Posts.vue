@@ -1,5 +1,7 @@
 <script setup>
-const props = defineProps({
+import { Link } from '@inertiajs/vue3';
+
+defineProps({
   data: Object,
 });
 </script>
@@ -36,16 +38,12 @@ const props = defineProps({
           v-for="post in props.data"
           :key="post.id"
           class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-          <inertia-link :href="post.url.show" class="mb-2 block text-blue-500 hover:underline">{{
-            post.title
-          }}</inertia-link>
+          <Link :href="post.url.show" class="mb-2 block text-blue-500 hover:underline">{{ post.title }}</Link>
           <div class="flex items-center text-sm">
             <!-- journal -->
             <p class="me-2">
               {{ $t('in') }}
-              <inertia-link :href="post.journal.url.show" class="text-blue-500 hover:underline">{{
-                post.journal.name
-              }}</inertia-link>
+              <Link :href="post.journal.url.show" class="text-blue-500 hover:underline">{{ post.journal.name }}</Link>
             </p>
 
             <!-- date -->

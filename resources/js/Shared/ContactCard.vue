@@ -1,4 +1,5 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
 import { Popover as APopover } from 'ant-design-vue';
 
 defineProps({
@@ -66,9 +67,9 @@ defineProps({
 
               <ul>
                 <li v-for="group in contact.groups" :key="group.id" class="group-list-item">
-                  <inertia-link class="text-blue-500 hover:underline">
+                  <Link class="text-blue-500 hover:underline">
                     {{ group.name }}
-                  </inertia-link>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -83,16 +84,14 @@ defineProps({
       <div class="inline-flex items-center">
         <!-- avatar -->
         <div class="img relative">
-          <inertia-link :href="contact.url">
+          <Link :href="contact.url">
             <div v-if="contact.avatar.type === 'svg'" :class="avatarClasses" v-html="contact.avatar.content" />
             <img v-else :class="avatarClasses" :src="contact.avatar.content" alt="avatar" />
-          </inertia-link>
+          </Link>
         </div>
 
         <!-- name -->
-        <inertia-link v-if="displayName" class="text-blue-500 hover:underline" :href="contact.url">{{
-          contact.name
-        }}</inertia-link>
+        <Link v-if="displayName" class="text-blue-500 hover:underline" :href="contact.url">{{ contact.name }}</Link>
       </div>
     </a-popover>
   </div>

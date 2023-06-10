@@ -1,7 +1,8 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
 import Avatar from '@/Shared/Avatar.vue';
 
-const props = defineProps({
+defineProps({
   data: Object,
   contactViewMode: Boolean,
 });
@@ -18,9 +19,9 @@ const props = defineProps({
         :class="'relative me-2 h-5 w-5 rounded-full border border-gray-200 dark:border-gray-800'" />
 
       <div class="flex flex-col">
-        <inertia-link :href="props.data.contact.url" class="text-gray-800 hover:underline dark:text-gray-200">{{
+        <Link :href="props.data.contact.url" class="text-gray-800 hover:underline dark:text-gray-200">{{
           props.data.contact.name
-        }}</inertia-link>
+        }}</Link>
       </div>
     </div>
 

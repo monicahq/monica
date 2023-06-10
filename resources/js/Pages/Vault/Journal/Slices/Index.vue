@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
@@ -52,9 +52,9 @@ const submit = () => {
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
+              <Link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
                 {{ $t('Journals') }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -67,9 +67,7 @@ const submit = () => {
               </svg>
             </li>
             <li class="relative me-2 inline">
-              <inertia-link :href="data.journal.url.show" class="text-blue-500 hover:underline">{{
-                data.journal.name
-              }}</inertia-link>
+              <Link :href="data.journal.url.show" class="text-blue-500 hover:underline">{{ data.journal.name }}</Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -137,7 +135,7 @@ const submit = () => {
               v-for="slice in localSlices"
               :key="slice.id"
               class="border-b border-gray-200 px-5 py-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-              <inertia-link :href="slice.url.show" class="text-blue-500 hover:underline">{{ slice.name }}</inertia-link>
+              <Link :href="slice.url.show" class="text-blue-500 hover:underline">{{ slice.name }}</Link>
               <span v-if="slice.date_range" class="mt-1 block text-xs">{{ slice.date_range }}</span>
             </li>
           </ul>

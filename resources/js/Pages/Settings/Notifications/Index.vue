@@ -9,9 +9,9 @@
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="data.url.settings" class="text-blue-500 hover:underline">
+              <InertiaLink :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -78,12 +78,14 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import Emails from '@/Pages/Settings/Notifications/Partials/Emails.vue';
 import Telegram from '@/Pages/Settings/Notifications/Partials/Telegram.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Layout,
     Emails,
     Telegram,

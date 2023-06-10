@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import { loadLanguageAsync, getActiveLanguage, trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods.js';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';

@@ -29,9 +29,9 @@
           <div class="mb-2 flex items-center">
             <avatar :data="task.contact.avatar" :class="'me-2 h-5 w-5 rounded-full'" />
 
-            <inertia-link :href="task.contact.url.show" class="text-blue-500 hover:underline">
+            <InertiaLink :href="task.contact.url.show" class="text-blue-500 hover:underline">
               {{ task.contact.name }}
-            </inertia-link>
+            </InertiaLink>
           </div>
 
           <!-- tasks -->
@@ -97,11 +97,13 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import Avatar from '@/Shared/Avatar.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Layout,
     Avatar,
   },

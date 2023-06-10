@@ -9,10 +9,10 @@
             <div>
               <ul class="mb-4">
                 <li class="border-s-2 ps-2" :class="{ 'border-orange-500': tab === 'index' }">
-                  <inertia-link :href="data.statistics.url.index">
+                  <InertiaLink :href="data.statistics.url.index">
                     {{ $t('All files') }}
                     <span class="text-sm text-gray-500">({{ data.statistics.statistics.all }})</span>
-                  </inertia-link>
+                  </InertiaLink>
                 </li>
               </ul>
 
@@ -21,22 +21,22 @@
               </p>
               <ul>
                 <li class="mb-2 border-s-2 ps-2" :class="{ 'border-orange-500': tab === 'documents' }">
-                  <inertia-link :href="data.statistics.url.documents">
+                  <InertiaLink :href="data.statistics.url.documents">
                     {{ $t('Documents') }}
                     <span class="text-sm text-gray-500">({{ data.statistics.statistics.documents }})</span>
-                  </inertia-link>
+                  </InertiaLink>
                 </li>
                 <li class="mb-2 border-s-2 ps-2" :class="{ 'border-orange-500': tab === 'photos' }">
-                  <inertia-link :href="data.statistics.url.photos">
+                  <InertiaLink :href="data.statistics.url.photos">
                     {{ $t('Photos') }}
                     <span class="text-sm text-gray-500">({{ data.statistics.statistics.photos }})</span>
-                  </inertia-link>
+                  </InertiaLink>
                 </li>
                 <li class="mb-2 border-s-2 ps-2" :class="{ 'border-orange-500': tab === 'avatars' }">
-                  <inertia-link :href="data.statistics.url.avatars">
+                  <InertiaLink :href="data.statistics.url.avatars">
                     {{ $t('Avatars') }}
                     <span class="text-sm text-gray-500">({{ data.statistics.statistics.avatars }})</span>
-                  </inertia-link>
+                  </InertiaLink>
                 </li>
               </ul>
             </div>
@@ -83,9 +83,9 @@
                   <!-- avatar -->
                   <div v-if="file.object.type == 'contact'" class="flex items-center">
                     <avatar :data="file.object.avatar" :class="'me-2 h-4 w-4 rounded-full'" />
-                    <inertia-link :href="file.object.url.show" class="text-sm text-blue-500 hover:underline">
+                    <InertiaLink :href="file.object.url.show" class="text-sm text-blue-500 hover:underline">
                       {{ file.object.name }}
-                    </inertia-link>
+                    </InertiaLink>
                   </div>
                 </div>
 
@@ -120,6 +120,7 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import Avatar from '@/Shared/Avatar.vue';
 import Pagination from '@/Components/Pagination.vue';
@@ -127,6 +128,7 @@ import Errors from '@/Shared/Form/Errors.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Layout,
     Avatar,
     Pagination,

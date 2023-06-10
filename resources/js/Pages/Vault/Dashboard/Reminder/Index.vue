@@ -9,9 +9,9 @@
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.dashboard" class="text-blue-500 hover:underline">
+              <InertiaLink :href="layoutData.vault.url.dashboard" class="text-blue-500 hover:underline">
                 {{ $t('Dashboard') }}
-              </inertia-link>
+              </InertiaLink>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -92,9 +92,9 @@
                     :data="reminder.contact.avatar"
                     :class="'me-2 h-4 w-4 rounded-full ring-2 ring-white dark:ring-gray-900'" />
 
-                  <inertia-link :href="reminder.contact.url.show" class="text-blue-500 hover:underline">
+                  <InertiaLink :href="reminder.contact.url.show" class="text-blue-500 hover:underline">
                     {{ reminder.contact.name }}
-                  </inertia-link>
+                  </InertiaLink>
                 </div>
                 <p class="">
                   {{ reminder.label }}
@@ -113,11 +113,13 @@
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import Avatar from '@/Shared/Avatar.vue';
 
 export default {
   components: {
+    InertiaLink: Link,
     Layout,
     Avatar,
   },

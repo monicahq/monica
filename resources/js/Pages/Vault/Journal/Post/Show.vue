@@ -1,4 +1,5 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
 
@@ -19,9 +20,9 @@ defineProps({
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <inertia-link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
+              <Link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
                 {{ $t('Journals') }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -34,9 +35,9 @@ defineProps({
               </svg>
             </li>
             <li class="inline">
-              <inertia-link :href="data.url.back" class="text-blue-500 hover:underline">
+              <Link :href="data.url.back" class="text-blue-500 hover:underline">
                 {{ data.journal.name }}
-              </inertia-link>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -75,23 +76,20 @@ defineProps({
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
                 </svg>
 
-                <inertia-link
+                <Link
                   v-if="data.previousPost"
                   :href="data.previousPost.url.show"
                   class="text-sm text-gray-400 hover:underline">
                   {{ data.previousPost.title }}
-                </inertia-link>
+                </Link>
               </div>
               <div v-else>&nbsp;</div>
 
               <!-- next post -->
               <div v-if="data.nextPost" class="flex items-center">
-                <inertia-link
-                  v-if="data.nextPost"
-                  :href="data.nextPost.url.show"
-                  class="text-sm text-gray-400 hover:underline">
+                <Link v-if="data.nextPost" :href="data.nextPost.url.show" class="text-sm text-gray-400 hover:underline">
                   {{ data.nextPost.title }}
-                </inertia-link>
+                </Link>
 
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -167,9 +165,7 @@ defineProps({
                 <div
                   class="rounded border-b border-s border-t border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
                   :class="data.sliceOfLife.cover_image ? '' : 'border-t'">
-                  <inertia-link :href="data.sliceOfLife.url.show" class="font-semibold">{{
-                    data.sliceOfLife.name
-                  }}</inertia-link>
+                  <Link :href="data.sliceOfLife.url.show" class="font-semibold">{{ data.sliceOfLife.name }}</Link>
                   <p class="text-xs text-gray-600">{{ data.sliceOfLife.date_range }}</p>
                 </div>
               </div>
@@ -226,9 +222,9 @@ defineProps({
             <!-- options -->
             <ul class="mb-6 text-sm">
               <li class="flex items-center">
-                <inertia-link :href="data.url.edit" class="text-blue-500 hover:underline">
+                <Link :href="data.url.edit" class="text-blue-500 hover:underline">
                   {{ $t('Edit post') }}
-                </inertia-link>
+                </Link>
               </li>
             </ul>
           </div>
