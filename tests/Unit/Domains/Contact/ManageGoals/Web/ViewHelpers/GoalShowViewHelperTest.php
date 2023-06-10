@@ -7,10 +7,9 @@ use App\Models\Contact;
 use App\Models\Goal;
 use App\Models\User;
 use Carbon\Carbon;
+use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-
-use function env;
 
 class GoalShowViewHelperTest extends TestCase
 {
