@@ -211,7 +211,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash($t('The pet has been added'), 'success');
+          this.flash(this.$t('The pet has been added'), 'success');
           this.localPets.unshift(response.data.data);
           this.loadingState = '';
           this.addPetModalShown = false;
@@ -229,7 +229,7 @@ export default {
         .put(pet.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash($t('The pet has been edited'), 'success');
+          this.flash(this.$t('The pet has been edited'), 'success');
           this.localPets[this.localPets.findIndex((x) => x.id === pet.id)] = response.data.data;
           this.editedPetId = 0;
         })

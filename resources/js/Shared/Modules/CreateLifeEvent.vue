@@ -258,7 +258,7 @@ const store = () => {
         <div v-if="!editDate" class="flex items-center justify-between">
           <div>
             <span class="text-sm">{{ $t('Date of the event:') }}</span>
-            {{ props.lifeEvent ? props.lifeEvent.happened_at : props.data.current_date_human_format }}
+            {{ lifeEvent ? lifeEvent.happened_at : data.current_date_human_format }}
           </div>
 
           <p @click="editDate = true" class="cursor-pointer text-sm text-blue-500 hover:underline">
@@ -292,9 +292,9 @@ const store = () => {
 
         <!-- current contact -->
         <div class="mb-4 flex items-center">
-          <avatar :data="props.data.contact.avatar" :class="'me-2 h-5 w-5'" />
+          <avatar :data="data.contact.avatar" :class="'me-2 h-5 w-5'" />
 
-          <span>{{ props.data.contact.name }}</span>
+          <span>{{ data.contact.name }}</span>
         </div>
 
         <!-- all other participants -->

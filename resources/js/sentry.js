@@ -26,13 +26,14 @@ const myTransport = (options) => {
 const install = (app, options) => {
   if (options.dsn !== undefined) {
     Sentry.init({
+      app,
       dsn: options.dsn,
       tunnel: '/sentry/tunnel',
       environment: options.environment || null,
       release: options.release || '',
       sendDefaultPii: options.sendDefaultPii || false,
       tracesSampleRate: options.tracesSampleRate || 0.0,
-      integrations: [options.tracesSampleRate > 0 ? new BrowserTracing() : null],
+      integrations: options.tracesSampleRate > 0 ? [new BrowserTracing()] : [],
       transport: myTransport,
     });
     app.mixin(Sentry.createTracingMixins({ trackComponents: true }));

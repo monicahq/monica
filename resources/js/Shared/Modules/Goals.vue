@@ -215,7 +215,7 @@ export default {
       axios
         .post(this.data.url.store, this.form)
         .then((response) => {
-          this.flash($t('The goal has been created'), 'success');
+          this.flash(this.$t('The goal has been created'), 'success');
           this.localGoals.unshift(response.data.data);
           this.createGoalModalShown = false;
         })
@@ -230,7 +230,7 @@ export default {
       axios
         .put(goal.url.streak_update, this.form)
         .then((response) => {
-          this.flash($t('The goal has been edited'), 'success');
+          this.flash(this.$t('The goal has been edited'), 'success');
           this.localGoals[this.localGoals.findIndex((x) => x.id === goal.id)] = response.data.data;
           this.editedGoalId = 0;
         })

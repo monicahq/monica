@@ -117,7 +117,7 @@ const update = () => {
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <dropdown
               v-model="form.group_type_id"
-              :data="props.data.group_types"
+              :data="data.group_types"
               :required="true"
               :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
@@ -126,7 +126,7 @@ const update = () => {
 
           <!-- actions -->
           <div class="flex justify-between p-5">
-            <pretty-link :href="props.data.url.back" :text="$t('Cancel')" :class="'me-3'" />
+            <pretty-link :href="data.url.back" :text="$t('Cancel')" :class="'me-3'" />
             <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
           </div>
         </form>
