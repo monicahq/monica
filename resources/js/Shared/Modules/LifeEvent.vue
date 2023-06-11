@@ -137,8 +137,8 @@ const toggleLifeEventVisibility = (lifeEvent) => {
     <div>
       <!-- add a timeline event -->
       <create-life-event
-        :data="props.data"
-        :layout-data="props.layoutData"
+        :data="data"
+        :layout-data="layoutData"
         :open-modal="createLifeEventModalShown"
         :create-timeline-event="true"
         @close-modal="createLifeEventModalShown = false"
@@ -200,8 +200,8 @@ const toggleLifeEventVisibility = (lifeEvent) => {
               class="mb-2 ms-6 rounded-lg border-gray-200 dark:border-gray-700">
               <template v-if="lifeEvent.edit">
                 <create-life-event
-                  :data="props.data"
-                  :layout-data="props.layoutData"
+                  :data="data"
+                  :layout-data="layoutData"
                   :open-modal="lifeEvent.edit"
                   :life-event="lifeEvent"
                   @close-modal="lifeEvent.edit = false"
@@ -338,8 +338,8 @@ const toggleLifeEventVisibility = (lifeEvent) => {
               </span>
 
               <create-life-event
-                :data="props.data"
-                :layout-data="props.layoutData"
+                :data="data"
+                :layout-data="layoutData"
                 :open-modal="showAddLifeEventModalForTimelineEventId == timelineEvent.id"
                 :create-timeline-event="false"
                 :timeline-event="timelineEvent"

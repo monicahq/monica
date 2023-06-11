@@ -80,14 +80,14 @@ const update = () => {
               <div class="flex items-center">
                 <dropdown
                   v-model="form.sort_order"
-                  :data="props.data.contact_sort_orders"
+                  :data="data.contact_sort_orders"
                   :required="false"
                   :dropdown-class="'block w-full me-2'"
                   @change="update()" />
 
                 <pretty-link
                   v-if="layoutData.vault.permission.at_least_editor"
-                  :href="props.data.url.contact.create"
+                  :href="data.url.contact.create"
                   :text="$t('Add a contact')"
                   class="ms-3"
                   :icon="'plus'" />

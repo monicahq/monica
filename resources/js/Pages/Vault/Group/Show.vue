@@ -118,7 +118,7 @@ const destroy = () => {
           <div class="flex items-center">
             <ul class="list">
               <li class="me-4 inline">
-                <Link :href="props.data.url.edit" class="text-blue-500 hover:underline">{{ $t('Edit') }}</Link>
+                <Link :href="data.url.edit" class="text-blue-500 hover:underline">{{ $t('Edit') }}</Link>
               </li>
               <li class="inline" @click="deletingGroup = true">
                 <span class="inline cursor-pointer text-red-500 hover:text-red-900">{{ $t('Delete') }}</span>

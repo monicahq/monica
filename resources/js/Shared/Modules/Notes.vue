@@ -323,7 +323,7 @@ export default {
       this.editedNoteId = note.id;
       this.form.title = note.title;
       this.form.body = note.body;
-      this.form.emotion = note.emotion.id;
+      this.form.emotion = note.emotion?.id;
     },
 
     showTitleField() {
@@ -363,7 +363,7 @@ export default {
         .put(note.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash($t('The note has been edited'), 'success');
+          this.flash(this.$t('The note has been edited'), 'success');
           this.localNotes[this.localNotes.findIndex((x) => x.id === note.id)] = response.data.data;
           this.editedNoteId = 0;
         })

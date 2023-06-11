@@ -31,11 +31,11 @@ defineProps({
     </div>
 
     <!-- posts -->
-    <div v-if="props.data.length > 0">
+    <div v-if="data.length > 0">
       <ul class="mb-4 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <!-- body of the post -->
         <li
-          v-for="post in props.data"
+          v-for="post in data"
           :key="post.id"
           class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
           <Link :href="post.url.show" class="mb-2 block text-blue-500 hover:underline">{{ post.title }}</Link>
@@ -69,7 +69,7 @@ defineProps({
 
     <!-- blank state -->
     <div
-      v-if="props.data.length == 0"
+      v-if="data.length == 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_posts.svg" :alt="$t('Notes')" class="mx-auto mt-4 h-20 w-20" />
       <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no posts yet.') }}</p>
