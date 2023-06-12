@@ -82,10 +82,10 @@ const close = () => {
 onMounted(() => {
   document.addEventListener('keydown', onKeydown);
   if (_.find(useAttrs(), (item, key) => key === 'autofocus') > -1) {
-    setTimeout(() => {
+    nextTick(() => {
       select.value.focus();
       open.value = true;
-    }, 100);
+    });
   }
 });
 onUnmounted(() => document.removeEventListener('keydown', onKeydown));

@@ -9,14 +9,8 @@ import CreateOrEditImportantDate from './Partials/CreateOrEditImportantDate.vue'
 import Errors from '@/Shared/Form/Errors.vue';
 
 const props = defineProps({
-  layoutData: {
-    type: Object,
-    default: null,
-  },
-  data: {
-    type: Object,
-    default: null,
-  },
+  layoutData: Object,
+  data: Object,
 });
 
 const editedDateId = ref(0);
@@ -32,12 +26,10 @@ const showCreateModal = () => {
   nextTick(() => createForm.value.reset());
 };
 
-const updateDateModal = (date) => {
+const updateDateModal = (date, i) => {
   editedDateId.value = date.id;
 
-  nextTick(() => {
-    editForm.value[0].reset();
-  });
+  nextTick(() => editForm.value[i].reset());
 };
 
 const created = (date) => {
@@ -142,7 +134,7 @@ const destroy = (date) => {
             v-if="localDates.length > 0"
             class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
             <li
-              v-for="date in localDates"
+              v-for="(date, i) in localDates"
               :key="date.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
               <!-- detail of the important date -->
@@ -159,7 +151,7 @@ const destroy = (date) => {
 
                 <!-- actions -->
                 <ul class="text-sm">
-                  <li class="me-4 inline cursor-pointer" @click="updateDateModal(date)">
+                  <li class="me-4 inline cursor-pointer" @click="updateDateModal(date, i)">
                     <span class="text-blue-500 hover:underline">{{ $t('Edit') }}</span>
                   </li>
                   <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(date)">
@@ -172,7 +164,7 @@ const destroy = (date) => {
               <CreateOrEditImportantDate
                 :ref="'editForm'"
                 :date="date"
-                v-if="editedDateId === date.id"
+                v-show="editedDateId === date.id"
                 :data="data"
                 @close="editedDateId = 0"
                 @update:date="updated" />

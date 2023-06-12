@@ -48,9 +48,7 @@ const showCreateReminderModal = () => {
   form.frequencyNumber = 1;
   addReminderModalShown.value = true;
 
-  setTimeout(() => {
-    nextTick(() => label.value.focus());
-  }, 150);
+  nextTick(() => label.value.focus());
 };
 
 const showEditReminderModal = (reminder) => {
@@ -150,7 +148,7 @@ const destroy = (reminder) => {
 
     <!-- add a reminder modal -->
     <form
-      v-if="addReminderModalShown"
+      v-show="addReminderModalShown"
       class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="submit()">
       <div class="border-b border-gray-200 dark:border-gray-700">

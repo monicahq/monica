@@ -58,6 +58,7 @@ class ModuleContactTasksViewHelper
             'completed' => $task->completed,
             'completed_at' => $task->completed_at ? DateHelper::format($task->completed_at, $user) : null,
             'due_at' => $task->due_at ? DateHelper::format($task->due_at, $user) : null,
+            'due_at_full' => optional($task->due_at)->format('Y-m-d'),
             'due_at_late' => optional($task->due_at)->isPast() ?? false,
             'url' => [
                 'update' => route('contact.task.update', [

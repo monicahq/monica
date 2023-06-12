@@ -31,6 +31,7 @@ class VaultTasksIndexViewHelper
                     'id' => $task->id,
                     'label' => $task->label,
                     'due_at' => $task->due_at ? DateHelper::format(Carbon::parse($task->due_at), $user) : null,
+                    'due_at_full' => optional($task->due_at)->format('Y-m-d'),
                     'due_at_late' => optional(Carbon::parse($task->due_at))->isPast() ?? false,
                     'url' => [
                         'toggle' => route('contact.task.toggle', [
