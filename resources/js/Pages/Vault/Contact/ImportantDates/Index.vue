@@ -121,14 +121,14 @@ const destroy = (date) => {
 
         <!-- modal to create a new date -->
         <CreateOrEditImportantDate
-          v-if="createDateModalShown"
+          v-show="createDateModalShown"
           class="mb-6"
           :ref="'createForm'"
           :data="data"
           @close="createDateModalShown = false"
           @created="created" />
 
-        <div v-else>
+        <div v-if="!createDateModalShown">
           <!-- list of dates -->
           <ul
             v-if="localDates.length > 0"

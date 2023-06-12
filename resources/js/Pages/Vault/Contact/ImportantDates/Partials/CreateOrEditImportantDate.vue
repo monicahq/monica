@@ -1,6 +1,6 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
-import { onMounted, nextTick, ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import { DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
 import { isDark } from '@/methods.js';
@@ -36,10 +36,6 @@ const form = useForm({
 });
 const masks = ref({
   modelValue: 'YYYY-MM-DD',
-});
-
-onMounted(() => {
-  reset();
 });
 
 const reset = () => {
