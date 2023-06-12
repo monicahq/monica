@@ -14,7 +14,7 @@ class ContactModuleAddressImageController extends Controller
 {
     public function show(Request $request, string $vaultId, string $contactId, int $addressId, int $width, int $height)
     {
-        $address = Address::where('contact_id', $contactId)
+        $address = Address::where('vault_id', $vaultId)
             ->findOrFail($addressId);
 
         $url = MapHelper::getStaticImage($address, $width, $height);
