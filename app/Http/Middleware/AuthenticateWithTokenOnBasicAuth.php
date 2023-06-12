@@ -64,7 +64,8 @@ class AuthenticateWithTokenOnBasicAuth
         $user = $this->sanctum()->setRequest($request)->user();
 
         // if there is no bearer token PHP_AUTH_USER header must match user email
-        if ($user->currentAccessToken() !== null
+        if ($user !== null
+            && $user->currentAccessToken() !== null
             && $request->bearerToken() !== null
             && $request->getUser() !== $user->email) {
             return null;
