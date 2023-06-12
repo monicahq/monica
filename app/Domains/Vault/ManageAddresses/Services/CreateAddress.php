@@ -2,7 +2,6 @@
 
 namespace App\Domains\Vault\ManageAddresses\Services;
 
-use App\Domains\Vault\ManageAddresses\Jobs\FetchAddressGeocoding;
 use App\Interfaces\ServiceInterface;
 use App\Models\Address;
 use App\Services\BaseService;
@@ -76,6 +75,8 @@ class CreateAddress extends BaseService implements ServiceInterface
 
     private function geocodeAddress(): void
     {
-        FetchAddressGeocoding::dispatch($this->address)->onQueue('low');
+        GetGPSCoordinate::dispatch([
+            'address_id' => $this->address->id,
+        ])->onQueue('low');
     }
 }

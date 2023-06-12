@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Vault\ManageAddresses\Services;
 
-use App\Domains\Vault\ManageAddresses\Jobs\FetchAddressGeocoding;
+use App\Domains\Vault\ManageAddresses\Services\GetGPSCoordinate;
 use App\Domains\Vault\ManageAddresses\Services\UpdateAddress;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
@@ -152,8 +152,6 @@ class UpdateAddressTest extends TestCase
             $address
         );
 
-        Queue::assertPushed(FetchAddressGeocoding::class, function ($job) use ($address) {
-            return $job->address->id === $address->id;
-        });
+        Queue::assertPushed(GetGPSCoordinate::class, fn ($job) => $job->data['address_id'] === $address->id);
     }
 }
