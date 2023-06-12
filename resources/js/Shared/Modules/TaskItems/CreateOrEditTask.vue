@@ -30,7 +30,7 @@ const form = useForm({
 const reset = () => {
   if (props.task) {
     form.label = props.task.label;
-    form.due_at = props.task.due_at_full;
+    form.due_at = props.task.due_at.value;
     form.due_at_checked = props.task.due_at !== null;
   } else {
     form.label = '';

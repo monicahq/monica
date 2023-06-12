@@ -145,9 +145,9 @@ const destroy = (task) => {
 
               <!-- due date -->
               <span
-                v-if="task.due_at"
+                v-if="task.due_at !== null"
                 :class="
-                  task.due_at_late
+                  task.due_at.is_late
                     ? 'bg-red-400/10 text-red-600 dark:text-red-400'
                     : 'bg-sky-400/10 text-sky-600 dark:text-sky-400'
                 "
@@ -164,7 +164,7 @@ const destroy = (task) => {
                     stroke-linejoin="round"
                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <span>{{ task.due_at }}</span>
+                <span>{{ task.due_at.formatted }}</span>
               </span>
             </label>
           </div>
@@ -218,9 +218,9 @@ const destroy = (task) => {
 
                 <!-- due date -->
                 <span
-                  v-if="task.due_at"
+                  v-if="task.due_at != null"
                   :class="
-                    task.due_at_late
+                    task.due_at.is_late
                       ? 'bg-red-400/10 text-red-600 dark:text-red-400'
                       : 'bg-sky-400/10 text-sky-600 dark:text-sky-400'
                   "
@@ -237,7 +237,7 @@ const destroy = (task) => {
                       stroke-linejoin="round"
                       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  <span class="">{{ task.due_at }}</span>
+                  <span>{{ task.due_at.formatted }}</span>
                 </span>
               </label>
             </div>

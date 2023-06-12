@@ -56,9 +56,9 @@
 
                   <!-- due date -->
                   <span
-                    v-if="currentTask.due_at"
+                    v-if="currentTask.due_at !== null"
                     :class="
-                      currentTask.due_at_late
+                      currentTask.due_at.is_late
                         ? 'bg-red-400/10 text-red-600 dark:bg-red-600/10 dark:text-red-400'
                         : 'bg-sky-400/10 text-sky-600 dark:bg-sky-600/10 dark:text-sky-400'
                     "
@@ -76,7 +76,7 @@
                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
 
-                    <span class="">{{ currentTask.due_at }}</span>
+                    <span class="">{{ currentTask.due_at.formatted }}</span>
                   </span>
                 </label>
               </div>
