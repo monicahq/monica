@@ -5084,13 +5084,13 @@ moment-locales-webpack-plugin@^1.2:
     lodash.difference "^4.5.0"
 
 moment-timezone@^0.5:
-  version "0.5.40"
-  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.40.tgz#c148f5149fd91dd3e29bf481abc8830ecba16b89"
-  integrity sha512-tWfmNkRYmBkPJz5mr9GVDn9vRlVZOTe6yqY92rFxiOdWXbjaR0+9LwQnZGGuNR63X456NqmEkbskte8tWL5ePg==
+  version "0.5.43"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.43.tgz#3dd7f3d0c67f78c23cd1906b9b2137a09b3c4790"
+  integrity sha512-72j3aNyuIsDxdF1i7CEgV2FfxM1r6aaqJyLB2vwb33mXYyoyLly+F1zbWqhA3/bVIoJ4szlUoMbUnVdid32NUQ==
   dependencies:
-    moment ">= 2.9.0"
+    moment "^2.29.4"
 
-"moment@>= 2.9.0", moment@^2.24.0, moment@^2.26:
+moment@^2.24.0, moment@^2.26, moment@^2.29.4:
   version "2.29.4"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
