@@ -1,64 +1,41 @@
 <script setup>
 import { nextTick, ref } from 'vue';
-import { useForm } from '@inertiajs/vue3';
 import { flash } from '@/methods';
 import { trans } from 'laravel-vue-i18n';
-import { DatePicker } from 'v-calendar';
-import 'v-calendar/style.css';
 import HoverMenu from '@/Shared/HoverMenu.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
-import PrettySpan from '@/Shared/Form/PrettySpan.vue';
-import TextInput from '@/Shared/Form/TextInput.vue';
-import Errors from '@/Shared/Form/Errors.vue';
+import CreateOrEditTask from '@/Shared/Modules/TaskItems/CreateOrEditTask.vue';
 
 const props = defineProps({
   data: Object,
 });
 
-const labelInput = ref(null);
-const updateInput = ref([]);
+const createTaskForm = ref(null);
+const updateTaskForm = ref([]);
+const updateCompletedTaskForm = ref([]);
 const createTaskModalShown = ref(false);
 const showCompletedTasks = ref(false);
 const localTasks = ref(props.data.tasks);
 const localCompletedTasks = ref([]);
-const loadingState = ref('');
 const editedTaskId = ref(0);
-const dueDateShown = ref(false);
-const masks = ref({
-  modelValue: 'YYYY-MM-DD',
-});
-const form = useForm({
-  label: '',
-  due_at: '',
-  due_at_checked: false,
-  errors: [],
-});
+const editedCompletedTaskId = ref(0);
 
 const showCreateTaskModal = () => {
-  form.errors = [];
-  form.label = '';
   createTaskModalShown.value = true;
-  form.due_at_checked = false;
 
-  setTimeout(() => {
-    nextTick(() => labelInput.value.focus());
-  }, 150);
+  nextTick(() => createTaskForm.value.reset());
 };
 
-const showUpdateTaskModal = (task) => {
-  form.errors = [];
-  form.label = task.label;
+const showUpdateTaskModal = (task, i) => {
   editedTaskId.value = task.id;
-  form.due_at = task.due_at;
-  form.due_at_checked = task.due_at !== '';
 
-  setTimeout(() => {
-    nextTick(() => updateInput.value.focus());
-  }, 150);
+  nextTick(() => updateTaskForm.value[i].reset());
 };
 
-const toggleDueDateModal = () => {
-  dueDateShown.value = !dueDateShown.value;
+const showUpdateCompletedTaskModal = (task, i) => {
+  editedCompletedTaskId.value = task.id;
+
+  nextTick(() => updateCompletedTaskForm.value[i].reset());
 };
 
 const getCompleted = () => {
@@ -68,38 +45,22 @@ const getCompleted = () => {
   });
 };
 
-const submit = () => {
-  loadingState.value = 'loading';
-
-  axios
-    .post(props.data.url.store, form)
-    .then((response) => {
-      loadingState.value = '';
-      flash(trans('The task has been created'), 'success');
-      localTasks.value.unshift(response.data.data);
-      createTaskModalShown.value = false;
-    })
-    .catch((error) => {
-      loadingState.value = '';
-      form.errors = error.response.data;
-    });
+const created = (task) => {
+  flash(trans('The task has been created'), 'success');
+  localTasks.value.unshift(task);
+  createTaskModalShown.value = false;
 };
 
-const update = (task) => {
-  loadingState.value = 'loading';
+const updated = (task) => {
+  flash(trans('The task has been edited'), 'success');
+  localTasks.value[localTasks.value.findIndex((x) => x.id === task.id)] = task;
+  editedTaskId.value = 0;
+};
 
-  axios
-    .put(task.url.update, form)
-    .then((response) => {
-      loadingState.value = '';
-      flash(trans('The task has been edited'), 'success');
-      localTasks.value[localTasks.value.findIndex((x) => x.id === task.id)] = response.data.data;
-      editedTaskId.value = 0;
-    })
-    .catch((error) => {
-      loadingState.value = '';
-      form.errors = error.response.data;
-    });
+const updatedCompleted = (task) => {
+  flash(trans('The task has been edited'), 'success');
+  localCompletedTasks.value[localCompletedTasks.value.findIndex((x) => x.id === task.id)] = task;
+  editedCompletedTaskId.value = 0;
 };
 
 const toggle = (task) => {
@@ -154,71 +115,20 @@ const destroy = (task) => {
     </div>
 
     <!-- add a task modal -->
-    <form
-      v-if="createTaskModalShown"
-      class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
-      @submit.prevent="submit()">
-      <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-        <errors :errors="form.errors" />
-
-        <!-- title -->
-        <text-input
-          :ref="'labelInput'"
-          v-model="form.label"
-          :label="$t('Title')"
-          :type="'text'"
-          :input-class="'block w-full mb-3'"
-          :required="true"
-          :autocomplete="false"
-          :maxlength="255"
-          @esc-key-pressed="createTaskModalShown = false" />
-      </div>
-
-      <!-- due date -->
-      <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-        <div class="flex items-center">
-          <input
-            id="reminder"
-            v-model="form.due_at_checked"
-            name="reminder"
-            type="checkbox"
-            class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
-            @click="toggleDueDateModal" />
-          <label for="reminder" class="ms-2 block cursor-pointer text-sm text-gray-900">
-            {{ $t('Add a due date') }}
-          </label>
-        </div>
-
-        <!-- task options -->
-        <div v-if="form.due_at_checked" class="ms-4 mt-4">
-          <DatePicker
-            v-model.string="form.due_at"
-            class="inline-block h-full"
-            :masks="masks"
-            :locale="$page.props.user.locale"
-            :is-dark="isDark()">
-            <template #default="{ inputValue, inputEvents }">
-              <input
-                class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
-                :value="inputValue"
-                v-on="inputEvents" />
-            </template>
-          </DatePicker>
-        </div>
-      </div>
-
-      <div class="flex justify-between p-5">
-        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createTaskModalShown = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
-      </div>
-    </form>
+    <CreateOrEditTask
+      class="mb-6"
+      v-show="createTaskModalShown"
+      :data="data"
+      :ref="'createTaskForm'"
+      @created="created"
+      @close="createTaskModalShown = false" />
 
     <!-- tasks -->
     <ul
       v-if="localTasks.length > 0"
       class="mb-2 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <li
-        v-for="task in localTasks"
+        v-for="(task, i) in localTasks"
         :key="task.id"
         class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
         <div v-if="editedTaskId !== task.id" class="flex items-center justify-between p-3">
@@ -230,14 +140,18 @@ const destroy = (task) => {
               type="checkbox"
               class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
               @change="toggle(task)" />
-            <label :for="task.id" class="ms-2 flex cursor-pointer text-gray-900">
+            <label :for="task.id" class="ms-2 flex cursor-pointer text-gray-900 dark:text-gray-50">
               {{ task.label }}
 
               <!-- due date -->
               <span
-                v-if="task.due_at"
-                :class="task.due_at_late ? 'bg-red-400/10 text-red-600' : 'bg-sky-400/10 text-sky-600'"
-                class="ms-2 flex items-center rounded-full px-2 py-0.5 text-xs font-medium leading-5 dark:text-sky-400">
+                v-if="task.due_at !== null"
+                :class="
+                  task.due_at.is_late
+                    ? 'bg-red-400/10 text-red-600 dark:text-red-400'
+                    : 'bg-sky-400/10 text-sky-600 dark:text-sky-400'
+                "
+                class="ms-2 flex items-center rounded-full px-2 py-0.5 text-xs font-medium leading-5">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="me-1 h-3 w-3"
@@ -250,69 +164,27 @@ const destroy = (task) => {
                     stroke-linejoin="round"
                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <span>{{ task.due_at }}</span>
+                <span>{{ task.due_at.formatted }}</span>
               </span>
             </label>
           </div>
 
-          <hover-menu :show-edit="true" :show-delete="true" @edit="showUpdateTaskModal(task)" @delete="destroy(task)" />
+          <hover-menu
+            :show-edit="true"
+            :show-delete="true"
+            @edit="showUpdateTaskModal(task, i)"
+            @delete="destroy(task)" />
         </div>
 
         <!-- edit task -->
-        <form v-if="editedTaskId === task.id" class="bg-gray-50 dark:bg-gray-900" @submit.prevent="update(task)">
-          <errors :errors="form.errors" />
-
-          <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-            <text-input
-              :ref="'updateInput'"
-              v-model="form.label"
-              :label="$t('Title')"
-              :type="'text'"
-              :input-class="'block w-full'"
-              :required="true"
-              :autocomplete="false"
-              :maxlength="255"
-              @esc-key-pressed="editedTaskId = 0" />
-          </div>
-
-          <!-- due date -->
-          <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-            <div class="flex items-center">
-              <input
-                id="reminder"
-                v-model="form.due_at_checked"
-                name="reminder"
-                type="checkbox"
-                class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
-                @click="toggleDueDateModal" />
-              <label for="reminder" class="ms-2 block cursor-pointer text-sm text-gray-900">
-                {{ $t('Add a due date') }}
-              </label>
-            </div>
-
-            <!-- task options -->
-            <div v-if="form.due_at_checked" class="ms-4 mt-4">
-              <DatePicker
-                v-model.string="form.due_at"
-                class="inline-block h-full"
-                :masks="masks"
-                :locale="$page.props.user.locale"
-                :is-dark="isDark()">
-                <template #default="{ inputValue, inputEvents }">
-                  <input
-                    class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
-                    :value="inputValue"
-                    v-on="inputEvents" />
-                </template>
-              </DatePicker>
-            </div>
-          </div>
-
-          <div class="flex justify-between p-5">
-            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="editedTaskId = 0" />
-            <pretty-button :text="$t('Update')" :state="loadingState" :icon="'check'" :class="'save'" />
-          </div>
-        </form>
+        <CreateOrEditTask
+          class="mb-3"
+          v-show="editedTaskId === task.id"
+          :ref="'updateTaskForm'"
+          :data="data"
+          :task="task"
+          @update:task="updated"
+          @close="editedTaskId = 0" />
       </li>
     </ul>
 
@@ -325,13 +197,13 @@ const destroy = (task) => {
     </p>
 
     <!-- list of completed tasks -->
-    <div v-if="showCompletedTasks" class="mx-4 text-xs">
+    <div v-show="showCompletedTasks" class="mx-4 text-xs">
       <ul
-        v-for="task in localCompletedTasks"
+        v-for="(task, i) in localCompletedTasks"
         :key="task.id"
         class="mb-2 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <li>
-          <div class="flex items-center justify-between p-3">
+          <div v-if="editedCompletedTaskId !== task.id" class="flex items-center justify-between p-3">
             <div class="flex items-center">
               <input
                 :id="task.id"
@@ -341,14 +213,18 @@ const destroy = (task) => {
                 class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
                 @change="toggle(task)" />
 
-              <label :for="task.id" class="ms-2 flex cursor-pointer items-center text-gray-900">
+              <label :for="task.id" class="ms-2 flex cursor-pointer items-center text-gray-900 dark:text-gray-50">
                 {{ task.label }}
 
                 <!-- due date -->
                 <span
-                  v-if="task.due_at"
-                  :class="task.due_at_late ? 'bg-red-400/10' : ''"
-                  class="ms-2 flex items-center rounded-full bg-sky-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-sky-600 dark:text-sky-400">
+                  v-if="task.due_at != null"
+                  :class="
+                    task.due_at.is_late
+                      ? 'bg-red-400/10 text-red-600 dark:text-red-400'
+                      : 'bg-sky-400/10 text-sky-600 dark:text-sky-400'
+                  "
+                  class="ms-2 flex items-center rounded-full px-2 py-0.5 text-xs font-medium leading-5">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="me-1 h-3 w-3"
@@ -361,17 +237,26 @@ const destroy = (task) => {
                       stroke-linejoin="round"
                       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  <span class="">{{ task.due_at }}</span>
+                  <span>{{ task.due_at.formatted }}</span>
                 </span>
               </label>
             </div>
 
             <hover-menu
-              :show-edit="false"
+              :show-edit="true"
               :show-delete="true"
-              @edit="showUpdateTaskModal(task)"
+              @edit="showUpdateCompletedTaskModal(task, i)"
               @delete="destroy(task)" />
           </div>
+
+          <!-- edit task -->
+          <CreateOrEditTask
+            v-show="editedCompletedTaskId === task.id"
+            :ref="'updateCompletedTaskForm'"
+            :data="data"
+            :task="task"
+            @update:task="updatedCompleted"
+            @close="editedCompletedTaskId = 0" />
         </li>
       </ul>
     </div>

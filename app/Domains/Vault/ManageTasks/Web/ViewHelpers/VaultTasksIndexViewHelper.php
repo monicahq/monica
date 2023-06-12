@@ -3,35 +3,34 @@
 namespace App\Domains\Vault\ManageTasks\Web\ViewHelpers;
 
 use App\Helpers\DateHelper;
+use App\Models\ContactTask;
 use App\Models\User;
 use App\Models\Vault;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 class VaultTasksIndexViewHelper
 {
     public static function data(Vault $vault, User $user): Collection
     {
         $contacts = $vault->contacts()
+            ->with('tasks')
             ->get()
             ->sortByCollator('last_name');
 
         $contactsCollection = collect();
         foreach ($contacts as $contact) {
-            $tasks = DB::table('contact_tasks')
-                ->where('completed', false)
-                ->where('contact_id', $contact->id)
+            $tasksCollection = $contact->tasks()
+                ->notCompleted()
                 ->orderBy('due_at', 'asc')
-                ->get();
-
-            $tasksCollection = collect();
-            foreach ($tasks as $task) {
-                $tasksCollection->push([
+                ->get()
+                ->map(fn (ContactTask $task) => [
                     'id' => $task->id,
                     'label' => $task->label,
-                    'due_at' => $task->due_at ? DateHelper::format(Carbon::parse($task->due_at), $user) : null,
-                    'due_at_late' => optional(Carbon::parse($task->due_at))->isPast() ?? false,
+                    'due_at' => $task->due_at !== null ? [
+                        'formatted' => DateHelper::format($task->due_at, $user),
+                        'value' => $task->due_at->format('Y-m-d'),
+                        'is_late' => $task->due_at->isPast(),
+                    ] : null,
                     'url' => [
                         'toggle' => route('contact.task.toggle', [
                             'vault' => $contact->vault_id,
@@ -40,7 +39,6 @@ class VaultTasksIndexViewHelper
                         ]),
                     ],
                 ]);
-            }
 
             if ($tasksCollection->count() <= 0) {
                 continue;

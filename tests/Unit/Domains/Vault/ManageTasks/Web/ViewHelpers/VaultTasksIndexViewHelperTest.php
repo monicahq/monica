@@ -40,8 +40,11 @@ class VaultTasksIndexViewHelperTest extends TestCase
                 0 => [
                     'id' => $task->id,
                     'label' => $task->label,
-                    'due_at' => 'Jan 01, 2021',
-                    'due_at_late' => true,
+                    'due_at' => [
+                        'formatted' => 'Jan 01, 2021',
+                        'value' => '2021-01-01',
+                        'is_late' => true,
+                    ],
                     'url' => [
                         'toggle' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/tasks/'.$task->id.'/toggle',
                     ],

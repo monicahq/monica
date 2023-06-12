@@ -12,15 +12,15 @@ class ModuleContactTasksViewHelper
 {
     public static function data(Contact $contact, User $user): array
     {
-        $tasks = $contact->tasks()->where('completed', false)
+        $tasks = $contact->tasks()
+            ->notCompleted()
             ->orderBy('id', 'desc')
             ->get();
 
-        $tasksCollection = $tasks->map(function ($task) use ($contact, $user) {
-            return self::dtoTask($contact, $task, $user);
-        });
+        $tasksCollection = $tasks->map(fn ($task) => self::dtoTask($contact, $task, $user));
 
-        $completedTasksCount = $contact->tasks()->where('completed', true)
+        $completedTasksCount = $contact->tasks()
+            ->completed()
             ->count();
 
         return [
@@ -41,12 +41,11 @@ class ModuleContactTasksViewHelper
 
     public static function completed(Contact $contact, User $user): Collection
     {
-        return $contact->tasks()->where('completed', true)
+        return $contact->tasks()
+            ->completed()
             ->orderBy('completed_at', 'desc')
             ->get()
-            ->map(function ($task) use ($contact, $user) {
-                return self::dtoTask($contact, $task, $user);
-            });
+            ->map(fn ($task) => self::dtoTask($contact, $task, $user));
     }
 
     public static function dtoTask(Contact $contact, ContactTask $task, User $user): array
@@ -56,9 +55,12 @@ class ModuleContactTasksViewHelper
             'label' => $task->label,
             'description' => $task->description,
             'completed' => $task->completed,
-            'completed_at' => $task->completed_at ? DateHelper::format($task->completed_at, $user) : null,
-            'due_at' => $task->due_at ? DateHelper::format($task->due_at, $user) : null,
-            'due_at_late' => optional($task->due_at)->isPast() ?? false,
+            'completed_at' => $task->completed_at !== null ? DateHelper::format($task->completed_at, $user) : null,
+            'due_at' => $task->due_at ? [
+                'formatted' => DateHelper::format($task->due_at, $user),
+                'value' => $task->due_at->format('Y-m-d'),
+                'is_late' => $task->due_at->isPast(),
+            ] : null,
             'url' => [
                 'update' => route('contact.task.update', [
                     'vault' => $contact->vault_id,

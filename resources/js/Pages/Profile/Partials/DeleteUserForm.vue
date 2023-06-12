@@ -18,14 +18,14 @@ const form = useForm({
 const confirmUserDeletion = () => {
   confirmingUserDeletion.value = true;
 
-  setTimeout(() => passwordInput.value.focus(), 250);
+  nextTick(() => passwordInput.value.focus());
 };
 
 const deleteUser = () => {
   form.delete(route('current-user.destroy'), {
     preserveScroll: true,
     onSuccess: () => closeModal(),
-    onError: () => passwordInput.value.focus(),
+    onError: () => nextTick(() => passwordInput.value.focus()),
     onFinish: () => form.reset(),
   });
 };

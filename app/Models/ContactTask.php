@@ -54,4 +54,14 @@ class ContactTask extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function scopeNotCompleted($query)
+    {
+        return $query->where('completed', false);
+    }
+
+    public function scopeCompleted($query)
+    {
+        return $query->where('completed', true);
+    }
 }

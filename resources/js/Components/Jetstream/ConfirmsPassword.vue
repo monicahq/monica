@@ -41,7 +41,7 @@ const startConfirmingPassword = () => {
     } else {
       confirmingPassword.value = true;
 
-      setTimeout(() => passwordInput.value.focus(), 250);
+      nextTick(() => passwordInput.value.focus());
     }
   });
 };
@@ -62,7 +62,7 @@ const confirmPassword = () => {
     .catch((error) => {
       form.processing = false;
       form.error = error.response.data.errors.password[0];
-      passwordInput.value.focus();
+      nextTick(() => passwordInput.value.focus());
     });
 };
 

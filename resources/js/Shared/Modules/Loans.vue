@@ -51,9 +51,7 @@ const showCreateLoanModal = () => {
   form.currency_id = '';
   createLoanModalShown.value = true;
 
-  setTimeout(() => {
-    nextTick(() => nameInput.value.focus());
-  }, 2500);
+  nextTick(() => nameInput.value.focus());
 };
 
 const showEditLoanModal = (loan) => {
@@ -178,7 +176,7 @@ const toggle = (loan) => {
     <div>
       <!-- add a loan modal -->
       <form
-        v-if="createLoanModalShown"
+        v-show="createLoanModalShown"
         class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
         @submit.prevent="submit()">
         <div class="border-b border-gray-200 dark:border-gray-700">

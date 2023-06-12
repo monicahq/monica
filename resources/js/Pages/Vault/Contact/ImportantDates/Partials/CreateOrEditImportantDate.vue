@@ -10,7 +10,7 @@ import TextInput from '@/Shared/Form/TextInput.vue';
 import Dropdown from '@/Shared/Form/Dropdown.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 
-const emit = defineEmits(['close', 'update:date']);
+const emit = defineEmits(['close', 'created', 'update:date']);
 
 const props = defineProps({
   date: Object,
@@ -62,20 +62,14 @@ const reset = () => {
     form.reminderChoice = 'recurring_year';
   }
 
-  setTimeout(() => {
-    nextTick(() => label.value.focus());
-  }, 150);
+  nextTick(() => label.value.focus());
 };
 
 const showAge = () => {
-  setTimeout(() => {
-    nextTick(() => age.value.focus());
-  }, 150);
+  nextTick(() => age.value.focus());
 };
 const showMonth = () => {
-  setTimeout(() => {
-    nextTick(() => month.value.focus());
-  }, 150);
+  nextTick(() => month.value.focus());
 };
 
 const submit = () => {
@@ -161,7 +155,7 @@ defineExpose({
             {{ $t('I know the exact date, including the year') }}
           </label>
         </div>
-        <div v-if="form.choice === 'full_date'" class="mb-4 ms-6">
+        <div v-show="form.choice === 'full_date'" class="mb-4 ms-6">
           <DatePicker
             v-model.string="form.date"
             class="inline-block h-full"
@@ -192,7 +186,7 @@ defineExpose({
             {{ $t('I only know the day and month, not the year') }}
           </label>
         </div>
-        <div v-if="form.choice === 'month_day'" class="ms-6 flex">
+        <div v-show="form.choice === 'month_day'" class="ms-6 flex">
           <Dropdown
             :ref="'month'"
             v-model.number="form.month"
@@ -227,7 +221,7 @@ defineExpose({
             {{ $t('I only know a number of years (an age, for example)') }}
           </label>
         </div>
-        <div v-if="form.choice === 'year'" class="ms-6">
+        <div v-show="form.choice === 'year'" class="ms-6">
           <TextInput
             :ref="'age'"
             v-model.number="form.age"
