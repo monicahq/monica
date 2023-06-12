@@ -6,17 +6,15 @@ use App\Exceptions\EnvVariablesNotSetException;
 use App\Helpers\MapHelper;
 use App\Interfaces\ServiceInterface;
 use App\Models\Address;
-use App\Services\BaseService;
+use App\Services\QueuableService;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-class GetGPSCoordinate extends BaseService implements ServiceInterface
+class GetGPSCoordinate extends QueuableService implements ServiceInterface
 {
     private Address $address;
-
-    private array $data;
 
     /**
      * Get the validation rules that apply to the service.
@@ -29,27 +27,15 @@ class GetGPSCoordinate extends BaseService implements ServiceInterface
     }
 
     /**
-     * Get the permissions that apply to the user calling the service.
-     */
-    public function permissions(): array
-    {
-        return [];
-    }
-
-    /**
      * Get the latitude and longitude from a place.
      * This method uses LocationIQ to process the geocoding.
      * It should always be done through a job, and not be called directly.
-     * Typically, the job FetchAddressGeocoding calls this service.
      */
-    public function execute(array $data): Address
+    public function execute(array $data): void
     {
-        $this->data = $data;
         $this->validate();
 
         $this->getCoordinates();
-
-        return $this->address;
     }
 
     private function validate(): void
@@ -64,15 +50,15 @@ class GetGPSCoordinate extends BaseService implements ServiceInterface
         $query = $this->buildQuery();
 
         try {
-            $response = Http::get($query);
-            $response->throw();
+            $response = Http::get($query)->throw();
 
             $this->address->latitude = $response->json('0.lat');
             $this->address->longitude = $response->json('0.lon');
             $this->address->save();
         } catch (HttpClientException $e) {
             Log::error('Error calling location_iq: '.$e);
-            throw new HttpClientException();
+            dump($e);
+            throw $e;
         }
     }
 

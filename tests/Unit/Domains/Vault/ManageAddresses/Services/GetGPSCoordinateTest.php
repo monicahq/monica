@@ -15,6 +15,14 @@ class GetGPSCoordinateTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        config(['monica.location_iq_url' => 'https://fake.com/v1/']);
+        config(['monica.location_iq_api_key' => 'test']);
+    }
+
     /** @test */
     public function it_returns_null_if_geolocation_is_disabled()
     {
@@ -27,17 +35,15 @@ class GetGPSCoordinateTest extends TestCase
             'address_id' => $address->id,
         ];
 
-        (new GetGPSCoordinate())->execute($request);
+        (new GetGPSCoordinate($request))->handle();
     }
 
     /** @test */
     public function it_gets_gps_coordinates()
     {
-        config(['monica.location_iq_api_key' => 'test']);
-
         $body = file_get_contents(base_path('tests/Fixtures/Services/Address/GetGPSCoordinateSampleResponse.json'));
         Http::fake([
-            'us1.locationiq.com/v1/*' => Http::response($body, 200),
+            'fake.com/v1/*' => Http::response($body, 200),
         ]);
 
         $address = Address::factory()->create();
@@ -46,7 +52,9 @@ class GetGPSCoordinateTest extends TestCase
             'address_id' => $address->id,
         ];
 
-        $address = (new GetGPSCoordinate)->execute($request);
+        (new GetGPSCoordinate($request))->handle();
+
+        $address->refresh();
 
         $this->assertDatabaseHas('addresses', [
             'id' => $address->id,
@@ -61,10 +69,12 @@ class GetGPSCoordinateTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_null_if_we_cant_make_the_call(): void
+    public function it_fails_if_we_cant_make_the_call(): void
     {
         $this->expectException(HttpClientException::class);
-        config(['monica.location_iq_api_key' => 'test']);
+        Http::fake([
+            'fake.com/v1/*' => Http::response('{"error":"Invalid key"}', 401),
+        ]);
 
         $address = Address::factory()->create([
             'line_1' => '',
@@ -76,20 +86,17 @@ class GetGPSCoordinateTest extends TestCase
             'address_id' => $address->id,
         ];
 
-        $address = (new GetGPSCoordinate)->execute($request);
-
-        $this->assertNull($address);
+        (new GetGPSCoordinate($request))->handle();
     }
 
     /** @test */
-    public function it_returns_null_if_address_is_garbage(): void
+    public function it_fails_if_address_is_unknown(): void
     {
         $this->expectException(HttpClientException::class);
-        config(['monica.location_iq_api_key' => 'test']);
 
         $body = file_get_contents(base_path('tests/Fixtures/Services/Address/GetGPSCoordinateGarbageResponse.json'));
         Http::fake([
-            'us1.locationiq.com/v1/*' => Http::response($body, 404),
+            'fake.com/v1/*' => Http::response($body, 404),
         ]);
 
         $address = Address::factory()->create([
@@ -102,19 +109,17 @@ class GetGPSCoordinateTest extends TestCase
             'address_id' => $address->id,
         ];
 
-        $address = (new GetGPSCoordinate)->execute($request);
-
-        $this->assertNull($address);
+        (new GetGPSCoordinate($request))->handle();
     }
 
     /** @test */
     public function it_fails_if_wrong_parameters_are_given(): void
     {
         $request = [
-            'address_id' => 111,
+            'address_id' => 0,
         ];
 
         $this->expectException(ValidationException::class);
-        (new GetGPSCoordinate)->execute($request);
+        (new GetGPSCoordinate($request))->handle();
     }
 }
