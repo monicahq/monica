@@ -6455,33 +6455,27 @@
         },
         {
             "name": "predis/predis",
-            "version": "v2.1.1",
+            "version": "v2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/predis/predis.git",
-                "reference": "c5b60884e89630f9518a7919f0566db438f0fc9a"
+                "reference": "a77a43913a74f9331f637bb12867eb8e274814e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/predis/predis/zipball/c5b60884e89630f9518a7919f0566db438f0fc9a",
-                "reference": "c5b60884e89630f9518a7919f0566db438f0fc9a",
+                "url": "https://api.github.com/repos/predis/predis/zipball/a77a43913a74f9331f637bb12867eb8e274814e5",
+                "reference": "a77a43913a74f9331f637bb12867eb8e274814e5",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2 || ^8.0"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.3",
+                "phpstan/phpstan": "^1.9",
                 "phpunit/phpunit": "^8.0 || ~9.4.4"
             },
-            "suggest": {
-                "ext-curl": "Allows access to Webdis when paired with phpiredis"
-            },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "2.0-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Predis\\": "src/"
@@ -6496,12 +6490,6 @@
                     "name": "Till Krüss",
                     "homepage": "https://till.im",
                     "role": "Maintainer"
-                },
-                {
-                    "name": "Daniele Alessandri",
-                    "email": "suppakilla@gmail.com",
-                    "homepage": "http://clorophilla.net",
-                    "role": "Creator"
                 }
             ],
             "description": "A flexible and feature-complete Redis client for PHP.",
@@ -6513,7 +6501,7 @@
             ],
             "support": {
                 "issues": "https://github.com/predis/predis/issues",
-                "source": "https://github.com/predis/predis/tree/v2.1.1"
+                "source": "https://github.com/predis/predis/tree/v2.1.2"
             },
             "funding": [
                 {
@@ -6521,7 +6509,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-17T20:57:35+00:00"
+            "time": "2023-03-02T18:32:04+00:00"
         },
         {
             "name": "psr/cache",
