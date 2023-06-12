@@ -6,8 +6,8 @@ import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
 import JetActionSection from '@/Components/Jetstream/ActionSection.vue';
 import JetInputError from '@/Components/InputError.vue';
 
-const form = useForm();
-const providerForm = useForm();
+const form = useForm({});
+const providerForm = useForm({});
 const errors = computed(() => usePage().props.errors);
 
 const deleteProvider = (provider) => {

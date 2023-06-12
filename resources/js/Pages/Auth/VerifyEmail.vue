@@ -8,7 +8,7 @@ const props = defineProps({
   status: String,
 });
 
-const form = useForm();
+const form = useForm({});
 
 const verificationLinkSent = computed(() => props.status === 'verification-link-sent');
 

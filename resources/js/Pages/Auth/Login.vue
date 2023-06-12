@@ -26,7 +26,7 @@ const form = useForm({
   password: '',
   remember: false,
 });
-const providerForm = useForm();
+const providerForm = useForm({});
 
 watch(
   () => props.publicKey,

@@ -4,7 +4,7 @@ import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 import JetDangerButton from '@/Components/Jetstream/DangerButton.vue';
 import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
 
-const form = useForm();
+const form = useForm({});
 
 const props = defineProps({
   keyid: Number,
