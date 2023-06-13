@@ -3,6 +3,7 @@ name: Static analysis
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  merge_group:
 
 env:
   php-version: '8.2'
