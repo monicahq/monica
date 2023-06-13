@@ -7,7 +7,7 @@ use App\Helpers\MapHelper;
 use App\Interfaces\ServiceInterface;
 use App\Models\Address;
 use App\Services\QueuableService;
-use Illuminate\Http\Client\HttpClientException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -55,10 +55,9 @@ class GetGPSCoordinate extends QueuableService implements ServiceInterface
             $this->address->latitude = $response->json('0.lat');
             $this->address->longitude = $response->json('0.lon');
             $this->address->save();
-        } catch (HttpClientException $e) {
-            Log::error('Error calling location_iq: '.$e);
-            dump($e);
-            throw $e;
+        } catch (RequestException $e) {
+            Log::error('Error calling location_iq: '.$e->response->json()['error']);
+            $this->fail($e);
         }
     }
 
