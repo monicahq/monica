@@ -5,10 +5,7 @@ import { trans } from 'laravel-vue-i18n';
 import Errors from '@/Shared/Form/Errors.vue';
 
 const props = defineProps({
-  modelValue: {
-    type: [Array],
-    default: () => [],
-  },
+  modelValue: Array,
   inputClass: String,
   placeholder: {
     type: String,
@@ -44,7 +41,7 @@ const form = useForm({
 });
 
 const displayAddContactButton = computed(() => {
-  if (!props.addMultipleContacts && props.localContacts.length >= 1) {
+  if (!props.addMultipleContacts && localContacts.value.length >= 1) {
     return false;
   }
 
