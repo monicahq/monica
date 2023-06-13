@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, reopened]
   release:
     types: [created]
+  merge_group:
 
 env:
   node-version: 18

@@ -9,6 +9,7 @@ on:
     types: [opened, synchronize, reopened]
   release:
     types: [created]
+  merge_group:
 
 env:
   default-php-version: '8.2'
