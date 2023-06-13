@@ -68,7 +68,7 @@
             <errors :errors="form.errors" />
 
             <text-input
-              :ref="'newGiftOccasion'"
+              ref="newGiftOccasion"
               v-model="form.label"
               :label="$t('Name')"
               :type="'text'"

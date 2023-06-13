@@ -33,9 +33,7 @@ const showCreateLifeEventCategoryModal = () => {
   form.position = '';
   createLifeEventCategoryModalShown.value = true;
 
-  nextTick(() => {
-    newLifeEventCategory.value.focus();
-  });
+  nextTick().then(() => newLifeEventCategory.value.focus());
 };
 
 const showCreateLifeEventTypeModal = (lifeEventCategory) => {
@@ -44,18 +42,14 @@ const showCreateLifeEventTypeModal = (lifeEventCategory) => {
   createLifeEventTypeModalShown.value = true;
   lifeEventCategoryId.value = lifeEventCategory.id;
 
-  nextTick(() => {
-    newLifeEventType.value.focus();
-  });
+  nextTick().then(() => newLifeEventType.value.focus());
 };
 
 const renameLifeEventCategoryModal = (lifeEventCategory) => {
   form.label = lifeEventCategory.label;
   editLifeEventCategoryId.value = lifeEventCategory.id;
 
-  nextTick(() => {
-    newLifeEventCategory.value.focus();
-  });
+  nextTick().then(() => newLifeEventCategory.value.focus());
 };
 
 const renameLifeEventTypeModal = (lifeEventCategory, lifeEventType) => {
@@ -63,9 +57,7 @@ const renameLifeEventTypeModal = (lifeEventCategory, lifeEventType) => {
   editLifeEventCategoryId.value = lifeEventCategory;
   editLifeEventTypeId.value = lifeEventType.id;
 
-  nextTick(() => {
-    newLifeEventType.value.focus();
-  });
+  nextTick().then(() => newLifeEventType.value.focus());
 };
 
 const submit = () => {
@@ -342,7 +334,7 @@ const destroyLifeEventType = (lifeEventType) => {
                         <errors :errors="form.errors" />
 
                         <text-input
-                          :ref="'newLifeEventType'"
+                          ref="newLifeEventType"
                           v-model="form.label"
                           :label="$t('Name')"
                           :type="'text'"
@@ -383,7 +375,7 @@ const destroyLifeEventType = (lifeEventType) => {
                     <errors :errors="form.errors" />
 
                     <text-input
-                      :ref="'newLifeEventType'"
+                      ref="newLifeEventType"
                       v-model="form.label"
                       :label="$t('Name')"
                       :type="'text'"

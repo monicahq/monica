@@ -103,7 +103,7 @@
             <errors :errors="form.errors" />
 
             <text-input
-              :ref="'newTemplate'"
+              ref="newTemplate"
               v-model="form.name"
               :label="$t('Name')"
               :type="'text'"

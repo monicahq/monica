@@ -58,14 +58,14 @@ const reset = () => {
     form.reminderChoice = 'recurring_year';
   }
 
-  nextTick(() => label.value.focus());
+  nextTick().then(() => label.value.focus());
 };
 
 const showAge = () => {
-  nextTick(() => age.value.focus());
+  nextTick().then(() => age.value.focus());
 };
 const showMonth = () => {
-  nextTick(() => month.value.focus());
+  nextTick().then(() => month.value.focus());
 };
 
 const submit = () => {
@@ -113,7 +113,7 @@ defineExpose({
       <!-- name -->
       <div class="border-b border-gray-200 p-5 dark:border-gray-700">
         <TextInput
-          :ref="'label'"
+          ref="label"
           v-model="form.label"
           :label="$t('Name')"
           :type="'text'"
@@ -184,7 +184,7 @@ defineExpose({
         </div>
         <div v-show="form.choice === 'month_day'" class="ms-6 flex">
           <Dropdown
-            :ref="'month'"
+            ref="month"
             v-model.number="form.month"
             :data="data.months"
             :required="true"
@@ -219,7 +219,7 @@ defineExpose({
         </div>
         <div v-show="form.choice === 'year'" class="ms-6">
           <TextInput
-            :ref="'age'"
+            ref="age"
             v-model.number="form.age"
             :type="'number'"
             :min="0"

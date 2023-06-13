@@ -75,7 +75,7 @@ defineExpose({
     <div class="component relative">
       <select
         :id="id"
-        :ref="'input'"
+        ref="input"
         :value="modelValue"
         :class="localDropdownClasses"
         :required="required"

@@ -94,7 +94,7 @@
             <errors :errors="form.errors" />
 
             <text-input
-              :ref="'newPostTemplate'"
+              ref="newPostTemplate"
               v-model="form.label"
               :label="$t('Name')"
               :type="'text'"
@@ -227,7 +227,7 @@
                             <errors :errors="form.errors" />
 
                             <text-input
-                              :ref="'newSection'"
+                              ref="newSection"
                               v-model="form.label"
                               :label="$t('Name')"
                               :type="'text'"
@@ -268,7 +268,7 @@
                         <errors :errors="form.errors" />
 
                         <text-input
-                          :ref="'newSection'"
+                          ref="newSection"
                           v-model="form.label"
                           :label="$t('Name')"
                           :type="'text'"

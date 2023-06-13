@@ -35,18 +35,14 @@ const showCreateQuickFactModal = () => {
   createQuickFactModalShown.value = true;
   form.content = '';
 
-  nextTick(() => {
-    contentField.value.focus();
-  });
+  nextTick().then(() => contentField.value.focus());
 };
 
 const showEditQuickFactModal = (quickFact) => {
   editedQuickFactId.value = quickFact.id;
   form.content = quickFact.content;
 
-  nextTick(() => {
-    contentField.value.focus();
-  });
+  nextTick().then(() => contentField.value.focus());
 };
 
 const get = (template) => {

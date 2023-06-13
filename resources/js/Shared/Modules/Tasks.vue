@@ -23,19 +23,19 @@ const editedCompletedTaskId = ref(0);
 const showCreateTaskModal = () => {
   createTaskModalShown.value = true;
 
-  nextTick(() => createTaskForm.value.reset());
+  nextTick().then(() => createTaskForm.value.reset());
 };
 
-const showUpdateTaskModal = (task, i) => {
+const showUpdateTaskModal = (task) => {
   editedTaskId.value = task.id;
 
-  nextTick(() => updateTaskForm.value[i].reset());
+  nextTick().then(() => updateTaskForm.value[0].reset());
 };
 
-const showUpdateCompletedTaskModal = (task, i) => {
+const showUpdateCompletedTaskModal = (task) => {
   editedCompletedTaskId.value = task.id;
 
-  nextTick(() => updateCompletedTaskForm.value[i].reset());
+  nextTick().then(() => updateCompletedTaskForm.value[0].reset());
 };
 
 const getCompleted = () => {
@@ -117,9 +117,9 @@ const destroy = (task) => {
     <!-- add a task modal -->
     <CreateOrEditTask
       class="mb-6"
-      v-show="createTaskModalShown"
+      v-if="createTaskModalShown"
       :data="data"
-      :ref="'createTaskForm'"
+      ref="createTaskForm"
       @created="created"
       @close="createTaskModalShown = false" />
 
@@ -128,7 +128,7 @@ const destroy = (task) => {
       v-if="localTasks.length > 0"
       class="mb-2 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <li
-        v-for="(task, i) in localTasks"
+        v-for="task in localTasks"
         :key="task.id"
         class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
         <div v-if="editedTaskId !== task.id" class="flex items-center justify-between p-3">
@@ -169,18 +169,14 @@ const destroy = (task) => {
             </label>
           </div>
 
-          <hover-menu
-            :show-edit="true"
-            :show-delete="true"
-            @edit="showUpdateTaskModal(task, i)"
-            @delete="destroy(task)" />
+          <hover-menu :show-edit="true" :show-delete="true" @edit="showUpdateTaskModal(task)" @delete="destroy(task)" />
         </div>
 
         <!-- edit task -->
         <CreateOrEditTask
           class="mb-3"
-          v-show="editedTaskId === task.id"
-          :ref="'updateTaskForm'"
+          v-if="editedTaskId === task.id"
+          ref="updateTaskForm"
           :data="data"
           :task="task"
           @update:task="updated"
@@ -197,9 +193,9 @@ const destroy = (task) => {
     </p>
 
     <!-- list of completed tasks -->
-    <div v-show="showCompletedTasks" class="mx-4 text-xs">
+    <div v-if="showCompletedTasks" class="mx-4 text-xs">
       <ul
-        v-for="(task, i) in localCompletedTasks"
+        v-for="task in localCompletedTasks"
         :key="task.id"
         class="mb-2 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <li>
@@ -219,12 +215,7 @@ const destroy = (task) => {
                 <!-- due date -->
                 <span
                   v-if="task.due_at != null"
-                  :class="
-                    task.due_at.is_late
-                      ? 'bg-red-400/10 text-red-600 dark:text-red-400'
-                      : 'bg-sky-400/10 text-sky-600 dark:text-sky-400'
-                  "
-                  class="ms-2 flex items-center rounded-full px-2 py-0.5 text-xs font-medium leading-5">
+                  class="ms-2 flex items-center rounded-full bg-sky-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-sky-600 dark:text-sky-400">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="me-1 h-3 w-3"
@@ -245,14 +236,14 @@ const destroy = (task) => {
             <hover-menu
               :show-edit="true"
               :show-delete="true"
-              @edit="showUpdateCompletedTaskModal(task, i)"
+              @edit="showUpdateCompletedTaskModal(task)"
               @delete="destroy(task)" />
           </div>
 
           <!-- edit task -->
           <CreateOrEditTask
-            v-show="editedCompletedTaskId === task.id"
-            :ref="'updateCompletedTaskForm'"
+            v-if="editedCompletedTaskId === task.id"
+            ref="updateCompletedTaskForm"
             :data="data"
             :task="task"
             @update:task="updatedCompleted"

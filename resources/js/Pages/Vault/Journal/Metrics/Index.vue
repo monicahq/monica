@@ -26,9 +26,7 @@ const showJournalMetricModal = () => {
   form.label = '';
   createJournalMetricModalShown.value = true;
 
-  nextTick(() => {
-    newJournalMetric.value.focus();
-  });
+  nextTick().then(() => newJournalMetric.value.focus());
 };
 
 const submit = () => {

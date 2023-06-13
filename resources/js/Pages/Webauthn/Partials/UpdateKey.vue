@@ -35,7 +35,7 @@ watch(
   () => props.nameUpdate,
   (value) => {
     form.name = value;
-    nextTick(() => (nameInput.value ? nameInput.value.focus() : null));
+    nextTick().then(() => nameInput.value.focus());
   },
   {
     immediate: true,

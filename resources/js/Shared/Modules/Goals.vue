@@ -32,7 +32,7 @@
         <errors :errors="form.errors" />
         <!-- name -->
         <text-input
-          :ref="'newName'"
+          ref="newName"
           v-model="form.name"
           :label="$t('Name')"
           :type="'text'"

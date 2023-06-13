@@ -18,7 +18,7 @@
         <errors :errors="form.errors" />
 
         <text-input
-          :ref="'newLabel'"
+          ref="newLabel"
           v-model="form.name"
           :label="$t('Name')"
           :type="'text'"

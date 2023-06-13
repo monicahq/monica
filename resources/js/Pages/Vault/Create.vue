@@ -49,7 +49,7 @@
           </div>
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <text-input
-              :ref="'name'"
+              ref="name"
               v-model="form.name"
               :autofocus="true"
               :class="'mb-5'"

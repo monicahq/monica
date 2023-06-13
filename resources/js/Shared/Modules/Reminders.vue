@@ -17,6 +17,7 @@ const props = defineProps({
 });
 
 const label = ref(null);
+const labels = ref([]);
 const loadingState = ref('');
 const addReminderModalShown = ref(false);
 const localReminders = ref(props.data.reminders);
@@ -48,7 +49,7 @@ const showCreateReminderModal = () => {
   form.frequencyNumber = 1;
   addReminderModalShown.value = true;
 
-  nextTick(() => label.value.focus());
+  nextTick().then(() => label.value.focus());
 };
 
 const showEditReminderModal = (reminder) => {
@@ -62,6 +63,8 @@ const showEditReminderModal = (reminder) => {
   form.frequencyNumber = reminder.frequency_number;
   form.frequencyType = reminder.type;
   form.choice = reminder.choice;
+
+  nextTick().then(() => labels.value[0].focus());
 };
 
 const submit = () => {
@@ -148,7 +151,7 @@ const destroy = (reminder) => {
 
     <!-- add a reminder modal -->
     <form
-      v-show="addReminderModalShown"
+      v-if="addReminderModalShown"
       class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="submit()">
       <div class="border-b border-gray-200 dark:border-gray-700">
@@ -159,7 +162,7 @@ const destroy = (reminder) => {
         <!-- name -->
         <div class="border-b border-gray-200 p-5 dark:border-gray-700">
           <text-input
-            :ref="'label'"
+            ref="label"
             v-model="form.label"
             :label="$t('Name of the reminder')"
             :type="'text'"
@@ -366,7 +369,7 @@ const destroy = (reminder) => {
               <!-- name -->
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <text-input
-                  :ref="'label' + reminder.id"
+                  ref="labels"
                   v-model="form.label"
                   :label="$t('Name of the reminder')"
                   :type="'text'"

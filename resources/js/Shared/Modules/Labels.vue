@@ -35,7 +35,7 @@
         <errors :errors="form.errors" />
 
         <text-input
-          :ref="'label'"
+          ref="label"
           v-model="form.search"
           :type="'text'"
           :placeholder="$t('Filter list or create a new label')"

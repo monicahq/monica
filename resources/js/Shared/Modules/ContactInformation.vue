@@ -42,7 +42,7 @@
         <!-- name -->
         <div class="border-b border-gray-200 p-5 dark:border-gray-700">
           <text-input
-            :ref="'newData'"
+            ref="newData"
             v-model="form.data"
             :label="$t('Content')"
             :type="'text'"
@@ -112,7 +112,7 @@
               <!-- name -->
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <text-input
-                  :ref="'newData'"
+                  ref="newData"
                   v-model="form.data"
                   :label="$t('Content')"
                   :type="'text'"
