@@ -172,7 +172,7 @@ const search = _.debounce(() => {
     </div>
 
     <!-- mode to add a contact -->
-    <div v-show="addContactMode">
+    <div v-if="addContactMode">
       <div class="relative mb-3">
         <svg
           xmlns="http://www.w3.org/2000/svg"
