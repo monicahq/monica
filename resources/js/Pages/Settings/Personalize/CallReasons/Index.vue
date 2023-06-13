@@ -88,7 +88,7 @@
             <errors :errors="form.errors" />
 
             <text-input
-              :ref="'newCallReasonType'"
+              ref="newCallReasonType"
               v-model="form.callReasonTypeName"
               :label="$t('Name')"
               :type="'text'"
@@ -232,7 +232,7 @@
                 <errors :errors="form.errors" />
 
                 <text-input
-                  :ref="'newReason'"
+                  ref="newReason"
                   v-model="form.label"
                   :label="$t('Name')"
                   :type="'text'"

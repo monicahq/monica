@@ -120,7 +120,7 @@
         <errors :errors="form.errors" />
 
         <text-input
-          :ref="'newPage'"
+          ref="newPage"
           v-model="form.name"
           :label="$t('Name')"
           :type="'text'"

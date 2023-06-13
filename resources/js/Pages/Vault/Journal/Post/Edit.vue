@@ -307,7 +307,7 @@ const destroy = () => {
               <div class="border-gray-200 p-5 dark:border-gray-700">
                 <!-- title -->
                 <text-input
-                  :ref="'newTitle'"
+                  ref="newTitle"
                   v-model="form.title"
                   :label="$t('Title')"
                   :type="'text'"

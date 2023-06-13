@@ -51,7 +51,7 @@
         <!-- name -->
         <div v-if="chooseGroupTypeShown" class="border-b border-gray-200 p-5 dark:border-gray-700">
           <text-input
-            :ref="'newName'"
+            ref="newName"
             v-model="form.name"
             :label="$t('Name')"
             :type="'text'"

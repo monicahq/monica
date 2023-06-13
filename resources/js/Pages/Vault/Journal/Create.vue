@@ -21,7 +21,7 @@ const form = useForm({
 const nameField = ref(null);
 
 onMounted(() => {
-  nextTick(() => nameField.value.focus());
+  nextTick().then(() => nameField.value.focus());
 });
 
 const submit = () => {
@@ -79,7 +79,7 @@ const submit = () => {
 
             <text-input
               v-model="form.name"
-              :ref="'nameField'"
+              ref="nameField"
               :autofocus="true"
               :class="'mb-5'"
               :input-class="'block w-full'"

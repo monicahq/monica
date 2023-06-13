@@ -68,7 +68,7 @@
             <errors :errors="form.errors" />
 
             <text-input
-              :ref="'newAddressType'"
+              ref="newAddressType"
               v-model="form.name"
               :label="$t('Name')"
               :type="'text'"

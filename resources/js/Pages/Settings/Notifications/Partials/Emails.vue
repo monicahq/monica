@@ -22,7 +22,7 @@
 
         <!-- content -->
         <text-input
-          :ref="'content'"
+          ref="content"
           v-model="form.content"
           :label="$t('Which email address should we send the notification to?')"
           :type="'email'"

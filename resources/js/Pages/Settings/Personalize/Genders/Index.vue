@@ -68,7 +68,7 @@
             <errors :errors="form.errors" />
 
             <text-input
-              :ref="'newGender'"
+              ref="newGender"
               v-model="form.name"
               :label="$t('Name')"
               :type="'text'"

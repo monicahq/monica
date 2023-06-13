@@ -24,7 +24,7 @@ const loadingState = ref(null);
 const nameField = ref(null);
 
 onMounted(() => {
-  nextTick(() => nameField.value.focus());
+  nextTick().then(() => nameField.value.focus());
 });
 
 const update = () => {
@@ -104,7 +104,7 @@ const update = () => {
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <text-input
               v-model="form.name"
-              :ref="'nameField'"
+              ref="nameField"
               :autofocus="true"
               :class="'mb-5'"
               :input-class="'block w-full'"

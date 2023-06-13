@@ -53,7 +53,7 @@
         <!-- title -->
         <text-input
           v-if="titleFieldShown"
-          :ref="'newTitle'"
+          ref="newTitle"
           v-model="form.title"
           :label="$t('Title')"
           :type="'text'"
@@ -188,7 +188,7 @@
 
             <!-- title -->
             <text-input
-              :ref="'newTitle'"
+              ref="newTitle"
               v-model="form.title"
               :label="$t('Title')"
               :type="'text'"

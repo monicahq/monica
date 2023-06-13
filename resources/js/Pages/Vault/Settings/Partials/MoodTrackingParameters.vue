@@ -30,9 +30,7 @@ const showMoodTrackingParameterModal = () => {
   form.position = '';
   createMoodTrackingParametersModalShown.value = true;
 
-  nextTick(() => {
-    newMoodTrackingParameter.value.focus();
-  });
+  nextTick().then(() => newMoodTrackingParameter.value.focus());
 };
 
 const renameMoodTrackingParameterModal = (moodTrackingParameter) => {
@@ -40,9 +38,7 @@ const renameMoodTrackingParameterModal = (moodTrackingParameter) => {
   form.hex_color = moodTrackingParameter.hex_color;
   editMoodTrackingParameterId.value = moodTrackingParameter.id;
 
-  nextTick(() => {
-    newMoodTrackingParameter.value.focus();
-  });
+  nextTick().then(() => newMoodTrackingParameter.value.focus());
 };
 
 const submit = () => {

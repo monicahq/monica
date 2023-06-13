@@ -147,7 +147,7 @@
 
                   <div v-if="showContactName" class="ps-6">
                     <text-input
-                      :ref="'contactName'"
+                      ref="contactName"
                       v-model="form.first_name"
                       :autofocus="true"
                       :class="'mb-5'"

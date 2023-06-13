@@ -37,7 +37,7 @@
         <!-- name -->
         <div class="border-b border-gray-200 p-5 dark:border-gray-700">
           <text-input
-            :ref="'newName'"
+            ref="newName"
             v-model="form.name"
             :label="$t('Name of the pet')"
             :type="'text'"
@@ -102,7 +102,7 @@
               <!-- name -->
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <text-input
-                  :ref="'label'"
+                  ref="label"
                   v-model="form.name"
                   :label="$t('Name of the pet')"
                   :type="'text'"

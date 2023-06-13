@@ -23,13 +23,13 @@ const errors = ref(null);
 const showCreateModal = () => {
   createDateModalShown.value = true;
 
-  nextTick(() => createForm.value.reset());
+  nextTick().then(() => createForm.value.reset());
 };
 
-const updateDateModal = (date, i) => {
+const updateDateModal = (date) => {
   editedDateId.value = date.id;
 
-  nextTick(() => editForm.value[i].reset());
+  nextTick().then(() => editForm.value[0].reset());
 };
 
 const created = (date) => {
@@ -123,18 +123,18 @@ const destroy = (date) => {
         <CreateOrEditImportantDate
           v-if="createDateModalShown"
           class="mb-6"
-          :ref="'createForm'"
+          ref="createForm"
           :data="data"
           @close="createDateModalShown = false"
           @created="created" />
 
-        <div v-else>
+        <div v-if="!createDateModalShown">
           <!-- list of dates -->
           <ul
             v-if="localDates.length > 0"
             class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
             <li
-              v-for="(date, i) in localDates"
+              v-for="date in localDates"
               :key="date.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
               <!-- detail of the important date -->
@@ -151,7 +151,7 @@ const destroy = (date) => {
 
                 <!-- actions -->
                 <ul class="text-sm">
-                  <li class="me-4 inline cursor-pointer" @click="updateDateModal(date, i)">
+                  <li class="me-4 inline cursor-pointer" @click="updateDateModal(date)">
                     <span class="text-blue-500 hover:underline">{{ $t('Edit') }}</span>
                   </li>
                   <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(date)">
@@ -162,9 +162,9 @@ const destroy = (date) => {
 
               <!-- edit date modal -->
               <CreateOrEditImportantDate
-                :ref="'editForm'"
+                ref="editForm"
                 :date="date"
-                v-show="editedDateId === date.id"
+                v-if="editedDateId === date.id"
                 :data="data"
                 @close="editedDateId = 0"
                 @update:date="updated" />
