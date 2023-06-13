@@ -72,6 +72,10 @@ class ModuleFamilySummaryViewHelper
                     $relatedContact = Contact::find($relation->contact_id);
                 }
 
+                if ($relatedContact === null) {
+                    continue;
+                }
+
                 $relationshipsCollection->push([
                     'id' => $counter,
                     'contact' => self::getContact($relatedContact),
