@@ -112,27 +112,21 @@ const showAddSummaryField = () => {
   form.summary = null;
   addSummaryFieldShown.value = true;
 
-  nextTick(() => {
-    summaryField.value.focus();
-  });
+  nextTick().then(() => summaryField.value.focus());
 };
 
 const showAddDescriptionField = () => {
   form.description = null;
   addDescriptionFieldShown.value = true;
 
-  nextTick(() => {
-    descriptionField.value.focus();
-  });
+  nextTick().then(() => descriptionField.value.focus());
 };
 
 const showAddDistanceField = () => {
   form.distance = null;
   addDistanceFieldShown.value = true;
 
-  nextTick(() => {
-    distanceField.value.focus();
-  });
+  nextTick().then(() => distanceField.value.focus());
 };
 
 const store = () => {
@@ -158,7 +152,7 @@ const store = () => {
     .request(request)
     .then((response) => {
       loadingState.value = '';
-      emit('closeModal');
+      nextTick().then(() => emit('closeModal'));
 
       if (props.createTimelineEvent) {
         emit('timelineEventCreated', response.data.data);

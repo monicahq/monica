@@ -55,7 +55,7 @@
           <!-- create a new company -->
           <text-input
             v-if="showCreateCompanyField"
-            :ref="'name'"
+            ref="name"
             v-model="form.company_name"
             :label="$t('Company name')"
             :type="'text'"

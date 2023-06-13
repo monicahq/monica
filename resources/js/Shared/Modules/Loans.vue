@@ -51,7 +51,7 @@ const showCreateLoanModal = () => {
   form.currency_id = '';
   createLoanModalShown.value = true;
 
-  nextTick(() => nameInput.value.focus());
+  nextTick().then(() => nameInput.value.focus());
 };
 
 const showEditLoanModal = (loan) => {
@@ -176,7 +176,7 @@ const toggle = (loan) => {
     <div>
       <!-- add a loan modal -->
       <form
-        v-show="createLoanModalShown"
+        v-if="createLoanModalShown"
         class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
         @submit.prevent="submit()">
         <div class="border-b border-gray-200 dark:border-gray-700">
@@ -222,7 +222,7 @@ const toggle = (loan) => {
           <!-- name -->
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <text-input
-              :ref="'nameInput'"
+              ref="nameInput"
               v-model="form.name"
               :label="$t('What is the loan?')"
               :type="'text'"
@@ -237,7 +237,7 @@ const toggle = (loan) => {
           <!-- amount + currency -->
           <div v-if="form.type === 'monetary'" class="flex border-b border-gray-200 p-5 dark:border-gray-700">
             <text-input
-              :ref="'label'"
+              ref="label"
               v-model="form.amount_lent"
               :label="$t('How much money was lent?')"
               :help="$t('Write the amount with a dot if you need decimals, like 100.50')"
@@ -446,7 +446,7 @@ const toggle = (loan) => {
             <!-- name -->
             <div class="border-b border-gray-200 p-5 dark:border-gray-700">
               <text-input
-                :ref="'name'"
+                ref="name"
                 v-model="form.name"
                 :label="$t('What is the loan?')"
                 :type="'text'"
@@ -461,7 +461,7 @@ const toggle = (loan) => {
             <!-- amount + currency -->
             <div v-if="form.type === 'monetary'" class="flex border-b border-gray-200 p-5 dark:border-gray-700">
               <text-input
-                :ref="'label'"
+                ref="label"
                 v-model="form.amount_lent"
                 :label="$t('How much was lent?')"
                 :help="$t('Write the amount with a dot if you need decimals, like 100.50')"

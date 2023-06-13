@@ -30,7 +30,7 @@ const form = useForm({
 const reset = () => {
   if (props.task) {
     form.label = props.task.label;
-    form.due_at = props.task.due_at.value;
+    form.due_at = props.task.due_at !== null ? props.task.due_at.value : null;
     form.due_at_checked = props.task.due_at !== null;
   } else {
     form.label = '';
@@ -38,7 +38,7 @@ const reset = () => {
     form.due_at_checked = false;
   }
 
-  nextTick(() => labelInput.value.focus());
+  nextTick().then(() => labelInput.value.focus());
 };
 
 const submit = () => {
@@ -83,7 +83,7 @@ defineExpose({
 
       <!-- title -->
       <text-input
-        :ref="'labelInput'"
+        ref="labelInput"
         v-model="form.label"
         :label="$t('Title')"
         :type="'text'"

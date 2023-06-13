@@ -77,10 +77,11 @@ watch(
 const showAddContactMode = () => {
   addContactMode.value = true;
   form.searchTerm = '';
-  nextTick(() => searchInput.value.focus());
+  nextTick().then(() => searchInput.value.focus());
 };
 
 const sendEscKey = () => {
+  search.cancel();
   addContactMode.value = false;
 };
 
@@ -97,7 +98,7 @@ const add = (contact) => {
     localContacts.value.push(contact);
     form.searchTerm = '';
     addContactMode.value = false;
-    emit('update:modelValue', localContacts.value);
+    nextTick().then(() => emit('update:modelValue', localContacts.value));
   }
 };
 
@@ -105,7 +106,7 @@ const remove = (contact) => {
   let id = localContacts.value.findIndex((x) => x.id === contact.id);
   localContacts.value.splice(id, 1);
 
-  emit('update:modelValue', localContacts.value);
+  nextTick().then(() => emit('update:modelValue', localContacts.value));
 };
 
 const search = _.debounce(() => {
@@ -171,7 +172,7 @@ const search = _.debounce(() => {
     </div>
 
     <!-- mode to add a contact -->
-    <div v-show="addContactMode">
+    <div v-if="addContactMode">
       <div class="relative mb-3">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +188,7 @@ const search = _.debounce(() => {
         </svg>
 
         <input
-          :ref="'searchInput'"
+          ref="searchInput"
           v-model="form.searchTerm"
           :class="localInputClasses"
           :type="type"

@@ -82,7 +82,7 @@ const close = () => {
 onMounted(() => {
   document.addEventListener('keydown', onKeydown);
   if (_.find(useAttrs(), (item, key) => key === 'autofocus') > -1) {
-    nextTick(() => {
+    nextTick().then(() => {
       select.value.focus();
       open.value = true;
     });

@@ -23,14 +23,14 @@ const form = useForm({
 const confirmLogout = () => {
   confirmingLogout.value = true;
 
-  nextTick(() => passwordInput.value.focus());
+  nextTick().then(() => passwordInput.value.focus());
 };
 
 const logoutOtherBrowserSessions = () => {
   form.delete(route('other-browser-sessions.destroy'), {
     preserveScroll: true,
     onSuccess: () => closeModal(),
-    onError: () => nextTick(() => passwordInput.value.focus()),
+    onError: () => nextTick().then(() => passwordInput.value.focus()),
     onFinish: () => form.reset(),
   });
 };

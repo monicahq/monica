@@ -29,9 +29,7 @@ const showCreateLifeMetricModal = () => {
   createLifeMetricModalShown.value = true;
   form.label = '';
 
-  nextTick(() => {
-    labelField.value.focus();
-  });
+  nextTick().then(() => labelField.value.focus());
 };
 
 const showEditLifeMetricModal = (lifeMetric) => {

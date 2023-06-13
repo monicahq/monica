@@ -31,9 +31,7 @@ const enableEditMode = () => {
 const focusNameOrder = () => {
   disableNameOrder.value = false;
 
-  nextTick(() => {
-    nameOrder.value.focus();
-  });
+  nextTick().then(() => nameOrder.value.focus());
 };
 
 const helpDocumentation = () => {
@@ -202,7 +200,7 @@ const submit = () => {
         </div>
         <div class="ms-8">
           <text-input
-            :ref="'nameOrder'"
+            ref="nameOrder"
             v-model="form.nameOrder"
             :type="'text'"
             :autofocus="true"

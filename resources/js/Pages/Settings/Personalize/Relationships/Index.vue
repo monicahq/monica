@@ -107,7 +107,7 @@
             <errors :errors="form.errors" />
 
             <text-input
-              :ref="'newGroupType'"
+              ref="newGroupType"
               v-model="form.relationshipGroupTypeName"
               :label="$t('Name')"
               :type="'text'"
@@ -287,7 +287,7 @@
                 <errors :errors="form.errors" />
 
                 <text-input
-                  :ref="'newRelationshipType'"
+                  ref="newRelationshipType"
                   v-model="form.name"
                   :label="$t('Name')"
                   :type="'text'"

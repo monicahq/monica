@@ -28,7 +28,7 @@
         <errors :errors="form.errors" />
 
         <text-input
-          :ref="'tag'"
+          ref="tag"
           v-model="form.search"
           :type="'text'"
           :placeholder="$t('Filter list or create a new tag')"

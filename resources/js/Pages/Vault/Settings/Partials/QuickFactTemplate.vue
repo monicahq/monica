@@ -28,18 +28,14 @@ const showAddEntryModal = () => {
   form.position = '';
   createEntryModalShown.value = true;
 
-  nextTick(() => {
-    newEntry.value.focus();
-  });
+  nextTick().then(() => newEntry.value.focus());
 };
 
 const renameEntryModal = (entry) => {
   form.label = entry.label;
   editEntryId.value = entry.id;
 
-  nextTick(() => {
-    newEntry.value.focus();
-  });
+  nextTick().then(() => newEntry.value.focus());
 };
 
 const submit = () => {

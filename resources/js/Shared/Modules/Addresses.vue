@@ -264,7 +264,7 @@ const destroy = () => {
           <!-- street  -->
           <div class="grid gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
             <text-input
-              :ref="'line_1'"
+              ref="line_1"
               v-model="form.line_1"
               :label="$t('Address')"
               :type="'text'"
@@ -279,7 +279,7 @@ const destroy = () => {
           <!-- apartment + city -->
           <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
             <text-input
-              :ref="'line_2'"
+              ref="line_2"
               v-model="form.line_2"
               :label="$t('Apartment, suite, etc…')"
               :type="'text'"
@@ -425,7 +425,7 @@ const destroy = () => {
               <!-- street  -->
               <div class="grid gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
                 <text-input
-                  :ref="'line_1'"
+                  ref="line_1"
                   v-model="form.line_1"
                   :label="$t('Address')"
                   :type="'text'"
@@ -440,7 +440,7 @@ const destroy = () => {
               <!-- apartment + city -->
               <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
                 <text-input
-                  :ref="'line_2'"
+                  ref="line_2"
                   v-model="form.line_2"
                   :label="$t('Apartment, suite, etc…')"
                   :type="'text'"
@@ -606,7 +606,7 @@ const destroy = () => {
               <!-- street  -->
               <div class="grid gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
                 <text-input
-                  :ref="'line_1'"
+                  ref="line_1"
                   v-model="form.line_1"
                   :label="$t('Address')"
                   :type="'text'"
@@ -621,7 +621,7 @@ const destroy = () => {
               <!-- apartment + city -->
               <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
                 <text-input
-                  :ref="'line_2'"
+                  ref="line_2"
                   v-model="form.line_2"
                   :label="$t('Apartment, suite, etc…')"
                   :type="'text'"

@@ -8,7 +8,7 @@ defineProps({
 defineEmits(['update:modelValue']);
 
 const input = ref(null);
-const focus = () => nextTick(() => input.value.focus());
+const focus = () => nextTick().then(() => input.value.focus());
 
 onMounted(() => {
   if (input.value.hasAttribute('autofocus')) {

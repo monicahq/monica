@@ -21,7 +21,7 @@ const nameInput = ref(null);
 
 onMounted(() => {
   props.form.reset();
-  nextTick(() => nameInput.value.focus());
+  nextTick().then(() => nameInput.value.focus());
 });
 
 watch(
@@ -37,7 +37,7 @@ const begin = () => {
   registering.value = true;
   error.value = '';
 
-  emit('start');
+  nextTick().then(() => emit('start'));
   axios
     .post(route('webauthn.store.options'))
     .then((response) => {
@@ -61,7 +61,7 @@ const registerWaitForKey = (publicKey) => {
 
 const stop = () => {
   registering.value = false;
-  emit('stop');
+  nextTick().then(() => emit('stop'));
 };
 </script>
 
