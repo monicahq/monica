@@ -5,7 +5,10 @@ import { trans } from 'laravel-vue-i18n';
 import Errors from '@/Shared/Form/Errors.vue';
 
 const props = defineProps({
-  modelValue: Array,
+  modelValue: {
+    type: Array,
+    default: () => [],
+  },
   inputClass: String,
   placeholder: {
     type: String,

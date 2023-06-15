@@ -384,7 +384,7 @@ export default {
         create_contact_entry: false,
         relationship_type_id: 0,
         base_contact_id: 0,
-        other_contact_id: 0,
+        other_contact_id: [],
         last_name: '',
         middle_name: '',
         nickname: '',
