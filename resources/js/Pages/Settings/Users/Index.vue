@@ -84,7 +84,7 @@
             </div>
 
             <!-- case: normal user -->
-            <div v-if="user.name && editModalshownId != user.id" class="flex items-center justify-between px-5 py-2">
+            <div v-if="user.name && editModalshownId !== user.id" class="flex items-center justify-between px-5 py-2">
               <div>
                 <span class="block">
                   {{ user.name }}
@@ -111,7 +111,7 @@
             </div>
 
             <!-- edit user -->
-            <form v-if="editModalshownId == user.id" @submit.prevent="update(user)">
+            <form v-if="editModalshownId === user.id" @submit.prevent="update(user)">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />
 

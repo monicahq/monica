@@ -114,7 +114,7 @@
             class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <!-- detail of the contact information type -->
             <div
-              v-if="renameContactInformationTypeModalShownId != contactInformationType.id"
+              v-if="renameContactInformationTypeModalShownId !== contactInformationType.id"
               class="flex items-center justify-between px-5 py-2">
               <div>
                 <span class="text-base">{{ contactInformationType.name }}</span>
@@ -145,7 +145,7 @@
 
             <!-- rename a contactInformationType modal -->
             <form
-              v-if="renameContactInformationTypeModalShownId == contactInformationType.id"
+              v-if="renameContactInformationTypeModalShownId === contactInformationType.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
               @submit.prevent="update(contactInformationType)">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
@@ -189,7 +189,7 @@
 
         <!-- blank state -->
         <div
-          v-if="localContactInformationTypes.length == 0"
+          v-if="localContactInformationTypes.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">
             {{
@@ -256,6 +256,7 @@ export default {
       this.form.name = '';
       this.form.protocol = '';
       this.createContactInformationTypeModalShown = true;
+      this.renameContactInformationTypeModalShownId = 0;
 
       this.$nextTick(() => {
         this.$refs.newContactInformationType.focus();
@@ -266,6 +267,7 @@ export default {
       this.form.name = contactInformationType.name;
       this.form.protocol = contactInformationType.protocol;
       this.renameContactInformationTypeModalShownId = contactInformationType.id;
+      this.createContactInformationTypeModalShown = false;
 
       this.$nextTick(() => {
         this.$refs.rename[0].focus();

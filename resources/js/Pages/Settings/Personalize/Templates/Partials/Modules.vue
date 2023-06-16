@@ -93,7 +93,7 @@
     </ul>
 
     <!-- blank state -->
-    <div v-if="localPageModules.length == 0 && moduleLoaded">
+    <div v-if="localPageModules.length === 0 && moduleLoaded">
       <p class="rounded-lg border border-gray-200 bg-white p-5 text-center dark:border-gray-700 dark:bg-gray-900">
         {{ $t('Add at least one module.') }}
       </p>

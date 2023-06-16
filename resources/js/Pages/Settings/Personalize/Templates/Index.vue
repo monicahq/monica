@@ -238,6 +238,7 @@ export default {
     showTemplateModal() {
       this.form.name = '';
       this.createTemplateModalShown = true;
+      this.renameTemplateModalShownId = 0;
 
       this.$nextTick(() => {
         this.$refs.newTemplate.focus();
@@ -247,6 +248,7 @@ export default {
     showUpdateTemplateModal(template) {
       this.form.name = template.name;
       this.renameTemplateModalShownId = template.id;
+      this.createTemplateModalShown = false;
 
       this.$nextTick(() => {
         this.$refs.rename[0].focus();

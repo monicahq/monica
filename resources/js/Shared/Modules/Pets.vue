@@ -75,7 +75,7 @@
           :key="pet.id"
           class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
           <!-- pet -->
-          <div v-if="editedPetId != pet.id" class="flex items-center justify-between px-3 py-2">
+          <div v-if="editedPetId !== pet.id" class="flex items-center justify-between px-3 py-2">
             <div class="flex items-center">
               <span class="me-2 text-sm text-gray-500">{{ pet.pet_category.name }}</span>
               <span class="me-2">{{ pet.name }}</span>
@@ -93,7 +93,7 @@
           </div>
 
           <!-- edit pet modal -->
-          <form v-if="editedPetId == pet.id" class="bg-gray-50 dark:bg-gray-900" @submit.prevent="update(pet)">
+          <form v-if="editedPetId === pet.id" class="bg-gray-50 dark:bg-gray-900" @submit.prevent="update(pet)">
             <div class="border-b border-gray-200 dark:border-gray-700">
               <div v-if="form.errors.length > 0" class="p-5">
                 <errors :errors="form.errors" />
@@ -137,7 +137,7 @@
 
     <!-- blank state -->
     <div
-      v-if="localPets.length == 0"
+      v-if="localPets.length === 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_pet.svg" :alt="$t('Pets')" class="mx-auto mt-4 h-16 w-16" />
       <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no pets yet.') }}</p>

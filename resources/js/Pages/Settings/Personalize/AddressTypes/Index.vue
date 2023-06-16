@@ -96,7 +96,7 @@
             class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <!-- detail of the address type -->
             <div
-              v-if="renameAddressTypeModalShownId != addressType.id"
+              v-if="renameAddressTypeModalShownId !== addressType.id"
               class="flex items-center justify-between px-5 py-2">
               <span class="text-base">{{ addressType.name }}</span>
 
@@ -113,7 +113,7 @@
 
             <!-- rename a addressType modal -->
             <form
-              v-if="renameAddressTypeModalShownId == addressType.id"
+              v-if="renameAddressTypeModalShownId === addressType.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
               @submit.prevent="update(addressType)">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
@@ -142,7 +142,7 @@
 
         <!-- blank state -->
         <div
-          v-if="localAddressTypes.length == 0"
+          v-if="localAddressTypes.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">{{ $t('Address types let you classify contact addresses.') }}</p>
         </div>
@@ -201,6 +201,7 @@ export default {
     showAddressTypeModal() {
       this.form.name = '';
       this.createAddressTypeModalShown = true;
+      this.renameAddressTypeModalShownId = 0;
 
       this.$nextTick(() => {
         this.$refs.newAddressType.focus();
@@ -210,6 +211,7 @@ export default {
     updateAdressTypeModal(addressType) {
       this.form.name = addressType.name;
       this.renameAddressTypeModalShownId = addressType.id;
+      this.createAddressTypeModalShown = false;
 
       this.$nextTick(() => {
         this.$refs.rename[0].focus();

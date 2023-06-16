@@ -110,7 +110,7 @@
         <Pagination :items="paginator" />
 
         <div
-          v-if="localPhotos.length == 0"
+          v-if="localPhotos.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">
             {{ $t('There are no photos yet.') }}

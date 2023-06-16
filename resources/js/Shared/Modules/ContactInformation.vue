@@ -80,7 +80,7 @@
           :key="info.id"
           class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
           <!-- contact information -->
-          <div v-if="editedContactInformationId != info.id" class="flex items-center justify-between px-3 py-2">
+          <div v-if="editedContactInformationId !== info.id" class="flex items-center justify-between px-3 py-2">
             <div>
               <a :href="info.data_with_protocol" class="text-blue-500 hover:underline">{{ info.data }}</a>
               <span class="ms-2 text-xs text-gray-500">({{ info.label }})</span>
@@ -101,7 +101,7 @@
 
           <!-- edit info modal -->
           <form
-            v-if="editedContactInformationId == info.id"
+            v-if="editedContactInformationId === info.id"
             class="bg-gray-50 dark:bg-gray-900"
             @submit.prevent="update(info)">
             <div class="border-b border-gray-200 dark:border-gray-700">
@@ -147,7 +147,7 @@
 
     <!-- blank state -->
     <div
-      v-if="localContactInformation.length == 0"
+      v-if="localContactInformation.length === 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_contact.svg" :alt="$t('Contact informations')" class="mx-auto mt-4 h-20 w-20" />
       <p class="px-5 pb-5 pt-2 text-center">

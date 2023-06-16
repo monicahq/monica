@@ -156,7 +156,7 @@ export default {
 
   methods: {
     showAddModal(type) {
-      if (type == 'lifeEvent') {
+      if (type === 'lifeEvent') {
         this.addMode = true;
       }
     },

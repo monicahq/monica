@@ -113,7 +113,7 @@
           <li v-for="callReasonType in localCallReasonTypes" :key="callReasonType.id">
             <!-- detail of the call reason type -->
             <div
-              v-if="renameCallReasonTypeModalShownId != callReasonType.id"
+              v-if="renameCallReasonTypeModalShownId !== callReasonType.id"
               class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
               <span class="text-base font-semibold">{{ callReasonType.label }}</span>
 
@@ -132,7 +132,7 @@
 
             <!-- rename a call reason type modal -->
             <form
-              v-if="renameCallReasonTypeModalShownId == callReasonType.id"
+              v-if="renameCallReasonTypeModalShownId === callReasonType.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
               @submit.prevent="updateCallReasonType(callReasonType)">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
@@ -215,7 +215,7 @@
 
             <!-- create a new reason -->
             <div
-              v-if="createReasonModalId != callReasonType.id"
+              v-if="createReasonModalId !== callReasonType.id"
               class="item-list border-b border-gray-200 px-5 py-2 ps-6 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
               <span
                 class="cursor-pointer text-sm text-blue-500 hover:underline"
@@ -226,7 +226,7 @@
 
             <!-- create a new resaon -->
             <form
-              v-if="createReasonModalId == callReasonType.id"
+              v-if="createReasonModalId === callReasonType.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
               @submit.prevent="storeReason(callReasonType)">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
@@ -255,7 +255,7 @@
 
         <!-- blank state -->
         <div
-          v-if="localCallReasonTypes.length == 0"
+          v-if="localCallReasonTypes.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">
             {{ $t('Call reasons let you indicate the reason of calls you make to your contacts.') }}
@@ -319,6 +319,7 @@ export default {
     showCallReasonTypeModal() {
       this.form.callReasonTypeName = '';
       this.createCallReasonTypeModalShown = true;
+      this.renameCallReasonTypeModalShownId = 0;
 
       this.$nextTick(() => {
         this.$refs.newCallReasonType.focus();
@@ -328,6 +329,7 @@ export default {
     renameCallReasonTypeModal(callReasonType) {
       this.form.callReasonTypeName = callReasonType.label;
       this.renameCallReasonTypeModalShownId = callReasonType.id;
+      this.createCallReasonTypeModalShown = false;
 
       this.$nextTick(() => {
         this.$refs.renameCallReasonType[0].focus();

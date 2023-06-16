@@ -71,7 +71,7 @@
 
         <!-- case if the label does not exist and needs to be created -->
         <li
-          v-if="filteredLabels.length == 0 && form.search.length != ''"
+          v-if="filteredLabels.length === 0 && form.search.length !== ''"
           class="cursor-pointer border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
           @click="store()">
           {{ $t('Create new label') }} <span class="italic">"{{ form.search }}"</span>
@@ -79,7 +79,7 @@
 
         <!-- blank state when there is no label at all -->
         <li
-          v-if="filteredLabels.length == 0 && form.search.length == ''"
+          v-if="filteredLabels.length === 0 && form.search.length === ''"
           class="border-b border-gray-200 px-3 py-2 text-sm text-gray-600 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400 hover:dark:bg-slate-800">
           {{ $t('Please type a few characters to create a new label.') }}
         </li>
@@ -98,7 +98,7 @@
     </div>
 
     <!-- blank state -->
-    <p v-if="localLabels.length == 0" class="text-sm text-gray-600 dark:text-gray-400">{{ $t('Not set') }}</p>
+    <p v-if="localLabels.length === 0" class="text-sm text-gray-600 dark:text-gray-400">{{ $t('Not set') }}</p>
   </div>
 </template>
 

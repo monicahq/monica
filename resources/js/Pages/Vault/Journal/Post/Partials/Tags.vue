@@ -64,7 +64,7 @@
 
         <!-- case if the tag does not exist and needs to be created -->
         <li
-          v-if="filteredTags.length == 0 && form.search.length != ''"
+          v-if="filteredTags.length === 0 && form.search.length !== ''"
           class="cursor-pointer border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
           @click="store()">
           {{ $t('Create new tag') }} <span class="italic">"{{ form.search }}"</span>
@@ -72,7 +72,7 @@
 
         <!-- blank state when there is no tag at all -->
         <li
-          v-if="filteredTags.length == 0 && form.search.length == ''"
+          v-if="filteredTags.length === 0 && form.search.length === ''"
           class="border-b border-gray-200 px-3 py-2 text-sm text-gray-600 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400 hover:dark:bg-slate-800">
           {{ $t('Please type a few characters to create a new tag.') }}
         </li>
@@ -90,7 +90,7 @@
     </div>
 
     <!-- blank state -->
-    <p v-if="localTags.length == 0" class="text-sm text-gray-600 dark:text-gray-400">{{ $t('Not set') }}</p>
+    <p v-if="localTags.length === 0" class="text-sm text-gray-600 dark:text-gray-400">{{ $t('Not set') }}</p>
   </div>
 </template>
 

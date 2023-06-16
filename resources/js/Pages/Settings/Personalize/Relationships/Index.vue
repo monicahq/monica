@@ -388,6 +388,9 @@ export default {
     showCreateRelationshipGroupTypeModal() {
       this.form.relationshipGroupTypeName = '';
       this.createRelationshipGroupTypeModalShown = true;
+      this.renameRelationshipGroupTypeModalShownId = 0;
+      this.createRelationshipTypeModalId = 0;
+      this.renameRelationshipTypeModalId = 0;
 
       this.$nextTick(() => {
         this.$refs.newGroupType.focus();
@@ -397,6 +400,9 @@ export default {
     renameRelationshipGroupTypeModal(groupType) {
       this.form.relationshipGroupTypeName = groupType.name;
       this.renameRelationshipGroupTypeModalShownId = groupType.id;
+      this.createRelationshipGroupTypeModalShown = false;
+      this.createRelationshipTypeModalId = 0;
+      this.renameRelationshipTypeModalId = 0;
 
       this.$nextTick(() => {
         this.$refs.renameGroupType[0].focus();
@@ -404,9 +410,12 @@ export default {
     },
 
     showRelationshipTypeModal(groupType) {
-      this.createRelationshipTypeModalId = groupType.id;
       this.form.name = '';
       this.form.nameReverseRelationship = '';
+      this.createRelationshipTypeModalId = groupType.id;
+      this.renameRelationshipTypeModalId = 0;
+      this.renameRelationshipGroupTypeModalShownId = 0;
+      this.createRelationshipGroupTypeModalShown = false;
 
       this.$nextTick(() => {
         this.$refs.newRelationshipType[0].focus();
@@ -417,6 +426,9 @@ export default {
       this.form.name = type.name;
       this.form.nameReverseRelationship = type.name_reverse_relationship;
       this.renameRelationshipTypeModalId = type.id;
+      this.createRelationshipTypeModalId = 0;
+      this.renameRelationshipGroupTypeModalShownId = 0;
+      this.createRelationshipGroupTypeModalShown = false;
 
       this.$nextTick(() => {
         this.$refs.rename[0].focus();

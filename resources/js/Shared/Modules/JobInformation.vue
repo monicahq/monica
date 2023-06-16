@@ -189,7 +189,7 @@ export default {
         .then((response) => {
           this.localCompanies = response.data.data;
 
-          if (this.localCompanies.length == 0) {
+          if (this.localCompanies.length === 0) {
             this.showDropdownCompanies = false;
             this.showCreateCompanyLink = false;
             this.showCreateCompanyField = true;
