@@ -343,11 +343,11 @@ const destroyLifeEventType = (lifeEventType) => {
                           :required="true"
                           :autocomplete="false"
                           :maxlength="255"
-                          @esc-key-pressed="lifeEventCategoryId = 0" />
+                          @esc-key-pressed="editLifeEventTypeId = 0" />
                       </div>
 
                       <div class="flex justify-between p-5">
-                        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="lifeEventCategoryId = 0" />
+                        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="editLifeEventTypeId = 0" />
                         <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
                       </div>
                     </form>
