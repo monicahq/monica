@@ -76,7 +76,7 @@
             <errors :errors="form.errors" />
 
             <text-input
-              :ref="'rename' + tag.id"
+              ref="rename"
               v-model="form.name"
               :label="$t('Name')"
               :type="'text'"

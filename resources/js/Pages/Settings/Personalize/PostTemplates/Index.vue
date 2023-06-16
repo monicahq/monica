@@ -316,7 +316,7 @@
                   <errors :errors="form.errors" />
 
                   <text-input
-                    :ref="'rename' + element.id"
+                    ref="rename"
                     v-model="form.label"
                     :label="$t('Name')"
                     :type="'text'"

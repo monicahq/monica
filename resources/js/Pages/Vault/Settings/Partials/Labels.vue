@@ -98,7 +98,7 @@
             <errors :errors="form.errors" />
 
             <text-input
-              :ref="'rename' + label.id"
+              ref="rename"
               v-model="form.name"
               :label="$t('Name')"
               :type="'text'"

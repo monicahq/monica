@@ -91,7 +91,7 @@
             <errors :errors="form.errors" />
 
             <text-input
-              :ref="'rename' + element.id"
+              ref="rename"
               v-model="form.name"
               :label="$t('Name')"
               :type="'text'"
@@ -217,7 +217,7 @@ export default {
       this.renamePageModalShownId = page.id;
 
       this.$nextTick(() => {
-        this.$refs[`rename${page.id}`].focus();
+        this.$refs.rename[0].focus();
       });
     },
 

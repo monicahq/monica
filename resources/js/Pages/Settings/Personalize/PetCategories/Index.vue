@@ -120,7 +120,7 @@
                 <errors :errors="form.errors" />
 
                 <text-input
-                  :ref="'rename' + petCategory.id"
+                  ref="rename"
                   v-model="form.name"
                   :label="$t('Name')"
                   :type="'text'"
@@ -214,7 +214,7 @@ export default {
       this.renamePetCategoryModalShownId = petCategory.id;
 
       this.$nextTick(() => {
-        this.$refs[`rename${petCategory.id}`].focus();
+        this.$refs.rename[0].focus();
       });
     },
 

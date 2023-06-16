@@ -79,7 +79,7 @@
             <errors :errors="form.errors" />
 
             <text-input
-              :ref="'rename' + type.id"
+              ref="rename"
               v-model="form.label"
               :label="$t('Name')"
               :type="'text'"

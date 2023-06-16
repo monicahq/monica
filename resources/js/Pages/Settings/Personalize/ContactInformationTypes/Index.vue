@@ -152,7 +152,7 @@
                 <errors :errors="form.errors" />
 
                 <text-input
-                  :ref="'rename' + contactInformationType.id"
+                  ref="rename"
                   v-model="form.name"
                   :label="$t('Name')"
                   :type="'text'"
@@ -268,7 +268,7 @@ export default {
       this.renameContactInformationTypeModalShownId = contactInformationType.id;
 
       this.$nextTick(() => {
-        this.$refs[`rename${contactInformationType.id}`].focus();
+        this.$refs.rename[0].focus();
       });
     },
 

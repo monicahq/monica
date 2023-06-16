@@ -118,7 +118,7 @@
                 <errors :errors="form.errors" />
 
                 <text-input
-                  :ref="'rename' + pronoun.id"
+                  ref="rename"
                   v-model="form.name"
                   :label="$t('Name')"
                   :type="'text'"
@@ -216,7 +216,7 @@ export default {
       this.renamePronounModalShownId = pronoun.id;
 
       this.$nextTick(() => {
-        this.$refs[`rename${pronoun.id}`].focus();
+        this.$refs.rename[0].focus();
       });
     },
 

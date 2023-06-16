@@ -118,7 +118,7 @@
                 <errors :errors="form.errors" />
 
                 <text-input
-                  :ref="'rename' + gender.id"
+                  ref="rename"
                   v-model="form.name"
                   :label="$t('Name')"
                   :type="'text'"
@@ -210,7 +210,7 @@ export default {
       this.renameGenderModalShownId = gender.id;
 
       this.$nextTick(() => {
-        this.$refs[`rename${gender.id}`].focus();
+        this.$refs.rename[0].focus();
       });
     },
 
