@@ -924,12 +924,6 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'call_reason_type_id' => $type->id,
             'label_translation_key' => trans_key('To hear their story'),
         ]);
-        (new CreateCallReason())->execute([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'call_reason_type_id' => $type->id,
-            'label_translation_key' => trans_key(''),
-        ]);
 
         // business
         $type = (new CreateCallReasonType())->execute([

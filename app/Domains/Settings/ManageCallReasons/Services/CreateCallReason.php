@@ -46,7 +46,7 @@ class CreateCallReason extends BaseService implements ServiceInterface
         $callReason = CallReason::create([
             'call_reason_type_id' => $type->id,
             'label' => $data['label'] ?? null,
-            'label_translation_key' => $data['label'] ?? null,
+            'label_translation_key' => $data['label_translation_key'] ?? null,
         ]);
 
         return $callReason;

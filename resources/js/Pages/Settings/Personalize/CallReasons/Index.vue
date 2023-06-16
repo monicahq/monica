@@ -165,7 +165,6 @@
               v-for="reason in callReasonType.reasons"
               :key="reason.id"
               class="border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-              {{ reason }}
               <!-- detail of the relationship type -->
               <div v-if="renameReasonModalId !== reason.id" class="flex items-center justify-between px-5 py-2 ps-6">
                 <span>{{ reason.label }}</span>
