@@ -132,7 +132,7 @@
           <li v-for="groupType in localGroupTypes" :key="groupType.id">
             <!-- detail of the relationship -->
             <div
-              v-if="renameRelationshipGroupTypeModalShownId != groupType.id"
+              v-if="renameRelationshipGroupTypeModalShownId !== groupType.id"
               class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
               <span class="text-base font-semibold">{{ groupType.name }}</span>
 
@@ -152,14 +152,14 @@
 
             <!-- rename a group type modal -->
             <form
-              v-if="renameRelationshipGroupTypeModalShownId == groupType.id"
+              v-if="renameRelationshipGroupTypeModalShownId === groupType.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
               @submit.prevent="updateGroupType(groupType)">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />
 
                 <text-input
-                  :ref="'rename' + groupType.id"
+                  ref="renameGroupType"
                   v-model="form.relationshipGroupTypeName"
                   :label="$t('Name')"
                   :type="'text'"
@@ -186,7 +186,7 @@
               :key="type.id"
               class="border-b border-gray-200 px-5 py-2 ps-6 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
               <!-- detail of the relationship type -->
-              <div v-if="renameRelationshipTypeModalId != type.id" class="flex items-center justify-between">
+              <div v-if="renameRelationshipTypeModalId !== type.id" class="flex items-center justify-between">
                 <div class="relative">
                   <!-- relation type name -->
                   <span>{{ type.name }}</span>
@@ -224,14 +224,14 @@
 
               <!-- rename the relationship type modal -->
               <form
-                v-if="renameRelationshipTypeModalId == type.id"
+                v-if="renameRelationshipTypeModalId === type.id"
                 class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
                 @submit.prevent="updateRelationType(groupType, type)">
                 <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                   <errors :errors="form.errors" />
 
                   <text-input
-                    :ref="'rename' + type.id"
+                    ref="rename"
                     v-model="form.name"
                     :label="$t('Name')"
                     :type="'text'"
@@ -269,7 +269,7 @@
 
             <!-- create a new relationship type line -->
             <div
-              v-if="createRelationshipTypeModalId != groupType.id"
+              v-if="createRelationshipTypeModalId !== groupType.id"
               class="item-list border-b border-gray-200 px-5 py-2 ps-6 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
               <span
                 class="cursor-pointer text-sm text-blue-500 hover:underline"
@@ -280,7 +280,7 @@
 
             <!-- create a new relationship type -->
             <form
-              v-if="createRelationshipTypeModalId == groupType.id"
+              v-if="createRelationshipTypeModalId === groupType.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
               @submit.prevent="storeRelationshipType(groupType)">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
@@ -323,7 +323,7 @@
 
         <!-- blank state -->
         <div
-          v-if="localGroupTypes.length == 0"
+          v-if="localGroupTypes.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">
             {{ $t('Relationship types let you link contacts and document how they are connected.') }}
@@ -388,6 +388,9 @@ export default {
     showCreateRelationshipGroupTypeModal() {
       this.form.relationshipGroupTypeName = '';
       this.createRelationshipGroupTypeModalShown = true;
+      this.renameRelationshipGroupTypeModalShownId = 0;
+      this.createRelationshipTypeModalId = 0;
+      this.renameRelationshipTypeModalId = 0;
 
       this.$nextTick(() => {
         this.$refs.newGroupType.focus();
@@ -397,19 +400,25 @@ export default {
     renameRelationshipGroupTypeModal(groupType) {
       this.form.relationshipGroupTypeName = groupType.name;
       this.renameRelationshipGroupTypeModalShownId = groupType.id;
+      this.createRelationshipGroupTypeModalShown = false;
+      this.createRelationshipTypeModalId = 0;
+      this.renameRelationshipTypeModalId = 0;
 
       this.$nextTick(() => {
-        this.$refs[`rename${groupType.id}`].focus();
+        this.$refs.renameGroupType[0].focus();
       });
     },
 
     showRelationshipTypeModal(groupType) {
-      this.createRelationshipTypeModalId = groupType.id;
       this.form.name = '';
       this.form.nameReverseRelationship = '';
+      this.createRelationshipTypeModalId = groupType.id;
+      this.renameRelationshipTypeModalId = 0;
+      this.renameRelationshipGroupTypeModalShownId = 0;
+      this.createRelationshipGroupTypeModalShown = false;
 
       this.$nextTick(() => {
-        this.$refs.newRelationshipType.focus();
+        this.$refs.newRelationshipType[0].focus();
       });
     },
 
@@ -417,9 +426,12 @@ export default {
       this.form.name = type.name;
       this.form.nameReverseRelationship = type.name_reverse_relationship;
       this.renameRelationshipTypeModalId = type.id;
+      this.createRelationshipTypeModalId = 0;
+      this.renameRelationshipGroupTypeModalShownId = 0;
+      this.createRelationshipGroupTypeModalShown = false;
 
       this.$nextTick(() => {
-        this.$refs[`rename${type.id}`].focus();
+        this.$refs.rename[0].focus();
       });
     },
 

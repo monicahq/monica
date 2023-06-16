@@ -214,7 +214,7 @@ const destroy = (task) => {
 
                 <!-- due date -->
                 <span
-                  v-if="task.due_at != null"
+                  v-if="task.due_at !== null"
                   class="ms-2 flex items-center rounded-full bg-sky-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-sky-600 dark:text-sky-400">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -254,7 +254,7 @@ const destroy = (task) => {
 
     <!-- blank state -->
     <div
-      v-if="localTasks.length == 0"
+      v-if="localTasks.length === 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/dashboard_blank_tasks.svg" :alt="$t('Tasks')" class="mx-auto mt-4 h-14 w-14" />
       <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no tasks yet.') }}</p>

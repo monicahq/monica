@@ -147,7 +147,7 @@ const destroy = (metric) => {
           </div>
         </form>
 
-        <div v-if="localMetrics.length != 0">
+        <div v-if="localMetrics.length !== 0">
           <ul class="metric-list mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
             <li
               v-for="metric in localMetrics"
@@ -167,7 +167,7 @@ const destroy = (metric) => {
 
         <!-- blank state -->
         <div
-          v-if="localMetrics.length == 0"
+          v-if="localMetrics.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <img src="/img/journal_blank_index.svg" :alt="$t('Journal')" class="mx-auto mt-4 h-44 w-44" />
           <p class="px-5 pb-5 pt-2 text-center">

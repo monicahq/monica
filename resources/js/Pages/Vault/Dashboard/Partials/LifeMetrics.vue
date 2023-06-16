@@ -270,7 +270,7 @@ const destroy = (lifeMetric) => {
 
       <!-- blank state -->
       <div
-        v-if="localLifeMetrics.length == 0"
+        v-if="localLifeMetrics.length === 0"
         class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <img src="/img/vault_life_metrics_blank.svg" :alt="$t('Life events')" class="mx-auto mt-4 h-20 w-20" />
         <p class="px-5 pb-5 pt-2 text-center">

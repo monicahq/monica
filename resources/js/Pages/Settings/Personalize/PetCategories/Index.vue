@@ -96,7 +96,7 @@
             class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <!-- detail of the pet category -->
             <div
-              v-if="renamePetCategoryModalShownId != petCategory.id"
+              v-if="renamePetCategoryModalShownId !== petCategory.id"
               class="flex items-center justify-between px-5 py-2">
               <span class="text-base">{{ petCategory.name }}</span>
 
@@ -113,14 +113,14 @@
 
             <!-- rename a petCategory modal -->
             <form
-              v-if="renamePetCategoryModalShownId == petCategory.id"
+              v-else
               class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
               @submit.prevent="update(petCategory)">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />
 
                 <text-input
-                  :ref="'rename' + petCategory.id"
+                  ref="rename"
                   v-model="form.name"
                   :label="$t('Name')"
                   :type="'text'"
@@ -142,7 +142,7 @@
 
         <!-- blank state -->
         <div
-          v-if="localPetCategories.length == 0"
+          v-if="localPetCategories.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">
             {{ $t('Pet categories let you add types of pets that contacts can add to their profile.') }}
@@ -203,6 +203,7 @@ export default {
     showPetCategoryModal() {
       this.form.name = '';
       this.createPetCategoryModalShown = true;
+      this.renamePetCategoryModalShownId = 0;
 
       this.$nextTick(() => {
         this.$refs.newPetCategory.focus();
@@ -212,9 +213,10 @@ export default {
     updatePetCategoryModal(petCategory) {
       this.form.name = petCategory.name;
       this.renamePetCategoryModalShownId = petCategory.id;
+      this.createPetCategoryModalShown = false;
 
       this.$nextTick(() => {
-        this.$refs[`rename${petCategory.id}`].focus();
+        this.$refs.rename[0].focus();
       });
     },
 

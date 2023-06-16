@@ -67,7 +67,7 @@
         :key="label.id"
         class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800 hover:dark:bg-slate-900">
         <!-- detail of the label -->
-        <div v-if="editLabelModalShownId != label.id" class="flex items-center justify-between px-5 py-2">
+        <div v-if="editLabelModalShownId !== label.id" class="flex items-center justify-between px-5 py-2">
           <span class="flex items-center text-base">
             <div class="me-2 inline-block h-4 w-4 rounded-full" :class="label.bg_color" />
             <span class="me-2">{{ label.name }}</span>
@@ -91,14 +91,14 @@
 
         <!-- edit a label modal -->
         <form
-          v-if="editLabelModalShownId == label.id"
+          v-if="editLabelModalShownId === label.id"
           class="item-list border-b border-gray-200 bg-gray-50 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:bg-slate-900 hover:dark:bg-slate-800 hover:dark:bg-slate-900"
           @submit.prevent="update(label)">
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <errors :errors="form.errors" />
 
             <text-input
-              :ref="'rename' + label.id"
+              ref="rename"
               v-model="form.name"
               :label="$t('Name')"
               :type="'text'"
@@ -142,7 +142,7 @@
 
     <!-- blank state -->
     <div
-      v-if="localLabels.length == 0"
+      v-if="localLabels.length === 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">
         {{ $t('Labels let you classify contacts using a system that matters to you.') }}

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods';
@@ -57,7 +57,7 @@ const submit = () => {
       flash(trans('Changes saved'), 'success');
       localNameOrder.value = form.nameOrder;
       localNameExample.value = response.data.data.name_example;
-      form.choice.value = form.nameOrder;
+      form.choice = form.nameOrder;
       editMode.value = false;
       loadingState.value = null;
     })

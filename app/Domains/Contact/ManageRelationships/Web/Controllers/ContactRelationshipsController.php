@@ -45,7 +45,7 @@ class ContactRelationshipsController extends Controller
 
         // first, let's create a contact if there is no contact selected
         $otherContactId = 0;
-        if ($request->input('choice') != 'contact') {
+        if ($request->input('choice') !== 'contact') {
             $otherContact = (new CreateContact())->execute([
                 'account_id' => Auth::user()->account_id,
                 'author_id' => Auth::id(),
@@ -61,9 +61,7 @@ class ContactRelationshipsController extends Controller
                 'template_id' => null,
             ]);
             $otherContactId = $otherContact->id;
-        }
-
-        if ($request->input('choice') == 'contact') {
+        } else {
             $otherContactId = collect($request->input('other_contact_id'))->pluck('id')->first();
         }
 
@@ -72,8 +70,8 @@ class ContactRelationshipsController extends Controller
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'relationship_type_id' => $request->input('relationship_type_id'),
-            'contact_id' => $request->input('base_contact_id') == $contactId ? $contactId : $otherContactId,
-            'other_contact_id' => $request->input('base_contact_id') == $contactId ? $otherContactId : $contactId,
+            'contact_id' => $request->input('base_contact_id') === $contactId ? $contactId : $otherContactId,
+            'other_contact_id' => $request->input('base_contact_id') === $contactId ? $otherContactId : $contactId,
         ]);
 
         return response()->json([

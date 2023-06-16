@@ -76,7 +76,7 @@
                       :class="'h-8 w-8 rounded-full ring-2 ring-white dark:ring-gray-900'" />
                   </div>
                   <div
-                    v-if="vault.remaining_contacts != 0"
+                    v-if="vault.remaining_contacts !== 0"
                     class="relative -start-[5px] -top-px flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-gray-700 text-xs font-medium text-white hover:bg-gray-600 dark:border-gray-800 dark:bg-gray-300 dark:text-gray-900 hover:dark:bg-gray-400">
                     + {{ vault.remaining_contacts }}
                   </div>

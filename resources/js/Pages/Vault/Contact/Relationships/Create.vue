@@ -211,7 +211,7 @@
                     </label>
                   </div>
 
-                  <div v-if="form.choice == 'contact'" class="ps-6">
+                  <div v-if="form.choice === 'contact'" class="ps-6">
                     <contact-selector
                       v-model="form.other_contact_id"
                       :search-url="layoutData.vault.url.search_contacts_only"
@@ -299,7 +299,7 @@
             </div>
 
             <!-- create a contact entry -->
-            <div v-if="form.choice != 'contact'" class="border-b border-gray-200 p-5 dark:border-gray-700">
+            <div v-if="form.choice !== 'contact'" class="border-b border-gray-200 p-5 dark:border-gray-700">
               <div class="relative flex items-start">
                 <input
                   id="create-contact"
@@ -384,7 +384,7 @@ export default {
         create_contact_entry: false,
         relationship_type_id: 0,
         base_contact_id: 0,
-        other_contact_id: 0,
+        other_contact_id: [],
         last_name: '',
         middle_name: '',
         nickname: '',
@@ -465,7 +465,7 @@ export default {
       this.fromRelationship = this.toRelationship;
       this.toRelationship = temp;
 
-      if (this.form.base_contact_id == this.data.contact.id) {
+      if (this.form.base_contact_id === this.data.contact.id) {
         this.form.base_contact_id = 0;
       } else {
         this.form.base_contact_id = this.data.contact.id;

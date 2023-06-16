@@ -234,7 +234,7 @@ const destroyLifeEventType = (lifeEventType) => {
         handle=".handle"
         @change="updatePosition">
         <template #item="{ element }">
-          <div v-if="editLifeEventCategoryId != element.id" class="">
+          <div v-if="editLifeEventCategoryId !== element.id" class="">
             <div
               class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
               <div class="mb-3 flex items-center justify-between">
@@ -283,7 +283,7 @@ const destroyLifeEventType = (lifeEventType) => {
                   handle=".handle"
                   @change="updatePosition">
                   <template #item="{ element, id }">
-                    <div v-if="editLifeEventTypeId != element.id" class="">
+                    <div v-if="editLifeEventTypeId !== element.id" class="">
                       <div
                         class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
                         <div class="flex items-center justify-between">
@@ -343,11 +343,11 @@ const destroyLifeEventType = (lifeEventType) => {
                           :required="true"
                           :autocomplete="false"
                           :maxlength="255"
-                          @esc-key-pressed="lifeEventCategoryId = 0" />
+                          @esc-key-pressed="editLifeEventTypeId = 0" />
                       </div>
 
                       <div class="flex justify-between p-5">
-                        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="lifeEventCategoryId = 0" />
+                        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="editLifeEventTypeId = 0" />
                         <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
                       </div>
                     </form>
@@ -357,9 +357,9 @@ const destroyLifeEventType = (lifeEventType) => {
                 <!-- add a life event type -->
                 <span
                   v-if="
-                    element.life_event_types.length != 0 &&
+                    element.life_event_types.length !== 0 &&
                     !createLifeEventTypeModalShown &&
-                    lifeEventCategoryId != element.id
+                    lifeEventCategoryId !== element.id
                   "
                   class="inline cursor-pointer text-sm text-blue-500 hover:underline"
                   @click="showCreateLifeEventTypeModal(element)"
@@ -368,7 +368,7 @@ const destroyLifeEventType = (lifeEventType) => {
 
                 <!-- form: create new life event type -->
                 <form
-                  v-if="createLifeEventTypeModalShown && lifeEventCategoryId == element.id"
+                  v-if="createLifeEventTypeModalShown && lifeEventCategoryId === element.id"
                   class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
                   @submit.prevent="submitLifeEventType(element)">
                   <div class="border-b border-gray-200 p-5 dark:border-gray-700">
@@ -396,9 +396,9 @@ const destroyLifeEventType = (lifeEventType) => {
                 <!-- blank state -->
                 <div
                   v-if="
-                    element.life_event_types.length == 0 &&
+                    element.life_event_types.length === 0 &&
                     !createLifeEventTypeModalShown &&
-                    lifeEventCategoryId != element.id
+                    lifeEventCategoryId !== element.id
                   "
                   class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                   <p class="p-5 text-center">

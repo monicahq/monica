@@ -245,7 +245,7 @@ const destroy = () => {
 
         <!-- create new address -->
         <div
-          v-if="!choiceChooseExisting || props.data.addresses_in_vault.length == 0"
+          v-if="!choiceChooseExisting || props.data.addresses_in_vault.length === 0"
           class="border-b border-gray-200 dark:border-gray-700">
           <div v-if="form.errors.length > 0" class="p-5">
             <errors :errors="form.errors" />
@@ -366,7 +366,7 @@ const destroy = () => {
           v-for="address in localActiveAddresses"
           :key="address.id"
           class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-          <div v-if="address.id != editedAddressId" class="flex items-center justify-between p-3">
+          <div v-if="address.id !== editedAddressId" class="flex items-center justify-between p-3">
             <!-- address detail -->
             <div>
               <p v-if="address.type" class="mb-2 text-sm font-semibold">
@@ -523,7 +523,7 @@ const destroy = () => {
 
       <!-- blank state -->
       <div
-        v-if="localActiveAddresses.length == 0"
+        v-if="localActiveAddresses.length === 0"
         class="mb-2 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <img src="/img/contact_blank_address.svg" :alt="$t('Addresses')" class="mx-auto mt-4 h-14 w-14" />
         <p class="px-5 pb-5 pt-2 text-center">
@@ -547,7 +547,7 @@ const destroy = () => {
           v-for="address in localInactiveAddresses"
           :key="address.id"
           class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-          <div v-if="address.id != editedAddressId" class="flex items-center justify-between p-3">
+          <div v-if="address.id !== editedAddressId" class="flex items-center justify-between p-3">
             <!-- address detail -->
             <div>
               <p v-if="address.type" class="mb-2 text-sm font-semibold">

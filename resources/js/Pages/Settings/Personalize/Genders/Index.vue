@@ -95,7 +95,7 @@
             :key="gender.id"
             class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <!-- detail of the gender -->
-            <div v-if="renameGenderModalShownId != gender.id" class="flex items-center justify-between px-5 py-2">
+            <div v-if="renameGenderModalShownId !== gender.id" class="flex items-center justify-between px-5 py-2">
               <span class="text-base">{{ gender.name }}</span>
 
               <!-- actions -->
@@ -111,14 +111,14 @@
 
             <!-- rename a gender modal -->
             <form
-              v-if="renameGenderModalShownId == gender.id"
+              v-if="renameGenderModalShownId === gender.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
               @submit.prevent="update(gender)">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />
 
                 <text-input
-                  :ref="'rename' + gender.id"
+                  ref="rename"
                   v-model="form.name"
                   :label="$t('Name')"
                   :type="'text'"
@@ -140,7 +140,7 @@
 
         <!-- blank state -->
         <div
-          v-if="localGenders.length == 0"
+          v-if="localGenders.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">{{ $t('Add genders to associate them to contacts.') }}</p>
         </div>
@@ -199,6 +199,7 @@ export default {
     showGenderModal() {
       this.form.name = '';
       this.createGenderModalShown = true;
+      this.renameGenderModalShownId = 0;
 
       this.$nextTick(() => {
         this.$refs.newGender.focus();
@@ -208,9 +209,10 @@ export default {
     updateGenderModal(gender) {
       this.form.name = gender.name;
       this.renameGenderModalShownId = gender.id;
+      this.createGenderModalShown = false;
 
       this.$nextTick(() => {
-        this.$refs[`rename${gender.id}`].focus();
+        this.$refs.rename[0].focus();
       });
     },
 

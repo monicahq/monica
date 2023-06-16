@@ -130,7 +130,7 @@
             :key="template.id"
             class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <!-- detail of the template -->
-            <div v-if="renameTemplateModalShownId != template.id" class="flex items-center justify-between px-5 py-2">
+            <div v-if="renameTemplateModalShownId !== template.id" class="flex items-center justify-between px-5 py-2">
               <InertiaLink :href="template.url.show" class="text-blue-500 hover:underline">
                 {{ template.name }}
               </InertiaLink>
@@ -148,14 +148,14 @@
 
             <!-- rename a template modal -->
             <form
-              v-if="renameTemplateModalShownId == template.id"
+              v-if="renameTemplateModalShownId === template.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
               @submit.prevent="update(template)">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />
 
                 <text-input
-                  :ref="'rename' + template.id"
+                  ref="rename"
                   v-model="form.name"
                   :label="$t('Name')"
                   :type="'text'"
@@ -177,7 +177,7 @@
 
         <!-- blank state -->
         <div
-          v-if="localTemplates.length == 0"
+          v-if="localTemplates.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">
             {{ $t('Create at least one template to use Monica.') }}
@@ -238,6 +238,7 @@ export default {
     showTemplateModal() {
       this.form.name = '';
       this.createTemplateModalShown = true;
+      this.renameTemplateModalShownId = 0;
 
       this.$nextTick(() => {
         this.$refs.newTemplate.focus();
@@ -247,9 +248,10 @@ export default {
     showUpdateTemplateModal(template) {
       this.form.name = template.name;
       this.renameTemplateModalShownId = template.id;
+      this.createTemplateModalShown = false;
 
       this.$nextTick(() => {
-        this.$refs[`rename${template.id}`].focus();
+        this.$refs.rename[0].focus();
       });
     },
 

@@ -332,7 +332,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
             <div class="mb-2 ms-6">
               <span
                 @click="showAddLifeEventModalForTimelineEventId = timelineEvent.id"
-                v-if="showAddLifeEventModalForTimelineEventId != timelineEvent.id"
+                v-if="showAddLifeEventModalForTimelineEventId !== timelineEvent.id"
                 class="cursor-pointer text-sm text-blue-500 hover:underline">
                 {{ $t('Add another life event') }}
               </span>
@@ -340,7 +340,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
               <create-life-event
                 :data="data"
                 :layout-data="layoutData"
-                :open-modal="showAddLifeEventModalForTimelineEventId == timelineEvent.id"
+                :open-modal="showAddLifeEventModalForTimelineEventId === timelineEvent.id"
                 :create-timeline-event="false"
                 :timeline-event="timelineEvent"
                 @close-modal="showAddLifeEventModalForTimelineEventId = 0"
@@ -366,7 +366,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
 
       <!-- blank state -->
       <div
-        v-if="localTimelines.length == 0"
+        v-if="localTimelines.length === 0"
         class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
         <img src="/img/contact_blank_life_event.svg" :alt="$t('Life events')" class="mx-auto mt-4 h-20 w-20" />
         <p class="px-5 pb-5 pt-2 text-center">{{ $t('Life events let you document what happened in your life.') }}</p>

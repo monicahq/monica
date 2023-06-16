@@ -7,7 +7,7 @@
 
     <!-- + icon -->
     <svg
-      v-if="icon === 'plus' && state != 'loading'"
+      v-if="icon === 'plus' && state !== 'loading'"
       xmlns="http://www.w3.org/2000/svg"
       class="icon relative me-1 inline h-5 w-5"
       fill="none"
@@ -18,7 +18,7 @@
 
     <!-- check icon -->
     <svg
-      v-if="icon === 'check' && state != 'loading'"
+      v-if="icon === 'check' && state !== 'loading'"
       xmlns="http://www.w3.org/2000/svg"
       class="icon relative me-1 inline h-5 w-5"
       fill="none"
@@ -29,7 +29,7 @@
 
     <!-- minus icon -->
     <svg
-      v-if="icon === 'minus' && state != 'loading'"
+      v-if="icon === 'minus' && state !== 'loading'"
       xmlns="http://www.w3.org/2000/svg"
       class="icon relative mx-1 inline h-5 w-5"
       fill="none"

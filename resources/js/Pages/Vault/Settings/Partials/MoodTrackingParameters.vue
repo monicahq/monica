@@ -191,7 +191,7 @@ const updatePosition = (event) => {
         @change="updatePosition">
         <template #item="{ element }">
           <div
-            v-if="editMoodTrackingParameterId != element.id"
+            v-if="editMoodTrackingParameterId !== element.id"
             class="item-list flex items-center justify-between border-b border-gray-200 py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <!-- icon to move position -->
             <div class="me-2 flex items-center">
@@ -285,7 +285,7 @@ const updatePosition = (event) => {
 
     <!-- blank state -->
     <div
-      v-if="localMoodTrackingParameters.length == 0"
+      v-if="localMoodTrackingParameters.length === 0"
       class="rounded-lg bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">Add at least one parameter to be able to track your mood.</p>
     </div>

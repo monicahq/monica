@@ -37,7 +37,7 @@ defineProps({
     </ul>
 
     <!-- blank state -->
-    <p v-if="data.dates.length == 0" class="text-sm text-gray-600 dark:text-gray-400">{{ $t('Not set') }}</p>
+    <p v-if="data.dates.length === 0" class="text-sm text-gray-600 dark:text-gray-400">{{ $t('Not set') }}</p>
   </div>
 </template>
 

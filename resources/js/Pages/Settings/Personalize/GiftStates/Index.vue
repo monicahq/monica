@@ -95,7 +95,7 @@
             handle=".handle"
             @change="updatePosition">
             <template #item="{ element }">
-              <div v-if="editGiftStateId != element.id" class="list-icon">
+              <div v-if="editGiftStateId !== element.id" class="list-icon">
                 <div
                   class="item-list mb-2 flex items-center justify-between rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
                   <!-- icon to move position -->
@@ -143,7 +143,7 @@
                   <errors :errors="form.errors" />
 
                   <text-input
-                    :ref="'rename' + element.id"
+                    ref="rename"
                     v-model="form.label"
                     :label="$t('Name')"
                     :type="'text'"
@@ -166,7 +166,7 @@
 
         <!-- blank state -->
         <div
-          v-if="localGiftStates.length == 0"
+          v-if="localGiftStates.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">{{ $t('Gift states let you define the various states for your gifts.') }}</p>
         </div>
@@ -229,6 +229,7 @@ export default {
       this.form.label = '';
       this.form.position = '';
       this.createGiftStateModalShown = true;
+      this.editGiftStateId = 0;
 
       this.$nextTick(() => {
         this.$refs.newGiftState.focus();
@@ -238,6 +239,9 @@ export default {
     renameGiftStateModal(giftState) {
       this.form.label = giftState.label;
       this.editGiftStateId = giftState.id;
+      this.createGiftStateModalShown = false;
+
+      this.$nextTick().then(() => this.$refs.rename.focus());
     },
 
     submit() {

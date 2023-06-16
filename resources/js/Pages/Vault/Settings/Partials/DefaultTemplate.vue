@@ -58,7 +58,7 @@
       </ul>
 
       <!-- blank state -->
-      <div v-if="localTemplates.length == 0">
+      <div v-if="localTemplates.length === 0">
         <p class="p-5 text-center">
           {{ $t('There are no templates in the account. Go to the account settings to create one.') }}
         </p>
@@ -101,7 +101,7 @@ export default {
 
           // mark the previous default template as not default
           this.localTemplates.forEach((row) => {
-            if (row.is_default == true) {
+            if (row.is_default === true) {
               row.is_default = false;
             }
           });

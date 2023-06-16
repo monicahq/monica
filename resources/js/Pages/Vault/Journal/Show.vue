@@ -237,7 +237,7 @@ const destroy = () => {
 
             <!-- no slices of life yet -->
             <div
-              v-if="data.slices.length == 0"
+              v-if="data.slices.length === 0"
               class="mb-1 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
               <img src="/img/journal_slice_of_life_blank.svg" :alt="$t('Journal')" class="mx-auto mt-4 h-14 w-14" />
               <p class="px-5 pb-5 pt-2 text-center">{{ $t('Group journal entries together with slices of life.') }}</p>

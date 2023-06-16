@@ -95,7 +95,7 @@
             :key="pronoun.id"
             class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <!-- detail of the pronoun -->
-            <div v-if="renamePronounModalShownId != pronoun.id" class="flex items-center justify-between px-5 py-2">
+            <div v-if="renamePronounModalShownId !== pronoun.id" class="flex items-center justify-between px-5 py-2">
               <span class="text-base">{{ pronoun.name }}</span>
 
               <!-- actions -->
@@ -111,14 +111,14 @@
 
             <!-- rename a pronoun modal -->
             <form
-              v-if="renamePronounModalShownId == pronoun.id"
+              v-if="renamePronounModalShownId === pronoun.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
               @submit.prevent="update(pronoun)">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />
 
                 <text-input
-                  :ref="'rename' + pronoun.id"
+                  ref="rename"
                   v-model="form.name"
                   :label="$t('Name')"
                   :type="'text'"
@@ -140,7 +140,7 @@
 
         <!-- blank state -->
         <div
-          v-if="localPronouns.length == 0"
+          v-if="localPronouns.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">
             {{
@@ -205,6 +205,7 @@ export default {
     showPronounModal() {
       this.form.name = '';
       this.createPronounModalShown = true;
+      this.renamePronounModalShownId = 0;
 
       this.$nextTick(() => {
         this.$refs.newPronoun.focus();
@@ -214,9 +215,10 @@ export default {
     updatePronounModal(pronoun) {
       this.form.name = pronoun.name;
       this.renamePronounModalShownId = pronoun.id;
+      this.createPronounModalShown = false;
 
       this.$nextTick(() => {
-        this.$refs[`rename${pronoun.id}`].focus();
+        this.$refs.rename[0].focus();
       });
     },
 

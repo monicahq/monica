@@ -46,7 +46,7 @@
         :key="tag.id"
         class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800 hover:dark:bg-slate-900">
         <!-- detail of the tag -->
-        <div v-if="editTagModalShownId != tag.id" class="flex items-center justify-between px-5 py-2">
+        <div v-if="editTagModalShownId !== tag.id" class="flex items-center justify-between px-5 py-2">
           <span class="flex items-center text-base">
             <span class="me-2">{{ tag.name }}</span>
             <span v-if="tag.count > 0" class="text-xs text-gray-500"
@@ -69,14 +69,14 @@
 
         <!-- edit a tag modal -->
         <form
-          v-if="editTagModalShownId == tag.id"
+          v-if="editTagModalShownId === tag.id"
           class="item-list border-b border-gray-200 bg-gray-50 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:bg-slate-900 hover:dark:bg-slate-800 hover:dark:bg-slate-900"
           @submit.prevent="update(tag)">
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <errors :errors="form.errors" />
 
             <text-input
-              :ref="'rename' + tag.id"
+              ref="rename"
               v-model="form.name"
               :label="$t('Name')"
               :type="'text'"
@@ -99,7 +99,7 @@
 
     <!-- blank state -->
     <div
-      v-if="localTags.length == 0"
+      v-if="localTags.length === 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="p-5 text-center">
         {{ $t('Tags let you classify journal posts using a system that matters to you.') }}
