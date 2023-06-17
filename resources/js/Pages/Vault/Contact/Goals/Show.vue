@@ -186,7 +186,7 @@ export default {
       this.editMode = true;
       this.form.name = this.localGoal.name;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newName.focus();
       });
     },

@@ -87,16 +87,16 @@ export default {
     };
   },
 
-  mounted() {
-    this.localNumberFormat = this.data.number_format;
-    this.form.numberFormat = this.data.number_format;
-  },
-
   computed: {
     currentFormat() {
       let index = _.findIndex(this.data.numbers, (f) => f.value === this.localNumberFormat);
       return index >= 0 ? this.data.numbers[index].format : '';
     },
+  },
+
+  mounted() {
+    this.localNumberFormat = this.data.number_format;
+    this.form.numberFormat = this.data.number_format;
   },
 
   methods: {

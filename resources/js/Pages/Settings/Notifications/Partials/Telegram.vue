@@ -29,11 +29,11 @@
             {{ $t('At') }}
           </span>
 
-          <Dropdown v-model="form.hours" dropdownClass="me-1" :required="required" :data="hours" />
+          <Dropdown v-model="form.hours" dropdown-class="me-1" :required="required" :data="hours" />
 
           <span class="me-2">:</span>
 
-          <Dropdown v-model="form.minutes" dropdownClass="me-1" :required="required" :data="minutes" />
+          <Dropdown v-model="form.minutes" dropdown-class="me-1" :required="required" :data="minutes" />
         </div>
       </div>
 
@@ -195,13 +195,6 @@ export default {
     };
   },
 
-  mounted() {
-    this.localTelegram = this.data.telegram.data;
-    this.envVariableSet = this.data.telegram.telegram_env_variable_set;
-    this.form.hours = '09';
-    this.form.minutes = '00';
-  },
-
   computed: {
     hours() {
       let result = [];
@@ -219,6 +212,13 @@ export default {
       }
       return result;
     },
+  },
+
+  mounted() {
+    this.localTelegram = this.data.telegram.data;
+    this.envVariableSet = this.data.telegram.telegram_env_variable_set;
+    this.form.hours = '09';
+    this.form.minutes = '00';
   },
 
   methods: {

@@ -54,7 +54,7 @@
           </h3>
           <pretty-button
             v-if="!createPronounModalShown"
-            :text="this.$t('Add a pronoun')"
+            :text="$t('Add a pronoun')"
             :icon="'plus'"
             @click="showPronounModal" />
         </div>
@@ -207,7 +207,7 @@ export default {
       this.createPronounModalShown = true;
       this.renamePronounModalShownId = 0;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newPronoun.focus();
       });
     },
@@ -217,7 +217,7 @@ export default {
       this.renamePronounModalShownId = pronoun.id;
       this.createPronounModalShown = false;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.rename[0].focus();
       });
     },

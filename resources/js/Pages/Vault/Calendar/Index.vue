@@ -137,8 +137,8 @@ const get = (day) => {
                   <div v-for="date in day.important_dates" :key="date.id">
                     <contact-card
                       :contact="date.contact"
-                      :avatarClasses="'h-5 w-5 rounded-full me-2'"
-                      :displayName="false" />
+                      :avatar-classes="'h-5 w-5 rounded-full me-2'"
+                      :display-name="false" />
                   </div>
                 </div>
 
@@ -223,8 +223,8 @@ const get = (day) => {
                   <span
                     ><contact-card
                       :contact="importantDate.contact"
-                      :avatarClasses="'h-5 w-5 rounded-full me-2'"
-                      :displayName="false"
+                      :avatar-classes="'h-5 w-5 rounded-full me-2'"
+                      :display-name="false"
                   /></span>
                 </li>
               </ul>

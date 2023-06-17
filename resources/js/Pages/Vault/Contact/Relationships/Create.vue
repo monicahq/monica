@@ -64,7 +64,7 @@
               v-model="form.relationship_type_id"
               name="types"
               class="w-full rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
-              @update:modelValue="load"
+              @update:model-value="load"
               :data="fromRelationshipOptions" />
           </div>
 
@@ -396,12 +396,6 @@ export default {
     };
   },
 
-  created() {
-    this.form.base_contact_id = this.data.contact.id;
-    this.fromRelationship = 'Father';
-    this.toRelationship = 'Child';
-  },
-
   computed: {
     fromRelationshipOptions() {
       return _.map(this.data.relationship_group_types, (group) => {
@@ -419,13 +413,19 @@ export default {
     },
   },
 
+  created() {
+    this.form.base_contact_id = this.data.contact.id;
+    this.fromRelationship = 'Father';
+    this.toRelationship = 'Child';
+  },
+
   methods: {
     displayContactNameField() {
       this.form.choice = 'name';
       this.showContactName = true;
       this.showMoreContactOptions = true;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.contactName.focus();
       });
     },

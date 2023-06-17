@@ -13,7 +13,7 @@ const props = defineProps({
   form: Object,
 });
 
-const emit = defineEmits(['start', 'register', 'update:name']);
+const emit = defineEmits(['start', 'stop', 'register', 'update:name']);
 
 const registering = ref(false);
 const error = ref(props.errorMessage);

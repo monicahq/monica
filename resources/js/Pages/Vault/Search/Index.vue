@@ -89,7 +89,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(() => {
+    this.$nextTick().then(() => {
       this.$refs.searchField.focus();
     });
   },

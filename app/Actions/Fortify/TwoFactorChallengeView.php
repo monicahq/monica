@@ -26,7 +26,7 @@ class TwoFactorChallengeView implements TwoFactorChallengeViewContract
         }
 
         return Inertia::render('Auth/TwoFactorChallenge', $data + [
-            'two_factor' => optional($user)->two_factor_secret && ! is_null(optional($user)->two_factor_confirmed_at),
+            'twoFactor' => optional($user)->two_factor_secret && ! is_null(optional($user)->two_factor_confirmed_at),
             'remember' => $request->session()->get('login.remember'),
         ])->toResponse($request);
     }

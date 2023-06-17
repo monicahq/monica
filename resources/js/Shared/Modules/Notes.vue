@@ -330,7 +330,7 @@ export default {
       this.titleFieldShown = true;
       this.form.title = '';
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newTitle.focus();
       });
     },

@@ -86,6 +86,9 @@ export default {
       type: Array,
     },
   },
+
+  emits: ['success', 'error'],
+
   methods: {
     onClick() {
       const {

@@ -12,7 +12,7 @@ defineProps({
 
 <template>
   <div>
-    <JetSectionTitle :editMode="true">
+    <JetSectionTitle :edit-mode="true">
       <template #title>
         <slot name="title" />
       </template>

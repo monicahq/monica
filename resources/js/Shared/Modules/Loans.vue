@@ -329,7 +329,7 @@ const toggle = (loan) => {
         <div v-if="editedLoanId !== loan.id" class="me-3 flex items-center">
           <div class="flex -space-x-2 overflow-hidden">
             <div v-for="loaner in loan.loaners" :key="loaner.id">
-              <contact-card :contact="loaner" :avatarClasses="'h-7 w-7 rounded-full me-2'" :displayName="false" />
+              <contact-card :contact="loaner" :avatar-classes="'h-7 w-7 rounded-full me-2'" :display-name="false" />
             </div>
           </div>
 
@@ -344,7 +344,7 @@ const toggle = (loan) => {
           </svg>
 
           <div v-for="loanee in loan.loanees" :key="loanee.id">
-            <contact-card :contact="loanee" :avatarClasses="'h-7 w-7 rounded-full me-2'" :displayName="false" />
+            <contact-card :contact="loanee" :avatar-classes="'h-7 w-7 rounded-full me-2'" :display-name="false" />
           </div>
         </div>
 

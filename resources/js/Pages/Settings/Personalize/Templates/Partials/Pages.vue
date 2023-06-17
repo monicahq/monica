@@ -170,6 +170,8 @@ export default {
     },
   },
 
+  emits: ['pageSelected'],
+
   data() {
     return {
       drag: false,
@@ -207,7 +209,7 @@ export default {
       this.form.name = '';
       this.createPageModalShown = true;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newPage.focus();
       });
     },
@@ -216,7 +218,7 @@ export default {
       this.form.name = page.name;
       this.renamePageModalShownId = page.id;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.rename[0].focus();
       });
     },

@@ -155,7 +155,7 @@ export default {
       this.form.name = '';
       this.editLabelModalShown = true;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.label.focus();
       });
     },

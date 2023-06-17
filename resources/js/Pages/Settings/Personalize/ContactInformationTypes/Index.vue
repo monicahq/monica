@@ -258,7 +258,7 @@ export default {
       this.createContactInformationTypeModalShown = true;
       this.renameContactInformationTypeModalShownId = 0;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newContactInformationType.focus();
       });
     },
@@ -269,7 +269,7 @@ export default {
       this.renameContactInformationTypeModalShownId = contactInformationType.id;
       this.createContactInformationTypeModalShown = false;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.rename[0].focus();
       });
     },

@@ -172,8 +172,8 @@
                       :component-data="{ name: 'fade' }"
                       handle=".handle"
                       @change="updatePosition">
-                      <template #item="{ element, id }">
-                        <div v-if="editSectionId !== element.id" class="">
+                      <template #item="{ element2, id }">
+                        <div v-if="editSectionId !== element2.id" class="">
                           <div
                             class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
                             <div class="flex items-center justify-between">
@@ -197,20 +197,20 @@
                                   <path d="M17 15H15V17H17V15Z" fill="currentColor" />
                                 </svg>
 
-                                <span>{{ element.label }}</span>
+                                <span>{{ element2.label }}</span>
                               </div>
 
                               <!-- actions -->
                               <ul class="text-sm">
                                 <li
                                   class="inline cursor-pointer text-blue-500 hover:underline"
-                                  @click="renameSectionModal(id, element)">
+                                  @click="renameSectionModal(id, element2)">
                                   <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                                 </li>
                                 <li
-                                  v-if="element.can_be_deleted"
+                                  v-if="element2.can_be_deleted"
                                   class="ms-4 inline cursor-pointer text-red-500 hover:text-red-900"
-                                  @click="destroySection(element)">
+                                  @click="destroySection(element2)">
                                   {{ $t('Delete') }}
                                 </li>
                               </ul>
@@ -222,7 +222,7 @@
                         <form
                           v-else
                           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
-                          @submit.prevent="updateSection(element)">
+                          @submit.prevent="updateSection(element2)">
                           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                             <errors :errors="form.errors" />
 

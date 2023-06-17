@@ -85,7 +85,10 @@ defineProps({
                 <span class="mb-1 block">{{ address.address }}</span>
                 <ul class="list">
                   <li v-for="contact in address.contacts" :key="contact.id" class="me-3 inline">
-                    <contact-card :contact="contact" :avatarClasses="'h-5 w-5 rounded-full me-2'" :displayName="true" />
+                    <contact-card
+                      :contact="contact"
+                      :avatar-classes="'h-5 w-5 rounded-full me-2'"
+                      :display-name="true" />
                   </li>
                 </ul>
               </li>
