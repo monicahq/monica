@@ -160,7 +160,7 @@ export default {
       this.form.label = '';
       this.createTypeModalShown = true;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newtype.focus();
       });
     },

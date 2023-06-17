@@ -205,7 +205,7 @@ export default {
       this.form.data = '';
       this.form.contact_information_type_id = this.data.contact_information_types[0].id;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newData.focus();
       });
     },

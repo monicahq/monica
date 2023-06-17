@@ -38,7 +38,7 @@ const submit = () => {
 };
 
 defineProps({
-  two_factor: Boolean,
+  twoFactor: Boolean,
   remember: Boolean,
   publicKey: Object,
 });
@@ -57,10 +57,10 @@ defineProps({
         {{ $t('Please confirm access to your account by validating your security key.') }}
       </h1>
 
-      <WebauthnLogin :remember="remember" :publicKey="publicKey" />
+      <WebauthnLogin :remember="remember" :public-key="publicKey" />
     </div>
 
-    <div v-if="two_factor">
+    <div v-if="twoFactor">
       <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
         <template v-if="!recovery">
           {{

@@ -227,12 +227,6 @@ export default {
     };
   },
 
-  mounted() {
-    this.localEmails = this.data.emails;
-    this.form.hours = '09';
-    this.form.minutes = '00';
-  },
-
   computed: {
     hours() {
       let result = [];
@@ -252,13 +246,19 @@ export default {
     },
   },
 
+  mounted() {
+    this.localEmails = this.data.emails;
+    this.form.hours = '09';
+    this.form.minutes = '00';
+  },
+
   methods: {
     showAddEmailModal() {
       this.form.label = '';
       this.form.content = '';
       this.addEmailModalShown = true;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.content.focus();
       });
     },

@@ -132,22 +132,6 @@ const destroyAvatar = () => {
 };
 </script>
 
-<style lang="scss" scoped>
-.special-grid {
-  grid-template-columns: 300px 1fr;
-}
-
-@media (max-width: 480px) {
-  .special-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.group-list-item:not(:last-child):after {
-  content: ',';
-}
-</style>
-
 <template>
   <Layout :layout-data="layoutData" :inside-vault="true">
     <!-- breadcrumb -->
@@ -404,3 +388,19 @@ const destroyAvatar = () => {
     </main>
   </Layout>
 </template>
+
+<style lang="scss" scoped>
+.special-grid {
+  grid-template-columns: 300px 1fr;
+}
+
+@media (max-width: 480px) {
+  .special-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.group-list-item:not(:last-child):after {
+  content: ',';
+}
+</style>

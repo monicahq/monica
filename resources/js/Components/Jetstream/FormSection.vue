@@ -20,7 +20,7 @@ const submit = () => {
 
 <template>
   <div>
-    <JetSectionTitle :editMode="editMode" @edit="editMode = true">
+    <JetSectionTitle :edit-mode="editMode" @edit="editMode = true">
       <template #title>
         <slot name="title" />
       </template>

@@ -392,7 +392,7 @@ export default {
       this.createRelationshipTypeModalId = 0;
       this.renameRelationshipTypeModalId = 0;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newGroupType.focus();
       });
     },
@@ -404,7 +404,7 @@ export default {
       this.createRelationshipTypeModalId = 0;
       this.renameRelationshipTypeModalId = 0;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.renameGroupType[0].focus();
       });
     },
@@ -417,7 +417,7 @@ export default {
       this.renameRelationshipGroupTypeModalShownId = 0;
       this.createRelationshipGroupTypeModalShown = false;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newRelationshipType[0].focus();
       });
     },
@@ -430,7 +430,7 @@ export default {
       this.renameRelationshipGroupTypeModalShownId = 0;
       this.createRelationshipGroupTypeModalShown = false;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.rename[0].focus();
       });
     },

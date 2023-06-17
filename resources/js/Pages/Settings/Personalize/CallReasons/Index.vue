@@ -320,7 +320,7 @@ export default {
       this.createCallReasonTypeModalShown = true;
       this.renameCallReasonTypeModalShownId = 0;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newCallReasonType.focus();
       });
     },
@@ -330,7 +330,7 @@ export default {
       this.renameCallReasonTypeModalShownId = callReasonType.id;
       this.createCallReasonTypeModalShown = false;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.renameCallReasonType[0].focus();
       });
     },
@@ -339,7 +339,7 @@ export default {
       this.createReasonModalId = callReasonType.id;
       this.form.label = '';
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newReason[0].focus();
       });
     },
@@ -348,7 +348,7 @@ export default {
       this.form.label = reason.label;
       this.renameReasonModalId = reason.id;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.rename[0].focus();
       });
     },

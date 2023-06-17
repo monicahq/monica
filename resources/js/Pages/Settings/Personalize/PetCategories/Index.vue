@@ -205,7 +205,7 @@ export default {
       this.createPetCategoryModalShown = true;
       this.renamePetCategoryModalShownId = 0;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newPetCategory.focus();
       });
     },
@@ -215,7 +215,7 @@ export default {
       this.renamePetCategoryModalShownId = petCategory.id;
       this.createPetCategoryModalShown = false;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.rename[0].focus();
       });
     },

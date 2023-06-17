@@ -231,7 +231,7 @@ export default {
       this.createGiftStateModalShown = true;
       this.editGiftStateId = 0;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newGiftState.focus();
       });
     },

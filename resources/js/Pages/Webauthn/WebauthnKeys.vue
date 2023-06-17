@@ -133,7 +133,7 @@ const webauthnRegisterCallback = (data) => {
 
       <div v-else-if="register">
         <RegisterKey
-          :errorMessage="errorMessage"
+          :error-message="errorMessage"
           :form="registerForm"
           :name="registerForm.name"
           @update:name="registerForm.name = $event"

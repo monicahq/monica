@@ -203,7 +203,7 @@ export default {
       this.createAddressTypeModalShown = true;
       this.renameAddressTypeModalShownId = 0;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newAddressType.focus();
       });
     },
@@ -213,7 +213,7 @@ export default {
       this.renameAddressTypeModalShownId = addressType.id;
       this.createAddressTypeModalShown = false;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.rename[0].focus();
       });
     },

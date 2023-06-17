@@ -154,7 +154,7 @@ defineProps({
               <p class="mb-2 text-sm font-semibold">{{ $t('Contacts in this post') }}</p>
 
               <div v-for="contact in data.contacts" :key="contact.id" class="mb-2 block">
-                <contact-card :contact="contact" :avatarClasses="'h-5 w-5 rounded-full me-2'" :displayName="true" />
+                <contact-card :contact="contact" :avatar-classes="'h-5 w-5 rounded-full me-2'" :display-name="true" />
               </div>
             </div>
 

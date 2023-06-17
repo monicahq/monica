@@ -193,7 +193,7 @@ export default {
       this.form.name = '';
       this.form.pet_category_id = 0;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newName.focus();
       });
     },

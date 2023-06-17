@@ -201,7 +201,7 @@ export default {
       this.form.name = '';
       this.createGoalModalShown = true;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newName.focus();
       });
     },

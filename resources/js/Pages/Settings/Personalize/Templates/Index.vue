@@ -240,7 +240,7 @@ export default {
       this.createTemplateModalShown = true;
       this.renameTemplateModalShownId = 0;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newTemplate.focus();
       });
     },
@@ -250,7 +250,7 @@ export default {
       this.renameTemplateModalShownId = template.id;
       this.createTemplateModalShown = false;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.rename[0].focus();
       });
     },

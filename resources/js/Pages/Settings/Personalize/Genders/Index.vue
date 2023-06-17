@@ -201,7 +201,7 @@ export default {
       this.createGenderModalShown = true;
       this.renameGenderModalShownId = 0;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newGender.focus();
       });
     },
@@ -211,7 +211,7 @@ export default {
       this.renameGenderModalShownId = gender.id;
       this.createGenderModalShown = false;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.rename[0].focus();
       });
     },

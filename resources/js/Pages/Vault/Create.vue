@@ -121,7 +121,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(() => {
+    this.$nextTick().then(() => {
       this.$refs.name.focus();
     });
   },

@@ -203,7 +203,7 @@ export default {
       this.form.name = '';
       this.createlabelModalShown = true;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newLabel.focus();
       });
     },

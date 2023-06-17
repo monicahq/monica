@@ -174,7 +174,7 @@ export default {
       this.showCreateCompanyField = true;
       this.form.company_name = '';
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.name.focus();
       });
     },

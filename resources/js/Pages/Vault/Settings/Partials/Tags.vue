@@ -155,7 +155,7 @@ export default {
       this.form.name = '';
       this.createTagModalShown = true;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newTag.focus();
       });
     },
