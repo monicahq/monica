@@ -132,10 +132,10 @@ const changeTab = (tab) => {
             </div>
 
             <!-- feed tab -->
-            <feed v-if="currentTab == 'activity'" :url="url.feed" :contact-view-mode="false" />
+            <feed v-if="currentTab === 'activity'" :url="url.feed" :contact-view-mode="false" />
 
             <!-- life events -->
-            <life-event v-if="currentTab == 'life_events'" :data="lifeEvents" :layout-data="layoutData" />
+            <life-event v-if="currentTab === 'life_events'" :data="lifeEvents" :layout-data="layoutData" />
 
             <!-- life metrics tab -->
             <life-metrics v-if="currentTab === 'life_metrics'" :data="lifeMetrics" />

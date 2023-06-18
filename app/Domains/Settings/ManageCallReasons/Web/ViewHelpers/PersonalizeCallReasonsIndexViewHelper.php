@@ -31,9 +31,7 @@ class PersonalizeCallReasonsIndexViewHelper
         return [
             'id' => $type->id,
             'label' => $type->label,
-            'reasons' => $type->callReasons->map(function ($reason) use ($type) {
-                return self::dtoReason($type, $reason);
-            }),
+            'reasons' => $type->callReasons->map(fn ($reason) => self::dtoReason($type, $reason)),
             'url' => [
                 'store' => route('settings.personalize.call_reasons.store', [
                     'callReasonType' => $type->id,

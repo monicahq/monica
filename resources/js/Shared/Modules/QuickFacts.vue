@@ -221,7 +221,7 @@ const destroy = (quickFact) => {
       </ul>
 
       <!-- blank state -->
-      <div v-if="localQuickFacts.length == 0 && !loading && !createQuickFactModalShown" class="mb-2">
+      <div v-if="localQuickFacts.length === 0 && !loading && !createQuickFactModalShown" class="mb-2">
         <p class="px-5 pb-2 text-center">
           {{ $t('There are no quick facts here yet.') }}
 

@@ -13,15 +13,15 @@ watch(message, async () => {
 
 <template>
   <div>
-    <div v-if="show && message" :class="{ 'bg-indigo-500': style == 'success', 'bg-red-700': style == 'danger' }">
+    <div v-if="show && message" :class="{ 'bg-indigo-500': style === 'success', 'bg-red-700': style === 'danger' }">
       <div class="mx-auto max-w-screen-xl px-3 py-2 sm:px-6 lg:px-8">
         <div class="flex flex-wrap items-center justify-between">
           <div class="flex w-0 min-w-0 flex-1 items-center">
             <span
               class="flex rounded-lg p-2"
-              :class="{ 'bg-indigo-600': style == 'success', 'bg-red-600': style == 'danger' }">
+              :class="{ 'bg-indigo-600': style === 'success', 'bg-red-600': style === 'danger' }">
               <svg
-                v-if="style == 'success'"
+                v-if="style === 'success'"
                 class="h-5 w-5 text-white"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -35,7 +35,7 @@ watch(message, async () => {
               </svg>
 
               <svg
-                v-if="style == 'danger'"
+                v-if="style === 'danger'"
                 class="h-5 w-5 text-white"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -59,8 +59,8 @@ watch(message, async () => {
               type="button"
               class="-me-1 flex rounded-md p-2 transition focus:outline-none sm:-me-2"
               :class="{
-                'hover:bg-indigo-600 focus:bg-indigo-600': style == 'success',
-                'hover:bg-red-600 focus:bg-red-600': style == 'danger',
+                'hover:bg-indigo-600 focus:bg-indigo-600': style === 'success',
+                'hover:bg-red-600 focus:bg-red-600': style === 'danger',
               }"
               :aria-label="$t('Dismiss')"
               @click.prevent="show = false">

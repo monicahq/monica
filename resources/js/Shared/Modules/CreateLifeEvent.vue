@@ -321,9 +321,9 @@ const store = () => {
 
       <!-- description -->
       <div
-        v-if="selectedLifeEventType && addDescriptionFieldShown"
+        v-show="selectedLifeEventType && addDescriptionFieldShown"
         class="border-b border-gray-200 p-3 dark:border-gray-700">
-        <text-area
+        <TextArea
           ref="descriptionField"
           v-model="form.description"
           :label="$t('Description')"

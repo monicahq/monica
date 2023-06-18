@@ -6,7 +6,7 @@ import Errors from '@/Shared/Form/Errors.vue';
 
 const props = defineProps({
   modelValue: {
-    type: [Array],
+    type: Array,
     default: () => [],
   },
   inputClass: String,
@@ -44,7 +44,7 @@ const form = useForm({
 });
 
 const displayAddContactButton = computed(() => {
-  if (!props.addMultipleContacts && props.localContacts.length >= 1) {
+  if (!props.addMultipleContacts && localContacts.value.length >= 1) {
     return false;
   }
 

@@ -82,8 +82,8 @@ defineProps({
               <div>
                 <contact-card
                   :contact="date.contact"
-                  :avatarClasses="'h-5 w-5 rounded-full me-2'"
-                  :displayName="true" />
+                  :avatar-classes="'h-5 w-5 rounded-full me-2'"
+                  :display-name="true" />
               </div>
             </li>
           </ul>

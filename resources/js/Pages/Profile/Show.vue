@@ -25,7 +25,7 @@ const providersExists = computed(() => size(props.providers) > 0);
 </script>
 
 <template>
-  <Layout :layoutData="layoutData">
+  <Layout :layout-data="layoutData">
     <template #header>
       <Breadcrumb
         :items="[
@@ -50,7 +50,7 @@ const providersExists = computed(() => size(props.providers) > 0);
         </div>
 
         <div class="mb-16" v-if="providersExists">
-          <UpdateProviders :user="$page.props.user" :providers="providers" :userTokens="userTokens" />
+          <UpdateProviders :user="$page.props.user" :providers="providers" :user-tokens="userTokens" />
         </div>
 
         <div class="mb-16" v-if="$page.props.jetstream.canManageTwoFactorAuthentication">
@@ -58,7 +58,7 @@ const providersExists = computed(() => size(props.providers) > 0);
         </div>
 
         <div class="mb-16">
-          <WebauthnKeys :webauthnKeys="webauthnKeys" />
+          <WebauthnKeys :webauthn-keys="webauthnKeys" />
         </div>
 
         <div class="mb-16">

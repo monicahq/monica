@@ -18,7 +18,7 @@ defineProps({
           {{ $t('All the companies') }}
         </h3>
 
-        <div v-if="data.companies.length != 0">
+        <div v-if="data.companies.length !== 0">
           <ul class="group-list mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
             <li
               v-for="company in data.companies"
@@ -39,7 +39,7 @@ defineProps({
 
         <!-- blank state -->
         <div
-          v-if="data.companies.length == 0"
+          v-if="data.companies.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <img src="/img/vault_company_blank.svg" :alt="$t('Groups')" class="mx-auto mt-4 h-36 w-36" />
           <p class="px-5 pb-5 pt-2 text-center">

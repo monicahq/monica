@@ -329,7 +329,7 @@ const toggle = (loan) => {
         <div v-if="editedLoanId !== loan.id" class="me-3 flex items-center">
           <div class="flex -space-x-2 overflow-hidden">
             <div v-for="loaner in loan.loaners" :key="loaner.id">
-              <contact-card :contact="loaner" :avatarClasses="'h-7 w-7 rounded-full me-2'" :displayName="false" />
+              <contact-card :contact="loaner" :avatar-classes="'h-7 w-7 rounded-full me-2'" :display-name="false" />
             </div>
           </div>
 
@@ -344,7 +344,7 @@ const toggle = (loan) => {
           </svg>
 
           <div v-for="loanee in loan.loanees" :key="loanee.id">
-            <contact-card :contact="loanee" :avatarClasses="'h-7 w-7 rounded-full me-2'" :displayName="false" />
+            <contact-card :contact="loanee" :avatar-classes="'h-7 w-7 rounded-full me-2'" :display-name="false" />
           </div>
         </div>
 
@@ -552,7 +552,7 @@ const toggle = (loan) => {
 
     <!-- blank state -->
     <div
-      v-if="localLoans.length == 0"
+      v-if="localLoans.length === 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_loan.svg" :alt="$t('Loans')" class="mx-auto mt-4 h-14 w-14" />
       <p class="px-5 pb-5 pt-2 text-center">{{ $t('There are no loans yet.') }}</p>

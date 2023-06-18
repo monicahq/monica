@@ -379,7 +379,7 @@ const destroy = () => {
               :masks="masks"
               :locale="$page.props.user.locale"
               class="mb-6 inline-block">
-              <template v-slot="{ inputValue, inputEvents }">
+              <template #default="{ inputValue, inputEvents }">
                 <input
                   class="rounded border bg-white px-2 py-1 dark:border-gray-700 dark:bg-gray-900"
                   :value="inputValue"

@@ -98,7 +98,7 @@
             @change="updatePosition">
             <template #item="{ element }">
               <div
-                v-if="editGiftOccasionId != element.id"
+                v-if="editGiftOccasionId !== element.id"
                 class="item-list flex items-center justify-between border-b border-gray-200 py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
                 <!-- icon to move position -->
                 <div class="me-2 flex">
@@ -142,7 +142,7 @@
                   <errors :errors="form.errors" />
 
                   <text-input
-                    :ref="'rename' + element.id"
+                    ref="rename"
                     v-model="form.label"
                     :label="$t('Name')"
                     :type="'text'"
@@ -165,7 +165,7 @@
 
         <!-- blank state -->
         <div
-          v-if="localGiftOccasions.length == 0"
+          v-if="localGiftOccasions.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">{{ $t('Gift occasions let you categorize all your gifts.') }}</p>
         </div>
@@ -228,15 +228,17 @@ export default {
       this.form.label = '';
       this.form.position = '';
       this.createGiftOccasionModalShown = true;
+      this.editGiftOccasionId = 0;
 
-      this.$nextTick(() => {
-        this.$refs.newGiftOccasion.focus();
-      });
+      this.$nextTick().then(() => this.$refs.newGiftOccasion.focus());
     },
 
     renameGiftOccasionModal(giftOccasion) {
       this.form.label = giftOccasion.label;
       this.editGiftOccasionId = giftOccasion.id;
+      this.createGiftOccasionModalShown = false;
+
+      this.$nextTick().then(() => this.$refs.rename.focus());
     },
 
     submit() {

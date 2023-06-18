@@ -81,7 +81,7 @@
                   </p>
 
                   <!-- avatar -->
-                  <div v-if="file.object.type == 'contact'" class="flex items-center">
+                  <div v-if="file.object.type === 'contact'" class="flex items-center">
                     <avatar :data="file.object.avatar" :class="'me-2 h-4 w-4 rounded-full'" />
                     <InertiaLink :href="file.object.url.show" class="text-sm text-blue-500 hover:underline">
                       {{ file.object.name }}
@@ -106,7 +106,7 @@
 
             <!-- blank state -->
             <div
-              v-if="data.files.length == 0"
+              v-if="data.files.length === 0"
               class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
               <p class="p-5 text-center">
                 {{ $t('There are no files yet.') }}

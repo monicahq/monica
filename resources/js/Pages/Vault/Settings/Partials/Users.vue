@@ -8,7 +8,7 @@
       </h3>
       <pretty-span v-if="!addUserModalShown" :text="$t('Add a user')" :icon="'plus'" @click="showAddUserModal" />
       <pretty-span
-        v-if="addUserModalShown && localUsersInAccount.length == 0"
+        v-if="addUserModalShown && localUsersInAccount.length === 0"
         :text="$t('Cancel')"
         @click="addUserModalShown = false" />
     </div>
@@ -111,7 +111,7 @@
 
     <!-- blank state -->
     <div
-      v-if="addUserModalShown && localUsersInAccount.length == 0"
+      v-if="addUserModalShown && localUsersInAccount.length === 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white p-5 text-center dark:border-gray-700 dark:bg-gray-900">
       <p>{{ $t('There are no other users in this account.') }}</p>
     </div>
@@ -123,11 +123,11 @@
           v-for="user in localUsersInVault"
           :key="user.id"
           class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-          <div v-if="editedUser.id != user.id" class="flex items-center justify-between px-5 py-2">
+          <div v-if="editedUser.id !== user.id" class="flex items-center justify-between px-5 py-2">
             <span>{{ user.name }}</span>
 
             <!-- actions -->
-            <ul v-if="user.id != layoutData.user.id" class="text-sm">
+            <ul v-if="user.id !== layoutData.user.id" class="text-sm">
               <li class="me-4 inline cursor-pointer" @click="showChangePermissionModal(user)">
                 <span class="text-blue-500 hover:underline">{{ $t('Change permission') }}</span>
               </li>
@@ -138,7 +138,7 @@
           </div>
 
           <!-- change permission modal -->
-          <form v-if="editedUser.id == user.id" class="bg-white dark:bg-gray-900" @submit.prevent="update(user)">
+          <form v-if="editedUser.id === user.id" class="bg-white dark:bg-gray-900" @submit.prevent="update(user)">
             <div class="border-b border-gray-200 p-5 dark:border-gray-700">
               <errors :errors="form.errors" />
 
@@ -209,7 +209,7 @@
       </ul>
 
       <!-- blank state -->
-      <div v-if="localUsersInVault.length == 0">
+      <div v-if="localUsersInVault.length === 0">
         <p class="p-5 text-center">
           {{ $t('There are no other users in this account.') }}
         </p>

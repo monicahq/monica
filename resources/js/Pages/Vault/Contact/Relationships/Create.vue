@@ -64,7 +64,7 @@
               v-model="form.relationship_type_id"
               name="types"
               class="w-full rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm"
-              @update:modelValue="load"
+              @update:model-value="load"
               :data="fromRelationshipOptions" />
           </div>
 
@@ -211,7 +211,7 @@
                     </label>
                   </div>
 
-                  <div v-if="form.choice == 'contact'" class="ps-6">
+                  <div v-if="form.choice === 'contact'" class="ps-6">
                     <contact-selector
                       v-model="form.other_contact_id"
                       :search-url="layoutData.vault.url.search_contacts_only"
@@ -299,7 +299,7 @@
             </div>
 
             <!-- create a contact entry -->
-            <div v-if="form.choice != 'contact'" class="border-b border-gray-200 p-5 dark:border-gray-700">
+            <div v-if="form.choice !== 'contact'" class="border-b border-gray-200 p-5 dark:border-gray-700">
               <div class="relative flex items-start">
                 <input
                   id="create-contact"
@@ -384,7 +384,7 @@ export default {
         create_contact_entry: false,
         relationship_type_id: 0,
         base_contact_id: 0,
-        other_contact_id: 0,
+        other_contact_id: [],
         last_name: '',
         middle_name: '',
         nickname: '',
@@ -394,12 +394,6 @@ export default {
         errors: [],
       },
     };
-  },
-
-  created() {
-    this.form.base_contact_id = this.data.contact.id;
-    this.fromRelationship = 'Father';
-    this.toRelationship = 'Child';
   },
 
   computed: {
@@ -419,13 +413,19 @@ export default {
     },
   },
 
+  created() {
+    this.form.base_contact_id = this.data.contact.id;
+    this.fromRelationship = 'Father';
+    this.toRelationship = 'Child';
+  },
+
   methods: {
     displayContactNameField() {
       this.form.choice = 'name';
       this.showContactName = true;
       this.showMoreContactOptions = true;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.contactName.focus();
       });
     },
@@ -465,7 +465,7 @@ export default {
       this.fromRelationship = this.toRelationship;
       this.toRelationship = temp;
 
-      if (this.form.base_contact_id == this.data.contact.id) {
+      if (this.form.base_contact_id === this.data.contact.id) {
         this.form.base_contact_id = 0;
       } else {
         this.form.base_contact_id = this.data.contact.id;

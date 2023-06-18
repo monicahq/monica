@@ -1,3 +1,106 @@
+<script>
+export default {
+  inheritAttrs: false,
+};
+</script>
+
+<script setup>
+import { computed, ref } from 'vue';
+
+const props = defineProps({
+  id: {
+    type: String,
+    default: 'text-area-',
+  },
+  type: {
+    type: String,
+    default: 'text',
+  },
+  textareaClass: {
+    type: String,
+    default: '',
+  },
+  modelValue: {
+    type: String,
+    default: '',
+  },
+  label: {
+    type: String,
+    default: '',
+  },
+  help: {
+    type: String,
+    default: '',
+  },
+  required: {
+    type: Boolean,
+    default: false,
+  },
+  rows: {
+    type: Number,
+    default: 3,
+  },
+  autofocus: {
+    type: Boolean,
+    default: false,
+  },
+  maxlength: {
+    type: Number,
+    default: null,
+  },
+  markdown: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits(['esc-key-pressed', 'update:modelValue']);
+
+const displayMaxLength = ref(false);
+const zone = ref(null);
+
+const proxyValue = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emit('update:modelValue', value);
+  },
+});
+
+const charactersLeft = computed(() => {
+  let char = 0;
+  if (props.modelValue) {
+    char = props.modelValue.length;
+  }
+
+  return `${props.maxlength - char} / ${props.maxlength}`;
+});
+
+const localTextAreaClasses = computed(() => [
+  'rounded-md shadow-sm',
+  'bg-white dark:bg-slate-900 border-gray-300 dark:border-gray-700',
+  'focus:border-indigo-300 focus:dark:border-indigo-700 focus:ring focus:ring-indigo-200 focus:dark:ring-indigo-800 focus:ring-opacity-50',
+  props.textareaClass,
+]);
+
+const sendEscKey = () => {
+  emit('esc-key-pressed');
+};
+
+const showMaxLength = () => {
+  displayMaxLength.value = true;
+};
+
+const focus = () => {
+  zone.value.focus();
+};
+
+defineExpose({
+  focus,
+});
+</script>
+
 <template>
   <div class="mb3">
     <label v-if="label" class="mb-2 block text-sm dark:text-gray-100" :for="id">
@@ -46,111 +149,6 @@
     </p>
   </div>
 </template>
-
-<script>
-export default {
-  inheritAttrs: false,
-
-  model: {
-    prop: 'modelValue',
-    event: 'update:modelValue',
-  },
-
-  props: {
-    id: {
-      type: String,
-      default: 'text-area-',
-    },
-    type: {
-      type: String,
-      default: 'text',
-    },
-    textareaClass: {
-      type: String,
-      default: '',
-    },
-    modelValue: {
-      type: String,
-      default: '',
-    },
-    label: {
-      type: String,
-      default: '',
-    },
-    help: {
-      type: String,
-      default: '',
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    rows: {
-      type: Number,
-      default: 3,
-    },
-    autofocus: {
-      type: Boolean,
-      default: false,
-    },
-    maxlength: {
-      type: Number,
-      default: null,
-    },
-    markdown: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  emits: ['esc-key-pressed', 'update:modelValue'],
-
-  data() {
-    return {
-      displayMaxLength: false,
-    };
-  },
-
-  computed: {
-    proxyValue: {
-      get() {
-        return this.modelValue;
-      },
-      set(value) {
-        this.$emit('update:modelValue', value);
-      },
-    },
-
-    charactersLeft() {
-      var char = 0;
-      if (this.modelValue) {
-        char = this.modelValue.length;
-      }
-
-      return `${this.maxlength - char} / ${this.maxlength}`;
-    },
-
-    localTextAreaClasses() {
-      return [
-        'rounded-md shadow-sm',
-        'bg-white dark:bg-slate-900 border-gray-300 dark:border-gray-700',
-        'focus:border-indigo-300 focus:dark:border-indigo-700 focus:ring focus:ring-indigo-200 focus:dark:ring-indigo-800 focus:ring-opacity-50',
-        this.textareaClass,
-      ];
-    },
-  },
-
-  methods: {
-    sendEscKey() {
-      this.$emit('esc-key-pressed');
-    },
-
-    showMaxLength() {
-      this.displayMaxLength = true;
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .optional-badge {

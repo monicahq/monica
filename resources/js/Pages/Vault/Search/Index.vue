@@ -89,14 +89,14 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(() => {
+    this.$nextTick().then(() => {
       this.$refs.searchField.focus();
     });
   },
 
   methods: {
     search: _.debounce(function () {
-      if (this.form.searchTerm != '' && this.form.searchTerm.length >= 3) {
+      if (this.form.searchTerm !== '' && this.form.searchTerm.length >= 3) {
         this.processingSearch = true;
 
         axios

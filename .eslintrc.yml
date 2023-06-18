@@ -4,6 +4,8 @@ env:
 extends:
   - eslint:recommended
   - plugin:vue/vue3-essential
+  - plugin:vue/vue3-strongly-recommended
+  - plugin:vue/vue3-recommended
   - prettier
 parserOptions:
   ecmaVersion: latest
@@ -47,3 +49,8 @@ rules:
       multiline: 6
   vue/singleline-html-element-content-newline: 0
   vue/no-deprecated-events-api: 0
+  vue/require-default-prop: 0
+  vue/attributes-order: 0
+  vue/next-tick-style: # https://eslint.vuejs.org/rules/next-tick-style.html
+    - error
+    - promise

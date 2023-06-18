@@ -125,7 +125,7 @@
 
     <!-- blank state -->
     <div
-      v-if="localGroups.length == 0"
+      v-if="localGroups.length === 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_group.svg" :alt="$t('Groups')" class="mx-auto mt-4 h-14 w-14" />
       <p class="px-5 pb-5 pt-2 text-center">{{ $t('The contact does not belong to any group yet.') }}</p>
@@ -198,7 +198,7 @@ export default {
     toggleCreateGroup() {
       this.form.name = '';
 
-      if (this.form.group_id == 0) {
+      if (this.form.group_id === 0) {
         this.createAddGroupModal();
       } else {
         this.chooseExistingGroupModal();
@@ -217,14 +217,14 @@ export default {
       this.chooseGroupTypeRoleShown = true;
 
       // we need to load the list of existing roles for this group
-      var id = this.localAvailableGroups.findIndex((x) => x.id == this.form.group_id);
+      var id = this.localAvailableGroups.findIndex((x) => x.id === this.form.group_id);
       this.form.group_type_id = this.localAvailableGroups[id].type.id;
       this.loadGroupTypeRoles();
     },
 
     loadGroupTypeRoles() {
       for (let i = 0; i < this.data.group_types.length; i++) {
-        if (this.data.group_types[i].id == this.form.group_type_id) {
+        if (this.data.group_types[i].id === this.form.group_type_id) {
           this.localGroupTypeRoles = this.data.group_types[i].roles;
         }
       }

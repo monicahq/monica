@@ -148,7 +148,7 @@ const updatePosition = (event) => {
         @change="updatePosition">
         <template #item="{ element }">
           <div
-            v-if="editEntryId != element.id"
+            v-if="editEntryId !== element.id"
             class="item-list flex items-center justify-between border-b border-gray-200 py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <!-- icon to move position -->
             <div class="me-2 flex">
@@ -214,7 +214,7 @@ const updatePosition = (event) => {
     </div>
 
     <!-- blank state -->
-    <div v-if="localEntries.length == 0">
+    <div v-if="localEntries.length === 0">
       <p class="p-5 text-center">{{ $t('Quick facts let you document interesting facts about a contact.') }}</p>
     </div>
   </div>

@@ -121,7 +121,7 @@
             handle=".handle"
             @change="updatePosition">
             <template #item="{ element }">
-              <div v-if="editGroupTypeId != element.id" class="">
+              <div v-if="editGroupTypeId !== element.id" class="">
                 <div
                   class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
                   <div class="mb-3 flex items-center justify-between">
@@ -169,8 +169,8 @@
                       :component-data="{ name: 'fade' }"
                       handle=".handle"
                       @change="updatePosition">
-                      <template #item="{ element, id }">
-                        <div v-if="editRoleId != element.id" class="">
+                      <template #item="{ element2, id }">
+                        <div v-if="editRoleId !== element2.id" class="">
                           <div
                             class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
                             <div class="flex items-center justify-between">
@@ -194,17 +194,17 @@
                                   <path d="M17 15H15V17H17V15Z" fill="currentColor" />
                                 </svg>
 
-                                <span>{{ element.label }}</span>
+                                <span>{{ element2.label }}</span>
                               </div>
 
                               <!-- actions -->
                               <ul class="text-sm">
-                                <li class="inline cursor-pointer" @click="renameRoleModal(id, element)">
+                                <li class="inline cursor-pointer" @click="renameRoleModal(id, element2)">
                                   <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                                 </li>
                                 <li
                                   class="ms-4 inline cursor-pointer text-red-500 hover:text-red-900"
-                                  @click="destroyRole(element)">
+                                  @click="destroyRole(element2)">
                                   {{ $t('Delete') }}
                                 </li>
                               </ul>
@@ -216,12 +216,12 @@
                         <form
                           v-else
                           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
-                          @submit.prevent="updateRole(element)">
+                          @submit.prevent="updateRole(element2)">
                           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                             <errors :errors="form.errors" />
 
                             <text-input
-                              ref="newRole"
+                              ref="renameRole"
                               v-model="form.label"
                               :label="$t('Name')"
                               :type="'text'"
@@ -230,11 +230,20 @@
                               :required="true"
                               :autocomplete="false"
                               :maxlength="255"
-                              @esc-key-pressed="roleGroupTypeId = 0" />
+                              @esc-key-pressed="
+                                editRoleId = 0;
+                                editGroupTypeId = 0;
+                              " />
                           </div>
 
                           <div class="flex justify-between p-5">
-                            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="roleGroupTypeId = 0" />
+                            <pretty-span
+                              :text="$t('Cancel')"
+                              :class="'me-3'"
+                              @click="
+                                editRoleId = 0;
+                                editGroupTypeId = 0;
+                              " />
                             <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
                           </div>
                         </form>
@@ -244,7 +253,7 @@
                     <!-- add a role -->
                     <span
                       v-if="
-                        element.group_type_roles.length != 0 && !createRoleModalShown && roleGroupTypeId != element.id
+                        element.group_type_roles.length !== 0 && !createRoleModalShown && roleGroupTypeId !== element.id
                       "
                       class="inline cursor-pointer text-sm text-blue-500 hover:underline"
                       @click="showCreateRoleModal(element)"
@@ -253,7 +262,7 @@
 
                     <!-- form: create new role -->
                     <form
-                      v-if="createRoleModalShown && roleGroupTypeId == element.id"
+                      v-if="createRoleModalShown && roleGroupTypeId === element.id"
                       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
                       @submit.prevent="submitRole(element)">
                       <div class="border-b border-gray-200 p-5 dark:border-gray-700">
@@ -269,11 +278,20 @@
                           :required="true"
                           :autocomplete="false"
                           :maxlength="255"
-                          @esc-key-pressed="createRoleModalShown = false" />
+                          @esc-key-pressed="
+                            createRoleModalShown = false;
+                            roleGroupTypeId = 0;
+                          " />
                       </div>
 
                       <div class="flex justify-between p-5">
-                        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createRoleModalShown = false" />
+                        <pretty-span
+                          :text="$t('Cancel')"
+                          :class="'me-3'"
+                          @click="
+                            createRoleModalShown = false;
+                            roleGroupTypeId = 0;
+                          " />
                         <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
                       </div>
                     </form>
@@ -281,7 +299,7 @@
                     <!-- blank state -->
                     <div
                       v-if="
-                        element.group_type_roles.length == 0 && !createRoleModalShown && roleGroupTypeId != element.id
+                        element.group_type_roles.length === 0 && !createRoleModalShown && roleGroupTypeId !== element.id
                       "
                       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                       <p class="p-5 text-center">
@@ -305,7 +323,7 @@
                   <errors :errors="form.errors" />
 
                   <text-input
-                    :ref="'rename' + element.id"
+                    ref="renameGroupType"
                     v-model="form.label"
                     :label="$t('Name')"
                     :type="'text'"
@@ -328,7 +346,7 @@
 
         <!-- blank state -->
         <div
-          v-if="localGroupTypes.length == 0"
+          v-if="localGroupTypes.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">{{ $t('Group types let you group people together.') }}</p>
         </div>
@@ -394,8 +412,12 @@ export default {
       this.form.label = '';
       this.form.position = '';
       this.createGroupTypeModalShown = true;
+      this.createRoleModalShown = false;
+      this.roleGroupTypeId = 0;
+      this.editGroupTypeId = 0;
+      this.editRoleId = 0;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newGroupType.focus();
       });
     },
@@ -405,8 +427,11 @@ export default {
       this.form.position = '';
       this.createRoleModalShown = true;
       this.roleGroupTypeId = groupType.id;
+      this.editGroupTypeId = 0;
+      this.editRoleId = 0;
+      this.createGroupTypeModalShown = false;
 
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         this.$refs.newRole.focus();
       });
     },
@@ -414,12 +439,23 @@ export default {
     renameGroupTypeModal(groupType) {
       this.form.label = groupType.label;
       this.editGroupTypeId = groupType.id;
+      this.roleGroupTypeId = 0;
+      this.editRoleId = 0;
+      this.createRoleModalShown = false;
+      this.createGroupTypeModalShown = false;
+
+      this.$nextTick().then(() => this.$refs.renameGroupType.focus());
     },
 
-    renameRoleModal(groupType, role) {
+    renameRoleModal(groupTypeId, role) {
       this.form.label = role.label;
-      this.editGroupTypeId = groupType;
+      this.editGroupTypeId = groupTypeId;
       this.editRoleId = role.id;
+      this.roleGroupTypeId = 0;
+      this.createRoleModalShown = false;
+      this.createGroupTypeModalShown = false;
+
+      this.$nextTick().then(() => this.$refs.renameRole.focus());
     },
 
     submit() {

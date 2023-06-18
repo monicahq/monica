@@ -322,7 +322,10 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                 <!-- participants -->
                 <div v-if="!lifeEvent.collapsed" class="flex p-3 pb-1">
                   <div v-for="contact in lifeEvent.participants" :key="contact.id" class="me-4">
-                    <contact-card :contact="contact" :avatarClasses="'h-5 w-5 rounded-full me-2'" :displayName="true" />
+                    <contact-card
+                      :contact="contact"
+                      :avatar-classes="'h-5 w-5 rounded-full me-2'"
+                      :display-name="true" />
                   </div>
                 </div>
               </template>
@@ -332,7 +335,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
             <div class="mb-2 ms-6">
               <span
                 @click="showAddLifeEventModalForTimelineEventId = timelineEvent.id"
-                v-if="showAddLifeEventModalForTimelineEventId != timelineEvent.id"
+                v-if="showAddLifeEventModalForTimelineEventId !== timelineEvent.id"
                 class="cursor-pointer text-sm text-blue-500 hover:underline">
                 {{ $t('Add another life event') }}
               </span>
@@ -340,7 +343,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
               <create-life-event
                 :data="data"
                 :layout-data="layoutData"
-                :open-modal="showAddLifeEventModalForTimelineEventId == timelineEvent.id"
+                :open-modal="showAddLifeEventModalForTimelineEventId === timelineEvent.id"
                 :create-timeline-event="false"
                 :timeline-event="timelineEvent"
                 @close-modal="showAddLifeEventModalForTimelineEventId = 0"
@@ -366,7 +369,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
 
       <!-- blank state -->
       <div
-        v-if="localTimelines.length == 0"
+        v-if="localTimelines.length === 0"
         class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
         <img src="/img/contact_blank_life_event.svg" :alt="$t('Life events')" class="mx-auto mt-4 h-20 w-20" />
         <p class="px-5 pb-5 pt-2 text-center">{{ $t('Life events let you document what happened in your life.') }}</p>

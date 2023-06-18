@@ -42,8 +42,8 @@ class CallReason extends Model
     protected function label(): Attribute
     {
         return Attribute::make(
-            get: function ($value, $attributes) {
-                if (! $value) {
+            get: function (?string $value, array $attributes) {
+                if ($value === null) {
                     return __($attributes['label_translation_key']);
                 }
 
