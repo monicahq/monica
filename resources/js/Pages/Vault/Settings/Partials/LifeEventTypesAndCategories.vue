@@ -362,9 +362,9 @@ const destroyLifeEventType = (lifeEventType) => {
                     lifeEventCategoryId !== element.id
                   "
                   class="inline cursor-pointer text-sm text-blue-500 hover:underline"
-                  @click="showCreateLifeEventTypeModal(element)"
-                  >{{ $t('add a life event type') }}</span
-                >
+                  @click="showCreateLifeEventTypeModal(element)">
+                  {{ $t('add a life event type') }}
+                </span>
 
                 <!-- form: create new life event type -->
                 <form

@@ -164,7 +164,7 @@
 
                   <!-- available sections -->
                   <div class="ms-8">
-                    <p class="mb-1 text-sm text-gray-500">Sections:</p>
+                    <p class="mb-1 text-sm text-gray-500">{{ $t('Sections:') }}</p>
 
                     <draggable
                       :list="element.post_template_sections"
