@@ -5,6 +5,7 @@ namespace Tests\Unit\Domains\Vault\ManageAddresses\Services;
 use App\Domains\Vault\ManageAddresses\Services\GetGPSCoordinate;
 use App\Exceptions\EnvVariablesNotSetException;
 use App\Models\Address;
+use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Http;
@@ -68,10 +69,14 @@ class GetGPSCoordinateTest extends TestCase
         );
     }
 
+    public function fails_if_we_cant_make_the_call_callback(GetGPSCoordinate $job, \Exception $e)
+    {
+        $this->assertInstanceOf(HttpClientException::class, $e);
+    }
+
     /** @test */
     public function it_fails_if_we_cant_make_the_call(): void
     {
-        $this->expectException(HttpClientException::class);
         Http::fake([
             'fake.com/v1/*' => Http::response('{"error":"Invalid key"}', 401),
         ]);
@@ -80,20 +85,29 @@ class GetGPSCoordinateTest extends TestCase
             'line_1' => '',
             'city' => 'sieklopekznqqq',
             'postal_code' => '',
+            'latitude' => null,
+            'longitude' => null,
         ]);
 
         $request = [
             'address_id' => $address->id,
         ];
 
-        (new GetGPSCoordinate($request))->handle();
+        $job = (new GetGPSCoordinate($request));
+        $job->setJob($syncjob = new FakeJob(app(), json_encode([]), 'sync', 'sync'));
+
+        app(Dispatcher::class)->dispatchNow($job);
+
+        $this->assertInstanceOf(HttpClientException::class, $syncjob->exception);
+
+        $address->refresh();
+        $this->assertNull($address->latitude);
+        $this->assertNull($address->longitude);
     }
 
     /** @test */
     public function it_fails_if_address_is_unknown(): void
     {
-        $this->expectException(HttpClientException::class);
-
         $body = file_get_contents(base_path('tests/Fixtures/Services/Address/GetGPSCoordinateGarbageResponse.json'));
         Http::fake([
             'fake.com/v1/*' => Http::response($body, 404),
@@ -103,13 +117,24 @@ class GetGPSCoordinateTest extends TestCase
             'line_1' => '',
             'city' => 'sieklopekznqqq',
             'postal_code' => '',
+            'latitude' => null,
+            'longitude' => null,
         ]);
 
         $request = [
             'address_id' => $address->id,
         ];
 
-        (new GetGPSCoordinate($request))->handle();
+        $job = (new GetGPSCoordinate($request));
+        $job->setJob($syncjob = new FakeJob(app(), json_encode([]), 'sync', 'sync'));
+
+        app(Dispatcher::class)->dispatchNow($job);
+
+        $this->assertInstanceOf(HttpClientException::class, $syncjob->exception);
+
+        $address->refresh();
+        $this->assertNull($address->latitude);
+        $this->assertNull($address->longitude);
     }
 
     /** @test */
@@ -121,5 +146,15 @@ class GetGPSCoordinateTest extends TestCase
 
         $this->expectException(ValidationException::class);
         (new GetGPSCoordinate($request))->handle();
+    }
+}
+
+class FakeJob extends \Illuminate\Queue\Jobs\SyncJob
+{
+    public $exception;
+
+    protected function failed($e)
+    {
+        $this->exception = $e;
     }
 }
