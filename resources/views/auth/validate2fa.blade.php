@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
       <form action="{{ session('oauth') ? route('oauth.validate2fa') : route('validate2fa') }}" method="post">
-        <input type="hidden" name="url" value="{{ urlencode(url()->current()) }}" />
+        <input type="hidden" name="url" value="dashboard" />
         <div class="row">
           <div class="col-12 col-md-6 offset-md-3 offset-md-3-right">
             <div class="signup-box">
