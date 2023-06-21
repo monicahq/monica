@@ -310,4 +310,4 @@ Monica uses a lot of open source projects and we thank them with all our hearts.
 Copyright © 2016–2022
 
 Licensed under [the AGPL License](/LICENSE.md).
-# Hello World From GTC  
+# Hello World From GTC
