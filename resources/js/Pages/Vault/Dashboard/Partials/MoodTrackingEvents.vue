@@ -7,6 +7,7 @@ import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
+import Errors from '@/Shared/Form/Errors.vue';
 
 const props = defineProps({
   data: Object,
@@ -107,7 +108,7 @@ const submit = () => {
       @submit.prevent="submit()">
       <div class="border-b border-gray-200 p-5 dark:border-gray-700">
         <div v-if="form.errors.length > 0" class="p-5">
-          <errors :errors="form.errors" />
+          <Errors :errors="form.errors" />
         </div>
 
         <!-- mood tracking parameters -->

@@ -110,7 +110,7 @@
 
 <script>
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
-import draggable from 'vuedraggable-es';
+import draggable from 'vuedraggable';
 
 export default {
   components: {

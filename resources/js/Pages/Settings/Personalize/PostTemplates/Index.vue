@@ -164,7 +164,7 @@
 
                   <!-- available sections -->
                   <div class="ms-8">
-                    <p class="mb-1 text-sm text-gray-500">Sections:</p>
+                    <p class="mb-1 text-sm text-gray-500">{{ $t('Sections:') }}</p>
 
                     <draggable
                       :list="element.post_template_sections"
@@ -172,7 +172,7 @@
                       :component-data="{ name: 'fade' }"
                       handle=".handle"
                       @change="updatePosition">
-                      <template #item="{ element2, id }">
+                      <template #item="{ element: element2 }">
                         <div v-if="editSectionId !== element2.id" class="">
                           <div
                             class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
@@ -204,11 +204,11 @@
                               <ul class="text-sm">
                                 <li
                                   class="inline cursor-pointer text-blue-500 hover:underline"
-                                  @click="renameSectionModal(id, element2)">
+                                  @click="renameSectionModal(element2)">
                                   <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                                 </li>
                                 <li
-                                  v-if="element2.can_be_deleted"
+                                  v-if="element.can_be_deleted"
                                   class="ms-4 inline cursor-pointer text-red-500 hover:text-red-900"
                                   @click="destroySection(element2)">
                                   {{ $t('Delete') }}
@@ -277,11 +277,20 @@
                           :required="true"
                           :autocomplete="false"
                           :maxlength="255"
-                          @esc-key-pressed="createSectionModalShown = false" />
+                          @esc-key-pressed="
+                            createSectionModalShown = false;
+                            postTemplateId = 0;
+                          " />
                       </div>
 
                       <div class="flex justify-between p-5">
-                        <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createSectionModalShown = false" />
+                        <pretty-span
+                          :text="$t('Cancel')"
+                          :class="'me-3'"
+                          @click="
+                            createSectionModalShown = false;
+                            postTemplateId = 0;
+                          " />
                         <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
                       </div>
                     </form>
@@ -348,7 +357,7 @@ import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
-import draggable from 'vuedraggable-es';
+import draggable from 'vuedraggable';
 
 export default {
   components: {
@@ -429,12 +438,12 @@ export default {
       this.$nextTick().then(() => this.$refs.renamePostTemplate.focus());
     },
 
-    renameSectionModal(postTemplateId, section) {
+    renameSectionModal(section) {
       this.form.label = section.label;
-      this.editPostTemplateId = postTemplateId;
       this.editSectionId = section.id;
       this.createSectionModalShown = false;
       this.createPostTemplateModalShown = false;
+      this.editPostTemplateId = 0;
       this.postTemplateId = 0;
 
       this.$nextTick().then(() => this.$refs.renameSection.focus());

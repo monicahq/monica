@@ -2,7 +2,7 @@
 import { ref, nextTick } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
-import draggable from 'vuedraggable-es';
+import draggable from 'vuedraggable';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
@@ -20,7 +20,9 @@ const editLifeEventCategoryId = ref(0);
 const editLifeEventTypeId = ref(0);
 const localLifeEventCategories = ref(props.data.life_event_categories);
 const newLifeEventCategory = ref(null);
+const renameLifeEventCategory = ref(null);
 const newLifeEventType = ref(null);
+const renameLifeEventType = ref(null);
 
 const form = useForm({
   label: '',
@@ -32,6 +34,10 @@ const showCreateLifeEventCategoryModal = () => {
   form.label = '';
   form.position = '';
   createLifeEventCategoryModalShown.value = true;
+  createLifeEventTypeModalShown.value = false;
+  lifeEventCategoryId.value = 0;
+  editLifeEventCategoryId.value = 0;
+  editLifeEventTypeId.value = 0;
 
   nextTick().then(() => newLifeEventCategory.value.focus());
 };
@@ -41,6 +47,9 @@ const showCreateLifeEventTypeModal = (lifeEventCategory) => {
   form.position = '';
   createLifeEventTypeModalShown.value = true;
   lifeEventCategoryId.value = lifeEventCategory.id;
+  editLifeEventCategoryId.value = 0;
+  editLifeEventTypeId.value = 0;
+  createLifeEventCategoryModalShown.value = false;
 
   nextTick().then(() => newLifeEventType.value.focus());
 };
@@ -48,16 +57,23 @@ const showCreateLifeEventTypeModal = (lifeEventCategory) => {
 const renameLifeEventCategoryModal = (lifeEventCategory) => {
   form.label = lifeEventCategory.label;
   editLifeEventCategoryId.value = lifeEventCategory.id;
+  editLifeEventTypeId.value = 0;
+  createLifeEventCategoryModalShown.value = false;
+  createLifeEventTypeModalShown.value = false;
+  lifeEventCategoryId.value = 0;
 
-  nextTick().then(() => newLifeEventCategory.value.focus());
+  nextTick().then(() => renameLifeEventCategory.value.focus());
 };
 
-const renameLifeEventTypeModal = (lifeEventCategory, lifeEventType) => {
+const renameLifeEventTypeModal = (lifeEventType) => {
   form.label = lifeEventType.label;
-  editLifeEventCategoryId.value = lifeEventCategory;
   editLifeEventTypeId.value = lifeEventType.id;
+  createLifeEventCategoryModalShown.value = false;
+  createLifeEventTypeModalShown.value = false;
+  editLifeEventCategoryId.value = 0;
+  lifeEventCategoryId.value = 0;
 
-  nextTick().then(() => newLifeEventType.value.focus());
+  nextTick().then(() => renameLifeEventType.value.focus());
 };
 
 const submit = () => {
@@ -228,13 +244,13 @@ const destroyLifeEventType = (lifeEventType) => {
     <!-- list of life event categories -->
     <div v-if="localLifeEventCategories.length > 0" class="mb-6">
       <draggable
-        :list="localLifeEventCategories"
+        v-model="localLifeEventCategories"
         item-key="id"
         :component-data="{ name: 'fade' }"
         handle=".handle"
         @change="updatePosition">
         <template #item="{ element }">
-          <div v-if="editLifeEventCategoryId !== element.id" class="">
+          <div v-if="editLifeEventCategoryId !== element.id">
             <div
               class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
               <div class="mb-3 flex items-center justify-between">
@@ -277,13 +293,13 @@ const destroyLifeEventType = (lifeEventType) => {
                 <p class="mb-1 text-sm text-gray-500">{{ $t('Life event types:') }}</p>
 
                 <draggable
-                  :list="element.life_event_types"
+                  v-model="element.life_event_types"
                   item-key="id"
                   :component-data="{ name: 'fade' }"
                   handle=".handle"
                   @change="updatePosition">
-                  <template #item="{ element2, id }">
-                    <div v-if="editLifeEventTypeId !== element2.id" class="">
+                  <template #item="{ element: element2 }">
+                    <div v-if="editLifeEventTypeId !== element2.id">
                       <div
                         class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
                         <div class="flex items-center justify-between">
@@ -312,7 +328,7 @@ const destroyLifeEventType = (lifeEventType) => {
 
                           <!-- actions -->
                           <ul class="text-sm">
-                            <li class="inline cursor-pointer" @click="renameLifeEventTypeModal(id, element2)">
+                            <li class="inline cursor-pointer" @click="renameLifeEventTypeModal(element2)">
                               <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                             </li>
                             <li
@@ -334,7 +350,7 @@ const destroyLifeEventType = (lifeEventType) => {
                         <errors :errors="form.errors" />
 
                         <text-input
-                          ref="newLifeEventType"
+                          ref="renameLifeEventType"
                           v-model="form.label"
                           :label="$t('Name')"
                           :type="'text'"
@@ -362,9 +378,9 @@ const destroyLifeEventType = (lifeEventType) => {
                     lifeEventCategoryId !== element.id
                   "
                   class="inline cursor-pointer text-sm text-blue-500 hover:underline"
-                  @click="showCreateLifeEventTypeModal(element)"
-                  >{{ $t('add a life event type') }}</span
-                >
+                  @click="showCreateLifeEventTypeModal(element)">
+                  {{ $t('add a life event type') }}
+                </span>
 
                 <!-- form: create new life event type -->
                 <form
@@ -384,11 +400,20 @@ const destroyLifeEventType = (lifeEventType) => {
                       :required="true"
                       :autocomplete="false"
                       :maxlength="255"
-                      @esc-key-pressed="createLifeEventTypeModalShown = false" />
+                      @esc-key-pressed="
+                        createLifeEventTypeModalShown = false;
+                        lifeEventCategoryId = 0;
+                      " />
                   </div>
 
                   <div class="flex justify-between p-5">
-                    <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createLifeEventTypeModalShown = false" />
+                    <pretty-span
+                      :text="$t('Cancel')"
+                      :class="'me-3'"
+                      @click="
+                        createLifeEventTypeModalShown = false;
+                        lifeEventCategoryId = 0;
+                      " />
                     <pretty-button :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
                   </div>
                 </form>
@@ -423,7 +448,7 @@ const destroyLifeEventType = (lifeEventType) => {
               <errors :errors="form.errors" />
 
               <text-input
-                ref="newLifeEventCategory"
+                ref="renameLifeEventCategory"
                 v-model="form.label"
                 :label="$t('Name')"
                 :type="'text'"
