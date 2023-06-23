@@ -245,7 +245,7 @@ const destroyLifeEventType = (lifeEventType) => {
     <div v-if="localLifeEventCategories.length > 0" class="mb-6">
       <draggable
         v-model="localLifeEventCategories"
-        :item-key="(e) => e.id"
+        item-key="id"
         :component-data="{ name: 'fade' }"
         handle=".handle"
         @change="updatePosition">
@@ -294,7 +294,7 @@ const destroyLifeEventType = (lifeEventType) => {
 
                 <draggable
                   v-model="element.life_event_types"
-                  :item-key="(e) => e.id"
+                  item-key="id"
                   :component-data="{ name: 'fade' }"
                   handle=".handle"
                   @change="updatePosition">
