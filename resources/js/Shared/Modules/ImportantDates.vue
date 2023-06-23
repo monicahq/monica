@@ -27,7 +27,7 @@ defineProps({
     </div>
 
     <!-- list of dates -->
-    <ul v-for="date in data.dates" :key="date.id" class="">
+    <ul v-for="date in data.dates" :key="date.id">
       <li class="mb-1 flex items-center justify-between hover:bg-slate-50 dark:bg-slate-800 hover:dark:bg-slate-900">
         <span class="text-sm">{{ date.label }}</span>
         <span class="text-sm">

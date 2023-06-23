@@ -111,7 +111,7 @@
                   class="mb-2 inline-block flex-none rounded-md bg-gray-200 px-2 py-1 text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-400">
                   {{ toRelationship }}
                 </p>
-                <div class="">
+                <div>
                   <!-- I don't know the name -->
                   <div class="mb-2 flex items-center">
                     <input

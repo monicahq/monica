@@ -332,7 +332,7 @@ const destroy = () => {
           </div>
 
           <!-- right -->
-          <div class="">
+          <div>
             <!-- Publish action -->
             <div class="mb-2 rounded-lg border border-gray-200 text-center dark:border-gray-700 dark:bg-gray-900">
               <div class="rounded-b-lg bg-gray-50 p-5 dark:bg-gray-900">

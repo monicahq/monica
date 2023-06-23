@@ -182,7 +182,7 @@ const toggle = (loan) => {
         <div class="border-b border-gray-200 dark:border-gray-700">
           <!-- loan options -->
           <div class="border-b border-gray-200 px-5 pb-3 pt-5 dark:border-gray-700">
-            <ul class="">
+            <ul>
               <li class="me-5 inline-block">
                 <div class="flex items-center">
                   <input
@@ -406,7 +406,7 @@ const toggle = (loan) => {
           <div class="border-b border-gray-200 dark:border-gray-700">
             <!-- loan options -->
             <div class="border-b border-gray-200 px-5 pb-3 pt-5 dark:border-gray-700">
-              <ul class="">
+              <ul>
                 <li class="me-5 inline-block">
                   <div class="flex items-center">
                     <input

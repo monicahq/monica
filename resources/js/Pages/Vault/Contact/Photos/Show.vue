@@ -102,7 +102,7 @@
           </span>
         </div>
 
-        <div class="">
+        <div>
           <img :src="data.url.display" alt="data.name" />
         </div>
       </div>

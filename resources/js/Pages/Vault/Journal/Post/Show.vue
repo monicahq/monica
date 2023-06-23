@@ -148,7 +148,7 @@ defineProps({
           </div>
 
           <!-- right -->
-          <div class="">
+          <div>
             <!-- contacts -->
             <div v-if="data.contacts.length > 0" class="mb-4">
               <p class="mb-2 text-sm font-semibold">{{ $t('Contacts in this post') }}</p>

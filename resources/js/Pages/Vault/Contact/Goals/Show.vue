@@ -114,7 +114,7 @@
             <p class="mb-2 text-xs">{{ $t('Details in the last year') }}</p>
             <div class="grid-calendar grid">
               <div v-for="week in localGoal.weeks" :key="week.id">
-                <div v-for="streak in week.streaks" :key="streak.id" class="">
+                <div v-for="streak in week.streaks" :key="streak.id">
                   <a-tooltip placement="topLeft" :title="streak.date" arrow-point-at-center>
                     <!-- there is a streak for this day -->
                     <div
