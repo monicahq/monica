@@ -266,7 +266,7 @@ const destroy = () => {
                   <span
                     ><Link :href="post.url.show" class="text-blue-500 hover:underline">{{ post.title }}</Link></span
                   >
-                  <p v-if="post.excerpt" class="">{{ post.excerpt }}</p>
+                  <p v-if="post.excerpt">{{ post.excerpt }}</p>
                 </div>
               </li>
             </ul>

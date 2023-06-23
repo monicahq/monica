@@ -96,7 +96,7 @@
                     {{ reminder.contact.name }}
                   </InertiaLink>
                 </div>
-                <p class="">
+                <p>
                   {{ reminder.label }}
                 </p>
               </div>

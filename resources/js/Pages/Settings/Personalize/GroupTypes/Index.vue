@@ -121,7 +121,7 @@
             handle=".handle"
             @change="updatePosition">
             <template #item="{ element }">
-              <div v-if="editGroupTypeId !== element.id" class="">
+              <div v-if="editGroupTypeId !== element.id">
                 <div
                   class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
                   <div class="mb-3 flex items-center justify-between">
@@ -170,7 +170,7 @@
                       handle=".handle"
                       @change="updatePosition">
                       <template #item="{ element: element2 }">
-                        <div v-if="editRoleId !== element2.id" class="">
+                        <div v-if="editRoleId !== element2.id">
                           <div
                             class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
                             <div class="flex items-center justify-between">

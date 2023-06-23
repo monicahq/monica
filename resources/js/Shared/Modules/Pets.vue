@@ -52,7 +52,7 @@
         <div class="p-5">
           <!-- pet categories -->
           <dropdown
-            v-model="form.pet_category_id"
+            v-model.number="form.pet_category_id"
             :data="data.pet_categories"
             :required="true"
             :placeholder="$t('Choose a value')"
@@ -117,7 +117,7 @@
               <div class="p-5">
                 <!-- pet categories -->
                 <dropdown
-                  v-model="form.pet_category_id"
+                  v-model.number="form.pet_category_id"
                   :data="data.pet_categories"
                   :required="true"
                   :placeholder="$t('Choose a value')"

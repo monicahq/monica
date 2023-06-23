@@ -253,7 +253,7 @@ const destroy = () => {
 
           <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
             <dropdown
-              v-model="form.address_type_id"
+              v-model.number="form.address_type_id"
               :data="data.address_types"
               :required="false"
               :placeholder="$t('Choose a value')"
@@ -414,7 +414,7 @@ const destroy = () => {
 
               <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
                 <dropdown
-                  v-model="form.address_type_id"
+                  v-model.number="form.address_type_id"
                   :data="data.address_types"
                   :required="false"
                   :placeholder="$t('Choose a value')"
@@ -595,7 +595,7 @@ const destroy = () => {
 
               <div class="grid grid-cols-2 gap-4 border-b border-gray-200 p-5 dark:border-gray-700">
                 <dropdown
-                  v-model="form.address_type_id"
+                  v-model.number="form.address_type_id"
                   :data="data.address_types"
                   :required="false"
                   :placeholder="$t('Choose a value')"

@@ -39,7 +39,7 @@
         <div class="border-b border-gray-200 p-5 dark:border-gray-700">
           <!-- group type -->
           <dropdown
-            v-model="form.group_id"
+            v-model.number="form.group_id"
             :data="localAvailableGroups"
             :required="true"
             :placeholder="$t('Choose a value')"
@@ -66,7 +66,7 @@
         <div v-if="chooseGroupTypeShown" class="border-b border-gray-200 p-5 dark:border-gray-700">
           <!-- group type -->
           <dropdown
-            v-model="form.group_type_id"
+            v-model.number="form.group_type_id"
             :data="data.group_types"
             :required="true"
             :placeholder="$t('Choose a value')"
@@ -78,7 +78,7 @@
         <div v-if="localGroupTypeRoles.length > 0 || chooseGroupTypeRoleShown" class="p-5">
           <!-- group role -->
           <dropdown
-            v-model="form.group_type_role_id"
+            v-model.number="form.group_type_role_id"
             :data="localGroupTypeRoles"
             :required="false"
             :placeholder="$t('Choose a value')"

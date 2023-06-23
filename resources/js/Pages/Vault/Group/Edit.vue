@@ -116,7 +116,7 @@ const update = () => {
           <!-- group type -->
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <dropdown
-              v-model="form.group_type_id"
+              v-model.number="form.group_type_id"
               :data="data.group_types"
               :required="true"
               :placeholder="$t('Choose a value')"
