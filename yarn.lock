@@ -3699,7 +3699,7 @@ __metadata:
     vite: ^4.3.9
     vue: ^3.3.4
     vue-clipboard3: ^2.0.0
-    vuedraggable-es: ^4.1.1
+    vuedraggable: ^4.1.0
     ziggy-js: 1.6.0
   languageName: unknown
   linkType: soft
@@ -4377,14 +4377,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vuedraggable-es@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "vuedraggable-es@npm:4.1.1"
+"vuedraggable@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "vuedraggable@npm:4.1.0"
   dependencies:
     sortablejs: 1.14.0
   peerDependencies:
-    vue: ^3.2.31
-  checksum: 2c11965a6c7657bf9f534149d18da22d6b35744b83f1196637a5437ec5fc85c6f9770b1e73e359ec7635f698fbb4a1ede3a6bda16a46cd9faee49f67af431bd3
+    vue: ^3.0.1
+  checksum: 8b4c5a6b384361df97f7a3595d7772dfbb086bf97c6702a1117b532a9e49db2908cb5d21b7959cb10179714c4c2225e4be0b77b29f778923169ea8a8197a429f
   languageName: node
   linkType: hard
 

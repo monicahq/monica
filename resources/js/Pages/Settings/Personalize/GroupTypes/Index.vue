@@ -169,7 +169,7 @@
                       :component-data="{ name: 'fade' }"
                       handle=".handle"
                       @change="updatePosition">
-                      <template #item="{ element2, id }">
+                      <template #item="{ element: element2 }">
                         <div v-if="editRoleId !== element2.id" class="">
                           <div
                             class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
@@ -199,7 +199,7 @@
 
                               <!-- actions -->
                               <ul class="text-sm">
-                                <li class="inline cursor-pointer" @click="renameRoleModal(id, element2)">
+                                <li class="inline cursor-pointer" @click="renameRoleModal(element2)">
                                   <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                                 </li>
                                 <li
@@ -362,7 +362,7 @@ import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
-import draggable from 'vuedraggable-es';
+import draggable from 'vuedraggable';
 
 export default {
   components: {
@@ -447,11 +447,11 @@ export default {
       this.$nextTick().then(() => this.$refs.renameGroupType.focus());
     },
 
-    renameRoleModal(groupTypeId, role) {
+    renameRoleModal(role) {
       this.form.label = role.label;
-      this.editGroupTypeId = groupTypeId;
       this.editRoleId = role.id;
       this.roleGroupTypeId = 0;
+      this.editGroupTypeId = 0;
       this.createRoleModalShown = false;
       this.createGroupTypeModalShown = false;
 
