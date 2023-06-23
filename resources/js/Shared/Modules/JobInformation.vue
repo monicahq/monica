@@ -37,7 +37,7 @@
           <!-- companies -->
           <dropdown
             v-if="showDropdownCompanies"
-            v-model="form.company_id"
+            v-model.number="form.company_id"
             :data="localCompanies"
             :required="false"
             :class="'mb-2'"

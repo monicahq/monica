@@ -57,7 +57,7 @@
         <div class="p-5">
           <!-- contact information types -->
           <dropdown
-            v-model="form.contact_information_type_id"
+            v-model.number="form.contact_information_type_id"
             :data="data.contact_information_types"
             :required="true"
             :placeholder="$t('Choose a value')"
@@ -127,7 +127,7 @@
               <div class="p-5">
                 <!-- contact information types -->
                 <dropdown
-                  v-model="form.contact_information_type_id"
+                  v-model.number="form.contact_information_type_id"
                   :data="data.contact_information_types"
                   :required="true"
                   :placeholder="$t('Choose a value')"

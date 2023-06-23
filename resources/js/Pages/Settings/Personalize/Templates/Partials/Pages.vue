@@ -219,7 +219,7 @@ export default {
       this.renamePageModalShownId = page.id;
 
       this.$nextTick().then(() => {
-        this.$refs.rename[0].focus();
+        this.$refs.rename.focus();
       });
     },
 
