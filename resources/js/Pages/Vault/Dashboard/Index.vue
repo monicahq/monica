@@ -62,8 +62,12 @@ const changeTab = (tab) => {
                 <button
                   @click="changeTab('activity')"
                   type="button"
-                  :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': currentTab === 'activity' }"
-                  class="inline-flex items-center rounded-s-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                  :class="
+                    currentTab === 'activity'
+                      ? 'bg-gray-100 text-blue-700 dark:bg-gray-900 dark:text-blue-300'
+                      : 'bg-white text-gray-900 dark:bg-gray-700 dark:text-white'
+                  "
+                  class="inline-flex items-center rounded-s-lg border-y border-s border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 hover:dark:bg-gray-600 hover:dark:text-blue-300 dark:focus:ring-blue-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -84,8 +88,12 @@ const changeTab = (tab) => {
                 <button
                   @click="changeTab('life_events')"
                   type="button"
-                  :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': currentTab === 'life_events' }"
-                  class="inline-flex items-center border-y border-e border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                  :class="
+                    currentTab === 'life_events'
+                      ? 'bg-gray-100 text-blue-700 dark:bg-gray-900 dark:text-blue-300'
+                      : 'bg-white text-gray-900 dark:bg-gray-700 dark:text-white'
+                  "
+                  class="inline-flex items-center border-y border-e border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 hover:dark:bg-gray-600 hover:dark:text-blue-300 dark:focus:ring-blue-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -109,10 +117,12 @@ const changeTab = (tab) => {
                 <button
                   @click="changeTab('life_metrics')"
                   type="button"
-                  :class="{
-                    'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': currentTab === 'life_metrics',
-                  }"
-                  class="inline-flex items-center rounded-e-lg border-y border-e border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                  :class="
+                    currentTab === 'life_metrics'
+                      ? 'bg-gray-100 text-blue-700 dark:bg-gray-900 dark:text-blue-300'
+                      : 'bg-white text-gray-900 dark:bg-gray-700 dark:text-white'
+                  "
+                  class="inline-flex items-center rounded-e-lg border-y border-e border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 hover:dark:bg-gray-600 hover:dark:text-blue-300 dark:focus:ring-blue-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
