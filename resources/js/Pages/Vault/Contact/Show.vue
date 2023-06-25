@@ -254,7 +254,7 @@ const destroyAvatar = () => {
           <!-- right -->
           <div class="p-3 sm:px-3 sm:py-0">
             <!-- quick facts -->
-            <Quick-facts
+            <QuickFacts
               v-if="data.quick_fact_template_entries.templates.length > 0"
               :data="data.quick_fact_template_entries" />
 
