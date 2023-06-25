@@ -149,7 +149,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
         <div v-for="timelineEvent in localTimelines" :key="timelineEvent.id" class="mb-4">
           <!-- timeline event name -->
           <div
-            class="mb-2 flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 hover:dark:bg-slate-900"
+            class="mb-2 flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-900"
             @click="toggleTimelineEventVisibility(timelineEvent)">
             <!-- timeline date / label / number of events -->
             <div>
@@ -197,7 +197,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
               v-for="lifeEvent in timelineEvent.life_events"
               :key="lifeEvent.id"
               :class="!lifeEvent.collapsed ? 'border' : ''"
-              class="mb-2 ms-6 rounded-lg border-gray-200 dark:border-gray-700">
+              class="mb-2 ms-6 rounded-lg border-gray-200 dark:border-gray-700 dark:bg-gray-900">
               <template v-if="lifeEvent.edit">
                 <create-life-event
                   :data="data"
@@ -370,7 +370,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
       <!-- blank state -->
       <div
         v-if="localTimelines.length === 0"
-        class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+        class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <img src="/img/contact_blank_life_event.svg" :alt="$t('Life events')" class="mx-auto mt-4 h-20 w-20" />
         <p class="px-5 pb-5 pt-2 text-center">{{ $t('Life events let you document what happened in your life.') }}</p>
       </div>

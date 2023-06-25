@@ -17,7 +17,7 @@ const props = defineProps({
   label: String,
   labelCta: {
     type: String,
-    default: () => trans('+ Add a contact'),
+    default: () => trans('+ add a contact'),
   },
   type: {
     type: String,
