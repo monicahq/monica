@@ -40,17 +40,17 @@ const changeTab = (tab) => {
 </script>
 
 <template>
-  <layout title="Dashboard" :inside-vault="true" :layout-data="layoutData">
+  <Layout title="Dashboard" :inside-vault="true" :layout-data="layoutData">
     <main class="relative sm:mt-24">
       <div class="max-w-8xl mx-auto py-2 sm:px-6 sm:py-6 lg:px-8">
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
           <!-- left -->
           <div class="p-3 sm:p-0">
             <!-- favorites -->
-            <favorites v-if="favorites.length > 0" :data="favorites" />
+            <Favorites v-if="favorites.length > 0" :data="favorites" />
 
             <!-- last updated contacts -->
-            <last-updated :data="lastUpdatedContacts" />
+            <LastUpdated :data="lastUpdatedContacts" />
           </div>
 
           <!-- middle -->
@@ -80,7 +80,6 @@ const changeTab = (tab) => {
                       stroke-linejoin="round"
                       d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25" />
                   </svg>
-
                   {{ $t('Activity in this vault') }}
                 </button>
 
@@ -135,37 +134,36 @@ const changeTab = (tab) => {
                       stroke-linejoin="round"
                       d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
                   </svg>
-
                   {{ $t('Life metrics') }}
                 </button>
               </div>
             </div>
 
             <!-- feed tab -->
-            <feed v-if="currentTab === 'activity'" :url="url.feed" :contact-view-mode="false" />
+            <Feed v-if="currentTab === 'activity'" :url="url.feed" :contact-view-mode="false" />
 
             <!-- life events -->
-            <life-event v-if="currentTab === 'life_events'" :data="lifeEvents" :layout-data="layoutData" />
+            <LifeEvent v-else-if="currentTab === 'life_events'" :data="lifeEvents" :layout-data="layoutData" />
 
             <!-- life metrics tab -->
-            <life-metrics v-if="currentTab === 'life_metrics'" :data="lifeMetrics" />
+            <LifeMetrics v-else-if="currentTab === 'life_metrics'" :data="lifeMetrics" />
           </div>
 
           <!-- right -->
           <div class="p-3 sm:p-0">
             <!-- mood tracking -->
-            <mood-tracking-events :data="moodTrackingEvents" />
+            <MoodTrackingEvents :data="moodTrackingEvents" />
 
             <!-- upcoming reminders -->
-            <upcoming-reminders :data="upcomingReminders" />
+            <UpcomingReminders :data="upcomingReminders" />
 
             <!-- tasks -->
-            <due-tasks :data="dueTasks" />
+            <DueTasks :data="dueTasks" />
           </div>
         </div>
       </div>
     </main>
-  </layout>
+  </Layout>
 </template>
 
 <style lang="scss" scoped>
