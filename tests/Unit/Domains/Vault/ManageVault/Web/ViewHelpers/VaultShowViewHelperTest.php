@@ -226,8 +226,11 @@ class VaultShowViewHelperTest extends TestCase
                     'description' => $task->description,
                     'completed' => false,
                     'completed_at' => null,
-                    'due_at' => 'Jan 01, 2021',
-                    'due_at_late' => true,
+                    'due_at' => [
+                        'value' => '2021-01-01',
+                        'formatted' => 'Jan 01, 2021',
+                        'is_late' => true,
+                    ],
                     'url' => [
                         'toggle' => env('APP_URL').'/vaults/'.$vault->id.'/contacts/'.$contact->id.'/tasks/'.$task->id.'/toggle',
                     ],
