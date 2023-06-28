@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { loadLanguageAsync, getActiveLanguage, trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods.js';
@@ -15,20 +15,10 @@ const props = defineProps({
 
 const loadingState = ref('');
 const editMode = ref(false);
-const localLocaleI18n = ref(props.data.locale_i18n);
+const localLocale = ref(props.data.name);
 const form = useForm({
-  locale: props.data.locale,
+  locale: props.data.id,
   errors: [],
-});
-
-const enableEditMode = () => {
-  editMode.value = true;
-};
-
-const locales = computed(() => {
-  return _.map(props.data.languages, (value, key) => {
-    return { id: key, name: value };
-  });
 });
 
 const submit = () => {
@@ -38,12 +28,13 @@ const submit = () => {
     .post(props.data.url.store, form.data())
     .then((response) => {
       flash(trans('Changes saved'), 'success');
-      localLocaleI18n.value = response.data.data.locale_i18n;
+      localLocale.value = response.data.data.name;
       editMode.value = false;
       loadingState.value = null;
 
       if (getActiveLanguage() !== form.locale) {
-        loadLanguageAsync(response.data.data.locale);
+        loadLanguageAsync(response.data.data.id);
+        document.getRootNode().querySelector('html').setAttribute('dir', response.data.data.dir);
       }
     })
     .catch((error) => {
@@ -63,34 +54,34 @@ const submit = () => {
           {{ $t('Language of the application') }}
         </span>
 
-        <help :url="$page.props.help_links.settings_preferences_language" :top="'5px'" />
+        <Help :url="$page.props.help_links.settings_preferences_language" :top="'5px'" />
       </h3>
-      <pretty-button v-if="!editMode" :text="$t('Edit')" @click="enableEditMode" />
+      <PrettyButton v-if="!editMode" :text="$t('Edit')" @click="editMode = true" />
     </div>
 
     <!-- normal mode -->
     <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="px-5 py-2">
         <span class="mb-2 block">{{ $t('Current language:') }}</span>
-        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{ localLocaleI18n }}</span>
+        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{ localLocale }}</span>
       </p>
     </div>
 
     <!-- edit mode -->
     <form
-      v-if="editMode"
+      v-else
       class="mb-6 rounded-lg border border-gray-200 bg-gray-50 bg-white dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="submit()">
       <div class="border-b border-gray-200 px-5 py-2 dark:border-gray-700">
-        <errors :errors="form.errors" />
+        <Errors :errors="form.errors" />
 
-        <Dropdown v-model="form.locale" name="locale" :data="locales" />
+        <Dropdown v-model="form.locale" name="locale" :data="data.locales" />
       </div>
 
       <!-- actions -->
       <div class="flex justify-between p-5">
-        <pretty-link :text="$t('Cancel')" :class="'me-3'" @click="editMode = false" />
-        <pretty-button :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
+        <PrettyLink :text="$t('Cancel')" :class="'me-3'" @click="editMode = false" />
+        <PrettyButton :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
       </div>
     </form>
   </div>

@@ -5,6 +5,8 @@ namespace App\Domains\Settings\ManageUserPreferences\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\User;
 use App\Services\BaseService;
+use Illuminate\Support\Facades\App;
+use Illuminate\Validation\Rule;
 
 class StoreLocale extends BaseService implements ServiceInterface
 {
@@ -18,7 +20,12 @@ class StoreLocale extends BaseService implements ServiceInterface
         return [
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
-            'locale' => 'required|string|max:10',
+            'locale' => [
+                'required',
+                'string',
+                'max:5',
+                Rule::in(config('localizer.supported-locales')),
+            ],
         ];
     }
 
@@ -49,5 +56,7 @@ class StoreLocale extends BaseService implements ServiceInterface
     {
         $this->author->locale = $this->data['locale'];
         $this->author->save();
+
+        App::setLocale($this->data['locale']);
     }
 }
