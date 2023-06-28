@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const props = defineProps({
   id: {
@@ -62,13 +62,20 @@ const localInputClasses = computed(() => {
   ];
 });
 
+onMounted(() => {
+  if (props.autofocus) {
+    focus();
+  }
+});
+
 const sendEscKey = () => {
   emit('esc-key-pressed');
 };
+const focus = () => {
+  input.value.focus();
+};
 
-defineExpose({
-  focus: () => input.value.focus(),
-});
+defineExpose({ focus: focus });
 </script>
 
 <template>
