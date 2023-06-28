@@ -192,11 +192,15 @@ class UserPreferencesIndexViewHelper
     public static function dtoLocale(User $user): array
     {
         return [
-            'locale' => $user->locale,
-            'locale_i18n' => self::language($user->locale),
-            'languages' => collect(config('localizer.supported-locales'))->mapWithKeys(fn ($locale) => [
-                $locale => self::language($locale),
-            ])->sortByCollator(fn ($value) => $value),
+            'id' => $user->locale,
+            'name' => self::language($user->locale),
+            'dir' => htmldir(),
+            'locales' => collect(config('localizer.supported-locales'))
+                ->map(fn ($locale) => [
+                    'id' => $locale,
+                    'name' => self::language($locale),
+                ])
+                ->sortByCollator(fn ($value) => $value['name']),
             'url' => [
                 'store' => route('settings.preferences.locale.store'),
             ],
@@ -205,6 +209,6 @@ class UserPreferencesIndexViewHelper
 
     public static function language(?string $code): string
     {
-        return $code !== null ? trans('auth.lang', locale: $code) : '';
+        return $code !== null ? __('auth.lang', [], $code) : '';
     }
 }

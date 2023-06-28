@@ -112,7 +112,7 @@
               <!-- name -->
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <text-input
-                  ref="newData"
+                  ref="rename"
                   v-model="form.data"
                   :label="$t('Content')"
                   :type="'text'"
@@ -121,7 +121,7 @@
                   :required="false"
                   :autocomplete="false"
                   :maxlength="255"
-                  @esc-key-pressed="addContactInformationModalShown = false" />
+                  @esc-key-pressed="editedContactInformationId = 0" />
               </div>
 
               <div class="p-5">
@@ -215,6 +215,10 @@ export default {
       this.editedContactInformationId = info.id;
       this.form.contact_information_type_id = info.contact_information_type.id;
       this.form.data = info.data;
+
+      this.$nextTick().then(() => {
+        this.$refs.rename[0].focus();
+      });
     },
 
     submit() {
