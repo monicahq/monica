@@ -254,7 +254,7 @@ const destroyAvatar = () => {
           <!-- right -->
           <div class="p-3 sm:px-3 sm:py-0">
             <!-- quick facts -->
-            <Quick-facts
+            <QuickFacts
               v-if="data.quick_fact_template_entries.templates.length > 0"
               :data="data.quick_fact_template_entries" />
 
@@ -278,15 +278,19 @@ const destroyAvatar = () => {
 
             <!-- all the pages -->
             <div class="mb-8 w-full border-b border-gray-200 dark:border-gray-700">
-              <div class="flex overflow-x-auto">
+              <div class="flex overflow-x-hidden">
                 <div v-for="page in data.template_pages" :key="page.id" class="me-2 flex-none">
                   <Link
                     :href="page.url.show"
-                    :class="{ 'border-orange-500 hover:border-orange-500': page.selected }"
-                    class="inline-block border-b-2 border-transparent px-2 pb-2 hover:border-gray-200 hover:dark:border-gray-700">
-                    <span class="mb-0 block rounded-sm px-3 py-1 hover:bg-gray-100 hover:dark:bg-gray-900">{{
-                      page.name
-                    }}</span>
+                    :class="
+                      page.selected
+                        ? 'border-orange-500 hover:border-orange-500'
+                        : 'border-transparent hover:border-gray-200 hover:dark:border-gray-700'
+                    "
+                    class="inline-block border-b-2 px-2 pb-2">
+                    <span class="mb-0 block rounded-sm px-3 py-1 hover:bg-gray-100 hover:dark:bg-gray-900">
+                      {{ page.name }}
+                    </span>
                   </Link>
                 </div>
               </div>

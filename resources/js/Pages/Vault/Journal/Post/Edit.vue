@@ -277,7 +277,7 @@ const destroy = () => {
                 <div v-else class="mb-6 flex items-center">
                   <p
                     class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300">
-                    {{ $t('+ Add another photo') }}
+                    {{ $t('+ add another photo') }}
                   </p>
                 </div>
               </uploadcare>

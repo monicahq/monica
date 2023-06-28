@@ -107,11 +107,7 @@ const destroy = (task) => {
 
         <span class="font-semibold"> {{ $t('Tasks') }} </span>
       </div>
-      <pretty-button
-        :text="$t('Add a task')"
-        :icon="'plus'"
-        :class="'w-full sm:w-fit'"
-        @click="showCreateTaskModal()" />
+      <PrettyButton :text="$t('Add a task')" :icon="'plus'" :class="'w-full sm:w-fit'" @click="showCreateTaskModal()" />
     </div>
 
     <!-- add a task modal -->
@@ -148,8 +144,8 @@ const destroy = (task) => {
                 v-if="task.due_at !== null"
                 :class="
                   task.due_at.is_late
-                    ? 'bg-red-400/10 text-red-600 dark:text-red-400'
-                    : 'bg-sky-400/10 text-sky-600 dark:text-sky-400'
+                    ? 'bg-red-400/10 text-red-600 dark:bg-red-600/10 dark:text-red-400'
+                    : 'bg-sky-400/10 text-sky-600 dark:bg-sky-600/10 dark:text-sky-400'
                 "
                 class="ms-2 flex items-center rounded-full px-2 py-0.5 text-xs font-medium leading-5">
                 <svg
@@ -169,7 +165,7 @@ const destroy = (task) => {
             </label>
           </div>
 
-          <hover-menu :show-edit="true" :show-delete="true" @edit="showUpdateTaskModal(task)" @delete="destroy(task)" />
+          <HoverMenu :show-edit="true" :show-delete="true" @edit="showUpdateTaskModal(task)" @delete="destroy(task)" />
         </div>
 
         <!-- edit task -->
@@ -233,7 +229,7 @@ const destroy = (task) => {
               </label>
             </div>
 
-            <hover-menu
+            <HoverMenu
               :show-edit="true"
               :show-delete="true"
               @edit="showUpdateCompletedTaskModal(task)"

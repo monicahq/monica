@@ -54,7 +54,7 @@
       <div
         v-for="goal in localGoals"
         :key="goal.id"
-        class="mb-4 rounded border border-gray-200 last:mb-0 dark:border-gray-700">
+        class="mb-4 rounded border border-gray-200 last:mb-0 dark:border-gray-700 dark:bg-gray-900">
         <div v-if="editedGoalId !== goal.id">
           <div class="flex items-center justify-between border-b border-gray-200 p-3 dark:border-gray-700">
             <div class="font-semibold text-gray-600 dark:text-gray-400">

@@ -40,17 +40,17 @@ const changeTab = (tab) => {
 </script>
 
 <template>
-  <layout title="Dashboard" :inside-vault="true" :layout-data="layoutData">
+  <Layout title="Dashboard" :inside-vault="true" :layout-data="layoutData">
     <main class="relative sm:mt-24">
       <div class="max-w-8xl mx-auto py-2 sm:px-6 sm:py-6 lg:px-8">
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
           <!-- left -->
           <div class="p-3 sm:p-0">
             <!-- favorites -->
-            <favorites v-if="favorites.length > 0" :data="favorites" />
+            <Favorites v-if="favorites.length > 0" :data="favorites" />
 
             <!-- last updated contacts -->
-            <last-updated :data="lastUpdatedContacts" />
+            <LastUpdated :data="lastUpdatedContacts" />
           </div>
 
           <!-- middle -->
@@ -62,8 +62,12 @@ const changeTab = (tab) => {
                 <button
                   @click="changeTab('activity')"
                   type="button"
-                  :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': currentTab === 'activity' }"
-                  class="inline-flex items-center rounded-s-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                  :class="
+                    currentTab === 'activity'
+                      ? 'bg-gray-100 text-blue-700 dark:bg-gray-900 dark:text-blue-300'
+                      : 'bg-white text-gray-900 dark:bg-gray-700 dark:text-white'
+                  "
+                  class="inline-flex items-center rounded-s-lg border-y border-s border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 hover:dark:bg-gray-600 hover:dark:text-blue-300 dark:focus:ring-blue-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -76,7 +80,6 @@ const changeTab = (tab) => {
                       stroke-linejoin="round"
                       d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25" />
                   </svg>
-
                   {{ $t('Activity in this vault') }}
                 </button>
 
@@ -84,8 +87,12 @@ const changeTab = (tab) => {
                 <button
                   @click="changeTab('life_events')"
                   type="button"
-                  :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': currentTab === 'life_events' }"
-                  class="inline-flex items-center border-y border-e border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                  :class="
+                    currentTab === 'life_events'
+                      ? 'bg-gray-100 text-blue-700 dark:bg-gray-900 dark:text-blue-300'
+                      : 'bg-white text-gray-900 dark:bg-gray-700 dark:text-white'
+                  "
+                  class="inline-flex items-center border-y border-e border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 hover:dark:bg-gray-600 hover:dark:text-blue-300 dark:focus:ring-blue-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -109,10 +116,12 @@ const changeTab = (tab) => {
                 <button
                   @click="changeTab('life_metrics')"
                   type="button"
-                  :class="{
-                    'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': currentTab === 'life_metrics',
-                  }"
-                  class="inline-flex items-center rounded-e-lg border-y border-e border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                  :class="
+                    currentTab === 'life_metrics'
+                      ? 'bg-gray-100 text-blue-700 dark:bg-gray-900 dark:text-blue-300'
+                      : 'bg-white text-gray-900 dark:bg-gray-700 dark:text-white'
+                  "
+                  class="inline-flex items-center rounded-e-lg border-y border-e border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 hover:dark:bg-gray-600 hover:dark:text-blue-300 dark:focus:ring-blue-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -125,37 +134,36 @@ const changeTab = (tab) => {
                       stroke-linejoin="round"
                       d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
                   </svg>
-
                   {{ $t('Life metrics') }}
                 </button>
               </div>
             </div>
 
             <!-- feed tab -->
-            <feed v-if="currentTab === 'activity'" :url="url.feed" :contact-view-mode="false" />
+            <Feed v-if="currentTab === 'activity'" :url="url.feed" :contact-view-mode="false" />
 
             <!-- life events -->
-            <life-event v-if="currentTab === 'life_events'" :data="lifeEvents" :layout-data="layoutData" />
+            <LifeEvent v-else-if="currentTab === 'life_events'" :data="lifeEvents" :layout-data="layoutData" />
 
             <!-- life metrics tab -->
-            <life-metrics v-if="currentTab === 'life_metrics'" :data="lifeMetrics" />
+            <LifeMetrics v-else-if="currentTab === 'life_metrics'" :data="lifeMetrics" />
           </div>
 
           <!-- right -->
           <div class="p-3 sm:p-0">
             <!-- mood tracking -->
-            <mood-tracking-events :data="moodTrackingEvents" />
+            <MoodTrackingEvents :data="moodTrackingEvents" />
 
             <!-- upcoming reminders -->
-            <upcoming-reminders :data="upcomingReminders" />
+            <UpcomingReminders :data="upcomingReminders" />
 
             <!-- tasks -->
-            <due-tasks :data="dueTasks" />
+            <DueTasks :data="dueTasks" />
           </div>
         </div>
       </div>
     </main>
-  </layout>
+  </Layout>
 </template>
 
 <style lang="scss" scoped>

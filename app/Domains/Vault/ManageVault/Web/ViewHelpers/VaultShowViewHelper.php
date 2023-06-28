@@ -116,7 +116,7 @@ class VaultShowViewHelper
         $tasksCollection = $vault->contacts()
             ->with('tasks')
             ->get()
-            ->flatMap(fn ($contact) => $contact->tasks)
+            ->flatMap(fn (Contact $contact) => $contact->tasks)
             ->where('completed', false)
             ->where('due_at', '<=', Carbon::now()->addDays(30))
             ->sortBy('due_at')
@@ -126,8 +126,11 @@ class VaultShowViewHelper
                 'description' => $task->description,
                 'completed' => $task->completed,
                 'completed_at' => $task->completed_at !== null ? DateHelper::format($task->completed_at, $user) : null,
-                'due_at' => $task->due_at !== null ? DateHelper::format($task->due_at, $user) : null,
-                'due_at_late' => optional($task->due_at)->isPast() ?? false,
+                'due_at' => $task->due_at !== null ? [
+                    'formatted' => DateHelper::format($task->due_at, $user),
+                    'value' => $task->due_at->format('Y-m-d'),
+                    'is_late' => $task->due_at->isPast(),
+                ] : null,
                 'url' => [
                     'toggle' => route('contact.task.toggle', [
                         'vault' => $task->contact->vault_id,

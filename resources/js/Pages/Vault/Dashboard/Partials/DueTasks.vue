@@ -1,3 +1,18 @@
+<script setup>
+import { Link } from '@inertiajs/vue3';
+import Avatar from '@/Shared/Avatar.vue';
+
+defineProps({
+  data: Object,
+});
+
+const toggle = (task) => {
+  axios.put(task.url.toggle).catch((error) => {
+    this.form.errors = error.response.data;
+  });
+};
+</script>
+
 <template>
   <div class="mb-10">
     <h3 class="mb-3 border-b border-gray-200 pb-1 font-medium dark:border-gray-800">
@@ -20,7 +35,7 @@
     </h3>
 
     <!-- list of tasks -->
-    <div v-if="data.tasks.length > 0">
+    <div v-if="Object.keys(data.tasks).length > 0">
       <ul class="mb-4 rounded-lg border border-gray-200 dark:border-gray-800 dark:bg-gray-900">
         <li
           v-for="task in data.tasks"
@@ -48,7 +63,7 @@
                     ? 'bg-red-400/10 text-red-600 dark:bg-red-600/10 dark:text-red-400'
                     : 'bg-sky-400/10 text-sky-600 dark:bg-sky-600/10 dark:text-sky-400'
                 "
-                class="me-4 ms-2 flex items-center rounded-full px-2 py-0.5 text-xs font-medium leading-5 dark:text-sky-400">
+                class="me-4 ms-2 flex items-center rounded-full px-2 py-0.5 text-xs font-medium leading-5">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="me-1 h-3 w-3"
@@ -66,11 +81,11 @@
 
               <!-- contact -->
               <div class="flex items-center">
-                <avatar :data="task.contact.avatar" :class="'me-2 h-5 w-5 rounded-full'" />
+                <Avatar :data="task.contact.avatar" :class="'me-2 h-5 w-5 rounded-full'" />
 
-                <InertiaLink :href="task.contact.url.show" class="text-blue-500 hover:underline">
+                <Link :href="task.contact.url.show" class="text-blue-500 hover:underline">
                   {{ task.contact.name }}
-                </InertiaLink>
+                </Link>
               </div>
             </div>
           </div>
@@ -80,7 +95,7 @@
 
     <!-- blank state -->
     <div
-      v-if="data.tasks.length === 0"
+      v-else
       class="mb-2 flex items-center rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-800 dark:bg-gray-900">
       <img src="/img/dashboard_blank_tasks.svg" :alt="$t('Tasks')" class="me-2 h-14 w-14" />
       <p class="px-5 text-center">
@@ -89,41 +104,14 @@
     </div>
 
     <div class="text-center">
-      <InertiaLink
+      <Link
         :href="data.url.index"
         class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
         {{ $t('View all') }}
-      </InertiaLink>
+      </Link>
     </div>
   </div>
 </template>
-
-<script>
-import { Link } from '@inertiajs/vue3';
-import Avatar from '@/Shared/Avatar.vue';
-
-export default {
-  components: {
-    InertiaLink: Link,
-    Avatar,
-  },
-
-  props: {
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-
-  methods: {
-    toggle(task) {
-      axios.put(task.url.toggle).catch((error) => {
-        this.form.errors = error.response.data;
-      });
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .icon-sidebar {

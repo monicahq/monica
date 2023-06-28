@@ -27,7 +27,7 @@ class ModuleGroupsViewHelper
         $availableGroupsCollection = $availableGroups->map(fn (Group $group) => self::dto($contact, $group));
         $availableGroupsCollection->prepend([
             'id' => 0,
-            'name' => trans('+ Create a group'),
+            'name' => trans('+ create a group'),
             'selected' => false,
         ]);
 

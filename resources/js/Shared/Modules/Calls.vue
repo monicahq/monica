@@ -289,7 +289,7 @@ const destroy = (call) => {
               <label
                 for="contact"
                 class="ms-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                {{ $t(':name called', { name: data.contact_name }) }}
+                {{ $t(':Name called', { name: data.contact_name }) }}
               </label>
             </div>
 
@@ -304,7 +304,7 @@ const destroy = (call) => {
               <label
                 for="contact_not_answered"
                 class="ms-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                {{ $t(':name called, but I didn’t answer', { name: data.contact_name }) }}
+                {{ $t(':Name called, but I didn’t answer', { name: data.contact_name }) }}
               </label>
             </div>
           </div>
@@ -444,7 +444,7 @@ const destroy = (call) => {
             <span
               v-else
               class="me-2 rounded border border-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800">
-              {{ $t(':name called', { name: data.contact_name }) }}
+              {{ $t(':Name called', { name: data.contact_name }) }}
             </span>
 
             <!-- reason, if defined -->
@@ -568,7 +568,7 @@ const destroy = (call) => {
                   <label
                     for="contact"
                     class="ms-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {{ $t(':name called', { name: data.contact_name }) }}
+                    {{ $t(':Name called', { name: data.contact_name }) }}
                   </label>
                 </div>
 
@@ -583,7 +583,7 @@ const destroy = (call) => {
                   <label
                     for="contact_not_answered"
                     class="ms-2 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {{ $t(':name called, but I didn’t answer', { name: data.contact_name }) }}
+                    {{ $t(':Name called, but I didn’t answer', { name: data.contact_name }) }}
                   </label>
                 </div>
               </div>

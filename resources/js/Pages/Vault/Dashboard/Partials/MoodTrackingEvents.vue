@@ -176,7 +176,11 @@ const submit = () => {
 
         <!-- note -->
         <div v-if="noteFieldShown" class="mt-4">
-          <text-area v-model="form.note" :label="'Add a note'" :maxlength="65535" :textarea-class="'block w-full'" />
+          <text-area
+            v-model="form.note"
+            :label="$t('Add a note')"
+            :maxlength="65535"
+            :textarea-class="'block w-full'" />
         </div>
 
         <!-- hours slept -->
