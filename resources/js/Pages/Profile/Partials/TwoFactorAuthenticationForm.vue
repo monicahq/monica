@@ -162,7 +162,7 @@ const disableTwoFactorAuthentication = () => {
           </div>
 
           <div v-if="confirming" class="mt-4">
-            <JetLabel for="code" value="Code" />
+            <JetLabel for="code" :value="$t('Code')" />
 
             <JetInput
               id="code"

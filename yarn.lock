@@ -594,6 +594,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@simplewebauthn/browser@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "@simplewebauthn/browser@npm:7.2.0"
+  dependencies:
+    "@simplewebauthn/typescript-types": "*"
+  checksum: 1eb8193e671307936cca3305b44860716e3c081effb83f11f35293cb411fc07e47c3e1ce0194322afab9d24b5e5cbde8c566daf8a21dcf8b2d872169cd04ce3d
+  languageName: node
+  linkType: hard
+
+"@simplewebauthn/typescript-types@npm:*":
+  version: 7.0.0
+  resolution: "@simplewebauthn/typescript-types@npm:7.0.0"
+  checksum: 11e55e74035e4a88287d5a615939c9cfffc6e05520dc947b68d77a1b5b301707137c2e29b5b279f91e3e4a9b472226fb6c7025144a6057990b6841145fdd4959
+  languageName: node
+  linkType: hard
+
 "@tailwindcss/forms@npm:^0.5.2":
   version: 0.5.3
   resolution: "@tailwindcss/forms@npm:0.5.3"
@@ -3670,6 +3686,7 @@ __metadata:
     "@popperjs/core": ^2.11.8
     "@sentry/tracing": ^7.11.1
     "@sentry/vue": ^7.54.0
+    "@simplewebauthn/browser": ^7.2.0
     "@tailwindcss/forms": ^0.5.2
     "@tailwindcss/typography": ^0.5.7
     "@vitejs/plugin-basic-ssl": ^1.0.1
