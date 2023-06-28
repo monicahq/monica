@@ -283,8 +283,9 @@ class UserPreferencesIndexViewHelperTest extends TestCase
             'locale' => 'fr',
         ]);
         $array = UserPreferencesIndexViewHelper::dtoLocale($user);
-        $this->assertEquals('fr', $array['locale']);
-        $this->assertEquals('Français', $array['locale_i18n']);
+        $this->assertEquals('fr', $array['id']);
+        $this->assertEquals('Français', $array['name']);
+        $this->assertEquals('ltr', $array['dir']);
         $this->assertEquals([
             'store' => env('APP_URL').'/settings/preferences/locale',
         ], $array['url']);
