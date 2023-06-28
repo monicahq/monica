@@ -1,5 +1,6 @@
-import emitter from 'tiny-emitter/instance';
 import { computed } from 'vue';
+import { trans } from 'laravel-vue-i18n';
+import emitter from 'tiny-emitter/instance';
 
 /**
  * Flash a message.
