@@ -59,7 +59,9 @@ const change = (event) => {
 };
 
 defineExpose({
-  focus: () => input.value.focus(),
+  focus: () => {
+    input.value.focus();
+  },
 });
 </script>
 

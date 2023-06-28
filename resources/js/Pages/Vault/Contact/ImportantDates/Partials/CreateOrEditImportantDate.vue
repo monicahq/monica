@@ -17,8 +17,8 @@ const props = defineProps({
   data: Object,
 });
 
-const age = ref(null);
-const month = ref(null);
+const ageInput = ref(null);
+const monthInput = ref(null);
 const label = ref(null);
 const loadingState = ref(null);
 
@@ -62,10 +62,10 @@ const reset = () => {
 };
 
 const showAge = () => {
-  nextTick().then(() => age.value.focus());
+  nextTick().then(() => ageInput.value.focus());
 };
 const showMonth = () => {
-  nextTick().then(() => month.value.focus());
+  nextTick().then(() => monthInput.value.focus());
 };
 
 const submit = () => {
@@ -184,10 +184,10 @@ defineExpose({
         </div>
         <div v-show="form.choice === 'month_day'" class="ms-6 flex">
           <Dropdown
-            ref="month"
+            ref="monthInput"
             v-model.number="form.month"
             :data="data.months"
-            :required="true"
+            :required="form.choice === 'month_day'"
             :class="'mb-5 me-2'"
             :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
@@ -196,7 +196,7 @@ defineExpose({
           <Dropdown
             v-model.number="form.day"
             :data="data.days"
-            :required="true"
+            :required="form.choice === 'month_day'"
             :class="'mb-5'"
             :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
@@ -219,14 +219,13 @@ defineExpose({
         </div>
         <div v-show="form.choice === 'year'" class="ms-6">
           <TextInput
-            ref="age"
+            ref="ageInput"
             v-model.number="form.age"
             :type="'number'"
             :min="0"
             :max="120"
-            :autofocus="true"
             :input-class="'block'"
-            :required="true"
+            :required="form.choice === 'year'"
             :autocomplete="false" />
         </div>
       </div>
