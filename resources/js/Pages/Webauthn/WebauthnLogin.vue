@@ -17,7 +17,7 @@ const isSupported = ref(true);
 const errorMessage = ref('');
 const processing = ref(false);
 
-const authForm = useForm();
+const authForm = useForm({});
 
 watch(
   () => props.publicKey,
