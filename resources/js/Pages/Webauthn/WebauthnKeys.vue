@@ -9,7 +9,8 @@ import JetButton from '@/Components/Button.vue';
 import RegisterKey from '@/Pages/Webauthn/Partials/RegisterKey.vue';
 import DeleteKeyModal from '@/Pages/Webauthn/Partials/DeleteKeyModal.vue';
 import UpdateKey from '@/Pages/Webauthn/Partials/UpdateKey.vue';
-import WebAuthn from '@/webauthn.js';
+import { webAuthnNotSupportedMessage } from '@/methods.js';
+import { startRegistration, browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 const props = defineProps({
   webauthnKeys: Array,
@@ -31,19 +32,15 @@ const nameUpdate = computed(() =>
 );
 
 onMounted(() => {
-  if (!webauthn.webAuthnSupport()) {
+  if (!browserSupportsWebAuthn()) {
     isSupported.value = false;
-    errorMessage.value = notSupportedMessage();
+    errorMessage.value = webAuthnNotSupportedMessage();
   }
 
   if (props.publicKey) {
     showRegisterModal();
-    registerWaitForKey(props.publicKey);
+    nextTick().then(() => registerWaitForKey(props.publicKey));
   }
-});
-
-const webauthn = new WebAuthn((name, message) => {
-  errorMessage.value = _errorMessage(name, message);
 });
 
 const _errorMessage = (name, message) => {
@@ -54,17 +51,6 @@ const _errorMessage = (name, message) => {
       return trans('The operation either timed out or was not allowed.');
     default:
       return message;
-  }
-};
-
-const notSupportedMessage = () => {
-  switch (webauthn.notSupportedMessage()) {
-    case 'not_supported':
-      return trans('Your browser doesn’t currently support WebAuthn.');
-    case 'not_secured':
-      return trans('WebAuthn only supports secure connections. Please load this page with https scheme.');
-    default:
-      return '';
   }
 };
 
@@ -79,11 +65,11 @@ const start = () => {
 };
 
 const registerWaitForKey = (publicKey) => {
-  nextTick().then(() =>
-    webauthn.register(publicKey, (data) => {
-      webauthnRegisterCallback(data);
-    }),
-  );
+  startRegistration(publicKey)
+    .then((data) => webauthnRegisterCallback(data))
+    .catch((error) => {
+      errorMessage.value = _errorMessage(error.name, error.message);
+    });
 };
 
 const webauthnRegisterCallback = (data) => {
@@ -100,7 +86,7 @@ const webauthnRegisterCallback = (data) => {
         registerForm.reset();
       },
       onError: (error) => {
-        errorMessage.value = error.email ? error.email : error.data.errors.webauthn;
+        errorMessage.value = error.email ?? error.data.errors.webauthn;
       },
     });
 };
@@ -128,7 +114,7 @@ const webauthnRegisterCallback = (data) => {
       </h3>
 
       <div v-if="!isSupported">
-        {{ notSupportedMessage() }}
+        {{ webAuthnNotSupportedMessage() }}
       </div>
 
       <div v-else-if="register">

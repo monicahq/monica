@@ -46,7 +46,7 @@ watch(
 <template>
   <form @submit.prevent="updateKey">
     <div class="mt-4">
-      <JetLabel for="keyname" value="Key name" />
+      <JetLabel for="keyname" :value="$t('Key name')" />
       <JetInput
         type="text"
         class="mt-1 block"
