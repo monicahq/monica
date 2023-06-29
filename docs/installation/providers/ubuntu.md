@@ -115,7 +115,7 @@ cd /var/www/monica
 # Get latest tags from GitHub
 git fetch
 # Clone the desired version
-git checkout tags/v2.18.0
+git checkout tags/v4.0.0
 ```
 
 ### 2. Setup the database
