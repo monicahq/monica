@@ -46,7 +46,7 @@ class CreateTag extends BaseService implements ServiceInterface
         $this->tag = Tag::create([
             'vault_id' => $data['vault_id'],
             'name' => $data['name'],
-            'slug' => Str::slug($data['name'], '-'),
+            'slug' => Str::slug($data['name'], '-', language: currentLang()),
         ]);
 
         return $this->tag;

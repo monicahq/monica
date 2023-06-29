@@ -22,11 +22,17 @@ class WikipediaHelper
             'format' => 'json',
         ]);
 
-        $url = 'https://en.wikipedia.org/w/api.php?'.$query;
+        $lang = currentLang();
+        $url = "https://$lang.wikipedia.org/w/api.php?$query";
 
-        $response = Http::get($url)->throw();
+        $response = null;
+        try {
+            $response = Http::get($url)->throw();
+        } catch (\Illuminate\Http\Client\RequestException) {
+            // Ignore the exception.
+        }
 
-        if ($response->json('query.pages.*.missing')[0] === true) {
+        if ($response === null || $response->json('query.pages.*.missing')[0] === true) {
             return [
                 'url' => null,
                 'description' => null,
@@ -35,7 +41,7 @@ class WikipediaHelper
         }
 
         return [
-            'url' => 'https://en.wikipedia.org/wiki/'.Str::slug($topic),
+            'url' => "https://$lang.wikipedia.org/wiki/".Str::slug($topic, language: $lang),
             'description' => $response->json('query.pages.*.description')[0],
             'thumbnail' => $response->json('query.pages.*.thumbnail.source')[0],
         ];

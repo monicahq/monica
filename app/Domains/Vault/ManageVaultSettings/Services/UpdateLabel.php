@@ -53,7 +53,7 @@ class UpdateLabel extends BaseService implements ServiceInterface
         $label->bg_color = $data['bg_color'];
         $label->text_color = $data['text_color'];
         $label->description = $this->valueOrNull($data, 'description');
-        $label->slug = Str::slug($data['name'], '-');
+        $label->slug = Str::slug($data['name'], '-', language: currentLang());
         $label->save();
 
         return $label;

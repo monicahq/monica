@@ -16,8 +16,7 @@ class ReportCountriesShowViewHelper
     {
         $addresses = $vault->addresses()
             ->whereNotNull('country')
-            ->where('country', Str::ucfirst($country))
-            ->orWhere('country', Str::lcfirst($country))
+            ->where('country', 'like', $country)
             ->with('contacts')
             ->get()
             ->map(fn (Address $address) => [

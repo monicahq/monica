@@ -27,7 +27,7 @@ class ReportAddressIndexViewHelper
                 'url' => [
                     'index' => route('vault.reports.addresses.cities.show', [
                         'vault' => $vault->id,
-                        'city' => urlencode(utf8_encode($address->city)),
+                        'city' => urlencode(mb_convert_encoding($address->city, 'UTF-8')),
                     ]),
                 ],
             ])
@@ -47,7 +47,7 @@ class ReportAddressIndexViewHelper
                 'url' => [
                     'index' => route('vault.reports.addresses.countries.show', [
                         'vault' => $vault->id,
-                        'country' => urlencode(utf8_encode($address->country)),
+                        'country' => urlencode(mb_convert_encoding($address->country, 'UTF-8')),
                     ]),
                 ],
             ])

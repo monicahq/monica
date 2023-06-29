@@ -57,7 +57,7 @@ class CreateTemplatePage extends BaseService implements ServiceInterface
             'template_id' => $data['template_id'],
             'name' => $data['name'] ?? null,
             'name_translation_key' => $data['name_translation_key'] ?? null,
-            'slug' => Str::slug($data['name'] ?? $data['name_translation_key'], '-'),
+            'slug' => Str::slug($data['name'] ?? $data['name_translation_key'], '-', language: currentLang()),
             'type' => $this->valueOrNull($data, 'type'),
             'position' => $newPosition,
             'can_be_deleted' => $this->valueOrTrue($data, 'can_be_deleted'),

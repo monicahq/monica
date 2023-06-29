@@ -50,7 +50,7 @@ class CreateLabel extends BaseService implements ServiceInterface
             'vault_id' => $data['vault_id'],
             'name' => $data['name'],
             'description' => $this->valueOrNull($data, 'description'),
-            'slug' => Str::slug($data['name'], '-'),
+            'slug' => Str::slug($data['name'], '-', language: currentLang()),
             'bg_color' => $data['bg_color'],
             'text_color' => $data['text_color'],
         ]);
