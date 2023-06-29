@@ -46,7 +46,7 @@ class UpdateTag extends BaseService implements ServiceInterface
             ->findOrFail($data['tag_id']);
 
         $tag->name = $data['name'];
-        $tag->slug = Str::slug($data['name'], '-');
+        $tag->slug = Str::slug($data['name'], '-', language: currentLang());
         $tag->save();
 
         return $tag;

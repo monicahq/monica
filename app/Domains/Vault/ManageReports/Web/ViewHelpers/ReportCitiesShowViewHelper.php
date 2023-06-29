@@ -16,8 +16,7 @@ class ReportCitiesShowViewHelper
     {
         $addresses = $vault->addresses()
             ->whereNotNull('city')
-            ->where('city', Str::ucfirst($city))
-            ->orWhere('city', Str::lcfirst($city))
+            ->where('city', 'like', $city)
             ->with('contacts')
             ->get()
             ->map(fn (Address $address) => [

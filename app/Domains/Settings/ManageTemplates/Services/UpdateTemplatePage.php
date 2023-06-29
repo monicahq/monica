@@ -50,7 +50,7 @@ class UpdateTemplatePage extends BaseService implements ServiceInterface
             ->findOrFail($data['template_page_id']);
 
         $this->templatePage->name = $data['name'];
-        $this->templatePage->slug = Str::slug($data['name'], '-');
+        $this->templatePage->slug = Str::slug($data['name'], '-', language: currentLang());
         $this->templatePage->save();
 
         return $this->templatePage;
