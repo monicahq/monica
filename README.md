@@ -26,7 +26,7 @@
 >
 > This branch is in development. It’s our beta version.
 > 
-> If you want to browse the stable and current version, see the [4.x](https://github.com/monicahq/monica/tree/4.x) branch.
+> If you want to browse the stable and current version, see the [4.x branch](https://github.com/monicahq/monica/tree/4.x).
 
 ## Table of contents
 
