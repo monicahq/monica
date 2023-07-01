@@ -27,6 +27,7 @@ RUN set -ex; \
     apt-get install -y --no-install-recommends \
         bash \
         busybox-static \
+        unzip \
     ; \
     rm -rf /var/lib/apt/lists/*
 
