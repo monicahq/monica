@@ -3,7 +3,6 @@
 namespace App\Helpers;
 
 use App\Models\ContactImportantDateType;
-use App\Models\Vault;
 use Illuminate\Support\Facades\Cache;
 
 class ContactImportantDateHelper
