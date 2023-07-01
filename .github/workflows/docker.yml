@@ -6,6 +6,8 @@ on:
       - main
       - chandler
 
+  workflow_dispatch:
+
 concurrency:
   group: Docker ${{ github.ref }}
   cancel-in-progress: true
