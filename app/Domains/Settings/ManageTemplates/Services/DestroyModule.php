@@ -4,7 +4,6 @@ namespace App\Domains\Settings\ManageTemplates\Services;
 
 use App\Exceptions\CantBeDeletedException;
 use App\Interfaces\ServiceInterface;
-use App\Models\Module;
 use App\Services\BaseService;
 
 class DestroyModule extends BaseService implements ServiceInterface

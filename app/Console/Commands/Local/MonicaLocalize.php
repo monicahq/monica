@@ -30,7 +30,7 @@ class MonicaLocalize extends Command
      */
     public function handle(): void
     {
-        $locales = config('localizer.supported-locales');
+        $locales = config('localizer.supported_locales');
         array_shift($locales);
         $this->call('localize', ['lang' => implode(',', $locales)]);
 

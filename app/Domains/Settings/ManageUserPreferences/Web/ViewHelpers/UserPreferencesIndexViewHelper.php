@@ -195,7 +195,7 @@ class UserPreferencesIndexViewHelper
             'id' => $user->locale,
             'name' => self::language($user->locale),
             'dir' => htmldir(),
-            'locales' => collect(config('localizer.supported-locales'))
+            'locales' => collect(config('localizer.supported_locales'))
                 ->map(fn ($locale) => [
                     'id' => $locale,
                     'name' => self::language($locale),

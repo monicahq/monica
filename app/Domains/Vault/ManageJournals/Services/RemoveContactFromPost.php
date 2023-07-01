@@ -3,7 +3,6 @@
 namespace App\Domains\Vault\ManageJournals\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\Contact;
 use App\Models\ContactFeedItem;
 use App\Models\Post;
 use App\Services\BaseService;

@@ -6,19 +6,41 @@ return [
      * The locales you wish to support.
      * English HAS TO be the first language of the array.
      */
-    'supported-locales' => ['en', 'bn', 'ca', 'da', 'de', 'es', 'el', 'fr', 'he', 'hi', 'it', 'ja', 'ml', 'nl', 'no', 'pa', 'pl', 'pt', 'ro', 'ru', 'sv', 'te', 'tr', 'ur', 'vi', 'zh'],
+    'supported_locales' => ['en', 'bn', 'ca', 'da', 'de', 'es', 'el', 'fr',
+        'he', 'hi', 'it', 'ja', 'ml', 'nl', 'no', 'pa', 'pl', 'pt', 'ro',
+        'ru', 'sv', 'te', 'tr', 'ur', 'vi', 'zh',
+    ],
+
+    /**
+     * If your main locale is omitted from the URL, set it here.
+     * It will always be used if no supported locale is found in the URL.
+     * Note that no other detectors will run after the OmittedLocaleDetector!
+     * Setting this option to `null` will disable this detector.
+     */
+    'omitted_locale' => null,
 
     /**
      * The detectors to use to find a matching locale.
      * These will be executed in the order that they are added to the array!
      */
     'detectors' => [
+        CodeZero\Localizer\Detectors\RouteActionDetector::class,
         CodeZero\Localizer\Detectors\UrlDetector::class,
+        CodeZero\Localizer\Detectors\OmittedLocaleDetector::class,
         CodeZero\Localizer\Detectors\UserDetector::class,
         CodeZero\Localizer\Detectors\SessionDetector::class,
         CodeZero\Localizer\Detectors\CookieDetector::class,
         CodeZero\Localizer\Detectors\BrowserDetector::class,
         CodeZero\Localizer\Detectors\AppDetector::class,
+    ],
+
+    /**
+     * Add any of the above detector class names here to make it trusted.
+     * When a trusted detector returns a locale, it will be used
+     * as the app locale, regardless if it's a supported locale or not.
+     */
+    'trusted_detectors' => [
+        //
     ],
 
     /**
@@ -34,30 +56,36 @@ return [
      * The index of the segment that has the locale,
      * when using the UrlDetector.
      */
-    'url-segment' => 1,
+    'url_segment' => 1,
+
+    /**
+     * The attribute or "action" on the route that holds the locale,
+     * when using the RouteActionDetector.
+     */
+    'route_action' => 'locale',
 
     /**
      * The attribute on the user model that holds the locale,
      * when using the UserDetector.
      */
-    'user-attribute' => 'locale',
+    'user_attribute' => 'locale',
 
     /**
      * The session key that holds the locale,
      * when using the SessionDetector and SessionStore.
      */
-    'session-key' => 'locale',
+    'session_key' => 'locale',
 
     /**
      * The name of the cookie that holds the locale,
      * when using the CookieDetector and CookieStore.
      */
-    'cookie-name' => 'locale',
+    'cookie_name' => 'locale',
 
     /**
      * The lifetime of the cookie that holds the locale,
      * when using the CookieStore.
      */
-    'cookie-minutes' => 60 * 24 * 365, // 1 year
+    'cookie_minutes' => 60 * 24 * 365, // 1 year
 
 ];

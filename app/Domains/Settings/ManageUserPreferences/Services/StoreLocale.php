@@ -24,7 +24,7 @@ class StoreLocale extends BaseService implements ServiceInterface
                 'required',
                 'string',
                 'max:5',
-                Rule::in(config('localizer.supported-locales')),
+                Rule::in(config('localizer.supported_locales')),
             ],
         ];
     }

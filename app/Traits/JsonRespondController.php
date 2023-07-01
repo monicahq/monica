@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 trait JsonRespondController
 {

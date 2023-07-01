@@ -13,7 +13,7 @@
     "php": "^8.2",
     "ext-fileinfo": "*",
     "asbiin/laravel-webauthn": "^3.2",
-    "codezero/laravel-localizer": "^1.7",
+    "codezero/laravel-localizer": "^2.0",
     "guzzlehttp/guzzle": "^7.4",
     "http-interop/http-factory-guzzle": "^1.2",
     "inertiajs/inertia-laravel": "^0",
@@ -39,7 +39,7 @@
     "socialiteproviders/microsoft-azure": "^5.1",
     "socialiteproviders/twitter": "^4.1",
     "tightenco/ziggy": "1.6.0",
-    "uploadcare/uploadcare-php": "^3.2"
+    "uploadcare/uploadcare-php": "^4.1"
   },
   "require-dev": {
     "amirami/localizator": "^0.12.1@alpha",
