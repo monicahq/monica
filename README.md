@@ -1,6 +1,6 @@
 <p align="center">
 
-![Monica's Logo](https://user-images.githubusercontent.com/61099/242266547-63d98bd9-35f3-4dfe-92f4-a4a8dd75aa5c.png)
+![Monica’s Logo](https://user-images.githubusercontent.com/61099/242266547-63d98bd9-35f3-4dfe-92f4-a4a8dd75aa5c.png)
 
 </p>
 <h1 align="center">Document your life</h1>
@@ -22,9 +22,11 @@
 
 ## Monica is an open source personal relationship management system, that lets you document your life.
 
-> **Note**
+> **Warning**
 >
-> This branch is the beta version of Monica. If you want to browse the stable and current version, use the main branch instead.
+> This branch is in development. It’s our beta version.
+> 
+> If you want to browse the stable and current version, see the [4.x branch](https://github.com/monicahq/monica/tree/4.x).
 
 ## Table of contents
 
@@ -79,7 +81,7 @@ Monica is an open-source web application that enables you to document your life,
 
 This project is for people who want to document their lives and those who have difficulty remembering details about the lives of people they care about.
 
-We've also had a lot of positive reviews from people with Asperger syndrome, Alzheimer's disease, and introverts who use our app every day.
+We’ve also had a lot of positive reviews from people with Asperger syndrome, Alzheimer’s disease, and introverts who use our app every day.
 
 ### What Monica isn’t
 
@@ -90,7 +92,7 @@ We've also had a lot of positive reviews from people with Asperger syndrome, Alz
 
 ## Contribute
 
-Do you want to lend a hand? That's great! We accept contributions from everyone, regardless of form.
+Do you want to lend a hand? That’s great! We accept contributions from everyone, regardless of form.
 
 Here are some of the things you can do to help.
 
@@ -160,9 +162,9 @@ We want to provide a platform that is:
 
 ### Why Open Source?
 
-Why is Monica open source? Is it risky? Could someone steal my code and use it to start a for-profit business that could hurt my own? Why reveal our strategy to the world? We've already received these kinds of questions in our emails.
+Why is Monica open source? Is it risky? Could someone steal my code and use it to start a for-profit business that could hurt my own? Why reveal our strategy to the world? We’ve already received these kinds of questions in our emails.
 
-The answer is simple: yes, you can fork Monica and create a competing project, make money from it (even if the license is not ideal for that) and we won't be aware. But that's okay, we don't mind.
+The answer is simple: yes, you can fork Monica and create a competing project, make money from it (even if the license is not ideal for that) and we won’t be aware. But that’s okay, we don’t mind.
 
 We wanted to open source Monica for several reasons:
 
