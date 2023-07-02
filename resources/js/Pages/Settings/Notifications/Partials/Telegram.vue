@@ -1,3 +1,124 @@
+<script setup>
+import { computed, onMounted, ref, watch } from 'vue';
+import { router, Link, useForm } from '@inertiajs/vue3';
+import { flash } from '@/methods';
+import { trans } from 'laravel-vue-i18n';
+import { debounce } from 'lodash';
+import { Tooltip as ATooltip } from 'ant-design-vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrettySpan from '@/Shared/Form/PrettySpan.vue';
+import Errors from '@/Shared/Form/Errors.vue';
+import Dropdown from '@/Shared/Form/Dropdown.vue';
+
+const props = defineProps({
+  data: Object,
+});
+
+const loadingState = ref('');
+const localTelegram = ref(props.data.telegram.data);
+const envVariableSet = ref(props.data.telegram.telegram_env_variable_set);
+const setupTelegramModalShown = ref(false);
+const notificationSent = ref(false);
+const form = useForm({
+  content: '',
+  label: '',
+  hours: 9,
+  minutes: 0,
+  errors: [],
+});
+
+const hours = computed(() => {
+  let result = [];
+  for (let i = 0; i < 24; i++) {
+    let name = i.toString().padStart(2, '0');
+    result.push({ id: i, name: name });
+  }
+  return result;
+});
+
+const minutes = computed(() => {
+  let result = [];
+  for (let i = 0; i < 60; i += 5) {
+    let name = i.toString().padStart(2, '0');
+    result.push({ id: i, name: name });
+  }
+  return result;
+});
+
+watch(
+  () => props.data,
+  () => {
+    localTelegram.value = props.data.telegram.data;
+    if (localTelegram.value && localTelegram.value.active) {
+      refresh.cancel();
+    }
+  },
+);
+
+onMounted(() => {
+  if (localTelegram.value && !localTelegram.value.active) {
+    refresh();
+  }
+});
+
+const showSetupTelegramModal = () => {
+  form.label = '';
+  setupTelegramModalShown.value = true;
+};
+
+const sendTest = () => {
+  axios
+    .post(localTelegram.value.url.send_test)
+    .then(() => {
+      flash(trans('The notification has been sent'), 'success');
+      notificationSent.value = true;
+    })
+    .catch((error) => {
+      form.errors = error.response.data;
+    });
+};
+
+const store = () => {
+  loadingState.value = 'loading';
+
+  axios
+    .post(props.data.url.store_telegram, form.data())
+    .then((response) => {
+      flash(trans('The channel has been added'), 'success');
+      localTelegram.value = response.data.data;
+      loadingState.value = null;
+      setupTelegramModalShown.value = false;
+      refresh();
+    })
+    .catch((error) => {
+      loadingState.value = null;
+      form.errors = error.response.data;
+    });
+};
+
+const refresh = debounce(() => {
+  router.reload({ only: ['data'] });
+  refresh();
+}, 2000);
+
+const destroy = () => {
+  if (confirm(trans('Are you sure? This action cannot be undone.'))) {
+    axios
+      .delete(localTelegram.value.url.destroy)
+      .then(() => {
+        flash(trans('The Telegram channel has been deleted'), 'success');
+        localTelegram.value = null;
+        refresh.cancel();
+      })
+      .catch((error) => {
+        loadingState.value = null;
+        form.errors = error.response.data;
+        refresh.cancel();
+      });
+  }
+};
+</script>
+
 <template>
   <div>
     <div class="mb-3 flex items-center justify-between">
@@ -62,7 +183,7 @@
 
       <div class="flex justify-between p-5">
         <pretty-span :text="$t('Cancel')" :class="'me-3'" @click.prevent="setupTelegramModalShown = false" />
-        <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :class="'save'" />
+        <pretty-button :text="$t('Setup')" :state="loadingState" :icon="'check'" :class="'save'" />
       </div>
     </form>
 
@@ -102,20 +223,39 @@
           </div>
 
           <!-- actions when Telegram is not active -->
-          <ul v-if="!localTelegram.active" class="text-sm">
-            <li class="me-4 inline">
-              <a :href="localTelegram.url.open" target="_blank" class="text-blue-500 hover:underline">{{
-                $t('Open Telegram to validate your identity')
-              }}</a>
-            </li>
+          <div v-if="!localTelegram.active">
+            <p class="mb-4 font-semibold"><span class="me-1">👋</span> {{ $t('What happens now?') }}</p>
+            <ol class="ms-4 list-decimal">
+              <li class="mb-2">
+                <a
+                  :href="localTelegram.url.open"
+                  target="_blank"
+                  class="text-blue-500 hover:underline"
+                  rel="noopener noreferrer">
+                  {{ $t('Open Telegram to validate your identity') }}
+                </a>
+              </li>
+              <li class="mb-2">
+                {{ $t('Type anything in the conversation with the Monica bot. It can be `start` for instance.') }}
+              </li>
+              <li>
+                {{
+                  $t(
+                    'Wait a few seconds for Monica (the application) to recognize you. We’ll send you a fake notification to see if it works.',
+                  )
+                }}
+              </li>
+            </ol>
 
-            <!-- delete email -->
-            <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy">
-              {{ $t('Delete') }}
-            </li>
-          </ul>
+            <ul class="mt-4 text-sm">
+              <!-- delete email -->
+              <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy">
+                {{ $t('Delete') }}
+              </li>
+            </ul>
+          </div>
 
-          <ul v-if="localTelegram.active" class="text-sm">
+          <ul v-else class="text-sm">
             <!-- link to send a test notification, if not already sent -->
             <li
               v-if="!notificationSent"
@@ -129,9 +269,9 @@
 
             <!-- view log -->
             <li class="me-4 inline cursor-pointer text-blue-500 hover:underline">
-              <InertiaLink :href="localTelegram.url.logs" class="text-blue-500 hover:underline">
+              <Link :href="localTelegram.url.logs" class="text-blue-500 hover:underline">
                 {{ $t('View log') }}
-              </InertiaLink>
+              </Link>
             </li>
 
             <!-- delete email -->
@@ -151,140 +291,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import { Link } from '@inertiajs/vue3';
-import { Tooltip as ATooltip } from 'ant-design-vue';
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
-import PrettySpan from '@/Shared/Form/PrettySpan.vue';
-import Errors from '@/Shared/Form/Errors.vue';
-import Dropdown from '@/Shared/Form/Dropdown.vue';
-
-export default {
-  components: {
-    InertiaLink: Link,
-    ATooltip,
-    PrettyButton,
-    PrettySpan,
-    Errors,
-    Dropdown,
-  },
-
-  props: {
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-
-  data() {
-    return {
-      loadingState: '',
-      localTelegram: null,
-      envVariableSet: null,
-      setupTelegramModalShown: false,
-      testEmailSentId: 0,
-      notificationSent: false,
-      form: {
-        content: '',
-        label: '',
-        minutes: '',
-        hours: '',
-        errors: [],
-      },
-    };
-  },
-
-  computed: {
-    hours() {
-      let result = [];
-      for (let i = 0; i < 24; i++) {
-        let name = i.toString().padStart(2, '0');
-        result.push({ id: i, name: name });
-      }
-      return result;
-    },
-    minutes() {
-      let result = [];
-      for (let i = 0; i < 60; i += 5) {
-        let name = i.toString().padStart(2, '0');
-        result.push({ id: i, name: name });
-      }
-      return result;
-    },
-  },
-
-  mounted() {
-    this.localTelegram = this.data.telegram.data;
-    this.envVariableSet = this.data.telegram.telegram_env_variable_set;
-    this.form.hours = '09';
-    this.form.minutes = '00';
-  },
-
-  methods: {
-    showSetupTelegramModal() {
-      this.form.label = '';
-      this.setupTelegramModalShown = true;
-    },
-
-    sendTest() {
-      axios
-        .post(this.localTelegram.url.send_test)
-        .then(() => {
-          this.flash(this.$t('The notification has been sent'), 'success');
-          this.notificationSent = true;
-        })
-        .catch((error) => {
-          this.form.errors = error.response.data;
-        });
-    },
-
-    toggle(channel) {
-      axios
-        .put(channel.url.toggle)
-        .then((response) => {
-          this.flash(this.$t('The channel has been updated'), 'success');
-          this.localTelegram[this.localTelegram.findIndex((x) => x.id === channel.id)] = response.data.data;
-        })
-        .catch((error) => {
-          this.form.errors = error.response.data;
-        });
-    },
-
-    store() {
-      this.loadingState = 'loading';
-
-      axios
-        .post(this.data.url.store_telegram, this.form)
-        .then((response) => {
-          this.flash(this.$t('The channel has been added'), 'success');
-          this.localTelegram = response.data.data;
-          this.loadingState = null;
-          this.setupTelegramModalShown = false;
-        })
-        .catch((error) => {
-          this.loadingState = null;
-          this.form.errors = error.response.data;
-        });
-    },
-
-    destroy() {
-      if (confirm(this.$t('Are you sure? This action cannot be undone.'))) {
-        axios
-          .delete(this.localTelegram.url.destroy)
-          .then(() => {
-            this.flash(this.$t('The Telegram channel has been deleted'), 'success');
-            this.localTelegram = null;
-          })
-          .catch((error) => {
-            this.loadingState = null;
-            this.form.errors = error.response.data;
-          });
-      }
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .item-list {

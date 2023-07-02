@@ -171,10 +171,12 @@ Route::middleware(['throttle:oauth2-socialite'])->group(function () {
 Route::get('invitation/{code}', [AcceptInvitationController::class, 'show'])->name('invitation.show');
 Route::post('invitation', [AcceptInvitationController::class, 'store'])->name('invitation.store');
 
-Route::post(
-    '/telegram/webhook/'.config('services.telegram-bot-api.webhook'),
-    [TelegramWebhookController::class, 'store']
-);
+if (config('services.telegram-bot-api.token') !== null) {
+    Route::post(
+        '/telegram/webhook/'.config('services.telegram-bot-api.webhook'),
+        [TelegramWebhookController::class, 'store']
+    );
+}
 
 Route::middleware([
     'auth:sanctum',
