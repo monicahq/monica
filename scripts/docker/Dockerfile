@@ -84,7 +84,7 @@ RUN set -ex; \
     apt-mark auto '.*' > /dev/null; \
     apt-mark manual $savedAptMark; \
         ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
-        | awk '/=>/ { print $3 }' \
+        | awk '/=>/ { print $1 }' \
         | sort -u \
         | xargs -r dpkg-query -S \
         | cut -d: -f1 \
