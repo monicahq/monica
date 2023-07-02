@@ -44,10 +44,7 @@ class NotificationsIndexViewHelperTest extends TestCase
             $array['url']
         );
 
-        $this->assertEquals(
-            null,
-            $array['telegram']['telegram_env_variable_set']
-        );
+        $this->assertFalse($array['telegram']['telegram_env_variable_set']);
     }
 
     /** @test */
