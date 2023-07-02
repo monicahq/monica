@@ -29,12 +29,13 @@ class TelegramWebhookController extends Controller
         // check if the message matches the expected pattern.
         // if the message does not match the pattern, then we return a 202 response
         // so telegram will stop trying to send the message.
-        if (! Str::of($messageText)->test('/^\/start\s[A-Za-z0-9-]{36}$/')) {
+        $message = Str::of($messageText);
+        if (! $message->test('/^\/start\s[A-Za-z0-9-]{36}$/')) {
             return response('Accepted', 202);
         }
 
         // Cleanup the string
-        $verificationKey = Str::of($messageText)->remove('/start ')->rtrim();
+        $verificationKey = $message->remove('/start ')->rtrim();
 
         // Get Telegram ID from the request.
         $chatId = $request->message['chat']['id'];

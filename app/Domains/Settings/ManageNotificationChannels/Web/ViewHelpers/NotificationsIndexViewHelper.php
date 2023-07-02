@@ -28,7 +28,7 @@ class NotificationsIndexViewHelper
             'emails' => $emailsCollection,
             'telegram' => [
                 'data' => $telegram ? self::dtoTelegram($telegram) : null,
-                'telegram_env_variable_set' => config('services.telegram-bot-api.token'),
+                'telegram_env_variable_set' => config('services.telegram-bot-api.token') !== null,
             ],
             'url' => [
                 'settings' => route('settings.index'),
