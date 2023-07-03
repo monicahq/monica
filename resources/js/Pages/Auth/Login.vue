@@ -76,7 +76,7 @@ const reload = () => {
     </div>
 
     <!-- beta mode-->
-    <div class="mb-4 rounded-lg border bg-amber-50 p-6">
+    <div class="mb-4 rounded-lg border bg-amber-50 p-6 dark:bg-amber-950">
       <p class="mb-2 text-center font-bold">
         <span class="me-2">🚧</span> {{ $t('Chandler is in beta.') }}
         <span class="ms-2">🚧</span>
@@ -133,7 +133,7 @@ const reload = () => {
                 :autofocus="true"
                 :input-class="'block w-full'"
                 :required="true"
-                :autocomplete="false"
+                autocomplete="username"
                 :maxlength="255" />
             </div>
 
@@ -142,10 +142,9 @@ const reload = () => {
                 v-model="form.password"
                 :label="$t('Password')"
                 :type="'password'"
-                :autofocus="true"
                 :input-class="'block w-full'"
                 :required="true"
-                :autocomplete="false"
+                autocomplete="current-password"
                 :maxlength="255" />
             </div>
 
