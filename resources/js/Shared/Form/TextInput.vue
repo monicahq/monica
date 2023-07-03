@@ -26,8 +26,8 @@ const props = defineProps({
   disabled: Boolean,
   autofocus: Boolean,
   autocomplete: {
-    type: Boolean,
-    default: true,
+    type: [String, Boolean],
+    default: '',
   },
   maxlength: Number,
   min: Number,
@@ -98,7 +98,7 @@ defineExpose({ focus: focus });
         :maxlength="maxlength"
         :required="required"
         :autofocus="autofocus"
-        :autocomplete="autocomplete ? '' : 'off'"
+        :autocomplete="typeof autocomplete === 'string' ? autocomplete : autocomplete ? '' : 'off'"
         :disabled="disabled"
         :min="min"
         :max="max"
