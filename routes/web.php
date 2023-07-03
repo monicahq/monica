@@ -11,6 +11,7 @@ use App\Domains\Contact\ManageContact\Web\Controllers\ContactNoTemplateControlle
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactPageController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactSortController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactTemplateController;
+use App\Domains\Contact\ManageContact\Web\Controllers\ContactVCardController;
 use App\Domains\Contact\ManageContactAddresses\Web\Controllers\ContactModuleAddressController;
 use App\Domains\Contact\ManageContactAddresses\Web\Controllers\ContactModuleAddressImageController;
 use App\Domains\Contact\ManageContactFeed\Web\Controllers\ContactFeedController;
@@ -141,6 +142,7 @@ use App\Domains\Vault\Search\Web\Controllers\VaultSearchController;
 use App\Http\Controllers\Auth\AcceptInvitationController;
 use App\Http\Controllers\Auth\SocialiteCallbackController;
 use App\Http\Controllers\Profile\UserTokenController;
+use App\Http\Middleware\HandleInertiaRequests;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -245,24 +247,26 @@ Route::middleware([
                 Route::middleware('can:contact-owner,vault,contact')->prefix('{contact}')->group(function () {
                     // general page information
                     Route::get('', [ContactController::class, 'show'])->name('contact.show');
-                    Route::get('/edit', [ContactController::class, 'edit'])->name('contact.edit');
+                    Route::get('edit', [ContactController::class, 'edit'])->name('contact.edit');
                     Route::post('', [ContactController::class, 'update'])->name('contact.update');
                     Route::delete('', [ContactController::class, 'destroy'])->name('contact.destroy');
 
+                    Route::post('vcard', [ContactVCardController::class, 'download'])->name('contact.vcard.download')->withoutMiddleware([HandleInertiaRequests::class]);
+
                     // quick facts
-                    Route::get('/quickFacts/{template}', [ContactQuickFactController::class, 'show'])->name('contact.quick_fact.show');
-                    Route::post('/quickFacts/{template}', [ContactQuickFactController::class, 'store'])->name('contact.quick_fact.store');
-                    Route::put('/quickFacts/toggle', [ContactQuickFactToggleController::class, 'update'])->name('contact.quick_fact.toggle');
-                    Route::put('/quickFacts/{template}/{quickFact}', [ContactQuickFactController::class, 'update'])->name('contact.quick_fact.update');
-                    Route::delete('/quickFacts/{template}/{quickFact}', [ContactQuickFactController::class, 'destroy'])->name('contact.quick_fact.destroy');
+                    Route::get('quickFacts/{template}', [ContactQuickFactController::class, 'show'])->name('contact.quick_fact.show');
+                    Route::post('quickFacts/{template}', [ContactQuickFactController::class, 'store'])->name('contact.quick_fact.store');
+                    Route::put('quickFacts/toggle', [ContactQuickFactToggleController::class, 'update'])->name('contact.quick_fact.toggle');
+                    Route::put('quickFacts/{template}/{quickFact}', [ContactQuickFactController::class, 'update'])->name('contact.quick_fact.update');
+                    Route::delete('quickFacts/{template}/{quickFact}', [ContactQuickFactController::class, 'destroy'])->name('contact.quick_fact.destroy');
 
                     // toggle archive/favorite
-                    Route::put('/toggle', [ContactArchiveController::class, 'update'])->name('contact.archive.update');
-                    Route::put('/toggle-favorite', [ContactFavoriteController::class, 'update'])->name('contact.favorite.update');
+                    Route::put('toggle', [ContactArchiveController::class, 'update'])->name('contact.archive.update');
+                    Route::put('toggle-favorite', [ContactFavoriteController::class, 'update'])->name('contact.favorite.update');
 
                     // move contact to another vault
-                    Route::get('/move', [ContactMoveController::class, 'show'])->name('contact.move.show');
-                    Route::post('/move', [ContactMoveController::class, 'store'])->name('contact.move.store');
+                    Route::get('move', [ContactMoveController::class, 'show'])->name('contact.move.show');
+                    Route::post('move', [ContactMoveController::class, 'store'])->name('contact.move.store');
 
                     // template
                     Route::get('update-template', [ContactNoTemplateController::class, 'show'])->name('contact.blank');
