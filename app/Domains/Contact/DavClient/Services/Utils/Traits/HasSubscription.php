@@ -16,13 +16,13 @@ trait HasSubscription
         return $this;
     }
 
-    private ?CardDAVBackend $backend = null;
+    protected ?CardDAVBackend $backend = null;
 
     /**
      * Get carddav backend.
      */
     protected function backend(): CardDAVBackend
     {
-        return $backend ?? $backend = app(CardDAVBackend::class)->withUser($this->subscription->user);
+        return $this->backend ?? $this->backend = app(CardDAVBackend::class)->withUser($this->subscription->user);
     }
 }

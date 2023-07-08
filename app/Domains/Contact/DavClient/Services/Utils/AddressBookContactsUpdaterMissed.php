@@ -13,15 +13,14 @@ class AddressBookContactsUpdaterMissed
     /**
      * Update local missed contacts.
      *
-     * @param  Collection<array-key, \App\Models\Contact\Contact>  $localContacts
+     * @param  Collection<array-key, \App\Models\Contact>  $localContacts
      * @param  Collection<array-key, \App\Domains\Contact\DavClient\Services\Utils\Model\ContactDto>  $distContacts
      */
     public function execute(Collection $localContacts, Collection $distContacts): Collection
     {
-        $uuids = $localContacts->pluck('uuid');
+        $uuids = $localContacts->pluck('id');
 
-        $missed = $distContacts->reject(fn (ContactDto $contact): bool => $uuids->contains($this->backend()->getUuid($contact->uri))
-        );
+        $missed = $distContacts->reject(fn (ContactDto $contact): bool => $uuids->contains($this->backend()->getUuid($contact->uri)));
 
         return app(AddressBookContactsUpdater::class)
             ->withSubscription($this->subscription)

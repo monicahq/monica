@@ -44,8 +44,8 @@ class AddressBookContactsPushMissed
         $addedUuids = collect($added)->map(fn (string $uri): string => $this->backend()->getUuid($uri));
 
         return collect($localContacts)
-            ->filter(fn (Contact $contact): bool => ! $distUuids->contains($contact->uuid)
-                && ! $addedUuids->contains($contact->uuid)
+            ->filter(fn (Contact $contact): bool => ! $distUuids->contains($contact->id)
+                && ! $addedUuids->contains($contact->id)
             )
             ->map(function (Contact $contact): PushVCard {
                 $card = $this->backend()->prepareCard($contact);

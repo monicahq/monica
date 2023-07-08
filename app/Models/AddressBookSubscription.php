@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use function safe\json_decode;
-use function safe\json_encode;
 
 class AddressBookSubscription extends Model
 {
@@ -51,10 +49,13 @@ class AddressBookSubscription extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'user_id' => 'string',
+        'vault_id' => 'string',
         'last_synchronized_at' => 'datetime',
         'readonly' => 'boolean',
         'active' => 'boolean',
         'localSyncToken' => 'integer',
+        'capabilities' => 'array',
     ];
 
     /**
@@ -97,19 +98,6 @@ class AddressBookSubscription extends Model
     }
 
     /**
-     * Get capabilities.
-     *
-     * @return Attribute<string,string>
-     */
-    public function capabilities(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
-            set: fn ($value) => json_encode($value)
-        );
-    }
-
-    /**
      * Get password.
      *
      * @return Attribute<string,string>
@@ -117,8 +105,8 @@ class AddressBookSubscription extends Model
     public function password(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => decrypt($value, true),
-            set: fn ($value) => encrypt($value)
+            get: fn (?string $value) => decrypt($value, true),
+            set: fn (string $value) => encrypt($value)
         );
     }
 

@@ -40,8 +40,10 @@ class CreateAddressBookSubscription extends BaseService
 
     /**
      * Add a new Adress Book.
+     *
+     * @throws DavClientException
      */
-    public function execute(array $data): ?AddressBookSubscription
+    public function execute(array $data): AddressBookSubscription
     {
         $this->validateRules($data);
 
@@ -53,7 +55,7 @@ class CreateAddressBookSubscription extends BaseService
         return $this->createAddressBook($data, $addressBookData);
     }
 
-    private function createAddressBook(array $data, array $addressBookData): ?AddressBookSubscription
+    private function createAddressBook(array $data, array $addressBookData): AddressBookSubscription
     {
         return AddressBookSubscription::create([
             'user_id' => $this->author->id,

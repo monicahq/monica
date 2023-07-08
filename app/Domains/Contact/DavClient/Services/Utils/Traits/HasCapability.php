@@ -11,6 +11,9 @@ trait HasCapability
      */
     private function hasCapability(string $capability): bool
     {
-        return Arr::get($this->subscription->capabilities, $capability, false);
+        /** @var \App\Models\AddressBookSubscription */
+        $subscription = $this->subscription;
+
+        return Arr::get($subscription->capabilities, $capability, false);
     }
 }

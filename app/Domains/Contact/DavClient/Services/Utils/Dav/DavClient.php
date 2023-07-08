@@ -372,6 +372,8 @@ class DavClient
                 return $callback($item);
             }
         }
+
+        return null;
     }
 
     /**

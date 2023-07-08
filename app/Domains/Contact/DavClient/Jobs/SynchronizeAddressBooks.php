@@ -2,6 +2,7 @@
 
 namespace App\Domains\Contact\DavClient\Jobs;
 
+use App\Domains\Contact\DavClient\Services\SynchronizeAddressBook;
 use App\Models\AddressBookSubscription;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
