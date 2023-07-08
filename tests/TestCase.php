@@ -102,4 +102,16 @@ abstract class TestCase extends BaseTestCase
 
         $property->setValue($object, $value);
     }
+
+    /**
+     * Get protected/private property of a class.
+     */
+    public function getPrivateValue(object &$object, string $propertyName): mixed
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $property = $reflection->getProperty($propertyName);
+        $property->setAccessible(true);
+
+        return $property->getValue($object);
+    }
 }

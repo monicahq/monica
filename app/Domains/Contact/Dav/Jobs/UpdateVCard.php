@@ -82,7 +82,7 @@ class UpdateVCard extends QueuableService implements ServiceInterface
      */
     private function updateCard($cardUri, $cardData): ?string
     {
-        $backend = app(CardDAVBackend::class, ['user' => $this->author]);
+        $backend = app(CardDAVBackend::class)->withUser($this->author);
 
         $contactId = null;
         if ($cardUri) {

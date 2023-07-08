@@ -132,9 +132,8 @@ class AttemptToAuthenticateSocialite
             'terms' => true,
         ];
 
-        event(new Registered($user = app(CreateNewUser::class)->create($data)));
-
-        return $user;
+        return tap(app(CreateNewUser::class)->create($data), fn (User $user) => event(new Registered($user))
+        );
     }
 
     /**

@@ -34,9 +34,13 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
 {
     use SyncDAVBackend;
 
-    public function __construct(
-        private User $user
-    ) {
+    private User $user;
+
+    public function withUser(User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
     /**

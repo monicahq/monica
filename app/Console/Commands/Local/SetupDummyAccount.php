@@ -119,7 +119,7 @@ class SetupDummyAccount extends Command
     {
         $this->info('☐ Create first user of the account');
 
-        $this->firstUser = (new CreateAccount())->execute([
+        $this->firstUser = app(CreateAccount::class)->execute([
             'email' => 'admin@admin.com',
             'password' => 'admin123',
             'first_name' => 'Michael',

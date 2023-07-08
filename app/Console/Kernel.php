@@ -37,6 +37,7 @@ class Kernel extends ConsoleKernel
     {
         $this->scheduleCommand($schedule, 'model:prune', 'daily');
         $this->scheduleCommand($schedule, 'queue:prune-batches', 'daily');
+        $this->scheduleCommand($schedule, 'monica:davclients', 'hourly');
         if (config('telescope.enabled')) {
             $this->scheduleCommand($schedule, 'telescope:prune', 'daily');
         }
