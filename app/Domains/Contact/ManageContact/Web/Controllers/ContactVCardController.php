@@ -25,13 +25,13 @@ class ContactVCardController extends Controller
     /**
      * Get the new exported version of the object.
      */
-    protected function exportVCard(string $vault_id, string $contact_id): string
+    protected function exportVCard(string $vaultId, string $contactId): string
     {
         $vcard = app(ExportVCard::class)->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
-            'vault_id' => $vault_id,
-            'contact_id' => $contact_id,
+            'vault_id' => $vaultId,
+            'contact_id' => $contactId,
         ]);
 
         return $vcard->serialize();
