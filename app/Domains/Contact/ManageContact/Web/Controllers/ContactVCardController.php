@@ -9,6 +9,7 @@ use App\Models\Vault;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 
 class ContactVCardController extends Controller
@@ -18,9 +19,10 @@ class ContactVCardController extends Controller
         $cardData = $this->exportVCard($vault->id, $contact->id);
         $name = Str::of($contact->name)->slug(language: App::getLocale());
 
-        return response()->streamDownload(function () use ($cardData) {
-            echo $cardData;
-        }, "$name.vcf", ['Content-Type' => 'text/vcard'], 'inline');
+        return Redirect::back()->with('flash', [
+            'data' => $cardData,
+            'filename' => "$name.vcf",
+        ]);
     }
 
     /**

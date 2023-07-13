@@ -132,15 +132,23 @@ const destroyAvatar = () => {
 };
 
 const download = () => {
-  return axios.post(props.data.url.download_vcard).then((response) => {
-    const filename = response.headers['content-disposition'].split('filename=')[1];
-    const url = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  router.post(props.data.url.download_vcard, null, {
+    preserveScroll: true,
+    onSuccess: (response) => {
+      const filename = response.props.jetstream.flash.filename;
+      if (filename !== undefined) {
+        const url = window.URL.createObjectURL(new Blob([response.props.jetstream.flash.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+        try {
+          document.body.appendChild(link);
+          link.click();
+        } catch (e) {
+          document.body.removeChild(link);
+        }
+      }
+    },
   });
 };
 </script>
