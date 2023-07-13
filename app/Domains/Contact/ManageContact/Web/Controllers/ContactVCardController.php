@@ -7,19 +7,20 @@ use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\Vault;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ContactVCardController extends Controller
 {
     public function download(Request $request, Vault $vault, Contact $contact)
     {
-        $carddata = $this->exportVCard($vault->id, $contact->id);
+        $cardData = $this->exportVCard($vault->id, $contact->id);
+        $name = Str::of($contact->name)->slug(language: App::getLocale());
 
-        return response()->streamDownload(function () use ($carddata) {
-            echo $carddata;
-        }, $contact->id.'.vcf', [
-            'Content-Type' => 'text/vcard',
-        ], 'inline');
+        return response()->streamDownload(function () use ($cardData) {
+            echo $cardData;
+        }, "$name.vcf", ['Content-Type' => 'text/vcard'], 'inline');
     }
 
     /**
