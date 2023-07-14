@@ -28,7 +28,7 @@ class GetMultipleVCardTest extends TestCase
         $fake = Bus::fake();
 
         $subscription = AddressBookSubscription::factory()->create();
-        $this->setPermissionInVault($subscription->user, Vault::PERMISSION_VIEW, $subscription->vault);
+        $this->setPermissionInVault($subscription->user, Vault::PERMISSION_EDIT, $subscription->vault);
 
         $contact = Contact::factory()->create([
             'vault_id' => $subscription->vault_id,
@@ -105,7 +105,7 @@ class GetMultipleVCardTest extends TestCase
         $fake = Bus::fake();
 
         $subscription = AddressBookSubscription::factory()->create();
-        $this->setPermissionInVault($subscription->user, Vault::PERMISSION_VIEW, $subscription->vault);
+        $this->setPermissionInVault($subscription->user, Vault::PERMISSION_EDIT, $subscription->vault);
 
         $contact = Contact::factory()->create([
             'vault_id' => $subscription->vault_id,
