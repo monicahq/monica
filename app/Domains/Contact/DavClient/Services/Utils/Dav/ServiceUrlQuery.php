@@ -53,7 +53,7 @@ class ServiceUrlQuery
     /**
      * Get uri from entry.
      *
-     * @throws \Http\Client\Exception\RequestException
+     * @throws \Illuminate\Http\Client\RequestException
      */
     private function getUri(array $entry, bool $https, DavClient $client): string
     {
