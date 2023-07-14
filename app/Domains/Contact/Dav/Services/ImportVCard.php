@@ -100,6 +100,8 @@ class ImportVCard extends BaseService implements ServiceInterface
      */
     public function execute(array $data): array
     {
+        dump($data);
+
         $this->validateRules($data);
 
         if (Arr::get($data, 'contact_id') !== null) {

@@ -57,6 +57,16 @@ class UpdateVCardTest extends TestCase
             return true;
         });
 
+        $this->assertDatabaseHas('accounts', [
+            'id' => $account->id,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+        ]);
+        $this->assertDatabaseHas('vaults', [
+            'id' => $vault->id,
+        ]);
+
         $batch = app(DatabaseBatchRepository::class)->store($pendingBatch);
         $job->withBatchId($batch->id)->handle();
 
