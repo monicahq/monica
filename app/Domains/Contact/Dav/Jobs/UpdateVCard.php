@@ -48,6 +48,7 @@ class UpdateVCard extends QueuableService implements ServiceInterface
             'author_must_belong_to_account',
             'vault_must_belong_to_account',
             'author_must_be_in_vault',
+            'author_must_be_vault_editor',
         ];
     }
 
