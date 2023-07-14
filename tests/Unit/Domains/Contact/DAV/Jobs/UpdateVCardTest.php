@@ -29,7 +29,7 @@ class UpdateVCardTest extends TestCase
         $contact = new Contact();
         $contact->forceFill([
             'first_name' => 'Test',
-            'uuid' => 'affacde9-b2fe-4371-9acb-6612aaee6971',
+            'id' => 'affacde9-b2fe-4371-9acb-6612aaee6971',
             'updated_at' => now(),
         ]);
 
@@ -60,6 +60,7 @@ class UpdateVCardTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'Test',
+            'id' => 'affacde9-b2fe-4371-9acb-6612aaee6971',
             'vcard' => $card,
             'distant_etag' => $etag,
         ]);
