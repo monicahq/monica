@@ -30,6 +30,10 @@ class SynchronizeAddressBooks implements ShouldQueue
      */
     public function handle(): void
     {
+        Log::withContext([
+            'addressbook_subscription_id' => $this->subscription->id,
+        ]);
+
         try {
             app(SynchronizeAddressBook::class)->execute([
                 'account_id' => $this->subscription->user->account_id,
@@ -41,5 +45,7 @@ class SynchronizeAddressBooks implements ShouldQueue
         }
         $this->subscription->last_synchronized_at = now();
         $this->subscription->save();
+
+        Log::withoutContext();
     }
 }

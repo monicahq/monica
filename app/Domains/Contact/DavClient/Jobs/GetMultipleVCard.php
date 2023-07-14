@@ -35,13 +35,13 @@ class GetMultipleVCard implements ShouldQueue
             return; // @codeCoverageIgnore
         }
 
-        $datas = $this->subscription->getClient()
+        $data = $this->subscription->getClient()
             ->addressbookMultiget([
                 '{DAV:}getetag',
                 $this->getAddressDataProperty(),
             ], $this->hrefs);
 
-        collect($datas)
+        collect($data)
             ->filter(fn (array $contact): bool => isset($contact[200]))
             ->each(fn (array $contact, $href) => $this->updateVCard($contact, $href));
     }

@@ -3,8 +3,10 @@
 namespace App\Domains\Contact\DavClient\Services\Utils\Dav;
 
 use GuzzleHttp\Psr7\Uri;
-use Http\Client\Exception\RequestException;
-use Illuminate\Support\Collection;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Http;
+use Safe\Exceptions\UrlException;
+use function Safe\parse_url;
 
 class ServiceUrlQuery
 {
@@ -16,31 +18,36 @@ class ServiceUrlQuery
      */
     public function execute(string $name, bool $https, string $baseUri, DavClient $client): ?string
     {
-        try {
-            $host = \Safe\parse_url($baseUri, PHP_URL_HOST);
-        } catch (\Safe\Exceptions\UrlException $e) {
-            return null;
-        }
+        if (($host = $this->parseUrl($baseUri)) !== null) {
+            $entries = Http::getDnsRecord($name.'.'.$host, DNS_SRV);
 
-        $entries = $this->dns_get_record($name.'.'.$host, DNS_SRV);
+            if (optional($entries)->count()) {
+                $entries = $entries
+                    ->groupBy('pri')
+                    ->sortKeys()
+                    ->sortByDesc('weight')
+                    ->flatten(1);
 
-        if ($entries && $entries->count() > 0) {
-            $entries = collect($entries)
-                ->groupBy('pri')
-                ->sortKeys()
-                ->first()
-                ->sortByDesc('weight');
-
-            foreach ($entries as $entry) {
-                try {
-                    return $this->getUri($entry, $https, $client);
-                } catch (RequestException $e) {
-                    // no exception
+                foreach ($entries as $entry) {
+                    try {
+                        return $this->getUri($entry, $https, $client);
+                    } catch (RequestException $e) {
+                        // if any exception occurs, it will try the next entry.
+                    }
                 }
             }
         }
 
         return null;
+    }
+
+    private function parseUrl(string $baseUri): ?string
+    {
+        try {
+            return parse_url($baseUri, PHP_URL_HOST);
+        } catch (UrlException $e) {
+            return null;
+        }
     }
 
     /**
@@ -59,16 +66,5 @@ class ServiceUrlQuery
         $client->request('GET', $uri);
 
         return (string) $uri;
-    }
-
-    private function dns_get_record(string $hostname, int $type = DNS_ANY, ?array &$authns = null, ?array &$addtl = null, bool $raw = false): ?Collection
-    {
-        error_clear_last();
-        $result = \dns_get_record($hostname, $type, $authns, $addtl, $raw);
-        if ($result === false) {
-            return null;
-        }
-
-        return collect($result);
     }
 }

@@ -221,14 +221,14 @@ class AddressBookGetter
     {
         // get the supported card format
         $addressData = collect($this->client->getProperty('{'.CardDAVPlugin::NS_CARDDAV.'}supported-address-data'));
-        $datas = $addressData->firstWhere('attributes.version', '4.0');
-        if (! $datas) {
-            $datas = $addressData->firstWhere('attributes.version', '3.0');
+        $data = $addressData->firstWhere('attributes.version', '4.0');
+        if (! $data) {
+            $data = $addressData->firstWhere('attributes.version', '3.0');
         }
 
-        if (! $datas) {
+        if (! $data) {
             // It should not happen !
-            $datas = [
+            $data = [
                 'attributes' => [
                     'content-type' => 'text/vcard',
                     'version' => '4.0',
@@ -238,8 +238,8 @@ class AddressBookGetter
 
         return [
             'addressData' => [
-                'content-type' => Arr::get($datas, 'attributes.content-type'),
-                'version' => Arr::get($datas, 'attributes.version'),
+                'content-type' => Arr::get($data, 'attributes.content-type'),
+                'version' => Arr::get($data, 'attributes.version'),
             ],
         ];
     }

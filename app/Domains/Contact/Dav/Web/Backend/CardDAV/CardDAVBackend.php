@@ -167,7 +167,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
     }
 
     /**
-     * Prepare datas for this contact.
+     * Prepare data for this contact.
      */
     public function prepareCard(Contact $contact): array
     {

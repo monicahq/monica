@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Scout\Attributes\SearchUsingFullText;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
@@ -386,7 +387,9 @@ class Contact extends Model
                     return NameHelper::formatContactName(Auth::user(), $this);
                 }
 
-                return $attributes['first_name'].' '.$attributes['last_name'];
+                $lastName = Arr::get($attributes, 'last_name');
+
+                return Arr::get($attributes, 'first_name').$lastName ? ' '.$lastName : '';
             }
         );
     }

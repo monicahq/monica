@@ -24,10 +24,11 @@ trait CardEtag
     protected function getCard(Contact $contact, bool $realFormat = false): string
     {
         $contact = $contact->refresh();
-        $url = route('contact.show', [
-            'vault' => $contact->vault_id,
-            'contact' => $contact->id,
-        ]);
+        $url = $contact->vault_id
+            ? route('contact.show', [
+                'vault' => $contact->vault_id,
+                'contact' => $contact->id,
+            ]) : null;
         $sabreversion = \Sabre\VObject\Version::VERSION;
         $timestamp = $contact->updated_at->format('Ymd\THis\Z');
 

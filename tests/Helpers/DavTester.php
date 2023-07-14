@@ -4,6 +4,7 @@ namespace Tests\Helpers;
 
 use App\Domains\Contact\DavClient\Services\Utils\Dav\DavClient;
 use GuzzleHttp\Promise\PromiseInterface;
+use Illuminate\Http\Client\Factory;
 use Illuminate\Http\Client\Request;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -17,6 +18,8 @@ class DavTester extends TestCase
 
     public string $baseUri = '';
 
+    public ?Factory $http = null;
+
     public function __construct(string $baseUri = 'https://test')
     {
         $this->baseUri = $baseUri;
@@ -29,7 +32,7 @@ class DavTester extends TestCase
 
     public function fake()
     {
-        Http::fake(function ($request) {
+        $this->http = Http::fake(function ($request) {
             return $this->responses[$this->current++]['response'];
         });
 

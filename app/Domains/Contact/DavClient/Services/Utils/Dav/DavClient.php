@@ -443,6 +443,8 @@ class DavClient
      * Performs an actual HTTP request, and returns the result.
      *
      * @param  string|null|resource|\Psr\Http\Message\StreamInterface  $body
+     *
+     * @throws \Illuminate\Http\Client\RequestException
      */
     public function request(string $method, string $url = '', mixed $body = null, array $headers = [], array $options = []): Response
     {
