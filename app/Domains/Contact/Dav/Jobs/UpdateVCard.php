@@ -94,16 +94,15 @@ class UpdateVCard extends QueuableService implements ServiceInterface
         }
 
         try {
-            $result = app(ImportVCard::class)
-                ->execute([
-                    'account_id' => $this->author->account_id,
-                    'author_id' => $this->author->id,
-                    'vault_id' => $this->vault->id,
-                    'contact_id' => $contactId,
-                    'entry' => $cardData,
-                    'etag' => Arr::get($this->data, 'etag'),
-                    'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
-                ]);
+            $result = app(ImportVCard::class)->execute([
+                'account_id' => $this->author->account_id,
+                'author_id' => $this->author->id,
+                'vault_id' => $this->vault->id,
+                'contact_id' => $contactId,
+                'entry' => $cardData,
+                'etag' => Arr::get($this->data, 'etag'),
+                'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
+            ]);
 
             if (! Arr::has($result, 'error')) {
                 return app(GetEtag::class)->execute([

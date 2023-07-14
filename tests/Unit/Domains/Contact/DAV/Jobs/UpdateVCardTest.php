@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domains\Contact\DAV\Jobs;
 
 use App\Domains\Contact\Dav\Jobs\UpdateVCard;
-use App\Models\Account;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
@@ -24,8 +23,7 @@ class UpdateVCardTest extends TestCase
     {
         $fake = Bus::fake();
 
-        $account = Account::factory()->create();
-        $user = User::factory()->create(['account_id' => $account->id]);
+        $user = User::factory()->create();
         $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
 
         $contact = new Contact();
@@ -40,7 +38,7 @@ class UpdateVCardTest extends TestCase
 
         $pendingBatch = $fake->batch([
             $job = new UpdateVCard([
-                'account_id' => $account->id,
+                'account_id' => $user->account_id,
                 'author_id' => $user->id,
                 'vault_id' => $vault->id,
                 'uri' => 'https://test/dav/uricontact1',
@@ -56,16 +54,6 @@ class UpdateVCardTest extends TestCase
 
             return true;
         });
-
-        $this->assertDatabaseHas('accounts', [
-            'id' => $account->id,
-        ]);
-        $this->assertDatabaseHas('users', [
-            'id' => $user->id,
-        ]);
-        $this->assertDatabaseHas('vaults', [
-            'id' => $vault->id,
-        ]);
 
         $batch = app(DatabaseBatchRepository::class)->store($pendingBatch);
         $job->withBatchId($batch->id)->handle();

@@ -30,10 +30,24 @@ class ImportVCard extends BaseService implements ServiceInterface
     /** @var string */
     public const BEHAVIOUR_REPLACE = 'behaviour_replace';
 
-    protected array $errorResults = [
-        'ERROR_PARSER' => 'import_vcard_parse_error',
-        'ERROR_CONTACT_EXIST' => 'import_vcard_contact_exist',
-        'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME' => 'import_vcard_contact_no_firstname',
+    /** @var string */
+    protected const ERROR_PARSER = 'ERROR_PARSER';
+
+    /** @var string */
+    protected const ERROR_CONTACT_EXIST = 'ERROR_CONTACT_EXIST';
+
+    /** @var string */
+    protected const ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME = 'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME';
+
+    /**
+     * Error results.
+     *
+     * @var array<string,string>
+     */
+    protected static array $errorResults = [
+        self::ERROR_PARSER => 'import_vcard_parse_error',
+        self::ERROR_CONTACT_EXIST => 'import_vcard_contact_exist',
+        self::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME => 'import_vcard_contact_no_firstname',
     ];
 
     /**
@@ -45,11 +59,6 @@ class ImportVCard extends BaseService implements ServiceInterface
         self::BEHAVIOUR_ADD,
         self::BEHAVIOUR_REPLACE,
     ];
-
-    /**
-     * The Account id.
-     */
-    public ?string $accountId = null;
 
     /**
      * Get the validation rules that apply to the service.
@@ -100,8 +109,6 @@ class ImportVCard extends BaseService implements ServiceInterface
      */
     public function execute(array $data): array
     {
-        dump($data);
-
         $this->validateRules($data);
 
         if (Arr::get($data, 'contact_id') !== null) {
@@ -114,25 +121,12 @@ class ImportVCard extends BaseService implements ServiceInterface
     }
 
     /**
-     * Clear data.
-     */
-    private function clear(): void
-    {
-        $this->accountId = null;
-    }
-
-    /**
      * Process data importation.
      *
      * @return array<string,mixed>
      */
     private function process(array $data, ?Contact $contact): array
     {
-        if ($this->accountId !== $data['account_id']) {
-            $this->clear();
-            $this->accountId = $data['account_id'];
-        }
-
         /**
          * @var VCard|null $entry
          * @var string $vcard
@@ -141,8 +135,8 @@ class ImportVCard extends BaseService implements ServiceInterface
 
         if ($entry === null) {
             return [
-                'error' => 'ERROR_PARSER',
-                'reason' => $this->errorResults['ERROR_PARSER'],
+                'error' => self::ERROR_PARSER,
+                'reason' => static::$errorResults[self::ERROR_PARSER],
                 'name' => '(unknow)',
             ];
         }
@@ -181,8 +175,8 @@ class ImportVCard extends BaseService implements ServiceInterface
     {
         if (! $this->canImportCurrentEntry($entry)) {
             return [
-                'error' => 'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME',
-                'reason' => $this->errorResults['ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME'],
+                'error' => self::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME,
+                'reason' => static::$errorResults[self::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME],
                 'name' => $this->name($entry),
             ];
         }
@@ -205,8 +199,8 @@ class ImportVCard extends BaseService implements ServiceInterface
         if ($contact && $behaviour === self::BEHAVIOUR_ADD) {
             return [
                 'contact_id' => $contact->id,
-                'error' => 'ERROR_CONTACT_EXIST',
-                'reason' => $this->errorResults['ERROR_CONTACT_EXIST'],
+                'error' => self::ERROR_CONTACT_EXIST,
+                'reason' => static::$errorResults[self::ERROR_CONTACT_EXIST],
                 'name' => $this->name($entry),
             ];
         }

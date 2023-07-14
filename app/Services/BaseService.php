@@ -57,32 +57,33 @@ abstract class BaseService
     {
         Validator::make($data, $this->rules())->validate();
 
-        if (in_array('author_must_belong_to_account', $this->permissions())) {
-            $this->validateAuthorBelongsToAccount($data);
-        }
-
-        if (in_array('author_must_be_account_administrator', $this->permissions())) {
-            $this->validateAuthorIsAccountAdministrator();
-        }
-
-        if (in_array('vault_must_belong_to_account', $this->permissions())) {
-            $this->validateVaultExists($data);
-        }
-
-        if (in_array('author_must_be_vault_manager', $this->permissions())) {
-            $this->validateUserPermissionInVault(Vault::PERMISSION_MANAGE);
-        }
-
-        if (in_array('author_must_be_vault_editor', $this->permissions())) {
-            $this->validateUserPermissionInVault(Vault::PERMISSION_EDIT);
-        }
-
-        if (in_array('author_must_be_in_vault', $this->permissions())) {
-            $this->validateUserPermissionInVault(Vault::PERMISSION_VIEW);
-        }
-
-        if (in_array('contact_must_belong_to_vault', $this->permissions())) {
-            $this->validateContactBelongsToVault($data);
+        foreach ($this->permissions() as $permission) {
+            switch ($permission) {
+                case 'author_must_belong_to_account':
+                    $this->validateAuthorBelongsToAccount($data);
+                    break;
+                case 'author_must_be_account_administrator':
+                    $this->validateAuthorIsAccountAdministrator();
+                    break;
+                case 'vault_must_belong_to_account':
+                    $this->validateVaultExists($data);
+                    break;
+                case 'author_must_be_vault_manager':
+                    $this->validateUserPermissionInVault(Vault::PERMISSION_MANAGE);
+                    break;
+                case 'author_must_be_vault_editor':
+                    $this->validateUserPermissionInVault(Vault::PERMISSION_EDIT);
+                    break;
+                case 'author_must_be_in_vault':
+                    $this->validateUserPermissionInVault(Vault::PERMISSION_VIEW);
+                    break;
+                case 'contact_must_belong_to_vault':
+                    $this->validateContactBelongsToVault($data);
+                    break;
+                default:
+                    throw new \Exception("Unknown permission: $permission");
+                    break;
+            }
         }
 
         return true;
