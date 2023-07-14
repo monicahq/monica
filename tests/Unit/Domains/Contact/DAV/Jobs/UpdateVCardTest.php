@@ -3,6 +3,7 @@
 namespace Tests\Unit\Domains\Contact\DAV\Jobs;
 
 use App\Domains\Contact\Dav\Jobs\UpdateVCard;
+use App\Models\Account;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
@@ -19,11 +20,12 @@ class UpdateVCardTest extends TestCase
     use CardEtag;
 
     /** @test */
-    public function it_create_a_contact()
+    public function it_creates_a_contact()
     {
         $fake = Bus::fake();
 
-        $user = User::factory()->create();
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
         $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
 
         $contact = new Contact();
@@ -38,7 +40,7 @@ class UpdateVCardTest extends TestCase
 
         $pendingBatch = $fake->batch([
             $job = new UpdateVCard([
-                'account_id' => $vault->account_id,
+                'account_id' => $account->id,
                 'author_id' => $user->id,
                 'vault_id' => $vault->id,
                 'uri' => 'https://test/dav/uricontact1',
