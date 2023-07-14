@@ -387,9 +387,11 @@ class Contact extends Model
                     return NameHelper::formatContactName(Auth::user(), $this);
                 }
 
+                $firstName = Arr::get($attributes, 'first_name');
                 $lastName = Arr::get($attributes, 'last_name');
+                $separator = $firstName && $lastName ? ' ' : '';
 
-                return Arr::get($attributes, 'first_name').$lastName ? ' '.$lastName : '';
+                return $firstName.$separator.$lastName;
             }
         );
     }
