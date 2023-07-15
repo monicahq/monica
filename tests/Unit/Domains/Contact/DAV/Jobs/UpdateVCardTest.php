@@ -40,9 +40,7 @@ END:VCARD';
             'card' => $card,
         ];
 
-        dump($card);
-
-        (new UpdateVCard($data))->handle();
+        (new UpdateVCard())->execute($data);
 
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'Test',

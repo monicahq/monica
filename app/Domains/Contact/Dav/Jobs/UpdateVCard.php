@@ -57,7 +57,13 @@ class UpdateVCard extends QueuableService implements ServiceInterface
      */
     public function execute(array $data): void
     {
+        dump($data);
+
+        $this->data = $data;
+
         $this->validateRules($data);
+
+        dump('ok');
 
         $this->withLocale($this->author->preferredLocale(), function () {
             $newtag = $this->updateCard($this->data['uri'], $this->data['card']);
