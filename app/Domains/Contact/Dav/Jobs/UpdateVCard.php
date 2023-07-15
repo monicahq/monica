@@ -57,10 +57,6 @@ class UpdateVCard extends QueuableService implements ServiceInterface
      */
     public function execute(array $data): void
     {
-        if (! $this->batching()) {
-            return;
-        }
-
         $this->validateRules($data);
 
         $this->withLocale($this->author->preferredLocale(), function () {
