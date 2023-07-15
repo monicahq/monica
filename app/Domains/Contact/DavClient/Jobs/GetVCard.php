@@ -32,7 +32,7 @@ class GetVCard implements ShouldQueue
     public function handle(): void
     {
         if (! $this->batching()) {
-            return;
+            return; // @codeCoverageIgnore
         }
 
         Log::info(__CLASS__.' '.$this->contact->uri);
@@ -40,22 +40,20 @@ class GetVCard implements ShouldQueue
         $response = $this->subscription->getClient()
             ->request('GET', $this->contact->uri);
 
-        $this->chainUpdateVCard($response->body());
+        $job = $this->updateVCard($response->body());
+
+        $this->batch()->add([$job]);
     }
 
-    private function chainUpdateVCard(string $card): void
+    private function updateVCard(string $card): UpdateVCard
     {
-        if (($batch = $this->batch()) !== null) {
-            $batch->add([
-                new UpdateVCard([
-                    'account_id' => $this->subscription->vault->account_id,
-                    'author_id' => $this->subscription->user_id,
-                    'vault_id' => $this->subscription->vault_id,
-                    'uri' => $this->contact->uri,
-                    'etag' => $this->contact->etag,
-                    'card' => $card,
-                ]),
-            ]);
-        }
+        return new UpdateVCard([
+            'account_id' => $this->subscription->vault->account_id,
+            'author_id' => $this->subscription->user_id,
+            'vault_id' => $this->subscription->vault_id,
+            'uri' => $this->contact->uri,
+            'etag' => $this->contact->etag,
+            'card' => $card,
+        ]);
     }
 }

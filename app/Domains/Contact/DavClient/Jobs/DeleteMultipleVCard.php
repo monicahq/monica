@@ -3,7 +3,6 @@
 namespace App\Domains\Contact\DavClient\Jobs;
 
 use App\Models\AddressBookSubscription;
-use Illuminate\Bus\Batch;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -33,19 +32,18 @@ class DeleteMultipleVCard implements ShouldQueue
             return; // @codeCoverageIgnore
         }
 
-        $batch = $this->batch();
+        $jobs = collect($this->hrefs)
+            ->map(fn (string $href): DeleteVCard => $this->deleteVCard($href))
+            ->toArray();
 
-        collect($this->hrefs)
-            ->each(fn ($href) => $this->deleteVCard($href, $batch));
+        $this->batch()->add($jobs);
     }
 
     /**
      * Delete the contact.
      */
-    private function deleteVCard(string $href, Batch $batch): void
+    private function deleteVCard(string $href): DeleteVCard
     {
-        $batch->add([
-            new DeleteVCard($this->subscription, $href),
-        ]);
+        return new DeleteVCard($this->subscription, $href);
     }
 }

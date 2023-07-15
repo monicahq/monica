@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
-use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use Sabre\CardDAV\Plugin as CardDav;
 
 class GetMultipleVCard implements ShouldQueue
 {
@@ -41,30 +41,32 @@ class GetMultipleVCard implements ShouldQueue
                 $this->getAddressDataProperty(),
             ], $this->hrefs);
 
-        collect($data)
+        $jobs = collect($data)
             ->filter(fn (array $contact): bool => isset($contact[200]))
-            ->each(fn (array $contact, $href) => $this->updateVCard($contact, $href));
+            ->map(fn (array $contact, string $href): ?UpdateVCard => $this->updateVCard($contact, $href))
+            ->filter()
+            ->toArray();
+
+        $this->batch()->add($jobs);
     }
 
     /**
      * Update the contact.
      */
-    private function updateVCard(array $contact, string $href): void
+    private function updateVCard(array $contact, string $href): ?UpdateVCard
     {
-        $card = Arr::get($contact, '200.{'.CardDAVPlugin::NS_CARDDAV.'}address-data');
+        $card = Arr::get($contact, '200.{'.CardDav::NS_CARDDAV.'}address-data');
 
-        if ($card !== null && ($batch = $this->batch()) !== null) {
-            $batch->add([
-                new UpdateVCard([
-                    'account_id' => $this->subscription->vault->account_id,
-                    'author_id' => $this->subscription->user_id,
-                    'vault_id' => $this->subscription->vault_id,
-                    'uri' => $href,
-                    'etag' => Arr::get($contact, '200.{DAV:}getetag'),
-                    'card' => $card,
-                ]),
+        return $card === null
+            ? null
+            : new UpdateVCard([
+                'account_id' => $this->subscription->vault->account_id,
+                'author_id' => $this->subscription->user_id,
+                'vault_id' => $this->subscription->vault_id,
+                'uri' => $href,
+                'etag' => Arr::get($contact, '200.{DAV:}getetag'),
+                'card' => $card,
             ]);
-        }
     }
 
     /**
@@ -78,7 +80,7 @@ class GetMultipleVCard implements ShouldQueue
         ]);
 
         return [
-            'name' => '{'.CardDAVPlugin::NS_CARDDAV.'}address-data',
+            'name' => '{'.CardDav::NS_CARDDAV.'}address-data',
             'value' => null,
             'attributes' => $addressDataAttributes,
         ];

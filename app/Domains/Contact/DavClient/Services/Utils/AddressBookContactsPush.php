@@ -29,7 +29,7 @@ class AddressBookContactsPush
         return $changes
             ->union($added)
             ->union($deleted)
-            ->filter(fn ($c) => $c !== null);
+            ->filter();
     }
 
     /**
@@ -62,8 +62,7 @@ class AddressBookContactsPush
     {
         // All removed contact must be deleted
         return collect($contacts)
-            ->map(fn (string $uri): DeleteVCard => new DeleteVCard($this->subscription, $uri)
-            );
+            ->map(fn (string $uri): DeleteVCard => new DeleteVCard($this->subscription, $uri));
     }
 
     /**

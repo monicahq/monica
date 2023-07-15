@@ -8,7 +8,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use Sabre\CardDAV\Plugin as CardDav;
 use Sabre\DAV\Xml\Request\PropPatch;
 use Sabre\DAV\Xml\Service;
 
@@ -216,14 +216,14 @@ class DavClient
     public function addressbookMultiget(mixed $properties, iterable $contacts, array $options = [], string $url = ''): array
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
-        $root = self::addElementNS($dom, CardDAVPlugin::NS_CARDDAV, 'card:addressbook-multiget');
+        $root = self::addElementNS($dom, CardDav::NS_CARDDAV, 'card:addressbook-multiget');
         $dom->createAttributeNS('DAV:', 'd:e');
 
         $prop = self::addElement($dom, $root, 'd:prop');
 
         $namespaces = [
             'DAV:' => 'd',
-            CardDAVPlugin::NS_CARDDAV => 'card',
+            CardDav::NS_CARDDAV => 'card',
         ];
 
         self::fetchProperties($dom, $prop, $properties, $namespaces);
@@ -249,14 +249,14 @@ class DavClient
     public function addressbookQuery(mixed $properties, array $options = [], string $url = ''): array
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
-        $root = self::addElementNS($dom, CardDAVPlugin::NS_CARDDAV, 'card:addressbook-query');
+        $root = self::addElementNS($dom, CardDav::NS_CARDDAV, 'card:addressbook-query');
         $dom->createAttributeNS('DAV:', 'd:e');
 
         $prop = self::addElement($dom, $root, 'd:prop');
 
         $namespaces = [
             'DAV:' => 'd',
-            CardDAVPlugin::NS_CARDDAV => 'card',
+            CardDav::NS_CARDDAV => 'card',
         ];
 
         self::fetchProperties($dom, $prop, $properties, $namespaces);

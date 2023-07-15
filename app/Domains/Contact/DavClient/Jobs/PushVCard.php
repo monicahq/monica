@@ -31,10 +31,6 @@ class PushVCard implements ShouldQueue
      */
     public function handle(): void
     {
-        if (! $this->batching()) {
-            return;
-        }
-
         Log::info(__CLASS__.' '.$this->contact->uri);
 
         $contact = Contact::where('vault_id', $this->subscription->vault_id)
@@ -50,13 +46,10 @@ class PushVCard implements ShouldQueue
     {
         $headers = [];
 
-        switch ($this->contact->mode) {
-            case ContactPushDto::MODE_MATCH_ETAG:
-                $headers['If-Match'] = $this->contact->etag;
-                break;
-            case ContactPushDto::MODE_MATCH_ANY:
-                $headers['If-Match'] = '*';
-                break;
+        if ($this->contact->mode === ContactPushDto::MODE_MATCH_ETAG) {
+            $headers['If-Match'] = $this->contact->etag;
+        } elseif ($this->contact->mode === ContactPushDto::MODE_MATCH_ANY) {
+            $headers['If-Match'] = '*';
         }
 
         $response = $this->subscription->getClient()

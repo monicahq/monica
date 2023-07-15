@@ -13,7 +13,7 @@ use Illuminate\Bus\PendingBatch;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Bus;
 use Mockery\MockInterface;
-use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use Sabre\CardDAV\Plugin as CardDav;
 use Tests\TestCase;
 use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
@@ -48,7 +48,7 @@ class GetMultipleVCardTest extends TestCase
                     $this->assertEquals([
                         '{DAV:}getetag',
                         [
-                            'name' => '{'.CardDAVPlugin::NS_CARDDAV.'}address-data',
+                            'name' => '{'.CardDav::NS_CARDDAV.'}address-data',
                             'value' => null,
                             'attributes' => [
                                 'content-type' => 'text/vcard',
@@ -63,7 +63,7 @@ class GetMultipleVCardTest extends TestCase
                 ->andReturn([
                     'https://test/dav/uri' => [
                         200 => [
-                            '{'.CardDAVPlugin::NS_CARDDAV.'}address-data' => $card,
+                            '{'.CardDav::NS_CARDDAV.'}address-data' => $card,
                             '{DAV:}getetag' => $etag,
                         ],
                     ],
@@ -125,7 +125,7 @@ class GetMultipleVCardTest extends TestCase
                     $this->assertEquals([
                         '{DAV:}getetag',
                         [
-                            'name' => '{'.CardDAVPlugin::NS_CARDDAV.'}address-data',
+                            'name' => '{'.CardDav::NS_CARDDAV.'}address-data',
                             'value' => null,
                             'attributes' => [
                                 'content-type' => 'text/vcard',
@@ -140,7 +140,7 @@ class GetMultipleVCardTest extends TestCase
                 ->andReturn([
                     'https://test/dav/uri' => [
                         200 => [
-                            '{'.CardDAVPlugin::NS_CARDDAV.'}address-data' => $card,
+                            '{'.CardDav::NS_CARDDAV.'}address-data' => $card,
                             '{DAV:}getetag' => $etag,
                         ],
                     ],

@@ -29,10 +29,6 @@ class DeleteVCard implements ShouldQueue
      */
     public function handle(): void
     {
-        if (! $this->batching()) {
-            return;
-        }
-
         Log::info(__CLASS__.' '.$this->uri);
 
         $this->subscription->getClient()

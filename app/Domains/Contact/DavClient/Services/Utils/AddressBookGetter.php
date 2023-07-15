@@ -9,7 +9,7 @@ use GuzzleHttp\Exception\ClientException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use Sabre\CardDAV\Plugin as CardDav;
 
 class AddressBookGetter
 {
@@ -152,7 +152,7 @@ class AddressBookGetter
      */
     private function getAddressBookHome(string $principal): string
     {
-        $prop = $this->client->getProperty('{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-home-set', $principal);
+        $prop = $this->client->getProperty('{'.CardDav::NS_CARDDAV.'}addressbook-home-set', $principal);
 
         if (is_null($prop) || empty($prop)) {
             throw new DavServerNotCompliantException('Server does not support rfc 6352 section 7.1.1 (CARD:addressbook-home-set)');
@@ -178,7 +178,7 @@ class AddressBookGetter
             }
 
             if (($resources = Arr::get($properties, '{DAV:}resourcetype', null)) &&
-                $resources->is('{'.CardDAVPlugin::NS_CARDDAV.'}addressbook')) {
+                $resources->is('{'.CardDav::NS_CARDDAV.'}addressbook')) {
                 return $book;
             }
         }
@@ -203,8 +203,8 @@ class AddressBookGetter
     {
         $supportedReportSet = $this->client->getSupportedReportSet();
 
-        $addressbookMultiget = in_array('{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-multiget', $supportedReportSet);
-        $addressbookQuery = in_array('{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-query', $supportedReportSet);
+        $addressbookMultiget = in_array('{'.CardDav::NS_CARDDAV.'}addressbook-multiget', $supportedReportSet);
+        $addressbookQuery = in_array('{'.CardDav::NS_CARDDAV.'}addressbook-query', $supportedReportSet);
         $syncCollection = in_array('{DAV:}sync-collection', $supportedReportSet);
 
         return [
@@ -220,7 +220,7 @@ class AddressBookGetter
     private function getSupportedAddressData(): array
     {
         // get the supported card format
-        $addressData = collect($this->client->getProperty('{'.CardDAVPlugin::NS_CARDDAV.'}supported-address-data'));
+        $addressData = collect($this->client->getProperty('{'.CardDav::NS_CARDDAV.'}supported-address-data'));
         $data = $addressData->firstWhere('attributes.version', '4.0');
         if (! $data) {
             $data = $addressData->firstWhere('attributes.version', '3.0');

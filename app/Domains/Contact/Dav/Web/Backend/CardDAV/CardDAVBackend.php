@@ -20,7 +20,7 @@ use ReturnTypeWillChange;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Backend\SyncSupport;
-use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use Sabre\CardDAV\Plugin as CardDav;
 use Sabre\DAV;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
@@ -85,7 +85,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
             'uri' => $vault->name,
             'principaluri' => PrincipalBackend::getPrincipalUser($this->user),
             '{DAV:}displayname' => trans('Contacts'),
-            '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $vault->name,
+            '{'.CardDav::NS_CARDDAV.'}addressbook-description' => $vault->name,
         ];
         if ($token) {
             $des += [

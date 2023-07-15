@@ -88,7 +88,7 @@ abstract class BaseService
 
         $permissions = collect($this->permissions());
 
-        foreach (static::$dependencies as $key => $value) {
+        foreach (self::$dependencies as $key => $value) {
             if ($permissions->contains($key)) {
                 collect($value)->each(function ($v) use ($permissions, $key) {
                     if (! $permissions->contains($v)) {
@@ -100,7 +100,7 @@ abstract class BaseService
             }
         }
 
-        if (($e = $permissions->diff(collect(static::$dependencies)->keys()))->isNotEmpty()) {
+        if (($e = $permissions->diff(collect(self::$dependencies)->keys()))->isNotEmpty()) {
             throw new \Exception('Unknown permission: '.$e->first());
         }
 
@@ -136,7 +136,6 @@ abstract class BaseService
                 break;
             default:
                 throw new \Exception("Unknown permission: $permission");
-                break;
         }
     }
 
