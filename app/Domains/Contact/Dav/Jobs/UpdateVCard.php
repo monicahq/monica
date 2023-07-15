@@ -57,13 +57,9 @@ class UpdateVCard extends QueuableService implements ServiceInterface
      */
     public function execute(array $data): void
     {
-        dump($data);
-
         $this->data = $data;
 
         $this->validateRules($data);
-
-        dump('ok');
 
         $this->withLocale($this->author->preferredLocale(), function () {
             $newtag = $this->updateCard($this->data['uri'], $this->data['card']);
@@ -79,11 +75,8 @@ class UpdateVCard extends QueuableService implements ServiceInterface
 
     /**
      * Update the contact with the carddata.
-     *
-     * @param  string  $cardUri
-     * @param  string  $cardData
      */
-    private function updateCard($cardUri, $cardData): ?string
+    private function updateCard(string $cardUri, mixed $cardData): ?string
     {
         $backend = app(CardDAVBackend::class)->withUser($this->author);
 
