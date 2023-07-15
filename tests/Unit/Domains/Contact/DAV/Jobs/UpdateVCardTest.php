@@ -35,7 +35,7 @@ END:VCARD';
             'account_id' => $user->account_id,
             'author_id' => $user->id,
             'vault_id' => $vault->id,
-            'uri' => 'https://test/dav/uricontact1',
+            'uri' => 'https://test/dav/affacde9-b2fe-4371-9acb-6612aaee6971',
             'etag' => $etag,
             'card' => $card,
         ];

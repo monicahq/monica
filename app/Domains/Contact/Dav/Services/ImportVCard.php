@@ -109,7 +109,11 @@ class ImportVCard extends BaseService implements ServiceInterface
      */
     public function execute(array $data): array
     {
+        dump($data);
+
         $this->validateRules($data);
+
+        dump('ok');
 
         if (Arr::get($data, 'contact_id') !== null) {
             $this->validateContactBelongsToVault($data);
