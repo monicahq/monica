@@ -32,9 +32,9 @@ class UpdateSubscriptionLocalSyncToken extends BaseService
      */
     private function updateSyncToken(AddressBookSubscription $subscription): void
     {
-        $backend = app(CardDAVBackend::class)->withUser($subscription->user);
-
-        $token = $backend->getCurrentSyncToken($subscription->vault_id);
+        $token = app(CardDAVBackend::class)
+            ->withUser($subscription->user)
+            ->getCurrentSyncToken($subscription->vault_id);
 
         if ($token !== null) {
             $subscription->localSyncToken = $token->id;

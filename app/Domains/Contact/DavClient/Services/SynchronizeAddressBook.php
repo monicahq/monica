@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Log;
 
 class SynchronizeAddressBook extends BaseService
 {
+    private AddressBookSubscription $subscription;
+
     /**
      * Get the validation rules that apply to the service.
      */
@@ -28,20 +30,23 @@ class SynchronizeAddressBook extends BaseService
     {
         $this->validateRules($data);
 
-        // TODO: check if account is limited
+        $this->validate($data);
 
-        $subscription = AddressBookSubscription::findOrFail($data['addressbook_subscription_id']);
+        $force = Arr::get($data, 'force', false);
 
-        if ($subscription->user->account_id !== $data['account_id']) {
-            throw new ModelNotFoundException();
-        }
+        $this->synchronize($force);
+    }
 
-        if (! $subscription->active) {
+    private function synchronize(bool $force)
+    {
+        if (! $this->subscription->active) {
             return;
         }
 
         try {
-            $this->sync($data, $subscription);
+            app(AddressBookSynchronizer::class)
+                ->withSubscription($this->subscription)
+                ->execute($force);
         } catch (ClientException $e) {
             Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
                 'body' => $e->hasResponse() ? $e->getResponse()->getBody() : null,
@@ -50,12 +55,14 @@ class SynchronizeAddressBook extends BaseService
         }
     }
 
-    private function sync(array $data, AddressBookSubscription $subscription)
+    private function validate(array $data): void
     {
-        $force = Arr::get($data, 'force', false);
+        $this->subscription = AddressBookSubscription::findOrFail($data['addressbook_subscription_id']);
 
-        app(AddressBookSynchronizer::class)
-            ->withSubscription($subscription)
-            ->execute($force);
+        if ($this->subscription->user->account_id !== $data['account_id']) {
+            throw new ModelNotFoundException();
+        }
+
+        // TODO: check if account is limited
     }
 }

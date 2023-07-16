@@ -26,13 +26,22 @@ class AddressBookSynchronizer
     {
         $this->client = $this->subscription->getClient();
 
-        $force ? $this->forcesync() : $this->sync();
+        $batch = $force
+            ? $this->forcesync()
+            : $this->sync();
+
+        Bus::batch($batch)
+            ->then(fn () => app(UpdateSubscriptionLocalSyncToken::class)->execute([
+                'addressbook_subscription_id' => $this->subscription->id,
+            ]))
+            ->allowFailures()
+            ->dispatch();
     }
 
     /**
      * Sync the address book.
      */
-    private function sync()
+    private function sync(): Collection
     {
         // Get changes to sync
         $localChanges = $this->backend()->getChangesForAddressBook($this->subscription->vault_id, (string) $this->subscription->localSyncToken, 1);
@@ -53,26 +62,19 @@ class AddressBookSynchronizer
             );
         }
 
-        Bus::batch($batch)
-            ->then(fn () => app(UpdateSubscriptionLocalSyncToken::class)->execute([
-                'addressbook_subscription_id' => $this->subscription->id,
-            ]))
-            ->allowFailures()
-            ->dispatch();
+        return $batch;
     }
 
     /**
      * Sync the address book.
      */
-    private function forcesync()
+    private function forcesync(): Collection
     {
-        $backend = $this->backend();
-
         // Get changes to sync
-        $localChanges = $backend->getChangesForAddressBook($this->subscription->vault_id, (string) $this->subscription->localSyncToken, 1);
+        $localChanges = $this->backend()->getChangesForAddressBook($this->subscription->vault_id, (string) $this->subscription->localSyncToken, 1);
 
         // Get current list of contacts
-        $localContacts = $backend->getObjects($this->subscription->vault_id);
+        $localContacts = $this->backend()->getObjects($this->subscription->vault_id);
 
         // Get distant changes to sync
         $distContacts = $this->getAllContactsEtag();
@@ -90,12 +92,7 @@ class AddressBookSynchronizer
             );
         }
 
-        Bus::batch($batch)
-            ->then(fn () => app(UpdateSubscriptionLocalSyncToken::class)->execute([
-                'addressbook_subscription_id' => $this->subscription->id,
-            ]))
-            ->allowFailures()
-            ->dispatch();
+        return $batch;
     }
 
     /**
@@ -103,13 +100,15 @@ class AddressBookSynchronizer
      */
     private function getDistantChanges(): Collection
     {
-        $etags = collect($this->getDistantEtags());
-        $contacts = $etags->filter(fn ($contact, $href): bool => $this->filterDistantContacts($contact, $href)
+        $etags = $this->getDistantEtags();
+        $data = collect($etags);
+
+        $contacts = $data->filter(fn ($contact, $href): bool => $this->filterDistantContacts($contact, $href)
         )
             ->map(fn (array $contact, string $href): ContactDto => new ContactDto($href, Arr::get($contact, 'properties.200.{DAV:}getetag'))
             );
 
-        $deleted = $etags->filter(fn ($contact): bool => is_array($contact) && $contact['status'] === '404'
+        $deleted = $data->filter(fn ($contact): bool => is_array($contact) && $contact['status'] === '404'
         )
             ->map(fn (array $contact, string $href): ContactDto => new ContactDeleteDto($href)
             );
@@ -138,16 +137,14 @@ class AddressBookSynchronizer
      */
     private function getDistantEtags(): array
     {
-        if ($this->hasCapability('syncCollection')) {
+        return $this->hasCapability('syncCollection')
             // With sync-collection
-            return $this->callSyncCollectionWhenNeeded();
-        } else {
+            ? $this->callSyncCollectionWhenNeeded()
             // With PROPFIND
-            return $this->client->propFind([
+            : $this->client->propFind([
                 '{DAV:}getcontenttype',
                 '{DAV:}getetag',
             ], 1);
-        }
     }
 
     /**
@@ -197,7 +194,8 @@ class AddressBookSynchronizer
             return collect();
         }
 
-        $data = collect($this->client->addressbookQuery('{DAV:}getetag'));
+        $query = $this->client->addressbookQuery('{DAV:}getetag');
+        $data = collect($query);
 
         $updated = $data->filter(fn ($contact): bool => is_array($contact) && $contact['status'] === '200'
         )

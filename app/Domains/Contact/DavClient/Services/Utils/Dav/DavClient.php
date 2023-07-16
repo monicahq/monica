@@ -355,7 +355,8 @@ class DavClient
         if (($prop = Arr::get($properties, $propName)) && is_array($prop)) {
             $prop = array_map(fn ($supportedReport) => $this->iterateOver($supportedReport, '{DAV:}supported-report', fn ($report) => $this->iterateOver($report, '{DAV:}report', fn ($type) => Arr::get($type, 'name')
             )
-            ), $prop);
+            ),
+                $prop);
         }
 
         return $prop;
