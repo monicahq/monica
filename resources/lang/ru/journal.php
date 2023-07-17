@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => 'Добавить вашу первую запись в журнал',
     'journal_blank_description' => 'В журнал вы можете добавлять записи о событиях в вашей жизни, чтобы сохранить их.',
     'delete_confirmation' => 'Вы уверены что хотите удалить эту запись?',
+    'apply_filter' => 'Apply filter',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'per_page' => 'Per Page',
+    'sort_order' => 'Sort Order',
+    'ascending' => 'Ascending',
+    'descending' => 'Descending',
 ];

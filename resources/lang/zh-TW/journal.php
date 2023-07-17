@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => '新增您的第一個記錄條目',
     'journal_blank_description' => '記錄允許您編寫發生在您身上的事件, 並記住它們。',
     'delete_confirmation' => '您確定要刪除此條目嗎？',
+    'apply_filter' => 'Apply filter',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'per_page' => 'Per Page',
+    'sort_order' => 'Sort Order',
+    'ascending' => 'Ascending',
+    'descending' => 'Descending',
 ];

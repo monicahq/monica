@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => 'Schreibe deinen ersten Eintrag',
     'journal_blank_description' => 'Im Tagebuch kannst du deine Erlebnisse festhalten und dich später an sie erinnern.',
     'delete_confirmation' => 'Willst du diesen Eintrag wirklich löschen?',
+    'apply_filter' => 'Apply filter',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'per_page' => 'Per Page',
+    'sort_order' => 'Sort Order',
+    'ascending' => 'Ascending',
+    'descending' => 'Descending',
 ];

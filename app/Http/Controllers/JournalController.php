@@ -28,10 +28,26 @@ class JournalController extends Controller
      *
      * @return array
      */
-    public function list()
+    public function list(Request $request)
     {
+
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $sortBy = $request->input('sort_by', 'created_at'); 
+        $sortOrder = $request->input('sort_order', 'desc'); 
+        $perPage = $request->input('per_page', 30);
+
         $entries = collect([]);
-        $journalEntries = auth()->user()->account->journalEntries()->paginate(30);
+        
+        $journalEntriesQuery = auth()->user()->account->journalEntries();
+
+        if ($startDate && $endDate) {
+            $journalEntriesQuery->whereDate('date', '>=', $startDate)
+                ->whereDate('date', '<=', $endDate);
+        }
+        $journalEntries = $journalEntriesQuery->orderBy($sortBy, $sortOrder)
+        ->paginate($perPage);
+
 
         // this is needed to determine if we need to display the calendar
         // (month + year) next to the journal entry

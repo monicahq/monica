@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => 'Thêm mục nhật ký đầu tiên của bạn',
     'journal_blank_description' => 'Nhật ký cho phép bạn viết sự kiện đã xảy ra với bạn, và ghi nhớ chúng.',
     'delete_confirmation' => 'Bạn chắc chắn muốn xóa mục nhật ký này?',
+    'apply_filter' => 'Apply filter',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'per_page' => 'Per Page',
+    'sort_order' => 'Sort Order',
+    'ascending' => 'Ascending',
+    'descending' => 'Descending',
 ];

@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => 'Voeg je eerst dagboek-invoer toe',
     'journal_blank_description' => 'Het dagboek laat je gebeurtenissen registreren, zodat je ze kunt onthouden.',
     'delete_confirmation' => 'Weet je zeker dat je deze dagboek-invoer wilt verwijderen?',
+    'apply_filter' => 'Apply filter',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'per_page' => 'Per Page',
+    'sort_order' => 'Sort Order',
+    'ascending' => 'Ascending',
+    'descending' => 'Descending',
 ];

@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => 'Añade tu primera entrada de diario',
     'journal_blank_description' => 'El diario te permite escribir eventos que te han pasado y recordarlos.',
     'delete_confirmation' => '¿Seguro que deseas eliminar esta entrada de tu diario?',
+    'apply_filter' => 'Apply filter',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'per_page' => 'Per Page',
+    'sort_order' => 'Sort Order',
+    'ascending' => 'Ascending',
+    'descending' => 'Descending',
 ];

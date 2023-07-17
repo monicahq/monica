@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => 'Ajouter votre première entrée dans le journal',
     'journal_blank_description' => 'Le journal vous permet de vous rappeler d’évènements passés, ou à venir.',
     'delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cette entrée ?',
+    'apply_filter' => 'Apply filter',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'per_page' => 'Per Page',
+    'sort_order' => 'Sort Order',
+    'ascending' => 'Ascending',
+    'descending' => 'Descending',
 ];

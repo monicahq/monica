@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => 'Lägg till din första journalpost',
     'journal_blank_description' => 'Tidskriften låter dig skriva händelser som hände dig, och kom ihåg dem.',
     'delete_confirmation' => 'Är du säker på att du vill ta bort denna journalpost?',
+    'apply_filter' => 'Apply filter',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'per_page' => 'Per Page',
+    'sort_order' => 'Sort Order',
+    'ascending' => 'Ascending',
+    'descending' => 'Descending',
 ];

@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => 'Tambahkan entri jurnal pertama Anda',
     'journal_blank_description' => 'Jurnal memungkinkan Anda menulis peristiwa yang terjadi pada Anda, dan mengingatnya.',
     'delete_confirmation' => 'Apakah Anda yakin ingin menghapus entri jurnal ini?',
+    'apply_filter' => 'Apply filter',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'per_page' => 'Per Page',
+    'sort_order' => 'Sort Order',
+    'ascending' => 'Ascending',
+    'descending' => 'Descending',
 ];

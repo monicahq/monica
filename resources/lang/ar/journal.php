@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => 'قم بتدوين مذكرتك الأولى',
     'journal_blank_description' => 'المذكرة تدَعُك تدون الأحداث التي حصلت لك، لتتذكرها.',
     'delete_confirmation' => 'هل أنت متأكد من حذف تدوين هذه المذكرة؟',
+    'apply_filter' => 'طبق الفلترة',
+    "start_date" => "تاريخ البدء" ,
+     "end_date" => "تاريخ الانتهاء" ,
+     "per_page" => "لكل صفحة" ,
+     'Sort_order' => 'ترتيب الفرز' ,
+     "ascending" => "تصاعدي" ,
+     "descending" => "تنازلي" ,
 ];

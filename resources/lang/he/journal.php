@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => 'ניתן להוסיף את רשומת היומן הראשונה שלך',
     'journal_blank_description' => 'היומן מאפשר לך לכתוב אירועים שעברו עליך ולזכור אותם.',
     'delete_confirmation' => 'למחוק את הרשומה הזאת ביומן?',
+    'apply_filter' => 'Apply filter',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'per_page' => 'Per Page',
+    'sort_order' => 'Sort Order',
+    'ascending' => 'Ascending',
+    'descending' => 'Descending',
 ];

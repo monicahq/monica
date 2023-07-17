@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => 'Legg til din første journaloppføring',
     'journal_blank_description' => 'Journalen lar deg skrive innlegg slik at du husker hva som skjer i løpet av en dag.',
     'delete_confirmation' => 'Er du sikker på at du vil slette denne journaloppføringen?',
+    'apply_filter' => 'Apply filter',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'per_page' => 'Per Page',
+    'sort_order' => 'Sort Order',
+    'ascending' => 'Ascending',
+    'descending' => 'Descending',
 ];

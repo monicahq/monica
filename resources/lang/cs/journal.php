@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => 'Přidej svůj první deníkový záznam',
     'journal_blank_description' => 'Deník umožňuje zaznamenávání událostí které se staly a ulehčuje jejich zapamatování.',
     'delete_confirmation' => 'Opravdu chcete smazat tento deníkový záznam?',
+    'apply_filter' => 'Apply filter',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'per_page' => 'Per Page',
+    'sort_order' => 'Sort Order',
+    'ascending' => 'Ascending',
+    'descending' => 'Descending',
 ];

@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => 'Scrivi qualcosa nel diario',
     'journal_blank_description' => 'Il diario ti permette di appuntare cose che ti succedono, e ricordarle.',
     'delete_confirmation' => 'Sei sicuro di voler rimuovere questa pagina dal diario?',
+    'apply_filter' => 'Apply filter',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'per_page' => 'Per Page',
+    'sort_order' => 'Sort Order',
+    'ascending' => 'Ascending',
+    'descending' => 'Descending',
 ];
