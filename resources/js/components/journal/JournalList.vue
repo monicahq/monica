@@ -177,7 +177,15 @@ export default {
 
     loadMore() {
       this.loadingMore = true;
-      axios.get('journal/entries?page=' + (this.journalEntries.current_page + 1))
+      axios.get('journal/entries?page=' + (this.journalEntries.current_page + 1),{
+        params: {
+          start_date: this.startDate,
+          end_date: this.endDate,
+          per_page: this.perPage,
+          sort_order: this.sortOrder,
+          sort_by: this.sortBy,
+        },
+      })
         .then(response => {
           this.journalEntries.current_page = response.data.current_page;
           this.journalEntries.next_page_url = response.data.next_page_url;
