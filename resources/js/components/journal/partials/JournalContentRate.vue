@@ -19,8 +19,24 @@
           </div>
 
           <!-- Log content -->
+          <div v-if="isEditingComment" class="pt2 w-100 pr-4">
+            <form-textarea
+              :id="'comment'"
+              v-model="day.comment"
+              :required="false"
+              :rows="4"
+            />
+            <div class="pv3">
+              <div class="flex-ns justify-between">
+                  <button v-cy-name="'save-entry-button'" class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click="saveComment()">
+                        {{ $t('app.save') }}
+                  </button>
+              </div>
+            </div>
+          </div>
+
           <div class="flex-auto flex items-center">
-            <p v-if="day.comment" class="mb2">
+            <p v-if="!isEditingComment && day.comment" class="mb2">
               {{ day.comment }}
             </p>
             <p v-if="!day.comment" class="mb2">
@@ -96,6 +112,11 @@
                 {{ $t('journal.journal_entry_rate') }}
               </li>
               <li class="di">
+                <a v-cy-name="'entry-edit-button-' + journalEntry.id" class="pointer" :href="'journal/day/' + journalEntry.id + '/edit'" @click.prevent="editingComment">
+                  {{ $t('app.edit') }}
+                </a>
+              </li>
+              <li class="di">
                 <a v-cy-name="'entry-delete-button-' + journalEntry.id" class="pointer" href="" @click.prevent="destroy()">
                   {{ $t('app.delete') }}
                 </a>
@@ -121,6 +142,8 @@ export default {
   data() {
     return {
       day: [],
+      isEditingComment: false,
+
     };
   },
 
@@ -137,6 +160,17 @@ export default {
   methods: {
     prepareComponent() {
       this.day = this.journalEntry.object;
+    },
+    editingComment() {
+      this.isEditingComment = !this.isEditingComment;
+    },
+    saveComment() {
+      axios.put('journal/day/' + this.day.id + '/update', {
+        comment: this.day.comment,
+      })
+      .then(response => {
+        this.editingComment();
+      });
     },
 
     destroy() {

@@ -209,6 +209,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/journal/hasRated', 'JournalController@hasRated');
         Route::post('/journal/day', 'JournalController@storeDay');
         Route::delete('/journal/day/{day}', 'JournalController@trashDay');
+        Route::put('/journal/day/{day}/update', 'JournalController@updateDay');
 
         Route::get('/journal/add', 'JournalController@create')->name('create');
         Route::post('/journal/create', 'JournalController@save')->name('save');
