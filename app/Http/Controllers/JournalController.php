@@ -189,6 +189,17 @@ class JournalController extends Controller
             ->withEntry($entry);
     }
 
+    public function updateDay(Request $request, Day $day)
+    {
+         $validatedData = $request->validate([
+            'comment' => 'required|string',
+        ]);
+
+        $day->update($validatedData);
+
+        return response()->json(['message' => 'Day updated successfully']);
+    }
+
     /**
      * Update a journal entry.
      *
