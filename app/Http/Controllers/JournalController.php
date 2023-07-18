@@ -188,7 +188,14 @@ class JournalController extends Controller
         return view('journal.edit')
             ->withEntry($entry);
     }
-
+    
+    /**
+     * Method updateDay
+     *
+     * @param Request $request
+     * @param Day $day 
+     *
+     */
     public function updateDay(Request $request, Day $day)
     {
          $validatedData = $request->validate([
