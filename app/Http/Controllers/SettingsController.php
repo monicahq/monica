@@ -365,7 +365,16 @@ class SettingsController extends Controller
         return redirect()->route('settings.tags.index')
                 ->with('success', trans('settings.tags_list_delete_success'));
     }
-
+    
+    /**
+     * Method editTag
+     *
+     * @param Tag $tag 
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    
     public function editTag(Tag $tag, Request $request)
     {
         $validator = Validator::make($request->all(), [
