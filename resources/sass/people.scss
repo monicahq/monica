@@ -41,13 +41,17 @@
         position: absolute;
       }
 
-      .number-contacts-per-tag {
+      .number-contacts-per-tag,
+      .number-contacts-without-tag {
         @if $htmldir == ltr {
           float: right;
         } @else {
           float: left;
         }
       }
+    }
+    .number-contacts-without-tag{
+      font-size: 1rem;
     }
   }
 
