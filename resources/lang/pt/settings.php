@@ -331,6 +331,7 @@ return [
     'tags_list_description' => 'You can organize your contacts by setting up tags. Tags work like folders, but you can add more than one tag to a contact.',
     'tags_list_contact_number' => '1 contacto|:count contactos',
     'tags_list_delete_success' => 'The tag has been successfully with success',
+    'tags_list_edit_success' => 'The tag has been successfully updated',
     'tags_list_delete_confirmation' => 'Are you sure you want to delete the tag? No contacts will be deleted, only the tag.',
     'tags_blank_title' => 'Tags are a great way of categorizing your contacts.',
     'tags_blank_description' => 'Tags work like folders, but you can add more than one tag to a contact. Go to a contact and tag a friend, right below the name. Once a contact is tagged, come back here to manage all the tags in your account.',

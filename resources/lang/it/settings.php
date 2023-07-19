@@ -331,6 +331,7 @@ return [
     'tags_list_description' => 'Puoi organizzare i tuoi contatti attraverso le etichette. Le etichette funzionano come delle cartelle, ma puoi aggiungere più di un\'etichetta a ogni contatto. Per aggiungere una nuova etichetta, aggiungila al contatto stesso.',
     'tags_list_contact_number' => '1 contatto|:count contatti',
     'tags_list_delete_success' => 'Etichetta rimossa',
+    'tags_list_edit_success' => 'The tag has been successfully updated',
     'tags_list_delete_confirmation' => 'Rimuovere etichetta? Nessun contatto verrà rimosso, solo l\'etichetta.',
     'tags_blank_title' => 'Le etichette sono un buon modo di organizzare i tuoi contatti.',
     'tags_blank_description' => 'I tag funzionano come cartelle, ma puoi aggiungerne più di uno a un contatto. Vai a un contatto e tagga un amico, proprio sotto al nome. Una volta taggato un contatto, torna qui per gestire tutti i tag nel tuo profilo.',

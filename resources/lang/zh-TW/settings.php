@@ -331,6 +331,7 @@ return [
     'tags_list_description' => '您可以通過設定來標記聯絡人。標記的工作方式類似於資料夾, 但可以向聯絡人新增多個標記。若要新增新標記, 請在聯絡人中新增即可。',
     'tags_list_contact_number' => ':count 個聯絡人',
     'tags_list_delete_success' => '標籤已成功刪除',
+    'tags_list_edit_success' => 'The tag has been successfully updated',
     'tags_list_delete_confirmation' => '確實要刪除該標籤嗎？不會刪除任何聯絡人, 只有標籤。',
     'tags_blank_title' => '標籤是對您的聯絡人進行分類的一種很好的方式。',
     'tags_blank_description' => 'Tags work like folders, but you can add more than one tag to a contact. Go to a contact and tag a friend, right below the name. Once a contact is tagged, come back here to manage all the tags in your account.',

@@ -63,7 +63,11 @@
               @foreach (auth()->user()->account->tags as $tag)
                 <li class="table-row" data-tag-id="{{ $tag->id }}">
                   <div class="table-cell">
-                    {{ $tag->name }}
+                    <form method="GET" action="{{ route('settings.tags.edit', $tag) }}" class="edit-tag-form hidden">
+                      @csrf
+                      <input name="tag_name" value="{{ $tag->name }}" class="di br2 f5 ba b--black-40 pa2 outline-0 edit-tag-input" />
+                    </form>
+                    <span class="tag-name">{{ $tag->name }}</span>
                     <span class="tags-list-contact-number">({{ trans_choice('settings.tags_list_contact_number', $tag->contacts()->count(), ['count' => $tag->contacts()->count()]) }})</span>
                     <ul>
                       @foreach($tag->contacts as $contact)
@@ -72,6 +76,10 @@
                     </ul>
                   </div>
                   <div class="table-cell actions">
+                    <a href="javascript:;" class="edit-icon-btn" onclick="toggleEditInput(this)">
+                      <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a>
+                    
                     <form method="POST" action="{{ route('settings.tags.delete', $tag) }}">
                       @method('DELETE')
                       @csrf
@@ -94,3 +102,15 @@
 </div>
 
 @endsection
+<script>
+  function toggleEditInput(editIcon) {
+    var tableRow = editIcon.closest('.table-row');
+    var tagName = tableRow.querySelector('.tag-name');
+    var contactNumber = tableRow.querySelector('.tags-list-contact-number');
+    var editInput = tableRow.querySelector('.edit-tag-form');
+    
+    tagName.classList.toggle('hidden');
+    contactNumber.classList.toggle('hidden');
+    editInput.classList.toggle('hidden');
+  }
+</script>

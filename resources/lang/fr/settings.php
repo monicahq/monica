@@ -331,6 +331,7 @@ return [
     'tags_list_description' => 'Vous pouvez organiser vos contact avec des étiquettes. Les étiquettes sont comme des dossiers, mais vous pouvez avoir autant d’étiquettes que vous le souhaitez par contact.',
     'tags_list_contact_number' => ':count contact|:count contacts',
     'tags_list_delete_success' => 'L’étiquette a été supprimée avec succès',
+    'tags_list_edit_success' => 'The tag has been successfully updated',
     'tags_list_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cette étiquette ? Aucun contact ne sera supprimé, seulement l’étiquette.',
     'tags_blank_title' => 'Les étiquettes sont une excellente manière de catégoriser vos contacts.',
     'tags_blank_description' => 'Les étiquettent fonctionnent comme des dossiers, mais vous pouvez ajouter plus d\'une étiquette à un contact. Allez à un contact et taguez un ami, juste en dessous du nom. Une fois qu\'un contact est étiqueté, revenez ici pour gérer toutes les étiquettes de votre compte.',

@@ -331,6 +331,7 @@ return [
     'tags_list_description' => 'Je kan je contacten organiseren door labels toe te voegen. Labels werken als mappen maar je kan meer dan één label toevoegen aan een contact. Om een nieuw label toe te voegen moet je dat bij een contactpersoon zelf doen.',
     'tags_list_contact_number' => '1 contact|:count contacten',
     'tags_list_delete_success' => 'Het label is succesvol verwijderd',
+    'tags_list_edit_success' => 'The tag has been successfully updated',
     'tags_list_delete_confirmation' => 'Weet je zeker dat je het label wil verwijderen? Alleen het label zal worden verwijderd, contactpersonen blijven behouden.',
     'tags_blank_title' => 'Labels zijn een geweldige methode om je contacten te organiseren.',
     'tags_blank_description' => 'Tags work like folders, but you can add more than one tag to a contact. Go to a contact and tag a friend, right below the name. Once a contact is tagged, come back here to manage all the tags in your account.',

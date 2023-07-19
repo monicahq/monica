@@ -331,6 +331,7 @@ return [
     'tags_list_description' => 'Du kan organisera dina kontakter genom att konfigurera taggar. Taggar fungerar som mappar, men du kan lägga till fler än en tagg till en kontakt. För att lägga till en ny tagg, lägg till den på själva kontakten.',
     'tags_list_contact_number' => '1 kontakt|:count kontakter',
     'tags_list_delete_success' => 'Taggen har tagits bort',
+    'tags_list_edit_success' => 'The tag has been successfully updated',
     'tags_list_delete_confirmation' => 'Är du säker på att du vill ta bort taggen? Inga kontakter kommer att tas bort, bara taggen.',
     'tags_blank_title' => 'Taggar är ett bra sätt att kategorisera dina kontakter.',
     'tags_blank_description' => 'Tags work like folders, but you can add more than one tag to a contact. Go to a contact and tag a friend, right below the name. Once a contact is tagged, come back here to manage all the tags in your account.',

@@ -331,6 +331,7 @@ return [
     'tags_list_description' => 'Puede organizar sus contactos configurando etiquetas. Las etiquetas funcionan como carpetas, pero puede añadir más de una etiqueta a un contacto. Para añadir una nueva etiqueta, añádela en el contacto mismo.',
     'tags_list_contact_number' => '1 contacto|:count contactos',
     'tags_list_delete_success' => 'La etiqueta se ha eliminado correctamente',
+    'tags_list_edit_success' => 'The tag has been successfully updated',
     'tags_list_delete_confirmation' => '¿Está seguro que desea eliminar la etiqueta? Ningún contacto será eliminado, sólo la etiqueta.',
     'tags_blank_title' => 'Las etiquetas son una excelente forma de clasificar tus contactos.',
     'tags_blank_description' => 'Las etiquetas funcionan como carpetas, pero puede añadir más de una etiqueta a un contacto. Ir a un contacto y etiquetar a un amigo, justo debajo del nombre. Una vez que un contacto está etiquetado, vuelve aquí para gestionar todas las etiquetas de tu cuenta.',

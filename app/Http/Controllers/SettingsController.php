@@ -26,6 +26,8 @@ use App\Services\Account\Settings\DestroyAccount;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
+use App\Models\Contact\Tag;
+use Illuminate\Support\Facades\Validator;
 
 class SettingsController extends Controller
 {
@@ -362,6 +364,27 @@ class SettingsController extends Controller
 
         return redirect()->route('settings.tags.index')
                 ->with('success', trans('settings.tags_list_delete_success'));
+    }
+
+    public function editTag(Tag $tag, Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'tag_name' => 'required|string|max:255', 
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('settings.tags.index')
+                ->with('error', $validator->errors());
+        }
+
+        $newName = $request->input('tag_name');
+
+        $tag->name = $newName;
+        $tag->save();
+
+
+        return redirect()->route('settings.tags.index')
+                ->with('success', trans('settings.tags_list_edit_success'));
     }
 
     public function api()

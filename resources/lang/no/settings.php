@@ -331,6 +331,7 @@ return [
     'tags_list_description' => 'Du kan organisere kontaktene dine ved å sette opp tagger. Tagger fungerer som mapper, men du kan legge til flere enn ett tag til en kontakt. For å legge til en ny tag, legg den til selve kontakten.',
     'tags_list_contact_number' => '1 kontakt|:count kontakter',
     'tags_list_delete_success' => 'Taggen har blitt slettet',
+    'tags_list_edit_success' => 'The tag has been successfully updated',
     'tags_list_delete_confirmation' => 'Er du sikker på at du vil slette taggen? Ingen kontakter vil bli slettet, bare taggen.',
     'tags_blank_title' => 'Tagger er en flott måte å kategorisere kontaktene på.',
     'tags_blank_description' => 'Merker fungerer som mapper, men du kan legge til flere enn en tag til en kontakt. Gå til kontakt og tagg en venn rett under navnet. Når en kontakt er tagget, kom tilbake hit for å administrere alle taggene på kontoen din.',
