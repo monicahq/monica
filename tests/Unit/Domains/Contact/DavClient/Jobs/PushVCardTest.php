@@ -19,6 +19,29 @@ class PushVCardTest extends TestCase
     use DatabaseTransactions;
     use CardEtag;
 
+    /** @test */
+    public function it_create_dto_string()
+    {
+        $subscription = AddressBookSubscription::factory()->create();
+        $dto = new PushVCard($subscription, 'uri', 'etag', 'card', 'id');
+        $this->assertEquals('uri', $dto->uri);
+        $this->assertEquals('etag', $dto->etag);
+        $this->assertEquals('id', $dto->contactId);
+        $this->assertEquals('card', $dto->card);
+    }
+
+    /** @test */
+    public function it_create_dto_resource()
+    {
+        $subscription = AddressBookSubscription::factory()->create();
+        $resource = fopen(__DIR__.'/stub.vcf', 'r');
+        $dto = new PushVCard($subscription, 'uri', 'etag', $resource, 'id');
+        $this->assertEquals('uri', $dto->uri);
+        $this->assertEquals('etag', $dto->etag);
+        $this->assertEquals('id', $dto->contactId);
+        $this->assertEquals('card', $dto->card);
+    }
+
     /**
      * @test
      *
