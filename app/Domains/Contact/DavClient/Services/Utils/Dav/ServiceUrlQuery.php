@@ -10,13 +10,25 @@ use function Safe\parse_url;
 
 class ServiceUrlQuery
 {
+    private DavClient $client;
+
+    /**
+     * Set the dav client.
+     */
+    public function withClient(DavClient $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
     /**
      * Get service url.
      *
      * @see https://datatracker.ietf.org/doc/html/rfc6352#section-11
      * @see https://datatracker.ietf.org/doc/html/rfc2782
      */
-    public function execute(string $name, bool $https, string $baseUri, DavClient $client): ?string
+    public function execute(string $name, bool $https, string $baseUri): ?string
     {
         if (($host = $this->parseUrl($baseUri)) !== null) {
             $entries = Http::getDnsRecord($name.'.'.$host, DNS_SRV);
@@ -30,7 +42,7 @@ class ServiceUrlQuery
 
                 foreach ($entries as $entry) {
                     try {
-                        return $this->getUri($entry, $https, $client);
+                        return $this->getUri($entry, $https);
                     } catch (RequestException $e) {
                         // if any exception occurs, it will try the next entry.
                     }
@@ -55,7 +67,7 @@ class ServiceUrlQuery
      *
      * @throws \Illuminate\Http\Client\RequestException
      */
-    private function getUri(array $entry, bool $https, DavClient $client): string
+    private function getUri(array $entry, bool $https): string
     {
         $uri = (new Uri())
             ->withScheme($https ? 'https' : 'http')
@@ -63,7 +75,7 @@ class ServiceUrlQuery
             ->withHost($entry['target']);
 
         // Test connection
-        $client->request('GET', $uri);
+        $this->client->request('GET', $uri);
 
         return (string) $uri;
     }

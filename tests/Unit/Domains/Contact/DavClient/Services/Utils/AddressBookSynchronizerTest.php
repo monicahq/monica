@@ -4,9 +4,9 @@ namespace Tests\Unit\Domains\Contact\DavClient\Services\Utils;
 
 use App\Domains\Contact\DavClient\Jobs\DeleteMultipleVCard;
 use App\Domains\Contact\DavClient\Jobs\GetMultipleVCard;
+use App\Domains\Contact\DavClient\Services\Utils\AddressBookContactsPush;
 use App\Domains\Contact\DavClient\Services\Utils\AddressBookContactsPushMissed;
 use App\Domains\Contact\DavClient\Services\Utils\AddressBookContactsUpdater;
-use App\Domains\Contact\DavClient\Services\Utils\AddressBookContactsUpdaterMissed;
 use App\Domains\Contact\DavClient\Services\Utils\AddressBookSynchronizer;
 use App\Models\AddressBookSubscription;
 use App\Models\Contact;
@@ -32,6 +32,13 @@ class AddressBookSynchronizerTest extends TestCase
         Bus::fake();
 
         $this->partialMock(AddressBookContactsUpdater::class, function (MockInterface $mock) {
+            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('execute')
+                ->once()
+                ->andReturn(collect());
+        });
+        $this->partialMock(AddressBookContactsPush::class, function (MockInterface $mock) {
+            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
             $mock->shouldReceive('execute')
                 ->once()
                 ->andReturn(collect());
@@ -56,6 +63,12 @@ class AddressBookSynchronizerTest extends TestCase
         Bus::fake();
 
         $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) {
+            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('execute')
+                ->once()
+                ->andReturn(collect());
+        });
+        $this->partialMock(AddressBookContactsPush::class, function (MockInterface $mock) {
             $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
             $mock->shouldReceive('execute')
                 ->once()
@@ -100,6 +113,17 @@ class AddressBookSynchronizerTest extends TestCase
                 ->withArgs(function ($contacts) {
                     $this->assertEquals('https://test/dav/addressbooks/user@test.com/contacts/uuid', $contacts->first()->uri);
                     $this->assertEquals('"test2"', $contacts->first()->etag);
+
+                    return true;
+                })
+                ->andReturn(collect());
+        });
+        $this->partialMock(AddressBookContactsPush::class, function (MockInterface $mock) {
+            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('execute')
+                ->once()
+                ->withArgs(function ($localChanges, $changes) {
+                    $this->assertEquals('"test2"', $changes->first()->etag);
 
                     return true;
                 })
@@ -216,23 +240,24 @@ class AddressBookSynchronizerTest extends TestCase
           '</d:prop>'.
         "</card:addressbook-query>\n", 'REPORT');
 
-        $this->mock(AddressBookContactsUpdaterMissed::class, function (MockInterface $mock) use ($contact, $etag) {
+        $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) {
             $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
             $mock->shouldReceive('execute')
                 ->once()
-                ->withArgs(function ($localContacts, $distContacts) use ($contact, $etag) {
+                ->andReturn(collect());
+        });
+
+        $this->mock(AddressBookContactsPushMissed::class, function (MockInterface $mock) use ($contact, $etag) {
+            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('execute')
+                ->once()
+                ->withArgs(function ($localChanges, $distContacts, $localContacts) use ($contact, $etag) {
                     $this->assertContains($contact->id, $localContacts->pluck('id'));
                     $this->assertEquals('https://test/dav/uuid1', $distContacts->first()->uri);
                     $this->assertEquals($etag, $distContacts->first()->etag);
 
                     return true;
                 })
-                ->andReturn(collect());
-        });
-        $this->mock(AddressBookContactsPushMissed::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
-            $mock->shouldReceive('execute')
-                ->once()
                 ->andReturn(collect());
         });
 

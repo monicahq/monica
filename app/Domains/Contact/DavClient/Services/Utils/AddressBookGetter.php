@@ -16,12 +16,20 @@ class AddressBookGetter
     private DavClient $client;
 
     /**
-     * Get address book data: uri, capabilities, and name.
+     * Set the dav client.
      */
-    public function execute(DavClient $client): ?array
+    public function withClient(DavClient $client): self
     {
         $this->client = $client;
 
+        return $this;
+    }
+
+    /**
+     * Get address book data: uri, capabilities, and name.
+     */
+    public function execute(): ?array
+    {
         try {
             return $this->getAddressBookData();
         } catch (ClientException $e) {

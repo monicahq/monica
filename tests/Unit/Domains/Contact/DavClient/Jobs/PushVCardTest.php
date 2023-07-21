@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domains\Contact\DavClient\Jobs;
 
 use App\Domains\Contact\DavClient\Jobs\PushVCard;
-use App\Domains\Contact\DavClient\Services\Utils\Model\ContactPushDto;
 use App\Models\AddressBookSubscription;
 use App\Models\Contact;
 use Illuminate\Bus\DatabaseBatchRepository;
@@ -56,7 +55,7 @@ class PushVCardTest extends TestCase
         });
 
         $pendingBatch = $fake->batch([
-            $job = new PushVCard($subscription, new ContactPushDto('https://test/dav/uri', $etag, $card, $contact->id, $mode)),
+            $job = new PushVCard($subscription, 'https://test/dav/uri', $etag, $card, $contact->id, $mode),
         ]);
         $batch = $pendingBatch->dispatch();
 

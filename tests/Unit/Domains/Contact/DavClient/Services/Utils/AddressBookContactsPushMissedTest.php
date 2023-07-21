@@ -6,7 +6,6 @@ use App\Domains\Contact\Dav\Web\Backend\CardDAV\CardDAVBackend;
 use App\Domains\Contact\DavClient\Jobs\PushVCard;
 use App\Domains\Contact\DavClient\Services\Utils\AddressBookContactsPushMissed;
 use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDto;
-use App\Domains\Contact\DavClient\Services\Utils\Model\ContactPushDto;
 use App\Models\AddressBookSubscription;
 use App\Models\Contact;
 use App\Models\SyncToken;
@@ -71,16 +70,14 @@ class AddressBookContactsPushMissedTest extends TestCase
 
         $batchs = (new AddressBookContactsPushMissed)
             ->withSubscription($subscription)
-            ->execute([], collect([
+            ->execute(collect(), collect([
                 'uuid6' => new ContactDto('uuid6', $etag),
             ]), collect([$contact]));
 
         $this->assertCount(1, $batchs);
         $batch = $batchs->first();
         $this->assertInstanceOf(PushVCard::class, $batch);
-        $dto = $this->getPrivateValue($batch, 'contact');
-        $this->assertInstanceOf(ContactPushDto::class, $dto);
-        $this->assertEquals('uuid3', $dto->uri);
-        $this->assertEquals(2, $dto->mode);
+        $this->assertEquals('uuid3', $batch->uri);
+        $this->assertEquals(2, $batch->mode);
     }
 }

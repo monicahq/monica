@@ -23,7 +23,8 @@ class AddressBookGetterTest extends TestCase
             ->fake();
         $client = $tester->client();
         $result = (new AddressBookGetter())
-            ->execute($client);
+            ->withClient($client)
+            ->execute();
 
         $tester->assert();
         $this->assertEquals([
@@ -53,7 +54,8 @@ class AddressBookGetterTest extends TestCase
 
         $this->expectException(DavServerNotCompliantException::class);
         (new AddressBookGetter())
-            ->execute($client);
+            ->withClient($client)
+            ->execute();
     }
 
     /** @test */
@@ -69,7 +71,8 @@ class AddressBookGetterTest extends TestCase
 
         $this->expectException(DavServerNotCompliantException::class);
         (new AddressBookGetter())
-            ->execute($client);
+            ->withClient($client)
+            ->execute();
     }
 
     /** @test */
@@ -86,7 +89,8 @@ class AddressBookGetterTest extends TestCase
 
         $this->expectException(DavServerNotCompliantException::class);
         (new AddressBookGetter())
-            ->execute($client);
+            ->withClient($client)
+            ->execute();
     }
 
     /** @test */
@@ -105,6 +109,7 @@ class AddressBookGetterTest extends TestCase
 
         $this->expectException(DavClientException::class);
         (new AddressBookGetter())
-            ->execute($client);
+            ->withClient($client)
+            ->execute();
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Domains\Contact\DavClient\Jobs;
 
-use App\Domains\Contact\DavClient\Services\Utils\Model\ContactPushDto;
 use App\Models\AddressBookSubscription;
 use App\Models\Contact;
 use Illuminate\Bus\Batchable;
@@ -16,14 +15,26 @@ class PushVCard implements ShouldQueue
 {
     use Batchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public const MODE_MATCH_NONE = 0;
+
+    public const MODE_MATCH_ETAG = 1;
+
+    public const MODE_MATCH_ANY = 2;
+
     /**
      * Create a new job instance.
      */
     public function __construct(
-        private AddressBookSubscription $subscription,
-        private ContactPushDto $contact
+        public AddressBookSubscription $subscription,
+        public string $uri,
+        public ?string $etag,
+        public mixed $card,
+        public string $contactId,
+        public int $mode = self::MODE_MATCH_NONE
+
     ) {
         $this->subscription = $subscription->withoutRelations();
+        $this->card = self::transformCard($card);
     }
 
     /**
@@ -31,10 +42,10 @@ class PushVCard implements ShouldQueue
      */
     public function handle(): void
     {
-        Log::info(__CLASS__.' '.$this->contact->uri);
+        Log::info(__CLASS__.' '.$this->uri);
 
         $contact = Contact::where('vault_id', $this->subscription->vault_id)
-            ->findOrFail($this->contact->contactId);
+            ->findOrFail($this->contactId);
 
         $etag = $this->pushDistant();
 
@@ -46,15 +57,29 @@ class PushVCard implements ShouldQueue
     {
         $headers = [];
 
-        if ($this->contact->mode === ContactPushDto::MODE_MATCH_ETAG) {
-            $headers['If-Match'] = $this->contact->etag;
-        } elseif ($this->contact->mode === ContactPushDto::MODE_MATCH_ANY) {
+        if ($this->mode === self::MODE_MATCH_ETAG) {
+            $headers['If-Match'] = $this->etag;
+        } elseif ($this->mode === self::MODE_MATCH_ANY) {
             $headers['If-Match'] = '*';
         }
 
         $response = $this->subscription->getClient()
-            ->request('PUT', $this->contact->uri, $this->contact->card, $headers);
+            ->request('PUT', $this->uri, $this->card, $headers);
 
         return $response->header('Etag');
+    }
+
+    /**
+     * Transform card.
+     *
+     * @param  string|resource  $card
+     */
+    protected static function transformCard(mixed $card): string
+    {
+        if (is_resource($card)) {
+            return tap(stream_get_contents($card), fn () => fclose($card));
+        }
+
+        return $card;
     }
 }

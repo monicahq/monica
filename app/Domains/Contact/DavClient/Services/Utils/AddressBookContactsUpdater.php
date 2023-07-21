@@ -53,8 +53,8 @@ class AddressBookContactsUpdater
     {
         return $refresh
             ->map(fn (ContactDto $contact) => $contact instanceof ContactDeleteDto
-                    ? new DeleteVCard($this->subscription, $contact->uri)
-                    : new GetVCard($this->subscription, $contact)
+                ? new DeleteVCard($this->subscription, $contact->uri)
+                : new GetVCard($this->subscription, $contact)
             );
     }
 }

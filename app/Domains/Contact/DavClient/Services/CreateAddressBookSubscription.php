@@ -72,7 +72,8 @@ class CreateAddressBookSubscription extends BaseService
         $client = $this->getClient($data);
 
         return app(AddressBookGetter::class)
-            ->execute($client);
+            ->withClient($client)
+            ->execute();
     }
 
     private function getClient(array $data): DavClient

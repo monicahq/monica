@@ -37,7 +37,9 @@ class ServiceUrlQueryTest extends TestCase
             ]);
         });
 
-        (new ServiceUrlQuery)->execute('srv', true, 'https://test.com', $tester->client());
+        (new ServiceUrlQuery)
+            ->withClient($tester->client())
+            ->execute('srv', true, 'https://test.com');
 
         $tester->assert();
     }
@@ -74,7 +76,9 @@ class ServiceUrlQueryTest extends TestCase
             ]);
         });
 
-        (new ServiceUrlQuery)->execute('srv', true, 'https://test.com', $tester->client());
+        (new ServiceUrlQuery)
+            ->withClient($tester->client())
+            ->execute('srv', true, 'https://test.com');
 
         $tester->assert();
     }
@@ -111,7 +115,9 @@ class ServiceUrlQueryTest extends TestCase
             ]);
         });
 
-        (new ServiceUrlQuery)->execute('srv', true, 'https://test.com', $tester->client());
+        (new ServiceUrlQuery)
+            ->withClient($tester->client())
+            ->execute('srv', true, 'https://test.com');
 
         $tester->assert();
     }
@@ -131,7 +137,9 @@ class ServiceUrlQueryTest extends TestCase
             return null;
         });
 
-        (new ServiceUrlQuery)->execute('srv', true, 'https://test.com', $tester->client());
+        (new ServiceUrlQuery)
+            ->withClient($tester->client())
+            ->execute('srv', true, 'https://test.com');
 
         $tester->assert();
     }

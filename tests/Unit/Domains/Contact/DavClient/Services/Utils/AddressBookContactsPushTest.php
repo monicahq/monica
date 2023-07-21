@@ -7,7 +7,6 @@ use App\Domains\Contact\DavClient\Jobs\DeleteVCard;
 use App\Domains\Contact\DavClient\Jobs\PushVCard;
 use App\Domains\Contact\DavClient\Services\Utils\AddressBookContactsPush;
 use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDto;
-use App\Domains\Contact\DavClient\Services\Utils\Model\ContactPushDto;
 use App\Models\AddressBookSubscription;
 use App\Models\Contact;
 use App\Models\SyncToken;
@@ -69,18 +68,16 @@ class AddressBookContactsPushTest extends TestCase
         $batchs = (new AddressBookContactsPush)
             ->withSubscription($subscription)
             ->execute(collect([
+                'added' => collect(['uricontact2']),
+            ]), collect([
                 'https://test/dav/uricontact1' => new ContactDto('https://test/dav/uricontact1', $etag),
-            ]), [
-                'added' => ['uricontact2'],
-            ]);
+            ]));
 
         $this->assertCount(1, $batchs);
         $batch = $batchs->first();
         $this->assertInstanceOf(PushVCard::class, $batch);
-        $dto = $this->getPrivateValue($batch, 'contact');
-        $this->assertInstanceOf(ContactPushDto::class, $dto);
-        $this->assertEquals('uricontact2', $dto->uri);
-        $this->assertEquals(ContactPushDto::MODE_MATCH_NONE, $dto->mode);
+        $this->assertEquals('uricontact2', $batch->uri);
+        $this->assertEquals(PushVCard::MODE_MATCH_NONE, $batch->mode);
     }
 
     /** @test */
@@ -132,18 +129,16 @@ class AddressBookContactsPushTest extends TestCase
         $batchs = (new AddressBookContactsPush)
             ->withSubscription($subscription)
             ->execute(collect([
+                'modified' => collect(['uricontact2']),
+            ]), collect([
                 'https://test/dav/uricontact1' => new ContactDto('https://test/dav/uricontact1', $etag),
-            ]), [
-                'modified' => ['uricontact2'],
-            ]);
+            ]));
 
         $this->assertCount(1, $batchs);
         $batch = $batchs->first();
         $this->assertInstanceOf(PushVCard::class, $batch);
-        $dto = $this->getPrivateValue($batch, 'contact');
-        $this->assertInstanceOf(ContactPushDto::class, $dto);
-        $this->assertEquals('uricontact2', $dto->uri);
-        $this->assertEquals(1, $dto->mode);
+        $this->assertEquals('uricontact2', $batch->uri);
+        $this->assertEquals(1, $batch->mode);
     }
 
     /** @test */
@@ -153,9 +148,9 @@ class AddressBookContactsPushTest extends TestCase
 
         $batchs = (new AddressBookContactsPush)
             ->withSubscription($subscription)
-            ->execute(collect(), [
-                'deleted' => ['uricontact2'],
-            ]);
+            ->execute(collect([
+                'deleted' => collect(['uricontact2']),
+            ]));
 
         $this->assertCount(1, $batchs);
         $batch = $batchs->first();

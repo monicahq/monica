@@ -5,9 +5,7 @@ namespace App\Domains\Contact\DavClient\Services\Utils;
 use App\Domains\Contact\DavClient\Jobs\DeleteVCard;
 use App\Domains\Contact\DavClient\Jobs\PushVCard;
 use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDto;
-use App\Domains\Contact\DavClient\Services\Utils\Model\ContactPushDto;
 use App\Domains\Contact\DavClient\Services\Utils\Traits\HasSubscription;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class AddressBookContactsPush
@@ -17,16 +15,16 @@ class AddressBookContactsPush
     /**
      * Push contacts to the distant server.
      *
-     * @param  Collection<array-key, ContactDto>  $changes
-     * @param  array<array-key, string>|null  $localChanges
+     * @param  Collection<array-key,Collection<array-key,string>>  $localChanges
+     * @param  Collection<array-key,ContactDto>|null  $changes
      */
-    public function execute(Collection $changes, ?array $localChanges): Collection
+    public function execute(Collection $localChanges, ?Collection $changes = null): Collection
     {
-        $changes = $this->preparePushChangedContacts($changes, Arr::get($localChanges, 'modified', []));
-        $added = $this->preparePushAddedContacts(Arr::get($localChanges, 'added', []));
-        $deleted = $this->prepareDeletedContacts(Arr::get($localChanges, 'deleted', []));
+        $modified = $this->preparePushChangedContacts($localChanges->get('modified', collect()), $changes ?? collect());
+        $added = $this->preparePushAddedContacts($localChanges->get('added', collect()));
+        $deleted = $this->prepareDeletedContacts($localChanges->get('deleted', collect()));
 
-        return $changes
+        return $modified
             ->union($added)
             ->union($deleted)
             ->filter();
@@ -34,63 +32,68 @@ class AddressBookContactsPush
 
     /**
      * Get list of requests to push new contacts.
+
+     *
+     * @param  Collection<array-key,string>  $contacts
      */
-    private function preparePushAddedContacts(array $contacts): Collection
+    private function preparePushAddedContacts(Collection $contacts): Collection
     {
         // All added contact must be pushed
-        return collect($contacts)
+        return $contacts
             ->map(function (string $uri): ?PushVCard {
                 $card = $this->backend()->getCard($this->subscription->vault->name, $uri);
 
                 return $card === false
                     ? null
                     : new PushVCard($this->subscription,
-                        new ContactPushDto(
-                            $uri,
-                            $card['distant_etag'],
-                            $card['carddata'],
-                            $card['contact_id']
-                        )
+                        $uri,
+                        $card['distant_etag'],
+                        $card['carddata'],
+                        $card['contact_id']
                     );
             });
     }
 
     /**
      * Get list of requests to delete contacts.
+
+     *
+     * @param  Collection<array-key,string>  $contacts
      */
-    private function prepareDeletedContacts(array $contacts): Collection
+    private function prepareDeletedContacts(Collection $contacts): Collection
     {
         // All removed contact must be deleted
-        return collect($contacts)
+        return $contacts
             ->map(fn (string $uri): DeleteVCard => new DeleteVCard($this->subscription, $uri));
     }
 
     /**
      * Get list of requests to push modified contacts.
      *
-     * @param  Collection<array-key, ContactDto>  $changes
+     * @param  Collection<array-key,string>  $contacts
+     * @param  Collection<array-key,ContactDto>  $changes
      */
-    private function preparePushChangedContacts(Collection $changes, array $contacts): Collection
+    private function preparePushChangedContacts(Collection $contacts, Collection $changes): Collection
     {
-        $refreshIds = $changes->map(fn (ContactDto $contact) => $this->backend()->getUuid($contact->uri));
+        $refreshIds = $changes->map(fn (ContactDto $contact): string => $this->backend()->getUuid($contact->uri));
 
         // We don't push contact that have just been pulled
-        return collect($contacts)
-            ->reject(fn (string $uri): bool => $refreshIds->contains($this->backend()->getUuid($uri))
-            )->map(function (string $uri): ?PushVCard {
+        return $contacts
+            ->reject(fn (string $uri): bool => $refreshIds->contains($this->backend()->getUuid($uri)))
+            ->map(function (string $uri): ?PushVCard {
                 $card = $this->backend()->getCard($this->subscription->vault->name, $uri);
 
-                return $card === false
-                    ? null
-                    : new PushVCard($this->subscription,
-                        new ContactPushDto(
-                            $uri,
-                            $card['distant_etag'],
-                            $card['carddata'],
-                            $card['contact_id'],
-                            $card['distant_etag'] !== null ? ContactPushDto::MODE_MATCH_ETAG : ContactPushDto::MODE_MATCH_ANY
-                        )
-                    );
+                if ($card === false) {
+                    return null;
+                }
+
+                return new PushVCard($this->subscription,
+                    $uri,
+                    $card['distant_etag'],
+                    $card['carddata'],
+                    $card['contact_id'],
+                    $card['distant_etag'] !== null ? PushVCard::MODE_MATCH_ETAG : PushVCard::MODE_MATCH_ANY
+                );
             });
     }
 }
