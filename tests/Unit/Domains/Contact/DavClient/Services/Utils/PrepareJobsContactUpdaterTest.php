@@ -7,9 +7,9 @@ use App\Domains\Contact\DavClient\Jobs\DeleteMultipleVCard;
 use App\Domains\Contact\DavClient\Jobs\DeleteVCard;
 use App\Domains\Contact\DavClient\Jobs\GetMultipleVCard;
 use App\Domains\Contact\DavClient\Jobs\GetVCard;
-use App\Domains\Contact\DavClient\Services\Utils\AddressBookContactsUpdater;
 use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDeleteDto;
 use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDto;
+use App\Domains\Contact\DavClient\Services\Utils\PrepareJobsContactUpdater;
 use App\Models\AddressBookSubscription;
 use App\Models\Contact;
 use App\Models\SyncToken;
@@ -18,7 +18,7 @@ use Mockery\MockInterface;
 use Tests\TestCase;
 use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
-class AddressBookContactsUpdaterTest extends TestCase
+class PrepareJobsContactUpdaterTest extends TestCase
 {
     use DatabaseTransactions;
     use CardEtag;
@@ -56,7 +56,7 @@ class AddressBookContactsUpdaterTest extends TestCase
                 ->andReturn($etag);
         });
 
-        $batchs = (new AddressBookContactsUpdater)
+        $batchs = (new PrepareJobsContactUpdater)
             ->withSubscription($subscription)
             ->execute(collect([
                 'https://test/dav/uuid2' => new ContactDto('https://test/dav/uuid2', $etag),
@@ -82,7 +82,7 @@ class AddressBookContactsUpdaterTest extends TestCase
         $subscription->localSyncToken = $token->id;
         $subscription->save();
 
-        $batchs = (new AddressBookContactsUpdater)
+        $batchs = (new PrepareJobsContactUpdater)
             ->withSubscription($subscription)
             ->execute(collect([
                 'https://test/dav/uuid2' => new ContactDeleteDto('https://test/dav/uuid2'),
@@ -152,7 +152,7 @@ class AddressBookContactsUpdaterTest extends TestCase
                 ->andReturn($etag);
         });
 
-        $batchs = (new AddressBookContactsUpdater)
+        $batchs = (new PrepareJobsContactUpdater)
             ->withSubscription($subscription)
             ->execute(collect([
                 'https://test/dav/uuid2' => new ContactDto('https://test/dav/uuid2', $etag),
@@ -189,7 +189,7 @@ class AddressBookContactsUpdaterTest extends TestCase
         $subscription->localSyncToken = $token->id;
         $subscription->save();
 
-        $batchs = (new AddressBookContactsUpdater)
+        $batchs = (new PrepareJobsContactUpdater)
             ->withSubscription($subscription)
             ->execute(collect([
                 'https://test/dav/uuid2' => new ContactDeleteDto('https://test/dav/uuid2'),

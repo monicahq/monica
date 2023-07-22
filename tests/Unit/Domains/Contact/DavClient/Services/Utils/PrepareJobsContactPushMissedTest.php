@@ -4,8 +4,8 @@ namespace Tests\Unit\Domains\Contact\DavClient\Services\Utils;
 
 use App\Domains\Contact\Dav\Web\Backend\CardDAV\CardDAVBackend;
 use App\Domains\Contact\DavClient\Jobs\PushVCard;
-use App\Domains\Contact\DavClient\Services\Utils\AddressBookContactsPushMissed;
 use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDto;
+use App\Domains\Contact\DavClient\Services\Utils\PrepareJobsContactPushMissed;
 use App\Models\AddressBookSubscription;
 use App\Models\Contact;
 use App\Models\SyncToken;
@@ -15,7 +15,7 @@ use Mockery\MockInterface;
 use Tests\TestCase;
 use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
-class AddressBookContactsPushMissedTest extends TestCase
+class PrepareJobsContactPushMissedTest extends TestCase
 {
     use DatabaseTransactions;
     use CardEtag;
@@ -68,7 +68,7 @@ class AddressBookContactsPushMissedTest extends TestCase
                 ]);
         });
 
-        $batchs = (new AddressBookContactsPushMissed)
+        $batchs = (new PrepareJobsContactPushMissed)
             ->withSubscription($subscription)
             ->execute(collect(), collect([
                 'uuid6' => new ContactDto('uuid6', $etag),

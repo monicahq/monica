@@ -12,7 +12,7 @@ use App\Domains\Contact\DavClient\Services\Utils\Traits\HasCapability;
 use App\Domains\Contact\DavClient\Services\Utils\Traits\HasSubscription;
 use Illuminate\Support\Collection;
 
-class AddressBookContactsUpdater
+class PrepareJobsContactUpdater
 {
     use HasCapability, HasSubscription;
 

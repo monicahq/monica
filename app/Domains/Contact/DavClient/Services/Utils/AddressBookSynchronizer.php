@@ -60,13 +60,13 @@ class AddressBookSynchronizer
         $changes = $this->getDistantChanges();
 
         // Get distant contacts
-        $batch = app(AddressBookContactsUpdater::class)
+        $batch = app(PrepareJobsContactUpdater::class)
             ->withSubscription($this->subscription)
             ->execute($changes);
 
         if (! $this->subscription->readonly) {
             $batch->union(
-                app(AddressBookContactsPush::class)
+                app(PrepareJobsContactPush::class)
                     ->withSubscription($this->subscription)
                     ->execute($localChanges, $changes)
             );
@@ -89,13 +89,13 @@ class AddressBookSynchronizer
 
         // Get missed contacts
         $missed = $distContacts->reject(fn (ContactDto $contact): bool => $uuids->contains($this->backend()->getUuid($contact->uri)));
-        $batch = app(AddressBookContactsUpdater::class)
+        $batch = app(PrepareJobsContactUpdater::class)
             ->withSubscription($this->subscription)
             ->execute($missed);
 
         if (! $this->subscription->readonly) {
             $batch->union(
-                app(AddressBookContactsPushMissed::class)
+                app(PrepareJobsContactPushMissed::class)
                     ->withSubscription($this->subscription)
                     ->execute($localChanges, $distContacts, $localContacts)
             );

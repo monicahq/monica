@@ -5,8 +5,8 @@ namespace Tests\Unit\Domains\Contact\DavClient\Services\Utils;
 use App\Domains\Contact\Dav\Web\Backend\CardDAV\CardDAVBackend;
 use App\Domains\Contact\DavClient\Jobs\DeleteVCard;
 use App\Domains\Contact\DavClient\Jobs\PushVCard;
-use App\Domains\Contact\DavClient\Services\Utils\AddressBookContactsPush;
 use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDto;
+use App\Domains\Contact\DavClient\Services\Utils\PrepareJobsContactPush;
 use App\Models\AddressBookSubscription;
 use App\Models\Contact;
 use App\Models\SyncToken;
@@ -16,7 +16,7 @@ use Mockery\MockInterface;
 use Tests\TestCase;
 use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
-class AddressBookContactsPushTest extends TestCase
+class PrepareJobsContactPushTest extends TestCase
 {
     use DatabaseTransactions;
     use CardEtag;
@@ -65,7 +65,7 @@ class AddressBookContactsPushTest extends TestCase
                 ->andReturn('uricontact1');
         });
 
-        $batchs = (new AddressBookContactsPush)
+        $batchs = (new PrepareJobsContactPush)
             ->withSubscription($subscription)
             ->execute(collect([
                 'added' => collect(['uricontact2']),
@@ -126,7 +126,7 @@ class AddressBookContactsPushTest extends TestCase
                 ]);
         });
 
-        $batchs = (new AddressBookContactsPush)
+        $batchs = (new PrepareJobsContactPush)
             ->withSubscription($subscription)
             ->execute(collect([
                 'modified' => collect(['uricontact2']),
@@ -146,7 +146,7 @@ class AddressBookContactsPushTest extends TestCase
     {
         $subscription = AddressBookSubscription::factory()->create();
 
-        $batchs = (new AddressBookContactsPush)
+        $batchs = (new PrepareJobsContactPush)
             ->withSubscription($subscription)
             ->execute(collect([
                 'deleted' => collect(['uricontact2']),

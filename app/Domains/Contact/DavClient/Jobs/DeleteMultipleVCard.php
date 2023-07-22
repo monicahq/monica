@@ -33,8 +33,7 @@ class DeleteMultipleVCard implements ShouldQueue
         }
 
         $jobs = collect($this->hrefs)
-            ->map(fn (string $href): DeleteVCard => $this->deleteVCard($href))
-            ->toArray();
+            ->map(fn (string $href): DeleteVCard => $this->deleteVCard($href));
 
         $this->batch()->add($jobs);
     }

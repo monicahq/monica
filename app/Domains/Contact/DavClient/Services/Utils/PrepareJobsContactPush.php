@@ -8,7 +8,7 @@ use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDto;
 use App\Domains\Contact\DavClient\Services\Utils\Traits\HasSubscription;
 use Illuminate\Support\Collection;
 
-class AddressBookContactsPush
+class PrepareJobsContactPush
 {
     use HasSubscription;
 

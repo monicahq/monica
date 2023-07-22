@@ -4,10 +4,10 @@ namespace Tests\Unit\Domains\Contact\DavClient\Services\Utils;
 
 use App\Domains\Contact\DavClient\Jobs\DeleteMultipleVCard;
 use App\Domains\Contact\DavClient\Jobs\GetMultipleVCard;
-use App\Domains\Contact\DavClient\Services\Utils\AddressBookContactsPush;
-use App\Domains\Contact\DavClient\Services\Utils\AddressBookContactsPushMissed;
-use App\Domains\Contact\DavClient\Services\Utils\AddressBookContactsUpdater;
 use App\Domains\Contact\DavClient\Services\Utils\AddressBookSynchronizer;
+use App\Domains\Contact\DavClient\Services\Utils\PrepareJobsContactPush;
+use App\Domains\Contact\DavClient\Services\Utils\PrepareJobsContactPushMissed;
+use App\Domains\Contact\DavClient\Services\Utils\PrepareJobsContactUpdater;
 use App\Models\AddressBookSubscription;
 use App\Models\Contact;
 use App\Models\SyncToken;
@@ -31,13 +31,13 @@ class AddressBookSynchronizerTest extends TestCase
     {
         Bus::fake();
 
-        $this->partialMock(AddressBookContactsUpdater::class, function (MockInterface $mock) {
+        $this->partialMock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
             $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
             $mock->shouldReceive('execute')
                 ->once()
                 ->andReturn(collect());
         });
-        $this->partialMock(AddressBookContactsPush::class, function (MockInterface $mock) {
+        $this->partialMock(PrepareJobsContactPush::class, function (MockInterface $mock) {
             $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
             $mock->shouldReceive('execute')
                 ->once()
@@ -62,13 +62,13 @@ class AddressBookSynchronizerTest extends TestCase
     {
         Bus::fake();
 
-        $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) {
+        $this->mock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
             $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
             $mock->shouldReceive('execute')
                 ->once()
                 ->andReturn(collect());
         });
-        $this->partialMock(AddressBookContactsPush::class, function (MockInterface $mock) {
+        $this->partialMock(PrepareJobsContactPush::class, function (MockInterface $mock) {
             $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
             $mock->shouldReceive('execute')
                 ->once()
@@ -106,7 +106,7 @@ class AddressBookSynchronizerTest extends TestCase
             ->getSyncCollection('token', '"test2"')
             ->fake();
 
-        $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) {
+        $this->mock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
             $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
             $mock->shouldReceive('execute')
                 ->once()
@@ -118,7 +118,7 @@ class AddressBookSynchronizerTest extends TestCase
                 })
                 ->andReturn(collect());
         });
-        $this->partialMock(AddressBookContactsPush::class, function (MockInterface $mock) {
+        $this->partialMock(PrepareJobsContactPush::class, function (MockInterface $mock) {
             $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
             $mock->shouldReceive('execute')
                 ->once()
@@ -240,14 +240,14 @@ class AddressBookSynchronizerTest extends TestCase
           '</d:prop>'.
         "</card:addressbook-query>\n", 'REPORT');
 
-        $this->mock(AddressBookContactsUpdater::class, function (MockInterface $mock) {
+        $this->mock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
             $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
             $mock->shouldReceive('execute')
                 ->once()
                 ->andReturn(collect());
         });
 
-        $this->mock(AddressBookContactsPushMissed::class, function (MockInterface $mock) use ($contact, $etag) {
+        $this->mock(PrepareJobsContactPushMissed::class, function (MockInterface $mock) use ($contact, $etag) {
             $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
             $mock->shouldReceive('execute')
                 ->once()

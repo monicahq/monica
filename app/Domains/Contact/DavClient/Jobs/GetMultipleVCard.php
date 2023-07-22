@@ -35,17 +35,12 @@ class GetMultipleVCard implements ShouldQueue
             return; // @codeCoverageIgnore
         }
 
-        $data = $this->subscription->getClient()
-            ->addressbookMultiget([
-                '{DAV:}getetag',
-                $this->getAddressDataProperty(),
-            ], $this->hrefs);
+        $data = $this->addressbookMultiget();
 
         $jobs = collect($data)
             ->filter(fn (array $contact): bool => isset($contact[200]))
             ->map(fn (array $contact, string $href): ?UpdateVCard => $this->updateVCard($contact, $href))
-            ->filter()
-            ->toArray();
+            ->filter();
 
         $this->batch()->add($jobs);
     }
@@ -67,6 +62,18 @@ class GetMultipleVCard implements ShouldQueue
                 'etag' => Arr::get($contact, '200.{DAV:}getetag'),
                 'card' => $card,
             ]);
+    }
+
+    /**
+     * Get addressbook data.
+     */
+    private function addressbookMultiget(): array
+    {
+        return $this->subscription->getClient()
+            ->addressbookMultiget([
+                '{DAV:}getetag',
+                $this->getAddressDataProperty(),
+            ], $this->hrefs);
     }
 
     /**

@@ -49,11 +49,19 @@ class PushVCard implements ShouldQueue
 
         $etag = $this->pushDistant();
 
-        $contact->distant_etag = empty($etag) ? null : $etag;
+        $contact->distant_etag = $etag === '' ? null : $etag;
         $contact->save();
     }
 
     private function pushDistant(): string
+    {
+        $response = $this->subscription->getClient()
+            ->request('PUT', $this->uri, $this->card, $this->headers());
+
+        return $response->header('Etag');
+    }
+
+    private function headers(): array
     {
         $headers = [];
 
@@ -63,10 +71,7 @@ class PushVCard implements ShouldQueue
             $headers['If-Match'] = '*';
         }
 
-        $response = $this->subscription->getClient()
-            ->request('PUT', $this->uri, $this->card, $headers);
-
-        return $response->header('Etag');
+        return $headers;
     }
 
     /**

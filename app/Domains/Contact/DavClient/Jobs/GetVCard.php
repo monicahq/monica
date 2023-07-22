@@ -42,7 +42,7 @@ class GetVCard implements ShouldQueue
 
         $job = $this->updateVCard($response->body());
 
-        $this->batch()->add([$job]);
+        $this->batch()->add($job);
     }
 
     private function updateVCard(string $card): UpdateVCard

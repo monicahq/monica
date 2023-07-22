@@ -8,7 +8,7 @@ use App\Domains\Contact\DavClient\Services\Utils\Traits\HasSubscription;
 use App\Models\Contact;
 use Illuminate\Support\Collection;
 
-class AddressBookContactsPushMissed
+class PrepareJobsContactPushMissed
 {
     use HasSubscription;
 
@@ -21,7 +21,7 @@ class AddressBookContactsPushMissed
      */
     public function execute(Collection $localChanges, Collection $distContacts, Collection $localContacts): Collection
     {
-        $changes = app(AddressBookContactsPush::class)
+        $changes = app(PrepareJobsContactPush::class)
             ->withSubscription($this->subscription)
             ->execute($localChanges);
 
