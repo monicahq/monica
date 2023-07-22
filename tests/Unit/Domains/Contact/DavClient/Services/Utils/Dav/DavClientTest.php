@@ -3,6 +3,7 @@
 namespace Tests\Unit\Domains\Contact\DavClient\Services\Utils\Dav;
 
 use App\Domains\Contact\DavClient\Services\Utils\Dav\DavClientException;
+use App\Domains\Contact\DavClient\Services\Utils\Dav\ServiceUrlQuery;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
@@ -56,6 +57,36 @@ class DavClientTest extends TestCase
             ->addResponse('https://test/.well-known/carddav', Http::response(), null, 'GET')
             ->addResponse('https://test/.well-known/carddav', Http::response(), null, 'GET')
             ->nonStandardServiceUrl()
+            ->fake();
+        $client = $tester->client();
+
+        $result = $client->getServiceUrl();
+
+        $tester->assert();
+        $this->assertEquals('https://test/dav/', $result);
+    }
+
+    /** @test */
+    public function it_get_serviceurl_name()
+    {
+        $this->mock(ServiceUrlQuery::class, function ($mock) {
+            $mock->shouldReceive('withClient')->once()->andReturn($mock);
+            $mock->shouldReceive('execute')
+                ->once()
+                ->withArgs(function (string $name, bool $https, string $baseUri) {
+                    $this->assertEquals('_carddavs._tcp', $name);
+                    $this->assertTrue($https);
+                    $this->assertEquals('https://test', $baseUri);
+
+                    return true;
+                })
+                ->andReturn('https://test/dav/');
+        });
+
+        $tester = (new DavTester())
+            ->addResponse('https://test/.well-known/carddav', Http::response(), null, 'GET')
+            ->addResponse('https://test/.well-known/carddav', Http::response(), null, 'GET')
+            ->addResponse('https://test/.well-known/carddav', Http::response(), null, 'PROPFIND')
             ->fake();
         $client = $tester->client();
 
