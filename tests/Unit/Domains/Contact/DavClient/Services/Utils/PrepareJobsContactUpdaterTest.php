@@ -33,7 +33,7 @@ class PrepareJobsContactUpdaterTest extends TestCase
             'name' => 'contacts1',
             'timestamp' => now()->addDays(-1),
         ]);
-        $subscription->localSyncToken = $token->id;
+        $subscription->sync_token_id = $token->id;
         $subscription->save();
 
         $contact = Contact::factory()->create([
@@ -79,7 +79,7 @@ class PrepareJobsContactUpdaterTest extends TestCase
             'name' => 'contacts1',
             'timestamp' => now()->addDays(-1),
         ]);
-        $subscription->localSyncToken = $token->id;
+        $subscription->sync_token_id = $token->id;
         $subscription->save();
 
         $batchs = (new PrepareJobsContactUpdater)
@@ -115,7 +115,7 @@ class PrepareJobsContactUpdaterTest extends TestCase
             'name' => 'contacts1',
             'timestamp' => now()->addDays(-1),
         ]);
-        $subscription->localSyncToken = $token->id;
+        $subscription->sync_token_id = $token->id;
         $subscription->save();
 
         $contact = Contact::factory()->create([
@@ -181,7 +181,7 @@ class PrepareJobsContactUpdaterTest extends TestCase
             'name' => 'contacts1',
             'timestamp' => now()->addDays(-1),
         ]);
-        $subscription->localSyncToken = $token->id;
+        $subscription->sync_token_id = $token->id;
         $subscription->save();
 
         $batchs = (new PrepareJobsContactUpdater)

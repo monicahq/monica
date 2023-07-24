@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\SyncToken;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
@@ -29,7 +30,7 @@ return new class extends Migration
             $table->string('capabilities', 2048);
             $table->string('syncToken', 512)->nullable();
             $table->string('last_batch')->nullable();
-            $table->string('localSyncToken', 1024)->nullable();
+            $table->foreignIdFor(SyncToken::class)->nullable()->constrained()->nullOnDelete();
             $table->smallInteger('frequency')->default(180); // 3 hours
             $table->timestamp('last_synchronized_at', 0)->nullable();
             $table->timestamps();

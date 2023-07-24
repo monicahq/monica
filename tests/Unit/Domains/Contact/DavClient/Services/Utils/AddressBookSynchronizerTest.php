@@ -97,7 +97,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $subscription = $this->getSubscription();
 
-        $contact = Contact::factory()->create([
+        Contact::factory()->create([
             'vault_id' => $subscription->vault_id,
             'id' => 'd403af1c-8492-4e9b-9833-cf18c795dfa9',
         ]);
@@ -145,7 +145,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $subscription = $this->getSubscription();
 
-        $contact = Contact::factory()->create([
+        Contact::factory()->create([
             'vault_id' => $subscription->vault_id,
             'id' => 'd403af1c-8492-4e9b-9833-cf18c795dfa9',
         ]);
@@ -363,7 +363,7 @@ class AddressBookSynchronizerTest extends TestCase
         });
     }
 
-    private function getSubscription()
+    private function getSubscription(): AddressBookSubscription
     {
         $subscription = AddressBookSubscription::factory()->create([
             'uri' => 'https://test/dav/addressbooks/user@test.com/contacts/',
@@ -375,7 +375,7 @@ class AddressBookSynchronizerTest extends TestCase
             'name' => 'contacts1',
             'timestamp' => now()->addDays(-1),
         ]);
-        $subscription->localSyncToken = $token->id;
+        $subscription->sync_token_id = $token->id;
         $subscription->save();
 
         return $subscription;

@@ -39,10 +39,10 @@ class UpdateSubscriptionLocalSyncToken extends QueuableService implements Servic
             ->getCurrentSyncToken($subscription->vault_id);
 
         if ($token !== null) {
-            $subscription->localSyncToken = $token->id;
+            $subscription->sync_token_id = $token->id;
             $subscription->save();
         }
 
-        Log::debug(__CLASS__.' '.__FUNCTION__.': '.$subscription->id.' '.$subscription->localSyncToken);
+        Log::debug(__CLASS__.' '.__FUNCTION__.': '.$subscription->id.' '.$subscription->sync_token_id);
     }
 }

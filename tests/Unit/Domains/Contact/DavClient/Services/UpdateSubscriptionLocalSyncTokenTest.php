@@ -43,7 +43,7 @@ class UpdateSubscriptionLocalSyncTokenTest extends TestCase
 
         $subscription->refresh();
 
-        $this->assertEquals($token->id, $subscription->localSyncToken);
+        $this->assertEquals($token->id, $subscription->sync_token_id);
     }
 
     /** @test */
@@ -69,6 +69,6 @@ class UpdateSubscriptionLocalSyncTokenTest extends TestCase
 
         $subscription->refresh();
 
-        $this->assertNull($subscription->localSyncToken);
+        $this->assertNull($subscription->sync_token_id);
     }
 }

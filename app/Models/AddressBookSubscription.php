@@ -30,7 +30,6 @@ class AddressBookSubscription extends Model
         'password',
         'readonly',
         'syncToken',
-        'localSyncToken',
         'frequency',
         'last_synchronized_at',
         'active',
@@ -54,7 +53,6 @@ class AddressBookSubscription extends Model
         'last_synchronized_at' => 'datetime',
         'readonly' => 'boolean',
         'active' => 'boolean',
-        'localSyncToken' => 'integer',
         'capabilities' => 'array',
     ];
 
@@ -69,32 +67,34 @@ class AddressBookSubscription extends Model
 
     /**
      * Get the account record associated with the subscription.
-     *
-     * @return BelongsTo
      */
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }
 
     /**
      * Get the user record associated with the subscription.
-     *
-     * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
      * Get the vault record associated with the subscription.
-     *
-     * @return BelongsTo
      */
-    public function vault()
+    public function vault(): BelongsTo
     {
         return $this->belongsTo(Vault::class);
+    }
+
+    /**
+     * Get the local synctoken.
+     */
+    public function localSyncToken(): BelongsTo
+    {
+        return $this->belongsTo(SyncToken::class);
     }
 
     /**
@@ -112,11 +112,8 @@ class AddressBookSubscription extends Model
 
     /**
      * Scope a query to only include active subscriptions.
-     *
-     * @param  Builder  $query
-     * @return Builder
      */
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('active', 1);
     }

@@ -31,7 +31,7 @@ class PrepareJobsContactPushTest extends TestCase
             'name' => 'contacts1',
             'timestamp' => now()->addDays(-1),
         ]);
-        $subscription->localSyncToken = $token->id;
+        $subscription->sync_token_id = $token->id;
         $subscription->save();
 
         $contact = Contact::factory()->create([
@@ -90,7 +90,7 @@ class PrepareJobsContactPushTest extends TestCase
             'name' => 'contacts1',
             'timestamp' => now()->addDays(-1),
         ]);
-        $subscription->localSyncToken = $token->id;
+        $subscription->sync_token_id = $token->id;
         $subscription->save();
 
         $contact = Contact::factory()->create([
