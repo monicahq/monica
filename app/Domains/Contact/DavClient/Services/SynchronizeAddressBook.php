@@ -26,7 +26,7 @@ class SynchronizeAddressBook extends BaseService
         ];
     }
 
-    public function execute(array $data): void
+    public function execute(array $data): ?string
     {
         $this->validateRules($data);
 
@@ -34,17 +34,17 @@ class SynchronizeAddressBook extends BaseService
 
         $force = Arr::get($data, 'force', false);
 
-        $this->synchronize($force);
+        return $this->synchronize($force);
     }
 
-    private function synchronize(bool $force)
+    private function synchronize(bool $force): ?string
     {
         if (! $this->subscription->active) {
-            return;
+            return null;
         }
 
         try {
-            app(AddressBookSynchronizer::class)
+            return app(AddressBookSynchronizer::class)
                 ->withSubscription($this->subscription)
                 ->execute($force);
         } catch (ClientException $e) {

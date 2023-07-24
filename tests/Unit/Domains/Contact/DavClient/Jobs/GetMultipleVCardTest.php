@@ -62,10 +62,13 @@ class GetMultipleVCardTest extends TestCase
                 })
                 ->andReturn([
                     'https://test/dav/uri' => [
-                        200 => [
-                            '{'.CardDav::NS_CARDDAV.'}address-data' => $card,
-                            '{DAV:}getetag' => $etag,
+                        'properties' => [
+                            200 => [
+                                '{'.CardDav::NS_CARDDAV.'}address-data' => $card,
+                                '{DAV:}getetag' => $etag,
+                            ],
                         ],
+                        'status' => '200',
                     ],
                 ]);
         });
@@ -139,10 +142,13 @@ class GetMultipleVCardTest extends TestCase
                 })
                 ->andReturn([
                     'https://test/dav/uri' => [
-                        200 => [
-                            '{'.CardDav::NS_CARDDAV.'}address-data' => $card,
-                            '{DAV:}getetag' => $etag,
+                        'properties' => [
+                            200 => [
+                                '{'.CardDav::NS_CARDDAV.'}address-data' => $card,
+                                '{DAV:}getetag' => $etag,
+                            ],
                         ],
+                        'status' => '200',
                     ],
                 ]);
         });

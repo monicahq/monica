@@ -4,6 +4,7 @@ namespace Tests\Unit\Domains\Contact\DavClient\Services\Utils;
 
 use App\Domains\Contact\DavClient\Jobs\DeleteMultipleVCard;
 use App\Domains\Contact\DavClient\Jobs\GetMultipleVCard;
+use App\Domains\Contact\DavClient\Jobs\PushVCard;
 use App\Domains\Contact\DavClient\Services\Utils\AddressBookSynchronizer;
 use App\Domains\Contact\DavClient\Services\Utils\PrepareJobsContactPush;
 use App\Domains\Contact\DavClient\Services\Utils\PrepareJobsContactPushMissed;
@@ -161,7 +162,7 @@ class AddressBookSynchronizerTest extends TestCase
         $tester->assert();
 
         Bus::assertBatched(function (PendingBatch $batch) {
-            $this->assertCount(2, $batch->jobs);
+            $this->assertCount(1, $batch->jobs);
             $job = $batch->jobs[0];
             $this->assertInstanceOf(GetMultipleVCard::class, $job);
             $this->assertEquals(['https://test/dav/addressbooks/user@test.com/contacts/uuid'], $this->getPrivateValue($job, 'hrefs'));
@@ -199,8 +200,8 @@ class AddressBookSynchronizerTest extends TestCase
         $tester->assert();
 
         Bus::assertBatched(function (PendingBatch $batch) {
-            $this->assertCount(2, $batch->jobs);
-            $job = $batch->jobs[1];
+            $this->assertCount(1, $batch->jobs);
+            $job = $batch->jobs[0];
             $this->assertInstanceOf(DeleteMultipleVCard::class, $job);
             $this->assertEquals(['https://test/dav/addressbooks/user@test.com/contacts/uuid'], $this->getPrivateValue($job, 'hrefs'));
 
@@ -308,9 +309,14 @@ class AddressBookSynchronizerTest extends TestCase
 
         Bus::assertBatched(function (PendingBatch $batch) {
             $this->assertCount(2, $batch->jobs);
+
             $job = $batch->jobs[0];
             $this->assertInstanceOf(GetMultipleVCard::class, $job);
             $this->assertEquals(['https://test/dav/uuid1'], $this->getPrivateValue($job, 'hrefs'));
+
+            $job = $batch->jobs[1];
+            $this->assertInstanceOf(PushVCard::class, $job);
+            $this->assertEquals('d403af1c-8492-4e9b-9833-cf18c795dfa9', $job->contactId);
 
             return true;
         });
@@ -348,8 +354,8 @@ class AddressBookSynchronizerTest extends TestCase
         $tester->assert();
 
         Bus::assertBatched(function (PendingBatch $batch) {
-            $this->assertCount(2, $batch->jobs);
-            $job = $batch->jobs[1];
+            $this->assertCount(1, $batch->jobs);
+            $job = $batch->jobs[0];
             $this->assertInstanceOf(DeleteMultipleVCard::class, $job);
             $this->assertEquals(['https://test/dav/uuid1'], $this->getPrivateValue($job, 'hrefs'));
 

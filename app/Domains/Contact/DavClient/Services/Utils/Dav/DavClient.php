@@ -7,6 +7,7 @@ use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Sabre\CardDAV\Plugin as CardDav;
 use Sabre\DAV\Xml\Request\PropPatch;
@@ -48,9 +49,17 @@ class DavClient
     {
         $uri = GuzzleUtils::uriFor($this->baseUri);
 
-        return (string) (is_null($path) || empty($path)
-            ? $uri
-            : $uri->withPath((string) Str::of($path)->start('/')));
+        if (is_null($path) || empty($path)) {
+            return (string) $uri;
+        }
+
+        if (Str::startsWith($path, '/')) {
+            return (string) $uri->withPath($path);
+        }
+
+        $basePath = Str::finish($uri->getPath(), '/');
+
+        return (string) $uri->withPath("$basePath$path");
     }
 
     /**
@@ -58,7 +67,8 @@ class DavClient
      */
     public function getRequest(): PendingRequest
     {
-        $request = Http::withUserAgent('Monica DavClient '.config('monica.app_version').'/Guzzle');
+        $request = Http::withUserAgent('Monica DavClient '.config('monica.app_version').'/Guzzle')
+            ->withoutVerifying();
 
         if ($this->username !== null && $this->password !== null) {
             $request = $request->withBasicAuth($this->username, $this->password);
@@ -461,9 +471,22 @@ class DavClient
 
         $url = Str::startsWith($url, 'http') ? $url : $this->path($url);
 
-        return $request
+        Log::debug(__CLASS__.' '.__FUNCTION__.': '.$method.' '.$url, [
+            'body' => $body,
+            'headers' => $headers,
+            'options' => $options,
+        ]);
+
+        $response = $request
             ->send($method, $url, $options)
             ->throw();
+
+        Log::debug(__CLASS__.' '.__FUNCTION__.'[response]: '.$method.' '.$url.' '.$response->status(), [
+            'body' => $response->body(),
+            'headers' => $response->headers(),
+        ]);
+
+        return $response;
     }
 
     /**

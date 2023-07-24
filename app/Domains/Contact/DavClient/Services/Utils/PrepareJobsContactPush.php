@@ -41,7 +41,7 @@ class PrepareJobsContactPush
         // All added contact must be pushed
         return $contacts
             ->map(function (string $uri): ?PushVCard {
-                $card = $this->backend()->getCard($this->subscription->vault->name, $uri);
+                $card = $this->backend()->getCard($this->subscription->vault_id, $uri);
 
                 return $card === false
                     ? null
@@ -56,7 +56,6 @@ class PrepareJobsContactPush
 
     /**
      * Get list of requests to delete contacts.
-
      *
      * @param  Collection<array-key,string>  $contacts
      */
@@ -81,7 +80,7 @@ class PrepareJobsContactPush
         return $contacts
             ->reject(fn (string $uri): bool => $refreshIds->contains($this->backend()->getUuid($uri)))
             ->map(function (string $uri): ?PushVCard {
-                $card = $this->backend()->getCard($this->subscription->vault->name, $uri);
+                $card = $this->backend()->getCard($this->subscription->vault_id, $uri);
 
                 if ($card === false) {
                     return null;

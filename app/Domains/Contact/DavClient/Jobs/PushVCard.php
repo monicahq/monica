@@ -7,6 +7,7 @@ use App\Models\Contact;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
@@ -42,7 +43,7 @@ class PushVCard implements ShouldQueue
      */
     public function handle(): void
     {
-        Log::info(__CLASS__.' '.$this->uri);
+        Log::debug(__CLASS__.' '.$this->uri);
 
         $contact = Contact::where('vault_id', $this->subscription->vault_id)
             ->findOrFail($this->contactId);
@@ -55,10 +56,19 @@ class PushVCard implements ShouldQueue
 
     private function pushDistant(): string
     {
-        $response = $this->subscription->getClient()
-            ->request('PUT', $this->uri, $this->card, $this->headers());
+        try {
+            $response = $this->subscription->getClient()
+                ->request('PUT', $this->uri, $this->card, $this->headers());
 
-        return $response->header('Etag');
+            return $response->header('Etag');
+        } catch (RequestException $e) {
+            Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
+                'body' => $e->response->body(),
+                $e,
+            ]);
+            $this->fail($e);
+            throw $e;
+        }
     }
 
     private function headers(): array

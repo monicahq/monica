@@ -55,7 +55,7 @@ class PrepareJobsContactPushMissed
                     $contact->distant_etag,
                     $card['carddata'],
                     $contact->id,
-                    PushVCard::MODE_MATCH_ANY
+                    $contact->distant_etag !== null ? PushVCard::MODE_MATCH_ANY : PushVCard::MODE_MATCH_NONE
                 );
             });
     }

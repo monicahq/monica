@@ -22,33 +22,36 @@ class AddressBookSynchronizer
     /**
      * Sync the address book.
      */
-    public function execute(bool $force = false): void
+    public function execute(bool $force = false): string
     {
         $this->client = $this->subscription->getClient();
 
         // Get changes to sync
         $localChanges = $this->getLocalChanges();
 
-        $batch = $force
+        $jobs = $force
             ? $this->forcesync($localChanges)
             : $this->sync($localChanges);
 
-        Bus::batch($batch)
-            ->then(fn () => app(UpdateSubscriptionLocalSyncToken::class)->execute([
-                'addressbook_subscription_id' => $this->subscription->id,
-            ]))
+        $updateSyncToken = new UpdateSubscriptionLocalSyncToken([
+            'addressbook_subscription_id' => $this->subscription->id,
+        ]);
+
+        $batch = Bus::batch($jobs)
+            ->then(fn () => $updateSyncToken->handle())
             ->allowFailures()
+            ->onQueue('high')
             ->dispatch();
+
+        return $batch->id;
     }
 
     private function getLocalChanges(): Collection
     {
         $localChanges = $this->backend()->getChangesForAddressBook($this->subscription->vault_id, (string) $this->subscription->localSyncToken, 1);
 
-        return $localChanges === null
-            ? collect()
-            : collect($localChanges)
-                ->map(fn (array $array): Collection => collect($array));
+        return Collection::wrap($localChanges)
+            ->map(fn ($changes): Collection => Collection::wrap($changes));
     }
 
     /**
@@ -60,19 +63,19 @@ class AddressBookSynchronizer
         $changes = $this->getDistantChanges();
 
         // Get distant contacts
-        $batch = app(PrepareJobsContactUpdater::class)
+        $jobs = app(PrepareJobsContactUpdater::class)
             ->withSubscription($this->subscription)
             ->execute($changes);
 
         if (! $this->subscription->readonly) {
-            $batch->union(
+            $jobs = $jobs->union(
                 app(PrepareJobsContactPush::class)
                     ->withSubscription($this->subscription)
                     ->execute($localChanges, $changes)
             );
         }
 
-        return $batch;
+        return $jobs;
     }
 
     /**
@@ -89,19 +92,19 @@ class AddressBookSynchronizer
 
         // Get missed contacts
         $missed = $distContacts->reject(fn (ContactDto $contact): bool => $uuids->contains($this->backend()->getUuid($contact->uri)));
-        $batch = app(PrepareJobsContactUpdater::class)
+        $jobs = app(PrepareJobsContactUpdater::class)
             ->withSubscription($this->subscription)
             ->execute($missed);
 
         if (! $this->subscription->readonly) {
-            $batch->union(
+            $jobs = $jobs->union(
                 app(PrepareJobsContactPushMissed::class)
                     ->withSubscription($this->subscription)
                     ->execute($localChanges, $distContacts, $localContacts)
             );
         }
 
-        return $batch;
+        return $jobs;
     }
 
     /**
@@ -115,7 +118,7 @@ class AddressBookSynchronizer
         }
 
         // only new contact or contact with etag that match
-        $card = $this->backend()->getCard($this->subscription->vault->name, $href);
+        $card = $this->backend()->getCard($this->subscription->vault_id, $href);
 
         return $card === false || $card['etag'] !== Arr::get($contact, 'properties.200.{DAV:}getetag');
     }
@@ -147,6 +150,7 @@ class AddressBookSynchronizer
         }
 
         $query = $this->client->addressbookQuery('{DAV:}getetag');
+
         $data = collect($query);
 
         $updated = $data->filter(fn ($contact): bool => is_array($contact) && $contact['status'] === '200')

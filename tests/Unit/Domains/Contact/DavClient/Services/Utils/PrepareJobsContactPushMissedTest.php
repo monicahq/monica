@@ -78,6 +78,6 @@ class PrepareJobsContactPushMissedTest extends TestCase
         $batch = $batchs->first();
         $this->assertInstanceOf(PushVCard::class, $batch);
         $this->assertEquals('uuid3', $batch->uri);
-        $this->assertEquals(2, $batch->mode);
+        $this->assertEquals(PushVCard::MODE_MATCH_NONE, $batch->mode);
     }
 }

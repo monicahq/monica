@@ -2,6 +2,7 @@
 
 namespace App\Domains\Contact\DavClient\Services\Utils\Dav;
 
+use App\Domains\Contact\DavClient\Services\Utils\Traits\HasClient;
 use GuzzleHttp\Psr7\Uri;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
@@ -10,17 +11,7 @@ use function Safe\parse_url;
 
 class ServiceUrlQuery
 {
-    private DavClient $client;
-
-    /**
-     * Set the dav client.
-     */
-    public function withClient(DavClient $client): self
-    {
-        $this->client = $client;
-
-        return $this;
-    }
+    use HasClient;
 
     /**
      * Get service url.

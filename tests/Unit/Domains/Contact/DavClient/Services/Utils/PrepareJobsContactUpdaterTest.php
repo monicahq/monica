@@ -62,7 +62,7 @@ class PrepareJobsContactUpdaterTest extends TestCase
                 'https://test/dav/uuid2' => new ContactDto('https://test/dav/uuid2', $etag),
             ]));
 
-        $this->assertCount(2, $batchs);
+        $this->assertCount(1, $batchs);
         $batch = $batchs->first();
         $this->assertInstanceOf(GetMultipleVCard::class, $batch);
         $hrefs = $this->getPrivateValue($batch, 'hrefs');
@@ -88,13 +88,8 @@ class PrepareJobsContactUpdaterTest extends TestCase
                 'https://test/dav/uuid2' => new ContactDeleteDto('https://test/dav/uuid2'),
             ]));
 
-        $this->assertCount(2, $batchs);
+        $this->assertCount(1, $batchs);
         $batch = $batchs->first();
-        $this->assertInstanceOf(GetMultipleVCard::class, $batch);
-        $hrefs = $this->getPrivateValue($batch, 'hrefs');
-        $this->assertEquals([], $hrefs);
-
-        $batch = $batchs[1];
         $this->assertInstanceOf(DeleteMultipleVCard::class, $batch);
         $hrefs = $this->getPrivateValue($batch, 'hrefs');
         $this->assertEquals(['https://test/dav/uuid2'], $hrefs);

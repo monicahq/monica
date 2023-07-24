@@ -2,9 +2,9 @@
 
 namespace App\Domains\Contact\DavClient\Services\Utils;
 
-use App\Domains\Contact\DavClient\Services\Utils\Dav\DavClient;
 use App\Domains\Contact\DavClient\Services\Utils\Dav\DavClientException;
 use App\Domains\Contact\DavClient\Services\Utils\Dav\DavServerNotCompliantException;
+use App\Domains\Contact\DavClient\Services\Utils\Traits\HasClient;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -13,17 +13,7 @@ use Sabre\CardDAV\Plugin as CardDav;
 
 class AddressBookGetter
 {
-    private DavClient $client;
-
-    /**
-     * Set the dav client.
-     */
-    public function withClient(DavClient $client): self
-    {
-        $this->client = $client;
-
-        return $this;
-    }
+    use HasClient;
 
     /**
      * Get address book data: uri, capabilities, and name.

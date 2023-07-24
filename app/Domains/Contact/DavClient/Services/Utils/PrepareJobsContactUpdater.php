@@ -38,10 +38,15 @@ class PrepareJobsContactUpdater
         $refresh = $refresh->groupBy(fn ($item): string => $item instanceof ContactDeleteDto ? 'deleted' : 'updated')
             ->map(fn (Collection $items): array => $items->pluck('uri')->toArray());
 
-        return collect([
-            new GetMultipleVCard($this->subscription, $refresh->get('updated', [])),
-            new DeleteMultipleVCard($this->subscription, $refresh->get('deleted', [])),
-        ]);
+        $jobs = collect();
+        if (($updated = $refresh->get('updated')) !== null) {
+            $jobs->add(new GetMultipleVCard($this->subscription, $updated));
+        }
+        if (($deleted = $refresh->get('deleted')) !== null) {
+            $jobs->add(new DeleteMultipleVCard($this->subscription, $deleted));
+        }
+
+        return $jobs;
     }
 
     /**

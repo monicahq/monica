@@ -3,13 +3,14 @@
 namespace Tests\Unit\Commands\Scheduling;
 
 use App\Domains\Contact\DavClient\Jobs\SynchronizeAddressBooks;
+use App\Domains\Contact\DavClient\Jobs\UpdateAddressBooks;
 use App\Models\AddressBookSubscription;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
-class DavClientsUpdateTest extends TestCase
+class UpdateAddressBooksTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -20,7 +21,7 @@ class DavClientsUpdateTest extends TestCase
 
         $subscription = AddressBookSubscription::factory()->create();
 
-        $this->artisan('monica:davclients')->run();
+        (new UpdateAddressBooks())->handle();
 
         Queue::assertPushed(SynchronizeAddressBooks::class, fn ($job) => $job->subscription->id === $subscription->id
         );
@@ -33,7 +34,7 @@ class DavClientsUpdateTest extends TestCase
 
         $subscription = AddressBookSubscription::factory()->inactive()->create();
 
-        $this->artisan('monica:davclients')->run();
+        (new UpdateAddressBooks())->handle();
 
         Queue::assertNotPushed(SynchronizeAddressBooks::class, fn ($job) => $job->subscription->id === $subscription->id
         );
@@ -50,7 +51,7 @@ class DavClientsUpdateTest extends TestCase
             'frequency' => 60,
         ])->create();
 
-        $this->artisan('monica:davclients')->run();
+        (new UpdateAddressBooks())->handle();
 
         Queue::assertPushed(SynchronizeAddressBooks::class, fn ($job) => $job->subscription->id === $subscription->id
         );
@@ -67,7 +68,7 @@ class DavClientsUpdateTest extends TestCase
             'frequency' => 60,
         ])->create();
 
-        $this->artisan('monica:davclients')->run();
+        (new UpdateAddressBooks())->handle();
 
         Queue::assertNotPushed(SynchronizeAddressBooks::class, fn ($job) => $job->subscription->id === $subscription->id
         );

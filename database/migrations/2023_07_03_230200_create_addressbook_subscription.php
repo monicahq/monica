@@ -28,10 +28,13 @@ return new class extends Migration
             $table->boolean('active')->default(true);
             $table->string('capabilities', 2048);
             $table->string('syncToken', 512)->nullable();
+            $table->string('last_batch')->nullable();
             $table->string('localSyncToken', 1024)->nullable();
             $table->smallInteger('frequency')->default(180); // 3 hours
             $table->timestamp('last_synchronized_at', 0)->nullable();
             $table->timestamps();
+
+            $table->foreign('last_batch')->references('id')->on('job_batches')->nullOnDelete();
         });
     }
 

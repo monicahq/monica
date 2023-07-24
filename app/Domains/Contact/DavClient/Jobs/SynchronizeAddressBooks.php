@@ -30,22 +30,26 @@ class SynchronizeAddressBooks implements ShouldQueue
      */
     public function handle(): void
     {
-        Log::withContext([
-            'addressbook_subscription_id' => $this->subscription->id,
-        ]);
-
         try {
-            app(SynchronizeAddressBook::class)->execute([
+            Log::withContext([
+                'addressbook_subscription_id' => $this->subscription->id,
+            ]);
+
+            $batchId = app(SynchronizeAddressBook::class)->execute([
                 'account_id' => $this->subscription->user->account_id,
                 'addressbook_subscription_id' => $this->subscription->id,
                 'force' => $this->force,
             ]);
+
+            $this->subscription->last_batch = $batchId;
         } catch (\Exception $e) {
             Log::error(__CLASS__.' '.__FUNCTION__.':'.$e->getMessage(), [$e]);
-        }
-        $this->subscription->last_synchronized_at = now();
-        $this->subscription->save();
+            $this->fail($e);
+        } finally {
+            $this->subscription->last_synchronized_at = now();
+            $this->subscription->save();
 
-        Log::withoutContext();
+            Log::withoutContext();
+        }
     }
 }

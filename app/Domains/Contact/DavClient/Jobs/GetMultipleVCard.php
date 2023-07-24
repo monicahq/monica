@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Sabre\CardDAV\Plugin as CardDav;
 
 class GetMultipleVCard implements ShouldQueue
@@ -35,10 +36,12 @@ class GetMultipleVCard implements ShouldQueue
             return; // @codeCoverageIgnore
         }
 
+        Log::debug(__CLASS__.' '.implode(',', $this->hrefs));
+
         $data = $this->addressbookMultiget();
 
         $jobs = collect($data)
-            ->filter(fn (array $contact): bool => isset($contact[200]))
+            ->filter(fn (array $contact): bool => is_array($contact) && $contact['status'] === '200')
             ->map(fn (array $contact, string $href): ?UpdateVCard => $this->updateVCard($contact, $href))
             ->filter();
 
@@ -50,7 +53,7 @@ class GetMultipleVCard implements ShouldQueue
      */
     private function updateVCard(array $contact, string $href): ?UpdateVCard
     {
-        $card = Arr::get($contact, '200.{'.CardDav::NS_CARDDAV.'}address-data');
+        $card = Arr::get($contact, 'properties.200.{'.CardDav::NS_CARDDAV.'}address-data');
 
         return $card === null
             ? null
@@ -59,7 +62,7 @@ class GetMultipleVCard implements ShouldQueue
                 'author_id' => $this->subscription->user_id,
                 'vault_id' => $this->subscription->vault_id,
                 'uri' => $href,
-                'etag' => Arr::get($contact, '200.{DAV:}getetag'),
+                'etag' => Arr::get($contact, 'properties.200.{DAV:}getetag'),
                 'card' => $card,
             ]);
     }
