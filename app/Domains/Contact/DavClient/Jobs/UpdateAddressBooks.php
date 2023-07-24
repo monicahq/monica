@@ -21,17 +21,25 @@ class UpdateAddressBooks implements ShouldQueue
         $now = now();
 
         AddressBookSubscription::active()
-            ->chunkById(200, function (Collection $subscriptions) use ($now) {
-                $subscriptions
-                    ->filter(fn ($subscription) => $this->isTimeToRunSync($subscription, $now))
-                    ->each(fn ($subscription) => SynchronizeAddressBooks::dispatch($subscription));
-            });
+            ->chunkById(200, fn (Collection $subscriptions) => $this->manageSubscriptions($subscriptions, $now));
+    }
+
+    /**
+     * Manage the subscriptions.
+     *
+     * @param  Collection<array-key,AddressBookSubscription>  $subscriptions
+     */
+    private function manageSubscriptions(Collection $subscriptions, Carbon $now): void
+    {
+        $subscriptions
+            ->filter(fn (AddressBookSubscription $subscription): bool => $this->isTimeToRunSync($subscription, $now))
+            ->each(fn (AddressBookSubscription $subscription) => SynchronizeAddressBooks::dispatch($subscription));
     }
 
     /**
      * Test if the last synchronized timestamp is older than the subscription's frequency time.
      */
-    private function isTimeToRunSync(AddressBookSubscription $subscription, Carbon $now): bool
+    private function isTimeToRunSync($subscription, Carbon $now): bool
     {
         return $subscription->last_synchronized_at === null
             || $subscription->last_synchronized_at->clone()->addMinutes($subscription->frequency)->lessThan($now);

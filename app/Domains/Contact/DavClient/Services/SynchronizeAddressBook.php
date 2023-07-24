@@ -53,6 +53,8 @@ class SynchronizeAddressBook extends BaseService
                 $e,
             ]);
         }
+
+        return null;
     }
 
     private function validate(array $data): void
