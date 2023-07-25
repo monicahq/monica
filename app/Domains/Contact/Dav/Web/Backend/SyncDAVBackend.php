@@ -42,7 +42,7 @@ trait SyncDAVBackend
     /**
      * Get SyncToken by token id.
      */
-    protected function getSyncToken(?string $collectionId, string $syncToken): ?SyncToken
+    protected function getSyncToken(?string $collectionId, int $syncTokenId): ?SyncToken
     {
         /** @var SyncToken|null */
         return SyncToken::where([
@@ -50,7 +50,7 @@ trait SyncDAVBackend
             'user_id' => $this->user->id,
             'name' => "{$this->backendUri()}-$collectionId",
         ])
-            ->find($syncToken);
+            ->find($syncTokenId);
     }
 
     /**
@@ -131,7 +131,7 @@ trait SyncDAVBackend
         $token = null;
         $timestamp = null;
         if ($syncToken !== null && $syncToken !== '') {
-            $token = $this->getSyncToken($collectionId, $syncToken);
+            $token = $this->getSyncToken($collectionId, (int) $syncToken);
 
             if ($token === null) {
                 // syncToken is not recognized

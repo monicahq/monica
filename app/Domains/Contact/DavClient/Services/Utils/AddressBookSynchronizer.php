@@ -48,7 +48,7 @@ class AddressBookSynchronizer
 
     private function getLocalChanges(): Collection
     {
-        $localChanges = $this->backend()->getChangesForAddressBook($this->subscription->vault_id, $this->subscription->sync_token_id, 1);
+        $localChanges = $this->backend()->getChangesForAddressBook($this->subscription->vault_id, (string) $this->subscription->sync_token_id, 1);
 
         return Collection::wrap($localChanges)
             ->map(fn ($changes): Collection => Collection::wrap($changes));
