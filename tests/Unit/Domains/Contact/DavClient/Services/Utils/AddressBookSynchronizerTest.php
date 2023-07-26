@@ -378,6 +378,11 @@ class AddressBookSynchronizerTest extends TestCase
         $subscription->sync_token_id = $token->id;
         $subscription->save();
 
+        $this->assertDatabaseHas('addressbook_subscriptions', [
+            'id' => $subscription->id,
+            'sync_token_id' => $token->id,
+        ]);
+
         return $subscription;
     }
 }

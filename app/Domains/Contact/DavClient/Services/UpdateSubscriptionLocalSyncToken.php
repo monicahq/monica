@@ -20,10 +20,15 @@ class UpdateSubscriptionLocalSyncToken extends QueuableService implements Servic
     ) {
         if ($data) {
             dump($data);
-            $subscription = AddressBookSubscription::findOrFail($data['addressbook_subscription_id']);
+            $subscription = AddressBookSubscription::find($data['addressbook_subscription_id']);
+            if ($subscription != null) {
+                dump("subscription: {$subscription->id}");
+            } else {
+                dump('subscription not found');
+            }
             // dump($subscription);
             $this->validateRules($data);
-            dump('ok');
+            dump('validation passed');
         }
     }
 
