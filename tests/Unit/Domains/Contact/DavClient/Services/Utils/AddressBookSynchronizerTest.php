@@ -31,37 +31,6 @@ class AddressBookSynchronizerTest extends TestCase
     use CardEtag;
 
     #[Test]
-    public function it_sync_empty_changes()
-    {
-        Bus::fake();
-
-        $this->partialMock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
-            $mock->shouldReceive('execute')
-                ->once()
-                ->andReturn(collect());
-        });
-        $this->partialMock(PrepareJobsContactPush::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
-            $mock->shouldReceive('execute')
-                ->once()
-                ->andReturn(collect());
-        });
-
-        $subscription = $this->getSubscription();
-
-        $tester = (new DavTester($subscription->uri))
-            ->getSynctoken($subscription->syncToken)
-            ->fake();
-
-        (new AddressBookSynchronizer)
-            ->withSubscription($subscription)
-            ->execute();
-
-        $tester->assert();
-    }
-
-    #[Test]
     public function it_sync_no_changes()
     {
         Bus::fake();
@@ -84,6 +53,37 @@ class AddressBookSynchronizerTest extends TestCase
         $tester = (new DavTester($subscription->uri))
             ->getSynctoken('"test21"')
             ->getSyncCollection('test20')
+            ->fake();
+
+        (new AddressBookSynchronizer)
+            ->withSubscription($subscription)
+            ->execute();
+
+        $tester->assert();
+    }
+
+    #[Test]
+    public function it_sync_empty_changes()
+    {
+        Bus::fake();
+
+        $this->partialMock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
+            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('execute')
+                ->once()
+                ->andReturn(collect());
+        });
+        $this->partialMock(PrepareJobsContactPush::class, function (MockInterface $mock) {
+            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('execute')
+                ->once()
+                ->andReturn(collect());
+        });
+
+        $subscription = $this->getSubscription();
+
+        $tester = (new DavTester($subscription->uri))
+            ->getSynctoken($subscription->syncToken)
             ->fake();
 
         (new AddressBookSynchronizer)
