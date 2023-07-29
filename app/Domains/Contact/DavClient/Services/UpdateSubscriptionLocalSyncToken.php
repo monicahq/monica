@@ -11,28 +11,6 @@ use Illuminate\Support\Facades\Log;
 class UpdateSubscriptionLocalSyncToken extends QueuableService implements ServiceInterface
 {
     /**
-     * Create a new job instance.
-     *
-     * @param  array|null  $data  The data to run service.
-     */
-    public function __construct(
-        public ?array $data = null
-    ) {
-        if ($data) {
-            dump($data);
-            $subscription = AddressBookSubscription::find($data['addressbook_subscription_id']);
-            if ($subscription != null) {
-                dump("subscription: {$subscription->id}");
-            } else {
-                dump('subscription not found');
-            }
-            // dump($subscription);
-            $this->validateRules($data);
-            dump('validation passed');
-        }
-    }
-
-    /**
      * Get the validation rules that apply to the service.
      */
     public function rules(): array
