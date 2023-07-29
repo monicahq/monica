@@ -6,16 +6,23 @@ use App\Domains\Contact\DavClient\Jobs\GetMultipleVCard;
 use App\Domains\Contact\DavClient\Services\Utils\AddressBookSynchronizer;
 use App\Domains\Contact\DavClient\Services\Utils\PrepareJobsContactPush;
 use App\Domains\Contact\DavClient\Services\Utils\PrepareJobsContactUpdater;
+use App\Models\AddressBookSubscription;
 use App\Models\Contact;
+use App\Models\SyncToken;
+use App\Models\Vault;
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Bus;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Helpers\DavTester;
 use Tests\TestCase;
 use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
+#[RunClassInSeparateProcess]
+#[RunTestsInSeparateProcesses]
 class AddressBookSynchronizer2Test extends TestCase
 {
     use DatabaseTransactions;
@@ -132,5 +139,28 @@ class AddressBookSynchronizer2Test extends TestCase
 
             return true;
         });
+    }
+
+    private function getSubscription(): AddressBookSubscription
+    {
+        $subscription = AddressBookSubscription::factory()->create([
+            'uri' => 'https://test/dav/addressbooks/user@test.com/contacts/',
+        ]);
+        $this->setPermissionInVault($subscription->user, Vault::PERMISSION_VIEW, $subscription->vault);
+        $token = SyncToken::factory()->create([
+            'account_id' => $subscription->user->account_id,
+            'user_id' => $subscription->user_id,
+            'name' => 'contacts1',
+            'timestamp' => now()->addDays(-1),
+        ]);
+        $subscription->sync_token_id = $token->id;
+        $subscription->save();
+
+        $this->assertDatabaseHas('addressbook_subscriptions', [
+            'id' => $subscription->id,
+            'sync_token_id' => $token->id,
+        ]);
+
+        return $subscription;
     }
 }
