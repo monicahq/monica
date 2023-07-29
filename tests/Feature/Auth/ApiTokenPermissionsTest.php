@@ -3,16 +3,18 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ApiTokenPermissionsTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
-    public function test_api_token_permissions_can_be_updated()
+    #[Test]
+    public function api_token_permissions_can_be_updated()
     {
         if (! Features::hasApiFeatures()) {
             return $this->markTestSkipped('API support is not enabled.');
