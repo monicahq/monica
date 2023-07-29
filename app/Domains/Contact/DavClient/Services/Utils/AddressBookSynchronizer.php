@@ -29,13 +29,13 @@ class AddressBookSynchronizer
         // Get changes to sync
         $localChanges = $this->getLocalChanges();
 
-        $jobs = $force
-            ? $this->forcesync($localChanges)
-            : $this->sync($localChanges);
-
         $updateSyncToken = new UpdateSubscriptionLocalSyncToken([
             'addressbook_subscription_id' => $this->subscription->id,
         ]);
+
+        $jobs = $force
+            ? $this->forcesync($localChanges)
+            : $this->sync($localChanges);
 
         $batch = Bus::batch($jobs)
             ->then(fn () => $updateSyncToken->handle())

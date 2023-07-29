@@ -74,7 +74,7 @@ class AddressBookSynchronizer2Test extends TestCase
 
         $tester = (new DavTester($subscription->uri))
             ->getSynctoken('"token"')
-            ->getSyncCollection('"token"', 'test2')
+            ->getSyncCollection('"token"', '"test2"')
             ->fake();
 
         $this->mock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
@@ -83,7 +83,7 @@ class AddressBookSynchronizer2Test extends TestCase
                 ->once()
                 ->withArgs(function ($contacts) {
                     $this->assertEquals('https://test/dav/addressbooks/user@test.com/contacts/uuid', $contacts->first()->uri);
-                    $this->assertEquals('test2', $contacts->first()->etag);
+                    $this->assertEquals('"test2"', $contacts->first()->etag);
 
                     return true;
                 })
@@ -94,7 +94,7 @@ class AddressBookSynchronizer2Test extends TestCase
             $mock->shouldReceive('execute')
                 ->once()
                 ->withArgs(function ($localChanges, $changes) {
-                    $this->assertEquals('test2', $changes->first()->etag);
+                    $this->assertEquals('"test2"', $changes->first()->etag);
 
                     return true;
                 })
@@ -122,7 +122,7 @@ class AddressBookSynchronizer2Test extends TestCase
 
         $tester = (new DavTester($subscription->uri))
             ->getSynctoken('"token"')
-            ->getSyncCollection('"token"', 'test2')
+            ->getSyncCollection('"token"', '"test2"')
             ->fake();
 
         (new AddressBookSynchronizer)
