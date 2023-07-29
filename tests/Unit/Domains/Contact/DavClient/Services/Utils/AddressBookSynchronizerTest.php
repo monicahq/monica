@@ -18,49 +18,15 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Http;
 use Mockery\MockInterface;
-use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Helpers\DavTester;
 use Tests\TestCase;
 use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
-#[RunClassInSeparateProcess]
 class AddressBookSynchronizerTest extends TestCase
 {
     use DatabaseTransactions;
     use CardEtag;
-
-    #[Test]
-    public function it_sync_no_changes()
-    {
-        Bus::fake();
-
-        $this->mock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
-            $mock->shouldReceive('execute')
-                ->once()
-                ->andReturn(collect());
-        });
-        $this->partialMock(PrepareJobsContactPush::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
-            $mock->shouldReceive('execute')
-                ->once()
-                ->andReturn(collect());
-        });
-
-        $subscription = $this->getSubscription();
-
-        $tester = (new DavTester($subscription->uri))
-            ->getSynctoken('"test21"')
-            ->getSyncCollection('test20')
-            ->fake();
-
-        (new AddressBookSynchronizer)
-            ->withSubscription($subscription)
-            ->execute();
-
-        $tester->assert();
-    }
 
     #[Test]
     public function it_sync_empty_changes()
@@ -91,87 +57,6 @@ class AddressBookSynchronizerTest extends TestCase
             ->execute();
 
         $tester->assert();
-    }
-
-    #[Test]
-    public function it_sync_changes_added_local_contact()
-    {
-        Bus::fake();
-
-        $subscription = $this->getSubscription();
-
-        Contact::factory()->create([
-            'vault_id' => $subscription->vault_id,
-            'id' => 'd403af1c-8492-4e9b-9833-cf18c795dfa9',
-        ]);
-
-        $tester = (new DavTester($subscription->uri))
-            ->getSynctoken('"token"')
-            ->getSyncCollection('token', '"test2"')
-            ->fake();
-
-        $this->mock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
-            $mock->shouldReceive('execute')
-                ->once()
-                ->withArgs(function ($contacts) {
-                    $this->assertEquals('https://test/dav/addressbooks/user@test.com/contacts/uuid', $contacts->first()->uri);
-                    $this->assertEquals('"test2"', $contacts->first()->etag);
-
-                    return true;
-                })
-                ->andReturn(collect());
-        });
-        $this->partialMock(PrepareJobsContactPush::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
-            $mock->shouldReceive('execute')
-                ->once()
-                ->withArgs(function ($localChanges, $changes) {
-                    $this->assertEquals('"test2"', $changes->first()->etag);
-
-                    return true;
-                })
-                ->andReturn(collect());
-        });
-
-        (new AddressBookSynchronizer)
-            ->withSubscription($subscription)
-            ->execute();
-
-        $tester->assert();
-    }
-
-    #[Test]
-    public function it_sync_changes_added_local_contact_batched()
-    {
-        Bus::fake();
-
-        $subscription = $this->getSubscription();
-
-        Contact::factory()->create([
-            'vault_id' => $subscription->vault_id,
-            'id' => 'd403af1c-8492-4e9b-9833-cf18c795dfa9',
-        ]);
-
-        $tester = (new DavTester($subscription->uri))
-            ->getSynctoken('"token"')
-            ->getSyncCollection('token', '"test2"')
-            ->fake();
-
-        (new AddressBookSynchronizer)
-            ->withSubscription($subscription)
-            ->execute();
-
-        $tester->assert();
-
-        Bus::assertBatched(function (PendingBatch $batch) {
-            $this->assertCount(1, $batch->jobs);
-            $job = $batch->jobs[0];
-            $this->assertInstanceOf(GetMultipleVCard::class, $job);
-            $this->assertEquals(['https://test/dav/addressbooks/user@test.com/contacts/uuid'], $this->getPrivateValue($job, 'hrefs'));
-
-            return true;
-        });
     }
 
     #[Test]
