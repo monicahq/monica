@@ -82,7 +82,7 @@ class ContactModuleAddressController extends Controller
         ]);
 
         // get the address with pivot information
-        $address = $contact->addresses()->firstWhere('address_id', $addressId);
+        $address = $contact->addresses()->where('address_id', $addressId)->first();
 
         return response()->json([
             'data' => ModuleContactAddressesViewHelper::dto($contact, $address, Auth::user()),

@@ -68,7 +68,8 @@ class ChangeVaultAccess extends BaseService implements ServiceInterface
     {
         // We need to get the vault with pivot, $this->vault does not contains it.
         $this->user->vaults()
-            ->firstWhere('vault_id', $this->vault->id)
+            ->where('vault_id', $this->vault->id)
+            ->first()
             ->pivot
             ->update([
                 'permission' => $this->data['permission'],

@@ -62,19 +62,14 @@ class NewAddressBookSubscription extends Command
                 'password' => $password,
             ]);
         } catch (\Exception $e) {
+            $this->error('Could not add subscription');
             $this->error($e->getMessage());
 
             return -1;
         }
 
-        if (! isset($addressBookSubscription)) {
-            $this->error('Could not add subscription');
-
-            return -2;
-        } else {
-            $this->info('Subscription added');
-            SynchronizeAddressBooks::dispatch($addressBookSubscription, true);
-        }
+        $this->info('Subscription added');
+        SynchronizeAddressBooks::dispatch($addressBookSubscription, true);
 
         return 0;
     }
