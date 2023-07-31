@@ -102,7 +102,7 @@ class PrepareJobsContactPush
      */
     private function filterContacts(Collection $contacts): Collection
     {
-        return $contacts->reject(fn (ContactDto $contact): bool => $this->getContactInVault() === $this->backend()->getUuid($contact->uri)
+        return $contacts->reject(fn (string $uri): bool => $this->getContactInVault() === $this->backend()->getUuid($uri)
         );
     }
 
