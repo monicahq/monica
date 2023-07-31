@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Local;
 
 use App\Domains\Contact\DavClient\Jobs\SynchronizeAddressBooks;
 use App\Models\AddressBookSubscription;
@@ -14,7 +14,8 @@ class UpdateAddressBookSubscription extends Command
      * @var string
      */
     protected $signature = 'monica:updateaddressbooksubscription
-                            {--subscriptionId= : Id of the vault to add subscription to}';
+                            {--subscriptionId= : Id of the subscription to synchronize}
+                            {--force : Force sync}';
 
     /**
      * The console command description.
@@ -25,13 +26,11 @@ class UpdateAddressBookSubscription extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return void
      */
     public function handle()
     {
         $subscription = AddressBookSubscription::findOrFail($this->option('subscriptionId'));
 
-        SynchronizeAddressBooks::dispatch($subscription, true);
+        SynchronizeAddressBooks::dispatch($subscription, $this->option('force'));
     }
 }

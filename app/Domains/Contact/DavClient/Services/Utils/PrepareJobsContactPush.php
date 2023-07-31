@@ -32,14 +32,13 @@ class PrepareJobsContactPush
 
     /**
      * Get list of requests to push new contacts.
-
      *
      * @param  Collection<array-key,string>  $contacts
      */
     private function preparePushAddedContacts(Collection $contacts): Collection
     {
         // All added contact must be pushed
-        return $contacts
+        return $this->filterContacts($contacts)
             ->map(function (string $uri): ?PushVCard {
                 $card = $this->backend()->getCard($this->subscription->vault_id, $uri);
 
@@ -62,7 +61,7 @@ class PrepareJobsContactPush
     private function prepareDeletedContacts(Collection $contacts): Collection
     {
         // All removed contact must be deleted
-        return $contacts
+        return $this->filterContacts($contacts)
             ->map(fn (string $uri): DeleteVCard => new DeleteVCard($this->subscription, $uri));
     }
 
@@ -77,7 +76,7 @@ class PrepareJobsContactPush
         $refreshIds = $changes->map(fn (ContactDto $contact): string => $this->backend()->getUuid($contact->uri));
 
         // We don't push contact that have just been pulled
-        return $contacts
+        return $this->filterContacts($contacts)
             ->reject(fn (string $uri): bool => $refreshIds->contains($this->backend()->getUuid($uri)))
             ->map(function (string $uri): ?PushVCard {
                 $card = $this->backend()->getCard($this->subscription->vault_id, $uri);
@@ -94,5 +93,27 @@ class PrepareJobsContactPush
                     $card['distant_etag'] !== null ? PushVCard::MODE_MATCH_ETAG : PushVCard::MODE_MATCH_ANY
                 );
             });
+    }
+
+    /**
+     * Filter list of contacts.
+     *
+     * @param  Collection<array-key,string>  $contacts
+     */
+    private function filterContacts(Collection $contacts): Collection
+    {
+        return $contacts->reject(fn (ContactDto $contact): bool => $this->getContactInVault() === $this->backend()->getUuid($contact->uri)
+        );
+    }
+
+    private function getContactInVault(): ?string
+    {
+        $entry = $this->subscription->user->vaults()
+            ->wherePivot('vault_id', $this->subscription->vault_id)
+            ->first();
+
+        $pivot = optional($entry)->pivot;
+
+        return optional($pivot)->contact_id;
     }
 }

@@ -162,7 +162,7 @@ class AddressBookGetter
     }
 
     /**
-     * Get Url fro address book.
+     * Get Url for address book.
      */
     private function getAddressBookUrl(string $principal): ?string
     {
@@ -171,7 +171,7 @@ class AddressBookGetter
         $books = $this->client->propfind('{DAV:}resourcetype', 1, [], $home);
 
         foreach ($books as $book => $properties) {
-            if ($book == $home) {
+            if ($book === $home) {
                 continue;
             }
 

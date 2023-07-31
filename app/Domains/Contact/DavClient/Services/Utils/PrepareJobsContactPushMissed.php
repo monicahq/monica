@@ -44,8 +44,7 @@ class PrepareJobsContactPushMissed
         $addedUuids = $added->map(fn (string $uri): string => $this->backend()->getUuid($uri));
 
         return $localContacts
-            ->filter(fn (Contact $contact): bool => ! $distUuids->contains($contact->id)
-                && ! $addedUuids->contains($contact->id)
+            ->reject(fn (Contact $contact): bool => $distUuids->contains($contact->id) || $addedUuids->contains($contact->id)
             )
             ->map(function (Contact $contact): PushVCard {
                 $card = $this->backend()->prepareCard($contact);

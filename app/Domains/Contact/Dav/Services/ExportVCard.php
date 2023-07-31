@@ -76,7 +76,7 @@ class ExportVCard extends BaseService implements ServiceInterface
                 /** @var VCard */
                 $vcard = Reader::read($contact->vcard, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
                 if (! $vcard->UID) {
-                    $vcard->UID = $contact->id;
+                    $vcard->UID = $contact->distant_uuid ?? $contact->id;
                 }
             } catch (ParseException $e) {
                 // Ignore error

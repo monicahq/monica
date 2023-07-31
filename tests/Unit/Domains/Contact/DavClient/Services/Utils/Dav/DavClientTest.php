@@ -70,7 +70,7 @@ class DavClientTest extends TestCase
     public function it_get_serviceurl_name()
     {
         $this->mock(ServiceUrlQuery::class, function ($mock) {
-            $mock->shouldReceive('withClient')->once()->andReturn($mock);
+            $mock->shouldReceive('withClient')->once()->andReturnSelf();
             $mock->shouldReceive('execute')
                 ->once()
                 ->withArgs(function (string $name, bool $https, string $baseUri) {

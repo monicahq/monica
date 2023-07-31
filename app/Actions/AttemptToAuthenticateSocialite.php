@@ -78,10 +78,10 @@ class AttemptToAuthenticateSocialite
      */
     private function authenticateUser(Request $request, string $driver, SocialiteUser $socialite): User
     {
-        if ($userToken = UserToken::where([
+        if ($userToken = UserToken::firstWhere([
             'driver_id' => $socialite->getId(),
             'driver' => $driver,
-        ])->first()) {
+        ])) {
             // Association already exist
 
             $user = $userToken->user;

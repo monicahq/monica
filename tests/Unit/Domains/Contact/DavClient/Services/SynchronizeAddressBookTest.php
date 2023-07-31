@@ -17,7 +17,7 @@ class SynchronizeAddressBookTest extends TestCase
     public function it_runs_sync()
     {
         $this->mock(AddressBookSynchronizer::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('withSubscription')->once()->andReturnSelf();
             $mock->shouldReceive('execute')
                 ->once()
                 ->withArgs(function ($force) {
@@ -41,7 +41,7 @@ class SynchronizeAddressBookTest extends TestCase
     public function it_runs_sync_force()
     {
         $this->mock(AddressBookSynchronizer::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('withSubscription')->once()->andReturnSelf();
             $mock->shouldReceive('execute')
                 ->once()
                 ->withArgs(function ($force) {

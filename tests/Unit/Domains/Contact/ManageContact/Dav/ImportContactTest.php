@@ -163,6 +163,7 @@ class ImportContactTest extends TestCase
     public function it_imports_uuid_default()
     {
         $importContact = new ImportContact();
+        $importContact->setContext(new ImportVCard($this->app));
 
         $vcard = new VCard([
             'UID' => '31fdc242-c974-436e-98de-6b21624d6e34',

@@ -20,8 +20,7 @@ class ModuleFamilySummaryViewHelper
     public static function data(Contact $contact, User $user): array
     {
         $loveRelationshipType = $contact->vault->account->relationshipGroupTypes()
-            ->where('type', RelationshipGroupType::TYPE_LOVE)
-            ->first();
+            ->firstWhere('type', RelationshipGroupType::TYPE_LOVE);
 
         $loveRelationships = $loveRelationshipType->types()
             ->where('type', RelationshipType::TYPE_LOVE)
@@ -30,8 +29,7 @@ class ModuleFamilySummaryViewHelper
         $loveRelationshipsCollection = self::getRelations($loveRelationships, $contact);
 
         $familyRelationshipType = $contact->vault->account->relationshipGroupTypes()
-            ->where('type', RelationshipGroupType::TYPE_FAMILY)
-            ->first();
+            ->firstWhere('type', RelationshipGroupType::TYPE_FAMILY);
 
         $familyRelationships = $familyRelationshipType->types()
             ->where('type', RelationshipType::TYPE_CHILD)

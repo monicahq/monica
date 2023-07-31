@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\ContactFeedItem;
 use App\Services\BaseService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class CreateContact extends BaseService implements ServiceInterface
 {
@@ -53,6 +54,7 @@ class CreateContact extends BaseService implements ServiceInterface
      */
     public function execute(array $data): Contact
     {
+        Log::debug(__CLASS__, $data);
         $this->data = $data;
 
         $this->validate();

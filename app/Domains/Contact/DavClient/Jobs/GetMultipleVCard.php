@@ -64,6 +64,7 @@ class GetMultipleVCard implements ShouldQueue
                 'uri' => $href,
                 'etag' => Arr::get($contact, 'properties.200.{DAV:}getetag'),
                 'card' => $card,
+                'external' => true,
             ]);
     }
 

@@ -60,6 +60,8 @@ class ImportVCard extends BaseService implements ServiceInterface
         self::BEHAVIOUR_REPLACE,
     ];
 
+    public bool $external = false;
+
     /**
      * Get the validation rules that apply to the service.
      */
@@ -83,6 +85,8 @@ class ImportVCard extends BaseService implements ServiceInterface
                 Rule::in(self::$behaviourTypes),
             ],
             'etag' => 'nullable|string',
+            'uri' => 'nullable|string',
+            'external' => 'nullable|boolean',
         ];
     }
 
@@ -110,6 +114,8 @@ class ImportVCard extends BaseService implements ServiceInterface
     public function execute(array $data): array
     {
         $this->validateRules($data);
+
+        $this->external = Arr::get($data, 'external', false);
 
         if (Arr::get($data, 'contact_id') !== null) {
             $this->validateContactBelongsToVault($data);
@@ -205,16 +211,22 @@ class ImportVCard extends BaseService implements ServiceInterface
             ];
         }
 
-        if ($contact !== null) {
-            $timestamps = $contact->timestamps;
-            $contact->timestamps = false;
-        }
+        $contact = $this->importEntry($contact, $entry);
 
-        $contact = $this->importEntry($contact, $entry, $vcard, Arr::get($data, 'etag'));
+        // Save vcard content
+        $contact->vcard = $vcard;
 
-        if (isset($timestamps)) {
-            $contact->timestamps = $timestamps;
-        }
+        $contact = Contact::withoutTimestamps(function () use ($contact, $data): Contact {
+            $uri = Arr::get($data, 'uri');
+            if (Arr::get($data, 'external', false)) {
+                $contact->distant_etag = Arr::get($data, 'etag');
+                $contact->distant_uri = $uri;
+            }
+
+            $contact->save();
+
+            return $contact;
+        });
 
         return [
             'contact_id' => $contact->id,
@@ -293,17 +305,22 @@ class ImportVCard extends BaseService implements ServiceInterface
     private function existingUuid(VCard $entry): ?Contact
     {
         return ! empty($uuid = (string) $entry->UID) && Uuid::isValid($uuid)
-            ? Contact::where([
+            ?
+            Contact::firstWhere([
+                'vault_id' => $this->vault->id,
+                'distant_uuid' => $uuid,
+            ]) ??
+            Contact::firstWhere([
                 'vault_id' => $this->vault->id,
                 'id' => $uuid,
-            ])->first()
+            ])
             : null;
     }
 
     /**
      * Create the Contact object matching the current entry.
      */
-    private function importEntry(?Contact $contact, VCard $entry, string $vcard, ?string $etag): Contact
+    private function importEntry(?Contact $contact, VCard $entry): Contact
     {
         /** @var \Illuminate\Support\Collection<int, ImportVCardResource> */
         $importers = collect($this->importers())
@@ -313,12 +330,6 @@ class ImportVCard extends BaseService implements ServiceInterface
         foreach ($importers as $importer) {
             $contact = $importer->import($contact, $entry);
         }
-
-        // Save vcard content
-        $contact->vcard = $vcard;
-        $contact->distant_etag = $etag;
-
-        $contact->save();
 
         return $contact;
     }

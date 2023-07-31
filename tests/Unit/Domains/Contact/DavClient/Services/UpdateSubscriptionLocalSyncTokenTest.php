@@ -26,7 +26,7 @@ class UpdateSubscriptionLocalSyncTokenTest extends TestCase
         ]);
 
         $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($token, $subscription) {
-            $mock->shouldReceive('withUser')->andReturn($mock);
+            $mock->shouldReceive('withUser')->andReturnSelf();
             $mock->shouldReceive('getCurrentSyncToken')
                 ->withArgs(function ($id) use ($subscription) {
                     $this->assertEquals($id, $subscription->vault_id);
@@ -52,7 +52,7 @@ class UpdateSubscriptionLocalSyncTokenTest extends TestCase
         $subscription = AddressBookSubscription::factory()->create();
 
         $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($subscription) {
-            $mock->shouldReceive('withUser')->andReturn($mock);
+            $mock->shouldReceive('withUser')->andReturnSelf();
             $mock->shouldReceive('getCurrentSyncToken')
                 ->withArgs(function ($id) use ($subscription) {
                     $this->assertEquals($id, $subscription->vault_id);

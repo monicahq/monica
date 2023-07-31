@@ -54,6 +54,7 @@ class GetVCard implements ShouldQueue
             'uri' => $this->contact->uri,
             'etag' => $this->contact->etag,
             'card' => $card,
+            'external' => true,
         ]);
     }
 }

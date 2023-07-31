@@ -130,7 +130,7 @@ class GrantVaultAccessToUserTest extends TestCase
 
         $this->assertDatabaseCount('contacts', 3);
 
-        $contact = Contact::where('first_name', $anotherUser->first_name)->first();
+        $contact = Contact::firstWhere('first_name', $anotherUser->first_name);
 
         $this->assertFalse(
             $contact->can_be_deleted

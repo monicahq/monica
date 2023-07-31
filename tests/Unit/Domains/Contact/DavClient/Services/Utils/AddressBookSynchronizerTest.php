@@ -34,13 +34,13 @@ class AddressBookSynchronizerTest extends TestCase
         Bus::fake();
 
         $this->partialMock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('withSubscription')->once()->andReturnSelf();
             $mock->shouldReceive('execute')
                 ->once()
                 ->andReturn(collect());
         });
         $this->partialMock(PrepareJobsContactPush::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('withSubscription')->once()->andReturnSelf();
             $mock->shouldReceive('execute')
                 ->once()
                 ->andReturn(collect());
@@ -65,13 +65,13 @@ class AddressBookSynchronizerTest extends TestCase
         Bus::fake();
 
         $this->mock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('withSubscription')->once()->andReturnSelf();
             $mock->shouldReceive('execute')
                 ->once()
                 ->andReturn(collect());
         });
         $this->partialMock(PrepareJobsContactPush::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('withSubscription')->once()->andReturnSelf();
             $mock->shouldReceive('execute')
                 ->once()
                 ->andReturn(collect());
@@ -109,7 +109,7 @@ class AddressBookSynchronizerTest extends TestCase
             ->fake();
 
         $this->mock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('withSubscription')->once()->andReturnSelf();
             $mock->shouldReceive('execute')
                 ->once()
                 ->withArgs(function ($contacts) {
@@ -121,7 +121,7 @@ class AddressBookSynchronizerTest extends TestCase
                 ->andReturn(collect());
         });
         $this->partialMock(PrepareJobsContactPush::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('withSubscription')->once()->andReturnSelf();
             $mock->shouldReceive('execute')
                 ->once()
                 ->withArgs(function ($localChanges, $changes) {
@@ -243,14 +243,14 @@ class AddressBookSynchronizerTest extends TestCase
         "</card:addressbook-query>\n", 'REPORT');
 
         $this->mock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('withSubscription')->once()->andReturnSelf();
             $mock->shouldReceive('execute')
                 ->once()
                 ->andReturn(collect());
         });
 
         $this->mock(PrepareJobsContactPushMissed::class, function (MockInterface $mock) use ($contact, $etag) {
-            $mock->shouldReceive('withSubscription')->once()->andReturn($mock);
+            $mock->shouldReceive('withSubscription')->once()->andReturnSelf();
             $mock->shouldReceive('execute')
                 ->once()
                 ->withArgs(function ($localChanges, $distContacts, $localContacts) use ($contact, $etag) {

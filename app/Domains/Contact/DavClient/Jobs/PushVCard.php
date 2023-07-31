@@ -50,11 +50,17 @@ class PushVCard implements ShouldQueue
 
         $etag = $this->pushDistant();
 
-        $contact->distant_etag = $etag === '' ? null : $etag;
-        $contact->save();
+        if ($contact->distant_uri !== null) {
+            Contact::withoutTimestamps(function () use ($contact, $etag): void {
+
+                $contact->distant_etag = empty($etag) ? null : $etag;
+
+                $contact->save();
+            });
+        }
     }
 
-    private function pushDistant(): string
+    private function pushDistant(int $depth = 1): string
     {
         try {
             $response = $this->subscription->getClient()
@@ -62,12 +68,19 @@ class PushVCard implements ShouldQueue
 
             return $response->header('Etag');
         } catch (RequestException $e) {
-            Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
-                'body' => $e->response->body(),
-                $e,
-            ]);
-            $this->fail($e);
-            throw $e;
+            if ($depth > 0 && $e->response->status() === 412) {
+                // If the status is 412 (Precondition Failed), then we retry once with a mode match NONE
+                $this->mode = self::MODE_MATCH_NONE;
+
+                return $this->pushDistant(--$depth);
+            } else {
+                Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
+                    'body' => $e->response->body(),
+                    $e,
+                ]);
+                $this->fail($e);
+                throw $e;
+            }
         }
     }
 

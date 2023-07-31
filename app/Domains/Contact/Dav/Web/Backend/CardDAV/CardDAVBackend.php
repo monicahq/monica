@@ -233,10 +233,13 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
             throw new NotEnoughPermissionException();
         }
 
-        return Contact::where([
+        return Contact::firstWhere([
+            'distant_uuid' => $uuid,
+            'vault_id' => $vault->id,
+        ]) ?? Contact::firstWhere([
             'id' => $uuid,
             'vault_id' => $vault->id,
-        ])->first();
+        ]);
     }
 
     /**

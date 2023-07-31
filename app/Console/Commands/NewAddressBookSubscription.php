@@ -7,6 +7,7 @@ use App\Domains\Contact\DavClient\Services\CreateAddressBookSubscription;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class NewAddressBookSubscription extends Command
 {
@@ -31,23 +32,25 @@ class NewAddressBookSubscription extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): int
     {
-        $user = User::where('email', $this->option('email'))->firstOrFail();
-        $vault = Vault::findOrFail($this->option('vaultId'));
+        if (($user = $this->user()) === null) {
+            return 1;
+        }
+        if (($vault = $this->vault()) === null) {
+            return 2;
+        }
 
         if ($user->account_id !== $vault->account_id) {
             $this->error('Vault does not belong to this account');
 
-            return;
+            return 3;
         }
 
-        $url = $this->option('url') ?? $this->ask('url', 'CardDAV url of the address book');
-        $login = $this->option('login') ?? $this->ask('login', 'Login name');
-        $password = $this->option('password') ?? $this->ask('password', 'User password');
+        $url = $this->option('url') ?? $this->ask('CardDAV url of the address book');
+        $login = $this->option('login') ?? $this->ask('Login name');
+        $password = $this->option('password') ?? $this->secret('User password');
 
         try {
             $addressBookSubscription = app(CreateAddressBookSubscription::class)->execute([
@@ -60,13 +63,53 @@ class NewAddressBookSubscription extends Command
             ]);
         } catch (\Exception $e) {
             $this->error($e->getMessage());
+
+            return -1;
         }
 
         if (! isset($addressBookSubscription)) {
             $this->error('Could not add subscription');
+
+            return -2;
         } else {
             $this->info('Subscription added');
             SynchronizeAddressBooks::dispatch($addressBookSubscription, true);
+        }
+
+        return 0;
+    }
+
+    private function user(): ?User
+    {
+        if (($email = $this->option('email')) === null) {
+            $this->error('Please provide an email address');
+
+            return null;
+        }
+
+        try {
+            return User::where('email', $email)->firstOrFail();
+        } catch (ModelNotFoundException) {
+            $this->error('Could not find user');
+
+            return null;
+        }
+    }
+
+    private function vault(): ?Vault
+    {
+        if (($vaultId = $this->option('vaultId')) === null) {
+            $this->error('Please provide an vaultId');
+
+            return null;
+        }
+
+        try {
+            return Vault::findOrFail($vaultId);
+        } catch (ModelNotFoundException) {
+            $this->error('Could not find vault');
+
+            return null;
         }
     }
 }

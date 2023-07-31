@@ -38,13 +38,13 @@ END:VCARD';
             'uri' => 'https://test/dav/affacde9-b2fe-4371-9acb-6612aaee6971',
             'etag' => $etag,
             'card' => $card,
+            'external' => true,
         ];
 
         (new UpdateVCard($data))->handle();
 
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'Test',
-            'id' => 'affacde9-b2fe-4371-9acb-6612aaee6971',
             'vcard' => $card,
             'distant_etag' => $etag,
         ]);

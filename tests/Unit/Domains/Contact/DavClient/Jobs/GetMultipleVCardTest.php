@@ -40,8 +40,8 @@ class GetMultipleVCardTest extends TestCase
         $etag = $this->getEtag($contact, true);
 
         $this->mock(DavClient::class, function (MockInterface $mock) use ($card, $etag) {
-            $mock->shouldReceive('setBaseUri')->once()->andReturn($mock);
-            $mock->shouldReceive('setCredentials')->once()->andReturn($mock);
+            $mock->shouldReceive('setBaseUri')->once()->andReturnSelf();
+            $mock->shouldReceive('setCredentials')->once()->andReturnSelf();
             $mock->shouldReceive('addressbookMultiget')
                 ->once()
                 ->withArgs(function ($properties, $contacts) {
@@ -96,6 +96,7 @@ class GetMultipleVCardTest extends TestCase
                 'uri' => 'https://test/dav/uri',
                 'etag' => $etag,
                 'card' => $card,
+                'external' => true,
             ], $updateVCard->data);
 
             return true;
@@ -120,8 +121,8 @@ class GetMultipleVCardTest extends TestCase
         $etag = $this->getEtag($contact, true);
 
         $this->mock(DavClient::class, function (MockInterface $mock) use ($card, $etag) {
-            $mock->shouldReceive('setBaseUri')->once()->andReturn($mock);
-            $mock->shouldReceive('setCredentials')->once()->andReturn($mock);
+            $mock->shouldReceive('setBaseUri')->once()->andReturnSelf();
+            $mock->shouldReceive('setCredentials')->once()->andReturnSelf();
             $mock->shouldReceive('addressbookMultiget')
                 ->once()
                 ->withArgs(function ($properties, $contacts) {
@@ -176,6 +177,7 @@ class GetMultipleVCardTest extends TestCase
                 'uri' => 'https://test/dav/uri',
                 'etag' => $etag,
                 'card' => $card,
+                'external' => true,
             ], $updateVCard->data);
 
             return true;

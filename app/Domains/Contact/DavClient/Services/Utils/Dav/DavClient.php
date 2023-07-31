@@ -6,6 +6,7 @@ use GuzzleHttp\Psr7\Utils as GuzzleUtils;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -67,8 +68,11 @@ class DavClient
      */
     public function getRequest(): PendingRequest
     {
-        $request = Http::withUserAgent('Monica DavClient '.config('monica.app_version').'/Guzzle')
-            ->withoutVerifying();
+        $request = Http::withUserAgent('Monica DavClient '.config('monica.app_version').'/Guzzle');
+
+        if (App::environment('local')) {
+            $request = $request->withoutVerifying();
+        }
 
         if ($this->username !== null && $this->password !== null) {
             $request = $request->withBasicAuth($this->username, $this->password);
@@ -471,7 +475,7 @@ class DavClient
 
         $url = Str::startsWith($url, 'http') ? $url : $this->path($url);
 
-        Log::debug(__CLASS__.' '.__FUNCTION__.': '.$method.' '.$url, [
+        Log::debug(__CLASS__.' '.__FUNCTION__.'[request]: '.$method.' '.$url, [
             'body' => $body,
             'headers' => $headers,
             'options' => $options,
@@ -479,7 +483,12 @@ class DavClient
 
         $response = $request
             ->send($method, $url, $options)
-            ->throw();
+            ->throw(function (Response $response) use ($method, $url) {
+                Log::debug(__CLASS__.' '.__FUNCTION__.'[error]: '.$method.' '.$url.' '.$response->status(), [
+                    'body' => $response->body(),
+                    'headers' => $response->headers(),
+                ]);
+            });
 
         Log::debug(__CLASS__.' '.__FUNCTION__.'[response]: '.$method.' '.$url.' '.$response->status(), [
             'body' => $response->body(),

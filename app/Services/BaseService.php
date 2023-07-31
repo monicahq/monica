@@ -7,6 +7,7 @@ use App\Models\Account;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 
 abstract class BaseService
@@ -192,6 +193,10 @@ abstract class BaseService
     {
         $this->contact = $this->vault->contacts()
             ->findOrFail($data['contact_id']);
+
+        if ($this->contact->vault_id !== $this->vault->id) {
+            throw new ModelNotFoundException();
+        }
     }
 
     /**

@@ -46,7 +46,7 @@ class PrepareJobsContactUpdaterTest extends TestCase
         $etag = $this->getEtag($contact, true);
 
         $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
-            $mock->shouldReceive('withUser')->andReturn($mock);
+            $mock->shouldReceive('withUser')->andReturnSelf();
             $mock->shouldReceive('updateCard')
                 ->withArgs(function ($addressBookId, $cardUri, $cardData) use ($card) {
                     $this->assertEquals($card, $cardData);
@@ -128,7 +128,7 @@ class PrepareJobsContactUpdaterTest extends TestCase
         $etag = $this->getEtag($contact, true);
 
         $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag) {
-            $mock->shouldReceive('withUser')->andReturn($mock);
+            $mock->shouldReceive('withUser')->andReturnSelf();
             $mock->shouldReceive('updateCard')
                 ->withArgs(function ($addressBookId, $cardUri, $cardData) use ($card) {
                     $this->assertTrue(is_resource($cardData));

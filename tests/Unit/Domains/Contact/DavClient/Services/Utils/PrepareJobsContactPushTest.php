@@ -43,7 +43,7 @@ class PrepareJobsContactPushTest extends TestCase
         $etag = $this->getEtag($contact, true);
 
         $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($contact, $card, $etag) {
-            $mock->shouldReceive('withUser')->andReturn($mock);
+            $mock->shouldReceive('withUser')->andReturnSelf();
             $mock->shouldReceive('getCard')
                 ->withArgs(function ($name, $uri) {
                     $this->assertEquals($uri, 'uricontact2');
@@ -58,11 +58,17 @@ class PrepareJobsContactPushTest extends TestCase
                 ]);
             $mock->shouldReceive('getUuid')
                 ->withArgs(function ($uri) {
-                    $this->assertEquals($uri, 'https://test/dav/uricontact1');
+                    if ($uri !== 'uricontact2' && $uri !== 'https://test/dav/uricontact1') {
+                        $this->fail("Invalid uri: $uri");
+
+                        return false;
+                    }
 
                     return true;
                 })
-                ->andReturn('uricontact1');
+                ->andReturnUsing(function ($uri) {
+                    return Str::contains($uri, 'uricontact1') ? 'uricontact1' : 'uricontact2';
+                });
         });
 
         $batchs = (new PrepareJobsContactPush)
@@ -102,7 +108,7 @@ class PrepareJobsContactPushTest extends TestCase
         $etag = $this->getEtag($contact, true);
 
         $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($contact, $card, $etag) {
-            $mock->shouldReceive('withUser')->andReturn($mock);
+            $mock->shouldReceive('withUser')->andReturnSelf();
             $mock->shouldReceive('getUuid')
                 ->withArgs(function ($uri) {
                     $this->assertStringContainsString('uricontact', $uri);

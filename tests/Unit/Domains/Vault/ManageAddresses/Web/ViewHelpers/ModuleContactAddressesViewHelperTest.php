@@ -114,7 +114,7 @@ class ModuleContactAddressesViewHelperTest extends TestCase
         ]);
 
         $activeAddress->contacts()->attach($contact, ['is_past_address' => false]);
-        $address = $contact->addresses()->where('address_id', $activeAddress->id)->first();
+        $address = $contact->addresses()->firstWhere('address_id', $activeAddress->id);
 
         $collection = ModuleContactAddressesViewHelper::dto($contact, $address, $user);
 

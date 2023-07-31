@@ -60,7 +60,9 @@ class Contact extends Model
         'file_id',
         'religion_id',
         'vcard',
+        'distant_uuid',
         'distant_etag',
+        'distant_uri',
         'prefix',
         'suffix',
     ];
@@ -414,8 +416,7 @@ class Contact extends Model
                 }
 
                 $birthdate = $this->importantDates
-                    ->where('contact_important_date_type_id', $type->id)
-                    ->first();
+                    ->firstWhere('contact_important_date_type_id', $type->id);
 
                 if (! $birthdate) {
                     return null;

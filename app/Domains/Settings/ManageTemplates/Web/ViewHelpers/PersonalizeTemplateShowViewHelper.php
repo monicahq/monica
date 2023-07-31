@@ -23,8 +23,7 @@ class PersonalizeTemplateShowViewHelper
         }
 
         $contactInformationTemplatePage = $template->pages()
-            ->where('type', 'contact_information')
-            ->first();
+            ->firstWhere('type', 'contact_information');
 
         return [
             'template' => [

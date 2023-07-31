@@ -8,9 +8,11 @@ use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDeleteDto;
 use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDto;
 use App\Domains\Contact\DavClient\Services\Utils\Traits\HasCapability;
 use App\Domains\Contact\DavClient\Services\Utils\Traits\HasSubscription;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class AddressBookSynchronizer
@@ -85,13 +87,13 @@ class AddressBookSynchronizer
     {
         // Get current list of contacts
         $localContacts = $this->backend()->getObjects($this->subscription->vault_id);
-        $uuids = $localContacts->pluck('id');
+        $localUuids = $localContacts->pluck('id');
 
         // Get distant changes to sync
         $distContacts = $this->getAllContactsEtag();
 
         // Get missed contacts
-        $missed = $distContacts->reject(fn (ContactDto $contact): bool => $uuids->contains($this->backend()->getUuid($contact->uri)));
+        $missed = $distContacts->reject(fn (ContactDto $contact): bool => $localUuids->contains($this->backend()->getUuid($contact->uri)));
         $jobs = app(PrepareJobsContactUpdater::class)
             ->withSubscription($this->subscription)
             ->execute($missed);
@@ -202,14 +204,21 @@ class AddressBookSynchronizer
         $syncToken = $this->subscription->syncToken ?? '';
 
         // get sync
-        $collection = $this->client->syncCollection([
-            '{DAV:}getcontenttype',
-            '{DAV:}getetag',
-        ], $syncToken);
+        try {
+            $collection = $this->client->syncCollection([
+                '{DAV:}getcontenttype',
+                '{DAV:}getetag',
+            ], $syncToken);
 
-        // save the new syncToken as current one
-        if ($newSyncToken = Arr::get($collection, 'synctoken')) {
-            $this->subscription->syncToken = $newSyncToken;
+            // save the new syncToken as current one
+            if ($newSyncToken = Arr::get($collection, 'synctoken')) {
+                $this->subscription->syncToken = $newSyncToken;
+                $this->subscription->save();
+            }
+        } catch (RequestException $e) {
+            Log::error(__CLASS__.' '.__FUNCTION__.':'.$e->getMessage(), [$e]);
+            $collection = [];
+            $this->subscription->syncToken = null;
             $this->subscription->save();
         }
 

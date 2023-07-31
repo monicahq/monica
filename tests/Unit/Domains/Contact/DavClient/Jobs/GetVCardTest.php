@@ -65,6 +65,7 @@ class GetVCardTest extends TestCase
                 'uri' => 'https://test/dav/uri',
                 'etag' => $etag,
                 'card' => $card,
+                'external' => true,
             ], $updateVCard->data);
 
             return true;

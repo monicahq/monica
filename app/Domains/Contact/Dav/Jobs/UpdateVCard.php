@@ -6,6 +6,7 @@ use App\Domains\Contact\Dav\Services\GetEtag;
 use App\Domains\Contact\Dav\Services\ImportVCard;
 use App\Domains\Contact\Dav\Web\Backend\CardDAV\CardDAVBackend;
 use App\Interfaces\ServiceInterface;
+use App\Models\Contact;
 use App\Services\QueuableService;
 use Closure;
 use Illuminate\Bus\Batchable;
@@ -28,6 +29,7 @@ class UpdateVCard extends QueuableService implements ServiceInterface
             'vault_id' => 'required|uuid|exists:vaults,id',
             'uri' => 'required|string',
             'etag' => 'nullable|string',
+            'external' => 'nullable|boolean',
             'card' => [
                 'required',
                 function (string $attribute, mixed $value, Closure $fail) {
@@ -76,16 +78,24 @@ class UpdateVCard extends QueuableService implements ServiceInterface
     /**
      * Update the contact with the carddata.
      */
-    private function updateCard(string $cardUri, mixed $cardData): ?string
+    private function updateCard(string $uri, mixed $card): ?string
     {
         $backend = app(CardDAVBackend::class)->withUser($this->author);
 
         $contactId = null;
-        if ($cardUri) {
-            $contactObject = $backend->getObject($this->vault->id, $cardUri);
-
+        if ($uri) {
+            $contactObject = $backend->getObject($this->vault->id, $uri);
             if ($contactObject) {
                 $contactId = $contactObject->id;
+            } else {
+                $contactObject = Contact::firstWhere([
+                    'vault_id' => $this->vault->id,
+                    'distant_uri' => $uri,
+                ]);
+
+                if ($contactObject) {
+                    $contactId = $contactObject->id;
+                }
             }
         }
 
@@ -95,8 +105,10 @@ class UpdateVCard extends QueuableService implements ServiceInterface
                 'author_id' => $this->author->id,
                 'vault_id' => $this->vault->id,
                 'contact_id' => $contactId,
-                'entry' => $cardData,
+                'entry' => $card,
                 'etag' => Arr::get($this->data, 'etag'),
+                'uri' => $uri,
+                'external' => Arr::get($this->data, 'external', false),
                 'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
             ]);
 
@@ -110,9 +122,9 @@ class UpdateVCard extends QueuableService implements ServiceInterface
             }
         } catch (\Exception $e) {
             Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
-                'contacturl' => $cardUri,
+                'contacturl' => $uri,
                 'contact_id' => $contactId,
-                'carddata' => $cardData,
+                'carddata' => $card,
                 $e,
             ]);
             throw $e;

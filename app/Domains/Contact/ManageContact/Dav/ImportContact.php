@@ -43,6 +43,11 @@ class ImportContact extends Importer implements ImportVCardResource
             $contact = app(CreateContact::class)->execute($contactData);
         }
 
+        if ($this->context->external && $contact->distant_uuid === null) {
+            $contact->distant_uuid = $this->getUid($vcard);
+            $contact->save();
+        }
+
         return $contact;
     }
 
@@ -156,11 +161,23 @@ class ImportContact extends Importer implements ImportVCardResource
      */
     private function importUid(array $contactData, VCard $entry): array
     {
-        if (! empty($uuid = (string) $entry->UID) && Uuid::isValid($uuid)) {
+        if (($uuid = $this->getUid($entry)) !== null && ! $this->context->external) {
             $contactData['id'] = $uuid;
         }
 
         return $contactData;
+    }
+
+    /**
+     * Import uid of the contact.
+     */
+    private function getUid(VCard $entry): ?string
+    {
+        if (! empty($uuid = (string) $entry->UID) && Uuid::isValid($uuid)) {
+            return $uuid;
+        }
+
+        return null;
     }
 
     /**
@@ -217,8 +234,7 @@ class ImportContact extends Importer implements ImportVCardResource
     private function getGenderByName(string $name): ?Gender
     {
         return $this->account()->genders
-            ->where('name', $name)
-            ->first();
+            ->firstWhere('name', $name);
     }
 
     /**
@@ -227,7 +243,6 @@ class ImportContact extends Importer implements ImportVCardResource
     private function getGenderByType(string $type): ?Gender
     {
         return $this->account()->genders
-            ->where('type', $type)
-            ->first();
+            ->firstWhere('type', $type);
     }
 }

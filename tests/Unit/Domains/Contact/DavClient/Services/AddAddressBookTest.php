@@ -27,7 +27,7 @@ class AddAddressBookTest extends TestCase
         ]);
 
         $this->mock(AddressBookGetter::class, function (MockInterface $mock) {
-            $mock->shouldReceive('withClient')->andReturn($mock);
+            $mock->shouldReceive('withClient')->andReturnSelf();
             $mock->shouldReceive('execute')
                 ->once()
                 ->andReturn($this->mockReturn());

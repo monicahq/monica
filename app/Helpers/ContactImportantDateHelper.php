@@ -13,11 +13,10 @@ class ContactImportantDateHelper
     public static function getImportantDateType(string $type, string $vaultId): ?ContactImportantDateType
     {
         return Cache::store('array')->remember("ImportantDateType:{$vaultId}:{$type}", 5,
-            fn () => ContactImportantDateType::where([
+            fn () => ContactImportantDateType::firstWhere([
                 'vault_id' => $vaultId,
                 'internal_type' => $type,
             ])
-                ->first()
         );
     }
 }

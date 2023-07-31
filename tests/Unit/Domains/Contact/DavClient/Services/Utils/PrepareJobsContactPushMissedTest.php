@@ -43,7 +43,7 @@ class PrepareJobsContactPushMissedTest extends TestCase
         $etag = $this->getEtag($contact, true);
 
         $this->mock(CardDAVBackend::class, function (MockInterface $mock) use ($card, $etag, $contact) {
-            $mock->shouldReceive('withUser')->andReturn($mock);
+            $mock->shouldReceive('withUser')->andReturnSelf();
             $mock->shouldReceive('getUuid')
                 ->once()
                 ->withArgs(function ($uri) {
