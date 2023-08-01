@@ -28,20 +28,21 @@ class AddressBookSynchronizer
     {
         $this->client = $this->subscription->getClient();
 
-        // Get changes to sync
-        $localChanges = $this->getLocalChanges();
-
         $updateSyncToken = new UpdateSubscriptionLocalSyncToken([
             'addressbook_subscription_id' => $this->subscription->id,
         ]);
 
         $jobs = $force
-            ? $this->forcesync($localChanges)
-            : $this->sync($localChanges);
+            ? $this->forcesync()
+            : $this->sync();
 
-        $batch = Bus::batch($jobs)
-            ->then(fn () => $updateSyncToken->handle())
-            ->allowFailures()
+        $batch = Bus::batch($jobs);
+
+        if ($this->subscription->isWayPush) {
+            $batch = $batch->then(fn () => $updateSyncToken->handle());
+        }
+
+        $batch = $batch->allowFailures()
             ->onQueue('high')
             ->dispatch();
 
@@ -59,17 +60,25 @@ class AddressBookSynchronizer
     /**
      * Sync the address book.
      */
-    private function sync(?Collection $localChanges): Collection
+    private function sync(): Collection
     {
         // Get distant changes to sync
         $changes = $this->getDistantChanges();
 
         // Get distant contacts
-        $jobs = app(PrepareJobsContactUpdater::class)
-            ->withSubscription($this->subscription)
-            ->execute($changes);
+        $jobs = collect();
+        if ($this->subscription->isWayGet) {
+            $jobs = $jobs->union(
+                app(PrepareJobsContactUpdater::class)
+                    ->withSubscription($this->subscription)
+                    ->execute($changes)
+            );
+        }
 
-        if (! $this->subscription->readonly) {
+        if ($this->subscription->isWayPush) {
+            // Get changes to sync
+            $localChanges = $this->getLocalChanges();
+
             $jobs = $jobs->union(
                 app(PrepareJobsContactPush::class)
                     ->withSubscription($this->subscription)
@@ -83,7 +92,7 @@ class AddressBookSynchronizer
     /**
      * Sync the address book.
      */
-    private function forcesync(?Collection $localChanges): Collection
+    private function forcesync(): Collection
     {
         // Get current list of contacts
         $localContacts = $this->backend()->getObjects($this->subscription->vault_id);
@@ -94,11 +103,20 @@ class AddressBookSynchronizer
 
         // Get missed contacts
         $missed = $distContacts->reject(fn (ContactDto $contact): bool => $localUuids->contains($this->backend()->getUuid($contact->uri)));
-        $jobs = app(PrepareJobsContactUpdater::class)
-            ->withSubscription($this->subscription)
-            ->execute($missed);
 
-        if (! $this->subscription->readonly) {
+        $jobs = collect();
+        if ($this->subscription->isWayGet) {
+            $jobs = $jobs->union(
+                app(PrepareJobsContactUpdater::class)
+                    ->withSubscription($this->subscription)
+                    ->execute($missed)
+            );
+        }
+
+        if ($this->subscription->isWayPush) {
+            // Get changes to sync
+            $localChanges = $this->getLocalChanges();
+
             $jobs = $jobs->union(
                 app(PrepareJobsContactPushMissed::class)
                     ->withSubscription($this->subscription)
@@ -186,9 +204,9 @@ class AddressBookSynchronizer
     private function callSyncCollectionWhenNeeded(): array
     {
         // get the current distant syncToken
-        $distantSyncToken = $this->client->getProperty('{DAV:}sync-token');
+        $currentSyncToken = $this->client->getProperty('{DAV:}sync-token');
 
-        if (($this->subscription->syncToken ?? '') === $distantSyncToken) {
+        if (($this->subscription->distant_sync_token ?? '') === $currentSyncToken) {
             // no change at all
             return [];
         }
@@ -201,7 +219,7 @@ class AddressBookSynchronizer
      */
     private function callSyncCollection(): array
     {
-        $syncToken = $this->subscription->syncToken ?? '';
+        $syncToken = $this->subscription->distant_sync_token ?? '';
 
         // get sync
         try {
@@ -212,13 +230,13 @@ class AddressBookSynchronizer
 
             // save the new syncToken as current one
             if ($newSyncToken = Arr::get($collection, 'synctoken')) {
-                $this->subscription->syncToken = $newSyncToken;
+                $this->subscription->distant_sync_token = $newSyncToken;
                 $this->subscription->save();
             }
         } catch (RequestException $e) {
             Log::error(__CLASS__.' '.__FUNCTION__.':'.$e->getMessage(), [$e]);
             $collection = [];
-            $this->subscription->syncToken = null;
+            $this->subscription->distant_sync_token = null;
             $this->subscription->save();
         }
 

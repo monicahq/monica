@@ -33,7 +33,7 @@ class UpdateAddressBooks implements ShouldQueue
     {
         $subscriptions
             ->filter(fn (AddressBookSubscription $subscription): bool => $this->isTimeToRunSync($subscription, $now))
-            ->each(fn (AddressBookSubscription $subscription) => SynchronizeAddressBooks::dispatch($subscription));
+            ->each(fn (AddressBookSubscription $subscription) => SynchronizeAddressBooks::dispatch($subscription)->onQueue('high'));
     }
 
     /**

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         if (! Schema::hasColumn('contacts', 'distant_uuid')) {
             Schema::table('contacts', function (Blueprint $table) {
-                $table->uuid('distant_uuid')->nullable()->after('vcard');
+                $table->string('distant_uuid', 256)->nullable()->after('vcard');
             });
         }
         if (! Schema::hasColumn('contacts', 'distant_uri')) {

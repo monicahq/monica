@@ -14,6 +14,12 @@ class AddressBookSubscription extends Model
 {
     use HasFactory, HasUuids;
 
+    public const WAY_PUSH = 0x1;
+
+    public const WAY_GET = 0x2;
+
+    public const WAY_BOTH = self::WAY_GET | self::WAY_PUSH;
+
     protected $table = 'addressbook_subscriptions';
 
     /**
@@ -28,8 +34,8 @@ class AddressBookSubscription extends Model
         'capabilities',
         'username',
         'password',
-        'readonly',
-        'syncToken',
+        'sync_way',
+        'distant_sync_token',
         'frequency',
         'last_synchronized_at',
         'active',
@@ -51,7 +57,6 @@ class AddressBookSubscription extends Model
         'user_id' => 'string',
         'vault_id' => 'string',
         'last_synchronized_at' => 'datetime',
-        'readonly' => 'boolean',
         'active' => 'boolean',
         'capabilities' => 'array',
     ];
@@ -107,6 +112,42 @@ class AddressBookSubscription extends Model
         return Attribute::make(
             get: fn (?string $value) => decrypt($value, true),
             set: fn (string $value) => encrypt($value)
+        );
+    }
+
+    /**
+     * Get synchronization way.
+     *
+     * @return Attribute<bool,never>
+     */
+    public function isWayPush(): Attribute
+    {
+        return Attribute::get(
+            fn (?bool $value, array $attributes) => ($attributes['sync_way'] & self::WAY_PUSH) === self::WAY_PUSH,
+        );
+    }
+
+    /**
+     * Get synchronization way.
+     *
+     * @return Attribute<bool,never>
+     */
+    public function isWayGet(): Attribute
+    {
+        return Attribute::get(
+            fn (?bool $value, array $attributes) => ($attributes['sync_way'] & self::WAY_GET) === self::WAY_GET,
+        );
+    }
+
+    /**
+     * Get synchronization way.
+     *
+     * @return Attribute<bool,never>
+     */
+    public function isWayBoth(): Attribute
+    {
+        return Attribute::get(
+            fn (?bool $value, array $attributes) => ($attributes['syncWay'] & self::WAY_BOTH) === self::WAY_BOTH,
         );
     }
 

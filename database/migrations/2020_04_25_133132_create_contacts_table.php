@@ -39,7 +39,7 @@ return new class() extends Migration
             $table->boolean('listed')->default(true);
 
             $table->mediumText('vcard')->nullable();
-            $table->uuid('distant_uuid')->nullable();
+            $table->string('distant_uuid', 256)->nullable();
             $table->string('distant_etag', 256)->nullable();
             $table->string('distant_uri', 2096)->nullable();
 

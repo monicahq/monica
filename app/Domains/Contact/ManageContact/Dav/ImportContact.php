@@ -161,7 +161,7 @@ class ImportContact extends Importer implements ImportVCardResource
      */
     private function importUid(array $contactData, VCard $entry): array
     {
-        if (($uuid = $this->getUid($entry)) !== null && ! $this->context->external) {
+        if (($uuid = $this->getUid($entry)) !== null && Uuid::isValid($uuid) && ! $this->context->external) {
             $contactData['id'] = $uuid;
         }
 
@@ -173,8 +173,8 @@ class ImportContact extends Importer implements ImportVCardResource
      */
     private function getUid(VCard $entry): ?string
     {
-        if (! empty($uuid = (string) $entry->UID) && Uuid::isValid($uuid)) {
-            return $uuid;
+        if (! empty($uuid = (string) $entry->UID)) {
+            return (string) Str::of($uuid)->after('urn:uuid:');
         }
 
         return null;

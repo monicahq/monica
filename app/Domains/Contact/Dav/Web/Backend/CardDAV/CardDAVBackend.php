@@ -234,11 +234,11 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
         }
 
         return Contact::firstWhere([
+            'vault_id' => $vault->id,
             'distant_uuid' => $uuid,
-            'vault_id' => $vault->id,
         ]) ?? Contact::firstWhere([
-            'id' => $uuid,
             'vault_id' => $vault->id,
+            'id' => $uuid,
         ]);
     }
 
@@ -404,6 +404,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
 
         Bus::batch([$job])
             ->allowFailures()
+            ->onQueue('high')
             ->dispatch();
 
         return null;
@@ -425,7 +426,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
                 'author_id' => $this->user->id,
                 'vault_id' => $contact->vault_id,
                 'contact_id' => $contact->id,
-            ]);
+            ])->onQueue('high');
 
             return true;
         }

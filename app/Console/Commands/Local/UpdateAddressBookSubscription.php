@@ -31,6 +31,6 @@ class UpdateAddressBookSubscription extends Command
     {
         $subscription = AddressBookSubscription::findOrFail($this->option('subscriptionId'));
 
-        SynchronizeAddressBooks::dispatch($subscription, $this->option('force'));
+        SynchronizeAddressBooks::dispatch($subscription, $this->option('force'))->onQueue('high');
     }
 }

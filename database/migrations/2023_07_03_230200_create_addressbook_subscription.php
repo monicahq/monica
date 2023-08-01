@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\AddressBookSubscription;
 use App\Models\SyncToken;
 use App\Models\User;
 use App\Models\Vault;
@@ -23,10 +24,10 @@ return new class extends Migration
             $table->string('uri', 2096);
             $table->string('username', 1024);
             $table->string('password', 2048);
-            $table->boolean('readonly')->default(false);
             $table->boolean('active')->default(true);
+            $table->unsignedTinyInteger('sync_way')->default(AddressBookSubscription::WAY_BOTH);
             $table->string('capabilities', 2048);
-            $table->string('syncToken', 512)->nullable();
+            $table->string('distant_sync_token', 512)->nullable();
             $table->string('last_batch')->nullable();
             $table->foreignIdFor(SyncToken::class)->nullable()->constrained()->nullOnDelete();
             $table->smallInteger('frequency')->default(180); // 3 hours
