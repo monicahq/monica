@@ -122,8 +122,8 @@ class AddressBookSubscription extends Model
      */
     public function isWayPush(): Attribute
     {
-        return Attribute::get(
-            fn (?bool $value, array $attributes) => ($attributes['sync_way'] & self::WAY_PUSH) === self::WAY_PUSH,
+        return Attribute::make(
+            get: fn (?bool $value, array $attributes) => ($attributes['sync_way'] & self::WAY_PUSH) === self::WAY_PUSH,
         );
     }
 
@@ -134,8 +134,8 @@ class AddressBookSubscription extends Model
      */
     public function isWayGet(): Attribute
     {
-        return Attribute::get(
-            fn (?bool $value, array $attributes) => ($attributes['sync_way'] & self::WAY_GET) === self::WAY_GET,
+        return Attribute::make(
+            get: fn (?bool $value, array $attributes) => ($attributes['sync_way'] & self::WAY_GET) === self::WAY_GET,
         );
     }
 
@@ -146,8 +146,8 @@ class AddressBookSubscription extends Model
      */
     public function isWayBoth(): Attribute
     {
-        return Attribute::get(
-            fn (?bool $value, array $attributes) => ($attributes['syncWay'] & self::WAY_BOTH) === self::WAY_BOTH,
+        return Attribute::make(
+            get: fn (?bool $value, array $attributes) => ($attributes['syncWay'] & self::WAY_BOTH) === self::WAY_BOTH,
         );
     }
 
