@@ -49,7 +49,7 @@ class AddressBookSynchronizerTest extends TestCase
         $subscription = $this->getSubscription();
 
         $tester = (new DavTester($subscription->uri))
-            ->getSynctoken($subscription->syncToken)
+            ->getSynctoken($subscription->distant_sync_token)
             ->fake();
 
         (new AddressBookSynchronizer)

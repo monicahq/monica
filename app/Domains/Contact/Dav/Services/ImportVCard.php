@@ -13,7 +13,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Ramsey\Uuid\Uuid;
 use ReflectionClass;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\ParseException;
@@ -304,7 +303,7 @@ class ImportVCard extends BaseService implements ServiceInterface
      */
     private function existingUuid(VCard $entry): ?Contact
     {
-        return ! empty($uuid = (string) $entry->UID) && Uuid::isValid($uuid)
+        return ! empty($uuid = (string) $entry->UID)
             ?
             Contact::firstWhere([
                 'vault_id' => $this->vault->id,

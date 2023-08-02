@@ -36,9 +36,9 @@ class AddressBookSubscriptionFactory extends Factory
             ],
             'username' => $this->faker->email,
             'password' => 'password',
-            'syncToken' => '"test"',
-            'readonly' => false,
+            'distant_sync_token' => '"test"',
             'active' => true,
+            'sync_way' => AddressBookSubscription::WAY_BOTH,
         ];
     }
 
