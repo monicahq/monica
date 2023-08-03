@@ -36,3 +36,7 @@ parameters:
 
         # larastan needs to manage ->pivot properties
         - '#Access to an undefined property App\\Models\\[^:]*::\$pivot\.#'
+
+        # Attributes
+        - '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayPush\.#'
+        - '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayGet\.#'

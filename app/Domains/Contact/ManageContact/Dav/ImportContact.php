@@ -25,6 +25,23 @@ class ImportContact extends Importer implements ImportVCardResource
     protected array $genders = [];
 
     /**
+     * Can import Contact.
+     */
+    public function can(VCard $vcard): bool
+    {
+        if (! ($this->hasFN($vcard) || $this->hasNICKNAME($vcard) || $this->hasFirstnameInN($vcard))) {
+            return false;
+        }
+
+        $kind = (string) ($vcard->KIND || $vcard->select('X-ADDRESSBOOKSERVER-KIND'));
+        if (! empty($kind) && $kind !== 'individual') {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Import Contact.
      */
     public function import(?Contact $contact, VCard $vcard): Contact
@@ -174,7 +191,7 @@ class ImportContact extends Importer implements ImportVCardResource
     private function getUid(VCard $entry): ?string
     {
         if (! empty($uuid = (string) $entry->UID)) {
-            return (string) Str::of($uuid)->after('urn:uuid:');
+            return $uuid;
         }
 
         return null;

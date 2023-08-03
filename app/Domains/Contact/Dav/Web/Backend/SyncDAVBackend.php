@@ -5,6 +5,7 @@ namespace App\Domains\Contact\Dav\Web\Backend;
 use App\Models\SyncToken;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 trait SyncDAVBackend
 {
@@ -198,7 +199,15 @@ trait SyncDAVBackend
 
     protected function encodeUri($obj): string
     {
-        return urlencode(($obj->distant_uuid ?? $obj->id).$this->getExtension());
+        $id = null;
+        if (isset($obj->distant_uuid)) {
+            $id = Str::of($obj->distant_uuid)->after('urn:uuid:');
+        }
+        if ($id === null) {
+            $id = $obj->id;
+        }
+
+        return urlencode($id.$this->getExtension());
     }
 
     private function decodeUri(string $uri): string
