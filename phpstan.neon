@@ -38,5 +38,7 @@ parameters:
         - '#Access to an undefined property App\\Models\\[^:]*::\$pivot\.#'
 
         # Attributes
-        - '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayPush\.#'
-        - '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayGet\.#'
+        - message: '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayPush\.#'
+          path: */app/Domains/Contact/DavClient/Services/Utils/AddressBookSynchronizer.php
+        - message: '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayGet\.#'
+          path: */app/Domains/Contact/DavClient/Services/Utils/AddressBookSynchronizer.php

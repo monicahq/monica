@@ -3,7 +3,6 @@
 namespace App\Domains\Contact\Dav;
 
 use App\Domains\Contact\Dav\Services\ImportVCard;
-use App\Models\Contact;
 use Sabre\VObject\Component\VCard;
 
 interface ImportVCardResource
@@ -14,12 +13,12 @@ interface ImportVCardResource
     public function setContext(ImportVCard $context): self;
 
     /**
-     * Can import Contact.
+     * Can import Card.
      */
     public function can(VCard $vcard): bool;
 
     /**
-     * Import Contact.
+     * Import Card.
      */
-    public function import(?Contact $contact, VCard $vcard): ?Contact;
+    public function import(VCard $vcard, mixed $result): mixed;
 }

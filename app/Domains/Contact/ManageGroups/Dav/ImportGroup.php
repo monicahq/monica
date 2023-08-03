@@ -5,7 +5,6 @@ namespace App\Domains\Contact\Managegroups\Dav;
 use App\Domains\Contact\Dav\Importer;
 use App\Domains\Contact\Dav\ImportVCardResource;
 use App\Domains\Contact\Dav\Order;
-use App\Models\Contact;
 use Sabre\VObject\Component\VCard;
 
 #[Order(2)]
@@ -16,7 +15,10 @@ class ImportGroup extends Importer implements ImportVCardResource
      */
     public function can(VCard $vcard): bool
     {
-        $kind = (string) ($vcard->KIND ?? $vcard->select('X-ADDRESSBOOKSERVER-KIND'));
+        $kind = (string) $vcard->KIND;
+        if ($kind == null) {
+            $kind = (string) collect($vcard->select('X-ADDRESSBOOKSERVER-KIND'))->first();
+        }
 
         return $kind === 'group';
     }
@@ -24,7 +26,7 @@ class ImportGroup extends Importer implements ImportVCardResource
     /**
      * Import group.
      */
-    public function import(?Contact $contact, VCard $vcard): ?Contact
+    public function import(VCard $vcard, mixed $entry): mixed
     {
         return null;
     }

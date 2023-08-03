@@ -58,9 +58,10 @@ class ExportVCard extends BaseService implements ServiceInterface
 
         $vcard = $this->export($this->contact);
 
-        $this->contact->timestamps = false;
-        $this->contact->vcard = $vcard->serialize();
-        $this->contact->save();
+        Contact::withoutTimestamps(function () use ($vcard): void {
+            $this->contact->vcard = $vcard->serialize();
+            $this->contact->save();
+        });
 
         return $vcard;
     }

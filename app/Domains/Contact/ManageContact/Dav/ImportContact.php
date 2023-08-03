@@ -5,10 +5,12 @@ namespace App\Domains\Contact\ManageContact\Dav;
 use App\Domains\Contact\Dav\Importer;
 use App\Domains\Contact\Dav\ImportVCardResource;
 use App\Domains\Contact\Dav\Order;
+use App\Domains\Contact\Dav\Web\Backend\CardDAV\CardDAVBackend;
 use App\Domains\Contact\ManageContact\Services\CreateContact;
 use App\Domains\Contact\ManageContact\Services\UpdateContact;
 use App\Models\Contact;
 use App\Models\Gender;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
@@ -44,8 +46,10 @@ class ImportContact extends Importer implements ImportVCardResource
     /**
      * Import Contact.
      */
-    public function import(?Contact $contact, VCard $vcard): Contact
+    public function import(VCard $vcard, mixed $result): mixed
     {
+        $contact = $this->getExistingContact($vcard);
+
         $contactData = $this->getContactData($contact);
         $original = $contactData;
 
@@ -63,6 +67,49 @@ class ImportContact extends Importer implements ImportVCardResource
         if ($this->context->external && $contact->distant_uuid === null) {
             $contact->distant_uuid = $this->getUid($vcard);
             $contact->save();
+        }
+
+        return Contact::withoutTimestamps(function () use ($contact): Contact {
+            $uri = Arr::get($this->context->data, 'uri');
+            if ($this->context->external) {
+                $contact->distant_etag = Arr::get($this->context->data, 'etag');
+                $contact->distant_uri = $uri;
+            }
+
+            $contact->save();
+
+            return $contact;
+        });
+    }
+
+    private function getExistingContact(VCard $vcard): ?Contact
+    {
+        $backend = app(CardDAVBackend::class)->withUser($this->context->author);
+        $contact = null;
+
+        if (($uri = Arr::get($this->context->data, 'uri')) !== null) {
+            $contact = $backend->getObject($this->context->vault->id, $uri);
+
+            if ($contact === null) {
+                $contact = Contact::firstWhere([
+                    'vault_id' => $this->context->vault->id,
+                    'distant_uri' => $uri,
+                ]);
+            }
+        }
+
+        if ($contact === null) {
+            $contactId = $this->getUid($vcard);
+            if ($contactId !== null) {
+                $contact = Contact::firstWhere([
+                    'vault_id' => $this->context->vault->id,
+                    'id' => $contactId,
+                ]);
+            }
+        }
+
+        if ($contact !== null && $contact->vault_id !== $this->context->vault->id) {
+            throw new ModelNotFoundException();
         }
 
         return $contact;
