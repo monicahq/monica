@@ -5,10 +5,10 @@ namespace App\Domains\Contact\ManageGroups\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactFeedItem;
 use App\Models\Group;
-use App\Services\BaseService;
+use App\Services\QueuableService;
 use Carbon\Carbon;
 
-class RemoveContactFromGroup extends BaseService implements ServiceInterface
+class RemoveContactFromGroup extends QueuableService implements ServiceInterface
 {
     private Group $group;
 
@@ -44,7 +44,7 @@ class RemoveContactFromGroup extends BaseService implements ServiceInterface
     /**
      * Remove a contact from a group.
      */
-    public function execute(array $data): Group
+    public function execute(array $data): void
     {
         $this->data = $data;
         $this->validate();
@@ -55,8 +55,6 @@ class RemoveContactFromGroup extends BaseService implements ServiceInterface
 
         $this->updateLastEditedDate();
         $this->createFeedItem();
-
-        return $this->group;
     }
 
     private function validate(): void

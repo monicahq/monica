@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Domains\Contact\Dav\VCardResource;
 use App\Helpers\ScoutHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Laravel\Scout\Attributes\SearchUsingFullText;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 
-class Group extends Model
+class Group extends Model implements VCardResource
 {
     use HasFactory;
     use Searchable;
@@ -28,6 +29,10 @@ class Group extends Model
         'vault_id',
         'group_type_id',
         'name',
+        'vcard',
+        'distant_uuid',
+        'distant_etag',
+        'distant_uri',
     ];
 
     /**

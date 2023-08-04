@@ -6,10 +6,11 @@ use App\Interfaces\ServiceInterface;
 use App\Models\ContactFeedItem;
 use App\Models\Group;
 use App\Models\GroupTypeRole;
-use App\Services\BaseService;
+use App\Services\QueuableService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class AddContactToGroup extends BaseService implements ServiceInterface
+class AddContactToGroup extends QueuableService implements ServiceInterface
 {
     private Group $group;
 
@@ -25,7 +26,8 @@ class AddContactToGroup extends BaseService implements ServiceInterface
             'vault_id' => 'required|uuid|exists:vaults,id',
             'author_id' => 'required|uuid|exists:users,id',
             'group_id' => 'required|integer|exists:groups,id',
-            'contact_id' => 'required|uuid|exists:contacts,id',
+            'contact_id' => 'required_if:contact_distant_uuid,null|uuid|exists:contacts,id',
+            'contact_distant_uuid' => 'required_if:contact_id,null|string',
             'group_type_role_id' => 'nullable|integer',
         ];
     }
@@ -46,7 +48,7 @@ class AddContactToGroup extends BaseService implements ServiceInterface
     /**
      * Add a contact to a group.
      */
-    public function execute(array $data): Group
+    public function execute(array $data): void
     {
         $this->data = $data;
         $this->validate();
@@ -63,13 +65,23 @@ class AddContactToGroup extends BaseService implements ServiceInterface
 
         $this->createFeedItem();
         $this->updateLastEditedDate();
-
-        return $this->group;
     }
 
     private function validate(): void
     {
         $this->validateRules($this->data);
+
+        if (isset($this->data['contact_id'])) {
+            $this->validateContactBelongsToVault($this->data);
+        } else {
+            $this->contact = $this->vault->contacts()
+                ->where('distant_uuid', $this->data['contact_distant_uuid'])
+                ->firstOrFail();
+
+            if ($this->contact->vault_id !== $this->vault->id) {
+                throw new ModelNotFoundException();
+            }
+        }
 
         $this->group = $this->vault->groups()
             ->findOrFail($this->data['group_id']);
