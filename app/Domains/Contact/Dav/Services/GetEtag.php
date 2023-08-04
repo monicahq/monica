@@ -2,6 +2,7 @@
 
 namespace App\Domains\Contact\Dav\Services;
 
+use App\Domains\Contact\Dav\VCardResource;
 use App\Interfaces\ServiceInterface;
 use App\Services\BaseService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -40,6 +41,7 @@ class GetEtag extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
+        /** @var VCardResource */
         $entry = $data['entry'];
 
         if ($entry->vault_id !== $this->vault->id) {

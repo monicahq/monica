@@ -20,5 +20,5 @@ interface ImportVCardResource
     /**
      * Import Card.
      */
-    public function import(VCard $vcard, mixed $result): mixed;
+    public function import(VCard $vcard, ?VCardResource $result): ?VCardResource;
 }

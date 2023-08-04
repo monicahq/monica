@@ -5,6 +5,7 @@ namespace App\Domains\Contact\ManageContact\Dav;
 use App\Domains\Contact\Dav\Importer;
 use App\Domains\Contact\Dav\ImportVCardResource;
 use App\Domains\Contact\Dav\Order;
+use App\Domains\Contact\Dav\VCardResource;
 use App\Domains\Contact\Dav\Web\Backend\CardDAV\CardDAVBackend;
 use App\Domains\Contact\ManageContact\Services\CreateContact;
 use App\Domains\Contact\ManageContact\Services\UpdateContact;
@@ -13,7 +14,6 @@ use App\Models\Gender;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Ramsey\Uuid\Uuid;
 use Sabre\VObject\Component\VCard;
 
 #[Order(1)]
@@ -46,7 +46,7 @@ class ImportContact extends Importer implements ImportVCardResource
     /**
      * Import Contact.
      */
-    public function import(VCard $vcard, mixed $result): mixed
+    public function import(VCard $vcard, ?VCardResource $result): ?VCardResource
     {
         $contact = $this->getExistingContact($vcard);
 
@@ -57,11 +57,11 @@ class ImportContact extends Importer implements ImportVCardResource
         $contactData = $this->importNames($contactData, $vcard);
         $contactData = $this->importGender($contactData, $vcard);
 
-        if ($contact !== null && $contactData !== $original) {
-            $contact = app(UpdateContact::class)->execute($contactData);
-        } else {
+        if ($contact === null) {
             $contactData['listed'] = true;
             $contact = app(CreateContact::class)->execute($contactData);
+        } elseif ($contactData !== $original) {
+            $contact = app(UpdateContact::class)->execute($contactData);
         }
 
         if ($this->context->external && $contact->distant_uuid === null) {
@@ -88,11 +88,11 @@ class ImportContact extends Importer implements ImportVCardResource
         $contact = null;
 
         if (($uri = Arr::get($this->context->data, 'uri')) !== null) {
-            $contact = $backend->getObject($this->context->vault->id, $uri);
+            $contact = $backend->getObject($this->vault()->id, $uri);
 
             if ($contact === null) {
                 $contact = Contact::firstWhere([
-                    'vault_id' => $this->context->vault->id,
+                    'vault_id' => $this->vault()->id,
                     'distant_uri' => $uri,
                 ]);
             }
@@ -102,13 +102,13 @@ class ImportContact extends Importer implements ImportVCardResource
             $contactId = $this->getUid($vcard);
             if ($contactId !== null) {
                 $contact = Contact::firstWhere([
-                    'vault_id' => $this->context->vault->id,
+                    'vault_id' => $this->vault()->id,
                     'id' => $contactId,
                 ]);
             }
         }
 
-        if ($contact !== null && $contact->vault_id !== $this->context->vault->id) {
+        if ($contact !== null && $contact->vault_id !== $this->vault()->id) {
             throw new ModelNotFoundException();
         }
 
@@ -122,8 +122,8 @@ class ImportContact extends Importer implements ImportVCardResource
     {
         $result = [
             'account_id' => $this->account()->id,
-            'vault_id' => $this->context->vault->id,
-            'author_id' => $this->context->author->id,
+            'vault_id' => $this->vault()->id,
+            'author_id' => $this->author()->id,
             'first_name' => $contact ? $contact->first_name : null,
             'last_name' => $contact ? $contact->last_name : null,
             'middle_name' => $contact ? $contact->middle_name : null,
@@ -199,12 +199,12 @@ class ImportContact extends Importer implements ImportVCardResource
     {
         $fullnameParts = preg_split('/\s+/', $entry->FN, 2);
 
-        if (Str::of($this->context->author->name_order)->startsWith('%first_name% %last_name%')) {
+        if (Str::of($this->author()->name_order)->startsWith('%first_name% %last_name%')) {
             $contactData['first_name'] = $this->formatValue($fullnameParts[0]);
             if (count($fullnameParts) > 1) {
                 $contactData['last_name'] = $this->formatValue($fullnameParts[1]);
             }
-        } elseif (Str::of($this->context->author->name_order)->startsWith('%last_name% %first_name%')) {
+        } elseif (Str::of($this->author()->name_order)->startsWith('%last_name% %first_name%')) {
             $contactData['last_name'] = $this->formatValue($fullnameParts[0]);
             if (count($fullnameParts) > 1) {
                 $contactData['first_name'] = $this->formatValue($fullnameParts[1]);
@@ -218,30 +218,6 @@ class ImportContact extends Importer implements ImportVCardResource
         }
 
         return $contactData;
-    }
-
-    /**
-     * Import uid of the contact.
-     */
-    private function importUid(array $contactData, VCard $entry): array
-    {
-        if (($uuid = $this->getUid($entry)) !== null && Uuid::isValid($uuid) && ! $this->context->external) {
-            $contactData['id'] = $uuid;
-        }
-
-        return $contactData;
-    }
-
-    /**
-     * Import uid of the contact.
-     */
-    private function getUid(VCard $entry): ?string
-    {
-        if (! empty($uuid = (string) $entry->UID)) {
-            return $uuid;
-        }
-
-        return null;
     }
 
     /**

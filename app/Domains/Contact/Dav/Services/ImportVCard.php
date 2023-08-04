@@ -4,11 +4,13 @@ namespace App\Domains\Contact\Dav\Services;
 
 use App\Domains\Contact\Dav\ImportVCardResource;
 use App\Domains\Contact\Dav\Order;
+use App\Domains\Contact\Dav\VCardResource;
 use App\Interfaces\ServiceInterface;
 use App\Services\BaseService;
 use App\Traits\DAVFormat;
 use Closure;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -194,6 +196,7 @@ class ImportVCard extends BaseService implements ServiceInterface
      */
     private function processEntryContact(VCard $entry, string $vcard): array
     {
+        /** @var Model|VCardResource */
         $result = $this->importEntry($entry);
 
         if ($result === null) {
@@ -234,7 +237,7 @@ class ImportVCard extends BaseService implements ServiceInterface
     /**
      * Create the object matching the current entry.
      */
-    private function importEntry(VCard $entry): mixed
+    private function importEntry(VCard $entry): ?VCardResource
     {
         $result = null;
 

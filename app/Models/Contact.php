@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Domains\Contact\Dav\VCardResource;
 use App\Helpers\AvatarHelper;
 use App\Helpers\ContactImportantDateHelper;
 use App\Helpers\ImportantDateHelper;
@@ -23,7 +24,7 @@ use Laravel\Scout\Attributes\SearchUsingFullText;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 
-class Contact extends Model
+class Contact extends Model implements VCardResource
 {
     use HasFactory, SoftDeletes, HasUuids;
     use Searchable;
