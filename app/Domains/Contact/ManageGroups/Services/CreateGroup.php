@@ -8,8 +8,6 @@ use App\Services\BaseService;
 
 class CreateGroup extends BaseService implements ServiceInterface
 {
-    private Group $group;
-
     private array $data;
 
     /**

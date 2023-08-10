@@ -4,7 +4,6 @@ namespace App\Domains\Contact\ManageGroups\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactFeedItem;
-use App\Models\Group;
 use App\Models\GroupTypeRole;
 use App\Services\QueuableService;
 use Carbon\Carbon;
@@ -12,10 +11,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AddContactToGroup extends QueuableService implements ServiceInterface
 {
-    private Group $group;
-
-    private array $data;
-
     /**
      * Get the validation rules that apply to the service.
      */
@@ -62,6 +57,7 @@ class AddContactToGroup extends QueuableService implements ServiceInterface
                 $this->contact->id => ['group_type_role_id' => null],
             ]);
         }
+        $this->group->touch();
 
         $this->createFeedItem();
         $this->updateLastEditedDate();

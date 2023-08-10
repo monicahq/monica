@@ -31,6 +31,11 @@ return new class extends Migration
                 $table->string('distant_uri', 2096)->nullable()->after('distant_etag');
             });
         }
+        if (! Schema::hasColumn('groups', 'deleted_at')) {
+            Schema::table('groups', function (Blueprint $table) {
+                $table->softDeletes()->after('distant_uri');
+            });
+        }
     }
 
     /**
@@ -38,6 +43,11 @@ return new class extends Migration
      */
     public function down()
     {
+        if (Schema::hasColumn('groups', 'deleted_at')) {
+            Schema::table('groups', function (Blueprint $table) {
+                $table->dropColumn('deleted_at');
+            });
+        }
         if (Schema::hasColumn('groups', 'distant_uri')) {
             Schema::table('groups', function (Blueprint $table) {
                 $table->dropColumn('distant_uri');

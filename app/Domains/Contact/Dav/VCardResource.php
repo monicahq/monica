@@ -7,6 +7,8 @@ namespace App\Domains\Contact\Dav;
  * @property string $vault_id
  * @property string $distant_etag
  * @property string $vcard
+ *
+ * @method void refresh
  */
 interface VCardResource
 {

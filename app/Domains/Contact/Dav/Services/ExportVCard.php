@@ -4,10 +4,14 @@ namespace App\Domains\Contact\Dav\Services;
 
 use App\Domains\Contact\Dav\ExportVCardResource;
 use App\Domains\Contact\Dav\Order;
+use App\Domains\Contact\Dav\VCardResource;
+use App\Domains\Contact\Dav\VCardType;
 use App\Interfaces\ServiceInterface;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Services\BaseService;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -27,7 +31,8 @@ class ExportVCard extends BaseService implements ServiceInterface
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
             'vault_id' => 'required|uuid|exists:vaults,id',
-            'contact_id' => 'required|uuid|exists:contacts,id',
+            'contact_id' => 'required_if:group_id,null|uuid|exists:contacts,id',
+            'group_id' => 'required_if:contact_id,null|int|exists:groups,id',
         ];
     }
 
@@ -41,6 +46,7 @@ class ExportVCard extends BaseService implements ServiceInterface
             'vault_must_belong_to_account',
             'author_must_be_in_vault',
             'contact_must_belong_to_vault',
+            'group_must_belong_to_vault',
         ];
     }
 
@@ -56,11 +62,19 @@ class ExportVCard extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $vcard = $this->export($this->contact);
+        if (isset($data['contact_id'])) {
+            $obj = $this->contact;
+        } elseif (isset($data['group_id'])) {
+            $obj = $this->group;
+        } else {
+            throw new ModelNotFoundException();
+        }
 
-        Contact::withoutTimestamps(function () use ($vcard): void {
-            $this->contact->vcard = $vcard->serialize();
-            $this->contact->save();
+        $vcard = $this->export($obj);
+
+        $obj::withoutTimestamps(function () use ($obj, $vcard): void {
+            $obj->vcard = $vcard->serialize();
+            $obj->save();
         });
 
         return $vcard;
@@ -69,42 +83,58 @@ class ExportVCard extends BaseService implements ServiceInterface
     /**
      * Export the contact.
      */
-    private function export(Contact $contact): VCard
+    private function export(VCardResource $resource): VCard
     {
         // The standard for most of these fields can be found on https://datatracker.ietf.org/doc/html/rfc6350
-        if ($contact->vcard) {
+        if ($resource->vcard) {
             try {
                 /** @var VCard */
-                $vcard = Reader::read($contact->vcard, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
+                $vcard = Reader::read($resource->vcard, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
                 if (! $vcard->UID) {
-                    $vcard->UID = $contact->distant_uuid ?? $contact->id;
+                    $vcard->UID = $resource->distant_uuid ?? $resource->uuid ?? $resource->id;
                 }
             } catch (ParseException $e) {
                 // Ignore error
             }
         }
+
         if (! isset($vcard)) {
             // Basic information
             $vcard = new VCard([
-                'UID' => $contact->id,
-                'SOURCE' => route('contact.show', [
-                    'vault' => $contact->vault_id,
-                    'contact' => $contact->id,
-                ]),
+                'UID' => $resource->uuid ?? $resource->id,
+                'SOURCE' => $this->getSource($resource),
                 'VERSION' => '4.0',
             ]);
         }
 
         /** @var Collection<int, ExportVCardResource> */
         $exporters = collect($this->exporters())
+            ->filter(fn (ReflectionClass $exporter) => VCardType::is($exporter, $resource::class))
             ->sortBy(fn (ReflectionClass $exporter) => Order::get($exporter))
             ->map(fn (ReflectionClass $exporter): ExportVCardResource => $exporter->newInstance());
 
         foreach ($exporters as $exporter) {
-            $exporter->export($contact, $vcard);
+            $exporter->export($resource, $vcard);
         }
 
         return $vcard;
+    }
+
+    private function getSource(VCardResource $vcard): string
+    {
+        if ($vcard instanceof Contact) {
+            return route('contact.show', [
+                'vault' => $vcard->vault,
+                'contact' => $vcard,
+            ]);
+        } elseif ($vcard instanceof Group) {
+            return route('group.show', [
+                'vault' => $vcard->vault,
+                'group' => $vcard,
+            ]);
+        } else {
+            throw new ModelNotFoundException();
+        }
     }
 
     /**

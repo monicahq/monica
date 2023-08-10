@@ -4,16 +4,11 @@ namespace App\Domains\Contact\ManageGroups\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactFeedItem;
-use App\Models\Group;
 use App\Services\QueuableService;
 use Carbon\Carbon;
 
 class RemoveContactFromGroup extends QueuableService implements ServiceInterface
 {
-    private Group $group;
-
-    private array $data;
-
     /**
      * Get the validation rules that apply to the service.
      */
@@ -38,6 +33,7 @@ class RemoveContactFromGroup extends QueuableService implements ServiceInterface
             'vault_must_belong_to_account',
             'author_must_be_vault_editor',
             'contact_must_belong_to_vault',
+            'group_must_belong_to_vault',
         ];
     }
 

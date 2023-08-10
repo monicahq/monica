@@ -26,7 +26,7 @@ use Laravel\Scout\Searchable;
 
 class Contact extends Model implements VCardResource
 {
-    use HasFactory, SoftDeletes, HasUuids;
+    use HasFactory, HasUuids;
     use Searchable;
     use SoftDeletes;
 

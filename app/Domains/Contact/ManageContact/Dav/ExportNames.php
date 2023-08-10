@@ -5,13 +5,16 @@ namespace App\Domains\Contact\ManageContact\Dav;
 use App\Domains\Contact\Dav\Exporter;
 use App\Domains\Contact\Dav\ExportVCardResource;
 use App\Domains\Contact\Dav\Order;
+use App\Domains\Contact\Dav\VCardResource;
+use App\Domains\Contact\Dav\VCardType;
 use App\Models\Contact;
 use Sabre\VObject\Component\VCard;
 
 #[Order(1)]
+#[VCardType(Contact::class)]
 class ExportNames extends Exporter implements ExportVCardResource
 {
-    public function export(Contact $contact, VCard $vcard): void
+    public function export(VCardResource $contact, VCard $vcard): void
     {
         $vcard->remove('FN');
         $vcard->remove('N');

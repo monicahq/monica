@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Group\Managegroups\Dav;
+namespace App\Domains\Contact\ManageGroups\Dav;
 
 use App\Domains\Contact\Dav\Importer;
 use App\Domains\Contact\Dav\ImportVCardResource;

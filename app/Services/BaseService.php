@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -25,7 +26,12 @@ abstract class BaseService
     /**
      * The contact object.
      */
-    public Contact $contact;
+    public ?Contact $contact = null;
+
+    /**
+     * The contact object.
+     */
+    public ?Group $group = null;
 
     /**
      * Dependencies between permissions.
@@ -51,6 +57,10 @@ abstract class BaseService
             'author_must_belong_to_account',
         ],
         'contact_must_belong_to_vault' => [
+            'vault_must_belong_to_account',
+            'author_must_belong_to_account',
+        ],
+        'group_must_belong_to_vault' => [
             'vault_must_belong_to_account',
             'author_must_belong_to_account',
         ],
@@ -135,6 +145,9 @@ abstract class BaseService
             case 'contact_must_belong_to_vault':
                 $this->validateContactBelongsToVault($data);
                 break;
+            case 'group_must_belong_to_vault':
+                $this->validateGroupBelongsToVault($data);
+                break;
             default:
                 throw new \Exception("Unknown permission: $permission");
         }
@@ -191,11 +204,28 @@ abstract class BaseService
      */
     public function validateContactBelongsToVault(array $data): void
     {
-        $this->contact = $this->vault->contacts()
-            ->findOrFail($data['contact_id']);
+        if (isset($data['contact_id'])) {
+            $this->contact = $this->vault->contacts()
+                ->findOrFail($data['contact_id']);
 
-        if ($this->contact->vault_id !== $this->vault->id) {
-            throw new ModelNotFoundException();
+            if ($this->contact->vault_id !== $this->vault->id) {
+                throw new ModelNotFoundException();
+            }
+        }
+    }
+
+    /**
+     * Validate that the group belongs to the account.
+     */
+    public function validateGroupBelongsToVault(array $data): void
+    {
+        if (isset($data['group_id'])) {
+            $this->group = $this->vault->groups()
+                ->findOrFail($data['group_id']);
+
+            if ($this->group->vault_id !== $this->vault->id) {
+                throw new ModelNotFoundException();
+            }
         }
     }
 

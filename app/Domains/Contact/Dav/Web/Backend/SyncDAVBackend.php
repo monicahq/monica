@@ -2,6 +2,7 @@
 
 namespace App\Domains\Contact\Dav\Web\Backend;
 
+use App\Domains\Contact\Dav\VCardResource;
 use App\Models\SyncToken;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -204,6 +205,9 @@ trait SyncDAVBackend
             $id = Str::of($obj->distant_uuid)->after('urn:uuid:');
         }
         if ($id === null) {
+            $id = $obj->uuid;
+        }
+        if ($id === null) {
             $id = $obj->id;
         }
 
@@ -261,5 +265,5 @@ trait SyncDAVBackend
      *
      * @param  mixed  $obj
      */
-    abstract protected function refreshObject($obj): string;
+    abstract protected function refreshObject(VCardResource $obj): string;
 }

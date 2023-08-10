@@ -50,6 +50,7 @@ return new class() extends Migration
             $table->string('distant_etag', 256)->nullable();
             $table->string('distant_uri', 2096)->nullable();
 
+            $table->softDeletes();
             $table->timestamps();
 
             if (config('scout.driver') === 'database' && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {

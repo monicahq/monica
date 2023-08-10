@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Domains\Contact\ManageContact\Dav;
+namespace App\Domains\Contact\ManageGroups\Dav;
 
 use App\Domains\Contact\Dav\ExportVCardResource;
 use App\Domains\Contact\Dav\Order;
 use App\Domains\Contact\Dav\VCardResource;
 use App\Domains\Contact\Dav\VCardType;
-use App\Models\Contact;
+use App\Models\Group;
 use Sabre\VObject\Component\VCard;
 
 #[Order(1000)]
-#[VCardType(Contact::class)]
+#[VCardType(Group::class)]
 class ExportTimestamp implements ExportVCardResource
 {
-    public function export(VCardResource $contact, VCard $vcard): void
+    public function export(VCardResource $group, VCard $vcard): void
     {
         $vcard->remove('REV');
 
-        $vcard->REV = $contact->updated_at->format('Ymd\\THis\\Z');
+        $vcard->REV = $group->updated_at->format('Ymd\\THis\\Z');
     }
 }
