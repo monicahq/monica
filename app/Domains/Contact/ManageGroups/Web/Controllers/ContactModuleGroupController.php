@@ -71,8 +71,10 @@ class ContactModuleGroupController extends Controller
             'group_id' => $groupId,
         ];
 
-        $group = (new RemoveContactFromGroup())->execute($data);
+        RemoveContactFromGroup::dispatch($data)->onQueue('high');
+
         $contact = Contact::find($contactId);
+        $group = Group::find($groupId);
 
         return response()->json([
             'data' => ModuleGroupsViewHelper::dto($contact, $group, false),

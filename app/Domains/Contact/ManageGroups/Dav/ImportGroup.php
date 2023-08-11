@@ -77,7 +77,7 @@ class ImportGroup extends Importer implements ImportVCardResource
     /**
      * Get existing group.
      */
-    protected function getExistingGroup(VCard $vcard): ?VCardResource
+    protected function getExistingGroup(VCard $vcard): ?Group
     {
         $group = null;
 
@@ -195,13 +195,13 @@ class ImportGroup extends Importer implements ImportVCardResource
     private function updateGroupMembers(Group $group, Collection $members): void
     {
         // Contacts to remove
-        $contacts = $group->contacts()
+        $contacts = $group->contacts
             ->groupBy(fn (Contact $contact): string => $members->contains('distant_uuid', $contact->distant_uuid) || $members->contains('id', $contact->id)
                     ? 'keep'
                     : 'remove'
             );
 
-        $contacts->item('remove')
+        $contacts->get('remove')
             ->each(fn ($contact) => RemoveContactFromGroup::dispatch([
                 'account_id' => $this->account()->id,
                 'vault_id' => $this->vault()->id,
@@ -211,8 +211,8 @@ class ImportGroup extends Importer implements ImportVCardResource
             ])->onQueue('high'));
 
         // Contacts to add
-        $members->filter(fn ($member) => ! $contacts->item('keep')->contains('distant_uuid', $member['distant_uuid'])
-            || ! $contacts->item('keep')->contains('id', $member['id']))
+        $members->filter(fn ($member) => ! $contacts->get('keep')->contains('distant_uuid', $member['distant_uuid'])
+            || ! $contacts->get('keep')->contains('id', $member['id']))
             ->each(function ($member) use ($group) {
                 $groupData = [
                     'account_id' => $this->account()->id,
@@ -222,7 +222,8 @@ class ImportGroup extends Importer implements ImportVCardResource
                 ];
 
                 if (isset($member['distant_uuid'])) {
-                    $groupData['contact_distant_uuid'] = $member['distant_uuid'];
+                    $contact = Contact::where('distant_uuid', $member['distant_uuid'])->firstOrFail();
+                    $groupData['contact_id'] = $contact->id;
                 } elseif (isset($member['id'])) {
                     $groupData['contact_id'] = $member['id'];
                 } else {

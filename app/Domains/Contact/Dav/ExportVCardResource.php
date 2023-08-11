@@ -4,7 +4,13 @@ namespace App\Domains\Contact\Dav;
 
 use Sabre\VObject\Component\VCard;
 
+/**
+ * @template T of VCardResource
+ */
 interface ExportVCardResource
 {
-    public function export(VCardResource $resource, VCard $vcard): void;
+    /**
+     * @param  T  $resource
+     */
+    public function export($resource, VCard $vcard): void;
 }

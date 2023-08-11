@@ -28,6 +28,7 @@ use Sabre\CardDAV\Plugin as CardDav;
 use Sabre\DAV;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
+use Sabre\VObject\Component\VCard;
 use Sabre\VObject\ParseException;
 use Sabre\VObject\Reader;
 

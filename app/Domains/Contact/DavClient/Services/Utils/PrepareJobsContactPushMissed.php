@@ -2,10 +2,10 @@
 
 namespace App\Domains\Contact\DavClient\Services\Utils;
 
+use App\Domains\Contact\Dav\VCardResource;
 use App\Domains\Contact\DavClient\Jobs\PushVCard;
 use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDto;
 use App\Domains\Contact\DavClient\Services\Utils\Traits\HasSubscription;
-use App\Models\Contact;
 use Illuminate\Support\Collection;
 
 class PrepareJobsContactPushMissed
@@ -17,7 +17,7 @@ class PrepareJobsContactPushMissed
      *
      * @param  Collection<array-key,Collection<array-key,string>>  $localChanges
      * @param  Collection<array-key,ContactDto>  $distContacts
-     * @param  Collection<array-key,Contact>  $localContacts
+     * @param  Collection<array-key,VCardResource>  $localContacts
      */
     public function execute(Collection $localChanges, Collection $distContacts, Collection $localContacts): Collection
     {
@@ -36,7 +36,7 @@ class PrepareJobsContactPushMissed
      *
      * @param  Collection<array-key,string>  $added
      * @param  Collection<array-key,ContactDto>  $distContacts
-     * @param  Collection<array-key,Contact>  $localContacts
+     * @param  Collection<array-key,VCardResource>  $localContacts
      */
     private function preparePushMissedContacts(Collection $added, Collection $distContacts, Collection $localContacts): Collection
     {
@@ -44,17 +44,17 @@ class PrepareJobsContactPushMissed
         $addedUuids = $added->map(fn (string $uri): string => $this->backend()->getUuid($uri));
 
         return $localContacts
-            ->reject(fn (Contact $contact): bool => $distUuids->contains($contact->id) || $addedUuids->contains($contact->id)
+            ->reject(fn (VCardResource $resource): bool => $distUuids->contains($resource->id) || $addedUuids->contains($resource->id)
             )
-            ->map(function (Contact $contact): PushVCard {
-                $card = $this->backend()->prepareCard($contact);
+            ->map(function (VCardResource $resource): PushVCard {
+                $card = $this->backend()->prepareCard($resource);
 
                 return new PushVCard($this->subscription,
                     $card['uri'],
-                    $contact->distant_etag,
+                    $resource->distant_etag,
                     $card['carddata'],
-                    $contact->id,
-                    $contact->distant_etag !== null ? PushVCard::MODE_MATCH_ANY : PushVCard::MODE_MATCH_NONE
+                    $resource->id,
+                    $resource->distant_etag !== null ? PushVCard::MODE_MATCH_ANY : PushVCard::MODE_MATCH_NONE
                 );
             });
     }

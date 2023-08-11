@@ -42,23 +42,15 @@ class RemoveContactFromGroup extends QueuableService implements ServiceInterface
      */
     public function execute(array $data): void
     {
-        $this->data = $data;
-        $this->validate();
+        $this->validateRules($data);
 
         $this->group->contacts()->detach([
             $this->contact->id,
         ]);
+        $this->group->touch();
 
         $this->updateLastEditedDate();
         $this->createFeedItem();
-    }
-
-    private function validate(): void
-    {
-        $this->validateRules($this->data);
-
-        $this->group = $this->vault->groups()
-            ->findOrFail($this->data['group_id']);
     }
 
     private function updateLastEditedDate(): void

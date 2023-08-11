@@ -10,7 +10,6 @@ use App\Services\BaseService;
 use App\Traits\DAVFormat;
 use Closure;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -196,7 +195,6 @@ class ImportVCard extends BaseService implements ServiceInterface
      */
     private function processEntryContact(VCard $entry, string $vcard): array
     {
-        /** @var Model|VCardResource */
         $result = $this->importEntry($entry);
 
         if ($result === null) {

@@ -7,7 +7,6 @@ use App\Models\ContactFeedItem;
 use App\Models\GroupTypeRole;
 use App\Services\QueuableService;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AddContactToGroup extends QueuableService implements ServiceInterface
 {
@@ -21,8 +20,7 @@ class AddContactToGroup extends QueuableService implements ServiceInterface
             'vault_id' => 'required|uuid|exists:vaults,id',
             'author_id' => 'required|uuid|exists:users,id',
             'group_id' => 'required|integer|exists:groups,id',
-            'contact_id' => 'required_if:contact_distant_uuid,null|uuid|exists:contacts,id',
-            'contact_distant_uuid' => 'required_if:contact_id,null|string',
+            'contact_id' => 'required|uuid|exists:contacts,id',
             'group_type_role_id' => 'nullable|integer',
         ];
     }
@@ -37,6 +35,7 @@ class AddContactToGroup extends QueuableService implements ServiceInterface
             'vault_must_belong_to_account',
             'author_must_be_vault_editor',
             'contact_must_belong_to_vault',
+            'group_must_belong_to_vault',
         ];
     }
 
@@ -57,30 +56,16 @@ class AddContactToGroup extends QueuableService implements ServiceInterface
                 $this->contact->id => ['group_type_role_id' => null],
             ]);
         }
+
         $this->group->touch();
 
-        $this->createFeedItem();
         $this->updateLastEditedDate();
+        $this->createFeedItem();
     }
 
     private function validate(): void
     {
         $this->validateRules($this->data);
-
-        if (isset($this->data['contact_id'])) {
-            $this->validateContactBelongsToVault($this->data);
-        } else {
-            $this->contact = $this->vault->contacts()
-                ->where('distant_uuid', $this->data['contact_distant_uuid'])
-                ->firstOrFail();
-
-            if ($this->contact->vault_id !== $this->vault->id) {
-                throw new ModelNotFoundException();
-            }
-        }
-
-        $this->group = $this->vault->groups()
-            ->findOrFail($this->data['group_id']);
 
         if ($this->data['group_type_role_id'] != 0) {
             $role = GroupTypeRole::findOrFail($this->data['group_type_role_id']);
