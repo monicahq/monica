@@ -10,13 +10,11 @@ use App\Models\Contact;
 use App\Models\Group;
 use Sabre\VObject\Component\VCard;
 
-#[Order(20)]
-#[VCardType(Group::class)]
 /**
  * @implements ExportVCardResource<Group>
- *
- * @template-implements ExportVCardResource<Group>
  */
+#[Order(20)]
+#[VCardType(Group::class)]
 class ExportMembers extends Exporter implements ExportVCardResource
 {
     /**
@@ -24,20 +22,29 @@ class ExportMembers extends Exporter implements ExportVCardResource
      */
     public function export($resource, VCard $vcard): void
     {
+        $kind = collect($vcard->select('X-ADDRESSBOOKSERVER-KIND'))->first();
+
+        $this->exportType($resource, $vcard, $kind ? 'X-ADDRESSBOOKSERVER-MEMBER' : 'MEMBER');
+    }
+
+    private function exportType($resource, VCard $vcard, string $type): void
+    {
         $contacts = $resource->contacts
             ->map(fn (Contact $contact) => $contact->distant_uuid ?? $contact->id)
             ->sort();
 
-        $current = collect($vcard->select('MEMBER'));
+        $current = collect($vcard->select($type));
         $members = $current
             ->map(fn ($member) => (string) $member);
 
+        // Add new members
         foreach ($contacts as $contact) {
             if (! $members->contains($contact)) {
-                $vcard->add('MEMBER', $contact);
+                $vcard->add($type, $contact);
             }
         }
 
+        // Remove old members
         foreach ($current as $member) {
             if (! $contacts->contains((string) $member)) {
                 $vcard->remove($member);

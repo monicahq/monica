@@ -8,13 +8,11 @@ use App\Domains\Contact\Dav\VCardType;
 use App\Models\Contact;
 use Sabre\VObject\Component\VCard;
 
-#[Order(1000)]
-#[VCardType(Contact::class)]
 /**
  * @implements ExportVCardResource<Contact>
- *
- * @template-implements ExportVCardResource<Contact>
  */
+#[Order(1000)]
+#[VCardType(Contact::class)]
 class ExportTimestamp implements ExportVCardResource
 {
     /**

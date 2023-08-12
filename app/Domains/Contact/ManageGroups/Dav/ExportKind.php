@@ -9,13 +9,11 @@ use App\Domains\Contact\Dav\VCardType;
 use App\Models\Group;
 use Sabre\VObject\Component\VCard;
 
-#[Order(1)]
-#[VCardType(Group::class)]
 /**
  * @implements ExportVCardResource<Group>
- *
- * @template-implements ExportVCardResource<Group>
  */
+#[Order(1)]
+#[VCardType(Group::class)]
 class ExportKind extends Exporter implements ExportVCardResource
 {
     /**
@@ -23,10 +21,10 @@ class ExportKind extends Exporter implements ExportVCardResource
      */
     public function export($resource, VCard $vcard): void
     {
-        $kind = (string) collect($vcard->select('X-ADDRESSBOOKSERVER-KIND'))->first();
+        $kind = collect($vcard->select('X-ADDRESSBOOKSERVER-KIND'))->first();
 
-        if (! empty($kind)) {
-            $vcard->remove('X-ADDRESSBOOKSERVER-KIND');
+        if ($kind) {
+            $vcard->remove($kind);
             $vcard->add('X-ADDRESSBOOKSERVER-KIND', 'group');
 
             return;

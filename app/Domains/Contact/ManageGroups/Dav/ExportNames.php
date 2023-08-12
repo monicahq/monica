@@ -9,13 +9,11 @@ use App\Domains\Contact\Dav\VCardType;
 use App\Models\Group;
 use Sabre\VObject\Component\VCard;
 
-#[Order(10)]
-#[VCardType(Group::class)]
 /**
  * @implements ExportVCardResource<Group>
- *
- * @template-implements ExportVCardResource<Group>
  */
+#[Order(10)]
+#[VCardType(Group::class)]
 class ExportNames extends Exporter implements ExportVCardResource
 {
     /**

@@ -5,7 +5,7 @@ namespace App\Domains\Contact\Dav;
 use Sabre\VObject\Component\VCard;
 
 /**
- * @template T of VCardResource
+ * @template T of \App\Domains\Contact\Dav\VCardResource
  */
 interface ExportVCardResource
 {

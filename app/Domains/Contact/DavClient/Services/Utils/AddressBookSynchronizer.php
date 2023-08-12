@@ -68,7 +68,7 @@ class AddressBookSynchronizer
         // Get distant contacts
         $jobs = collect();
         if ($this->subscription->isWayGet) {
-            $jobs = $jobs->union(
+            $jobs = $jobs->merge(
                 app(PrepareJobsContactUpdater::class)
                     ->withSubscription($this->subscription)
                     ->execute($changes)
@@ -79,7 +79,7 @@ class AddressBookSynchronizer
             // Get changes to sync
             $localChanges = $this->getLocalChanges();
 
-            $jobs = $jobs->union(
+            $jobs = $jobs->merge(
                 app(PrepareJobsContactPush::class)
                     ->withSubscription($this->subscription)
                     ->execute($localChanges, $changes)
@@ -106,7 +106,7 @@ class AddressBookSynchronizer
 
         $jobs = collect();
         if ($this->subscription->isWayGet) {
-            $jobs = $jobs->union(
+            $jobs = $jobs->merge(
                 app(PrepareJobsContactUpdater::class)
                     ->withSubscription($this->subscription)
                     ->execute($missed)
@@ -117,7 +117,7 @@ class AddressBookSynchronizer
             // Get changes to sync
             $localChanges = $this->getLocalChanges();
 
-            $jobs = $jobs->union(
+            $jobs = $jobs->merge(
                 app(PrepareJobsContactPushMissed::class)
                     ->withSubscription($this->subscription)
                     ->execute($localChanges, $distContacts, $localContacts)
@@ -157,7 +157,7 @@ class AddressBookSynchronizer
         $deleted = $data->filter(fn ($contact): bool => is_array($contact) && $contact['status'] === '404')
             ->map(fn (array $contact, string $href): ContactDto => new ContactDeleteDto($href));
 
-        return $updated->union($deleted);
+        return $updated->merge($deleted);
     }
 
     /**
@@ -178,7 +178,7 @@ class AddressBookSynchronizer
         $deleted = $data->filter(fn ($contact): bool => is_array($contact) && $contact['status'] === '404')
             ->map(fn (array $contact, string $href): ContactDto => new ContactDeleteDto($href));
 
-        return $updated->union($deleted);
+        return $updated->merge($deleted);
     }
 
     /**

@@ -19,17 +19,4 @@
     <plugins>
         <pluginClass class="Psalm\LaravelPlugin\Plugin"/>
     </plugins>
-
-    <issueHandlers>
-        <MissingTemplateParam>
-            <errorLevel type="info">
-                <file name="app/Domains/Contact/ManageContact/Dav/ExportNames.php"/>
-                <file name="app/Domains/Contact/ManageContact/Dav/ExportTimestamp.php"/>
-                <file name="app/Domains/Contact/ManageGroups/Dav/ExportMembers.php"/>
-                <file name="app/Domains/Contact/ManageGroups/Dav/ExportNames.php"/>
-                <file name="app/Domains/Contact/ManageGroups/Dav/ExportTimestamp.php"/>
-                <file name="app/Domains/Settings/ManageGenders/Dav/ExportGender.php"/>
-            </errorLevel>
-        </MissingTemplateParam>
-    </issueHandlers>
 </psalm>

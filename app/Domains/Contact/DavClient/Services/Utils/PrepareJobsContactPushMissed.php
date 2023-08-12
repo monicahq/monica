@@ -28,7 +28,7 @@ class PrepareJobsContactPushMissed
         $missings = $this->preparePushMissedContacts($localChanges->get('added', collect()), $distContacts, $localContacts);
 
         return $changes
-            ->union($missings);
+            ->merge($missings);
     }
 
     /**

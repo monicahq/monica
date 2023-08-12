@@ -25,8 +25,8 @@ class PrepareJobsContactPush
         $deleted = $this->prepareDeletedContacts($localChanges->get('deleted', collect()));
 
         return $modified
-            ->union($added)
-            ->union($deleted)
+            ->merge($added)
+            ->merge($deleted)
             ->filter();
     }
 
