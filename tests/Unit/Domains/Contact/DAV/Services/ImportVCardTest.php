@@ -152,8 +152,8 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
         $author = User::factory()->create();
         $vault = $this->createVaultUser($author, Vault::PERMISSION_EDIT);
         $importVCard = new ImportVCard($this->app);
-        $this->setPrivateValue($importVCard, 'author', $author);
-        $this->setPrivateValue($importVCard, 'vault', $vault);
+        $importVCard->author = $author;
+        $importVCard->vault = $vault;
 
         $vcard = new VCard([
             'N' => ['John', 'Doe', '', '', ''],
@@ -171,8 +171,8 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
         $author = User::factory()->create();
         $vault = $this->createVaultUser($author, Vault::PERMISSION_EDIT);
         $importVCard = new ImportVCard($this->app);
-        $this->setPrivateValue($importVCard, 'author', $author);
-        $this->setPrivateValue($importVCard, 'vault', $vault);
+        $importVCard->author = $author;
+        $importVCard->vault = $vault;
 
         $vcard = new VCard([
             'FN' => 'John Doe',

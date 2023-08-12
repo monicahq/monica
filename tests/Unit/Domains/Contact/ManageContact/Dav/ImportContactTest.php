@@ -49,7 +49,7 @@ class ImportContactTest extends TestCase
     {
         $author = User::factory()->create();
         $importVCard = new ImportVCard($this->app);
-        $this->setPrivateValue($importVCard, 'author', $author);
+        $importVCard->author = $author;
         $importContact = new ImportContact();
         $importContact->setContext($importVCard);
 
@@ -69,7 +69,7 @@ class ImportContactTest extends TestCase
             'name_order' => '%last_name% %first_name%',
         ]);
         $importVCard = new ImportVCard($this->app);
-        $this->setPrivateValue($importVCard, 'author', $author);
+        $importVCard->author = $author;
         $importContact = new ImportContact();
         $importContact->setContext($importVCard);
 
@@ -87,7 +87,7 @@ class ImportContactTest extends TestCase
     {
         $author = User::factory()->create();
         $importVCard = new ImportVCard($this->app);
-        $this->setPrivateValue($importVCard, 'author', $author);
+        $importVCard->author = $author;
         $importContact = new ImportContact();
         $importContact->setContext($importVCard);
 
@@ -105,7 +105,7 @@ class ImportContactTest extends TestCase
     {
         $author = User::factory()->create();
         $importVCard = new ImportVCard($this->app);
-        $this->setPrivateValue($importVCard, 'author', $author);
+        $importVCard->author = $author;
         $importContact = new ImportContact();
         $importContact->setContext($importVCard);
 
@@ -126,7 +126,7 @@ class ImportContactTest extends TestCase
             'name_order' => '%last_name% %first_name%',
         ]);
         $importVCard = new ImportVCard($this->app);
-        $this->setPrivateValue($importVCard, 'author', $author);
+        $importVCard->author = $author;
         $importContact = new ImportContact();
         $importContact->setContext($importVCard);
 
@@ -145,7 +145,7 @@ class ImportContactTest extends TestCase
     {
         $author = User::factory()->create();
         $importVCard = new ImportVCard($this->app);
-        $this->setPrivateValue($importVCard, 'author', $author);
+        $importVCard->author = $author;
         $importContact = new ImportContact();
         $importContact->setContext($importVCard);
 

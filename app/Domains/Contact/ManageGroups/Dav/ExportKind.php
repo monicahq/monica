@@ -9,27 +9,30 @@ use App\Domains\Contact\Dav\VCardType;
 use App\Models\Group;
 use Sabre\VObject\Component\VCard;
 
-#[Order(10)]
+#[Order(1)]
 #[VCardType(Group::class)]
 /**
  * @implements ExportVCardResource<Group>
  *
  * @template-implements ExportVCardResource<Group>
  */
-class ExportNames extends Exporter implements ExportVCardResource
+class ExportKind extends Exporter implements ExportVCardResource
 {
     /**
      * @param  Group  $resource
      */
     public function export($resource, VCard $vcard): void
     {
-        $vcard->remove('FN');
-        $vcard->remove('N');
+        $kind = (string) collect($vcard->select('X-ADDRESSBOOKSERVER-KIND'))->first();
 
-        $vcard->add('FN', $this->escape($resource->name));
+        if (! empty($kind)) {
+            $vcard->remove('X-ADDRESSBOOKSERVER-KIND');
+            $vcard->add('X-ADDRESSBOOKSERVER-KIND', 'group');
 
-        $vcard->add('N', [
-            $this->escape($resource->name),
-        ]);
+            return;
+        }
+
+        $vcard->remove('KIND');
+        $vcard->add('KIND', 'group');
     }
 }

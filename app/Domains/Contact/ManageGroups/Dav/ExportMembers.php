@@ -10,7 +10,7 @@ use App\Models\Contact;
 use App\Models\Group;
 use Sabre\VObject\Component\VCard;
 
-#[Order(2)]
+#[Order(20)]
 #[VCardType(Group::class)]
 /**
  * @implements ExportVCardResource<Group>
@@ -24,9 +24,24 @@ class ExportMembers extends Exporter implements ExportVCardResource
      */
     public function export($resource, VCard $vcard): void
     {
-        $vcard->remove('MEMBER');
+        $contacts = $resource->contacts
+            ->map(fn (Contact $contact) => $contact->distant_uuid ?? $contact->id)
+            ->sort();
 
-        $resource->contacts()
-            ->each(fn (Contact $contact) => $vcard->add('MEMBER', $contact->distant_uuid ?? $contact->id));
+        $current = collect($vcard->select('MEMBER'));
+        $members = $current
+            ->map(fn ($member) => (string) $member);
+
+        foreach ($contacts as $contact) {
+            if (! $members->contains($contact)) {
+                $vcard->add('MEMBER', $contact);
+            }
+        }
+
+        foreach ($current as $member) {
+            if (! $contacts->contains((string) $member)) {
+                $vcard->remove($member);
+            }
+        }
     }
 }

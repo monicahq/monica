@@ -14,6 +14,7 @@ use App\Models\Gender;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 use Sabre\VObject\Component\VCard;
 
 #[Order(1)]
@@ -100,7 +101,7 @@ class ImportContact extends Importer implements ImportVCardResource
 
         if ($contact === null) {
             $contactId = $this->getUid($vcard);
-            if ($contactId !== null) {
+            if ($contactId !== null && Uuid::isValid($contactId)) {
                 $contact = Contact::firstWhere([
                     'vault_id' => $this->vault()->id,
                     'id' => $contactId,

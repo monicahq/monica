@@ -19,7 +19,7 @@ use Sabre\VObject\Component\VCard;
 class ExportGender implements ExportVCardResource
 {
     /**
-     * @param  Contact  $contact
+     * @param  Contact  $resource
      */
     public function export($resource, VCard $vcard): void
     {
