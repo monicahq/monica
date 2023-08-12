@@ -5,7 +5,6 @@ namespace App\Domains\Contact\ManageContact\Dav;
 use App\Domains\Contact\Dav\Exporter;
 use App\Domains\Contact\Dav\ExportVCardResource;
 use App\Domains\Contact\Dav\Order;
-use App\Domains\Contact\Dav\VCardType;
 use App\Models\Contact;
 use Sabre\VObject\Component\VCard;
 
@@ -13,9 +12,13 @@ use Sabre\VObject\Component\VCard;
  * @implements ExportVCardResource<Contact>
  */
 #[Order(1)]
-#[VCardType(Contact::class)]
 class ExportNames extends Exporter implements ExportVCardResource
 {
+    public function getType(): string
+    {
+        return Contact::class;
+    }
+
     /**
      * @param  Contact  $resource
      */

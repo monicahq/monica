@@ -5,7 +5,6 @@ namespace App\Domains\Contact\Dav\Services;
 use App\Domains\Contact\Dav\ExportVCardResource;
 use App\Domains\Contact\Dav\Order;
 use App\Domains\Contact\Dav\VCardResource;
-use App\Domains\Contact\Dav\VCardType;
 use App\Interfaces\ServiceInterface;
 use App\Models\Contact;
 use App\Models\Group;
@@ -109,9 +108,9 @@ class ExportVCard extends BaseService implements ServiceInterface
 
         /** @var Collection<int, ExportVCardResource> */
         $exporters = collect($this->exporters())
-            ->filter(fn (ReflectionClass $exporter) => VCardType::is($exporter, $resource::class))
             ->sortBy(fn (ReflectionClass $exporter) => Order::get($exporter))
-            ->map(fn (ReflectionClass $exporter): ExportVCardResource => $exporter->newInstance());
+            ->map(fn (ReflectionClass $exporter): ExportVCardResource => $exporter->newInstance())
+            ->filter(fn (ExportVCardResource $exporter) => $exporter->getType() === $resource::class);
 
         foreach ($exporters as $exporter) {
             $exporter->export($resource, $vcard);

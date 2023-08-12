@@ -10,6 +10,11 @@ use Sabre\VObject\Component\VCard;
 interface ExportVCardResource
 {
     /**
+     * @return class-string<T>
+     */
+    public function getType(): string;
+
+    /**
      * @param  T  $resource
      */
     public function export($resource, VCard $vcard): void;

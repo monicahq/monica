@@ -13,6 +13,7 @@ use App\Models\AddressBookSubscription;
 use App\Models\Contact;
 use App\Models\SyncToken;
 use App\Models\Vault;
+use Carbon\Carbon;
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Bus;
@@ -277,11 +278,12 @@ class AddressBookSynchronizerTest extends TestCase
 
         $subscription = $this->getSubscription();
 
-        $contact = Contact::factory()->create([
+        $contact1 = $subscription->vault->contacts->first();
+        $contact2 = Contact::factory()->create([
+            'first_name' => 'Ryan',
             'vault_id' => $subscription->vault_id,
             'id' => 'd403af1c-8492-4e9b-9833-cf18c795dfa9',
         ]);
-        $etag = $this->getEtag($contact, true);
 
         $tester = (new DavTester($subscription->uri))
             ->fake()
@@ -290,7 +292,16 @@ class AddressBookSynchronizerTest extends TestCase
             '<d:href>https://test/dav/uuid1</d:href>'.
             '<d:propstat>'.
                 '<d:prop>'.
-                    "<d:getetag>$etag</d:getetag>".
+                    "<d:getetag>{$this->getEtag($contact1, true)}</d:getetag>".
+                '</d:prop>'.
+                '<d:status>HTTP/1.1 200 OK</d:status>'.
+            '</d:propstat>'.
+        '</d:response>'.
+        '<d:response>'.
+            '<d:href>https://test/dav/uuid1</d:href>'.
+            '<d:propstat>'.
+                '<d:prop>'.
+                    "<d:getetag>{$this->getEtag($contact2, true)}</d:getetag>".
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.
@@ -308,8 +319,8 @@ class AddressBookSynchronizerTest extends TestCase
 
         $tester->assert();
 
-        Bus::assertBatched(function (PendingBatch $batch) {
-            $this->assertCount(2, $batch->jobs);
+        Bus::assertBatched(function (PendingBatch $batch) use ($contact1, $contact2) {
+            $this->assertCount(3, $batch->jobs);
 
             $job = $batch->jobs[0];
             $this->assertInstanceOf(GetMultipleVCard::class, $job);
@@ -317,7 +328,11 @@ class AddressBookSynchronizerTest extends TestCase
 
             $job = $batch->jobs[1];
             $this->assertInstanceOf(PushVCard::class, $job);
-            $this->assertEquals('d403af1c-8492-4e9b-9833-cf18c795dfa9', $job->contactId);
+            $this->assertEquals($contact1->id, $job->contactId);
+
+            $job = $batch->jobs[2];
+            $this->assertInstanceOf(PushVCard::class, $job);
+            $this->assertEquals($contact2->id, $job->contactId);
 
             return true;
         });
@@ -355,7 +370,7 @@ class AddressBookSynchronizerTest extends TestCase
         $tester->assert();
 
         Bus::assertBatched(function (PendingBatch $batch) {
-            $this->assertCount(1, $batch->jobs);
+            $this->assertCount(2, $batch->jobs);
             $job = $batch->jobs[0];
             $this->assertInstanceOf(DeleteMultipleVCard::class, $job);
             $this->assertEquals(['https://test/dav/uuid1'], $this->getPrivateValue($job, 'hrefs'));
@@ -366,16 +381,22 @@ class AddressBookSynchronizerTest extends TestCase
 
     private function getSubscription(): AddressBookSubscription
     {
+        Carbon::setTestNow(Carbon::create(2023, 1, 1, 0, 0, 0));
+
         $subscription = AddressBookSubscription::factory()->create([
             'uri' => 'https://test/dav/addressbooks/user@test.com/contacts/',
         ]);
         $this->setPermissionInVault($subscription->user, Vault::PERMISSION_VIEW, $subscription->vault);
+
+        Carbon::setTestNow(Carbon::create(2023, 1, 3, 0, 0, 0));
+
         $token = SyncToken::factory()->create([
             'account_id' => $subscription->user->account_id,
             'user_id' => $subscription->user_id,
             'name' => 'contacts1',
-            'timestamp' => now()->addDays(-1),
+            'timestamp' => now(),
         ]);
+
         $subscription->sync_token_id = $token->id;
         $subscription->save();
 
@@ -383,6 +404,8 @@ class AddressBookSynchronizerTest extends TestCase
             'id' => $subscription->id,
             'sync_token_id' => $token->id,
         ]);
+
+        Carbon::setTestNow(Carbon::create(2023, 1, 4, 0, 0, 0));
 
         return $subscription;
     }

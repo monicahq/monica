@@ -5,7 +5,6 @@ namespace App\Domains\Contact\ManageGroups\Dav;
 use App\Domains\Contact\Dav\Exporter;
 use App\Domains\Contact\Dav\ExportVCardResource;
 use App\Domains\Contact\Dav\Order;
-use App\Domains\Contact\Dav\VCardType;
 use App\Models\Contact;
 use App\Models\Group;
 use Sabre\VObject\Component\VCard;
@@ -14,9 +13,13 @@ use Sabre\VObject\Component\VCard;
  * @implements ExportVCardResource<Group>
  */
 #[Order(20)]
-#[VCardType(Group::class)]
 class ExportMembers extends Exporter implements ExportVCardResource
 {
+    public function getType(): string
+    {
+        return Group::class;
+    }
+
     /**
      * @param  Group  $resource
      */

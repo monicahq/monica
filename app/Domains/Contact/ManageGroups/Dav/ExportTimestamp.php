@@ -4,7 +4,6 @@ namespace App\Domains\Contact\ManageGroups\Dav;
 
 use App\Domains\Contact\Dav\ExportVCardResource;
 use App\Domains\Contact\Dav\Order;
-use App\Domains\Contact\Dav\VCardType;
 use App\Models\Group;
 use Sabre\VObject\Component\VCard;
 
@@ -12,9 +11,13 @@ use Sabre\VObject\Component\VCard;
  * @implements ExportVCardResource<Group>
  */
 #[Order(1000)]
-#[VCardType(Group::class)]
 class ExportTimestamp implements ExportVCardResource
 {
+    public function getType(): string
+    {
+        return Group::class;
+    }
+
     /**
      * @param  Group  $resource
      */

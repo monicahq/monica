@@ -68,11 +68,9 @@ class AddressBookSynchronizer
         // Get distant contacts
         $jobs = collect();
         if ($this->subscription->isWayGet) {
-            $jobs = $jobs->merge(
-                app(PrepareJobsContactUpdater::class)
-                    ->withSubscription($this->subscription)
-                    ->execute($changes)
-            );
+            $jobs = app(PrepareJobsContactUpdater::class)
+                ->withSubscription($this->subscription)
+                ->execute($changes);
         }
 
         if ($this->subscription->isWayPush) {
@@ -106,11 +104,9 @@ class AddressBookSynchronizer
 
         $jobs = collect();
         if ($this->subscription->isWayGet) {
-            $jobs = $jobs->merge(
-                app(PrepareJobsContactUpdater::class)
-                    ->withSubscription($this->subscription)
-                    ->execute($missed)
-            );
+            $jobs = app(PrepareJobsContactUpdater::class)
+                ->withSubscription($this->subscription)
+                ->execute($missed);
         }
 
         if ($this->subscription->isWayPush) {
