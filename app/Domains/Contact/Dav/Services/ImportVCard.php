@@ -64,7 +64,8 @@ class ImportVCard extends BaseService implements ServiceInterface
 
     public ?array $data = null;
 
-    private ?Collection $importers = null;
+    /** @var Collection<array-key,ImportVCardResource> */
+    private static ?Collection $importers = null;
 
     /**
      * Get the validation rules that apply to the service.
@@ -251,23 +252,24 @@ class ImportVCard extends BaseService implements ServiceInterface
     /**
      * Get importers instance.
      *
-     * @return \Illuminate\Support\Collection<int,ImportVCardResource>
+     * @return Collection<array-key,ImportVCardResource>
      */
     private function importers(): Collection
     {
-        if ($this->importers === null) {
-            $this->importers = collect($this->listImporters())
+        if (static::$importers === null) {
+            static::$importers = collect($this->listImporters())
                 ->sortBy(fn (ReflectionClass $importer): int => Order::get($importer))
-                ->map(fn (ReflectionClass $importer): ImportVCardResource => $importer->newInstance()->setContext($this));
+                ->map(fn (ReflectionClass $importer): ImportVCardResource => $importer->newInstance());
         }
 
-        return $this->importers;
+        return static::$importers
+            ->map(fn (ImportVCardResource $importer): ImportVCardResource => $importer->setContext($this));
     }
 
     /**
      * Get importers.
      *
-     * @return \Generator<ReflectionClass>
+     * @return \Generator<array-key,ReflectionClass<ImportVCardResource>>
      */
     private function listImporters()
     {

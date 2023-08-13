@@ -48,7 +48,6 @@ class ImportGroup extends Importer implements ImportVCardResource
         $data = $this->importMembers($data, $vcard);
 
         if ($group !== null) {
-            $data['listed'] = true;
             $group = app(CreateGroup::class)->execute($data);
         } elseif ($data !== $original) {
             $group = app(UpdateGroup::class)->execute($data);
@@ -186,8 +185,9 @@ class ImportGroup extends Importer implements ImportVCardResource
             return $data;
         }
 
-        $data['members'] = collect($members)->map(fn ($member) => ['distant_uuid' => $this->formatValue((string) $member)]
-        )->toArray();
+        $data['members'] = collect($members)
+            ->map(fn ($member) => ['distant_uuid' => $this->formatValue((string) $member)])
+            ->toArray();
 
         return $data;
     }

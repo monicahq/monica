@@ -21,6 +21,9 @@ use Symfony\Component\Finder\Finder;
 
 class ExportVCard extends BaseService implements ServiceInterface
 {
+    /** @var Collection<array-key,ExportVCardResource> */
+    private static ?Collection $exporters = null;
+
     /**
      * Get the validation rules that apply to the service.
      */
@@ -106,11 +109,8 @@ class ExportVCard extends BaseService implements ServiceInterface
             ]);
         }
 
-        /** @var Collection<int, ExportVCardResource> */
-        $exporters = collect($this->exporters())
-            ->sortBy(fn (ReflectionClass $exporter) => Order::get($exporter))
-            ->map(fn (ReflectionClass $exporter): ExportVCardResource => $exporter->newInstance())
-            ->filter(fn (ExportVCardResource $exporter) => $exporter->getType() === $resource::class);
+        /** @var Collection<array-key,ExportVCardResource> */
+        $exporters = $this->exporters($resource::class);
 
         foreach ($exporters as $exporter) {
             $exporter->export($resource, $vcard);
@@ -137,11 +137,29 @@ class ExportVCard extends BaseService implements ServiceInterface
     }
 
     /**
+     * Get exporter instances.
+     *
+     * @param  class-string  $resourceClass
+     * @return Collection<array-key,ExportVCardResource>
+     */
+    private function exporters(string $resourceClass)
+    {
+        if (static::$exporters === null) {
+            static::$exporters = collect($this->listExporters())
+                ->sortBy(fn (ReflectionClass $exporter) => Order::get($exporter))
+                ->map(fn (ReflectionClass $exporter): ExportVCardResource => $exporter->newInstance());
+        }
+
+        return static::$exporters
+            ->filter(fn (ExportVCardResource $exporter): bool => $exporter->getType() === $resourceClass);
+    }
+
+    /**
      * Get exporters.
      *
-     * @return \Generator<ReflectionClass>
+     * @return \Generator<array-key,ReflectionClass<ExportVCardResource>>
      */
-    private function exporters()
+    private function listExporters()
     {
         $namespace = $this->app->getNamespace();
         $appPath = app_path();

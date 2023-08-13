@@ -21,13 +21,6 @@ use Sabre\VObject\Component\VCard;
 class ImportContact extends Importer implements ImportVCardResource
 {
     /**
-     * The genders that will be associated with imported contacts.
-     *
-     * @var array<Gender>
-     */
-    protected array $genders = [];
-
-    /**
      * Can import Contact.
      */
     public function can(VCard $vcard): bool
@@ -51,18 +44,18 @@ class ImportContact extends Importer implements ImportVCardResource
     {
         $contact = $this->getExistingContact($vcard);
 
-        $contactData = $this->getContactData($contact);
-        $original = $contactData;
+        $data = $this->getContactData($contact);
+        $original = $data;
 
-        $contactData = $this->importUid($contactData, $vcard);
-        $contactData = $this->importNames($contactData, $vcard);
-        $contactData = $this->importGender($contactData, $vcard);
+        $data = $this->importUid($data, $vcard);
+        $data = $this->importNames($data, $vcard);
+        $data = $this->importGender($data, $vcard);
 
         if ($contact === null) {
-            $contactData['listed'] = true;
-            $contact = app(CreateContact::class)->execute($contactData);
-        } elseif ($contactData !== $original) {
-            $contact = app(UpdateContact::class)->execute($contactData);
+            $data['listed'] = true;
+            $contact = app(CreateContact::class)->execute($data);
+        } elseif ($data !== $original) {
+            $contact = app(UpdateContact::class)->execute($data);
         }
 
         if ($this->context->external && $contact->distant_uuid === null) {
@@ -239,34 +232,31 @@ class ImportContact extends Importer implements ImportVCardResource
      */
     private function getGender(string $genderCode): Gender
     {
-        if (! Arr::has($this->genders, $genderCode)) {
-            $gender = $this->getGenderByType($genderCode);
-            if (! $gender) {
-                switch ($genderCode) {
-                    case 'M':
-                        $gender = $this->getGenderByName(trans('Male')) ?? $this->getGenderByName(config('dav.default_gender'));
-                        break;
-                    case 'F':
-                        $gender = $this->getGenderByName(trans('Female')) ?? $this->getGenderByName(config('dav.default_gender'));
-                        break;
-                    default:
-                        $gender = $this->getGenderByName(config('dav.default_gender'));
-                        break;
-                }
-            }
+        $gender = $this->getGenderByType($genderCode);
 
-            if (! $gender) {
-                $gender = Gender::create([
-                    'account_id' => $this->account()->id,
-                    'name' => config('dav.default_gender'),
-                    'type' => Gender::UNKNOWN,
-                ]);
+        if (! $gender) {
+            switch ($genderCode) {
+                case 'M':
+                    $gender = $this->getGenderByName(trans('Male')) ?? $this->getGenderByName(config('dav.default_gender'));
+                    break;
+                case 'F':
+                    $gender = $this->getGenderByName(trans('Female')) ?? $this->getGenderByName(config('dav.default_gender'));
+                    break;
+                default:
+                    $gender = $this->getGenderByName(config('dav.default_gender'));
+                    break;
             }
-
-            Arr::set($this->genders, $genderCode, $gender);
         }
 
-        return Arr::get($this->genders, $genderCode);
+        if (! $gender) {
+            $gender = Gender::create([
+                'account_id' => $this->account()->id,
+                'name' => config('dav.default_gender'),
+                'type' => Gender::UNKNOWN,
+            ]);
+        }
+
+        return $gender;
     }
 
     /**
