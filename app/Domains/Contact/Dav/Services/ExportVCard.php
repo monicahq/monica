@@ -9,19 +9,16 @@ use App\Interfaces\ServiceInterface;
 use App\Models\Contact;
 use App\Models\Group;
 use App\Services\BaseService;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use ReflectionClass;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\ParseException;
 use Sabre\VObject\Reader;
-use Symfony\Component\Finder\Finder;
 
 class ExportVCard extends BaseService implements ServiceInterface
 {
-    /** @var Collection<array-key,ExportVCardResource> */
+    /** @var Collection<array-key,ExportVCardResource>|null */
     private static ?Collection $exporters = null;
 
     /**
@@ -50,11 +47,6 @@ class ExportVCard extends BaseService implements ServiceInterface
             'contact_must_belong_to_vault',
             'group_must_belong_to_vault',
         ];
-    }
-
-    public function __construct(
-        private Application $app
-    ) {
     }
 
     /**
@@ -109,7 +101,6 @@ class ExportVCard extends BaseService implements ServiceInterface
             ]);
         }
 
-        /** @var Collection<array-key,ExportVCardResource> */
         $exporters = $this->exporters($resource::class);
 
         foreach ($exporters as $exporter) {
@@ -142,39 +133,15 @@ class ExportVCard extends BaseService implements ServiceInterface
      * @param  class-string  $resourceClass
      * @return Collection<array-key,ExportVCardResource>
      */
-    private function exporters(string $resourceClass)
+    private function exporters(string $resourceClass): Collection
     {
         if (self::$exporters === null) {
-            self::$exporters = collect($this->listExporters())
+            self::$exporters = collect(subclasses(ExportVCardResource::class))
                 ->sortBy(fn (ReflectionClass $exporter) => Order::get($exporter))
                 ->map(fn (ReflectionClass $exporter): ExportVCardResource => $exporter->newInstance());
         }
 
         return self::$exporters
             ->filter(fn (ExportVCardResource $exporter): bool => $exporter->getType() === $resourceClass);
-    }
-
-    /**
-     * Get exporters.
-     *
-     * @return \Generator<array-key,ReflectionClass<ExportVCardResource>>
-     */
-    private function listExporters()
-    {
-        $namespace = $this->app->getNamespace();
-        $appPath = app_path();
-
-        foreach ((new Finder)->files()->in($appPath)->name('*.php')->notName('helpers.php') as $file) {
-            $file = $namespace.str_replace(
-                ['/', '.php'],
-                ['\\', ''],
-                Str::after($file->getRealPath(), realpath($appPath).DIRECTORY_SEPARATOR)
-            );
-
-            $class = new ReflectionClass($file);
-            if ($class->isSubclassOf(ExportVCardResource::class) && ! $class->isAbstract()) {
-                yield $class;
-            }
-        }
     }
 }

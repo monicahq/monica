@@ -9,16 +9,13 @@ use App\Interfaces\ServiceInterface;
 use App\Services\BaseService;
 use App\Traits\DAVFormat;
 use Closure;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use ReflectionClass;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\ParseException;
 use Sabre\VObject\Reader;
-use Symfony\Component\Finder\Finder;
 
 class ImportVCard extends BaseService implements ServiceInterface
 {
@@ -106,11 +103,6 @@ class ImportVCard extends BaseService implements ServiceInterface
             'author_must_be_in_vault',
             'author_must_be_vault_editor',
         ];
-    }
-
-    public function __construct(
-        private Application $app
-    ) {
     }
 
     /**
@@ -257,36 +249,12 @@ class ImportVCard extends BaseService implements ServiceInterface
     private function importers(): Collection
     {
         if (self::$importers === null) {
-            self::$importers = collect($this->listImporters())
+            self::$importers = collect(subclasses(ImportVCardResource::class))
                 ->sortBy(fn (ReflectionClass $importer): int => Order::get($importer))
                 ->map(fn (ReflectionClass $importer): ImportVCardResource => $importer->newInstance());
         }
 
         return self::$importers
             ->map(fn (ImportVCardResource $importer): ImportVCardResource => $importer->setContext($this));
-    }
-
-    /**
-     * Get importers.
-     *
-     * @return \Generator<array-key,ReflectionClass<ImportVCardResource>>
-     */
-    private function listImporters()
-    {
-        $namespace = $this->app->getNamespace();
-        $appPath = app_path();
-
-        foreach ((new Finder)->files()->in($appPath)->name('*.php')->notName('helpers.php') as $file) {
-            $file = $namespace.str_replace(
-                ['/', '.php'],
-                ['\\', ''],
-                Str::after($file->getRealPath(), realpath($appPath).DIRECTORY_SEPARATOR)
-            );
-
-            $class = new ReflectionClass($file);
-            if ($class->isSubclassOf(ImportVCardResource::class) && ! $class->isAbstract()) {
-                yield $class;
-            }
-        }
     }
 }
