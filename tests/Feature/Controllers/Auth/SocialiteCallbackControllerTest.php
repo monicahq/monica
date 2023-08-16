@@ -99,7 +99,7 @@ class SocialiteCallbackControllerTest extends TestCase
         $this->assertDatabaseHas('users', [
             'email' => 'customer@legit.com',
         ]);
-        $user = User::where('email', 'customer@legit.com')->first();
+        $user = User::firstWhere('email', 'customer@legit.com');
         $this->assertDatabaseHas('user_tokens', [
             'driver_id' => 12345,
             'driver' => 'test',

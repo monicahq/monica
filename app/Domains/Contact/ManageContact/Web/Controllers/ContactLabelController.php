@@ -18,7 +18,7 @@ class ContactLabelController extends Controller
     {
         $vault = Vault::findOrFail($vaultId);
 
-        $contacts = Label::where('id', $labelId)->first()
+        $contacts = Label::find($labelId)
             ->contacts()
             ->where('vault_id', $request->route()->parameter('vault'))
             ->where('listed', true)
