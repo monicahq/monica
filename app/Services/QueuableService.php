@@ -29,7 +29,7 @@ abstract class QueuableService extends BaseService implements ShouldQueue
         public ?array $data = null
     ) {
         if ($data !== null) {
-            $this->validateRules($data ?? []);
+            $this->validateRules($data);
         }
     }
 
