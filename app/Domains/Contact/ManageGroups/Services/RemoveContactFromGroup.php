@@ -10,8 +10,6 @@ use Carbon\Carbon;
 
 class RemoveContactFromGroup extends BaseService implements ServiceInterface
 {
-    private Group $group;
-
     private array $data;
 
     /**
