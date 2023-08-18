@@ -141,20 +141,16 @@ class Vault extends Model
 
     /**
      * Get the groups associated with the vault.
-     *
-     * @return HasMany
      */
-    public function groups()
+    public function groups(): HasMany
     {
         return $this->hasMany(Group::class);
     }
 
     /**
      * Get the journals associated with the vault.
-     *
-     * @return HasMany
      */
-    public function journals()
+    public function journals(): HasMany
     {
         return $this->hasMany(Journal::class);
     }

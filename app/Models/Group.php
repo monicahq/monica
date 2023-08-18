@@ -2,20 +2,25 @@
 
 namespace App\Models;
 
+use App\Domains\Contact\Dav\VCardResource;
 use App\Helpers\ScoutHelper;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Attributes\SearchUsingFullText;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 
-class Group extends Model
+class Group extends VCardResource
 {
     use HasFactory;
+    use HasUuids;
     use Searchable;
+    use SoftDeletes;
 
     protected $table = 'groups';
 
@@ -28,7 +33,22 @@ class Group extends Model
         'vault_id',
         'group_type_id',
         'name',
+        'uuid',
+        'vcard',
+        'distant_uuid',
+        'distant_etag',
+        'distant_uri',
     ];
+
+    /**
+     * Get the columns that should receive a unique identifier.
+     *
+     * @return array
+     */
+    public function uniqueIds()
+    {
+        return ['uuid'];
+    }
 
     /**
      * Get the indexable data array for the model.
@@ -87,5 +107,25 @@ class Group extends Model
     public function feedItem(): MorphOne
     {
         return $this->morphOne(ContactFeedItem::class, 'feedable');
+    }
+
+    /**
+     * Get the uuid of the group.
+     *
+     * @return Attribute<string,never>
+     */
+    protected function uuid(): Attribute
+    {
+        return Attribute::make(
+            get: function (?string $value, array $attributes) {
+                if (! isset($attributes['uuid'])) {
+                    return tap($this->newUniqueId(), function ($uuid) {
+                        $this->forceFill(['uuid' => $uuid]);
+                    });
+                }
+
+                return $attributes['uuid'];
+            }
+        );
     }
 }

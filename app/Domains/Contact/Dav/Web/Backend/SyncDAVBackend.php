@@ -2,9 +2,11 @@
 
 namespace App\Domains\Contact\Dav\Web\Backend;
 
+use App\Domains\Contact\Dav\VCardResource;
 use App\Models\SyncToken;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 trait SyncDAVBackend
 {
@@ -42,7 +44,7 @@ trait SyncDAVBackend
     /**
      * Get SyncToken by token id.
      */
-    protected function getSyncToken(?string $collectionId, string $syncToken): ?SyncToken
+    protected function getSyncToken(?string $collectionId, int $syncTokenId): ?SyncToken
     {
         /** @var SyncToken|null */
         return SyncToken::where([
@@ -50,7 +52,7 @@ trait SyncDAVBackend
             'user_id' => $this->user->id,
             'name' => "{$this->backendUri()}-$collectionId",
         ])
-            ->find($syncToken);
+            ->find($syncTokenId);
     }
 
     /**
@@ -72,7 +74,7 @@ trait SyncDAVBackend
     public function getLastModified(?string $collectionId): ?Carbon
     {
         return $this->getObjects($collectionId)
-            ->map(fn ($object) => $object->updated_at)
+            ->map(fn (VCardResource $object) => $object->updated_at)
             ->max();
     }
 
@@ -131,7 +133,7 @@ trait SyncDAVBackend
         $token = null;
         $timestamp = null;
         if ($syncToken !== null && $syncToken !== '') {
-            $token = $this->getSyncToken($collectionId, $syncToken);
+            $token = $this->getSyncToken($collectionId, (int) $syncToken);
 
             if ($token === null) {
                 // syncToken is not recognized
@@ -156,7 +158,7 @@ trait SyncDAVBackend
      */
     private function getAdded(Collection $objs, ?Carbon $timestamp): array
     {
-        return $objs->filter(fn ($obj): bool => $timestamp === null ||
+        return $objs->filter(fn (VCardResource $obj): bool => $timestamp === null ||
             $obj->created_at >= $timestamp
         )
             ->map(fn ($obj): string => $this->encodeUri($obj))
@@ -169,11 +171,11 @@ trait SyncDAVBackend
      */
     private function getModified(Collection $objs, ?Carbon $timestamp): array
     {
-        return $objs->filter(fn ($obj): bool => $timestamp !== null &&
+        return $objs->filter(fn (VCardResource $obj): bool => $timestamp !== null &&
             $obj->updated_at > $timestamp &&
             $obj->created_at < $timestamp
         )
-            ->map(function ($obj): string {
+            ->map(function (VCardResource $obj): string {
                 $this->refreshObject($obj);
 
                 return $this->encodeUri($obj);
@@ -188,17 +190,28 @@ trait SyncDAVBackend
     private function getDeleted(string $collectionId, ?Carbon $timestamp): array
     {
         return $this->getDeletedObjects($collectionId)
-            ->filter(fn ($obj): bool => $timestamp === null ||
+            ->filter(fn (VCardResource $obj): bool => $timestamp === null ||
                 $obj->deleted_at >= $timestamp
             )
-            ->map(fn ($obj): string => $this->encodeUri($obj))
+            ->map(fn (VCardResource $obj): string => $this->encodeUri($obj))
             ->values()
             ->toArray();
     }
 
-    protected function encodeUri($obj): string
+    protected function encodeUri(VCardResource $obj): string
     {
-        return urlencode($obj->id.$this->getExtension());
+        $id = null;
+        if (isset($obj->distant_uuid)) {
+            $id = Str::of($obj->distant_uuid)->after('urn:uuid:');
+        }
+        if ($id === null && isset($obj->uuid)) {
+            $id = $obj->uuid;
+        }
+        if ($id === null) {
+            $id = $obj->id;
+        }
+
+        return urlencode($id.$this->getExtension());
     }
 
     private function decodeUri(string $uri): string
@@ -230,27 +243,30 @@ trait SyncDAVBackend
 
     /**
      * Returns the object for the specific uuid.
-     *
-     * @return mixed
      */
-    abstract public function getObjectUuid(?string $collectionId, string $uuid);
+    abstract public function getObjectUuid(?string $collectionId, string $uuid): mixed;
 
     /**
      * Returns the collection of objects.
+     *
+     * @return \Illuminate\Support\Collection<array-key,VCardResource>
      */
     abstract public function getObjects(?string $collectionId): Collection;
 
     /**
      * Returns the collection of objects.
+     *
+     * @return \Illuminate\Support\Collection<array-key,VCardResource>
      */
     abstract public function getDeletedObjects(?string $collectionId): Collection;
 
-    abstract public function getExtension();
+    /**
+     * Extension for Calendar objects.
+     */
+    abstract public function getExtension(): string;
 
     /**
      * Get the new exported version of the object.
-     *
-     * @param  mixed  $obj
      */
-    abstract protected function refreshObject($obj): string;
+    abstract protected function refreshObject(VCardResource $obj): string;
 }

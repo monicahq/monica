@@ -132,73 +132,6 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     }
 
     /** @test */
-    public function it_returns_an_unknown_name_if_no_name_is_in_entry()
-    {
-        $importVCard = new ImportVCard($this->app);
-
-        $vcard = new VCard([
-            'EMAIL' => 'john@',
-        ]);
-
-        $this->assertEquals(
-            'john@',
-            $this->invokePrivateMethod($importVCard, 'name', [$vcard])
-        );
-    }
-
-    /** @test */
-    public function it_returns_a_name_for_N()
-    {
-        $importVCard = new ImportVCard($this->app);
-
-        $vcard = new VCard([
-            'N' => ['John', 'Doe', '', '', ''],
-            'EMAIL' => 'john@doe.com',
-        ]);
-
-        $this->assertEquals('John Doe', $this->invokePrivateMethod($importVCard, 'name', [$vcard]));
-    }
-
-    /** @test */
-    public function it_returns_a_name_for_N_incomplete()
-    {
-        $importVCard = new ImportVCard($this->app);
-
-        $vcard = new VCard([
-            'N' => ['John', 'Doe'],
-            'EMAIL' => 'john@doe.com',
-        ]);
-
-        $this->assertEquals('John Doe', $this->invokePrivateMethod($importVCard, 'name', [$vcard]));
-    }
-
-    /** @test */
-    public function it_returns_a_name_for_NICKNAME()
-    {
-        $importVCard = new ImportVCard($this->app);
-
-        $vcard = new VCard([
-            'NICKNAME' => 'John',
-            'EMAIL' => 'john@doe.com',
-        ]);
-
-        $this->assertEquals('john@doe.com', $this->invokePrivateMethod($importVCard, 'name', [$vcard]));
-    }
-
-    /** @test */
-    public function it_returns_a_name_for_FN()
-    {
-        $importVCard = new ImportVCard($this->app);
-
-        $vcard = new VCard([
-            'FN' => 'John Doe',
-            'EMAIL' => 'john@doe.com',
-        ]);
-
-        $this->assertEquals('John Doe', $this->invokePrivateMethod($importVCard, 'name', [$vcard]));
-    }
-
-    /** @test */
     public function it_formats_value()
     {
         $importVCard = new ImportVCard($this->app);
@@ -219,16 +152,15 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
         $author = User::factory()->create();
         $vault = $this->createVaultUser($author, Vault::PERMISSION_EDIT);
         $importVCard = new ImportVCard($this->app);
-        $importVCard->accountId = $author->account_id;
-        $this->setPrivateValue($importVCard, 'author', $author);
-        $this->setPrivateValue($importVCard, 'vault', $vault);
+        $importVCard->author = $author;
+        $importVCard->vault = $vault;
 
         $vcard = new VCard([
             'N' => ['John', 'Doe', '', '', ''],
             'EMAIL' => 'john@doe.com',
         ]);
 
-        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [null, $vcard, $vcard->serialize(), null]);
+        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [$vcard]);
 
         $this->assertTrue($contact->exists);
     }
@@ -239,16 +171,15 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
         $author = User::factory()->create();
         $vault = $this->createVaultUser($author, Vault::PERMISSION_EDIT);
         $importVCard = new ImportVCard($this->app);
-        $importVCard->accountId = $author->account_id;
-        $this->setPrivateValue($importVCard, 'author', $author);
-        $this->setPrivateValue($importVCard, 'vault', $vault);
+        $importVCard->author = $author;
+        $importVCard->vault = $vault;
 
         $vcard = new VCard([
             'FN' => 'John Doe',
             'UID' => '31fdc242-c974-436e-98de-6b21624d6e34',
         ]);
 
-        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [null, $vcard, $vcard->serialize(), null]);
+        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [$vcard]);
 
         $this->assertDatabaseHas('contacts', [
             'id' => '31fdc242-c974-436e-98de-6b21624d6e34',

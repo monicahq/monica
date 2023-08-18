@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Domains\Contact\Dav\VCardResource;
 use App\Helpers\AvatarHelper;
 use App\Helpers\ContactImportantDateHelper;
 use App\Helpers\ImportantDateHelper;
@@ -11,20 +12,20 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Scout\Attributes\SearchUsingFullText;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 
-class Contact extends Model
+class Contact extends VCardResource
 {
-    use HasFactory, SoftDeletes, HasUuids;
+    use HasFactory, HasUuids;
     use Searchable;
     use SoftDeletes;
 
@@ -59,7 +60,9 @@ class Contact extends Model
         'file_id',
         'religion_id',
         'vcard',
+        'distant_uuid',
         'distant_etag',
+        'distant_uri',
         'prefix',
         'suffix',
     ];
@@ -386,7 +389,11 @@ class Contact extends Model
                     return NameHelper::formatContactName(Auth::user(), $this);
                 }
 
-                return $attributes['first_name'].' '.$attributes['last_name'];
+                $firstName = Arr::get($attributes, 'first_name');
+                $lastName = Arr::get($attributes, 'last_name');
+                $separator = $firstName && $lastName ? ' ' : '';
+
+                return $firstName.$separator.$lastName;
             }
         );
     }
@@ -409,8 +416,7 @@ class Contact extends Model
                 }
 
                 $birthdate = $this->importantDates
-                    ->where('contact_important_date_type_id', $type->id)
-                    ->first();
+                    ->firstWhere('contact_important_date_type_id', $type->id);
 
                 if (! $birthdate) {
                     return null;
