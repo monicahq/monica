@@ -37,13 +37,11 @@ class DAVServiceProvider extends ServiceProvider
      */
     private function nodes(): array
     {
-        $params = [
-            'user' => Auth::user(),
-        ];
+        $user = Auth::user();
 
         // Initiate custom backends for link between Sabre and Monica
-        $principalBackend = app(PrincipalBackend::class, $params);
-        $carddavBackend = app(CardDAVBackend::class, $params);
+        $principalBackend = app(PrincipalBackend::class, ['user' => $user]);
+        $carddavBackend = app(CardDAVBackend::class)->withUser($user);
 
         return [
             new PrincipalCollection($principalBackend),
