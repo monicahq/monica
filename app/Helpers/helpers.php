@@ -74,7 +74,7 @@ if (! function_exists('subclasses')) {
     /**
      * Get all subclass of the given class name.
      *
-     * @template T of mixed
+     * @template T of object
      *
      * @param  class-string<T>  $className
      * @return \Generator<array-key,ReflectionClass<T>>

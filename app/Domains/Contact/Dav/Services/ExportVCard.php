@@ -59,7 +59,12 @@ class ExportVCard extends BaseService implements ServiceInterface
         if (isset($data['contact_id'])) {
             $obj = $this->contact;
         } elseif (isset($data['group_id'])) {
-            $obj = $this->group;
+            $obj = $this->vault->groups()
+                ->findOrFail($data['group_id']);
+
+            if ($obj->vault_id !== $this->vault->id) {
+                throw new ModelNotFoundException();
+            }
         } else {
             throw new ModelNotFoundException();
         }
