@@ -130,6 +130,27 @@ const destroyAvatar = () => {
       form.errors = error.response.data;
     });
 };
+
+const download = () => {
+  router.post(props.data.url.download_vcard, null, {
+    preserveScroll: true,
+    onSuccess: (response) => {
+      const filename = response.props.jetstream.flash.filename;
+      if (filename !== undefined) {
+        const url = window.URL.createObjectURL(new Blob([response.props.jetstream.flash.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+        try {
+          document.body.appendChild(link);
+          link.click();
+        } catch (e) {
+          document.body.removeChild(link);
+        }
+      }
+    },
+  });
+};
 </script>
 
 <template>
@@ -240,6 +261,12 @@ const destroyAvatar = () => {
               <li class="mb-2">
                 <Link :href="data.url.move_contact" class="cursor-pointer text-blue-500 hover:underline">
                   {{ $t('Move contact') }}
+                </Link>
+              </li>
+              <!-- download as vcard -->
+              <li class="mb-2">
+                <Link @click.prevent="download()" class="cursor-pointer text-blue-500 hover:underline">
+                  {{ $t('Download as vCard') }}
                 </Link>
               </li>
               <!-- delete contact -->
