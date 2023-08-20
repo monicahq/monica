@@ -13,7 +13,7 @@ return new class extends Migration
     {
         if (Schema::hasTable('synctokens')) {
             Schema::table('synctokens', function (Blueprint $table) {
-                $table->id()->change();
+                $table->unsignedBigInteger('id')->change();
             });
             Schema::rename('synctokens', 'sync_tokens');
         }
@@ -26,7 +26,7 @@ return new class extends Migration
     {
         if (Schema::hasTable('sync_tokens')) {
             Schema::table('sync_tokens', function (Blueprint $table) {
-                $table->increments('id')->change();
+                $table->unsignedInteger('id')->change();
             });
             Schema::rename('sync_tokens', 'synctokens');
         }
