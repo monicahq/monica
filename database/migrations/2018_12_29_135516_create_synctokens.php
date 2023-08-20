@@ -15,8 +15,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('synctokens', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('sync_tokens', function (Blueprint $table) {
+            $table->id();
             $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string('name')->default('contacts');
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('synctokens');
+        Schema::dropIfExists('sync_tokens');
     }
 };

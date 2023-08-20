@@ -20,7 +20,7 @@ class CleanSyncToken extends QueuableService implements ServiceInterface
     {
         $this->timefix = now()->addDays(-7);
 
-        DB::table('synctokens')
+        DB::table('sync_tokens')
             ->orderBy('user_id')
             ->groupBy('user_id', 'name')
             ->select(DB::raw('user_id, name, max(timestamp) as timestamp'))
