@@ -3,9 +3,9 @@
 namespace App\Domains\Contact\ManageGroups\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Services\BaseService;
+use App\Services\QueuableService;
 
-class DestroyGroup extends BaseService implements ServiceInterface
+class DestroyGroup extends QueuableService implements ServiceInterface
 {
     /**
      * Get the validation rules that apply to the service.
@@ -29,6 +29,7 @@ class DestroyGroup extends BaseService implements ServiceInterface
             'author_must_belong_to_account',
             'vault_must_belong_to_account',
             'author_must_be_vault_editor',
+            'group_must_belong_to_vault',
         ];
     }
 
@@ -39,9 +40,6 @@ class DestroyGroup extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $group = $this->vault->groups()
-            ->findOrFail($data['group_id']);
-
-        $group->delete();
+        $this->group->delete();
     }
 }

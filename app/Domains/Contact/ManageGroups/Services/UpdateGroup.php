@@ -8,8 +8,6 @@ use App\Services\BaseService;
 
 class UpdateGroup extends BaseService implements ServiceInterface
 {
-    private Group $group;
-
     private array $data;
 
     /**
@@ -36,6 +34,7 @@ class UpdateGroup extends BaseService implements ServiceInterface
             'author_must_belong_to_account',
             'vault_must_belong_to_account',
             'author_must_be_vault_editor',
+            'group_must_belong_to_vault',
         ];
     }
 

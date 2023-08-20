@@ -4,16 +4,11 @@ namespace App\Domains\Contact\ManageGroups\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactFeedItem;
-use App\Models\Group;
-use App\Services\BaseService;
+use App\Services\QueuableService;
 use Carbon\Carbon;
 
-class RemoveContactFromGroup extends BaseService implements ServiceInterface
+class RemoveContactFromGroup extends QueuableService implements ServiceInterface
 {
-    private Group $group;
-
-    private array $data;
-
     /**
      * Get the validation rules that apply to the service.
      */
@@ -38,33 +33,24 @@ class RemoveContactFromGroup extends BaseService implements ServiceInterface
             'vault_must_belong_to_account',
             'author_must_be_vault_editor',
             'contact_must_belong_to_vault',
+            'group_must_belong_to_vault',
         ];
     }
 
     /**
      * Remove a contact from a group.
      */
-    public function execute(array $data): Group
+    public function execute(array $data): void
     {
-        $this->data = $data;
-        $this->validate();
+        $this->validateRules($data);
 
         $this->group->contacts()->detach([
             $this->contact->id,
         ]);
+        $this->group->touch();
 
         $this->updateLastEditedDate();
         $this->createFeedItem();
-
-        return $this->group;
-    }
-
-    private function validate(): void
-    {
-        $this->validateRules($this->data);
-
-        $this->group = $this->vault->groups()
-            ->findOrFail($this->data['group_id']);
     }
 
     private function updateLastEditedDate(): void

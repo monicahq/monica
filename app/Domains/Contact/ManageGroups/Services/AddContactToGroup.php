@@ -4,17 +4,12 @@ namespace App\Domains\Contact\ManageGroups\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactFeedItem;
-use App\Models\Group;
 use App\Models\GroupTypeRole;
-use App\Services\BaseService;
+use App\Services\QueuableService;
 use Carbon\Carbon;
 
-class AddContactToGroup extends BaseService implements ServiceInterface
+class AddContactToGroup extends QueuableService implements ServiceInterface
 {
-    private Group $group;
-
-    private array $data;
-
     /**
      * Get the validation rules that apply to the service.
      */
@@ -40,13 +35,14 @@ class AddContactToGroup extends BaseService implements ServiceInterface
             'vault_must_belong_to_account',
             'author_must_be_vault_editor',
             'contact_must_belong_to_vault',
+            'group_must_belong_to_vault',
         ];
     }
 
     /**
      * Add a contact to a group.
      */
-    public function execute(array $data): Group
+    public function execute(array $data): void
     {
         $this->data = $data;
         $this->validate();
@@ -61,18 +57,15 @@ class AddContactToGroup extends BaseService implements ServiceInterface
             ]);
         }
 
-        $this->createFeedItem();
-        $this->updateLastEditedDate();
+        $this->group->touch();
 
-        return $this->group;
+        $this->updateLastEditedDate();
+        $this->createFeedItem();
     }
 
     private function validate(): void
     {
         $this->validateRules($this->data);
-
-        $this->group = $this->vault->groups()
-            ->findOrFail($this->data['group_id']);
 
         if ($this->data['group_type_role_id'] != 0) {
             $role = GroupTypeRole::findOrFail($this->data['group_type_role_id']);
