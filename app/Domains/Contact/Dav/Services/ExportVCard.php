@@ -141,7 +141,7 @@ class ExportVCard extends BaseService implements ServiceInterface
     private function exporters(string $resourceClass): Collection
     {
         if (self::$exporters === null) {
-            self::$exporters = collect(subclasses(ExportVCardResource::class))
+            self::$exporters = collect(subClasses(ExportVCardResource::class))
                 ->sortBy(fn (ReflectionClass $exporter) => Order::get($exporter))
                 ->map(fn (ReflectionClass $exporter): ExportVCardResource => $exporter->newInstance());
         }

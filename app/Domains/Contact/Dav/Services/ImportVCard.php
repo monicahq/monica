@@ -249,7 +249,7 @@ class ImportVCard extends BaseService implements ServiceInterface
     private function importers(): Collection
     {
         if (self::$importers === null) {
-            self::$importers = collect(subclasses(ImportVCardResource::class))
+            self::$importers = collect(subClasses(ImportVCardResource::class))
                 ->sortBy(fn (ReflectionClass $importer): int => Order::get($importer))
                 ->map(fn (ReflectionClass $importer): ImportVCardResource => $importer->newInstance());
         }

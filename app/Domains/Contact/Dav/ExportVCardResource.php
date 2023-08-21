@@ -17,5 +17,5 @@ interface ExportVCardResource
     /**
      * @param  T  $resource
      */
-    public function export($resource, VCard $vcard): void;
+    public function export(mixed $resource, VCard $vcard): void;
 }

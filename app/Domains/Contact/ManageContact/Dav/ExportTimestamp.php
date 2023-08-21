@@ -21,7 +21,7 @@ class ExportTimestamp implements ExportVCardResource
     /**
      * @param  Contact  $resource
      */
-    public function export($resource, VCard $vcard): void
+    public function export(mixed $resource, VCard $vcard): void
     {
         $vcard->remove('REV');
 
