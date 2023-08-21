@@ -8,8 +8,6 @@ use App\Services\BaseService;
 
 class UpdateGroup extends BaseService implements ServiceInterface
 {
-    private Group $group;
-
     private array $data;
 
     /**
@@ -36,6 +34,7 @@ class UpdateGroup extends BaseService implements ServiceInterface
             'author_must_belong_to_account',
             'vault_must_belong_to_account',
             'author_must_be_vault_editor',
+            'group_must_belong_to_vault',
         ];
     }
 
@@ -57,9 +56,6 @@ class UpdateGroup extends BaseService implements ServiceInterface
     private function validate(): void
     {
         $this->validateRules($this->data);
-
-        $this->group = $this->vault->groups()
-            ->findOrFail($this->data['group_id']);
 
         $this->account()->groupTypes()
             ->findOrFail($this->data['group_type_id']);
