@@ -8,20 +8,31 @@ use App\Models\Contact;
 use App\Models\Gender;
 use Sabre\VObject\Component\VCard;
 
+/**
+ * @implements ExportVCardResource<Contact>
+ */
 #[Order(10)]
 class ExportGender implements ExportVCardResource
 {
-    public function export(Contact $contact, VCard $vcard): void
+    public function getType(): string
+    {
+        return Contact::class;
+    }
+
+    /**
+     * @param  Contact  $resource
+     */
+    public function export(mixed $resource, VCard $vcard): void
     {
         $vcard->remove('GENDER');
 
-        if (is_null($contact->gender)) {
+        if (is_null($resource->gender)) {
             return;
         }
 
-        $gender = $contact->gender->type;
+        $gender = $resource->gender->type;
         if (empty($gender)) {
-            switch ($contact->gender->name) {
+            switch ($resource->gender->name) {
                 case trans('Male'):
                     $gender = Gender::MALE;
                     break;

@@ -4,17 +4,12 @@ namespace Tests\Feature\Controllers\Auth;
 
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class LoginControllerTest extends TestCase
 {
-    /** @test */
-    public function it_get_login_page(): void
-    {
-        $response = $this->get('/login');
-
-        $response->assertOk();
-    }
+    use DatabaseTransactions;
 
     /** @test */
     public function it_get_login_without_webauthn(): void

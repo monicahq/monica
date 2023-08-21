@@ -12,17 +12,11 @@ class NotificationsIndexViewHelper
         $channels = $user->notificationChannels;
 
         // emails
-        $emails = $channels->filter(function ($channel) {
-            return $channel->type === 'email';
-        });
-        $emailsCollection = $emails->map(function ($channel) {
-            return self::dtoEmail($channel);
-        });
+        $emails = $channels->filter(fn ($channel) => $channel->type === 'email');
+        $emailsCollection = $emails->map(fn ($channel) => self::dtoEmail($channel));
 
         // telegram
-        $telegram = $channels->filter(function ($channel) {
-            return $channel->type === 'telegram';
-        })->first();
+        $telegram = $channels->filter(fn ($channel) => $channel->type === 'telegram')->first();
 
         return [
             'emails' => $emailsCollection,

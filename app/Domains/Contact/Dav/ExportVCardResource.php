@@ -2,10 +2,20 @@
 
 namespace App\Domains\Contact\Dav;
 
-use App\Models\Contact;
 use Sabre\VObject\Component\VCard;
 
+/**
+ * @template T of \App\Domains\Contact\Dav\VCardResource
+ */
 interface ExportVCardResource
 {
-    public function export(Contact $contact, VCard $vcard): void;
+    /**
+     * @return class-string<T>
+     */
+    public function getType(): string;
+
+    /**
+     * @param  T  $resource
+     */
+    public function export(mixed $resource, VCard $vcard): void;
 }

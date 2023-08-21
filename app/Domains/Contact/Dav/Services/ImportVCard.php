@@ -4,21 +4,18 @@ namespace App\Domains\Contact\Dav\Services;
 
 use App\Domains\Contact\Dav\ImportVCardResource;
 use App\Domains\Contact\Dav\Order;
+use App\Domains\Contact\Dav\VCardResource;
 use App\Interfaces\ServiceInterface;
-use App\Models\Contact;
 use App\Services\BaseService;
 use App\Traits\DAVFormat;
 use Closure;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
-use Ramsey\Uuid\Uuid;
 use ReflectionClass;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\ParseException;
 use Sabre\VObject\Reader;
-use Symfony\Component\Finder\Finder;
 
 class ImportVCard extends BaseService implements ServiceInterface
 {
@@ -30,10 +27,24 @@ class ImportVCard extends BaseService implements ServiceInterface
     /** @var string */
     public const BEHAVIOUR_REPLACE = 'behaviour_replace';
 
-    protected array $errorResults = [
-        'ERROR_PARSER' => 'import_vcard_parse_error',
-        'ERROR_CONTACT_EXIST' => 'import_vcard_contact_exist',
-        'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME' => 'import_vcard_contact_no_firstname',
+    /** @var string */
+    protected const ERROR_PARSER = 'ERROR_PARSER';
+
+    /** @var string */
+    protected const ERROR_CONTACT_EXIST = 'ERROR_CONTACT_EXIST';
+
+    /** @var string */
+    protected const ERROR_CARD_NOT_IMPORTABLE = 'ERROR_CARD_NOT_IMPORTABLE';
+
+    /**
+     * Error results.
+     *
+     * @var array<string,string>
+     */
+    protected static array $errorResults = [
+        self::ERROR_PARSER => 'import_vcard_parse_error',
+        self::ERROR_CONTACT_EXIST => 'import_vcard_contact_exist',
+        self::ERROR_CARD_NOT_IMPORTABLE => 'import_vcard_not_importable',
     ];
 
     /**
@@ -46,10 +57,12 @@ class ImportVCard extends BaseService implements ServiceInterface
         self::BEHAVIOUR_REPLACE,
     ];
 
-    /**
-     * The Account id.
-     */
-    public ?string $accountId = null;
+    public bool $external = false;
+
+    public ?array $data = null;
+
+    /** @var Collection<array-key,ImportVCardResource> */
+    private static ?Collection $importers = null;
 
     /**
      * Get the validation rules that apply to the service.
@@ -74,6 +87,8 @@ class ImportVCard extends BaseService implements ServiceInterface
                 Rule::in(self::$behaviourTypes),
             ],
             'etag' => 'nullable|string',
+            'uri' => 'nullable|string',
+            'external' => 'nullable|boolean',
         ];
     }
 
@@ -90,33 +105,18 @@ class ImportVCard extends BaseService implements ServiceInterface
         ];
     }
 
-    public function __construct(
-        private Application $app
-    ) {
-    }
-
     /**
      * Import one VCard.
      */
     public function execute(array $data): array
     {
+        $this->data = $data;
+
         $this->validateRules($data);
 
-        if (Arr::get($data, 'contact_id') !== null) {
-            $this->validateContactBelongsToVault($data);
+        $this->external = Arr::get($data, 'external', false);
 
-            return $this->process($data, $this->contact);
-        } else {
-            return $this->process($data, null);
-        }
-    }
-
-    /**
-     * Clear data.
-     */
-    private function clear(): void
-    {
-        $this->accountId = null;
+        return $this->process($data);
     }
 
     /**
@@ -124,13 +124,8 @@ class ImportVCard extends BaseService implements ServiceInterface
      *
      * @return array<string,mixed>
      */
-    private function process(array $data, ?Contact $contact): array
+    private function process(array $data): array
     {
-        if ($this->accountId !== $data['account_id']) {
-            $this->clear();
-            $this->accountId = $data['account_id'];
-        }
-
         /**
          * @var VCard|null $entry
          * @var string $vcard
@@ -139,13 +134,12 @@ class ImportVCard extends BaseService implements ServiceInterface
 
         if ($entry === null) {
             return [
-                'error' => 'ERROR_PARSER',
-                'reason' => $this->errorResults['ERROR_PARSER'],
-                'name' => '(unknow)',
+                'error' => self::ERROR_PARSER,
+                'reason' => static::$errorResults[self::ERROR_PARSER],
             ];
         }
 
-        return $this->processEntry($data, $contact, $entry, $vcard);
+        return $this->processEntry($entry, $vcard);
     }
 
     /**
@@ -175,21 +169,16 @@ class ImportVCard extends BaseService implements ServiceInterface
      *
      * @return array<string,mixed>
      */
-    private function processEntry(array $data, ?Contact $contact, VCard $entry, string $vcard): array
+    private function processEntry(VCard $entry, string $vcard): array
     {
         if (! $this->canImportCurrentEntry($entry)) {
             return [
-                'error' => 'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME',
-                'reason' => $this->errorResults['ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME'],
-                'name' => $this->name($entry),
+                'error' => self::ERROR_CARD_NOT_IMPORTABLE,
+                'reason' => static::$errorResults[self::ERROR_CARD_NOT_IMPORTABLE],
             ];
         }
 
-        if ($contact === null) {
-            $contact = $this->getExistingContact($entry);
-        }
-
-        return $this->processEntryContact($data, $contact, $entry, $vcard);
+        return $this->processEntryContact($entry, $vcard);
     }
 
     /**
@@ -197,157 +186,75 @@ class ImportVCard extends BaseService implements ServiceInterface
      *
      * @return array<string,mixed>
      */
-    private function processEntryContact(array $data, ?Contact $contact, VCard $entry, string $vcard): array
+    private function processEntryContact(VCard $entry, string $vcard): array
     {
-        $behaviour = $data['behaviour'] ?? self::BEHAVIOUR_ADD;
-        if ($contact && $behaviour === self::BEHAVIOUR_ADD) {
+        $result = $this->importEntry($entry);
+
+        if ($result === null) {
             return [
-                'contact_id' => $contact->id,
-                'error' => 'ERROR_CONTACT_EXIST',
-                'reason' => $this->errorResults['ERROR_CONTACT_EXIST'],
-                'name' => $this->name($entry),
+                'error' => self::ERROR_CARD_NOT_IMPORTABLE,
+                'reason' => static::$errorResults[self::ERROR_CARD_NOT_IMPORTABLE],
             ];
         }
 
-        if ($contact !== null) {
-            $timestamps = $contact->timestamps;
-            $contact->timestamps = false;
-        }
+        // Save vcard content
+        $result = $result->withoutTimestamps(function () use ($result, $vcard): mixed {
+            $result->vcard = $vcard;
+            $result->save();
 
-        $contact = $this->importEntry($contact, $entry, $vcard, Arr::get($data, 'etag'));
-
-        if (isset($timestamps)) {
-            $contact->timestamps = $timestamps;
-        }
+            return $result;
+        });
 
         return [
-            'contact_id' => $contact->id,
-            'name' => $this->name($entry),
+            'id' => $result->id,
+            'entry' => $result,
         ];
     }
 
     /**
-     * Return the name of current entry.
-     * Only used for report display.
-     *
-     * @param  VCard  $entry
-     */
-    private function name($entry): string
-    {
-        if ($entry->N !== null) {
-            return trim(implode(' ', $entry->N->getParts()));
-        }
-        if ($entry->FN !== null) {
-            return (string) $entry->FN;
-        }
-        if ($entry->EMAIL !== null) {
-            return (string) $entry->EMAIL;
-        }
-        if ($entry->NICKNAME !== null) {
-            return (string) $entry->NICKNAME;
-        }
-
-        return (string) trans('Unknown contact name');
-    }
-
-    /**
-     * Check whether a contact has a first name or a nickname. If not, contact
-     * can not be imported.
+     * Check whether an importer can import this card.
      */
     private function canImportCurrentEntry(VCard $entry): bool
     {
-        return
-            $this->hasFirstnameInN($entry) ||
-            $this->hasNICKNAME($entry) ||
-            $this->hasFN($entry);
-    }
-
-    private function hasFirstnameInN(VCard $entry): bool
-    {
-        return $entry->N !== null && ! empty(Arr::get($entry->N->getParts(), '1'));
-    }
-
-    private function hasNICKNAME(VCard $entry): bool
-    {
-        return ! empty((string) $entry->NICKNAME);
-    }
-
-    private function hasFN(VCard $entry): bool
-    {
-        return ! empty((string) $entry->FN);
-    }
-
-    /**
-     * Check whether the contact already exists in the database.
-     */
-    private function getExistingContact(VCard $entry): ?Contact
-    {
-        $contact = $this->existingUuid($entry);
-
-        if ($contact) {
-            $contact->timestamps = false;
-        }
-
-        return $contact;
-    }
-
-    /**
-     * Search with uuid.
-     */
-    private function existingUuid(VCard $entry): ?Contact
-    {
-        return ! empty($uuid = (string) $entry->UID) && Uuid::isValid($uuid)
-            ? Contact::where([
-                'vault_id' => $this->vault->id,
-                'id' => $uuid,
-            ])->first()
-            : null;
-    }
-
-    /**
-     * Create the Contact object matching the current entry.
-     */
-    private function importEntry(?Contact $contact, VCard $entry, string $vcard, ?string $etag): Contact
-    {
-        /** @var \Illuminate\Support\Collection<int, ImportVCardResource> */
-        $importers = collect($this->importers())
-            ->sortBy(fn (ReflectionClass $importer): int => Order::get($importer))
-            ->map(fn (ReflectionClass $importer): ImportVCardResource => $importer->newInstance()->setContext($this));
-
-        foreach ($importers as $importer) {
-            $contact = $importer->import($contact, $entry);
-        }
-
-        // Save vcard content
-        $contact->vcard = $vcard;
-        $contact->distant_etag = $etag;
-
-        $contact->save();
-
-        return $contact;
-    }
-
-    /**
-     * Get importers.
-     *
-     * @return \Generator<ReflectionClass>
-     */
-    private function importers()
-    {
-        $namespace = $this->app->getNamespace();
-        $appPath = app_path();
-
-        foreach ((new Finder)->files()->in($appPath)->name('*.php')->notName('helpers.php') as $file) {
-            $file = $namespace.str_replace(
-                ['/', '.php'],
-                ['\\', ''],
-                Str::after($file->getRealPath(), realpath($appPath).DIRECTORY_SEPARATOR)
-            );
-
-            $class = new ReflectionClass($file);
-            if ($class->isSubclassOf(ImportVCardResource::class) && ! $class->isAbstract()) {
-                yield $class;
+        foreach ($this->importers() as $importer) {
+            if ($importer->can($entry)) {
+                return true;
             }
         }
+
+        return false;
+    }
+
+    /**
+     * Create the object matching the current entry.
+     */
+    private function importEntry(VCard $entry): ?VCardResource
+    {
+        $result = null;
+
+        foreach ($this->importers() as $importer) {
+            if ($importer->can($entry)) {
+                $result = $importer->import($entry, $result);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get importers instance.
+     *
+     * @return Collection<array-key,ImportVCardResource>
+     */
+    private function importers(): Collection
+    {
+        if (self::$importers === null) {
+            self::$importers = collect(subClasses(ImportVCardResource::class))
+                ->sortBy(fn (ReflectionClass $importer): int => Order::get($importer))
+                ->map(fn (ReflectionClass $importer): ImportVCardResource => $importer->newInstance());
+        }
+
+        return self::$importers
+            ->map(fn (ImportVCardResource $importer): ImportVCardResource => $importer->setContext($this));
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Domains\Contact\Dav\Services;
 
+use App\Domains\Contact\Dav\VCardResource;
 use App\Interfaces\ServiceInterface;
 use App\Services\BaseService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class GetEtag extends BaseService implements ServiceInterface
 {
@@ -16,7 +18,7 @@ class GetEtag extends BaseService implements ServiceInterface
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
             'vault_id' => 'required|uuid|exists:vaults,id',
-            'contact_id' => 'required|uuid|exists:contacts,id',
+            'entry' => 'required',
         ];
     }
 
@@ -29,7 +31,6 @@ class GetEtag extends BaseService implements ServiceInterface
             'author_must_belong_to_account',
             'vault_must_belong_to_account',
             'author_must_be_in_vault',
-            'contact_must_belong_to_vault',
         ];
     }
 
@@ -40,6 +41,13 @@ class GetEtag extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        return $this->contact->distant_etag ?? '"'.hash('sha256', $this->contact->vcard).'"';
+        /** @var VCardResource */
+        $entry = $data['entry'];
+
+        if ($entry->vault_id !== $this->vault->id) {
+            throw new ModelNotFoundException();
+        }
+
+        return $entry->distant_etag ?? '"'.hash('sha256', $entry->vcard).'"';
     }
 }

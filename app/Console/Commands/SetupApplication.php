@@ -21,7 +21,8 @@ class SetupApplication extends Command
      */
     protected $signature = 'monica:setup
                             {--force : Force the operation to run when in production.}
-                            {--skip-storage-link : Skip storage link create.}';
+                            {--skip-storage-link : Skip storage link create.}
+                            {--skip-docs : Skip api docs generation.}';
 
     /**
      * The console command description.
@@ -40,7 +41,9 @@ class SetupApplication extends Command
             $this->clearConfig();
             $this->symlink();
             $this->migrate();
-            $this->documentation();
+            if ($this->option('skip-docs') !== true) {
+                $this->documentation();
+            }
             $this->cacheConfig();
             $this->scout();
         }
