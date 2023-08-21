@@ -4,6 +4,10 @@ namespace App\Domains\Contact\Dav;
 
 use App\Domains\Contact\Dav\Services\ImportVCard;
 use App\Models\Account;
+use App\Models\User;
+use App\Models\Vault;
+use Ramsey\Uuid\Uuid;
+use Sabre\VObject\Component\VCard;
 
 abstract class Importer implements ImportVCardResource
 {
@@ -24,7 +28,23 @@ abstract class Importer implements ImportVCardResource
      */
     protected function account(): Account
     {
-        return $this->context->vault->account;
+        return $this->vault()->account;
+    }
+
+    /**
+     * Get the vault.
+     */
+    protected function vault(): Vault
+    {
+        return $this->context->vault;
+    }
+
+    /**
+     * Get the author.
+     */
+    protected function author(): User
+    {
+        return $this->context->author;
     }
 
     /**
@@ -33,5 +53,29 @@ abstract class Importer implements ImportVCardResource
     protected function formatValue(?string $value): ?string
     {
         return ! empty($value) ? str_replace('\;', ';', trim($value)) : null;
+    }
+
+    /**
+     * Get uid of the card.
+     */
+    protected function getUid(VCard $entry): ?string
+    {
+        if (! empty($uuid = (string) $entry->UID)) {
+            return $uuid;
+        }
+
+        return null;
+    }
+
+    /**
+     * Import UID.
+     */
+    protected function importUid(array $data, VCard $entry): array
+    {
+        if (($uuid = $this->getUid($entry)) !== null && Uuid::isValid($uuid) && ! $this->context->external) {
+            $data['id'] = $uuid;
+        }
+
+        return $data;
     }
 }

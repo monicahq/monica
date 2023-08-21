@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
+use Symfony\Component\Finder\Finder;
 
 if (! function_exists('trans_key')) {
     /**
@@ -64,6 +66,35 @@ if (! function_exists('htmldir')) {
                 return 'rtl';
             default:
                 return 'ltr';
+        }
+    }
+}
+
+if (! function_exists('subClasses')) {
+    /**
+     * Get all subclass of the given class name.
+     *
+     * @template T of object
+     *
+     * @param  class-string<T>  $className
+     * @return \Generator<array-key,ReflectionClass<T>>
+     */
+    function subClasses(string $className): Generator
+    {
+        $namespace = App::getNamespace();
+        $appPath = app_path();
+
+        foreach ((new Finder)->files()->in($appPath)->name('*.php')->notName('helpers.php') as $file) {
+            $file = $namespace.str_replace(
+                ['/', '.php'],
+                ['\\', ''],
+                Str::after($file->getRealPath(), realpath($appPath).DIRECTORY_SEPARATOR)
+            );
+
+            $class = new ReflectionClass($file);
+            if ($class->isSubclassOf($className) && ! $class->isAbstract()) {
+                yield $class;
+            }
         }
     }
 }

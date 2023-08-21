@@ -44,6 +44,13 @@ return new class() extends Migration
             $table->foreignIdFor(Vault::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(GroupType::class)->constrained()->cascadeOnDelete();
             $table->string('name');
+
+            $table->mediumText('vcard')->nullable();
+            $table->string('distant_uuid', 256)->nullable();
+            $table->string('distant_etag', 256)->nullable();
+            $table->string('distant_uri', 2096)->nullable();
+
+            $table->softDeletes();
             $table->timestamps();
 
             if (config('scout.driver') === 'database' && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {

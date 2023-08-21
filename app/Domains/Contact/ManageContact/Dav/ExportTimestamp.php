@@ -7,13 +7,24 @@ use App\Domains\Contact\Dav\Order;
 use App\Models\Contact;
 use Sabre\VObject\Component\VCard;
 
+/**
+ * @implements ExportVCardResource<Contact>
+ */
 #[Order(1000)]
 class ExportTimestamp implements ExportVCardResource
 {
-    public function export(Contact $contact, VCard $vcard): void
+    public function getType(): string
+    {
+        return Contact::class;
+    }
+
+    /**
+     * @param  Contact  $resource
+     */
+    public function export(mixed $resource, VCard $vcard): void
     {
         $vcard->remove('REV');
 
-        $vcard->REV = $contact->updated_at->format('Ymd\\THis\\Z');
+        $vcard->REV = $resource->updated_at->format('Ymd\\THis\\Z');
     }
 }

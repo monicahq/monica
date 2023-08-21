@@ -101,6 +101,7 @@ class DestroyGroupTest extends TestCase
 
         $this->assertDatabaseMissing('groups', [
             'id' => $group->id,
+            'deleted_at' => null,
         ]);
     }
 }

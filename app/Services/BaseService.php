@@ -29,7 +29,7 @@ abstract class BaseService
     public ?Contact $contact = null;
 
     /**
-     * The contact object.
+     * The group object.
      */
     public ?Group $group = null;
 

@@ -5,14 +5,18 @@ namespace App\Domains\Contact\Dav\Web\Backend\CardDAV;
 use App\Domains\Contact\Dav\Jobs\UpdateVCard;
 use App\Domains\Contact\Dav\Services\ExportVCard;
 use App\Domains\Contact\Dav\Services\GetEtag;
+use App\Domains\Contact\Dav\VCardResource;
 use App\Domains\Contact\Dav\Web\Backend\IDAVBackend;
 use App\Domains\Contact\Dav\Web\Backend\SyncDAVBackend;
 use App\Domains\Contact\Dav\Web\DAVACL\PrincipalBackend;
 use App\Domains\Contact\ManageContact\Services\DestroyContact;
+use App\Domains\Contact\ManageGroups\Services\DestroyGroup;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\User;
 use App\Models\Vault;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
@@ -20,10 +24,13 @@ use ReturnTypeWillChange;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Backend\SyncSupport;
-use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use Sabre\CardDAV\Plugin as CardDav;
 use Sabre\DAV;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
+use Sabre\VObject\Component\VCard;
+use Sabre\VObject\ParseException;
+use Sabre\VObject\Reader;
 
 /**
  * @template TValue of ?Contact
@@ -34,9 +41,13 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
 {
     use SyncDAVBackend;
 
-    public function __construct(
-        private User $user
-    ) {
+    private User $user;
+
+    public function withUser(User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
     /**
@@ -81,7 +92,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
             'uri' => $vault->name,
             'principaluri' => PrincipalBackend::getPrincipalUser($this->user),
             '{DAV:}displayname' => trans('Contacts'),
-            '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $vault->name,
+            '{'.CardDav::NS_CARDDAV.'}addressbook-description' => $vault->name,
         ];
         if ($token) {
             $des += [
@@ -163,55 +174,78 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
     }
 
     /**
-     * Prepare datas for this contact.
+     * Prepare data for this contact.
      */
-    public function prepareCard(Contact $contact): array
+    public function prepareCard(VCardResource $resource): array
     {
-        $carddata = $contact->vcard;
+        $carddata = $resource->vcard;
         try {
-            if (empty($carddata)) {
-                $carddata = $this->refreshObject($contact);
+            if ($carddata) {
+                $timestamp = $this->rev($carddata);
+            }
+
+            if ($carddata === null || empty($carddata) || $timestamp === null || $timestamp < $resource->updated_at) {
+                $carddata = $this->refreshObject($resource);
             }
 
             $etag = app(GetEtag::class)->execute([
                 'account_id' => $this->user->account_id,
                 'author_id' => $this->user->id,
-                'vault_id' => $contact->vault_id,
-                'contact_id' => $contact->id,
+                'vault_id' => $resource->vault_id,
+                'entry' => $resource->refresh(),
             ]);
 
             return [
-                'contact_id' => $contact->id,
-                'uri' => $this->encodeUri($contact),
+                'contact_id' => $resource->id,
+                'uri' => $this->encodeUri($resource),
                 'carddata' => $carddata,
                 'etag' => $etag,
-                'distant_etag' => $contact->distant_etag,
-                'lastmodified' => $contact->updated_at->timestamp,
+                'distant_etag' => $resource->distant_etag,
+                'lastmodified' => $resource->updated_at->timestamp,
             ];
         } catch (\Exception $e) {
             Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
                 'carddata' => $carddata,
-                'contact_id' => $contact->id,
+                'id' => $resource->id,
                 $e,
             ]);
             throw $e;
         }
     }
 
+    private function rev(string $card): ?Carbon
+    {
+        try {
+            /** @var VCard */
+            $vcard = Reader::read($card, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
+
+            return Carbon::parse($vcard->REV);
+        } catch (ParseException $e) {
+            // Ignore error
+        }
+
+        return null;
+    }
+
     /**
      * Get the new exported version of the object.
-     *
-     * @param  mixed  $obj  contact
      */
-    protected function refreshObject($obj): string
+    protected function refreshObject(VCardResource $obj): string
     {
+        $request = [
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'vault_id' => $obj->vault_id,
+        ];
+
+        if ($obj instanceof Contact) {
+            $request['contact_id'] = $obj->id;
+        } elseif ($obj instanceof Group) {
+            $request['group_id'] = $obj->id;
+        }
+
         $vcard = app(ExportVCard::class)
-            ->execute([
-                'account_id' => $this->user->account_id,
-                'author_id' => $this->user->id,
-                'vault_id' => $obj->vault_id,
-                'contact_id' => $obj->id,
-            ]);
+            ->execute($request);
 
         return $vcard->serialize();
     }
@@ -219,7 +253,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
     /**
      * Returns the contact for the specific uuid.
      */
-    public function getObjectUuid(?string $collectionId, string $uuid): ?Contact
+    public function getObjectUuid(?string $collectionId, string $uuid): ?VCardResource
     {
         $vault = $this->user->vaults()
             ->wherePivot('permission', '<=', Vault::PERMISSION_VIEW)
@@ -229,16 +263,25 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
             throw new NotEnoughPermissionException();
         }
 
-        return Contact::where([
-            'id' => $uuid,
+        return Contact::firstWhere([
             'vault_id' => $vault->id,
-        ])->first();
+            'distant_uuid' => $uuid,
+        ]) ?? Group::firstWhere([
+            'vault_id' => $vault->id,
+            'distant_uuid' => $uuid,
+        ]) ?? Contact::firstWhere([
+            'vault_id' => $vault->id,
+            'id' => $uuid,
+        ]) ?? Group::firstWhere([
+            'vault_id' => $vault->id,
+            'uuid' => $uuid,
+        ]);
     }
 
     /**
      * Returns the collection of all active contacts.
      *
-     * @return \Illuminate\Support\Collection<array-key, Contact>
+     * @return \Illuminate\Support\Collection<array-key,VCardResource>
      */
     public function getObjects(?string $collectionId): Collection
     {
@@ -249,18 +292,28 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
             $vaults = $vaults->where('id', $collectionId);
         }
 
-        return $vaults->get()
-            ->map(fn (Vault $vault) => $vault->contacts()
+        $contacts = $vaults->get()
+            ->map(fn (Vault $vault): Collection => $vault->contacts()
                 ->active()
                 ->get()
             )
             ->flatten();
+
+        $groups = $vaults->get()
+            ->map(fn (Vault $vault): Collection => $vault->groups()
+                ->get()
+            )
+            ->flatten();
+
+        $result = $contacts->merge($groups);
+
+        return $result;
     }
 
     /**
      * Returns the collection of deleted contacts.
      *
-     * @return \Illuminate\Support\Collection<array-key, Contact>
+     * @return \Illuminate\Support\Collection<array-key,VCardResource>
      */
     public function getDeletedObjects(?string $collectionId): Collection
     {
@@ -271,12 +324,21 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
             $vaults = $vaults->where('id', $collectionId);
         }
 
-        return $vaults->get()
-            ->map(fn (Vault $vault) => $vault->contacts()
+        $contacts = $vaults->get()
+            ->map(fn (Vault $vault): Collection => $vault->contacts()
                 ->onlyTrashed()
                 ->get()
             )
             ->flatten();
+
+        $groups = $vaults->get()
+            ->map(fn (Vault $vault): Collection => $vault->groups()
+                ->onlyTrashed()
+                ->get()
+            )
+            ->flatten();
+
+        return $contacts->merge($groups);
     }
 
     /**
@@ -299,10 +361,10 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
      */
     public function getCards($addressbookId): array
     {
-        $contacts = $this->getObjects($addressbookId);
+        $cards = $this->getObjects($addressbookId);
 
-        return $contacts
-            ->map(fn (Contact $contact) => $this->prepareCard($contact))
+        return $cards
+            ->map(fn (VCardResource $card) => $this->prepareCard($card))
             ->toArray();
     }
 
@@ -321,11 +383,11 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
     #[ReturnTypeWillChange]
     public function getCard($addressBookId, $cardUri)
     {
-        $contact = $this->getObject($addressBookId, $cardUri);
+        $card = $this->getObject($addressBookId, $cardUri);
 
-        return $contact === null
+        return $card === null
             ? false
-            : $this->prepareCard($contact);
+            : $this->prepareCard($card);
     }
 
     /**
@@ -397,6 +459,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
 
         Bus::batch([$job])
             ->allowFailures()
+            ->onQueue('high')
             ->dispatch();
 
         return null;
@@ -410,14 +473,23 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
      */
     public function deleteCard($addressBookId, $cardUri): bool
     {
-        $contact = $this->getObject($addressBookId, $cardUri);
+        $obj = $this->getObject($addressBookId, $cardUri);
 
-        if ($contact) {
+        if ($obj !== null && $obj instanceof Contact) {
             DestroyContact::dispatch([
                 'account_id' => $this->user->account_id,
                 'author_id' => $this->user->id,
-                'vault_id' => $contact->vault_id,
-                'contact_id' => $contact->id,
+                'vault_id' => $obj->vault_id,
+                'contact_id' => $obj->id,
+            ])->onQueue('high');
+
+            return true;
+        } elseif ($obj !== null && $obj instanceof Group) {
+            (new DestroyGroup)->execute([
+                'account_id' => $this->user->account_id,
+                'author_id' => $this->user->id,
+                'vault_id' => $obj->vault_id,
+                'group_id' => $obj->id,
             ]);
 
             return true;

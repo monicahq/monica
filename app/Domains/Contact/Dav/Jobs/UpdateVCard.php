@@ -4,7 +4,6 @@ namespace App\Domains\Contact\Dav\Jobs;
 
 use App\Domains\Contact\Dav\Services\GetEtag;
 use App\Domains\Contact\Dav\Services\ImportVCard;
-use App\Domains\Contact\Dav\Web\Backend\CardDAV\CardDAVBackend;
 use App\Interfaces\ServiceInterface;
 use App\Services\QueuableService;
 use Closure;
@@ -28,6 +27,7 @@ class UpdateVCard extends QueuableService implements ServiceInterface
             'vault_id' => 'required|uuid|exists:vaults,id',
             'uri' => 'required|string',
             'etag' => 'nullable|string',
+            'external' => 'nullable|boolean',
             'card' => [
                 'required',
                 function (string $attribute, mixed $value, Closure $fail) {
@@ -48,6 +48,7 @@ class UpdateVCard extends QueuableService implements ServiceInterface
             'author_must_belong_to_account',
             'vault_must_belong_to_account',
             'author_must_be_in_vault',
+            'author_must_be_vault_editor',
         ];
     }
 
@@ -56,17 +57,15 @@ class UpdateVCard extends QueuableService implements ServiceInterface
      */
     public function execute(array $data): void
     {
-        if (! $this->batching()) {
-            return;
-        }
+        $this->data = $data;
 
         $this->validateRules($data);
 
         $this->withLocale($this->author->preferredLocale(), function () {
             $newtag = $this->updateCard($this->data['uri'], $this->data['card']);
 
-            if (($etag = Arr::get($this->data, 'etag')) !== null && $newtag !== $etag) {
-                Log::warning(__CLASS__.' '.__FUNCTION__.' wrong etag when updating contact. Expected '.$etag.', get '.$newtag, [
+            if ($newtag !== null && ($etag = Arr::get($this->data, 'etag')) !== null && $newtag !== $etag) {
+                Log::warning(__CLASS__.' '.__FUNCTION__." wrong etag when updating contact. Expected [$etag], got [$newtag]", [
                     'contacturl' => $this->data['uri'],
                     'carddata' => $this->data['card'],
                 ]);
@@ -76,48 +75,33 @@ class UpdateVCard extends QueuableService implements ServiceInterface
 
     /**
      * Update the contact with the carddata.
-     *
-     * @param  string  $cardUri
-     * @param  string  $cardData
      */
-    private function updateCard($cardUri, $cardData): ?string
+    private function updateCard(string $uri, mixed $card): ?string
     {
-        $backend = app(CardDAVBackend::class, ['user' => $this->author]);
-
-        $contactId = null;
-        if ($cardUri) {
-            $contactObject = $backend->getObject($this->vault->id, $cardUri);
-
-            if ($contactObject) {
-                $contactId = $contactObject->id;
-            }
-        }
-
         try {
-            $result = app(ImportVCard::class)
-                ->execute([
-                    'account_id' => $this->author->account_id,
-                    'author_id' => $this->author->id,
-                    'vault_id' => $this->vault->id,
-                    'contact_id' => $contactId,
-                    'entry' => $cardData,
-                    'etag' => Arr::get($this->data, 'etag'),
-                    'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
-                ]);
+            $result = app(ImportVCard::class)->execute([
+                'account_id' => $this->author->account_id,
+                'author_id' => $this->author->id,
+                'vault_id' => $this->vault->id,
+                'entry' => $card,
+                'etag' => Arr::get($this->data, 'etag'),
+                'uri' => $uri,
+                'external' => Arr::get($this->data, 'external', false),
+                'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
+            ]);
 
             if (! Arr::has($result, 'error')) {
                 return app(GetEtag::class)->execute([
                     'account_id' => $this->author->account_id,
                     'author_id' => $this->author->id,
                     'vault_id' => $this->vault->id,
-                    'contact_id' => $result['contact_id'],
+                    'entry' => $result['entry'],
                 ]);
             }
         } catch (\Exception $e) {
             Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
-                'contacturl' => $cardUri,
-                'contact_id' => $contactId,
-                'carddata' => $cardData,
+                'uri' => $uri,
+                'carddata' => $card,
                 $e,
             ]);
             throw $e;
