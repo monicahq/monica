@@ -10,10 +10,6 @@ use Carbon\Carbon;
 
 class RemoveContactFromGroup extends BaseService implements ServiceInterface
 {
-    private Group $group;
-
-    private array $data;
-
     /**
      * Get the validation rules that apply to the service.
      */
@@ -38,6 +34,7 @@ class RemoveContactFromGroup extends BaseService implements ServiceInterface
             'vault_must_belong_to_account',
             'author_must_be_vault_editor',
             'contact_must_belong_to_vault',
+            'group_must_belong_to_vault',
         ];
     }
 
@@ -46,8 +43,7 @@ class RemoveContactFromGroup extends BaseService implements ServiceInterface
      */
     public function execute(array $data): Group
     {
-        $this->data = $data;
-        $this->validate();
+        $this->validateRules($data);
 
         $this->group->contacts()->detach([
             $this->contact->id,
@@ -57,14 +53,6 @@ class RemoveContactFromGroup extends BaseService implements ServiceInterface
         $this->createFeedItem();
 
         return $this->group;
-    }
-
-    private function validate(): void
-    {
-        $this->validateRules($this->data);
-
-        $this->group = $this->vault->groups()
-            ->findOrFail($this->data['group_id']);
     }
 
     private function updateLastEditedDate(): void

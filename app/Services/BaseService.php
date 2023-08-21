@@ -5,8 +5,10 @@ namespace App\Services;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 
 abstract class BaseService
@@ -24,7 +26,45 @@ abstract class BaseService
     /**
      * The contact object.
      */
-    public Contact $contact;
+    public ?Contact $contact = null;
+
+    /**
+     * The contact object.
+     */
+    public ?Group $group = null;
+
+    /**
+     * Dependencies between permissions.
+     *
+     * @var array<string,array<string>>
+     */
+    private static array $permissionDependencies = [
+        'author_must_belong_to_account' => [],
+        'author_must_be_account_administrator' => [
+            'author_must_belong_to_account',
+        ],
+        'vault_must_belong_to_account' => [],
+        'author_must_be_vault_manager' => [
+            'vault_must_belong_to_account',
+            'author_must_belong_to_account',
+        ],
+        'author_must_be_vault_editor' => [
+            'vault_must_belong_to_account',
+            'author_must_belong_to_account',
+        ],
+        'author_must_be_in_vault' => [
+            'vault_must_belong_to_account',
+            'author_must_belong_to_account',
+        ],
+        'contact_must_belong_to_vault' => [
+            'vault_must_belong_to_account',
+            'author_must_belong_to_account',
+        ],
+        'group_must_belong_to_vault' => [
+            'vault_must_belong_to_account',
+            'author_must_belong_to_account',
+        ],
+    ];
 
     /**
      * Get the validation rules that apply to the service.
@@ -57,35 +97,60 @@ abstract class BaseService
     {
         Validator::make($data, $this->rules())->validate();
 
-        if (in_array('author_must_belong_to_account', $this->permissions())) {
-            $this->validateAuthorBelongsToAccount($data);
+        $permissions = collect($this->permissions());
+
+        foreach (self::$permissionDependencies as $key => $values) {
+            if ($permissions->contains($key)) {
+                collect($values)->each(function ($value) use ($permissions, $key) {
+                    if (! $permissions->contains($value)) {
+                        throw new \Exception("$key requires $value");
+                    }
+                });
+
+                $this->validatePermission($key, $data);
+            }
         }
 
-        if (in_array('author_must_be_account_administrator', $this->permissions())) {
-            $this->validateAuthorIsAccountAdministrator();
-        }
-
-        if (in_array('vault_must_belong_to_account', $this->permissions())) {
-            $this->validateVaultExists($data);
-        }
-
-        if (in_array('author_must_be_vault_manager', $this->permissions())) {
-            $this->validateUserPermissionInVault(Vault::PERMISSION_MANAGE);
-        }
-
-        if (in_array('author_must_be_vault_editor', $this->permissions())) {
-            $this->validateUserPermissionInVault(Vault::PERMISSION_EDIT);
-        }
-
-        if (in_array('author_must_be_in_vault', $this->permissions())) {
-            $this->validateUserPermissionInVault(Vault::PERMISSION_VIEW);
-        }
-
-        if (in_array('contact_must_belong_to_vault', $this->permissions())) {
-            $this->validateContactBelongsToVault($data);
+        if (($e = $permissions->diff(collect(self::$permissionDependencies)->keys()))->isNotEmpty()) {
+            throw new \Exception('Unknown permission: '.$e->first());
         }
 
         return true;
+    }
+
+    /**
+     * Validate a permission.
+     */
+    private function validatePermission(string $permission, array $data): void
+    {
+        switch ($permission) {
+            case 'author_must_belong_to_account':
+                $this->validateAuthorBelongsToAccount($data);
+                break;
+            case 'author_must_be_account_administrator':
+                $this->validateAuthorIsAccountAdministrator();
+                break;
+            case 'vault_must_belong_to_account':
+                $this->validateVaultExists($data);
+                break;
+            case 'author_must_be_vault_manager':
+                $this->validateUserPermissionInVault(Vault::PERMISSION_MANAGE);
+                break;
+            case 'author_must_be_vault_editor':
+                $this->validateUserPermissionInVault(Vault::PERMISSION_EDIT);
+                break;
+            case 'author_must_be_in_vault':
+                $this->validateUserPermissionInVault(Vault::PERMISSION_VIEW);
+                break;
+            case 'contact_must_belong_to_vault':
+                $this->validateContactBelongsToVault($data);
+                break;
+            case 'group_must_belong_to_vault':
+                $this->validateGroupBelongsToVault($data);
+                break;
+            default:
+                throw new \Exception("Unknown permission: $permission");
+        }
     }
 
     /**
@@ -139,8 +204,29 @@ abstract class BaseService
      */
     public function validateContactBelongsToVault(array $data): void
     {
-        $this->contact = $this->vault->contacts()
-            ->findOrFail($data['contact_id']);
+        if (isset($data['contact_id'])) {
+            $this->contact = $this->vault->contacts()
+                ->findOrFail($data['contact_id']);
+
+            if ($this->contact->vault_id !== $this->vault->id) {
+                throw new ModelNotFoundException();
+            }
+        }
+    }
+
+    /**
+     * Validate that the group belongs to the account.
+     */
+    public function validateGroupBelongsToVault(array $data): void
+    {
+        if (isset($data['group_id'])) {
+            $this->group = $this->vault->groups()
+                ->findOrFail($data['group_id']);
+
+            if ($this->group->vault_id !== $this->vault->id) {
+                throw new ModelNotFoundException();
+            }
+        }
     }
 
     /**

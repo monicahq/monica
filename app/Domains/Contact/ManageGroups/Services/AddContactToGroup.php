@@ -11,8 +11,6 @@ use Carbon\Carbon;
 
 class AddContactToGroup extends BaseService implements ServiceInterface
 {
-    private Group $group;
-
     private array $data;
 
     /**
@@ -40,6 +38,7 @@ class AddContactToGroup extends BaseService implements ServiceInterface
             'vault_must_belong_to_account',
             'author_must_be_vault_editor',
             'contact_must_belong_to_vault',
+            'group_must_belong_to_vault',
         ];
     }
 
@@ -61,8 +60,10 @@ class AddContactToGroup extends BaseService implements ServiceInterface
             ]);
         }
 
-        $this->createFeedItem();
+        $this->group->touch();
+
         $this->updateLastEditedDate();
+        $this->createFeedItem();
 
         return $this->group;
     }
@@ -70,9 +71,6 @@ class AddContactToGroup extends BaseService implements ServiceInterface
     private function validate(): void
     {
         $this->validateRules($this->data);
-
-        $this->group = $this->vault->groups()
-            ->findOrFail($this->data['group_id']);
 
         if ($this->data['group_type_role_id'] != 0) {
             $role = GroupTypeRole::findOrFail($this->data['group_type_role_id']);
