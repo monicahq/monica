@@ -68,9 +68,9 @@ class ImportContact extends Importer implements ImportVCardResource
             if ($this->context->external) {
                 $contact->distant_etag = Arr::get($this->context->data, 'etag');
                 $contact->distant_uri = $uri;
-            }
 
-            $contact->save();
+                $contact->save();
+            }
 
             return $contact;
         });
