@@ -56,7 +56,7 @@ class ImportGroupTest extends TestCase
 
         $vcard = new VCard([
             'FN' => 'Other Name',
-            'N' => 'Name Group;;;;',
+            'N' => 'Name Group',
         ]);
         $group = $importGroup->importNames([], $vcard);
 
