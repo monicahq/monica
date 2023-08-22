@@ -8,13 +8,12 @@ use App\Domains\Contact\Dav\Order;
 use App\Domains\Contact\Dav\VCardResource;
 use App\Domains\Contact\ManageGroups\Services\CreateGroup;
 use App\Domains\Contact\ManageGroups\Services\UpdateGroup;
-use App\Models\Contact;
 use App\Models\Group;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Sabre\VObject\Component\VCard;
 
-#[Order(2)]
+#[Order(10)]
 class ImportGroup extends Importer implements ImportVCardResource
 {
     /**
@@ -81,14 +80,11 @@ class ImportGroup extends Importer implements ImportVCardResource
             ]);
         }
 
-        if ($group === null) {
-            $groupId = $this->getUid($vcard);
-            if ($groupId !== null) {
-                $group = Group::firstWhere([
-                    'vault_id' => $this->vault()->id,
-                    'id' => $groupId,
-                ]);
-            }
+        if ($group === null && ($groupId = $this->getUid($vcard)) !== null) {
+            $group = Group::firstWhere([
+                'vault_id' => $this->vault()->id,
+                'distant_uuid' => $groupId,
+            ]);
         }
 
         if ($group !== null && $group->vault_id !== $this->vault()->id) {
@@ -103,25 +99,12 @@ class ImportGroup extends Importer implements ImportVCardResource
      */
     private function getGroupData(?Group $group): array
     {
-        $result = [
+        return [
             'account_id' => $this->account()->id,
             'vault_id' => $this->vault()->id,
             'author_id' => $this->author()->id,
-            'name' => $group ? $group->name : null,
+            'name' => optional($group)->name,
         ];
-
-        if ($group) {
-            $result['members'] = [];
-            $group->contacts->each(function (Contact $contact) use (&$result) {
-                $c = ['id' => $contact->id];
-                if ($contact->distant_uuid !== null) {
-                    $c['distant_uuid'] = $contact->distant_uuid;
-                }
-                $result['members'][] = $c;
-            });
-        }
-
-        return $result;
     }
 
     /**
@@ -152,9 +135,7 @@ class ImportGroup extends Importer implements ImportVCardResource
 
     private function importNameFromN(array $contactData, VCard $entry): array
     {
-        $parts = $entry->N->getParts();
-
-        $contactData['name'] = $this->formatValue(Arr::get($parts, '0'));
+        $contactData['name'] = $this->formatValue(Arr::get($entry->N->getParts(), '0'));
 
         return $contactData;
     }

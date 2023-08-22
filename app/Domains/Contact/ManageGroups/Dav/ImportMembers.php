@@ -15,7 +15,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Sabre\VObject\Component\VCard;
 
-#[Order(3)]
+#[Order(11)]
 class ImportMembers extends Importer implements ImportVCardResource
 {
     /**
@@ -61,14 +61,11 @@ class ImportMembers extends Importer implements ImportVCardResource
             ]);
         }
 
-        if ($group === null) {
-            $groupId = $this->getUid($vcard);
-            if ($groupId !== null) {
-                $group = Group::firstWhere([
-                    'vault_id' => $this->vault()->id,
-                    'id' => $groupId,
-                ]);
-            }
+        if ($group === null && ($groupId = $this->getUid($vcard)) !== null) {
+            $group = Group::firstWhere([
+                'vault_id' => $this->vault()->id,
+                'distant_uuid' => $groupId,
+            ]);
         }
 
         if ($group !== null && $group->vault_id !== $this->vault()->id) {
@@ -86,7 +83,6 @@ class ImportMembers extends Importer implements ImportVCardResource
         $members = $entry->MEMBER;
 
         $data = [];
-        $data['members'] = [];
 
         if ($members === null) {
             return $data;
@@ -134,7 +130,7 @@ class ImportMembers extends Importer implements ImportVCardResource
                 }
 
                 if ($contact === null) {
-                    // Contact not found
+                    // Contact not found !
                     return;
                 }
 

@@ -178,7 +178,7 @@ class ImportVCard extends BaseService implements ServiceInterface
             ];
         }
 
-        return $this->processEntryContact($entry, $vcard);
+        return $this->processEntryCard($entry, $vcard);
     }
 
     /**
@@ -186,7 +186,7 @@ class ImportVCard extends BaseService implements ServiceInterface
      *
      * @return array<string,mixed>
      */
-    private function processEntryContact(VCard $entry, string $vcard): array
+    private function processEntryCard(VCard $entry, string $vcard): array
     {
         $result = $this->importEntry($entry);
 

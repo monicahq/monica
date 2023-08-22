@@ -32,7 +32,7 @@ class ImportGroupTest extends TestCase
     public function it_imports_names_FN()
     {
         $author = User::factory()->create();
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
         $importVCard->author = $author;
         $importGroup = new ImportGroup();
         $importGroup->setContext($importVCard);
@@ -49,7 +49,7 @@ class ImportGroupTest extends TestCase
     public function it_imports_name_FN()
     {
         $author = User::factory()->create();
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
         $importVCard->author = $author;
         $importGroup = new ImportGroup();
         $importGroup->setContext($importVCard);

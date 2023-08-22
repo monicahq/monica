@@ -5,6 +5,7 @@ namespace App\Domains\Contact\ManageGroups\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\Group;
 use App\Services\BaseService;
+use Illuminate\Support\Arr;
 
 class UpdateGroup extends BaseService implements ServiceInterface
 {
@@ -20,7 +21,7 @@ class UpdateGroup extends BaseService implements ServiceInterface
             'vault_id' => 'required|uuid|exists:vaults,id',
             'author_id' => 'required|uuid|exists:users,id',
             'group_id' => 'required|integer|exists:groups,id',
-            'group_type_id' => 'required|integer|exists:group_types,id',
+            'group_type_id' => 'nullable|integer|exists:group_types,id',
             'name' => 'nullable|string|max:255',
         ];
     }
@@ -57,7 +58,9 @@ class UpdateGroup extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->account()->groupTypes()
-            ->findOrFail($this->data['group_type_id']);
+        if (($groupTypeId = Arr::get($this->data, 'group_type_id')) !== null) {
+            $this->account()->groupTypes()
+                ->findOrFail($groupTypeId);
+        }
     }
 }
