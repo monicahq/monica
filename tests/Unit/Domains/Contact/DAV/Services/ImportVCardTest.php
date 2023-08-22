@@ -191,7 +191,7 @@ END:VCARD';
         ]);
 
         $this->assertDatabaseHas('contacts', [
-            'id' => '31fdc242-c974-436e-98de-6b21624d6e34',
+            'distant_uuid' => '31fdc242-c974-436e-98de-6b21624d6e34',
             'vault_id' => $vault->id,
             'first_name' => 'Doe',
             'last_name' => 'John',
