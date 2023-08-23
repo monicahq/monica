@@ -103,6 +103,7 @@ class ImportGroup extends Importer implements ImportVCardResource
             'account_id' => $this->account()->id,
             'vault_id' => $this->vault()->id,
             'author_id' => $this->author()->id,
+            'group_id' => optional($group)->id,
             'name' => optional($group)->name,
         ];
     }

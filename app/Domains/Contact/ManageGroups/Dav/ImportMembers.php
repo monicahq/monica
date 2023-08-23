@@ -125,10 +125,10 @@ class ImportMembers extends Importer implements ImportVCardResource
                 ];
 
                 $contact = Contact::firstWhere('distant_uuid', $member);
+
                 if ($contact === null) {
                     $contact = Contact::find($member);
                 }
-
                 if ($contact === null) {
                     // Contact not found !
                     return;
