@@ -14,10 +14,13 @@ class AddressBookSubscription extends Model
 {
     use HasFactory, HasUuids;
 
+    /** Allow push changes to the distant server */
     public const WAY_PUSH = 0x1;
 
+    /** Allow get changes from the distant server */
     public const WAY_GET = 0x2;
 
+    /** Allow both push and get changes from the distant server */
     public const WAY_BOTH = self::WAY_GET | self::WAY_PUSH;
 
     protected $table = 'addressbook_subscriptions';

@@ -9,7 +9,6 @@ use App\Models\Gender;
 use App\Models\Pronoun;
 use App\Services\BaseService;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 
 class UpdateContact extends BaseService implements ServiceInterface
 {
@@ -59,7 +58,6 @@ class UpdateContact extends BaseService implements ServiceInterface
      */
     public function execute(array $data): Contact
     {
-        Log::debug(__CLASS__, $data);
         $this->data = $data;
         $this->validate();
 
