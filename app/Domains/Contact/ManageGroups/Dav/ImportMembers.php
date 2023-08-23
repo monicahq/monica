@@ -39,9 +39,9 @@ class ImportMembers extends Importer implements ImportVCardResource
         $group = $this->getExistingGroup($vcard);
 
         if ($group !== null) {
-            $data = $this->importMembers($vcard);
+            $members = $this->importMembers($vcard);
 
-            $this->updateGroupMembers($group, collect($data['members']));
+            $this->updateGroupMembers($group, $members);
         }
 
         return $group;
@@ -77,24 +77,30 @@ class ImportMembers extends Importer implements ImportVCardResource
 
     /**
      * Import members of the group.
+     *
+     * @return Collection<string>
      */
-    public function importMembers(VCard $entry): array
+    public function importMembers(VCard $entry): Collection
     {
         $members = $entry->MEMBER;
 
-        $data = [];
-
         if ($members === null) {
-            return $data;
+            $members = $entry->select('X-ADDRESSBOOKSERVER-MEMBER');
         }
 
-        $data['members'] = collect($members)
-            ->map(fn ($member) => $this->formatValue((string) $member))
-            ->toArray();
+        if ($members === null) {
+            return collect();
+        }
 
-        return $data;
+        return collect($members)
+            ->map(fn ($member): string => $this->formatValue((string) $member));
     }
 
+    /**
+     * Update group members.
+     *
+     * @param  Collection<string>  $members
+     */
     private function updateGroupMembers(Group $group, Collection $members): void
     {
         // Contacts to remove
@@ -105,7 +111,7 @@ class ImportMembers extends Importer implements ImportVCardResource
             );
 
         $contacts->get('remove', collect())
-            ->each(fn ($contact) => RemoveContactFromGroup::dispatch([
+            ->each(fn (Contact $contact) => RemoveContactFromGroup::dispatch([
                 'account_id' => $this->account()->id,
                 'vault_id' => $this->vault()->id,
                 'author_id' => $this->author()->id,
@@ -114,16 +120,9 @@ class ImportMembers extends Importer implements ImportVCardResource
             ])->onQueue('high'));
 
         // Contacts to add
-        $members->filter(fn ($member) => ! $contacts->get('keep', collect())->contains('distant_uuid', $member)
+        $members->filter(fn (string $member): bool => ! $contacts->get('keep', collect())->contains('distant_uuid', $member)
             || ! $contacts->get('keep', collect())->contains('id', $member))
-            ->each(function ($member) use ($group) {
-                $groupData = [
-                    'account_id' => $this->account()->id,
-                    'vault_id' => $this->vault()->id,
-                    'author_id' => $this->author()->id,
-                    'group_id' => $group->id,
-                ];
-
+            ->map(function (string $member): ?string {
                 $contact = Contact::firstWhere('distant_uuid', $member);
 
                 if ($contact === null) {
@@ -131,12 +130,19 @@ class ImportMembers extends Importer implements ImportVCardResource
                 }
                 if ($contact === null) {
                     // Contact not found !
-                    return;
+                    return null;
                 }
 
-                $groupData['contact_id'] = $contact->id;
-
-                AddContactToGroup::dispatch($groupData)->onQueue('default');
-            });
+                return $contact->id;
+            })
+            ->filter()
+            ->each(fn (string $contactId) => AddContactToGroup::dispatch([
+                'account_id' => $this->account()->id,
+                'vault_id' => $this->vault()->id,
+                'author_id' => $this->author()->id,
+                'group_id' => $group->id,
+                'contact_id' => $contactId,
+            ])->onQueue('default')
+            );
     }
 }

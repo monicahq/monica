@@ -28,11 +28,9 @@ class ImportMembersTest extends TestCase
             'MEMBER' => '31fdc242-c974-436e-98de-6b21624d6e34',
         ]);
 
-        $data = [];
+        $members = $this->invokePrivateMethod($importGroup, 'importMembers', [$vcard]);
 
-        $data = $this->invokePrivateMethod($importGroup, 'importMembers', [$vcard]);
-
-        $this->assertEquals(['31fdc242-c974-436e-98de-6b21624d6e34'], $data['members']);
+        $this->assertContains('31fdc242-c974-436e-98de-6b21624d6e34', $members);
     }
 
     /** @test */
@@ -47,12 +45,10 @@ class ImportMembersTest extends TestCase
 
         $data = [];
 
-        $data = $this->invokePrivateMethod($importGroup, 'importMembers', [$vcard]);
+        $members = $this->invokePrivateMethod($importGroup, 'importMembers', [$vcard]);
 
-        $this->assertEquals([
-            '31fdc242-c974-436e-98de-6b21624d6e34',
-            '61fdc242-c974-436e-98de-6b21624d6e34',
-        ], $data['members']);
+        $this->assertContains('31fdc242-c974-436e-98de-6b21624d6e34', $members);
+        $this->assertContains('61fdc242-c974-436e-98de-6b21624d6e34', $members);
     }
 
     /** @test */

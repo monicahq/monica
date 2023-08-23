@@ -33,12 +33,12 @@ class ExportMembers extends Exporter implements ExportVCardResource
     private function exportType($resource, VCard $vcard, string $type): void
     {
         $contacts = $resource->contacts
-            ->map(fn (Contact $contact) => $contact->distant_uuid ?? $contact->id)
+            ->map(fn (Contact $contact): string => $contact->distant_uuid ?? $contact->id)
             ->sort();
 
         $current = collect($vcard->select($type));
         $members = $current
-            ->map(fn ($member) => (string) $member);
+            ->map(fn ($member): string => $this->formatValue((string) $member));
 
         // Add new members
         foreach ($contacts as $contact) {
@@ -49,7 +49,7 @@ class ExportMembers extends Exporter implements ExportVCardResource
 
         // Remove old members
         foreach ($current as $member) {
-            if (! $contacts->contains((string) $member)) {
+            if (! $contacts->contains($this->formatValue((string) $member))) {
                 $vcard->remove($member);
             }
         }
