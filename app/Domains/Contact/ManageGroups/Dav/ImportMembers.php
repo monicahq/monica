@@ -78,7 +78,7 @@ class ImportMembers extends Importer implements ImportVCardResource
     /**
      * Import members of the group.
      *
-     * @return Collection<string>
+     * @return Collection<array-key,string>
      */
     public function importMembers(VCard $entry): Collection
     {
@@ -99,7 +99,7 @@ class ImportMembers extends Importer implements ImportVCardResource
     /**
      * Update group members.
      *
-     * @param  Collection<string>  $members
+     * @param  Collection<array-key,string>  $members
      */
     private function updateGroupMembers(Group $group, Collection $members): void
     {
