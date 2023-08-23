@@ -63,7 +63,7 @@ class GroupShowViewHelper
         if ($contactsCollection->isNotEmpty()) {
             $rolesCollection->push([
                 'id' => -1,
-                'label' => 'No role',
+                'label' => trans('No role'),
                 'contacts' => $contactsCollection,
             ]);
         }
