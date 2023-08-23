@@ -3,6 +3,8 @@
 namespace Tests\Unit\Domains\Contact\DAV\Services;
 
 use App\Domains\Contact\Dav\Services\ImportVCard;
+use App\Models\Contact;
+use App\Models\Group;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -19,7 +21,7 @@ class ImportVCardTest extends TestCase
     /** @test */
     public function it_can_not_import_because_no_firstname_or_nickname_in_vcard()
     {
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
 
         $vcard = new VCard([]);
 
@@ -29,7 +31,7 @@ class ImportVCardTest extends TestCase
     /** @test */
     public function it_can_not_import_because_no_firstname_in_vcard()
     {
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
 
         $vcard = new VCard([
             'N' => ['John', '', '', '', ''],
@@ -41,7 +43,7 @@ class ImportVCardTest extends TestCase
     /** @test */
     public function it_can_not_import_because_empty_firstname_in_vcard()
     {
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
 
         $vcard = new VCard([
             'N' => ';;;;',
@@ -53,7 +55,7 @@ class ImportVCardTest extends TestCase
     /** @test */
     public function it_can_not_import_vcard()
     {
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
 
         $vcard = Reader::read('
 BEGIN:VCARD
@@ -74,7 +76,7 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     /** @test */
     public function it_can_not_import_because_empty_nickname_in_vcard()
     {
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
 
         $vcard = new VCard([
             'NICKNAME' => '',
@@ -86,7 +88,7 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     /** @test */
     public function it_can_not_import_because_empty_fullname_in_vcard()
     {
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
 
         $vcard = new VCard([
             'FN' => '',
@@ -98,7 +100,7 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     /** @test */
     public function it_can_import_firstname()
     {
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
 
         $vcard = new VCard([
             'N' => ['', 'John', '', '', ''],
@@ -110,7 +112,7 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     /** @test */
     public function it_can_import_nickname()
     {
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
 
         $vcard = new VCard([
             'NICKNAME' => 'John',
@@ -122,7 +124,7 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     /** @test */
     public function it_can_import_fullname()
     {
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
 
         $vcard = new VCard([
             'FN' => 'John Doe',
@@ -134,7 +136,7 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     /** @test */
     public function it_formats_value()
     {
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
 
         $result = $this->invokePrivateMethod($importVCard, 'formatValue', ['']);
         $this->assertNull($result);
@@ -151,7 +153,7 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     {
         $author = User::factory()->create();
         $vault = $this->createVaultUser($author, Vault::PERMISSION_EDIT);
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
         $importVCard->author = $author;
         $importVCard->vault = $vault;
 
@@ -166,11 +168,84 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     }
 
     /** @test */
+    public function it_creates_a_contact_full()
+    {
+        $author = User::factory()->create();
+        $vault = $this->createVaultUser($author, Vault::PERMISSION_EDIT);
+
+        $vcard = 'BEGIN:VCARD
+VERSION:3.0
+UID:31fdc242-c974-436e-98de-6b21624d6e34
+N:John;Doe;;;
+FN:John Doe
+REV:20210900T000102Z
+END:VCARD';
+
+        (new ImportVCard())->execute([
+            'account_id' => $author->account_id,
+            'author_id' => $author->id,
+            'vault_id' => $vault->id,
+            'entry' => $vcard,
+            'behaviour' => 'behaviour_add',
+            'external' => true,
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'distant_uuid' => '31fdc242-c974-436e-98de-6b21624d6e34',
+            'vault_id' => $vault->id,
+            'first_name' => 'Doe',
+            'last_name' => 'John',
+        ]);
+    }
+
+    /** @test */
+    public function it_creates_a_group_full()
+    {
+        $author = User::factory()->create();
+        $vault = $this->createVaultUser($author, Vault::PERMISSION_EDIT);
+
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+
+        $vcard = "BEGIN:VCARD
+VERSION:3.0
+UID:61fdc242-c974-436e-98de-6b21624d6e35
+KIND:group
+N:Colleagues;;;;
+FN:Colleagues
+MEMBER:{$contact->id}
+REV:20210900T000102Z
+END:VCARD";
+
+        (new ImportVCard())->execute([
+            'account_id' => $author->account_id,
+            'author_id' => $author->id,
+            'vault_id' => $vault->id,
+            'entry' => $vcard,
+            'behaviour' => 'behaviour_add',
+            'external' => true,
+        ]);
+
+        $this->assertDatabaseHas('groups', [
+            'distant_uuid' => '61fdc242-c974-436e-98de-6b21624d6e35',
+            'vault_id' => $vault->id,
+            'name' => 'Colleagues',
+        ]);
+
+        $group = Group::firstWhere('distant_uuid', '61fdc242-c974-436e-98de-6b21624d6e35');
+        $this->assertDatabaseHas('contact_group', [
+            'group_id' => $group->id,
+            'contact_id' => $contact->id,
+        ]);
+    }
+
+    /** @test */
     public function it_imports_uuid_contact()
     {
         $author = User::factory()->create();
         $vault = $this->createVaultUser($author, Vault::PERMISSION_EDIT);
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
         $importVCard->author = $author;
         $importVCard->vault = $vault;
 

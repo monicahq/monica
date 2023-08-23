@@ -3,9 +3,9 @@
 namespace App\Domains\Contact\ManageGroups\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Services\BaseService;
+use App\Services\QueuableService;
 
-class DestroyGroup extends BaseService implements ServiceInterface
+class DestroyGroup extends QueuableService implements ServiceInterface
 {
     /**
      * Get the validation rules that apply to the service.

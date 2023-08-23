@@ -71,22 +71,24 @@ class ModuleGroupsViewHelper
                 ];
             });
 
-        $roles = $group->groupType
-            ->groupTypeRoles()
-            ->orderBy('position')
-            ->get()
-            ->map(function ($role) {
-                return [
-                    'id' => $role->id,
-                    'label' => $role->label,
-                ];
-            });
+        $roles = $group->groupType === null
+            ? collect()
+            : $group->groupType
+                ->groupTypeRoles()
+                ->orderBy('position')
+                ->get()
+                ->map(function ($role) {
+                    return [
+                        'id' => $role->id,
+                        'label' => $role->label,
+                    ];
+                });
 
         return [
             'id' => $group->id,
             'name' => $group->name,
             'type' => [
-                'id' => $group->groupType->id,
+                'id' => optional($group->groupType)->id,
             ],
             'contacts' => $contacts,
             'roles' => $roles,

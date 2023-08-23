@@ -68,7 +68,6 @@
           <dropdown
             v-model.number="form.group_type_id"
             :data="data.group_types"
-            :required="true"
             :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
             :label="$t('Group type')"
@@ -173,7 +172,7 @@ export default {
       form: {
         search: '',
         group_id: -1,
-        group_type_id: -1,
+        group_type_id: '',
         group_type_role_id: 0,
         name: '',
         errors: [],

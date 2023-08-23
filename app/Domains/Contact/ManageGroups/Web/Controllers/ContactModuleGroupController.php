@@ -8,6 +8,7 @@ use App\Domains\Contact\ManageGroups\Services\RemoveContactFromGroup;
 use App\Domains\Contact\ManageGroups\Web\ViewHelpers\ModuleGroupsViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use App\Models\Group;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,9 +51,10 @@ class ContactModuleGroupController extends Controller
             'group_type_role_id' => $request->input('group_type_role_id') ?? null,
         ];
 
-        $group = (new AddContactToGroup())->execute($data);
+        AddContactToGroup::dispatchSync($data);
 
         $contact = Contact::find($contactId);
+        $group = Group::find($data['group_id']);
 
         return response()->json([
             'data' => ModuleGroupsViewHelper::dto($contact, $group, true),
@@ -69,8 +71,9 @@ class ContactModuleGroupController extends Controller
             'group_id' => $groupId,
         ];
 
-        $group = (new RemoveContactFromGroup())->execute($data);
+        RemoveContactFromGroup::dispatch($data)->onQueue('high');
         $contact = Contact::find($contactId);
+        $group = Group::find($groupId);
 
         return response()->json([
             'data' => ModuleGroupsViewHelper::dto($contact, $group, false),

@@ -42,7 +42,7 @@ return new class() extends Migration
             $table->id();
             $table->uuid('uuid')->nullable();
             $table->foreignIdFor(Vault::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(GroupType::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(GroupType::class)->nullable()->constrained()->nullOnDelete();
             $table->string('name');
 
             $table->mediumText('vcard')->nullable();

@@ -118,7 +118,6 @@ const update = () => {
             <dropdown
               v-model.number="form.group_type_id"
               :data="data.group_types"
-              :required="true"
               :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
               :label="$t('Group type')" />

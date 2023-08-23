@@ -5,6 +5,7 @@ namespace App\Domains\Contact\ManageGroups\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\Group;
 use App\Services\BaseService;
+use Illuminate\Support\Arr;
 
 class CreateGroup extends BaseService implements ServiceInterface
 {
@@ -19,7 +20,7 @@ class CreateGroup extends BaseService implements ServiceInterface
             'account_id' => 'required|uuid|exists:accounts,id',
             'vault_id' => 'required|uuid|exists:vaults,id',
             'author_id' => 'required|uuid|exists:users,id',
-            'group_type_id' => 'required|integer|exists:group_types,id',
+            'group_type_id' => 'nullable|integer|exists:group_types,id',
             'name' => 'nullable|string|max:255',
         ];
     }
@@ -45,7 +46,7 @@ class CreateGroup extends BaseService implements ServiceInterface
         $this->validate();
 
         $this->group = Group::create([
-            'group_type_id' => $data['group_type_id'],
+            'group_type_id' => Arr::get($data, 'group_type_id'),
             'vault_id' => $data['vault_id'],
             'name' => $this->valueOrNull($data, 'name'),
         ]);
@@ -57,7 +58,9 @@ class CreateGroup extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->account()->groupTypes()
-            ->findOrFail($this->data['group_type_id']);
+        if (($groupTypeId = Arr::get($this->data, 'group_type_id')) !== null) {
+            $this->account()->groupTypes()
+                ->findOrFail($groupTypeId);
+        }
     }
 }

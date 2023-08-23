@@ -97,7 +97,7 @@ const destroy = () => {
           </div>
 
           <!-- type -->
-          <div class="me-8 flex items-center">
+          <div v-if="data.type.label" class="me-8 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
