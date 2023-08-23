@@ -17,30 +17,32 @@ class GroupShowViewHelper
      */
     public static function data(Group $group): array
     {
-        $rolesCollection = $group->groupType->groupTypeRoles()
-            ->orderBy('position')
-            ->get()
-            ->map(function (GroupTypeRole $role) use ($group) {
-                $contactsCollection = $group->contacts()
-                    ->wherePivot('group_type_role_id', $role->id)
-                    ->get()
-                    ->map(fn (Contact $contact) => [
-                        'id' => $contact->id,
-                        'name' => $contact->name,
-                        'age' => $contact->age,
-                        'avatar' => $contact->avatar,
-                        'url' => route('contact.show', [
-                            'vault' => $contact->vault_id,
-                            'contact' => $contact->id,
-                        ]),
-                    ]);
+        $rolesCollection = $group->groupType === null
+            ? collect()
+            : $group->groupType->groupTypeRoles()
+                ->orderBy('position')
+                ->get()
+                ->map(function (GroupTypeRole $role) use ($group) {
+                    $contactsCollection = $group->contacts()
+                        ->wherePivot('group_type_role_id', $role->id)
+                        ->get()
+                        ->map(fn (Contact $contact) => [
+                            'id' => $contact->id,
+                            'name' => $contact->name,
+                            'age' => $contact->age,
+                            'avatar' => $contact->avatar,
+                            'url' => route('contact.show', [
+                                'vault' => $contact->vault_id,
+                                'contact' => $contact->id,
+                            ]),
+                        ]);
 
-                return [
-                    'id' => $role->id,
-                    'label' => $role->label,
-                    'contacts' => $contactsCollection,
-                ];
-            });
+                    return [
+                        'id' => $role->id,
+                        'label' => $role->label,
+                        'contacts' => $contactsCollection,
+                    ];
+                });
 
         // now we get all the contacts that are not assigned to a role
         $contactsCollection = $group->contacts()
@@ -61,7 +63,7 @@ class GroupShowViewHelper
         if ($contactsCollection->isNotEmpty()) {
             $rolesCollection->push([
                 'id' => -1,
-                'label' => 'No role',
+                'label' => trans('No role'),
                 'contacts' => $contactsCollection,
             ]);
         }
@@ -71,7 +73,7 @@ class GroupShowViewHelper
             'name' => $group->name,
             'contact_count' => $group->contacts->count(),
             'type' => [
-                'label' => $group->groupType->label,
+                'label' => optional($group->groupType)->label,
             ],
             'roles' => $rolesCollection,
             'url' => [

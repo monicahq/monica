@@ -68,9 +68,9 @@ class ImportContact extends Importer implements ImportVCardResource
             if ($this->context->external) {
                 $contact->distant_etag = Arr::get($this->context->data, 'etag');
                 $contact->distant_uri = $uri;
-            }
 
-            $contact->save();
+                $contact->save();
+            }
 
             return $contact;
         });
@@ -114,22 +114,17 @@ class ImportContact extends Importer implements ImportVCardResource
      */
     private function getContactData(?Contact $contact): array
     {
-        $result = [
+        return [
             'account_id' => $this->account()->id,
             'vault_id' => $this->vault()->id,
             'author_id' => $this->author()->id,
-            'first_name' => $contact ? $contact->first_name : null,
-            'last_name' => $contact ? $contact->last_name : null,
-            'middle_name' => $contact ? $contact->middle_name : null,
-            'nickname' => $contact ? $contact->nickname : null,
+            'contact_id' => optional($contact)->id,
+            'first_name' => optional($contact)->first_name,
+            'last_name' => optional($contact)->last_name,
+            'middle_name' => optional($contact)->middle_name,
+            'nickname' => optional($contact)->nickname,
             'gender_id' => $contact ? $contact->gender_id : $this->getGender('O')->id,
         ];
-
-        if ($contact) {
-            $result['contact_id'] = $contact->id;
-        }
-
-        return $result;
     }
 
     /**

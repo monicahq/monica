@@ -7,9 +7,15 @@ use App\Models\ContactFeedItem;
 use App\Models\GroupTypeRole;
 use App\Services\QueuableService;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
 class AddContactToGroup extends QueuableService implements ServiceInterface
 {
+    /**
+     * The optional group type role.
+     */
+    private ?GroupTypeRole $role = null;
+
     /**
      * Get the validation rules that apply to the service.
      */
@@ -47,15 +53,9 @@ class AddContactToGroup extends QueuableService implements ServiceInterface
         $this->data = $data;
         $this->validate();
 
-        if ($this->data['group_type_role_id'] != 0) {
-            $this->group->contacts()->syncWithoutDetaching([
-                $this->contact->id => ['group_type_role_id' => $this->data['group_type_role_id']],
-            ]);
-        } else {
-            $this->group->contacts()->syncWithoutDetaching([
-                $this->contact->id => ['group_type_role_id' => null],
-            ]);
-        }
+        $this->group->contacts()->syncWithoutDetaching([
+            $this->contact->id => ['group_type_role_id' => optional($this->role)->id],
+        ]);
 
         $this->group->touch();
 
@@ -67,11 +67,11 @@ class AddContactToGroup extends QueuableService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        if ($this->data['group_type_role_id'] != 0) {
-            $role = GroupTypeRole::findOrFail($this->data['group_type_role_id']);
+        if (($groupTypeRoleId = Arr::get($this->data, 'group_type_role_id', 0)) != 0) {
+            $this->role = GroupTypeRole::findOrFail($groupTypeRoleId);
 
             $this->account()->groupTypes()
-                ->findOrFail($role->group_type_id);
+                ->findOrFail($this->role->group_type_id);
         }
     }
 

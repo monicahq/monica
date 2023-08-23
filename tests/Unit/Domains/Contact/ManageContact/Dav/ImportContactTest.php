@@ -48,7 +48,7 @@ class ImportContactTest extends TestCase
     public function it_imports_names_FN()
     {
         $author = User::factory()->create();
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
         $importVCard->author = $author;
         $importContact = new ImportContact();
         $importContact->setContext($importVCard);
@@ -68,7 +68,7 @@ class ImportContactTest extends TestCase
         $author = User::factory()->create([
             'name_order' => '%last_name% %first_name%',
         ]);
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
         $importVCard->author = $author;
         $importContact = new ImportContact();
         $importContact->setContext($importVCard);
@@ -86,7 +86,7 @@ class ImportContactTest extends TestCase
     public function it_imports_names_FN_extra_space()
     {
         $author = User::factory()->create();
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
         $importVCard->author = $author;
         $importContact = new ImportContact();
         $importContact->setContext($importVCard);
@@ -104,7 +104,7 @@ class ImportContactTest extends TestCase
     public function it_imports_name_FN()
     {
         $author = User::factory()->create();
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
         $importVCard->author = $author;
         $importContact = new ImportContact();
         $importContact->setContext($importVCard);
@@ -125,7 +125,7 @@ class ImportContactTest extends TestCase
         $author = User::factory()->create([
             'name_order' => '%last_name% %first_name%',
         ]);
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
         $importVCard->author = $author;
         $importContact = new ImportContact();
         $importContact->setContext($importVCard);
@@ -144,7 +144,7 @@ class ImportContactTest extends TestCase
     public function it_imports_names_FN_multiple()
     {
         $author = User::factory()->create();
-        $importVCard = new ImportVCard($this->app);
+        $importVCard = new ImportVCard();
         $importVCard->author = $author;
         $importContact = new ImportContact();
         $importContact->setContext($importVCard);
