@@ -70,16 +70,16 @@ if (! function_exists('htmldir')) {
     }
 }
 
-if (! function_exists('subclasses')) {
+if (! function_exists('subClasses')) {
     /**
      * Get all subclass of the given class name.
      *
-     * @template T
+     * @template T of object
      *
      * @param  class-string<T>  $className
      * @return \Generator<array-key,ReflectionClass<T>>
      */
-    function subclasses(string $className): Generator
+    function subClasses(string $className): Generator
     {
         $namespace = App::getNamespace();
         $appPath = app_path();

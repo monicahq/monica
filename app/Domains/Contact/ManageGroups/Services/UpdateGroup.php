@@ -57,9 +57,6 @@ class UpdateGroup extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->group = $this->vault->groups()
-            ->findOrFail($this->data['group_id']);
-
         $this->account()->groupTypes()
             ->findOrFail($this->data['group_type_id']);
     }

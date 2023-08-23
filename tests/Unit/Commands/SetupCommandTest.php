@@ -3,10 +3,8 @@
 namespace Tests\Unit\Commands;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
 use Tests\TestCase;
 
-#[RunClassInSeparateProcess]
 class SetupCommandTest extends TestCase
 {
     use DatabaseTransactions;

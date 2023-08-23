@@ -104,11 +104,11 @@ class SetupDummyAccount extends Command
         $this->line('| An account with a lot of data:');
         $this->line('| username: admin@admin.com');
         $this->line('| password: admin123');
-        $this->line('|------------------------–––-');
+        $this->line('|----------------------------');
         $this->line('|A blank account:');
         $this->line('| username: blank@blank.com');
         $this->line('| password: blank123');
-        $this->line('|------------------------–––-');
+        $this->line('|----------------------------');
         $this->line('| URL:      '.config('app.url'));
         $this->line('-----------------------------');
 

@@ -29,7 +29,7 @@ abstract class BaseService
     public ?Contact $contact = null;
 
     /**
-     * The contact object.
+     * The group object.
      */
     public ?Group $group = null;
 
@@ -38,7 +38,7 @@ abstract class BaseService
      *
      * @var array<string,array<string>>
      */
-    private static array $dependencies = [
+    private static array $permissionDependencies = [
         'author_must_belong_to_account' => [],
         'author_must_be_account_administrator' => [
             'author_must_belong_to_account',
@@ -99,11 +99,11 @@ abstract class BaseService
 
         $permissions = collect($this->permissions());
 
-        foreach (self::$dependencies as $key => $value) {
+        foreach (self::$permissionDependencies as $key => $values) {
             if ($permissions->contains($key)) {
-                collect($value)->each(function ($v) use ($permissions, $key) {
-                    if (! $permissions->contains($v)) {
-                        throw new \Exception("$key requires $v");
+                collect($values)->each(function ($value) use ($permissions, $key) {
+                    if (! $permissions->contains($value)) {
+                        throw new \Exception("$key requires $value");
                     }
                 });
 
@@ -111,7 +111,7 @@ abstract class BaseService
             }
         }
 
-        if (($e = $permissions->diff(collect(self::$dependencies)->keys()))->isNotEmpty()) {
+        if (($e = $permissions->diff(collect(self::$permissionDependencies)->keys()))->isNotEmpty()) {
             throw new \Exception('Unknown permission: '.$e->first());
         }
 
