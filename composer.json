@@ -14,6 +14,7 @@
     "ext-fileinfo": "*",
     "asbiin/laravel-webauthn": "^3.2",
     "codezero/laravel-localizer": "^2.0",
+    "doctrine/dbal": "^3.6",
     "guzzlehttp/guzzle": "^7.4",
     "http-interop/http-factory-guzzle": "^1.2",
     "inertiajs/inertia-laravel": "^0",
