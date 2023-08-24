@@ -35,6 +35,13 @@ sudo apt update
 sudo apt install -y git
 ```
 
+**Unzip:** Unzip is required but was not installed by default. Install it with:
+
+```sh
+sudo apt update
+sudo apt install -y unzip
+```
+
 **Apache:** Apache should come pre-installed with your server. If it's not, install it with:
 
 ```sh
@@ -55,7 +62,7 @@ Then install php 8.1 with these extensions:
 
 ```sh
 sudo apt update
-sudo apt install -y php8.1-{bcmath,cli,curl,common,fpm,gd,gmp,intl,json,mbstring,mysql,opcache,redis,xml,zip}
+sudo apt install -y php8.1-{bcmath,cli,curl,common,fpm,gd,gmp,intl,mbstring,mysql,opcache,redis,xml,zip}
 ```
 
 **Composer:** After you're done installing PHP, you'll need the [Composer](https://getcomposer.org/download/) dependency manager.
@@ -155,6 +162,7 @@ exit
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
 2. Update `.env` to your specific needs
+   - Update database information.
    ```diff
    - DB_USERNAME=homestead
    - DB_PASSWORD=secret
@@ -211,11 +219,11 @@ sudo a2enmod rewrite
 sudo nano /etc/apache2/sites-available/monica.conf
 ```
 
-Then, in the `nano` text editor window you just opened, copy the following - swapping the `**YOUR IP ADDRESS/DOMAIN**` with your server's IP address/associated domain:
+Then, in the `nano` text editor window you just opened, copy the following - swapping the `monica.example.com` with your server's IP address/associated domain:
 
 ```html
 <VirtualHost *:80>
-    ServerName **YOUR IP ADDRESS/DOMAIN**
+    ServerName monica.example.com
 
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/monica/public
