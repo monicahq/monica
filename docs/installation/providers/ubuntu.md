@@ -2,7 +2,7 @@
 
 <img alt="Ubuntu" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Logo-ubuntu_cof-orange-hex.svg/120px-Logo-ubuntu_cof-orange-hex.svg.png" width="120" height="120" />
 
-Monica can run on [Ubuntu 22.04 (Jammy Jellyfish)](http://releases.ubuntu.com/18.04/).
+Monica can run on [Ubuntu 22.04 (Jammy Jellyfish)](http://releases.ubuntu.com/22.04/).
 
 - [Prerequisites](#prerequisites)
   - [Types of databases](#types-of-databases)
