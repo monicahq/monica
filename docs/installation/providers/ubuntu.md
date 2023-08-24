@@ -2,7 +2,7 @@
 
 <img alt="Ubuntu" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Logo-ubuntu_cof-orange-hex.svg/120px-Logo-ubuntu_cof-orange-hex.svg.png" width="120" height="120" />
 
-Monica can run on [Ubuntu 18.04 (Bionic Beaver)](http://releases.ubuntu.com/18.04/).
+Monica can run on [Ubuntu 22.04 (Jammy Jellyfish)](http://releases.ubuntu.com/18.04/).
 
 - [Prerequisites](#prerequisites)
   - [Types of databases](#types-of-databases)
@@ -74,7 +74,7 @@ rm -f composer-setup.php
 **Node.js:** Install node.js with package manager.
 
 ```sh
-curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
 ```
 
@@ -115,7 +115,7 @@ cd /var/www/monica
 # Get latest tags from GitHub
 git fetch
 # Clone the desired version
-git checkout tags/v2.18.0
+git checkout tags/v4.0.0
 ```
 
 ### 2. Setup the database
