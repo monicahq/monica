@@ -155,7 +155,7 @@ exit
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
 2. Update `.env` to your specific needs
-   ```
+   ```diff
    - DB_USERNAME=homestead
    - DB_PASSWORD=secret
    + DB_USERNAME=monica
