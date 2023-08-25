@@ -10,10 +10,11 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Traits\Localizable;
 
 class SynchronizeAddressBooks implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Localizable;
 
     /**
      * Create a new job instance.
@@ -29,6 +30,14 @@ class SynchronizeAddressBooks implements ShouldQueue
      * Execute the job.
      */
     public function handle(): void
+    {
+        $this->withLocale($this->subscription->user->preferredLocale(), fn () => $this->synchronize());
+    }
+
+    /**
+     * Run synchronization.
+     */
+    private function synchronize(): void
     {
         try {
             Log::withContext([

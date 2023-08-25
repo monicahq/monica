@@ -39,7 +39,7 @@ class PushVCard implements ShouldQueue
     }
 
     /**
-     * Update the Last Consulted At field for the given contact.
+     * Push VCard data to the distance server.
      */
     public function handle(): void
     {
@@ -77,11 +77,15 @@ class PushVCard implements ShouldQueue
                     $e,
                 ]);
                 $this->fail($e);
+
                 throw $e;
             }
         }
     }
 
+    /**
+     * Get the headers for the request.
+     */
     private function headers(): array
     {
         $headers = [];
