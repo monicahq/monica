@@ -10,7 +10,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
 class GetVCard implements ShouldQueue
 {
@@ -34,8 +33,6 @@ class GetVCard implements ShouldQueue
         if (! $this->batching()) {
             return; // @codeCoverageIgnore
         }
-
-        Log::debug(__CLASS__.' '.$this->contact->uri);
 
         $response = $this->subscription->getClient()
             ->request('GET', $this->contact->uri);

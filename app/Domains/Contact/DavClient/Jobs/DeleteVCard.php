@@ -8,7 +8,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
 class DeleteVCard implements ShouldQueue
 {
@@ -29,8 +28,6 @@ class DeleteVCard implements ShouldQueue
      */
     public function handle(): void
     {
-        Log::debug(__CLASS__.' '.$this->uri);
-
         $this->subscription->getClient()
             ->request('DELETE', $this->uri);
     }

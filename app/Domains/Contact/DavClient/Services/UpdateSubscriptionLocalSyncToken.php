@@ -6,7 +6,6 @@ use App\Domains\Contact\Dav\Web\Backend\CardDAV\CardDAVBackend;
 use App\Interfaces\ServiceInterface;
 use App\Models\AddressBookSubscription;
 use App\Services\QueuableService;
-use Illuminate\Support\Facades\Log;
 
 class UpdateSubscriptionLocalSyncToken extends QueuableService implements ServiceInterface
 {
@@ -42,7 +41,5 @@ class UpdateSubscriptionLocalSyncToken extends QueuableService implements Servic
             $subscription->sync_token_id = $token->id;
             $subscription->save();
         }
-
-        Log::debug(__CLASS__.' '.__FUNCTION__.': '.$subscription->id.' '.$subscription->sync_token_id);
     }
 }

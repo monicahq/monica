@@ -43,8 +43,6 @@ class PushVCard implements ShouldQueue
      */
     public function handle(): void
     {
-        Log::debug(__CLASS__.' '.$this->uri);
-
         $contact = Contact::where('vault_id', $this->subscription->vault_id)
             ->findOrFail($this->contactId);
 

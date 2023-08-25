@@ -8,7 +8,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
 class DeleteMultipleVCard implements ShouldQueue
 {
@@ -33,8 +32,6 @@ class DeleteMultipleVCard implements ShouldQueue
             return; // @codeCoverageIgnore
         }
 
-        Log::debug(__CLASS__.' '.implode(',', $this->hrefs));
-
         $jobs = collect($this->hrefs)
             ->map(fn (string $href): DeleteVCard => $this->deleteVCard($href));
 
@@ -46,8 +43,6 @@ class DeleteMultipleVCard implements ShouldQueue
      */
     private function deleteVCard(string $href): DeleteVCard
     {
-        Log::debug(__CLASS__.' deleteVCard:'.$href);
-
         return new DeleteVCard($this->subscription, $href);
     }
 }

@@ -10,7 +10,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
 use Sabre\CardDAV\Plugin as CardDav;
 
 class GetMultipleVCard implements ShouldQueue
@@ -35,8 +34,6 @@ class GetMultipleVCard implements ShouldQueue
         if (! $this->batching()) {
             return; // @codeCoverageIgnore
         }
-
-        Log::debug(__CLASS__.' '.implode(',', $this->hrefs));
 
         $data = $this->addressbookMultiget();
 
