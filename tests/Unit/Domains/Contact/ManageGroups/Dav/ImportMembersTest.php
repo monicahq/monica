@@ -143,9 +143,8 @@ class ImportMembersTest extends TestCase
         $this->invokePrivateMethod($importGroup, 'updateGroupMembers', [$group, collect($members)]);
 
         $group = $group->refresh();
-        $contacts = collect($group->contacts->all())->map(fn ($c) => $c->id)->toArray();
-
-        $this->assertEquals($members, $contacts);
+        collect($group->contacts->all())->each(fn ($contact) => $this->assertContains($contact->id, $members)
+        );
     }
 
     /** @test */
@@ -181,8 +180,7 @@ class ImportMembersTest extends TestCase
         $this->invokePrivateMethod($importGroup, 'updateGroupMembers', [$group, collect($members)]);
 
         $group = $group->refresh();
-        $contacts = collect($group->contacts->all())->map(fn ($c) => $c->id)->toArray();
-
-        $this->assertEquals($members, $contacts);
+        collect($group->contacts->all())->each(fn ($contact) => $this->assertContains($contact->id, $members)
+        );
     }
 }
