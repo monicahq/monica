@@ -45,7 +45,7 @@ class AddContactToGroupTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new AddContactToGroup($request))->handle();
+        (new AddContactToGroup())->execute($request);
     }
 
     /** @test */
@@ -154,7 +154,7 @@ class AddContactToGroupTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        (new AddContactToGroup($request))->handle();
+        (new AddContactToGroup())->execute($request);
 
         $this->assertDatabaseHas('contact_group', [
             'contact_id' => $contact->id,
