@@ -393,9 +393,10 @@ class AddressBookSynchronizerTest extends TestCase
         $token = SyncToken::factory()->create([
             'account_id' => $subscription->user->account_id,
             'user_id' => $subscription->user_id,
-            'name' => "contacts-{$subscription->vault->id}",
+            'name' => "contacts-{$subscription->vault_id}",
             'timestamp' => now(),
         ]);
+        dump($token);
 
         $subscription->sync_token_id = $token->id;
         $subscription->save();
