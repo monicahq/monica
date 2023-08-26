@@ -106,7 +106,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $tester = (new DavTester($subscription->uri))
             ->getSynctoken('"token"')
-            ->getSyncCollection('"token"', '"test2"')
+            ->getSyncCollection('"token"', '"test2"', uuid: 'd403af1c-8492-4e9b-9833-cf18c795dfa9')
             ->fake();
 
         $this->mock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
@@ -114,7 +114,7 @@ class AddressBookSynchronizerTest extends TestCase
             $mock->shouldReceive('execute')
                 ->once()
                 ->withArgs(function ($contacts) {
-                    $this->assertEquals('https://test/dav/addressbooks/user@test.com/contacts/uuid', $contacts->first()->uri);
+                    $this->assertEquals('https://test/dav/addressbooks/user@test.com/contacts/d403af1c-8492-4e9b-9833-cf18c795dfa9', $contacts->first()->uri);
                     $this->assertEquals('"test2"', $contacts->first()->etag);
 
                     return true;
@@ -154,7 +154,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $tester = (new DavTester($subscription->uri))
             ->getSynctoken('"token"')
-            ->getSyncCollection('"token"', '"test2"')
+            ->getSyncCollection('"token"', '"test2"', uuid: 'd403af1c-8492-4e9b-9833-cf18c795dfa9')
             ->fake();
 
         (new AddressBookSynchronizer)
@@ -167,7 +167,7 @@ class AddressBookSynchronizerTest extends TestCase
             $this->assertCount(2, $batch->jobs);
             $job = $batch->jobs[0];
             $this->assertInstanceOf(GetMultipleVCard::class, $job);
-            $this->assertEquals(['https://test/dav/addressbooks/user@test.com/contacts/uuid'], $this->getPrivateValue($job, 'hrefs'));
+            $this->assertEquals(['https://test/dav/addressbooks/user@test.com/contacts/d403af1c-8492-4e9b-9833-cf18c795dfa9'], $this->getPrivateValue($job, 'hrefs'));
 
             return true;
         });
