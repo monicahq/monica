@@ -82,7 +82,7 @@ class AddressBookSynchronizerTest extends TestCase
 
         $tester = (new DavTester($subscription->uri))
             ->getSynctoken('"test21"')
-            ->getSyncCollection('"test20"')
+            ->getSyncCollection('"test20"', uuid: 'd403af1c-8492-4e9b-9833-cf18c795dfa9')
             ->fake();
 
         (new AddressBookSynchronizer)
@@ -396,7 +396,6 @@ class AddressBookSynchronizerTest extends TestCase
             'name' => "contacts-{$subscription->vault_id}",
             'timestamp' => now(),
         ]);
-        dump($token);
 
         $subscription->sync_token_id = $token->id;
         $subscription->save();

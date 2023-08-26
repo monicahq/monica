@@ -84,22 +84,6 @@ return [
             'sslmode' => 'prefer',
         ],
 
-        // workaround from https://github.com/laravel/framework/issues/36280
-        'pgsql-cache' => [
-            'driver' => 'pgsql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'monica'),
-            'username' => env('DB_USERNAME', 'monica'),
-            'password' => env('DB_PASSWORD', 'secret'),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'search_path' => 'public',
-            'sslmode' => 'prefer',
-        ],
-
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),

@@ -289,11 +289,11 @@ class DavTester extends TestCase
         '</d:multistatus>'));
     }
 
-    public function getSyncCollection(string $synctoken = '"token"', string $etag = '"etag"')
+    public function getSyncCollection(string $synctoken = '"token"', string $etag = '"etag"', string $uuid = 'uuid')
     {
         return $this->addResponse('https://test/dav/addressbooks/user@test.com/contacts/', Http::response($this->multistatusHeader().
         '<d:response>'.
-            '<d:href>https://test/dav/addressbooks/user@test.com/contacts/uuid</d:href>'.
+            "<d:href>https://test/dav/addressbooks/user@test.com/contacts/$uuid</d:href>".
             '<d:propstat>'.
                 '<d:prop>'.
                     "<d:getetag>$etag</d:getetag>".

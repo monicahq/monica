@@ -47,7 +47,7 @@ $config = [
             'driver' => 'database',
             'table' => 'cache',
             'connection' => null,
-            'lock_connection' => env('DB_CONNECTION', 'mysql') === 'pgsql' ? 'pgsql-cache' : null,
+            'lock_connection' => null,
         ],
 
         'file' => [
