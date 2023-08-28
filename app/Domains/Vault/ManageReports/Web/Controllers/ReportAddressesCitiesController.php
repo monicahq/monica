@@ -15,7 +15,7 @@ class ReportAddressesCitiesController extends Controller
     public function show(Request $request, string $vaultId, string $city)
     {
         $vault = Vault::findOrFail($vaultId);
-        $city = urldecode(mb_convert_encoding($city, 'UTF-8'));
+        $city = mb_convert_encoding(urldecode($city), 'UTF-8');
 
         return Inertia::render('Vault/Reports/Address/Cities/Index', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
