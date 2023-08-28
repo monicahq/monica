@@ -485,12 +485,12 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
 
             return true;
         } elseif ($obj !== null && $obj instanceof Group) {
-            (new DestroyGroup)->execute([
+            DestroyGroup::dispatch([
                 'account_id' => $this->user->account_id,
                 'author_id' => $this->user->id,
                 'vault_id' => $obj->vault_id,
                 'group_id' => $obj->id,
-            ]);
+            ])->onQueue('high');
 
             return true;
         }

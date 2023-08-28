@@ -19,6 +19,7 @@ return [
         'telescope*',
         'horizon*',
         'docs*',
+        'dav*',
     ],
 
     /*

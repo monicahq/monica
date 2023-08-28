@@ -10,6 +10,7 @@ use Illuminate\Database\Schema\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -59,6 +60,20 @@ class AppServiceProvider extends ServiceProvider
                 $result = rtrim($result, '</p>');
 
                 return $result;
+            });
+        }
+
+        if (! Http::hasMacro('getDnsRecord')) {
+            Http::macro('getDnsRecord', function (string $hostname, int $type): ?Collection {
+                try {
+                    if (($entries = \Safe\dns_get_record($hostname, $type)) !== null) {
+                        return collect($entries);
+                    }
+                } catch (\Safe\Exceptions\NetworkException) {
+                    // ignore
+                }
+
+                return null;
             });
         }
 

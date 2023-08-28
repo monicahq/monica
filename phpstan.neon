@@ -36,3 +36,9 @@ parameters:
 
         # larastan needs to manage ->pivot properties
         - '#Access to an undefined property App\\Models\\[^:]*::\$pivot\.#'
+
+        # Attributes
+        - message: '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayPush\.#'
+          path: */app/Domains/Contact/DavClient/Services/Utils/AddressBookSynchronizer.php
+        - message: '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayGet\.#'
+          path: */app/Domains/Contact/DavClient/Services/Utils/AddressBookSynchronizer.php

@@ -39,6 +39,7 @@
     "socialiteproviders/linkedin": "^4.2",
     "socialiteproviders/microsoft-azure": "^5.1",
     "socialiteproviders/twitter": "^4.1",
+    "thecodingmachine/safe": "^2.5",
     "tightenco/ziggy": "1.6.0",
     "uploadcare/uploadcare-php": "^4.1"
   },

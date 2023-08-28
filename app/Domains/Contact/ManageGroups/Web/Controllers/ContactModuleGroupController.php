@@ -72,6 +72,7 @@ class ContactModuleGroupController extends Controller
         ];
 
         RemoveContactFromGroup::dispatch($data)->onQueue('high');
+
         $contact = Contact::find($contactId);
         $group = Group::find($groupId);
 
