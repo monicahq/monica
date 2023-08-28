@@ -114,7 +114,7 @@ class AddressBookSynchronizerTest extends TestCase
             $mock->shouldReceive('execute')
                 ->once()
                 ->withArgs(function ($contacts) use ($contact) {
-                    $this->assertEquals(["https://test/dav/addressbooks/user@test.com/contacts/{$contact->id}"], $contacts->first()->uri);
+                    $this->assertEquals("https://test/dav/addressbooks/user@test.com/contacts/{$contact->id}", $contacts->first()->uri);
                     $this->assertEquals('"test2"', $contacts->first()->etag);
 
                     return true;

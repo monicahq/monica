@@ -43,6 +43,36 @@ class AddressBookGetterTest extends TestCase
     }
 
     /** @test */
+    public function it_get_address_book_data_direct()
+    {
+        $tester = (new DavTester('https://test/dav/addressbooks/user@test.com/contacts/'))
+            ->resourceTypeAddressBook('https://test/dav/addressbooks/user@test.com/contacts/')
+            ->optionsOk('https://test/dav/addressbooks/user@test.com/contacts/')
+            ->capabilities()
+            ->displayName()
+            ->fake();
+        $client = $tester->client();
+        $result = (new AddressBookGetter())
+            ->withClient($client)
+            ->execute();
+
+        $tester->assert();
+        $this->assertEquals([
+            'uri' => 'https://test/dav/addressbooks/user@test.com/contacts/',
+            'capabilities' => [
+                'addressbookMultiget' => true,
+                'addressbookQuery' => true,
+                'syncCollection' => true,
+                'addressData' => [
+                    'content-type' => 'text/vcard',
+                    'version' => '4.0',
+                ],
+            ],
+            'name' => 'Test',
+        ], $result);
+    }
+
+    /** @test */
     public function it_fails_on_server_not_compliant()
     {
         $tester = (new DavTester())

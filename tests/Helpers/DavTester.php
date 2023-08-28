@@ -64,8 +64,6 @@ class DavTester extends TestCase
     public function addressBookBaseUri()
     {
         return $this->userPrincipal('https://test')
-            ->optionsOk('https://test/dav/principals/user@test.com/')
-            ->userPrincipal('https://test/dav/principals/user@test.com/')
             ->addressbookHome()
             ->resourceTypeAddressBook()
             ->optionsOk('https://test/dav/addressbooks/user@test.com/contacts/');
@@ -174,9 +172,9 @@ class DavTester extends TestCase
         '</d:multistatus>'));
     }
 
-    public function resourceTypeAddressBook()
+    public function resourceTypeAddressBook(string $uri = 'https://test/dav/addressbooks/user@test.com/')
     {
-        return $this->addResponse('https://test/dav/addressbooks/user@test.com/', Http::response($this->multistatusHeader().
+        return $this->addResponse($uri, Http::response($this->multistatusHeader().
         '<d:response>'.
             '<d:href>/dav/addressbooks/user@test.com/contacts/</d:href>'.
             '<d:propstat>'.
