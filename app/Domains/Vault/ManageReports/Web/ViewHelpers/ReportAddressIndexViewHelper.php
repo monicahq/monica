@@ -5,6 +5,7 @@ namespace App\Domains\Vault\ManageReports\Web\ViewHelpers;
 use App\Models\Address;
 use App\Models\Vault;
 use Illuminate\Support\Str;
+use function Safe\mb_convert_encoding;
 
 class ReportAddressIndexViewHelper
 {

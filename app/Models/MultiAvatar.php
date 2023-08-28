@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use function Safe\preg_match_all;
+use function Safe\preg_replace;
+
 // Multiavatar v1.0 (PHP version)
 
 // Thanks for this awesome little MIT snippet. 🤘

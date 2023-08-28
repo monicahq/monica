@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Support\Facades\File;
+use function Safe\passthru;
+use function Safe\putenv;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**

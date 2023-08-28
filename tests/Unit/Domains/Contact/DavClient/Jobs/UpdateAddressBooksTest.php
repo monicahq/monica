@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Commands\Scheduling;
+namespace Tests\Unit\Domains\Contact\DavClient\Jobs;
 
 use App\Domains\Contact\DavClient\Jobs\SynchronizeAddressBooks;
 use App\Domains\Contact\DavClient\Jobs\UpdateAddressBooks;

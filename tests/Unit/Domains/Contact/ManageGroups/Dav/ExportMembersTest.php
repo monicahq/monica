@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Domains\Contact\ManageContact\Dav;
+namespace Tests\Unit\Domains\Contact\ManageGroups\Dav;
 
 use App\Domains\Contact\ManageGroups\Dav\ExportMembers;
 use App\Models\Contact;

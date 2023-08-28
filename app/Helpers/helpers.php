@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
+use function Safe\preg_match;
+use function Safe\preg_split;
+use function Safe\realpath;
 use Symfony\Component\Finder\Finder;
 
 if (! function_exists('trans_key')) {

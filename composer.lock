@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6323d7ef6898c6866a585668036ae8c4",
+    "content-hash": "1b9869842a96c2bd63382af049094259",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -17112,6 +17112,63 @@
                 }
             ],
             "time": "2023-02-16T10:14:28+00:00"
+        },
+        {
+            "name": "thecodingmachine/phpstan-safe-rule",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/phpstan-safe-rule.git",
+                "reference": "8a7b88e0d54f209a488095085f183e9174c40e1e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/phpstan-safe-rule/zipball/8a7b88e0d54f209a488095085f183e9174c40e1e",
+                "reference": "8a7b88e0d54f209a488095085f183e9174c40e1e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0",
+                "phpstan/phpstan": "^1.0",
+                "thecodingmachine/safe": "^1.0 || ^2.0"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^7.5.2 || ^8.0",
+                "squizlabs/php_codesniffer": "^3.4"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                },
+                "phpstan": {
+                    "includes": [
+                        "phpstan-safe-rule.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TheCodingMachine\\Safe\\PHPStan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com"
+                }
+            ],
+            "description": "A PHPStan rule to detect safety issues. Must be used in conjunction with thecodingmachine/safe",
+            "support": {
+                "issues": "https://github.com/thecodingmachine/phpstan-safe-rule/issues",
+                "source": "https://github.com/thecodingmachine/phpstan-safe-rule/tree/v1.2.0"
+            },
+            "time": "2022-01-17T10:12:29+00:00"
         },
         {
             "name": "theseer/tokenizer",

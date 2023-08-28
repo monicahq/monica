@@ -11,6 +11,8 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use function Safe\fclose;
+use function Safe\stream_get_contents;
 
 class PushVCard implements ShouldQueue
 {

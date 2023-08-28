@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Domains\Contact\ManageContact\Dav;
+namespace Tests\Unit\Domains\Contact\ManageGroups\Dav;
 
 use App\Domains\Contact\Dav\Services\ImportVCard;
 use App\Domains\Contact\ManageGroups\Dav\ImportMembers;

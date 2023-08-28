@@ -4,6 +4,8 @@ namespace App\Console\Commands\Local;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
+use function Safe\json_decode;
+use function Safe\json_encode;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use Symfony\Component\Finder\Finder;
 

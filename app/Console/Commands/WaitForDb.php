@@ -5,6 +5,9 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Database\Connectors\ConnectionFactory;
 use Illuminate\Database\SQLiteDatabaseDoesNotExistException;
+use function Safe\chgrp;
+use function Safe\chown;
+use function Safe\touch;
 
 class WaitForDb extends Command
 {

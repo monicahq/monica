@@ -4,8 +4,8 @@ namespace App\Domains\Contact\DavClient\Jobs;
 
 use App\Models\AddressBookSubscription;
 use Carbon\Carbon;
-use DragonCode\Contracts\Queue\ShouldQueue;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\Dispatchable;
 
