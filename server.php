@@ -1,5 +1,7 @@
 <?php
 
+use function Safe\parse_url;
+
 /**
  * Laravel - A PHP Framework For Web Artisans
  *

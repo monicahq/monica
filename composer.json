@@ -59,7 +59,8 @@
     "psalm/plugin-laravel": "^2.0",
     "roave/security-advisories": "dev-master",
     "spatie/laravel-ignition": "^2.0",
-    "stichoza/google-translate-php": "^5.1"
+    "stichoza/google-translate-php": "^5.1",
+    "thecodingmachine/phpstan-safe-rule": "^1.2"
   },
   "autoload": {
     "psr-4": {

@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use function Safe\shuffle;
+
 class WallpaperHelper
 {
     /**
