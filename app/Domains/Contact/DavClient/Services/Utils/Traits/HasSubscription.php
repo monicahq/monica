@@ -9,6 +9,10 @@ trait HasSubscription
 {
     private AddressBookSubscription $subscription;
 
+    /**
+     * Set the subscription.
+     */
+    #[\ReturnTypeWillChange]
     public function withSubscription(AddressBookSubscription $subscription): self
     {
         $this->subscription = $subscription;

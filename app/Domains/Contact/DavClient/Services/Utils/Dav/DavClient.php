@@ -190,9 +190,7 @@ class DavClient
             return Arr::get($result, 'properties.200', []);
         }
 
-        return array_map(function ($statusList) {
-            return Arr::get($statusList, 'properties.200', []);
-        }, $result);
+        return array_map(fn ($statusList) => Arr::get($statusList, 'properties.200', []), $result);
     }
 
     /**

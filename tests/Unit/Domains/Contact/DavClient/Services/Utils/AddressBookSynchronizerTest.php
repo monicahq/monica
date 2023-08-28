@@ -99,22 +99,22 @@ class AddressBookSynchronizerTest extends TestCase
 
         $subscription = $this->getSubscription();
 
-        Contact::factory()->create([
+        $contact = Contact::factory()->create([
             'vault_id' => $subscription->vault_id,
             'id' => 'd403af1c-8492-4e9b-9833-cf18c795dfa9',
         ]);
 
         $tester = (new DavTester($subscription->uri))
             ->getSynctoken('"token"')
-            ->getSyncCollection('"token"', '"test2"', uuid: 'd403af1c-8492-4e9b-9833-cf18c795dfa9')
+            ->getSyncCollection('"token"', '"test2"', uuid: $contact->id)
             ->fake();
 
-        $this->mock(PrepareJobsContactUpdater::class, function (MockInterface $mock) {
+        $this->mock(PrepareJobsContactUpdater::class, function (MockInterface $mock) use ($contact) {
             $mock->shouldReceive('withSubscription')->once()->andReturnSelf();
             $mock->shouldReceive('execute')
                 ->once()
-                ->withArgs(function ($contacts) {
-                    $this->assertEquals('https://test/dav/addressbooks/user@test.com/contacts/d403af1c-8492-4e9b-9833-cf18c795dfa9', $contacts->first()->uri);
+                ->withArgs(function ($contacts) use ($contact) {
+                    $this->assertEquals(["https://test/dav/addressbooks/user@test.com/contacts/{$contact->id}"], $contacts->first()->uri);
                     $this->assertEquals('"test2"', $contacts->first()->etag);
 
                     return true;
@@ -147,14 +147,14 @@ class AddressBookSynchronizerTest extends TestCase
 
         $subscription = $this->getSubscription();
 
-        Contact::factory()->create([
+        $contact = Contact::factory()->create([
             'vault_id' => $subscription->vault_id,
             'id' => 'd403af1c-8492-4e9b-9833-cf18c795dfa9',
         ]);
 
         $tester = (new DavTester($subscription->uri))
             ->getSynctoken('"token"')
-            ->getSyncCollection('"token"', '"test2"', uuid: 'd403af1c-8492-4e9b-9833-cf18c795dfa9')
+            ->getSyncCollection('"token"', '"test2"', uuid: $contact->id)
             ->fake();
 
         (new AddressBookSynchronizer)
@@ -163,11 +163,11 @@ class AddressBookSynchronizerTest extends TestCase
 
         $tester->assert();
 
-        Bus::assertBatched(function (PendingBatch $batch) {
+        Bus::assertBatched(function (PendingBatch $batch) use ($contact) {
             $this->assertCount(2, $batch->jobs);
             $job = $batch->jobs[0];
             $this->assertInstanceOf(GetMultipleVCard::class, $job);
-            $this->assertEquals(['https://test/dav/addressbooks/user@test.com/contacts/d403af1c-8492-4e9b-9833-cf18c795dfa9'], $this->getPrivateValue($job, 'hrefs'));
+            $this->assertEquals(["https://test/dav/addressbooks/user@test.com/contacts/{$contact->id}"], $this->getPrivateValue($job, 'hrefs'));
 
             return true;
         });

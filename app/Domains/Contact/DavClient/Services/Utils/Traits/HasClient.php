@@ -11,6 +11,7 @@ trait HasClient
     /**
      * Set the dav client.
      */
+    #[\ReturnTypeWillChange]
     public function withClient(DavClient $client): self
     {
         $this->client = $client;
