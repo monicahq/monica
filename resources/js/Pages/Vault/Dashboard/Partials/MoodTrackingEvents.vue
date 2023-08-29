@@ -163,7 +163,7 @@ const submit = () => {
             :timezone="'UTC'"
             class="inline-block h-full"
             :masks="masks"
-            :locale="$page.props.user.locale"
+            :locale="$page.props.auth.user?.locale"
             :is-dark="isDark()">
             <template #default="{ inputValue, inputEvents }">
               <input

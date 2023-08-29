@@ -13,9 +13,10 @@ use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultQuickFactsTemplate;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
+use function env;
 
 class VaultSettingsIndexViewHelperTest extends TestCase
 {

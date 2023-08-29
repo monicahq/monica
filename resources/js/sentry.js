@@ -43,8 +43,8 @@ const install = (app, options) => {
 
 const setContext = (vm) => {
   if (activated && typeof vm.$page !== 'undefined') {
-    if (vm.$page.props.user) {
-      Sentry.setUser({ id: vm.$page.props.user.id });
+    if (vm.$page.props.auth.user) {
+      Sentry.setUser({ id: vm.$page.props.auth.user.id });
     }
     Sentry.setTag('page.component', vm.$page.component);
     vm.$once(

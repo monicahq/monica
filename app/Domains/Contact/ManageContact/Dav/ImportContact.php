@@ -16,6 +16,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 use Sabre\VObject\Component\VCard;
+
 use function Safe\preg_split;
 
 #[Order(1)]

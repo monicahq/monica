@@ -4,9 +4,10 @@ namespace Tests\Unit\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
 use App\Domains\Vault\ManageJournals\Web\ViewHelpers\JournalCreateViewHelper;
 use App\Models\Vault;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
+use function env;
 
 class JournalCreateViewHelperTest extends TestCase
 {

@@ -169,7 +169,7 @@ class UpdateCallTest extends TestCase
         $this->executeService($regis, $regis->account, $vault, $contact, $call, $callReason);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Call $call, CallReason $reason, ?Emotion $emotion = null): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Call $call, CallReason $reason, Emotion $emotion = null): void
     {
         $request = [
             'account_id' => $account->id,

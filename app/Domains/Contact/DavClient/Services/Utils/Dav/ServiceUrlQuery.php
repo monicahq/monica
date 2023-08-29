@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Uri;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Safe\Exceptions\UrlException;
+
 use function Safe\parse_url;
 
 class ServiceUrlQuery

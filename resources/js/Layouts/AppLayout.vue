@@ -49,15 +49,15 @@ const logout = () => {
                       class="flex rounded-full border-2 border-transparent text-sm transition focus:border-gray-300 focus:outline-none focus:dark:border-gray-700">
                       <img
                         class="h-8 w-8 rounded-full object-cover"
-                        :src="$page.props.user.profile_photo_url"
-                        :alt="$page.props.user.name" />
+                        :src="$page.props.auth.user?.profile_photo_url"
+                        :alt="$page.props.auth.user?.name" />
                     </button>
 
                     <span v-else class="inline-flex rounded-md">
                       <button
                         type="button"
                         class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition hover:text-gray-700 focus:outline-none dark:bg-gray-900 hover:dark:text-gray-300">
-                        {{ $page.props.user.name }}
+                        {{ $page.props.auth.user?.name }}
 
                         <svg
                           class="-me-0.5 ms-2 h-4 w-4"
@@ -87,7 +87,7 @@ const logout = () => {
                                             {{ $t('Settings') }}
                                         </JetDropdownLink>
 
-                                        <JetDropdownLink v-if="$page.props.user.instance_administrator" :href="route('administration.index')">
+                                        <JetDropdownLink v-if="$page.props.auth.user?.instance_administrator" :href="route('administration.index')">
                                           Administration
                                         </JetDropdownLink>
 
@@ -146,16 +146,16 @@ const logout = () => {
               <div v-if="$page.props.jetstream.managesProfilePhotos" class="me-3 shrink-0">
                 <img
                   class="h-10 w-10 rounded-full object-cover"
-                  :src="$page.props.user.profile_photo_url"
-                  :alt="$page.props.user.name" />
+                  :src="$page.props.auth.user?.profile_photo_url"
+                  :alt="$page.props.auth.user?.name" />
               </div>
 
               <div>
                 <div class="text-base font-medium text-gray-800 dark:text-gray-200">
-                  {{ $page.props.user.name }}
+                  {{ $page.props.auth.user?.name }}
                 </div>
                 <div class="text-sm font-medium text-gray-500">
-                  {{ $page.props.user.email }}
+                  {{ $page.props.auth.user?.email }}
                 </div>
               </div>
             </div>
@@ -169,7 +169,7 @@ const logout = () => {
                                 {{ $t('Settings') }}
                             </JetResponsiveNavLink>
 
-                            <JetResponsiveNavLink v-if="$page.props.user.instance_administrator" :href="route('administration.index')" :active="route().current('administration.index')">
+                            <JetResponsiveNavLink v-if="$page.props.auth.user?.instance_administrator" :href="route('administration.index')" :active="route().current('administration.index')">
                               Administration
                             </JetResponsiveNavLink>
 

@@ -18,7 +18,7 @@ const finalURL = computed(() => {
 
 <template>
   <a
-    v-if="$page.props.auth.user.help_shown"
+    v-if="$page.props.auth.user?.help_shown"
     class="relative inline cursor-pointer"
     :href="finalURL"
     :style="'top:' + top"

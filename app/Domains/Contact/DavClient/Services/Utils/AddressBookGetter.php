@@ -10,6 +10,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Sabre\CardDAV\Plugin as CardDav;
+
 use function Safe\parse_url;
 
 class AddressBookGetter

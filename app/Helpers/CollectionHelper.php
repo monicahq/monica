@@ -43,7 +43,7 @@ class CollectionHelper
     /**
      * Get a Collator object for the locale or current locale.
      */
-    public static function getCollator(?string $locale = null): \Collator
+    public static function getCollator(string $locale = null): \Collator
     {
         static $collators = [];
 

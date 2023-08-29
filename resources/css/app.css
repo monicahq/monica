@@ -1,7 +1,5 @@
 @import 'charts.css';
-@import 'ant-design-vue/lib/popover/style/index.css';
-@import 'ant-design-vue/lib/dropdown/style/index.css';
-@import 'ant-design-vue/lib/tooltip/style/index.css';
+@import 'ant-design-vue/dist/reset.css';
 @import 'v-calendar/dist/style.css';
 
 @tailwind base;

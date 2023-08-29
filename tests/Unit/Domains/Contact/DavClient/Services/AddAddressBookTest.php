@@ -10,8 +10,9 @@ use App\Models\Vault;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Mockery\MockInterface;
-use function Safe\json_encode;
 use Tests\TestCase;
+
+use function Safe\json_encode;
 
 class AddAddressBookTest extends TestCase
 {

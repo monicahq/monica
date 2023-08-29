@@ -5,9 +5,10 @@ namespace Tests\Unit\Domains\Settings\ManageCallReasons\Web\ViewHelpers;
 use App\Domains\Settings\ManageCallReasons\Web\ViewHelpers\PersonalizeCallReasonsIndexViewHelper;
 use App\Models\CallReason;
 use App\Models\CallReasonType;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
+use function env;
 
 class PersonalizeCallReasonsIndexViewHelperTest extends TestCase
 {

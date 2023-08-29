@@ -90,7 +90,7 @@
         :key="email.id"
         class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
         <div class="flex items-center">
-          <a-tooltip v-if="email.verified_at" placement="topLeft" title="Verified" arrow-point-at-center>
+          <a-tooltip v-if="email.verified_at" placement="topLeft" :title="$t('Verified')" arrow-point-at-center>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="me-2 inline h-4 w-4 text-green-600"
