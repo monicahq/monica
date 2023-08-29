@@ -74,7 +74,7 @@ class RedirectIfTwoFactorAuthenticatable
     /**
      * Fire the failed authentication attempt event with the given arguments.
      */
-    protected function fireFailedEvent(Request $request, ?User $user = null): void
+    protected function fireFailedEvent(Request $request, User $user = null): void
     {
         event(new Failed(config('fortify.guard'), $user, [
             'email' => $request->email,

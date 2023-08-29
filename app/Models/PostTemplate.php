@@ -57,7 +57,7 @@ class PostTemplate extends Model
      * Post template entries have a default name that can be translated.
      * Howerer, if a name is set, it will be used instead of the default.
      *
-     * @return Attribute<string,never>
+     * @return Attribute<string,string>
      */
     protected function label(): Attribute
     {
@@ -68,7 +68,8 @@ class PostTemplate extends Model
                 }
 
                 return $value;
-            }
+            },
+            set: fn ($value) => $value,
         );
     }
 }

@@ -108,7 +108,7 @@ class UpdateContactTest extends TestCase
         $this->executeService($regis, $regis->account, $vault, $contact);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ?Gender $gender = null, ?Pronoun $pronoun = null): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Gender $gender = null, Pronoun $pronoun = null): void
     {
         $request = [
             'account_id' => $account->id,

@@ -42,7 +42,7 @@ const providersExists = computed(() => size(props.providers) > 0);
     <div class="relative">
       <div class="mx-auto max-w-3xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <div class="mb-16" v-if="$page.props.jetstream.canUpdateProfileInformation">
-          <UpdateProfileInformationForm :user="$page.props.user" />
+          <UpdateProfileInformationForm :user="$page.props.auth.user" />
         </div>
 
         <div class="mb-16" v-if="$page.props.jetstream.canUpdatePassword">
@@ -50,7 +50,7 @@ const providersExists = computed(() => size(props.providers) > 0);
         </div>
 
         <div class="mb-16" v-if="providersExists">
-          <UpdateProviders :user="$page.props.user" :providers="providers" :user-tokens="userTokens" />
+          <UpdateProviders :providers="providers" :user-tokens="userTokens" />
         </div>
 
         <div class="mb-16" v-if="$page.props.jetstream.canManageTwoFactorAuthentication">

@@ -122,7 +122,7 @@ class UpdateContactImportantDateTest extends TestCase
         $this->executeService($regis, $regis->account, $vault, $contact, $date);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ContactImportantDate $date, ?ContactImportantDateType $contactImportantDateType = null): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ContactImportantDate $date, ContactImportantDateType $contactImportantDateType = null): void
     {
         $request = [
             'account_id' => $account->id,

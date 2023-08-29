@@ -184,7 +184,7 @@ class AttemptToAuthenticateSocialite
     /**
      * Fire the failed authentication attempt event with the given arguments.
      */
-    protected function fireFailedEvent(Request $request, ?User $user = null): void
+    protected function fireFailedEvent(Request $request, User $user = null): void
     {
         event(new Failed('web', $user, [
             'email' => $request->email,

@@ -18,7 +18,7 @@ class PrepareJobsContactPush
      * @param  Collection<array-key,Collection<array-key,string>>  $localChanges
      * @param  Collection<array-key,ContactDto>|null  $changes
      */
-    public function execute(Collection $localChanges, ?Collection $changes = null): Collection
+    public function execute(Collection $localChanges, Collection $changes = null): Collection
     {
         $modified = $this->preparePushChangedContacts($localChanges->get('modified', collect()), $changes ?? collect());
         $added = $this->preparePushAddedContacts($localChanges->get('added', collect()));

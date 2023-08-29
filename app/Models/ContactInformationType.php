@@ -46,7 +46,7 @@ class ContactInformationType extends Model
      * Contact information type entries have a default name that can be translated.
      * Howerer, if a name is set, it will be used instead of the default.
      *
-     * @return Attribute<string,never>
+     * @return Attribute<string,string>
      */
     protected function name(): Attribute
     {
@@ -57,7 +57,8 @@ class ContactInformationType extends Model
                 }
 
                 return $value;
-            }
+            },
+            set: fn ($value) => $value,
         );
     }
 }

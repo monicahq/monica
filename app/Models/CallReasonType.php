@@ -46,7 +46,7 @@ class CallReasonType extends Model
      * Call reason types entries have a default name that can be translated.
      * Howerer, if a name is set, it will be used instead of the default.
      *
-     * @return Attribute<string,never>
+     * @return Attribute<string,string>
      */
     protected function label(): Attribute
     {
@@ -57,7 +57,8 @@ class CallReasonType extends Model
                 }
 
                 return $value;
-            }
+            },
+            set: fn ($value) => $value,
         );
     }
 }

@@ -5,9 +5,10 @@ namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Web\ViewHelpers
 use App\Domains\Settings\ManageNotificationChannels\Web\ViewHelpers\NotificationsIndexViewHelper;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
+use function env;
 
 class NotificationsIndexViewHelperTest extends TestCase
 {

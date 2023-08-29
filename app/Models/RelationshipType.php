@@ -58,7 +58,7 @@ class RelationshipType extends Model
      * Relationship type entries have a default name that can be translated.
      * Howerer, if a name is set, it will be used instead of the default.
      *
-     * @return Attribute<string,never>
+     * @return Attribute<string,string>
      */
     protected function name(): Attribute
     {
@@ -69,7 +69,8 @@ class RelationshipType extends Model
                 }
 
                 return $value;
-            }
+            },
+            set: fn ($value) => $value,
         );
     }
 
@@ -79,7 +80,7 @@ class RelationshipType extends Model
      * Howerer, if a name is set, it will be used instead of the default.
      * Interestingly, the attribute has to be written in camelCase.
      *
-     * @return Attribute<string,never>
+     * @return Attribute<string,string>
      */
     protected function nameReverseRelationship(): Attribute
     {
@@ -90,7 +91,8 @@ class RelationshipType extends Model
                 }
 
                 return $value;
-            }
+            },
+            set: fn ($value) => $value,
         );
     }
 }

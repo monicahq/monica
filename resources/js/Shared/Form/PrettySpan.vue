@@ -26,8 +26,18 @@ span {
   position: relative !important;
   text-decoration: none !important;
   transition-duration: 0.15s !important;
-  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter,
-    backdrop-filter, -webkit-backdrop-filter !important;
+  transition-property:
+    background-color,
+    border-color,
+    color,
+    fill,
+    stroke,
+    opacity,
+    box-shadow,
+    transform,
+    filter,
+    backdrop-filter,
+    -webkit-backdrop-filter !important;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
   font-size: 0.875rem !important;
   line-height: 1.25rem !important;

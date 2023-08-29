@@ -73,7 +73,7 @@ class Gender extends Model
      * Genders have a default name that can be translated.
      * Howerer, if a name is set, it will be used instead of the default.
      *
-     * @return Attribute<string,never>
+     * @return Attribute<string,string>
      */
     protected function name(): Attribute
     {
@@ -84,7 +84,8 @@ class Gender extends Model
                 }
 
                 return $value;
-            }
+            },
+            set: fn ($value) => $value,
         );
     }
 }

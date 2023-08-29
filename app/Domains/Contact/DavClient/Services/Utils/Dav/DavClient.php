@@ -46,7 +46,7 @@ class DavClient
     /**
      * Get current uri.
      */
-    public function path(?string $path = null): string
+    public function path(string $path = null): string
     {
         $uri = GuzzleUtils::uriFor($this->baseUri);
 
@@ -557,7 +557,7 @@ class DavClient
     /**
      * Create a new Element and add it as root's child.
      */
-    private static function addElement(\DOMDocument $dom, \DOMNode $root, string $name, ?string $value = null): \DOMNode
+    private static function addElement(\DOMDocument $dom, \DOMNode $root, string $name, string $value = null): \DOMNode
     {
         return $root->appendChild($dom->createElement($name, $value));
     }

@@ -8,9 +8,10 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Vault;
 use Carbon\Carbon;
-use function env;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
+use function env;
 
 class JournalIndexViewHelperTest extends TestCase
 {
