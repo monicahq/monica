@@ -46,7 +46,7 @@ class ContactInformation extends Model
      * If the contact information type is a phone number or an email, return the
      * content. If it's something else, return the contact information type's label.
      *
-     * @return Attribute<string,never>
+     * @return Attribute<string,string>
      */
     protected function name(): Attribute
     {
@@ -59,7 +59,8 @@ class ContactInformation extends Model
                 } else {
                     return $type->name;
                 }
-            }
+            },
+            set: fn ($value) => $value,
         );
     }
 

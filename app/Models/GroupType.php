@@ -47,7 +47,7 @@ class GroupType extends Model
      * Group type entries have a default label that can be translated.
      * Howerer, if a label is set, it will be used instead of the default.
      *
-     * @return Attribute<string,never>
+     * @return Attribute<string,string>
      */
     protected function label(): Attribute
     {
@@ -58,7 +58,8 @@ class GroupType extends Model
                 }
 
                 return $value;
-            }
+            },
+            set: fn ($value) => $value,
         );
     }
 }
