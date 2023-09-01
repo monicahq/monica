@@ -45,7 +45,7 @@ class DeleteVCard implements ShouldQueue
      */
     private function run(): void
     {
-        Log::channel('database')->info("Delete card {$this->uri}");
+        Log::channel('database')->debug("Delete card {$this->uri}");
 
         $this->subscription->getClient()
             ->request('DELETE', $this->uri);

@@ -2,6 +2,8 @@
 
 namespace App\Domains\Contact\DavClient\Services\Utils;
 
+use App\Domains\Contact\DavClient\Jobs\DeleteVCard;
+use App\Domains\Contact\DavClient\Jobs\PushVCard;
 use App\Domains\Contact\DavClient\Services\UpdateSubscriptionLocalSyncToken;
 use App\Domains\Contact\DavClient\Services\Utils\Dav\DavClient;
 use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDeleteDto;
@@ -77,11 +79,12 @@ class AddressBookSynchronizer
             // Get changes to sync
             $localChanges = $this->getLocalChanges();
 
-            $jobs = $jobs->merge(
-                app(PrepareJobsContactPush::class)
-                    ->withSubscription($this->subscription)
-                    ->execute($localChanges, $changes)
-            );
+            $pushes = app(PrepareJobsContactPush::class)
+                ->withSubscription($this->subscription)
+                ->execute($localChanges, $changes);
+            $this->logs($pushes);
+
+            $jobs = $jobs->merge($pushes);
         }
 
         return $jobs;
@@ -113,11 +116,12 @@ class AddressBookSynchronizer
             // Get changes to sync
             $localChanges = $this->getLocalChanges();
 
-            $jobs = $jobs->merge(
-                app(PrepareJobsContactPushMissed::class)
-                    ->withSubscription($this->subscription)
-                    ->execute($localChanges, $distContacts, $localContacts)
-            );
+            $pushes = app(PrepareJobsContactPushMissed::class)
+                ->withSubscription($this->subscription)
+                ->execute($localChanges, $distContacts, $localContacts);
+            $this->logs($pushes);
+
+            $jobs = $jobs->merge($pushes);
         }
 
         return $jobs;
@@ -149,7 +153,6 @@ class AddressBookSynchronizer
 
         $updated = $data->filter(fn ($contact, $href): bool => $this->filterDistantContacts($contact, $href))
             ->map(fn (array $contact, string $href): ContactDto => new ContactDto($href, Arr::get($contact, 'properties.200.{DAV:}getetag')));
-
         $deleted = $data->filter(fn ($contact): bool => is_array($contact) && $contact['status'] === '404')
             ->map(fn (array $contact, string $href): ContactDto => new ContactDeleteDto($href));
 
@@ -237,5 +240,17 @@ class AddressBookSynchronizer
         }
 
         return $collection;
+    }
+
+    private function logs(Collection $jobs): void
+    {
+        $counts = $jobs->countBy(fn ($job): string => $job::class);
+
+        if (($updated = $counts->get(PushVCard::class, 0)) > 0) {
+            Log::channel('database')->info("Update or create $updated cards to distant server...");
+        }
+        if (($deleted = $counts->get(DeleteVCard::class, 0)) > 0) {
+            Log::channel('database')->info("Delete $deleted cards to distant server...");
+        }
     }
 }

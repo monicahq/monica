@@ -52,6 +52,8 @@ class DeleteMultipleVCard implements ShouldQueue
         $jobs = collect($this->hrefs)
             ->map(fn (string $href): DeleteVCard => $this->deleteVCard($href));
 
+        Log::channel('database')->info("Delete {$jobs->count()} cards on distant server...");
+
         $this->batch()->add($jobs);
     }
 

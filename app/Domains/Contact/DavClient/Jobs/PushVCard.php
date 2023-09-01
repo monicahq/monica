@@ -80,7 +80,7 @@ class PushVCard implements ShouldQueue
     private function pushDistant(int $depth = 1): string
     {
         try {
-            Log::channel('database')->info("Push card {$this->uri}");
+            Log::channel('database')->debug("Push card {$this->uri}");
 
             $response = $this->subscription->getClient()
                 ->request('PUT', $this->uri, $this->card, $this->headers());

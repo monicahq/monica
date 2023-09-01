@@ -51,7 +51,7 @@ class GetVCard implements ShouldQueue
      */
     private function run(): void
     {
-        Log::channel('database')->info("Get card {$this->contact->uri}");
+        Log::channel('database')->debug("Get card {$this->contact->uri}");
 
         $response = $this->subscription->getClient()
             ->request('GET', $this->contact->uri);

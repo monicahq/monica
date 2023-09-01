@@ -11,6 +11,7 @@ use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDto;
 use App\Domains\Contact\DavClient\Services\Utils\Traits\HasCapability;
 use App\Domains\Contact\DavClient\Services\Utils\Traits\HasSubscription;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class PrepareJobsContactUpdater
 {
@@ -35,14 +36,14 @@ class PrepareJobsContactUpdater
      */
     private function refreshMultigetContacts(Collection $refresh): Collection
     {
-        $refresh = $refresh->groupBy(fn ($item): string => $item instanceof ContactDeleteDto ? 'deleted' : 'updated')
+        $refresh = $refresh->groupBy(fn ($item): string => $item::class)
             ->map(fn (Collection $items): array => $items->pluck('uri')->toArray());
 
         $jobs = collect();
-        if (($updated = $refresh->get('updated')) !== null) {
+        if (($updated = $refresh->get(ContactDto::class)) !== null) {
             $jobs->add(new GetMultipleVCard($this->subscription, $updated));
         }
-        if (($deleted = $refresh->get('deleted')) !== null) {
+        if (($deleted = $refresh->get(ContactDeleteDto::class)) !== null) {
             $jobs->add(new DeleteMultipleVCard($this->subscription, $deleted));
         }
 
@@ -56,10 +57,24 @@ class PrepareJobsContactUpdater
      */
     private function refreshSimpleGetContacts(Collection $refresh): Collection
     {
-        return $refresh
-            ->map(fn (ContactDto $contact) => $contact instanceof ContactDeleteDto
-                ? new DeleteVCard($this->subscription, $contact->uri)
-                : new GetVCard($this->subscription, $contact)
+        $refresh = $refresh->groupBy(fn ($item): string => $item::class);
+
+        $jobs = collect();
+        if (($updated = $refresh->get(ContactDto::class)) !== null) {
+            Log::channel('database')->info("Get {$updated->count()} cards from distant server...");
+
+            $jobs = $jobs->merge(
+                $updated->map(fn (ContactDto $contact) => new GetVCard($this->subscription, $contact))
             );
+        }
+        if (($deleted = $refresh->get(ContactDeleteDto::class)) !== null) {
+            Log::channel('database')->info("Delete {$deleted->count()} cards from distant server...");
+
+            $jobs = $jobs->merge(
+                $deleted->map(fn (ContactDto $contact) => new DeleteVCard($this->subscription, $contact->uri))
+            );
+        }
+
+        return $jobs;
     }
 }

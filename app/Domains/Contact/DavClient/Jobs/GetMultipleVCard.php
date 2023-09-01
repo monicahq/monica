@@ -59,6 +59,8 @@ class GetMultipleVCard implements ShouldQueue
             ->map(fn (array $contact, string $href): ?UpdateVCard => $this->updateVCard($contact, $href))
             ->filter();
 
+        Log::channel('database')->info("Get {$jobs->count()} cards from distant server...");
+
         $this->batch()->add($jobs);
     }
 
