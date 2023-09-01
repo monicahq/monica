@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class DeleteMultipleVCard implements ShouldQueue
 {
@@ -32,6 +33,22 @@ class DeleteMultipleVCard implements ShouldQueue
             return; // @codeCoverageIgnore
         }
 
+        Log::shareContext([
+            'addressbook_subscription_id' => $this->subscription->id,
+        ]);
+
+        try {
+            $this->run();
+        } finally {
+            Log::flushSharedContext();
+        }
+    }
+
+    /**
+     * Run the job.
+     */
+    private function run(): void
+    {
         $jobs = collect($this->hrefs)
             ->map(fn (string $href): DeleteVCard => $this->deleteVCard($href));
 

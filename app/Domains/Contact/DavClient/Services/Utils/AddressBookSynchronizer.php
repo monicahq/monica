@@ -230,7 +230,7 @@ class AddressBookSynchronizer
                 $this->subscription->save();
             }
         } catch (RequestException $e) {
-            Log::error(__CLASS__.' '.__FUNCTION__.':'.$e->getMessage(), [$e]);
+            Log::channel('database')->error(__CLASS__.' '.__FUNCTION__.':'.$e->getMessage(), [$e]);
             $collection = [];
             $this->subscription->distant_sync_token = null;
             $this->subscription->save();

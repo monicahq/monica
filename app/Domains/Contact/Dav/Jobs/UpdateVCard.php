@@ -65,7 +65,7 @@ class UpdateVCard extends QueuableService implements ServiceInterface
             $newtag = $this->updateCard($this->data['uri'], $this->data['card']);
 
             if ($newtag !== null && ($etag = Arr::get($this->data, 'etag')) !== null && $newtag !== $etag) {
-                Log::warning(__CLASS__.' '.__FUNCTION__." wrong etag when updating contact. Expected [$etag], got [$newtag]", [
+                Log::channel('database')->warning(__CLASS__.' '.__FUNCTION__." wrong etag when updating contact. Expected [$etag], got [$newtag]", [
                     'contacturl' => $this->data['uri'],
                     'carddata' => $this->data['card'],
                 ]);
@@ -99,7 +99,7 @@ class UpdateVCard extends QueuableService implements ServiceInterface
                 ]);
             }
         } catch (\Exception $e) {
-            Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
+            Log::channel('database')->error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
                 'uri' => $uri,
                 'carddata' => $card,
                 $e,

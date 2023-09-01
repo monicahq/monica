@@ -473,7 +473,7 @@ class DavClient
 
         $url = Str::startsWith($url, 'http') ? $url : $this->path($url);
 
-        Log::debug(__CLASS__.' '.__FUNCTION__.'[request]: '.$method.' '.$url, [
+        Log::channel('database')->debug(__CLASS__.' '.__FUNCTION__.'[request]: '.$method.' '.$url, [
             'body' => $body,
             'headers' => $headers,
             'options' => $options,
@@ -482,13 +482,13 @@ class DavClient
         $response = $request
             ->send($method, $url, $options)
             ->throw(function (Response $response) use ($method, $url) {
-                Log::debug(__CLASS__.' '.__FUNCTION__.'[error]: '.$method.' '.$url.' '.$response->status(), [
+                Log::channel('database')->debug(__CLASS__.' '.__FUNCTION__.'[error]: '.$method.' '.$url.' '.$response->status(), [
                     'body' => $response->body(),
                     'headers' => $response->headers(),
                 ]);
             });
 
-        Log::debug(__CLASS__.' '.__FUNCTION__.'[response]: '.$method.' '.$url.' '.$response->status(), [
+        Log::channel('database')->debug(__CLASS__.' '.__FUNCTION__.'[response]: '.$method.' '.$url.' '.$response->status(), [
             'body' => $response->body(),
             'headers' => $response->headers(),
         ]);
@@ -557,7 +557,7 @@ class DavClient
     /**
      * Create a new Element and add it as root's child.
      */
-    private static function addElement(\DOMDocument $dom, \DOMNode $root, string $name, string $value = null): \DOMNode
+    private static function addElement(\DOMDocument $dom, \DOMNode $root, string $name, string $value = ''): \DOMNode
     {
         return $root->appendChild($dom->createElement($name, $value));
     }

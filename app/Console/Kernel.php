@@ -6,6 +6,7 @@ use App\Console\Scheduling\CronEvent;
 use App\Domains\Contact\Dav\Jobs\CleanSyncToken;
 use App\Domains\Contact\DavClient\Jobs\UpdateAddressBooks;
 use App\Domains\Contact\ManageReminders\Jobs\ProcessScheduledContactReminders;
+use App\Logging\CleanLogs;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\App;
@@ -44,6 +45,7 @@ class Kernel extends ConsoleKernel
         $this->scheduleJob($schedule, UpdateAddressBooks::class, 'hourly');
         $this->scheduleJob($schedule, ProcessScheduledContactReminders::class, 'minutes', 1);
         $this->scheduleJob($schedule, CleanSyncToken::class, 'daily');
+        $this->scheduleJob($schedule, CleanLogs::class, 'daily');
     }
 
     /**
