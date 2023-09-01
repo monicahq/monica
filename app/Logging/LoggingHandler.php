@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\LogRecord;
 
+use function Safe\json_encode;
+
 class LoggingHandler extends AbstractProcessingHandler
 {
     protected function write(LogRecord $record): void
