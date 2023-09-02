@@ -48,7 +48,7 @@ class SynchronizeAddressBook extends BaseService
                 ->withSubscription($this->subscription)
                 ->execute($force);
         } catch (ClientException $e) {
-            Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
+            Log::channel('database')->error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
                 'body' => $e->hasResponse() ? $e->getResponse()->getBody() : null,
                 $e,
             ]);

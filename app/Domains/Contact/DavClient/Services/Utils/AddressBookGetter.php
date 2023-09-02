@@ -25,7 +25,7 @@ class AddressBookGetter
         try {
             return $this->getAddressBookData();
         } catch (ClientException $e) {
-            Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [$e]);
+            Log::channel('database')->error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [$e]);
             throw $e;
         }
     }

@@ -17,6 +17,13 @@ class SynchronizeAddressBooks implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Localizable;
 
     /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 1;
+
+    /**
      * Create a new job instance.
      */
     public function __construct(
@@ -31,7 +38,19 @@ class SynchronizeAddressBooks implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->withLocale($this->subscription->user->preferredLocale(), fn () => $this->synchronize());
+        try {
+            $logid = $this->subscription->current_logid ?? 0;
+            $this->subscription->current_logid = $logid + 1;
+            $this->subscription->save();
+
+            Log::shareContext([
+                'addressbook_subscription_id' => $this->subscription->id,
+            ]);
+
+            $this->withLocale($this->subscription->user->preferredLocale(), fn () => $this->synchronize());
+        } finally {
+            Log::flushSharedContext();
+        }
     }
 
     /**
@@ -39,11 +58,9 @@ class SynchronizeAddressBooks implements ShouldQueue
      */
     private function synchronize(): void
     {
-        try {
-            Log::withContext([
-                'addressbook_subscription_id' => $this->subscription->id,
-            ]);
+        Log::channel('database')->info("Synchronize addressbook '{$this->subscription->vault->name}'");
 
+        try {
             $batchId = app(SynchronizeAddressBook::class)->execute([
                 'account_id' => $this->subscription->user->account_id,
                 'addressbook_subscription_id' => $this->subscription->id,
@@ -52,13 +69,11 @@ class SynchronizeAddressBooks implements ShouldQueue
 
             $this->subscription->last_batch = $batchId;
         } catch (\Exception $e) {
-            Log::error(__CLASS__.' '.__FUNCTION__.':'.$e->getMessage(), [$e]);
+            Log::stack([config('logging.default'), 'database'])->error(__CLASS__.' '.__FUNCTION__.':'.$e->getMessage(), [$e]);
             $this->fail($e);
         } finally {
             $this->subscription->last_synchronized_at = now();
             $this->subscription->save();
-
-            Log::withoutContext();
         }
     }
 }

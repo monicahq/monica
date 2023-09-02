@@ -3,14 +3,16 @@
 namespace App\Models;
 
 use App\Domains\Contact\DavClient\Services\Utils\Dav\DavClient;
+use App\Logging\Loggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-class AddressBookSubscription extends Model
+class AddressBookSubscription extends Model implements Loggable
 {
     use HasFactory, HasUuids;
 
@@ -39,6 +41,7 @@ class AddressBookSubscription extends Model
         'password',
         'sync_way',
         'distant_sync_token',
+        'current_logid',
         'frequency',
         'last_synchronized_at',
         'active',
@@ -62,6 +65,7 @@ class AddressBookSubscription extends Model
         'last_synchronized_at' => 'datetime',
         'active' => 'boolean',
         'capabilities' => 'array',
+        'current_logid' => 'integer',
     ];
 
     /**
@@ -103,6 +107,14 @@ class AddressBookSubscription extends Model
     public function localSyncToken(): BelongsTo
     {
         return $this->belongsTo(SyncToken::class);
+    }
+
+    /**
+     * Get the subscription's logs.
+     */
+    public function logs(): MorphMany
+    {
+        return $this->morphMany(Log::class, 'loggable');
     }
 
     /**

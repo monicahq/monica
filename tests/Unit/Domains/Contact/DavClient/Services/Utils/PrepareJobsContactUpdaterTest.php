@@ -3,8 +3,8 @@
 namespace Tests\Unit\Domains\Contact\DavClient\Services\Utils;
 
 use App\Domains\Contact\Dav\Web\Backend\CardDAV\CardDAVBackend;
+use App\Domains\Contact\DavClient\Jobs\DeleteLocalVCard;
 use App\Domains\Contact\DavClient\Jobs\DeleteMultipleVCard;
-use App\Domains\Contact\DavClient\Jobs\DeleteVCard;
 use App\Domains\Contact\DavClient\Jobs\GetMultipleVCard;
 use App\Domains\Contact\DavClient\Jobs\GetVCard;
 use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDeleteDto;
@@ -192,7 +192,7 @@ class PrepareJobsContactUpdaterTest extends TestCase
 
         $this->assertCount(1, $batchs);
         $batch = $batchs->first();
-        $this->assertInstanceOf(DeleteVCard::class, $batch);
+        $this->assertInstanceOf(DeleteLocalVCard::class, $batch);
         $uri = $this->getPrivateValue($batch, 'uri');
         $this->assertEquals('https://test/dav/uuid2', $uri);
     }

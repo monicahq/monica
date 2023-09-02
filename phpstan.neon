@@ -43,3 +43,6 @@ parameters:
           path: */app/Domains/Contact/DavClient/Services/Utils/AddressBookSynchronizer.php
         - message: '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayGet\.#'
           path: */app/Domains/Contact/DavClient/Services/Utils/AddressBookSynchronizer.php
+
+        - message: '#Access to an undefined property App\\Logging\\Loggable::\$id\.#'
+          path: */app/Logging/LoggingHandler.php

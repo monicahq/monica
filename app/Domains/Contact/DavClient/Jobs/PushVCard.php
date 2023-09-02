@@ -46,6 +46,22 @@ class PushVCard implements ShouldQueue
      */
     public function handle(): void
     {
+        Log::shareContext([
+            'addressbook_subscription_id' => $this->subscription->id,
+        ]);
+
+        try {
+            $this->run();
+        } finally {
+            Log::flushSharedContext();
+        }
+    }
+
+    /**
+     * Run the job.
+     */
+    private function run(): void
+    {
         $contact = Contact::where('vault_id', $this->subscription->vault_id)
             ->findOrFail($this->contactId);
 
@@ -64,6 +80,8 @@ class PushVCard implements ShouldQueue
     private function pushDistant(int $depth = 1): string
     {
         try {
+            Log::channel('database')->debug("Push card {$this->uri}");
+
             $response = $this->subscription->getClient()
                 ->request('PUT', $this->uri, $this->card, $this->headers());
 
@@ -75,7 +93,7 @@ class PushVCard implements ShouldQueue
 
                 return $this->pushDistant(--$depth);
             } else {
-                Log::error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
+                Log::channel('database')->error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
                     'body' => $e->response->body(),
                     $e,
                 ]);

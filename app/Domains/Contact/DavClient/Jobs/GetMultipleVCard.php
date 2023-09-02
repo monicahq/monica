@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Sabre\CardDAV\Plugin as CardDav;
 
 class GetMultipleVCard implements ShouldQueue
@@ -35,12 +36,30 @@ class GetMultipleVCard implements ShouldQueue
             return; // @codeCoverageIgnore
         }
 
+        Log::shareContext([
+            'addressbook_subscription_id' => $this->subscription->id,
+        ]);
+
+        try {
+            $this->run();
+        } finally {
+            Log::flushSharedContext();
+        }
+    }
+
+    /**
+     * Run the job.
+     */
+    private function run(): void
+    {
         $data = $this->addressbookMultiget();
 
         $jobs = collect($data)
             ->filter(fn (array $contact): bool => is_array($contact) && $contact['status'] === '200')
             ->map(fn (array $contact, string $href): ?UpdateVCard => $this->updateVCard($contact, $href))
             ->filter();
+
+        Log::channel('database')->info("Get {$jobs->count()} card(s) from distant server...");
 
         $this->batch()->add($jobs);
     }

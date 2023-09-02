@@ -2,6 +2,7 @@
 
 namespace App\Domains\Contact\DavClient\Jobs;
 
+use App\Domains\Contact\Dav\Web\Backend\CardDAV\CardDAVBackend;
 use App\Models\AddressBookSubscription;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -10,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class DeleteMultipleVCard implements ShouldQueue
+class DeleteLocalVCard implements ShouldQueue
 {
     use Batchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -19,20 +20,16 @@ class DeleteMultipleVCard implements ShouldQueue
      */
     public function __construct(
         private AddressBookSubscription $subscription,
-        private array $hrefs
+        private string $uri
     ) {
         $this->subscription = $subscription->withoutRelations();
     }
 
     /**
-     * Update the Last Consulted At field for the given contact.
+     * Send Delete contact.
      */
     public function handle(): void
     {
-        if (! $this->batching()) {
-            return; // @codeCoverageIgnore
-        }
-
         Log::shareContext([
             'addressbook_subscription_id' => $this->subscription->id,
         ]);
@@ -49,19 +46,9 @@ class DeleteMultipleVCard implements ShouldQueue
      */
     private function run(): void
     {
-        $jobs = collect($this->hrefs)
-            ->map(fn (string $href): DeleteLocalVCard => $this->deleteVCard($href));
+        Log::channel('database')->debug("Delete local card {$this->uri}");
 
-        Log::channel('database')->info("Delete {$jobs->count()} card(s) from distant server...");
-
-        $this->batch()->add($jobs);
-    }
-
-    /**
-     * Delete the contact.
-     */
-    private function deleteVCard(string $href): DeleteLocalVCard
-    {
-        return new DeleteLocalVCard($this->subscription, $href);
+        $backend = app(CardDAVBackend::class)->withUser($this->subscription->user);
+        $backend->deleteCard($this->subscription->vault_id, $this->uri);
     }
 }

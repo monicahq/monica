@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class DeleteVCard implements ShouldQueue
 {
@@ -28,6 +29,24 @@ class DeleteVCard implements ShouldQueue
      */
     public function handle(): void
     {
+        Log::shareContext([
+            'addressbook_subscription_id' => $this->subscription->id,
+        ]);
+
+        try {
+            $this->run();
+        } finally {
+            Log::flushSharedContext();
+        }
+    }
+
+    /**
+     * Run the job.
+     */
+    private function run(): void
+    {
+        Log::channel('database')->debug("Delete card {$this->uri}");
+
         $this->subscription->getClient()
             ->request('DELETE', $this->uri);
     }
