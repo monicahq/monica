@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('level')->index();
             $table->string('level_name');
             $table->string('channel')->index();
-            $table->longText('message');
-            $table->longText('context');
-            $table->longText('extra');
-            $table->longText('formatted');
+            $table->longText('message')->nullable();
+            $table->longText('context')->nullable();
+            $table->longText('extra')->nullable();
+            $table->longText('formatted')->nullable();
             $table->morphs('loggable');
             $table->dateTime('logged_at');
             $table->timestamps();

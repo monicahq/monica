@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Domains\Contact\DavClient\Services\Utils\Dav\DavClient;
+use App\Logging\Loggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-class AddressBookSubscription extends Model
+class AddressBookSubscription extends Model implements Loggable
 {
     use HasFactory, HasUuids;
 

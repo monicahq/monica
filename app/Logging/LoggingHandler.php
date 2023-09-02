@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\LogRecord;
 
-use function Safe\json_encode;
-
 class LoggingHandler extends AbstractProcessingHandler
 {
     protected function write(LogRecord $record): void
@@ -19,27 +17,27 @@ class LoggingHandler extends AbstractProcessingHandler
         try {
             if (isset($context['addressbook_subscription_id'])) {
                 $subscription = AddressBookSubscription::findOrFail($context['addressbook_subscription_id']);
-                $this->logAddressBookSubscription($record, $subscription);
+                $this->logRecord($record, $subscription);
             }
         } catch (ModelNotFoundException) {
             // ignore log
         }
     }
 
-    private function logAddressBookSubscription(LogRecord $record, AddressBookSubscription $subscription): void
+    private function logRecord(LogRecord $record, Loggable $loggable): void
     {
         Log::create([
-            'group_id' => $subscription->current_logid ?? 0,
+            'group_id' => $loggable->current_logid ?? 0,
             'level' => $record->level->value,
             'level_name' => $record->level->getName(),
             'channel' => $record->channel,
             'message' => $record->message,
-            'context' => json_encode($record->context),
-            'extra' => json_encode($record->extra),
+            'context' => count($record->context) > 0 ? $record->context : null,
+            'extra' => count($record->extra) > 0 ? $record->extra : null,
             'formatted' => (string) $record->formatted,
             'logged_at' => $record->datetime,
-            'loggable_type' => AddressBookSubscription::class,
-            'loggable_id' => $subscription->id,
+            'loggable_type' => $loggable::class,
+            'loggable_id' => $loggable->id,
         ]);
     }
 }
