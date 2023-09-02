@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Domains\Contact\DavClient\Jobs;
 
+use App\Domains\Contact\DavClient\Jobs\DeleteLocalVCard;
 use App\Domains\Contact\DavClient\Jobs\DeleteMultipleVCard;
-use App\Domains\Contact\DavClient\Jobs\DeleteVCard;
 use App\Models\AddressBookSubscription;
 use Illuminate\Bus\DatabaseBatchRepository;
 use Illuminate\Bus\PendingBatch;
@@ -37,7 +37,7 @@ class DeleteMultipleVCardTest extends TestCase
         $batch = app(DatabaseBatchRepository::class)->store($pendingBatch);
         $job->withBatchId($batch->id)->handle();
 
-        $fake->assertDispatched(function (DeleteVCard $updateVCard) {
+        $fake->assertDispatched(function (DeleteLocalVCard $updateVCard) {
             $uri = $this->getPrivateValue($updateVCard, 'uri');
             $this->assertEquals('https://test/dav/uri', $uri);
 

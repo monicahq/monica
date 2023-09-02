@@ -247,10 +247,10 @@ class AddressBookSynchronizer
         $counts = $jobs->countBy(fn ($job): string => $job::class);
 
         if (($updated = $counts->get(PushVCard::class, 0)) > 0) {
-            Log::channel('database')->info("Update or create $updated cards to distant server...");
+            Log::channel('database')->info("Update or create $updated card(s) to distant server...");
         }
         if (($deleted = $counts->get(DeleteVCard::class, 0)) > 0) {
-            Log::channel('database')->info("Delete $deleted cards to distant server...");
+            Log::channel('database')->info("Delete $deleted card(s) to distant server...");
         }
     }
 }

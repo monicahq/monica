@@ -58,7 +58,7 @@ class SynchronizeAddressBooks implements ShouldQueue
      */
     private function synchronize(): void
     {
-        Log::channel('database')->info('Synchronize addressbook');
+        Log::channel('database')->info("Synchronize addressbook '{$this->subscription->vault->name}'");
 
         try {
             $batchId = app(SynchronizeAddressBook::class)->execute([
@@ -74,8 +74,6 @@ class SynchronizeAddressBooks implements ShouldQueue
         } finally {
             $this->subscription->last_synchronized_at = now();
             $this->subscription->save();
-
-            Log::channel('database')->info('End of synchronization');
         }
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Domains\Contact\DavClient\Services\Utils;
 
+use App\Domains\Contact\DavClient\Jobs\DeleteLocalVCard;
 use App\Domains\Contact\DavClient\Jobs\DeleteMultipleVCard;
-use App\Domains\Contact\DavClient\Jobs\DeleteVCard;
 use App\Domains\Contact\DavClient\Jobs\GetMultipleVCard;
 use App\Domains\Contact\DavClient\Jobs\GetVCard;
 use App\Domains\Contact\DavClient\Services\Utils\Model\ContactDeleteDto;
@@ -61,17 +61,17 @@ class PrepareJobsContactUpdater
 
         $jobs = collect();
         if (($updated = $refresh->get(ContactDto::class)) !== null) {
-            Log::channel('database')->info("Get {$updated->count()} cards from distant server...");
+            Log::channel('database')->info("Get {$updated->count()} card(s) from distant server...");
 
             $jobs = $jobs->merge(
                 $updated->map(fn (ContactDto $contact) => new GetVCard($this->subscription, $contact))
             );
         }
         if (($deleted = $refresh->get(ContactDeleteDto::class)) !== null) {
-            Log::channel('database')->info("Delete {$deleted->count()} cards from distant server...");
+            Log::channel('database')->info("Delete {$deleted->count()} card(s) from distant server...");
 
             $jobs = $jobs->merge(
-                $deleted->map(fn (ContactDto $contact) => new DeleteVCard($this->subscription, $contact->uri))
+                $deleted->map(fn (ContactDto $contact) => new DeleteLocalVCard($this->subscription, $contact->uri))
             );
         }
 
