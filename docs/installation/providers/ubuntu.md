@@ -2,7 +2,7 @@
 
 <img alt="Ubuntu" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Logo-ubuntu_cof-orange-hex.svg/120px-Logo-ubuntu_cof-orange-hex.svg.png" width="120" height="120" />
 
-Monica can run on [Ubuntu 18.04 (Bionic Beaver)](http://releases.ubuntu.com/18.04/).
+Monica can run on [Ubuntu 22.04 (Jammy Jellyfish)](http://releases.ubuntu.com/22.04/).
 
 - [Prerequisites](#prerequisites)
   - [Types of databases](#types-of-databases)
@@ -35,6 +35,13 @@ sudo apt update
 sudo apt install -y git
 ```
 
+**Unzip:** Unzip is required but was not installed by default. Install it with:
+
+```sh
+sudo apt update
+sudo apt install -y unzip
+```
+
 **Apache:** Apache should come pre-installed with your server. If it's not, install it with:
 
 ```sh
@@ -55,9 +62,7 @@ Then install php 8.1 with these extensions:
 
 ```sh
 sudo apt update
-sudo apt install -y php8.1 php8.1-bcmath php8.1-cli php8.1-curl php8.1-common \
-    php8.1-fpm php8.1-gd php8.1-gmp php8.1-intl php-json php8.1-mbstring \
-    php8.1-mysql php8.1-opcache php8.1-redis php8.1-xml php8.1-zip
+sudo apt install -y php8.1-{bcmath,cli,curl,common,fpm,gd,gmp,intl,mbstring,mysql,opcache,redis,xml,zip}
 ```
 
 **Composer:** After you're done installing PHP, you'll need the [Composer](https://getcomposer.org/download/) dependency manager.
@@ -74,7 +79,7 @@ rm -f composer-setup.php
 **Node.js:** Install node.js with package manager.
 
 ```sh
-curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
 ```
 
@@ -115,7 +120,7 @@ cd /var/www/monica
 # Get latest tags from GitHub
 git fetch
 # Clone the desired version
-git checkout tags/v2.18.0
+git checkout tags/v4.0.0
 ```
 
 ### 2. Setup the database
@@ -157,16 +162,23 @@ exit
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
 2. Update `.env` to your specific needs
-    - set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
+   - Update database information.
+   ```diff
+   - DB_USERNAME=homestead
+   - DB_PASSWORD=secret
+   + DB_USERNAME=monica
+   # Use the password you created.
+   + DB_PASSWORD=strongpassword
+   ```
     - configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
     - set the `APP_ENV` variable to `production`, `local` is only used for the development version. Beware: setting `APP_ENV` to `production` will force HTTPS. Skip this if you're running Monica locally.
-3. Run `composer install --no-interaction --no-dev` to install all packages.
-4. Run `yarn install` to install frontend packages, then `yarn run production` to build the assets (js, css).
-5. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-6. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
+4. Run `composer install --no-interaction --no-dev` to install all packages.
+5. Run `yarn install` to install frontend packages, then `yarn run production` to build the assets (js, css).
+6. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
+7. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
     - You can use `email` and `password` parameter to setup a first account directly: `php artisan setup:production --email=your@email.com --password=yourpassword -v`
-7. _Optional_: Setup the queues with Redis, Beanstalk or Amazon SQS: see optional instruction of [generic installation](generic.md#setup-queues)
-8. _Optional_: Setup the access tokens to use the API follow optional instruction of [generic installation](generic.md#setup-access-tokens)
+8. _Optional_: Setup the queues with Redis, Beanstalk or Amazon SQS: see optional instruction of [generic installation](generic.md#setup-queues)
+9. _Optional_: Setup the access tokens to use the API follow optional instruction of [generic installation](generic.md#setup-access-tokens)
 
 ### 4. Configure cron job
 
@@ -207,11 +219,11 @@ sudo a2enmod rewrite
 sudo nano /etc/apache2/sites-available/monica.conf
 ```
 
-Then, in the `nano` text editor window you just opened, copy the following - swapping the `**YOUR IP ADDRESS/DOMAIN**` with your server's IP address/associated domain:
+Then, in the `nano` text editor window you just opened, copy the following - swapping the `monica.example.com` with your server's IP address/associated domain:
 
 ```html
 <VirtualHost *:80>
-    ServerName **YOUR IP ADDRESS/DOMAIN**
+    ServerName monica.example.com
 
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/monica/public
