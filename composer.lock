@@ -2984,16 +2984,16 @@
         },
         {
             "name": "laravel/socialite",
-            "version": "v5.8.1",
+            "version": "v5.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/socialite.git",
-                "reference": "9989b4530331597fae811bca240bf4e8f15e804b"
+                "reference": "14acfa3262875f180fba51efe3c7aaa089a9ef24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/socialite/zipball/9989b4530331597fae811bca240bf4e8f15e804b",
-                "reference": "9989b4530331597fae811bca240bf4e8f15e804b",
+                "url": "https://api.github.com/repos/laravel/socialite/zipball/14acfa3262875f180fba51efe3c7aaa089a9ef24",
+                "reference": "14acfa3262875f180fba51efe3c7aaa089a9ef24",
                 "shasum": ""
             },
             "require": {
@@ -3050,7 +3050,7 @@
                 "issues": "https://github.com/laravel/socialite/issues",
                 "source": "https://github.com/laravel/socialite"
             },
-            "time": "2023-08-21T13:06:52+00:00"
+            "time": "2023-09-05T15:20:21+00:00"
         },
         {
             "name": "laravel/telescope",
