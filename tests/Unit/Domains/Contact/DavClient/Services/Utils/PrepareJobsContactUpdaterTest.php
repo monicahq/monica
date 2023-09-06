@@ -20,8 +20,8 @@ use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
 class PrepareJobsContactUpdaterTest extends TestCase
 {
-    use DatabaseTransactions;
     use CardEtag;
+    use DatabaseTransactions;
 
     /** @test */
     public function it_sync_changes_multiget()

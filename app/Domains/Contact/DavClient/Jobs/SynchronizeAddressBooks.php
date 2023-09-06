@@ -14,7 +14,7 @@ use Illuminate\Support\Traits\Localizable;
 
 class SynchronizeAddressBooks implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Localizable;
+    use Dispatchable, InteractsWithQueue, Localizable, Queueable, SerializesModels;
 
     /**
      * The number of times the job may be attempted.

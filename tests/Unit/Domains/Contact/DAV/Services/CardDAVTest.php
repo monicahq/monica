@@ -11,7 +11,7 @@ use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
 class CardDAVTest extends TestCase
 {
-    use DatabaseTransactions, CardEtag;
+    use CardEtag, DatabaseTransactions;
 
     /**
      * @test
