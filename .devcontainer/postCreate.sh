@@ -14,7 +14,7 @@ set_apache() {
     chgrp -R www-data $ROOT/storage && chmod -R g+w $ROOT/storage
     sudo rm -rf /var/www/html && sudo ln -s "$ROOT/public" /var/www/html
     sudo a2enmod rewrite
-    sudo service apache2 restart
+    sudo apache2ctl restart
 }
 
 set_database() {

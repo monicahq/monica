@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo service apache2 restart
+sudo apache2ctl restart

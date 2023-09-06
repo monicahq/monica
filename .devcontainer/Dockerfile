@@ -1,6 +1,6 @@
 # Update the VARIANT arg in docker-compose.yml to pick a PHP version: 8, 8.0, 8.1
 ARG VARIANT=8
-FROM mcr.microsoft.com/vscode/devcontainers/php:dev-${VARIANT}
+FROM mcr.microsoft.com/devcontainers/php:${VARIANT}
 
 # Install packages
 RUN set -ex; \

@@ -5,7 +5,7 @@
   "dockerComposeFile": "docker-compose.yml",
 
   // For use with PHP or Apache (e.g.php -S localhost:8080 or apache2ctl start)
-  "forwardPorts": [80],
+  "forwardPorts": [8080],
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": ".devcontainer/postCreate.sh",
