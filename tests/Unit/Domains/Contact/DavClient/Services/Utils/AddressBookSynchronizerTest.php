@@ -26,8 +26,8 @@ use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
 class AddressBookSynchronizerTest extends TestCase
 {
-    use DatabaseTransactions;
     use CardEtag;
+    use DatabaseTransactions;
 
     #[Test]
     public function it_sync_empty_changes()

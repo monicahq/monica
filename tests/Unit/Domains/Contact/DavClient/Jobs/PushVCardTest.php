@@ -16,8 +16,8 @@ use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
 class PushVCardTest extends TestCase
 {
-    use DatabaseTransactions;
     use CardEtag;
+    use DatabaseTransactions;
 
     /** @test */
     public function it_create_dto_string()

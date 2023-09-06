@@ -13,9 +13,9 @@ use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
 class ExportGenderTest extends TestCase
 {
-    use DatabaseTransactions,
-        PHPUnitAssertions,
-        CardEtag;
+    use CardEtag,
+        DatabaseTransactions,
+        PHPUnitAssertions;
 
     /** @var int */
     const defaultPropsCount = 3;

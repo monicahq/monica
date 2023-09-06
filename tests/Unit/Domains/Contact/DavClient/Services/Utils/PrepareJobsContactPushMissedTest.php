@@ -17,8 +17,8 @@ use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
 class PrepareJobsContactPushMissedTest extends TestCase
 {
-    use DatabaseTransactions;
     use CardEtag;
+    use DatabaseTransactions;
 
     /** @test */
     public function it_push_contacts_missed()

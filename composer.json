@@ -12,7 +12,7 @@
   "require": {
     "php": "^8.2",
     "ext-fileinfo": "*",
-    "asbiin/laravel-webauthn": "^3.2",
+    "asbiin/laravel-webauthn": "^4.0",
     "codezero/laravel-localizer": "^2.0",
     "doctrine/dbal": "^3.6",
     "guzzlehttp/guzzle": "^7.4",

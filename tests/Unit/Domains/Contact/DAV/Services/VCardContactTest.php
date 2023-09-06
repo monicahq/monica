@@ -12,7 +12,7 @@ use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
 class VCardContactTest extends TestCase
 {
-    use DatabaseTransactions, CardEtag, PHPUnitAssertions;
+    use CardEtag, DatabaseTransactions, PHPUnitAssertions;
 
     /**
      * @test

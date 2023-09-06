@@ -18,8 +18,8 @@ use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
 class GetVCardTest extends TestCase
 {
-    use DatabaseTransactions;
     use CardEtag;
+    use DatabaseTransactions;
 
     /** @test */
     public function it_get_card()
