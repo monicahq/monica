@@ -8,26 +8,28 @@
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
-            "version": "3.3.1",
+            "version": "3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbiin/laravel-webauthn.git",
-                "reference": "fa246351081aac52c7cb48fbabf42510c3475ab9"
+                "reference": "a572cd66c64144d3b2153a023eb5dc9458a6bb72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/fa246351081aac52c7cb48fbabf42510c3475ab9",
-                "reference": "fa246351081aac52c7cb48fbabf42510c3475ab9",
+                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/a572cd66c64144d3b2153a023eb5dc9458a6bb72",
+                "reference": "a572cd66c64144d3b2153a023eb5dc9458a6bb72",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "^9.0 || ^10.0",
                 "php": ">=8.1",
                 "psr/http-factory-implementation": "1.0",
-                "thecodingmachine/safe": "^2.0",
                 "web-auth/cose-lib": "^4.0",
                 "web-auth/webauthn-lib": "^4.0",
                 "web-token/jwt-signature": "^3.0"
+            },
+            "conflict": {
+                "web-auth/webauthn-lib": "4.7.0"
             },
             "require-dev": {
                 "ext-sqlite3": "*",
@@ -39,8 +41,7 @@
                 "phpstan/phpstan-deprecation-rules": "^1.0",
                 "phpstan/phpstan-phpunit": "^1.0",
                 "phpstan/phpstan-strict-rules": "^1.0",
-                "phpunit/phpunit": "^9.5",
-                "thecodingmachine/phpstan-safe-rule": "^1.0"
+                "phpunit/phpunit": "^9.5"
             },
             "suggest": {
                 "guzzlehttp/psr7": "To provide a psr/http-factory-implementation implementation",
@@ -92,7 +93,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-19T17:57:47+00:00"
+            "time": "2023-09-04T20:39:53+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -3257,16 +3258,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "d44a24690f16b8c1808bf13b1bd54ae4c63ea048"
+                "reference": "3669d6d5f7a47a93c08ddff335e6d945481a1dd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/d44a24690f16b8c1808bf13b1bd54ae4c63ea048",
-                "reference": "d44a24690f16b8c1808bf13b1bd54ae4c63ea048",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/3669d6d5f7a47a93c08ddff335e6d945481a1dd5",
+                "reference": "3669d6d5f7a47a93c08ddff335e6d945481a1dd5",
                 "shasum": ""
             },
             "require": {
@@ -3359,7 +3360,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-03-24T15:16:10+00:00"
+            "time": "2023-08-30T16:55:00+00:00"
         },
         {
             "name": "league/config",
