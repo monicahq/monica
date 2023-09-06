@@ -9,7 +9,7 @@
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": ".devcontainer/postCreate.sh",
-  "postStartCommand": "sudo service apache2 restart"
+  "postStartCommand": ".devcontainer/postStart.sh"
 
   // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
   // "remoteUser": "vscode"
