@@ -2,22 +2,26 @@
 
 DATABASE=database/database.sqlite
 
+SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && /bin/pwd -P)
+source $SELF_PATH/../scripts/realpath.sh
+ROOT=$(realpath $SELF_PATH/..)
+
 setenv() {
-    sed -i "s%$1=.*%$1=$2%" .env
+    sed -i "s%$1=.*%$1=$2%" $ROOT/.env
 }
 
 set_apache() {
-    chgrp -R www-data storage && chmod -R g+w storage
-    sudo rm -rf /var/www/html && sudo ln -s "$(pwd)/public" /var/www/html
+    chgrp -R www-data $ROOT/storage && chmod -R g+w $ROOT/storage
+    sudo rm -rf /var/www/html && sudo ln -s "$ROOT/public" /var/www/html
     sudo a2enmod rewrite
-    sudo service apache2 restart
+    sudo apache2ctl restart
 }
 
 set_database() {
-    cp .env.example .env && echo "APP_TRUSTED_PROXIES=*" >> .env
+    cp $ROOT/.env.example $ROOT/.env && echo "APP_TRUSTED_PROXIES=*" >> $ROOT/.env
     setenv "DB_CONNECTION" "sqlite"
-    setenv "DB_DATABASE" "$(pwd)/$DATABASE"
-    touch $DATABASE && chgrp www-data database $DATABASE && chmod g+w database $DATABASE
+    setenv "DB_DATABASE" "$ROOT/$DATABASE"
+    touch $ROOT/$DATABASE && chgrp www-data database $ROOT/$DATABASE && chmod g+w database $ROOT/$DATABASE
 }
 
 set_conf() {
@@ -30,21 +34,21 @@ set_conf() {
 }
 
 composer_install() {
-    composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+    composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --working-dir=$ROOT
 }
 
 yarn_install() {
-    yarn install --immutable
-    yarn run build
+    yarn install --cwd $ROOT --immutable
+    yarn run --cwd $ROOT build
 }
 
 setup() {
-    php artisan key:generate --no-interaction
-    php artisan monica:setup --force -vvv
+    php $ROOT/artisan key:generate --no-interaction
+    php $ROOT/artisan monica:setup --force -vvv
 }
 
 dummy() {
-    php artisan monica:dummy --force -vvv
+    php $ROOT/artisan monica:dummy --force -vvv
 }
 
 set_apache
