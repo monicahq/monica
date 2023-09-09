@@ -104,7 +104,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array<int, string>
+     * @var array<int,string>
      */
     protected $hidden = [
         'password',
@@ -116,7 +116,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * The attributes that should be visible in serialization.
      *
-     * @var array<string>
+     * @var array<int,string>
      */
     protected $visible = [
         'name',
@@ -132,7 +132,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * The accessors to append to the model's array form.
      *
-     * @var array
+     * @var array<int,string>
      */
     protected $appends = [
         'name',
@@ -141,7 +141,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array<string, string>
+     * @var array<string,string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
