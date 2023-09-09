@@ -14,9 +14,9 @@ use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
 class ExportVCardTest extends TestCase
 {
-    use DatabaseTransactions,
-        PHPUnitAssertions,
-        CardEtag;
+    use CardEtag,
+        DatabaseTransactions,
+        PHPUnitAssertions;
 
     /**
      * @group dav

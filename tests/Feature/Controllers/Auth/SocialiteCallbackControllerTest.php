@@ -46,6 +46,7 @@ class SocialiteCallbackControllerTest extends TestCase
                 'login' => 'customer',
                 'name' => 'Customer Legit',
                 'avatar_url' => '',
+                'node_id' => '',
             ],
             'https://api.github.com/user/emails' => [[
                 'primary' => true,

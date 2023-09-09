@@ -13,7 +13,7 @@ use Throwable;
  */
 abstract class QueuableService extends BaseService implements ShouldQueue
 {
-    use Dispatchable, Queueable, InteractsWithQueue;
+    use Dispatchable, InteractsWithQueue, Queueable;
 
     /**
      * The number of times the job may be attempted.

@@ -17,14 +17,14 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use LaravelWebauthn\WebauthnAuthenticatable;
 
-class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
+class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail
 {
-    use Notifiable;
-    use HasFactory;
     use HasApiTokens;
+    use HasFactory;
+    use HasUuids;
+    use Notifiable;
     use TwoFactorAuthenticatable;
     use WebauthnAuthenticatable;
-    use HasUuids;
 
     /**
      * Possible number format types.

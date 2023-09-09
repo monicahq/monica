@@ -1,6 +1,6 @@
 # Update the VARIANT arg in docker-compose.yml to pick a PHP version: 8, 8.0, 8.1
 ARG VARIANT=8
-FROM mcr.microsoft.com/vscode/devcontainers/php:dev-${VARIANT}
+FROM mcr.microsoft.com/devcontainers/php:${VARIANT}
 
 # Install packages
 RUN set -ex; \
@@ -34,17 +34,43 @@ RUN set -ex; \
         libicu-dev \
         zlib1g-dev \
         libzip-dev \
-        libsqlite3-dev \
+        libpng-dev \
+        libpq-dev \
+        libxml2-dev \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libgmp-dev \
+        libmemcached-dev \
+        libmagickwand-dev \
+        libwebp-dev \
     ; \
     \
     debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
     docker-php-ext-configure intl; \
+    docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp; \
+    docker-php-ext-configure gmp; \
     docker-php-ext-install -j$(nproc) \
         intl \
-        fileinfo \
         zip \
-        pdo_sqlite \
+        bcmath \
+        gd \
+        gmp \
+        pdo_mysql \
+        mysqli \
+        pdo_pgsql \
+        soap \
     ; \
+    \
+    pecl install APCu; \
+    pecl install memcached; \
+    pecl install redis; \
+    \
+    docker-php-ext-enable \
+        apcu \
+        memcached \
+        redis \
+    ; \
+    \
     rm -rf /var/lib/apt/lists/*
 
 # [Optional] Uncomment this line to install global node packages.

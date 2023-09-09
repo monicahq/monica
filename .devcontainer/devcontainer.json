@@ -5,11 +5,11 @@
   "dockerComposeFile": "docker-compose.yml",
 
   // For use with PHP or Apache (e.g.php -S localhost:8080 or apache2ctl start)
-  "forwardPorts": [80],
+  "forwardPorts": [8080],
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": ".devcontainer/postCreate.sh",
-  "postStartCommand": "service apache2 restart"
+  "postStartCommand": ".devcontainer/postStart.sh"
 
   // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
   // "remoteUser": "vscode"

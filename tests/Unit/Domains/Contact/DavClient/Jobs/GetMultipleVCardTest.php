@@ -19,8 +19,8 @@ use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
 class GetMultipleVCardTest extends TestCase
 {
-    use DatabaseTransactions;
     use CardEtag;
+    use DatabaseTransactions;
 
     /** @test */
     public function it_get_cards()

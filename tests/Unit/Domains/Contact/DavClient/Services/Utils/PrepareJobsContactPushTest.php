@@ -18,8 +18,8 @@ use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
 class PrepareJobsContactPushTest extends TestCase
 {
-    use DatabaseTransactions;
     use CardEtag;
+    use DatabaseTransactions;
 
     /** @test */
     public function it_push_contacts_added()

@@ -11,8 +11,8 @@ use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
 class UpdateVCardTest extends TestCase
 {
-    use DatabaseTransactions;
     use CardEtag;
+    use DatabaseTransactions;
 
     /** @test */
     public function it_creates_a_contact()
