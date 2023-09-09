@@ -114,6 +114,31 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     ];
 
     /**
+     * The attributes that should be visible in serialization.
+     *
+     * @var array<string>
+     */
+    protected $visible = [
+        'name',
+        'first_name',
+        'last_name',
+        'email',
+        'help_shown',
+        'locale',
+        'is_account_administrator',
+        'timezone',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'name',
+    ];
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
