@@ -35,15 +35,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ant-design/icons-vue@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "@ant-design/icons-vue@npm:6.1.0"
+"@ant-design/icons-vue@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@ant-design/icons-vue@npm:7.0.0"
   dependencies:
     "@ant-design/colors": ^6.0.0
     "@ant-design/icons-svg": ^4.2.1
   peerDependencies:
     vue: ">=3.0.3"
-  checksum: d6f29d436301da38bf196283a96d9a4d5c6e77985ccaeaa232647c2170441207e061bea061b7ce234b22782e5bb6194a5b90dd18de9416167ddd9922503d442b
+  checksum: 9947645f703348acae1a8be10bdd3ba77be86d796108f1a24b02a0a061bdbe08ebf74cb05ff6d827d0a198a51fb5d244f13b844f40ed1925e6589d284967b449
   languageName: node
   linkType: hard
 
@@ -1052,11 +1052,11 @@ __metadata:
   linkType: hard
 
 "ant-design-vue@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "ant-design-vue@npm:4.0.1"
+  version: 4.0.3
+  resolution: "ant-design-vue@npm:4.0.3"
   dependencies:
     "@ant-design/colors": ^6.0.0
-    "@ant-design/icons-vue": ^6.1.0
+    "@ant-design/icons-vue": ^7.0.0
     "@babel/runtime": ^7.10.5
     "@ctrl/tinycolor": ^3.5.0
     "@emotion/hash": ^0.9.0
@@ -1079,7 +1079,7 @@ __metadata:
     warning: ^4.0.0
   peerDependencies:
     vue: ">=3.2.0"
-  checksum: 92992e54af09962e61b984aeb6e6a8fb6120e2032f24bf6cf3908a49cdcdda11ff4102925bf22a9d6cab13747696bc74f0c958088ca9dea38081f88dcb8ea321
+  checksum: 2a839b5d42318e26c00f17e6ae3edb1bb70bbe38c657c800899d161e02eb526c131557fe128875770a684a81d32c81f77dd34604d7903e35e1d754a3260dca53
   languageName: node
   linkType: hard
 
