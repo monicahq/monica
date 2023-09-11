@@ -492,18 +492,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry-internal/tracing@npm:7.65.0":
-  version: 7.65.0
-  resolution: "@sentry-internal/tracing@npm:7.65.0"
-  dependencies:
-    "@sentry/core": 7.65.0
-    "@sentry/types": 7.65.0
-    "@sentry/utils": 7.65.0
-    tslib: ^2.4.1 || ^1.9.3
-  checksum: 6a6eac00071d1286f0145625b6f432d27681f84d959a4963e4ddb79cf144c20ae9de3e8b97a8d659dc47c1a93fee9534e7e06cb71c6cea67f1138999e5ea9adb
-  languageName: node
-  linkType: hard
-
 "@sentry-internal/tracing@npm:7.68.0":
   version: 7.68.0
   resolution: "@sentry-internal/tracing@npm:7.68.0"
@@ -516,28 +504,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:7.65.0":
-  version: 7.65.0
-  resolution: "@sentry/browser@npm:7.65.0"
+"@sentry/browser@npm:7.68.0":
+  version: 7.68.0
+  resolution: "@sentry/browser@npm:7.68.0"
   dependencies:
-    "@sentry-internal/tracing": 7.65.0
-    "@sentry/core": 7.65.0
-    "@sentry/replay": 7.65.0
-    "@sentry/types": 7.65.0
-    "@sentry/utils": 7.65.0
+    "@sentry-internal/tracing": 7.68.0
+    "@sentry/core": 7.68.0
+    "@sentry/replay": 7.68.0
+    "@sentry/types": 7.68.0
+    "@sentry/utils": 7.68.0
     tslib: ^2.4.1 || ^1.9.3
-  checksum: 05e6ac2414fab3315267e5223606eeb87139c4215a7321247fb12a583195f636fe9be1b632198a35ea77224b9eed273e8bbea762a9565749c738c450cc0d9232
-  languageName: node
-  linkType: hard
-
-"@sentry/core@npm:7.65.0":
-  version: 7.65.0
-  resolution: "@sentry/core@npm:7.65.0"
-  dependencies:
-    "@sentry/types": 7.65.0
-    "@sentry/utils": 7.65.0
-    tslib: ^2.4.1 || ^1.9.3
-  checksum: 0f30331d76e191b874caa407fd28868716421a348cb63b89555c69a1a4134378bb7b6098e158f39380d2243fb50949899a77da4194aa6f72b26caf98d05c2404
+  checksum: 85d688902057d85113cd6fb46e4ca17167bfda6ce77c8264f1f29bf7d451dd73315ebcf7134ac91d539fc4032449ac25b0dd6e9209695bd934a4716acda55aac
   languageName: node
   linkType: hard
 
@@ -552,14 +529,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/replay@npm:7.65.0":
-  version: 7.65.0
-  resolution: "@sentry/replay@npm:7.65.0"
+"@sentry/replay@npm:7.68.0":
+  version: 7.68.0
+  resolution: "@sentry/replay@npm:7.68.0"
   dependencies:
-    "@sentry/core": 7.65.0
-    "@sentry/types": 7.65.0
-    "@sentry/utils": 7.65.0
-  checksum: 5c51cfd95f2c31e378279a082d13cd0651688474d8d2cfe563f8f1b0c9102f12022964d778cedf1fc03342d8a1d1cb09ba5d73c2daa65d69a25944999be641bb
+    "@sentry/core": 7.68.0
+    "@sentry/types": 7.68.0
+    "@sentry/utils": 7.68.0
+  checksum: a54871ec011bdd7df329fe684f3790932d1bd3c08ea7a849f5e1d9bde6cdae3b96993687522a92e0cfaf529f4e7439e28db1da5216e13d633af2dcf121b6f505
   languageName: node
   linkType: hard
 
@@ -572,27 +549,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:7.65.0":
-  version: 7.65.0
-  resolution: "@sentry/types@npm:7.65.0"
-  checksum: 4cf32139267195398c61125a481cf1fafe4bd8228d1bbe00b9cf22df5ac2c40684feab2fb2a7a2b5ac3c3d7a59eb9648a34863ccc1922da8ab5dca62320ba593
-  languageName: node
-  linkType: hard
-
 "@sentry/types@npm:7.68.0":
   version: 7.68.0
   resolution: "@sentry/types@npm:7.68.0"
   checksum: 9854e14b6864dc2b649655dc10a6f05d1e960d8fb2e2b0cb178073d884118314f790aca633d208ab0ab76b173523a66d066fb915294c0d5412e00456fa89343d
-  languageName: node
-  linkType: hard
-
-"@sentry/utils@npm:7.65.0":
-  version: 7.65.0
-  resolution: "@sentry/utils@npm:7.65.0"
-  dependencies:
-    "@sentry/types": 7.65.0
-    tslib: ^2.4.1 || ^1.9.3
-  checksum: f0423ab0464137bf70cff918b611702006026f7ba022dc2143619ed7ce53438eac2e33199392dfa3ac7874b8b977443f2037f25b9d76083bb91f39a2100dbbe1
   languageName: node
   linkType: hard
 
@@ -607,17 +567,17 @@ __metadata:
   linkType: hard
 
 "@sentry/vue@npm:^7.65.0":
-  version: 7.65.0
-  resolution: "@sentry/vue@npm:7.65.0"
+  version: 7.68.0
+  resolution: "@sentry/vue@npm:7.68.0"
   dependencies:
-    "@sentry/browser": 7.65.0
-    "@sentry/core": 7.65.0
-    "@sentry/types": 7.65.0
-    "@sentry/utils": 7.65.0
+    "@sentry/browser": 7.68.0
+    "@sentry/core": 7.68.0
+    "@sentry/types": 7.68.0
+    "@sentry/utils": 7.68.0
     tslib: ^2.4.1 || ^1.9.3
   peerDependencies:
     vue: 2.x || 3.x
-  checksum: 8f9a0f2c5d731b13895e30bc2ab0a445dfbd143a296dd459d2b724f08248eff3898694623d4d6841df9535be440f00ee183fe0030fab96efefa65fbd13d2bb99
+  checksum: ca4c95fc48654cb157f746da1d0e5c1d582499493a750b12d2c71e9b5139115ae96908d5e6b363b89432b9b075838822c0bed1380693e9d054f012c3e7b915f5
   languageName: node
   linkType: hard
 
