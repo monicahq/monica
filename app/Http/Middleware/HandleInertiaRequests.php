@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Middleware;
-use Laravel\Fortify\Features;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -34,18 +33,6 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request)
     {
         return array_merge(parent::share($request), [
-            'auth' => fn () => [
-                'user' => ($user = $request->user()) ? [
-                    'name' => $user->name,
-                    'first_name' => $user->first_name,
-                    'lastname' => $user->last_name,
-                    'email' => $user->email,
-                    'help_shown' => $user->help_shown,
-                    'locale' => $user->locale,
-                    'two_factor_enabled' => Features::enabled(Features::twoFactorAuthentication())
-                            && ! is_null($user->two_factor_secret),
-                ] : null,
-            ],
             'help_links' => fn () => config('monica.help_links'),
             'help_url' => fn () => config('monica.help_center_url'),
             'footer' => Str::markdownExternalLink(trans('Version :version — commit [:short](:url).', [
