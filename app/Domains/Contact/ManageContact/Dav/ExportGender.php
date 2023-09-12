@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Settings\ManageGenders\Dav;
+namespace App\Domains\Contact\ManageContact\Dav;
 
 use App\Domains\Contact\Dav\ExportVCardResource;
 use App\Domains\Contact\Dav\Order;
