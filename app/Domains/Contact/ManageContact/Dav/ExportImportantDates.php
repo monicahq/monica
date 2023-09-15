@@ -39,6 +39,7 @@ class ExportImportantDates extends Exporter implements ExportVCardResource
             $date .= $importantDate->month ? Str::padLeft($importantDate->month, 2, 0) : '--';
             $date .= $importantDate->day ? Str::padLeft($importantDate->day, 2, 0) : '--';
 
+            // https://datatracker.ietf.org/doc/html/rfc6350#section-6.2.5
             $vcard->add('BDAY', $date);
         }
     }

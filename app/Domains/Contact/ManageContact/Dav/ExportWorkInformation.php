@@ -28,7 +28,12 @@ class ExportWorkInformation extends Exporter implements ExportVCardResource
         $vcard->remove('TITLE');
 
         if (($company = $resource->company) !== null) {
+            // https://datatracker.ietf.org/doc/html/rfc6350#section-6.6.4
             $vcard->add('ORG', $this->escape($company->name));
+        }
+
+        if (! empty($resource->job_position)) {
+            // https://datatracker.ietf.org/doc/html/rfc6350#section-6.6.1
             $vcard->add('TITLE', $this->escape($resource->job_position));
         }
     }

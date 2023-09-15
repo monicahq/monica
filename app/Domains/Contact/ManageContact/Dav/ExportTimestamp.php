@@ -25,6 +25,7 @@ class ExportTimestamp implements ExportVCardResource
     {
         $vcard->remove('REV');
 
+        // https://datatracker.ietf.org/doc/html/rfc6350#section-6.7.4
         $vcard->REV = $resource->updated_at->format('Ymd\\THis\\Z');
     }
 }

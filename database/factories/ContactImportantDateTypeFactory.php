@@ -23,7 +23,7 @@ class ContactImportantDateTypeFactory extends Factory
     {
         return [
             'vault_id' => Vault::factory(),
-            'label' => 'birthdate',
+            'label' => 'Birthdate',
             'internal_type' => ContactImportantDate::TYPE_BIRTHDATE,
             'can_be_deleted' => true,
         ];

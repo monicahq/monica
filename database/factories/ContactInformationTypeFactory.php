@@ -23,7 +23,7 @@ class ContactInformationTypeFactory extends Factory
         return [
             'account_id' => Account::factory(),
             'name' => $this->faker->name(),
-            'protocol' => '+tel',
+            'protocol' => 'mailto:',
             'can_be_deleted' => false,
             'type' => 'email',
         ];

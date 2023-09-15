@@ -29,7 +29,6 @@ class ContactFactory extends Factory
             'can_be_deleted' => true,
             'prefix' => 'Dr.',
             'suffix' => 'III',
-            'company_id' => Company::factory(),
             'gender_id' => fn (array $properties) => Gender::factory()->create([
                 'account_id' => Vault::find($properties['vault_id'])->account_id,
             ])->getKey(),
@@ -82,6 +81,18 @@ class ContactFactory extends Factory
     {
         return $this->state(fn () => [
             'nickname' => $this->faker->unique()->firstName,
+        ]);
+    }
+
+    /**
+     * Indicate that the contact has a job.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function company()
+    {
+        return $this->state(fn () => [
+            'company_id' => Company::factory(),
         ]);
     }
 }

@@ -44,6 +44,8 @@ class ExportGender implements ExportVCardResource
                     break;
             }
         }
+
+        // https://datatracker.ietf.org/doc/html/rfc6350#section-6.2.7
         $vcard->add('GENDER', $gender);
     }
 }

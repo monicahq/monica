@@ -38,38 +38,40 @@ class ExportContactInformation extends Exporter implements ExportVCardResource
     {
         switch ($contactInformation->contactInformationType->name) {
             case trans('Email address'):
+                // https://datatracker.ietf.org/doc/html/rfc6350#section-6.4.2
                 $vcard->add('EMAIL', $contactInformation->data, [
-                    'TYPE' => $contactInformation->contactInformationType->name,
+                    // 'TYPE' => $contactInformation->contactInformationType->type,
                 ]);
                 break;
             case trans('Phone'):
+                // https://datatracker.ietf.org/doc/html/rfc6350#section-6.4.1
                 $vcard->add('TEL', $contactInformation->data, [
-                    'TYPE' => $contactInformation->contactInformationType->name,
+                    //'TYPE' => $contactInformation->contactInformationType->type,
                 ]);
                 break;
             case trans('Facebook'):
                 $vcard->add('socialProfile', $this->escape('https://www.facebook.com/'.$contactInformation->data), [
-                    'type' => 'facebook',
+                    'TYPE' => 'facebook',
                 ]);
                 break;
             case trans('Mastodon'):
                 $vcard->add('socialProfile', $this->escape($contactInformation->data), [
-                    'type' => 'Mastodon',
+                    'TYPE' => 'Mastodon',
                 ]);
                 break;
             case trans('Whatsapp'):
                 $vcard->add('socialProfile', $this->escape('https://wa.me/'.$contactInformation->data), [
-                    'type' => 'whatsapp',
+                    'TYPE' => 'whatsapp',
                 ]);
                 break;
             case trans('Telegram'):
                 $vcard->add('socialProfile', $this->escape('http://t.me/'.$contactInformation->data), [
-                    'type' => 'telegram',
+                    'TYPE' => 'telegram',
                 ]);
                 break;
             case trans('LinkedIn'):
                 $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/'.$contactInformation->data), [
-                    'type' => 'linkedin',
+                    'TYPE' => 'linkedin',
                 ]);
                 break;
             default:

@@ -27,6 +27,7 @@ class ExportAdr implements ExportVCardResource
 
         if (($addresses = $resource->addresses) !== null) {
             foreach ($addresses as $address) {
+                // https://datatracker.ietf.org/doc/html/rfc6350#section-6.3.1
                 $vcard->add('ADR', [
                     '',
                     $address->line_1,
