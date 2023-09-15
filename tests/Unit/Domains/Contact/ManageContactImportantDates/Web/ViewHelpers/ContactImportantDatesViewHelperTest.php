@@ -78,7 +78,7 @@ class ContactImportantDatesViewHelperTest extends TestCase
                 'date' => 'Oct 29, 1981',
                 'type' => [
                     'id' => $date->contactImportantDateType->id,
-                    'label' => 'birthdate',
+                    'label' => 'Birthdate',
                 ],
                 'age' => '40',
                 'choice' => 'full_date',

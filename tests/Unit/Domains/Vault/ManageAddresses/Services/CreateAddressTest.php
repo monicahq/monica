@@ -84,6 +84,8 @@ class CreateAddressTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, AddressType $type): void
     {
+        config(['monica.location_iq_api_key' => '12345']);
+
         Queue::fake();
 
         $request = [
