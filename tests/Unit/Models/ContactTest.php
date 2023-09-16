@@ -4,7 +4,6 @@ namespace Tests\Unit\Models;
 
 use App\Models\Address;
 use App\Models\Call;
-use App\Models\Company;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
 use App\Models\ContactImportantDateType;
@@ -170,9 +169,7 @@ class ContactTest extends TestCase
     /** @test */
     public function it_has_one_company()
     {
-        $contact = Contact::factory()->create([
-            'company_id' => Company::factory()->create(),
-        ]);
+        $contact = Contact::factory()->company()->create();
 
         $this->assertTrue($contact->company()->exists());
     }

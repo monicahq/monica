@@ -114,6 +114,8 @@ class UpdateAddressTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, AddressType $type, Address $address): void
     {
+        config(['monica.location_iq_api_key' => '12345']);
+
         Queue::fake();
 
         $request = [

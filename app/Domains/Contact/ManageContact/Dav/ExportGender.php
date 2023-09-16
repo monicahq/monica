@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Settings\ManageGenders\Dav;
+namespace App\Domains\Contact\ManageContact\Dav;
 
 use App\Domains\Contact\Dav\ExportVCardResource;
 use App\Domains\Contact\Dav\Order;
@@ -44,6 +44,8 @@ class ExportGender implements ExportVCardResource
                     break;
             }
         }
+
+        // https://datatracker.ietf.org/doc/html/rfc6350#section-6.2.7
         $vcard->add('GENDER', $gender);
     }
 }

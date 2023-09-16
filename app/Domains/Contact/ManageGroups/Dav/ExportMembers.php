@@ -27,6 +27,7 @@ class ExportMembers extends Exporter implements ExportVCardResource
     {
         $kind = collect($vcard->select('X-ADDRESSBOOKSERVER-KIND'))->first();
 
+        // https://datatracker.ietf.org/doc/html/rfc6350#section-6.6.5
         $this->exportType($resource, $vcard, $kind ? 'X-ADDRESSBOOKSERVER-MEMBER' : 'MEMBER');
     }
 

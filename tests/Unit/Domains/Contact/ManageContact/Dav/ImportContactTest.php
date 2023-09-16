@@ -7,6 +7,8 @@ use App\Domains\Contact\ManageContact\Dav\ImportContact;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Arr;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\PHPUnitAssertions;
 use Tests\TestCase;
@@ -16,7 +18,8 @@ class ImportContactTest extends TestCase
     use DatabaseTransactions,
         PHPUnitAssertions;
 
-    /** @test */
+    #[Group('dav')]
+    #[Test]
     public function it_imports_names_N()
     {
         $importContact = new ImportContact();
@@ -31,7 +34,8 @@ class ImportContactTest extends TestCase
         $this->assertEquals('Jane', $contact['middle_name']);
     }
 
-    /** @test */
+    #[Group('dav')]
+    #[Test]
     public function it_imports_names_NICKNAME()
     {
         $importContact = new ImportContact();
@@ -44,7 +48,8 @@ class ImportContactTest extends TestCase
         $this->assertEquals('John', $contact['first_name']);
     }
 
-    /** @test */
+    #[Group('dav')]
+    #[Test]
     public function it_imports_names_FN()
     {
         $author = User::factory()->create();
@@ -62,7 +67,8 @@ class ImportContactTest extends TestCase
         $this->assertEquals('Doe', $contact['last_name']);
     }
 
-    /** @test */
+    #[Group('dav')]
+    #[Test]
     public function it_imports_names_FN_last()
     {
         $author = User::factory()->create([
@@ -82,7 +88,8 @@ class ImportContactTest extends TestCase
         $this->assertEquals('John', $contact['last_name']);
     }
 
-    /** @test */
+    #[Group('dav')]
+    #[Test]
     public function it_imports_names_FN_extra_space()
     {
         $author = User::factory()->create();
@@ -100,7 +107,8 @@ class ImportContactTest extends TestCase
         $this->assertEquals('Doe', $contact['last_name']);
     }
 
-    /** @test */
+    #[Group('dav')]
+    #[Test]
     public function it_imports_name_FN()
     {
         $author = User::factory()->create();
@@ -119,7 +127,8 @@ class ImportContactTest extends TestCase
         $this->assertEquals('', Arr::get($contact, 'last_name'));
     }
 
-    /** @test */
+    #[Group('dav')]
+    #[Test]
     public function it_imports_name_FN_last()
     {
         $author = User::factory()->create([
@@ -140,7 +149,8 @@ class ImportContactTest extends TestCase
         $this->assertEquals('', Arr::get($contact, 'first_name'));
     }
 
-    /** @test */
+    #[Group('dav')]
+    #[Test]
     public function it_imports_names_FN_multiple()
     {
         $author = User::factory()->create();
@@ -159,7 +169,8 @@ class ImportContactTest extends TestCase
         $this->assertEquals('Doe Marco', $contact['last_name']);
     }
 
-    /** @test */
+    #[Group('dav')]
+    #[Test]
     public function it_imports_uuid_default()
     {
         $importContact = new ImportContact();

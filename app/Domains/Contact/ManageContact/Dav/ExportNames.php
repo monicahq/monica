@@ -28,8 +28,10 @@ class ExportNames extends Exporter implements ExportVCardResource
         $vcard->remove('N');
         $vcard->remove('NICKNAME');
 
+        // https://datatracker.ietf.org/doc/html/rfc6350#section-6.2.1
         $vcard->add('FN', $this->escape($resource->name));
 
+        // https://datatracker.ietf.org/doc/html/rfc6350#section-6.2.2
         $vcard->add('N', [
             $this->escape($resource->last_name),
             $this->escape($resource->first_name),
@@ -37,6 +39,7 @@ class ExportNames extends Exporter implements ExportVCardResource
         ]);
 
         if (! empty($resource->nickname)) {
+            // https://datatracker.ietf.org/doc/html/rfc6350#section-6.2.3
             $vcard->add('NICKNAME', $this->escape($resource->nickname));
         }
     }

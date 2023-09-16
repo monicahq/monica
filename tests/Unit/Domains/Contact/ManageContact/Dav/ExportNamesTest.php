@@ -5,6 +5,8 @@ namespace Tests\Unit\Domains\Contact\ManageContact\Dav;
 use App\Domains\Contact\ManageContact\Dav\ExportNames;
 use App\Models\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Sabre\VObject\Component\VCard;
 use Tests\TestCase;
 
@@ -15,11 +17,8 @@ class ExportNamesTest extends TestCase
     /** @var int */
     const defaultPropsCount = 3;
 
-    /**
-     * @group dav
-     *
-     * @test
-     */
+    #[Group('dav')]
+    #[Test]
     public function it_adds_names_in_vcard()
     {
         $user = $this->createUser();
@@ -39,11 +38,8 @@ class ExportNamesTest extends TestCase
         $this->assertStringContainsString("N:{$contact->last_name};{$contact->first_name};;;", $vCard->serialize());
     }
 
-    /**
-     * @group dav
-     *
-     * @test
-     */
+    #[Group('dav')]
+    #[Test]
     public function it_adds_nickname_in_vcard()
     {
         $user = $this->createUser();

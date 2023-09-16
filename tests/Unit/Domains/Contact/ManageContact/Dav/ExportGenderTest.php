@@ -1,11 +1,13 @@
 <?php
 
-namespace Tests\Unit\Domains\Settings\ManageGenders\Dav;
+namespace Tests\Unit\Domains\Contact\ManageContact\Dav;
 
-use App\Domains\Settings\ManageGenders\Dav\ExportGender;
+use App\Domains\Contact\ManageContact\Dav\ExportGender;
 use App\Models\Contact;
 use App\Models\Gender;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\PHPUnitAssertions;
 use Tests\TestCase;
@@ -20,11 +22,8 @@ class ExportGenderTest extends TestCase
     /** @var int */
     const defaultPropsCount = 3;
 
-    /**
-     * @group dav
-     *
-     * @test
-     */
+    #[Group('dav')]
+    #[Test]
     public function it_adds_gender_to_vcard()
     {
         $user = $this->createUser();
@@ -41,11 +40,8 @@ class ExportGenderTest extends TestCase
         $this->assertStringContainsString("GENDER:{$contact->gender->type}", $vCard->serialize());
     }
 
-    /**
-     * @group dav
-     *
-     * @test
-     */
+    #[Group('dav')]
+    #[Test]
     public function it_adds_gender_female()
     {
         $user = $this->createUser();
@@ -70,11 +66,8 @@ class ExportGenderTest extends TestCase
         $this->assertStringContainsString('GENDER:F', $vCard->serialize());
     }
 
-    /**
-     * @group dav
-     *
-     * @test
-     */
+    #[Group('dav')]
+    #[Test]
     public function it_adds_gender_unknown()
     {
         $user = $this->createUser();
@@ -98,11 +91,8 @@ class ExportGenderTest extends TestCase
         $this->assertStringContainsString('GENDER:U', $vCard->serialize());
     }
 
-    /**
-     * @group dav
-     *
-     * @test
-     */
+    #[Group('dav')]
+    #[Test]
     public function it_adds_gender_type_null()
     {
         $user = $this->createUser();
@@ -127,11 +117,8 @@ class ExportGenderTest extends TestCase
         $this->assertStringContainsString('GENDER:O', $vCard->serialize());
     }
 
-    /**
-     * @group dav
-     *
-     * @test
-     */
+    #[Group('dav')]
+    #[Test]
     public function it_adds_gender_type_null_male()
     {
         $user = $this->createUser();
@@ -156,11 +143,8 @@ class ExportGenderTest extends TestCase
         $this->assertStringContainsString('GENDER:M', $vCard->serialize());
     }
 
-    /**
-     * @group dav
-     *
-     * @test
-     */
+    #[Group('dav')]
+    #[Test]
     public function it_adds_gender_type_null_female()
     {
         $user = $this->createUser();

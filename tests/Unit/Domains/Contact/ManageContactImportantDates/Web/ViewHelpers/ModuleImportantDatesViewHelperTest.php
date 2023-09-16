@@ -44,7 +44,7 @@ class ModuleImportantDatesViewHelperTest extends TestCase
                     'id' => $date->id,
                     'label' => $date->label,
                     'date' => 'Oct 29, 1981',
-                    'type' => ContactImportantDate::TYPE_BIRTHDATE,
+                    'type' => 'Birthdate',
                     'age' => 36,
                 ],
             ],

@@ -16,7 +16,7 @@ class ModuleCompanyViewHelperTest extends TestCase
     /** @test */
     public function it_gets_the_data_needed_for_the_view(): void
     {
-        $contact = Contact::factory()->create([
+        $contact = Contact::factory()->company()->create([
             'job_position' => 'CEO',
         ]);
 

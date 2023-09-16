@@ -142,6 +142,10 @@ class ContactShowViewHelper
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
                 ]),
+                'download_vcard' => route('contact.vcard.download', [
+                    'vault' => $contact->vault,
+                    'contact' => $contact,
+                ]),
             ],
         ];
     }

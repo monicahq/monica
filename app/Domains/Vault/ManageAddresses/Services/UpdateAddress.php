@@ -89,8 +89,10 @@ class UpdateAddress extends BaseService implements ServiceInterface
 
     private function geocodeAddress(): void
     {
-        GetGPSCoordinate::dispatch([
-            'address_id' => $this->address->id,
-        ])->onQueue('low');
+        if (config('monica.location_iq_api_key')) {
+            GetGPSCoordinate::dispatch([
+                'address_id' => $this->address->id,
+            ])->onQueue('low');
+        }
     }
 }
