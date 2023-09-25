@@ -504,17 +504,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:7.69.0":
-  version: 7.69.0
-  resolution: "@sentry/browser@npm:7.69.0"
+"@sentry-internal/tracing@npm:7.70.0":
+  version: 7.70.0
+  resolution: "@sentry-internal/tracing@npm:7.70.0"
   dependencies:
-    "@sentry-internal/tracing": 7.69.0
-    "@sentry/core": 7.69.0
-    "@sentry/replay": 7.69.0
-    "@sentry/types": 7.69.0
-    "@sentry/utils": 7.69.0
+    "@sentry/core": 7.70.0
+    "@sentry/types": 7.70.0
+    "@sentry/utils": 7.70.0
     tslib: ^2.4.1 || ^1.9.3
-  checksum: 8b5460c1733628ecb1dee16228f0e055fcf7787f97ce85554a5fddd7dbdf787a6be0f61c8180756144139ec3bb6a0647e95f82772e601353f1fc64e32d5fda91
+  checksum: 51fe662ae5b4e26a9698515dbd47427714966c4e3f5df6f19d3d26c21150e17260e4b8c53e814a7e9274e8ca7b7994a4fac2838a71233cadcd4a30f394f9227e
+  languageName: node
+  linkType: hard
+
+"@sentry/browser@npm:7.70.0":
+  version: 7.70.0
+  resolution: "@sentry/browser@npm:7.70.0"
+  dependencies:
+    "@sentry-internal/tracing": 7.70.0
+    "@sentry/core": 7.70.0
+    "@sentry/replay": 7.70.0
+    "@sentry/types": 7.70.0
+    "@sentry/utils": 7.70.0
+    tslib: ^2.4.1 || ^1.9.3
+  checksum: 805f3fa8517c2d072aef94e9b4487929dd275aac5332a46a641a7c394de130d50401671a2b0d043ef67e716ba35a364dacac95e67d845d657ca9cad6f947abe2
   languageName: node
   linkType: hard
 
@@ -529,14 +541,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/replay@npm:7.69.0":
-  version: 7.69.0
-  resolution: "@sentry/replay@npm:7.69.0"
+"@sentry/core@npm:7.70.0":
+  version: 7.70.0
+  resolution: "@sentry/core@npm:7.70.0"
   dependencies:
-    "@sentry/core": 7.69.0
-    "@sentry/types": 7.69.0
-    "@sentry/utils": 7.69.0
-  checksum: 47d9ccfd6a619ef1640a2649fccce7a0824e52e12c84759d40c569416ad65886e50bd30c3b789c6fe9d121060e3e55f4344925470dfd9db12ac678703b005f72
+    "@sentry/types": 7.70.0
+    "@sentry/utils": 7.70.0
+    tslib: ^2.4.1 || ^1.9.3
+  checksum: 550ff55f8232fbbe8263b05deca997b6fe98ae19fe445f39d90915cc515bdcc8d6c2ec09df6976fcf750547adc39aefb5714ebfd5f039b32e94c5c5320f4cfab
+  languageName: node
+  linkType: hard
+
+"@sentry/replay@npm:7.70.0":
+  version: 7.70.0
+  resolution: "@sentry/replay@npm:7.70.0"
+  dependencies:
+    "@sentry/core": 7.70.0
+    "@sentry/types": 7.70.0
+    "@sentry/utils": 7.70.0
+  checksum: 5e02e535cf41f4d2c6b7bd2a4f936005f25c853783f7bd2a16a40a7e526fddcb64b480f2c541315d6055f77acbb8f10b83a66bcd05411fbe44ca726b9bd0a8c4
   languageName: node
   linkType: hard
 
@@ -556,6 +579,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/types@npm:7.70.0":
+  version: 7.70.0
+  resolution: "@sentry/types@npm:7.70.0"
+  checksum: 0a38f47ccf0d995d8d5ab0353c332bd2573f044d993d746ec9ecee5e185da773ffdc13db3f29d525b4377ed3ce9235eaa0dc728c039739eb23050d0411667222
+  languageName: node
+  linkType: hard
+
 "@sentry/utils@npm:7.69.0":
   version: 7.69.0
   resolution: "@sentry/utils@npm:7.69.0"
@@ -566,18 +596,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/vue@npm:^7.65.0":
-  version: 7.69.0
-  resolution: "@sentry/vue@npm:7.69.0"
+"@sentry/utils@npm:7.70.0":
+  version: 7.70.0
+  resolution: "@sentry/utils@npm:7.70.0"
   dependencies:
-    "@sentry/browser": 7.69.0
-    "@sentry/core": 7.69.0
-    "@sentry/types": 7.69.0
-    "@sentry/utils": 7.69.0
+    "@sentry/types": 7.70.0
+    tslib: ^2.4.1 || ^1.9.3
+  checksum: a1590f5e752667910638262bb8e85f2e2c26e722df4087e79c39b11d1d81dbefaea8f426826a50b0832c079e77092ff7c2335d48e63a2d11c32b1c0b59b10eee
+  languageName: node
+  linkType: hard
+
+"@sentry/vue@npm:^7.65.0":
+  version: 7.70.0
+  resolution: "@sentry/vue@npm:7.70.0"
+  dependencies:
+    "@sentry/browser": 7.70.0
+    "@sentry/core": 7.70.0
+    "@sentry/types": 7.70.0
+    "@sentry/utils": 7.70.0
     tslib: ^2.4.1 || ^1.9.3
   peerDependencies:
     vue: 2.x || 3.x
-  checksum: 98660c89f71517dac27a432ca5d109ee5c0aae838268f86b9e7e35c38db04af10ce7b93d54855c362f260b41a37042b24b4c695e08789dcf360a0c4643166377
+  checksum: 48be569deba3826dd453463879485537b838e0fd78244ec0e7d4ce0a826aef98169abd6e9280a0b888f763657bc9f9e87b3243b0c871da91ee671a67f36a77e8
   languageName: node
   linkType: hard
 
