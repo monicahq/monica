@@ -9,6 +9,12 @@
     "social"
   ],
   "license": "AGPL-3.0-or-later",
+  "repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/asbiin/money"
+    }
+  ],
   "require": {
     "php": "^8.2",
     "ext-fileinfo": "*",
@@ -28,8 +34,9 @@
     "laravel/socialite": "^5.5",
     "laravel/telescope": "^4.9",
     "laravel/tinker": "^2.7",
+    "lcobucci/clock": "3.2.0-rc1",
     "meilisearch/meilisearch-php": "^1.0",
-    "moneyphp/money": "^4.1",
+    "moneyphp/money": "dev-php83",
     "monicahq/laravel-sabre": "^1.6",
     "naugrim/laravel-sentry-tunnel": "^1.1",
     "sentry/sentry-laravel": "^3.0",
