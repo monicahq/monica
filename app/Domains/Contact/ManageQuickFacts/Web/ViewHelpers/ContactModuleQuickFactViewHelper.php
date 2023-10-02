@@ -28,13 +28,6 @@ class ContactModuleQuickFactViewHelper
                 ],
             ],
             'quick_facts' => $quickFacts,
-            'url' => [
-                'store' => route('contact.quick_fact.store', [
-                    'vault' => $contact->vault_id,
-                    'contact' => $contact->id,
-                    'template' => $template->id,
-                ]),
-            ],
         ];
     }
 
