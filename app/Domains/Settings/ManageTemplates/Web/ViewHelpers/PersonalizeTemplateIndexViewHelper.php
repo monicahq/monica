@@ -29,6 +29,7 @@ class PersonalizeTemplateIndexViewHelper
         return [
             'id' => $template->id,
             'name' => $template->name,
+            'can_be_deleted' => $template->can_be_deleted,
             'url' => [
                 'show' => route('settings.personalize.template.show', [
                     'template' => $template->id,

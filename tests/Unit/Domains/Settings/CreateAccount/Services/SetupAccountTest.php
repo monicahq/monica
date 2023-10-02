@@ -48,6 +48,7 @@ class SetupAccountTest extends TestCase
         $this->assertDatabaseHas('templates', [
             'account_id' => $user->account_id,
             'name_translation_key' => 'Default template',
+            'can_be_deleted' => false,
         ]);
         $this->assertDatabaseHas('template_pages', [
             'name_translation_key' => 'Contact information',

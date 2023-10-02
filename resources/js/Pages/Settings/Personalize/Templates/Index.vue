@@ -140,7 +140,10 @@
                 <li class="me-4 inline cursor-pointer" @click="showUpdateTemplateModal(template)">
                   <span class="text-blue-500 hover:underline">{{ $t('Rename') }}</span>
                 </li>
-                <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(template)">
+                <li
+                  v-if="template.can_be_deleted"
+                  class="inline cursor-pointer text-red-500 hover:text-red-900"
+                  @click="destroy(template)">
                   {{ $t('Delete') }}
                 </li>
               </ul>
