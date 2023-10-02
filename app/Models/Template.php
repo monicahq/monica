@@ -21,6 +21,16 @@ class Template extends Model
         'account_id',
         'name',
         'name_translation_key',
+        'can_be_deleted',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'can_be_deleted' => 'boolean',
     ];
 
     /**

@@ -122,6 +122,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'author_id' => $this->author->id,
             'name' => null,
             'name_translation_key' => trans_key('Default template'),
+            'can_be_deleted' => false,
         ];
 
         $this->template = (new CreateTemplate())->execute($request);

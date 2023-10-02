@@ -8,7 +8,7 @@
     <!-- contact information page | can't be removed -->
     <div
       :class="isSelectedId === data.template_page_contact_information.id ? 'border-2	bg-sky-100' : ''"
-      class="mb-2 flex items-center rounded-lg border border-gray-200 bg-white px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800"
+      class="mb-2 flex items-center rounded-lg border border-gray-200 bg-white px-5 py-2 hover:cursor-pointer hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800"
       @click="selectPage(data.template_page_contact_information)">
       <!-- detail of a page -->
       <div>
@@ -42,7 +42,7 @@
         <div
           v-if="renamePageModalShownId !== element.id"
           :class="isSelectedId === element.id ? 'border-2	bg-sky-100' : ''"
-          class="mb-2 flex items-center rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800"
+          class="mb-2 flex items-center rounded-lg hover:cursor-pointer border border-gray-200 bg-white py-2 pe-5 ps-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800"
           @click="selectPage(element)">
           <!-- icon to move position -->
           <div class="me-2">
