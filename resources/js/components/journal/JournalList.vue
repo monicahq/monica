@@ -26,7 +26,7 @@
             <input type="number" id="per-page" class="form-control" v-model="perPage">
           </div>
           <div class="dt pl-2">
-            <label for="sort-order">{{ $t('journal.sort_order') }}:</label>
+            <label for="sort-order">{{ $t('journal.sort_order') }} :</label>
             <select id="sort-order" class="form-control" v-model="sortOrder">
               <option value="asc">{{ $t('journal.ascending') }}</option>
               <option value="desc">{{ $t('journal.descending') }}</option>

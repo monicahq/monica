@@ -32,7 +32,7 @@ return [
     "start_date" => "تاريخ البدء" ,
      "end_date" => "تاريخ الانتهاء" ,
      "per_page" => "لكل صفحة" ,
-     'Sort_order' => 'ترتيب الفرز' ,
+     'Sort_order' => 'فرز حسب تاريخ الإنشاء',
      "ascending" => "تصاعدي" ,
      "descending" => "تنازلي" ,
 ];

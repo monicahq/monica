@@ -32,7 +32,7 @@ return [
     'start_date' => 'Start Date',
     'end_date' => 'End Date',
     'per_page' => 'Per Page',
-    'sort_order' => 'Sort Order',
+    'sort_order' => 'Sort By Created At',
     'ascending' => 'Ascending',
     'descending' => 'Descending',
 ];
