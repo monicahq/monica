@@ -104,7 +104,7 @@
 @endsection
 <script>
   function toggleEditInput(editIcon) {
-    var tableRow = editIcon.closest('.table-row');
+    let tableRow = editIcon.closest('.table-row');
     var tagName = tableRow.querySelector('.tag-name');
     var contactNumber = tableRow.querySelector('.tags-list-contact-number');
     var editInput = tableRow.querySelector('.edit-tag-form');
