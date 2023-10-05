@@ -76,7 +76,7 @@
                     </ul>
                   </div>
                   <div class="table-cell actions">
-                    <a href="javascript:;" class="edit-icon-btn" onclick="toggleEditInput(this)">
+                    <div class="edit-icon-btn" onclick="toggleEditInput(this)">
                       <i class="fa fa-pencil" aria-hidden="true"></i>
                     </a>
                     
