@@ -7,8 +7,8 @@ return [
      * English HAS TO be the first language of the array.
      */
     'supported_locales' => ['en', 'bn', 'ca', 'da', 'de', 'es', 'el', 'fr',
-        'he', 'hi', 'it', 'ja', 'ml', 'nl', 'no', 'pa', 'pl', 'pt', 'ro',
-        'ru', 'sv', 'te', 'tr', 'ur', 'vi', 'zh',
+        'he', 'hi', 'it', 'ja', 'ml', 'nl', 'nn', 'pa', 'pl', 'pt', 'ro',
+        'ru', 'sv', 'te', 'tr', 'ur', 'vi', 'zh-CN', 'zh-TW',
     ],
 
     /**
