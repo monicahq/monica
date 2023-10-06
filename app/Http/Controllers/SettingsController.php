@@ -374,7 +374,6 @@ class SettingsController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    
     public function editTag(Tag $tag, Request $request): RedirectResponse
     {
         $validator = Validator::make($request->all(), [
