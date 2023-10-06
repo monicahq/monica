@@ -5,6 +5,7 @@ namespace App\Console\Commands\Local;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Translation\MessageSelector;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 
 use function Safe\json_decode;
@@ -34,6 +35,8 @@ class MonicaLocalize extends Command
      */
     public function handle(): void
     {
+        $this->googleTranslate = (new GoogleTranslate())->setSource('en');
+
         $locales = $langs = config('localizer.supported_locales');
 
         $this->updateLocales($locales);
@@ -72,8 +75,6 @@ class MonicaLocalize extends Command
      */
     private function loadTranslations(array $locales): void
     {
-        $this->googleTranslate = new GoogleTranslate();
-
         foreach ($locales as $locale) {
             $this->info('Loading locale: '.$locale);
 
@@ -85,21 +86,93 @@ class MonicaLocalize extends Command
 
     private function translateStrings(string $locale, array $strings)
     {
-        if ($locale !== 'en') {
-            foreach ($strings as $index => $value) {
-                if ($value === '') {
-                    $this->googleTranslate->setTarget($locale);
-                    $translated = $this->googleTranslate->translate($index);
-                    $this->info('translating: `'.$index.'` to `'.$translated.'`');
+        try {
+            if ($locale !== 'en') {
+                $this->googleTranslate->setTarget($this->getTarget($locale));
 
-                    // we store the translated string in the array
-                    $strings[$index] = $translated;
+                foreach ($strings as $index => $value) {
+                    if ($value === '' || $this->option('update')) {
+                        // we store the translated string in the array
+                        $strings[$index] = $this->translate($locale, $index);
+                    }
                 }
+            }
+        } finally {
+
+            // now we need to save the array back to the file
+            Storage::disk('lang')->put($locale.'.json', json_encode($strings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        }
+    }
+
+    private function getTarget($locale)
+    {
+        // Google Translate knows Norwegian locale as 'no' instead of 'nn'
+        return $locale === 'nn' ? 'no' : $locale;
+    }
+
+    private function translate(string $locale, string $text): string
+    {
+        $result = Str::contains($text, '|')
+            ? $this->translateCount($locale, $text)
+            : $this->translateText($text);
+
+        $this->info('translating: `'.$text.'` to `'.$result.'`');
+
+        return $result;
+    }
+
+    private function translateText(string $text): string
+    {
+        $str = Str::of($text);
+        $match = $str->matchAll('/(?<pattern>:\w+)/');
+
+        // replace the placeholders with a generic string
+        if ($match->count() > 0) {
+            $replacements = $match->map(fn ($item, $index) => "{{#$index}}");
+            $str = $str->replace($match->toArray(), $replacements->toArray());
+        }
+
+        $translated = $this->googleTranslate->translate((string) $str);
+
+        // replace the generic string with the placeholders
+        if ($match->count() > 0) {
+            $translated = Str::replace($replacements->toArray(), $match->toArray(), $translated);
+        }
+
+        $translated = Str::replace(['\''], ['’'], $translated);
+
+        return $translated;
+    }
+
+    private function translateCount(string $locale, string $text): string
+    {
+        $strings = collect(explode('|', $text));
+        $result = collect([]);
+
+        for ($i = 0; $i < 100; $i++) {
+            $j = app(MessageSelector::class)->getPluralIndex($locale, $i);
+            if (! $result->has($j)) {
+                if ($j >= $strings->count()) {
+                    $message = $strings[$strings->count() - 1];
+                } elseif (! $result->has($j)) {
+                    $message = $strings[$j];
+                }
+
+                $replaced = Str::replace(':count', $i, $message);
+
+                $translated = $this->translateText($replaced);
+
+                if (Str::contains($translated, $i)) {
+                    $translated = Str::replace($i, ':count', $translated);
+                } else {
+                    $translated = $this->translateText($message);
+                }
+
+                $result->put($j, $translated);
             }
         }
 
-        // now we need to save the array back to the file
-        Storage::disk('lang')->put($locale.'.json', json_encode($strings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        return $result->sortKeys()->implode('|');
     }
 
     private function fixPagination(array $locales): void
