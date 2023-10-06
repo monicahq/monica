@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 return [
     '0' => 'Erro Desconhecido',
     '100' => 'Continuar',

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 return [
     'failed' => 'Credenciais informadas não correspondem com nossos registros.',
     'lang' => 'Português (Brasil)',
