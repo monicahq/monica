@@ -60,7 +60,7 @@ class MonicaLocalize extends Command
         foreach ($newLocales as $locale) {
             try {
                 $this->info('Adding locale: '.$locale);
-                $this->call('lang:add', ['locales' => $locale]);
+                $this->call('lang:add', ['locales' => Str::replace('-', '_', $locale)]);
             } catch (\LaravelLang\Publisher\Exceptions\UnknownLocaleCodeException) {
                 $this->warn('Locale not recognize: '.$locale);
             }
