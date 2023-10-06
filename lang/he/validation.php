@@ -93,6 +93,7 @@ return [
         'string' => 'שדה :attribute חייב להיות בין :min ל-:max תווים.',
     ],
     'boolean' => 'שדה :attribute חייב להיות אמת או שקר.',
+    'can' => 'שדה :attribute מכיל ערך לא מורשה.',
     'confirmed' => 'שדה האישור של :attribute לא תואם.',
     'current_password' => 'הסיסמא לא נכונה.',
     'date' => 'שדה :attribute אינו תאריך תקני.',

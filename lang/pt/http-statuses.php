@@ -12,7 +12,7 @@ return [
     '204' => 'Sem conteúdo',
     '205' => 'Redefinir conteúdo',
     '206' => 'Conteúdo Parcial',
-    '207' => 'Multi-status',
+    '207' => 'Vários status',
     '208' => 'Já Reportado',
     '226' => 'Estou acostumado',
     '300' => 'Escolhas múltiplas',

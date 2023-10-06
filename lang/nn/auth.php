@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 return [
     'failed' => 'Brukarnamn og/eller passord er feil.',
     'lang' => 'Norsk',

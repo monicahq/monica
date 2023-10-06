@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 return [
     'reset' => 'Passordet vart endra!',
     'sent' => 'Vi har sendt deg ei lenke du kan klikke på for å endre passordet ditt!',

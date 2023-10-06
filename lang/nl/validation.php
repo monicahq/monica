@@ -93,6 +93,7 @@ return [
         'string' => ':Attribute moet tussen :min en :max karakters zijn.',
     ],
     'boolean' => ':Attribute moet ja of nee zijn.',
+    'can' => ':Attribute bevat een waarde waar je niet bevoegd voor bent.',
     'confirmed' => 'Bevestiging van :attribute komt niet overeen.',
     'current_password' => 'Huidig wachtwoord is onjuist.',
     'date' => ':Attribute moet een datum bevatten.',

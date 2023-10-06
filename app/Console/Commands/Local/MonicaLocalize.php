@@ -4,8 +4,8 @@ namespace App\Console\Commands\Local;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Stichoza\GoogleTranslate\GoogleTranslate;
-use Symfony\Component\Finder\Finder;
 
 use function Safe\json_decode;
 use function Safe\json_encode;
@@ -19,7 +19,8 @@ class MonicaLocalize extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:localize';
+    protected $signature = 'monica:localize
+                            {--update : Update the current locales.}';
 
     /**
      * The console command description.
@@ -33,11 +34,37 @@ class MonicaLocalize extends Command
      */
     public function handle(): void
     {
-        $locales = config('localizer.supported_locales');
-        array_shift($locales);
-        $this->call('localize', ['lang' => implode(',', $locales)]);
+        $locales = $langs = config('localizer.supported_locales');
+
+        $this->updateLocales($locales);
+
+        array_shift($langs);
+        $this->call('localize', ['lang' => implode(',', $langs)]);
 
         $this->loadTranslations($locales);
+
+        $this->fixPagination($locales);
+    }
+
+    private function updateLocales(array $locales): void
+    {
+        $currentLocales = Storage::disk('lang')->directories();
+
+        if ($this->option('update')) {
+            $this->info('Updating locales...');
+            $this->call('lang:update');
+        }
+
+        $newLocales = collect($locales)->diff($currentLocales);
+
+        foreach ($newLocales as $locale) {
+            try {
+                $this->info('Adding locale: '.$locale);
+                $this->call('lang:add', ['locales' => $locale]);
+            } catch (\LaravelLang\Publisher\Exceptions\UnknownLocaleCodeException) {
+                $this->warn('Locale not recognize: '.$locale);
+            }
+        }
     }
 
     /**
@@ -45,40 +72,44 @@ class MonicaLocalize extends Command
      */
     private function loadTranslations(array $locales): void
     {
-        $path = lang_path();
-        $finder = new Finder();
-        $finder->in($path)->name(['*.json'])->files();
         $this->googleTranslate = new GoogleTranslate();
 
-        foreach ($finder as $file) {
-            $locale = $file->getFilenameWithoutExtension();
+        foreach ($locales as $locale) {
+            $this->info('Loading locale: '.$locale);
 
-            if (! in_array($locale, $locales)) {
-                continue;
-            }
-
-            $this->info('loading locale: '.$locale);
-            $jsonString = $file->getContents();
-            $strings = json_decode($jsonString, true);
-
+            $content = Storage::disk('lang')->get($locale.'.json');
+            $strings = json_decode($content, true);
             $this->translateStrings($locale, $strings);
         }
     }
 
     private function translateStrings(string $locale, array $strings)
     {
-        foreach ($strings as $index => $value) {
-            if ($value === '') {
-                $this->googleTranslate->setTarget($locale);
-                $translated = $this->googleTranslate->translate($index);
-                $this->info('translating: `'.$index.'` to `'.$translated.'`');
+        if ($locale !== 'en') {
+            foreach ($strings as $index => $value) {
+                if ($value === '') {
+                    $this->googleTranslate->setTarget($locale);
+                    $translated = $this->googleTranslate->translate($index);
+                    $this->info('translating: `'.$index.'` to `'.$translated.'`');
 
-                // we store the translated string in the array
-                $strings[$index] = $translated;
+                    // we store the translated string in the array
+                    $strings[$index] = $translated;
+                }
             }
         }
 
         // now we need to save the array back to the file
         Storage::disk('lang')->put($locale.'.json', json_encode($strings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    }
+
+    private function fixPagination(array $locales): void
+    {
+        foreach ($locales as $locale) {
+            $pagination = Storage::disk('lang')->get($locale.DIRECTORY_SEPARATOR.'pagination.php');
+
+            $pagination = Str::replace(['&laquo; ', ' &raquo;'], ['❮ ', ' ❯'], $pagination);
+
+            Storage::disk('lang')->put($locale.DIRECTORY_SEPARATOR.'pagination.php', $pagination);
+        }
     }
 }

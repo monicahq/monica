@@ -93,6 +93,7 @@ return [
         'string' => ':Attribute mutlaka :min - :max karakter arasında olmalıdır.',
     ],
     'boolean' => ':Attribute sadece doğru veya yanlış olmalıdır.',
+    'can' => ':Attribute alanı yetkisiz bir değer içeriyor.',
     'confirmed' => ':Attribute tekrarı eşleşmiyor.',
     'current_password' => 'Parola hatalı.',
     'date' => ':Attribute geçerli bir tarih değil.',
