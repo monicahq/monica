@@ -163,13 +163,13 @@ class MonicaLocalize extends Command
                 }
 
                 // Replace the count placeholder with the actual count.
-                $replaced = Str::replace(':count', $i, $message);
+                $replaced = Str::replace(':count', (string) $i, $message);
 
                 $translated = $this->translateText($replaced);
 
                 // Replace back with the placeholder
-                if (Str::contains($translated, $i)) {
-                    $translated = Str::replace($i, ':count', $translated);
+                if (Str::contains($translated, (string) $i)) {
+                    $translated = Str::replace((string) $i, ':count', $translated);
                 } else {
                     $translated = $this->translateText($message);
                 }
