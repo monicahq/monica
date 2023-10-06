@@ -150,18 +150,24 @@ class MonicaLocalize extends Command
         $result = collect([]);
 
         for ($i = 0; $i < 100; $i++) {
+
+            // Get the plural index for the given locale and count.
             $j = app(MessageSelector::class)->getPluralIndex($locale, $i);
+
             if (! $result->has($j)) {
+                // Update the translation for the given plural index.
                 if ($j >= $strings->count()) {
                     $message = $strings[$strings->count() - 1];
                 } elseif (! $result->has($j)) {
                     $message = $strings[$j];
                 }
 
+                // Replace the count placeholder with the actual count.
                 $replaced = Str::replace(':count', $i, $message);
 
                 $translated = $this->translateText($replaced);
 
+                // Replace back with the placeholder
                 if (Str::contains($translated, $i)) {
                     $translated = Str::replace($i, ':count', $translated);
                 } else {
