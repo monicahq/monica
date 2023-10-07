@@ -23,6 +23,7 @@ class MonicaLocalize extends Command
      */
     protected $signature = 'monica:localize
                             {--update : Update the current locales.}
+                            {--remove-missing : Remove missing translations.}
                             {--restart : Restart translation of all messages.}';
 
     /**
@@ -44,7 +45,10 @@ class MonicaLocalize extends Command
         $this->updateLocales($locales);
 
         array_shift($langs);
-        $this->call('localize', ['lang' => implode(',', $langs)]);
+        $this->call('localize', [
+            'lang' => implode(',', $langs),
+            '--remove-missing' => $this->option('remove-missing'),
+        ]);
 
         $this->loadTranslations($locales);
 

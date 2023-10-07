@@ -452,7 +452,6 @@
     "Gender": "صنف",
     "Gender and pronoun": "جنس اور ضمیر",
     "Genders": "جنس",
-    "Gift center": "گفٹ سینٹر",
     "Gift occasions": "تحفے کے مواقع",
     "Gift occasions let you categorize all your gifts.": "تحفے کے مواقع آپ کو اپنے تمام تحائف کی درجہ بندی کرنے دیتے ہیں۔",
     "Gift states": "گفٹ اسٹیٹس",
@@ -567,7 +566,6 @@
     "Life metrics": "زندگی کی پیمائش",
     "Life metrics let you track metrics that are important to you.": "لائف میٹرکس آپ کو ان میٹرکس کو ٹریک کرنے دیتی ہیں جو آپ کے لیے اہم ہیں۔",
     "LinkedIn": "LinkedIn",
-    "Link to documentation": "دستاویزات سے لنک کریں۔",
     "List of addresses": "پتوں کی فہرست",
     "List of addresses of the contacts in the vault": "والٹ میں رابطوں کے پتوں کی فہرست",
     "List of all important dates": "تمام اہم تاریخوں کی فہرست",
@@ -861,7 +859,6 @@
     "Small animal": "چھوٹا جانور",
     "Social": "سماجی",
     "Some dates have a special type that we will use in the software to calculate an age.": "کچھ تاریخوں کی ایک خاص قسم ہوتی ہے جسے ہم سافٹ ویئر میں عمر کا حساب لگانے کے لیے استعمال کریں گے۔",
-    "Sort contacts": "رابطوں کو ترتیب دیں۔",
     "So… it works 😼": "تو… یہ کام کرتا ہے 😼",
     "Sport": "کھیل",
     "spouse": "شریک حیات",
@@ -1133,7 +1130,6 @@
     "Unknown": "نامعلوم",
     "unknown action": "نامعلوم کارروائی",
     "Unknown age": "نامعلوم عمر",
-    "Unknown contact name": "نامعلوم رابطہ نام",
     "Unknown name": "نامعلوم نام",
     "Update": "اپ ڈیٹ",
     "Update a key.": "ایک کلید کو اپ ڈیٹ کریں۔",
@@ -1232,9 +1228,7 @@
     "You are invited to join Monica": "آپ کو مونیکا میں شامل ہونے کی دعوت دی جاتی ہے۔",
     "You are receiving this email because we received a password reset request for your account.": "آپ کو یہ ای میل موصول ہو رہا ہے کیونکہ ہم نے آپ کے اکاؤنٹ کے پاس پاسورٹ ری سیٹ کی درخواست موصول ہوئی ہے.",
     "you can't even use your current username or password to sign in,": "آپ سائن ان کرنے کے لیے اپنا موجودہ صارف نام یا پاس ورڈ بھی استعمال نہیں کر سکتے،",
-    "you can't even use your current username or password to sign in, ": "آپ سائن ان کرنے کے لیے اپنا موجودہ صارف نام یا پاس ورڈ بھی استعمال نہیں کر سکتے،",
     "you can't import any data from your current Monica account(yet),": "آپ اپنے موجودہ مونیکا اکاؤنٹ (ابھی تک) سے کوئی ڈیٹا درآمد نہیں کر سکتے،",
-    "you can't import any data from your current Monica account(yet), ": "آپ اپنے موجودہ مونیکا اکاؤنٹ (ابھی تک) سے کوئی ڈیٹا درآمد نہیں کر سکتے،",
     "You can add job information to your contacts and manage the companies here in this tab.": "آپ اپنے رابطوں میں ملازمت کی معلومات شامل کر سکتے ہیں اور یہاں اس ٹیب میں کمپنیوں کا نظم کر سکتے ہیں۔",
     "You can add more account to log in to our service with one click.": "آپ ایک کلک کے ساتھ ہماری سروس میں لاگ ان کرنے کے لیے مزید اکاؤنٹ شامل کر سکتے ہیں۔",
     "You can be notified through different channels: emails, a Telegram message, on Facebook. You decide.": "آپ کو مختلف چینلز کے ذریعے مطلع کیا جا سکتا ہے: ای میلز، ایک ٹیلیگرام پیغام، فیس بک پر۔ تم فیصلہ کرو.",
