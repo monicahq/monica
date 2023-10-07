@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Local;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Translation\MessageSelector;
@@ -21,7 +22,8 @@ class MonicaLocalize extends Command
      * @var string
      */
     protected $signature = 'monica:localize
-                            {--update : Update the current locales.}';
+                            {--update : Update the current locales.}
+                            {--restart : Restart translation of all messages.}';
 
     /**
      * The console command description.
@@ -55,7 +57,23 @@ class MonicaLocalize extends Command
 
         if ($this->option('update')) {
             $this->info('Updating locales...');
-            $this->call('lang:update');
+
+            $aliases = config('lang-publisher.aliases');
+            try {
+                foreach ($aliases as $locale => $alias) {
+                    File::move(lang_path($alias.'.json'), lang_path($locale.'.json'));
+                    File::moveDirectory(lang_path($alias), lang_path($locale), true);
+                }
+
+                config(['lang-publisher.aliases' => []]);
+
+                $this->call('lang:update');
+            } finally {
+                foreach ($aliases as $locale => $alias) {
+                    File::move(lang_path($locale.'.json'), lang_path($alias.'.json'));
+                    File::moveDirectory(lang_path($locale), lang_path($alias), true);
+                }
+            }
         }
 
         $newLocales = collect($locales)->diff($currentLocales);
@@ -91,15 +109,16 @@ class MonicaLocalize extends Command
                 $this->googleTranslate->setTarget($this->getTarget($locale));
 
                 foreach ($strings as $index => $value) {
-                    if ($value === '' || $this->option('update')) {
+                    if ($value === '' || $this->option('restart')) {
                         // we store the translated string in the array
                         $strings[$index] = $this->translate($locale, $index);
                     }
                 }
             }
         } finally {
-
             // now we need to save the array back to the file
+            ksort($strings, SORT_NATURAL | SORT_FLAG_CASE);
+
             Storage::disk('lang')->put($locale.'.json', json_encode($strings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         }
     }
