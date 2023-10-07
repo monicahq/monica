@@ -8,7 +8,7 @@
 <div align="center">
 
 [![Docker pulls](https://img.shields.io/docker/pulls/library/monica)](https://hub.docker.com/_/monica/)
-![Lines of code](https://img.shields.io/tokei/lines/github/monicahq/chandler)
+![Lines of code](https://sloc.xyz/github/monicahq/monica/)
 [![Code coverage](https://img.shields.io/sonar/coverage/monica?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&label=Coverage%20Status)](https://sonarcloud.io/project/activity?custom_metrics=coverage&amp;graph=custom&amp;id=monica)
 [![License](https://img.shields.io/github/license/monicahq/monica)](https://github.com/monicahq/monica/blob/main/LICENSE.md)
 
@@ -16,14 +16,13 @@
 
 <p align="center">
   <a href="https://docs.monicahq.com">Docs</a>
-   -
-   <a href="https://github.com/monicahq/monica/issues/new?assignees=&labels=bug&template=bug_report.md">Bug report</a>
+  -
+  <a href="https://github.com/monicahq/monica/issues/new?assignees=&amp;labels=bug&amp;template=bug_report.md">Bug report</a>
 </p>
 
 ## Monica is an open source personal relationship management system, that lets you document your life.
 
-> **Warning**
->
+> [!WARNING]
 > This branch is in development. It’s our beta version.
 > 
 > If you want to browse the stable and current version, see the [4.x branch](https://github.com/monicahq/monica/tree/4.x).
@@ -85,10 +84,10 @@ We’ve also had a lot of positive reviews from people with Asperger syndrome, A
 
 ### What Monica isn’t
 
- * Monica is not a social network and **it never will be**. It’s not meant to be social. It’s designed to be the opposite: it’s for your eyes only.
- * Monica is not a smart assistant. It won’t guess what you want to do. It’s actually pretty dumb: it will only send you emails for the things you asked to be reminded of.
- * Monica does not have built-in AI with integrations like ChatGPT.
- * Monica is not a tool that will scan your data and do nasty things with it. It’s your data, your server, do whatever you want with it. You’re in control of your data.
+* Monica is not a social network and **it never will be**. It’s not meant to be social. It’s designed to be the opposite: it’s for your eyes only.
+* Monica is not a smart assistant. It won’t guess what you want to do. It’s actually pretty dumb: it will only send you emails for the things you asked to be reminded of.
+* Monica does not have built-in AI with integrations like ChatGPT.
+* Monica is not a tool that will scan your data and do nasty things with it. It’s your data, your server, do whatever you want with it. You’re in control of your data.
 
 ## Contribute
 
@@ -99,23 +98,16 @@ Here are some of the things you can do to help.
 ### Contribute as a community
 
 - Unlike Fight Club, the best way to help is **to actually talk about Monica** as much as you can in blog posts and articles, or on social media.
-
 - You can answer questions in [the issue tracker](https://github.com/monicahq/monica/issues) to help other community members.
-
 - You can financially support Monica’s development [on Patreon](https://www.patreon.com/monicahq) or by subscribing to [a paid account](https://monicahq.com/pricing).
 
 ### Contribute as a developer
 
 - Read our [Contribution Guide](https://docs.monicahq.com/developers/contribution-guide).
-
 - Install [the developer version locally](https://docs.monicahq.com/developers/setup-local-development) so you can start contributing.
-
 - Look for [issues labelled ‘Bugs’](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) if you are looking to have an immediate impact on Monica.
-
 - Look for [issues labelled ‘Help Wanted’](https://github.com/monicahq/monica/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22). These are issues that you can solve relatively easily.
-
 - Look for [issues labelled ’Good First Issue’](https://github.com/monicahq/monica/labels/good%20first%20issue). These issues are for people who want to contribute, but try to work on a small feature first.
-
 - If you are an advanced developer, you can try to tackle [issues labelled ‘Feature Requests’](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22). These are harder to do and will require a lot of back-and-forth with the repository administrator to make sure we are going to the right direction with the product.
 
 ## Principles, vision, goals and strategy
@@ -127,21 +119,13 @@ We want to use technology in a way that does not harm human relationships, unlik
 Monica has a few principles.
 
 - It should help improve relationships.
-
 - It should be simple to use, simple to contribute to, simple to understand, extremely simple to maintain.
-
 - It is not a social network and never will be.
-
 - It is not and never will be ad-supported.
-
 - Users are not and never will be tracked.
-
 - It should be transparent.
-
 - It should be open-source.
-
 - It should do one thing (documenting your life) extremely well, and nothing more.
-
 - It should be well documented.
 
 ### Vision
@@ -153,11 +137,8 @@ Monica’s vision is to **help people have more meaningful relationships**.
 We want to provide a platform that is:
 
 - **really easy to use**: we value simplicity over anything else.
-
 - **open-source**: we believe everyone should be able to contribute to this tool, and see for themselves that nothing nasty is done behind the scenes that would go against the best interests of the users. We also want to leverage the community to build attractive features and do things that would not be possible otherwise.
-
 - **easy to contribute to**: we want to keep the codebase as simple as possible. This has two big advantages: anyone can contribute, and it’s easily maintainable on the long run.
-
 - **available everywhere**: Monica should be able to run on any desktop OS or mobile phone easily. This will be made possible by making sure the tool is easily installable by anyone who wants to either contribute or host the platform themselves.
 
 ### Why Open Source?
@@ -170,13 +151,10 @@ We wanted to open source Monica for several reasons:
 
 - **We believe that this tool can really change people’s lives.**
     We aim to make money from this project, but also want everyone to benefit. Open sourcing it will help Monica become much bigger than we imagine. We believe the software should follow our vision, but we must be humble enough to recognize that ideas come from everywhere and people may have better ideas than us.
-
 - **You can’t make something great alone.**
     While Monica could become a company and hire a bunch of super smart people to work on it, you can’t beat the manpower of an entire community. Open sourcing the product means bugs will be fixed faster, features will be developed faster, and more importantly, developers will be able to contribute to a tool that positively changes their own lives and the lives of other people.
-
 - **Doing things in a transparent way leads to formidable things.**
     People respect the project more when they can see how it’s being worked on. You can’t hide nasty things in the code. You can’t do things behind the backs of your users. Doing everything in the open is a major driving force that motivates you to keep doing what’s right.
-
 - **Once you’ve created a community of passionate developers around your project, you’ve won.**
     Developers are powerful influencers: they create apps, discuss your product on forums, and share it with their networks. Nurture your relationship with developers – users will follow.
 
@@ -191,7 +169,6 @@ You can support the development of Monica [on Patreon](https://www.patreon.com/m
 Our team is made of two core members:
 
 - [Regis (djaiss)](https://github.com/djaiss)
-
 - [Alexis Saettler (asbiin)](https://github.com/asbiin)
 
 We are also fortunate to have an amazing [community of developers](https://github.com/monicahq/monica/graphs/contributors) who help us greatly.
