@@ -890,7 +890,6 @@
     "Test email for Monica": "Test e-post for Monica",
     "Test email sent!": "Testmail sendt!",
     "Thanks,": "Takk,",
-    "Thanks for giving Monica a try": "Takk for at du prøvde Monica",
     "Thanks for giving Monica a try.": "Takk for at du prøvde Monica.",
     "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn’t receive the email, we will gladly send you another.": "Takk for at du registrerte deg! Før du begynner, kan du bekrefte e-postadressen din ved å klikke på linken vi nettopp sendte til deg? Hvis du ikke har mottatt e-posten, sender vi deg gjerne en annen.",
     "The :attribute must be at least :length characters.": "De :attribute må bestå av minst :length tegn.",
