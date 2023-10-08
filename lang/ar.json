@@ -220,7 +220,7 @@
     "boss": "رئيس",
     "Bought": "مُشترى",
     "Breakdown of the current usage": "انهيار الاستخدام الحالي",
-    "brother\/sister": "أخ أخت",
+    "brother/sister": "أخ / أخت",
     "Browser Sessions": "جلسات المتصفح",
     "Buddhist": "بوذي",
     "Business": "عمل",
@@ -364,7 +364,7 @@
     "Delete the photo": "احذف الصورة",
     "Delete the slice": "احذف الشريحة",
     "Delete the vault": "احذف الخزينة",
-    "Delete your account on https:\/\/customers.monicahq.com.": "احذف حسابك على https:\/\/customers.monicahq.com.",
+    "Delete your account on https://customers.monicahq.com.": "احذف حسابك على https://customers.monicahq.com.",
     "Deleting the vault means deleting all the data inside this vault, forever. There is no turning back. Please be certain.": "حذف المخزن يعني حذف جميع البيانات الموجودة داخل هذا المخزن إلى الأبد. ليس هناك عودة الى الوراء. يرجى التأكد.",
     "Description": "وصف",
     "Detail of a goal": "تفاصيل الهدف",
@@ -478,7 +478,7 @@
     "Had a promotion": "كان ترقية",
     "Hamster": "الهامستر",
     "Have a great day,": "أتمنى لك يوماً عظيماً،",
-    "he\/him": "هو \/ له",
+    "he/him": "هو / له",
     "Hello!": "أهلاً بك!",
     "Help": "يساعد",
     "Hi :name": "مرحبًا :name",
@@ -638,7 +638,7 @@
     "Name of the reminder": "اسم التذكير",
     "Name of the reverse relationship": "اسم العلاقة العكسية",
     "Nature of the call": "طبيعة المكالمة",
-    "nephew\/niece": "ابن أخ \/ ابنة",
+    "nephew/niece": "ابن أخ / ابنة",
     "New Password": "كلمة مرور جديدة",
     "New to Monica?": "هل أنت جديد في Monica؟",
     "Next": "التالي",
@@ -696,7 +696,7 @@
     "Password": "كلمة المرور",
     "Payment Required": "مطلوب الدفع",
     "Pending Team Invitations": "دعوات معلقة للإنضمام لفريق",
-    "per\/per": "لكل \/ لكل",
+    "per/per": "لكل / لكل",
     "Permanently delete this team.": "احذف هذا الفريق بشكل دائم.",
     "Permanently delete your account.": "احذف حسابك بشكل دائم.",
     "Permission for :name": "إذن لـ :name",
@@ -729,7 +729,7 @@
     "Please indicate the contacts": "يرجى الإشارة إلى جهات الاتصال",
     "Please join Monica": "يرجى الانضمام Monica",
     "Please provide the email address of the person you would like to add to this team.": "يرجى كتابة عنوان البريد الإلكتروني للشخص الذي ترغب بإضافته إلى هذا الفريق.",
-    "Please read our <link>documentation<\/link> to know more about this feature, and which variables you have access to.": "يرجى قراءة <link>الوثائق<\/link> الخاصة بنا لمعرفة المزيد حول هذه الميزة والمتغيرات التي يمكنك الوصول إليها.",
+    "Please read our <link>documentation</link> to know more about this feature, and which variables you have access to.": "يرجى قراءة <link>الوثائق</link> الخاصة بنا لمعرفة المزيد حول هذه الميزة والمتغيرات التي يمكنك الوصول إليها.",
     "Please select a page on the left to load modules.": "الرجاء تحديد صفحة على اليسار لتحميل الوحدات.",
     "Please type a few characters to create a new label.": "الرجاء كتابة بضعة أحرف لإنشاء تسمية جديدة.",
     "Please type a few characters to create a new tag.": "الرجاء كتابة بضعة أحرف لإنشاء علامة جديدة.",
@@ -835,7 +835,7 @@
     "Setup Key": "مفتاح الإعداد",
     "Setup Key:": "مفتاح الإعداد:",
     "Setup Telegram": "إعداد برقية",
-    "she\/her": "هي \/ لها",
+    "she/her": "هي / لها",
     "Shintoist": "الشنتوية",
     "Show Calendar tab": "إظهار علامة تبويب التقويم",
     "Show Companies tab": "إظهار علامة تبويب الشركات",
@@ -1069,7 +1069,7 @@
     "The vault has been created": "تم إنشاء القبو",
     "The vault has been deleted": "تم حذف الخزنة",
     "The vault have been updated": "تم تحديث القبو",
-    "they\/them": "هم \/ لهم",
+    "they/them": "هم / لهم",
     "This address is not active anymore": "هذا العنوان لم يعد نشطا بعد الآن",
     "This device": "هذا الجهاز",
     "This email is a test email to check if Monica can send an email to this email address.": "يعد هذا البريد الإلكتروني بمثابة بريد إلكتروني تجريبي للتحقق مما إذا كان بإمكان Monica إرسال بريد إلكتروني إلى عنوان البريد الإلكتروني هذا.",
@@ -1096,7 +1096,7 @@
     "to": "إلى",
     "To finish enabling two factor authentication, scan the following QR code using your phone's authenticator application or enter the setup key and provide the generated OTP code.": "لإنهاء تمكين المصادقة الثنائية، قم بسمح رمز الاستجابة السريعة التالي باستخدام تطبيق المصادقة بهاتفك أو قم بإدخال مفتاح الإعداد وأدخل رمز OTP الذي تم إنشاؤه.",
     "To finish enabling two factor authentication, scan the following QR code using your phone’s authenticator application or enter the setup key and provide the generated OTP code.": "لإنهاء تمكين المصادقة الثنائية، قم بمسح رمز الاستجابة السريعة التالي باستخدام تطبيق المصادقة الخاص بهاتفك أو أدخل مفتاح الإعداد وقم بتوفير رمز OTP الذي تم إنشاؤه.",
-    "Toggle navigation": "إظهار\/إخفاء القائمة",
+    "Toggle navigation": "إظهار/إخفاء القائمة",
     "To hear their story": "لسماع قصتهم",
     "Token Name": "اسم الرمز",
     "Token name (for your reference only)": "اسم الرمز المميز (للرجوع إليه فقط)",
@@ -1123,7 +1123,7 @@
     "Unarchive contact": "إلغاء أرشفة جهة الاتصال",
     "unarchived the contact": "تم إلغاء أرشفة جهة الاتصال",
     "Unauthorized": "غير مصرّح",
-    "uncle\/aunt": "عم خالة",
+    "uncle/aunt": "عم / خالة",
     "Undefined": "غير معرف",
     "Unexpected error on login.": "خطأ غير متوقع عند تسجيل الدخول.",
     "Unknown": "غير معروف",
@@ -1160,7 +1160,7 @@
     "Value copied into your clipboard": "تم نسخ القيمة إلى الحافظة الخاصة بك",
     "Vaults contain all your contacts data.": "تحتوي الخزائن على جميع بيانات جهات الاتصال الخاصة بك.",
     "Vault settings": "إعدادات الخزنة",
-    "ve\/ver": "لقد \/ الإصدار",
+    "ve/ver": "لقد / الإصدار",
     "Verification email sent": "تم إرسال رسالة التحقق بالبريد الإلكتروني",
     "Verified": "تم التحقق",
     "Verify Email Address": "التحقق من عنوان البريد الإلكتروني",
@@ -1220,7 +1220,7 @@
     "Write the amount with a dot if you need decimals, like 100.50": "اكتب المبلغ بنقطة إذا كنت بحاجة إلى أعداد عشرية، مثل 100.50",
     "Written on": "وكتب على",
     "wrote a note": "كتب ملاحظة",
-    "xe\/xem": "xe\/xem",
+    "xe/xem": "xe / xem",
     "year": "سنة",
     "Years": "سنين",
     "You are here:": "أنت هنا:",
@@ -1234,7 +1234,7 @@
     "You can change that at any time.": "يمكنك تغيير ذلك في أي وقت.",
     "You can choose how you want Monica to display dates in the application.": "يمكنك اختيار الطريقة التي تريد أن تعرض بها Monica التواريخ في التطبيق.",
     "You can choose which currencies should be enabled in your account, and which one shouldn’t.": "يمكنك اختيار العملات التي يجب تمكينها في حسابك، والعملات التي لا ينبغي تمكينها.",
-    "You can customize how contacts should be displayed according to your own taste\/culture. Perhaps you would want to use James Bond instead of Bond James. Here, you can define it at will.": "يمكنك تخصيص كيفية عرض جهات الاتصال وفقًا لذوقك\/ثقافتك. ربما ترغب في استخدام جيمس بوند بدلاً من بوند جيمس. هنا، يمكنك تحديد ذلك في الإرادة.",
+    "You can customize how contacts should be displayed according to your own taste/culture. Perhaps you would want to use James Bond instead of Bond James. Here, you can define it at will.": "يمكنك تخصيص كيفية عرض جهات الاتصال وفقًا لذوقك/ثقافتك. ربما ترغب في استخدام جيمس بوند بدلاً من بوند جيمس. هنا، يمكنك تحديد ذلك في الإرادة.",
     "You can customize the criteria that let you track your mood.": "يمكنك تخصيص المعايير التي تتيح لك تتبع حالتك المزاجية.",
     "You can move contacts between vaults. This change is immediate. You can only move contacts to vaults you are part of. All the contacts data will move with it.": "يمكنك نقل جهات الاتصال بين الخزائن. هذا التغيير فوري. يمكنك فقط نقل جهات الاتصال إلى الخزائن التي أنت جزء منها. ستنتقل معها جميع بيانات جهات الاتصال.",
     "You cannot remove your own administrator privilege.": "لا يمكنك إزالة امتياز المسؤول الخاص بك.",
@@ -1268,7 +1268,7 @@
     "You wanted to be reminded of the following:": "أردت أن أذكرك بما يلي:",
     "You WILL still have to delete your account on Monica or OfficeLife.": "سيظل يتعين عليك حذف حسابك على Monica أو OfficeLife.",
     "You’ve been invited to use this email address in Monica, an open source personal CRM, so we can use it to send you notifications.": "لقد تمت دعوتك لاستخدام عنوان البريد الإلكتروني هذا في Monica، وهو نظام إدارة علاقات العملاء (CRM) شخصي مفتوح المصدر، حتى نتمكن من استخدامه لإرسال إشعارات إليك.",
-    "ze\/hir": "زي\/هير",
+    "ze/hir": "زي / هير",
     "⚠️ Danger zone": "⚠️منطقة الخطر",
     "🌳 Chalet": "🌳شاليه",
     "🏠 Secondary residence": "🏠 الإقامة الثانوية",

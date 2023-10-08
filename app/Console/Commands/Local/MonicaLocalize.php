@@ -120,10 +120,13 @@ class MonicaLocalize extends Command
                 }
             }
         } finally {
+
+            $strings = collect($strings)->map(fn ($value) => Str::replace(['\''], ['’'], $value))->all();
+
             // now we need to save the array back to the file
             ksort($strings, SORT_NATURAL | SORT_FLAG_CASE);
 
-            Storage::disk('lang')->put($locale.'.json', json_encode($strings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            Storage::disk('lang')->put($locale.'.json', json_encode($strings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
         }
     }
 
