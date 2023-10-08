@@ -8,7 +8,7 @@ return [
      */
     'supported_locales' => ['en', 'ar', 'bn', 'ca', 'da', 'de', 'es', 'el',
         'fr', 'he', 'hi', 'it', 'ja', 'ml', 'nl', 'nn', 'pa', 'pl', 'pt',
-        'pt-BR', 'ro', 'ru', 'sv', 'te', 'tr', 'ur', 'vi', 'zh-CN', 'zh-TW',
+        'pt_BR', 'ro', 'ru', 'sv', 'te', 'tr', 'ur', 'vi', 'zh_CN', 'zh_TW',
     ],
 
     /**

@@ -11,6 +11,6 @@ return new class extends Migration
     public function up(): void
     {
         User::where('locale', 'no')->update(['locale' => 'nn']);
-        User::where('locale', 'zh')->update(['locale' => 'zh-CN']);
+        User::where('locale', 'zh')->update(['locale' => 'zh_CN']);
     }
 };

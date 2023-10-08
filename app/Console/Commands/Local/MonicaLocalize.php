@@ -61,23 +61,7 @@ class MonicaLocalize extends Command
 
         if ($this->option('update')) {
             $this->info('Updating locales...');
-
-            $aliases = config('lang-publisher.aliases');
-            try {
-                foreach ($aliases as $locale => $alias) {
-                    File::move(lang_path($alias.'.json'), lang_path($locale.'.json'));
-                    File::moveDirectory(lang_path($alias), lang_path($locale), true);
-                }
-
-                config(['lang-publisher.aliases' => []]);
-
-                $this->call('lang:update');
-            } finally {
-                foreach ($aliases as $locale => $alias) {
-                    File::move(lang_path($locale.'.json'), lang_path($alias.'.json'));
-                    File::moveDirectory(lang_path($locale), lang_path($alias), true);
-                }
-            }
+            $this->call('lang:update');
         }
 
         $newLocales = collect($locales)->diff($currentLocales);
