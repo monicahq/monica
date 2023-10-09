@@ -6,7 +6,7 @@
         <div class="rounded-t-lg border-x border-t border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
           <p class="mb-2 text-center text-xl">👋</p>
           <h2 class="mb-6 text-center text-lg font-semibold">
-            {{ $t('Thanks for giving Monica a try') }}
+            {{ $t('Thanks for giving Monica a try.') }}
           </h2>
           <p class="mb-3">
             {{ $t('Monica was made to help you document your life and your social interactions.') }}

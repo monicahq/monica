@@ -162,7 +162,7 @@ const reload = () => {
                 v-if="canResetPassword"
                 :href="route('password.request')"
                 class="text-sm text-blue-500 hover:underline">
-                {{ $t('Forgot password?') }}
+                {{ $t('Forgot your password?') }}
               </Link>
 
               <PrettyButton :text="$t('Log in')" :state="loadingState" :class="'save ms-4'" />

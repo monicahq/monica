@@ -6,9 +6,9 @@ return [
      * The locales you wish to support.
      * English HAS TO be the first language of the array.
      */
-    'supported_locales' => ['en', 'bn', 'ca', 'da', 'de', 'es', 'el', 'fr',
-        'he', 'hi', 'it', 'ja', 'ml', 'nl', 'no', 'pa', 'pl', 'pt', 'ro',
-        'ru', 'sv', 'te', 'tr', 'ur', 'vi', 'zh',
+    'supported_locales' => ['en', 'ar', 'bn', 'ca', 'da', 'de', 'es', 'el',
+        'fr', 'he', 'hi', 'it', 'ja', 'ml', 'nl', 'nn', 'pa', 'pl', 'pt',
+        'pt_BR', 'ro', 'ru', 'sv', 'te', 'tr', 'ur', 'vi', 'zh_CN', 'zh_TW',
     ],
 
     /**

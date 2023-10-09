@@ -93,6 +93,7 @@ return [
         'string' => 'El campo :attribute tiene que tener entre :min - :max caracteres.',
     ],
     'boolean' => 'El campo :attribute debe tener un valor verdadero o falso.',
+    'can' => 'El campo :attribute contiene un valor no autorizado.',
     'confirmed' => 'La confirmación de :attribute no coincide.',
     'current_password' => 'La contraseña es incorrecta.',
     'date' => 'El campo :attribute debe ser una fecha válida.',

@@ -93,6 +93,7 @@ return [
         'string' => ':Attributeは、:min文字から:max文字にしてください。',
     ],
     'boolean' => ':Attributeには、\'true\'か\'false\'を指定してください。',
+    'can' => ':Attribute フィールドには不正な値が含まれています。',
     'confirmed' => ':Attributeと:attribute確認が一致しません。',
     'current_password' => 'パスワードが正しくありません。',
     'date' => ':Attributeは、正しい日付ではありません。',
