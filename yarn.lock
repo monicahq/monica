@@ -4256,8 +4256,8 @@ __metadata:
   linkType: hard
 
 "v-calendar@npm:^3.0.3":
-  version: 3.1.0
-  resolution: "v-calendar@npm:3.1.0"
+  version: 3.1.1
+  resolution: "v-calendar@npm:3.1.1"
   dependencies:
     "@types/lodash": ^4.14.165
     "@types/resize-observer-browser": ^0.1.7
@@ -4268,7 +4268,7 @@ __metadata:
   peerDependencies:
     "@popperjs/core": ^2.0.0
     vue: ^3.2.0
-  checksum: 5bc2d770b3d1ae7569a8455683db0d2ce1f490ff1af9f0e38928a83366b66f447108cd9919ef7e5e6224253c700a87a608916d6b60a1bb409ebc8d9805d9da34
+  checksum: 8bb472a2da186c1e4360c733e8012d52194f730159028fa5aa65eaefef9b6a9336c2a0b7b717cb712b1781dc71258902c28de0acd8d575b77194bb947e1aa988
   languageName: node
   linkType: hard
 
