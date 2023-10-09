@@ -632,11 +632,11 @@ __metadata:
   linkType: hard
 
 "@simplewebauthn/browser@npm:^8.0.2":
-  version: 8.0.2
-  resolution: "@simplewebauthn/browser@npm:8.0.2"
+  version: 8.3.1
+  resolution: "@simplewebauthn/browser@npm:8.3.1"
   dependencies:
     "@simplewebauthn/typescript-types": ^8.0.0
-  checksum: 3837a8a80dad90e4eecc116ecf42c61c4e51d0948bea41240bd18665c753425f50df89b4f9c18f99d862b931cd2c24d7bde23a9d7626fbe7a4d8b308160afc56
+  checksum: 1c3ce9e23b2ec93ee102589ac8a548d417caf15acc17d60c87049a22faccaaf25b689ac8c878c7445096f6a06ff1359d84e3da95b01a5200c240af3d2ea378ca
   languageName: node
   linkType: hard
 
