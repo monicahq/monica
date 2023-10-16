@@ -35,7 +35,7 @@ class StorageHelper
         return [
             'publicKey' => config('services.uploadcare.public_key'),
             'signature' => optional($signature)->getSignature(),
-            'expire' => optional($signature)->getExpire()->getTimestamp(),
+            'expire' => optional(optional($signature)->getExpire())->getTimestamp(),
         ];
     }
 }
