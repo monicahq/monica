@@ -19,7 +19,7 @@ class ModulePhotosViewHelper
 
         return [
             'photos' => $photosCollection,
-            'uploadcarePublicKey' => config('services.uploadcare.public_key'),
+            'uploadcare' => StorageHelper::uploadcare(),
             'canUploadFile' => StorageHelper::canUploadFile($contact->vault->account),
             'url' => [
                 'index' => route('contact.photo.index', [

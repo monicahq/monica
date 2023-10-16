@@ -364,28 +364,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inertiajs/core@npm:1.0.11":
-  version: 1.0.11
-  resolution: "@inertiajs/core@npm:1.0.11"
+"@inertiajs/core@npm:1.0.12":
+  version: 1.0.12
+  resolution: "@inertiajs/core@npm:1.0.12"
   dependencies:
     axios: ^1.2.0
     deepmerge: ^4.0.0
     nprogress: ^0.2.0
     qs: ^6.9.0
-  checksum: 366edf6cb1d6cb4ea35ff7660e30120c590669fc94b24056d89c453bbab67f5fa765858659fe35f25ef382afef7383be919fa0411eb5484b69e54bec34b30fc0
+  checksum: ac2a401f445043ecda71285475cba516df1c0928ad6553a881eff24ac275fe3c6d1ecd15328cf165fd3b8e67b2f43176399adfb6c87271e1c4dcbcf093da5c4a
   languageName: node
   linkType: hard
 
 "@inertiajs/vue3@npm:^1.0.11":
-  version: 1.0.11
-  resolution: "@inertiajs/vue3@npm:1.0.11"
+  version: 1.0.12
+  resolution: "@inertiajs/vue3@npm:1.0.12"
   dependencies:
-    "@inertiajs/core": 1.0.11
+    "@inertiajs/core": 1.0.12
     lodash.clonedeep: ^4.5.0
     lodash.isequal: ^4.5.0
   peerDependencies:
     vue: ^3.0.0
-  checksum: 8f6e00ab04059168fb90cc159f2ce99c37171c41dec79fabe6f8c284ef2096798dea9c84767d9f970e6a3f2bae1c4f2df3d48e92b0c0689c4a9dbcc549113286
+  checksum: 0bf6d71f961a186dc17df62a68f6bae5ae12a7ce44662d83a70cab7418125f1aece583fb9b473bef48da2e61fec9cad285bd9fec02f32cfbdb26066ba7fbf7ad
   languageName: node
   linkType: hard
 
@@ -703,12 +703,12 @@ __metadata:
   linkType: hard
 
 "@vitejs/plugin-vue@npm:^4.3.4":
-  version: 4.3.4
-  resolution: "@vitejs/plugin-vue@npm:4.3.4"
+  version: 4.4.0
+  resolution: "@vitejs/plugin-vue@npm:4.4.0"
   peerDependencies:
     vite: ^4.0.0
     vue: ^3.2.25
-  checksum: 95bf6c85c0a7812a96a07faf3c28155624c74584448a8fe46ac93e08ebc13520fdc9eb96e2fa95bccacf23028277a9cd3210e00120dadaab25b116456ee2cc43
+  checksum: 37b6987951f2e6fac0d2b7bad58aa4392142c1f325b7d189865426dbf97ee6c545aa489f952fa16d2f422adce5b6c9977785f398868c5d2f5333e43e361a0e0b
   languageName: node
   linkType: hard
 
@@ -1512,12 +1512,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns-tz@npm:^1.0.12":
-  version: 1.3.8
-  resolution: "date-fns-tz@npm:1.3.8"
+"date-fns-tz@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "date-fns-tz@npm:2.0.0"
   peerDependencies:
     date-fns: ">=2.0.0"
-  checksum: dbf17cb88de7c7b71a9f86b815ac62ebdbf725c030e78d2421309456b5001a85284a5b6763f4af0ba660183f12e876c165e725a0723f642edb7846407db03133
+  checksum: a6553603a9d26dd9669326c99a58a2335ac550bc060c74b86a5ad9e1de73c9d4e3e5236f0f552f990e616e4e8dcc2b6a637913a04d2e04396e6a9f8ae83c73da
   languageName: node
   linkType: hard
 
@@ -2590,14 +2590,14 @@ __metadata:
   linkType: hard
 
 "laravel-vite-plugin@npm:^0.8.0":
-  version: 0.8.0
-  resolution: "laravel-vite-plugin@npm:0.8.0"
+  version: 0.8.1
+  resolution: "laravel-vite-plugin@npm:0.8.1"
   dependencies:
     picocolors: ^1.0.0
     vite-plugin-full-reload: ^1.0.5
   peerDependencies:
     vite: ^3.0.0 || ^4.0.0
-  checksum: 645f1690bc07e01199a8ebedde8c299c58d997e3707f820af0b0628e538af3951634f85aeb2092323b250aa3eb50dad2f0b09ebfccfd93cd49ce21e01552b473
+  checksum: 47dd556df1326a9d285ba59c29ff053e7a15557bc6cb4d892638dd08c51477cac17f13fd13678b76691da730935ce09ff1f6bd2fc52508352eed3a79bd9b2f3d
   languageName: node
   linkType: hard
 
@@ -3425,8 +3425,8 @@ __metadata:
   linkType: hard
 
 "prettier-plugin-tailwindcss@npm:^0.5.3":
-  version: 0.5.4
-  resolution: "prettier-plugin-tailwindcss@npm:0.5.4"
+  version: 0.5.6
+  resolution: "prettier-plugin-tailwindcss@npm:0.5.6"
   peerDependencies:
     "@ianvs/prettier-plugin-sort-imports": "*"
     "@prettier/plugin-pug": "*"
@@ -3473,7 +3473,7 @@ __metadata:
       optional: true
     prettier-plugin-twig-melody:
       optional: true
-  checksum: b4380e03a9f7aaf25f5d352fd145618497b5e9281bbd8c1a43e90a9a72daaf0585f8ac8bf5608e41481441caa4eb568c74556164a384de6a5533a196edab52b0
+  checksum: ea5b18daf8727ee77eb6f10e5ceb43416aedee48350b838faae5764083dadb93edba33b84ed5c6ce606de33c875fc444ca979e669f340373fa0f0b76a5cafeac
   languageName: node
   linkType: hard
 
@@ -4245,19 +4245,19 @@ __metadata:
   linkType: hard
 
 "v-calendar@npm:^3.0.3":
-  version: 3.1.1
-  resolution: "v-calendar@npm:3.1.1"
+  version: 3.1.2
+  resolution: "v-calendar@npm:3.1.2"
   dependencies:
     "@types/lodash": ^4.14.165
     "@types/resize-observer-browser": ^0.1.7
     date-fns: ^2.16.1
-    date-fns-tz: ^1.0.12
+    date-fns-tz: ^2.0.0
     lodash: ^4.17.20
     vue-screen-utils: ^1.0.0-beta.13
   peerDependencies:
     "@popperjs/core": ^2.0.0
     vue: ^3.2.0
-  checksum: 8bb472a2da186c1e4360c733e8012d52194f730159028fa5aa65eaefef9b6a9336c2a0b7b717cb712b1781dc71258902c28de0acd8d575b77194bb947e1aa988
+  checksum: 543096b0f87cba975523bd52ddde8da0f2701db7866a60886fdfeac7edf26698fc70079985d3138b97fb7c42296c8bb5d8c77c39479a593ad65ead633004fb3a
   languageName: node
   linkType: hard
 

@@ -58,7 +58,7 @@ class SliceOfLifeShowViewHelper
             'slice' => self::dtoSlice($slice),
             'posts' => $postsCollection,
             'contacts' => $contactsCollection,
-            'uploadcarePublicKey' => config('services.uploadcare.public_key'),
+            'uploadcare' => StorageHelper::uploadcare(),
             'canUploadFile' => StorageHelper::canUploadFile($slice->journal->vault->account),
             'url' => [
                 'slices_index' => route('slices.index', [
