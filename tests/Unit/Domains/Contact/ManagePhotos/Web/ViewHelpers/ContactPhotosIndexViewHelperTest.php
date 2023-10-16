@@ -41,7 +41,7 @@ class ContactPhotosIndexViewHelperTest extends TestCase
         );
         $this->assertEquals(
             '123',
-            $array['uploadcarePublicKey']
+            $array['uploadcare']['publicKey']
         );
         $this->assertTrue($array['canUploadFile']);
         $this->assertEquals(

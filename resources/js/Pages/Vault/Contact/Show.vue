@@ -229,10 +229,11 @@ const download = () => {
               <!-- upload new avatar -->
               <li v-if="!data.avatar.hasFile" class="mb-2">
                 <Uploadcare
-                  v-if="data.avatar.uploadcarePublicKey && data.avatar.canUploadFile"
-                  :public-key="data.avatar.uploadcarePublicKey"
+                  v-if="data.avatar.uploadcare.publicKey && data.avatar.canUploadFile"
+                  :public-key="data.avatar.uploadcare.publicKey"
+                  :secure-signature="data.avatar.uploadcare.signature"
+                  :secure-expire="data.avatar.uploadcare.expire"
                   :tabs="'file'"
-                  :multiple="false"
                   :preview-step="false"
                   @success="onSuccess"
                   @error="onError">

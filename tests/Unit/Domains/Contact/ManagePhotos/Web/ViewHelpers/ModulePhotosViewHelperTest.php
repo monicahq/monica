@@ -31,13 +31,13 @@ class ModulePhotosViewHelperTest extends TestCase
         );
 
         $this->assertArrayHasKey('photos', $array);
-        $this->assertArrayHasKey('uploadcarePublicKey', $array);
+        $this->assertArrayHasKey('uploadcare', $array);
         $this->assertArrayHasKey('canUploadFile', $array);
         $this->assertArrayHasKey('url', $array);
 
         $this->assertEquals(
             '123',
-            $array['uploadcarePublicKey']
+            $array['uploadcare']['publicKey']
         );
         $this->assertFalse($array['canUploadFile']);
         $this->assertEquals(
