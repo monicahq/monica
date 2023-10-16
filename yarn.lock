@@ -1512,12 +1512,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns-tz@npm:^1.0.12":
-  version: 1.3.8
-  resolution: "date-fns-tz@npm:1.3.8"
+"date-fns-tz@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "date-fns-tz@npm:2.0.0"
   peerDependencies:
     date-fns: ">=2.0.0"
-  checksum: dbf17cb88de7c7b71a9f86b815ac62ebdbf725c030e78d2421309456b5001a85284a5b6763f4af0ba660183f12e876c165e725a0723f642edb7846407db03133
+  checksum: a6553603a9d26dd9669326c99a58a2335ac550bc060c74b86a5ad9e1de73c9d4e3e5236f0f552f990e616e4e8dcc2b6a637913a04d2e04396e6a9f8ae83c73da
   languageName: node
   linkType: hard
 
@@ -4245,19 +4245,19 @@ __metadata:
   linkType: hard
 
 "v-calendar@npm:^3.0.3":
-  version: 3.1.1
-  resolution: "v-calendar@npm:3.1.1"
+  version: 3.1.2
+  resolution: "v-calendar@npm:3.1.2"
   dependencies:
     "@types/lodash": ^4.14.165
     "@types/resize-observer-browser": ^0.1.7
     date-fns: ^2.16.1
-    date-fns-tz: ^1.0.12
+    date-fns-tz: ^2.0.0
     lodash: ^4.17.20
     vue-screen-utils: ^1.0.0-beta.13
   peerDependencies:
     "@popperjs/core": ^2.0.0
     vue: ^3.2.0
-  checksum: 8bb472a2da186c1e4360c733e8012d52194f730159028fa5aa65eaefef9b6a9336c2a0b7b717cb712b1781dc71258902c28de0acd8d575b77194bb947e1aa988
+  checksum: 543096b0f87cba975523bd52ddde8da0f2701db7866a60886fdfeac7edf26698fc70079985d3138b97fb7c42296c8bb5d8c77c39479a593ad65ead633004fb3a
   languageName: node
   linkType: hard
 
