@@ -30,12 +30,12 @@ class StorageHelper
      */
     public static function uploadcare(): array
     {
-        $signature = new Signature(config('services.uploadcare.private_key'));
+        $signature = config('services.uploadcare.private_key') != '' ? new Signature(config('services.uploadcare.private_key')) : null;
 
         return [
             'publicKey' => config('services.uploadcare.public_key'),
-            'signature' => $signature->getSignature(),
-            'expire' => $signature->getExpire()->getTimestamp(),
+            'signature' => optional($signature)->getSignature(),
+            'expire' => optional($signature)->getExpire()->getTimestamp(),
         ];
     }
 }
