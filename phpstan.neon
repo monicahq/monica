@@ -46,3 +46,6 @@ parameters:
 
         - message: '#Access to an undefined property App\\Logging\\Loggable::\$id\.#'
           path: */app/Logging/LoggingHandler.php
+
+        - message: '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$user_id\.#'
+          path: */app/Listeners/WebauthnRegistered.php
