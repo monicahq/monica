@@ -4,7 +4,6 @@ namespace Tests\Unit\Domains\Settings\ManageNotificationChannels\Services;
 
 use App\Domains\Settings\ManageNotificationChannels\Jobs\SendVerificationEmailChannel;
 use App\Domains\Settings\ManageNotificationChannels\Services\CreateUserNotificationChannel;
-use App\Exceptions\EmailAlreadyExistException;
 use App\Models\Account;
 use App\Models\User;
 use App\Models\UserNotificationChannel;
@@ -58,7 +57,7 @@ class CreateUserNotificationChannelTest extends TestCase
     /** @test */
     public function it_fails_if_email_already_exists_in_the_account(): void
     {
-        $this->expectException(EmailAlreadyExistException::class);
+        $this->expectException(ValidationException::class);
 
         $ross = $this->createAdministrator();
         UserNotificationChannel::factory()->create([
