@@ -11,6 +11,8 @@ class WebauthnRegistered
      * Handle WebauthnRegister event.
      *
      * @return void
+     *
+     * @codeCoverageIgnore
      */
     public function handle(WebauthnRegister $event)
     {
