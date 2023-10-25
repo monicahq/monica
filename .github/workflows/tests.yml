@@ -151,7 +151,7 @@ jobs:
     needs: tests
     runs-on: ubuntu-latest
     name: Sonarcloud
-    if: ${{ ! startsWith(github.ref, 'dependabot/') && (success() || failure()) }}
+    if: success() || failure()
 
     steps:
       - name: Checkout repository
