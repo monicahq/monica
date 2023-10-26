@@ -1,5 +1,6 @@
 {
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite --https",
     "build": "vite build",
@@ -53,7 +54,7 @@
       "eslint --fix",
       "prettier --write --ignore-unknown"
     ],
-    "resources/**/*.{css,scss}": [
+    "**/*.{css,scss,json,yml,md}": [
       "prettier --write --ignore-unknown"
     ],
     "**/*.php": [

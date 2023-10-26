@@ -9,7 +9,7 @@
 
 [![Docker pulls](https://img.shields.io/docker/pulls/library/monica)](https://hub.docker.com/_/monica/)
 ![Lines of code](https://sloc.xyz/github/monicahq/monica/)
-[![Code coverage](https://img.shields.io/sonar/coverage/monica?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&label=Coverage%20Status)](https://sonarcloud.io/project/activity?custom_metrics=coverage&amp;graph=custom&amp;id=monica)
+[![Code coverage](https://img.shields.io/sonar/coverage/monica?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&label=Coverage%20Status)](https://sonarcloud.io/project/activity?custom_metrics=coverage&graph=custom&id=monica)
 [![License](https://img.shields.io/github/license/monicahq/monica)](https://github.com/monicahq/monica/blob/main/LICENSE.md)
 
 </div>
@@ -24,7 +24,7 @@
 
 > [!WARNING]
 > This branch is in development. It’s our beta version.
-> 
+>
 > If you want to browse the stable and current version, see the [4.x branch](https://github.com/monicahq/monica/tree/4.x).
 
 ## Table of contents
@@ -53,28 +53,28 @@ Monica is an open-source web application that enables you to document your life,
 
 ### Features
 
-* Add and manage contacts
-* Define relationships between contacts
-* Reminders
-* Automatic reminders for birthdays
-* Ability to add notes to a contact
-* Ability to record how you met someone
-* Management of activities with a contact
-* Management of tasks
-* Management of addresses and all the different ways to contact someone
-* Management of contact field types
-* Management of a contact’s pets
-* Top of the art diary to keep track of what’s happening in your life
-* Ability to record how your day went
-* Upload documents and photos
-* Ability to define custom genders
-* Ability to define custom activity types
-* Ability to favorite contacts
-* Multiple vaults and users
-* Labels to organize contacts
-* Ability to define what section should appear on the contact sheet
-* Multiple currencies
-* Translated in 27 languages
+- Add and manage contacts
+- Define relationships between contacts
+- Reminders
+- Automatic reminders for birthdays
+- Ability to add notes to a contact
+- Ability to record how you met someone
+- Management of activities with a contact
+- Management of tasks
+- Management of addresses and all the different ways to contact someone
+- Management of contact field types
+- Management of a contact’s pets
+- Top of the art diary to keep track of what’s happening in your life
+- Ability to record how your day went
+- Upload documents and photos
+- Ability to define custom genders
+- Ability to define custom activity types
+- Ability to favorite contacts
+- Multiple vaults and users
+- Labels to organize contacts
+- Ability to define what section should appear on the contact sheet
+- Multiple currencies
+- Translated in 27 languages
 
 ### Who is it for?
 
@@ -84,10 +84,10 @@ We’ve also had a lot of positive reviews from people with Asperger syndrome, A
 
 ### What Monica isn’t
 
-* Monica is not a social network and **it never will be**. It’s not meant to be social. It’s designed to be the opposite: it’s for your eyes only.
-* Monica is not a smart assistant. It won’t guess what you want to do. It’s actually pretty dumb: it will only send you emails for the things you asked to be reminded of.
-* Monica does not have built-in AI with integrations like ChatGPT.
-* Monica is not a tool that will scan your data and do nasty things with it. It’s your data, your server, do whatever you want with it. You’re in control of your data.
+- Monica is not a social network and **it never will be**. It’s not meant to be social. It’s designed to be the opposite: it’s for your eyes only.
+- Monica is not a smart assistant. It won’t guess what you want to do. It’s actually pretty dumb: it will only send you emails for the things you asked to be reminded of.
+- Monica does not have built-in AI with integrations like ChatGPT.
+- Monica is not a tool that will scan your data and do nasty things with it. It’s your data, your server, do whatever you want with it. You’re in control of your data.
 
 ## Contribute
 
@@ -150,13 +150,13 @@ The answer is simple: yes, you can fork Monica and create a competing project, m
 We wanted to open source Monica for several reasons:
 
 - **We believe that this tool can really change people’s lives.**
-    We aim to make money from this project, but also want everyone to benefit. Open sourcing it will help Monica become much bigger than we imagine. We believe the software should follow our vision, but we must be humble enough to recognize that ideas come from everywhere and people may have better ideas than us.
+  We aim to make money from this project, but also want everyone to benefit. Open sourcing it will help Monica become much bigger than we imagine. We believe the software should follow our vision, but we must be humble enough to recognize that ideas come from everywhere and people may have better ideas than us.
 - **You can’t make something great alone.**
-    While Monica could become a company and hire a bunch of super smart people to work on it, you can’t beat the manpower of an entire community. Open sourcing the product means bugs will be fixed faster, features will be developed faster, and more importantly, developers will be able to contribute to a tool that positively changes their own lives and the lives of other people.
+  While Monica could become a company and hire a bunch of super smart people to work on it, you can’t beat the manpower of an entire community. Open sourcing the product means bugs will be fixed faster, features will be developed faster, and more importantly, developers will be able to contribute to a tool that positively changes their own lives and the lives of other people.
 - **Doing things in a transparent way leads to formidable things.**
-    People respect the project more when they can see how it’s being worked on. You can’t hide nasty things in the code. You can’t do things behind the backs of your users. Doing everything in the open is a major driving force that motivates you to keep doing what’s right.
+  People respect the project more when they can see how it’s being worked on. You can’t hide nasty things in the code. You can’t do things behind the backs of your users. Doing everything in the open is a major driving force that motivates you to keep doing what’s right.
 - **Once you’ve created a community of passionate developers around your project, you’ve won.**
-    Developers are powerful influencers: they create apps, discuss your product on forums, and share it with their networks. Nurture your relationship with developers – users will follow.
+  Developers are powerful influencers: they create apps, discuss your product on forums, and share it with their networks. Nurture your relationship with developers – users will follow.
 
 ### Patreon
 

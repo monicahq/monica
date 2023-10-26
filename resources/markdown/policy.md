@@ -1,13 +1,13 @@
 # Privacy Policy
 
 The customer portal supports the following browsers:
-  - The latest Edge browser
-  - Firefox (latest)
-  - Chrome (latest)
-  - Safari (latest)
+
+- The latest Edge browser
+- Firefox (latest)
+- Chrome (latest)
+- Safari (latest)
 
 We do not guarantee that the site will work with other browsers, but it’s very likely that it will just work.
-
 
 ## Rights
 
@@ -26,7 +26,6 @@ Your data is backed up every hour.
 If the site ceases operation, you will receive an opportunity to export all your data before the site dies.
 
 Any new features that affect privacy will be strictly opt-in.
-
 
 ## Responsibilities
 
@@ -47,7 +46,6 @@ You may not abuse the invitation system.
 You are responsible for keeping your account secure.
 
 We reserve the right to close accounts that abuse the system or use it in an unreasonable manner.
-
 
 ## Other important legal stuff
 
