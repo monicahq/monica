@@ -242,7 +242,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     {
         return Attribute::make(
             get: function ($value, $attributes) {
-                return Str::replace('_', '-', $attributes['locale']);
+                return isset($attributes['locale']) ? Str::replace('_', '-', $attributes['locale']) : null;
             }
         );
     }
