@@ -1,6 +1,5 @@
 {
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "vite --https",
     "build": "vite build",
