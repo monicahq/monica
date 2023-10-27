@@ -378,7 +378,7 @@ const destroy = () => {
             <DatePicker
               v-model.string="form.date"
               :masks="masks"
-              :locale="$page.props.auth.user?.locale"
+              :locale="$page.props.auth.user?.locale_ietf"
               class="mb-6 inline-block">
               <template #default="{ inputValue, inputEvents }">
                 <input

@@ -156,7 +156,7 @@ defineExpose({
             v-model.string="form.date"
             class="inline-block h-full"
             :masks="masks"
-            :locale="$page.props.auth.user?.locale"
+            :locale="$page.props.auth.user?.locale_ietf"
             :is-dark="isDark()"
             :update-on-input="false">
             <template #default="{ inputValue, inputEvents }">

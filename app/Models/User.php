@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use LaravelWebauthn\WebauthnAuthenticatable;
@@ -125,6 +126,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         'email',
         'help_shown',
         'locale',
+        'locale_ietf',
         'is_account_administrator',
         'timezone',
     ];
@@ -136,6 +138,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      */
     protected $appends = [
         'name',
+        'locale_ietf',
     ];
 
     /**
@@ -226,6 +229,20 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         return Attribute::make(
             get: function ($value, $attributes) {
                 return $attributes['first_name'].' '.$attributes['last_name'];
+            }
+        );
+    }
+
+    /**
+     * Get the locale of the user in the IETF format.
+     *
+     * @return Attribute<string,never>
+     */
+    protected function localeIetf(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return isset($attributes['locale']) ? Str::replace('_', '-', $attributes['locale']) : null;
             }
         );
     }
