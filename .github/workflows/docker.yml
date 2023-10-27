@@ -46,11 +46,11 @@ jobs:
           username: ${{ secrets.CR_USER }}
           password: ${{ secrets.CR_PAT }}
 
-    # Configure
+      # Configure
       - name: Configure variables
         run: scripts/docker/build.sh --skip-build $GITHUB_SHA
 
-    # Build docker
+      # Build docker
       - name: Docker build
         id: docker_build
         uses: docker/build-push-action@v5

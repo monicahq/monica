@@ -18,7 +18,6 @@ concurrency:
   group: Build ${{ github.ref }}
   cancel-in-progress: true
 
-
 jobs:
   #############
   # Run tests

@@ -1,15 +1,14 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-
 ---
 
 ## Bug description
 
-*Please describe.*
-*If this affects the front-end, screenshots would be of great help.*
+_Please describe._
+_If this affects the front-end, screenshots would be of great help._
 
-*If you are on our hosted version it would be really valuable if you can share any links where the problem occurs. This speeds up our ability to troubleshoot tremendously.*
+_If you are on our hosted version it would be really valuable if you can share any links where the problem occurs. This speeds up our ability to troubleshoot tremendously._
 
 ## How to reproduce
 
@@ -24,5 +23,4 @@ about: Create a report to help us improve
 
 ## Additional context
 
-
-#### *Thank you* for your bug report – we love squashing them!
+#### _Thank you_ for your bug report – we love squashing them!
