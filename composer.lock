@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
-            "version": "4.1.1",
+            "version": "4.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbiin/laravel-webauthn.git",
-                "reference": "7ea4c1da7d88d0b4616950f59d7c25d223e4df15"
+                "reference": "1d1f417e69579dac06c5b0359b782c64b650ce0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/7ea4c1da7d88d0b4616950f59d7c25d223e4df15",
-                "reference": "7ea4c1da7d88d0b4616950f59d7c25d223e4df15",
+                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/1d1f417e69579dac06c5b0359b782c64b650ce0d",
+                "reference": "1d1f417e69579dac06c5b0359b782c64b650ce0d",
                 "shasum": ""
             },
             "require": {
@@ -25,7 +25,7 @@
                 "php": ">=8.1",
                 "psr/http-factory-implementation": "1.0",
                 "web-auth/cose-lib": "^4.0",
-                "web-auth/webauthn-lib": "^4.0",
+                "web-auth/webauthn-lib": "^4.7.1",
                 "web-token/jwt-signature": "^3.0"
             },
             "conflict": {
@@ -35,13 +35,15 @@
                 "ext-sqlite3": "*",
                 "guzzlehttp/psr7": "^2.1",
                 "laravel/legacy-factories": "^1.0",
+                "laravel/pint": "^1.13",
                 "nunomaduro/larastan": "^2.0",
                 "ocramius/package-versions": "^2.0",
                 "orchestra/testbench": "^7.0 || ^8.0",
                 "phpstan/phpstan-deprecation-rules": "^1.0",
                 "phpstan/phpstan-phpunit": "^1.0",
                 "phpstan/phpstan-strict-rules": "^1.0",
-                "phpunit/phpunit": "^9.5 || ^10.0"
+                "phpunit/phpunit": "^9.5 || ^10.0",
+                "xheaven/composer-git-hooks": "^3.1"
             },
             "suggest": {
                 "guzzlehttp/psr7": "To provide a psr/http-factory-implementation implementation",
@@ -58,6 +60,16 @@
                 "laravel": {
                     "providers": [
                         "LaravelWebauthn\\WebauthnServiceProvider"
+                    ]
+                },
+                "hooks": {
+                    "config": {
+                        "stop-on-failure": [
+                            "pre-commit"
+                        ]
+                    },
+                    "pre-commit": [
+                        "files=$(git diff --staged --name-only);\"$(dirname \"$0\")/../../vendor/bin/pint\" $files; git add $files"
                     ]
                 }
             },
@@ -93,7 +105,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-09-06T13:51:35+00:00"
+            "time": "2023-10-01T12:00:29+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -637,16 +649,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.7.0",
+            "version": "3.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "00d03067f07482f025d41ab55e4ba0db5eca2cdf"
+                "reference": "5b7bd66c9ff58c04c5474ab85edce442f8081cb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/00d03067f07482f025d41ab55e4ba0db5eca2cdf",
-                "reference": "00d03067f07482f025d41ab55e4ba0db5eca2cdf",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/5b7bd66c9ff58c04c5474ab85edce442f8081cb2",
+                "reference": "5b7bd66c9ff58c04c5474ab85edce442f8081cb2",
                 "shasum": ""
             },
             "require": {
@@ -730,7 +742,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.7.0"
+                "source": "https://github.com/doctrine/dbal/tree/3.7.1"
             },
             "funding": [
                 {
@@ -746,7 +758,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-26T20:56:55+00:00"
+            "time": "2023-10-06T05:06:20+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -1373,21 +1385,21 @@
         },
         {
             "name": "fruitcake/php-cors",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruitcake/php-cors.git",
-                "reference": "58571acbaa5f9f462c9c77e911700ac66f446d4e"
+                "reference": "3d158f36e7875e2f040f37bc0573956240a5a38b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruitcake/php-cors/zipball/58571acbaa5f9f462c9c77e911700ac66f446d4e",
-                "reference": "58571acbaa5f9f462c9c77e911700ac66f446d4e",
+                "url": "https://api.github.com/repos/fruitcake/php-cors/zipball/3d158f36e7875e2f040f37bc0573956240a5a38b",
+                "reference": "3d158f36e7875e2f040f37bc0573956240a5a38b",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4|^8.0",
-                "symfony/http-foundation": "^4.4|^5.4|^6"
+                "symfony/http-foundation": "^4.4|^5.4|^6|^7"
             },
             "require-dev": {
                 "phpstan/phpstan": "^1.4",
@@ -1397,7 +1409,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.1-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -1428,7 +1440,7 @@
             ],
             "support": {
                 "issues": "https://github.com/fruitcake/php-cors/issues",
-                "source": "https://github.com/fruitcake/php-cors/tree/v1.2.0"
+                "source": "https://github.com/fruitcake/php-cors/tree/v1.3.0"
             },
             "funding": [
                 {
@@ -1440,7 +1452,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-02-20T15:07:15+00:00"
+            "time": "2023-10-12T05:21:21+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -2850,16 +2862,16 @@
         },
         {
             "name": "laravel/scout",
-            "version": "v10.3.0",
+            "version": "v10.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/scout.git",
-                "reference": "b7972cffc879c8c7c255781b341a8867cb411076"
+                "reference": "c3fe5fdef438c0dec6e58834cf2b18037e9d0358"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/scout/zipball/b7972cffc879c8c7c255781b341a8867cb411076",
-                "reference": "b7972cffc879c8c7c255781b341a8867cb411076",
+                "url": "https://api.github.com/repos/laravel/scout/zipball/c3fe5fdef438c0dec6e58834cf2b18037e9d0358",
+                "reference": "c3fe5fdef438c0dec6e58834cf2b18037e9d0358",
                 "shasum": ""
             },
             "require": {
@@ -2876,7 +2888,7 @@
                 "algolia/algoliasearch-client-php": "^3.2",
                 "meilisearch/meilisearch-php": "^1.0",
                 "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^7.0|^8.0",
+                "orchestra/testbench": "^7.31|^8.11",
                 "php-http/guzzle7-adapter": "^1.0",
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^9.3"
@@ -2921,7 +2933,7 @@
                 "issues": "https://github.com/laravel/scout/issues",
                 "source": "https://github.com/laravel/scout"
             },
-            "time": "2023-09-05T15:47:47+00:00"
+            "time": "2023-10-10T15:41:23+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -3447,16 +3459,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.17.0",
+            "version": "3.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "bd4c9b26849d82364119c68429541f1631fba94b"
+                "reference": "015633a05aee22490495159237a5944091d8281e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/bd4c9b26849d82364119c68429541f1631fba94b",
-                "reference": "bd4c9b26849d82364119c68429541f1631fba94b",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/015633a05aee22490495159237a5944091d8281e",
+                "reference": "015633a05aee22490495159237a5944091d8281e",
                 "shasum": ""
             },
             "require": {
@@ -3485,7 +3497,7 @@
                 "google/cloud-storage": "^1.23",
                 "microsoft/azure-storage-blob": "^1.1",
                 "phpseclib/phpseclib": "^3.0.14",
-                "phpstan/phpstan": "^0.12.26",
+                "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^9.5.11|^10.0",
                 "sabre/dav": "^4.3.1"
             },
@@ -3521,7 +3533,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.17.0"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.18.0"
             },
             "funding": [
                 {
@@ -3533,20 +3545,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-05T20:15:05+00:00"
+            "time": "2023-10-20T17:59:40+00:00"
         },
         {
             "name": "league/flysystem-local",
-            "version": "3.16.0",
+            "version": "3.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-local.git",
-                "reference": "ec7383f25642e6fd4bb0c9554fc2311245391781"
+                "reference": "e7381ef7643f658b87efb7dbe98fe538fb1bbf32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-local/zipball/ec7383f25642e6fd4bb0c9554fc2311245391781",
-                "reference": "ec7383f25642e6fd4bb0c9554fc2311245391781",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-local/zipball/e7381ef7643f658b87efb7dbe98fe538fb1bbf32",
+                "reference": "e7381ef7643f658b87efb7dbe98fe538fb1bbf32",
                 "shasum": ""
             },
             "require": {
@@ -3581,7 +3593,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem-local/issues",
-                "source": "https://github.com/thephpleague/flysystem-local/tree/3.16.0"
+                "source": "https://github.com/thephpleague/flysystem-local/tree/3.18.0"
             },
             "funding": [
                 {
@@ -3593,20 +3605,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-08-30T10:23:59+00:00"
+            "time": "2023-10-19T20:07:13+00:00"
         },
         {
             "name": "league/mime-type-detection",
-            "version": "1.13.0",
+            "version": "1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/mime-type-detection.git",
-                "reference": "a6dfb1194a2946fcdc1f38219445234f65b35c96"
+                "reference": "b6a5854368533df0295c5761a0253656a2e52d9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/a6dfb1194a2946fcdc1f38219445234f65b35c96",
-                "reference": "a6dfb1194a2946fcdc1f38219445234f65b35c96",
+                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/b6a5854368533df0295c5761a0253656a2e52d9e",
+                "reference": "b6a5854368533df0295c5761a0253656a2e52d9e",
                 "shasum": ""
             },
             "require": {
@@ -3637,7 +3649,7 @@
             "description": "Mime-type detection for Flysystem",
             "support": {
                 "issues": "https://github.com/thephpleague/mime-type-detection/issues",
-                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.13.0"
+                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.14.0"
             },
             "funding": [
                 {
@@ -3649,7 +3661,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-05T12:09:49+00:00"
+            "time": "2023-10-17T14:13:20+00:00"
         },
         {
             "name": "league/oauth1-client",
@@ -6740,16 +6752,16 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "3.8.0",
+            "version": "3.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "c7e7611553f9f90af10ed98dde1a680220f02e4d"
+                "reference": "1293e5732f8405e12f000cdf5dee78c927a18de0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/c7e7611553f9f90af10ed98dde1a680220f02e4d",
-                "reference": "c7e7611553f9f90af10ed98dde1a680220f02e4d",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/1293e5732f8405e12f000cdf5dee78c927a18de0",
+                "reference": "1293e5732f8405e12f000cdf5dee78c927a18de0",
                 "shasum": ""
             },
             "require": {
@@ -6816,7 +6828,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-laravel/issues",
-                "source": "https://github.com/getsentry/sentry-laravel/tree/3.8.0"
+                "source": "https://github.com/getsentry/sentry-laravel/tree/3.8.2"
             },
             "funding": [
                 {
@@ -6828,7 +6840,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-09-05T11:02:34+00:00"
+            "time": "2023-10-12T14:38:46+00:00"
         },
         {
             "name": "shalvah/clara",
@@ -8058,16 +8070,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v6.3.2",
+            "version": "v6.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "15f9f4bad62bfcbe48b5dedd866f04a08fc7ff00"
+                "reference": "213e564da4cbf61acc9728d97e666bcdb868c10d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/15f9f4bad62bfcbe48b5dedd866f04a08fc7ff00",
-                "reference": "15f9f4bad62bfcbe48b5dedd866f04a08fc7ff00",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/213e564da4cbf61acc9728d97e666bcdb868c10d",
+                "reference": "213e564da4cbf61acc9728d97e666bcdb868c10d",
                 "shasum": ""
             },
             "require": {
@@ -8130,7 +8142,7 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v6.3.2"
+                "source": "https://github.com/symfony/http-client/tree/v6.3.5"
             },
             "funding": [
                 {
@@ -8146,7 +8158,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-05T08:41:27+00:00"
+            "time": "2023-09-29T15:57:12+00:00"
         },
         {
             "name": "symfony/http-client-contracts",
@@ -8228,16 +8240,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v6.3.5",
+            "version": "v6.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "b50f5e281d722cb0f4c296f908bacc3e2b721957"
+                "reference": "c186627f52febe09c6d5270b04f8462687a250a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/b50f5e281d722cb0f4c296f908bacc3e2b721957",
-                "reference": "b50f5e281d722cb0f4c296f908bacc3e2b721957",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/c186627f52febe09c6d5270b04f8462687a250a6",
+                "reference": "c186627f52febe09c6d5270b04f8462687a250a6",
                 "shasum": ""
             },
             "require": {
@@ -8247,12 +8259,12 @@
                 "symfony/polyfill-php83": "^1.27"
             },
             "conflict": {
-                "symfony/cache": "<6.2"
+                "symfony/cache": "<6.3"
             },
             "require-dev": {
-                "doctrine/dbal": "^2.13.1|^3.0",
+                "doctrine/dbal": "^2.13.1|^3|^4",
                 "predis/predis": "^1.1|^2.0",
-                "symfony/cache": "^5.4|^6.0",
+                "symfony/cache": "^6.3",
                 "symfony/dependency-injection": "^5.4|^6.0",
                 "symfony/expression-language": "^5.4|^6.0",
                 "symfony/http-kernel": "^5.4.12|^6.0.12|^6.1.4",
@@ -8285,7 +8297,7 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v6.3.5"
+                "source": "https://github.com/symfony/http-foundation/tree/v6.3.6"
             },
             "funding": [
                 {
@@ -8301,20 +8313,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-04T21:33:54+00:00"
+            "time": "2023-10-17T11:32:53+00:00"
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v6.3.5",
+            "version": "v6.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "9f991a964368bee8d883e8d57ced4fe9fff04dfc"
+                "reference": "4945f5001b06ff9080cd3d8f1f9f069094c0d156"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/9f991a964368bee8d883e8d57ced4fe9fff04dfc",
-                "reference": "9f991a964368bee8d883e8d57ced4fe9fff04dfc",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/4945f5001b06ff9080cd3d8f1f9f069094c0d156",
+                "reference": "4945f5001b06ff9080cd3d8f1f9f069094c0d156",
                 "shasum": ""
             },
             "require": {
@@ -8398,7 +8410,7 @@
             "description": "Provides a structured process for converting a Request into a Response",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-kernel/tree/v6.3.5"
+                "source": "https://github.com/symfony/http-kernel/tree/v6.3.6"
             },
             "funding": [
                 {
@@ -8414,7 +8426,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-30T06:37:04+00:00"
+            "time": "2023-10-21T13:12:51+00:00"
         },
         {
             "name": "symfony/mailer",
@@ -9788,16 +9800,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v6.3.3",
+            "version": "v6.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "3ed078c54bc98bbe4414e1e9b2d5e85ed5a5c8bd"
+                "reference": "869b26c7a9d4b8a48afdd77ab36031909c87e3a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/3ed078c54bc98bbe4414e1e9b2d5e85ed5a5c8bd",
-                "reference": "3ed078c54bc98bbe4414e1e9b2d5e85ed5a5c8bd",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/869b26c7a9d4b8a48afdd77ab36031909c87e3a2",
+                "reference": "869b26c7a9d4b8a48afdd77ab36031909c87e3a2",
                 "shasum": ""
             },
             "require": {
@@ -9863,7 +9875,7 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/translation/tree/v6.3.3"
+                "source": "https://github.com/symfony/translation/tree/v6.3.6"
             },
             "funding": [
                 {
@@ -9879,7 +9891,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-31T07:08:24+00:00"
+            "time": "2023-10-17T11:32:53+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -10035,16 +10047,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v6.3.5",
+            "version": "v6.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "3d9999376be5fea8de47752837a3e1d1c5f69ef5"
+                "reference": "999ede244507c32b8e43aebaa10e9fce20de7c97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/3d9999376be5fea8de47752837a3e1d1c5f69ef5",
-                "reference": "3d9999376be5fea8de47752837a3e1d1c5f69ef5",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/999ede244507c32b8e43aebaa10e9fce20de7c97",
+                "reference": "999ede244507c32b8e43aebaa10e9fce20de7c97",
                 "shasum": ""
             },
             "require": {
@@ -10099,7 +10111,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v6.3.5"
+                "source": "https://github.com/symfony/var-dumper/tree/v6.3.6"
             },
             "funding": [
                 {
@@ -10115,7 +10127,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-12T10:11:35+00:00"
+            "time": "2023-10-12T18:45:56+00:00"
         },
         {
             "name": "symfony/var-exporter",
@@ -10829,16 +10841,16 @@
         },
         {
             "name": "web-auth/metadata-service",
-            "version": "4.6.4",
+            "version": "4.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/webauthn-metadata-service.git",
-                "reference": "b58fbb0df46450acc426329bd87b60d794859da0"
+                "reference": "1da1fc6d8055c75af4e46cde169d7b920b8af90a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/webauthn-metadata-service/zipball/b58fbb0df46450acc426329bd87b60d794859da0",
-                "reference": "b58fbb0df46450acc426329bd87b60d794859da0",
+                "url": "https://api.github.com/repos/web-auth/webauthn-metadata-service/zipball/1da1fc6d8055c75af4e46cde169d7b920b8af90a",
+                "reference": "1da1fc6d8055c75af4e46cde169d7b920b8af90a",
                 "shasum": ""
             },
             "require": {
@@ -10894,7 +10906,7 @@
                 "webauthn"
             ],
             "support": {
-                "source": "https://github.com/web-auth/webauthn-metadata-service/tree/4.6.4"
+                "source": "https://github.com/web-auth/webauthn-metadata-service/tree/4.7.3"
             },
             "funding": [
                 {
@@ -10906,20 +10918,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2023-06-01T19:06:30+00:00"
+            "time": "2023-10-07T13:59:48+00:00"
         },
         {
             "name": "web-auth/webauthn-lib",
-            "version": "4.6.4",
+            "version": "4.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/webauthn-lib.git",
-                "reference": "8cb4949d81ef8414c82f334fb3514141aa013340"
+                "reference": "d9b0d0563c561eaec5c24c46a551bf8ff23a030b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/webauthn-lib/zipball/8cb4949d81ef8414c82f334fb3514141aa013340",
-                "reference": "8cb4949d81ef8414c82f334fb3514141aa013340",
+                "url": "https://api.github.com/repos/web-auth/webauthn-lib/zipball/d9b0d0563c561eaec5c24c46a551bf8ff23a030b",
+                "reference": "d9b0d0563c561eaec5c24c46a551bf8ff23a030b",
                 "shasum": ""
             },
             "require": {
@@ -10934,7 +10946,7 @@
                 "psr/log": "^1.0|^2.0|^3.0",
                 "spomky-labs/cbor-php": "^3.0",
                 "symfony/uid": "^6.1",
-                "web-auth/cose-lib": "^4.0.12",
+                "web-auth/cose-lib": "^4.2.3",
                 "web-auth/metadata-service": "self.version"
             },
             "require-dev": {
@@ -10982,7 +10994,7 @@
                 "webauthn"
             ],
             "support": {
-                "source": "https://github.com/web-auth/webauthn-lib/tree/4.6.4"
+                "source": "https://github.com/web-auth/webauthn-lib/tree/4.7.3"
             },
             "funding": [
                 {
@@ -10994,7 +11006,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2023-07-15T14:53:06+00:00"
+            "time": "2023-10-15T11:54:31+00:00"
         },
         {
             "name": "web-token/jwt-core",
@@ -11731,16 +11743,16 @@
         },
         {
             "name": "brianium/paratest",
-            "version": "v7.2.9",
+            "version": "v7.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paratestphp/paratest.git",
-                "reference": "1f9e41c0779be4540654d92a9314016713f5e62c"
+                "reference": "2951d3f773ea91451c7440f48122287778634b0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/1f9e41c0779be4540654d92a9314016713f5e62c",
-                "reference": "1f9e41c0779be4540654d92a9314016713f5e62c",
+                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/2951d3f773ea91451c7440f48122287778634b0d",
+                "reference": "2951d3f773ea91451c7440f48122287778634b0d",
                 "shasum": ""
             },
             "require": {
@@ -11754,22 +11766,22 @@
                 "phpunit/php-code-coverage": "^10.1.7",
                 "phpunit/php-file-iterator": "^4.1.0",
                 "phpunit/php-timer": "^6.0",
-                "phpunit/phpunit": "^10.4.0",
+                "phpunit/phpunit": "^10.4.1",
                 "sebastian/environment": "^6.0.1",
-                "symfony/console": "^6.3.4",
-                "symfony/process": "^6.3.4"
+                "symfony/console": "^6.3.4 || ^7.0.0",
+                "symfony/process": "^6.3.4 || ^7.0.0"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^12.0.0",
                 "ext-pcov": "*",
                 "ext-posix": "*",
-                "infection/infection": "^0.27.3",
-                "phpstan/phpstan": "^1.10.37",
+                "infection/infection": "^0.27.4",
+                "phpstan/phpstan": "^1.10.38",
                 "phpstan/phpstan-deprecation-rules": "^1.1.4",
-                "phpstan/phpstan-phpunit": "^1.3.14",
+                "phpstan/phpstan-phpunit": "^1.3.15",
                 "phpstan/phpstan-strict-rules": "^1.5.1",
                 "squizlabs/php_codesniffer": "^3.7.2",
-                "symfony/filesystem": "^6.3.1"
+                "symfony/filesystem": "^6.3.1 || ^7.0.0"
             },
             "bin": [
                 "bin/paratest",
@@ -11810,7 +11822,7 @@
             ],
             "support": {
                 "issues": "https://github.com/paratestphp/paratest/issues",
-                "source": "https://github.com/paratestphp/paratest/tree/v7.2.9"
+                "source": "https://github.com/paratestphp/paratest/tree/v7.3.0"
             },
             "funding": [
                 {
@@ -11822,7 +11834,7 @@
                     "type": "paypal"
                 }
             ],
-            "time": "2023-10-06T07:53:04+00:00"
+            "time": "2023-10-10T15:11:25+00:00"
         },
         {
             "name": "composer/class-map-generator",
@@ -13028,16 +13040,16 @@
         },
         {
             "name": "laravel/pint",
-            "version": "v1.13.1",
+            "version": "v1.13.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/pint.git",
-                "reference": "22f204242d68095b3ba7dab5d3ef0240454a4652"
+                "reference": "93b2d0d49719bc6e444ba21cd4dbbccec935413d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/pint/zipball/22f204242d68095b3ba7dab5d3ef0240454a4652",
-                "reference": "22f204242d68095b3ba7dab5d3ef0240454a4652",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/93b2d0d49719bc6e444ba21cd4dbbccec935413d",
+                "reference": "93b2d0d49719bc6e444ba21cd4dbbccec935413d",
                 "shasum": ""
             },
             "require": {
@@ -13048,13 +13060,13 @@
                 "php": "^8.1.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.21.1",
-                "illuminate/view": "^10.5.1",
+                "friendsofphp/php-cs-fixer": "^3.34.1",
+                "illuminate/view": "^10.23.1",
                 "laravel-zero/framework": "^10.1.2",
-                "mockery/mockery": "^1.5.1",
-                "nunomaduro/larastan": "^2.5.1",
+                "mockery/mockery": "^1.6.6",
+                "nunomaduro/larastan": "^2.6.4",
                 "nunomaduro/termwind": "^1.15.1",
-                "pestphp/pest": "^2.4.0"
+                "pestphp/pest": "^2.18.2"
             },
             "bin": [
                 "builds/pint"
@@ -13090,7 +13102,7 @@
                 "issues": "https://github.com/laravel/pint/issues",
                 "source": "https://github.com/laravel/pint"
             },
-            "time": "2023-09-06T11:03:34+00:00"
+            "time": "2023-10-10T15:39:09+00:00"
         },
         {
             "name": "laravel/sail",
@@ -16654,16 +16666,16 @@
         },
         {
             "name": "spatie/ignition",
-            "version": "1.10.1",
+            "version": "1.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/ignition.git",
-                "reference": "d92b9a081e99261179b63a858c7a4b01541e7dd1"
+                "reference": "48b23411ca4bfbc75c75dfc638b6b36159c375aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ignition/zipball/d92b9a081e99261179b63a858c7a4b01541e7dd1",
-                "reference": "d92b9a081e99261179b63a858c7a4b01541e7dd1",
+                "url": "https://api.github.com/repos/spatie/ignition/zipball/48b23411ca4bfbc75c75dfc638b6b36159c375aa",
+                "reference": "48b23411ca4bfbc75c75dfc638b6b36159c375aa",
                 "shasum": ""
             },
             "require": {
@@ -16733,20 +16745,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-08-21T15:06:37+00:00"
+            "time": "2023-09-19T15:29:52+00:00"
         },
         {
             "name": "spatie/laravel-ignition",
-            "version": "2.3.0",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ignition.git",
-                "reference": "4ed813d16edb5a1ab0d7f4b1d116c37ee8cdf3c0"
+                "reference": "bf21cd15aa47fa4ec5d73bbc932005c70261efc8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/4ed813d16edb5a1ab0d7f4b1d116c37ee8cdf3c0",
-                "reference": "4ed813d16edb5a1ab0d7f4b1d116c37ee8cdf3c0",
+                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/bf21cd15aa47fa4ec5d73bbc932005c70261efc8",
+                "reference": "bf21cd15aa47fa4ec5d73bbc932005c70261efc8",
                 "shasum": ""
             },
             "require": {
@@ -16825,7 +16837,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-08-23T06:24:34+00:00"
+            "time": "2023-10-09T12:55:26+00:00"
         },
         {
             "name": "spatie/laravel-ray",

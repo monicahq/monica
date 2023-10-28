@@ -20,7 +20,7 @@ class ContactPhotosIndexViewHelper
                 'name' => $contact->name,
             ],
             'photos' => $photosCollection,
-            'uploadcarePublicKey' => config('services.uploadcare.public_key'),
+            'uploadcare' => StorageHelper::uploadcare(),
             'canUploadFile' => StorageHelper::canUploadFile($contact->vault->account),
             'url' => [
                 'show' => route('contact.show', [

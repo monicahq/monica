@@ -74,7 +74,7 @@ class PostEditViewHelper
             'tags_in_post' => $tagsAssociatedWithPostCollection,
             'tags_in_vault' => $tagsInVaultCollection,
             'journal_metrics' => self::journalMetrics($post),
-            'uploadcarePublicKey' => config('services.uploadcare.public_key'),
+            'uploadcare' => StorageHelper::uploadcare(),
             'canUploadFile' => StorageHelper::canUploadFile($journal->vault->account),
             'journal' => [
                 'name' => $journal->name,

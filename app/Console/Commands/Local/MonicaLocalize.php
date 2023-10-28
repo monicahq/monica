@@ -3,7 +3,6 @@
 namespace App\Console\Commands\Local;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Translation\MessageSelector;
@@ -12,6 +11,9 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 use function Safe\json_decode;
 use function Safe\json_encode;
 
+/**
+ * @codeCoverageIgnore
+ */
 class MonicaLocalize extends Command
 {
     private GoogleTranslate $googleTranslate;

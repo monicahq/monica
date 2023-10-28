@@ -11,7 +11,6 @@ concurrency:
   group: Static ${{ github.ref }}
   cancel-in-progress: true
 
-
 jobs:
   psalm:
     runs-on: ubuntu-latest

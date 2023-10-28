@@ -86,7 +86,7 @@ jobs:
           php-version: ${{ env.php-version }}
           coverage: none
 
-    # Composer
+      # Composer
       - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
@@ -100,7 +100,7 @@ jobs:
             ${{ runner.os }}-composer-${{ matrix.php-version }}
             ${{ runner.os }}-composer-
 
-    # Yarn
+      # Yarn
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
