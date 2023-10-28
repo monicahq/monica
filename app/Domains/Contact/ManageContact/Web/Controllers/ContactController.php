@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
+use function Safe\preg_replace;
+
 class ContactController extends Controller
 {
     public function index(Request $request, Vault $vault)
