@@ -83,14 +83,14 @@ RUN set -ex; \
 # reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
     apt-mark auto '.*' > /dev/null; \
     apt-mark manual $savedAptMark; \
-        ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
-        | awk '/=>/ { print $3 }' \
+    ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
+        | awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1) { next }; gsub("^/(usr/)?", "", so); print so }' \
         | sort -u \
         | xargs -r dpkg-query -S \
         | cut -d: -f1 \
         | sort -u \
         | xargs -rt apt-mark manual; \
-        \
+    \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
     rm -rf /var/lib/apt/lists/*
 
@@ -106,6 +106,9 @@ ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
     PHP_OPCACHE_MAX_ACCELERATED_FILES="20000" \
     PHP_OPCACHE_MEMORY_CONSUMPTION="192" \
     PHP_OPCACHE_MAX_WASTED_PERCENTAGE="10"
+# Limits
+ENV PHP_MEMORY_LIMIT="512M" \
+    PHP_UPLOAD_LIMIT="512M"
 RUN set -ex; \
     \
     docker-php-ext-enable opcache; \
@@ -123,7 +126,11 @@ RUN set -ex; \
     \
     echo 'apc.enable_cli=1' >> $PHP_INI_DIR/conf.d/docker-php-ext-apcu.ini; \
     \
-    echo 'memory_limit=512M' > $PHP_INI_DIR/conf.d/memory-limit.ini
+    { \
+        echo 'memory_limit=${PHP_MEMORY_LIMIT}'; \
+        echo 'upload_max_filesize=${PHP_UPLOAD_LIMIT}'; \
+        echo 'post_max_size=${PHP_UPLOAD_LIMIT}'; \
+    } > $PHP_INI_DIR/conf.d/limits.ini;
 
 RUN set -ex; \
     \
@@ -135,6 +142,15 @@ RUN set -ex; \
         echo RemoteIPTrustedProxy 192.168.0.0/16; \
     } > $APACHE_CONFDIR/conf-available/remoteip.conf; \
     a2enconf remoteip
+
+# set apache config LimitRequestBody
+ENV APACHE_BODY_LIMIT 1073741824
+RUN set -ex; \
+    \
+    { \
+        echo 'LimitRequestBody ${APACHE_BODY_LIMIT}'; \
+    } > $APACHE_CONFDIR/conf-available/apache-limits.conf; \
+    a2enconf apache-limits
 
 RUN set -ex; \
     APACHE_DOCUMENT_ROOT=/var/www/html/public; \
