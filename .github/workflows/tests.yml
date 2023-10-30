@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - chandler
   pull_request:
     types: [opened, synchronize, reopened]
   release:
@@ -181,15 +180,6 @@ jobs:
           SONAR_COVERAGE=$(ls -m --format=comma results/${{ env.coverage-with }}/coverage/coverage*.xml | sed -e ':a;N;$!ba;s/\n//g; s/ //g;')
           echo "list=$SONAR_COVERAGE" >> $GITHUB_OUTPUT
 
-      - name: Set project key
-        id: projectkey
-        run: |
-          if [[ "${{ github.repository }}" == "monicahq/chandler" ]]; then
-            echo "value=monicahq_chandler" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.repository }}" == "monicahq/monica" ]]; then
-            echo "value=monica" >> $GITHUB_OUTPUT
-          fi
-
       - name: SonarCloud Scan
         if: env.SONAR_TOKEN != ''
         uses: SonarSource/sonarcloud-github-action@v2.0.2
@@ -198,7 +188,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: |
-            -Dsonar.projectKey=${{ steps.projectkey.outputs.value }}
+            -Dsonar.projectKey=monica
             -Dsonar.organization=monicahq
             -Dsonar.sources=app,bootstrap,config,database,public,resources,routes
             -Dsonar.exclusions=bootstrap/cache/*,public/vendor/**,resources/lang/**
