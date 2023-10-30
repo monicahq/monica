@@ -1,0 +1,39 @@
+name: Bug report
+description: Create a report to help us improve
+body:
+  - type: markdown
+    attributes:
+      value: 'Thank you for your bug report — we love squashing them!'
+  - type: input
+    attributes:
+      label: Bug description
+      description: Please describe the bug.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: How to reproduce
+      description: How do you trigger this bug? Please walk us through it step by step.
+      value: |
+        1.
+        2.
+        3.
+        ...
+      render: bash
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Environment
+      description: Environment or version where the bug happens.
+      options:
+        - app.monicahq.com (monica v4)
+        - beta.monicahq.com (v5 a.k.a chandler version or main branch)
+        - Your own self-hosted instance (monica v4)
+        - Your own self-hosted instance (v5 a.k.a chandler version or main branch)
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: Please add information about the bug, screenshots, links, any context that can speed-up resolution.
