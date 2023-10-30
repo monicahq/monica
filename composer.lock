@@ -1981,16 +1981,16 @@
         },
         {
             "name": "inertiajs/inertia-laravel",
-            "version": "v0.6.10",
+            "version": "v0.6.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inertiajs/inertia-laravel.git",
-                "reference": "609f960c9392e61f8f10418e333599cf1b12efbe"
+                "reference": "2a1e19048f95c0e4adb2b2733f9119e49c4fc09f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/609f960c9392e61f8f10418e333599cf1b12efbe",
-                "reference": "609f960c9392e61f8f10418e333599cf1b12efbe",
+                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/2a1e19048f95c0e4adb2b2733f9119e49c4fc09f",
+                "reference": "2a1e19048f95c0e4adb2b2733f9119e49c4fc09f",
                 "shasum": ""
             },
             "require": {
@@ -2041,7 +2041,7 @@
             ],
             "support": {
                 "issues": "https://github.com/inertiajs/inertia-laravel/issues",
-                "source": "https://github.com/inertiajs/inertia-laravel/tree/v0.6.10"
+                "source": "https://github.com/inertiajs/inertia-laravel/tree/v0.6.11"
             },
             "funding": [
                 {
@@ -2049,7 +2049,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-09-13T02:24:55+00:00"
+            "time": "2023-10-27T10:59:02+00:00"
         },
         {
             "name": "jaybizzle/crawler-detect",
