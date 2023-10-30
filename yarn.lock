@@ -620,18 +620,18 @@ __metadata:
   linkType: hard
 
 "@simplewebauthn/browser@npm:^8.0.2":
-  version: 8.3.1
-  resolution: "@simplewebauthn/browser@npm:8.3.1"
+  version: 8.3.4
+  resolution: "@simplewebauthn/browser@npm:8.3.4"
   dependencies:
-    "@simplewebauthn/typescript-types": ^8.0.0
-  checksum: 1c3ce9e23b2ec93ee102589ac8a548d417caf15acc17d60c87049a22faccaaf25b689ac8c878c7445096f6a06ff1359d84e3da95b01a5200c240af3d2ea378ca
+    "@simplewebauthn/typescript-types": ^8.3.4
+  checksum: dd1365f5a64b957fe9820b465948a99f70d7eb790bd0ec9a105075a91ea6b62b323402fec8c32889ffe9f7853aeea7b971423d688561f2cc922802c6038e543c
   languageName: node
   linkType: hard
 
-"@simplewebauthn/typescript-types@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "@simplewebauthn/typescript-types@npm:8.0.0"
-  checksum: 59b4ac9804170edbee50703428f5adcada70211117c8f458c805a4b6d4772b9ec678664dd3f00e400aee2e392c9da8e5a8c38448fb0c3d792aba535a3329bfe7
+"@simplewebauthn/typescript-types@npm:^8.3.4":
+  version: 8.3.4
+  resolution: "@simplewebauthn/typescript-types@npm:8.3.4"
+  checksum: c16484180b18a99a569440dceb0de65727c3cf182aaaa674ce9f6b5bc9e5a4e3978984eb5a6067cf38b6a97a2d603e6190436a19aa443f7b5fceb45bc23aa66f
   languageName: node
   linkType: hard
 
