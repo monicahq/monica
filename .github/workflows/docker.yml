@@ -67,7 +67,7 @@ jobs:
           file: scripts/docker/Dockerfile
           context: .
           platforms: linux/amd64,linux/arm64
-          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description="${{ env.description }}"
+          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=${{ env.description }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
