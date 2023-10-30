@@ -24,6 +24,7 @@ jobs:
         with:
           php-version: ${{ env.php-version }}
           coverage: none
+          tools: psalm
 
       # Composer
       - name: Get Composer Cache Directory
@@ -57,6 +58,7 @@ jobs:
         with:
           php-version: ${{ env.php-version }}
           coverage: none
+          tools: phpstan
 
       # Composer
       - name: Get Composer Cache Directory

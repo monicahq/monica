@@ -105,14 +105,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.build-node-version }}
-      - name: Cache yarn files
-        uses: actions/cache@v3
-        with:
-          path: .yarn/cache
-          key: ${{ runner.os }}-yarn-v2-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-v2-${{ hashFiles('**/yarn.lock') }}
-            ${{ runner.os }}-yarn-v2-
+          cache: yarn
 
       - name: Import key
         run: echo -e "$GPG_KEY" | gpg --batch --yes --import -
