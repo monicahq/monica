@@ -17,6 +17,7 @@ concurrency:
 
 env:
   package-name: monica-next
+  registry: ghcr.io
 
 jobs:
   docker-run:
@@ -25,6 +26,10 @@ jobs:
 
     strategy:
       fail-fast: false
+
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout sources
@@ -36,7 +41,7 @@ jobs:
         id: docker_meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/${{ env.package-name }}
+          images: ${{ env.registry }}/${{ github.repository_owner }}/${{ env.package-name }}
           tags: |
             type=schedule
             type=ref,event=branch
@@ -56,9 +61,9 @@ jobs:
       - name: Login to GitHub container registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ secrets.CR_USER }}
-          password: ${{ secrets.CR_PAT }}
+          registry: ${{ env.registry }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       # Configure
       - name: Configure variables
@@ -71,7 +76,7 @@ jobs:
         with:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/${{ env.package-name }}:main
+          cache-from: type=registry,ref=${{ env.registry }}/${{ github.repository_owner }}/${{ env.package-name }}:main
           labels: ${{ steps.docker_meta.outputs.labels }}
           file: scripts/docker/Dockerfile
           context: .
@@ -85,7 +90,7 @@ jobs:
         uses: vlaurin/action-ghcr-prune@v0.5.0
         if: github.event_name != 'pull_request'
         with:
-          token: ${{ secrets.CR_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           organization: ${{ github.repository_owner }}
           container: ${{ env.package-name }}
           keep-younger-than: 15
