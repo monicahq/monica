@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - chandler
 
   workflow_dispatch:
 
@@ -31,10 +30,15 @@ jobs:
 
       - name: Docker meta
         id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v5
+        uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository_owner }}/${{ env.package-name }}
-          tag-sha: true
+          tags: |
+            type=sha
+          labels: |
+            org.opencontainers.image.description="This is MonicaHQ, your personal memory! MonicaHQ is like a CRM but for the friends, family, and acquaintances around you."
+            org.opencontainers.image.title="MonicaHQ, the Personal Relationship Manager"
+            org.opencontainers.image.vendor="Monica"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -50,6 +54,10 @@ jobs:
       - name: Configure variables
         run: scripts/docker/build.sh --skip-build $GITHUB_SHA
 
+      - name: Fix labels
+        id: labels
+        run: scripts/ci/labels.sh labels "${{ steps.docker_meta.outputs.labels }}"
+
       # Build docker
       - name: Docker build
         id: docker_build
@@ -62,6 +70,7 @@ jobs:
           file: scripts/docker/Dockerfile
           context: .
           platforms: linux/amd64,linux/arm64
+          outputs: ${{ steps.labels.outputs.labels }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

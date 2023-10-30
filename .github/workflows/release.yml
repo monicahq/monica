@@ -94,17 +94,17 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
-            ${{ runner.os }}-composer-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ env.php-version }}
             ${{ runner.os }}-composer-
 
       # Yarn
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.node-version }}
+          node-version: ${{ env.build-node-version }}
       - name: Cache yarn files
         uses: actions/cache@v3
         with:
@@ -159,4 +159,5 @@ jobs:
         with:
           workflow: Release update
           repo: monicahq/docker
+          ref: refs/heads/main
           token: ${{ secrets.DOCKER_GITHUB_TOKEN }}
