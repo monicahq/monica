@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+  release:
+    types: [published]
 
   workflow_dispatch:
 
@@ -34,7 +38,13 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository_owner }}/${{ env.package-name }}
           tags: |
-            type=sha
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
           labels: |
             org.opencontainers.image.description="This is MonicaHQ, your personal memory! MonicaHQ is like a CRM but for the friends, family, and acquaintances around you."
             org.opencontainers.image.title="MonicaHQ, the Personal Relationship Manager"
@@ -59,13 +69,13 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v5
         with:
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/${{ env.package-name }}:main
           labels: ${{ steps.docker_meta.outputs.labels }}
           file: scripts/docker/Dockerfile
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ (github.event_name != 'pull_request') && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
           outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=This is MonicaHQ your personal memory! MonicaHQ is like a CRM but for the friends family and acquaintances around you.
 
       - name: Image digest
@@ -73,6 +83,7 @@ jobs:
 
       - name: Prune images
         uses: vlaurin/action-ghcr-prune@v0.5.0
+        if: github.event_name != 'pull_request'
         with:
           token: ${{ secrets.CR_PAT }}
           organization: ${{ github.repository_owner }}
