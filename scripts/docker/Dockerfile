@@ -3,7 +3,7 @@
 ###
 ### This file is used for dev purpose.
 ### The standard monica image definition will be found here: https://github.com/monicahq/docker
-### This file is based off of the `apache` variant in the above mentioned repo
+### This file is based on the `apache` variant in the above mentioned repo
 ###
 
 ## Build assets
@@ -13,7 +13,7 @@ WORKDIR /var/www/html
 COPY . ./
 RUN set -ex; \
     \
-    yarn install; \
+    yarn install --immutable; \
     yarn run build
 
 
@@ -48,8 +48,9 @@ RUN set -ex; \
         libjpeg62-turbo-dev \
         libgmp-dev \
         libmemcached-dev \
-        libmagickwand-dev \
+        libssl-dev \
         libwebp-dev \
+        libcurl4-openssl-dev \
     ; \
     \
     debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
@@ -99,7 +100,7 @@ RUN set -ex; \
     \
     mkdir -p /var/spool/cron/crontabs; \
     rm -f /var/spool/cron/crontabs/root; \
-    echo '*/5 * * * * php /var/www/html/artisan schedule:run -v' > /var/spool/cron/crontabs/www-data
+    echo '* * * * * php /var/www/html/artisan schedule:run -v' > /var/spool/cron/crontabs/www-data
 
 # Opcache
 ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
@@ -158,7 +159,6 @@ RUN set -ex; \
     sed -ri -e "s!/var/www/!${APACHE_DOCUMENT_ROOT}!g" $APACHE_CONFDIR/apache2.conf $APACHE_CONFDIR/conf-available/*.conf
 
 WORKDIR /var/www/html
-
 
 # Copy the local (outside Docker) source into the working directory,
 # copy system files into their proper homes, and set file ownership
