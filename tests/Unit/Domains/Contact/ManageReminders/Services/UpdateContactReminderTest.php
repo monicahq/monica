@@ -64,7 +64,6 @@ class UpdateContactReminderTest extends TestCase
         ];
 
         (new UpdateContactReminder())->execute($request);
-        (new UpdateContactReminder())->execute($request);
 
         $this->assertDatabaseHas('user_notification_channels', [
             'user_id' => $regis->id,
