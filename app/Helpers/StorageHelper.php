@@ -14,6 +14,11 @@ class StorageHelper
      */
     public static function canUploadFile(Account $account): bool
     {
+        // if storage limit is 0 then unlimited storage is allowed
+        // therefore the function should always return true
+        if ($account->storage_limit_in_mb == 0) {
+            return true;
+        }
         // get the file size of all the files in the account
         // the size will be in bytes
         $vaultIds = $account->vaults()->select('id')->get()->toArray();

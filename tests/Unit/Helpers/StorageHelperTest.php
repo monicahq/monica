@@ -32,4 +32,24 @@ class StorageHelperTest extends TestCase
 
         $this->assertFalse(StorageHelper::canUploadFile($account));
     }
+
+    /** @test */
+    public function it_checks_if_we_can_upload_files_with_0_storage_limit(): void
+    {
+        $account = Account::factory()->create([
+            'storage_limit_in_mb' => 0,
+        ]);
+
+        $this->assertTrue(StorageHelper::canUploadFile($account));
+
+        $vault = Vault::factory()->create([
+            'account_id' => $account->id,
+        ]);
+        File::factory()->create([
+            'vault_id' => $vault->id,
+            'size' => 1024 * 1024,
+        ]);
+
+        $this->assertTrue(StorageHelper::canUploadFile($account));
+    }
 }
