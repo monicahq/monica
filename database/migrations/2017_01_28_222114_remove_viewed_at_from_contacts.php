@@ -13,11 +13,11 @@ class RemoveViewedAtFromContacts extends Migration
      */
     public function up()
     {
-        Schema::table('contacts', function (Blueprint $table) {
-            if ($table->hasColumn('viewed_at')) {
+        if (Schema::hasColumn('contacts', 'viewed_at')) {
+            Schema::table('contacts', function (Blueprint $table) {
                 $table->dropColumn('viewed_at');
-            }
-        });
+            });
+        }
     }
 
     /**
@@ -27,10 +27,10 @@ class RemoveViewedAtFromContacts extends Migration
      */
     public function down()
     {
-        Schema::table('contacts', function (Blueprint $table) {
-            if ($table->hasColumn('viewed_at')) {
+        if (! Schema::hasColumn('contacts', 'viewed_at')) {
+            Schema::table('contacts', function (Blueprint $table) {
                 $table->dateTime('viewed_at')->nullable();
-            }
-        });
+            });
+        }
     }
 }
