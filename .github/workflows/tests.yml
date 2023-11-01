@@ -250,7 +250,7 @@ jobs:
 
     # Test
       - name: Upgrade Chrome Driver
-        run: php artisan dusk:chrome-driver $(google-chrome -version | awk '{ print $3 }' | cut -d . -f 1)
+        run: php artisan dusk:chrome-driver --detect
       - name: Start Chrome Driver
         run: |
           chmod -R 0755 vendor/laravel/dusk/bin/
