@@ -83,7 +83,7 @@ class UpdateContactReminder extends BaseService implements ServiceInterface
 
     private function deleteOldScheduledReminders(): void
     {
-        $this->reminder->userNotificationChannels->each->delete();
+        $this->reminder->userNotificationChannels()->detach();
     }
 
     private function scheduledReminderForAllUsersInVault(): void
