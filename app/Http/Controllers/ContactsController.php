@@ -85,8 +85,8 @@ class ContactsController extends Controller
         }
 
         $tagsCount = Tag::contactsCount();
-        $contactsWithoutTagsCount = $contacts->doesntHave('tags')->count();
-        
+        $contactsWithoutTagsCount = (clone $contacts)->doesntHave('tags')->count();
+
         $tags = null;
         $url = null;
         $count = 1;
