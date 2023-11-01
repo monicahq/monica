@@ -125,7 +125,7 @@
             </span>
           </div>
           <!-- full body -->
-          <div v-else class="p-3">
+          <div v-else class="p-3 whitespace-pre-line">
             {{ note.body }}
           </div>
 
