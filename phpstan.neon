@@ -48,3 +48,5 @@ parameters:
         - */Http/Resources/**/*.php
         - */ExportResources/**/*.php
         - */ExportResources/*.php
+        - */Console/Commands/ImportAccounts.php
+
