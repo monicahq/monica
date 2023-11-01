@@ -42,7 +42,7 @@ return [
     'export_title_json' => 'ייצוא ל־Json',
     'export_submitted' => 'הייצוא שלך הוגש, הוא יהיה זמין בעוד מספר רגעים…',
     'export_json_explanation' => 'הנתונים שלך מיוצאים בתצורת Json למטרות גיבוי.',
-    'export_json_beta' => 'Json export is in preview mode. Tell us what you think about it:',
+    'export_json_beta' => 'ייצוא Json הוא במצב תצוגה מקדימה. נא לספר לנו מה דעתך עליו:',
     'export_json_cta' => 'ייצוא ל־Json',
     'export_header_type' => 'סוג',
     'export_header_timestamp' => 'מועד יצירה',
