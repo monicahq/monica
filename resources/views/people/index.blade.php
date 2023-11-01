@@ -144,6 +144,7 @@
               @if ($tagsCount->count() != 0)
                 <li class="f7 mt3">
                     <a href="{{ route('people.index') }}?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
+                    <span class="number-contacts-without-tag">{{ trans_choice('people.people_list_contacts_per_tags', $contactsWithoutTagsCount) }}</span>
                 </li>
               @endif
 
