@@ -31,6 +31,7 @@
         "laravel/socialite": "^5.0",
         "laravel/ui": "^4.0",
         "laravolt/avatar": "^4.0",
+        "lcobucci/clock": "3.0.0",
         "league/flysystem-aws-s3-v3": "^3.0",
         "mariuzzo/laravel-js-localization": "^1.7",
         "matriphe/iso-639": "^1.0",
