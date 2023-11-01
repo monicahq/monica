@@ -332,33 +332,33 @@ export default {
       this.saveTab(view);
 
       switch (view) {
-        case 'calls':
-          if (! this.callsAlreadyLoaded) {
-            this.getCalls();
-            this.callsAlreadyLoaded = true;
-          }
-          break;
+      case 'calls':
+        if (! this.callsAlreadyLoaded) {
+          this.getCalls();
+          this.callsAlreadyLoaded = true;
+        }
+        break;
 
-        case 'notes':
-          if (! this.notesAlreadyLoaded) {
-            this.getNotes();
-            this.notesAlreadyLoaded = true;
-          }
-          break;
+      case 'notes':
+        if (! this.notesAlreadyLoaded) {
+          this.getNotes();
+          this.notesAlreadyLoaded = true;
+        }
+        break;
 
-        case 'debts':
-          if (! this.debtsAlreadyLoaded) {
-            this.getDebts();
-            this.debtsAlreadyLoaded = true;
-          }
-          break;
+      case 'debts':
+        if (! this.debtsAlreadyLoaded) {
+          this.getDebts();
+          this.debtsAlreadyLoaded = true;
+        }
+        break;
 
-        case 'tasks':
-          if (! this.tasksAlreadyLoaded) {
-            this.getTasks();
-            this.tasksAlreadyLoaded = true;
-          }
-          break;
+      case 'tasks':
+        if (! this.tasksAlreadyLoaded) {
+          this.getTasks();
+          this.tasksAlreadyLoaded = true;
+        }
+        break;
       }
     },
 
