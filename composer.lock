@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "97cdf44688f77f53c96285c17f322f1b",
+    "content-hash": "8c2a9ddbec63b22cf6bb27edd741f02d",
     "packages": [
         {
             "name": "asbiin/laravel-adorable",
@@ -13729,21 +13729,22 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v7.4.0",
+            "version": "v7.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "c15e0e2d2d7fe3281c015e6172df9288c6597cbb"
+                "reference": "ef474f54ab24989f480c77ba92dc39d07d499dee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/c15e0e2d2d7fe3281c015e6172df9288c6597cbb",
-                "reference": "c15e0e2d2d7fe3281c015e6172df9288c6597cbb",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/ef474f54ab24989f480c77ba92dc39d07d499dee",
+                "reference": "ef474f54ab24989f480c77ba92dc39d07d499dee",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-zip": "*",
+                "guzzlehttp/guzzle": "^7.2",
                 "illuminate/console": "^9.0|^10.0",
                 "illuminate/support": "^9.0|^10.0",
                 "nesbot/carbon": "^2.0",
@@ -13756,8 +13757,10 @@
             },
             "require-dev": {
                 "mockery/mockery": "^1.4.2",
-                "orchestra/testbench": "^7.0|^8.0",
-                "phpunit/phpunit": "^9.0"
+                "orchestra/testbench": "^7.33|^8.13",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.5.10|^10.0.1",
+                "psy/psysh": "^0.11.12"
             },
             "suggest": {
                 "ext-pcntl": "Used to gracefully terminate Dusk when tests are running."
@@ -13796,9 +13799,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/dusk/issues",
-                "source": "https://github.com/laravel/dusk/tree/v7.4.0"
+                "source": "https://github.com/laravel/dusk/tree/v7.11.3"
             },
-            "time": "2023-01-06T16:04:32+00:00"
+            "time": "2023-10-17T13:53:17+00:00"
         },
         {
             "name": "laravel/legacy-factories",
