@@ -2,7 +2,7 @@
 
 return [
     'failed' => 'Неверное имя пользователя или пароль.',
-    'lang' => 'Pусский',
+    'lang' => 'русский язык',
     'login_provider_azure' => 'Microsoft',
     'login_provider_facebook' => 'Facebook',
     'login_provider_github' => 'GitHub',

@@ -34,6 +34,43 @@ class UpdateContactReminderTest extends TestCase
     }
 
     /** @test */
+    public function it_persists_notification_channels(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $reminder = ContactReminder::factory()->create([
+            'contact_id' => $contact->id,
+        ]);
+
+        UserNotificationChannel::factory()->create([
+            'user_id' => $regis->id,
+            'preferred_time' => '18:00',
+        ]);
+
+        $request = [
+            'account_id' => $regis->account->id,
+            'vault_id' => $vault->id,
+            'author_id' => $regis->id,
+            'contact_id' => $contact->id,
+            'contact_reminder_id' => $reminder->id,
+            'label' => 'birthdate',
+            'day' => 29,
+            'month' => 10,
+            'year' => 1981,
+            'type' => ContactReminder::TYPE_ONE_TIME,
+            'frequency_number' => null,
+        ];
+
+        (new UpdateContactReminder())->execute($request);
+
+        $this->assertDatabaseHas('user_notification_channels', [
+            'user_id' => $regis->id,
+        ]);
+    }
+
+    /** @test */
     public function it_fails_if_wrong_parameters_are_given(): void
     {
         $request = [

@@ -196,11 +196,11 @@ class UserPreferencesIndexViewHelper
             'name' => self::language($user->locale),
             'dir' => htmldir(),
             'locales' => collect(config('localizer.supported_locales'))
-                ->map(fn ($locale) => [
+                ->map(fn (string $locale) => [
                     'id' => $locale,
                     'name' => self::language($locale),
                 ])
-                ->sortByCollator(fn ($value) => $value['name']),
+                ->sortByCollator('name'),
             'url' => [
                 'store' => route('settings.preferences.locale.store'),
             ],

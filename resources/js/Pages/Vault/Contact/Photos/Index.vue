@@ -82,10 +82,11 @@
 
           <!-- upload -->
           <uploadcare
-            v-if="data.uploadcarePublicKey && data.canUploadFile"
-            :public-key="data.uploadcarePublicKey"
+            v-if="data.uploadcare.publicKey && data.canUploadFile"
+            :public-key="data.uploadcare.publicKey"
+            :secure-signature="data.uploadcare.signature"
+            :secure-expire="data.uploadcare.expire"
             :tabs="'file'"
-            :multiple="false"
             :preview-step="false"
             @success="onSuccess"
             @error="onError">

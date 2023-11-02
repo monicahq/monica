@@ -93,6 +93,7 @@ return [
         'string' => ':Attribute ha de tenir entre :min - :max caràcters.',
     ],
     'boolean' => 'El camp :attribute ha de ser verdader o fals',
+    'can' => 'El camp :attribute conté un valor no autoritzat.',
     'confirmed' => 'La confirmació de :attribute no coincideix.',
     'current_password' => 'La contrasenya és incorrecta.',
     'date' => ':Attribute no és una data vàlida.',

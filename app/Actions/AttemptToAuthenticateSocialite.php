@@ -166,7 +166,6 @@ class AttemptToAuthenticateSocialite
     /**
      * Throw a failed authentication validation exception.
      *
-     * @param  string  $message
      *
      * @throws \Illuminate\Validation\ValidationException
      */

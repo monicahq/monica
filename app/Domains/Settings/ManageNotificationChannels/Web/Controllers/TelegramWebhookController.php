@@ -2,6 +2,7 @@
 
 namespace App\Domains\Settings\ManageNotificationChannels\Web\Controllers;
 
+use App\Domains\Settings\ManageNotificationChannels\Services\ScheduleAllContactRemindersForNotificationChannel;
 use App\Http\Controllers\Controller;
 use App\Models\UserNotificationChannel;
 use Exception;
@@ -51,6 +52,12 @@ class TelegramWebhookController extends Controller
         $channel->content = $chatId;
         $channel->active = true;
         $channel->save();
+
+        (new ScheduleAllContactRemindersForNotificationChannel())->execute([
+            'account_id' => $channel->user->account_id,
+            'author_id' => $channel->user->id,
+            'user_notification_channel_id' => $channel->id,
+        ]);
 
         return response('Success', 200);
     }

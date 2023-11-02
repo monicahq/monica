@@ -30,13 +30,13 @@ class ModuleDocumentsViewHelperTest extends TestCase
         );
 
         $this->assertArrayHasKey('documents', $array);
-        $this->assertArrayHasKey('uploadcarePublicKey', $array);
+        $this->assertArrayHasKey('uploadcare', $array);
         $this->assertArrayHasKey('canUploadFile', $array);
         $this->assertArrayHasKey('url', $array);
 
         $this->assertEquals(
             '123',
-            $array['uploadcarePublicKey']
+            $array['uploadcare']['publicKey']
         );
         $this->assertFalse($array['canUploadFile']);
         $this->assertEquals(

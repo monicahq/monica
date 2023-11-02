@@ -93,6 +93,7 @@ return [
         'string' => ':Attribute deve trovarsi tra :min - :max caratteri.',
     ],
     'boolean' => 'Il campo :attribute deve essere vero o falso.',
+    'can' => 'Il campo :attribute contiene un valore non autorizzato.',
     'confirmed' => 'Il campo di conferma per :attribute non coincide.',
     'current_password' => 'Password non valida.',
     'date' => ':Attribute non è una data valida.',

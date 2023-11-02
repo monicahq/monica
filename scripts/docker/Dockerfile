@@ -3,7 +3,7 @@
 ###
 ### This file is used for dev purpose.
 ### The standard monica image definition will be found here: https://github.com/monicahq/docker
-### This file is based off of the `apache` variant in the above mentioned repo
+### This file is based on the `apache` variant in the above mentioned repo
 ###
 
 ## Build assets
@@ -13,7 +13,7 @@ WORKDIR /var/www/html
 COPY . ./
 RUN set -ex; \
     \
-    yarn install; \
+    yarn install --immutable; \
     yarn run build
 
 
@@ -48,8 +48,9 @@ RUN set -ex; \
         libjpeg62-turbo-dev \
         libgmp-dev \
         libmemcached-dev \
-        libmagickwand-dev \
+        libssl-dev \
         libwebp-dev \
+        libcurl4-openssl-dev \
     ; \
     \
     debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
@@ -83,14 +84,14 @@ RUN set -ex; \
 # reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
     apt-mark auto '.*' > /dev/null; \
     apt-mark manual $savedAptMark; \
-        ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
-        | awk '/=>/ { print $3 }' \
+    ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
+        | awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1) { next }; gsub("^/(usr/)?", "", so); print so }' \
         | sort -u \
         | xargs -r dpkg-query -S \
         | cut -d: -f1 \
         | sort -u \
         | xargs -rt apt-mark manual; \
-        \
+    \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
     rm -rf /var/lib/apt/lists/*
 
@@ -99,13 +100,16 @@ RUN set -ex; \
     \
     mkdir -p /var/spool/cron/crontabs; \
     rm -f /var/spool/cron/crontabs/root; \
-    echo '*/5 * * * * php /var/www/html/artisan schedule:run -v' > /var/spool/cron/crontabs/www-data
+    echo '* * * * * php /var/www/html/artisan schedule:run -v' > /var/spool/cron/crontabs/www-data
 
 # Opcache
 ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
     PHP_OPCACHE_MAX_ACCELERATED_FILES="20000" \
     PHP_OPCACHE_MEMORY_CONSUMPTION="192" \
     PHP_OPCACHE_MAX_WASTED_PERCENTAGE="10"
+# Limits
+ENV PHP_MEMORY_LIMIT="512M" \
+    PHP_UPLOAD_LIMIT="512M"
 RUN set -ex; \
     \
     docker-php-ext-enable opcache; \
@@ -123,7 +127,11 @@ RUN set -ex; \
     \
     echo 'apc.enable_cli=1' >> $PHP_INI_DIR/conf.d/docker-php-ext-apcu.ini; \
     \
-    echo 'memory_limit=512M' > $PHP_INI_DIR/conf.d/memory-limit.ini
+    { \
+        echo 'memory_limit=${PHP_MEMORY_LIMIT}'; \
+        echo 'upload_max_filesize=${PHP_UPLOAD_LIMIT}'; \
+        echo 'post_max_size=${PHP_UPLOAD_LIMIT}'; \
+    } > $PHP_INI_DIR/conf.d/limits.ini;
 
 RUN set -ex; \
     \
@@ -136,13 +144,21 @@ RUN set -ex; \
     } > $APACHE_CONFDIR/conf-available/remoteip.conf; \
     a2enconf remoteip
 
+# set apache config LimitRequestBody
+ENV APACHE_BODY_LIMIT 1073741824
+RUN set -ex; \
+    \
+    { \
+        echo 'LimitRequestBody ${APACHE_BODY_LIMIT}'; \
+    } > $APACHE_CONFDIR/conf-available/apache-limits.conf; \
+    a2enconf apache-limits
+
 RUN set -ex; \
     APACHE_DOCUMENT_ROOT=/var/www/html/public; \
     sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" $APACHE_CONFDIR/sites-available/*.conf; \
     sed -ri -e "s!/var/www/!${APACHE_DOCUMENT_ROOT}!g" $APACHE_CONFDIR/apache2.conf $APACHE_CONFDIR/conf-available/*.conf
 
 WORKDIR /var/www/html
-
 
 # Copy the local (outside Docker) source into the working directory,
 # copy system files into their proper homes, and set file ownership

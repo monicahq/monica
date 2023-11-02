@@ -5,10 +5,12 @@ namespace App\Providers;
 use App\Domains\Contact\ManageDocuments\Events\FileDeleted;
 use App\Domains\Contact\ManageDocuments\Listeners\DeleteFileInStorage;
 use App\Listeners\LoginListener;
+use App\Listeners\WebauthnRegistered;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use LaravelWebauthn\Events\WebauthnRegister;
 use SocialiteProviders\Azure\AzureExtendSocialite;
 use SocialiteProviders\Facebook\FacebookExtendSocialite;
 use SocialiteProviders\GitHub\GitHubExtendSocialite;
@@ -41,6 +43,9 @@ class EventServiceProvider extends ServiceProvider
             GoogleExtendSocialite::class,
             LinkedInExtendSocialite::class,
             TwitterExtendSocialite::class,
+        ],
+        WebauthnRegister::class => [
+            WebauthnRegistered::class,
         ],
     ];
 

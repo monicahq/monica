@@ -65,12 +65,12 @@ class ExportContactInformation extends Exporter implements ExportVCardResource
                 ]);
                 break;
             case trans('Telegram'):
-                $vcard->add('socialProfile', $this->escape('http://t.me/'.$contactInformation->data), [
+                $vcard->add('socialProfile', $this->escape('https://t.me/'.$contactInformation->data), [
                     'TYPE' => 'telegram',
                 ]);
                 break;
             case trans('LinkedIn'):
-                $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/'.$contactInformation->data), [
+                $vcard->add('socialProfile', $this->escape('https://www.linkedin.com/in/'.$contactInformation->data), [
                     'TYPE' => 'linkedin',
                 ]);
                 break;

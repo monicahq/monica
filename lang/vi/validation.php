@@ -93,6 +93,7 @@ return [
         'string' => 'Trường :attribute phải từ :min - :max kí tự.',
     ],
     'boolean' => 'Trường :attribute phải là true hoặc false.',
+    'can' => 'Trường :attribute chứa một giá trị trái phép.',
     'confirmed' => 'Giá trị xác nhận trong trường :attribute không khớp.',
     'current_password' => 'Mật khẩu không đúng.',
     'date' => 'Trường :attribute không phải là định dạng của ngày-tháng.',

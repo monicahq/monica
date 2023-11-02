@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Domains\Settings\ManageGenders\Dav;
+namespace Tests\Unit\Domains\Contact\ManageContact\Dav;
 
 use App\Domains\Contact\ManageContact\Dav\ExportWorkInformation;
 use App\Models\Company;

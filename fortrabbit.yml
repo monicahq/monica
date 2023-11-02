@@ -3,13 +3,13 @@ version: 2
 
 # optional Composer settings
 composer:
-    # Resolves to the --no-dev parameter
-    no-dev: true
+  # Resolves to the --no-dev parameter
+  no-dev: true
 
 # called after Composer runs
 post: artisan monica:setup --force --verbose
 
 # list of sustained folders in ~/htdocs. If not given, then it defaults to the "vendor" folder
 sustained:
-    - storage
-    - vendor
+  - storage
+  - vendor

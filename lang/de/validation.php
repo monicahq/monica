@@ -93,6 +93,7 @@ return [
         'string' => ':Attribute muss zwischen :min & :max Zeichen lang sein.',
     ],
     'boolean' => ':Attribute muss entweder \'true\' oder \'false\' sein.',
+    'can' => 'Das Feld :attribute enthält einen nicht autorisierten Wert.',
     'confirmed' => ':Attribute stimmt nicht mit der Bestätigung überein.',
     'current_password' => 'Das Passwort ist falsch.',
     'date' => ':Attribute muss ein gültiges Datum sein.',

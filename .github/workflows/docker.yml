@@ -4,7 +4,10 @@ on:
   push:
     branches:
       - main
-      - chandler
+  pull_request:
+    types: [opened, synchronize, reopened]
+  release:
+    types: [published]
 
   workflow_dispatch:
 
@@ -14,6 +17,7 @@ concurrency:
 
 env:
   package-name: monica-next
+  registry: ghcr.io
 
 jobs:
   docker-run:
@@ -23,6 +27,10 @@ jobs:
     strategy:
       fail-fast: false
 
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -31,45 +39,58 @@ jobs:
 
       - name: Docker meta
         id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v4
+        uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/${{ env.package-name }}
-          tag-sha: true
+          images: ${{ env.registry }}/${{ github.repository_owner }}/${{ env.package-name }}
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+          labels: |
+            org.opencontainers.image.description="This is MonicaHQ, your personal memory! MonicaHQ is like a CRM but for the friends, family, and acquaintances around you."
+            org.opencontainers.image.title="MonicaHQ, the Personal Relationship Manager"
+            org.opencontainers.image.vendor="Monica"
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to GitHub container registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ secrets.CR_USER }}
-          password: ${{ secrets.CR_PAT }}
+          registry: ${{ env.registry }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-    # Configure
+      # Configure
       - name: Configure variables
         run: scripts/docker/build.sh --skip-build $GITHUB_SHA
 
-    # Build docker
+      # Build docker
       - name: Docker build
         id: docker_build
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/${{ env.package-name }}:main
+          cache-from: type=registry,ref=${{ env.registry }}/${{ github.repository_owner }}/${{ env.package-name }}:main
           labels: ${{ steps.docker_meta.outputs.labels }}
           file: scripts/docker/Dockerfile
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ (github.event_name != 'pull_request') && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
+          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=This is MonicaHQ your personal memory! MonicaHQ is like a CRM but for the friends family and acquaintances around you.
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
       - name: Prune images
         uses: vlaurin/action-ghcr-prune@v0.5.0
+        if: github.event_name != 'pull_request'
         with:
-          token: ${{ secrets.CR_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           organization: ${{ github.repository_owner }}
           container: ${{ env.package-name }}
           keep-younger-than: 15

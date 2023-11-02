@@ -12,7 +12,7 @@ return [
     '204' => 'Kein Inhalt',
     '205' => 'Inhalt zurücksetzen',
     '206' => 'Teilinhalt',
-    '207' => 'Multi-Status',
+    '207' => 'Multistatus',
     '208' => 'Bereits gemeldet',
     '226' => 'IM verwendet',
     '300' => 'Mehrfachauswahl',
