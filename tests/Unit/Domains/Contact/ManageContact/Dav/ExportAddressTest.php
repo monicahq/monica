@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Domains\Settings\ManageGenders\Dav;
+namespace Tests\Unit\Domains\Contact\ManageContact\Dav;
 
 use App\Domains\Contact\ManageContact\Dav\ExportAddress;
 use App\Models\Address;
@@ -43,6 +43,6 @@ class ExportAddressTest extends TestCase
 
         $text = "ADR;TYPE={$address->addressType->name}:;{$address->line_1};{$address->line_2};{$address->city};{$address->province};{$address->postal_code};{$address->country}";
         $this->assertStringContainsString(Str::substr($text, 0, 75), $vCard->serialize());
-        $this->assertStringContainsString(' '.Str::substr($text, 76), $vCard->serialize());
+        $this->assertStringContainsString(Str::substr($text, 75), $vCard->serialize());
     }
 }
