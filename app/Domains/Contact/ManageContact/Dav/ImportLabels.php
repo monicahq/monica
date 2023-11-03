@@ -11,22 +11,18 @@ use App\Domains\Contact\ManageLabels\Services\RemoveLabel;
 use App\Domains\Vault\ManageVaultSettings\Services\CreateLabel;
 use App\Models\Contact;
 use App\Models\Label;
+use Illuminate\Support\Collection;
 use Sabre\VObject\Component\VCard;
 
 #[Order(30)]
 class ImportLabels extends Importer implements ImportVCardResource
 {
     /**
-     * Can import Contact labels.
+     * Test if the Card is handled by this importer.
      */
-    public function can(VCard $vcard): bool
+    public function handle(VCard $vcard): bool
     {
-        $kind = (string) ($vcard->KIND || $vcard->select('X-ADDRESSBOOKSERVER-KIND'));
-        if (! empty($kind) && $kind !== 'individual') {
-            return false;
-        }
-
-        return true;
+        return $this->kind($vcard) === 'individual';
     }
 
     /**
@@ -38,8 +34,7 @@ class ImportLabels extends Importer implements ImportVCardResource
         $contact = $result;
 
         $labels = $contact->labels->mapWithKeys(fn (Label $label): array => [$label->name => $label]);
-        $categories = $vcard->select('CATEGORIES')[0]->getValue();
-        $categories = collect(explode(',', $categories));
+        $categories = $this->getCategories($vcard);
 
         $toAdd = $categories->diffKeys($labels);
         $toRemove = $labels->diffKeys($categories);
@@ -55,6 +50,17 @@ class ImportLabels extends Importer implements ImportVCardResource
         }
 
         return $refresh ? $contact->refresh() : $contact;
+    }
+
+    private function getCategories(VCard $vcard): Collection
+    {
+        $categories = $vcard->select('CATEGORIES');
+
+        if ($categories === null || count($categories) === 0) {
+            return collect();
+        }
+
+        return collect($categories[0]->getParts());
     }
 
     private function addLabel(Contact $contact, string $name): void

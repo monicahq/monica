@@ -22,8 +22,8 @@ class LabelFactory extends Factory
     {
         return [
             'vault_id' => Vault::factory(),
-            'name' => $this->faker->name(),
-            'slug' => $this->faker->name(),
+            'name' => $this->faker->word(),
+            'slug' => $this->faker->word(),
             'description' => $this->faker->sentence(),
         ];
     }

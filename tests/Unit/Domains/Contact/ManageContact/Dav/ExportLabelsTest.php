@@ -63,6 +63,6 @@ class ExportLabelsTest extends TestCase
             $vCard->children()
         );
 
-        $this->assertStringContainsString("CATEGORIES:{$labels->name}", $vCard->serialize());
+        $this->assertStringContainsString("CATEGORIES:{$labels->pluck('name')->implode(',')}", $vCard->serialize());
     }
 }

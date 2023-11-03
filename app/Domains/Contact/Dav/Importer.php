@@ -14,6 +14,14 @@ abstract class Importer implements ImportVCardResource
     public ImportVCard $context;
 
     /**
+     * Can import Card.
+     */
+    public function can(VCard $vcard): bool
+    {
+        return true;
+    }
+
+    /**
      * Set context.
      */
     public function setContext(ImportVCard $context): ImportVCardResource
@@ -77,5 +85,21 @@ abstract class Importer implements ImportVCardResource
         }
 
         return $data;
+    }
+
+    protected function kind(VCard $entry): string
+    {
+        $kind = $entry->KIND;
+
+        if ($kind === null) {
+            $kinds = $entry->select('X-ADDRESSBOOKSERVER-KIND');
+            if ($kinds !== null && count($kinds) > 0) {
+                $kind = $kinds[0];
+            }
+        }
+
+        return $kind === null
+            ? 'individual'
+            : $kind->getValue();
     }
 }

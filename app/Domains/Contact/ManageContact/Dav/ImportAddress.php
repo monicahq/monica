@@ -24,16 +24,11 @@ use Sabre\VObject\Property;
 class ImportAddress extends Importer implements ImportVCardResource
 {
     /**
-     * Can import Contact addresses.
+     * Test if the Card is handled by this importer.
      */
-    public function can(VCard $vcard): bool
+    public function handle(VCard $vcard): bool
     {
-        $kind = (string) ($vcard->KIND || $vcard->select('X-ADDRESSBOOKSERVER-KIND'));
-        if (! empty($kind) && $kind !== 'individual') {
-            return false;
-        }
-
-        return true;
+        return $this->kind($vcard) === 'individual';
     }
 
     /**

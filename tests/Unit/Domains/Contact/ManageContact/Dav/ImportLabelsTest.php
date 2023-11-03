@@ -36,7 +36,7 @@ class ImportLabelsTest extends TestCase
         ]);
 
         $vcard = new VCard([
-            'CATEGORIES' => 'tag',
+            'CATEGORIES' => ['tag'],
         ]);
 
         $contact = $importer->import($vcard, $contact);
@@ -63,7 +63,7 @@ class ImportLabelsTest extends TestCase
         ]);
 
         $vcard = new VCard([
-            'CATEGORIES' => 'tag1,tag2',
+            'CATEGORIES' => ['tag1', 'tag2'],
         ]);
 
         $contact = $importer->import($vcard, $contact);
@@ -96,7 +96,7 @@ class ImportLabelsTest extends TestCase
         $contact->labels()->syncWithoutDetaching($label);
 
         $vcard = new VCard([
-            'CATEGORIES' => 'tag1,tag2',
+            'CATEGORIES' => ['tag1', 'tag2'],
         ]);
 
         $contact = $importer->import($vcard, $contact);
@@ -130,7 +130,7 @@ class ImportLabelsTest extends TestCase
         $contact->labels()->syncWithoutDetaching($label);
 
         $vcard = new VCard([
-            'CATEGORIES' => $label->name,
+            'CATEGORIES' => [$label->name],
         ]);
 
         $contact = $importer->import($vcard, $contact);

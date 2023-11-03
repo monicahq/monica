@@ -23,20 +23,19 @@ use function Safe\preg_split;
 class ImportContact extends Importer implements ImportVCardResource
 {
     /**
+     * Test if the Card is handled by this importer.
+     */
+    public function handle(VCard $vcard): bool
+    {
+        return $this->kind($vcard) === 'individual';
+    }
+
+    /**
      * Can import Contact.
      */
     public function can(VCard $vcard): bool
     {
-        if (! ($this->hasFN($vcard) || $this->hasNICKNAME($vcard) || $this->hasFirstnameInN($vcard))) {
-            return false;
-        }
-
-        $kind = (string) ($vcard->KIND || $vcard->select('X-ADDRESSBOOKSERVER-KIND'));
-        if (! empty($kind) && $kind !== 'individual') {
-            return false;
-        }
-
-        return true;
+        return $this->hasFN($vcard) || $this->hasNICKNAME($vcard) || $this->hasFirstnameInN($vcard);
     }
 
     /**
