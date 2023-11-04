@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContact\Dav;
 
-use App\Domains\Contact\ManageContact\Dav\ExportAdr;
+use App\Domains\Contact\ManageContact\Dav\ExportAddress;
 use App\Models\Address;
 use App\Models\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -14,7 +14,7 @@ use Sabre\VObject\PHPUnitAssertions;
 use Tests\TestCase;
 use Tests\Unit\Domains\Contact\DAV\CardEtag;
 
-class ExportAdrTest extends TestCase
+class ExportAddressTest extends TestCase
 {
     use CardEtag,
         DatabaseTransactions,
@@ -34,7 +34,7 @@ class ExportAdrTest extends TestCase
         $address->contacts()->attach($contact->id);
 
         $vCard = new VCard();
-        (new ExportAdr)->export($contact, $vCard);
+        (new ExportAddress)->export($contact, $vCard);
 
         $this->assertCount(
             self::defaultPropsCount + 1,

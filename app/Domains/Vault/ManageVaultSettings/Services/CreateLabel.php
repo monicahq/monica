@@ -22,8 +22,8 @@ class CreateLabel extends BaseService implements ServiceInterface
             'vault_id' => 'required|uuid|exists:vaults,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:65535',
-            'bg_color' => 'string|max:255',
-            'text_color' => 'string|max:255',
+            'bg_color' => 'nullable|string|max:255',
+            'text_color' => 'nullable|string|max:255',
         ];
     }
 
@@ -51,8 +51,8 @@ class CreateLabel extends BaseService implements ServiceInterface
             'name' => $data['name'],
             'description' => $this->valueOrNull($data, 'description'),
             'slug' => Str::slug($data['name'], '-', language: currentLang()),
-            'bg_color' => $data['bg_color'],
-            'text_color' => $data['text_color'],
+            'bg_color' => $this->valueOrNull($data, 'bg_color') ?? 'bg-neutral-200',
+            'text_color' => $this->valueOrNull($data, 'text_color') ?? 'text-neutral-800',
         ]);
 
         return $this->label;

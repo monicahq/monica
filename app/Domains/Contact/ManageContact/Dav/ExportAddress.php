@@ -11,7 +11,7 @@ use Sabre\VObject\Component\VCard;
  * @implements ExportVCardResource<Contact>
  */
 #[Order(20)]
-class ExportAdr implements ExportVCardResource
+class ExportAddress implements ExportVCardResource
 {
     public function getType(): string
     {

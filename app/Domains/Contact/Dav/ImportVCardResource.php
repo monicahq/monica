@@ -13,6 +13,11 @@ interface ImportVCardResource
     public function setContext(ImportVCard $context): self;
 
     /**
+     * Test if the Card is handled by this importer.
+     */
+    public function handle(VCard $vcard): bool;
+
+    /**
      * Can import Card.
      */
     public function can(VCard $vcard): bool;

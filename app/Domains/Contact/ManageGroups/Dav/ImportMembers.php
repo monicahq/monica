@@ -19,16 +19,11 @@ use Sabre\VObject\Component\VCard;
 class ImportMembers extends Importer implements ImportVCardResource
 {
     /**
-     * Can import Group.
+     * Test if the Card is handled by this importer.
      */
-    public function can(VCard $vcard): bool
+    public function handle(VCard $vcard): bool
     {
-        $kind = (string) $vcard->KIND;
-        if ($kind == null) {
-            $kind = (string) collect($vcard->select('X-ADDRESSBOOKSERVER-KIND'))->first();
-        }
-
-        return $kind === 'group';
+        return $this->kind($vcard) === 'group';
     }
 
     /**
