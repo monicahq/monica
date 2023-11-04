@@ -93,13 +93,11 @@ abstract class Importer implements ImportVCardResource
 
         if ($kind === null) {
             $kinds = $entry->select('X-ADDRESSBOOKSERVER-KIND');
-            if ($kinds !== null && count($kinds) > 0) {
+            if (! empty($kinds)) {
                 $kind = $kinds[0];
             }
         }
 
-        return $kind === null
-            ? 'individual'
-            : $kind->getValue();
+        return optional($kind)->getValue() ?? 'individual';
     }
 }
