@@ -54,13 +54,11 @@ class ImportLabels extends Importer implements ImportVCardResource
 
     private function getCategories(VCard $vcard): Collection
     {
-        $categories = $vcard->select('CATEGORIES');
+        $categories = $vcard->CATEGORIES;
 
-        if ($categories === null || count($categories) === 0) {
-            return collect();
-        }
-
-        return collect($categories[0]->getParts());
+        return $categories === null
+            ? collect()
+            : collect($categories->getParts());
     }
 
     private function addLabel(Contact $contact, string $name): void
