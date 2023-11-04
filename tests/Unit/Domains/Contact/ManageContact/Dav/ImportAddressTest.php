@@ -105,6 +105,49 @@ class ImportAddressTest extends TestCase
 
     #[Group('dav')]
     #[Test]
+    public function it_imports_new_address_type()
+    {
+        $user = $this->createAdministrator();
+        $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
+        $importVCard = new ImportVCard();
+        $importVCard->author = $user;
+        $importVCard->vault = $vault;
+        $importer = new ImportAddress();
+        $importer->setContext($importVCard);
+
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+
+        $vcard = new VCard();
+        $vcard->add('ADR', [
+            '',
+            'line 1',
+            'line 2',
+            'city',
+            'province',
+            'postal code',
+            'country',
+        ], [
+            'TYPE' => 'home',
+        ]);
+
+        $contact = $importer->import($vcard, $contact);
+
+        $this->assertCount(1, $contact->addresses);
+        $address = $contact->addresses->first();
+
+        $this->assertDatabaseHas('address_types', [
+            'account_id' => $user->account_id,
+            'name' => 'home',
+        ]);
+
+        $this->assertNotNull($address->addressType);
+        $this->assertEquals('home', $address->addressType->name);
+    }
+
+    #[Group('dav')]
+    #[Test]
     public function it_imports_new_address_and_remove_old()
     {
         $user = $this->createUser();
