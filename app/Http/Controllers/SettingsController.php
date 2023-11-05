@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User\User;
 use App\Helpers\DateHelper;
+use App\Models\Contact\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
@@ -16,19 +17,18 @@ use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
 use App\Exceptions\StripeException;
 use App\Http\Requests\ImportsRequest;
+use Illuminate\Http\RedirectResponse;
 use App\Notifications\InvitationMail;
 use App\Http\Requests\SettingsRequest;
 use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
+use Illuminate\Support\Facades\Validator;
 use App\Services\Account\Settings\ResetAccount;
 use App\Services\Account\Settings\DestroyAccount;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
-use App\Models\Contact\Tag;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\RedirectResponse;
 
 class SettingsController extends Controller
 {
