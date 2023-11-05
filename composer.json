@@ -15,7 +15,6 @@
         "ext-gmp": "*",
         "ext-intl": "*",
         "ext-redis": "*",
-        "ext-tokenizer": "*",
         "asbiin/laravel-adorable": "^1.0",
         "asbiin/laravel-webauthn": "^3.0",
         "bacon/bacon-qr-code": "^2.0",
