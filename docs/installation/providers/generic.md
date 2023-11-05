@@ -31,22 +31,23 @@ If you don't want to use Docker, the best way to setup the project is to use the
 
 **PHP:** Install php8.1 minimum, with these extensions:
 
--   bcmath
--   curl
--   dom
--   gd
--   gmp
--   iconv
--   intl
--   json
--   mbstring
--   mysqli
--   opcache
--   pdo_mysql
--   redis
--   sodium
--   xml
--   zip
+- bcmath
+- curl
+- dom
+- gd
+- gmp
+- iconv
+- intl
+- json
+- mbstring
+- mysqli
+- opcache
+- pdo_mysql
+- redis
+- sodium
+- tokenizer
+- xml
+- zip
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager. It is not enough to just install Composer, you also need to make sure it is installed globally for Monica's installation to run smoothly:
 
