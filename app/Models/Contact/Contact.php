@@ -877,6 +877,21 @@ class Contact extends Model
                     $completeName = $completeName.' '.$this->middle_name;
                 }
                 break;
+            case 'nickname_bracketed_firstname_lastname':
+                $completeName = $this->first_name;
+
+                if (! is_null($this->middle_name)) {
+                    $completeName = $completeName.' '.$this->middle_name;
+                }
+
+                if (! is_null($this->nickname)) {
+                    $completeName = $this->nickname.' ('.$completeName.')';
+                }
+
+                if (! is_null($this->last_name)) {
+                    $completeName = $completeName.' '.$this->last_name;
+                }
+                break;
             case 'nickname':
                 if (! is_null($this->nickname)) {
                     $completeName = $this->nickname;
@@ -908,6 +923,10 @@ class Contact extends Model
     {
         $incompleteName = '';
         $incompleteName = $this->first_name;
+
+        if ($this->nameOrder == 'nickname_bracketed_firstname_lastname' && ! is_null($this->nickname)) {
+            $incompleteName = $this->nickname;
+        }
 
         if (! is_null($this->last_name)) {
             $incompleteName .= ' '.mb_substr($this->last_name, 0, 1);
