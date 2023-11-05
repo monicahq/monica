@@ -69,6 +69,7 @@ return [
     'name_order_lastname_nickname_firstname' => '<Фамилия> (<Псевдоним>) <Имя> - Иван (Ivan228) Иванов',
     'name_order_nickname_firstname_lastname' => '<Псевдоним> (<Имя> <Фамилия>) – Ivan228 (Иван Иванов)',
     'name_order_nickname_lastname_firstname' => '<Псевдоним> (<Фамилия> <Имя>) – Ivan228 (Иванов Иван)',
+    'name_order_nickname_bracketed_firstname_lastname' => '<Nickname> (<First name>) <Last name> - Rambo (John) Doe',
     'name_order_nickname' => '<Псевдоним> - Ivan228',
     'currency' => 'Валюта',
     'name' => 'Ваше имя: :name',
