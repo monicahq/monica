@@ -69,6 +69,7 @@ return [
     'name_order_lastname_nickname_firstname' => '<Last name> (<Nickname>) <First name> – Surasep (Kabayan) Asep',
     'name_order_nickname_firstname_lastname' => '<Nickname> (<First name> <Last name>) – Kabayan (Asep Surasep)',
     'name_order_nickname_lastname_firstname' => '<Nickname> (<Last name> <First name>) – Kabayan (Surasep Asep)',
+    'name_order_nickname_bracketed_firstname_lastname' => '<Nickname> (<First name>) <Last name> - Rambo (John) Doe',
     'name_order_nickname' => '<Nickname> - Kabayan',
     'currency' => 'Mata uang',
     'name' => 'Nama Anda: :name',
