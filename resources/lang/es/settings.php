@@ -69,6 +69,7 @@ return [
     'name_order_lastname_nickname_firstname' => '<Apellido> (<Apodo>) <Nombre> – Pérez (el Nota) Juan',
     'name_order_nickname_firstname_lastname' => '<Apodo> (<Nombre> <Apellido>) – El Nota (Juan Pérez)',
     'name_order_nickname_lastname_firstname' => '<Apodo> (<Apellido> <Nombre>) – El Nota (Pérez Juan)',
+    'name_order_nickname_bracketed_firstname_lastname' => '<Nickname> (<First name>) <Last name> - Rambo (John) Doe',
     'name_order_nickname' => '<Apodo> — el Nota',
     'currency' => 'Moneda',
     'name' => 'Tu nombre: :name',
