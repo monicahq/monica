@@ -69,6 +69,7 @@ return [
     'name_order_lastname_nickname_firstname' => '<Nom> (<Surnom>) <Prénom> – Dupont (Jojo) Jean',
     'name_order_nickname_firstname_lastname' => '<Surnom> (<Prénom> <Nom>) – Jojo (Jean Dupont)',
     'name_order_nickname_lastname_firstname' => '<Surnom> (<Nom> <Prénom>) – Jojo (Dupont Jean)',
+    'name_order_nickname_bracketed_firstname_lastname' => '<Nickname> (<First name>) <Last name> - Rambo (John) Doe',
     'name_order_nickname' => '<Surnom> – Jojo',
     'currency' => 'Devise',
     'name' => 'Votre nom : :name',
