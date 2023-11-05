@@ -23,22 +23,23 @@ Monica can be configured in shared hosting environments with a little difference
 
 **PHP:** Install php8.1 minimum. Generally cPanel will have a PHP 7 version installed, verify under the 'PHP Version' section from the cPanel section. Make sure these extensions are enabled:
 
--   bcmath
--   curl
--   dom
--   gd
--   gmp
--   iconv
--   intl
--   json
--   mbstring
--   mysqli
--   opcache
--   pdo_mysql
--   redis
--   sodium
--   xml
--   zip
+- bcmath
+- curl
+- dom
+- gd
+- gmp
+- iconv
+- intl
+- json
+- mbstring
+- mysqli
+- opcache
+- pdo_mysql
+- redis
+- sodium
+- tokenizer
+- xml
+- zip
 
 In most cases, this will be under the section called 'PHP Version' in cPanel where you can enable and disable modules. 
 

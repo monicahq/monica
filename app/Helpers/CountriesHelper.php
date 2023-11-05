@@ -198,6 +198,6 @@ class CountriesHelper
                 break;
         }
 
-        return $timezone;
+        return $timezone ?? config('app.timezone');
     }
 }
