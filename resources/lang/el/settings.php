@@ -69,6 +69,7 @@ return [
     'name_order_lastname_nickname_firstname' => '<Επώνυμο> (<Ψευδώνυμο>) <Όνομα> – Τάδε (Ράμπο) Γιάννης',
     'name_order_nickname_firstname_lastname' => '<Ψευδώνυμο> (<Όνομα> <Επώνυμο>) – Ράμπο (Γιάννης Τάδε)',
     'name_order_nickname_lastname_firstname' => '<Ψευδώνυμο> (<Επώνυμο> <Όνομα>) – Ράμπο (Τάδε Γιάννης)',
+    'name_order_nickname_bracketed_firstname_lastname' => '<Nickname> (<First name>) <Last name> - Rambo (John) Doe',
     'name_order_nickname' => '<Ψευδώνυμο> – Ράμπο',
     'currency' => 'Nόμισμα',
     'name' => 'Το όνομά σας: :name',
