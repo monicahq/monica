@@ -668,7 +668,7 @@ class ImportVCard extends BaseService
      * @psalm-suppress InvalidReturnType
      *
      * @param  VCard  $entry
-     * @return array|string|null|\Illuminate\Contracts\Translation\Translator
+     * @return array|string
      */
     private function name($entry)
     {

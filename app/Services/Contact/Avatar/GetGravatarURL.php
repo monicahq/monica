@@ -53,7 +53,7 @@ class GetGravatarURL extends BaseService
     {
         try {
             return Gravatar::exists($data['email']);
-        } catch (\Creativeorange\Gravatar\Exceptions\InvalidEmailException $e) {
+        } catch (\Exception $e) {
             // catch invalid email
             return false;
         }
