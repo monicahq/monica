@@ -496,13 +496,13 @@ class Contact extends Model
     {
         switch ($criteria) {
             case 'firstnameAZ':
-                return $builder->orderBy('first_name', 'asc');
+                return $builder->orderBy('first_name');
             case 'firstnameZA':
-                return $builder->orderBy('first_name', 'desc');
+                return $builder->orderByDesc('first_name');
             case 'lastnameAZ':
-                return $builder->orderBy('last_name', 'asc');
+                return $builder->orderBy('last_name');
             case 'lastnameZA':
-                return $builder->orderBy('last_name', 'desc');
+                return $builder->orderByDesc('last_name');
             case 'lastactivitydateNewtoOld':
                 return $this->sortedByLastActivity($builder, 'desc');
             case 'lastactivitydateOldtoNew':

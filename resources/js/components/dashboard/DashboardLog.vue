@@ -99,9 +99,7 @@
               <a :href="'people/' + note.contact.id">
                 {{ note.name }}
               </a>
-              <p>
-                {{ note.body }}
-              </p>
+              <p v-html="compiledMarkdown(note.body)"></p>
             </div>
           </div>
         </template>
@@ -449,7 +447,11 @@ export default {
         .then(response => {
           this.tasks.splice(this.tasks.indexOf(task), 1);
         });
-    }
+    },
+
+    compiledMarkdown (text) {
+      return text !== undefined && text !== null ? marked(text, { sanitize: true }) : '';
+    },
   }
 };
 </script>

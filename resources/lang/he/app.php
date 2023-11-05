@@ -180,10 +180,10 @@ return [
     'relationship_type_lovedby_female_with_name' => 'מאהבת סודית של :name',
     'relationship_type_lovedby_male_with_name' => 'מאהב סודי של :name',
 
-    'relationship_type_ex' => 'ex-partner',
+    'relationship_type_ex' => 'שותף לשעבר לחיים',
     'relationship_type_ex_female' => 'חברה לשעבר',
     'relationship_type_ex_male' => 'חבר לשעבר',
-    'relationship_type_ex_with_name' => ':name’s ex-partner',
+    'relationship_type_ex_with_name' => 'שותף לחיים לשעבר של :name',
     'relationship_type_ex_female_with_name' => 'חברה לשעבר של :name',
     'relationship_type_ex_male_with_name' => 'חבר לשעבר של :name',
 
@@ -222,17 +222,17 @@ return [
     'relationship_type_sibling_female_with_name' => 'אחות של :name',
     'relationship_type_sibling_male_with_name' => 'אח של :name',
 
-    'relationship_type_grandparent' => 'grandparent',
+    'relationship_type_grandparent' => 'סב',
     'relationship_type_grandparent_female' => 'סבתא',
     'relationship_type_grandparent_male' => 'סבא',
-    'relationship_type_grandparent_with_name' => ':name’s grandparent',
+    'relationship_type_grandparent_with_name' => 'הסבא או הסבתא של :name',
     'relationship_type_grandparent_female_with_name' => 'סבתא של :name',
     'relationship_type_grandparent_male_with_name' => 'סבא של :name',
 
     'relationship_type_grandchild' => 'נכד/ה',
     'relationship_type_grandchild_female' => 'נכדה',
     'relationship_type_grandchild_male' => 'נכד',
-    'relationship_type_grandchild_with_name' => ':name’s grandchild',
+    'relationship_type_grandchild_with_name' => 'הנכד או הנכדה של :name',
     'relationship_type_grandchild_female_with_name' => 'נכדה של :name',
     'relationship_type_grandchild_male_with_name' => 'נכד של :name',
 
@@ -257,10 +257,10 @@ return [
     'relationship_type_cousin_female_with_name' => 'בת דודה של :name',
     'relationship_type_cousin_male_with_name' => 'בן דוד של :name',
 
-    'relationship_type_godfather' => 'godparent',
+    'relationship_type_godfather' => 'אפוטרופוס',
     'relationship_type_godfather_female' => 'סנדקית',
     'relationship_type_godfather_male' => 'סנדק',
-    'relationship_type_godfather_with_name' => ':name’s godparent',
+    'relationship_type_godfather_with_name' => 'האפוטרופוס/ית של :name',
     'relationship_type_godfather_female_with_name' => 'הסנדקית של :name',
     'relationship_type_godfather_male_with_name' => 'הסנדק של :name',
 

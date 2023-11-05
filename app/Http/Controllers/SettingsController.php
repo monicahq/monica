@@ -59,7 +59,9 @@ class SettingsController extends Controller
         if (auth()->user()->me_contact_id) {
             $meContact = Contact::where('account_id', auth()->user()->account_id)
                 ->find(auth()->user()->me_contact_id);
-            $existingContacts->prepend($meContact);
+            if ($meContact) {
+                $existingContacts->prepend($meContact);
+            }
         }
 
         $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
