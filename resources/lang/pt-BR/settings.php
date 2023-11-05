@@ -69,6 +69,7 @@ return [
     'name_order_lastname_nickname_firstname' => '<Last name> (<Nickname>) <First name> – Silva (Jão) João',
     'name_order_nickname_firstname_lastname' => '<Nickname> (<First name> <Last name>) – Jão (João Silva)',
     'name_order_nickname_lastname_firstname' => '<Nickname> (<Last name> <First name>) – Rambo (Doe John)',
+    'name_order_nickname_bracketed_firstname_lastname' => '<Nickname> (<First name>) <Last name> - Rambo (John) Doe',
     'name_order_nickname' => '<Nickname> – Jão',
     'currency' => 'Moeda',
     'name' => 'Seu nome: :name',
