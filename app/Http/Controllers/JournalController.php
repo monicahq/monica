@@ -198,7 +198,7 @@ class JournalController extends Controller
      */
     public function updateDay(Request $request, Day $day)
     {
-         $validatedData = $request->validate([
+        $validatedData = $request->validate([
             'comment' => 'required|string',
         ]);
 
