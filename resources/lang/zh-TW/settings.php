@@ -69,6 +69,7 @@ return [
     'name_order_lastname_nickname_firstname' => '<姓> (<暱稱>) <名> - 王 (小黑) 小明',
     'name_order_nickname_firstname_lastname' => '<暱稱> (<名> <姓>) - 小黑 (小明 王)',
     'name_order_nickname_lastname_firstname' => '<暱稱> (<姓> <名>) - 小黑 (王 小明)',
+    'name_order_nickname_bracketed_firstname_lastname' => '<Nickname> (<First name>) <Last name> - Rambo (John) Doe',
     'name_order_nickname' => '<暱稱> - 小黑',
     'currency' => '貨幣',
     'name' => '您的姓名: :name',
