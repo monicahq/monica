@@ -331,6 +331,7 @@ return [
     'tags_list_description' => 'Você pode organizar seus contatos configurando etiquetas (tags). As tags funcionam como pastas, mas você pode adicionar mais de uma tag a um contato. Para adicionar uma nova tag, adicione-a no próprio contato.',
     'tags_list_contact_number' => '1 contato|:count contatos',
     'tags_list_delete_success' => 'A tag foi excluída com sucesso',
+    'tags_list_edit_success' => 'The tag has been successfully updated',
     'tags_list_delete_confirmation' => 'Tem certeza que deseja excluir a etiqueta? Nenhum contato será excluído, apenas a etiqueta.',
     'tags_blank_title' => 'As tags são uma ótima maneira de categorizar seus contatos.',
     'tags_blank_description' => 'As tags funcionam como pastas, mas você pode adicionar mais de uma tag a um contato. Vá para um contato e marque um amigo, logo abaixo do nome. Depois de adicionar uma tag ao contato, volte aqui para gerenciar todas as tags da sua conta.',

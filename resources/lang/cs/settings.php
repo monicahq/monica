@@ -331,6 +331,7 @@ return [
     'tags_list_description' => 'Své kontakty můžete organizovat pomocí tagů. Tagy fungují jako adresáře, kontaktům můžete ale přidat vícero tagů. Nový tag přidáte úpravou vlastního kontaktu.',
     'tags_list_contact_number' => '1 contact|:count contacts',
     'tags_list_delete_success' => 'Tag byl úspěšně smazán',
+    'tags_list_edit_success' => 'The tag has been successfully updated',
     'tags_list_delete_confirmation' => 'Opravdu chcete smazat tento tag? Bude smazán pouze vybraný tag, žádné kontakty.',
     'tags_blank_title' => 'Tagy jsou šikovné řešení kategorizace kontaktů.',
     'tags_blank_description' => 'Tags work like folders, but you can add more than one tag to a contact. Go to a contact and tag a friend, right below the name. Once a contact is tagged, come back here to manage all the tags in your account.',

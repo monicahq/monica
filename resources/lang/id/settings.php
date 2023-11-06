@@ -331,6 +331,7 @@ return [
     'tags_list_description' => 'Anda dapat mengkategorikan kontak Anda dengan mengatur tag. Tag berfungsi seperti folder, tetapi Anda dapat menambahkan lebih dari satu tag ke kontak. Untuk menambahkan sebuah tag baru, tambahkan tag pada kontak tersebut.',
     'tags_list_contact_number' => ':count kontak',
     'tags_list_delete_success' => 'Tag telah berhasil dihapus',
+    'tags_list_edit_success' => 'The tag has been successfully updated',
     'tags_list_delete_confirmation' => 'Apakah Anda yakin ingin menghapus tag? Tidak ada kontak yang akan dihapus, hanya tag saja.',
     'tags_blank_title' => 'Tag adalah sebuah cara yang bagus untuk mengkategorikan kontak Anda.',
     'tags_blank_description' => 'Tag bekerja seperti folder, tetapi Anda dapat menambahkan lebih dari satu tag ke kontak. Cari sebuah kontak dan tag seorang teman, tepat di bawah namanya. Setelah sebuah kontak ditambhkan tag, kembali ke sini untuk mengelola semua tag di akun Anda.',
