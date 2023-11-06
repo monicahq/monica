@@ -340,6 +340,39 @@ class ContactTest extends FeatureTestCase
         $contact->middle_name = 'H';
         $contact->last_name = 'Gregory';
         $contact->nickname = 'Rambo';
+        $contact->nameOrder('nickname_bracketed_firstname_lastname');
+        $this->assertEquals(
+            'Rambo (Peter H) Gregory',
+            $contact->name
+        );
+
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->middle_name = 'H';
+        $contact->last_name = null;
+        $contact->nickname = 'Rambo';
+        $contact->nameOrder('nickname_bracketed_firstname_lastname');
+        $this->assertEquals(
+            'Rambo (Peter H)',
+            $contact->name
+        );
+
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->middle_name = null;
+        $contact->last_name = 'Gregory';
+        $contact->nickname = 'Rambo';
+        $contact->nameOrder('nickname_bracketed_firstname_lastname');
+        $this->assertEquals(
+            'Rambo (Peter) Gregory',
+            $contact->name
+        );
+
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->middle_name = 'H';
+        $contact->last_name = 'Gregory';
+        $contact->nickname = 'Rambo';
         $contact->nameOrder('nickname');
         $this->assertEquals(
             'Rambo',

@@ -53,27 +53,28 @@ sudo apt update
 
 Install PHP 8.1 with these extensions:
 
--   bcmath
--   curl
--   dom
--   gd
--   gmp
--   iconv
--   intl
--   json
--   mbstring
--   mysqli
--   opcache
--   pdo_mysql
--   redis
--   sodium
--   xml
--   zip
+- bcmath
+- curl
+- dom
+- gd
+- gmp
+- iconv
+- intl
+- json
+- mbstring
+- mysqli
+- opcache
+- pdo_mysql
+- redis
+- sodium
+- tokenizer
+- xml
+- zip
 
 Run:
 ```sh
 sudo apt install -y php8.1 php8.1-bcmath php8.1-curl php8.1-gd php8.1-gmp \
-    php8.1-intl php8.1-mbstring php8.1-mysql php8.1-redis php8.1-xml php8.1-zip
+    php8.1-intl php8.1-mbstring php8.1-mysql php8.1-redis php8.1-tokenizer php8.1-xml php8.1-zip
 ```
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager.

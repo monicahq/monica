@@ -496,13 +496,13 @@ class Contact extends Model
     {
         switch ($criteria) {
             case 'firstnameAZ':
-                return $builder->orderBy('first_name', 'asc');
+                return $builder->orderBy('first_name');
             case 'firstnameZA':
-                return $builder->orderBy('first_name', 'desc');
+                return $builder->orderByDesc('first_name');
             case 'lastnameAZ':
-                return $builder->orderBy('last_name', 'asc');
+                return $builder->orderBy('last_name');
             case 'lastnameZA':
-                return $builder->orderBy('last_name', 'desc');
+                return $builder->orderByDesc('last_name');
             case 'lastactivitydateNewtoOld':
                 return $this->sortedByLastActivity($builder, 'desc');
             case 'lastactivitydateOldtoNew':
@@ -877,6 +877,21 @@ class Contact extends Model
                     $completeName = $completeName.' '.$this->middle_name;
                 }
                 break;
+            case 'nickname_bracketed_firstname_lastname':
+                $completeName = $this->first_name;
+
+                if (! is_null($this->middle_name)) {
+                    $completeName = $completeName.' '.$this->middle_name;
+                }
+
+                if (! is_null($this->nickname)) {
+                    $completeName = $this->nickname.' ('.$completeName.')';
+                }
+
+                if (! is_null($this->last_name)) {
+                    $completeName = $completeName.' '.$this->last_name;
+                }
+                break;
             case 'nickname':
                 if (! is_null($this->nickname)) {
                     $completeName = $this->nickname;
@@ -908,6 +923,10 @@ class Contact extends Model
     {
         $incompleteName = '';
         $incompleteName = $this->first_name;
+
+        if ($this->nameOrder == 'nickname_bracketed_firstname_lastname' && ! is_null($this->nickname)) {
+            $incompleteName = $this->nickname;
+        }
 
         if (! is_null($this->last_name)) {
             $incompleteName .= ' '.mb_substr($this->last_name, 0, 1);

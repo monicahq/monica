@@ -133,6 +133,7 @@ class ContactsController extends Controller
             ->withHasArchived($nbArchived > 0)
             ->withArchivedContacts($nbArchived)
             ->withTags($tags)
+            ->withSort($sort)
             ->withTagsCount($tagsCount)
             ->withUrl($url)
             ->withTagCount($count)
