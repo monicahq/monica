@@ -9,31 +9,36 @@
   <div class="mw9 center">
     <!-- Left sidebar -->
     <div :class="[dirltr ? 'fl' : 'fr']" class="w-70-ns w-100 pa2">
-
       <!-- Filters -->
       <div class="filter mb-4">
         <div class="d-flex pb-2">
           <div class="dt">
             <label for="start-date">{{ $t('journal.start_date') }}:</label>
-            <input type="date" id="start-date" class="form-control" v-model="startDate">
+            <input id="start-date" v-model="startDate" type="date" class="form-control" />
           </div>
           <div class="dt pl-2">
             <label for="end-date py-2">{{ $t('journal.end_date') }}:</label>
-            <input type="date" id="end-date" class="form-control" v-model="endDate">
+            <input id="end-date" v-model="endDate" type="date" class="form-control" />
           </div>
           <div class="dt pl-2">
             <label for="per-page">{{ $t('journal.per_page') }}:</label>
-            <input type="number" id="per-page" class="form-control" v-model="perPage">
+            <input id="per-page" v-model="perPage" type="number" class="form-control" />
           </div>
           <div class="dt pl-2">
             <label for="sort-order">{{ $t('journal.sort_order') }} :</label>
-            <select id="sort-order" class="form-control" v-model="sortOrder">
-              <option value="asc">{{ $t('journal.ascending') }}</option>
-              <option value="desc">{{ $t('journal.descending') }}</option>
+            <select id="sort-order" v-model="sortOrder" class="form-control">
+              <option value="asc">
+                {{ $t('journal.ascending') }}
+              </option>
+              <option value="desc">
+                {{ $t('journal.descending') }}
+              </option>
             </select>
           </div>
-      </div>
-      <button @click="getEntries" class="btn btn-primary">{{ $t('journal.apply_filter') }}</button>
+        </div>
+        <button class="btn btn-primary" @click="getEntries">
+          {{ $t('journal.apply_filter') }}
+        </button>
       </div>
 
 
@@ -42,22 +47,28 @@
 
       <!-- Logs -->
       <div v-if="journalEntries.data" v-cy-name="'journal-entries-body'" v-cy-items="journalEntries.data.map(j => j.id)"
-        :cy-object-items="journalEntries.data.map(j => j.object.id)">
+           :cy-object-items="journalEntries.data.map(j => j.object.id)"
+      >
         <div v-for="journalEntry in journalEntries.data" :key="journalEntry.id"
-          v-cy-name="'entry-body-' + journalEntry.id" class="cf">
+             v-cy-name="'entry-body-' + journalEntry.id" class="cf"
+        >
           <journal-content-rate v-if="journalEntry.journalable_type === 'App\\Models\\Journal\\Day'"
-            :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
+                                :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry"
+          />
 
           <journal-content-activity v-else-if="journalEntry.journalable_type === 'App\\Models\\Account\\Activity'"
-            :journal-entry="journalEntry" />
+                                    :journal-entry="journalEntry"
+          />
 
           <journal-content-entry v-else-if="journalEntry.journalable_type === 'App\\Models\\Journal\\Entry'"
-            :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
+                                 :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry"
+          />
         </div>
       </div>
 
       <div v-if="(journalEntries.per_page * journalEntries.current_page) <= journalEntries.total"
-        class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">
+           class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc"
+      >
         <p class="mb0 pointer" @click="loadMore()">
           <span v-if="!loadingMore">
             {{ $t('app.load_more') }}
@@ -69,7 +80,8 @@
       </div>
 
       <div v-if="journalEntries.total === 0" v-cy-name="'journal-blank-state'"
-        class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">
+           class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc"
+      >
         <div class="tc mb4">
           <img src="img/journal/blank.svg" :alt="$t('journal.journal_empty')" />
         </div>
