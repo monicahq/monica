@@ -28,4 +28,11 @@ return [
     'journal_blank_cta' => 'Προσθέστε την πρώτη καταχώρηση ημερολογίου',
     'journal_blank_description' => 'Το ημερολόγιο σας επιτρέπει να γράφετε γεγονότα που σας συνέβησαν και να τα θυμάστε.',
     'delete_confirmation' => 'Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτή την καταχώρηση ημερολογίου;',
+    'apply_filter' => 'Apply filter',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'per_page' => 'Per Page',
+    'sort_order' => 'Sort By Created At',
+    'ascending' => 'Ascending',
+    'descending' => 'Descending',
 ];
