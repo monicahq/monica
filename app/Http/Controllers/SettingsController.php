@@ -20,10 +20,10 @@ use App\Http\Requests\ImportsRequest;
 use Illuminate\Http\RedirectResponse;
 use App\Notifications\InvitationMail;
 use App\Http\Requests\SettingsRequest;
+use App\Services\Contact\Tag\UpdateTag;
 use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
-use Illuminate\Support\Facades\Validator;
 use App\Services\Account\Settings\ResetAccount;
 use App\Services\Account\Settings\DestroyAccount;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
@@ -370,7 +370,7 @@ class SettingsController extends Controller
     }
     
     /**
-     * Method editTag
+     * Edit a tag name.
      *
      * @param Tag $tag 
      * @param Request $request
@@ -379,22 +379,13 @@ class SettingsController extends Controller
      */
     public function editTag(Tag $tag, Request $request): RedirectResponse
     {
-        $validator = Validator::make($request->all(), [
-            'tag_name' => 'required|string|max:255', 
+        app(UpdateTag::class)->execute([
+            'tag_id' => $tag->id,
+            'account_id' => auth()->user()->account_id,
+            'name' => $request->input('name'),
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->route('settings.tags.index')
-                ->with('error', $validator->errors());
-        }
-
-        $newName = $request->input('tag_name');
-
-        $tag->name = $newName;
-        $tag->save();
-
-
-        return redirect()->route('settings.tags.index')
+        return back()
                 ->with('success', trans('settings.tags_list_edit_success'));
     }
 

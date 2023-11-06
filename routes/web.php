@@ -293,8 +293,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
 
         Route::name('tags.')->group(function () {
             Route::get('/settings/tags', 'SettingsController@tags')->name('index');
-            Route::get('/settings/tags/update/{tag}', 'SettingsController@editTag')->name('edit');
-            Route::get('/settings/tags/add', 'SettingsController@addUser')->name('add');
+            Route::put('/settings/tags/{tag}', 'SettingsController@editTag')->name('update');
             Route::delete('/settings/tags/{tag}', 'SettingsController@deleteTag')->name('delete');
         });
 

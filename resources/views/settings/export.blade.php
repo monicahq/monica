@@ -87,16 +87,16 @@
                 </li>
                 @foreach ($exports as $export)
                 <li class="table-row">
-                  <div class="table-cell table-cell">
+                  <div class="table-cell">
                     {{ trans("settings.export_type_{$export['type']}") }}
                   </div>
-                  <div class="table-cell table-cell date">
+                  <div class="table-cell date">
                     {{ \App\Helpers\DateHelper::getShortDateWithTime($export['created_at']) }}
                   </div>
-                  <div class="table-cell table-cell">
+                  <div class="table-cell">
                     {{ trans("settings.export_status_{$export['status']}") }}
                   </div>
-                  <div class="table-cell actions table-cell">
+                  <div class="table-cell actions">
                     @if ($export['status'] === \App\Models\Account\ExportJob::EXPORT_DONE)
                       <form method="POST" action="{{ route('settings.export.download', ['uuid' => $export['uuid']]) }}">
                         @csrf
