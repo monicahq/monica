@@ -28,9 +28,9 @@
             />
             <div class="pv3">
               <div class="flex-ns justify-between">
-                  <button v-cy-name="'save-entry-button'" class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click="saveComment()">
-                        {{ $t('app.save') }}
-                  </button>
+                <button v-cy-name="'save-entry-button'" class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click="saveComment()">
+                  {{ $t('app.save') }}
+                </button>
               </div>
             </div>
           </div>
@@ -168,9 +168,9 @@ export default {
       axios.put('journal/day/' + this.day.id + '/update', {
         comment: this.day.comment,
       })
-      .then(response => {
-        this.editingComment();
-      });
+        .then(response => {
+          this.editingComment();
+        });
     },
 
     destroy() {
