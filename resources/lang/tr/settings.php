@@ -331,6 +331,7 @@ return [
     'tags_list_description' => 'Etiketler ayarlayarak kişilerinizi düzenleyebilirsiniz. Etiketler klasörler gibi çalışır, ancak bir kişiye birden fazla etiket ekleyebilirsiniz. Yeni bir etiket eklemek için, kişinin üzerine ekleyin.',
     'tags_list_contact_number' => ':count bağlantı',
     'tags_list_delete_success' => 'Etiket başarıyla silindi',
+    'tags_list_edit_success' => 'The tag has been successfully updated',
     'tags_list_delete_confirmation' => 'Etiketi silmek istediğinizden emin misiniz? Bağlantılar silinmeyecek, sadece etiket silinecektir.',
     'tags_blank_title' => 'Etiketler, kişilerinizi sınıflandırmanın harika bir yoludur.',
     'tags_blank_description' => 'Tags work like folders, but you can add more than one tag to a contact. Go to a contact and tag a friend, right below the name. Once a contact is tagged, come back here to manage all the tags in your account.',

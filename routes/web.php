@@ -209,6 +209,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/journal/hasRated', 'JournalController@hasRated');
         Route::post('/journal/day', 'JournalController@storeDay');
         Route::delete('/journal/day/{day}', 'JournalController@trashDay');
+        Route::put('/journal/day/{day}/update', 'JournalController@updateDay');
 
         Route::get('/journal/add', 'JournalController@create')->name('create');
         Route::post('/journal/create', 'JournalController@save')->name('save');
@@ -293,7 +294,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
 
         Route::name('tags.')->group(function () {
             Route::get('/settings/tags', 'SettingsController@tags')->name('index');
-            Route::get('/settings/tags/add', 'SettingsController@addUser')->name('add');
+            Route::put('/settings/tags/{tag}', 'SettingsController@editTag')->name('update');
             Route::delete('/settings/tags/{tag}', 'SettingsController@deleteTag')->name('delete');
         });
 

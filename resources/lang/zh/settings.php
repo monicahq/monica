@@ -331,6 +331,7 @@ return [
     'tags_list_description' => '您可以通过设置来标记联系人。标记的工作方式类似于文件夹, 但可以向联系人添加多个标记。若要添加新标记, 请在联系人中添加即可。',
     'tags_list_contact_number' => ':count 个联系人',
     'tags_list_delete_success' => '标签已成功删除',
+    'tags_list_edit_success' => 'The tag has been successfully updated',
     'tags_list_delete_confirmation' => '确实要删除该标签吗？不会删除任何联系人, 只有标签。',
     'tags_blank_title' => '标签是对您的联系人进行分类的一种很好的方式。',
     'tags_blank_description' => '标签的工作方式类似于文件夹，但可以向联系人添加多个标签。你可以转到联系人页面，并在名字的下方添加标签，之后可以返回此处管理帐户中的所有标签。',

@@ -331,6 +331,7 @@ return [
     'tags_list_description' => 'Du kannst deine Kontakte mithilfe von Tags organisieren. Tags funktionieren wie Ordner, wobei ein Kontakt auch mehrere Tags erhalten kann. Um einen neuen Tag anzulegen, musst du ihn nur beim Kontakt hinzufügen.',
     'tags_list_contact_number' => '1 Kontakt|:count Kontakte',
     'tags_list_delete_success' => 'Der Tag wurde erfolgreich gelöscht',
+    'tags_list_edit_success' => 'The tag has been successfully updated',
     'tags_list_delete_confirmation' => 'Möchtest du den Tag wirklich löschen? Kontakte werden nicht gelöscht, sondern nur der Tag.',
     'tags_blank_title' => 'Tags bieten eine tolle Möglichkeit Kontakte zu organisieren.',
     'tags_blank_description' => 'Tags funktionieren wie Ordner, wobei ein Kontakt auch mehrere Tags erhalten kann. Öffne einen Kontakt und tagge einen Freund direkt unter dem Namen. Sobald ein Kontakt getaggt ist, kannst du hier deine Tags verwalten.',

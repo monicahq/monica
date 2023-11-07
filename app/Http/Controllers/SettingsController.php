@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User\User;
 use App\Helpers\DateHelper;
+use App\Models\Contact\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
@@ -16,8 +17,10 @@ use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
 use App\Exceptions\StripeException;
 use App\Http\Requests\ImportsRequest;
+use Illuminate\Http\RedirectResponse;
 use App\Notifications\InvitationMail;
 use App\Http\Requests\SettingsRequest;
+use App\Services\Contact\Tag\UpdateTag;
 use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
@@ -59,7 +62,9 @@ class SettingsController extends Controller
         if (auth()->user()->me_contact_id) {
             $meContact = Contact::where('account_id', auth()->user()->account_id)
                 ->find(auth()->user()->me_contact_id);
-            $existingContacts->prepend($meContact);
+            if ($meContact) {
+                $existingContacts->prepend($meContact);
+            }
         }
 
         $accountHasLimitations = AccountHelper::hasLimitations(auth()->user()->account);
@@ -362,6 +367,26 @@ class SettingsController extends Controller
 
         return redirect()->route('settings.tags.index')
                 ->with('success', trans('settings.tags_list_delete_success'));
+    }
+    
+    /**
+     * Edit a tag name.
+     *
+     * @param Tag $tag 
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function editTag(Tag $tag, Request $request): RedirectResponse
+    {
+        app(UpdateTag::class)->execute([
+            'tag_id' => $tag->id,
+            'account_id' => auth()->user()->account_id,
+            'name' => $request->input('name'),
+        ]);
+
+        return back()
+                ->with('success', trans('settings.tags_list_edit_success'));
     }
 
     public function api()
