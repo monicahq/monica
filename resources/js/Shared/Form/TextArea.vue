@@ -103,10 +103,16 @@ defineExpose({
 
 <template>
   <div class="mb-3">
-    <label v-if="label" class="mb-2 block text-sm dark:text-gray-100" :for="id">
+    <label v-if="label" class="mb-2 block relative text-sm dark:text-gray-100" :for="id">
       {{ label }}
       <span v-if="!required" class="optional-badge rounded px-[3px] py-px text-xs">
         {{ $t('optional') }}
+      </span>
+
+      <span
+        v-if="maxlength && displayMaxLength"
+        class="length absolute end-0 top-0 rounded px-1 py-[3px] text-xs dark:text-gray-100">
+        {{ charactersLeft }}
       </span>
     </label>
 
@@ -125,11 +131,6 @@ defineExpose({
         @keydown.esc="sendEscKey"
         @focus="showMaxLength"
         @blur="displayMaxLength = false" />
-      <span
-        v-if="maxlength && displayMaxLength"
-        class="length absolute end-2.5 top-2.5 rounded px-1 py-[3px] text-xs dark:text-gray-100">
-        {{ charactersLeft }}
-      </span>
     </div>
     <p v-if="markdown" class="rounded-b-lg bg-slate-100 px-3 py-2 text-xs dark:bg-slate-900">
       <span>{{ $t('We support Markdown to format the text (bold, lists, headings, etc…).') }}</span>
