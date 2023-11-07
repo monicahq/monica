@@ -48,6 +48,7 @@
           :rows="10"
           :required="true"
           :maxlength="65535"
+          :markdown="true"
           :textarea-class="'block w-full mb-3'" />
 
         <!-- title -->
@@ -184,6 +185,7 @@
               :rows="10"
               :required="true"
               :maxlength="65535"
+              :markdown="true"
               :textarea-class="'block w-full mb-3'" />
 
             <!-- title -->
