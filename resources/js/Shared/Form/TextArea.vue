@@ -102,7 +102,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="mb3">
+  <div class="mb-3">
     <label v-if="label" class="mb-2 block text-sm dark:text-gray-100" :for="id">
       {{ label }}
       <span v-if="!required" class="optional-badge rounded px-[3px] py-px text-xs">
