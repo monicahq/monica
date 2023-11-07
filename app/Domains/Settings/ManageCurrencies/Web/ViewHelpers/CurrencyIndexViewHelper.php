@@ -11,7 +11,9 @@ class CurrencyIndexViewHelper
     {
         $currenciesCollection = $account->currencies()
             ->orderBy('code')
-            ->where('active', true)->get()->map(function ($currency) use ($currencyId) {
+            ->where('active', true)
+            ->get()
+            ->map(function ($currency) use ($currencyId) {
                 return [
                     'id' => $currency->id,
                     'name' => $currency->code,
