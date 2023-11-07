@@ -8,6 +8,7 @@
 /public/build
 /public/docs
 /public/hot
+/public/vendor
 /public/storage
 /public/vendor/scribe
 /resources/views/scribe
