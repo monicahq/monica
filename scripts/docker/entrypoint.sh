@@ -28,11 +28,11 @@ done
 
 if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
 
-    MONICADIR=/var/www/html
-    ARTISAN="php ${MONICADIR}/artisan"
+    ROOT=/var/www/html
+    ARTISAN="php ${ROOT}/artisan"
 
     # Ensure storage directories are present
-    STORAGE=${MONICADIR}/storage
+    STORAGE=${ROOT}/storage
     mkdir -p ${STORAGE}/logs
     mkdir -p ${STORAGE}/app/public
     mkdir -p ${STORAGE}/framework/views
@@ -59,14 +59,14 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
     fi
 
     # Run migrations
-    ${ARTISAN} monica:waitfordb
+    ${ARTISAN} waitfordb
     ${ARTISAN} monica:setup --force -vv
 
     # if [ ! -f "${STORAGE}/oauth-public.key" -o ! -f "${STORAGE}/oauth-private.key" ]; then
     #     echo "Passport keys creation ..."
     #     ${ARTISAN} passport:keys
     #     ${ARTISAN} passport:client --personal --no-interaction
-    #     echo "! Please be careful to backup $MONICADIR/storage/oauth-public.key and $MONICADIR/storage/oauth-private.key files !"
+    #     echo "! Please be careful to backup $ROOT/storage/oauth-public.key and $ROOT/storage/oauth-private.key files !"
     # fi
 
 fi

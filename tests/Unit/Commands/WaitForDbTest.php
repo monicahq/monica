@@ -13,7 +13,7 @@ class WaitForDbTest extends TestCase
     #[Test]
     public function it_run_WaitForDb_command(): void
     {
-        $this->artisan('monica:waitfordb')
+        $this->artisan('waitfordb')
             ->expectsOutput('Database ready.')
             ->assertExitCode(0);
     }
