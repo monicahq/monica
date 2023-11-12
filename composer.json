@@ -28,10 +28,12 @@
     "laravel/socialite": "^5.5",
     "laravel/telescope": "^4.9",
     "laravel/tinker": "^2.7",
+    "matriphe/iso-639": "^1.2",
     "meilisearch/meilisearch-php": "^1.0",
     "moneyphp/money": "^4.1",
     "monicahq/laravel-sabre": "^1.6",
     "naugrim/laravel-sentry-tunnel": "^1.1",
+    "rinvex/countries": "^9.0",
     "sentry/sentry-laravel": "^3.0",
     "socialiteproviders/facebook": "^4.1",
     "socialiteproviders/github": "^4.1",
@@ -39,8 +41,9 @@
     "socialiteproviders/linkedin": "^4.2",
     "socialiteproviders/microsoft-azure": "^5.1",
     "socialiteproviders/twitter": "^4.1",
+    "stevebauman/location": "^7.0",
     "thecodingmachine/safe": "^2.5",
-    "tightenco/ziggy": "1.6.2",
+    "tightenco/ziggy": "1.8.1",
     "uploadcare/uploadcare-php": "^4.1"
   },
   "require-dev": {

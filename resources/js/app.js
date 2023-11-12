@@ -4,7 +4,7 @@ import '../css/app.css';
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { ZiggyVue } from 'ziggy-js/src/js/vue.js';
+import { ZiggyVue } from 'ziggy-js/dist/vue.es.js';
 import { i18nVue } from 'laravel-vue-i18n';
 import { sentry } from './sentry';
 import methods from './methods';
