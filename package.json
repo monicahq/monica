@@ -46,7 +46,7 @@
     "vue": "^3.3.4",
     "vue-clipboard3": "^2.0.0",
     "vuedraggable": "^4.1.0",
-    "ziggy-js": "1.6.2"
+    "ziggy-js": "1.8.1"
   },
   "lint-staged": {
     "*.js|resources/**/*.{vue,js}": [
@@ -60,5 +60,5 @@
       "vendor/bin/pint"
     ]
   },
-  "packageManager": "yarn@3.5.0"
+  "packageManager": "yarn@4.0.1"
 }
