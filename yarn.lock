@@ -657,12 +657,12 @@ __metadata:
   linkType: hard
 
 "@vitejs/plugin-vue@npm:^4.3.4":
-  version: 4.4.1
-  resolution: "@vitejs/plugin-vue@npm:4.4.1"
+  version: 4.5.0
+  resolution: "@vitejs/plugin-vue@npm:4.5.0"
   peerDependencies:
-    vite: ^4.0.0
+    vite: ^4.0.0 || ^5.0.0
     vue: ^3.2.25
-  checksum: c8dd2b3b6c7067b6831274c480f446b904a6c756c1542443e53a5656e848cd0e98590495ad0906e761de9d14f0d8b48c47486f5b6fecbda6645d2f96bf5684b2
+  checksum: d15b9c817cc6ae361a5b0975254d842a8f81bc7296112fe6ace7296e80a2bfb03ad749c7db356a0f6d5fc5af1c8d755dfe7d11fd5b7499512c44fea174334f45
   languageName: node
   linkType: hard
 
