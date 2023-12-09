@@ -48,6 +48,7 @@
           :rows="10"
           :required="true"
           :maxlength="65535"
+          :markdown="true"
           :textarea-class="'block w-full mb-3'" />
 
         <!-- title -->
@@ -125,7 +126,7 @@
             </span>
           </div>
           <!-- full body -->
-          <div v-else class="p-3">
+          <div v-else class="p-3 whitespace-pre-line">
             {{ note.body }}
           </div>
 
@@ -184,6 +185,7 @@
               :rows="10"
               :required="true"
               :maxlength="65535"
+              :markdown="true"
               :textarea-class="'block w-full mb-3'" />
 
             <!-- title -->

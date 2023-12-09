@@ -55,7 +55,7 @@ class ContactShowViewHelper
             'quick_fact_template_entries' => self::quickFacts($contact),
             'modules' => $firstPage ? self::modules($firstPage, $contact, $user) : [],
             'avatar' => [
-                'uploadcarePublicKey' => config('services.uploadcare.public_key'),
+                'uploadcare' => StorageHelper::uploadcare(),
                 'canUploadFile' => StorageHelper::canUploadFile($contact->vault->account),
                 'hasFile' => $contact->avatar['type'] === 'url',
             ],
@@ -109,7 +109,7 @@ class ContactShowViewHelper
             'quick_fact_template_entries' => self::quickFacts($contact),
             'modules' => self::modules($templatePage, $contact, $user),
             'avatar' => [
-                'uploadcarePublicKey' => config('services.uploadcare.public_key'),
+                'uploadcare' => StorageHelper::uploadcare(),
                 'canUploadFile' => StorageHelper::canUploadFile($contact->vault->account),
                 'hasFile' => $contact->avatar['type'] === 'url',
             ],
@@ -153,7 +153,7 @@ class ContactShowViewHelper
     /**
      * @param  EloquentCollection<int,TemplatePage>  $templatePages
      */
-    private static function getTemplatePagesList(EloquentCollection $templatePages, Contact $contact, TemplatePage $currentTemplatePage = null): Collection
+    private static function getTemplatePagesList(EloquentCollection $templatePages, Contact $contact, ?TemplatePage $currentTemplatePage = null): Collection
     {
         return $templatePages->filter(fn (TemplatePage $page) => $page->type !== TemplatePage::TYPE_CONTACT)
             ->map(fn (TemplatePage $page) => [

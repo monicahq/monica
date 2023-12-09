@@ -17,14 +17,14 @@ class WaitForDb extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:waitfordb';
+    protected $signature = 'waitfordb';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Wait for the database to be ready.';
 
     /**
      * Execute the console command.

@@ -41,8 +41,8 @@ class CreateAddressType extends BaseService implements ServiceInterface
 
         $type = AddressType::create([
             'account_id' => $data['account_id'],
-            'name' => $data['name'] ?? null,
-            'name_translation_key' => $data['name_translation_key'] ?? null,
+            'name' => $this->valueOrNull($data, 'name'),
+            'name_translation_key' => $this->valueOrNull($data, 'name_translation_key'),
         ]);
 
         return $type;

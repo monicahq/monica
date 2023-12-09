@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - chandler
   pull_request:
     types: [opened, synchronize, reopened]
   release:
@@ -18,7 +17,6 @@ concurrency:
   group: Build ${{ github.ref }}
   cancel-in-progress: true
 
-
 jobs:
   #############
   # Run tests
@@ -30,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.2','8.3']
+        php-version: ['8.2', '8.3']
         connection: [sqlite, mysql, pgsql]
         testsuite: [Unit]
         coverage: [true] # run test with coverage, if 'coverage-with' match with the connection
@@ -39,27 +37,22 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
 
-      - name: Setup PHP ${{ matrix.php-version }} without coverage
-        if: matrix.connection != env.coverage-with || matrix.php-version != env.default-php-version || ! matrix.coverage
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          extensions: mbstring, dom, fileinfo, ${{ matrix.connection }}
-          coverage: none
       - name: Setup PHP ${{ matrix.php-version }}
-        if: matrix.connection == env.coverage-with && matrix.php-version == env.default-php-version && matrix.coverage
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           extensions: mbstring, dom, fileinfo, ${{ matrix.connection }}
-          coverage: pcov
-          ini-values: pcov.directory=., pcov.exclude="~vendor~"
+          coverage: ${{ (matrix.connection == env.coverage-with && matrix.php-version == env.default-php-version && matrix.coverage) && 'pcov' || 'none' }}
+          ini-values: ${{ (matrix.connection == env.coverage-with && matrix.php-version == env.default-php-version && matrix.coverage) && 'pcov.directory=., pcov.exclude="~vendor~"' || '' }}
+
       - name: Check PHP Version
         run: php -v
       - name: Check Composer Version
         run: composer -V
       - name: Check PHP Extensions
         run: php -m
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
 
       # Composer
       - name: Validate composer.json and composer.lock
@@ -121,13 +114,15 @@ jobs:
         run: php artisan db:seed --no-interaction -vvv
 
       # Test
-      - name: Run tests suite with coverage
+      - name: Setup problem matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+      - name: Run tests with coverage
         if: matrix.connection == env.coverage-with && matrix.php-version == env.default-php-version && matrix.coverage
         run: vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/${{ matrix.connection }}/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/${{ matrix.connection }}/coverage/coverage${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
       - name: Run tests
-        if: matrix.connection != env.coverage-with || matrix.php-version != env.default-php-version || ! matrix.coverage
+        if: ${{ ! (matrix.connection == env.coverage-with && matrix.php-version == env.default-php-version && matrix.coverage) }}
         run: vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/${{ matrix.connection }}/junit/results${{ matrix.testsuite }}.xml
         env:
           DB_CONNECTION: ${{ matrix.connection }}
@@ -151,7 +146,7 @@ jobs:
     needs: tests
     runs-on: ubuntu-latest
     name: Sonarcloud
-    if: ${{ ! startsWith(github.ref, 'dependabot/') && (success() || failure()) }}
+    if: success() || failure()
 
     steps:
       - name: Checkout repository
@@ -182,15 +177,6 @@ jobs:
           SONAR_COVERAGE=$(ls -m --format=comma results/${{ env.coverage-with }}/coverage/coverage*.xml | sed -e ':a;N;$!ba;s/\n//g; s/ //g;')
           echo "list=$SONAR_COVERAGE" >> $GITHUB_OUTPUT
 
-      - name: Set project key
-        id: projectkey
-        run: |
-          if [[ "${{ github.repository }}" == "monicahq/chandler" ]]; then
-            echo "value=monicahq_chandler" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.repository }}" == "monicahq/monica" ]]; then
-            echo "value=monica" >> $GITHUB_OUTPUT
-          fi
-
       - name: SonarCloud Scan
         if: env.SONAR_TOKEN != ''
         uses: SonarSource/sonarcloud-github-action@v2.0.2
@@ -199,7 +185,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: |
-            -Dsonar.projectKey=${{ steps.projectkey.outputs.value }}
+            -Dsonar.projectKey=monica
             -Dsonar.organization=monicahq
             -Dsonar.sources=app,bootstrap,config,database,public,resources,routes
             -Dsonar.exclusions=bootstrap/cache/*,public/vendor/**,resources/lang/**

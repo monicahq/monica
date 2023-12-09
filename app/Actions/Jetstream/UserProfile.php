@@ -35,10 +35,10 @@ class UserProfile
         $data['userTokens'] = $request->user()->userTokens()->get();
         $data['webauthnKeys'] = $webauthnKeys;
 
-        $data['locales'] = collect(config('lang-detector.languages'))->map(fn (string $locale) => [
+        $data['locales'] = collect(config('localizer.supported_locales'))->map(fn (string $locale) => [
             'id' => $locale,
             'name' => __('auth.lang', [], $locale),
-        ]);
+        ])->sortByCollator('name');
 
         $data['layoutData'] = VaultIndexViewHelper::layoutData();
 

@@ -22,20 +22,12 @@ class ContactModuleQuickFactViewHelperTest extends TestCase
         $array = ContactModuleQuickFactViewHelper::data($contact, $template);
 
         $this->assertEquals(
-            3,
+            2,
             count($array)
         );
 
         $this->assertArrayHasKey('template', $array);
         $this->assertArrayHasKey('quick_facts', $array);
-        $this->assertArrayHasKey('url', $array);
-
-        $this->assertEquals(
-            [
-                'store' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/quickFacts/'.$template->id,
-            ],
-            $array['url']
-        );
     }
 
     /** @test */

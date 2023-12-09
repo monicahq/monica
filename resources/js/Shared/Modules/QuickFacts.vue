@@ -22,7 +22,6 @@ const createQuickFactModalShown = ref(false);
 const openState = ref(props.data.show_quick_facts);
 const localQuickFacts = ref(props.data.quick_facts.quick_facts);
 const localTemplate = ref(props.data.quick_facts.template);
-const localUrl = ref(props.data.url);
 const contentField = ref(null);
 const editedQuickFactId = ref(null);
 
@@ -48,11 +47,10 @@ const showEditQuickFactModal = (quickFact) => {
 
 const get = (template) => {
   loading.value = true;
-  localTemplate.value = template;
 
   axios.get(template.url.show).then((response) => {
+    localTemplate.value = response.data.data.template;
     localQuickFacts.value = response.data.data.quick_facts;
-    localUrl.value = response.data.data.url;
     loading.value = false;
   });
 };
@@ -61,7 +59,7 @@ const store = () => {
   loadingState.value = 'loading';
 
   axios
-    .post(localUrl.value.store, form)
+    .post(localTemplate.value.url.store, form)
     .then((response) => {
       loadingState.value = '';
       createQuickFactModalShown.value = false;

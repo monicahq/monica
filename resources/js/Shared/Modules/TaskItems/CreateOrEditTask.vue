@@ -114,7 +114,7 @@ defineExpose({
           v-model.string="form.due_at"
           class="inline-block h-full"
           :masks="masks"
-          :locale="$page.props.auth.user?.locale"
+          :locale="$page.props.auth.user?.locale_ietf"
           :is-dark="isDark()">
           <template #default="{ inputValue, inputEvents }">
             <input class="rounded border bg-white px-2 py-1 dark:bg-gray-900" :value="inputValue" v-on="inputEvents" />

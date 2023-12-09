@@ -93,6 +93,7 @@ return [
         'string' => ':Attribute måste innehålla :min till :max tecken.',
     ],
     'boolean' => ':Attribute måste vara sant eller falskt.',
+    'can' => 'Fältet :attribute innehåller ett obehörigt värde.',
     'confirmed' => ':Attribute bekräftelsen matchar inte.',
     'current_password' => 'Lösenordet är felaktigt.',
     'date' => ':Attribute är inte ett giltigt datum.',

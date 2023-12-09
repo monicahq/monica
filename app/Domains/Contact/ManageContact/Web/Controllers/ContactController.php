@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
+use function Safe\preg_replace;
+
 class ContactController extends Controller
 {
     public function index(Request $request, Vault $vault)
@@ -28,12 +30,14 @@ class ContactController extends Controller
         $contacts = $vault->contacts()
             ->where('listed', true);
 
+        $column_to_order = preg_replace('/^%([a-z_]+)%.*$/', '$1', Auth::user()->name_order);
+
         switch (Auth::user()->contact_sort_order) {
             case User::CONTACT_SORT_ORDER_ASC:
-                $contacts = $contacts->orderBy('last_name', 'asc');
+                $contacts = $contacts->orderBy($column_to_order, 'asc');
                 break;
             case User::CONTACT_SORT_ORDER_DESC:
-                $contacts = $contacts->orderBy('last_name', 'desc');
+                $contacts = $contacts->orderBy($column_to_order, 'desc');
                 break;
             default:
                 $contacts = $contacts->orderBy('last_updated_at', 'desc');

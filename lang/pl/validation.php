@@ -93,6 +93,7 @@ return [
         'string' => 'Pole :attribute musi zawierać się w granicach :min - :max znaków.',
     ],
     'boolean' => 'Pole :attribute musi mieć wartość logiczną prawda albo fałsz.',
+    'can' => 'Pole :attribute zawiera nieautoryzowaną wartość.',
     'confirmed' => 'Potwierdzenie pola :attribute nie zgadza się.',
     'current_password' => 'Hasło jest nieprawidłowe.',
     'date' => 'Pole :attribute nie jest prawidłową datą.',

@@ -3,11 +3,11 @@
 namespace App\Domains\Settings\ManageNotificationChannels\Services;
 
 use App\Domains\Settings\ManageNotificationChannels\Jobs\SendVerificationEmailChannel;
-use App\Exceptions\EmailAlreadyExistException;
 use App\Interfaces\ServiceInterface;
 use App\Models\UserNotificationChannel;
 use App\Services\BaseService;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class CreateUserNotificationChannel extends BaseService implements ServiceInterface
 {
@@ -62,7 +62,7 @@ class CreateUserNotificationChannel extends BaseService implements ServiceInterf
             ->exists();
 
         if ($exists) {
-            throw new EmailAlreadyExistException(trans('The email is already taken. Please choose another one.'));
+            throw ValidationException::withMessages(['content' => trans('The email is already taken. Please choose another one.')]);
         }
     }
 

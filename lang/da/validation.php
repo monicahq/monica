@@ -93,6 +93,7 @@ return [
         'string' => ':Attribute skal være mellem :min og :max tegn.',
     ],
     'boolean' => ':Attribute skal være sand eller falsk.',
+    'can' => 'Feltet :attribute indeholder en uautoriseret værdi.',
     'confirmed' => ':Attribute er ikke det samme som bekræftelsesfeltet.',
     'current_password' => 'Adgangskoden er forkert.',
     'date' => ':Attribute er ikke en gyldig dato.',

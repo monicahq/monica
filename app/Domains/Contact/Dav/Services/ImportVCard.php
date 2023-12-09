@@ -216,13 +216,20 @@ class ImportVCard extends BaseService implements ServiceInterface
      */
     private function canImportCurrentEntry(VCard $entry): bool
     {
-        foreach ($this->importers() as $importer) {
-            if ($importer->can($entry)) {
-                return true;
+        $importers = $this->importers()
+            ->filter(fn (ImportVCardResource $importer): bool => $importer->handle($entry));
+
+        if ($importers->isEmpty()) {
+            return false;
+        }
+
+        foreach ($importers as $importer) {
+            if (! $importer->can($entry)) {
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -232,10 +239,11 @@ class ImportVCard extends BaseService implements ServiceInterface
     {
         $result = null;
 
-        foreach ($this->importers() as $importer) {
-            if ($importer->can($entry)) {
-                $result = $importer->import($entry, $result);
-            }
+        $importers = $this->importers()
+            ->filter(fn (ImportVCardResource $importer): bool => $importer->handle($entry));
+
+        foreach ($importers as $importer) {
+            $result = $importer->import($entry, $result);
         }
 
         return $result;

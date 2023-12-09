@@ -21,6 +21,7 @@ class CreateTemplate extends BaseService implements ServiceInterface
             'author_id' => 'required|uuid|exists:users,id',
             'name' => 'nullable|string|max:255',
             'name_translation_key' => 'nullable|string|max:255',
+            'can_be_deleted' => 'nullable|boolean',
         ];
     }
 
@@ -46,6 +47,7 @@ class CreateTemplate extends BaseService implements ServiceInterface
             'account_id' => $data['account_id'],
             'name' => $data['name'] ?? null,
             'name_translation_key' => $data['name_translation_key'] ?? null,
+            'can_be_deleted' => $data['can_be_deleted'] ?? true,
         ]);
 
         // A template has at least one page: the Contact information page.

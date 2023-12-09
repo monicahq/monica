@@ -42,6 +42,7 @@ class PersonalizeTemplateIndexViewHelperTest extends TestCase
             [
                 'id' => $template->id,
                 'name' => $template->name,
+                'can_be_deleted' => $template->can_be_deleted,
                 'url' => [
                     'show' => env('APP_URL').'/settings/personalize/templates/'.$template->id,
                     'update' => env('APP_URL').'/settings/personalize/templates/'.$template->id,

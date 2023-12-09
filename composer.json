@@ -9,12 +9,6 @@
     "social"
   ],
   "license": "AGPL-3.0-or-later",
-  "repositories": [
-    {
-        "type": "vcs",
-        "url": "https://github.com/asbiin/money"
-    }
-  ],
   "require": {
     "php": "^8.2",
     "ext-fileinfo": "*",
@@ -34,21 +28,24 @@
     "laravel/socialite": "^5.5",
     "laravel/telescope": "^4.9",
     "laravel/tinker": "^2.7",
-    "lcobucci/clock": "3.2.0-rc1",
+    "matriphe/iso-639": "^1.2",
     "meilisearch/meilisearch-php": "^1.0",
-    "moneyphp/money": "dev-php83",
+    "moneyphp/money": "^4.3",
     "monicahq/laravel-sabre": "^1.6",
     "naugrim/laravel-sentry-tunnel": "^1.1",
-    "sentry/sentry-laravel": "^3.0",
+    "rinvex/countries": "^9.0",
+    "sentry/sentry-laravel": "^4.0",
     "socialiteproviders/facebook": "^4.1",
     "socialiteproviders/github": "^4.1",
     "socialiteproviders/google": "^4.1",
     "socialiteproviders/linkedin": "^4.2",
     "socialiteproviders/microsoft-azure": "^5.1",
     "socialiteproviders/twitter": "^4.1",
+    "stevebauman/location": "^7.0",
     "thecodingmachine/safe": "^2.5",
-    "tightenco/ziggy": "1.6.2",
-    "uploadcare/uploadcare-php": "^4.1"
+    "tightenco/ziggy": "1.8.1",
+    "uploadcare/uploadcare-php": "^4.1",
+    "vimeo/psalm": "^5.17"
   },
   "require-dev": {
     "amirami/localizator": "^0.12.1@alpha",
@@ -56,12 +53,12 @@
     "barryvdh/laravel-ide-helper": "^2.12",
     "brianium/paratest": "^7.0",
     "fakerphp/faker": "^1.9",
+    "larastan/larastan": "^2.0",
     "laravel-lang/common": "^4.0",
     "laravel/pint": "^1.1",
     "laravel/sail": "^1.14",
     "mockery/mockery": "^1.4",
     "nunomaduro/collision": "^7.0",
-    "nunomaduro/larastan": "^2.0",
     "phpunit/phpunit": "^10.0",
     "psalm/plugin-laravel": "^2.0",
     "roave/security-advisories": "dev-master",
@@ -103,6 +100,6 @@
       "php-http/discovery": true
     }
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "prefer-stable": true
 }

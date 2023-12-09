@@ -93,6 +93,7 @@ return [
         'string' => ':Attribute, :min और :max वर्णों के बीच होना चाहिए ।',
     ],
     'boolean' => ':Attribute फील्ड सही या गलत होना चाहिए ।',
+    'can' => ':Attribute फ़ील्ड में एक अनधिकृत मान है।',
     'confirmed' => ':Attribute पुष्टिकरण मेल नहीं खा रहा है।',
     'current_password' => 'पासवर्ड गलत है ।',
     'date' => ':Attribute एक मान्य दिनांक नहीं है।',

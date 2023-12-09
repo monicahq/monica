@@ -141,7 +141,7 @@ const disableTwoFactorAuthentication = () => {
             <p v-if="confirming" class="font-semibold">
               {{
                 $t(
-                  'To finish enabling two factor authentication, scan the following QR code using your phone’s authenticator application or enter the setup key and provide the generated OTP code.',
+                  "To finish enabling two factor authentication, scan the following QR code using your phone's authenticator application or enter the setup key and provide the generated OTP code.",
                 )
               }}
             </p>

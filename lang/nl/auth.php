@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'failed' => 'ਈਮੇਲ ਅਤੇ ਪਾਸਵਰਡ ਦੀ ਇਸ ਜੋੜੀ ਵੈਧ ਨਹੀਂ ਹੈ।',
-    'lang' => 'ਨੀਦਰਲੈਂਡਸ',
-    'password' => 'ਪਾਸਵਰਡ ਗਲਤ ਹੈ।',
-    'throttle' => ':seconds ਸਕਿੰਟਾਂ ਵਿੱਚ ਹੋਈਆਂ ਬਹੁਤ ਵਧੀਆਂ ਲੋੜਾਂ ਦੀ ਵਜ੍ਹਾ ਤੋਂ ਲਾਗਤਾਰ ਸਾਈਨ ਇਨ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕੀਤੀ ਹੈ। ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ।',
+    'failed' => 'Deze combinatie van e-mailadres en wachtwoord is niet geldig.',
+    'lang' => 'Nederlands',
+    'password' => 'Wachtwoord is onjuist.',
+    'throttle' => 'Te veel mislukte aanmeldpogingen. Probeer het nog eens over :seconds seconden.',
 ];
