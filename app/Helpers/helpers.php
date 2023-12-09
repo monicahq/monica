@@ -12,7 +12,7 @@ if (! function_exists('trans_key')) {
     /**
      * Extract the message.
      */
-    function trans_key(string $key = null): ?string
+    function trans_key(?string $key = null): ?string
     {
         return $key;
     }
@@ -22,7 +22,7 @@ if (! function_exists('trans_ignore')) {
     /**
      * Translate the given message. It won't be extracted by monica:localize command.
      */
-    function trans_ignore(string $key = null, array $replace = [], string $locale = null): string
+    function trans_ignore(?string $key = null, array $replace = [], ?string $locale = null): string
     {
         return __($key, $replace, $locale);
     }
@@ -32,7 +32,7 @@ if (! function_exists('currentLang')) {
     /**
      * Get the current language from locale.
      */
-    function currentLang(string $locale = null): string
+    function currentLang(?string $locale = null): string
     {
         if ($locale === null) {
             $locale = App::getLocale();

@@ -79,7 +79,7 @@ class CancelAccountTest extends TestCase
         CancelAccount::dispatch($request);
     }
 
-    private function executeService(Account $account, User $user, File $file = null): void
+    private function executeService(Account $account, User $user, ?File $file = null): void
     {
         Event::fake();
 

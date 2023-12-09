@@ -127,7 +127,7 @@ class CreateCallTest extends TestCase
         $this->executeService($regis, $regis->account, $vault, $contact, $callReason);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, CallReason $reason, Emotion $emotion = null): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, CallReason $reason, ?Emotion $emotion = null): void
     {
         Queue::fake();
 

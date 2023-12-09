@@ -8,7 +8,7 @@ use App\Models\Vault;
 
 class ContactIndexViewHelper
 {
-    public static function data($contacts, Vault $vault, int $labelId = null, User $user): array
+    public static function data($contacts, Vault $vault, ?int $labelId, User $user): array
     {
         $contactCollection = collect();
         foreach ($contacts as $contact) {

@@ -100,7 +100,7 @@ class CreatePostTest extends TestCase
         $this->executeService($regis, $regis->account, $vault, $journal);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Journal $journal, PostTemplate $postTemplate = null): void
+    private function executeService(User $author, Account $account, Vault $vault, Journal $journal, ?PostTemplate $postTemplate = null): void
     {
         $postTemplate = $postTemplate ?? PostTemplate::factory()->create([
             'account_id' => $account->id,

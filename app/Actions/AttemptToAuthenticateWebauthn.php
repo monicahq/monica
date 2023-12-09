@@ -95,7 +95,7 @@ class AttemptToAuthenticateWebauthn
      *
      * @return void
      */
-    protected function fireFailedEvent(Request $request, Authenticatable $user = null)
+    protected function fireFailedEvent(Request $request, ?Authenticatable $user = null)
     {
         event(new Failed(config('webauthn.guard'), $user, [
             Webauthn::username() => $user !== null
