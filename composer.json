@@ -57,7 +57,7 @@
     "laravel/sail": "^1.14",
     "mockery/mockery": "^1.4",
     "nunomaduro/collision": "^7.0",
-    "nunomaduro/larastan": "^2.0",
+    "larastan/larastan": "^2.7",
     "phpunit/phpunit": "^10.0",
     "psalm/plugin-laravel": "^2.0",
     "roave/security-advisories": "dev-master",
