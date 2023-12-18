@@ -134,7 +134,7 @@ jobs:
 
       - name: Store results
         if: matrix.php-version == env.default-php-version && (success() || failure())
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: results
           path: results
