@@ -123,7 +123,7 @@ There are multiple ways of getting started with Monica:
 
     - Platform.sh [![Deploy on Platform.sh](https://platform.sh/images/deploy/deploy-button-lg-blue.svg)](https://console.platform.sh/projects/create-project/?template=https%3A%2F%2Fraw.githubusercontent.com%2Fmonicahq%2Fmonica%2Fmain%2F.platform.app.yaml&amp;utm_campaign=deploy_on_platform&amp;utm_medium=button&amp;utm_source=affiliate_links&amp;utm_content=https%3A%2F%2Fgithub.com%2Fmonicahq%2Fmonica)
 
-    - [Heroku](https://heroku.com) [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/monicahq/monica/tree/main)
+    - [Heroku](https://heroku.com) [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/monicahq/monica/tree/4.x)
 
 
 ### Requirements
