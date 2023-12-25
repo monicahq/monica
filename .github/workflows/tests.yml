@@ -157,7 +157,7 @@ jobs:
       - name: Download results
         uses: actions/download-artifact@v4
         with:
-          name: results-*
+          pattern: results-*
           path: results
           merge-multiple: true
 
@@ -211,7 +211,7 @@ jobs:
       - name: Download results
         uses: actions/download-artifact@v4
         with:
-          name: results-*
+          pattern: results-*
           path: results
           merge-multiple: true
 
