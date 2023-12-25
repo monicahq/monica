@@ -500,16 +500,16 @@
         },
         {
             "name": "composer/ca-bundle",
-            "version": "1.3.7",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "76e46335014860eec1aa5a724799a00a2e47cc85"
+                "reference": "b66d11b7479109ab547f9405b97205640b17d385"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/76e46335014860eec1aa5a724799a00a2e47cc85",
-                "reference": "76e46335014860eec1aa5a724799a00a2e47cc85",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/b66d11b7479109ab547f9405b97205640b17d385",
+                "reference": "b66d11b7479109ab547f9405b97205640b17d385",
                 "shasum": ""
             },
             "require": {
@@ -521,7 +521,7 @@
                 "phpstan/phpstan": "^0.12.55",
                 "psr/log": "^1.0",
                 "symfony/phpunit-bridge": "^4.2 || ^5",
-                "symfony/process": "^2.5 || ^3.0 || ^4.0 || ^5.0 || ^6.0"
+                "symfony/process": "^2.5 || ^3.0 || ^4.0 || ^5.0 || ^6.0 || ^7.0"
             },
             "type": "library",
             "extra": {
@@ -556,7 +556,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/ca-bundle/issues",
-                "source": "https://github.com/composer/ca-bundle/tree/1.3.7"
+                "source": "https://github.com/composer/ca-bundle/tree/1.4.0"
             },
             "funding": [
                 {
@@ -572,7 +572,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-30T09:31:38+00:00"
+            "time": "2023-12-18T12:05:55+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -3873,23 +3873,23 @@
         },
         {
             "name": "maxmind-db/reader",
-            "version": "v1.11.0",
+            "version": "v1.11.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/maxmind/MaxMind-DB-Reader-php.git",
-                "reference": "b1f3c0699525336d09cc5161a2861268d9f2ae5b"
+                "url": "git@github.com:maxmind/MaxMind-DB-Reader-php.git",
+                "reference": "1e66f73ffcf25e17c7a910a1317e9720a95497c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maxmind/MaxMind-DB-Reader-php/zipball/b1f3c0699525336d09cc5161a2861268d9f2ae5b",
-                "reference": "b1f3c0699525336d09cc5161a2861268d9f2ae5b",
+                "url": "https://api.github.com/repos/maxmind/MaxMind-DB-Reader-php/zipball/1e66f73ffcf25e17c7a910a1317e9720a95497c7",
+                "reference": "1e66f73ffcf25e17c7a910a1317e9720a95497c7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2"
             },
             "conflict": {
-                "ext-maxminddb": "<1.10.1,>=2.0.0"
+                "ext-maxminddb": "<1.11.1,>=2.0.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "3.*",
@@ -3930,11 +3930,7 @@
                 "geolocation",
                 "maxmind"
             ],
-            "support": {
-                "issues": "https://github.com/maxmind/MaxMind-DB-Reader-php/issues",
-                "source": "https://github.com/maxmind/MaxMind-DB-Reader-php/tree/v1.11.0"
-            },
-            "time": "2021-10-18T15:23:10+00:00"
+            "time": "2023-12-02T00:09:23+00:00"
         },
         {
             "name": "maxmind/web-service-common",
@@ -7896,16 +7892,16 @@
         },
         {
             "name": "stevebauman/location",
-            "version": "v7.0.1",
+            "version": "v7.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stevebauman/location.git",
-                "reference": "e77c663dc33ae978aa23b76c1fb3950078f68d33"
+                "reference": "fc4dc2eb30a7cd630015caaa02521af43ded6e0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stevebauman/location/zipball/e77c663dc33ae978aa23b76c1fb3950078f68d33",
-                "reference": "e77c663dc33ae978aa23b76c1fb3950078f68d33",
+                "url": "https://api.github.com/repos/stevebauman/location/zipball/fc4dc2eb30a7cd630015caaa02521af43ded6e0e",
+                "reference": "fc4dc2eb30a7cd630015caaa02521af43ded6e0e",
                 "shasum": ""
             },
             "require": {
@@ -7958,9 +7954,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stevebauman/location/issues",
-                "source": "https://github.com/stevebauman/location/tree/v7.0.1"
+                "source": "https://github.com/stevebauman/location/tree/v7.1.0"
             },
-            "time": "2023-09-29T22:49:11+00:00"
+            "time": "2023-11-23T18:01:33+00:00"
         },
         {
             "name": "symfony/console",
