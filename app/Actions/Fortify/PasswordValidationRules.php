@@ -2,8 +2,7 @@
 
 namespace App\Actions\Fortify;
 
-use Illuminate\Support\Facades\App;
-use Laravel\Fortify\Rules\Password;
+use Illuminate\Validation\Rules\Password;
 
 trait PasswordValidationRules
 {
@@ -12,21 +11,11 @@ trait PasswordValidationRules
      */
     protected function passwordRules(bool $confirmed = true): array
     {
-        $rules = (new Password)->length(4);
-
-        if (App::environment('production')) {
-            // @codeCoverageIgnoreStart
-            $rules->length(8)
-                ->requireUppercase()
-                ->requireNumeric();
-            // @codeCoverageIgnoreEnd
-        }
-
         return array_filter([
             'nullable',
             'string',
             $confirmed ? 'confirmed' : null,
-            $rules,
+            Password::default(),
         ]);
     }
 }
