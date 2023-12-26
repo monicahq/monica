@@ -49,9 +49,9 @@ const update = () => {
       <ul class="rounded-b rounded-t bg-white dark:bg-gray-900">
         <li
           class="item-list border-b border-gray-200 p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
-          <label for="toggle-files" class="relative inline-flex cursor-pointer items-center">
+          <label for="toggle-calendar" class="relative inline-flex cursor-pointer items-center">
             <input
-              id="toggle-files"
+              id="toggle-calendar"
               v-model="form.show_calendar_tab"
               type="checkbox"
               class="peer hidden"
