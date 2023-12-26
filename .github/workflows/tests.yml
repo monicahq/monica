@@ -134,9 +134,9 @@ jobs:
 
       - name: Store results
         if: matrix.php-version == env.default-php-version && (success() || failure())
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: results
+          name: results-${{ matrix.php-version }}-${{ matrix.connection }}-${{ matrix.testsuite }}
           path: results
 
   ###########################
@@ -155,10 +155,11 @@ jobs:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: Download results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: results
+          pattern: results-*
           path: results
+          merge-multiple: true
 
       - name: Merge junit files
         run: |
@@ -208,10 +209,11 @@ jobs:
 
     steps:
       - name: Download results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: results
+          pattern: results-*
           path: results
+          merge-multiple: true
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v4
