@@ -278,6 +278,7 @@ Route::middleware([
                     // avatar
                     Route::put('avatar', [ModuleAvatarController::class, 'update'])->name('contact.avatar.update');
                     Route::delete('avatar', [ModuleAvatarController::class, 'destroy'])->name('contact.avatar.destroy');
+                    Route::get('avatar/suggest', [ModuleAvatarController::class, 'suggest'])->name('contact.avatar.suggest');
 
                     // contact feed entries
                     Route::get('feed', [ContactFeedController::class, 'show'])->name('contact.feed.show');

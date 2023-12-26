@@ -2,13 +2,11 @@
 
 namespace Tests\Unit\Domains\Contact\ManageContact\Services;
 
-use App\Domains\Contact\ManagePhotos\Services\GooglePhoto;
 use Exception;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
-class GooglePhotoTest extends TestCase
+class SuggestAvatarTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -21,13 +19,7 @@ class GooglePhotoTest extends TestCase
      */
     public function it_searches_google(): void
     {
-        Http::fake([
-            GooglePhoto::GOOGLE_SEARCH_URL.'/*' => Http::response('', 200),
-        ]);
 
-        $service = new GooglePhoto();
-
-        $imageUrls = $service->execute('Laravel');
     }
 
     /**

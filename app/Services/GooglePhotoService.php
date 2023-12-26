@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Domains\Contact\ManagePhotos\Services;
+namespace App\Services;
 
-use App\Interfaces\ServiceInterface;
-use App\Services\BaseService;
 use DOMDocument;
 use Exception;
 use Illuminate\Support\Facades\Http;
 
-class GooglePhoto extends BaseService implements ServiceInterface
+class GooglePhotoService
 {
     /**
      * Google search URL.
@@ -24,31 +22,6 @@ class GooglePhoto extends BaseService implements ServiceInterface
     ];
 
     /**
-     * Get the permissions that apply to the user calling the service.
-     */
-    public function permissions(): array
-    {
-        return [
-            'author_must_belong_to_account',
-            'vault_must_belong_to_account',
-            'author_must_be_vault_editor',
-            'contact_must_belong_to_vault',
-        ];
-    }
-
-    /**
-     * Create a pet.
-     *
-     * @throws Exception
-     */
-    public function execute(string $searchTerm): array
-    {
-        $html = $this->search($searchTerm);
-
-        return $this->imageUrls($html);
-    }
-
-    /**
      * Set the params for the service.
      */
     public function params(array $params): self
@@ -61,7 +34,7 @@ class GooglePhoto extends BaseService implements ServiceInterface
     /**
      * Extract image URLs from the HTML.
      */
-    private function imageUrls(string $html): array
+    public function imageUrls(string $html): array
     {
         $imageUrls = [];
 
@@ -89,18 +62,18 @@ class GooglePhoto extends BaseService implements ServiceInterface
      *
      * @throws Exception
      */
-    private function search(string $searchTerm): string
+    public function search(string $searchTerm): array
     {
         $params = array_merge($this->params, [
             'q' => $searchTerm,
         ]);
 
         try {
-            $response = Http::get(self::GOOGLE_SEARCH_URL, $params);
+            $html = Http::get(self::GOOGLE_SEARCH_URL, $params)->body();
         } catch (Exception $e) {
             throw new Exception('Failed to fetch data from Google.');
         }
 
-        return $response->body() ?? '';
+        return $this->imageUrls($html);
     }
 }
