@@ -73,6 +73,7 @@ export default {
     data: {
       type: Object,
       default: null,
+      isOpen: false,
     },
   },
 
@@ -97,6 +98,9 @@ export default {
         .catch((error) => {
           this.form.errors = error.response.data;
         });
+    },
+    toggleOpen() {
+      this.isOpen = !this.isOpen;
     },
   },
 };
