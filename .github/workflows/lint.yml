@@ -10,9 +10,11 @@ concurrency:
 
 jobs:
   php:
+    name: Lint PHP files
     uses: monicahq/workflows/.github/workflows/lint_php.yml@init
 
   vue:
+    name: Lint Vue files
     uses: monicahq/workflows/.github/workflows/lint_vue.yml@init
     with:
       node-version: 18
