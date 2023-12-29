@@ -13,6 +13,6 @@ concurrency:
 
 jobs:
   statics:
-    uses: monicahq/workflows/.github/workflows/static.yml@init
+    uses: monicahq/workflows/.github/workflows/static.yml@main
     with:
       php-version: 8.2

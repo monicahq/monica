@@ -22,7 +22,7 @@ jobs:
   ####################
   semantic:
     if: github.event_name != 'pull_request'
-    uses: monicahq/workflows/.github/workflows/release.yml@init
+    uses: monicahq/workflows/.github/workflows/release.yml@main
     with:
       semantic_version: 19
 
