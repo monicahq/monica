@@ -30,9 +30,8 @@
         } else {
             document.documentElement.classList.remove('dark')
         }
-    </script>
-    <script>
-      UPLOADCARE_PUBLIC_KEY = "{{ config('monica.uploadcare_public_key')}}";
+
+        UPLOADCARE_PUBLIC_KEY = "{{ config('monica.uploadcare_public_key') }}";
     </script>
     @routes
     @vite('resources/js/app.js')
