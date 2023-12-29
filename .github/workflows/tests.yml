@@ -34,3 +34,8 @@ jobs:
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     needs: tests
+
+  assets:
+    uses: monicahq/workflows/.github/workflows/build_assets.yml@init
+    with:
+      node-version: 18

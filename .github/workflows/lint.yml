@@ -1,0 +1,18 @@
+name: Lint files
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: Lint files ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php:
+    uses: monicahq/workflows/.github/workflows/lint_php.yml@init
+
+  vue:
+    uses: monicahq/workflows/.github/workflows/lint_vue.yml@init
+    with:
+      node-version: 18
