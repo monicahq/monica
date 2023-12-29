@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <button ref="toggleButton" type="button" @click.prevent="toggleOpen">
+    <button ref="toggleButton" type="button" @click.prevent="toggle">
       <span class="sr-only">Open Avatar Upload</span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -22,28 +22,22 @@
         <div class="block px-4 py-2">Photo Suggestions</div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 px-4 py-2">
           <photo-suggestion v-model="photo" :photos="photos" @select="select" />
+          <div v-if="!photos">{{ $t('No suggestions found') }}</div>
         </div>
       </div>
-      <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUserAvatarButton">
-        <li>
-          <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >Upload a photo...</a
-          >
-        </li>
-        <li>
-          <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >Remove photo</a
-          >
-        </li>
-      </ul>
     </div>
     <avatar :data="data.avatar" :class="'mx-auto mb-6 sm:w-1/2'" :img-classes="'rounded sm:w-72'" />
+    <input id="uploader" type="hidden" />
   </div>
 </template>
 
 <script>
 import Avatar from '@/Shared/Avatar.vue';
-import PhotoSuggestion from '@/Shared/Form/PhotoSuggestion.vue';
+import PhotoSuggestion from '@/Shared/Form/AvatarSuggestion.vue';
+import { flash } from '@/methods';
+import { trans } from 'laravel-vue-i18n';
+import uploadcare from 'uploadcare-widget';
+import { router } from '@inertiajs/vue3';
 
 export default {
   components: {
@@ -60,20 +54,17 @@ export default {
 
   data() {
     return {
-      photo: { src: '' },
-      photos: [
-        { src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg' },
-        { src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg' },
-        { src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg' },
-        { src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg' },
-        { src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg' },
-        { src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-6.jpg' },
-        { src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-7.jpg' },
-        { src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-8.jpg' },
-        { src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-9.jpg' },
-        { src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-10.jpg' },
-        { src: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg' },
-      ],
+      photo: {},
+      photos: [],
+      form: {
+        uuid: null,
+        name: null,
+        original_url: null,
+        cdn_url: null,
+        mime_type: null,
+        size: null,
+        errors: [],
+      },
     };
   },
 
@@ -83,14 +74,65 @@ export default {
         this.$refs.dropdown.classList.add('hidden');
       }
     });
+
+    this.suggest();
   },
 
   methods: {
-    toggleOpen() {
+    toggle() {
       this.$refs.dropdown.classList.toggle('hidden');
     },
     select(photo) {
-      console.log(photo);
+      this.toggle();
+      const file = uploadcare.fileFrom('url', photo.src);
+      uploadcare
+        .openDialog([file], {
+          publicKey: this.data.uploadcare.publicKey,
+          secureSignature: this.data.uploadcare.secureSignature,
+          secureExpire: this.data.uploadcare.secureExpire,
+          tabs: 'url',
+          imagesOnly: true,
+          crop: 'free',
+          previewStep: true,
+          systemDialog: true,
+        })
+        .done((filePromise) => {
+          filePromise.done((file) => {
+            this.update({
+              uuid: file.uuid,
+              name: file.name,
+              original_url: file.originalUrl,
+              cdn_url: file.cdnUrl,
+              mime_type: file.mimeType,
+              size: file.size,
+            });
+          });
+          filePromise.fail(() => {
+            flash(trans('Avatar upload failed'), 'error');
+          });
+        });
+    },
+    suggest() {
+      axios
+        .get(this.data.url.suggest)
+        .then((response) => {
+          this.photos = response.data.data.map((url) => ({ src: url }));
+        })
+        .catch(() => {
+          this.form.errors = error.response.data;
+        });
+    },
+    update(form) {
+      axios
+        .put(this.data.url.update, form)
+        .then((response) => {
+          console.log(response, 555);
+          router.visit(response.data.data);
+          flash(trans('Avatar has been added'), 'success');
+        })
+        .catch(() => {
+          flash(trans('Something went wrong'), 'error');
+        });
     },
   },
 };

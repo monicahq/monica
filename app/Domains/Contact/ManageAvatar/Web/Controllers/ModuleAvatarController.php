@@ -81,6 +81,8 @@ class ModuleAvatarController extends Controller
 
         $imageUrls = (new SuggestAvatar())->execute($data);
 
-        return response()->json($imageUrls, 200);
+        return response()->json([
+            'data' => $imageUrls,
+        ]);
     }
 }

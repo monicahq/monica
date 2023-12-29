@@ -18,7 +18,6 @@ class GooglePhotoService
      */
     private array $params = [
         'tbm' => 'isch',
-        'tbs' => 'iar:xw,ift:png',
     ];
 
     /**
