@@ -15,54 +15,16 @@ on:
 env:
   php-version: '8.2'
   build-node-version: 18
-  semantic-node-version: 18
 
 jobs:
   ####################
   # Semantic release
   ####################
   semantic:
-    runs-on: ubuntu-latest
-    name: Semantic release
     if: github.event_name != 'pull_request'
-
-    outputs:
-      new_release_published: ${{ steps.semantic.outputs.new_release_published }}
-      new_release_version: ${{ steps.semantic.outputs.new_release_version }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Get all tags
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.semantic-node-version }}
-
-      - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v4
-        id: semantic
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_TOKEN_RELEASE: ${{ secrets.GH_TOKEN_RELEASE }}
-        with:
-          semantic_version: 19
-          extra_plugins: |
-            conventional-changelog-conventionalcommits@5.0.0
-            @semantic-release/changelog@6
-
-      - name: New release published
-        if: steps.semantic.outputs.new_release_published == 'true'
-        run: echo "### Release ${{ steps.semantic.outputs.new_release_version }} created :rocket:" >> $GITHUB_STEP_SUMMARY
-
-      - name: Store changelog file
-        if: steps.semantic.outputs.new_release_published == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: changelog
-          path: CHANGELOG.md
+    uses: monicahq/workflows/.github/workflows/release.yml@main
+    with:
+      semantic_version: 19
 
   package:
     needs: semantic

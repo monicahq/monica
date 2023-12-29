@@ -9,213 +9,33 @@ on:
   release:
     types: [created]
 
-env:
-  default-php-version: '8.2'
-  coverage-with: sqlite
-
 concurrency:
   group: Build ${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  #############
-  # Run tests
-  #############
   tests:
-    runs-on: ubuntu-latest
-    name: Testsuite ${{ matrix.testsuite }} with PHP ${{ matrix.php-version }} + ${{ matrix.connection }}
+    uses: monicahq/workflows/.github/workflows/laravel.yml@main
+    with:
+      php-version: ${{ matrix.php-version }}
+      connection: ${{ matrix.connection }}
+      coverage: ${{ matrix.connection == 'sqlite' && matrix.php-version == '8.2' }}
 
     strategy:
       fail-fast: false
       matrix:
         php-version: ['8.2']
         connection: [sqlite, mysql, pgsql]
-        testsuite: [Unit]
-        coverage: [true] # run test with coverage, if 'coverage-with' match with the connection
 
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-
-      - name: Setup PHP ${{ matrix.php-version }}
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          extensions: mbstring, dom, fileinfo, ${{ matrix.connection }}
-          coverage: ${{ (matrix.connection == env.coverage-with && matrix.php-version == env.default-php-version && matrix.coverage) && 'pcov' || 'none' }}
-          ini-values: ${{ (matrix.connection == env.coverage-with && matrix.php-version == env.default-php-version && matrix.coverage) && 'pcov.directory=., pcov.exclude="~vendor~"' || '' }}
-
-      - name: Check PHP Version
-        run: php -v
-      - name: Check Composer Version
-        run: composer -V
-      - name: Check PHP Extensions
-        run: php -m
-      - name: Setup problem matchers for PHP
-        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-
-      # Composer
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-      - name: Cache composer files
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
-            ${{ runner.os }}-composer-${{ matrix.php-version }}
-            ${{ runner.os }}-composer-
-
-      - name: Install composer dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
-
-      # Prepare
-      - name: Prepare environment
-        run: |
-          cp tests/.env.ci.${{ matrix.connection }} .env
-          mkdir -p public/build/assets
-          {\
-            echo "{"; \
-            for f in app.js app.css; do \
-              [[ $first == 1 ]] && echo -n "," || first=1; \
-              k=${f##*.}/$f; \
-              echo "\"resources/$k\": {\"file\": \"assets/$f\", \"src\": \"resources/$k\"}"; \
-              echo '' > public/build/assets/$f; \
-            done; \
-            echo "}"; \
-          } | tee public/build/manifest.json
-      - name: Create sqlite database
-        if: matrix.connection == 'sqlite'
-        run: touch database/database.sqlite
-      - name: Create mysql database
-        if: matrix.connection == 'mysql'
-        run: |
-          sudo systemctl start mysql.service
-          mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-      - name: Create pgsql database
-        if: matrix.connection == 'pgsql'
-        run: |
-          sudo systemctl start postgresql.service
-          sudo -u postgres psql --command="CREATE USER monica PASSWORD 'secret'" --command="\du"
-          sudo -u postgres createdb --owner=monica monica
-          PGPASSWORD=secret psql --username=monica --host=localhost --list monica
-
-      - name: Generate key
-        run: php artisan key:generate
-
-      - name: Run migrations
-        run: php artisan migrate --no-interaction -vvv
-      - name: Run seeds
-        run: php artisan db:seed --no-interaction -vvv
-
-      # Test
-      - name: Setup problem matchers for PHPUnit
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-      - name: Run tests with coverage
-        if: matrix.connection == env.coverage-with && matrix.php-version == env.default-php-version && matrix.coverage
-        run: vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/${{ matrix.connection }}/junit/results${{ matrix.testsuite }}.xml --coverage-clover ./results/${{ matrix.connection }}/coverage/coverage${{ matrix.testsuite }}.xml
-        env:
-          DB_CONNECTION: ${{ matrix.connection }}
-      - name: Run tests
-        if: ${{ ! (matrix.connection == env.coverage-with && matrix.php-version == env.default-php-version && matrix.coverage) }}
-        run: vendor/bin/phpunit -c phpunit.xml --testsuite ${{ matrix.testsuite }} --log-junit ./results/${{ matrix.connection }}/junit/results${{ matrix.testsuite }}.xml
-        env:
-          DB_CONNECTION: ${{ matrix.connection }}
-
-      - name: Fix results files
-        run: sed -i -e "s%$GITHUB_WORKSPACE/%%g" **/*.xml
-        working-directory: results/${{ matrix.connection }}
-        if: success() || failure()
-
-      - name: Store results
-        if: matrix.php-version == env.default-php-version && (success() || failure())
-        uses: actions/upload-artifact@v4
-        with:
-          name: results-${{ matrix.php-version }}-${{ matrix.connection }}-${{ matrix.testsuite }}
-          path: results
-
-  ###########################
-  # Reporting to sonarcloud
-  ###########################
-  sonarcloud:
-    needs: tests
-    runs-on: ubuntu-latest
-    name: Sonarcloud
-    if: success() || failure()
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-
-      - name: Download results
-        uses: actions/download-artifact@v4
-        with:
-          pattern: results-*
-          path: results
-          merge-multiple: true
-
-      - name: Merge junit files
-        run: |
-          yarn dlx junit-merge --recursive --dir results/${{ env.coverage-with }}/junit --out results/results.xml
-
-      - name: Set version parameter
-        id: version
-        run: |
-          version=$(git tag --points-at HEAD)
-          test -z "$version" && version="main"
-          echo "value=$version" >> $GITHUB_OUTPUT
-
-      - name: Set coverage list
-        id: coverage
-        run: |
-          SONAR_COVERAGE=$(ls -m --format=comma results/${{ env.coverage-with }}/coverage/coverage*.xml | sed -e ':a;N;$!ba;s/\n//g; s/ //g;')
-          echo "list=$SONAR_COVERAGE" >> $GITHUB_OUTPUT
-
-      - name: SonarCloud Scan
-        if: env.SONAR_TOKEN != ''
-        uses: SonarSource/sonarcloud-github-action@v2.1.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: |
-            -Dsonar.projectKey=monica
-            -Dsonar.organization=monicahq
-            -Dsonar.sources=app,bootstrap,config,database,public,resources,routes
-            -Dsonar.exclusions=bootstrap/cache/*,public/vendor/**,resources/lang/**
-            -Dsonar.tests=tests
-            -Dsonar.coverage.exclusions=routes/*.php,config/**/*.php,bootstrap/**,resources/**/*.php,database/**/*.php,public/*.php,resources/**/*.vue,resources/**/*.js
-            -Dsonar.cpd.exclusions=routes/*.php,config/*.php,bootstrap/**,resources/**/*.php,database/**/*.php
-            -Dsonar.sourceEncoding=UTF-8
-            -Dsonar.projectVersion=${{ steps.version.outputs.value }}
-            -Dsonar.php.tests.reportPath=./results/results.xml
-            -Dsonar.php.coverage.reportPaths=${{ steps.coverage.outputs.list }}
-
-  ###########################
-  # JUnit Test Report
-  ###########################
   reporting:
+    uses: monicahq/workflows/.github/workflows/reporting.yml@main
+    with:
+      project: monica
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     needs: tests
-    runs-on: ubuntu-latest
-    name: Reporting
-    if: success() || failure()
 
-    steps:
-      - name: Download results
-        uses: actions/download-artifact@v4
-        with:
-          pattern: results-*
-          path: results
-          merge-multiple: true
-
-      - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v4
-        with:
-          report_paths: results/${{ env.coverage-with }}/junit/*.xml
+  assets:
+    uses: monicahq/workflows/.github/workflows/build_assets.yml@main
+    with:
+      node-version: 18
