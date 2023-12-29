@@ -126,7 +126,6 @@ export default {
       axios
         .put(this.data.url.update, form)
         .then((response) => {
-          console.log(response, 555);
           router.visit(response.data.data);
           flash(trans('Avatar has been added'), 'success');
         })
