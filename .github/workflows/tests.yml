@@ -34,7 +34,3 @@ jobs:
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     needs: tests
-
-  junit:
-    uses: monicahq/workflows/.github/workflows/junit.yml@init
-    needs: tests
