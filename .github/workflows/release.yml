@@ -25,6 +25,8 @@ jobs:
     uses: monicahq/workflows/.github/workflows/release.yml@main
     with:
       semantic_version: 19
+    secrets:
+      GH_TOKEN_RELEASE: ${{ secrets.GH_TOKEN_RELEASE }}
 
   package:
     needs: semantic
