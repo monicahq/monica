@@ -15,13 +15,17 @@ concurrency:
 
 jobs:
   tests:
-    uses: monicahq/workflows/.github/workflows/tests.yml@fix-results3
+    uses: monicahq/workflows/.github/workflows/laravel.yml@main
     with:
       php-versions: "['8.2']"
       connections: "['sqlite', 'mysql', 'pgsql']"
       default-php-version: '8.2'
       default-connection: sqlite
       project: monica
-      node-version: 18
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  assets:
+    uses: monicahq/workflows/.github/workflows/build_assets.yml@main
+    with:
+      node-version: 18
