@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   tests:
-    uses: monicahq/workflows/.github/workflows/laravel.yml@fix-results2
+    uses: monicahq/workflows/.github/workflows/laravel.yml@fix-results3
     with:
       php-version: ${{ matrix.php-version }}
       connection: ${{ matrix.connection }}
@@ -28,7 +28,7 @@ jobs:
         connection: [sqlite, mysql, pgsql]
 
   reporting:
-    uses: monicahq/workflows/.github/workflows/reporting.yml@fix-results2
+    uses: monicahq/workflows/.github/workflows/reporting.yml@fix-results3
     with:
       project: monica
     secrets:
@@ -36,6 +36,6 @@ jobs:
     needs: tests
 
   assets:
-    uses: monicahq/workflows/.github/workflows/build_assets.yml@fix-results2
+    uses: monicahq/workflows/.github/workflows/build_assets.yml@fix-results3
     with:
       node-version: 18
