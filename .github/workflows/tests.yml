@@ -15,28 +15,13 @@ concurrency:
 
 jobs:
   tests:
-    uses: monicahq/workflows/.github/workflows/laravel.yml@fix-results3
+    uses: monicahq/workflows/.github/workflows/tests.yml@fix-results3
     with:
-      php-version: ${{ matrix.php-version }}
-      connection: ${{ matrix.connection }}
-      coverage: ${{ matrix.connection == 'sqlite' && matrix.php-version == '8.2' }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ['8.2']
-        connection: [sqlite, mysql, pgsql]
-
-  reporting:
-    uses: monicahq/workflows/.github/workflows/reporting.yml@fix-results3
-    with:
+      php-versions: "['8.2']"
+      connections: '[sqlite, mysql, pgsql]'
+      default-php-version: '8.2'
+      default-connection: 'sqlite'
       project: monica
-      pattern: 'results_sqlite_8.2*'
+      node-version: 18
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    needs: tests
-
-  assets:
-    uses: monicahq/workflows/.github/workflows/build_assets.yml@fix-results3
-    with:
-      node-version: 18
