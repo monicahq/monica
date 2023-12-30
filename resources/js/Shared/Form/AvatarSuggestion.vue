@@ -10,7 +10,6 @@ const select = (selectedIndex) => {
   props.photos.map(function (photo, index) {
     photo.selected = selectedIndex === index;
     if (photo.selected) {
-      console.log(photo);
       emit('update:modelValue', photo);
       emit('select', photo);
     }
