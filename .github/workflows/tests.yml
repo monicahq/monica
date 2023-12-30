@@ -31,6 +31,7 @@ jobs:
     uses: monicahq/workflows/.github/workflows/reporting.yml@fix-results3
     with:
       project: monica
+      pattern: 'results_sqlite_8.2*'
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     needs: tests
