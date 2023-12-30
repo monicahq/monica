@@ -36,8 +36,8 @@ import Avatar from '@/Shared/Avatar.vue';
 import PhotoSuggestion from '@/Shared/Form/AvatarSuggestion.vue';
 import { flash } from '@/methods';
 import { trans } from 'laravel-vue-i18n';
-import uploadcare from 'uploadcare-widget';
 import { router } from '@inertiajs/vue3';
+import uploadcare from 'uploadcare-widget';
 
 export default {
   components: {
