@@ -15,6 +15,7 @@ concurrency:
 
 jobs:
   tests:
+    name: Run tests
     uses: monicahq/workflows/.github/workflows/laravel.yml@main
     with:
       php-versions: "['8.2']"
@@ -26,6 +27,7 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   assets:
+    name: Build assets
     uses: monicahq/workflows/.github/workflows/build_assets.yml@main
     with:
       node-version: 18
