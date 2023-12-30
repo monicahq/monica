@@ -54,7 +54,6 @@ class SuggestAvatar extends BaseService implements ServiceInterface
         try {
             return (new GooglePhotoService())->search($search_term);
         } catch (\Exception $e) {
-            // TODO: log error
             return [];
         }
     }
