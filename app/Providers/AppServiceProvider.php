@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
+use Illuminate\Validation\Rules\Password;
 use LaravelWebauthn\Facades\Webauthn;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
@@ -105,6 +106,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Password::defaults(function () {
+            return $this->app->environment('production')
+                // @codeCoverageIgnoreStart
+                ? Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                // @codeCoverageIgnoreEnd
+                : Password::min(4);
+        });
+
         RateLimiter::for('oauth2-socialite', function (Request $request) {
             return Limit::perMinute(5)->by(optional($request->user())->id ?: $request->ip());
         });

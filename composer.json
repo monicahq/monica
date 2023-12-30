@@ -52,7 +52,7 @@
     "barryvdh/laravel-ide-helper": "^2.12",
     "brianium/paratest": "^7.0",
     "fakerphp/faker": "^1.9",
-    "larastan/larastan": "^2.0",
+    "larastan/larastan": "^2.7",
     "laravel-lang/common": "^4.0",
     "laravel/pint": "^1.1",
     "laravel/sail": "^1.14",
