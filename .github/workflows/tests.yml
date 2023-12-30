@@ -18,9 +18,9 @@ jobs:
     uses: monicahq/workflows/.github/workflows/tests.yml@fix-results3
     with:
       php-versions: "['8.2']"
-      connections: '[sqlite, mysql, pgsql]'
+      connections: "['sqlite', 'mysql', 'pgsql']"
       default-php-version: '8.2'
-      default-connection: 'sqlite'
+      default-connection: sqlite
       project: monica
       node-version: 18
     secrets:
