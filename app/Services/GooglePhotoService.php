@@ -5,6 +5,7 @@ namespace App\Services;
 use DOMDocument;
 use Exception;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class GooglePhotoService
 {
@@ -12,6 +13,11 @@ class GooglePhotoService
      * Google search URL.
      */
     public const GOOGLE_SEARCH_URL = 'https://www.google.com/search';
+
+    /**
+     * Google image URL.
+     */
+    public const GOOGLE_IMAGE_URL = 'https://encrypted-tbn0.gstatic.com';
 
     /**
      * The params for Google search.
@@ -48,7 +54,10 @@ class GooglePhotoService
 
         foreach ($imgTags as $imgTag) {
             $src = $imgTag->getAttribute('src');
-            if (filter_var($src, FILTER_VALIDATE_URL)) {
+
+            // Add only full-size images (exclude thumbnails, etc.)
+            if (filter_var($src, FILTER_VALIDATE_URL)
+                && Str::startsWith($src, self::GOOGLE_IMAGE_URL)) {
                 $imageUrls[] = $src;
             }
         }

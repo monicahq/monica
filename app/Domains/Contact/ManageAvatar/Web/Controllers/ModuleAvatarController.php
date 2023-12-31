@@ -71,12 +71,16 @@ class ModuleAvatarController extends Controller
 
     public function suggest(Request $request, string $vaultId, string $contactId): JsonResponse
     {
+        $accountId = Auth::user()->account_id;
+        $authorId = Auth::id();
+        $searchTerm = $request->search_term;
+
         $data = [
-            'account_id' => Auth::user()->account_id,
-            'author_id' => Auth::id(),
+            'account_id' => $accountId,
+            'author_id' => $authorId,
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
-            'search_term' => $request->input('search_term'),
+            'search_term' => $searchTerm,
         ];
 
         $imageUrls = (new SuggestAvatar())->execute($data);

@@ -5,13 +5,19 @@ namespace App\Domains\Contact\ManageAvatar\Services;
 use App\Interfaces\ServiceInterface;
 use App\Services\BaseService;
 use App\Services\GooglePhotoService;
+use Exception;
 
 class SuggestAvatar extends BaseService implements ServiceInterface
 {
-    private array $data;
+    /**
+     * The contact instance.
+     */
+    private string $search_term;
 
     /**
      * Get the validation rules that apply to the service.
+     *
+     * @return array<string,string>
      */
     public function rules(): array
     {
@@ -26,6 +32,8 @@ class SuggestAvatar extends BaseService implements ServiceInterface
 
     /**
      * Get the permissions that apply to the user calling the service.
+     *
+     * @return array<string>
      */
     public function permissions(): array
     {
@@ -39,30 +47,42 @@ class SuggestAvatar extends BaseService implements ServiceInterface
 
     /**
      * Remove the current file used as avatar and put the default avatar back.
+     *
+     * @throws Exception
      */
     public function execute(array $data): array
     {
-        $this->data = $data;
-        $this->validate();
+        $this->validate($data);
+        $this->setSearchTerm($data);
 
-        $search_term = $data['search_term'] ?? $this->contact->name;
-
-        if (empty($search_term)) {
+        if (empty($this->getSearchTerm())) {
             return [];
         }
 
         try {
-            return (new GooglePhotoService())->search($search_term);
-        } catch (\Exception $e) {
+            return (new GooglePhotoService())->search($this->getSearchTerm());
+        } catch (Exception $e) {
             return [];
         }
     }
 
-    /**
-     * @throws \Exception
-     */
-    private function validate(): void
+    public function getSearchTerm(): string
     {
-        $this->validateRules($this->data);
+        return $this->search_term;
+    }
+
+    public function setSearchTerm(array $data): self
+    {
+        $this->search_term = $data['search_term'] ?? $this->contact->name;
+
+        return $this;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function validate(array $data): void
+    {
+        $this->validateRules($data);
     }
 }
