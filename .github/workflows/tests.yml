@@ -30,4 +30,4 @@ jobs:
     name: Build assets
     uses: monicahq/workflows/.github/workflows/build_assets.yml@main
     with:
-      node-version: 18
+      node-version: 20
