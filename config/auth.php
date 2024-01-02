@@ -111,7 +111,7 @@ return [
     | List of available login providers, coma separated. This uses socialite
     | packages.
     |
-    | Supported: azure, facebook, github, google, linkedin, saml2, twitter.
+    | Supported: azure, facebook, github, google, linkedin, saml2.
     |
     */
 

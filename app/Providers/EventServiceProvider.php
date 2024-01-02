@@ -17,7 +17,6 @@ use SocialiteProviders\GitHub\GitHubExtendSocialite;
 use SocialiteProviders\Google\GoogleExtendSocialite;
 use SocialiteProviders\LinkedIn\LinkedInExtendSocialite;
 use SocialiteProviders\Manager\SocialiteWasCalled;
-use SocialiteProviders\Twitter\TwitterExtendSocialite;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -42,7 +41,6 @@ class EventServiceProvider extends ServiceProvider
             GitHubExtendSocialite::class,
             GoogleExtendSocialite::class,
             LinkedInExtendSocialite::class,
-            TwitterExtendSocialite::class,
         ],
         WebauthnRegister::class => [
             WebauthnRegistered::class,

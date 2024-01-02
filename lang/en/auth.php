@@ -11,7 +11,6 @@ return [
     'login_provider_google' => 'Google',
     'login_provider_linkedin' => 'LinkedIn',
     'login_provider_saml2' => 'SAML 2.0 provider',
-    'login_provider_twitter' => 'Twitter',
     'password' => 'The password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 ];
