@@ -34,7 +34,7 @@
               Régis
             </a>
             &amp;
-            <a href="https://twitter.com/asbin" rel="noopener noreferrer" class="text-blue-500 hover:underline">
+            <a href="https://mamot.fr/@asbin" rel="noopener noreferrer" class="text-blue-500 hover:underline">
               Alexis
             </a>
           </p>

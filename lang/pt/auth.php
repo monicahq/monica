@@ -9,7 +9,6 @@ return [
     'login_provider_google' => 'Google',
     'login_provider_linkedin' => 'LinkedIn',
     'login_provider_saml2' => 'Provedor SAML 2.0',
-    'login_provider_twitter' => 'Twitter',
     'password' => 'A palavra-passe está errada.',
     'throttle' => 'O número limite de tentativas de login foi atingido. Por favor tente novamente dentro de :seconds segundos.',
 ];
