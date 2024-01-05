@@ -9,7 +9,6 @@ return [
     'login_provider_google' => 'Google',
     'login_provider_linkedin' => 'LinkedIn',
     'login_provider_saml2' => 'Fournisseur SAML 2.0',
-    'login_provider_twitter' => 'Twitter',
     'password' => 'Le mot de passe est incorrect',
     'throttle' => 'Tentatives de connexion trop nombreuses. Veuillez essayer de nouveau dans :seconds secondes.',
 ];
