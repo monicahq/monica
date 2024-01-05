@@ -81,7 +81,7 @@ body:
     attributes:
       label: Web server
       description: |
-        Select Webserver serving Nextcloud Server.
+        Select Webserver serving Monica Server.
         _Describe in the "Additional info" section if you chose "Other"._
       options:
         - Apache
@@ -92,7 +92,7 @@ body:
     attributes:
       label: Database engine version
       description: |
-        Select Database engine serving Nextcloud Server.
+        Select Database engine serving Monica Server.
         _Describe in the "Additional info" section if you chose "Other"._
       options:
         - MySQL
