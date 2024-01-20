@@ -12,10 +12,12 @@ class ContactIndexViewHelper
     {
         $contactCollection = collect();
         foreach ($contacts as $contact) {
+            $date = Carbon::parse($contact->updated_at)->format('M d, Y');
             $contactCollection->push([
                 'id' => $contact->id,
                 'name' => $contact->name,
                 'avatar' => $contact->avatar,
+                'updated_at' => $date,
                 'url' => [
                     'show' => route('contact.show', [
                         'vault' => $vault->id,
