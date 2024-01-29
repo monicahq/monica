@@ -27,7 +27,7 @@ class VaultFeedController extends Controller
                 ],
             ])
             ->orderBy('created_at', 'desc')
-            ->paginate(15);
+            ->paginate(1000);
 
         return response()->json([
             'data' => ModuleFeedViewHelper::data($items, Auth::user(), $vault),
