@@ -16,7 +16,7 @@ concurrency:
 jobs:
   tests:
     name: Run tests
-    uses: monicahq/workflows/.github/workflows/laravel.yml@v1
+    uses: monicahq/workflows/.github/workflows/laravel.yml@v2
     with:
       php-versions: "['8.2']"
       connections: "['sqlite', 'mysql', 'pgsql']"
@@ -28,6 +28,6 @@ jobs:
 
   assets:
     name: Build assets
-    uses: monicahq/workflows/.github/workflows/build_assets.yml@v1
+    uses: monicahq/workflows/.github/workflows/build_assets.yml@v2
     with:
       node-version: 18
