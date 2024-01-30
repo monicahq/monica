@@ -18,6 +18,8 @@ use App\Domains\Contact\ManageContactFeed\Web\Controllers\ContactFeedController;
 use App\Domains\Contact\ManageContactImportantDates\Web\Controllers\ContactImportantDatesController;
 use App\Domains\Contact\ManageContactInformation\Web\Controllers\ContactInformationController;
 use App\Domains\Contact\ManageDocuments\Web\Controllers\ContactModuleDocumentController;
+use App\Domains\Contact\ManageGifts\Web\Controllers\ContactGiftsController;
+use App\Domains\Contact\ManageGifts\Web\Controllers\ContactModuleGiftController;
 use App\Domains\Contact\ManageGoals\Web\Controllers\ContactGoalController;
 use App\Domains\Contact\ManageGoals\Web\Controllers\ContactModuleGoalController;
 use App\Domains\Contact\ManageGoals\Web\Controllers\ContactModuleStreakController;
@@ -293,6 +295,12 @@ Route::middleware([
                     Route::post('notes', [ContactModuleNoteController::class, 'store'])->name('contact.note.store');
                     Route::put('notes/{note}', [ContactModuleNoteController::class, 'update'])->name('contact.note.update');
                     Route::delete('notes/{note}', [ContactModuleNoteController::class, 'destroy'])->name('contact.note.destroy');
+
+                    // gift
+                    Route::get('gifts', [ContactGiftsController::class, 'index'])->name('contact.gift.index');
+                    Route::post('gifts', [ContactModuleGiftController::class, 'store'])->name('contact.gift.store');
+                    Route::put('gifts/{gift}', [ContactModuleGiftController::class, 'update'])->name('contact.gift.update');
+                    Route::delete('gifts/{gift}', [ContactModuleGiftController::class, 'destroy'])->name('contact.gift.destroy');
 
                     // goals
                     Route::get('goals/{goal}', [ContactGoalController::class, 'show'])->name('contact.goal.show');

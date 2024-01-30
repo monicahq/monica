@@ -35,7 +35,7 @@ import Posts from '@/Shared/Modules/Posts.vue';
 import LifeEvent from '@/Shared/Modules/LifeEvent.vue';
 import QuickFacts from '@/Shared/Modules/QuickFacts.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
-
+import Gifts from '@/Shared/Modules/Gifts.vue';
 const props = defineProps({
   layoutData: Object,
   data: Object,
@@ -356,6 +356,8 @@ const download = () => {
                 <Photos v-else-if="module.type === 'photos'" :data="module.data" />
 
                 <Posts v-else-if="module.type === 'posts'" :data="module.data" />
+
+                <Gifts v-else-if="module.type === 'gifts'" :data="module.data" />
 
                 <Life-Event v-else-if="module.type === 'life_events'" :data="module.data" :layout-data="layoutData" />
               </div>

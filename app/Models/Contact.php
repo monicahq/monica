@@ -206,6 +206,14 @@ class Contact extends VCardResource
     }
 
     /**
+     * Get the gift records associated with the contact.
+     */
+    public function gifts(): HasMany
+    {
+        return $this->hasMany(Gift::class);
+    }
+
+    /**
      * Get the date records associated with the contact.
      */
     public function importantDates(): HasMany

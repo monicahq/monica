@@ -18,6 +18,8 @@ class Module extends Model
      */
     public const TYPE_NOTES = 'notes';
 
+    public const TYPE_GIFTS = 'gifts';
+
     public const TYPE_CONTACT_NAMES = 'contact_names';
 
     public const TYPE_AVATAR = 'avatar';
