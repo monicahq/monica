@@ -38,7 +38,7 @@ class StorageIndexViewHelper
             ->where('type', File::TYPE_AVATAR)
             ->count();
 
-        $accountLimit = $account->storage_limit_in_mb * 1024 * 1024;
+        $accountLimit = 64 * 1024 * 1024;
 
         return [
             'statistics' => [

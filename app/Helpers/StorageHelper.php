@@ -25,7 +25,7 @@ class StorageHelper
 
         $totalSizeInBytes = File::whereIn('vault_id', $vaultIds)->sum('size');
 
-        $accountLimit = $account->storage_limit_in_mb * 1024 * 1024;
+        $accountLimit = 64 * 1024 * 1024;
 
         return $totalSizeInBytes < $accountLimit;
     }

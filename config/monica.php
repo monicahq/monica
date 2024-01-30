@@ -34,7 +34,7 @@ return [
     |
     */
 
-    'default_storage_limit_in_mb' => env('DEFAULT_STORAGE_LIMIT', 50),
+    'default_storage_limit_in_mb' => env('DEFAULT_STORAGE_LIMIT', 64),
 
     /*
     |--------------------------------------------------------------------------
