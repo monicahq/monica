@@ -25,7 +25,7 @@ class AcceptInvitation extends BaseService implements ServiceInterface
             'invitation_code' => 'required|uuid',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'password' => 'required|alpha_dash|string|max:255',
+            'password' => 'required|string|max:255',
         ];
     }
 
