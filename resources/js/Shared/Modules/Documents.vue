@@ -65,7 +65,7 @@
             <!-- actions -->
             <ul class="text-sm">
               <li class="me-4 inline">
-                <a :href="document.url.download" class="text-blue-500 hover:underline">{{ $t('Download') }}</a>
+                <button @click="downloadItem(document.url.download, document.name)">{{ $t('Download') }}</button>
               </li>
               <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(document)">
                 {{ $t('Delete') }}
@@ -134,6 +134,20 @@ export default {
   },
 
   methods: {
+    downloadItem(url, name) {
+      axios
+        .get(url, { responseType: 'blob' })
+        .then((response) => {
+          const blob = new Blob([response.data], { type: response.data.type });
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = name;
+          link.click();
+          URL.revokeObjectURL(link.href);
+        })
+        .catch(console.error);
+    },
+
     onSuccess(file) {
       this.form.uuid = file.uuid;
       this.form.name = file.name;
