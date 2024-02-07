@@ -57,6 +57,11 @@ const deleteContactForm = reactive({
   processing: false,
 });
 
+const deletingavatar = ref(false);
+const deleteavatarForm = reactive({
+  processing: false,
+});
+
 const togglingArchive = ref(false);
 const toggleArchiveForm = reactive({
   processing: false,
@@ -120,13 +125,18 @@ const upload = () => {
 };
 
 const destroyAvatar = () => {
+  deleteavatarForm.processing = true;
+  location.reload();
+  
   axios
     .delete(props.data.url.destroy_avatar)
     .then((response) => {
+      deleteavatarForm.processing = false;
       router.visit(response.data.data);
       flash(trans('Changes saved'), 'success');
     })
     .catch((error) => {
+      deleteavatarForm.processing = false;
       form.errors = error.response.data;
     });
 };
@@ -222,7 +232,7 @@ const download = () => {
             <ul class="text-xs">
               <!-- remove avatar -->
               <li v-if="data.avatar.hasFile" class="mb-2">
-                <span @click.prevent="destroyAvatar()" class="cursor-pointer text-blue-500 hover:underline">
+                <span @click="deletingavatar = true" class="cursor-pointer text-blue-500 hover:underline">
                   {{ $t('Remove avatar') }}
                 </span>
               </li>
@@ -363,6 +373,36 @@ const download = () => {
           </div>
         </div>
       </div>
+
+       <!-- Delete Avatar Confirmation Modal -->
+      <JetConfirmationModal :show="deletingavatar" @close="deletingavatar = false">
+        <template #title>
+          {{ $t('Delete contact') }}
+        </template>
+
+        <template #content>
+          {{
+            $t(
+              'Are you sure you would like to Remove this Avatar? This will remove everything we know about this contact.',
+            )
+          }}
+        </template>
+
+        <template #footer>
+          <JetSecondaryButton @click="deletingavatar = false">
+            {{ $t('Cancel') }}
+          </JetSecondaryButton>
+
+          <JetDangerButton
+            class="ms-3"
+            :class="{ 'opacity-25': deleteavatarForm.processing }"
+            :disabled="deleteavatarForm.processing"
+            @click="destroyAvatar">
+            {{ $t('Delete') }}
+          </JetDangerButton>
+        </template>
+      </JetConfirmationModal>
+
 
       <!-- Delete Contact Confirmation Modal -->
       <JetConfirmationModal :show="deletingContact" @close="deletingContact = false">
