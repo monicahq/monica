@@ -114,6 +114,7 @@ const upload = () => {
 
 const destroyPhoto = () => {
   processPhotoDeletion.value = true;
+  location.reload();
 
   axios
     .delete(photoToDelete.value.url.destroy)
