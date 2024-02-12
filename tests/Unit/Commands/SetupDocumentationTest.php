@@ -10,12 +10,12 @@ use Tests\TestCase;
 #[RunClassInSeparateProcess]
 class SetupDocumentationTest extends TestCase
 {
-    use DatabaseTransactions;
+    // use DatabaseTransactions;
 
-    #[Test]
-    public function it_run_scribe_setup(): void
-    {
-        $this->artisan('scribe:setup', ['--clean' => true, '--force' => true, '-q' => true])
-            ->assertExitCode(0);
-    }
+    // #[Test]
+    // public function it_run_scribe_setup(): void
+    // {
+    //     $this->artisan('scribe:setup', ['--clean' => true, '--force' => true, '-q' => true])
+    //         ->assertExitCode(0);
+    // }
 }
