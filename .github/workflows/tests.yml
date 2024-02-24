@@ -13,6 +13,11 @@ concurrency:
   group: Build ${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  checks: write
+  id-token: write
+
 jobs:
   tests:
     name: Run tests
