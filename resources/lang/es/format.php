@@ -28,9 +28,9 @@ return [
     'short_month_year' => 'Mes Año',
     'short_day' => 'Día',
     'full_date_year' => 'F día, año',
-    'full_month' => 'F',
+    'full_month' => 'Mes entero',
     'full_month_year' => 'F Y',
     'full_hour' => 'h.i A',
 
-    'short_text' => '{text}…',
+    'short_text' => '{texto}…',
 ];
