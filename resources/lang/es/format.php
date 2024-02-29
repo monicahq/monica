@@ -21,13 +21,13 @@ return [
     |
     */
 
-    'short_date_year_time' => 'M d, Y H:i',
+    'short_date_year_time' => 'Mes día, Año Hora: minutos',
     'short_date_year' => 'j M Y',
     'short_date' => 'j M',
-    'short_month' => 'M',
-    'short_month_year' => 'M Y',
-    'short_day' => 'D',
-    'full_date_year' => 'F d, Y',
+    'short_month' => 'Mes',
+    'short_month_year' => 'Mes Año',
+    'short_day' => 'Día',
+    'full_date_year' => 'F día, año',
     'full_month' => 'F',
     'full_month_year' => 'F Y',
     'full_hour' => 'h.i A',
