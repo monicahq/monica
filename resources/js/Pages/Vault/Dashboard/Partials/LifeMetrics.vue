@@ -226,18 +226,27 @@ const destroy = (lifeMetric) => {
           <div
             v-if="editedLifeMetricId !== lifeMetric.id && lifeMetric.show_graph"
             class="m-3 mb-2 rounded-lg border border-gray-200">
-            <table class="charts-css column show-labels show-primary-axis h-72">
-              <tbody>
-                <tr v-for="month in lifeMetric.months" :key="month.id">
-                  <td :style="'--size: calc(' + month.events + '/' + lifeMetric.max_number_of_events">
-                    {{ month.friendly_name }}
-
+            <div>
+              <table class="charts-css column show-labels show-primary-axis h-72">
+                <caption style="caption-side: top;">Tabla de seguimiento del estado de ánimo por mes, 
+                  mostrando el número de eventos de seguimiento del estado de ánimo que ocurrieron en cada mes.</caption>
+                <thead>
+                  <tr>
+                    <th>Mes</th>
+                    <th>Eventos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="month in lifeMetric.months" :key="month.id">
+                    <td :style="'--size: calc(' + month.events + '/' + lifeMetric.max_number_of_events">
+                      {{ month.friendly_name }}
                     <span class="tooltip"> {{ month.events }} events </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
 
           <!-- edit modal -->
           <form
