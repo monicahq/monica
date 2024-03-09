@@ -10,7 +10,7 @@
       <InertiaLink :href="data.url" class="text-gray-800 hover:underline dark:text-gray-200">{{
         data.name
       }}</InertiaLink>
-      <span v-if="data.age" class="text-gray-500">{{ data.age }}</span>
+      <span v-if="data.age || data.age === 0" class="text-gray-500">{{ data.age }}</span>
       <span v-else class="text-xs text-gray-500">{{ $t('Unknown age') }}</span>
     </div>
   </div>
