@@ -37,7 +37,7 @@ class MonetaryNumberHelper
      * @param  string|null  $currency  Currency of amount.
      * @return string Formatted amount for display without currency symbol (ex: '1234.50').
      */
-    public static function formatValue(User $user, int $amount, string $currency = null, int $format = \NumberFormatter::DECIMAL): string
+    public static function formatValue(User $user, int $amount, ?string $currency = null, int $format = \NumberFormatter::DECIMAL): string
     {
         if ($currency === null) {
             $currency = 'USD';
@@ -66,7 +66,7 @@ class MonetaryNumberHelper
      * @param  string|null  $currency  Currency of amount.
      * @return string Formatted amount for display without currency symbol (ex: '1234.50').
      */
-    public static function format(User $user, int $amount, string $currency = null): string
+    public static function format(User $user, int $amount, ?string $currency = null): string
     {
         $value = static::formatValue($user, $amount, $currency);
 
@@ -101,7 +101,7 @@ class MonetaryNumberHelper
      * @param  string  $value  Amount value in input format (ex: 145.00).
      * @return int Amount as storable format (ex: 14500).
      */
-    public static function parseInput(string $value, string $currency = null): int
+    public static function parseInput(string $value, ?string $currency = null): int
     {
         $moneyParser = new DecimalMoneyParser(static::getCurrencies());
         $money = $moneyParser->parse($value, new Currency($currency ?? 'USD'));
@@ -117,7 +117,7 @@ class MonetaryNumberHelper
      * @param  int  $amount  Amount value in storable format (ex: 100 for 1,00€).
      * @return string Real value of amount in input format (ex: 1.24).
      */
-    public static function inputValue(int $amount, string $currency = null): string
+    public static function inputValue(int $amount, ?string $currency = null): string
     {
         $moneyFormatter = new DecimalMoneyFormatter(static::getCurrencies());
         $money = new Money($amount, new Currency($currency ?? 'USD'));

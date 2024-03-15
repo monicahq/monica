@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 
 class VaultSearchIndexViewHelper
 {
-    public static function data(Vault $vault, string $term = null): array
+    public static function data(Vault $vault, ?string $term = null): array
     {
         return [
             'contacts' => $term ? self::contacts($vault, $term) : [],

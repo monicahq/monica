@@ -153,7 +153,7 @@ class ContactShowViewHelper
     /**
      * @param  EloquentCollection<int,TemplatePage>  $templatePages
      */
-    private static function getTemplatePagesList(EloquentCollection $templatePages, Contact $contact, TemplatePage $currentTemplatePage = null): Collection
+    private static function getTemplatePagesList(EloquentCollection $templatePages, Contact $contact, ?TemplatePage $currentTemplatePage = null): Collection
     {
         return $templatePages->filter(fn (TemplatePage $page) => $page->type !== TemplatePage::TYPE_CONTACT)
             ->map(fn (TemplatePage $page) => [

@@ -169,7 +169,7 @@ class AttemptToAuthenticateSocialite
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function throwFailedAuthenticationException(Request $request, string $driver, string $message = null): void
+    protected function throwFailedAuthenticationException(Request $request, string $driver, ?string $message = null): void
     {
         $this->fireFailedEvent($request, Auth::user());
 
@@ -183,7 +183,7 @@ class AttemptToAuthenticateSocialite
     /**
      * Fire the failed authentication attempt event with the given arguments.
      */
-    protected function fireFailedEvent(Request $request, User $user = null): void
+    protected function fireFailedEvent(Request $request, ?User $user = null): void
     {
         event(new Failed('web', $user, [
             'email' => $request->email,

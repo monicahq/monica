@@ -108,7 +108,7 @@ class DestroyUserTest extends TestCase
         $this->executeService($author->account, $author, $user);
     }
 
-    private function executeService(Account $account, User $author, User $user, Vault $vaultManager = null, Vault $vaultEditor = null, Vault $vaultViewer = null): void
+    private function executeService(Account $account, User $author, User $user, ?Vault $vaultManager = null, ?Vault $vaultEditor = null, ?Vault $vaultViewer = null): void
     {
         $request = [
             'account_id' => $account->id,

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5dc684edc166d524e31355e4d5044e4d",
+    "content-hash": "2493f49c9001084d867889e2df9a9388",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -2319,16 +2319,16 @@
         },
         {
             "name": "knuckleswtf/scribe",
-            "version": "4.33.0",
+            "version": "4.34.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/knuckleswtf/scribe.git",
-                "reference": "c0afe840081f8c9872b346694a0ab95a0e378842"
+                "reference": "30624433a37a8d2ee277c86297bab62d4a2b8338"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/knuckleswtf/scribe/zipball/c0afe840081f8c9872b346694a0ab95a0e378842",
-                "reference": "c0afe840081f8c9872b346694a0ab95a0e378842",
+                "url": "https://api.github.com/repos/knuckleswtf/scribe/zipball/30624433a37a8d2ee277c86297bab62d4a2b8338",
+                "reference": "30624433a37a8d2ee277c86297bab62d4a2b8338",
                 "shasum": ""
             },
             "require": {
@@ -2402,7 +2402,7 @@
             ],
             "support": {
                 "issues": "https://github.com/knuckleswtf/scribe/issues",
-                "source": "https://github.com/knuckleswtf/scribe/tree/4.33.0"
+                "source": "https://github.com/knuckleswtf/scribe/tree/4.34.0"
             },
             "funding": [
                 {
@@ -2410,7 +2410,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2024-02-29T19:10:57+00:00"
+            "time": "2024-03-15T19:25:29+00:00"
         },
         {
             "name": "laravel-notification-channels/telegram",
@@ -18291,12 +18291,13 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": {
         "naugrim/laravel-sentry-tunnel": 20,
         "amirami/localizator": 20,
         "psalm/plugin-laravel": 20,
-        "roave/security-advisories": 20
+        "roave/security-advisories": 20,
+        "vimeo/psalm": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

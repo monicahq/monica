@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 class CurrencyIndexViewHelper
 {
-    public static function data(Account $account, int $currencyId = null): Collection
+    public static function data(Account $account, ?int $currencyId = null): Collection
     {
         $currenciesCollection = $account->currencies()
             ->orderBy('code')

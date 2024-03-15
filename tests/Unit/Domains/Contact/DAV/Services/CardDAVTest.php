@@ -466,12 +466,8 @@ class CardDAVTest extends TestCase
 
         $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\">
  <d:response>
-  <d:status>HTTP/1.1 404 Not Found</d:status>
   <d:href>/dav/addressbooks/{$user->email}/$vaultname/{$contact->id}.vcf</d:href>
-  <d:propstat>
-   <d:prop/>
-   <d:status>HTTP/1.1 418 I'm a teapot</d:status>
-  </d:propstat>
+  <d:status>HTTP/1.1 404 Not Found</d:status>
  </d:response>
  <d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>
 </d:multistatus>", false);
