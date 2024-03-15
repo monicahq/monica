@@ -78,7 +78,7 @@ class ScheduleContactReminderForUser extends BaseService implements ServiceInter
 
         $notificationChannels = $this->user->notificationChannels;
         foreach ($notificationChannels as $channel) {
-            $this->upcomingDate->shiftTimezone($this->user->timezone);
+            $this->upcomingDate->shiftTimezone($this->user->timezone ?? config('app.timezone'));
             $this->upcomingDate->hour = $channel->preferred_time->hour;
             $this->upcomingDate->minute = $channel->preferred_time->minute;
 
