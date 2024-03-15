@@ -20,7 +20,7 @@ class ModuleRowField extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<string>
+     * @var array<int,string>
      */
     protected $fillable = [
         'module_row_id',

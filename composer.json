@@ -30,11 +30,11 @@
     "laravel/tinker": "^2.7",
     "matriphe/iso-639": "^1.2",
     "meilisearch/meilisearch-php": "^1.0",
-    "moneyphp/money": "^4.1",
+    "moneyphp/money": "^4.3",
     "monicahq/laravel-sabre": "^1.6",
     "naugrim/laravel-sentry-tunnel": "^1.1",
     "rinvex/countries": "^9.0",
-    "sentry/sentry-laravel": "^3.0",
+    "sentry/sentry-laravel": "^4.0",
     "socialiteproviders/facebook": "^4.1",
     "socialiteproviders/github": "^4.1",
     "socialiteproviders/google": "^4.1",
@@ -51,18 +51,19 @@
     "barryvdh/laravel-ide-helper": "^2.12",
     "brianium/paratest": "^7.0",
     "fakerphp/faker": "^1.9",
+    "larastan/larastan": "^2.7",
     "laravel-lang/common": "^4.0",
     "laravel/pint": "^1.1",
     "laravel/sail": "^1.14",
     "mockery/mockery": "^1.4",
     "nunomaduro/collision": "^7.0",
-    "larastan/larastan": "^2.7",
     "phpunit/phpunit": "^10.0",
     "psalm/plugin-laravel": "^2.0",
     "roave/security-advisories": "dev-master",
     "spatie/laravel-ignition": "^2.0",
     "stichoza/google-translate-php": "^5.1",
-    "thecodingmachine/phpstan-safe-rule": "^1.2"
+    "thecodingmachine/phpstan-safe-rule": "^1.2",
+    "vimeo/psalm": "^5.17"
   },
   "autoload": {
     "psr-4": {
@@ -98,6 +99,6 @@
       "php-http/discovery": true
     }
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "prefer-stable": true
 }
