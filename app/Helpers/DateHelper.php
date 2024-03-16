@@ -21,7 +21,7 @@ class DateHelper
      * Return a date according to the timezone of the user, in a
      * short format like "Oct 29, 1981".
      */
-    public static function formatDate(Carbon $date, string $timezone = null): string
+    public static function formatDate(Carbon $date, ?string $timezone = null): string
     {
         if ($timezone) {
             $date->setTimezone($timezone);
@@ -34,7 +34,7 @@ class DateHelper
      * Return a date and the time according to the timezone of the user, in a
      * short format like "Oct 29, 1981 19:32".
      */
-    public static function formatShortDateWithTime(Carbon $date, string $timezone = null): string
+    public static function formatShortDateWithTime(Carbon $date, ?string $timezone = null): string
     {
         if ($timezone) {
             $date->setTimezone($timezone);
@@ -86,7 +86,7 @@ class DateHelper
     /**
      * Return the day and the month in a format like "Monday (July 29th)".
      */
-    public static function formatDayAndMonthInParenthesis(Carbon $date, string $timezone = null): string
+    public static function formatDayAndMonthInParenthesis(Carbon $date, ?string $timezone = null): string
     {
         if ($timezone) {
             $date->setTimezone($timezone);

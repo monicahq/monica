@@ -4,9 +4,6 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-env:
-  php-version: '8.2'
-
 concurrency:
   group: Static ${{ github.ref }}
   cancel-in-progress: true
@@ -16,4 +13,4 @@ jobs:
     name: Static analysis
     uses: monicahq/workflows/.github/workflows/static.yml@v2
     with:
-      php-version: 8.2
+      php-version: 8.3

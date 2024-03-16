@@ -118,7 +118,7 @@ class CreateContactTest extends TestCase
         $this->executeService($regis, $regis->account, $vault);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Gender $gender = null, Pronoun $pronoun = null, Template $template = null): void
+    private function executeService(User $author, Account $account, Vault $vault, ?Gender $gender = null, ?Pronoun $pronoun = null, ?Template $template = null): void
     {
         Queue::fake();
 
