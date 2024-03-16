@@ -78,7 +78,7 @@ class DestroyVaultTest extends TestCase
         $this->executeService($ross, $ross->account, $vault);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, File $file = null): void
+    private function executeService(User $author, Account $account, Vault $vault, ?File $file = null): void
     {
         Queue::fake();
         Event::fake();

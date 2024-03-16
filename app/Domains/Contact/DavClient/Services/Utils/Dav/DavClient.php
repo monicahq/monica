@@ -46,7 +46,7 @@ class DavClient
     /**
      * Get current uri.
      */
-    public function path(string $path = null): string
+    public function path(?string $path = null): string
     {
         $uri = GuzzleUtils::uriFor($this->baseUri);
 

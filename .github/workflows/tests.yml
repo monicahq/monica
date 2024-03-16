@@ -13,12 +13,17 @@ concurrency:
   group: Build ${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  checks: write
+  id-token: write
+
 jobs:
   tests:
     name: Run tests
-    uses: monicahq/workflows/.github/workflows/laravel.yml@v1
+    uses: monicahq/workflows/.github/workflows/laravel.yml@v2
     with:
-      php-versions: "['8.2']"
+      php-versions: "['8.2', '8.3']"
       connections: "['sqlite', 'mysql', 'pgsql']"
       default-php-version: '8.2'
       default-connection: sqlite
@@ -28,6 +33,6 @@ jobs:
 
   assets:
     name: Build assets
-    uses: monicahq/workflows/.github/workflows/build_assets.yml@v1
+    uses: monicahq/workflows/.github/workflows/build_assets.yml@v2
     with:
-      node-version: 18
+      node-version: 20

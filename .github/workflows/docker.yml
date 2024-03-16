@@ -87,7 +87,7 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
 
       - name: Prune images
-        uses: vlaurin/action-ghcr-prune@v0.5.0
+        uses: vlaurin/action-ghcr-prune@v0.6.0
         if: github.event_name != 'pull_request'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
