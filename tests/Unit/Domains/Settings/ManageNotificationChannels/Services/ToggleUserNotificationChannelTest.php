@@ -117,7 +117,7 @@ class ToggleUserNotificationChannelTest extends TestCase
         $this->executeService($ross, $channel);
     }
 
-    private function executeService(User $author, UserNotificationChannel $channel, ContactReminder $contactReminder = null): void
+    private function executeService(User $author, UserNotificationChannel $channel, ?ContactReminder $contactReminder = null): void
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1));
 
