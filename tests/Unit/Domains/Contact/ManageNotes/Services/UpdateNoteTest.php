@@ -133,7 +133,7 @@ class UpdateNoteTest extends TestCase
         $this->executeService($regis, $regis->account, $vault, $contact, $note);
     }
 
-    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Note $note, Emotion $emotion = null): void
+    private function executeService(User $author, Account $account, Vault $vault, Contact $contact, Note $note, ?Emotion $emotion = null): void
     {
         $request = [
             'account_id' => $account->id,

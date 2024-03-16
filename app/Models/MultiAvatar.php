@@ -25,9 +25,8 @@ class MultiAvatar
 
     public function __invoke($avatarId, $sansEnv, $ver)
     {
-        $svgCode = $this->generate(strval($avatarId), $sansEnv, $ver);
 
-        return $svgCode;
+        return $this->generate(strval($avatarId), $sansEnv, $ver);
     }
 
     public function getFinal($part, $partV, $theme, $themes, $sP)
