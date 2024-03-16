@@ -44,7 +44,7 @@ class FortifyServiceProvider extends ServiceProvider
         ]);
 
         Fortify::loginView(fn ($request) => (new LoginController())($request));
-        Fortify::confirmPasswordsUsing(fn ($user, string $password = null) => $user->password
+        Fortify::confirmPasswordsUsing(fn ($user, ?string $password = null) => $user->password
                 ? app(StatefulGuard::class)->validate([
                     'email' => $user->email,
                     'password' => $password,

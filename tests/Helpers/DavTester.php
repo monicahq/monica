@@ -75,7 +75,7 @@ class DavTester extends TestCase
             ->supportedAddressData();
     }
 
-    public function addResponse(string $uri, PromiseInterface $response, string $body = null, string $method = 'PROPFIND', array $headers = null)
+    public function addResponse(string $uri, PromiseInterface $response, ?string $body = null, string $method = 'PROPFIND', ?array $headers = null)
     {
         $this->responses[] = [
             'uri' => $uri,

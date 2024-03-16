@@ -14,7 +14,7 @@ class VaultIndexViewHelper
     /**
      * Get all the data needed for the general layout page.
      */
-    public static function layoutData(Vault $vault = null): array
+    public static function layoutData(?Vault $vault = null): array
     {
         return [
             'user' => [
