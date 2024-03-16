@@ -46,6 +46,7 @@ class VaultShowViewHelper
             fn ($channel) => $channel->contactReminders()
                 ->wherePivot('scheduled_at', '<=', $currentDate->addDays(30))
                 ->wherePivot('triggered_at', null)
+                ->orderByPivot('scheduled_at', 'asc')
                 ->get()
         );
 
