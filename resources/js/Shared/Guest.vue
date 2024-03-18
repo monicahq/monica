@@ -11,7 +11,8 @@ import ApplicationLogo from '@/Components/ApplicationLogo.vue';
       </Link>
     </div>
 
-    <div class="mt-6 w-full overflow-hidden bg-white px-6 py-6 shadow-md dark:bg-gray-900 sm:max-w-md sm:rounded-lg">
+    <div
+      class="mt-6 mb-12 w-full overflow-hidden bg-white px-6 py-6 shadow-md dark:bg-gray-900 sm:max-w-md sm:rounded-lg">
       <slot />
     </div>
   </div>
