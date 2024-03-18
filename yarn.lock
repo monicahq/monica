@@ -355,28 +355,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inertiajs/core@npm:1.0.14":
-  version: 1.0.14
-  resolution: "@inertiajs/core@npm:1.0.14"
+"@inertiajs/core@npm:1.0.15":
+  version: 1.0.15
+  resolution: "@inertiajs/core@npm:1.0.15"
   dependencies:
-    axios: "npm:^1.2.0"
+    axios: "npm:^1.6.0"
     deepmerge: "npm:^4.0.0"
     nprogress: "npm:^0.2.0"
     qs: "npm:^6.9.0"
-  checksum: 6c1dc784e16e5d0fd1d957f180128f8f347d9e1191fb51b4c6ebc556763ee4e78dcef233b70947ed32f297bc8dadb7c08def1bd01b30d771a26fc55e40076a38
+  checksum: 8e55973f51327e4a6c9c13a65fcbb9a8bb26923650fd84852cbccf0ebc7be4d82f721c3c9d380615a56032d5c4ec024711c220dd17ec69dde30d017d2aa0f90e
   languageName: node
   linkType: hard
 
 "@inertiajs/vue3@npm:^1.0.11":
-  version: 1.0.14
-  resolution: "@inertiajs/vue3@npm:1.0.14"
+  version: 1.0.15
+  resolution: "@inertiajs/vue3@npm:1.0.15"
   dependencies:
-    "@inertiajs/core": "npm:1.0.14"
+    "@inertiajs/core": "npm:1.0.15"
     lodash.clonedeep: "npm:^4.5.0"
     lodash.isequal: "npm:^4.5.0"
   peerDependencies:
     vue: ^3.0.0
-  checksum: 4b5bd3c49e21ce91765d7458a8981ac3d35d310e06e5ea229a29dd850487d53df533000be06aedecafe16c7cbc769dabcc5573217afd047c3c7241c99253f79f
+  checksum: 10791133c1fc65089b962155f0635de4e80db29a16fc6971c6569c92ca9052aa67ae43ca0df46f23ed8706e2f2dc5232a3eb9ddca62e13b97ff88bedba3d5dbe
   languageName: node
   linkType: hard
 
@@ -1074,7 +1074,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.2.0, axios@npm:^1.5.0":
+"axios@npm:^1.5.0":
   version: 1.6.1
   resolution: "axios@npm:1.6.1"
   dependencies:
@@ -1082,6 +1082,17 @@ __metadata:
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
   checksum: ca2c6f56659a7f19e4a99082f549fe151952f6fd8aa72ed148559ab2d6a32ce37cd5dc72ce6d4d3cd91f0c1e2617c7c95c20077e5e244a79f319a6c0ce41204f
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.6.0":
+  version: 1.6.8
+  resolution: "axios@npm:1.6.8"
+  dependencies:
+    follow-redirects: "npm:^1.15.6"
+    form-data: "npm:^4.0.0"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: 0f22da6f490335479a89878bc7d5a1419484fbb437b564a80c34888fc36759ae4f56ea28d55a191695e5ed327f0bad56e7ff60fb6770c14d1be6501505d47ab9
   languageName: node
   linkType: hard
 
@@ -1984,7 +1995,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.15.0":
+"follow-redirects@npm:^1.15.0, follow-redirects@npm:^1.15.6":
   version: 1.15.6
   resolution: "follow-redirects@npm:1.15.6"
   peerDependenciesMeta:
