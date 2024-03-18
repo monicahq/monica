@@ -98,8 +98,8 @@ class MoveContactToAnotherVault extends BaseService implements ServiceInterface
                     'account_id' => $this->author->account_id,
                     'author_id' => $this->author->id,
                     'vault_id' => $this->newVault->id,
-                    'name' => $this->contact->name,
-                    'type' => $this->contact->type,
+                    'name' => $this->contact->company->name,
+                    'type' => $this->contact->company->type,
                 ]);
 
                 $this->contact->company_id = $newCompany->id;
