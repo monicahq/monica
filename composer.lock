@@ -3825,16 +3825,16 @@
         },
         {
             "name": "matriphe/iso-639",
-            "version": "1.2",
+            "version": "1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matriphe/php-iso-639.git",
-                "reference": "0245d844daeefdd22a54b47103ffdb0e03c323e1"
+                "reference": "9a4a5823147890e70e0e0f60f3baea95e8d3b5f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matriphe/php-iso-639/zipball/0245d844daeefdd22a54b47103ffdb0e03c323e1",
-                "reference": "0245d844daeefdd22a54b47103ffdb0e03c323e1",
+                "url": "https://api.github.com/repos/matriphe/php-iso-639/zipball/9a4a5823147890e70e0e0f60f3baea95e8d3b5f1",
+                "reference": "9a4a5823147890e70e0e0f60f3baea95e8d3b5f1",
                 "shasum": ""
             },
             "require-dev": {
@@ -3867,9 +3867,9 @@
             ],
             "support": {
                 "issues": "https://github.com/matriphe/php-iso-639/issues",
-                "source": "https://github.com/matriphe/php-iso-639/tree/master"
+                "source": "https://github.com/matriphe/php-iso-639/tree/1.3"
             },
-            "time": "2017-07-19T15:11:19+00:00"
+            "time": "2024-03-17T21:30:14+00:00"
         },
         {
             "name": "maxmind-db/reader",
@@ -17710,5 +17710,5 @@
         "ext-fileinfo": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
