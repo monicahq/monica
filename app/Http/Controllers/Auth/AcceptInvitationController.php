@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 
 class AcceptInvitationController extends Controller
@@ -35,7 +35,7 @@ class AcceptInvitationController extends Controller
             'invitation_code' => 'required|uuid',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', Password::min(8)->uncompromised()],
         ]);
 
         $data = [

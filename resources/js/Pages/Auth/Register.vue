@@ -87,9 +87,10 @@ const policy = () => {
           id="password"
           v-model="form.password"
           type="password"
-          class="mt-1 block w-full"
+          class="mt-1 mb-1 block w-full"
           required
           autocomplete="new-password" />
+        <p class="text-xs text-gray-600">{{ $t('The password should be at least 8 characters long.') }}</p>
       </div>
 
       <div class="mb-8 mt-4">
