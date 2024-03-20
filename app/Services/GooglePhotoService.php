@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Services;
+
+use DOMDocument;
+use Exception;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+
+class GooglePhotoService
+{
+    /**
+     * Google search URL.
+     */
+    public const GOOGLE_SEARCH_URL = 'https://www.google.com/search';
+
+    /**
+     * Google image URL.
+     */
+    public const GOOGLE_IMAGE_URL = 'https://encrypted-tbn0.gstatic.com';
+
+    /**
+     * The params for Google search.
+     */
+    private array $params = [
+        'tbm' => 'isch',
+    ];
+
+    /**
+     * Set the params for the service.
+     */
+    public function params(array $params): self
+    {
+        $this->params = $params;
+
+        return $this;
+    }
+
+    /**
+     * Extract image URLs from the HTML.
+     */
+    public function imageUrls(string $html): array
+    {
+        $imageUrls = [];
+
+        if (empty($html)) {
+            return $imageUrls;
+        }
+
+        $doc = new DOMDocument();
+        @$doc->loadHTML($html);
+
+        $imgTags = $doc->getElementsByTagName('img');
+
+        foreach ($imgTags as $imgTag) {
+            $src = $imgTag->getAttribute('src');
+
+            // Add only full-size images (exclude thumbnails, etc.)
+            if (filter_var($src, FILTER_VALIDATE_URL)
+                && Str::startsWith($src, self::GOOGLE_IMAGE_URL)) {
+                $imageUrls[] = $src;
+            }
+        }
+
+        return $imageUrls;
+    }
+
+    /**
+     * Fetch the HTML from Google.
+     *
+     * @throws Exception
+     */
+    public function search(string $searchTerm): array
+    {
+        $params = array_merge($this->params, [
+            'q' => $searchTerm,
+        ]);
+
+        try {
+            $html = Http::get(self::GOOGLE_SEARCH_URL, $params)->body();
+        } catch (Exception $e) {
+            throw new Exception('Failed to fetch data from Google.');
+        }
+
+        return $this->imageUrls($html);
+    }
+}

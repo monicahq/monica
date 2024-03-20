@@ -3,10 +3,12 @@
 namespace App\Domains\Contact\ManageAvatar\Web\Controllers;
 
 use App\Domains\Contact\ManageAvatar\Services\DestroyAvatar;
+use App\Domains\Contact\ManageAvatar\Services\SuggestAvatar;
 use App\Domains\Contact\ManageAvatar\Services\UpdatePhotoAsAvatar;
 use App\Domains\Contact\ManageDocuments\Services\UploadFile;
 use App\Http\Controllers\Controller;
 use App\Models\File;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -65,5 +67,26 @@ class ModuleAvatarController extends Controller
                 'contact' => $contactId,
             ]),
         ], 200);
+    }
+
+    public function suggest(Request $request, string $vaultId, string $contactId): JsonResponse
+    {
+        $accountId = Auth::user()->account_id;
+        $authorId = Auth::id();
+        $searchTerm = $request->search_term;
+
+        $data = [
+            'account_id' => $accountId,
+            'author_id' => $authorId,
+            'vault_id' => $vaultId,
+            'contact_id' => $contactId,
+            'search_term' => $searchTerm,
+        ];
+
+        $imageUrls = (new SuggestAvatar())->execute($data);
+
+        return response()->json([
+            'data' => $imageUrls,
+        ]);
     }
 }
