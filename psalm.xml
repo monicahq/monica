@@ -19,4 +19,20 @@
     <plugins>
         <pluginClass class="Psalm\LaravelPlugin\Plugin"/>
     </plugins>
+
+    <issueHandlers>
+        <MissingDependency errorLevel="suppress" />
+        <PossiblyUnusedMethod errorLevel="suppress" />
+        <PossiblyUnusedParam errorLevel="suppress" />
+        <PossiblyUnusedProperty errorLevel="suppress" />
+        <PossiblyUnusedReturnValue errorLevel="suppress" />
+        <ReservedWord errorLevel="suppress" />
+        <UnnecessaryVarAnnotation errorLevel="suppress" />
+        <UnusedClass errorLevel="suppress" />
+        <UnusedClosureParam errorLevel="suppress" />
+        <UnusedForeachValue errorLevel="suppress" />
+        <UnusedMethod errorLevel="suppress" />
+        <UnusedReturnValue errorLevel="suppress" />
+        <UnusedVariable errorLevel="suppress" />
+    </issueHandlers>
 </psalm>

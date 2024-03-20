@@ -87,7 +87,7 @@ class ScheduleAllContactRemindersForNotificationChannel extends BaseService impl
                 }
             }
 
-            $upcomingDate->shiftTimezone($this->userNotificationChannel->user->timezone);
+            $upcomingDate->shiftTimezone($this->userNotificationChannel->user->timezone ?? config('app.timezone'));
             $upcomingDate->hour = $this->userNotificationChannel->preferred_time->hour;
             $upcomingDate->minute = $this->userNotificationChannel->preferred_time->minute;
 
