@@ -4,6 +4,10 @@ namespace App\Console\Scheduling;
 
 use Illuminate\Support\Facades\Schedule as ScheduleFacade;
 
+/**
+ * @method static void command(string $command, string $frequency = null)
+ * @method static void job(string $command, string $frequency = null, int $args = 0)
+ */
 class Schedule
 {
     /**
