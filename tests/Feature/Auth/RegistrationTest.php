@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Fortify\Features;
 use Laravel\Jetstream\Jetstream;
@@ -42,6 +41,6 @@ class RegistrationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        $response->assertRedirect('/vaults');
     }
 }

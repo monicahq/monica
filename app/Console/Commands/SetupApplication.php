@@ -5,11 +5,13 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Support\Facades\Schema;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @codeCoverageIgnore
  */
+#[AsCommand(name: 'monica:setup')]
 class SetupApplication extends Command
 {
     use ConfirmableTrait;
@@ -68,10 +70,12 @@ class SetupApplication extends Command
             $this->artisan('✓ Clear config cache', 'config:clear');
             $this->artisan('✓ Resetting route cache', 'route:cache');
             $this->artisan('✓ Resetting view cache', 'view:clear');
+            $this->artisan('✓ Resetting event cache', 'event:cache');
         } else {
             $this->artisan('✓ Clear config cache', 'config:clear');
             $this->artisan('✓ Clear route cache', 'route:clear');
             $this->artisan('✓ Clear view cache', 'view:clear');
+            $this->artisan('✓ Clear event cache', 'event:clear');
         }
     }
 

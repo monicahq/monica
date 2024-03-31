@@ -12,20 +12,13 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/asbiin/localizator"
-    },
-    {
-      "type": "vcs",
-      "url": "https://github.com/asbiin/laravel-sentry-tunnel"
-    },
-    {
-      "type": "vcs",
       "url": "https://github.com/asbiin/psalm-plugin-laravel"
     }
   ],
   "require": {
     "php": "^8.2",
     "ext-fileinfo": "*",
+    "asbiin/laravel-sentry-tunnel": "^2.0",
     "asbiin/laravel-webauthn": "^4.0",
     "codezero/laravel-localizer": "^3.0",
     "doctrine/dbal": "^3.6",
@@ -45,7 +38,6 @@
     "meilisearch/meilisearch-php": "^1.0",
     "moneyphp/money": "^4.3",
     "monicahq/laravel-sabre": "^1.6",
-    "naugrim/laravel-sentry-tunnel": "dev-patch-1",
     "rinvex/countries": "^9.0",
     "sentry/sentry-laravel": "^4.3",
     "socialiteproviders/facebook": "^4.1",
@@ -59,7 +51,7 @@
     "uploadcare/uploadcare-php": "^4.1"
   },
   "require-dev": {
-    "amirami/localizator": "dev-patch-1",
+    "amirami/localizator": "^0.13.0-alpha",
     "barryvdh/laravel-debugbar": "^3.7",
     "barryvdh/laravel-ide-helper": "^3.0",
     "brianium/paratest": "^7.0",

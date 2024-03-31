@@ -3,7 +3,6 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
@@ -52,7 +51,7 @@ class EmailVerificationTest extends TestCase
         Event::assertDispatched(Verified::class);
 
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
-        $response->assertRedirect(RouteServiceProvider::HOME.'?verified=1');
+        $response->assertRedirect('/vaults?verified=1');
     }
 
     #[Test]

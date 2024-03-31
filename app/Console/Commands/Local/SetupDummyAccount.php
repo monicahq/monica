@@ -22,10 +22,12 @@ use Carbon\Carbon;
 use Faker\Factory as Faker;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 /**
  * @codeCoverageIgnore
  */
+#[AsCommand(name: 'monica:dummy')]
 class SetupDummyAccount extends Command
 {
     use ConfirmableTrait;

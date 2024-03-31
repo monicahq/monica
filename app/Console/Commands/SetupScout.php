@@ -4,11 +4,13 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @codeCoverageIgnore
  */
+#[AsCommand(name: 'scout:setup')]
 class SetupScout extends Command
 {
     use ConfirmableTrait;

@@ -12,7 +12,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'test:send-reminders')]
 class TestReminders extends Command
 {
     /**
