@@ -1,8 +1,15 @@
 <?php
 
+use App\Http\Middleware\HandleInertiaRequests;
+use CodeZero\Localizer\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use Laravel\Sanctum\Http\Middleware\CheckAbilities;
+use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use LaravelWebauthn\Http\Middleware\WebauthnMiddleware;
 use Sentry\Laravel\Integration;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -13,28 +20,25 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->replace(
-            \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
-            \App\Http\Middleware\VerifyCsrfToken::class
-        );
+        $middleware->validateCsrfTokens(except: [
+            '/dav',
+            '/dav/*',
+            '/telegram/webhook/*',
+        ]);
+        $middleware->alias([
+            'abilities' => CheckAbilities::class,
+            'ability' => CheckForAnyAbility::class,
+            'webauthn' => WebauthnMiddleware::class,
+        ]);
         $middleware->web(append: [
-            \CodeZero\Localizer\Middleware\SetLocale::class,
-            \App\Http\Middleware\HandleInertiaRequests::class,
-            \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+            SetLocale::class,
+            HandleInertiaRequests::class,
+            AddLinkHeadersForPreloadedAssets::class,
         ]);
         $middleware->api(prepend: [
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            EnsureFrontendRequestsAreStateful::class,
         ]);
         $middleware->throttleApi();
-        $middleware->alias([
-            'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
-            'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
-            'webauthn' => \LaravelWebauthn\Http\Middleware\WebauthnMiddleware::class,
-        ]);
-        // $middleware->group('mfa', [
-        //     \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        //     'webauthn',
-        // ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         Integration::handles($exceptions);
