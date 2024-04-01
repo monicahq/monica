@@ -102,3 +102,23 @@ if (! function_exists('subClasses')) {
         }
     }
 }
+
+if (! function_exists('readVersion')) {
+    /**
+     * Read the version from the config file.
+     */
+    function readVersion(string $file, string $gitCommand, ?string $default = null): ?string
+    {
+        $content = null;
+        if (is_file($file)) {
+            $content = file_get_contents($file);
+        } elseif (is_dir(base_path('.git'))) {
+            $command = Str::of($gitCommand)
+                ->start('git ')
+                ->replaceStart('git', 'git --git-dir "'.base_path('.git').'"');
+            $content = trim(exec("$command 2>".(substr(php_uname(), 0, 7) === 'Windows' ? 'NUL' : '/dev/null')));
+        }
+
+        return trim($content ?? $default);
+    }
+}
