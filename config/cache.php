@@ -147,7 +147,7 @@ if (extension_loaded('memcached')) {
         \Memcached::OPT_POLL_TIMEOUT => $timeout_ms,        // milliseconds
         \Memcached::OPT_SEND_TIMEOUT => $timeout_ms * 1000, // microseconds
         \Memcached::OPT_RECV_TIMEOUT => $timeout_ms * 1000, // microseconds
-        \Memcached::OPT_CONNECT_TIMEOUT => $timeout_ms,        // milliseconds
+        \Memcached::OPT_CONNECT_TIMEOUT => $timeout_ms,     // milliseconds
 
         // Further performance tuning
         \Memcached::OPT_NO_BLOCK => true,

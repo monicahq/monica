@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
 
+use function Safe\exec;
+use function Safe\file_get_contents;
 use function Safe\preg_match;
 use function Safe\preg_split;
 use function Safe\realpath;
@@ -107,7 +109,7 @@ if (! function_exists('readVersion')) {
     /**
      * Read the version from the config file.
      */
-    function readVersion(string $file, string $gitCommand, ?string $default = null): ?string
+    function readVersion(string $file, string $gitCommand, ?string $default = null): string
     {
         $content = null;
         if (is_file($file)) {

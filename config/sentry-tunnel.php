@@ -1,21 +1,68 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Support\Str;
 
 return [
-    'tunnel-url' => env('SENTRY_TUNNEL_URL', '/sentry/tunnel'),
+    /*
+    |--------------------------------------------------------------------------
+    | Allowed Hosts
+    |--------------------------------------------------------------------------
+    |
+    | This is the list of target sentry hosts that are allowed to use the tunnel.
+    | It uses the value of 'SENTRY_LARAVEL_DSN' by default.
+    |
+    */
 
-    // this is required to prevent misuse
-    'allowed-hosts' => env('SENTRY_TUNNEL_ALLOWED_HOSTS', Str::of(env('SENTRY_LARAVEL_DSN'))->after('@')->before('/')->__toString()),
-
-    // this is optional, all project are allowed by default
-    'allowed-projects' => env('SENTRY_TUNNEL_ALLOWED_PROJECTS', Str::of(env('SENTRY_LARAVEL_DSN'))->afterLast('/')->__toString()),
+    'allowed-hosts' => explode(',', env('SENTRY_TUNNEL_ALLOWED_HOSTS', (string) Str::of(env('SENTRY_LARAVEL_DSN'))->after('@')->before('/'))),
 
     /*
-     * see the readme before disabling this
-     * is only relevant when you use the provided MiddlewareList
-     */
-    'use-auth-middleware' => env('SENTRY_TUNNEL_USE_AUTH_MIDDLEWARE', true),
+    |--------------------------------------------------------------------------
+    | Allowed Projects
+    |--------------------------------------------------------------------------
+    |
+    | This is the list of target sentry projects that are allowed to use the tunnel.
+    | It uses the value of 'SENTRY_LARAVEL_DSN' by default.
+    | If the value is empty, all projects are allowed. Otherwise, it should be a
+    | comma-separated list of project IDs.
+    */
+
+    'allowed-projects' => explode(',', env('SENTRY_TUNNEL_ALLOWED_PROJECTS', (string) Str::of(env('SENTRY_LARAVEL_DSN'))->afterLast('/'))),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Domain
+    |--------------------------------------------------------------------------
+    |
+    | This is the subdomain where the tunnel will be accessible from. If the
+    | setting is null, the route will reside under the same domain as the
+    | application. Otherwise, this value will be used as the subdomain.
+    |
+    */
+
+    'domain' => null,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tunnel url
+    |--------------------------------------------------------------------------
+    |
+    | This is the URI path of the tunnel. It is used to define the route that
+    | will be used to proxy the requests to Sentry.
+    |
+    */
+
+    'tunnel-url' => env('SENTRY_TUNNEL_URL', '/sentry/tunnel'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Route Middleware
+    |--------------------------------------------------------------------------
+    |
+    | These middlewares will be assigned to the tunnel route.
+    |
+    */
+
+    'middleware' => [
+        'web',
+    ],
 ];
