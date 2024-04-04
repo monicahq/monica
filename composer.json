@@ -9,12 +9,6 @@
     "social"
   ],
   "license": "AGPL-3.0-or-later",
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/asbiin/psalm-plugin-laravel"
-    }
-  ],
   "require": {
     "php": "^8.2",
     "ext-fileinfo": "*",
@@ -63,12 +57,10 @@
     "mockery/mockery": "^1.4",
     "nunomaduro/collision": "^8.1",
     "phpunit/phpunit": "^10.0",
-    "psalm/plugin-laravel": "dev-patch-1",
     "roave/security-advisories": "dev-master",
     "spatie/laravel-ignition": "^2.4",
     "stichoza/google-translate-php": "^5.1",
-    "thecodingmachine/phpstan-safe-rule": "^1.2",
-    "vimeo/psalm": "dev-master"
+    "thecodingmachine/phpstan-safe-rule": "^1.2"
   },
   "autoload": {
     "psr-4": {

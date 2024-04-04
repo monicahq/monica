@@ -11,6 +11,7 @@ concurrency:
 jobs:
   statics:
     name: Static analysis
-    uses: monicahq/workflows/.github/workflows/static.yml@v2
+    uses: monicahq/workflows/.github/workflows/static.yml@statics
     with:
       php-version: 8.3
+      with: phpstan
