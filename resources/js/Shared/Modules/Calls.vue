@@ -195,7 +195,8 @@ const destroy = (call) => {
               class="inline-block h-full"
               :masks="masks"
               :locale="$page.props.auth.user?.locale_ietf"
-              :is-dark="isDark()">
+              :is-dark="isDark()"
+              :max-date="new Date()">
               <template #default="{ inputValue, inputEvents }">
                 <input
                   class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
@@ -472,7 +473,8 @@ const destroy = (call) => {
                   v-model.string="form.called_at"
                   class="inline-block h-full"
                   :masks="masks"
-                  :is-dark="isDark()">
+                  :is-dark="isDark()"
+                  :max-date="new Date()">
                   <template #default="{ inputValue, inputEvents }">
                     <input
                       class="rounded border bg-white px-2 py-1 dark:bg-gray-900"

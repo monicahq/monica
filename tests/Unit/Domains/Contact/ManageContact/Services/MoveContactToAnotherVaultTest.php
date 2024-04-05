@@ -5,6 +5,7 @@ namespace Tests\Unit\Domains\Contact\ManageContact\Services;
 use App\Domains\Contact\ManageContact\Services\MoveContactToAnotherVault;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
+use App\Models\Company;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
@@ -28,6 +29,58 @@ class MoveContactToAnotherVaultTest extends TestCase
         $contact = Contact::factory()->create(['vault_id' => $vault->id]);
 
         $this->executeService($regis, $regis->account, $vault, $newVault, $contact);
+    }
+
+    /** @test */
+    public function it_moves_a_contact_to_another_vault_and_copy_the_company_information_if_there_are_multiple_contacts_in_it(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
+        $newVault = $this->createVault($regis->account);
+        $newVault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $newVault);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $company = Company::factory()->create(['vault_id' => $vault->id]);
+        Contact::factory()->count(2)->create(['vault_id' => $vault->id, 'company_id' => $company->id]);
+        $contact->company_id = $company->id;
+        $contact->save();
+
+        $this->executeService($regis, $regis->account, $vault, $newVault, $contact);
+
+        $this->assertDatabaseHas('companies', [
+            'id' => $company->id,
+        ]);
+
+        $this->assertDatabaseMissing('contacts', [
+            'id' => $contact->id,
+            'company_id' => $company->id,
+        ]);
+    }
+
+    /** @test */
+    public function it_moves_a_contact_to_another_vault_and_move_the_company_information_if_there_are_no_other_contacts_in_it(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
+        $newVault = $this->createVault($regis->account);
+        $newVault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $newVault);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $company = Company::factory()->create(['vault_id' => $vault->id]);
+        $contact->company_id = $company->id;
+        $contact->save();
+
+        $this->executeService($regis, $regis->account, $vault, $newVault, $contact);
+
+        $this->assertDatabaseMissing('companies', [
+            'id' => $company->id,
+            'vault_id' => $vault->id,
+        ]);
+
+        $this->assertDatabaseHas('companies', [
+            'id' => $company->id,
+            'vault_id' => $newVault->id,
+        ]);
     }
 
     /** @test */

@@ -2,6 +2,7 @@
 
 namespace App\Domains\Contact\ManageContact\Services;
 
+use App\Domains\Vault\ManageCompanies\Services\CreateCompany;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Interfaces\ServiceInterface;
 use App\Models\Contact;
@@ -50,6 +51,7 @@ class MoveContactToAnotherVault extends BaseService implements ServiceInterface
         $this->data = $data;
         $this->validate();
         $this->move();
+        $this->moveCompanyInformation();
         $this->updateLastEditedDate();
 
         return $this->contact;
@@ -76,6 +78,34 @@ class MoveContactToAnotherVault extends BaseService implements ServiceInterface
     {
         $this->contact->vault_id = $this->newVault->id;
         $this->contact->save();
+    }
+
+    /**
+     * If the contact belongs to a company, we should move the company
+     * information to the new vault as well.
+     * If the company only has this contact, we should move the company.
+     * However, if the company has other contacts, we should copy the company
+     * and move the contact to the new company.
+     */
+    private function moveCompanyInformation(): void
+    {
+        if ($this->contact->company) {
+            if ($this->contact->company->contacts->count() === 1) {
+                $this->contact->company->vault_id = $this->newVault->id;
+                $this->contact->company->save();
+            } else {
+                $newCompany = (new CreateCompany())->execute([
+                    'account_id' => $this->author->account_id,
+                    'author_id' => $this->author->id,
+                    'vault_id' => $this->newVault->id,
+                    'name' => $this->contact->company->name,
+                    'type' => $this->contact->company->type,
+                ]);
+
+                $this->contact->company_id = $newCompany->id;
+                $this->contact->save();
+            }
+        }
     }
 
     private function updateLastEditedDate(): void
