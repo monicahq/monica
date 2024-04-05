@@ -123,9 +123,7 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        RedirectIfAuthenticated::redirectUsing(function (Request $request) {
-            return route('vault.index', absolute: false);
-        });
+        RedirectIfAuthenticated::redirectUsing(fn () => route('vault.index', absolute: false));
 
         Password::defaults(function () {
             return $this->app->environment('production')
