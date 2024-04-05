@@ -21,7 +21,7 @@ permissions:
 jobs:
   tests:
     name: Run tests
-    uses: monicahq/workflows/.github/workflows/laravel.yml@v2
+    uses: monicahq/workflows/.github/workflows/laravel.yml@assets
     with:
       php-versions: "['8.2', '8.3']"
       connections: "['sqlite', 'mysql', 'pgsql']"
@@ -33,6 +33,6 @@ jobs:
 
   assets:
     name: Build assets
-    uses: monicahq/workflows/.github/workflows/build_assets.yml@v2
+    uses: monicahq/workflows/.github/workflows/build_assets.yml@assets
     with:
       node-version: 20
