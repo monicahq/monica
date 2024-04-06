@@ -144,4 +144,6 @@ return [
         'settings_preferences_maps' => 'user-and-account-settings/manage-preferences#timezone',
         'settings_account_deletion' => 'user-and-account-settings/account-deletion',
     ],
+
+    'uploadcare_public_key' => env('UPLOADCARE_PUBLIC_KEY', null),
 ];
