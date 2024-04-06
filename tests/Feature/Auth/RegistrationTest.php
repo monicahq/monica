@@ -15,6 +15,8 @@ class RegistrationTest extends TestCase
     #[Test]
     public function registration_screen_can_be_rendered()
     {
+        $this->withoutVite();
+
         if (! Features::enabled(Features::registration())) {
             return $this->markTestSkipped('Registration support is not enabled.');
         }

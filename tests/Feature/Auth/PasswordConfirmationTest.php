@@ -14,6 +14,8 @@ class PasswordConfirmationTest extends TestCase
     #[Test]
     public function confirm_password_screen_can_be_rendered()
     {
+        $this->withoutVite();
+
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get('/user/confirm-password');

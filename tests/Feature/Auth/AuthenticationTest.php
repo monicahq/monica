@@ -14,8 +14,9 @@ class AuthenticationTest extends TestCase
     #[Test]
     public function login_screen_can_be_rendered()
     {
+        $this->withoutVite();
+
         $response = $this->get('/login');
-        $response->dump();
 
         $response->assertStatus(200);
     }

@@ -18,6 +18,8 @@ class EmailVerificationTest extends TestCase
     #[Test]
     public function email_verification_screen_can_be_rendered()
     {
+        $this->withoutVite();
+
         if (! Features::enabled(Features::emailVerification())) {
             return $this->markTestSkipped('Email verification not enabled.');
         }
