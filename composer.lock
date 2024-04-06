@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7131e6db82474711c117f510221007c",
+    "content-hash": "a7bb5c9c0b8cd67afde0d64334647da1",
     "packages": [
         {
             "name": "asbiin/laravel-sentry-tunnel",
@@ -3880,7 +3880,7 @@
             "version": "v1.11.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:maxmind/MaxMind-DB-Reader-php.git",
+                "url": "https://github.com/maxmind/MaxMind-DB-Reader-php.git",
                 "reference": "1e66f73ffcf25e17c7a910a1317e9720a95497c7"
             },
             "dist": {
@@ -3934,6 +3934,10 @@
                 "geolocation",
                 "maxmind"
             ],
+            "support": {
+                "issues": "https://github.com/maxmind/MaxMind-DB-Reader-php/issues",
+                "source": "https://github.com/maxmind/MaxMind-DB-Reader-php/tree/v1.11.1"
+            },
             "time": "2023-12-02T00:09:23+00:00"
         },
         {
@@ -4437,16 +4441,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "3.2.3",
+            "version": "3.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "4d599a6e2351d6b6bf21737accdfe1a4ce3fdbb1"
+                "reference": "82c28278c1c8f7b82dcdab25692237f052ffc8d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/4d599a6e2351d6b6bf21737accdfe1a4ce3fdbb1",
-                "reference": "4d599a6e2351d6b6bf21737accdfe1a4ce3fdbb1",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/82c28278c1c8f7b82dcdab25692237f052ffc8d8",
+                "reference": "82c28278c1c8f7b82dcdab25692237f052ffc8d8",
                 "shasum": ""
             },
             "require": {
@@ -4539,7 +4543,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-30T18:22:00+00:00"
+            "time": "2024-04-05T09:58:10+00:00"
         },
         {
             "name": "nette/schema",
@@ -5129,16 +5133,16 @@
         },
         {
             "name": "paragonie/sodium_compat",
-            "version": "v1.20.0",
+            "version": "v1.20.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/sodium_compat.git",
-                "reference": "e592a3e06d1fa0d43988c7c7d9948ca836f644b6"
+                "reference": "1840b98d228bdad83869b191d7e51f9bb6624d8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/e592a3e06d1fa0d43988c7c7d9948ca836f644b6",
-                "reference": "e592a3e06d1fa0d43988c7c7d9948ca836f644b6",
+                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/1840b98d228bdad83869b191d7e51f9bb6624d8d",
+                "reference": "1840b98d228bdad83869b191d7e51f9bb6624d8d",
                 "shasum": ""
             },
             "require": {
@@ -5209,9 +5213,9 @@
             ],
             "support": {
                 "issues": "https://github.com/paragonie/sodium_compat/issues",
-                "source": "https://github.com/paragonie/sodium_compat/tree/v1.20.0"
+                "source": "https://github.com/paragonie/sodium_compat/tree/v1.20.1"
             },
-            "time": "2023-04-30T00:54:53+00:00"
+            "time": "2024-04-05T21:00:10+00:00"
         },
         {
             "name": "php-http/client-common",
@@ -11161,37 +11165,38 @@
         },
         {
             "name": "tightenco/ziggy",
-            "version": "v1.8.1",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tighten/ziggy.git",
-                "reference": "22dafc51f3f5ae5ed51f7cb6b566e6b9537f6937"
+                "reference": "f2ce6091078109f434e295a17adfac7378257ace"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tighten/ziggy/zipball/22dafc51f3f5ae5ed51f7cb6b566e6b9537f6937",
-                "reference": "22dafc51f3f5ae5ed51f7cb6b566e6b9537f6937",
+                "url": "https://api.github.com/repos/tighten/ziggy/zipball/f2ce6091078109f434e295a17adfac7378257ace",
+                "reference": "f2ce6091078109f434e295a17adfac7378257ace",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "laravel/framework": ">=5.4@dev"
+                "laravel/framework": ">=9.0",
+                "php": ">=8.1"
             },
             "require-dev": {
-                "orchestra/testbench": "^3.0 || ^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0",
-                "phpunit/phpunit": "^6.0 || ^7.0 || ^8.0 || ^9.0"
+                "orchestra/testbench": "^7.0 || ^8.0 || ^9.0",
+                "phpunit/phpunit": "^9.5 || ^10.3"
             },
             "type": "library",
             "extra": {
                 "laravel": {
                     "providers": [
-                        "Tightenco\\Ziggy\\ZiggyServiceProvider"
+                        "Tighten\\Ziggy\\ZiggyServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Tightenco\\Ziggy\\": "src/"
+                    "Tighten\\Ziggy\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -11212,7 +11217,7 @@
                     "email": "jacob@tighten.co"
                 }
             ],
-            "description": "Generates a Blade directive exporting all of your named Laravel routes. Also provides a nice route() helper function in JavaScript.",
+            "description": "Use your Laravel named routes in JavaScript.",
             "homepage": "https://github.com/tighten/ziggy",
             "keywords": [
                 "Ziggy",
@@ -11222,9 +11227,9 @@
             ],
             "support": {
                 "issues": "https://github.com/tighten/ziggy/issues",
-                "source": "https://github.com/tighten/ziggy/tree/v1.8.1"
+                "source": "https://github.com/tighten/ziggy/tree/v2.1.0"
             },
-            "time": "2023-10-12T18:31:26+00:00"
+            "time": "2024-03-26T16:04:23+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -13498,16 +13503,16 @@
         },
         {
             "name": "laravel-lang/locales",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Lang/locales.git",
-                "reference": "8cd288c5041731befc3b8cf9e63b8cc44b62cdc0"
+                "reference": "35aa06ee4ea58d210fca305341220698aeb6b356"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Lang/locales/zipball/8cd288c5041731befc3b8cf9e63b8cc44b62cdc0",
-                "reference": "8cd288c5041731befc3b8cf9e63b8cc44b62cdc0",
+                "url": "https://api.github.com/repos/Laravel-Lang/locales/zipball/35aa06ee4ea58d210fca305341220698aeb6b356",
+                "reference": "35aa06ee4ea58d210fca305341220698aeb6b356",
                 "shasum": ""
             },
             "require": {
@@ -13566,7 +13571,7 @@
                 "issues": "https://github.com/Laravel-Lang/locales/issues",
                 "source": "https://github.com/Laravel-Lang/locales"
             },
-            "time": "2024-03-13T09:48:27+00:00"
+            "time": "2024-04-06T12:33:47+00:00"
         },
         {
             "name": "laravel-lang/native-country-names",
@@ -14802,16 +14807,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.5.16",
+            "version": "10.5.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "18f8d4a5f52b61fdd9370aaae3167daa0eeb69cd"
+                "reference": "c1f736a473d21957ead7e94fcc029f571895abf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/18f8d4a5f52b61fdd9370aaae3167daa0eeb69cd",
-                "reference": "18f8d4a5f52b61fdd9370aaae3167daa0eeb69cd",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c1f736a473d21957ead7e94fcc029f571895abf5",
+                "reference": "c1f736a473d21957ead7e94fcc029f571895abf5",
                 "shasum": ""
             },
             "require": {
@@ -14883,7 +14888,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.16"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.17"
             },
             "funding": [
                 {
@@ -14899,7 +14904,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-28T10:08:10+00:00"
+            "time": "2024-04-05T04:39:01+00:00"
         },
         {
             "name": "roave/security-advisories",

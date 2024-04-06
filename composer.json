@@ -45,7 +45,7 @@
     "uploadcare/uploadcare-php": "^4.1"
   },
   "require-dev": {
-    "amirami/localizator": "^0",
+    "amirami/localizator": "^0.13.0-alpha",
     "barryvdh/laravel-debugbar": "^3.7",
     "barryvdh/laravel-ide-helper": "^3.0",
     "brianium/paratest": "^7.0",
