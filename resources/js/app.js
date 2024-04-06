@@ -4,13 +4,12 @@ import '../css/app.css';
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { ZiggyVue } from 'ziggy-js/dist/vue.es.js';
+import { ZiggyVue } from 'ziggy-js';
 import { i18nVue } from 'laravel-vue-i18n';
 import { sentry } from './sentry';
 import methods from './methods';
 
-const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
-const sentryConfigVal = typeof SentryConfig !== 'undefined' ? SentryConfig : {};
+const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Monica';
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
@@ -20,23 +19,20 @@ createInertiaApp({
   },
   setup({ el, App, props, plugin }) {
     return createApp({
-      render: () => h(App, props),
       mounted() {
-        this.$nextTick(() => {
+        this.$nextTick().then(() => {
           sentry.setContext(this);
         });
       },
+      render: () => h(App, props),
     })
       .use(plugin)
-      .use(ZiggyVue, Ziggy)
+      .use(ZiggyVue, window.Ziggy)
       .use(i18nVue, {
         resolve: (lang) => resolvePageComponent(`../../lang/${lang}.json`, import.meta.glob('../../lang/*.json')),
       })
-      .use(sentry, {
-        ...sentryConfigVal,
-        release: import.meta.env.VITE_SENTRY_RELEASE,
-      })
-      .mixin({ methods: Object.assign({ route }, methods) })
+      .use(sentry, props.initialPage.props.sentry)
+      .mixin({ methods: { route: window.route, ...methods } })
       .mount(el);
   },
 });

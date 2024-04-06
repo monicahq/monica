@@ -109,7 +109,7 @@ if (! function_exists('readVersion')) {
     /**
      * Read the version from the config file.
      */
-    function readVersion(string $file, string $gitCommand, ?string $default = null): string
+    function readVersion(string $file, string $gitCommand, ?string $default = null): ?string
     {
         $content = null;
         if (is_file($file)) {

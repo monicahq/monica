@@ -1,6 +1,5 @@
 @import 'charts.css';
 @import 'ant-design-vue/dist/reset.css';
-@import 'v-calendar/dist/style.css';
 
 @tailwind base;
 @tailwind components;

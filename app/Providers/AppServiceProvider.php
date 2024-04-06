@@ -23,6 +23,7 @@ use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\Rules\Password;
 use LaravelWebauthn\Facades\Webauthn;
+use LaravelWebauthn\Listeners\LoginViaRemember;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
@@ -118,7 +119,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (Config::get('app.force_url')) {
+        if (Config::get('app.force_url') === true) {
             URL::forceRootUrl(Str::of(config('app.url'))->ltrim('/'));
             URL::forceScheme('https');
         }
@@ -147,6 +148,7 @@ class AppServiceProvider extends ServiceProvider
         Webauthn::updateViewResponseUsing(WebauthnUpdateResponse::class);
         Webauthn::destroyViewResponseUsing(WebauthnDestroyResponse::class);
 
+        Event::subscribe(LoginViaRemember::class);
         Event::listen(FileDeleted::class, DeleteFileInStorage::class);
         Event::listen(SocialiteWasCalled::class, AzureExtendSocialite::class);
         Event::listen(SocialiteWasCalled::class, FacebookExtendSocialite::class);
