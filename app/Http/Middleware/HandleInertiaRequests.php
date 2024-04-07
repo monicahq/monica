@@ -40,6 +40,14 @@ class HandleInertiaRequests extends Middleware
                 'short' => substr(config('monica.commit'), 0, 7),
                 'url' => Str::finish(config('monica.repository', 'https://github.com/monicahq/monica/'), '/').'commit/'.config('monica.commit'),
             ]), 'underline text-xs dark:text-gray-100 hover:text-gray-900 hover:dark:text-gray-200'),
+            'sentry' => fn () => [
+                'dsn' => config('sentry.dsn'),
+                'tunnel' => config('sentry-tunnel.tunnel-url'),
+                'release' => config('sentry.release'),
+                'environment' => config('sentry.environment'),
+                'sendDefaultPii' => config('sentry.send_default_pii'),
+                'tracesSampleRate' => config('sentry.traces_sample_rate'),
+            ],
         ]);
     }
 }

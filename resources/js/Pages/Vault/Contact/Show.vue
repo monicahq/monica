@@ -144,7 +144,7 @@ const download = () => {
         try {
           document.body.appendChild(link);
           link.click();
-        } catch (e) {
+        } catch {
           document.body.removeChild(link);
         }
       }
