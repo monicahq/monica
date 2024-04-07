@@ -38,8 +38,8 @@ composer_install() {
 }
 
 yarn_install() {
-    yarn install --cwd $ROOT --immutable
-    yarn run --cwd $ROOT build
+    yarn --cwd $ROOT install --immutable
+    yarn --cwd $ROOT run build
 }
 
 setup() {
