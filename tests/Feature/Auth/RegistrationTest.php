@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Fortify\Features;
 use Laravel\Jetstream\Jetstream;
@@ -16,6 +15,8 @@ class RegistrationTest extends TestCase
     #[Test]
     public function registration_screen_can_be_rendered()
     {
+        $this->withoutVite();
+
         if (! Features::enabled(Features::registration())) {
             return $this->markTestSkipped('Registration support is not enabled.');
         }
@@ -42,6 +43,6 @@ class RegistrationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        $response->assertRedirect('/vaults');
     }
 }

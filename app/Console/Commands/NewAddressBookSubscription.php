@@ -9,7 +9,9 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'monica:newaddressbooksubscription')]
 class NewAddressBookSubscription extends Command
 {
     /**

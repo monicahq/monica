@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Support\Facades\File;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use function Safe\passthru;
@@ -13,6 +14,7 @@ use function Safe\putenv;
 /**
  * @codeCoverageIgnore
  */
+#[AsCommand(name: 'scribe:setup')]
 class SetupDocumentation extends Command
 {
     use ConfirmableTrait;

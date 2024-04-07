@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'app_version' => trim(is_file(__DIR__.'/.version') ? file_get_contents(__DIR__.'/.version') : (is_dir(__DIR__.'/../.git') ? (($v = trim(exec('git --git-dir '.base_path('.git').' describe --abbrev=0 --tags 2>/dev/null'))) != '' ? $v : '0.0.0') : '0.0.0')),
+    'app_version' => readVersion(__DIR__.'/.version', 'git describe --abbrev=0 --tags', '0.0.0'),
 
     /*
     |--------------------------------------------------------------------------
@@ -22,7 +22,7 @@ return [
     |
     */
 
-    'commit' => trim(is_file(__DIR__.'/.commit') ? file_get_contents(__DIR__.'/.commit') : (is_dir(__DIR__.'/../.git') ? trim(exec('git --git-dir '.base_path('.git').' log --pretty="%H" -n1')) : '')),
+    'commit' => readVersion(__DIR__.'/.commit', 'git log --pretty="%H" -n1 HEAD'),
 
     /*
     |--------------------------------------------------------------------------

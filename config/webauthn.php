@@ -228,7 +228,7 @@ return [
         \Cose\Algorithms::COSE_ALGORITHM_ES256, // ECDSA with SHA-256
         \Cose\Algorithms::COSE_ALGORITHM_ES512, // ECDSA with SHA-512
         \Cose\Algorithms::COSE_ALGORITHM_RS256, // RSASSA-PKCS1-v1_5 with SHA-256
-        \Cose\Algorithms::COSE_ALGORITHM_EdDSA, // EdDSA
+        \Cose\Algorithms::COSE_ALGORITHM_EDDSA, // EdDSA
         \Cose\Algorithms::COSE_ALGORITHM_ES384, // ECDSA with SHA-384
     ],
 

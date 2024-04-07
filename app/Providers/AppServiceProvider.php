@@ -2,26 +2,39 @@
 
 namespace App\Providers;
 
+use App\Domains\Contact\ManageDocuments\Events\FileDeleted;
+use App\Domains\Contact\ManageDocuments\Listeners\DeleteFileInStorage;
 use App\Helpers\CollectionHelper;
 use App\Http\Controllers\Profile\WebauthnDestroyResponse;
 use App\Http\Controllers\Profile\WebauthnUpdateResponse;
+use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\Rules\Password;
 use LaravelWebauthn\Facades\Webauthn;
+use LaravelWebauthn\Listeners\LoginViaRemember;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\MarkdownConverter;
+use SocialiteProviders\Azure\AzureExtendSocialite;
+use SocialiteProviders\Facebook\FacebookExtendSocialite;
+use SocialiteProviders\GitHub\GitHubExtendSocialite;
+use SocialiteProviders\Google\GoogleExtendSocialite;
+use SocialiteProviders\LinkedIn\LinkedInExtendSocialite;
+use SocialiteProviders\Manager\SocialiteWasCalled;
 use Tests\TestResponseMacros;
 
 class AppServiceProvider extends ServiceProvider
@@ -106,6 +119,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (Config::get('app.force_url') === true) {
+            URL::forceRootUrl(Str::of(config('app.url'))->ltrim('/'));
+            URL::forceScheme('https');
+        }
+
+        RedirectIfAuthenticated::redirectUsing(fn () => route('vault.index', absolute: false));
+
         Password::defaults(function () {
             return $this->app->environment('production')
                 // @codeCoverageIgnoreStart
@@ -118,11 +138,22 @@ class AppServiceProvider extends ServiceProvider
                 : Password::min(4);
         });
 
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+        });
         RateLimiter::for('oauth2-socialite', function (Request $request) {
             return Limit::perMinute(5)->by(optional($request->user())->id ?: $request->ip());
         });
 
         Webauthn::updateViewResponseUsing(WebauthnUpdateResponse::class);
         Webauthn::destroyViewResponseUsing(WebauthnDestroyResponse::class);
+
+        Event::subscribe(LoginViaRemember::class);
+        Event::listen(FileDeleted::class, DeleteFileInStorage::class);
+        Event::listen(SocialiteWasCalled::class, AzureExtendSocialite::class);
+        Event::listen(SocialiteWasCalled::class, FacebookExtendSocialite::class);
+        Event::listen(SocialiteWasCalled::class, GitHubExtendSocialite::class);
+        Event::listen(SocialiteWasCalled::class, GoogleExtendSocialite::class);
+        Event::listen(SocialiteWasCalled::class, LinkedInExtendSocialite::class);
     }
 }

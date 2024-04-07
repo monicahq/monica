@@ -3,7 +3,6 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
@@ -19,6 +18,8 @@ class EmailVerificationTest extends TestCase
     #[Test]
     public function email_verification_screen_can_be_rendered()
     {
+        $this->withoutVite();
+
         if (! Features::enabled(Features::emailVerification())) {
             return $this->markTestSkipped('Email verification not enabled.');
         }
@@ -52,7 +53,7 @@ class EmailVerificationTest extends TestCase
         Event::assertDispatched(Verified::class);
 
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
-        $response->assertRedirect(RouteServiceProvider::HOME.'?verified=1');
+        $response->assertRedirect('/vaults?verified=1');
     }
 
     #[Test]

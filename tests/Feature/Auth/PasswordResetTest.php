@@ -17,6 +17,8 @@ class PasswordResetTest extends TestCase
     #[Test]
     public function reset_password_link_screen_can_be_rendered()
     {
+        $this->withoutVite();
+
         if (! Features::enabled(Features::resetPasswords())) {
             return $this->markTestSkipped('Password updates are not enabled.');
         }
@@ -47,6 +49,8 @@ class PasswordResetTest extends TestCase
     #[Test]
     public function reset_password_screen_can_be_rendered()
     {
+        $this->withoutVite();
+
         if (! Features::enabled(Features::resetPasswords())) {
             return $this->markTestSkipped('Password updates are not enabled.');
         }

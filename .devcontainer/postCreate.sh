@@ -29,8 +29,6 @@ set_conf() {
     setenv "QUEUE_CONNECTION" "sync"
     setenv "SESSION_DRIVER" "database"
     setenv "MAIL_MAILER" "log"
-    setenv "MAIL_FROM_ADDRESS" "from@mail.com"
-    setenv "MAIL_REPLY_TO_ADDRESS" "reply@mail.com"
 }
 
 composer_install() {
