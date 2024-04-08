@@ -78,6 +78,7 @@ class Contact extends Model
      */
     protected $return_from_search = [
         'id',
+        'uuid',
         'first_name',
         'middle_name',
         'last_name',
