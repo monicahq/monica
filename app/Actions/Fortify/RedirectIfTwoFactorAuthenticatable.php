@@ -16,8 +16,6 @@ class RedirectIfTwoFactorAuthenticatable
 {
     /**
      * Create a new action instance.
-     *
-     * @return void
      */
     public function __construct(
         protected StatefulGuard $guard,
@@ -27,10 +25,8 @@ class RedirectIfTwoFactorAuthenticatable
 
     /**
      * Handle the incoming request.
-     *
-     * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         $user = $this->validateCredentials($request);
 
@@ -58,7 +54,6 @@ class RedirectIfTwoFactorAuthenticatable
 
     /**
      * Throw a failed authentication validation exception.
-     *
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -91,7 +86,7 @@ class RedirectIfTwoFactorAuthenticatable
     {
         $request->session()->put([
             'login.id' => $user->getKey(),
-            'login.remember' => $request->filled('remember'),
+            'login.remember' => $request->boolean('remember'),
         ]);
 
         TwoFactorAuthenticationChallenged::dispatch($user);
