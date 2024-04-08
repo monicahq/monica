@@ -41,26 +41,28 @@ class ProcessScheduledContactReminders implements ShouldQueue
 
             $contactReminder = ContactReminder::find($scheduledReminder->contact_reminder_id);
             $contact = $contactReminder->contact;
-            $contactName = NameHelper::formatContactName($userNotificationChannel->user, $contact);
 
-            if ($userNotificationChannel->type === UserNotificationChannel::TYPE_EMAIL) {
-                Notification::route('mail', $userNotificationChannel->content)
-                    ->notify(new ReminderTriggered($userNotificationChannel, $contactReminder->label, $contactName));
-            }
+            if ($contact !== null) {
+                $contactName = NameHelper::formatContactName($userNotificationChannel->user, $contact);
 
-            if ($userNotificationChannel->type === UserNotificationChannel::TYPE_TELEGRAM) {
-                Notification::route('telegram', $userNotificationChannel->content)
-                    ->notify(new ReminderTriggered($userNotificationChannel, $contactReminder->label, $contactName));
+                if ($userNotificationChannel->type === UserNotificationChannel::TYPE_EMAIL) {
+                    Notification::route('mail', $userNotificationChannel->content)
+                        ->notify(new ReminderTriggered($userNotificationChannel, $contactReminder->label, $contactName));
+                } elseif ($userNotificationChannel->type === UserNotificationChannel::TYPE_TELEGRAM) {
+                    Notification::route('telegram', $userNotificationChannel->content)
+                        ->notify(new ReminderTriggered($userNotificationChannel, $contactReminder->label, $contactName));
+                }
+
+                $this->updateNumberOfTimesTriggered($scheduledReminder->contact_reminder_id);
+
+                (new RescheduleContactReminderForChannel())->execute([
+                    'contact_reminder_id' => $scheduledReminder->contact_reminder_id,
+                    'user_notification_channel_id' => $scheduledReminder->user_notification_channel_id,
+                    'contact_reminder_scheduled_id' => $scheduledReminder->id,
+                ]);
             }
 
             $this->updateScheduledContactReminderTriggeredAt($scheduledReminder);
-            $this->updateNumberOfTimesTriggered($scheduledReminder->contact_reminder_id);
-
-            (new RescheduleContactReminderForChannel())->execute([
-                'contact_reminder_id' => $scheduledReminder->contact_reminder_id,
-                'user_notification_channel_id' => $scheduledReminder->user_notification_channel_id,
-                'contact_reminder_scheduled_id' => $scheduledReminder->id,
-            ]);
         }
     }
 
