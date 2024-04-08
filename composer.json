@@ -13,7 +13,7 @@
     "php": "^8.2",
     "ext-fileinfo": "*",
     "asbiin/laravel-sentry-tunnel": "^2.0",
-    "asbiin/laravel-webauthn": "^4.0",
+    "asbiin/laravel-webauthn": "^4.4",
     "codezero/laravel-localizer": "^3.0",
     "doctrine/dbal": "^3.6",
     "guzzlehttp/guzzle": "^7.4",

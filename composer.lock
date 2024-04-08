@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7bb5c9c0b8cd67afde0d64334647da1",
+    "content-hash": "f68048c67692666099fda98e1c1e2d82",
     "packages": [
         {
             "name": "asbiin/laravel-sentry-tunnel",
@@ -82,16 +82,16 @@
         },
         {
             "name": "asbiin/laravel-webauthn",
-            "version": "4.4.0",
+            "version": "4.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbiin/laravel-webauthn.git",
-                "reference": "3e5eaa22f51161e41eb66643675df72e3ba5f884"
+                "reference": "a47afc4bf20e9fd63749f08d6fa877748fe49faf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/3e5eaa22f51161e41eb66643675df72e3ba5f884",
-                "reference": "3e5eaa22f51161e41eb66643675df72e3ba5f884",
+                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/a47afc4bf20e9fd63749f08d6fa877748fe49faf",
+                "reference": "a47afc4bf20e9fd63749f08d6fa877748fe49faf",
                 "shasum": ""
             },
             "require": {
@@ -180,7 +180,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-03T15:01:42+00:00"
+            "time": "2024-04-08T20:50:21+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",

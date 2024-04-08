@@ -142,4 +142,11 @@ return [
         ]),
     ],
 
+    'pipelines' => [
+        'login' => [
+            \App\Actions\Fortify\RedirectIfTwoFactorAuthenticatable::class,
+            \Laravel\Fortify\Actions\AttemptToAuthenticate::class,
+            \Laravel\Fortify\Actions\PrepareAuthenticatedSession::class,
+        ],
+    ],
 ];
