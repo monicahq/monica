@@ -11,6 +11,7 @@ import WebauthnLogin from '@/Pages/Webauthn/WebauthnLogin.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 
 const props = defineProps({
+  isSignupEnabled: Boolean,
   canResetPassword: Boolean,
   status: String,
   wallpaperUrl: String,
@@ -195,7 +196,7 @@ const reload = () => {
           </form>
         </div>
 
-        <div class="px-6 py-6 text-sm dark:text-gray-50">
+        <div v-if="isSignupEnabled" class="px-6 py-6 text-sm dark:text-gray-50">
           {{ $t('New to Monica?') }}
           <Link :href="route('register')" class="text-blue-500 hover:underline">
             {{ $t('Create an account') }}
