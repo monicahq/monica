@@ -5,7 +5,7 @@ on:
     types: [labeled, opened, synchronize, reopened]
 
 env:
-  node-version: 18
+  node-version: 20
 
 concurrency:
   group: Cypress tests ${{ github.ref }}
@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.1']
+        php-version: ['8.2']
         browser: [chrome]
         containers: [1, 2, 3, 4, 5, 6, 7, 8]
 

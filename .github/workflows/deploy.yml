@@ -14,8 +14,8 @@ on:
   workflow_dispatch:
 
 env:
-  php-version: '8.1'
-  node-version: 18
+  php-version: '8.2'
+  node-version: 20
 
 concurrency:
   group: Deploy ${{ github.ref }}
