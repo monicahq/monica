@@ -296,7 +296,7 @@ export default {
     startRegister() {
       var self = this;
       this.errorMessage = '';
-      axios.get('webauthn/register')
+      axios.post('webauthn/keys/options')
         .then(response => {
           if (self.registerTab === '2') {
             var data = response.data.publicKey;
@@ -319,16 +319,15 @@ export default {
 
     webauthnRegisterCallback(data, redirect) {
       var self = this;
-      axios.post('webauthn/register', {
-        register: JSON.stringify(data),
+      axios.post('webauthn/keys', {
+        ...data,
         name: self.keyName,
       }).then(response => {
         self.success = true;
         self.notify(self.$t('settings.webauthn_success'), true);
         self.currentkeys.push({
-          id: response.data.id,
-          name: response.data.name,
-          counter: response.data.counter,
+          id: response.result.id,
+          name: response.result.name,
         });
       }).then(response => {
         if (redirect) {
@@ -346,7 +345,7 @@ export default {
     webauthnLoginCallback(data) {
       var self = this;
       axios.post('webauthn/auth', {
-        data: JSON.stringify(data)
+        ...data
       }).then(response => {
         self.success = true;
         self.notify(self.$t('settings.webauthn_success'), true);
@@ -359,13 +358,11 @@ export default {
 
     webauthnRemove(id) {
       var self = this;
-      axios.delete('webauthn/'+id)
+      axios.delete('webauthn/keys/'+id)
         .then(response => {
-          if (response.data.deleted === true) {
-            self.currentkeys.splice(self.currentkeys.indexOf(self.currentkeys.find(item => item.id === response.data.id)), 1);
-            self.success = true;
-            self.notify(self.$t('settings.webauthn_delete_success'), true);
-          }
+          self.currentkeys.splice(self.currentkeys.indexOf(self.currentkeys.find(item => item.id === response.data.id)), 1);
+          self.success = true;
+          self.notify(self.$t('settings.webauthn_delete_success'), true);
           self.closeDeleteModal();
         }).catch(error => {
           self.errorMessage = error.response.data.message;
