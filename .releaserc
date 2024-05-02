@@ -1,6 +1,7 @@
 {
   "branches": [
     "main",
+    "4.x",
     "next",
     "next-major",
     {"name": "beta", "prerelease": true},
