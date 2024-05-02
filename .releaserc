@@ -32,14 +32,6 @@
       {
         "changelogFile": "CHANGELOG.md"
       }
-    ],
-    "@semantic-release/github",
-    [
-      "semantic-release-github-pullrequest",
-      {
-        "assets": ["CHANGELOG.md"],
-        "labels": ["semantic-release", "auto-squash"]
-      }
     ]
   ]
 }
