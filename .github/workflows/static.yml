@@ -1,26 +1,26 @@
-# name: Static analysis
+name: Static analysis
 
-# on:
-#   pull_request:
-#     types: [opened, synchronize, reopened]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 #   workflow_run:
 #     workflows: ['Compress images']
 #     types: [completed]
 
-# env:
-#   php-version: '8.2'
+env:
+  php-version: '8.2'
 
 # concurrency:
 #   group: Static analysis ${{ github.ref }}
 #   cancel-in-progress: true
 
-# jobs:
-#   psalm:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout sources
-#         uses: actions/checkout@v4
+jobs:
+  psalm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
 
 #       - name: Setup PHP ${{ env.php-version }}
 #         uses: shivammathur/setup-php@v2
@@ -49,11 +49,11 @@
 #         run: vendor/bin/psalm --output-format=github
 
 
-#   phpstan:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout sources
-#         uses: actions/checkout@v4
+  phpstan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
 
 #       - name: Setup PHP ${{ env.php-version }}
 #         uses: shivammathur/setup-php@v2

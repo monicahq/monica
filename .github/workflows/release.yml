@@ -9,6 +9,7 @@ on:
       - next-major
       - beta
       - alpha
+      - 4.x
 
   workflow_dispatch:
 
