@@ -9,7 +9,7 @@ on:
     types: [completed]
 
 env:
-  php-version: '8.1'
+  php-version: '8.2'
 
 concurrency:
   group: Static analysis ${{ github.ref }}

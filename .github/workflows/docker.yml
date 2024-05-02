@@ -6,8 +6,8 @@ on:
       - main
 
 env:
-  php-version: '8.1'
-  node-version: 18
+  php-version: '8.2'
+  node-version: 20
 
 concurrency:
   group: Docker ${{ github.ref }}
@@ -32,7 +32,8 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v4
         with:
           images: ghcr.io/monicahq/monica
-          tag-sha: true
+          tags: |
+            type=sha
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2

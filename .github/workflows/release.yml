@@ -13,9 +13,9 @@ on:
   workflow_dispatch:
 
 env:
-  php-version: '8.1'
-  build-node-version: 18
-  semantic-node-version: 18
+  php-version: '8.2'
+  build-node-version: 20
+  semantic-node-version: 20
 
 jobs:
   ####################
