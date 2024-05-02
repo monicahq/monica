@@ -49,11 +49,11 @@ jobs:
 #         run: vendor/bin/psalm --output-format=github
 
 
-#   phpstan:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout sources
-#         uses: actions/checkout@v4
+  phpstan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
 
 #       - name: Setup PHP ${{ env.php-version }}
 #         uses: shivammathur/setup-php@v2
