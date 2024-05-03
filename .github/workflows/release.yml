@@ -44,6 +44,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: changelog
+          run-id: 8937613632
 
       - name: Setup PHP ${{ env.php-version }}
         uses: shivammathur/setup-php@v2
