@@ -29,18 +29,16 @@ echo ""
 
 # BUILD
 composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --no-dev --working-dir=$ROOT
-yarn install --cwd $ROOT --immutable
-yarn run --cwd $ROOT build
+yarn --cwd $ROOT install --immutable
+yarn --cwd $ROOT run build
 
 
 # PACKAGE
 package=monica-$version
 mkdir -p $package/database
-ln -s $ROOT/.env.example $package/
 ln -s $ROOT/.dockerignore $package/
 ln -s $ROOT/.editorconfig $package/
-ln -s $ROOT/.eslintignore $package/
-ln -s $ROOT/.eslintrc.yml $package/
+ln -s $ROOT/.env.example $package/
 ln -s $ROOT/.prettierignore $package/
 ln -s $ROOT/.prettierrc.json $package/
 ln -s $ROOT/.tool-versions $package/
@@ -48,15 +46,18 @@ ln -s $ROOT/.yarnrc.yml $package/
 ln -s $ROOT/artisan $package/
 ln -s $ROOT/composer.json $package/
 ln -s $ROOT/composer.lock $package/
+ln -s $ROOT/eslint.config.js $package/
+ln -s $ROOT/jsconfig.json $package/
 ln -s $ROOT/LICENSE.md $package/
 ln -s $ROOT/package.json $package/
 ln -s $ROOT/postcss.config.js $package/
 ln -s $ROOT/README.md $package/
 ln -s $ROOT/SECURITY.md $package/
-ln -s $ROOT/server.php $package/
 ln -s $ROOT/tailwind.config.js $package/
 ln -s $ROOT/vite.config.js $package/
 ln -s $ROOT/yarn.lock $package/
+ln -s $ROOT/.devcontainer $package/
+ln -s $ROOT/.yarn $package/
 ln -s $ROOT/app $package/
 ln -s $ROOT/bootstrap $package/
 ln -s $ROOT/config $package/
