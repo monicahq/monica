@@ -45,6 +45,7 @@ jobs:
         with:
           name: changelog
           run-id: 8937613632
+          github-token: ${{ secrets.GH_DOWNLOAD_TOKEN }}
 
       - name: Setup PHP ${{ env.php-version }}
         uses: shivammathur/setup-php@v2
