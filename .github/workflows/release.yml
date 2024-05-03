@@ -2,8 +2,7 @@ name: Release
 
 on:
   pull_request:
-    branches:
-      - 20250503-fix-package
+    types: [opened, synchronize, reopened]
   push:
     branches:
       - next
