@@ -164,4 +164,5 @@ jobs:
         with:
           workflow: Release update
           repo: monicahq/docker
+          ref: refs/heads/main
           token: ${{ secrets.DOCKER_GITHUB_TOKEN }}

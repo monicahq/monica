@@ -188,7 +188,7 @@ jobs:
       - name: Deploy
         run: |
           git remote add deploy $REPO_URL
-          git push deploy ${{ github.ref_name }}:master --force
+          git push deploy HEAD:master --force
         env:
           # This avoids a failure when the client does not know the SSH Host already
           GIT_SSH_COMMAND: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
