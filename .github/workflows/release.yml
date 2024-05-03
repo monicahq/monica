@@ -24,7 +24,7 @@ jobs:
     if: github.event_name != 'pull_request'
     uses: monicahq/workflows/.github/workflows/release.yml@v2
     with:
-      semantic_version: 19
+      semantic_version: 23
     secrets:
       GH_TOKEN_RELEASE: ${{ secrets.GH_TOKEN_RELEASE }}
 
