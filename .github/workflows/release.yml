@@ -37,9 +37,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          # ref: v${{ needs.semantic.outputs.new_release_version }}
-          ref: v5.0.0-beta.4
+
       - name: Download changelog file
         uses: actions/download-artifact@v4
         with:
