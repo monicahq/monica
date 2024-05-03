@@ -3,6 +3,8 @@ name: Release
 on:
   pull_request:
     branches-ignore: ['*']
+    branches:
+      - 20250503-fix-package
   push:
     branches:
       - next
@@ -20,25 +22,26 @@ jobs:
   ####################
   # Semantic release
   ####################
-  semantic:
-    if: github.event_name != 'pull_request'
-    uses: monicahq/workflows/.github/workflows/release.yml@v2
-    with:
-      semantic_version: 23
-    secrets:
-      GH_TOKEN_RELEASE: ${{ secrets.GH_TOKEN_RELEASE }}
+  # semantic:
+  #   if: github.event_name != 'pull_request'
+  #   uses: monicahq/workflows/.github/workflows/release.yml@v2
+  #   with:
+  #     semantic_version: 23
+  #   secrets:
+  #     GH_TOKEN_RELEASE: ${{ secrets.GH_TOKEN_RELEASE }}
 
   package:
-    needs: semantic
+    # needs: semantic
     runs-on: ubuntu-latest
     name: Package release
-    if: needs.semantic.outputs.new_release_published == 'true'
+    # if: needs.semantic.outputs.new_release_published == 'true'
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: v${{ needs.semantic.outputs.new_release_version }}
+          # ref: v${{ needs.semantic.outputs.new_release_version }}
+          ref: v5.0.0-beta.4
       - name: Download changelog file
         uses: actions/download-artifact@v4
         with:
@@ -78,16 +81,22 @@ jobs:
 
       - name: Create package
         id: package
-        run: scripts/ci/package.sh 'v${{ needs.semantic.outputs.new_release_version }}' $GITHUB_SHA
+        # run: scripts/ci/package.sh 'v${{ needs.semantic.outputs.new_release_version }}' $GITHUB_SHA
+        run: scripts/ci/package.sh 'v5.0.0-beta.4' $GITHUB_SHA
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
 
       - name: Publish package
+        # run: |
+        #   for f in {${{ steps.package.outputs.package }},${{ steps.package.outputs.assets }}}{,.asc,.sha512,.sha512.asc}; do
+        #     echo "Uploading release file '$f'…"
+        #     gh release upload 'v${{ needs.semantic.outputs.new_release_version }}' "$f" --clobber
+        #   done
         run: |
           for f in {${{ steps.package.outputs.package }},${{ steps.package.outputs.assets }}}{,.asc,.sha512,.sha512.asc}; do
             echo "Uploading release file '$f'…"
-            gh release upload 'v${{ needs.semantic.outputs.new_release_version }}' "$f" --clobber
+            gh release upload 'v5.0.0-beta.4' "$f" --clobber
           done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -105,10 +114,11 @@ jobs:
           path: ${{ steps.package.outputs.assets }}
 
   docker-workflow:
-    needs: [semantic, package]
+    # needs: [semantic, package]
+    needs: [package]
     runs-on: ubuntu-latest
     name: Docker release create
-    if: needs.semantic.outputs.new_release_published == 'true'
+    # if: needs.semantic.outputs.new_release_published == 'true'
 
     steps:
       - name: Dispatch docker release
