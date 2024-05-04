@@ -20,9 +20,7 @@ class EnsureSignupIsEnabled
 
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$this->signupHelper->isEnabled()) {
-            abort(Response::HTTP_FORBIDDEN, $this->translator->get('auth.signup_disabled'));
-        }
+        abort_if(! $this->signupHelper->isEnabled(), 403, trans('Registration is currently disabled'));
 
         return $next($request);
     }
