@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace App\Helpers;
 
 use App\Models\Account;
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
+use Illuminate\Contracts\Config\Repository as Config;
 
 class SignupHelper
 {
-    protected ConfigRepository $configRepository;
-
-    public function __construct(ConfigRepository $configRepository)
-    {
-        $this->configRepository = $configRepository;
-    }
+    public function __construct(
+        protected Config $config
+    )
+    {  }
 
     public function isEnabled(): bool
     {
@@ -23,7 +21,7 @@ class SignupHelper
 
     protected function isDisabledByConfig(): bool
     {
-        return (bool) $this->configRepository->get('monica.disable_signup');
+        return (bool) $this->config->get('monica.disable_signup');
     }
 
     protected function hasAtLeastOneAccount(): bool
