@@ -2,7 +2,9 @@ name: Unit tests
 
 on:
   push:
-    branches: [main]
+    branches: 
+      - main
+      - 4.x
   pull_request:
     types: [opened, synchronize, reopened]
     branches-ignore: ['l10n_main*']
@@ -14,8 +16,8 @@ on:
     types: [completed]
 
 env:
-  default-php-version: '8.1'
-  node-version: 18
+  default-php-version: '8.2'
+  node-version: 20
 
 concurrency:
   group: Unit tests ${{ github.ref }}
@@ -32,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.1']
+        php-version: ['8.2']
         connection: [mysql]
         testsuite: [Api, Feature, Commands-Other, Commands-Scheduling, Unit-Models, Unit-Services]
         # exclude:
@@ -152,7 +154,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.1']
+        php-version: ['8.2']
         connection: [mysql]
 
     steps:

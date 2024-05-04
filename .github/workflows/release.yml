@@ -9,13 +9,14 @@ on:
       - next-major
       - beta
       - alpha
+      - 4.x
 
   workflow_dispatch:
 
 env:
-  php-version: '8.1'
-  build-node-version: 18
-  semantic-node-version: 18
+  php-version: '8.2'
+  build-node-version: 20
+  semantic-node-version: 20
 
 jobs:
   ####################
@@ -42,17 +43,16 @@ jobs:
           node-version: ${{ env.semantic-node-version }}
 
       - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v3
+        uses: cycjimmy/semantic-release-action@v4
         id: semantic
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN_RELEASE: ${{ secrets.GH_TOKEN_RELEASE }}
         with:
-          semantic_version: 19
+          semantic_version: 23
           extra_plugins: |
-            conventional-changelog-conventionalcommits@5.0.0
+            conventional-changelog-conventionalcommits@7
             @semantic-release/changelog@6
-            semantic-release-github-pullrequest
 
       - name: New release published
         if: steps.semantic.outputs.new_release_published == 'true'
@@ -164,4 +164,5 @@ jobs:
         with:
           workflow: Release update
           repo: monicahq/docker
+          ref: refs/heads/main
           token: ${{ secrets.DOCKER_GITHUB_TOKEN }}

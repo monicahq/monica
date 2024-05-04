@@ -1,6 +1,7 @@
 {
   "branches": [
     "main",
+    "4.x",
     "next",
     "next-major",
     {"name": "beta", "prerelease": true},
@@ -32,13 +33,6 @@
         "changelogFile": "CHANGELOG.md"
       }
     ],
-    "@semantic-release/github",
-    [
-      "semantic-release-github-pullrequest",
-      {
-        "assets": ["CHANGELOG.md"],
-        "labels": ["semantic-release", "auto-squash"]
-      }
-    ]
+    "@semantic-release/github"
   ]
 }
