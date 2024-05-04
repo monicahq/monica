@@ -12,14 +12,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EnsureSignupIsEnabled
 {
-    protected SignupHelper $signupHelper;
-    protected Translator $translator;
-
-    public function __construct(SignupHelper $signupHelper, Translator $translator)
-    {
-        $this->signupHelper = $signupHelper;
-        $this->translator = $translator;
-    }
+    public function __construct(
+        protected SignupHelper $signupHelper,
+        protected Translator $translator
+    )
+    { }
 
     public function handle(Request $request, Closure $next): Response
     {
