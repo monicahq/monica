@@ -15,12 +15,10 @@ use LaravelWebauthn\Facades\Webauthn;
 
 class LoginController extends Controller
 {
-    protected SignupHelper $signupHelper;
-
-    public function __construct(SignupHelper $signupHelper)
-    {
-        $this->signupHelper = $signupHelper;
-    }
+    public function __construct(
+        protected SignupHelper $signupHelper
+    )
+    { }
 
     /**
      * Display the login view.
