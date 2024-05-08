@@ -17,8 +17,8 @@ class LoginController extends Controller
 {
     public function __construct(
         protected SignupHelper $signupHelper
-    )
-    { }
+    ) {
+    }
 
     /**
      * Display the login view.

@@ -23,6 +23,7 @@ class RegistrationTest extends TestCase
         $this->app->bind(SignupHelper::class, function () use (&$isSignupEnabled) {
             $mock = Mockery::mock(SignupHelper::class)->makePartial();
             $mock->shouldReceive('isEnabled')->andReturn($isSignupEnabled);
+
             return $mock;
         });
 
@@ -42,6 +43,7 @@ class RegistrationTest extends TestCase
         $this->app->bind(SignupHelper::class, function () use (&$isSignupEnabled) {
             $mock = Mockery::mock(SignupHelper::class)->makePartial();
             $mock->shouldReceive('isEnabled')->andReturn($isSignupEnabled);
+
             return $mock;
         });
 
@@ -61,7 +63,6 @@ class RegistrationTest extends TestCase
 
         $isSignupEnabled = true;
         $response = $this->post('/register', $data);
-        $response->assertStatus(Response::HTTP_OK);
         $this->assertAuthenticated();
         $response->assertRedirect('/vaults');
     }

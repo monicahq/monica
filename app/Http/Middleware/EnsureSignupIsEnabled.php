@@ -13,12 +13,12 @@ class EnsureSignupIsEnabled
 {
     public function __construct(
         protected SignupHelper $signupHelper,
-    )
-    { }
+    ) {
+    }
 
     public function handle(Request $request, Closure $next): Response
     {
-        abort_if(!$this->signupHelper->isEnabled(), 403, trans('Registration is currently disabled'));
+        abort_if(! $this->signupHelper->isEnabled(), 403, trans('Registration is currently disabled'));
 
         return $next($request);
     }

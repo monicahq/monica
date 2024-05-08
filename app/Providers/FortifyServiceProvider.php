@@ -71,7 +71,7 @@ class FortifyServiceProvider extends ServiceProvider
         $router = $this->app->make(Router::class);
         $routes = $router->getRoutes();
         collect(['create', 'store'])->each(function ($method) use ($routes) {
-            if ($route = $routes->getByAction(RegisteredUserController::class . '@' . $method)) {
+            if ($route = $routes->getByAction(RegisteredUserController::class.'@'.$method)) {
                 $route->middleware('monica.signup_is_enabled');
             }
         });

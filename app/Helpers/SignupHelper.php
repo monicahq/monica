@@ -11,12 +11,12 @@ class SignupHelper
 {
     public function __construct(
         protected Config $config
-    )
-    {  }
+    ) {
+    }
 
     public function isEnabled(): bool
     {
-        return !($this->isDisabledByConfig() && $this->hasAtLeastOneAccount());
+        return ! ($this->isDisabledByConfig() && $this->hasAtLeastOneAccount());
     }
 
     protected function isDisabledByConfig(): bool
@@ -26,6 +26,6 @@ class SignupHelper
 
     protected function hasAtLeastOneAccount(): bool
     {
-        return !empty(Account::first());
+        return ! empty(Account::first());
     }
 }
