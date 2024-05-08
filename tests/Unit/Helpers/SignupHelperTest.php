@@ -2,20 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Tests\PHPUnit\Helpers;
+namespace Tests\Unit\Helpers;
 
 use App\Helpers\SignupHelper;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Mockery;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 #[CoversClass(SignupHelper::class)]
 class SignupHelperTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     #[DataProvider('isEnabledDataProvider')]
     public function testIsEnabled(bool $isSignupDisabled, bool $hasAtLeastOneAccount, bool $expectedResult): void
     {
