@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 return [
     'failed' => 'These credentials do not match our records.',
-    'signup_disabled' => 'Registration is currently disabled',
     'lang' => 'English',
     'login_provider_azure' => 'Microsoft',
     'login_provider_facebook' => 'Facebook',

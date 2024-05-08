@@ -6,7 +6,6 @@ namespace App\Http\Middleware;
 
 use App\Helpers\SignupHelper;
 use Closure;
-use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -14,13 +13,12 @@ class EnsureSignupIsEnabled
 {
     public function __construct(
         protected SignupHelper $signupHelper,
-        protected Translator $translator
     )
     { }
 
     public function handle(Request $request, Closure $next): Response
     {
-        abort_if(! $this->signupHelper->isEnabled(), 403, trans('Registration is currently disabled'));
+        abort_if(!$this->signupHelper->isEnabled(), 403, trans('Registration is currently disabled'));
 
         return $next($request);
     }
