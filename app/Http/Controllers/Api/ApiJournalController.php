@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use App\Models\Journal\Entry;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Journal\Entry as JournalResource;
+use App\Models\Journal\Entry;
+use App\Services\Journal\CreateEntry;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class ApiJournalController extends ApiController
 {
@@ -49,32 +51,34 @@ class ApiJournalController extends ApiController
     }
 
     /**
-     * Store the call.
+     * Store the entry.
      *
      * @param  Request  $request
      * @return JournalResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        $isvalid = $this->validateUpdate($request);
-        if ($isvalid !== true) {
-            return $isvalid;
-        }
-
         try {
-            $entry = Entry::create(
+            $entry = app(CreateEntry::class)->execute(
                 $request->except(['account_id'])
-                + ['account_id' => auth()->user()->account_id]
+                +
+                [
+                    'account_id' => auth()->user()->account_id,
+                ]
             );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            return $this->respondInvalidQuery();
         }
 
         return new JournalResource($entry);
     }
 
     /**
-     * Update the note.
+     * Update the entry.
      *
      * @param  Request  $request
      * @param  int  $entryId

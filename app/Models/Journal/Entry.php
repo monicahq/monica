@@ -35,7 +35,15 @@ class Entry extends Model implements IsJournalableInterface
         'account_id',
         'title',
         'post',
+        'date',
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array<string>
+     */
+    protected $dates = ['date'];
 
     /**
      * Get the account record associated with the entry.
@@ -45,18 +53,6 @@ class Entry extends Model implements IsJournalableInterface
     public function account()
     {
         return $this->belongsTo(Account::class);
-    }
-
-    /**
-     * Get the Entry date.
-     *
-     * @param  string  $value
-     * @return \Carbon\Carbon
-     */
-    public function getDateAttribute($value)
-    {
-        // Default to created_at, but show journalEntry->date if the entry type is JournalEntry
-        return $this->journalEntry ? $this->journalEntry->date : $this->created_at;
     }
 
     /**
