@@ -1,5 +1,5 @@
 services:
-  laravel.test:
+  laravel.test: &app
     build:
       context: ./vendor/laravel/sail/runtimes/8.3
       dockerfile: Dockerfile
@@ -28,31 +28,11 @@ services:
       - meilisearch
       - mailpit
   laravel.queue:
-    build:
-      context: ./vendor/laravel/sail/runtimes/8.3
-      dockerfile: Dockerfile
-      args:
-        WWWGROUP: '${WWWGROUP}'
-    image: sail-8.3/app
+    <<: *app
     command: 'php artisan queue:work --sleep=10 --timeout=0 --tries=3 --queue=high,default,low'
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
-    environment:
-      WWWUSER: '${WWWUSER}'
-      LARAVEL_SAIL: 1
-      XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-      XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
-      IGNITION_LOCAL_SITES_PATH: '${PWD}'
-    volumes:
-      - '.:/var/www/html'
-    networks:
-      - sail
-    depends_on:
-      - mariadb
-      - redis
-      - memcached
-      - meilisearch
-      - mailpit
+  laravel.cron:
+    <<: *app
+    command: 'php artisan schedule:run'
   mariadb:
     image: 'mariadb:10'
     ports:
