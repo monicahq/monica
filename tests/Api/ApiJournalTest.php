@@ -15,6 +15,7 @@ class ApiJournalTest extends ApiTestCase
         'object',
         'title',
         'post',
+        'date',
         'account' => [
             'id',
         ],
@@ -94,6 +95,7 @@ class ApiJournalTest extends ApiTestCase
         $response = $this->json('POST', '/api/journal', [
             'title' => 'my title',
             'post' => 'content post',
+            'date' => '2024-01-01',
         ]);
 
         $response->assertStatus(201);
@@ -106,6 +108,7 @@ class ApiJournalTest extends ApiTestCase
             'id' => $entryId,
             'title' => 'my title',
             'post' => 'content post',
+            'date' => '2024-01-01T00:00:00.000000Z',
         ]);
 
         $this->assertGreaterThan(0, $entryId);
@@ -114,6 +117,7 @@ class ApiJournalTest extends ApiTestCase
             'id' => $entryId,
             'title' => 'my title',
             'post' => 'content post',
+            'date' => '2024-01-01',
         ]);
     }
 
@@ -125,8 +129,8 @@ class ApiJournalTest extends ApiTestCase
         $response = $this->json('POST', '/api/journal', []);
 
         $this->expectDataError($response, [
-            'The title field is required.',
             'The post field is required.',
+            'The date field is required.',
         ]);
     }
 
@@ -136,12 +140,14 @@ class ApiJournalTest extends ApiTestCase
         $user = $this->signin();
         $entry = factory(Entry::class)->create([
             'account_id' => $user->account_id,
-            'title' => 'xxx',
+            'post' => 'xxx',
+            'date' => '2024-01-01',
         ]);
 
         $response = $this->json('PUT', '/api/journal/'.$entry->id, [
             'title' => 'my title',
             'post' => 'content post',
+            'date' => '2024-01-02',
         ]);
 
         $response->assertStatus(200);
@@ -155,6 +161,7 @@ class ApiJournalTest extends ApiTestCase
             'id' => $entryId,
             'title' => 'my title',
             'post' => 'content post',
+            'date' => '2024-01-02T00:00:00.000000Z',
         ]);
 
         $this->assertGreaterThan(0, $entryId);
@@ -163,6 +170,7 @@ class ApiJournalTest extends ApiTestCase
             'id' => $entryId,
             'title' => 'my title',
             'post' => 'content post',
+            'date' => '2024-01-02',
         ]);
     }
 
@@ -177,8 +185,8 @@ class ApiJournalTest extends ApiTestCase
         $response = $this->json('PUT', '/api/journal/'.$entry->id, []);
 
         $this->expectDataError($response, [
-            'The title field is required.',
             'The post field is required.',
+            'The date field is required.',
         ]);
     }
 
@@ -210,6 +218,8 @@ class ApiJournalTest extends ApiTestCase
 
         $response = $this->json('DELETE', '/api/journal/0');
 
-        $this->expectNotFound($response);
+        $this->expectDataError($response, [
+            'The selected id is invalid.',
+        ]);
     }
 }

@@ -43,9 +43,9 @@ class JournalEntryTest extends FeatureTestCase
             'account_id' => $user->account_id,
             'title' => 'This is the title',
             'post' => 'this is a post',
+            'date' => '2017-01-01',
         ]);
-        $entry->date = '2017-01-01';
-        $journalEntry = JournalEntry::add($entry);
+        JournalEntry::add($entry);
 
         $params = [
             'entry' => 'Good day',

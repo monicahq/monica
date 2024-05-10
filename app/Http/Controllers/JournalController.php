@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DateHelper;
-use App\Models\Journal\Day;
-use Illuminate\Http\Request;
-use App\Models\Journal\Entry;
 use App\Helpers\JournalHelper;
-use App\Models\Journal\JournalEntry;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Journal\DaysRequest;
+use App\Models\Journal\Day;
+use App\Models\Journal\Entry;
+use App\Models\Journal\JournalEntry;
+use App\Services\Journal\CreateEntry;
+use App\Services\Journal\DestroyEntry;
+use App\Services\Journal\UpdateEntry;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class JournalController extends Controller
 {
@@ -33,12 +37,12 @@ class JournalController extends Controller
 
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-        $sortBy = $request->input('sort_by', 'created_at'); 
-        $sortOrder = $request->input('sort_order', 'desc'); 
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'desc');
         $perPage = $request->input('per_page', 30);
 
         $entries = collect([]);
-        
+
         $journalEntriesQuery = auth()->user()->account->journalEntries();
 
         if ($startDate && $endDate) {
@@ -46,7 +50,7 @@ class JournalController extends Controller
                 ->whereDate('date', '<=', $endDate);
         }
         $journalEntries = $journalEntriesQuery->orderBy($sortBy, $sortOrder)
-        ->paginate($perPage);
+            ->paginate($perPage);
 
 
         // this is needed to determine if we need to display the calendar
@@ -90,7 +94,7 @@ class JournalController extends Controller
     /**
      * Gets the details of a single Journal Entry.
      *
-     * @param  JournalEntry  $journalEntry
+     * @param JournalEntry $journalEntry
      * @return array
      */
     public function get(JournalEntry $journalEntry)
@@ -160,35 +164,28 @@ class JournalController extends Controller
     /**
      * Saves the journal entry.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function save(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'entry' => 'required|string',
-            'date' => 'required|date',
-        ]);
-
-        if ($validator->fails()) {
+        try {
+            app(CreateEntry::class)->execute(
+                $request->except(['account_id'])
+                +
+                [
+                    'account_id' => $request->user()->account_id,
+                    'post' => $request->input('entry'),
+                ]
+            );
+        } catch (ValidationException $e) {
             return back()
                 ->withInput()
-                ->withErrors($validator);
+                ->withErrors($e->validator);
+        } catch (Throwable $e) {
+            return back()
+                ->withInput();
         }
-
-        $entry = new Entry;
-        $entry->account_id = $request->user()->account_id;
-        $entry->post = $request->input('entry');
-
-        if ($request->input('title') != '') {
-            $entry->title = $request->input('title');
-        }
-
-        $entry->save();
-
-        $entry->date = $request->input('date');
-        // Log a journal entry
-        JournalEntry::add($entry);
 
         return redirect()->route('journal.index');
     }
@@ -196,7 +193,7 @@ class JournalController extends Controller
     /**
      * Display the Edit journal entry screen.
      *
-     * @param  Entry  $entry
+     * @param Entry $entry
      * @return \Illuminate\View\View
      */
     public function edit(Entry $entry)
@@ -204,12 +201,12 @@ class JournalController extends Controller
         return view('journal.edit')
             ->withEntry($entry);
     }
-    
+
     /**
      * Method updateDay
      *
      * @param Request $request
-     * @param Day $day 
+     * @param Day $day
      *
      */
     public function updateDay(Request $request, Day $day)
@@ -226,48 +223,46 @@ class JournalController extends Controller
     /**
      * Update a journal entry.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Entry $entry)
     {
-        $validator = Validator::make($request->all(), [
-            'entry' => 'required|string',
-            'date' => 'required|date',
-        ]);
-
-        if ($validator->fails()) {
+        try {
+            app(UpdateEntry::class)->execute(
+                $request->except(['account_id', 'id'])
+                +
+                [
+                    'account_id' => $request->user()->account_id,
+                    'id' => $entry->id,
+                    'post' => $request->input('entry'),
+                ]
+            );
+        } catch (ValidationException $e) {
             return back()
                 ->withInput()
-                ->withErrors($validator);
-        }
-
-        $entry->post = $request->input('entry');
-
-        if ($request->input('title') != '') {
-            $entry->title = $request->input('title');
-        }
-
-        $entry->save();
-
-        // Update journal entry
-        $journalEntry = $entry->journalEntry;
-        if ($journalEntry) {
-            $entry->date = $request->input('date');
-            $journalEntry->edit($entry);
+                ->withErrors($e->validator);
+        } catch (Throwable $e) {
+            return back()
+                ->withInput();
         }
 
         return redirect()->route('journal.index');
     }
 
     /**
-     * Delete the reminder.
+     * Delete the journal entry.
      */
     public function deleteEntry(Request $request, Entry $entry)
     {
-        $entry->deleteJournalEntry();
-        $entry->delete();
-
-        return ['true'];
+        try {
+            app(DestroyEntry::class)->execute([
+                'account_id' => $request->user()->account_id,
+                'id' => $entry->id,
+            ]);
+            return ['true'];
+        } catch (Throwable $e) {
+            return ['false'];
+        }
     }
 }
