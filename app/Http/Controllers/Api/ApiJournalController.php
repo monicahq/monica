@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Resources\Journal\Entry as JournalResource;
 use App\Models\Journal\Entry;
 use App\Services\Journal\CreateEntry;
+use App\Services\Journal\UpdateEntry;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class ApiJournalController extends ApiController
@@ -87,46 +87,23 @@ class ApiJournalController extends ApiController
     public function update(Request $request, $entryId)
     {
         try {
-            $entry = Entry::where('account_id', auth()->user()->account_id)
-                ->where('id', $entryId)
-                ->firstOrFail();
+            $entry = app(UpdateEntry::class)->execute(
+                $request->except(['account_id', 'id'])
+                    +
+                    [
+                        'account_id' => auth()->user()->account_id,
+                        'id' => $entryId,
+                    ]
+            );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        }
-
-        $isvalid = $this->validateUpdate($request);
-        if ($isvalid !== true) {
-            return $isvalid;
-        }
-
-        try {
-            $entry->update($request->only(['title', 'post']));
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            return $this->respondInvalidQuery();
         }
 
         return new JournalResource($entry);
-    }
-
-    /**
-     * Validate the request for update.
-     *
-     * @param  Request  $request
-     * @return \Illuminate\Http\JsonResponse|true
-     */
-    private function validateUpdate(Request $request)
-    {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|max:255',
-            'post' => 'required|max:1000000',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->respondValidatorFailed($validator);
-        }
-
-        return true;
     }
 
     /**

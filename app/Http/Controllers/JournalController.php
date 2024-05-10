@@ -9,8 +9,8 @@ use App\Models\Journal\Day;
 use App\Models\Journal\Entry;
 use App\Models\Journal\JournalEntry;
 use App\Services\Journal\CreateEntry;
+use App\Services\Journal\UpdateEntry;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 
@@ -227,30 +227,23 @@ class JournalController extends Controller
      */
     public function update(Request $request, Entry $entry)
     {
-        $validator = Validator::make($request->all(), [
-            'entry' => 'required|string',
-            'date' => 'required|date',
-        ]);
-
-        if ($validator->fails()) {
+        try {
+            app(UpdateEntry::class)->execute(
+                $request->except(['account_id', 'id'])
+                +
+                [
+                    'account_id' => $request->user()->account_id,
+                    'id' => $entry->id,
+                    'post' => $request->input('entry'),
+                ]
+            );
+        } catch (ValidationException $e) {
             return back()
                 ->withInput()
-                ->withErrors($validator);
-        }
-
-        $entry->post = $request->input('entry');
-
-        if ($request->input('title') != '') {
-            $entry->title = $request->input('title');
-        }
-
-        $entry->save();
-
-        // Update journal entry
-        $journalEntry = $entry->journalEntry;
-        if ($journalEntry) {
-            $entry->date = $request->input('date');
-            $journalEntry->edit($entry);
+                ->withErrors($e->validator);
+        } catch (Throwable $e) {
+            return back()
+                ->withInput();
         }
 
         return redirect()->route('journal.index');
