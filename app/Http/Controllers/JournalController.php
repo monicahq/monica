@@ -9,6 +9,7 @@ use App\Models\Journal\Day;
 use App\Models\Journal\Entry;
 use App\Models\Journal\JournalEntry;
 use App\Services\Journal\CreateEntry;
+use App\Services\Journal\DestroyEntry;
 use App\Services\Journal\UpdateEntry;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -250,13 +251,18 @@ class JournalController extends Controller
     }
 
     /**
-     * Delete the reminder.
+     * Delete the journal entry.
      */
     public function deleteEntry(Request $request, Entry $entry)
     {
-        $entry->deleteJournalEntry();
-        $entry->delete();
-
-        return ['true'];
+        try {
+            app(DestroyEntry::class)->execute([
+                'account_id' => $request->user()->account_id,
+                'id' => $entry->id,
+            ]);
+            return ['true'];
+        } catch (Throwable $e) {
+            return ['false'];
+        }
     }
 }

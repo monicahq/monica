@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Resources\Journal\Entry as JournalResource;
 use App\Models\Journal\Entry;
 use App\Services\Journal\CreateEntry;
+use App\Services\Journal\DestroyEntry;
 use App\Services\Journal\UpdateEntry;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -115,15 +116,16 @@ class ApiJournalController extends ApiController
     public function destroy(Request $request, $entryId)
     {
         try {
-            $entry = Entry::where('account_id', auth()->user()->account_id)
-                ->where('id', $entryId)
-                ->firstOrFail();
+            app(DestroyEntry::class)->execute([
+                'account_id' => auth()->user()->account_id,
+                'id' => $entryId,
+            ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
-        $entry->delete();
-
-        return $this->respondObjectDeleted($entry->id);
+        return $this->respondObjectDeleted($entryId);
     }
 }
