@@ -17,7 +17,8 @@ class EntryTest extends TestCase
             'id' => 1,
             'title' => 'This is the title',
             'post' => 'this is a post',
-            'created_at' => '2017-01-01 00:00:00',
+            'date' => '2017-01-01',
+            'created_at' => '2024-01-01 00:00:00',
         ]);
 
         $data = [
@@ -31,7 +32,7 @@ class EntryTest extends TestCase
             'month_name' => 'JAN',
             'year' => 2017,
             'date' => '2017-01-01 00:00:00',
-            'created_at' => 'Jan 01, 2017 00:00',
+            'created_at' => 'Jan 01, 2024 00:00',
         ];
 
         $this->assertEquals(
