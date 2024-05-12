@@ -15,7 +15,8 @@ return [
     | using Laravel Scout. This connection is used when syncing all models
     | to the search service. You should adjust this based on your needs.
     |
-    | Supported: "algolia", "meilisearch", "collection", "null"
+    | Supported: "algolia", "meilisearch", "typesense",
+    |            "database", "collection", "null"
     |
     */
 
@@ -122,22 +123,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | MeiliSearch Configuration
+    | Meilisearch Configuration
     |--------------------------------------------------------------------------
     |
-    | Here you may configure your MeiliSearch settings. MeiliSearch is an open
+    | Here you may configure your Meilisearch settings. Meilisearch is an open
     | source search engine with minimal configuration. Below, you can state
-    | the host and key information for your own MeiliSearch installation.
+    | the host and key information for your own Meilisearch installation.
     |
-    | See: https://docs.meilisearch.com/guides/advanced_guides/configuration.html
+    | See: https://www.meilisearch.com/docs/learn/configuration/instance_options#all-instance-options
     |
     */
 
     'meilisearch' => [
         'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
-        'key' => env('MEILISEARCH_KEY', null),
+        'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
             Contact::class => [
+                'filterableAttributes' => ['id', 'vault_id'],
+                'sortableAttributes' => ['updated_at'],
+            ],
+            Group::class => [
                 'filterableAttributes' => ['id', 'vault_id'],
                 'sortableAttributes' => ['updated_at'],
             ],
@@ -145,9 +150,106 @@ return [
                 'filterableAttributes' => ['id', 'vault_id', 'contact_id'],
                 'sortableAttributes' => ['updated_at'],
             ],
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Typesense Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure your Typesense settings. Typesense is an open
+    | source search engine using minimal configuration. Below, you will
+    | state the host, key, and schema configuration for the instance.
+    |
+    */
+
+    'typesense' => [
+        'client-settings' => [
+            'api_key' => env('TYPESENSE_API_KEY'),
+            'nodes' => [
+                [
+                    'host' => env('TYPESENSE_HOST', 'localhost'),
+                    'port' => env('TYPESENSE_PORT', '8108'),
+                    'path' => env('TYPESENSE_PATH', ''),
+                    'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
+                ],
+            ],
+            'nearest_node' => [
+                'host' => env('TYPESENSE_HOST', 'localhost'),
+                'port' => env('TYPESENSE_PORT', '8108'),
+                'path' => env('TYPESENSE_PATH', ''),
+                'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
+            ],
+            'connection_timeout_seconds' => env('TYPESENSE_CONNECTION_TIMEOUT_SECONDS', 2),
+            'healthcheck_interval_seconds' => env('TYPESENSE_HEALTHCHECK_INTERVAL_SECONDS', 30),
+            'num_retries' => env('TYPESENSE_NUM_RETRIES', 3),
+            'retry_interval_seconds' => env('TYPESENSE_RETRY_INTERVAL_SECONDS', 1),
+        ],
+        'model-settings' => [
+            Contact::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => '.*',
+                            'type' => 'auto',
+                        ],
+                        [
+                            'name' => '__soft_deleted',
+                            'type' => 'int32',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'updated_at',
+                            'type' => 'int32',
+                        ],
+                    ],
+                    'default_sorting_field' => 'updated_at',
+                ],
+                'search-parameters' => [
+                    'query_by' => 'first_name,last_name,middle_name,nickname,maiden_name',
+                ],
+            ],
             Group::class => [
-                'filterableAttributes' => ['id', 'vault_id'],
-                'sortableAttributes' => ['updated_at'],
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => '.*',
+                            'type' => 'auto',
+                        ],
+                        [
+                            'name' => '__soft_deleted',
+                            'type' => 'int32',
+                            'optional' => true,
+                        ],
+                        [
+                            'name' => 'updated_at',
+                            'type' => 'int32',
+                        ],
+                    ],
+                    'default_sorting_field' => 'updated_at',
+                ],
+                'search-parameters' => [
+                    'query_by' => 'name',
+                ],
+            ],
+            Note::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => '.*',
+                            'type' => 'auto',
+                        ],
+                        [
+                            'name' => 'updated_at',
+                            'type' => 'int32',
+                        ],
+                    ],
+                    'default_sorting_field' => 'updated_at',
+                ],
+                'search-parameters' => [
+                    'query_by' => 'title,body',
+                ],
             ],
         ],
     ],

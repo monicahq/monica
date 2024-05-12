@@ -93,11 +93,12 @@ class Contact extends VCardResource
         return [
             'id' => $this->id,
             'vault_id' => $this->vault_id,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'middle_name' => $this->middle_name,
-            'nickname' => $this->nickname,
-            'maiden_name' => $this->maiden_name,
+            'first_name' => $this->first_name ?? '',
+            'last_name' => $this->last_name ?? '',
+            'middle_name' => $this->middle_name ?? '',
+            'nickname' => $this->nickname ?? '',
+            'maiden_name' => $this->maiden_name ?? '',
+            'updated_at' => $this->updated_at->timestamp,
         ];
     }
 

@@ -44,8 +44,9 @@ class Note extends Model
             'id' => $this->id,
             'vault_id' => $this->vault_id,
             'contact_id' => $this->contact_id,
-            'title' => $this->title,
-            'body' => $this->body,
+            'title' => $this->title ?? '',
+            'body' => $this->body ?? '',
+            'updated_at' => $this->updated_at->timestamp,
         ];
     }
 

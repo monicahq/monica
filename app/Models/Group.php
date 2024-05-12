@@ -63,7 +63,8 @@ class Group extends VCardResource
         return [
             'id' => $this->id,
             'vault_id' => $this->vault_id,
-            'name' => $this->name,
+            'name' => $this->name ?? '',
+            'updated_at' => $this->updated_at->timestamp,
         ];
     }
 
