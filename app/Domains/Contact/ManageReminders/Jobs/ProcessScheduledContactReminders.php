@@ -7,6 +7,7 @@ use App\Helpers\NameHelper;
 use App\Models\Contact;
 use App\Models\ContactReminder;
 use App\Models\UserNotificationChannel;
+use App\Models\UserNotificationSent;
 use App\Notifications\ReminderTriggered;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -57,6 +58,12 @@ class ProcessScheduledContactReminders implements ShouldQueue
                     'message' => $e->getMessage(),
                     'scheduledReminder' => $scheduledReminder,
                 ]);
+                UserNotificationSent::create([
+                    'user_notification_channel_id' => $userNotificationChannel->id,
+                    'sent_at' => Carbon::now(),
+                    'error' => $e->getMessage(),
+                ]);
+
                 $userNotificationChannel->refresh();
                 $userNotificationChannel->fails += 1;
 

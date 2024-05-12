@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::table('user_notification_channels', function (Blueprint $table) {
             $table->integer('fails')->default(0)->after('active');
         });
+
+        Schema::table('user_notification_sent', function (Blueprint $table) {
+            $table->longText('error')->nullable()->after('payload');
+        });
     }
 
     /**
@@ -23,6 +27,10 @@ return new class extends Migration
     {
         Schema::table('user_notification_channels', function (Blueprint $table) {
             $table->dropColumn('fails');
+        });
+
+        Schema::table('user_notification_sent', function (Blueprint $table) {
+            $table->dropColumn('error');
         });
     }
 };
