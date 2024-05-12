@@ -40,12 +40,12 @@ class ProcessScheduledContactReminders implements ShouldQueue
             ->get();
 
         foreach ($scheduledContactReminders as $scheduledReminder) {
-            $userNotificationChannel = UserNotificationChannel::findOrFail($scheduledReminder->user_notification_channel_id);
-
-            $contactReminder = ContactReminder::find($scheduledReminder->contact_reminder_id);
-            $contact = $contactReminder->contact;
-
             try {
+                $userNotificationChannel = UserNotificationChannel::findOrFail($scheduledReminder->user_notification_channel_id);
+
+                $contactReminder = ContactReminder::find($scheduledReminder->contact_reminder_id);
+                $contact = $contactReminder->contact;
+
                 if ($contact !== null) {
                     $this->triggerNotification($userNotificationChannel, $contact, $contactReminder, $scheduledReminder);
                 }
@@ -61,6 +61,7 @@ class ProcessScheduledContactReminders implements ShouldQueue
                 UserNotificationSent::create([
                     'user_notification_channel_id' => $userNotificationChannel->id,
                     'sent_at' => Carbon::now(),
+                    'subject_line' => '',
                     'error' => $e->getMessage(),
                 ]);
 
@@ -91,15 +92,15 @@ class ProcessScheduledContactReminders implements ShouldQueue
             ->increment('number_times_triggered');
     }
 
-    private function triggerNotification(UserNotificationChannel $userNotificationChannel, Contact $contact, ContactReminder $contactReminder, $scheduledReminder)
+    private function triggerNotification(UserNotificationChannel $channel, Contact $contact, ContactReminder $contactReminder, $scheduledReminder)
     {
-        if (! $userNotificationChannel->active) {
+        if (! $channel->active) {
             return;
         }
 
-        $contactName = NameHelper::formatContactName($userNotificationChannel->user, $contact);
+        $contactName = NameHelper::formatContactName($channel->user, $contact);
 
-        switch ($userNotificationChannel->type) {
+        switch ($channel->type) {
             case UserNotificationChannel::TYPE_EMAIL:
                 $type = 'mail';
                 break;
@@ -111,8 +112,8 @@ class ProcessScheduledContactReminders implements ShouldQueue
                 return;
         }
 
-        Notification::route($type, $userNotificationChannel->content)
-            ->notify(new ReminderTriggered($userNotificationChannel, $contactReminder->label, $contactName));
+        Notification::route($type, $channel->content)
+            ->notify((new ReminderTriggered($channel, $contactReminder->label, $contactName))->locale($channel->user->locale));
 
         $this->updateNumberOfTimesTriggered($scheduledReminder->contact_reminder_id);
 
