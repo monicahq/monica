@@ -60,7 +60,7 @@ class ProcessScheduledContactReminders implements ShouldQueue
                 $userNotificationChannel->refresh();
                 $userNotificationChannel->fails += 1;
 
-                if ($userNotificationChannel->fails >= 10) {
+                if ($userNotificationChannel->fails >= config('monica.max_notification_failures', 10)) {
                     $userNotificationChannel->active = false;
                     $userNotificationChannel->contactReminders->each->delete();
                 }
