@@ -99,7 +99,19 @@ class ProcessScheduledContactReminders implements ShouldQueue
 
         $contactName = NameHelper::formatContactName($userNotificationChannel->user, $contact);
 
-        Notification::route($userNotificationChannel->type, $userNotificationChannel->content)
+        switch ($userNotificationChannel->type) {
+            case UserNotificationChannel::TYPE_EMAIL:
+                $type = 'mail';
+                break;
+            case UserNotificationChannel::TYPE_TELEGRAM:
+                $type = 'telegram';
+                break;
+            default:
+                // type unknown
+                return;
+        }
+
+        Notification::route($type, $userNotificationChannel->content)
             ->notify(new ReminderTriggered($userNotificationChannel, $contactReminder->label, $contactName));
 
         $this->updateNumberOfTimesTriggered($scheduledReminder->contact_reminder_id);
