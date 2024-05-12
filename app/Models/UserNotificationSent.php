@@ -22,6 +22,7 @@ class UserNotificationSent extends Model
         'sent_at',
         'subject_line',
         'payload',
+        'error',
     ];
 
     /**

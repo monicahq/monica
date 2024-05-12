@@ -53,12 +53,10 @@ class TestReminders extends Command
                 $contactName = NameHelper::formatContactName($channel->user, $contact);
 
                 Notification::route('mail', $channel->content)
-                    ->notify(new ReminderTriggered($channel, $contactReminder->label, $contactName));
-            }
-
-            if ($channel->type === UserNotificationChannel::TYPE_TELEGRAM) {
+                    ->notify((new ReminderTriggered($channel, $contactReminder->label, $contactName))->locale($channel->user->locale));
+            } elseif ($channel->type === UserNotificationChannel::TYPE_TELEGRAM) {
                 Notification::route('telegram', $channel->content)
-                    ->notify(new ReminderTriggered($channel, $contactReminder->label, ''));
+                    ->notify((new ReminderTriggered($channel, $contactReminder->label, ''))->locale($channel->user->locale));
             }
 
             try {
