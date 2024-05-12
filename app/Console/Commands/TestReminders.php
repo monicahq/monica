@@ -54,9 +54,7 @@ class TestReminders extends Command
 
                 Notification::route('mail', $channel->content)
                     ->notify(new ReminderTriggered($channel, $contactReminder->label, $contactName));
-            }
-
-            if ($channel->type === UserNotificationChannel::TYPE_TELEGRAM) {
+            } elseif ($channel->type === UserNotificationChannel::TYPE_TELEGRAM) {
                 Notification::route('telegram', $channel->content)
                     ->notify(new ReminderTriggered($channel, $contactReminder->label, ''));
             }

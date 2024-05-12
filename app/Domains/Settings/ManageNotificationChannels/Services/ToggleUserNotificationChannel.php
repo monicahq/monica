@@ -57,6 +57,9 @@ class ToggleUserNotificationChannel extends BaseService implements ServiceInterf
     private function toggle(): void
     {
         $this->userNotificationChannel->active = ! $this->userNotificationChannel->active;
+        if ($this->userNotificationChannel->active) {
+            $this->userNotificationChannel->fails = 0;
+        }
         $this->userNotificationChannel->save();
     }
 
