@@ -254,4 +254,18 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Create full text index
+    |--------------------------------------------------------------------------
+    |
+    | The database driver requires full text indexes on some columns. If you never
+    | intend to use the database driver, you may want to deactivate those indexes.
+    | This property is only used during migration of the database.
+    | Be aware that you won't be able to switch back to the database driver if you
+    | deactivate the full text indexes.
+    |
+    */
+
+    'full_text_index' => (bool) env('SCOUT_FULL_TEXT_INDEX', true),
 ];

@@ -54,6 +54,10 @@ class ScoutHelper
      */
     public static function id(Model $model): array
     {
+        if (config('scout.driver') === 'database') {
+            return [];
+        }
+
         $id = $model->getKey();
 
         if ($id !== null && $model->getKeyType() === 'string') {
@@ -62,8 +66,9 @@ class ScoutHelper
 
         return [
             'id' => $id,
-            'created_at' => (int) $model->getAttribute(Model::CREATED_AT)->timestamp,
-            'updated_at' => (int) $model->getAttribute(Model::UPDATED_AT)->timestamp,
+            'vault_id' => (string) $model->getAttribute('vault_id'),
+            'created_at' => (int) optional($model->getAttribute(Model::CREATED_AT))->timestamp,
+            'updated_at' => (int) optional($model->getAttribute(Model::UPDATED_AT))->timestamp,
         ];
     }
 }

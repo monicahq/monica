@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Attributes\SearchUsingFullText;
-use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 
 class Group extends VCardResource
@@ -53,15 +52,12 @@ class Group extends VCardResource
     /**
      * Get the indexable data array for the model.
      *
-     *
      * @codeCoverageIgnore
      */
-    #[SearchUsingPrefix(['id', 'vault_id'])]
-    #[SearchUsingFullText(['name'])]
+    #[SearchUsingFullText(['name'], ['expanded' => true])]
     public function toSearchableArray(): array
     {
         return array_merge(ScoutHelper::id($this), [
-            'vault_id' => (string) $this->vault_id,
             'name' => $this->name ?? '',
         ]);
     }

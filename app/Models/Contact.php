@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Scout\Attributes\SearchUsingFullText;
-use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 
 class Contact extends VCardResource
@@ -83,15 +82,12 @@ class Contact extends VCardResource
     /**
      * Get the indexable data array for the model.
      *
-     *
      * @codeCoverageIgnore
      */
-    #[SearchUsingPrefix(['id', 'vault_id'])]
-    #[SearchUsingFullText(['first_name', 'last_name', 'middle_name', 'nickname', 'maiden_name'])]
+    #[SearchUsingFullText(['first_name', 'last_name', 'middle_name', 'nickname', 'maiden_name'], ['expanded' => true])]
     public function toSearchableArray(): array
     {
         return array_merge(ScoutHelper::id($this), [
-            'vault_id' => (string) $this->vault_id,
             'first_name' => $this->first_name ?? '',
             'last_name' => $this->last_name ?? '',
             'middle_name' => $this->middle_name ?? '',

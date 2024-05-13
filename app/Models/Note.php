@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Laravel\Scout\Attributes\SearchUsingFullText;
-use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 
 class Note extends Model
@@ -33,15 +32,12 @@ class Note extends Model
     /**
      * Get the indexable data array for the model.
      *
-     *
      * @codeCoverageIgnore
      */
-    #[SearchUsingPrefix(['id', 'vault_id'])]
-    #[SearchUsingFullText(['title', 'body'])]
+    #[SearchUsingFullText(['title', 'body'], ['expanded' => true])]
     public function toSearchableArray(): array
     {
         return array_merge(ScoutHelper::id($this), [
-            'vault_id' => (string) $this->vault_id,
             'contact_id' => (string) $this->contact_id,
             'title' => $this->title ?? '',
             'body' => $this->body ?? '',

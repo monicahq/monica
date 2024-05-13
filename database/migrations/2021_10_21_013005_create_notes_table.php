@@ -26,7 +26,7 @@ return new class() extends Migration
             $table->text('body');
             $table->timestamps();
 
-            if (config('scout.driver') === 'database' && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
+            if (config('scout.full_text_index') && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
                 $table->fullText('title');
                 $table->fullText('body');
             }

@@ -53,7 +53,7 @@ return new class() extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            if (config('scout.driver') === 'database' && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
+            if (config('scout.full_text_index') && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
                 $table->fullText('name');
             }
         });

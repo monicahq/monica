@@ -49,7 +49,7 @@ return new class() extends Migration
 
             $table->index(['vault_id', 'id']);
 
-            if (config('scout.driver') === 'database' && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
+            if (config('scout.full_text_index') && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
                 $table->fullText('first_name');
                 $table->fullText('last_name');
                 $table->fullText('middle_name');
