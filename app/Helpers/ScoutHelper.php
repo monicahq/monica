@@ -60,7 +60,7 @@ class ScoutHelper
 
         $id = $model->getKey();
 
-        if ($id !== null && $model->getKeyType() === 'string') {
+        if ($id !== null && $model->getKeyType() === 'string' || config('scout.driver') === 'typesense') {
             $id = (string) $id;
         }
 
