@@ -91,7 +91,7 @@ class Contact extends VCardResource
     public function toSearchableArray(): array
     {
         return array_merge(ScoutHelper::id($this), [
-            'vault_id' => $this->vault_id,
+            'vault_id' => (string) $this->vault_id,
             'first_name' => $this->first_name ?? '',
             'last_name' => $this->last_name ?? '',
             'middle_name' => $this->middle_name ?? '',
@@ -119,7 +119,7 @@ class Contact extends VCardResource
     }
 
     /**
-     * Used to delete related objects from Meilisearch/Algolia instance.
+     * Used to delete related objects from scout driver instance.
      */
     protected static function boot(): void
     {

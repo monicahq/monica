@@ -61,7 +61,7 @@ class Group extends VCardResource
     public function toSearchableArray(): array
     {
         return array_merge(ScoutHelper::id($this), [
-            'vault_id' => $this->vault_id,
+            'vault_id' => (string) $this->vault_id,
             'name' => $this->name ?? '',
         ]);
     }

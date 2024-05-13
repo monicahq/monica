@@ -67,7 +67,7 @@ class Vault extends Model
     ];
 
     /**
-     * Used to delete related objects from Meilisearch/Algolia instance.
+     * Used to delete related objects from scout driver instance.
      */
     protected static function boot(): void
     {

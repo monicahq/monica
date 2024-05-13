@@ -41,8 +41,8 @@ class Note extends Model
     public function toSearchableArray(): array
     {
         return array_merge(ScoutHelper::id($this), [
-            'vault_id' => (int) $this->vault_id,
-            'contact_id' => (int) $this->contact_id,
+            'vault_id' => (string) $this->vault_id,
+            'contact_id' => (string) $this->contact_id,
             'title' => $this->title ?? '',
             'body' => $this->body ?? '',
         ]);
