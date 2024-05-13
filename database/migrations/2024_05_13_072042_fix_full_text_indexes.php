@@ -19,14 +19,14 @@ return new class extends Migration
 
     private function addFullTextIndex(string $name, array $columns): void
     {
-        Schema::table($name, function (Blueprint $table) use ($columns) {
-            if (config('scout.full_text_index') && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
+        if (config('scout.full_text_index') && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
+            Schema::table($name, function (Blueprint $table) use ($columns) {
                 foreach ($columns as $column) {
                     if (! Schema::hasIndex($table->getTable(), $table->getTable().'_'.$column.'_fulltext')) {
                         $table->fullText($column);
                     }
                 }
-            }
-        });
+            });
+        }
     }
 };
