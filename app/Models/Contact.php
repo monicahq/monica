@@ -90,16 +90,14 @@ class Contact extends VCardResource
     #[SearchUsingFullText(['first_name', 'last_name', 'middle_name', 'nickname', 'maiden_name'])]
     public function toSearchableArray(): array
     {
-        return [
-            'id' => $this->id,
+        return array_merge(ScoutHelper::id($this), [
             'vault_id' => $this->vault_id,
             'first_name' => $this->first_name ?? '',
             'last_name' => $this->last_name ?? '',
             'middle_name' => $this->middle_name ?? '',
             'nickname' => $this->nickname ?? '',
             'maiden_name' => $this->maiden_name ?? '',
-            'updated_at' => $this->updated_at->timestamp,
-        ];
+        ]);
     }
 
     /**

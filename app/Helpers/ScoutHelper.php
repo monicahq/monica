@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Database\Eloquent\Model;
+
 class ScoutHelper
 {
     /**
@@ -43,5 +45,31 @@ class ScoutHelper
             default:
                 return false;
         }
+    }
+
+    /**
+     * Get id and basic elements of this model.
+     *
+     * @codeCoverageIgnore
+     */
+    public static function id(Model $model): array
+    {
+        switch (config('scout.driver')) {
+            case 'meilisearch':
+                $id = (int) $model->id;
+                break;
+            case 'typesense':
+                $id = (string) $model->id;
+                break;
+            default:
+                $id = $model->id;
+                break;
+        }
+
+        return [
+            'id' => $id,
+            'updated_at' => (int) $model->updated_at->timestamp,
+            'created_at' => (int) $model->created_at->timestamp,
+        ];
     }
 }

@@ -60,30 +60,14 @@ class SetupScout extends Command
      */
     protected function scoutFlush(): void
     {
-        if (! $this->option('flush')) {
-            return;
-        }
+        if ($this->option('flush')) {
+            foreach (config('scout.meilisearch.index-settings') as $index => $settings) {
+                $name = (new $index)->getTable();
+                $this->artisan("☐ Flush {$name} index", 'scout:flush', ['model' => $index, '--verbose' => true]);
+            }
 
-        switch (config('scout.driver')) {
-            case 'algolia':
-                break;
-            case 'meilisearch':
-                foreach (config('scout.meilisearch.index-settings') as $index => $settings) {
-                    $name = (new $index)->getTable();
-                    $this->artisan("☐ Flush {$name} index", 'scout:flush', ['model' => $index, '--verbose' => true]);
-                }
-                break;
-            case 'typesense':
-                foreach (config('scout.typesense.model-settings') as $index => $settings) {
-                    $name = (new $index)->getTable();
-                    $this->artisan("☐ Flush {$name} index", 'scout:flush', ['model' => $index, '--verbose' => true]);
-                }
-                break;
-            default:
-                return;
+            $this->info('✓ Indexes flushed');
         }
-
-        $this->info('✓ Indexes flushed');
     }
 
     /**
@@ -91,30 +75,14 @@ class SetupScout extends Command
      */
     protected function scoutImport(): void
     {
-        if (! $this->option('import')) {
-            return;
-        }
+        if ($this->option('import')) {
+            foreach (config('scout.meilisearch.index-settings') as $index => $settings) {
+                $name = (new $index)->getTable();
+                $this->artisan("☐ Import {$name}", 'scout:import', ['model' => $index, '--verbose' => true]);
+            }
 
-        switch (config('scout.driver')) {
-            case 'algolia':
-                break;
-            case 'meilisearch':
-                foreach (config('scout.meilisearch.index-settings') as $index => $settings) {
-                    $name = (new $index)->getTable();
-                    $this->artisan("☐ Import {$name}", 'scout:import', ['model' => $index, '--verbose' => true]);
-                }
-                break;
-            case 'typesense':
-                foreach (config('scout.typesense.model-settings') as $index => $settings) {
-                    $name = (new $index)->getTable();
-                    $this->artisan("☐ Import {$name}", 'scout:import', ['model' => $index, '--verbose' => true]);
-                }
-                break;
-            default:
-                return;
+            $this->info('✓ Indexes imported');
         }
-
-        $this->info('✓ Indexes imported');
     }
 
     private function artisan(string $message, string $command, array $options = [])

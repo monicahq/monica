@@ -40,14 +40,12 @@ class Note extends Model
     #[SearchUsingFullText(['title', 'body'])]
     public function toSearchableArray(): array
     {
-        return [
-            'id' => $this->id,
-            'vault_id' => $this->vault_id,
-            'contact_id' => $this->contact_id,
+        return array_merge(ScoutHelper::id($this), [
+            'vault_id' => (int) $this->vault_id,
+            'contact_id' => (int) $this->contact_id,
             'title' => $this->title ?? '',
             'body' => $this->body ?? '',
-            'updated_at' => $this->updated_at->timestamp,
-        ];
+        ]);
     }
 
     /**

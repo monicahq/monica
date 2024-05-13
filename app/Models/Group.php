@@ -60,12 +60,10 @@ class Group extends VCardResource
     #[SearchUsingFullText(['name'])]
     public function toSearchableArray(): array
     {
-        return [
-            'id' => $this->id,
+        return array_merge(ScoutHelper::id($this), [
             'vault_id' => $this->vault_id,
             'name' => $this->name ?? '',
-            'updated_at' => $this->updated_at->timestamp,
-        ];
+        ]);
     }
 
     /**
