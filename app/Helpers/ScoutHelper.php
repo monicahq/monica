@@ -54,22 +54,16 @@ class ScoutHelper
      */
     public static function id(Model $model): array
     {
-        switch (config('scout.driver')) {
-            case 'meilisearch':
-                $id = (int) $model->id;
-                break;
-            case 'typesense':
-                $id = (string) $model->id;
-                break;
-            default:
-                $id = $model->id;
-                break;
+        $id = $model->getKey();
+
+        if ($id !== null && $model->getKeyType() === 'string') {
+            $id = (string) $id;
         }
 
         return [
             'id' => $id,
-            'updated_at' => (int) $model->updated_at->timestamp,
-            'created_at' => (int) $model->created_at->timestamp,
+            'created_at' => (int) $model->getAttribute(Model::CREATED_AT)->timestamp,
+            'updated_at' => (int) $model->getAttribute(Model::UPDATED_AT)->timestamp,
         ];
     }
 }

@@ -51,7 +51,7 @@ class SetupScout extends Command
     protected function scoutConfigure(): void
     {
         if (ScoutHelper::indexed()) {
-            $this->artisan('☐ Updating indexes on Meilisearch', 'scout:sync-index-settings', ['--verbose' => true]);
+            $this->artisan('☐ Updating indexes', 'scout:sync-index-settings', ['--verbose' => true]);
         }
     }
 
@@ -60,7 +60,8 @@ class SetupScout extends Command
      */
     protected function scoutFlush(): void
     {
-        if ($this->option('flush')) {
+        if ($this->option('flush') && ScoutHelper::indexed()) {
+            // Using meilisearch config for any driver
             foreach (config('scout.meilisearch.index-settings') as $index => $settings) {
                 $name = (new $index)->getTable();
                 $this->artisan("☐ Flush {$name} index", 'scout:flush', ['model' => $index, '--verbose' => true]);
@@ -75,7 +76,8 @@ class SetupScout extends Command
      */
     protected function scoutImport(): void
     {
-        if ($this->option('import')) {
+        if ($this->option('import') && ScoutHelper::indexed()) {
+            // Using meilisearch config for any driver
             foreach (config('scout.meilisearch.index-settings') as $index => $settings) {
                 $name = (new $index)->getTable();
                 $this->artisan("☐ Import {$name}", 'scout:import', ['model' => $index, '--verbose' => true]);
