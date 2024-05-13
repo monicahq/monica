@@ -191,8 +191,32 @@ return [
                 'collection-schema' => [
                     'fields' => [
                         [
-                            'name' => '.*',
-                            'type' => 'auto',
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'vault_id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'first_name',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'last_name',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'middle_name',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'nickname',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'maiden_name',
+                            'type' => 'string',
                         ],
                         [
                             'name' => '__soft_deleted',
@@ -214,8 +238,16 @@ return [
                 'collection-schema' => [
                     'fields' => [
                         [
-                            'name' => '.*',
-                            'type' => 'auto',
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'vault_id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
                         ],
                         [
                             'name' => '__soft_deleted',
@@ -237,8 +269,24 @@ return [
                 'collection-schema' => [
                     'fields' => [
                         [
-                            'name' => '.*',
-                            'type' => 'auto',
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'vault_id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'contact_id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'title',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'body',
+                            'type' => 'string',
                         ],
                         [
                             'name' => 'updated_at',
