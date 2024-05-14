@@ -304,7 +304,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Create full text index
+    | Create full text indexes
     |--------------------------------------------------------------------------
     |
     | The database driver requires full text indexes on some columns. If you never
@@ -313,7 +313,9 @@ return [
     | Be aware that you won't be able to switch back to the database driver if you
     | deactivate the full text indexes.
     |
+    | Note: Full text indexes are only available on mysql and postgresql databases.
+    |
     */
 
-    'full_text_index' => (bool) env('SCOUT_FULL_TEXT_INDEX', true),
+    'full_text_index' => (bool) env('FULL_TEXT_INDEX', true),
 ];

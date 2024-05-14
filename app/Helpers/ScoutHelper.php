@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class ScoutHelper
 {
@@ -45,6 +46,16 @@ class ScoutHelper
             default:
                 return false;
         }
+    }
+
+    /**
+     * Test if the driver supports full text indexes.
+     *
+     * @codeCoverageIgnore
+     */
+    public static function fullTextIndex(): bool
+    {
+        return config('scout.full_text_index') && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql']);
     }
 
     /**
