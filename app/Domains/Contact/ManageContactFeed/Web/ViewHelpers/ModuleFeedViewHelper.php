@@ -3,6 +3,7 @@
 namespace App\Domains\Contact\ManageContactFeed\Web\ViewHelpers;
 
 use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedAddress;
+use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedCall;
 use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedContactInformation;
 use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedGenericContactInformation;
 use App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions\ActionFeedGoal;
@@ -72,6 +73,7 @@ class ModuleFeedViewHelper
             'unfavorited' => trans('removed the contact from the favorites'),
             'changed_avatar' => trans('updated the avatar of the contact'),
             'mood_tracking_event_added' => trans('logged the mood'),
+            'call_created' => trans('logged a call'),
             default => trans('unknown action'),
         };
     }
@@ -140,6 +142,9 @@ class ModuleFeedViewHelper
             case 'mood_tracking_event_updated':
             case 'mood_tracking_event_deleted':
                 return ActionFeedMoodTrackingEvent::data($item, $user);
+
+            case 'call_created':
+                return ActionFeedCall::data($item, $user);
 
             default:
                 return ActionFeedGenericContactInformation::data($item);
