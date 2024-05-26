@@ -7,12 +7,14 @@ use App\Domains\Contact\ManageDocuments\Listeners\DeleteFileInStorage;
 use App\Helpers\CollectionHelper;
 use App\Http\Controllers\Profile\WebauthnDestroyResponse;
 use App\Http\Controllers\Profile\WebauthnUpdateResponse;
+use App\View\Components\DBLayout;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
@@ -123,6 +125,8 @@ class AppServiceProvider extends ServiceProvider
             URL::forceRootUrl(Str::of(config('app.url'))->ltrim('/'));
             URL::forceScheme('https');
         }
+
+        Blade::component('db-layout', DBLayout::class);
 
         RedirectIfAuthenticated::redirectUsing(fn () => route('vault.index', absolute: false));
 
