@@ -7107,16 +7107,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "4.6.1",
+            "version": "4.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "5a94184175e5830b589bf923da8c9c3af2c0f409"
+                "reference": "d6769b2a5e6bf19ed3bbfbf52328ceaf8e6fcb1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/5a94184175e5830b589bf923da8c9c3af2c0f409",
-                "reference": "5a94184175e5830b589bf923da8c9c3af2c0f409",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/d6769b2a5e6bf19ed3bbfbf52328ceaf8e6fcb1f",
+                "reference": "d6769b2a5e6bf19ed3bbfbf52328ceaf8e6fcb1f",
                 "shasum": ""
             },
             "require": {
@@ -7180,7 +7180,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-php/issues",
-                "source": "https://github.com/getsentry/sentry-php/tree/4.6.1"
+                "source": "https://github.com/getsentry/sentry-php/tree/4.7.0"
             },
             "funding": [
                 {
@@ -7192,27 +7192,27 @@
                     "type": "custom"
                 }
             ],
-            "time": "2024-03-08T08:18:09+00:00"
+            "time": "2024-04-10T13:22:13+00:00"
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "4.4.1",
+            "version": "4.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "9fd34f41b84377d73ae3184627d454993757c581"
+                "reference": "a15b2f5fa7b446f006eb93134e237c38a11776cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/9fd34f41b84377d73ae3184627d454993757c581",
-                "reference": "9fd34f41b84377d73ae3184627d454993757c581",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/a15b2f5fa7b446f006eb93134e237c38a11776cf",
+                "reference": "a15b2f5fa7b446f006eb93134e237c38a11776cf",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "^6.0 | ^7.0 | ^8.0 | ^9.0 | ^10.0 | ^11.0",
                 "nyholm/psr7": "^1.0",
                 "php": "^7.2 | ^8.0",
-                "sentry/sentry": "^4.5",
+                "sentry/sentry": "^4.7",
                 "symfony/psr-http-message-bridge": "^1.0 | ^2.0 | ^6.0 | ^7.0"
             },
             "require-dev": {
@@ -7269,7 +7269,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-laravel/issues",
-                "source": "https://github.com/getsentry/sentry-laravel/tree/4.4.1"
+                "source": "https://github.com/getsentry/sentry-laravel/tree/4.5.1"
             },
             "funding": [
                 {
@@ -7281,7 +7281,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2024-04-04T14:46:42+00:00"
+            "time": "2024-04-24T08:58:34+00:00"
         },
         {
             "name": "shalvah/clara",
@@ -10130,16 +10130,16 @@
         },
         {
             "name": "symfony/psr-http-message-bridge",
-            "version": "v7.0.6",
+            "version": "v7.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/psr-http-message-bridge.git",
-                "reference": "fbc500cbcb64d3ea7469f019ab7aa717b320ff3f"
+                "reference": "727befd41438a8feb64066871d3656d8cbdcdbe2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/psr-http-message-bridge/zipball/fbc500cbcb64d3ea7469f019ab7aa717b320ff3f",
-                "reference": "fbc500cbcb64d3ea7469f019ab7aa717b320ff3f",
+                "url": "https://api.github.com/repos/symfony/psr-http-message-bridge/zipball/727befd41438a8feb64066871d3656d8cbdcdbe2",
+                "reference": "727befd41438a8feb64066871d3656d8cbdcdbe2",
                 "shasum": ""
             },
             "require": {
@@ -10193,7 +10193,7 @@
                 "psr-7"
             ],
             "support": {
-                "source": "https://github.com/symfony/psr-http-message-bridge/tree/v7.0.6"
+                "source": "https://github.com/symfony/psr-http-message-bridge/tree/v7.0.7"
             },
             "funding": [
                 {
@@ -10209,7 +10209,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-28T09:20:36+00:00"
+            "time": "2024-04-18T09:29:19+00:00"
         },
         {
             "name": "symfony/routing",
