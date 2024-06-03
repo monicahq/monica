@@ -369,28 +369,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inertiajs/core@npm:1.0.16":
-  version: 1.0.16
-  resolution: "@inertiajs/core@npm:1.0.16"
+"@inertiajs/core@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@inertiajs/core@npm:1.1.0"
   dependencies:
     axios: "npm:^1.6.0"
     deepmerge: "npm:^4.0.0"
     nprogress: "npm:^0.2.0"
     qs: "npm:^6.9.0"
-  checksum: 10c0/e89ec6381f14d48cc9a49ec86216186061e72cdc75ad51c1ecac8666403934781430c3c20944758ccfbc48e7cee77f195c2c92b879d2a81189742a2313b4510c
+  checksum: 10c0/5ea155b5a796b660e9924f82ba7dc1f636a3441efc59ef668710658ccc44f06ee093e4f9562153732a03c70f8f18b434c8b66df617c3de62d3718188a1c2a7cf
   languageName: node
   linkType: hard
 
 "@inertiajs/vue3@npm:^1.0.15":
-  version: 1.0.16
-  resolution: "@inertiajs/vue3@npm:1.0.16"
+  version: 1.1.0
+  resolution: "@inertiajs/vue3@npm:1.1.0"
   dependencies:
-    "@inertiajs/core": "npm:1.0.16"
+    "@inertiajs/core": "npm:1.1.0"
     lodash.clonedeep: "npm:^4.5.0"
     lodash.isequal: "npm:^4.5.0"
   peerDependencies:
     vue: ^3.0.0
-  checksum: 10c0/449739f4da7a7bd20da713d6109bef289bb5e2d790ca780d9af86f387bd831cc4caa001bc163dfcb06a09476d23c541b0d71f035db00e0a346558dc49732b032
+  checksum: 10c0/893a1fcbb5a253101281cd5554009dea2c39716271b860fe820eedf6cf1c257a4c21e7ed2f0b9c52aac5c48fa1c9628ce95cff8cfd253f837cb18808b629c5e7
   languageName: node
   linkType: hard
 
