@@ -8071,16 +8071,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v7.0.7",
+            "version": "v7.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "c981e0e9380ce9f146416bde3150c79197ce9986"
+                "reference": "5bcde9e0b2ea9bd9772bca17618365ea921c5707"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/c981e0e9380ce9f146416bde3150c79197ce9986",
-                "reference": "c981e0e9380ce9f146416bde3150c79197ce9986",
+                "url": "https://api.github.com/repos/symfony/console/zipball/5bcde9e0b2ea9bd9772bca17618365ea921c5707",
+                "reference": "5bcde9e0b2ea9bd9772bca17618365ea921c5707",
                 "shasum": ""
             },
             "require": {
@@ -8144,7 +8144,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v7.0.7"
+                "source": "https://github.com/symfony/console/tree/v7.1.0"
             },
             "funding": [
                 {
@@ -8160,7 +8160,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:29:19+00:00"
+            "time": "2024-05-17T10:55:18+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -9893,16 +9893,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v7.0.7",
+            "version": "v7.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "3839e56b94dd1dbd13235d27504e66baf23faba0"
+                "reference": "56c8a1ea51eb70003fee94a78c7d6d0f44832ce7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/3839e56b94dd1dbd13235d27504e66baf23faba0",
-                "reference": "3839e56b94dd1dbd13235d27504e66baf23faba0",
+                "url": "https://api.github.com/repos/symfony/process/zipball/56c8a1ea51eb70003fee94a78c7d6d0f44832ce7",
+                "reference": "56c8a1ea51eb70003fee94a78c7d6d0f44832ce7",
                 "shasum": ""
             },
             "require": {
@@ -9934,7 +9934,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v7.0.7"
+                "source": "https://github.com/symfony/process/tree/v7.1.0"
             },
             "funding": [
                 {
@@ -9950,7 +9950,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:29:19+00:00"
+            "time": "2024-05-17T10:55:18+00:00"
         },
         {
             "name": "symfony/property-access",
@@ -10455,16 +10455,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v7.0.7",
+            "version": "v7.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "e405b5424dc2528e02e31ba26b83a79fd4eb8f63"
+                "reference": "6f41b185e742737917e6f2e3eca37767fba5f17a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/e405b5424dc2528e02e31ba26b83a79fd4eb8f63",
-                "reference": "e405b5424dc2528e02e31ba26b83a79fd4eb8f63",
+                "url": "https://api.github.com/repos/symfony/string/zipball/6f41b185e742737917e6f2e3eca37767fba5f17a",
+                "reference": "6f41b185e742737917e6f2e3eca37767fba5f17a",
                 "shasum": ""
             },
             "require": {
@@ -10478,6 +10478,7 @@
                 "symfony/translation-contracts": "<2.5"
             },
             "require-dev": {
+                "symfony/emoji": "^7.1",
                 "symfony/error-handler": "^6.4|^7.0",
                 "symfony/http-client": "^6.4|^7.0",
                 "symfony/intl": "^6.4|^7.0",
@@ -10521,7 +10522,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v7.0.7"
+                "source": "https://github.com/symfony/string/tree/v7.1.0"
             },
             "funding": [
                 {
@@ -10537,7 +10538,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:29:19+00:00"
+            "time": "2024-05-17T10:55:18+00:00"
         },
         {
             "name": "symfony/translation",
@@ -12263,16 +12264,16 @@
         },
         {
             "name": "brianium/paratest",
-            "version": "v7.4.4",
+            "version": "v7.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paratestphp/paratest.git",
-                "reference": "bfe354e71aca261cf37bf70bf47791081100000d"
+                "reference": "d4de825332842a7dee1ff350f0fd6caafa930d79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/bfe354e71aca261cf37bf70bf47791081100000d",
-                "reference": "bfe354e71aca261cf37bf70bf47791081100000d",
+                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/d4de825332842a7dee1ff350f0fd6caafa930d79",
+                "reference": "d4de825332842a7dee1ff350f0fd6caafa930d79",
                 "shasum": ""
             },
             "require": {
@@ -12288,19 +12289,19 @@
                 "phpunit/php-timer": "^6.0.0 || ^7.0.0",
                 "phpunit/phpunit": "^10.5.20 || ^11.1.3",
                 "sebastian/environment": "^6.1.0 || ^7.1.0",
-                "symfony/console": "^6.4.7 || ^7.0.7",
-                "symfony/process": "^6.4.7 || ^7.0.7"
+                "symfony/console": "^6.4.7 || ^7.1.0",
+                "symfony/process": "^6.4.7 || ^7.1.0"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^12.0.0",
                 "ext-pcov": "*",
                 "ext-posix": "*",
-                "phpstan/phpstan": "^1.10.67",
-                "phpstan/phpstan-deprecation-rules": "^1.1.4",
-                "phpstan/phpstan-phpunit": "^1.3.16",
-                "phpstan/phpstan-strict-rules": "^1.5.5",
-                "squizlabs/php_codesniffer": "^3.9.2",
-                "symfony/filesystem": "^6.4.3 || ^7.0.7"
+                "phpstan/phpstan": "^1.11.2",
+                "phpstan/phpstan-deprecation-rules": "^1.2.0",
+                "phpstan/phpstan-phpunit": "^1.4.0",
+                "phpstan/phpstan-strict-rules": "^1.6.0",
+                "squizlabs/php_codesniffer": "^3.10.1",
+                "symfony/filesystem": "^6.4.3 || ^7.1.0"
             },
             "bin": [
                 "bin/paratest",
@@ -12341,7 +12342,7 @@
             ],
             "support": {
                 "issues": "https://github.com/paratestphp/paratest/issues",
-                "source": "https://github.com/paratestphp/paratest/tree/v7.4.4"
+                "source": "https://github.com/paratestphp/paratest/tree/v7.4.5"
             },
             "funding": [
                 {
@@ -12353,7 +12354,7 @@
                     "type": "paypal"
                 }
             ],
-            "time": "2024-05-03T13:01:49+00:00"
+            "time": "2024-05-31T13:59:20+00:00"
         },
         {
             "name": "composer/class-map-generator",
