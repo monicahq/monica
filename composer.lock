@@ -7929,16 +7929,16 @@
         },
         {
             "name": "stevebauman/location",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stevebauman/location.git",
-                "reference": "c95c397bf54a109f9cdb335377887047408dc8bc"
+                "reference": "603d75b13da2e1c181bdf75a658dcc3ddb7fc9b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stevebauman/location/zipball/c95c397bf54a109f9cdb335377887047408dc8bc",
-                "reference": "c95c397bf54a109f9cdb335377887047408dc8bc",
+                "url": "https://api.github.com/repos/stevebauman/location/zipball/603d75b13da2e1c181bdf75a658dcc3ddb7fc9b6",
+                "reference": "603d75b13da2e1c181bdf75a658dcc3ddb7fc9b6",
                 "shasum": ""
             },
             "require": {
@@ -7991,9 +7991,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stevebauman/location/issues",
-                "source": "https://github.com/stevebauman/location/tree/v7.2.1"
+                "source": "https://github.com/stevebauman/location/tree/v7.2.2"
             },
-            "time": "2024-04-09T17:05:20+00:00"
+            "time": "2024-06-04T21:41:15+00:00"
         },
         {
             "name": "symfony/clock",
