@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\SignupHelper;
 use App\Helpers\WallpaperHelper;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -14,6 +15,11 @@ use LaravelWebauthn\Facades\Webauthn;
 
 class LoginController extends Controller
 {
+    public function __construct(
+        protected SignupHelper $signupHelper
+    ) {
+    }
+
     /**
      * Display the login view.
      */
@@ -40,6 +46,7 @@ class LoginController extends Controller
         }
 
         return Inertia::render('Auth/Login', $data + [
+            'isSignupEnabled' => $this->signupHelper->isEnabled(),
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
             'wallpaperUrl' => WallpaperHelper::getRandomWallpaper(),

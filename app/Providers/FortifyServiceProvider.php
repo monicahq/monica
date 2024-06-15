@@ -11,9 +11,11 @@ use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -34,7 +36,11 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Fortify::loginView(fn ($request) => (new LoginController())($request));
+        $this->patchRoutes();
+
+        $loginController = $this->app->make(LoginController::class);
+
+        Fortify::loginView(fn ($request) => $loginController($request));
         Fortify::confirmPasswordsUsing(fn ($user, ?string $password = null) => $user->password
                 ? app(StatefulGuard::class)->validate([
                     'email' => $user->email,
@@ -56,5 +62,20 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('two-factor', fn (Request $request) => Limit::perMinute(5)->by($request->session()->get('login.id')));
+    }
+
+    protected function patchRoutes(): void
+    {
+        if ($this->app->routesAreCached()) {
+            return;
+        }
+
+        $router = $this->app->make(Router::class);
+        $routes = $router->getRoutes();
+        collect(['create', 'store'])->each(function ($method) use ($routes) {
+            if ($route = $routes->getByAction(RegisteredUserController::class.'@'.$method)) {
+                $route->middleware('monica.signup_is_enabled');
+            }
+        });
     }
 }
