@@ -39,7 +39,7 @@ class UpdateTemplatePagePositionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateTemplatePagePosition())->execute($request);
+        (new UpdateTemplatePagePosition)->execute($request);
     }
 
     /** @test */
@@ -109,7 +109,7 @@ class UpdateTemplatePagePositionTest extends TestCase
             'new_position' => 3,
         ];
 
-        $templatePage = (new UpdateTemplatePagePosition())->execute($request);
+        $templatePage = (new UpdateTemplatePagePosition)->execute($request);
 
         $this->assertDatabaseHas('template_pages', [
             'id' => $templatePage1->id,
@@ -134,7 +134,7 @@ class UpdateTemplatePagePositionTest extends TestCase
 
         $request['new_position'] = 2;
 
-        $templatePage = (new UpdateTemplatePagePosition())->execute($request);
+        $templatePage = (new UpdateTemplatePagePosition)->execute($request);
 
         $this->assertDatabaseHas('template_pages', [
             'id' => $templatePage1->id,

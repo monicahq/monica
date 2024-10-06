@@ -20,7 +20,7 @@ class VaultSettingsMoodTrackingParameterPositionController extends Controller
             'new_position' => $request->input('position'),
         ];
 
-        $parameter = (new UpdateMoodTrackingParameterPosition())->execute($data);
+        $parameter = (new UpdateMoodTrackingParameterPosition)->execute($data);
 
         return response()->json([
             'data' => VaultSettingsIndexViewHelper::dtoMoodTrackingParameter($parameter),

@@ -17,6 +17,7 @@ class NotificationsLogIndexViewHelper
                 'id' => $notification->id,
                 'sent_at' => DateHelper::format($notification->sent_at, $user),
                 'subject_line' => $notification->subject_line,
+                'error' => $notification->error,
             ];
         });
 

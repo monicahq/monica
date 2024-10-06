@@ -83,7 +83,7 @@ class ContactController extends Controller
             'listed' => true,
         ];
 
-        $contact = (new CreateContact())->execute($data);
+        $contact = (new CreateContact)->execute($data);
 
         return response()->json([
             'data' => route('contact.show', [
@@ -112,7 +112,7 @@ class ContactController extends Controller
             ]);
         }
 
-        (new UpdateContactView())->execute([
+        (new UpdateContactView)->execute([
             'account_id' => Auth::user()->account_id,
             'vault_id' => $vaultId,
             'author_id' => Auth::id(),
@@ -154,7 +154,7 @@ class ContactController extends Controller
             'suffix' => $request->input('suffix'),
         ];
 
-        $contact = (new UpdateContact())->execute($data);
+        $contact = (new UpdateContact)->execute($data);
 
         return response()->json([
             'data' => route('contact.show', [

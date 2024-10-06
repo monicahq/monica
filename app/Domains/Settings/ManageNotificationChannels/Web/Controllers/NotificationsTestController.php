@@ -22,11 +22,11 @@ class NotificationsTestController extends Controller
         $channel = UserNotificationChannel::find($userNotificationChannelId);
 
         if ($channel->type == UserNotificationChannel::TYPE_EMAIL) {
-            (new SendTestEmail())->execute($data);
+            (new SendTestEmail)->execute($data);
         }
 
         if ($channel->type == UserNotificationChannel::TYPE_TELEGRAM) {
-            (new SendTestTelegramNotification())->execute($data);
+            (new SendTestTelegramNotification)->execute($data);
         }
 
         return response()->json([

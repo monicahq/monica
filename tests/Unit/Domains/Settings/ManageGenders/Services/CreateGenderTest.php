@@ -31,7 +31,7 @@ class CreateGenderTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateGender())->execute($request);
+        (new CreateGender)->execute($request);
     }
 
     /** @test */
@@ -61,7 +61,7 @@ class CreateGenderTest extends TestCase
             'name' => 'gender name',
         ];
 
-        $gender = (new CreateGender())->execute($request);
+        $gender = (new CreateGender)->execute($request);
 
         $this->assertDatabaseHas('genders', [
             'id' => $gender->id,

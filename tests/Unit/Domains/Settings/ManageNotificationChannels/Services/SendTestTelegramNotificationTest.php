@@ -37,7 +37,7 @@ class SendTestTelegramNotificationTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new SendTestTelegramNotification())->execute($request);
+        (new SendTestTelegramNotification)->execute($request);
     }
 
     /** @test */
@@ -74,7 +74,7 @@ class SendTestTelegramNotificationTest extends TestCase
             'user_notification_channel_id' => $channel->id,
         ];
 
-        $channel = (new SendTestTelegramNotification())->execute($request);
+        $channel = (new SendTestTelegramNotification)->execute($request);
 
         $this->assertInstanceOf(
             UserNotificationChannel::class,

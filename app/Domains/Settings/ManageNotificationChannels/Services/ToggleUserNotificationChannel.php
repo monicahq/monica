@@ -57,6 +57,9 @@ class ToggleUserNotificationChannel extends BaseService implements ServiceInterf
     private function toggle(): void
     {
         $this->userNotificationChannel->active = ! $this->userNotificationChannel->active;
+        if ($this->userNotificationChannel->active) {
+            $this->userNotificationChannel->fails = 0;
+        }
         $this->userNotificationChannel->save();
     }
 
@@ -82,7 +85,7 @@ class ToggleUserNotificationChannel extends BaseService implements ServiceInterf
 
     private function rescheduledReminders(): void
     {
-        (new ScheduleAllContactRemindersForNotificationChannel())->execute([
+        (new ScheduleAllContactRemindersForNotificationChannel)->execute([
             'account_id' => $this->data['account_id'],
             'author_id' => $this->data['author_id'],
             'user_notification_channel_id' => $this->userNotificationChannel->id,

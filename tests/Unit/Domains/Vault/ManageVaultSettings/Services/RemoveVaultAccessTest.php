@@ -101,7 +101,7 @@ class RemoveVaultAccessTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new RemoveVaultAccess())->execute($request);
+        (new RemoveVaultAccess)->execute($request);
     }
 
     private function executeService(Account $account, User $regis, User $anotherUser, Vault $vault, Contact $contact): void
@@ -132,7 +132,7 @@ class RemoveVaultAccessTest extends TestCase
             'user_id' => $anotherUser->id,
         ];
 
-        (new RemoveVaultAccess())->execute($request);
+        (new RemoveVaultAccess)->execute($request);
 
         $this->assertDatabaseMissing('user_vault', [
             'vault_id' => $vault->id,

@@ -21,7 +21,7 @@ class ImportVCardTest extends TestCase
     /** @test */
     public function it_can_not_import_because_no_firstname_or_nickname_in_vcard()
     {
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
 
         $vcard = new VCard([]);
 
@@ -31,7 +31,7 @@ class ImportVCardTest extends TestCase
     /** @test */
     public function it_can_not_import_because_no_firstname_in_vcard()
     {
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
 
         $vcard = new VCard([
             'N' => ['John', '', '', '', ''],
@@ -43,7 +43,7 @@ class ImportVCardTest extends TestCase
     /** @test */
     public function it_can_not_import_because_empty_firstname_in_vcard()
     {
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
 
         $vcard = new VCard([
             'N' => ';;;;',
@@ -55,7 +55,7 @@ class ImportVCardTest extends TestCase
     /** @test */
     public function it_can_not_import_vcard()
     {
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
 
         $vcard = Reader::read('
 BEGIN:VCARD
@@ -76,7 +76,7 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     /** @test */
     public function it_can_not_import_because_empty_nickname_in_vcard()
     {
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
 
         $vcard = new VCard([
             'NICKNAME' => '',
@@ -88,7 +88,7 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     /** @test */
     public function it_can_not_import_because_empty_fullname_in_vcard()
     {
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
 
         $vcard = new VCard([
             'FN' => '',
@@ -100,7 +100,7 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     /** @test */
     public function it_can_import_firstname()
     {
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
 
         $vcard = new VCard([
             'N' => ['', 'John', '', '', ''],
@@ -112,7 +112,7 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     /** @test */
     public function it_can_import_nickname()
     {
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
 
         $vcard = new VCard([
             'NICKNAME' => 'John',
@@ -124,7 +124,7 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     /** @test */
     public function it_can_import_fullname()
     {
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
 
         $vcard = new VCard([
             'FN' => 'John Doe',
@@ -136,7 +136,7 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     /** @test */
     public function it_formats_value()
     {
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
 
         $result = $this->invokePrivateMethod($importVCard, 'formatValue', ['']);
         $this->assertNull($result);
@@ -153,7 +153,7 @@ END:VCARD', Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     {
         $author = User::factory()->create();
         $vault = $this->createVaultUser($author, Vault::PERMISSION_EDIT);
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $author;
         $importVCard->vault = $vault;
 
@@ -181,7 +181,7 @@ FN:John Doe
 REV:20210900T000102Z
 END:VCARD';
 
-        (new ImportVCard())->execute([
+        (new ImportVCard)->execute([
             'account_id' => $author->account_id,
             'author_id' => $author->id,
             'vault_id' => $vault->id,
@@ -218,7 +218,7 @@ MEMBER:{$contact->id}
 REV:20210900T000102Z
 END:VCARD";
 
-        (new ImportVCard())->execute([
+        (new ImportVCard)->execute([
             'account_id' => $author->account_id,
             'author_id' => $author->id,
             'vault_id' => $vault->id,
@@ -245,7 +245,7 @@ END:VCARD";
     {
         $author = User::factory()->create();
         $vault = $this->createVaultUser($author, Vault::PERMISSION_EDIT);
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $author;
         $importVCard->vault = $vault;
 

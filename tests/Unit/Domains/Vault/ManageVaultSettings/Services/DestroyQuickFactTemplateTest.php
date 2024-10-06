@@ -37,7 +37,7 @@ class DestroyQuickFactTemplateTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyQuickFactTemplate())->execute($request);
+        (new DestroyQuickFactTemplate)->execute($request);
     }
 
     /** @test */
@@ -103,7 +103,7 @@ class DestroyQuickFactTemplateTest extends TestCase
             'vault_quick_facts_template_id' => $quickFactTemplateEntry->id,
         ];
 
-        (new DestroyQuickFactTemplate())->execute($request);
+        (new DestroyQuickFactTemplate)->execute($request);
 
         $this->assertDatabaseMissing('vault_quick_facts_templates', [
             'id' => $quickFactTemplateEntry->id,

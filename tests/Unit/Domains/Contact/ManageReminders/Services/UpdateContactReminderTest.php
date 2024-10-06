@@ -63,7 +63,7 @@ class UpdateContactReminderTest extends TestCase
             'frequency_number' => null,
         ];
 
-        (new UpdateContactReminder())->execute($request);
+        (new UpdateContactReminder)->execute($request);
 
         $this->assertDatabaseHas('user_notification_channels', [
             'user_id' => $regis->id,
@@ -78,7 +78,7 @@ class UpdateContactReminderTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateContactReminder())->execute($request);
+        (new UpdateContactReminder)->execute($request);
     }
 
     /** @test */
@@ -165,7 +165,7 @@ class UpdateContactReminderTest extends TestCase
             'frequency_number' => null,
         ];
 
-        $reminder = (new UpdateContactReminder())->execute($request);
+        $reminder = (new UpdateContactReminder)->execute($request);
 
         $this->assertDatabaseHas('contact_reminders', [
             'id' => $reminder->id,

@@ -26,6 +26,7 @@ class UserNotificationChannelFactory extends Factory
             'label' => $this->faker->word(),
             'content' => 'admin@admin.com',
             'active' => true,
+            'fails' => 0,
             'verified_at' => null,
             'preferred_time' => '09:00:00',
         ];
