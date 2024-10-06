@@ -38,7 +38,7 @@ class ToggleQuickFactModuleTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new ToggleQuickFactModule())->execute($request);
+        (new ToggleQuickFactModule)->execute($request);
     }
 
     /** @test */
@@ -96,14 +96,14 @@ class ToggleQuickFactModuleTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        (new ToggleQuickFactModule())->execute($request);
+        (new ToggleQuickFactModule)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
             'show_quick_facts' => true,
         ]);
 
-        (new ToggleQuickFactModule())->execute($request);
+        (new ToggleQuickFactModule)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,

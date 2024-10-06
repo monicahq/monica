@@ -51,7 +51,7 @@ class UpdatePostMetricTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdatePostMetric())->execute($request);
+        (new UpdatePostMetric)->execute($request);
     }
 
     /** @test */
@@ -165,7 +165,7 @@ class UpdatePostMetricTest extends TestCase
             'value' => 1,
         ];
 
-        $postMetric = (new UpdatePostMetric())->execute($request);
+        $postMetric = (new UpdatePostMetric)->execute($request);
 
         $this->assertDatabaseHas('post_metrics', [
             'id' => $postMetric->id,

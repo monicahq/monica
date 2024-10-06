@@ -23,7 +23,7 @@ class LifeMetricController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $lifeMetric = (new CreateLifeMetric())->execute($data);
+        $lifeMetric = (new CreateLifeMetric)->execute($data);
 
         $vault = Vault::find($vaultId);
         $contact = Auth::user()->getContactInVault($vault);
@@ -43,7 +43,7 @@ class LifeMetricController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $lifeMetric = (new UpdateLifeMetric())->execute($data);
+        $lifeMetric = (new UpdateLifeMetric)->execute($data);
         $vault = Vault::find($vaultId);
         $contact = Auth::user()->getContactInVault($vault);
 
@@ -61,7 +61,7 @@ class LifeMetricController extends Controller
             'life_metric_id' => $lifeMetricId,
         ];
 
-        (new DestroyLifeMetric())->execute($data);
+        (new DestroyLifeMetric)->execute($data);
 
         return response()->json([
             'data' => true,

@@ -18,7 +18,7 @@ class PreferencesDistanceFormatController extends Controller
             'distance_format' => $request->input('distanceFormat'),
         ];
 
-        $user = (new StoreDistanceFormatPreference())->execute($data);
+        $user = (new StoreDistanceFormatPreference)->execute($data);
 
         return response()->json([
             'data' => UserPreferencesIndexViewHelper::dtoDistanceFormat($user),

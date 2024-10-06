@@ -40,7 +40,7 @@ class AssignTagTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new AssignTag())->execute($request);
+        (new AssignTag)->execute($request);
     }
 
     /** @test */
@@ -130,7 +130,7 @@ class AssignTagTest extends TestCase
             'tag_id' => $tag->id,
         ];
 
-        (new AssignTag())->execute($request);
+        (new AssignTag)->execute($request);
 
         $this->assertDatabaseHas('post_tag', [
             'post_id' => $post->id,

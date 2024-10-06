@@ -28,7 +28,7 @@ class ContactMoodTrackingEventsController extends Controller
             'number_of_hours_slept' => $request->input('hours') ?? null,
         ];
 
-        $moodTrackingEvent = (new CreateMoodTrackingEvent())->execute($data);
+        $moodTrackingEvent = (new CreateMoodTrackingEvent)->execute($data);
 
         $contact = Contact::find($contactId);
 

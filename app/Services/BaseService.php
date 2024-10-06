@@ -170,7 +170,7 @@ abstract class BaseService
     private function validateAuthorIsAccountAdministrator(): void
     {
         if (! $this->author->is_account_administrator) {
-            throw new NotEnoughPermissionException();
+            throw new NotEnoughPermissionException;
         }
     }
 
@@ -195,7 +195,7 @@ abstract class BaseService
             ->exists();
 
         if (! $exists) {
-            throw new NotEnoughPermissionException();
+            throw new NotEnoughPermissionException;
         }
     }
 
@@ -209,7 +209,7 @@ abstract class BaseService
                 ->findOrFail($data['contact_id']);
 
             if ($this->contact->vault_id !== $this->vault->id) {
-                throw new ModelNotFoundException();
+                throw new ModelNotFoundException;
             }
         }
     }
@@ -224,7 +224,7 @@ abstract class BaseService
                 ->findOrFail($data['group_id']);
 
             if ($this->group->vault_id !== $this->vault->id) {
-                throw new ModelNotFoundException();
+                throw new ModelNotFoundException;
             }
         }
     }

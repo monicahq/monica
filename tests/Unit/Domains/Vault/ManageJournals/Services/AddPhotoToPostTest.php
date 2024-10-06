@@ -42,7 +42,7 @@ class AddPhotoToPostTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new AddPhotoToPost())->execute($request);
+        (new AddPhotoToPost)->execute($request);
     }
 
     /** @test */
@@ -140,7 +140,7 @@ class AddPhotoToPostTest extends TestCase
             'file_id' => $file->id,
         ];
 
-        (new AddPhotoToPost())->execute($request);
+        (new AddPhotoToPost)->execute($request);
 
         $this->assertDatabaseHas('files', [
             'id' => $file->id,

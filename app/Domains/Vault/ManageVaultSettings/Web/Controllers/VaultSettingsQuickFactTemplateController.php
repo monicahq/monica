@@ -21,7 +21,7 @@ class VaultSettingsQuickFactTemplateController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $template = (new CreateQuickFactTemplate())->execute($data);
+        $template = (new CreateQuickFactTemplate)->execute($data);
 
         return response()->json([
             'data' => VaultSettingsIndexViewHelper::dtoQuickFactTemplateEntry($template),
@@ -38,7 +38,7 @@ class VaultSettingsQuickFactTemplateController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $template = (new UpdateQuickFactTemplate())->execute($data);
+        $template = (new UpdateQuickFactTemplate)->execute($data);
 
         return response()->json([
             'data' => VaultSettingsIndexViewHelper::dtoQuickFactTemplateEntry($template),
@@ -54,7 +54,7 @@ class VaultSettingsQuickFactTemplateController extends Controller
             'vault_quick_facts_template_id' => $quickFactTemplateId,
         ];
 
-        (new DestroyQuickFactTemplate())->execute($data);
+        (new DestroyQuickFactTemplate)->execute($data);
 
         return response()->json([
             'data' => true,

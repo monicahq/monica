@@ -21,8 +21,7 @@ class UserInvited extends Mailable implements ShouldQueue
     public function __construct(
         protected User $invitedUser,
         protected User $user
-    ) {
-    }
+    ) {}
 
     /**
      * Build the message.

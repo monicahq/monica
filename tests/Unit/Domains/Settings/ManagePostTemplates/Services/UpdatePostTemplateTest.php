@@ -33,7 +33,7 @@ class UpdatePostTemplateTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdatePostTemplate())->execute($request);
+        (new UpdatePostTemplate)->execute($request);
     }
 
     /** @test */
@@ -78,7 +78,7 @@ class UpdatePostTemplateTest extends TestCase
             'label' => 'Business',
         ];
 
-        $postTemplate = (new UpdatePostTemplate())->execute($request);
+        $postTemplate = (new UpdatePostTemplate)->execute($request);
 
         $this->assertDatabaseHas('post_templates', [
             'id' => $postTemplate->id,

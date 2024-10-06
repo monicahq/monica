@@ -43,7 +43,7 @@ class DestroySliceOfLifeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroySliceOfLife())->execute($request);
+        (new DestroySliceOfLife)->execute($request);
     }
 
     /** @test */
@@ -143,7 +143,7 @@ class DestroySliceOfLifeTest extends TestCase
             'slice_of_life_id' => $sliceOfLife->id,
         ];
 
-        (new DestroySliceOfLife())->execute($request);
+        (new DestroySliceOfLife)->execute($request);
 
         $this->assertDatabaseMissing('slice_of_lives', [
             'id' => $sliceOfLife->id,

@@ -41,7 +41,7 @@ class DestroyPetTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyPet())->execute($request);
+        (new DestroyPet)->execute($request);
     }
 
     /** @test */
@@ -117,7 +117,7 @@ class DestroyPetTest extends TestCase
             'pet_id' => $pet->id,
         ];
 
-        (new DestroyPet())->execute($request);
+        (new DestroyPet)->execute($request);
 
         $this->assertDatabaseMissing('pets', [
             'id' => $pet->id,

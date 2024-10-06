@@ -39,7 +39,7 @@ class CreateMoodTrackingEventTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateMoodTrackingEvent())->execute($request);
+        (new CreateMoodTrackingEvent)->execute($request);
     }
 
     /** @test */
@@ -112,7 +112,7 @@ class CreateMoodTrackingEventTest extends TestCase
             'number_of_hours_slept' => 3,
         ];
 
-        $event = (new CreateMoodTrackingEvent())->execute($request);
+        $event = (new CreateMoodTrackingEvent)->execute($request);
 
         $this->assertDatabaseHas('mood_tracking_events', [
             'id' => $event->id,

@@ -28,9 +28,9 @@ class PostPhotoController extends Controller
             'type' => File::TYPE_PHOTO,
         ];
 
-        $file = (new UploadFile())->execute($data);
+        $file = (new UploadFile)->execute($data);
 
-        $post = (new AddPhotoToPost())->execute([
+        $post = (new AddPhotoToPost)->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,
@@ -53,7 +53,7 @@ class PostPhotoController extends Controller
             'file_id' => $fileId,
         ];
 
-        (new DestroyFile())->execute($data);
+        (new DestroyFile)->execute($data);
 
         return response()->json([
             'data' => true,

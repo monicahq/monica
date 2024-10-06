@@ -35,7 +35,7 @@ class ExportImportantDatesTest extends TestCase
             'contact_id' => $contact->id,
         ]);
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportImportantDates)->export($contact, $vCard);
 
         $this->assertCount(
