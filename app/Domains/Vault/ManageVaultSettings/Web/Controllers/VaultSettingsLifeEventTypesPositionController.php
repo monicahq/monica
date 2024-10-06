@@ -21,7 +21,7 @@ class VaultSettingsLifeEventTypesPositionController extends Controller
             'new_position' => $request->input('position'),
         ];
 
-        $lifeEventType = (new UpdateLifeEventTypePosition())->execute($data);
+        $lifeEventType = (new UpdateLifeEventTypePosition)->execute($data);
 
         return response()->json([
             'data' => VaultSettingsIndexViewHelper::dtoType($lifeEventType->lifeEventCategory, $lifeEventType),

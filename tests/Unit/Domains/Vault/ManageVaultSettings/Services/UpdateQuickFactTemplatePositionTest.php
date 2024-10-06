@@ -36,7 +36,7 @@ class UpdateQuickFactTemplatePositionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateQuickFactTemplatePosition())->execute($request);
+        (new UpdateQuickFactTemplatePosition)->execute($request);
     }
 
     /** @test */
@@ -89,7 +89,7 @@ class UpdateQuickFactTemplatePositionTest extends TestCase
             'new_position' => 3,
         ];
 
-        $quickFactTemplateEntry = (new UpdateQuickFactTemplatePosition())->execute($request);
+        $quickFactTemplateEntry = (new UpdateQuickFactTemplatePosition)->execute($request);
 
         $this->assertDatabaseHas('vault_quick_facts_templates', [
             'id' => $quickFactTemplateEntry1->id,
@@ -114,7 +114,7 @@ class UpdateQuickFactTemplatePositionTest extends TestCase
 
         $request['new_position'] = 2;
 
-        $quickFactTemplateEntry = (new UpdateQuickFactTemplatePosition())->execute($request);
+        $quickFactTemplateEntry = (new UpdateQuickFactTemplatePosition)->execute($request);
 
         $this->assertDatabaseHas('vault_quick_facts_templates', [
             'id' => $quickFactTemplateEntry1->id,

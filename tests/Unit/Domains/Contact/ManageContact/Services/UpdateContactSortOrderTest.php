@@ -32,7 +32,7 @@ class UpdateContactSortOrderTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateContactSortOrder())->execute($request);
+        (new UpdateContactSortOrder)->execute($request);
     }
 
     /** @test */
@@ -57,7 +57,7 @@ class UpdateContactSortOrderTest extends TestCase
             'sort_order' => User::CONTACT_SORT_ORDER_DESC,
         ];
 
-        (new UpdateContactSortOrder())->execute($request);
+        (new UpdateContactSortOrder)->execute($request);
 
         $this->assertDatabaseHas('users', [
             'id' => $author->id,

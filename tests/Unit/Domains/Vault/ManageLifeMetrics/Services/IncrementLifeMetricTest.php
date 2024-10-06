@@ -37,7 +37,7 @@ class IncrementLifeMetricTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new IncrementLifeMetric())->execute($request);
+        (new IncrementLifeMetric)->execute($request);
     }
 
     /** @test */
@@ -90,7 +90,7 @@ class IncrementLifeMetricTest extends TestCase
             'life_metric_id' => $lifeMetric->id,
         ];
 
-        (new IncrementLifeMetric())->execute($request);
+        (new IncrementLifeMetric)->execute($request);
 
         $contact = $author->getContactInVault($vault);
 

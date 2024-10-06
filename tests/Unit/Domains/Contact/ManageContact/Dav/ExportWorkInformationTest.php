@@ -37,7 +37,7 @@ class ExportWorkInformationTest extends TestCase
             'job_position' => 'random',
         ]);
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportWorkInformation)->export($contact, $vCard);
 
         $this->assertCount(

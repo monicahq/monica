@@ -59,7 +59,7 @@ class VaultController extends ApiController
             'description' => $request->input('description'),
         ];
 
-        $vault = (new CreateVault())->execute($data);
+        $vault = (new CreateVault)->execute($data);
 
         return new VaultResource($vault);
     }
@@ -99,7 +99,7 @@ class VaultController extends ApiController
             'description' => $request->input('description'),
         ];
 
-        $vault = (new UpdateVault())->execute($data);
+        $vault = (new UpdateVault)->execute($data);
 
         return new VaultResource($vault);
     }
@@ -119,7 +119,7 @@ class VaultController extends ApiController
             'vault_id' => $vaultId,
         ];
 
-        (new DestroyVault())->execute($data);
+        (new DestroyVault)->execute($data);
 
         return $this->respondObjectDeleted($vaultId);
     }

@@ -22,7 +22,7 @@ class ImportContactTest extends TestCase
     #[Test]
     public function it_imports_names_N()
     {
-        $importContact = new ImportContact();
+        $importContact = new ImportContact;
 
         $vcard = new VCard([
             'N' => ['Doe', 'John', 'Jane', '', ''],
@@ -38,7 +38,7 @@ class ImportContactTest extends TestCase
     #[Test]
     public function it_imports_names_NICKNAME()
     {
-        $importContact = new ImportContact();
+        $importContact = new ImportContact;
 
         $vcard = new VCard([
             'NICKNAME' => 'John',
@@ -53,9 +53,9 @@ class ImportContactTest extends TestCase
     public function it_imports_names_FN()
     {
         $author = User::factory()->create();
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $author;
-        $importContact = new ImportContact();
+        $importContact = new ImportContact;
         $importContact->setContext($importVCard);
 
         $vcard = new VCard([
@@ -74,9 +74,9 @@ class ImportContactTest extends TestCase
         $author = User::factory()->create([
             'name_order' => '%last_name% %first_name%',
         ]);
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $author;
-        $importContact = new ImportContact();
+        $importContact = new ImportContact;
         $importContact->setContext($importVCard);
 
         $vcard = new VCard([
@@ -93,9 +93,9 @@ class ImportContactTest extends TestCase
     public function it_imports_names_FN_extra_space()
     {
         $author = User::factory()->create();
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $author;
-        $importContact = new ImportContact();
+        $importContact = new ImportContact;
         $importContact->setContext($importVCard);
 
         $vcard = new VCard([
@@ -112,9 +112,9 @@ class ImportContactTest extends TestCase
     public function it_imports_name_FN()
     {
         $author = User::factory()->create();
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $author;
-        $importContact = new ImportContact();
+        $importContact = new ImportContact;
         $importContact->setContext($importVCard);
 
         $vcard = new VCard([
@@ -134,9 +134,9 @@ class ImportContactTest extends TestCase
         $author = User::factory()->create([
             'name_order' => '%last_name% %first_name%',
         ]);
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $author;
-        $importContact = new ImportContact();
+        $importContact = new ImportContact;
         $importContact->setContext($importVCard);
 
         $vcard = new VCard([
@@ -154,9 +154,9 @@ class ImportContactTest extends TestCase
     public function it_imports_names_FN_multiple()
     {
         $author = User::factory()->create();
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $author;
-        $importContact = new ImportContact();
+        $importContact = new ImportContact;
         $importContact->setContext($importVCard);
 
         $vcard = new VCard([
@@ -173,7 +173,7 @@ class ImportContactTest extends TestCase
     #[Test]
     public function it_imports_uuid_default()
     {
-        $importContact = new ImportContact();
+        $importContact = new ImportContact;
         $importContact->setContext(new ImportVCard($this->app));
 
         $vcard = new VCard([

@@ -260,7 +260,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
             ->find($collectionId);
 
         if (! $vault) {
-            throw new NotEnoughPermissionException();
+            throw new NotEnoughPermissionException;
         }
 
         return Contact::firstWhere([

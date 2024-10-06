@@ -19,8 +19,7 @@ class EnsureDavRequestsAreStateful
     public function __construct(
         private Application $app,
         private Auth $auth
-    ) {
-    }
+    ) {}
 
     /**
      * Handle an incoming request.

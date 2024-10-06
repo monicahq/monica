@@ -66,7 +66,7 @@ class GiveAdministratorPrivilegeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new GiveAdministratorPrivilege())->execute($request);
+        (new GiveAdministratorPrivilege)->execute($request);
     }
 
     private function executeService(Account $account, User $author, User $anotherUser): void
@@ -77,7 +77,7 @@ class GiveAdministratorPrivilegeTest extends TestCase
             'user_id' => $anotherUser->id,
         ];
 
-        (new GiveAdministratorPrivilege())->execute($request);
+        (new GiveAdministratorPrivilege)->execute($request);
 
         $this->assertDatabaseHas('users', [
             'id' => $anotherUser->id,

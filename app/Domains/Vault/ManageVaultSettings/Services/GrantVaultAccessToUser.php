@@ -63,7 +63,7 @@ class GrantVaultAccessToUser extends BaseService implements ServiceInterface
             ->findOrFail($this->data['user_id']);
 
         if ($this->user->id === $this->author->id) {
-            throw new SameUserException();
+            throw new SameUserException;
         }
     }
 
@@ -101,7 +101,7 @@ class GrantVaultAccessToUser extends BaseService implements ServiceInterface
                 continue;
             }
 
-            (new ScheduleContactReminderForUser())->execute([
+            (new ScheduleContactReminderForUser)->execute([
                 'contact_reminder_id' => $contactReminder->id,
                 'user_id' => $this->user->id,
             ]);

@@ -43,7 +43,7 @@ class UpdateModulePositionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateModulePosition())->execute($request);
+        (new UpdateModulePosition)->execute($request);
     }
 
     /** @test */
@@ -140,7 +140,7 @@ class UpdateModulePositionTest extends TestCase
             'new_position' => 3,
         ];
 
-        $module = (new UpdateModulePosition())->execute($request);
+        $module = (new UpdateModulePosition)->execute($request);
 
         $this->assertDatabaseHas('module_template_page', [
             'module_id' => $module1->id,
@@ -165,7 +165,7 @@ class UpdateModulePositionTest extends TestCase
 
         $request['new_position'] = 2;
 
-        $module = (new UpdateModulePosition())->execute($request);
+        $module = (new UpdateModulePosition)->execute($request);
 
         $this->assertDatabaseHas('module_template_page', [
             'module_id' => $module1->id,
