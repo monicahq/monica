@@ -26,8 +26,6 @@ class UpdateAddressBooks implements ShouldQueue
 
     /**
      * Manage the subscriptions.
-     *
-     * @param  Collection<array-key,AddressBookSubscription>  $subscriptions
      */
     private function manageSubscriptions(Collection $subscriptions, Carbon $now): void
     {
