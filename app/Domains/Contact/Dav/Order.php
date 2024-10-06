@@ -11,8 +11,7 @@ class Order
 {
     public function __construct(
         public int $order,
-    ) {
-    }
+    ) {}
 
     /**
      * Get order value from a reflection class.

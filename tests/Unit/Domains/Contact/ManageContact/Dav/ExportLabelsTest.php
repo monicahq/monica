@@ -32,7 +32,7 @@ class ExportLabelsTest extends TestCase
         $label = Label::factory()->create(['vault_id' => $vault->id]);
         $label->contacts()->attach($contact->id);
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportLabels)->export($contact, $vCard);
 
         $this->assertCount(
@@ -55,7 +55,7 @@ class ExportLabelsTest extends TestCase
             $label->contacts()->attach($contact->id);
         }
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportLabels)->export($contact, $vCard);
 
         $this->assertCount(

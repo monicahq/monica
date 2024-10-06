@@ -39,7 +39,7 @@ class UpdateTimelineEventTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateTimelineEvent())->execute($request);
+        (new UpdateTimelineEvent)->execute($request);
     }
 
     /** @test */
@@ -117,7 +117,7 @@ class UpdateTimelineEventTest extends TestCase
             'started_at' => '1982-02-04',
         ];
 
-        $timelineEvent = (new UpdateTimelineEvent())->execute($request);
+        $timelineEvent = (new UpdateTimelineEvent)->execute($request);
 
         $this->assertDatabaseHas('timeline_events', [
             'id' => $timelineEvent->id,

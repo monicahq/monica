@@ -41,7 +41,7 @@ class UpdateLifeEventTypePositionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateLifeEventTypePosition())->execute($request);
+        (new UpdateLifeEventTypePosition)->execute($request);
     }
 
     /** @test */
@@ -116,7 +116,7 @@ class UpdateLifeEventTypePositionTest extends TestCase
             'new_position' => 3,
         ];
 
-        $lifeEventType = (new UpdateLifeEventTypePosition())->execute($request);
+        $lifeEventType = (new UpdateLifeEventTypePosition)->execute($request);
 
         $this->assertDatabaseHas('life_event_types', [
             'id' => $lifeEventType1->id,
@@ -141,7 +141,7 @@ class UpdateLifeEventTypePositionTest extends TestCase
 
         $request['new_position'] = 2;
 
-        $lifeEventType = (new UpdateLifeEventTypePosition())->execute($request);
+        $lifeEventType = (new UpdateLifeEventTypePosition)->execute($request);
 
         $this->assertDatabaseHas('life_event_types', [
             'id' => $lifeEventType1->id,

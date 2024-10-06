@@ -43,7 +43,7 @@ class DestroyQuickFactTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyQuickFact())->execute($request);
+        (new DestroyQuickFact)->execute($request);
     }
 
     /** @test */
@@ -127,7 +127,7 @@ class DestroyQuickFactTest extends TestCase
             'quick_fact_id' => $quickFact->id,
         ];
 
-        (new DestroyQuickFact())->execute($request);
+        (new DestroyQuickFact)->execute($request);
 
         $this->assertDatabaseMissing('quick_facts', [
             'id' => $quickFact->id,

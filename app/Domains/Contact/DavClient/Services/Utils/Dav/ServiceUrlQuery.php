@@ -61,7 +61,7 @@ class ServiceUrlQuery
      */
     private function getUri(array $entry, bool $https): string
     {
-        $uri = (new Uri())
+        $uri = (new Uri)
             ->withScheme($https ? 'https' : 'http')
             ->withPort($entry['port'])
             ->withHost($entry['target']);

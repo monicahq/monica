@@ -34,7 +34,7 @@ class CreateLifeMetricTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateLifeMetric())->execute($request);
+        (new CreateLifeMetric)->execute($request);
     }
 
     /** @test */
@@ -80,7 +80,7 @@ class CreateLifeMetricTest extends TestCase
             'label' => 'label name',
         ];
 
-        $lifeMetric = (new CreateLifeMetric())->execute($request);
+        $lifeMetric = (new CreateLifeMetric)->execute($request);
 
         $this->assertDatabaseHas('life_metrics', [
             'id' => $lifeMetric->id,

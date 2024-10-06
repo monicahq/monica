@@ -59,7 +59,7 @@ class RemoveVaultAccess extends BaseService implements ServiceInterface
             ->findOrFail($this->data['user_id']);
 
         if ($this->user->id === $this->author->id) {
-            throw new SameUserException();
+            throw new SameUserException;
         }
     }
 

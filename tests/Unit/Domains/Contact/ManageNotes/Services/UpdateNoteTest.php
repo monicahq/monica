@@ -61,7 +61,7 @@ class UpdateNoteTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateNote())->execute($request);
+        (new UpdateNote)->execute($request);
     }
 
     /** @test */
@@ -149,7 +149,7 @@ class UpdateNoteTest extends TestCase
             $request['emotion_id'] = $emotion->id;
         }
 
-        $note = (new UpdateNote())->execute($request);
+        $note = (new UpdateNote)->execute($request);
 
         $this->assertDatabaseHas('notes', [
             'id' => $note->id,

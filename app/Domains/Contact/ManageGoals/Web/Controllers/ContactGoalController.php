@@ -42,7 +42,7 @@ class ContactGoalController extends Controller
         $contact = Contact::findOrFail($contactId);
         $goal = Goal::where('contact_id', $contact->id)->findOrFail($goalId);
 
-        $goal = (new UpdateGoal())->execute($data);
+        $goal = (new UpdateGoal)->execute($data);
 
         $contact = Contact::find($contactId);
 
@@ -64,7 +64,7 @@ class ContactGoalController extends Controller
         $contact = Contact::findOrFail($contactId);
         Goal::where('contact_id', $contact->id)->findOrFail($goalId);
 
-        (new DestroyGoal())->execute($data);
+        (new DestroyGoal)->execute($data);
 
         return response()->json([
             'data' => route('contact.show', [

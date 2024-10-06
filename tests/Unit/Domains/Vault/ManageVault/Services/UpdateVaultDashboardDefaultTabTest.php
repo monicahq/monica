@@ -32,7 +32,7 @@ class UpdateVaultDashboardDefaultTabTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateVaultDashboardDefaultTab())->execute($request);
+        (new UpdateVaultDashboardDefaultTab)->execute($request);
     }
 
     /** @test */
@@ -67,7 +67,7 @@ class UpdateVaultDashboardDefaultTabTest extends TestCase
             'default_activity_tab' => 'activity',
         ];
 
-        $vault = (new UpdateVaultDashboardDefaultTab())->execute($request);
+        $vault = (new UpdateVaultDashboardDefaultTab)->execute($request);
 
         $this->assertDatabaseHas('vaults', [
             'id' => $vault->id,
