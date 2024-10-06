@@ -21,7 +21,7 @@ class VaultSettingsTagController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $tag = (new CreateTag())->execute($data);
+        $tag = (new CreateTag)->execute($data);
 
         return response()->json([
             'data' => VaultSettingsIndexViewHelper::dtoTag($tag),
@@ -38,7 +38,7 @@ class VaultSettingsTagController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $tag = (new UpdateTag())->execute($data);
+        $tag = (new UpdateTag)->execute($data);
 
         return response()->json([
             'data' => VaultSettingsIndexViewHelper::dtoTag($tag),
@@ -54,7 +54,7 @@ class VaultSettingsTagController extends Controller
             'tag_id' => $tagId,
         ];
 
-        (new DestroyTag())->execute($data);
+        (new DestroyTag)->execute($data);
 
         return response()->json([
             'data' => true,

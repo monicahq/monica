@@ -6,8 +6,8 @@ use App\Models\AddressBookSubscription;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Collection;
 
 class UpdateAddressBooks implements ShouldQueue
 {

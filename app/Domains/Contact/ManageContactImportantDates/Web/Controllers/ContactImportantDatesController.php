@@ -54,12 +54,12 @@ class ContactImportantDatesController extends Controller
             $year = Carbon::now()->subYears($request->input('age'))->format('Y');
         }
 
-        $date = (new CreateContactImportantDate())->execute([
+        $date = (new CreateContactImportantDate)->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
-            'contact_important_date_type_id' => $request->input('contact_important_date_type_id') == 0 ? null : $request->input('contact_important_date_type_id'),
+            'contact_important_date_type_id' => $request->input('contact_important_date_type_id') <= 0 ? null : $request->input('contact_important_date_type_id'),
             'label' => $request->input('label'),
             'day' => $day,
             'month' => $month,
@@ -67,7 +67,7 @@ class ContactImportantDatesController extends Controller
         ]);
 
         if ($request->input('reminder')) {
-            (new CreateContactReminder())->execute([
+            (new CreateContactReminder)->execute([
                 'account_id' => Auth::user()->account_id,
                 'author_id' => Auth::id(),
                 'vault_id' => $vaultId,
@@ -125,7 +125,7 @@ class ContactImportantDatesController extends Controller
             'year' => $year,
         ];
 
-        $date = (new UpdateContactImportantDate())->execute($data);
+        $date = (new UpdateContactImportantDate)->execute($data);
 
         $contact = Contact::find($contactId);
 
@@ -144,7 +144,7 @@ class ContactImportantDatesController extends Controller
             'contact_important_date_id' => $dateId,
         ];
 
-        (new DestroyContactImportantDate())->execute($data);
+        (new DestroyContactImportantDate)->execute($data);
 
         return response()->json([
             'data' => true,

@@ -22,7 +22,7 @@ class VaultSettingsMoodTrackingParameterController extends Controller
             'hex_color' => $request->input('hex_color'),
         ];
 
-        $parameter = (new CreateMoodTrackingParameter())->execute($data);
+        $parameter = (new CreateMoodTrackingParameter)->execute($data);
 
         return response()->json([
             'data' => VaultSettingsIndexViewHelper::dtoMoodTrackingParameter($parameter),
@@ -40,7 +40,7 @@ class VaultSettingsMoodTrackingParameterController extends Controller
             'hex_color' => $request->input('hex_color'),
         ];
 
-        $parameter = (new UpdateMoodTrackingParameter())->execute($data);
+        $parameter = (new UpdateMoodTrackingParameter)->execute($data);
 
         return response()->json([
             'data' => VaultSettingsIndexViewHelper::dtoMoodTrackingParameter($parameter),
@@ -56,7 +56,7 @@ class VaultSettingsMoodTrackingParameterController extends Controller
             'mood_tracking_parameter_id' => $moodTrackingParameterId,
         ];
 
-        (new DestroyMoodTrackingParameter())->execute($data);
+        (new DestroyMoodTrackingParameter)->execute($data);
 
         return response()->json([
             'data' => true,

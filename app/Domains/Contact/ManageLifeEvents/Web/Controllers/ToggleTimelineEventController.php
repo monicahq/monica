@@ -17,7 +17,7 @@ class ToggleTimelineEventController
             'timeline_event_id' => $timelineEventId,
         ];
 
-        (new ToggleTimelineEvent())->execute($data);
+        (new ToggleTimelineEvent)->execute($data);
 
         return response()->json([
             'data' => true,

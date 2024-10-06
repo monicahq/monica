@@ -104,7 +104,7 @@ class ImportContact extends Importer implements ImportVCardResource
         }
 
         if ($contact !== null && $contact->vault_id !== $this->vault()->id) {
-            throw new ModelNotFoundException();
+            throw new ModelNotFoundException;
         }
 
         return $contact;

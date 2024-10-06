@@ -18,7 +18,7 @@ class PreferencesLocaleController extends Controller
             'locale' => $request->input('locale'),
         ];
 
-        $user = (new StoreLocale())->execute($data);
+        $user = (new StoreLocale)->execute($data);
 
         return response()->json([
             'data' => UserPreferencesIndexViewHelper::dtoLocale($user),

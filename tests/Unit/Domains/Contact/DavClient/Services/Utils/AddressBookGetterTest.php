@@ -16,13 +16,13 @@ class AddressBookGetterTest extends TestCase
     /** @test */
     public function it_get_address_book_data()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->addressBookBaseUri()
             ->capabilities()
             ->displayName()
             ->fake();
         $client = $tester->client();
-        $result = (new AddressBookGetter())
+        $result = (new AddressBookGetter)
             ->withClient($client)
             ->execute();
 
@@ -52,7 +52,7 @@ class AddressBookGetterTest extends TestCase
             ->displayName()
             ->fake();
         $client = $tester->client();
-        $result = (new AddressBookGetter())
+        $result = (new AddressBookGetter)
             ->withClient($client)
             ->execute();
 
@@ -75,7 +75,7 @@ class AddressBookGetterTest extends TestCase
     /** @test */
     public function it_fails_on_server_not_compliant()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->userPrincipalEmpty()
             ->serviceUrl()
             ->optionsFail()
@@ -83,7 +83,7 @@ class AddressBookGetterTest extends TestCase
         $client = $tester->client();
 
         $this->expectException(DavServerNotCompliantException::class);
-        (new AddressBookGetter())
+        (new AddressBookGetter)
             ->withClient($client)
             ->execute();
     }
@@ -91,7 +91,7 @@ class AddressBookGetterTest extends TestCase
     /** @test */
     public function it_fails_if_no_userprincipal()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->userPrincipalEmpty()
             ->serviceUrl()
             ->optionsOk()
@@ -100,7 +100,7 @@ class AddressBookGetterTest extends TestCase
         $client = $tester->client();
 
         $this->expectException(DavServerNotCompliantException::class);
-        (new AddressBookGetter())
+        (new AddressBookGetter)
             ->withClient($client)
             ->execute();
     }
@@ -108,7 +108,7 @@ class AddressBookGetterTest extends TestCase
     /** @test */
     public function it_fails_if_no_addressbook()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->userPrincipalEmpty()
             ->serviceUrl()
             ->optionsOk()
@@ -118,7 +118,7 @@ class AddressBookGetterTest extends TestCase
         $client = $tester->client();
 
         $this->expectException(DavServerNotCompliantException::class);
-        (new AddressBookGetter())
+        (new AddressBookGetter)
             ->withClient($client)
             ->execute();
     }
@@ -126,7 +126,7 @@ class AddressBookGetterTest extends TestCase
     /** @test */
     public function it_fails_if_no_addressbook_url()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->userPrincipalEmpty()
             ->serviceUrl()
             ->optionsOk()
@@ -138,7 +138,7 @@ class AddressBookGetterTest extends TestCase
         $client = $tester->client();
 
         $this->expectException(DavClientException::class);
-        (new AddressBookGetter())
+        (new AddressBookGetter)
             ->withClient($client)
             ->execute();
     }
