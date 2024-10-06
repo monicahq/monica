@@ -43,7 +43,7 @@ class ToggleLifeEventTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new ToggleLifeEvent())->execute($request);
+        (new ToggleLifeEvent)->execute($request);
     }
 
     /** @test */
@@ -130,7 +130,7 @@ class ToggleLifeEventTest extends TestCase
             'life_event_id' => $lifeEvent->id,
         ];
 
-        $lifeEvent = (new ToggleLifeEvent())->execute($request);
+        $lifeEvent = (new ToggleLifeEvent)->execute($request);
 
         $this->assertDatabaseHas('life_events', [
             'id' => $lifeEvent->id,

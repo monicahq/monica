@@ -43,7 +43,7 @@ class DestroyPostTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyPost())->execute($request);
+        (new DestroyPost)->execute($request);
     }
 
     /** @test */
@@ -143,7 +143,7 @@ class DestroyPostTest extends TestCase
             'post_id' => $post->id,
         ];
 
-        (new DestroyPost())->execute($request);
+        (new DestroyPost)->execute($request);
 
         $this->assertDatabaseMissing('posts', [
             'id' => $post->id,

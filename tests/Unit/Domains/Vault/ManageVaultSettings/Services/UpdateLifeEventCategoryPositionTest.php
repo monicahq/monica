@@ -36,7 +36,7 @@ class UpdateLifeEventCategoryPositionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateLifeEventCategoryPosition())->execute($request);
+        (new UpdateLifeEventCategoryPosition)->execute($request);
     }
 
     /** @test */
@@ -90,7 +90,7 @@ class UpdateLifeEventCategoryPositionTest extends TestCase
             'new_position' => 3,
         ];
 
-        $lifeEventCategory = (new UpdateLifeEventCategoryPosition())->execute($request);
+        $lifeEventCategory = (new UpdateLifeEventCategoryPosition)->execute($request);
 
         $this->assertDatabaseHas('life_event_categories', [
             'id' => $lifeEventCategory1->id,
@@ -115,7 +115,7 @@ class UpdateLifeEventCategoryPositionTest extends TestCase
 
         $request['new_position'] = 2;
 
-        $lifeEventCategory = (new UpdateLifeEventCategoryPosition())->execute($request);
+        $lifeEventCategory = (new UpdateLifeEventCategoryPosition)->execute($request);
 
         $this->assertDatabaseHas('life_event_categories', [
             'id' => $lifeEventCategory1->id,

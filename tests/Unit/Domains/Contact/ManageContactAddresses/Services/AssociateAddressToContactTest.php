@@ -44,7 +44,7 @@ class AssociateAddressToContactTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new AssociateAddressToContact())->execute($request);
+        (new AssociateAddressToContact)->execute($request);
     }
 
     /** @test */
@@ -129,7 +129,7 @@ class AssociateAddressToContactTest extends TestCase
             'is_past_address' => false,
         ];
 
-        $address = (new AssociateAddressToContact())->execute($request);
+        $address = (new AssociateAddressToContact)->execute($request);
 
         $this->assertDatabaseHas('contact_address', [
             'contact_id' => $contact->id,

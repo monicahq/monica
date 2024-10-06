@@ -18,7 +18,7 @@ class VaultDefaultTabOnDashboardController extends Controller
             'default_activity_tab' => $request->input('default_activity_tab'),
         ];
 
-        (new UpdateVaultDashboardDefaultTab())->execute($data);
+        (new UpdateVaultDashboardDefaultTab)->execute($data);
 
         return response()->json([
             'data' => true,

@@ -73,7 +73,7 @@ class GroupController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $group = (new UpdateGroup())->execute($data);
+        $group = (new UpdateGroup)->execute($data);
 
         return response()->json([
             'data' => route('group.show', [
@@ -94,7 +94,7 @@ class GroupController extends Controller
             'group_id' => $groupId,
         ];
 
-        (new DestroyGroup())->execute($data);
+        (new DestroyGroup)->execute($data);
 
         return response()->json([
             'data' => route('group.index', [

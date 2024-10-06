@@ -40,7 +40,7 @@ class DestroyReminderTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyReminder())->execute($request);
+        (new DestroyReminder)->execute($request);
     }
 
     /** @test */
@@ -116,7 +116,7 @@ class DestroyReminderTest extends TestCase
             'contact_reminder_id' => $reminder->id,
         ];
 
-        (new DestroyReminder())->execute($request);
+        (new DestroyReminder)->execute($request);
 
         $this->assertDatabaseMissing('contact_reminders', [
             'id' => $reminder->id,

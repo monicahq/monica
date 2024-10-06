@@ -26,10 +26,10 @@ class ImportAddressTest extends TestCase
     {
         $user = $this->createUser();
         $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $user;
         $importVCard->vault = $vault;
-        $importer = new ImportAddress();
+        $importer = new ImportAddress;
         $importer->setContext($importVCard);
 
         $contact = Contact::factory()->create([
@@ -66,10 +66,10 @@ class ImportAddressTest extends TestCase
     {
         $user = $this->createUser();
         $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $user;
         $importVCard->vault = $vault;
-        $importer = new ImportAddress();
+        $importer = new ImportAddress;
         $importer->setContext($importVCard);
 
         $contact = Contact::factory()->create([
@@ -81,7 +81,7 @@ class ImportAddressTest extends TestCase
             'name' => 'home',
         ]);
 
-        $vcard = new VCard();
+        $vcard = new VCard;
         $vcard->add('ADR', [
             '',
             'line 1',
@@ -109,17 +109,17 @@ class ImportAddressTest extends TestCase
     {
         $user = $this->createAdministrator();
         $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $user;
         $importVCard->vault = $vault;
-        $importer = new ImportAddress();
+        $importer = new ImportAddress;
         $importer->setContext($importVCard);
 
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
         ]);
 
-        $vcard = new VCard();
+        $vcard = new VCard;
         $vcard->add('ADR', [
             '',
             'line 1',
@@ -152,10 +152,10 @@ class ImportAddressTest extends TestCase
     {
         $user = $this->createUser();
         $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $user;
         $importVCard->vault = $vault;
-        $importer = new ImportAddress();
+        $importer = new ImportAddress;
         $importer->setContext($importVCard);
 
         $contact = Contact::factory()->create([

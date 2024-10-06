@@ -31,7 +31,7 @@ class CreateRelationshipGroupTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateRelationshipGroupType())->execute($request);
+        (new CreateRelationshipGroupType)->execute($request);
     }
 
     /** @test */
@@ -62,7 +62,7 @@ class CreateRelationshipGroupTypeTest extends TestCase
             'can_be_deleted' => true,
         ];
 
-        $type = (new CreateRelationshipGroupType())->execute($request);
+        $type = (new CreateRelationshipGroupType)->execute($request);
 
         $this->assertDatabaseHas('relationship_group_types', [
             'id' => $type->id,

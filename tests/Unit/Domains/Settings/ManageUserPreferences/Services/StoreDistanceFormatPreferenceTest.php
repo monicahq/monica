@@ -30,7 +30,7 @@ class StoreDistanceFormatPreferenceTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new StoreDistanceFormatPreference())->execute($request);
+        (new StoreDistanceFormatPreference)->execute($request);
     }
 
     /** @test */
@@ -53,7 +53,7 @@ class StoreDistanceFormatPreferenceTest extends TestCase
             'distance_format' => 'km',
         ];
 
-        $user = (new StoreDistanceFormatPreference())->execute($request);
+        $user = (new StoreDistanceFormatPreference)->execute($request);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,

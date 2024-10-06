@@ -37,7 +37,7 @@ class UpdateTagTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateTag())->execute($request);
+        (new UpdateTag)->execute($request);
     }
 
     /** @test */
@@ -91,7 +91,7 @@ class UpdateTagTest extends TestCase
             'name' => 'label name',
         ];
 
-        $tag = (new UpdateTag())->execute($request);
+        $tag = (new UpdateTag)->execute($request);
 
         $this->assertDatabaseHas('tags', [
             'id' => $tag->id,

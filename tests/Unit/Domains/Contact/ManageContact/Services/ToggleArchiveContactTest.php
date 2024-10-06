@@ -35,7 +35,7 @@ class ToggleArchiveContactTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new ToggleArchiveContact())->execute($request);
+        (new ToggleArchiveContact)->execute($request);
     }
 
     /** @test */
@@ -87,7 +87,7 @@ class ToggleArchiveContactTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $contact = (new ToggleArchiveContact())->execute($request);
+        $contact = (new ToggleArchiveContact)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -95,7 +95,7 @@ class ToggleArchiveContactTest extends TestCase
             'listed' => false,
         ]);
 
-        $contact = (new ToggleArchiveContact())->execute($request);
+        $contact = (new ToggleArchiveContact)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,

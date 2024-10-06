@@ -38,7 +38,7 @@ class UpdateRelationshipTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateRelationshipType())->execute($request);
+        (new UpdateRelationshipType)->execute($request);
     }
 
     /** @test */
@@ -96,7 +96,7 @@ class UpdateRelationshipTypeTest extends TestCase
             'name_reverse_relationship' => 'reverse type name',
         ];
 
-        $type = (new UpdateRelationshipType())->execute($request);
+        $type = (new UpdateRelationshipType)->execute($request);
 
         $this->assertDatabaseHas('relationship_types', [
             'id' => $type->id,

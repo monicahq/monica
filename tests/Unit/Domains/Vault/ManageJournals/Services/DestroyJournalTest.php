@@ -39,7 +39,7 @@ class DestroyJournalTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyJournal())->execute($request);
+        (new DestroyJournal)->execute($request);
     }
 
     /** @test */
@@ -110,7 +110,7 @@ class DestroyJournalTest extends TestCase
             'journal_id' => $journal->id,
         ];
 
-        (new DestroyJournal())->execute($request);
+        (new DestroyJournal)->execute($request);
 
         $this->assertDatabaseMissing('journals', [
             'id' => $journal->id,
