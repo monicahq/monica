@@ -6,6 +6,10 @@ import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
 import HoverMenu from '@/Shared/HoverMenu.vue';
 import CreateLifeEvent from '@/Shared/Modules/CreateLifeEvent.vue';
+import FireIcon from '@/Shared/Icons/FireIcon.vue';
+import ChevronIcon from '@/Shared/Icons/ChevronIcon.vue';
+import ClockIcon from '@/Shared/Icons/ClockIcon.vue';
+import TwoPinMapIcon from '@/Shared/Icons/TwoPinMapIcon.vue';
 
 const props = defineProps({
   layoutData: Object,
@@ -107,22 +111,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
         <span class="relative me-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="icon-sidebar relative inline h-4 w-4">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
-          </svg>
+          <FireIcon />
         </span>
 
         <span class="font-semibold"> {{ $t('Life events') }} </span>
@@ -164,27 +153,9 @@ const toggleLifeEventVisibility = (lifeEvent) => {
             <!-- chevrons and menu -->
             <div class="flex">
               <!-- chevrons -->
-              <svg
-                v-if="timelineEvent.collapsed"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="me-2 h-4 w-4 text-gray-400">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
+              <ChevronIcon v-if="timelineEvent.collapsed" :type="'down'" />
 
-              <svg
-                v-if="!timelineEvent.collapsed"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="me-2 h-4 w-4 text-gray-400">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
-              </svg>
+              <ChevronIcon v-if="!timelineEvent.collapsed" :type="'up'" />
 
               <!-- menu -->
               <hover-menu :show-edit="false" :show-delete="true" @delete="destroy(timelineEvent)" />
@@ -231,30 +202,10 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                   <!-- chevrons and menu -->
                   <div class="flex">
                     <!-- chevrons -->
-                    <svg
-                      @click="toggleLifeEventVisibility(lifeEvent)"
-                      v-if="lifeEvent.collapsed"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="me-2 h-4 w-4 text-gray-400">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                    </svg>
+                    <ChevronIcon v-if="timelineEvent.collapsed" :type="'down'" @click="toggleLifeEventVisibility(lifeEvent)"/>
 
-                    <svg
-                      @click="toggleLifeEventVisibility(lifeEvent)"
-                      v-if="!lifeEvent.collapsed"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="me-2 h-4 w-4 text-gray-400">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
-                    </svg>
-
+                    <ChevronIcon v-if="!timelineEvent.collapsed" :type="'up'" @click="toggleLifeEventVisibility(lifeEvent)"/>
+                    
                     <!-- menu -->
                     <hover-menu
                       :show-edit="true"
@@ -277,43 +228,14 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                   class="flex items-center border-b border-gray-200 px-3 py-2 text-sm dark:border-gray-700">
                   <!-- date -->
                   <div class="me-4 flex items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="me-2 h-4 w-4 text-gray-500">
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                    <ClockIcon />
 
                     {{ lifeEvent.happened_at }}
                   </div>
 
                   <!-- distance -->
                   <div v-if="lifeEvent.distance" class="flex items-center">
-                    <svg
-                      class="me-2 h-6 w-6 text-gray-500"
-                      viewBox="0 0 64 64"
-                      xmlns="http://www.w3.org/2000/svg"
-                      stroke-width="3"
-                      stroke="#000000"
-                      fill="none">
-                      <path
-                        d="M17.94,54.81a.1.1,0,0,1-.14,0c-1-1.11-11.69-13.23-11.69-21.26,0-9.94,6.5-12.24,11.76-12.24,4.84,0,11.06,2.6,11.06,12.24C28.93,41.84,18.87,53.72,17.94,54.81Z" />
-                      <circle cx="17.52" cy="31.38" r="4.75" />
-                      <path
-                        d="M49.58,34.77a.11.11,0,0,1-.15,0c-.87-1-9.19-10.45-9.19-16.74,0-7.84,5.12-9.65,9.27-9.65,3.81,0,8.71,2,8.71,9.65C58.22,24.52,50.4,33.81,49.58,34.77Z" />
-                      <circle cx="49.23" cy="17.32" r="3.75" />
-                      <path d="M17.87,54.89a28.73,28.73,0,0,0,3.9.89" />
-                      <path
-                        d="M24.68,56.07c2.79.12,5.85-.28,7.9-2.08,5.8-5.09,2.89-11.25,6.75-14.71a16.72,16.72,0,0,1,4.93-3"
-                        stroke-dasharray="7.8 2.92" />
-                      <path d="M45.63,35.8a23,23,0,0,1,3.88-.95" />
-                    </svg>
+                    <TwoPinMapIcon />
 
                     <span>{{ lifeEvent.distance }}</span>
                   </div>
