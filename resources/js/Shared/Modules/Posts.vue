@@ -1,5 +1,7 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import TagIcon from '@/Shared/Icons/TagIcon.vue';
+import ClockIcon from '@/Shared/Icons/ClockIcon.vue';
 
 defineProps({
   data: Object,
@@ -12,18 +14,7 @@ defineProps({
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
         <span class="relative me-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="icon-sidebar relative inline h-4 w-4">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9" />
-          </svg>
+          <TagIcon />
         </span>
 
         <span class="font-semibold"> {{ $t('Posts') }} </span>
@@ -48,18 +39,7 @@ defineProps({
 
             <!-- date -->
             <div class="relative me-3 inline">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon-note relative inline h-3 w-3 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+              <ClockIcon :time="'four'" />
               {{ post.written_at }}
             </div>
           </div>

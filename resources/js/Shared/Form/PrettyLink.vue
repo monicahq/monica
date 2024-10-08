@@ -3,42 +3,12 @@
     :class="'dark:box-s relative border-zinc-900 bg-white text-sm dark:border-zinc-100 dark:bg-gray-800 dark:text-gray-100'"
     :href="href"
     preserve-scroll>
-    <!-- + icon -->
-    <svg
-      v-if="icon === 'plus'"
-      xmlns="http://www.w3.org/2000/svg"
-      class="icon relative inline h-5 w-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-    </svg>
+    
+    <PlusIcon v-if="icon === 'plus'" />
 
-    <!-- check icon -->
-    <svg
-      v-else-if="icon === 'check'"
-      xmlns="http://www.w3.org/2000/svg"
-      class="icon relative inline h-5 w-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-    </svg>
+    <CheckedIcon v-else-if="icon === 'check'" />
 
-    <!-- door icon -->
-    <svg
-      v-else-if="icon === 'exit'"
-      class="icon relative me-1 inline h-5 w-5"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor">
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-    </svg>
+    <DoorIcon :type="'entry'" v-else-if="icon === 'exit'" />
 
     <span>
       {{ text }}
@@ -48,10 +18,16 @@
 
 <script>
 import { Link } from '@inertiajs/vue3';
+import PlusIcon from '@/Shared/Icons/PlusIcon.vue';
+import CheckedIcon from '@/Shared/Icons/CheckedIcon.vue';
+import DoorIcon from '@/Shared/Icons/DoorIcon.vue';
 
 export default {
   components: {
     InertiaLink: Link,
+    PlusIcon,
+    CheckedIcon,
+    DoorIcon,
   },
 
   props: {

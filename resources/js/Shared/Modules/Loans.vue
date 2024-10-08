@@ -13,6 +13,8 @@ import Errors from '@/Shared/Form/Errors.vue';
 import ContactSelector from '@/Shared/Form/ContactSelector.vue';
 import Dropdown from '@/Shared/Form/Dropdown.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
+import DollarIcon from '@/Shared/Icons/DollarIcon.vue';
+import ArrowIcon from '@/Shared/Icons/ArrowIcon.vue';
 
 const props = defineProps({
   layoutData: Object,
@@ -150,18 +152,7 @@ const toggle = (loan) => {
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
         <span class="relative me-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon-sidebar relative inline h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+          <DollarIcon />
         </span>
 
         <span class="font-semibold"> {{ $t('Loans') }} </span>
@@ -333,15 +324,7 @@ const toggle = (loan) => {
             </div>
           </div>
 
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
+          <ArrowIcon :type="'right'" :size="'big'" />
 
           <div v-for="loanee in loan.loanees" :key="loanee.id">
             <contact-card :contact="loanee" :avatar-classes="'h-7 w-7 rounded-full me-2'" :display-name="false" />
