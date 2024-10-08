@@ -37,7 +37,7 @@ class UpdateGroupTypeRolePositionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateGroupTypeRolePosition())->execute($request);
+        (new UpdateGroupTypeRolePosition)->execute($request);
     }
 
     /** @test */
@@ -92,7 +92,7 @@ class UpdateGroupTypeRolePositionTest extends TestCase
             'new_position' => 3,
         ];
 
-        $groupTypeRole = (new UpdateGroupTypeRolePosition())->execute($request);
+        $groupTypeRole = (new UpdateGroupTypeRolePosition)->execute($request);
 
         $this->assertDatabaseHas('group_type_roles', [
             'id' => $groupTypeRole1->id,
@@ -117,7 +117,7 @@ class UpdateGroupTypeRolePositionTest extends TestCase
 
         $request['new_position'] = 2;
 
-        $groupTypeRole = (new UpdateGroupTypeRolePosition())->execute($request);
+        $groupTypeRole = (new UpdateGroupTypeRolePosition)->execute($request);
 
         $this->assertDatabaseHas('group_type_roles', [
             'id' => $groupTypeRole1->id,

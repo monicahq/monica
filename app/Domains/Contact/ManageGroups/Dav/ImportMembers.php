@@ -64,7 +64,7 @@ class ImportMembers extends Importer implements ImportVCardResource
         }
 
         if ($group !== null && $group->vault_id !== $this->vault()->id) {
-            throw new ModelNotFoundException();
+            throw new ModelNotFoundException;
         }
 
         return $group;

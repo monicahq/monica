@@ -43,7 +43,7 @@ class UpdateGroupTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateGroup())->execute($request);
+        (new UpdateGroup)->execute($request);
     }
 
     /** @test */
@@ -128,7 +128,7 @@ class UpdateGroupTest extends TestCase
             'name' => 'love',
         ];
 
-        $group = (new UpdateGroup())->execute($request);
+        $group = (new UpdateGroup)->execute($request);
 
         $this->assertDatabaseHas('groups', [
             'id' => $group->id,

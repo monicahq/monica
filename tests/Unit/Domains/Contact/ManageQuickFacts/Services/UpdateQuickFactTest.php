@@ -48,7 +48,7 @@ class UpdateQuickFactTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateQuickFact())->execute($request);
+        (new UpdateQuickFact)->execute($request);
     }
 
     /** @test */
@@ -148,7 +148,7 @@ class UpdateQuickFactTest extends TestCase
             'content' => 'love',
         ];
 
-        $quickFact = (new UpdateQuickFact())->execute($request);
+        $quickFact = (new UpdateQuickFact)->execute($request);
 
         $this->assertDatabaseHas('quick_facts', [
             'id' => $quickFact->id,

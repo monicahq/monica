@@ -21,7 +21,7 @@ class PersonalizeGroupTypeRoleController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $groupTypeRole = (new CreateGroupTypeRole())->execute($data);
+        $groupTypeRole = (new CreateGroupTypeRole)->execute($data);
 
         return response()->json([
             'data' => PersonalizeGroupTypeViewHelper::dtoGroupTypeRole($groupTypeRole->groupType, $groupTypeRole),
@@ -38,7 +38,7 @@ class PersonalizeGroupTypeRoleController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $groupTypeRole = (new UpdateGroupTypeRole())->execute($data);
+        $groupTypeRole = (new UpdateGroupTypeRole)->execute($data);
 
         return response()->json([
             'data' => PersonalizeGroupTypeViewHelper::dtoGroupTypeRole($groupTypeRole->groupType, $groupTypeRole),
@@ -54,7 +54,7 @@ class PersonalizeGroupTypeRoleController extends Controller
             'group_type_role_id' => $groupTypeRoleId,
         ];
 
-        (new DestroyGroupTypeRole())->execute($data);
+        (new DestroyGroupTypeRole)->execute($data);
 
         return response()->json([
             'data' => true,

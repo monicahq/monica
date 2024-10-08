@@ -57,22 +57,22 @@ class DAVServiceProvider extends ServiceProvider
     private function plugins()
     {
         // Authentication backend
-        $authBackend = new AuthBackend();
+        $authBackend = new AuthBackend;
         yield new AuthPlugin($authBackend);
 
         // CardDAV plugin
-        yield new CardDAVPlugin();
-        yield new VCFExportPlugin();
+        yield new CardDAVPlugin;
+        yield new VCFExportPlugin;
 
         // CalDAV plugin
         // yield new CalDAVPlugin();
         // yield new ICSExportPlugin();
 
         // Sync Plugin - rfc6578
-        yield new SyncPlugin();
+        yield new SyncPlugin;
 
         // ACL plugnin
-        $aclPlugin = new AclPlugin();
+        $aclPlugin = new AclPlugin;
         $aclPlugin->allowUnauthenticatedAccess = false;
         $aclPlugin->hideNodesFromListings = true;
         yield $aclPlugin;
@@ -81,7 +81,7 @@ class DAVServiceProvider extends ServiceProvider
         if (App::environment('local')) {
             yield new BrowserPlugin(false);
         } else {
-            yield new DAVRedirect();
+            yield new DAVRedirect;
         }
     }
 }

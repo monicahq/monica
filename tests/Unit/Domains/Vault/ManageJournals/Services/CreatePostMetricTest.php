@@ -46,7 +46,7 @@ class CreatePostMetricTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreatePostMetric())->execute($request);
+        (new CreatePostMetric)->execute($request);
     }
 
     /** @test */
@@ -162,7 +162,7 @@ class CreatePostMetricTest extends TestCase
             'label' => 'this is a title',
         ];
 
-        $postMetric = (new CreatePostMetric())->execute($request);
+        $postMetric = (new CreatePostMetric)->execute($request);
 
         $this->assertDatabaseHas('post_metrics', [
             'id' => $postMetric->id,

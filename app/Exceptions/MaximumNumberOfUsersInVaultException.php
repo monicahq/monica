@@ -4,6 +4,4 @@ namespace App\Exceptions;
 
 use Exception;
 
-class MaximumNumberOfUsersInVaultException extends Exception
-{
-}
+class MaximumNumberOfUsersInVaultException extends Exception {}
