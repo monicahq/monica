@@ -40,11 +40,13 @@
               stroke-width="2"
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-          <input
-            type="text"
-            class="dark:highlight-white/5 block w-64 rounded-md border border-gray-300 px-2 py-1 text-center placeholder:text-gray-600 hover:cursor-pointer focus:border-indigo-500 focus:ring-indigo-500 dark:border-0 dark:border-gray-700 dark:bg-slate-900 placeholder:dark:text-gray-400 hover:dark:bg-slate-700 sm:text-sm"
-            :placeholder="$t('Search something')"
-            @focus="goToSearchPage" />
+          <form @submit.prevent="goToSearchPage">
+            <input
+              type="text"
+              class="dark:highlight-white/5 block w-64 rounded-md border border-gray-300 px-2 py-1 text-center placeholder:text-gray-600 hover:cursor-pointer focus:border-indigo-500 focus:ring-indigo-500 dark:border-0 dark:border-gray-700 dark:bg-slate-900 placeholder:dark:text-gray-400 hover:dark:bg-slate-700 sm:text-sm"
+              :placeholder="$t('Search something')"
+              v-model="search" />
+          </form>
         </div>
 
         <!-- icons -->
@@ -374,7 +376,7 @@ export default {
 
   methods: {
     goToSearchPage() {
-      this.$inertia.visit(this.layoutData.vault.url.search);
+      this.$inertia.visit(this.layoutData.vault.url.search + '?searchTerm=' + this.search);
     },
 
     toggleStyle() {
