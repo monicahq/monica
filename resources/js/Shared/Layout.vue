@@ -376,7 +376,9 @@ export default {
 
   methods: {
     goToSearchPage() {
-      this.$inertia.visit(this.layoutData.vault.url.search + '?searchTerm=' + this.search);
+      this.$inertia.visit(this.layoutData.vault.url.search, {
+        data: { searchTerm: this.search },
+      });
     },
 
     toggleStyle() {
