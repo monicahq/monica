@@ -34,8 +34,8 @@ jobs:
             suffix:
           - name: fpm
             file: scripts/docker/Dockerfile-fpm
-            tag: fpm
-            suffix: fpm
+            tag: main-fpm
+            suffix: -fpm
 
     permissions:
       contents: read
