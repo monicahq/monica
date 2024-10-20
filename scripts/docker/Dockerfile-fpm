@@ -3,7 +3,7 @@
 ###
 ### This file is used for dev purpose.
 ### The standard monica image definition will be found here: https://github.com/monicahq/docker
-### This file is based on the `apache` variant in the above mentioned repo
+### This file is based on the `fpm` variant in the above mentioned repo
 ###
 
 ## Build assets
@@ -18,7 +18,7 @@ RUN set -ex; \
 
 
 ## Image
-FROM php:8.3-apache
+FROM php:8.3-fpm
 
 # entrypoint.sh dependencies
 RUN set -ex; \
@@ -133,31 +133,6 @@ RUN set -ex; \
         echo 'post_max_size=${PHP_UPLOAD_LIMIT}'; \
     } > $PHP_INI_DIR/conf.d/limits.ini;
 
-RUN set -ex; \
-    \
-    a2enmod headers rewrite remoteip; \
-    { \
-        echo RemoteIPHeader X-Real-IP; \
-        echo RemoteIPTrustedProxy 10.0.0.0/8; \
-        echo RemoteIPTrustedProxy 172.16.0.0/12; \
-        echo RemoteIPTrustedProxy 192.168.0.0/16; \
-    } > $APACHE_CONFDIR/conf-available/remoteip.conf; \
-    a2enconf remoteip
-
-# set apache config LimitRequestBody
-ENV APACHE_BODY_LIMIT=1073741824
-RUN set -ex; \
-    \
-    { \
-        echo 'LimitRequestBody ${APACHE_BODY_LIMIT}'; \
-    } > $APACHE_CONFDIR/conf-available/apache-limits.conf; \
-    a2enconf apache-limits
-
-RUN set -ex; \
-    APACHE_DOCUMENT_ROOT=/var/www/html/public; \
-    sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" $APACHE_CONFDIR/sites-available/*.conf; \
-    sed -ri -e "s!/var/www/!${APACHE_DOCUMENT_ROOT}!g" $APACHE_CONFDIR/apache2.conf $APACHE_CONFDIR/conf-available/*.conf
-
 WORKDIR /var/www/html
 
 # Copy the local (outside Docker) source into the working directory,
@@ -195,4 +170,4 @@ COPY scripts/docker/entrypoint.sh \
     /usr/local/bin/
 
 ENTRYPOINT ["entrypoint.sh"]
-CMD ["apache2-foreground"]
+CMD ["php-fpm"]
