@@ -5,6 +5,8 @@ import { trans } from 'laravel-vue-i18n';
 import HoverMenu from '@/Shared/HoverMenu.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import CreateOrEditTask from '@/Shared/Modules/TaskItems/CreateOrEditTask.vue';
+import TaskIcon from '@/Shared/Icons/TaskIcon.vue';
+import DateIcon from '@/Shared/Icons/DateIcon.vue';
 
 const props = defineProps({
   data: Object,
@@ -91,18 +93,7 @@ const destroy = (task) => {
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
         <span class="relative me-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon-sidebar relative inline h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-          </svg>
+          <TaskIcon />
         </span>
 
         <span class="font-semibold"> {{ $t('Tasks') }} </span>
@@ -148,18 +139,7 @@ const destroy = (task) => {
                     : 'bg-sky-400/10 text-sky-600 dark:bg-sky-600/10 dark:text-sky-400'
                 "
                 class="ms-2 flex items-center rounded-full px-2 py-0.5 text-xs font-medium leading-5">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="me-1 h-3 w-3"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
+                <DateIcon />
                 <span>{{ task.due_at.formatted }}</span>
               </span>
             </label>
@@ -212,18 +192,7 @@ const destroy = (task) => {
                 <span
                   v-if="task.due_at !== null"
                   class="ms-2 flex items-center rounded-full bg-sky-400/10 px-2 py-0.5 text-xs font-medium leading-5 text-sky-600 dark:text-sky-400">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="me-1 h-3 w-3"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
+                  <DateIcon />
                   <span>{{ task.due_at.formatted }}</span>
                 </span>
               </label>
