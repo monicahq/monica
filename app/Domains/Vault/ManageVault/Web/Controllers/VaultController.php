@@ -64,6 +64,7 @@ class VaultController extends Controller
     public function show(Request $request, Vault $vault)
     {
         $contact = Auth::user()->getContactInVault($vault);
+        dd(ModuleLifeEventViewHelper::data($contact, Auth::user()));
 
         return Inertia::render('Vault/Dashboard/Index', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
