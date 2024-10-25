@@ -18,7 +18,7 @@ class ContactArchiveController extends Controller
             'contact_id' => $contactId,
         ];
 
-        (new ToggleArchiveContact())->execute($data);
+        (new ToggleArchiveContact)->execute($data);
 
         return response()->json([
             'data' => route('contact.show', [

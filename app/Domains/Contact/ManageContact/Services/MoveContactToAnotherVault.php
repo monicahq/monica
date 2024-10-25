@@ -70,7 +70,7 @@ class MoveContactToAnotherVault extends BaseService implements ServiceInterface
             ->exists();
 
         if (! $exists) {
-            throw new NotEnoughPermissionException();
+            throw new NotEnoughPermissionException;
         }
     }
 
@@ -94,7 +94,7 @@ class MoveContactToAnotherVault extends BaseService implements ServiceInterface
                 $this->contact->company->vault_id = $this->newVault->id;
                 $this->contact->company->save();
             } else {
-                $newCompany = (new CreateCompany())->execute([
+                $newCompany = (new CreateCompany)->execute([
                     'account_id' => $this->author->account_id,
                     'author_id' => $this->author->id,
                     'vault_id' => $this->newVault->id,

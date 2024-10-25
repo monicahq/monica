@@ -42,7 +42,7 @@ class CreateLifeEventTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateLifeEvent())->execute($request);
+        (new CreateLifeEvent)->execute($request);
     }
 
     /** @test */
@@ -166,7 +166,7 @@ class CreateLifeEventTest extends TestCase
             'participant_ids' => [$contact->id],
         ];
 
-        $lifeEvent = (new CreateLifeEvent())->execute($request);
+        $lifeEvent = (new CreateLifeEvent)->execute($request);
 
         $this->assertDatabaseHas('life_events', [
             'id' => $lifeEvent->id,

@@ -19,7 +19,7 @@ class ContactQuickFactToggleController extends Controller
             'contact_id' => $contactId,
         ];
 
-        (new ToggleQuickFactModule())->execute($data);
+        (new ToggleQuickFactModule)->execute($data);
 
         return response()->json([
             'data' => true,

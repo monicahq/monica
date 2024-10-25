@@ -63,9 +63,9 @@ class AppServiceProvider extends ServiceProvider
                     ],
                 ];
                 $environment = new Environment($config);
-                $environment->addExtension(new CommonMarkCoreExtension());
-                $environment->addExtension(new GithubFlavoredMarkdownExtension());
-                $environment->addExtension(new ExternalLinkExtension());
+                $environment->addExtension(new CommonMarkCoreExtension);
+                $environment->addExtension(new GithubFlavoredMarkdownExtension);
+                $environment->addExtension(new ExternalLinkExtension);
 
                 $converter = new MarkdownConverter($environment);
 
