@@ -41,7 +41,7 @@ const showEditModal = () => {
 
 <template>
   <div class="mb-4">
-    <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
+    <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 flex">
       <!-- title -->
       <div class="mb-2 text-xs sm:mb-0">{{ $t('Religion') }}</div>
 
