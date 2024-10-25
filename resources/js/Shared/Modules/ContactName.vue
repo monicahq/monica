@@ -1,6 +1,6 @@
 <template>
   <div class="mb-4">
-    <div class="mb-1 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
+    <div class="mb-1 items-center justify-between border-b border-gray-200 dark:border-gray-700 flex">
       <div class="mb-2 text-xs sm:mb-0">{{ $t('Name') }}</div>
       <InertiaLink :href="data.url.edit" class="relative">
         <svg
