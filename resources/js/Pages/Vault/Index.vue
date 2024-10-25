@@ -11,10 +11,12 @@
           <p class="mb-3">
             {{ $t('Monica was made to help you document your life and your social interactions.') }}
           </p>
-          <p class="mb-5">
-            {{ $t('To start, you need to create a vault.') }}
+          <p class="mb-3">
+            {{
+              $t('To start, you need to create a vault. A vault is a private space where you can store your contacts.')
+            }}
           </p>
-          <div class="mb-4 text-center">
+          <div class="mb-1 text-center">
             <pretty-link :href="data.url.vault.create" :text="$t('Create a vault')" :icon="'plus'" />
           </div>
         </div>
