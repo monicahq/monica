@@ -10,7 +10,8 @@
               :class="'relative h-5 w-5 rounded-full border border-gray-200 dark:border-gray-800'" />
           </div>
 
-          <div class="flex w-full items-center justify-between">
+          <div class="flex flex-col md:flex-row w-full md:items-center justify-between">
+            <!-- action description -->
             <p class="me-2 text-gray-400">
               <!-- author name + link to profile -->
               <InertiaLink
@@ -25,7 +26,8 @@
               <span class="ms-2">{{ feedItem.sentence }}</span>
             </p>
 
-            <p class="flex items-center text-sm text-gray-400">
+            <!-- date of the action -->
+            <p class="mb-1 md:mb-0 flex items-center text-sm text-gray-400">
               <span>{{ feedItem.created_at }}</span>
 
               <svg
