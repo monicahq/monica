@@ -25,10 +25,10 @@ class ImportLabelsTest extends TestCase
     {
         $user = $this->createUser();
         $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $user;
         $importVCard->vault = $vault;
-        $importer = new ImportLabels();
+        $importer = new ImportLabels;
         $importer->setContext($importVCard);
 
         $contact = Contact::factory()->create([
@@ -52,10 +52,10 @@ class ImportLabelsTest extends TestCase
     {
         $user = $this->createUser();
         $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $user;
         $importVCard->vault = $vault;
-        $importer = new ImportLabels();
+        $importer = new ImportLabels;
         $importer->setContext($importVCard);
 
         $contact = Contact::factory()->create([
@@ -80,10 +80,10 @@ class ImportLabelsTest extends TestCase
     {
         $user = $this->createUser();
         $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $user;
         $importVCard->vault = $vault;
-        $importer = new ImportLabels();
+        $importer = new ImportLabels;
         $importer->setContext($importVCard);
 
         $contact = Contact::factory()->create([
@@ -114,10 +114,10 @@ class ImportLabelsTest extends TestCase
     {
         $user = $this->createUser();
         $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $user;
         $importVCard->vault = $vault;
-        $importer = new ImportLabels();
+        $importer = new ImportLabels;
         $importer->setContext($importVCard);
 
         $contact = Contact::factory()->create([

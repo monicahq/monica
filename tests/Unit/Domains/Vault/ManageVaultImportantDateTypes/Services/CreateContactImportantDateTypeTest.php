@@ -34,7 +34,7 @@ class CreateContactImportantDateTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateContactImportantDateType())->execute($request);
+        (new CreateContactImportantDateType)->execute($request);
     }
 
     /** @test */
@@ -81,7 +81,7 @@ class CreateContactImportantDateTypeTest extends TestCase
             'can_be_deleted' => false,
         ];
 
-        $type = (new CreateContactImportantDateType())->execute($request);
+        $type = (new CreateContactImportantDateType)->execute($request);
 
         $this->assertDatabaseHas('contact_important_date_types', [
             'id' => $type->id,

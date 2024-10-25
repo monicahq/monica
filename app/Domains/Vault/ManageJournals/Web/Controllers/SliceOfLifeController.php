@@ -42,7 +42,7 @@ class SliceOfLifeController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $slice = (new CreateSliceOfLife())->execute($data);
+        $slice = (new CreateSliceOfLife)->execute($data);
 
         return response()->json([
             'data' => SliceOfLifeIndexViewHelper::dtoSlice($slice),
@@ -88,7 +88,7 @@ class SliceOfLifeController extends Controller
             'description' => $request->input('description'),
         ];
 
-        $slice = (new UpdateSliceOfLife())->execute($data);
+        $slice = (new UpdateSliceOfLife)->execute($data);
 
         return Redirect::route('slices.show', [
             'vault' => $vaultId,
@@ -110,7 +110,7 @@ class SliceOfLifeController extends Controller
             'slice_of_life_id' => $sliceOfLifeId,
         ];
 
-        (new DestroySliceOfLife())->execute($data);
+        (new DestroySliceOfLife)->execute($data);
 
         return Redirect::route('slices.index', [
             'vault' => $vaultId,

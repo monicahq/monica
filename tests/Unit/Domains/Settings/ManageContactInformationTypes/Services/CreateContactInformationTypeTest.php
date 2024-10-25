@@ -31,7 +31,7 @@ class CreateContactInformationTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateContactInformationType())->execute($request);
+        (new CreateContactInformationType)->execute($request);
     }
 
     /** @test */
@@ -61,7 +61,7 @@ class CreateContactInformationTypeTest extends TestCase
             'name' => 'type name',
         ];
 
-        $type = (new CreateContactInformationType())->execute($request);
+        $type = (new CreateContactInformationType)->execute($request);
 
         $this->assertDatabaseHas('contact_information_types', [
             'id' => $type->id,

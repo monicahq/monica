@@ -52,7 +52,7 @@ class JournalController extends Controller
             'description' => $request->input('description'),
         ];
 
-        $journal = (new CreateJournal())->execute($data);
+        $journal = (new CreateJournal)->execute($data);
 
         return Redirect::route('journal.show', [
             'vault' => $vaultId,
@@ -104,7 +104,7 @@ class JournalController extends Controller
             'description' => $request->input('description'),
         ];
 
-        $journal = (new UpdateJournal())->execute($data);
+        $journal = (new UpdateJournal)->execute($data);
 
         return Redirect::route('journal.show', [
             'vault' => $vaultId,
@@ -121,7 +121,7 @@ class JournalController extends Controller
             'journal_id' => $journalId,
         ];
 
-        (new DestroyJournal())->execute($data);
+        (new DestroyJournal)->execute($data);
 
         return Redirect::route('journal.index', [
             'vault' => $vaultId,

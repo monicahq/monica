@@ -41,7 +41,7 @@ class CreateUserNotificationChannelTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateUserNotificationChannel())->execute($request);
+        (new CreateUserNotificationChannel)->execute($request);
     }
 
     /** @test */
@@ -82,7 +82,7 @@ class CreateUserNotificationChannelTest extends TestCase
             'preferred_time' => '09:00',
         ];
 
-        $channel = (new CreateUserNotificationChannel())->execute($request);
+        $channel = (new CreateUserNotificationChannel)->execute($request);
 
         $this->assertDatabaseHas('user_notification_channels', [
             'id' => $channel->id,

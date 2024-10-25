@@ -13,7 +13,7 @@ class ContactModuleReligionController extends Controller
 {
     public function update(Request $request, string $vaultId, string $contactId)
     {
-        (new UpdateReligion())->execute([
+        (new UpdateReligion)->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::user()->id,
             'vault_id' => $vaultId,

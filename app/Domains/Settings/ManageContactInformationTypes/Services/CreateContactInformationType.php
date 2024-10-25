@@ -47,6 +47,6 @@ class CreateContactInformationType extends BaseService implements ServiceInterfa
             'protocol' => $this->valueOrNull($data, 'protocol'),
         ]);
 
-        return $type;
+        return $type->refresh();
     }
 }

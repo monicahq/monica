@@ -23,7 +23,7 @@ class PostTagController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $tag = (new CreateTag())->execute($data);
+        $tag = (new CreateTag)->execute($data);
 
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -34,7 +34,7 @@ class PostTagController extends Controller
             'tag_id' => $tag->id,
         ];
 
-        $tag = (new AssignTag())->execute($data);
+        $tag = (new AssignTag)->execute($data);
         $journal = Journal::findOrFail($journalId);
         $post = Post::findOrFail($postId);
 
@@ -54,7 +54,7 @@ class PostTagController extends Controller
             'tag_id' => $tagId,
         ];
 
-        $tag = (new AssignTag())->execute($data);
+        $tag = (new AssignTag)->execute($data);
         $journal = Journal::findOrFail($journalId);
         $post = Post::findOrFail($postId);
 
@@ -74,7 +74,7 @@ class PostTagController extends Controller
             'tag_id' => $tagId,
         ];
 
-        $tag = (new RemoveTag())->execute($data);
+        $tag = (new RemoveTag)->execute($data);
 
         $journal = Journal::findOrFail($journalId);
         $post = Post::findOrFail($postId);

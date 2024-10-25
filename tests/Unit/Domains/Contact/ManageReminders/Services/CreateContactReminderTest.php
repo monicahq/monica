@@ -39,7 +39,7 @@ class CreateContactReminderTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateContactReminder())->execute($request);
+        (new CreateContactReminder)->execute($request);
     }
 
     /** @test */
@@ -103,7 +103,7 @@ class CreateContactReminderTest extends TestCase
             'frequency_number' => null,
         ];
 
-        $contactReminder = (new CreateContactReminder())->execute($request);
+        $contactReminder = (new CreateContactReminder)->execute($request);
 
         $this->assertDatabaseHas('contact_reminders', [
             'id' => $contactReminder->id,

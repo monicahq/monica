@@ -57,7 +57,7 @@ class PostController extends Controller
             ]);
         }
 
-        $post = (new CreatePost())->execute([
+        $post = (new CreatePost)->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,
@@ -80,7 +80,7 @@ class PostController extends Controller
         $vault = Vault::findOrFail($vaultId);
         $post = Post::findOrFail($postId);
 
-        (new IncrementPostReadCounter())->execute([
+        (new IncrementPostReadCounter)->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,
@@ -110,7 +110,7 @@ class PostController extends Controller
     {
         Vault::findOrFail($vaultId);
 
-        $post = (new UpdatePost())->execute([
+        $post = (new UpdatePost)->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,
@@ -135,7 +135,7 @@ class PostController extends Controller
                         'contact_id' => $contact['id'],
                     ];
 
-                    (new AddContactToPost())->execute($data);
+                    (new AddContactToPost)->execute($data);
                 }
             }
         }
@@ -147,7 +147,7 @@ class PostController extends Controller
 
     public function destroy(Request $request, string $vaultId, int $journalId, int $postId)
     {
-        (new DestroyPost())->execute([
+        (new DestroyPost)->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,

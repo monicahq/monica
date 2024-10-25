@@ -43,7 +43,7 @@ class UpdatePostTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdatePost())->execute($request);
+        (new UpdatePost)->execute($request);
     }
 
     /** @test */
@@ -138,7 +138,7 @@ class UpdatePostTest extends TestCase
             'written_at' => null,
         ];
 
-        $post = (new UpdatePost())->execute($request);
+        $post = (new UpdatePost)->execute($request);
 
         $this->assertDatabaseHas('posts', [
             'id' => $post->id,
