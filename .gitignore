@@ -37,3 +37,4 @@ npm-debug.log
 .phpunit.result.cache
 yarn-error.log
 monica.db
+sail
