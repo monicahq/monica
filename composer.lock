@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "36913c9f26b1869f1b6e170605310dfc",
+    "content-hash": "43ec10656d24e660ac57db33fbc2067e",
     "packages": [
         {
             "name": "asbiin/laravel-sentry-tunnel",
@@ -17180,7 +17180,8 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2",
-        "ext-fileinfo": "*"
+        "ext-fileinfo": "*",
+        "ext-intl": "*"
     },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
