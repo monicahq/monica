@@ -50,7 +50,7 @@
     "barryvdh/laravel-ide-helper": "^3.0",
     "brianium/paratest": "^7.0",
     "fakerphp/faker": "^1.9",
-    "larastan/larastan": "^2.7",
+    "larastan/larastan": "2.9.8",
     "laravel-lang/common": "^6.0",
     "laravel/pint": "^1.1",
     "laravel/sail": "^1.14",

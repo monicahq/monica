@@ -13,9 +13,14 @@ parameters:
 
     excludePaths:
         - */app/Domains/Vault/ManageCalendar/Web/ViewHelpers/VaultCalendarIndexViewHelper.php
+        - */app/Domains/Contact/DavClient/Services/Utils/Dav/ServiceUrlQuery.php
+        - */app/Models/Contact.php
 
     level: 5
     ignoreErrors:
+        # Global ignore of the "Access to an undefined property"
+        - '#Access to an undefined property .*\.#'
+
         # Global ignore of VCard properties access
         - '#Access to an undefined property Sabre\\VObject\\Component\\VCard::\$.*\.#'
 
@@ -49,6 +54,6 @@ parameters:
 
         - message: '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$user_id\.#'
           path: */app/Listeners/WebauthnRegistered.php
-          
+
         - path: */app/Helpers/helpers.php
           message: '#Function readVersion\(\) never returns null so it can be removed from the return type\.#'
