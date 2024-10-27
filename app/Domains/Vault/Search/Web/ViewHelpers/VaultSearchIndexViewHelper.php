@@ -15,6 +15,7 @@ class VaultSearchIndexViewHelper
     public static function data(Vault $vault, ?string $term = null): array
     {
         return [
+            'query' => $term,
             'contacts' => $term ? self::contacts($vault, $term) : [],
             'notes' => $term ? self::notes($vault, $term) : [],
             'groups' => $term ? self::groups($vault, $term) : [],
