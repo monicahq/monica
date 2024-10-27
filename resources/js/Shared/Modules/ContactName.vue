@@ -21,9 +21,9 @@
         @click.prevent="toggleFavorite">
         <StarIcon />
       </a-tooltip>
-      
+
       <!-- if the contact is a favorite -->
-      <StarIcon :isFavorite="localData.is_favorite" @click.prevent="toggleFavorite" />
+      <StarIcon :is-favorite="localData.is_favorite" @click.prevent="toggleFavorite" />
     </h1>
   </div>
 </template>
@@ -39,7 +39,7 @@ export default {
     InertiaLink: Link,
     ATooltip,
     EditIcon,
-    StarIcon
+    StarIcon,
   },
 
   props: {

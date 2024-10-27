@@ -3,7 +3,6 @@
     :class="'dark:box-s relative border-zinc-900 bg-white text-sm dark:border-zinc-100 dark:bg-gray-800 dark:text-gray-100'"
     :href="href"
     preserve-scroll>
-    
     <PlusIcon v-if="icon === 'plus'" />
 
     <CheckedIcon v-else-if="icon === 'check'" />

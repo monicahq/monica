@@ -202,10 +202,16 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                   <!-- chevrons and menu -->
                   <div class="flex">
                     <!-- chevrons -->
-                    <ChevronIcon v-if="timelineEvent.collapsed" :type="'down'" @click="toggleLifeEventVisibility(lifeEvent)"/>
+                    <ChevronIcon
+                      v-if="timelineEvent.collapsed"
+                      :type="'down'"
+                      @click="toggleLifeEventVisibility(lifeEvent)" />
 
-                    <ChevronIcon v-if="!timelineEvent.collapsed" :type="'up'" @click="toggleLifeEventVisibility(lifeEvent)"/>
-                    
+                    <ChevronIcon
+                      v-if="!timelineEvent.collapsed"
+                      :type="'up'"
+                      @click="toggleLifeEventVisibility(lifeEvent)" />
+
                     <!-- menu -->
                     <hover-menu
                       :show-edit="true"

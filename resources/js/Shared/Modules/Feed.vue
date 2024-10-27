@@ -200,7 +200,7 @@ export default {
     Goal,
     MoodTrackingEvent,
     Note,
-    CalendarIcon
+    CalendarIcon,
   },
 
   props: {

@@ -97,7 +97,7 @@ export default {
     Uploadcare,
     DatabaseIcon,
   },
-  
+
   props: {
     data: {
       type: Object,

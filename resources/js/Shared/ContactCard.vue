@@ -35,7 +35,6 @@ defineProps({
 
             <!-- birthdate -->
             <p class="flex items-center">
-
               <CalendarIcon />
 
               <span v-if="contact.age">{{ contact.age }}</span>

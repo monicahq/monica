@@ -87,7 +87,8 @@
                   v-else
                   class="me-2 cursor-pointer text-center text-2xl sm:me-0"
                   @click="toggleStreak(goal, streak)">
-                  <div class="rounded-md border border-gray-200 bg-slate-100 px-2 py-1 dark:border-gray-700 dark:bg-slate-900">
+                  <div
+                    class="rounded-md border border-gray-200 bg-slate-100 px-2 py-1 dark:border-gray-700 dark:bg-slate-900">
                     <FaceIcon />
                   </div>
                 </span>
@@ -143,7 +144,7 @@ export default {
     BallIcon,
     FaceIcon,
   },
-  
+
   props: {
     data: {
       type: Object,
