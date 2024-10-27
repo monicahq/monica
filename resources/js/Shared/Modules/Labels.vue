@@ -3,18 +3,7 @@
     <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 flex">
       <div class="mb-2 text-xs sm:mb-0">{{ $t('Labels') }}</div>
       <span v-if="!editLabelModalShown" class="relative cursor-pointer" @click="showEditModal">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="icon-sidebar relative inline h-3 w-3 text-gray-300 hover:text-gray-600 dark:text-gray-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-        </svg>
+        <EditIcon />
       </span>
 
       <!-- close button -->
@@ -58,15 +47,7 @@
             <span>{{ label.name }}</span>
           </div>
 
-          <svg
-            v-if="label.taken"
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 text-green-700"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
+          <CheckedIcon v-if="label.taken" />
         </li>
 
         <!-- case if the label does not exist and needs to be created -->
@@ -106,12 +87,16 @@
 import { Link } from '@inertiajs/vue3';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
+import EditIcon from '@/Shared/Icons/EditIcon.vue';
+import CheckedIcon from '@/Shared/Icons/CheckedIcon.vue';
 
 export default {
   components: {
     InertiaLink: Link,
     TextInput,
     Errors,
+    EditIcon,
+    CheckedIcon,
   },
 
   props: {
