@@ -3,9 +3,9 @@
 namespace App\Domains\Settings\ManageAddressTypes\Web\Controllers;
 
 use App\Domains\Settings\ManageAddressTypes\Services\CreateAddressType;
+use App\Domains\Settings\ManageAddressTypes\Services\DestroyAddressType;
 use App\Domains\Settings\ManageAddressTypes\Services\UpdateAddressType;
 use App\Domains\Settings\ManageAddressTypes\Web\ViewHelpers\PersonalizeAddressTypeIndexViewHelper;
-use App\Domains\Settings\ManagePronouns\Services\DestroyPronoun;
 use App\Domains\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -61,7 +61,7 @@ class PersonalizeAddressTypeController extends Controller
             'address_type_id' => $addressTypeId,
         ];
 
-        (new DestroyPronoun)->execute($data);
+        (new DestroyAddressType)->execute($data);
 
         return response()->json([
             'data' => true,
