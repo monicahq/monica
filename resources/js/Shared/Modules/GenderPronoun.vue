@@ -11,7 +11,7 @@ defineProps({
   <div class="mb-4 grid grid-cols-2 gap-4">
     <!-- gender -->
     <div>
-      <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
+      <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 flex">
         <div class="mb-2 text-xs sm:mb-0">{{ $t('Gender') }}</div>
         <Link :href="data.url.edit" class="relative">
           <EditIcon />
@@ -26,7 +26,7 @@ defineProps({
 
     <!-- pronoun -->
     <div>
-      <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 sm:flex">
+      <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 flex">
         <div class="mb-2 text-xs sm:mb-0">{{ $t('Pronoun') }}</div>
         <Link :href="data.url.edit" class="relative">
           <EditIcon />

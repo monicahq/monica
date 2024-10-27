@@ -12,6 +12,7 @@
   "require": {
     "php": "^8.2",
     "ext-fileinfo": "*",
+    "ext-intl": "*",
     "asbiin/laravel-sentry-tunnel": "^2.0",
     "asbiin/laravel-webauthn": "^4.4",
     "codezero/laravel-localizer": "^3.0",
@@ -50,7 +51,7 @@
     "barryvdh/laravel-ide-helper": "^3.0",
     "brianium/paratest": "^7.0",
     "fakerphp/faker": "^1.9",
-    "larastan/larastan": "^2.7",
+    "larastan/larastan": "2.9.8",
     "laravel-lang/common": "^6.0",
     "laravel/pint": "^1.1",
     "laravel/sail": "^1.14",
