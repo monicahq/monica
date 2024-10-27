@@ -1,6 +1,6 @@
 <template>
   <button
-    :class="'dark:box-s relative border-zinc-900 bg-white text-sm dark:border-zinc-100 dark:bg-gray-800 dark:text-gray-100'"
+    :class="'dark:box-s relative border-zinc-900 bg-white text-sm dark:border-zinc-100 dark:bg-gray-800 dark:text-gray-100 flex'"
     :disabled="state === 'loading' || state === 'disabled'"
     type="submit">
     <span v-if="state === 'loading'"> {{ $t('Loading…') }} </span>
