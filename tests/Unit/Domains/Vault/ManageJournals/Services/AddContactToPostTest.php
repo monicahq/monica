@@ -42,7 +42,7 @@ class AddContactToPostTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new AddContactToPost())->execute($request);
+        (new AddContactToPost)->execute($request);
     }
 
     /** @test */
@@ -140,7 +140,7 @@ class AddContactToPostTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        (new AddContactToPost())->execute($request);
+        (new AddContactToPost)->execute($request);
 
         $this->assertDatabaseHas('contact_post', [
             'contact_id' => $contact->id,

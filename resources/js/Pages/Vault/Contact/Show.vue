@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue';
 import { Link, router, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods.js';
+import { onMounted } from 'vue';
 import JetDialogModal from '@/Components/Jetstream/DialogModal.vue';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 import JetButton from '@/Components/Button.vue';
@@ -144,12 +145,25 @@ const download = () => {
         try {
           document.body.appendChild(link);
           link.click();
-        } catch (e) {
+        } catch {
           document.body.removeChild(link);
         }
       }
     },
   });
+};
+
+const selectedOption = ref('');
+
+onMounted(() => {
+  const selectedPage = Object.values(props.data.template_pages).find((page) => page.selected);
+  if (selectedPage) {
+    selectedOption.value = selectedPage.url.show;
+  }
+});
+
+const navigateToSelected = () => {
+  router.visit(selectedOption.value);
 };
 </script>
 
@@ -304,8 +318,8 @@ const download = () => {
               </div>
             </div>
 
-            <!-- all the pages -->
-            <div class="mb-8 w-full border-b border-gray-200 dark:border-gray-700">
+            <!-- page selector on desktop -->
+            <div class="hidden md:block mb-8 w-full border-b border-gray-200 dark:border-gray-700">
               <div class="flex overflow-x-hidden">
                 <div v-for="page in data.template_pages" :key="page.id" class="me-2 flex-none">
                   <Link
@@ -322,6 +336,19 @@ const download = () => {
                   </Link>
                 </div>
               </div>
+            </div>
+
+            <!-- page selector on mobile -->
+            <div class="md:hidden mb-8 w-full">
+              <p class="text-sm mb-2">{{ $t('Select a page') }}</p>
+              <select
+                v-model="selectedOption"
+                @change="navigateToSelected"
+                class="w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                <option v-for="page in data.template_pages" :key="page.id" :value="page.url.show">
+                  {{ page.name }}
+                </option>
+              </select>
             </div>
 
             <!-- all the modules -->

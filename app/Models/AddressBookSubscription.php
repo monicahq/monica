@@ -57,7 +57,7 @@ class AddressBookSubscription extends Model implements Loggable
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array<string, string>
+     * @var array<string,string>
      */
     protected $casts = [
         'user_id' => 'string',
@@ -71,7 +71,7 @@ class AddressBookSubscription extends Model implements Loggable
     /**
      * Eager load account with every contact.
      *
-     * @var array<string>
+     * @var array<int,string>
      */
     protected $with = [
         'user',

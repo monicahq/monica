@@ -42,7 +42,7 @@ class AddPostToSliceOfLifeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new AddPostToSliceOfLife())->execute($request);
+        (new AddPostToSliceOfLife)->execute($request);
     }
 
     /** @test */
@@ -140,7 +140,7 @@ class AddPostToSliceOfLifeTest extends TestCase
             'slice_of_life_id' => $slice->id,
         ];
 
-        (new AddPostToSliceOfLife())->execute($request);
+        (new AddPostToSliceOfLife)->execute($request);
 
         $this->assertDatabaseHas('posts', [
             'id' => $post->id,

@@ -29,8 +29,6 @@ set_conf() {
     setenv "QUEUE_CONNECTION" "sync"
     setenv "SESSION_DRIVER" "database"
     setenv "MAIL_MAILER" "log"
-    setenv "MAIL_FROM_ADDRESS" "from@mail.com"
-    setenv "MAIL_REPLY_TO_ADDRESS" "reply@mail.com"
 }
 
 composer_install() {
@@ -38,8 +36,8 @@ composer_install() {
 }
 
 yarn_install() {
-    yarn install --cwd $ROOT --immutable
-    yarn run --cwd $ROOT build
+    yarn --cwd $ROOT install --immutable
+    yarn --cwd $ROOT run build
 }
 
 setup() {

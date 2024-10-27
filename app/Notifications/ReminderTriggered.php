@@ -23,8 +23,7 @@ class ReminderTriggered extends Notification
         private UserNotificationChannel $channel,
         private string $content,
         private string $contactName
-    ) {
-    }
+    ) {}
 
     /**
      * Get the notification's delivery channels.
@@ -34,12 +33,11 @@ class ReminderTriggered extends Notification
      */
     public function via($notifiable)
     {
-        if ($this->channel->type === UserNotificationChannel::TYPE_EMAIL) {
-            return ['mail'];
-        }
-
-        if ($this->channel->type === UserNotificationChannel::TYPE_TELEGRAM) {
-            return ['telegram'];
+        switch ($this->channel->type) {
+            case UserNotificationChannel::TYPE_EMAIL:
+                return ['mail'];
+            case UserNotificationChannel::TYPE_TELEGRAM:
+                return ['telegram'];
         }
 
         return [];
@@ -59,7 +57,7 @@ class ReminderTriggered extends Notification
             'subject_line' => $this->content,
         ]);
 
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject(trans('Reminder for :name', ['name' => $this->contactName]))
             ->line(trans('You wanted to be reminded of the following:'))
             ->line($this->content)
@@ -83,8 +81,8 @@ class ReminderTriggered extends Notification
         ]);
 
         return TelegramMessage::create()
-            ->to($this->channel->content)
-            ->content($content);
+            ->content($content)
+            ->to($this->channel->content);
     }
 
     /**

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Translation\MessageSelector;
 use Stichoza\GoogleTranslate\GoogleTranslate;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Safe\json_decode;
 use function Safe\json_encode;
@@ -14,6 +15,7 @@ use function Safe\json_encode;
 /**
  * @codeCoverageIgnore
  */
+#[AsCommand(name: 'monica:localize')]
 class MonicaLocalize extends Command
 {
     private GoogleTranslate $googleTranslate;
@@ -40,7 +42,7 @@ class MonicaLocalize extends Command
      */
     public function handle(): void
     {
-        $this->googleTranslate = (new GoogleTranslate())->setSource('en');
+        $this->googleTranslate = (new GoogleTranslate)->setSource('en');
 
         $locales = $langs = config('localizer.supported_locales');
 

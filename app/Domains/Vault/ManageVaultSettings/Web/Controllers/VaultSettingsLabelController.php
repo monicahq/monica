@@ -24,7 +24,7 @@ class VaultSettingsLabelController extends Controller
             'text_color' => $request->input('text_color'),
         ];
 
-        $label = (new CreateLabel())->execute($data);
+        $label = (new CreateLabel)->execute($data);
 
         return response()->json([
             'data' => VaultSettingsIndexViewHelper::dtoLabel($label),
@@ -44,7 +44,7 @@ class VaultSettingsLabelController extends Controller
             'text_color' => $request->input('text_color'),
         ];
 
-        $label = (new UpdateLabel())->execute($data);
+        $label = (new UpdateLabel)->execute($data);
 
         return response()->json([
             'data' => VaultSettingsIndexViewHelper::dtoLabel($label),
@@ -60,7 +60,7 @@ class VaultSettingsLabelController extends Controller
             'label_id' => $labelId,
         ];
 
-        (new DestroyLabel())->execute($data);
+        (new DestroyLabel)->execute($data);
 
         return response()->json([
             'data' => true,

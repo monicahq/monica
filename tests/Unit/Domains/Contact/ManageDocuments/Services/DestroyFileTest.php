@@ -40,7 +40,7 @@ class DestroyFileTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyFile())->execute($request);
+        (new DestroyFile)->execute($request);
     }
 
     /** @test */
@@ -87,7 +87,7 @@ class DestroyFileTest extends TestCase
             'file_id' => $file->id,
         ];
 
-        (new DestroyFile())->execute($request);
+        (new DestroyFile)->execute($request);
 
         $this->assertDatabaseMissing('files', [
             'id' => $file->id,

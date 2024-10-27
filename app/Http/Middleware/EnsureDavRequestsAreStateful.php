@@ -19,8 +19,7 @@ class EnsureDavRequestsAreStateful
     public function __construct(
         private Application $app,
         private Auth $auth
-    ) {
-    }
+    ) {}
 
     /**
      * Handle an incoming request.
@@ -52,10 +51,10 @@ class EnsureDavRequestsAreStateful
 
                 return $next($request);
             },
-            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
             AuthenticateWithTokenOnBasicAuth::class,
         ];
     }

@@ -94,7 +94,7 @@ const reload = () => {
     </div>
 
     <div
-      class="mt-6 flex w-full flex-col overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:max-w-4xl sm:rounded-lg md:flex-row">
+      class="mt-6 mb-12 flex w-full flex-col overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:max-w-4xl sm:rounded-lg md:flex-row">
       <img :src="wallpaperUrl" class="w-full sm:invisible sm:w-10/12 md:visible" :alt="$t('Wallpaper')" />
       <div class="w-full">
         <div class="border-b border-gray-200 px-6 pb-6 pt-8 dark:border-gray-700">

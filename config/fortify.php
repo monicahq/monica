@@ -1,6 +1,5 @@
 <?php
 
-use App\Providers\RouteServiceProvider;
 use Laravel\Fortify\Features;
 
 return [
@@ -61,7 +60,7 @@ return [
     |
     */
 
-    'home' => RouteServiceProvider::HOME,
+    'home' => '/vaults',
 
     /*
     |--------------------------------------------------------------------------
@@ -143,4 +142,11 @@ return [
         ]),
     ],
 
+    'pipelines' => [
+        'login' => [
+            \App\Actions\Fortify\RedirectIfTwoFactorAuthenticatable::class,
+            \Laravel\Fortify\Actions\AttemptToAuthenticate::class,
+            \Laravel\Fortify\Actions\PrepareAuthenticatedSession::class,
+        ],
+    ],
 ];

@@ -31,7 +31,7 @@ class PersonalizePostTemplateController extends Controller
             'can_be_deleted' => true,
         ];
 
-        $postTemplate = (new CreatePostTemplate())->execute($data);
+        $postTemplate = (new CreatePostTemplate)->execute($data);
 
         return response()->json([
             'data' => PersonalizePostTemplateViewHelper::dto($postTemplate),
@@ -47,7 +47,7 @@ class PersonalizePostTemplateController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $postTemplate = (new UpdatePostTemplate())->execute($data);
+        $postTemplate = (new UpdatePostTemplate)->execute($data);
 
         return response()->json([
             'data' => PersonalizePostTemplateViewHelper::dto($postTemplate),
@@ -62,7 +62,7 @@ class PersonalizePostTemplateController extends Controller
             'post_template_id' => $postTemplateId,
         ];
 
-        (new DestroyPostTemplate())->execute($data);
+        (new DestroyPostTemplate)->execute($data);
 
         return response()->json([
             'data' => true,

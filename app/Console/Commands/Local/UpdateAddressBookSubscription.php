@@ -5,7 +5,9 @@ namespace App\Console\Commands\Local;
 use App\Domains\Contact\DavClient\Jobs\SynchronizeAddressBooks;
 use App\Models\AddressBookSubscription;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'monica:updateaddressbooksubscription')]
 class UpdateAddressBookSubscription extends Command
 {
     /**

@@ -17,7 +17,7 @@ class VaultSearchController extends Controller
 
         return Inertia::render('Vault/Search/Index', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
-            'data' => VaultSearchIndexViewHelper::data($vault),
+            'data' => VaultSearchIndexViewHelper::data($vault, $request->input('searchTerm')),
         ]);
     }
 

@@ -12,7 +12,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'test:send-reminders')]
 class TestReminders extends Command
 {
     /**
@@ -51,16 +53,14 @@ class TestReminders extends Command
                 $contactName = NameHelper::formatContactName($channel->user, $contact);
 
                 Notification::route('mail', $channel->content)
-                    ->notify(new ReminderTriggered($channel, $contactReminder->label, $contactName));
-            }
-
-            if ($channel->type === UserNotificationChannel::TYPE_TELEGRAM) {
+                    ->notify((new ReminderTriggered($channel, $contactReminder->label, $contactName))->locale($channel->user->locale));
+            } elseif ($channel->type === UserNotificationChannel::TYPE_TELEGRAM) {
                 Notification::route('telegram', $channel->content)
-                    ->notify(new ReminderTriggered($channel, $contactReminder->label, ''));
+                    ->notify((new ReminderTriggered($channel, $contactReminder->label, ''))->locale($channel->user->locale));
             }
 
             try {
-                (new RescheduleContactReminderForChannel())->execute([
+                (new RescheduleContactReminderForChannel)->execute([
                     'contact_reminder_id' => $scheduledReminder->contact_reminder_id,
                     'user_notification_channel_id' => $scheduledReminder->user_notification_channel_id,
                     'contact_reminder_scheduled_id' => $scheduledReminder->id,

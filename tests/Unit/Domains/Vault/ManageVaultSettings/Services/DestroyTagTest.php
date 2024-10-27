@@ -37,7 +37,7 @@ class DestroyTagTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyTag())->execute($request);
+        (new DestroyTag)->execute($request);
     }
 
     /** @test */
@@ -103,7 +103,7 @@ class DestroyTagTest extends TestCase
             'vault_id' => $vault->id,
         ];
 
-        (new DestroyTag())->execute($request);
+        (new DestroyTag)->execute($request);
 
         $this->assertDatabaseMissing('tags', [
             'id' => $tag->id,

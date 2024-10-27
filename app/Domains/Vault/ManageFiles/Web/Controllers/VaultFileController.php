@@ -91,7 +91,7 @@ class VaultFileController extends Controller
             'file_id' => $fileId,
         ];
 
-        (new DestroyFile())->execute($data);
+        (new DestroyFile)->execute($data);
 
         return response()->json([
             'data' => true,

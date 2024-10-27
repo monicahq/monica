@@ -1,0 +1,100 @@
+<script setup>
+defineProps({
+  checked: { type: Boolean, default: false },
+});
+</script>
+
+<template>
+  <svg v-if="!checked" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" height="15" width="15">
+    <g>
+      <circle
+        cx="7"
+        cy="7"
+        r="2.5"
+        fill="none"
+        stroke="#4B5563"
+        stroke-linecap="round"
+        stroke-linejoin="round"></circle>
+      <line
+        x1="7"
+        y1="0.5"
+        x2="7"
+        y2="2.5"
+        fill="none"
+        stroke="#4B5563"
+        stroke-linecap="round"
+        stroke-linejoin="round"></line>
+      <line
+        x1="2.4"
+        y1="2.4"
+        x2="3.82"
+        y2="3.82"
+        fill="none"
+        stroke="#4B5563"
+        stroke-linecap="round"
+        stroke-linejoin="round"></line>
+      <line
+        x1="0.5"
+        y1="7"
+        x2="2.5"
+        y2="7"
+        fill="none"
+        stroke="#4B5563"
+        stroke-linecap="round"
+        stroke-linejoin="round"></line>
+      <line
+        x1="2.4"
+        y1="11.6"
+        x2="3.82"
+        y2="10.18"
+        fill="none"
+        stroke="#4B5563"
+        stroke-linecap="round"
+        stroke-linejoin="round"></line>
+      <line
+        x1="7"
+        y1="13.5"
+        x2="7"
+        y2="11.5"
+        fill="none"
+        stroke="#4B5563"
+        stroke-linecap="round"
+        stroke-linejoin="round"></line>
+      <line
+        x1="11.6"
+        y1="11.6"
+        x2="10.18"
+        y2="10.18"
+        fill="none"
+        stroke="#4B5563"
+        stroke-linecap="round"
+        stroke-linejoin="round"></line>
+      <line
+        x1="13.5"
+        y1="7"
+        x2="11.5"
+        y2="7"
+        fill="none"
+        stroke="#4B5563"
+        stroke-linecap="round"
+        stroke-linejoin="round"></line>
+      <line
+        x1="11.6"
+        y1="2.4"
+        x2="10.18"
+        y2="3.82"
+        fill="none"
+        stroke="#4B5563"
+        stroke-linecap="round"
+        stroke-linejoin="round"></line>
+    </g>
+  </svg>
+  <svg v-if="checked" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" height="15" width="15">
+    <path
+      d="M12,10.48A6.55,6.55,0,0,1,6.46.5a6.55,6.55,0,0,0,1,13A6.46,6.46,0,0,0,13,10.39,6.79,6.79,0,0,1,12,10.48Z"
+      fill="none"
+      stroke="#e5e7eb"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+  </svg>
+</template>

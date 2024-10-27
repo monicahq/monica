@@ -11,6 +11,8 @@ import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Dropdown from '@/Shared/Form/Dropdown.vue';
 import Errors from '@/Shared/Form/Errors.vue';
+import ReminderIcon from '@/Shared/Icons/ReminderIcon.vue';
+import RefreshIcon from '@/Shared/Icons/RefreshIcon.vue';
 
 const props = defineProps({
   data: Object,
@@ -124,20 +126,7 @@ const destroy = (reminder) => {
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
         <span class="relative me-1">
-          <svg
-            class="icon-sidebar relative inline h-4 w-4"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M15 17C16.1046 17 17 16.1046 17 15C17 13.8954 16.1046 13 15 13C13.8954 13 13 13.8954 13 15C13 16.1046 13.8954 17 15 17Z"
-              fill="currentColor" />
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M6 3C4.34315 3 3 4.34315 3 6V18C3 19.6569 4.34315 21 6 21H18C19.6569 21 21 19.6569 21 18V6C21 4.34315 19.6569 3 18 3H6ZM5 18V7H19V18C19 18.5523 18.5523 19 18 19H6C5.44772 19 5 18.5523 5 18Z"
-              fill="currentColor" />
-          </svg>
+          <ReminderIcon />
         </span>
 
         <span class="font-semibold"> {{ $t('Reminders') }} </span>
@@ -328,18 +317,7 @@ const destroy = (reminder) => {
                 placement="topLeft"
                 title="Recurring"
                 arrow-point-at-center>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-3 w-3"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
+                <RefreshIcon />
               </a-tooltip>
             </div>
 

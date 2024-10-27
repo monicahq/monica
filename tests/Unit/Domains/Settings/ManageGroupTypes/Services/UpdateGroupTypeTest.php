@@ -34,7 +34,7 @@ class UpdateGroupTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateGroupType())->execute($request);
+        (new UpdateGroupType)->execute($request);
     }
 
     /** @test */
@@ -81,7 +81,7 @@ class UpdateGroupTypeTest extends TestCase
             'label' => 'type label',
         ];
 
-        $groupType = (new UpdateGroupType())->execute($request);
+        $groupType = (new UpdateGroupType)->execute($request);
 
         $this->assertDatabaseHas('group_types', [
             'id' => $groupType->id,

@@ -13,19 +13,24 @@ parameters:
 
     excludePaths:
         - */app/Domains/Vault/ManageCalendar/Web/ViewHelpers/VaultCalendarIndexViewHelper.php
+        - */app/Domains/Contact/DavClient/Services/Utils/Dav/ServiceUrlQuery.php
+        - */app/Models/Contact.php
 
     level: 5
     ignoreErrors:
+        # Global ignore of the "Access to an undefined property"
+        - '#Access to an undefined property .*\.#'
+
         # Global ignore of VCard properties access
-        - '#Access to an undefined property Sabre\\VObject\\Component\\VCard::\$.*\.#'
+        # - '#Access to an undefined property Sabre\\VObject\\Component\\VCard::\$.*\.#'
 
         # Specific column loaded with DB::raw
-        - message: '#Access to an undefined property App\\Models\\Post::\$year\.#'
-          path: */app/Domains/Vault/ManageJournals/Web/ViewHelpers/JournalShowViewHelper.php
+        #- message: '#Access to an undefined property App\\Models\\Post::\$year\.#'
+        #  path: */app/Domains/Vault/ManageJournals/Web/ViewHelpers/JournalShowViewHelper.php
 
         # unsearchable scout global method
-        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany<App\\Models\\Note>::unsearchable\(\)\.#'
-          path: */app/Models/Contact.php
+        #- message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany<App\\Models\\Note>::unsearchable\(\)\.#'
+        #  path: */app/Models/Contact.php
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany<App\\Models\\Note>::unsearchable\(\)\.#'
           path: */app/Models/Vault.php
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany<App\\Models\\Contact>::unsearchable\(\)\.#'
@@ -36,16 +41,19 @@ parameters:
           path: */app/Domains/Vault/ManageVault/Web/ViewHelpers/VaultIndexViewHelper.php
 
         # larastan needs to manage ->pivot properties
-        - '#Access to an undefined property App\\Models\\[^:]*::\$pivot\.#'
+        #- '#Access to an undefined property App\\Models\\[^:]*::\$pivot\.#'
 
         # Attributes
-        - message: '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayPush\.#'
-          path: */app/Domains/Contact/DavClient/Services/Utils/AddressBookSynchronizer.php
-        - message: '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayGet\.#'
-          path: */app/Domains/Contact/DavClient/Services/Utils/AddressBookSynchronizer.php
+        #- message: '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayPush\.#'
+        #  path: */app/Domains/Contact/DavClient/Services/Utils/AddressBookSynchronizer.php
+        #- message: '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayGet\.#'
+        #  path: */app/Domains/Contact/DavClient/Services/Utils/AddressBookSynchronizer.php
 
-        - message: '#Access to an undefined property App\\Logging\\Loggable::\$id\.#'
-          path: */app/Logging/LoggingHandler.php
+        #- message: '#Access to an undefined property App\\Logging\\Loggable::\$id\.#'
+        #  path: */app/Logging/LoggingHandler.php
 
-        - message: '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$user_id\.#'
-          path: */app/Listeners/WebauthnRegistered.php
+        #- message: '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$user_id\.#'
+        #  path: */app/Listeners/WebauthnRegistered.php
+
+        - path: */app/Helpers/helpers.php
+          message: '#Function readVersion\(\) never returns null so it can be removed from the return type\.#'

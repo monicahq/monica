@@ -10,6 +10,5 @@ class ContactDto
     public function __construct(
         public string $uri,
         public ?string $etag = null
-    ) {
-    }
+    ) {}
 }

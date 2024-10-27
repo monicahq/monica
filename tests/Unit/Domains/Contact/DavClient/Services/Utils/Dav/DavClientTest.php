@@ -17,7 +17,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_get_options()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->addResponse('https://test', Http::response(), null, 'OPTIONS')
             ->addResponse('https://test', Http::response(null, 200, ['Dav' => 'test']), null, 'OPTIONS')
             ->addResponse('https://test', Http::response(null, 200, ['Dav' => ' test ']), null, 'OPTIONS')
@@ -39,7 +39,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_get_serviceurl()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->serviceUrl()
             ->fake();
         $client = $tester->client();
@@ -53,7 +53,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_get_non_standard_serviceurl()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->addResponse('https://test/.well-known/carddav', Http::response(), null, 'GET')
             ->addResponse('https://test/.well-known/carddav', Http::response(), null, 'GET')
             ->nonStandardServiceUrl()
@@ -83,7 +83,7 @@ class DavClientTest extends TestCase
                 ->andReturn('https://test/dav/');
         });
 
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->addResponse('https://test/.well-known/carddav', Http::response(), null, 'GET')
             ->addResponse('https://test/.well-known/carddav', Http::response(), null, 'GET')
             ->addResponse('https://test/.well-known/carddav', Http::response(), null, 'PROPFIND')
@@ -99,7 +99,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_get_non_standard_serviceurl2()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->addResponse('https://test/.well-known/carddav', Http::response(null, 404), null, 'GET')
             ->addResponse('https://test/.well-known/carddav', Http::response(null, 404), null, 'GET')
             ->nonStandardServiceUrl()
@@ -115,7 +115,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_fail_non_standard()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->addResponse('https://test/.well-known/carddav', Http::response(null, 500), null, 'GET')
             ->fake();
         $client = $tester->client();
@@ -127,7 +127,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_get_base_uri()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->fake();
         $client = $tester->client();
 
@@ -143,7 +143,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_set_base_uri()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->fake();
         $client = $tester->client();
 
@@ -156,7 +156,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_call_propfind()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->addResponse('https://test', Http::response(DavTester::multistatusHeader().
                 '<d:response>'.
                     '<d:href>href</d:href>'.
@@ -188,7 +188,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_get_property()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->addResponse('https://test/test', Http::response(DavTester::multistatusHeader().
                 '<d:response>'.
                     '<d:href>href</d:href>'.
@@ -255,7 +255,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_sync_collection()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->addResponse('https://test', Http::response(DavTester::multistatusHeader().
                 '<d:response>'.
                     '<d:href>href</d:href>'.
@@ -300,7 +300,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_sync_collection_with_synctoken()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->addResponse('https://test', Http::response(DavTester::multistatusHeader().
                 '<d:response>'.
                     '<d:href>href</d:href>'.
@@ -345,7 +345,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_run_addressbook_multiget_report()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->addResponse('https://test', Http::response(DavTester::multistatusHeader().
                 '<d:response>'.
                     '<d:href>href</d:href>'.
@@ -388,7 +388,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_run_addressbook_query_report()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->addResponse('https://test', Http::response(DavTester::multistatusHeader().
                 '<d:response>'.
                     '<d:href>href</d:href>'.
@@ -429,7 +429,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_run_proppatch()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->addResponse('https://test', Http::response(DavTester::multistatusHeader().
                 '<d:response>'.
                     '<d:href>href</d:href>'.
@@ -461,7 +461,7 @@ class DavClientTest extends TestCase
     /** @test */
     public function it_run_proppatch_error()
     {
-        $tester = (new DavTester())
+        $tester = (new DavTester)
             ->addResponse('https://test', Http::response(DavTester::multistatusHeader().
                 '<d:response>'.
                     '<d:href>href</d:href>'.

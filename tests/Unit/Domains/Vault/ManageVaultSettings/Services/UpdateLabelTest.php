@@ -37,7 +37,7 @@ class UpdateLabelTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateLabel())->execute($request);
+        (new UpdateLabel)->execute($request);
     }
 
     /** @test */
@@ -93,7 +93,7 @@ class UpdateLabelTest extends TestCase
             'text_color' => 'bg-zinc-700',
         ];
 
-        $label = (new UpdateLabel())->execute($request);
+        $label = (new UpdateLabel)->execute($request);
 
         $this->assertDatabaseHas('labels', [
             'id' => $label->id,
