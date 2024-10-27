@@ -28,10 +28,13 @@ class ModuleRelationshipViewHelper
             $relationshipTypesCollection = collect();
             foreach ($relationshipTypes as $relationshipType) {
                 $relations = DB::table('relationships')
-                    ->join('contacts', 'relationships.contact_id', '=', 'contacts.id')
+                    ->join('contacts as contact1', 'relationships.contact_id', '=', 'contact1.id')
+                    ->join('contacts as contact2', 'relationships.related_contact_id', '=', 'contact2.id')
                     ->join('relationship_types', 'relationships.relationship_type_id', '=', 'relationship_types.id')
-                    ->select('relationships.id as main_id', 'relationship_types.id', 'relationships.contact_id', 'relationships.related_contact_id')
+                    ->select('relationships.id as main_id', 'relationship_types.id', 'relationships.contact_id', 'relationships.related_contact_id', 'contact1.deleted_at', 'contact2.deleted_at')
                     ->where('relationships.relationship_type_id', $relationshipType->id)
+                    ->where('contact1.deleted_at', null)
+                    ->where('contact2.deleted_at', null)
                     ->where(function ($query) use ($contact) {
                         $query->where('relationships.contact_id', $contact->id)
                             ->orWhere('relationships.related_contact_id', $contact->id);
