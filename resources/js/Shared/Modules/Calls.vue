@@ -154,7 +154,7 @@ const destroy = (call) => {
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
         <span class="relative me-1">
-          <CallIcon :isNormal="true" />
+          <CallIcon :is-normal="true" />
         </span>
 
         <span class="font-semibold"> {{ $t('Calls') }} </span>
