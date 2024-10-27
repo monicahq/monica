@@ -14,16 +14,12 @@
 
       <!-- if the contact is not yet a favorite -->
       <a-tooltip
-        v-if="!localData.is_favorite"
         placement="topLeft"
         :title="$t('Set as favorite')"
         arrow-point-at-center
         @click.prevent="toggleFavorite">
-        <StarIcon />
+        <StarIcon :is-favorite="localData.is_favorite" @click.prevent="toggleFavorite" />
       </a-tooltip>
-
-      <!-- if the contact is a favorite -->
-      <StarIcon :is-favorite="localData.is_favorite" @click.prevent="toggleFavorite" />
     </h1>
   </div>
 </template>
