@@ -3,6 +3,7 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import Errors from '@/Shared/Form/Errors.vue';
+import SearchIcon from '@/Shared/Icons/SearchIcon.vue';
 
 const props = defineProps({
   modelValue: {
@@ -174,18 +175,7 @@ const search = _.debounce(() => {
     <!-- mode to add a contact -->
     <div v-if="addContactMode">
       <div class="relative mb-3">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="absolute start-2 top-[13px] h-4 w-4 text-gray-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
+        <SearchIcon />
 
         <input
           ref="searchInput"
