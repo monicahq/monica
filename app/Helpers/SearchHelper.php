@@ -48,6 +48,7 @@ class SearchHelper
         }
 
         return Contact::search($needle, $accountId, $orderByColumn, $orderByDirection)
-            ->addressBook($accountId, $addressBookName);
+            ->addressBook($accountId, $addressBookName)
+            ->where('is_active', true);
     }
 }
