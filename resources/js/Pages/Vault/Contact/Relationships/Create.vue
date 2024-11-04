@@ -120,7 +120,8 @@
                       value="unknown"
                       name="name-order"
                       type="radio"
-                      class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700" />
+                      class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700"
+                      @click="hideContactNameField" />
                     <label
                       for="unknown"
                       class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -428,6 +429,19 @@ export default {
       this.$nextTick().then(() => {
         this.$refs.contactName.focus();
       });
+    },
+
+    hideContactNameField() {
+      this.form.choice = 'unknown';
+      this.form.first_name = '';
+      this.form.last_name = '';
+      this.form.middle_name = '';
+      this.form.nickname = '';
+      this.form.maiden_name = '';
+      this.form.gender_id = '';
+      this.form.pronoun_id = '';
+      this.showContactName = false;
+      this.showMoreContactOptions = false;
     },
 
     displayContactSelector() {
