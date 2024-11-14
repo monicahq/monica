@@ -31,7 +31,6 @@
       <div class="border-b border-gray-200 px-5 py-2 dark:border-gray-700">
         <errors :errors="form.errors" />
 
-        <!-- TODO: add dropdown that matches existing styles -->
         <select
           v-model="form.avatarStyle"
           name="timezone"
@@ -40,7 +39,6 @@
           <option v-for="style in avatarStyles" :key="style" :value="style">{{ style }}</option>
         </select>
 
-        <!-- TODO: add svg below dropdown showing preview of style -->
         <div class="mt-5 mb-2">
           <avatar :data="avatarData" :class="'h-16 w-16 rounded-full ring-2 ring-white dark:ring-gray-900'" />
         </div>
