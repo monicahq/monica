@@ -33,7 +33,7 @@
 
     <main class="relative sm:mt-20">
       <div class="mx-auto max-w-3xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
-        <avatar-styles :data="data.contact_avatar" />
+        <avatar-styles :data="data.avatar_style" />
 
         <help-preference :data="data.help" />
 

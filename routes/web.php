@@ -85,6 +85,7 @@ use App\Domains\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatePage
 use App\Domains\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatePagePositionController;
 use App\Domains\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatePagesController;
 use App\Domains\Settings\ManageTemplates\Web\Controllers\PersonalizeTemplatesController;
+use App\Domains\Settings\ManageUserPreferences\Web\Controllers\PreferencesAvatarStyleController;
 use App\Domains\Settings\ManageUserPreferences\Web\Controllers\PreferencesController;
 use App\Domains\Settings\ManageUserPreferences\Web\Controllers\PreferencesDateFormatController;
 use App\Domains\Settings\ManageUserPreferences\Web\Controllers\PreferencesDistanceFormatController;
@@ -556,6 +557,7 @@ Route::middleware([
             Route::post('maps', [PreferencesMapsPreferenceController::class, 'store'])->name('maps.store');
             Route::post('locale', [PreferencesLocaleController::class, 'store'])->name('locale.store');
             Route::post('help', [PreferencesHelpController::class, 'store'])->name('help.store');
+            Route::post('avatar-style', [PreferencesAvatarStyleController::class, 'store'])->name('avatar-style.store');
         });
 
         // notifications

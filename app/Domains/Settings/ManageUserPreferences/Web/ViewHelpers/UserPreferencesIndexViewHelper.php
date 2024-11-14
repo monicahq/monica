@@ -2,6 +2,7 @@
 
 namespace App\Domains\Settings\ManageUserPreferences\Web\ViewHelpers;
 
+use App\Helpers\AvatarHelper;
 use App\Helpers\MonetaryNumberHelper;
 use App\Helpers\NameHelper;
 use App\Models\Contact;
@@ -13,7 +14,7 @@ class UserPreferencesIndexViewHelper
     public static function data(User $user): array
     {
         return [
-            'contact_avatar' => self::dtoContactAvatar($user),
+            'avatar_style' => self::dtoAvatarStyle($user),
             'help' => self::dtoHelp($user),
             'name_order' => self::dtoNameOrder($user),
             'date_format' => self::dtoDateFormat($user),
@@ -39,14 +40,21 @@ class UserPreferencesIndexViewHelper
         ];
     }
 
-    public static function dtoContactAvatar(User $user): array
+    public static function dtoAvatarStyle(User $user): array
     {
         $contact = new Contact([
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
         ]);
 
-        return $contact->avatar;
+        return [
+            'url' => [
+                'store' => route('settings.preferences.avatar-style.store'),
+            ],
+            'style' => $user->avatar_style,
+            'avatar' => $contact->avatar,
+            'default_avatar' => AvatarHelper::generateRandomAvatar($contact),
+        ];
     }
 
     public static function dtoNameOrder(User $user): array

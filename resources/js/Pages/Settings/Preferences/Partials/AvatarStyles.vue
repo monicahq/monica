@@ -81,7 +81,7 @@ export default {
         'adventurer-neutral',
         'avataaars',
         'avataaars-neutral', // TODO: add all current styles
-      ], // The dicebear documentation does not seem to have an api link that lists all styles
+      ], // Dicebear does not have an endpoint that lists all styles
       loadingState: '',
       editMode: false,
       form: {
@@ -97,14 +97,12 @@ export default {
         type: 'dicebear',
         content: `https://api.dicebear.com/9.x/${this.form.avatarStyle}/svg?seed=${this.$page.props.auth.user?.name}`,
       };
-      console.log(this.data);
-      return this.form.avatarStyle ? dicebearAvatar : this.data;
+      return this.form.avatarStyle ? dicebearAvatar : this.data.default_avatar;
     },
   },
 
   mounted() {
-    // TODO: pass data to component and get avatar style if it exists
-    // this.form.avatarStyle = this.data.avatarStyle;
+    this.form.avatarStyle = this.data.style;
   },
 
   methods: {
@@ -112,20 +110,21 @@ export default {
       this.editMode = true;
     },
     submit() {
-      // this.loadingState = 'loading';
-      // TODO: handle avatar style change logic
-      // axios
-      //     .post(this.data.url.store, this.form)
-      //     .then((response) => {
-      //         this.flash(this.$t('Changes saved'), 'success');
-      //         this.localTimezone = response.data.data.timezone;
-      //         this.editMode = false;
-      //         this.loadingState = null;
-      //     })
-      //     .catch((error) => {
-      //         this.loadingState = null;
-      //         this.form.errors = error.response.data;
-      //     });
+      this.loadingState = 'loading';
+
+      axios
+        .post(this.data.url.store, this.form)
+        .then((response) => {
+          this.flash(this.$t('Changes saved'), 'success');
+
+          this.avatarStyle = response.data.data.style;
+          this.editMode = false;
+          this.loadingState = null;
+        })
+        .catch((error) => {
+          this.loadingState = null;
+          this.form.errors = error.response.data;
+        });
     },
   },
 };
