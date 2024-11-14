@@ -60,7 +60,7 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ]; then
 
     # Run migrations
     ${ARTISAN} waitfordb
-    ${ARTISAN} monica:setup --force -vv
+    ${ARTISAN} ${START_COMMAND:-monica:setup} --force -vv
 
     # if [ ! -f "${STORAGE}/oauth-public.key" -o ! -f "${STORAGE}/oauth-private.key" ]; then
     #     echo "Passport keys creation ..."

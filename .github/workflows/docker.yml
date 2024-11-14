@@ -65,7 +65,7 @@ jobs:
             org.opencontainers.image.title="MonicaHQ, the Personal Relationship Manager"
             org.opencontainers.image.vendor="Monica"
           flavor: |
-            latest=${{ matrix.flavor.tag == 'main' && 'auto' || 'false' }}
+            latest=${{ matrix.flavor.tag == 'main' && 'true' || 'false' }}
             suffix=${{ matrix.flavor.suffix }}
 
       - name: Set up Docker Buildx
