@@ -69,6 +69,6 @@ class SendTestTelegramNotification extends BaseService implements ServiceInterfa
         $content = trans('This is a test notification for :name', ['name' => $this->author->name]);
 
         Notification::route('telegram', $this->userNotificationChannel->content)
-            ->notify(new ReminderTriggered($this->userNotificationChannel, $content, 'Test'));
+            ->notify((new ReminderTriggered($this->userNotificationChannel, $content, 'Test'))->locale($this->userNotificationChannel->user->locale));
     }
 }

@@ -42,7 +42,7 @@ class MonicaLocalize extends Command
      */
     public function handle(): void
     {
-        $this->googleTranslate = (new GoogleTranslate())->setSource('en');
+        $this->googleTranslate = (new GoogleTranslate)->setSource('en');
 
         $locales = $langs = config('localizer.supported_locales');
 

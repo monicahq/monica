@@ -42,7 +42,7 @@ class DestroyContact extends QueuableService implements ServiceInterface
         $this->validateRules($data);
 
         if (! $this->contact->can_be_deleted) {
-            throw new CantBeDeletedException();
+            throw new CantBeDeletedException;
         }
 
         $this->destroyFiles();

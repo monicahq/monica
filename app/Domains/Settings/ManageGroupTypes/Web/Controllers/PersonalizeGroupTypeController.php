@@ -30,7 +30,7 @@ class PersonalizeGroupTypeController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $groupType = (new CreateGroupType())->execute($data);
+        $groupType = (new CreateGroupType)->execute($data);
 
         return response()->json([
             'data' => PersonalizeGroupTypeViewHelper::dto($groupType),
@@ -46,7 +46,7 @@ class PersonalizeGroupTypeController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $groupType = (new UpdateGroupType())->execute($data);
+        $groupType = (new UpdateGroupType)->execute($data);
 
         return response()->json([
             'data' => PersonalizeGroupTypeViewHelper::dto($groupType),
@@ -61,7 +61,7 @@ class PersonalizeGroupTypeController extends Controller
             'group_type_id' => $groupTypeId,
         ];
 
-        (new DestroyGroupType())->execute($data);
+        (new DestroyGroupType)->execute($data);
 
         return response()->json([
             'data' => true,

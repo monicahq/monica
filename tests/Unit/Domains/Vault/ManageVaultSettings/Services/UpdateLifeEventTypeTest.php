@@ -41,7 +41,7 @@ class UpdateLifeEventTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateLifeEventType())->execute($request);
+        (new UpdateLifeEventType)->execute($request);
     }
 
     /** @test */
@@ -121,7 +121,7 @@ class UpdateLifeEventTypeTest extends TestCase
             'can_be_deleted' => true,
         ];
 
-        $type = (new UpdateLifeEventType())->execute($request);
+        $type = (new UpdateLifeEventType)->execute($request);
 
         $this->assertDatabaseHas('life_event_types', [
             'id' => $type->id,

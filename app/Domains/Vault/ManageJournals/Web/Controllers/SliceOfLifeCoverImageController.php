@@ -29,9 +29,9 @@ class SliceOfLifeCoverImageController extends Controller
             'type' => File::TYPE_PHOTO,
         ];
 
-        $file = (new UploadFile())->execute($data);
+        $file = (new UploadFile)->execute($data);
 
-        $slice = (new SetSliceOfLifeCoverImage())->execute([
+        $slice = (new SetSliceOfLifeCoverImage)->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,
@@ -47,7 +47,7 @@ class SliceOfLifeCoverImageController extends Controller
 
     public function destroy(Request $request, string $vaultId, int $journalId, int $sliceId)
     {
-        (new RemoveSliceOfLifeCoverImage())->execute([
+        (new RemoveSliceOfLifeCoverImage)->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,

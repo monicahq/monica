@@ -25,7 +25,7 @@ class PostMetricController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $postMetric = (new CreatePostMetric())->execute($data);
+        $postMetric = (new CreatePostMetric)->execute($data);
 
         return response()->json([
             'data' => PostEditViewHelper::dtoPostMetric($postMetric),
@@ -47,7 +47,7 @@ class PostMetricController extends Controller
             'post_metric_id' => $postMetricId,
         ];
 
-        (new DestroyPostMetric())->execute($data);
+        (new DestroyPostMetric)->execute($data);
 
         return response()->json([
             'data' => null,

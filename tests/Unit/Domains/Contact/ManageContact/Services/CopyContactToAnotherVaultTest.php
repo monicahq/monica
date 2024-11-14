@@ -39,7 +39,7 @@ class CopyContactToAnotherVaultTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CopyContactToAnotherVault())->execute($request);
+        (new CopyContactToAnotherVault)->execute($request);
     }
 
     /** @test */
@@ -115,7 +115,7 @@ class CopyContactToAnotherVaultTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $newContact = (new CopyContactToAnotherVault())->execute($request);
+        $newContact = (new CopyContactToAnotherVault)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $newContact->id,

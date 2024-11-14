@@ -42,7 +42,7 @@ class UploadFileTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UploadFile())->execute($request);
+        (new UploadFile)->execute($request);
     }
 
     /** @test */
@@ -112,7 +112,7 @@ class UploadFileTest extends TestCase
             'type' => 'avatar',
         ];
 
-        $file = (new UploadFile())->execute($request);
+        $file = (new UploadFile)->execute($request);
 
         $this->assertInstanceOf(
             File::class,

@@ -89,7 +89,7 @@ class UpdateContactReminder extends BaseService implements ServiceInterface
     private function scheduledReminderForAllUsersInVault(): void
     {
         foreach ($this->vault->users as $user) {
-            (new ScheduleContactReminderForUser())->execute([
+            (new ScheduleContactReminderForUser)->execute([
                 'contact_reminder_id' => $this->reminder->id,
                 'user_id' => $user->id,
             ]);

@@ -43,7 +43,7 @@ class RemovePostFromSliceOfLifeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new RemovePostFromSliceOfLife())->execute($request);
+        (new RemovePostFromSliceOfLife)->execute($request);
     }
 
     /** @test */
@@ -128,7 +128,7 @@ class RemovePostFromSliceOfLifeTest extends TestCase
             'post_id' => $post->id,
         ];
 
-        (new RemovePostFromSliceOfLife())->execute($request);
+        (new RemovePostFromSliceOfLife)->execute($request);
 
         $this->assertDatabaseHas('posts', [
             'id' => $post->id,

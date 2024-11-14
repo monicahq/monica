@@ -99,7 +99,12 @@
             :key="notification.id"
             class="item-list border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
             <span class="me-2 text-sm text-gray-500">{{ notification.sent_at }}</span>
-            <span>{{ notification.subject_line }}</span>
+            <span class="text-sm text-red-600 dark:text-red-400" v-if="notification.error !== ''">
+              {{ notification.error }}
+            </span>
+            <span v-else>
+              {{ notification.subject_line }}
+            </span>
           </li>
         </ul>
 
