@@ -49,7 +49,7 @@ return new class extends Migration
 
             $table->index(['vault_id', 'id']);
 
-            if (ScoutHelper::fullTextIndex()) {
+            if (ScoutHelper::isFullTextIndex()) {
                 $table->fullText('first_name');
                 $table->fullText('last_name');
                 $table->fullText('middle_name');

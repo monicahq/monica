@@ -133,7 +133,7 @@ class Contact extends VCardResource
      */
     public function searchIndexShouldBeUpdated()
     {
-        return ScoutHelper::activated();
+        return ScoutHelper::isActivated();
     }
 
     /**

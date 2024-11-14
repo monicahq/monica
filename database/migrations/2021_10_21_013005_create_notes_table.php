@@ -26,7 +26,7 @@ return new class extends Migration
             $table->text('body');
             $table->timestamps();
 
-            if (ScoutHelper::fullTextIndex()) {
+            if (ScoutHelper::isFullTextIndex()) {
                 $table->fullText('title');
                 $table->fullText('body');
             }

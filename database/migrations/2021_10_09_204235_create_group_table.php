@@ -53,7 +53,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            if (ScoutHelper::fullTextIndex()) {
+            if (ScoutHelper::isFullTextIndex()) {
                 $table->fullText('name');
             }
         });

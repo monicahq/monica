@@ -12,7 +12,7 @@ class ScoutHelper
      *
      * @codeCoverageIgnore
      */
-    public static function activated(): bool
+    public static function isActivated(): bool
     {
         switch (config('scout.driver')) {
             case 'algolia':
@@ -34,7 +34,7 @@ class ScoutHelper
      *
      * @codeCoverageIgnore
      */
-    public static function indexed(): bool
+    public static function isIndexed(): bool
     {
         switch (config('scout.driver')) {
             case 'algolia':
@@ -53,7 +53,7 @@ class ScoutHelper
      *
      * @codeCoverageIgnore
      */
-    public static function fullTextIndex(): bool
+    public static function isFullTextIndex(): bool
     {
         return config('scout.full_text_index') && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql']);
     }

@@ -51,7 +51,7 @@ class Note extends Model
      */
     public function searchIndexShouldBeUpdated()
     {
-        return ScoutHelper::activated();
+        return ScoutHelper::isActivated();
     }
 
     /**
