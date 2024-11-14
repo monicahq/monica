@@ -13,6 +13,7 @@ class UserPreferencesIndexViewHelper
     public static function data(User $user): array
     {
         return [
+            'contact_avatar' => self::dtoContactAvatar($user),
             'help' => self::dtoHelp($user),
             'name_order' => self::dtoNameOrder($user),
             'date_format' => self::dtoDateFormat($user),
@@ -36,6 +37,16 @@ class UserPreferencesIndexViewHelper
                 'store' => route('settings.preferences.help.store'),
             ],
         ];
+    }
+
+    public static function dtoContactAvatar(User $user): array
+    {
+        $contact = new Contact([
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+        ]);
+
+        return $contact->avatar;
     }
 
     public static function dtoNameOrder(User $user): array

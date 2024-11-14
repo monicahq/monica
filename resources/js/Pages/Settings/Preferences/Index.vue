@@ -33,6 +33,8 @@
 
     <main class="relative sm:mt-20">
       <div class="mx-auto max-w-3xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
+        <avatar-styles :data="data.contact_avatar" />
+
         <help-preference :data="data.help" />
 
         <locale :data="data.locale" />
@@ -64,9 +66,11 @@ import Timezone from '@/Pages/Settings/Preferences/Partials/Timezone.vue';
 import Maps from '@/Pages/Settings/Preferences/Partials/Maps.vue';
 import Locale from '@/Pages/Settings/Preferences/Partials/Locale.vue';
 import HelpPreference from '@/Pages/Settings/Preferences/Partials/HelpPreference.vue';
+import AvatarStyles from '@/Pages/Settings/Preferences/Partials/AvatarStyles.vue';
 
 export default {
   components: {
+    AvatarStyles,
     InertiaLink: Link,
     Layout,
     NameOrder,
