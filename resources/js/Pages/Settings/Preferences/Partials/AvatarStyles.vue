@@ -118,7 +118,7 @@ export default {
   computed: {
     avatarData() {
       const dicebearAvatar = {
-        type: 'dicebear',
+        type: 'url',
         content: `https://api.dicebear.com/9.x/${this.form.avatarStyle}/svg?seed=${this.$page.props.auth.user?.name}`,
       };
       return this.form.avatarStyle ? dicebearAvatar : this.data.default_avatar;
