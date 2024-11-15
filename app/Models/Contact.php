@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Scout\Attributes\SearchUsingFullText;
-use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 
 class Contact extends VCardResource
@@ -83,22 +82,18 @@ class Contact extends VCardResource
     /**
      * Get the indexable data array for the model.
      *
-     *
      * @codeCoverageIgnore
      */
-    #[SearchUsingPrefix(['id', 'vault_id'])]
-    #[SearchUsingFullText(['first_name', 'last_name', 'middle_name', 'nickname', 'maiden_name'])]
+    #[SearchUsingFullText(['first_name', 'last_name', 'middle_name', 'nickname', 'maiden_name'], ['expanded' => true])]
     public function toSearchableArray(): array
     {
-        return [
-            'id' => $this->id,
-            'vault_id' => $this->vault_id,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'middle_name' => $this->middle_name,
-            'nickname' => $this->nickname,
-            'maiden_name' => $this->maiden_name,
-        ];
+        return array_merge(ScoutHelper::id($this), [
+            'first_name' => $this->first_name ?? '',
+            'last_name' => $this->last_name ?? '',
+            'middle_name' => $this->middle_name ?? '',
+            'nickname' => $this->nickname ?? '',
+            'maiden_name' => $this->maiden_name ?? '',
+        ]);
     }
 
     /**
@@ -120,7 +115,7 @@ class Contact extends VCardResource
     }
 
     /**
-     * Used to delete related objects from Meilisearch/Algolia instance.
+     * Used to delete related objects from scout driver instance.
      */
     protected static function boot(): void
     {
@@ -138,7 +133,7 @@ class Contact extends VCardResource
      */
     public function searchIndexShouldBeUpdated()
     {
-        return ScoutHelper::activated();
+        return ScoutHelper::isActivated();
     }
 
     /**

@@ -1,12 +1,12 @@
 <?php
 
+use App\Helpers\ScoutHelper;
 use App\Models\Contact;
 use App\Models\Emotion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->text('body');
             $table->timestamps();
 
-            if (config('scout.driver') === 'database' && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
+            if (ScoutHelper::isFullTextIndex()) {
                 $table->fullText('title');
                 $table->fullText('body');
             }
