@@ -32,14 +32,14 @@ class AvatarHelper
                 'type' => Contact::AVATAR_TYPE_URL,
                 'content' => self::getDicebearLink($avatarStyle, $name),
             ];
-        } else {
-            $multiavatar = new MultiAvatar;
-
-            return [
-                'type' => Contact::AVATAR_TYPE_SVG,
-                'content' => $multiavatar($name, null, null),
-            ];
         }
+
+        $multiavatar = new MultiAvatar;
+
+        return [
+            'type' => Contact::AVATAR_TYPE_SVG,
+            'content' => $multiavatar($name, null, null),
+        ];
     }
 
     public static function getDicebearLink($avatarStyle, $name)
