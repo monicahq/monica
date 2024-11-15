@@ -3,6 +3,8 @@
 namespace Tests\Unit\Domains\Settings\ManageUserPreferences\Web\ViewHelpers;
 
 use App\Domains\Settings\ManageUserPreferences\Web\ViewHelpers\UserPreferencesIndexViewHelper;
+use App\Helpers\AvatarHelper;
+use App\Models\Contact;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -25,10 +27,11 @@ class UserPreferencesIndexViewHelperTest extends TestCase
         $array = UserPreferencesIndexViewHelper::data($user);
 
         $this->assertEquals(
-            9,
+            10,
             count($array)
         );
 
+        $this->assertArrayHasKey('avatar_style', $array);
         $this->assertArrayHasKey('help', $array);
         $this->assertArrayHasKey('name_order', $array);
         $this->assertArrayHasKey('date_format', $array);
@@ -45,6 +48,35 @@ class UserPreferencesIndexViewHelperTest extends TestCase
                 'back' => env('APP_URL').'/settings',
             ],
             $array['url']
+        );
+    }
+
+    /** @test */
+    public function it_gets_the_data_needed_for_avatar_style(): void
+    {
+        $avatarStyle = 'placeholder-dicebear-style';
+
+        $user = User::factory()->create([
+            'avatar_style' => $avatarStyle,
+        ]);
+
+        $array = UserPreferencesIndexViewHelper::dtoAvatarStyle($user);
+
+        $contact = new Contact([
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+        ]);
+
+        $this->assertEquals(
+            [
+                'url' => [
+                    'store' => env('APP_URL').'/settings/preferences/avatar-style',
+                ],
+                'style' => $avatarStyle,
+                'avatar' => $contact->avatar,
+                'default_avatar' => AvatarHelper::generateRandomAvatar($contact),
+            ],
+            $array
         );
     }
 

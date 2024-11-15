@@ -446,7 +446,7 @@ class Contact extends VCardResource
                     ];
                 }
 
-                return AvatarHelper::generateRandomAvatar($this, Auth::user()->avatar_style);
+                return AvatarHelper::generateRandomAvatar($this, Auth::user()?->avatar_style);
             }
         );
     }
