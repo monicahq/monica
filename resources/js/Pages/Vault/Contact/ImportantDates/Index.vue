@@ -136,7 +136,7 @@ const destroy = (date) => {
             <li
               v-for="date in localDates"
               :key="date.id"
-              class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+              class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
               <!-- detail of the important date -->
               <div v-if="editedDateId === 0" class="flex items-center justify-between px-5 py-2">
                 <span class="text-base">
@@ -144,7 +144,7 @@ const destroy = (date) => {
 
                   <span
                     v-if="date.type"
-                    class="ms-2 inline-block rounded bg-neutral-200 px-1 py-0 text-xs text-neutral-500 last:me-0">
+                    class="ms-2 inline-block rounded-sm bg-neutral-200 px-1 py-0 text-xs text-neutral-500 last:me-0">
                     {{ date.type.label }}
                   </span>
                 </span>

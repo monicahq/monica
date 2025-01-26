@@ -44,7 +44,7 @@
       <li
         v-for="tag in localTags"
         :key="tag.id"
-        class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800 hover:dark:bg-slate-900">
+        class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800 dark:hover:bg-slate-900">
         <!-- detail of the tag -->
         <div v-if="editTagModalShownId !== tag.id" class="flex items-center justify-between px-5 py-2">
           <span class="flex items-center text-base">
@@ -60,7 +60,7 @@
               <span class="text-blue-500 hover:underline">{{ $t('Edit') }}</span>
             </li>
             <li
-              class="inline cursor-pointer text-red-500 hover:text-red-900 hover:dark:text-red-100"
+              class="inline cursor-pointer text-red-500 hover:text-red-900 dark:hover:text-red-100"
               @click="destroy(tag)">
               {{ $t('Delete') }}
             </li>
@@ -70,7 +70,7 @@
         <!-- edit a tag modal -->
         <form
           v-if="editTagModalShownId === tag.id"
-          class="item-list border-b border-gray-200 bg-gray-50 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:bg-slate-900 hover:dark:bg-slate-800 hover:dark:bg-slate-900"
+          class="item-list border-b border-gray-200 bg-gray-50 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:bg-slate-900 dark:hover:bg-slate-800 dark:hover:bg-slate-900"
           @submit.prevent="update(tag)">
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <errors :errors="form.errors" />

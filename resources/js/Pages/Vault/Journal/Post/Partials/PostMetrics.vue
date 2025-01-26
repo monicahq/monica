@@ -74,11 +74,11 @@ const destroy = (journalMetric, postMetric) => {
       <div class="mb-1 font-semibold">{{ journalMetric.label }}</div>
       <ul
         v-if="journalMetric.post_metrics.length > 0"
-        class="mb-2 rounded border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+        class="mb-2 rounded-sm border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <li
           v-for="postMetric in journalMetric.post_metrics"
           :key="postMetric.id"
-          class="item-list flex items-center justify-between border-b border-gray-200 px-3 py-1 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          class="item-list flex items-center justify-between border-b border-gray-200 px-3 py-1 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <span class="italic">{{ postMetric.label }}</span>
 
           <div class="flex items-center">

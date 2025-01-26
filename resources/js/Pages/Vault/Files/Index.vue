@@ -61,7 +61,7 @@
               <li
                 v-for="file in data.files"
                 :key="file.id"
-                class="items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800 sm:flex">
+                class="items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800 sm:flex">
                 <!-- left part -->
                 <div class="mb-4 block items-center sm:mb-0 sm:flex">
                   <!-- created at -->
@@ -74,7 +74,7 @@
                     <span class="block truncate">{{ file.name }}</span>
 
                     <span class="ms-2">
-                      <span class="rounded border bg-blue-50 px-1 py-0 font-mono text-xs text-blue-500">
+                      <span class="rounded-sm border bg-blue-50 px-1 py-0 font-mono text-xs text-blue-500">
                         {{ file.size }}
                       </span>
                     </span>

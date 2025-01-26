@@ -33,7 +33,7 @@
       <li
         v-for="note in localNotes"
         :key="note.id"
-        class="mb-4 rounded border border-gray-200 last:mb-0 dark:border-gray-700">
+        class="mb-4 rounded-sm border border-gray-200 last:mb-0 dark:border-gray-700">
         <div
           v-if="note.title"
           class="mb-1 border-b border-gray-200 p-3 text-xs font-semibold text-gray-600 dark:border-gray-700 dark:text-gray-400">
@@ -47,7 +47,7 @@
           {{ note.body }}
         </div>
         <div
-          class="flex border-t border-gray-200 px-3 py-2 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400 hover:dark:bg-slate-800">
+          class="flex border-t border-gray-200 px-3 py-2 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400 dark:hover:bg-slate-800">
           <!-- date -->
           <div class="relative me-3 inline">
             <svg

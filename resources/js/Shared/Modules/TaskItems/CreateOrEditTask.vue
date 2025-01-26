@@ -102,7 +102,7 @@ defineExpose({
           v-model="form.due_at_checked"
           name="reminder"
           type="checkbox"
-          class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600" />
+          class="focus:ring-3 relative h-4 w-4 rounded-sm border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
         <label for="reminder" class="ms-2 block cursor-pointer text-sm text-gray-900 dark:text-gray-50">
           {{ $t('Add a due date') }}
         </label>
@@ -117,7 +117,10 @@ defineExpose({
           :locale="$page.props.auth.user?.locale_ietf"
           :is-dark="isDark()">
           <template #default="{ inputValue, inputEvents }">
-            <input class="rounded border bg-white px-2 py-1 dark:bg-gray-900" :value="inputValue" v-on="inputEvents" />
+            <input
+              class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
+              :value="inputValue"
+              v-on="inputEvents" />
           </template>
         </DatePicker>
       </div>

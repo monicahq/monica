@@ -100,7 +100,7 @@ const update = () => {
               <li
                 v-for="contact in data.contacts"
                 :key="contact.id"
-                class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
                 <avatar :data="contact.avatar" :class="'me-2 h-5 w-5 rounded-full'" />
 
                 <Link :href="contact.url.show" class="text-blue-500 hover:underline">
