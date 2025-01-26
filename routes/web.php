@@ -190,6 +190,8 @@ Route::middleware([
         Route::get('create', [VaultController::class, 'create'])->name('vault.create');
         Route::post('', [VaultController::class, 'store'])->name('vault.store');
         Route::get('{vault}', [VaultController::class, 'show'])->name('vault.show');
+        Route::get('{vault}/edit', [VaultController::class, 'edit'])->name('vault.edit');
+        Route::put('{vault}', [VaultController::class, 'update'])->name('vault.update');
         Route::delete('{vault}', [VaultController::class, 'destroy'])->name('vault.destroy');
 
         Route::middleware('can:vault-viewer,vault')->prefix('{vault}')->group(function () {
