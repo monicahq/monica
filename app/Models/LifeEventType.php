@@ -17,7 +17,7 @@ class LifeEventType extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'life_event_category_id',

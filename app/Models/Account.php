@@ -16,7 +16,7 @@ class Account extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'storage_limit_in_mb',

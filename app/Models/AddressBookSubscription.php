@@ -30,7 +30,7 @@ class AddressBookSubscription extends Model implements Loggable
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'user_id',
@@ -71,7 +71,7 @@ class AddressBookSubscription extends Model implements Loggable
     /**
      * Eager load account with every contact.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $with = [
         'user',

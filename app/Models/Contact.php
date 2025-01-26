@@ -38,7 +38,7 @@ class Contact extends VCardResource
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'vault_id',
