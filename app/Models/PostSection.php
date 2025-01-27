@@ -26,6 +26,8 @@ class PostSection extends Model
 
     /**
      * Get the post associated with the post section.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Post, $this>
      */
     public function post(): BelongsTo
     {

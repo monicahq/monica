@@ -57,6 +57,8 @@ class File extends Model
 
     /**
      * Get the vault associated with the file.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {

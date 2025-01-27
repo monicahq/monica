@@ -48,6 +48,8 @@ class TemplatePage extends Model
 
     /**
      * Get the account associated with the template page.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Template, $this>
      */
     public function template(): BelongsTo
     {
@@ -56,6 +58,8 @@ class TemplatePage extends Model
 
     /**
      * Get the modules associated with the template page.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Module, $this>
      */
     public function modules(): BelongsToMany
     {

@@ -31,7 +31,7 @@ class GroupIndexViewHelper
                         ]),
                     ]);
 
-                return [
+                return [ // @phpstan-ignore-line
                     'id' => $group->id,
                     'name' => $group->name,
                     'url' => [

@@ -41,6 +41,8 @@ class ContactTask extends Model
 
     /**
      * Get the contact associated with the contact task.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
      */
     public function contact(): BelongsTo
     {
@@ -49,6 +51,8 @@ class ContactTask extends Model
 
     /**
      * Get the author associated with the contact task.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
      */
     public function author(): BelongsTo
     {

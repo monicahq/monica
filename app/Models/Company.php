@@ -35,6 +35,8 @@ class Company extends Model
 
     /**
      * Get the vault associated with the company.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {
@@ -43,6 +45,8 @@ class Company extends Model
 
     /**
      * Get the contacts associated with the company.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Contact, $this>
      */
     public function contacts(): HasMany
     {

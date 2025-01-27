@@ -25,6 +25,8 @@ class JournalMetric extends Model
 
     /**
      * Get the journal associated with the journal metric.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Journal, $this>
      */
     public function journal(): BelongsTo
     {
@@ -33,6 +35,8 @@ class JournalMetric extends Model
 
     /**
      * Get the post metrics associated with the journal metric.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PostMetric, $this>
      */
     public function postMetrics(): HasMany
     {

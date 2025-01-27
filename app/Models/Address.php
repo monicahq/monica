@@ -34,6 +34,8 @@ class Address extends Model
 
     /**
      * Get the contacts associated with the address.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Contact, $this>
      */
     public function contacts(): BelongsToMany
     {
@@ -43,6 +45,8 @@ class Address extends Model
 
     /**
      * Get the address type object associated with the address.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\AddressType, $this>
      */
     public function addressType(): BelongsTo
     {
@@ -51,6 +55,8 @@ class Address extends Model
 
     /**
      * Get the address's feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne<\App\Models\ContactFeedItem, $this>
      */
     public function feedItem(): MorphOne
     {

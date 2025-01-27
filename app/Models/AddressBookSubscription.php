@@ -79,6 +79,8 @@ class AddressBookSubscription extends Model implements Loggable
 
     /**
      * Get the account record associated with the subscription.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {
@@ -87,6 +89,8 @@ class AddressBookSubscription extends Model implements Loggable
 
     /**
      * Get the user record associated with the subscription.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
      */
     public function user(): BelongsTo
     {
@@ -95,6 +99,8 @@ class AddressBookSubscription extends Model implements Loggable
 
     /**
      * Get the vault record associated with the subscription.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {
@@ -103,6 +109,8 @@ class AddressBookSubscription extends Model implements Loggable
 
     /**
      * Get the local synctoken.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\SyncToken, $this>
      */
     public function localSyncToken(): BelongsTo
     {
@@ -111,6 +119,8 @@ class AddressBookSubscription extends Model implements Loggable
 
     /**
      * Get the subscription's logs.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\App\Models\Log, $this>
      */
     public function logs(): MorphMany
     {

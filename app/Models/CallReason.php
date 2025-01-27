@@ -26,6 +26,8 @@ class CallReason extends Model
 
     /**
      * Get the call reason type associated with call reason.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\CallReasonType, $this>
      */
     public function callReasonType(): BelongsTo
     {

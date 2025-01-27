@@ -52,7 +52,7 @@ class UserToken extends Model
     /**
      * Get the user record associated with the company.
      *
-     * @return BelongsTo
+     * @return BelongsTo<User, $this>
      */
     public function user()
     {

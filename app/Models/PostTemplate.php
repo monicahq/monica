@@ -38,6 +38,8 @@ class PostTemplate extends Model
 
     /**
      * Get the account associated with the post type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {
@@ -46,6 +48,8 @@ class PostTemplate extends Model
 
     /**
      * Get the post type section records associated with the post type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PostTemplateSection, $this>
      */
     public function postTemplateSections(): HasMany
     {

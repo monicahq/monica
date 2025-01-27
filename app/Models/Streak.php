@@ -31,6 +31,8 @@ class Streak extends Model
 
     /**
      * Get the goal associated with the streak.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Goal, $this>
      */
     public function goal(): BelongsTo
     {

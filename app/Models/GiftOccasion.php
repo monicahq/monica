@@ -27,6 +27,8 @@ class GiftOccasion extends Model
 
     /**
      * Get the account associated with the gift occasion.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {

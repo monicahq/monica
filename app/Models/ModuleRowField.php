@@ -41,6 +41,8 @@ class ModuleRowField extends Model
 
     /**
      * Get the module row associated with the module.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\ModuleRow, $this>
      */
     public function row(): BelongsTo
     {

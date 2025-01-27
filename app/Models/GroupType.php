@@ -28,6 +28,8 @@ class GroupType extends Model
 
     /**
      * Get the account record associated with the group type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {
@@ -36,6 +38,8 @@ class GroupType extends Model
 
     /**
      * Get the group type roles associated with the group type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\GroupTypeRole, $this>
      */
     public function groupTypeRoles(): HasMany
     {

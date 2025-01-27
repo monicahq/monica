@@ -52,6 +52,8 @@ class ContactReminder extends Model
 
     /**
      * Get the contact associated with the contact reminder.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
      */
     public function contact(): BelongsTo
     {
@@ -60,6 +62,8 @@ class ContactReminder extends Model
 
     /**
      * Get the user notification channel records associated with the contact reminder.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\UserNotificationChannel, $this>
      */
     public function userNotificationChannels(): BelongsToMany
     {

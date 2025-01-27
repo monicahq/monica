@@ -34,6 +34,8 @@ class Account extends Model
 
     /**
      * Get the templates associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Template, $this>
      */
     public function templates(): HasMany
     {
@@ -42,6 +44,8 @@ class Account extends Model
 
     /**
      * Get the modules associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Module, $this>
      */
     public function modules(): HasMany
     {
@@ -50,6 +54,8 @@ class Account extends Model
 
     /**
      * Get the information associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\GroupType, $this>
      */
     public function groupTypes(): HasMany
     {
@@ -58,6 +64,8 @@ class Account extends Model
 
     /**
      * Get the relationship group types associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\RelationshipGroupType, $this>
      */
     public function relationshipGroupTypes(): HasMany
     {
@@ -66,6 +74,8 @@ class Account extends Model
 
     /**
      * Get the genders associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Gender, $this>
      */
     public function genders(): HasMany
     {
@@ -74,6 +84,8 @@ class Account extends Model
 
     /**
      * Get the pronouns associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Pronoun, $this>
      */
     public function pronouns(): HasMany
     {
@@ -82,6 +94,8 @@ class Account extends Model
 
     /**
      * Get the contact information types associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ContactInformationType, $this>
      */
     public function contactInformationTypes(): HasMany
     {
@@ -90,6 +104,8 @@ class Account extends Model
 
     /**
      * Get the address types associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\AddressType, $this>
      */
     public function addressTypes(): HasMany
     {
@@ -98,6 +114,8 @@ class Account extends Model
 
     /**
      * Get the pet categories associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PetCategory, $this>
      */
     public function petCategories(): HasMany
     {
@@ -106,6 +124,8 @@ class Account extends Model
 
     /**
      * Get the emotions associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Emotion, $this>
      */
     public function emotions(): HasMany
     {
@@ -114,6 +134,8 @@ class Account extends Model
 
     /**
      * Get the currencies in the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Currency, $this>
      */
     public function currencies(): BelongsToMany
     {
@@ -124,6 +146,8 @@ class Account extends Model
 
     /**
      * Get the call reason types associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\CallReasonType, $this>
      */
     public function callReasonTypes(): HasMany
     {
@@ -132,6 +156,8 @@ class Account extends Model
 
     /**
      * Get the gift occasions associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\GiftOccasion, $this>
      */
     public function giftOccasions(): HasMany
     {
@@ -140,6 +166,8 @@ class Account extends Model
 
     /**
      * Get the gift stages associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\GiftState, $this>
      */
     public function giftStates(): HasMany
     {
@@ -148,6 +176,8 @@ class Account extends Model
 
     /**
      * Get the vaults associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Vault, $this>
      */
     public function vaults(): HasMany
     {
@@ -156,6 +186,8 @@ class Account extends Model
 
     /**
      * Get the post templates associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PostTemplate, $this>
      */
     public function postTemplates(): HasMany
     {
@@ -164,6 +196,8 @@ class Account extends Model
 
     /**
      * Get the religions associated with the account.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Religion, $this>
      */
     public function religions(): HasMany
     {

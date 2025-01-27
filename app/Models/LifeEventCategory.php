@@ -29,6 +29,8 @@ class LifeEventCategory extends Model
 
     /**
      * Get the vault associated with the life event category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {
@@ -37,6 +39,8 @@ class LifeEventCategory extends Model
 
     /**
      * Get the life event types associated with the life event category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\LifeEventType, $this>
      */
     public function lifeEventTypes(): HasMany
     {

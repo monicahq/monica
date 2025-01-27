@@ -27,6 +27,8 @@ class VaultQuickFactsTemplate extends Model
 
     /**
      * Get the vault associated with the quick fact template.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {

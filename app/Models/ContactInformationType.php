@@ -35,6 +35,8 @@ class ContactInformationType extends Model
 
     /**
      * Get the account associated with the contact information type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {

@@ -30,6 +30,8 @@ class Label extends Model
 
     /**
      * Get the vault associated with the label.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {
@@ -38,6 +40,8 @@ class Label extends Model
 
     /**
      * Get the contacts associated with the label.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Contact, $this>
      */
     public function contacts(): BelongsToMany
     {
@@ -46,6 +50,8 @@ class Label extends Model
 
     /**
      * Get the label's feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne<\App\Models\ContactFeedItem, $this>
      */
     public function feedItem(): MorphOne
     {

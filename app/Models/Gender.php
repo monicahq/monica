@@ -62,6 +62,8 @@ class Gender extends Model
 
     /**
      * Get the account associated with the gender.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {

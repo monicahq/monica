@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aac63388cbd4c6b29c6dd6be8114d0de",
+    "content-hash": "07ad745572bfe70574c92ec67fe23208",
     "packages": [
         {
             "name": "asbiin/laravel-sentry-tunnel",
@@ -13137,37 +13137,40 @@
         },
         {
             "name": "larastan/larastan",
-            "version": "v2.9.8",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/larastan/larastan.git",
-                "reference": "340badd89b0eb5bddbc503a4829c08cf9a2819d7"
+                "reference": "b2e24e1605cff1d1097ccb6fb8af3bbd1dfe1c6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/larastan/larastan/zipball/340badd89b0eb5bddbc503a4829c08cf9a2819d7",
-                "reference": "340badd89b0eb5bddbc503a4829c08cf9a2819d7",
+                "url": "https://api.github.com/repos/larastan/larastan/zipball/b2e24e1605cff1d1097ccb6fb8af3bbd1dfe1c6f",
+                "reference": "b2e24e1605cff1d1097ccb6fb8af3bbd1dfe1c6f",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "illuminate/console": "^9.52.16 || ^10.28.0 || ^11.0",
-                "illuminate/container": "^9.52.16 || ^10.28.0 || ^11.0",
-                "illuminate/contracts": "^9.52.16 || ^10.28.0 || ^11.0",
-                "illuminate/database": "^9.52.16 || ^10.28.0 || ^11.0",
-                "illuminate/http": "^9.52.16 || ^10.28.0 || ^11.0",
-                "illuminate/pipeline": "^9.52.16 || ^10.28.0 || ^11.0",
-                "illuminate/support": "^9.52.16 || ^10.28.0 || ^11.0",
-                "php": "^8.0.2",
+                "illuminate/console": "^11.15.0",
+                "illuminate/container": "^11.15.0",
+                "illuminate/contracts": "^11.15.0",
+                "illuminate/database": "^11.15.0",
+                "illuminate/http": "^11.15.0",
+                "illuminate/pipeline": "^11.15.0",
+                "illuminate/support": "^11.15.0",
+                "php": "^8.2",
                 "phpmyadmin/sql-parser": "^5.9.0",
-                "phpstan/phpstan": "^1.11.2"
+                "phpstan/phpstan": "^2.0.2"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^12.0",
-                "nikic/php-parser": "^4.19.1",
-                "orchestra/canvas": "^7.11.1 || ^8.11.0 || ^9.0.2",
-                "orchestra/testbench": "^7.33.0 || ^8.13.0 || ^9.0.3",
-                "phpunit/phpunit": "^9.6.13 || ^10.5.16"
+                "laravel/framework": "^11.15.0",
+                "mockery/mockery": "^1.6",
+                "nikic/php-parser": "^5.3",
+                "orchestra/canvas": "^v9.1.3",
+                "orchestra/testbench-core": "^9.5.2",
+                "phpstan/phpstan-deprecation-rules": "^2.0.0",
+                "phpunit/phpunit": "^10.5.16"
             },
             "suggest": {
                 "orchestra/testbench": "Using Larastan for analysing a package needs Testbench"
@@ -13215,27 +13218,15 @@
             ],
             "support": {
                 "issues": "https://github.com/larastan/larastan/issues",
-                "source": "https://github.com/larastan/larastan/tree/v2.9.8"
+                "source": "https://github.com/larastan/larastan/tree/v3.0.2"
             },
             "funding": [
                 {
-                    "url": "https://www.paypal.com/paypalme/enunomaduro",
-                    "type": "custom"
-                },
-                {
                     "url": "https://github.com/canvural",
                     "type": "github"
-                },
-                {
-                    "url": "https://github.com/nunomaduro",
-                    "type": "github"
-                },
-                {
-                    "url": "https://www.patreon.com/nunomaduro",
-                    "type": "patreon"
                 }
             ],
-            "time": "2024-07-06T17:46:02+00:00"
+            "time": "2024-11-26T23:15:21+00:00"
         },
         {
             "name": "laravel-lang/actions",
@@ -14855,20 +14846,20 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.12.16",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "e0bb5cb78545aae631220735aa706eac633a6be9"
+                "reference": "7d08f569e582ade182a375c366cbd896eccadd3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e0bb5cb78545aae631220735aa706eac633a6be9",
-                "reference": "e0bb5cb78545aae631220735aa706eac633a6be9",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/7d08f569e582ade182a375c366cbd896eccadd3a",
+                "reference": "7d08f569e582ade182a375c366cbd896eccadd3a",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2|^8.0"
+                "php": "^7.4|^8.0"
             },
             "conflict": {
                 "phpstan/phpstan-shim": "*"
@@ -14909,7 +14900,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-21T14:50:05+00:00"
+            "time": "2025-01-21T14:54:06+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -17657,26 +17648,27 @@
         },
         {
             "name": "thecodingmachine/phpstan-safe-rule",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/phpstan-safe-rule.git",
-                "reference": "8a7b88e0d54f209a488095085f183e9174c40e1e"
+                "reference": "5b4522c3a9f3bd7bd09215e91c923a9e6d21a5a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/phpstan-safe-rule/zipball/8a7b88e0d54f209a488095085f183e9174c40e1e",
-                "reference": "8a7b88e0d54f209a488095085f183e9174c40e1e",
+                "url": "https://api.github.com/repos/thecodingmachine/phpstan-safe-rule/zipball/5b4522c3a9f3bd7bd09215e91c923a9e6d21a5a6",
+                "reference": "5b4522c3a9f3bd7bd09215e91c923a9e6d21a5a6",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1 || ^8.0",
-                "phpstan/phpstan": "^1.0",
+                "nikic/php-parser": "^5",
+                "php": "^7.4 || ^8.0",
+                "phpstan/phpstan": "^2.0",
                 "thecodingmachine/safe": "^1.0 || ^2.0"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.1",
-                "phpunit/phpunit": "^7.5.2 || ^8.0",
+                "phpunit/phpunit": "^9.6",
                 "squizlabs/php_codesniffer": "^3.4"
             },
             "type": "phpstan-extension",
@@ -17687,7 +17679,7 @@
                     ]
                 },
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
@@ -17708,9 +17700,9 @@
             "description": "A PHPStan rule to detect safety issues. Must be used in conjunction with thecodingmachine/safe",
             "support": {
                 "issues": "https://github.com/thecodingmachine/phpstan-safe-rule/issues",
-                "source": "https://github.com/thecodingmachine/phpstan-safe-rule/tree/v1.2.0"
+                "source": "https://github.com/thecodingmachine/phpstan-safe-rule/tree/v1.3.0"
             },
-            "time": "2022-01-17T10:12:29+00:00"
+            "time": "2024-12-02T11:26:58+00:00"
         },
         {
             "name": "theseer/tokenizer",

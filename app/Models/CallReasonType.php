@@ -27,6 +27,8 @@ class CallReasonType extends Model
 
     /**
      * Get the account associated with the call reason type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {
@@ -35,6 +37,8 @@ class CallReasonType extends Model
 
     /**
      * Get the call reasons associated with the call reason type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\CallReason, $this>
      */
     public function callReasons(): HasMany
     {

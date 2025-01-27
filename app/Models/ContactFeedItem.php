@@ -108,6 +108,8 @@ class ContactFeedItem extends Model
 
     /**
      * Get the user associated with the contact feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
      */
     public function author(): BelongsTo
     {
@@ -116,6 +118,8 @@ class ContactFeedItem extends Model
 
     /**
      * Get the contact associated with the contact feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
      */
     public function contact(): BelongsTo
     {

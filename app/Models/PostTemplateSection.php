@@ -37,6 +37,8 @@ class PostTemplateSection extends Model
 
     /**
      * Get the post type associated with the post type section.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\PostTemplate, $this>
      */
     public function postTemplate(): BelongsTo
     {

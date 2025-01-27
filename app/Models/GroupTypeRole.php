@@ -27,6 +27,8 @@ class GroupTypeRole extends Model
 
     /**
      * Get the group type record associated with the group type role.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\GroupType, $this>
      */
     public function groupType(): BelongsTo
     {

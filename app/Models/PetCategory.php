@@ -26,6 +26,8 @@ class PetCategory extends Model
 
     /**
      * Get the account associated with the pet category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {

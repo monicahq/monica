@@ -47,6 +47,8 @@ class RelationshipType extends Model
 
     /**
      * Get the group type associated with the relationship type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\RelationshipGroupType, $this>
      */
     public function groupType(): BelongsTo
     {

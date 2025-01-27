@@ -29,6 +29,8 @@ class MoodTrackingParameter extends Model
 
     /**
      * Get the vault associated with the mood tracking parameter.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {
@@ -37,6 +39,8 @@ class MoodTrackingParameter extends Model
 
     /**
      * Get the mood tracking events associated with the mood tracking parameter.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\MoodTrackingEvent, $this>
      */
     public function moodTrackingEvents(): HasMany
     {

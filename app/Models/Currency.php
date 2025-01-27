@@ -23,6 +23,8 @@ class Currency extends Model
 
     /**
      * Get the account records that have the currency.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Account, $this>
      */
     public function accounts(): BelongsToMany
     {

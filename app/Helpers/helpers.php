@@ -99,7 +99,7 @@ if (! function_exists('subClasses')) {
 
             $class = new ReflectionClass($file);
             if ($class->isSubclassOf($className) && ! $class->isAbstract()) {
-                yield $class;
+                yield $class; // @phpstan-ignore-line
             }
         }
     }

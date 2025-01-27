@@ -36,6 +36,8 @@ class UserNotificationSent extends Model
 
     /**
      * Get the user notification channel associated with the user notification sent.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\UserNotificationChannel, $this>
      */
     public function notificationChannel(): BelongsTo
     {

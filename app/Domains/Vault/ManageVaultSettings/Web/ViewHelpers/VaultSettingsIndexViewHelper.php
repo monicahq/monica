@@ -31,12 +31,8 @@ class VaultSettingsIndexViewHelper
         $usersInAccount = $vault->account->users()->whereNotNull('email_verified_at')->get();
         $usersInVault = $vault->users()->get();
         $usersInAccount = $usersInAccount->diff($usersInVault);
-        $usersInAccountCollection = $usersInAccount->map(function ($user) use ($vault) {
-            return self::dtoUser($user, $vault);
-        });
-        $usersInVaultCollection = $usersInVault->map(function ($user) use ($vault) {
-            return self::dtoUser($user, $vault);
-        });
+        $usersInAccountCollection = $usersInAccount->map(fn (User $user): array => self::dtoUser($user, $vault)); // @phpstan-ignore-line
+        $usersInVaultCollection = $usersInVault->map(fn (User $user): array => self::dtoUser($user, $vault));
 
         // labels
         $labels = $vault->labels()

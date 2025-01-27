@@ -35,6 +35,8 @@ class ContactImportantDateType extends Model
 
     /**
      * Get the vault associated with the contact date type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {
