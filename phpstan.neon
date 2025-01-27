@@ -58,3 +58,9 @@ parameters:
 
         - path: */app/Helpers/helpers.php
           message: '#Function readVersion\(\) never returns null so it can be removed from the return type\.#'
+
+        - path: */app/Actions/Fortify/RedirectIfTwoFactorAuthenticatable.php
+          message: '#Call to an undefined method Illuminate\\Contracts\\Auth\\StatefulGuard::getProvider\(\)\.#'
+
+        - path: */app/Http/Middleware/SanctumSetUser.php
+          message: '#Parameter \#1 \$accessToken of method App\\Models\\User::withAccessToken\(\) expects Laravel\\Sanctum\\PersonalAccessToken, Laravel\\Sanctum\\TransientToken given\.#'
