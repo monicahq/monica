@@ -2439,31 +2439,31 @@
         },
         {
             "name": "laravel/fortify",
-            "version": "v1.25.3",
+            "version": "v1.25.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/fortify.git",
-                "reference": "ee35e5b8ea25cc51f8323e27a839283becd44160"
+                "reference": "f185600e2d3a861834ad00ee3b7863f26ac25d3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/fortify/zipball/ee35e5b8ea25cc51f8323e27a839283becd44160",
-                "reference": "ee35e5b8ea25cc51f8323e27a839283becd44160",
+                "url": "https://api.github.com/repos/laravel/fortify/zipball/f185600e2d3a861834ad00ee3b7863f26ac25d3f",
+                "reference": "f185600e2d3a861834ad00ee3b7863f26ac25d3f",
                 "shasum": ""
             },
             "require": {
                 "bacon/bacon-qr-code": "^3.0",
                 "ext-json": "*",
-                "illuminate/support": "^10.0|^11.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
                 "php": "^8.1",
                 "pragmarx/google2fa": "^8.0",
                 "symfony/console": "^6.0|^7.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^8.16|^9.0",
+                "orchestra/testbench": "^8.16|^9.0|^10.0",
                 "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^10.4"
+                "phpunit/phpunit": "^10.4|^11.3"
             },
             "type": "library",
             "extra": {
@@ -2500,7 +2500,7 @@
                 "issues": "https://github.com/laravel/fortify/issues",
                 "source": "https://github.com/laravel/fortify"
             },
-            "time": "2025-01-17T15:17:57+00:00"
+            "time": "2025-01-26T19:34:46+00:00"
         },
         {
             "name": "laravel/framework",
