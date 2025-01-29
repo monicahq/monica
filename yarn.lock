@@ -12,13 +12,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@alloc/quick-lru@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "@alloc/quick-lru@npm:5.2.0"
-  checksum: 10c0/7b878c48b9d25277d0e1a9b8b2f2312a314af806b4129dc902f2bc29ab09b58236e53964689feec187b28c80d2203aff03829754773a707a8a5987f1b7682d92
-  languageName: node
-  linkType: hard
-
 "@ant-design/colors@npm:^6.0.0":
   version: 6.0.0
   resolution: "@ant-design/colors@npm:6.0.0"
@@ -1082,31 +1075,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/postcss@npm:^4.0.0":
+"@tailwindcss/vite@npm:^4.0.0":
   version: 4.0.0
-  resolution: "@tailwindcss/postcss@npm:4.0.0"
+  resolution: "@tailwindcss/vite@npm:4.0.0"
   dependencies:
-    "@alloc/quick-lru": "npm:^5.2.0"
     "@tailwindcss/node": "npm:^4.0.0"
     "@tailwindcss/oxide": "npm:^4.0.0"
     lightningcss: "npm:^1.29.1"
-    postcss: "npm:^8.4.41"
     tailwindcss: "npm:4.0.0"
-  checksum: 10c0/a605393e9939026d8b723f676dfe5ba0bfcfc8dc3c3c26329890b0f9119b1f78ef9c8c6983bdeecbd5dc88bd2700a31f64ebdd386ac4c973ba789237baa8d55c
-  languageName: node
-  linkType: hard
-
-"@tailwindcss/typography@npm:^0.5.16":
-  version: 0.5.16
-  resolution: "@tailwindcss/typography@npm:0.5.16"
-  dependencies:
-    lodash.castarray: "npm:^4.4.0"
-    lodash.isplainobject: "npm:^4.0.6"
-    lodash.merge: "npm:^4.6.2"
-    postcss-selector-parser: "npm:6.0.10"
   peerDependencies:
-    tailwindcss: "*"
-  checksum: 10c0/35a7387876810c23c270a23848b920517229b707c8ead6a63c8bb7d6720a62f23728c3117f0a93b422a66d1e5ee9c7ad8a6c3f0fbf5255b535c0e4971ffa0158
+    vite: ^5.2.0 || ^6
+  checksum: 10c0/547eb16c6ef5d720bf962868bf163756b2a7583a0d26df609bc096e17a169963d98a2bd10408796b17dee575da89a1c0d4bc9764e0f3b10914f7ba2ba338fbe8
   languageName: node
   linkType: hard
 
@@ -2793,15 +2772,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-core-module@npm:^2.9.0":
-  version: 2.11.0
-  resolution: "is-core-module@npm:2.11.0"
-  dependencies:
-    has: "npm:^1.0.3"
-  checksum: 10c0/fd8f78ef4e243c295deafa809f89381d89aff5aaf38bb63266b17ee6e34b6a051baa5bdc2365456863336d56af6a59a4c1df1256b4eff7d6b4afac618586b004
-  languageName: node
-  linkType: hard
-
 "is-extglob@npm:^2.1.1":
   version: 2.1.1
   resolution: "is-extglob@npm:2.1.1"
@@ -3141,13 +3111,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.castarray@npm:^4.4.0":
-  version: 4.4.0
-  resolution: "lodash.castarray@npm:4.4.0"
-  checksum: 10c0/0bf523ad1596a5bf17869ba047235b4453eee927005013ae152345e2b291b81a02e7f2b7c38f876a1d16f73c34aa3c3241e965193e5b31595035bc8f330c4358
-  languageName: node
-  linkType: hard
-
 "lodash.clonedeep@npm:^4.5.0":
   version: 4.5.0
   resolution: "lodash.clonedeep@npm:4.5.0"
@@ -3159,13 +3122,6 @@ __metadata:
   version: 4.5.0
   resolution: "lodash.isequal@npm:4.5.0"
   checksum: 10c0/dfdb2356db19631a4b445d5f37868a095e2402292d59539a987f134a8778c62a2810c2452d11ae9e6dcac71fc9de40a6fedcb20e2952a15b431ad8b29e50e28f
-  languageName: node
-  linkType: hard
-
-"lodash.isplainobject@npm:^4.0.6":
-  version: 4.0.6
-  resolution: "lodash.isplainobject@npm:4.0.6"
-  checksum: 10c0/afd70b5c450d1e09f32a737bed06ff85b873ecd3d3d3400458725283e3f2e0bb6bf48e67dbe7a309eb371a822b16a26cca4a63c8c52db3fc7dc9d5f9dd324cbb
   languageName: node
   linkType: hard
 
@@ -3667,13 +3623,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-parse@npm:^1.0.7":
-  version: 1.0.7
-  resolution: "path-parse@npm:1.0.7"
-  checksum: 10c0/11ce261f9d294cc7a58d6a574b7f1b935842355ec66fba3c3fd79e0f036462eaf07d0aa95bb74ff432f9afef97ce1926c720988c6a7451d8a584930ae7de86e1
-  languageName: node
-  linkType: hard
-
 "php-parser@npm:3.1.3":
   version: 3.1.3
   resolution: "php-parser@npm:3.1.3"
@@ -3711,36 +3660,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pify@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "pify@npm:2.3.0"
-  checksum: 10c0/551ff8ab830b1052633f59cb8adc9ae8407a436e06b4a9718bcb27dc5844b83d535c3a8512b388b6062af65a98c49bdc0dd523d8b2617b188f7c8fee457158dc
-  languageName: node
-  linkType: hard
-
-"postcss-import@npm:^16.1.0":
-  version: 16.1.0
-  resolution: "postcss-import@npm:16.1.0"
-  dependencies:
-    postcss-value-parser: "npm:^4.0.0"
-    read-cache: "npm:^1.0.0"
-    resolve: "npm:^1.1.7"
-  peerDependencies:
-    postcss: ^8.0.0
-  checksum: 10c0/60e6499354079a3f46242b861412a40c54be7ab99f4ad55096a07ffe5e57fcc01c2c626b5d1fbc7a18cd23adc82b320c205059d0c7ab09e91baba8dc45c88e29
-  languageName: node
-  linkType: hard
-
-"postcss-selector-parser@npm:6.0.10":
-  version: 6.0.10
-  resolution: "postcss-selector-parser@npm:6.0.10"
-  dependencies:
-    cssesc: "npm:^3.0.0"
-    util-deprecate: "npm:^1.0.2"
-  checksum: 10c0/a0b27c5e3f7604c8dc7cd83f145fdd7b21448e0d86072da99e0d78e536ba27aa9db2d42024c50aa530408ee517c4bdc0260529e1afb56608f9a82e839c207e82
-  languageName: node
-  linkType: hard
-
 "postcss-selector-parser@npm:^6.0.15":
   version: 6.0.16
   resolution: "postcss-selector-parser@npm:6.0.16"
@@ -3748,13 +3667,6 @@ __metadata:
     cssesc: "npm:^3.0.0"
     util-deprecate: "npm:^1.0.2"
   checksum: 10c0/0e11657cb3181aaf9ff67c2e59427c4df496b4a1b6a17063fae579813f80af79d444bf38f82eeb8b15b4679653fd3089e66ef0283f9aab01874d885e6cf1d2cf
-  languageName: node
-  linkType: hard
-
-"postcss-value-parser@npm:^4.0.0":
-  version: 4.2.0
-  resolution: "postcss-value-parser@npm:4.2.0"
-  checksum: 10c0/f4142a4f56565f77c1831168e04e3effd9ffcc5aebaf0f538eee4b2d465adfd4b85a44257bb48418202a63806a7da7fe9f56c330aebb3cac898e46b4cbf49161
   languageName: node
   linkType: hard
 
@@ -3769,7 +3681,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.41, postcss@npm:^8.4.48, postcss@npm:^8.4.49, postcss@npm:^8.5.1":
+"postcss@npm:^8.4.48, postcss@npm:^8.4.49":
   version: 8.5.1
   resolution: "postcss@npm:8.5.1"
   dependencies:
@@ -3901,15 +3813,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"read-cache@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "read-cache@npm:1.0.0"
-  dependencies:
-    pify: "npm:^2.3.0"
-  checksum: 10c0/90cb2750213c7dd7c80cb420654344a311fdec12944e81eb912cd82f1bc92aea21885fa6ce442e3336d9fccd663b8a7a19c46d9698e6ca55620848ab932da814
-  languageName: node
-  linkType: hard
-
 "readable-stream@npm:^3.6.0":
   version: 3.6.2
   resolution: "readable-stream@npm:3.6.2"
@@ -3946,32 +3849,6 @@ __metadata:
   version: 4.0.0
   resolution: "resolve-from@npm:4.0.0"
   checksum: 10c0/8408eec31a3112ef96e3746c37be7d64020cda07c03a920f5024e77290a218ea758b26ca9529fd7b1ad283947f34b2291c1c0f6aa0ed34acfdda9c6014c8d190
-  languageName: node
-  linkType: hard
-
-"resolve@npm:^1.1.7":
-  version: 1.22.1
-  resolution: "resolve@npm:1.22.1"
-  dependencies:
-    is-core-module: "npm:^2.9.0"
-    path-parse: "npm:^1.0.7"
-    supports-preserve-symlinks-flag: "npm:^1.0.0"
-  bin:
-    resolve: bin/resolve
-  checksum: 10c0/6d58b1cb40f3fc80b9e45dd799d84cdc3829a993e4b9fa3b59d331e1dfacd0870e1851f4d0eb549d68c796e0b7087b43d1aec162653ccccff9e18191221a6e7d
-  languageName: node
-  linkType: hard
-
-"resolve@patch:resolve@npm%3A^1.1.7#optional!builtin<compat/resolve>":
-  version: 1.22.1
-  resolution: "resolve@patch:resolve@npm%3A1.22.1#optional!builtin<compat/resolve>::version=1.22.1&hash=c3c19d"
-  dependencies:
-    is-core-module: "npm:^2.9.0"
-    path-parse: "npm:^1.0.7"
-    supports-preserve-symlinks-flag: "npm:^1.0.0"
-  bin:
-    resolve: bin/resolve
-  checksum: 10c0/0d8ccceba5537769c42aa75e4aa75ae854aac866a11d7e9ffdb1663f0158ee646a0d48fc2818ed5e7fb364d64220a1fb9092a160e11e00cbdd5fbab39a13092c
   languageName: node
   linkType: hard
 
@@ -4092,8 +3969,7 @@ __metadata:
     "@sentry/vue": "npm:^8.51.0"
     "@simplewebauthn/browser": "npm:^13.1.0"
     "@tailwindcss/forms": "npm:^0.5.10"
-    "@tailwindcss/postcss": "npm:^4.0.0"
-    "@tailwindcss/typography": "npm:^0.5.16"
+    "@tailwindcss/vite": "npm:^4.0.0"
     "@vitejs/plugin-basic-ssl": "npm:^1.2.0"
     "@vitejs/plugin-vue": "npm:^5.2.1"
     ant-design-vue: "npm:^4.2.6"
@@ -4108,8 +3984,6 @@ __metadata:
     lint-staged: "npm:^15.4.3"
     lodash: "npm:^4.17.21"
     mitt: "npm:^3.0.1"
-    postcss: "npm:^8.5.1"
-    postcss-import: "npm:^16.1.0"
     prettier: "npm:^3.4.2"
     prettier-plugin-tailwindcss: "npm:^0.6.11"
     sass: "npm:^1.83.4"
@@ -4415,13 +4289,6 @@ __metadata:
   dependencies:
     has-flag: "npm:^4.0.0"
   checksum: 10c0/afb4c88521b8b136b5f5f95160c98dee7243dc79d5432db7efc27efb219385bbc7d9427398e43dd6cc730a0f87d5085ce1652af7efbe391327bc0a7d0f7fc124
-  languageName: node
-  linkType: hard
-
-"supports-preserve-symlinks-flag@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "supports-preserve-symlinks-flag@npm:1.0.0"
-  checksum: 10c0/6c4032340701a9950865f7ae8ef38578d8d7053f5e10518076e6554a9381fa91bd9c6850193695c141f32b21f979c985db07265a758867bac95de05f7d8aeb39
   languageName: node
   linkType: hard
 

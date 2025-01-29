@@ -2,8 +2,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --https",
+    "dev": "vite",
     "build": "vite build",
+    "preview": "vite preview",
     "lint": "eslint *.js resources",
     "format": "prettier --write '**/*.{js,vue,css,scss,json,yml,md}'",
     "postinstall": "husky install",
@@ -18,8 +19,6 @@
     "@sentry/vue": "^8.51.0",
     "@simplewebauthn/browser": "^13.1.0",
     "@tailwindcss/forms": "^0.5.10",
-    "@tailwindcss/postcss": "^4.0.0",
-    "@tailwindcss/typography": "^0.5.16",
     "@vitejs/plugin-basic-ssl": "^1.2.0",
     "@vitejs/plugin-vue": "^5.2.1",
     "ant-design-vue": "^4.2.6",
@@ -34,8 +33,6 @@
     "lint-staged": "^15.4.3",
     "lodash": "^4.17.21",
     "mitt": "^3.0.1",
-    "postcss": "^8.5.1",
-    "postcss-import": "^16.1.0",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "sass": "^1.83.4",
@@ -61,5 +58,8 @@
       "vendor/bin/pint"
     ]
   },
-  "packageManager": "yarn@4.5.0"
+  "packageManager": "yarn@4.5.0",
+  "dependencies": {
+    "@tailwindcss/vite": "^4.0.0"
+  }
 }
