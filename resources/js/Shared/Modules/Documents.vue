@@ -40,13 +40,13 @@
         <li
           v-for="document in localDocuments"
           :key="document.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <!-- document -->
           <div class="flex items-center justify-between px-3 py-2">
             <span class="flex items-center">
               <span class="max-w-sm truncate">{{ document.name }}</span>
 
-              <span class="ms-2 rounded border bg-blue-50 px-1 py-0 font-mono text-xs text-blue-500">
+              <span class="ms-2 rounded-sm border bg-blue-50 px-1 py-0 font-mono text-xs text-blue-500">
                 {{ document.size }}
               </span>
             </span>

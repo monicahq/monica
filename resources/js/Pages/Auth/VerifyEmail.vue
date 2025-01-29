@@ -41,7 +41,7 @@ const submit = () => {
           :href="route('logout')"
           method="post"
           as="button"
-          class="text-sm text-gray-600 underline hover:text-gray-900 dark:text-gray-400 hover:dark:text-gray-100">
+          class="text-sm text-gray-600 underline hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
           {{ $t('Log Out') }}
         </Link>
       </div>

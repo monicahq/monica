@@ -128,7 +128,7 @@ class VaultIndexViewHelper
     private static function getContacts(Vault $vault): Collection
     {
         return $vault->contacts
-            ->random(fn (Collection $items): int => min(5, count($items)))
+            ->random(fn (Collection $items): int => min(5, count($items))) // @phpstan-ignore-line
             ->map(fn (Contact $contact) => [
                 'id' => $contact->id,
                 'name' => $contact->name,

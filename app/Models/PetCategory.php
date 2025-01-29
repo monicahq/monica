@@ -16,7 +16,7 @@ class PetCategory extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'account_id',
@@ -26,6 +26,8 @@ class PetCategory extends Model
 
     /**
      * Get the account associated with the pet category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {

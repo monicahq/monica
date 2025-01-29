@@ -15,7 +15,7 @@ class Tag extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'vault_id',
@@ -25,6 +25,8 @@ class Tag extends Model
 
     /**
      * Get the vault associated with the journal tag.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {
@@ -33,6 +35,8 @@ class Tag extends Model
 
     /**
      * Get the posts associated with the journal tag.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Post, $this>
      */
     public function posts(): BelongsToMany
     {
@@ -41,6 +45,8 @@ class Tag extends Model
 
     /**
      * Get the journal tag's feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne<\App\Models\ContactFeedItem, $this>
      */
     public function feedItem(): MorphOne
     {

@@ -152,7 +152,7 @@ const destroy = (metric) => {
             <li
               v-for="metric in localMetrics"
               :key="metric.id"
-              class="flex items-center justify-between border-b border-gray-200 px-5 py-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+              class="flex items-center justify-between border-b border-gray-200 px-5 py-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
               <span>{{ metric.label }}</span>
 
               <!-- actions -->

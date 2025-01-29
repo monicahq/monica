@@ -24,7 +24,7 @@ class UserNotificationChannel extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'user_id',
@@ -50,6 +50,8 @@ class UserNotificationChannel extends Model
 
     /**
      * Get the user associated with the user notification channel.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
      */
     public function user(): BelongsTo
     {
@@ -59,6 +61,8 @@ class UserNotificationChannel extends Model
     /**
      * Get the user notification sent records associated with the user
      * notification channel.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\UserNotificationSent, $this>
      */
     public function userNotificationSent(): HasMany
     {
@@ -67,6 +71,8 @@ class UserNotificationChannel extends Model
 
     /**
      * Get the contact reminder records associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\ContactReminder, $this>
      */
     public function contactReminders(): BelongsToMany
     {

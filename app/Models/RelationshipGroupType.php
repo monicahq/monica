@@ -24,7 +24,7 @@ class RelationshipGroupType extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'account_id',
@@ -45,6 +45,8 @@ class RelationshipGroupType extends Model
 
     /**
      * Get the account associated with the relationship type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {
@@ -53,6 +55,8 @@ class RelationshipGroupType extends Model
 
     /**
      * Get the account associated with the relationship type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\RelationshipType, $this>
      */
     public function types(): HasMany
     {

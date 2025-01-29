@@ -44,7 +44,7 @@ class GetEtag extends BaseService implements ServiceInterface
         /** @var VCardResource */
         $entry = $data['entry'];
 
-        if ($entry->vault_id !== $this->vault->id) {
+        if ($entry->vault_id != $this->vault->id) {
             throw new ModelNotFoundException;
         }
 

@@ -15,7 +15,7 @@
     <!-- add modal -->
     <form
       v-if="addEmailModalShown"
-      class="item-list mb-6 rounded-lg border border-b border-gray-200 bg-gray-50 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:bg-slate-900 hover:dark:bg-slate-800"
+      class="item-list mb-6 rounded-lg border border-b border-gray-200 bg-gray-50 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:bg-slate-900 dark:hover:bg-slate-800"
       @submit.prevent="store()">
       <div class="border-b border-gray-200 p-5 dark:border-gray-700">
         <errors :errors="form.errors" />
@@ -88,7 +88,7 @@
       <li
         v-for="email in localEmails"
         :key="email.id"
-        class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+        class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
         <div class="flex items-center">
           <a-tooltip v-if="email.verified_at" placement="topLeft" :title="$t('Verified')" arrow-point-at-center>
             <svg

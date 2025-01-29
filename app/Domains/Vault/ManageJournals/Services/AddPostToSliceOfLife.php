@@ -11,8 +11,6 @@ class AddPostToSliceOfLife extends BaseService implements ServiceInterface
 {
     private Post $post;
 
-    private ?SliceOfLife $slice;
-
     private array $data;
 
     /**

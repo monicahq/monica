@@ -15,7 +15,7 @@ class UserNotificationSent extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'user_notification_channel_id',
@@ -36,6 +36,8 @@ class UserNotificationSent extends Model
 
     /**
      * Get the user notification channel associated with the user notification sent.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\UserNotificationChannel, $this>
      */
     public function notificationChannel(): BelongsTo
     {

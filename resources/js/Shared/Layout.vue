@@ -6,7 +6,7 @@
         class="hidden max-w-8xl mx-auto sm:flex h-10 items-center justify-between border-b bg-gray-50 px-3 dark:border-slate-600 dark:bg-gray-800 dark:text-slate-200 sm:px-6">
         <div
           class="dark:highlight-white/5 items-center rounded-lg border border-gray-200 bg-white px-2 py-1 text-sm dark:border-0 dark:border-gray-700 dark:bg-gray-400/20 dark:bg-gray-900 sm:flex">
-          <InertiaLink :href="layoutData.url.vaults" class="flex-shrink-0 dark:text-sky-400">
+          <InertiaLink :href="layoutData.url.vaults" class="shrink-0 dark:text-sky-400">
             {{ layoutData.user.name }}
           </InertiaLink>
 
@@ -24,7 +24,7 @@
           <SearchIcon />
           <input
             type="text"
-            class="dark:highlight-white/5 block w-64 rounded-md border border-gray-300 px-2 py-1 text-center placeholder:text-gray-600 hover:cursor-pointer focus:border-indigo-500 focus:ring-indigo-500 dark:border-0 dark:border-gray-700 dark:bg-slate-900 placeholder:dark:text-gray-400 hover:dark:bg-slate-700 sm:text-sm"
+            class="dark:highlight-white/5 block w-64 rounded-md border border-gray-300 px-2 py-1 text-center placeholder:text-gray-600 hover:cursor-pointer focus:border-indigo-500 focus:ring-indigo-500 dark:border-0 dark:border-gray-700 dark:bg-slate-900 dark:placeholder:text-gray-400 dark:hover:bg-slate-700 sm:text-sm"
             :placeholder="$t('Search something')"
             @focus="goToSearchPage" />
         </div>
@@ -41,7 +41,7 @@
                   class="peer hidden"
                   @click="toggleStyle" />
                 <div
-                  class="peer me-2 h-4 w-7 rounded-full bg-gray-200 after:absolute after:left-[2px] after:right-[14px] after:top-[2px] after:h-3 after:w-3 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
+                  class="peer me-2 h-4 w-7 rounded-full bg-gray-200 after:absolute after:left-[2px] after:right-[14px] after:top-[2px] after:h-3 after:w-3 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-hidden peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
                 <DarkModeIcon :checked="style.checked" />
               </label>
             </li>
@@ -70,7 +70,7 @@
         <div
           class="flex mb-2 dark:highlight-white/5 items-center justify-between text-sm dark:border-0 dark:border-gray-700 dark:bg-gray-400/20 dark:bg-gray-900">
           <div class="flex items-center border border-gray-200 rounded-lg bg-white px-2 py-1">
-            <InertiaLink :href="layoutData.url.vaults" class="flex-shrink-0 dark:text-sky-400">
+            <InertiaLink :href="layoutData.url.vaults" class="shrink-0 dark:text-sky-400">
               {{ layoutData.user.name }}
             </InertiaLink>
 
@@ -152,7 +152,7 @@
           </svg>
           <input
             type="text"
-            class="dark:highlight-white/5 block w-full rounded-md border border-gray-300 px-2 py-1 text-center placeholder:text-gray-600 hover:cursor-pointer focus:border-indigo-500 focus:ring-indigo-500 dark:border-0 dark:border-gray-700 dark:bg-slate-900 placeholder:dark:text-gray-400 hover:dark:bg-slate-700 sm:text-sm"
+            class="dark:highlight-white/5 block w-full rounded-md border border-gray-300 px-2 py-1 text-center placeholder:text-gray-600 hover:cursor-pointer focus:border-indigo-500 focus:ring-indigo-500 dark:border-0 dark:border-gray-700 dark:bg-slate-900 dark:placeholder:text-gray-400 dark:hover:bg-slate-700 sm:text-sm"
             :placeholder="$t('Search something')"
             @focus="goToSearchPage" />
         </div>
@@ -169,7 +169,7 @@
                   'bg-blue-700 text-white dark:bg-blue-300 dark:text-gray-900':
                     $page.component === 'Vault/Dashboard/Index',
                 }"
-                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
+                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
                 {{ $t('Dashboard') }}
               </InertiaLink>
             </li>
@@ -177,7 +177,7 @@
               <InertiaLink
                 :href="layoutData.vault.url.contacts"
                 :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Contact') }"
-                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
+                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
                 {{ $t('Contacts') }}
               </InertiaLink>
             </li>
@@ -186,7 +186,7 @@
                 :href="layoutData.vault.url.calendar"
                 v-if="layoutData.vault.visibility.show_calendar_tab"
                 :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Calendar') }"
-                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
+                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
                 {{ $t('Calendar') }}
               </InertiaLink>
             </li>
@@ -195,7 +195,7 @@
                 :href="layoutData.vault.url.journals"
                 v-if="layoutData.vault.visibility.show_journal_tab"
                 :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Journal') }"
-                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
+                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
                 {{ $t('Journals') }}
               </InertiaLink>
             </li>
@@ -204,7 +204,7 @@
                 :href="layoutData.vault.url.groups"
                 v-if="layoutData.vault.visibility.show_group_tab"
                 :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Group') }"
-                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
+                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
                 {{ $t('Groups') }}
               </InertiaLink>
             </li>
@@ -213,7 +213,7 @@
                 :href="layoutData.vault.url.companies"
                 v-if="layoutData.vault.visibility.show_companies_tab"
                 :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Companies') }"
-                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
+                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
                 {{ $t('Companies') }}
               </InertiaLink>
             </li>
@@ -225,7 +225,7 @@
                   'bg-blue-700 text-white dark:bg-blue-300 dark:text-gray-900':
                     $page.component.startsWith('Vault/Dashboard/Task'),
                 }"
-                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
+                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
                 {{ $t('Tasks') }}
               </InertiaLink>
             </li>
@@ -237,7 +237,7 @@
                   'bg-blue-700 text-white dark:bg-blue-300 dark:text-gray-900':
                     $page.component.startsWith('Vault/Reports'),
                 }"
-                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
+                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
                 {{ $t('Reports') }}
               </InertiaLink>
             </li>
@@ -246,7 +246,7 @@
                 :href="layoutData.vault.url.files"
                 v-if="layoutData.vault.visibility.show_files_tab"
                 :class="{ 'bg-blue-700 text-white': $page.component.startsWith('Vault/Files') }"
-                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 hover:dark:text-slate-300">
+                class="me-2 rounded-md px-2 py-1 hover:bg-gray-700 hover:text-white dark:bg-sky-400/20 dark:text-slate-400 dark:hover:text-slate-300">
                 {{ $t('Files') }}
               </InertiaLink>
             </li>
@@ -269,7 +269,7 @@
           <select
             v-model="selectedOption"
             @change="navigateToSelected"
-            class="w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+            class="w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-blue-500 focus:outline-hidden focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
             <option value="" disabled>{{ $t('Select a page') }}</option>
             <option :value="layoutData.vault.url.dashboard" :selected="$page.component.startsWith('Vault/Dashboard')">
               {{ $t('Dashboard') }}

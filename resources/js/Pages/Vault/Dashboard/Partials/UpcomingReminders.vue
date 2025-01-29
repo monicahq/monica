@@ -4,7 +4,7 @@
       <span class="relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-400 hover:dark:text-gray-400"
+          class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-400"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor">
@@ -25,7 +25,7 @@
         <li
           v-for="reminder in data.reminders"
           :key="reminder.id"
-          class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800 hover:dark:bg-slate-900">
+          class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800 dark:hover:bg-slate-900">
           <div class="flex items-center">
             <p class="me-3 text-xs text-gray-400">
               {{ reminder.scheduled_at }}
@@ -58,7 +58,7 @@
     <div v-if="data.reminders.length > 0" class="text-center">
       <InertiaLink
         :href="data.url.index"
-        class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
+        class="rounded-sm border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
         {{ $t('View all') }}
       </InertiaLink>
     </div>

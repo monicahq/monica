@@ -49,7 +49,7 @@ defineProps({
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-700 hover:dark:text-gray-400">
+                class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-700 dark:hover:text-gray-400">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"

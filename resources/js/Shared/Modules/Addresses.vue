@@ -212,7 +212,7 @@ const destroy = () => {
             <li
               v-for="address in props.data.addresses_in_vault"
               :key="address.id"
-              class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+              class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
               <!-- detail of the address type -->
               <div class="flex items-center">
                 <input
@@ -334,7 +334,7 @@ const destroy = () => {
               v-model="form.is_past_address"
               :name="form.is_past_address"
               type="checkbox"
-              class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600" />
+              class="focus:ring-3 relative h-4 w-4 rounded-sm border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
             <label :for="form.is_past_address" class="ms-2 cursor-pointer text-gray-900 dark:text-gray-100">
               {{ $t('This address is not active anymore') }}
             </label>
@@ -354,7 +354,7 @@ const destroy = () => {
         <div
           v-for="address in localActiveAddresses"
           :key="address.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <div v-if="address.id !== editedAddressId" class="flex items-center justify-between p-3">
             <!-- address detail -->
             <div>
@@ -495,7 +495,7 @@ const destroy = () => {
                   v-model="form.is_past_address"
                   :name="form.is_past_address"
                   type="checkbox"
-                  class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600" />
+                  class="focus:ring-3 relative h-4 w-4 rounded-sm border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
                 <label :for="form.is_past_address" class="ms-2 cursor-pointer text-gray-900 dark:text-gray-100">
                   {{ $t('This address is not active anymore') }}
                 </label>
@@ -535,7 +535,7 @@ const destroy = () => {
         <div
           v-for="address in localInactiveAddresses"
           :key="address.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <div v-if="address.id !== editedAddressId" class="flex items-center justify-between p-3">
             <!-- address detail -->
             <div>
@@ -676,7 +676,7 @@ const destroy = () => {
                   v-model="form.is_past_address"
                   name="is_past_address"
                   type="checkbox"
-                  class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600" />
+                  class="focus:ring-3 relative h-4 w-4 rounded-sm border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />
                 <label for="is_past_address" class="ms-2 cursor-pointer text-gray-900 dark:text-gray-100">
                   {{ $t('This address is not active anymore') }}
                 </label>
