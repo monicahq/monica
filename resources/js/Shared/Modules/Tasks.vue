@@ -117,7 +117,7 @@ const destroy = (task) => {
       <li
         v-for="task in localTasks"
         :key="task.id"
-        class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+        class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
         <div v-if="editedTaskId !== task.id" class="flex items-center justify-between p-3">
           <div class="flex items-center">
             <input
@@ -125,7 +125,7 @@ const destroy = (task) => {
               v-model="task.completed"
               :name="task.id"
               type="checkbox"
-              class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
+              class="focus:ring-3 relative h-4 w-4 rounded-sm border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
               @change="toggle(task)" />
             <label :for="task.id" class="ms-2 flex cursor-pointer text-gray-900 dark:text-gray-50">
               {{ task.label }}
@@ -182,7 +182,7 @@ const destroy = (task) => {
                 v-model="task.completed"
                 :name="task.id"
                 type="checkbox"
-                class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 focus:dark:ring-blue-600"
+                class="focus:ring-3 relative h-4 w-4 rounded-sm border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                 @change="toggle(task)" />
 
               <label :for="task.id" class="ms-2 flex cursor-pointer items-center text-gray-900 dark:text-gray-50">

@@ -14,7 +14,7 @@ class SliceOfLife extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'journal_id',
@@ -25,6 +25,8 @@ class SliceOfLife extends Model
 
     /**
      * Get the journal associated with the slice of life.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Journal, $this>
      */
     public function journal(): BelongsTo
     {
@@ -33,6 +35,8 @@ class SliceOfLife extends Model
 
     /**
      * Get the posts associated with the slice of life.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Post, $this>
      */
     public function posts(): HasMany
     {
@@ -42,6 +46,8 @@ class SliceOfLife extends Model
     /**
      * Get the file associated with the slice of life.
      * If it exists, it's the header image.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\File, $this>
      */
     public function file(): BelongsTo
     {

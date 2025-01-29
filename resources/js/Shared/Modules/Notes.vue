@@ -62,7 +62,7 @@
         <!-- cta to add a title -->
         <span
           v-if="!titleFieldShown"
-          class="me-2 inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300 dark:border-gray-700 dark:bg-slate-800 hover:dark:bg-slate-700"
+          class="me-2 inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300 dark:border-gray-700 dark:bg-slate-800 dark:hover:bg-slate-700"
           @click="showTitleField">
           {{ $t('+ add title') }}
         </span>
@@ -70,7 +70,7 @@
         <!-- cta to add emotion -->
         <span
           v-if="!emotionFieldShown"
-          class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300 dark:border-gray-700 dark:bg-slate-800 hover:dark:bg-slate-700"
+          class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300 dark:border-gray-700 dark:bg-slate-800 dark:hover:bg-slate-700"
           @click="showEmotionField">
           {{ $t('+ add emotion') }}
         </span>
@@ -87,7 +87,7 @@
       <div
         v-for="note in localNotes"
         :key="note.id"
-        class="mb-4 rounded border border-gray-200 last:mb-0 dark:border-gray-700 dark:bg-gray-900">
+        class="mb-4 rounded-sm border border-gray-200 last:mb-0 dark:border-gray-700 dark:bg-gray-900">
         <!-- body of the note, if not being edited -->
         <div v-if="editedNoteId !== note.id">
           <div
@@ -110,7 +110,7 @@
 
           <!-- details -->
           <div
-            class="flex justify-between border-t border-gray-200 px-3 py-1 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50 dark:border-gray-700 dark:text-gray-400 hover:dark:bg-slate-900">
+            class="flex justify-between border-t border-gray-200 px-3 py-1 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-slate-900">
             <div class="flex items-center">
               <!-- emotion -->
               <div v-if="note.emotion" class="relative me-3 inline">
@@ -196,7 +196,7 @@
       <div v-if="moduleMode" class="text-center">
         <InertiaLink
           :href="data.url.index"
-          class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
+          class="rounded-sm border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
           {{ $t('View all') }}
         </InertiaLink>
       </div>

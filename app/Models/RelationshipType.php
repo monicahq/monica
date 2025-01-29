@@ -24,7 +24,7 @@ class RelationshipType extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'relationship_group_type_id',
@@ -47,6 +47,8 @@ class RelationshipType extends Model
 
     /**
      * Get the group type associated with the relationship type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\RelationshipGroupType, $this>
      */
     public function groupType(): BelongsTo
     {

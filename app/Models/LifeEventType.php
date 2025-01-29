@@ -17,7 +17,7 @@ class LifeEventType extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'life_event_category_id',
@@ -29,6 +29,8 @@ class LifeEventType extends Model
 
     /**
      * Get the life event category associated with the life event type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\LifeEventCategory, $this>
      */
     public function lifeEventCategory(): BelongsTo
     {
@@ -37,6 +39,8 @@ class LifeEventType extends Model
 
     /**
      * Get the life events associated with the life event type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\LifeEvent, $this>
      */
     public function lifeEvents(): HasMany
     {

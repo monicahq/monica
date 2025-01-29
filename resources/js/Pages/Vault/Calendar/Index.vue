@@ -39,10 +39,10 @@ const get = (day) => {
 
               <!-- month next/previous -->
               <div class="flex justify-center">
-                <div class="inline-flex rounded-md shadow-sm">
+                <div class="inline-flex rounded-md shadow-xs">
                   <Link
                     :href="data.url.previous"
-                    class="inline-flex items-center rounded-s-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                    class="inline-flex items-center rounded-s-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -58,7 +58,7 @@ const get = (day) => {
 
                   <Link
                     :href="data.url.next"
-                    class="inline-flex items-center rounded-e-md border-y border-e border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                    class="inline-flex items-center rounded-e-md border-y border-e border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
                     {{ data.next_month }}
 
                     <svg

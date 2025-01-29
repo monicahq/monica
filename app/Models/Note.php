@@ -18,7 +18,7 @@ class Note extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'contact_id',
@@ -56,6 +56,8 @@ class Note extends Model
 
     /**
      * Get the contact associated with the note.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
      */
     public function contact(): BelongsTo
     {
@@ -64,6 +66,8 @@ class Note extends Model
 
     /**
      * Get the author associated with the note.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
      */
     public function author(): BelongsTo
     {
@@ -72,6 +76,8 @@ class Note extends Model
 
     /**
      * Get the emotion associated with the note.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Emotion, $this>
      */
     public function emotion(): BelongsTo
     {
@@ -80,6 +86,8 @@ class Note extends Model
 
     /**
      * Get the note's feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne<\App\Models\ContactFeedItem, $this>
      */
     public function feedItem(): MorphOne
     {

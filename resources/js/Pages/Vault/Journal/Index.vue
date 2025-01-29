@@ -33,7 +33,7 @@ defineProps({
             <li
               v-for="journal in data.journals"
               :key="journal.id"
-              class="border-b border-gray-200 px-5 py-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800 sm:flex">
+              class="border-b border-gray-200 px-5 py-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800 sm:flex">
               <!-- name and date -->
               <div class="sm:me-8">
                 <Link :href="journal.url.show" class="mb-1 block font-semibold text-blue-500 hover:underline">{{

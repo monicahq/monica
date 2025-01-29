@@ -16,7 +16,7 @@ class GroupTypeRole extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'group_type_id',
@@ -27,6 +27,8 @@ class GroupTypeRole extends Model
 
     /**
      * Get the group type record associated with the group type role.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\GroupType, $this>
      */
     public function groupType(): BelongsTo
     {

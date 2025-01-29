@@ -302,7 +302,7 @@ const navigateToSelected = () => {
 
             <!-- family summary -->
             <div v-if="data.group_summary_information.length > 0">
-              <div class="mb-6 flex rounded border border-gray-200 p-3 dark:border-gray-700">
+              <div class="mb-6 flex rounded-sm border border-gray-200 p-3 dark:border-gray-700">
                 <img src="/img/group.svg" class="me-2 h-6 w-6" />
                 <ul>
                   <li class="me-2 inline">{{ $t('Part of') }}</li>
@@ -327,10 +327,10 @@ const navigateToSelected = () => {
                     :class="
                       page.selected
                         ? 'border-orange-500 hover:border-orange-500'
-                        : 'border-transparent hover:border-gray-200 hover:dark:border-gray-700'
+                        : 'border-transparent hover:border-gray-200 dark:hover:border-gray-700'
                     "
                     class="inline-block border-b-2 px-2 pb-2">
-                    <span class="mb-0 block rounded-sm px-3 py-1 hover:bg-gray-100 hover:dark:bg-gray-900">
+                    <span class="mb-0 block rounded-xs px-3 py-1 hover:bg-gray-100 dark:hover:bg-gray-900">
                       {{ page.name }}
                     </span>
                   </Link>
@@ -344,7 +344,7 @@ const navigateToSelected = () => {
               <select
                 v-model="selectedOption"
                 @change="navigateToSelected"
-                class="w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                class="w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-blue-500 focus:outline-hidden focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
                 <option v-for="page in data.template_pages" :key="page.id" :value="page.url.show">
                   {{ page.name }}
                 </option>

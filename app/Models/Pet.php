@@ -16,7 +16,7 @@ class Pet extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'pet_category_id',
@@ -26,6 +26,8 @@ class Pet extends Model
 
     /**
      * Get the pet category associated with the pet.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\PetCategory, $this>
      */
     public function petCategory(): BelongsTo
     {
@@ -34,6 +36,8 @@ class Pet extends Model
 
     /**
      * Get the contact associated with the pet.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
      */
     public function contact(): BelongsTo
     {
@@ -42,6 +46,8 @@ class Pet extends Model
 
     /**
      * Get the pet's feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne<\App\Models\ContactFeedItem, $this>
      */
     public function feedItem(): MorphOne
     {

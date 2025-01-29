@@ -38,7 +38,7 @@ class Contact extends VCardResource
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'vault_id',
@@ -138,6 +138,8 @@ class Contact extends VCardResource
 
     /**
      * Get the vault associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {
@@ -146,6 +148,8 @@ class Contact extends VCardResource
 
     /**
      * Get the gender associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Gender, $this>
      */
     public function gender(): BelongsTo
     {
@@ -154,6 +158,8 @@ class Contact extends VCardResource
 
     /**
      * Get the pronoun associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Pronoun, $this>
      */
     public function pronoun(): BelongsTo
     {
@@ -162,6 +168,8 @@ class Contact extends VCardResource
 
     /**
      * Get the template associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Template, $this>
      */
     public function template(): BelongsTo
     {
@@ -170,6 +178,8 @@ class Contact extends VCardResource
 
     /**
      * Get the relationships associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Contact, $this>
      */
     public function relationships(): BelongsToMany
     {
@@ -178,6 +188,8 @@ class Contact extends VCardResource
 
     /**
      * Get the labels associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Label, $this>
      */
     public function labels(): BelongsToMany
     {
@@ -186,6 +198,8 @@ class Contact extends VCardResource
 
     /**
      * Get the contact information records associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ContactInformation, $this>
      */
     public function contactInformations(): HasMany
     {
@@ -194,6 +208,8 @@ class Contact extends VCardResource
 
     /**
      * Get the note records associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Note, $this>
      */
     public function notes(): HasMany
     {
@@ -202,6 +218,8 @@ class Contact extends VCardResource
 
     /**
      * Get the date records associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ContactImportantDate, $this>
      */
     public function importantDates(): HasMany
     {
@@ -210,6 +228,8 @@ class Contact extends VCardResource
 
     /**
      * Get the contact reminders records associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ContactReminder, $this>
      */
     public function reminders(): HasMany
     {
@@ -242,6 +262,8 @@ class Contact extends VCardResource
 
     /**
      * Get the company associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Company, $this>
      */
     public function company(): BelongsTo
     {
@@ -250,6 +272,8 @@ class Contact extends VCardResource
 
     /**
      * Get the tasks associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ContactTask, $this>
      */
     public function tasks(): HasMany
     {
@@ -258,6 +282,8 @@ class Contact extends VCardResource
 
     /**
      * Get the calls associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Call, $this>
      */
     public function calls(): HasMany
     {
@@ -266,6 +292,8 @@ class Contact extends VCardResource
 
     /**
      * Get the pets associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Pet, $this>
      */
     public function pets(): HasMany
     {
@@ -274,6 +302,8 @@ class Contact extends VCardResource
 
     /**
      * Get the goals associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Goal, $this>
      */
     public function goals(): HasMany
     {
@@ -282,6 +312,8 @@ class Contact extends VCardResource
 
     /**
      * Get the files associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\App\Models\File, $this>
      */
     public function files(): MorphMany
     {
@@ -291,6 +323,8 @@ class Contact extends VCardResource
     /**
      * Get the file associated with the contact.
      * If it exists, it's the avatar.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\File, $this>
      */
     public function file(): BelongsTo
     {
@@ -299,6 +333,8 @@ class Contact extends VCardResource
 
     /**
      * Get the groups associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Group, $this>
      */
     public function groups(): BelongsToMany
     {
@@ -307,6 +343,8 @@ class Contact extends VCardResource
 
     /**
      * Get the posts associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Post, $this>
      */
     public function posts(): BelongsToMany
     {
@@ -315,6 +353,8 @@ class Contact extends VCardResource
 
     /**
      * Get the religion associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Religion, $this>
      */
     public function religion(): BelongsTo
     {
@@ -323,6 +363,8 @@ class Contact extends VCardResource
 
     /**
      * Get the life events associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\LifeEvent, $this>
      */
     public function lifeEvents(): BelongsToMany
     {
@@ -331,6 +373,8 @@ class Contact extends VCardResource
 
     /**
      * Get the timeline events associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\TimelineEvent, $this>
      */
     public function timelineEvents(): BelongsToMany
     {
@@ -339,6 +383,8 @@ class Contact extends VCardResource
 
     /**
      * Get the mood tracking events associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\MoodTrackingEvent, $this>
      */
     public function moodTrackingEvents(): HasMany
     {
@@ -347,6 +393,8 @@ class Contact extends VCardResource
 
     /**
      * Get the addresses associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Address, $this>
      */
     public function addresses(): BelongsToMany
     {
@@ -357,6 +405,8 @@ class Contact extends VCardResource
 
     /**
      * Get the quick facts associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\QuickFact, $this>
      */
     public function quickFacts(): HasMany
     {
@@ -365,6 +415,8 @@ class Contact extends VCardResource
 
     /**
      * Get the life metrics associated with the contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\LifeMetric, $this>
      */
     public function lifeMetrics(): BelongsToMany
     {

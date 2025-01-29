@@ -51,7 +51,7 @@ const submit = () => {
 
       <div
         v-if="hasActions"
-        class="flex items-center justify-end bg-gray-50 px-4 py-3 text-right shadow dark:bg-gray-900 dark:shadow-gray-700 sm:rounded-bl-md sm:rounded-br-md sm:px-6">
+        class="flex items-center justify-end bg-gray-50 px-4 py-3 text-right shadow-sm dark:bg-gray-900 dark:shadow-gray-700 sm:rounded-bl-md sm:rounded-br-md sm:px-6">
         <slot name="actions" />
       </div>
     </form>
