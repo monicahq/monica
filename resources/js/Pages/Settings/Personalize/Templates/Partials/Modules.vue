@@ -28,7 +28,7 @@
       <li
         v-for="module in localAllModules"
         :key="module.id"
-        class="item-list flex items-center justify-between border-b border-gray-200 py-2 pe-5 ps-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+        class="item-list flex items-center justify-between border-b border-gray-200 py-2 pe-5 ps-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
         <span>{{ module.name }}</span>
         <span
           v-if="!module.already_used"
@@ -54,7 +54,7 @@
         @change="updatePosition">
         <template #item="{ element }">
           <div
-            class="item-list flex items-center border-b border-gray-200 py-2 pe-5 ps-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+            class="item-list flex items-center border-b border-gray-200 py-2 pe-5 ps-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
             <!-- anchor to move module -->
             <div class="me-2">
               <svg

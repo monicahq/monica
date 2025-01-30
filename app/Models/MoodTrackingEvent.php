@@ -16,7 +16,7 @@ class MoodTrackingEvent extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'contact_id',
@@ -37,6 +37,8 @@ class MoodTrackingEvent extends Model
 
     /**
      * Get the contact associated with the mood tracking event.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
      */
     public function contact(): BelongsTo
     {
@@ -45,6 +47,8 @@ class MoodTrackingEvent extends Model
 
     /**
      * Get the mood tracking parameter associated with the mood tracking event.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\MoodTrackingParameter, $this>
      */
     public function moodTrackingParameter(): BelongsTo
     {
@@ -53,6 +57,8 @@ class MoodTrackingEvent extends Model
 
     /**
      * Get the mood tracking event's feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne<\App\Models\ContactFeedItem, $this>
      */
     public function feedItem(): MorphOne
     {

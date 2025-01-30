@@ -50,10 +50,8 @@ ln -s $ROOT/eslint.config.js $package/
 ln -s $ROOT/jsconfig.json $package/
 ln -s $ROOT/LICENSE.md $package/
 ln -s $ROOT/package.json $package/
-ln -s $ROOT/postcss.config.js $package/
 ln -s $ROOT/README.md $package/
 ln -s $ROOT/SECURITY.md $package/
-ln -s $ROOT/tailwind.config.js $package/
 ln -s $ROOT/vite.config.js $package/
 ln -s $ROOT/yarn.lock $package/
 ln -s $ROOT/.devcontainer $package/

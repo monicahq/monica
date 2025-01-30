@@ -136,7 +136,7 @@ const destroy = () => {
     <!-- add modal -->
     <form
       v-if="setupTelegramModalShown"
-      class="item-list mb-6 rounded-lg border border-b border-gray-200 bg-gray-50 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:bg-slate-900 hover:dark:bg-slate-800"
+      class="item-list mb-6 rounded-lg border border-b border-gray-200 bg-gray-50 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:bg-slate-900 dark:hover:bg-slate-800"
       @submit.prevent="store()">
       <div class="border-b border-gray-200 p-5 dark:border-gray-700">
         <errors :errors="form.errors" />
@@ -199,7 +199,7 @@ const destroy = () => {
     <div v-if="envVariableSet">
       <div v-if="localTelegram">
         <div
-          class="flex items-center justify-between rounded-lg border border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          class="flex items-center justify-between rounded-lg border border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <div class="flex items-center">
             <a-tooltip v-if="localTelegram.active" placement="topLeft" title="Verified" arrow-point-at-center>
               <svg

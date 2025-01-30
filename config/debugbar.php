@@ -207,7 +207,7 @@ return [
         ],
         'views' => [
             'timeline' => false,  // Add the views to the timeline (Experimental)
-            'data' => false,    //Note: Can slow down the application, because the data can be quite large..
+            'data' => false,    // Note: Can slow down the application, because the data can be quite large..
             'exclude_paths' => [], // Add the paths which you don't want to appear in the views
         ],
         'route' => [

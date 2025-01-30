@@ -188,7 +188,7 @@ const destroy = (reminder) => {
               :is-dark="isDark()">
               <template #default="{ inputValue, inputEvents }">
                 <input
-                  class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                  class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
                   :value="inputValue"
                   v-on="inputEvents" />
               </template>
@@ -304,7 +304,7 @@ const destroy = (reminder) => {
         <li
           v-for="reminder in localReminders"
           :key="reminder.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <!-- reminder -->
           <div class="flex items-center justify-between px-3 py-2">
             <div class="flex items-center">
@@ -384,7 +384,7 @@ const destroy = (reminder) => {
                     :is-dark="isDark()">
                     <template #default="{ inputValue, inputEvents }">
                       <input
-                        class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                        class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
                         :value="inputValue"
                         v-on="inputEvents" />
                     </template>

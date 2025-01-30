@@ -67,7 +67,7 @@
         <li
           v-for="info in localContactInformation"
           :key="info.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <!-- contact information -->
           <div v-if="editedContactInformationId !== info.id" class="flex items-center justify-between px-3 py-2">
             <div>

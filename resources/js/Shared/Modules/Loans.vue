@@ -263,7 +263,7 @@ const toggle = (loan) => {
               :is-dark="isDark()">
               <template #default="{ inputValue, inputEvents }">
                 <input
-                  class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                  class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
                   :value="inputValue"
                   v-on="inputEvents" />
               </template>
@@ -333,7 +333,7 @@ const toggle = (loan) => {
 
         <div
           v-if="editedLoanId !== loan.id"
-          class="item-list w-full rounded-lg border border-gray-200 bg-white hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
+          class="item-list w-full rounded-lg border border-gray-200 bg-white hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-slate-800">
           <div class="border-b border-gray-200 px-3 py-2 dark:border-gray-700">
             <div class="flex items-center justify-between">
               <div>
@@ -479,7 +479,7 @@ const toggle = (loan) => {
                 :is-dark="isDark()">
                 <template #default="{ inputValue, inputEvents }">
                   <input
-                    class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                    class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
                     :value="inputValue"
                     v-on="inputEvents" />
                 </template>

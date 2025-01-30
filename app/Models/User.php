@@ -79,7 +79,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'account_id',
@@ -105,7 +105,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $hidden = [
         'password',
@@ -117,7 +117,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * The attributes that should be visible in serialization.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $visible = [
         'name',
@@ -134,7 +134,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * The accessors to append to the model's array form.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $appends = [
         'name',
@@ -169,6 +169,8 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
 
     /**
      * Get the account record associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {
@@ -177,6 +179,8 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
 
     /**
      * Get the vault records associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Vault, $this>
      */
     public function vaults(): BelongsToMany
     {
@@ -187,6 +191,8 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
 
     /**
      * Get the contact records associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Contact, $this>
      */
     public function contacts(): BelongsToMany
     {
@@ -197,6 +203,8 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
 
     /**
      * Get the note records associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Note, $this>
      */
     public function notes(): HasMany
     {
@@ -205,6 +213,8 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
 
     /**
      * Get the notification channel records associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\UserNotificationChannel, $this>
      */
     public function notificationChannels(): HasMany
     {
@@ -213,6 +223,8 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
 
     /**
      * Get the task records associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ContactTask, $this>
      */
     public function contactTasks(): HasMany
     {

@@ -55,8 +55,10 @@ class DestroyUser extends BaseService implements ServiceInterface
     {
         $this->validateRules($this->data);
 
-        $this->user = $this->account()->users()
+        /** @var User */
+        $user = $this->account()->users()
             ->findOrFail($this->data['user_id']);
+        $this->user = $user;
 
         if ($this->data['user_id'] === $this->data['author_id']) {
             throw new ValidationException(

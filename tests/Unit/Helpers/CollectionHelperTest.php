@@ -9,7 +9,7 @@ use Tests\TestCase;
 class CollectionHelperTest extends TestCase
 {
     /** @test */
-    public function it_sortByCollator_base()
+    public function it_sort_by_collator_base()
     {
         $collection = collect([
             ['name' => 'a'],
@@ -29,7 +29,7 @@ class CollectionHelperTest extends TestCase
     }
 
     /** @test */
-    public function it_sortByCollator_macro()
+    public function it_sort_by_collator_macro()
     {
         $collection = collect([
             ['name' => 'a'],
@@ -49,7 +49,7 @@ class CollectionHelperTest extends TestCase
     }
 
     /** @test */
-    public function it_sortByCollator_callback()
+    public function it_sort_by_collator_callback()
     {
         $collection = collect([
             ['name' => 'a'],
@@ -71,7 +71,7 @@ class CollectionHelperTest extends TestCase
     }
 
     /** @test */
-    public function it_sortByCollator_default_collation()
+    public function it_sort_by_collator_default_collation()
     {
         App::setLocale('en');
 
@@ -95,7 +95,7 @@ class CollectionHelperTest extends TestCase
     }
 
     /** @test */
-    public function it_sortByCollator_french_collation()
+    public function it_sort_by_collator_french_collation()
     {
         App::setLocale('fr');
 
@@ -119,7 +119,7 @@ class CollectionHelperTest extends TestCase
     }
 
     /** @test */
-    public function it_getCollator_french_collation()
+    public function it_get_collator_french_collation()
     {
         $collator = CollectionHelper::getCollator('fr');
 
