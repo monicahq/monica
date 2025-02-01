@@ -37,6 +37,14 @@
 
       <!-- labels in vault -->
       <ul class="label-list overflow-auto bg-white dark:bg-gray-900" :class="filteredLabels.length > 0 ? 'h-40' : ''">
+        <!-- case if the label does not exist and needs to be created -->
+        <li
+          v-if="showCreateNewLabel"
+          class="cursor-pointer border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
+          @click="store()">
+          {{ $t('Create new label') }} <span class="italic">"{{ form.search }}"</span>
+        </li>
+
         <li
           v-for="label in filteredLabels"
           :key="label.id"
@@ -48,14 +56,6 @@
           </div>
 
           <CheckedIcon v-if="label.taken" />
-        </li>
-
-        <!-- case if the label does not exist and needs to be created -->
-        <li
-          v-if="filteredLabels.length === 0 && form.search.length !== ''"
-          class="cursor-pointer border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800"
-          @click="store()">
-          {{ $t('Create new label') }} <span class="italic">"{{ form.search }}"</span>
         </li>
 
         <!-- blank state when there is no label at all -->
@@ -120,6 +120,16 @@ export default {
   },
 
   computed: {
+    showCreateNewLabel() {
+      let searchTermAlreadyAdded = false;
+      if (this.filteredLabels.length) {
+        this.filteredLabels.forEach((label) => {
+          if (label.name.toLowerCase() === this.form.search.toLowerCase()) searchTermAlreadyAdded = true;
+        });
+      }
+
+      return (!searchTermAlreadyAdded || this.filteredLabels.length === 0) && this.form.search !== '';
+    },
     filteredLabels() {
       return this.localLabelsInVault.filter((label) => {
         return label.name.toLowerCase().indexOf(this.form.search.toLowerCase()) > -1;

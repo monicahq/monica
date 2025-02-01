@@ -1,16 +1,14 @@
 {
   "name": "PHP & SQLite",
-  "service": "app",
-  "workspaceFolder": "/workspace",
-  "dockerComposeFile": "docker-compose.yml",
+  "image": "ghcr.io/asbiin/devcontainers/php:8.3",
 
   // For use with PHP or Apache (e.g.php -S localhost:8080 or apache2ctl start)
   "forwardPorts": [8080],
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": ".devcontainer/postCreate.sh",
   "postStartCommand": ".devcontainer/postStart.sh"
-
-  // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
-  // "remoteUser": "vscode"
 }

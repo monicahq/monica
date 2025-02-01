@@ -101,8 +101,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | When using navigation, redirects to these url on success:
-    | - login: after a successfull login.
-    | - register: after a successfull Webauthn key creation.
+    | - login: after a successful login.
+    | - register: after a successful Webauthn key creation.
     |
     | Redirects are not used in case of application/json requests.
     |
