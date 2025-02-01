@@ -35,7 +35,7 @@ class ContactQuickFactController extends Controller
             'content' => $request->input('content'),
         ];
 
-        $quickFact = (new CreateQuickFact())->execute($data);
+        $quickFact = (new CreateQuickFact)->execute($data);
 
         return response()->json([
             'data' => ContactModuleQuickFactViewHelper::dto($quickFact),
@@ -53,7 +53,7 @@ class ContactQuickFactController extends Controller
             'content' => $request->input('content'),
         ];
 
-        $quickFact = (new UpdateQuickFact())->execute($data);
+        $quickFact = (new UpdateQuickFact)->execute($data);
 
         return response()->json([
             'data' => ContactModuleQuickFactViewHelper::dto($quickFact),
@@ -70,7 +70,7 @@ class ContactQuickFactController extends Controller
             'quick_fact_id' => $quickFactId,
         ];
 
-        (new DestroyQuickFact())->execute($data);
+        (new DestroyQuickFact)->execute($data);
 
         return response()->json([
             'data' => true,

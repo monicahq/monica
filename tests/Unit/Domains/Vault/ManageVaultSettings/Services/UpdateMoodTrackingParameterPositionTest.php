@@ -36,7 +36,7 @@ class UpdateMoodTrackingParameterPositionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateMoodTrackingParameterPosition())->execute($request);
+        (new UpdateMoodTrackingParameterPosition)->execute($request);
     }
 
     /** @test */
@@ -89,7 +89,7 @@ class UpdateMoodTrackingParameterPositionTest extends TestCase
             'new_position' => 3,
         ];
 
-        $moodTrackingParameter = (new UpdateMoodTrackingParameterPosition())->execute($request);
+        $moodTrackingParameter = (new UpdateMoodTrackingParameterPosition)->execute($request);
 
         $this->assertDatabaseHas('mood_tracking_parameters', [
             'id' => $moodTrackingParameter1->id,
@@ -114,7 +114,7 @@ class UpdateMoodTrackingParameterPositionTest extends TestCase
 
         $request['new_position'] = 2;
 
-        $moodTrackingParameter = (new UpdateMoodTrackingParameterPosition())->execute($request);
+        $moodTrackingParameter = (new UpdateMoodTrackingParameterPosition)->execute($request);
 
         $this->assertDatabaseHas('mood_tracking_parameters', [
             'id' => $moodTrackingParameter1->id,

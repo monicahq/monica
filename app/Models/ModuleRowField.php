@@ -20,7 +20,7 @@ class ModuleRowField extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'module_row_id',
@@ -41,6 +41,8 @@ class ModuleRowField extends Model
 
     /**
      * Get the module row associated with the module.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\ModuleRow, $this>
      */
     public function row(): BelongsTo
     {

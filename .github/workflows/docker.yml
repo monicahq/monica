@@ -26,6 +26,16 @@ jobs:
 
     strategy:
       fail-fast: false
+      matrix:
+        flavor:
+          - name: apache
+            file: scripts/docker/Dockerfile
+            tag: main
+            suffix:
+          - name: fpm
+            file: scripts/docker/Dockerfile-fpm
+            tag: main-fpm
+            suffix: -fpm
 
     permissions:
       contents: read
@@ -54,6 +64,9 @@ jobs:
             org.opencontainers.image.description="This is MonicaHQ, your personal memory! MonicaHQ is like a CRM but for the friends, family, and acquaintances around you."
             org.opencontainers.image.title="MonicaHQ, the Personal Relationship Manager"
             org.opencontainers.image.vendor="Monica"
+          flavor: |
+            latest=${{ matrix.flavor.tag == 'main' && 'auto' || 'false' }}
+            suffix=${{ matrix.flavor.suffix }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -72,13 +85,13 @@ jobs:
       # Build docker
       - name: Docker build
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
-          cache-from: type=registry,ref=${{ env.registry }}/${{ github.repository_owner }}/${{ env.package-name }}:main
+          cache-from: type=registry,ref=${{ env.registry }}/${{ github.repository_owner }}/${{ env.package-name }}:${{ matrix.flavor.tag }}
           labels: ${{ steps.docker_meta.outputs.labels }}
-          file: scripts/docker/Dockerfile
+          file: ${{ matrix.flavor.file }}
           context: .
           platforms: ${{ (github.event_name != 'pull_request') && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
           outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=This is MonicaHQ your personal memory! MonicaHQ is like a CRM but for the friends family and acquaintances around you.

@@ -14,7 +14,7 @@
     </div>
 
     <!-- help text -->
-    <div class="mb-6 flex rounded border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
+    <div class="mb-6 flex rounded-sm border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-6 w-6 pe-2"
@@ -37,7 +37,7 @@
     <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="px-5 py-2">
         <span class="mb-2 block">{{ $t('Current timezone:') }}</span>
-        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{ localTimezone }}</span>
+        <span class="mb-2 block rounded-sm bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{ localTimezone }}</span>
       </p>
     </div>
 
@@ -52,7 +52,7 @@
         <select
           v-model="form.timezone"
           name="timezone"
-          class="rounded-md border-gray-300 bg-white px-3 py-2 pe-5 ps-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 ltr:bg-[right_3px_center] rtl:bg-[left_3px_center] dark:bg-gray-900 sm:text-sm">
+          class="rounded-md border-gray-300 bg-white px-3 py-2 pe-5 ps-2 shadow-xs focus:border-indigo-300 focus:outline-hidden focus:ring-3 focus:ring-indigo-200 focus:ring-opacity-50 ltr:bg-[right_3px_center] rtl:bg-[left_3px_center] dark:bg-gray-900 sm:text-sm">
           <optgroup label="General">
             <option value="GMT">GMT timezone</option>
             <option value="UTC">UTC timezone</option>

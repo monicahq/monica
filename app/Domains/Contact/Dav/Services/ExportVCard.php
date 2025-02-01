@@ -61,7 +61,7 @@ class ExportVCard extends BaseService implements ServiceInterface
         } elseif (isset($data['group_id'])) {
             $obj = $this->group;
         } else {
-            throw new ModelNotFoundException();
+            throw new ModelNotFoundException;
         }
 
         $vcard = $this->export($obj);
@@ -123,7 +123,7 @@ class ExportVCard extends BaseService implements ServiceInterface
                 'group' => $vcard,
             ]);
         } else {
-            throw new ModelNotFoundException();
+            throw new ModelNotFoundException;
         }
     }
 

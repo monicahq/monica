@@ -31,7 +31,7 @@ class ExportMembersTest extends TestCase
             $contact->id => ['group_type_role_id' => null],
         ]);
 
-        $exportMembers = new ExportMembers();
+        $exportMembers = new ExportMembers;
 
         $vcard = new VCard([
             'KIND' => 'group',
@@ -59,7 +59,7 @@ class ExportMembersTest extends TestCase
             $contact->id => ['group_type_role_id' => null],
         ]);
 
-        $exportMembers = new ExportMembers();
+        $exportMembers = new ExportMembers;
 
         $vcard = new VCard([
             'KIND' => 'group',
@@ -89,7 +89,7 @@ class ExportMembersTest extends TestCase
             $contact->id => ['group_type_role_id' => null],
         ]);
 
-        $exportMembers = new ExportMembers();
+        $exportMembers = new ExportMembers;
 
         $vcard = new VCard([
             'KIND' => 'group',

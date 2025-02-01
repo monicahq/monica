@@ -27,7 +27,7 @@ class DavTester extends TestCase
 
     public function client(): DavClient
     {
-        return (new DavClient())->setBaseUri($this->baseUri);
+        return (new DavClient)->setBaseUri($this->baseUri);
     }
 
     public function fake()

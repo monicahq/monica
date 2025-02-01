@@ -34,7 +34,7 @@ class SynchronizeAddressBookTest extends TestCase
             'addressbook_subscription_id' => $subscription->id,
         ];
 
-        (new SynchronizeAddressBook())->execute($request);
+        (new SynchronizeAddressBook)->execute($request);
     }
 
     /** @test */
@@ -59,6 +59,6 @@ class SynchronizeAddressBookTest extends TestCase
             'force' => true,
         ];
 
-        (new SynchronizeAddressBook())->execute($request);
+        (new SynchronizeAddressBook)->execute($request);
     }
 }

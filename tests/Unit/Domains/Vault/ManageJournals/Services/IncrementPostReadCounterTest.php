@@ -42,7 +42,7 @@ class IncrementPostReadCounterTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new IncrementPostReadCounter())->execute($request);
+        (new IncrementPostReadCounter)->execute($request);
     }
 
     /** @test */
@@ -124,7 +124,7 @@ class IncrementPostReadCounterTest extends TestCase
             'post_id' => $post->id,
         ];
 
-        $post = (new IncrementPostReadCounter())->execute($request);
+        $post = (new IncrementPostReadCounter)->execute($request);
 
         $this->assertDatabaseHas('posts', [
             'id' => $post->id,

@@ -38,7 +38,7 @@ class DestroyPostTemplateSectionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyPostTemplateSection())->execute($request);
+        (new DestroyPostTemplateSection)->execute($request);
     }
 
     /** @test */
@@ -96,7 +96,7 @@ class DestroyPostTemplateSectionTest extends TestCase
             'post_template_section_id' => $postTemplateSection->id,
         ];
 
-        (new DestroyPostTemplateSection())->execute($request);
+        (new DestroyPostTemplateSection)->execute($request);
 
         $this->assertDatabaseMissing('post_template_sections', [
             'id' => $postTemplateSection->id,

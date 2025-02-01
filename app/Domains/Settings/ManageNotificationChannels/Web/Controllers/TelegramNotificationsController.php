@@ -25,7 +25,7 @@ class TelegramNotificationsController extends Controller
             'preferred_time' => $time,
         ];
 
-        $channel = (new CreateUserNotificationChannel())->execute($data);
+        $channel = (new CreateUserNotificationChannel)->execute($data);
 
         return response()->json([
             'data' => NotificationsIndexViewHelper::dtoTelegram($channel),

@@ -44,11 +44,11 @@ class ContactModuleJobInformationController extends Controller
                 'type' => Company::TYPE_COMPANY,
             ];
 
-            $company = (new CreateCompany())->execute($data);
+            $company = (new CreateCompany)->execute($data);
             $companyId = $company->id;
         }
 
-        (new UpdateJobInformation())->execute([
+        (new UpdateJobInformation)->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,
@@ -66,7 +66,7 @@ class ContactModuleJobInformationController extends Controller
 
     public function destroy(Request $request, string $vaultId, string $contactId)
     {
-        (new ResetJobInformation())->execute([
+        (new ResetJobInformation)->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,

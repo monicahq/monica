@@ -20,7 +20,7 @@ class PersonalizeGroupTypeRolePositionController extends Controller
             'new_position' => $request->input('position'),
         ];
 
-        $groupTypeRole = (new UpdateGroupTypeRolePosition())->execute($data);
+        $groupTypeRole = (new UpdateGroupTypeRolePosition)->execute($data);
 
         return response()->json([
             'data' => PersonalizeGroupTypeViewHelper::dto($groupTypeRole->groupType),

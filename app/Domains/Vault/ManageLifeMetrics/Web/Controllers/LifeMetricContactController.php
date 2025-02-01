@@ -21,7 +21,7 @@ class LifeMetricContactController extends Controller
             'life_metric_id' => $lifeMetricId,
         ];
 
-        $lifeMetric = (new IncrementLifeMetric())->execute($data);
+        $lifeMetric = (new IncrementLifeMetric)->execute($data);
 
         $vault = Vault::find($vaultId);
         $contact = Auth::user()->getContactInVault($vault);

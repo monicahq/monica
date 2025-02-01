@@ -34,7 +34,7 @@ class UpdatePostTemplatePositionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdatePostTemplatePosition())->execute($request);
+        (new UpdatePostTemplatePosition)->execute($request);
     }
 
     /** @test */
@@ -82,7 +82,7 @@ class UpdatePostTemplatePositionTest extends TestCase
             'new_position' => 3,
         ];
 
-        $postTemplate = (new UpdatePostTemplatePosition())->execute($request);
+        $postTemplate = (new UpdatePostTemplatePosition)->execute($request);
 
         $this->assertDatabaseHas('post_templates', [
             'id' => $postTemplate1->id,
@@ -107,7 +107,7 @@ class UpdatePostTemplatePositionTest extends TestCase
 
         $request['new_position'] = 2;
 
-        $postTemplate = (new UpdatePostTemplatePosition())->execute($request);
+        $postTemplate = (new UpdatePostTemplatePosition)->execute($request);
 
         $this->assertDatabaseHas('post_templates', [
             'id' => $postTemplate1->id,

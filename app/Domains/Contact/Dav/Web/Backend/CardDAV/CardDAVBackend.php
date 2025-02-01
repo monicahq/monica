@@ -85,7 +85,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
 
     private function getAddressBookDetails(Vault $vault): array
     {
-        $token = $this->getCurrentSyncToken($vault->id);
+        $token = $this->getCurrentSyncToken((string) $vault->id);
 
         $des = [
             'id' => $vault->id,
@@ -260,7 +260,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
             ->find($collectionId);
 
         if (! $vault) {
-            throw new NotEnoughPermissionException();
+            throw new NotEnoughPermissionException;
         }
 
         return Contact::firstWhere([

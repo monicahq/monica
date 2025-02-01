@@ -30,7 +30,7 @@ class CreatePostTemplateTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreatePostTemplate())->execute($request);
+        (new CreatePostTemplate)->execute($request);
     }
 
     /** @test */
@@ -52,7 +52,7 @@ class CreatePostTemplateTest extends TestCase
             'can_be_deleted' => false,
         ];
 
-        $postTemplate = (new CreatePostTemplate())->execute($request);
+        $postTemplate = (new CreatePostTemplate)->execute($request);
 
         $this->assertDatabaseHas('post_templates', [
             'id' => $postTemplate->id,

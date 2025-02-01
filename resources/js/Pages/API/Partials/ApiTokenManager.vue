@@ -197,7 +197,7 @@ const copyToClipboard = (token) => {
 
         <div v-if="$page.props.jetstream.flash.token" class="mt-4 flex">
           <div
-            class="rounded bg-gray-100 px-4 py-2 font-mono text-sm text-gray-500"
+            class="rounded-sm bg-gray-100 px-4 py-2 font-mono text-sm text-gray-500"
             @click.prevent="copyToClipboard($page.props.jetstream.flash.token)">
             {{ $page.props.jetstream.flash.token }}
           </div>

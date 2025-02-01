@@ -37,7 +37,7 @@ class UpdateMoodTrackingParameterTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateMoodTrackingParameter())->execute($request);
+        (new UpdateMoodTrackingParameter)->execute($request);
     }
 
     /** @test */
@@ -92,7 +92,7 @@ class UpdateMoodTrackingParameterTest extends TestCase
             'hex_color' => 'bg-zinc-700',
         ];
 
-        $moodTrackingParameter = (new UpdateMoodTrackingParameter())->execute($request);
+        $moodTrackingParameter = (new UpdateMoodTrackingParameter)->execute($request);
 
         $this->assertDatabaseHas('mood_tracking_parameters', [
             'id' => $moodTrackingParameter->id,

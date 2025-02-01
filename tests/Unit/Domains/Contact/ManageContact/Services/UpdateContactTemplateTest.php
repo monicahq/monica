@@ -37,7 +37,7 @@ class UpdateContactTemplateTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateContactTemplate())->execute($request);
+        (new UpdateContactTemplate)->execute($request);
     }
 
     /** @test */
@@ -106,7 +106,7 @@ class UpdateContactTemplateTest extends TestCase
             'template_id' => $template->id,
         ];
 
-        $contact = (new UpdateContactTemplate())->execute($request);
+        $contact = (new UpdateContactTemplate)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,

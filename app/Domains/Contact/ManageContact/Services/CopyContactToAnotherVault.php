@@ -70,16 +70,16 @@ class CopyContactToAnotherVault extends BaseService implements ServiceInterface
             ->exists();
 
         if (! $exists) {
-            throw new NotEnoughPermissionException();
+            throw new NotEnoughPermissionException;
         }
     }
 
     private function copy(): void
     {
-        $this->newContact = new Contact();
+        $this->newContact = new Contact;
 
         $this->newContact = $this->contact->replicate();
-        $this->newContact->vault_id = $this->newVault->id;
+        $this->newContact->vault_id = (string) $this->newVault->id;
         $this->newContact->save();
     }
 

@@ -43,7 +43,7 @@ const act = (action, timeout) => {
 
 <template>
   <div
-    class="fixed bottom-8 z-[9999] rounded-md border-zinc-200 bg-white px-5 py-2.5 shadow-sm shadow-gray-400 transition duration-700 ease-in-out dark:border-zinc-600 dark:bg-gray-900 dark:shadow-gray-600"
+    class="fixed bottom-8 z-9999 rounded-md border-zinc-200 bg-white px-5 py-2.5 shadow-xs shadow-gray-400 transition duration-700 ease-in-out dark:border-zinc-600 dark:bg-gray-900 dark:shadow-gray-600"
     :class="[
       levelClass,
       isOpen ? ['opacity-100', 'translate-x-0', 'end-7'] : ['opacity-0', 'translate-x-full', 'end-0'],

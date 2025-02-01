@@ -20,7 +20,7 @@ class PersonalizeReligionsPositionController extends Controller
             'new_position' => $request->input('position'),
         ];
 
-        $religion = (new UpdateReligionPosition())->execute($data);
+        $religion = (new UpdateReligionPosition)->execute($data);
 
         return response()->json([
             'data' => PersonalizeReligionViewHelper::dto($religion),

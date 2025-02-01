@@ -16,7 +16,7 @@ class ModuleRow extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'module_id',
@@ -25,6 +25,8 @@ class ModuleRow extends Model
 
     /**
      * Get the module associated with the module.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Module, $this>
      */
     public function module(): BelongsTo
     {
@@ -33,6 +35,8 @@ class ModuleRow extends Model
 
     /**
      * Get the module row fields associated with the module.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ModuleRowField, $this>
      */
     public function fields(): HasMany
     {

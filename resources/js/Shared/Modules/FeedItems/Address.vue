@@ -40,7 +40,7 @@
       <!-- map image -->
       <div v-if="data.address.object.image">
         <a :href="data.address.object.url.show" target="_blank">
-          <img :src="data.address.object.image" class="rounded" :alt="data.address.object.description" />
+          <img :src="data.address.object.image" class="rounded-sm" :alt="data.address.object.description" />
         </a>
       </div>
     </div>

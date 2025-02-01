@@ -29,7 +29,7 @@ class StoreHelpPreferenceTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new StoreHelpPreference())->execute($request);
+        (new StoreHelpPreference)->execute($request);
     }
 
     /** @test */
@@ -50,7 +50,7 @@ class StoreHelpPreferenceTest extends TestCase
             'visibility' => false,
         ];
 
-        $user = (new StoreHelpPreference())->execute($request);
+        $user = (new StoreHelpPreference)->execute($request);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,

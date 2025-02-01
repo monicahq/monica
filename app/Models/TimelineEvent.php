@@ -27,7 +27,7 @@ class TimelineEvent extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'vault_id',
@@ -48,6 +48,8 @@ class TimelineEvent extends Model
 
     /**
      * Get the vault associated with the timeline event.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {
@@ -56,6 +58,8 @@ class TimelineEvent extends Model
 
     /**
      * Get the life events associated with the timeline event.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\LifeEvent, $this>
      */
     public function lifeEvents(): HasMany
     {
@@ -64,6 +68,8 @@ class TimelineEvent extends Model
 
     /**
      * Get the contact records the timeline event is with.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Contact, $this>
      */
     public function participants(): BelongsToMany
     {

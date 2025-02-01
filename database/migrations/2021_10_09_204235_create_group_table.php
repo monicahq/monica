@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\ScoutHelper;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Group;
@@ -8,10 +9,9 @@ use App\Models\GroupTypeRole;
 use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class() extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -53,7 +53,7 @@ return new class() extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            if (config('scout.driver') === 'database' && in_array(DB::connection()->getDriverName(), ['mysql', 'pgsql'])) {
+            if (ScoutHelper::isFullTextIndex()) {
                 $table->fullText('name');
             }
         });

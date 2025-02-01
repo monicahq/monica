@@ -66,7 +66,7 @@ class CreateCallTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateCall())->execute($request);
+        (new CreateCall)->execute($request);
     }
 
     /** @test */
@@ -148,7 +148,7 @@ class CreateCallTest extends TestCase
             $request['emotion_id'] = $emotion->id;
         }
 
-        $call = (new CreateCall())->execute($request);
+        $call = (new CreateCall)->execute($request);
 
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,

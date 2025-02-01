@@ -34,7 +34,7 @@ class CreateTagTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateTag())->execute($request);
+        (new CreateTag)->execute($request);
     }
 
     /** @test */
@@ -80,7 +80,7 @@ class CreateTagTest extends TestCase
             'name' => 'tag name',
         ];
 
-        $tag = (new CreateTag())->execute($request);
+        $tag = (new CreateTag)->execute($request);
 
         $this->assertDatabaseHas('tags', [
             'id' => $tag->id,

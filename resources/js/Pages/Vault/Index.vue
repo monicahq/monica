@@ -11,10 +11,12 @@
           <p class="mb-3">
             {{ $t('Monica was made to help you document your life and your social interactions.') }}
           </p>
-          <p class="mb-5">
-            {{ $t('To start, you need to create a vault.') }}
+          <p class="mb-3">
+            {{
+              $t('To start, you need to create a vault. A vault is a private space where you can store your contacts.')
+            }}
           </p>
-          <div class="mb-4 text-center">
+          <div class="mb-1 text-center">
             <pretty-link :href="data.url.vault.create" :text="$t('Create a vault')" :icon="'plus'" />
           </div>
         </div>
@@ -62,7 +64,7 @@
             <div class="vault-detail grid">
               <InertiaLink
                 :href="vault.url.show"
-                class="border-b border-gray-200 px-3 py-1 text-lg font-medium hover:rounded-t-lg hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-300 hover:dark:bg-slate-800">
+                class="border-b border-gray-200 px-3 py-1 text-lg font-medium hover:rounded-t-lg hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-300 dark:hover:bg-slate-800">
                 {{ vault.name }}
               </InertiaLink>
 
@@ -77,7 +79,7 @@
                   </div>
                   <div
                     v-if="vault.remaining_contacts !== 0"
-                    class="relative -start-[5px] -top-px flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-gray-700 text-xs font-medium text-white hover:bg-gray-600 dark:border-gray-800 dark:bg-gray-300 dark:text-gray-900 hover:dark:bg-gray-400">
+                    class="relative -start-[5px] -top-px flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-gray-700 text-xs font-medium text-white hover:bg-gray-600 dark:border-gray-800 dark:bg-gray-300 dark:text-gray-900 dark:hover:bg-gray-400">
                     + {{ vault.remaining_contacts }}
                   </div>
                 </div>
@@ -94,7 +96,7 @@
                 <InertiaLink :href="vault.url.settings">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="pointer h-5 w-5 text-gray-400 hover:text-gray-900 dark:text-gray-600 hover:dark:text-gray-100"
+                    class="pointer h-5 w-5 text-gray-400 hover:text-gray-900 dark:text-gray-600 dark:hover:text-gray-100"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -114,7 +116,7 @@
                 <InertiaLink :href="vault.url.show">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="pointer h-5 w-5 text-gray-400 hover:text-gray-900 dark:text-gray-600 hover:dark:text-gray-100"
+                    class="pointer h-5 w-5 text-gray-400 hover:text-gray-900 dark:text-gray-600 dark:hover:text-gray-100"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor">

@@ -17,7 +17,7 @@ class ContactInformation extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'contact_id',
@@ -27,6 +27,8 @@ class ContactInformation extends Model
 
     /**
      * Get the contact associated with the contact information.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
      */
     public function contact(): BelongsTo
     {
@@ -35,6 +37,8 @@ class ContactInformation extends Model
 
     /**
      * Get the contact information type associated with the contact information.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\ContactInformationType, $this>
      */
     public function contactInformationType(): BelongsTo
     {
@@ -66,6 +70,8 @@ class ContactInformation extends Model
 
     /**
      * Get the contact information's feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne<\App\Models\ContactFeedItem, $this>
      */
     public function feedItem(): MorphOne
     {

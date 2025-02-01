@@ -33,7 +33,7 @@ class ExportAddressTest extends TestCase
         $address = Address::factory()->create(['vault_id' => $vault->id]);
         $address->contacts()->attach($contact->id);
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportAddress)->export($contact, $vCard);
 
         $this->assertCount(

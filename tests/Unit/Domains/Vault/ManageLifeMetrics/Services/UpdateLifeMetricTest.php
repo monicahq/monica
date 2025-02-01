@@ -37,7 +37,7 @@ class UpdateLifeMetricTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateLifeMetric())->execute($request);
+        (new UpdateLifeMetric)->execute($request);
     }
 
     /** @test */
@@ -91,7 +91,7 @@ class UpdateLifeMetricTest extends TestCase
             'label' => 'label name',
         ];
 
-        $lifeMetric = (new UpdateLifeMetric())->execute($request);
+        $lifeMetric = (new UpdateLifeMetric)->execute($request);
 
         $this->assertDatabaseHas('life_metrics', [
             'id' => $lifeMetric->id,

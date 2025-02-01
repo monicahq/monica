@@ -64,10 +64,10 @@ defineProps({
 
             <div
               v-if="data.wikipedia.description"
-              class="rounded border border-gray-200 p-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+              class="rounded-sm border border-gray-200 p-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
               <p class="mb-3">{{ data.wikipedia.description }}</p>
 
-              <img :src="data.wikipedia.thumbnail" :alt="'Image of ' + data.country" class="mb-2 rounded" />
+              <img :src="data.wikipedia.thumbnail" :alt="'Image of ' + data.country" class="mb-2 rounded-sm" />
 
               <p class="text-xs">
                 <a :href="data.wikipedia.url" target="_blank">{{ $t('Information from Wikipedia') }}</a>
@@ -81,7 +81,7 @@ defineProps({
               <li
                 v-for="address in data.addresses"
                 :key="address.id"
-                class="item-list border-b border-gray-200 px-3 pb-2 pt-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                class="item-list border-b border-gray-200 px-3 pb-2 pt-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
                 <span class="mb-1 block">{{ address.address }}</span>
                 <ul class="list">
                   <li v-for="contact in address.contacts" :key="contact.id" class="me-3 inline">

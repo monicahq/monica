@@ -8,7 +8,7 @@
             <span class="relative">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-700 hover:dark:text-gray-400"
+                class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-700 dark:hover:text-gray-400"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor">
@@ -39,14 +39,14 @@
             <li
               v-for="currentTask in task.tasks"
               :key="currentTask.id"
-              class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-800 hover:dark:bg-slate-900">
+              class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-800 dark:hover:bg-slate-900">
               <div class="flex items-center">
                 <input
                   :id="currentTask.id"
                   v-model="currentTask.completed"
                   :name="currentTask.id"
                   type="checkbox"
-                  class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                  class="focus:ring-3 relative h-4 w-4 rounded-sm border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                   @change="toggle(currentTask)" />
 
                 <label

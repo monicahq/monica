@@ -39,7 +39,7 @@ class CreateAddressTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateAddress())->execute($request);
+        (new CreateAddress)->execute($request);
     }
 
     /** @test */
@@ -103,7 +103,7 @@ class CreateAddressTest extends TestCase
             'longitude' => 12345,
         ];
 
-        $address = (new CreateAddress())->execute($request);
+        $address = (new CreateAddress)->execute($request);
 
         $this->assertDatabaseHas('addresses', [
             'vault_id' => $vault->id,

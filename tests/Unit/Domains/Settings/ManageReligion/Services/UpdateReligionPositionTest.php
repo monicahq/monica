@@ -33,7 +33,7 @@ class UpdateReligionPositionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateReligionPosition())->execute($request);
+        (new UpdateReligionPosition)->execute($request);
     }
 
     /** @test */
@@ -81,7 +81,7 @@ class UpdateReligionPositionTest extends TestCase
             'new_position' => 3,
         ];
 
-        $religion = (new UpdateReligionPosition())->execute($request);
+        $religion = (new UpdateReligionPosition)->execute($request);
 
         $this->assertDatabaseHas('religions', [
             'id' => $religion1->id,
@@ -106,7 +106,7 @@ class UpdateReligionPositionTest extends TestCase
 
         $request['new_position'] = 2;
 
-        $religion = (new UpdateReligionPosition())->execute($request);
+        $religion = (new UpdateReligionPosition)->execute($request);
 
         $this->assertDatabaseHas('religions', [
             'id' => $religion1->id,

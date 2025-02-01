@@ -39,7 +39,7 @@ class CreateSliceOfLifeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateSliceOfLife())->execute($request);
+        (new CreateSliceOfLife)->execute($request);
     }
 
     /** @test */
@@ -98,7 +98,7 @@ class CreateSliceOfLifeTest extends TestCase
             'name' => 'this is a title',
         ];
 
-        $sliceOfLife = (new CreateSliceOfLife())->execute($request);
+        $sliceOfLife = (new CreateSliceOfLife)->execute($request);
 
         $this->assertDatabaseHas('slice_of_lives', [
             'id' => $sliceOfLife->id,

@@ -19,8 +19,7 @@ class UserNotificationChannelEmailCreated extends Mailable
      */
     public function __construct(
         public UserNotificationChannel $channel
-    ) {
-    }
+    ) {}
 
     /**
      * Build the message.

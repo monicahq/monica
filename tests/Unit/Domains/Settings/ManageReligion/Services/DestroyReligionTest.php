@@ -34,7 +34,7 @@ class DestroyReligionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyReligion())->execute($request);
+        (new DestroyReligion)->execute($request);
     }
 
     /** @test */
@@ -80,7 +80,7 @@ class DestroyReligionTest extends TestCase
             'religion_id' => $religion->id,
         ];
 
-        (new DestroyReligion())->execute($request);
+        (new DestroyReligion)->execute($request);
 
         $this->assertDatabaseMissing('religions', [
             'id' => $religion->id,

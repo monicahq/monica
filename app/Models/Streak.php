@@ -13,7 +13,7 @@ class Streak extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'goal_id',
@@ -31,6 +31,8 @@ class Streak extends Model
 
     /**
      * Get the goal associated with the streak.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Goal, $this>
      */
     public function goal(): BelongsTo
     {

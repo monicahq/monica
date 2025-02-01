@@ -35,7 +35,7 @@ class ToggleFavoriteContactTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new ToggleFavoriteContact())->execute($request);
+        (new ToggleFavoriteContact)->execute($request);
     }
 
     /** @test */
@@ -87,7 +87,7 @@ class ToggleFavoriteContactTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $contact = (new ToggleFavoriteContact())->execute($request);
+        $contact = (new ToggleFavoriteContact)->execute($request);
 
         $this->assertDatabaseHas('contact_vault_user', [
             'contact_id' => $contact->id,
@@ -95,7 +95,7 @@ class ToggleFavoriteContactTest extends TestCase
             'is_favorite' => true,
         ]);
 
-        $contact = (new ToggleFavoriteContact())->execute($request);
+        $contact = (new ToggleFavoriteContact)->execute($request);
 
         $this->assertDatabaseHas('contact_vault_user', [
             'contact_id' => $contact->id,

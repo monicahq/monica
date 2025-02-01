@@ -10,6 +10,7 @@ import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import Errors from '@/Shared/Form/Errors.vue';
+import CallIcon from '@/Shared/Icons/CallIcon.vue';
 
 const props = defineProps({
   data: Object,
@@ -153,18 +154,7 @@ const destroy = (call) => {
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
       <div class="mb-2 sm:mb-0">
         <span class="relative me-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon-sidebar relative inline h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-          </svg>
+          <CallIcon :is-normal="true" />
         </span>
 
         <span class="font-semibold"> {{ $t('Calls') }} </span>
@@ -199,7 +189,7 @@ const destroy = (call) => {
               :max-date="new Date()">
               <template #default="{ inputValue, inputEvents }">
                 <input
-                  class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                  class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
                   :value="inputValue"
                   v-on="inputEvents" />
               </template>
@@ -329,7 +319,7 @@ const destroy = (call) => {
             id="types"
             v-model="form.call_reason_id"
             name="types"
-            class="w-full rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
+            class="w-full rounded-md border-gray-300 bg-white px-3 py-2 shadow-xs focus:border-indigo-300 focus:outline-hidden focus:ring-3 focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
             <optgroup
               v-for="callReasonType in data.call_reason_types"
               :key="callReasonType.id"
@@ -399,39 +389,11 @@ const destroy = (call) => {
       <li
         v-for="call in localCalls"
         :key="call.id"
-        class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+        class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
         <div v-if="editedCallId !== call.id" class="flex items-center justify-between p-3">
           <div class="flex items-center">
             <div>
-              <!-- icon phone cancel -->
-              <svg
-                v-if="!call.answered"
-                xmlns="http://www.w3.org/2000/svg"
-                class="me-2 h-4 w-4 text-red-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M16 8l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M5 3a2 2 0 00-2 2v1c0 8.284 6.716 15 15 15h1a2 2 0 002-2v-3.28a1 1 0 00-.684-.948l-4.493-1.498a1 1 0 00-1.21.502l-1.13 2.257a11.042 11.042 0 01-5.516-5.517l2.257-1.128a1 1 0 00.502-1.21L9.228 3.683A1 1 0 008.279 3H5z" />
-              </svg>
-
-              <!-- call accepted -->
-              <svg
-                v-if="call.answered"
-                xmlns="http://www.w3.org/2000/svg"
-                class="me-2 h-4 w-4 text-green-600"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
+              <CallIcon :answered="call.answered" />
             </div>
 
             <span class="me-2 text-sm text-gray-500">{{ call.called_at }}</span>
@@ -439,12 +401,12 @@ const destroy = (call) => {
             <!-- who called -->
             <span
               v-if="call.who_initiated === 'me'"
-              class="me-2 rounded border border-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800">
+              class="me-2 rounded-sm border border-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800">
               {{ $t('I called') }}
             </span>
             <span
               v-else
-              class="me-2 rounded border border-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800">
+              class="me-2 rounded-sm border border-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800">
               {{ $t(':Name called', { name: data.contact_name }) }}
             </span>
 
@@ -477,7 +439,7 @@ const destroy = (call) => {
                   :max-date="new Date()">
                   <template #default="{ inputValue, inputEvents }">
                     <input
-                      class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                      class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
                       :value="inputValue"
                       v-on="inputEvents" />
                   </template>
@@ -609,7 +571,7 @@ const destroy = (call) => {
                 id="types"
                 v-model="form.call_reason_id"
                 name="types"
-                class="w-full rounded-md border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
+                class="w-full rounded-md border-gray-300 bg-white px-3 py-2 shadow-xs focus:border-indigo-300 focus:outline-hidden focus:ring-3 focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
                 <optgroup
                   v-for="callReasonType in data.call_reason_types"
                   :key="callReasonType.id"

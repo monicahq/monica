@@ -46,7 +46,7 @@ class ExportContactInformation extends Exporter implements ExportVCardResource
             case trans('Phone'):
                 // https://datatracker.ietf.org/doc/html/rfc6350#section-6.4.1
                 $vcard->add('TEL', $contactInformation->data, [
-                    //'TYPE' => $contactInformation->contactInformationType->type,
+                    // 'TYPE' => $contactInformation->contactInformationType->type,
                 ]);
                 break;
             case trans('Facebook'):

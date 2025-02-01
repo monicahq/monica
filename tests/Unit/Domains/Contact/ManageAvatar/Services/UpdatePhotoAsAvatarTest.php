@@ -42,7 +42,7 @@ class UpdatePhotoAsAvatarTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdatePhotoAsAvatar())->execute($request);
+        (new UpdatePhotoAsAvatar)->execute($request);
     }
 
     /** @test */
@@ -109,7 +109,7 @@ class UpdatePhotoAsAvatarTest extends TestCase
             'file_id' => $file->id,
         ];
 
-        $contact = (new UpdatePhotoAsAvatar())->execute($request);
+        $contact = (new UpdatePhotoAsAvatar)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,

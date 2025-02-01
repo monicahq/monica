@@ -24,6 +24,6 @@ class VaultSettingsTabVisibilityController extends Controller
             'show_calendar_tab' => $request->boolean('show_calendar_tab'),
         ];
 
-        (new UpdateVaultTabVisibility())->execute($data);
+        (new UpdateVaultTabVisibility)->execute($data);
     }
 }

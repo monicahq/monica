@@ -48,7 +48,7 @@ class UpdateLifeEventTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateLifeEvent())->execute($request);
+        (new UpdateLifeEvent)->execute($request);
     }
 
     /** @test */
@@ -204,7 +204,7 @@ class UpdateLifeEventTest extends TestCase
             'participant_ids' => [$contact->id],
         ];
 
-        $lifeEvent = (new UpdateLifeEvent())->execute($request);
+        $lifeEvent = (new UpdateLifeEvent)->execute($request);
 
         $this->assertDatabaseHas('life_events', [
             'id' => $lifeEvent->id,

@@ -97,7 +97,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
      */
     private function addNotificationChannel(): void
     {
-        $channel = (new CreateUserNotificationChannel())->execute([
+        $channel = (new CreateUserNotificationChannel)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'label' => 'Email address',
@@ -125,7 +125,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'can_be_deleted' => false,
         ];
 
-        $this->template = (new CreateTemplate())->execute($request);
+        $this->template = (new CreateTemplate)->execute($request);
     }
 
     private function addTemplatePageContactInformation(): void
@@ -136,7 +136,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
             ->firstWhere('type', TemplatePage::TYPE_CONTACT);
 
         // avatar
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Avatar'),
@@ -144,7 +144,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'can_be_deleted' => false,
             'reserved_to_contact_information' => true,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -153,7 +153,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // names
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Contact name'),
@@ -161,7 +161,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'can_be_deleted' => false,
             'reserved_to_contact_information' => true,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -170,7 +170,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // family summary
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Family summary'),
@@ -178,7 +178,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'can_be_deleted' => false,
             'reserved_to_contact_information' => true,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -187,7 +187,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // important dates
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Important dates'),
@@ -195,7 +195,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'can_be_deleted' => false,
             'reserved_to_contact_information' => true,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -204,7 +204,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // gender/pronouns
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Gender and pronoun'),
@@ -212,7 +212,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'can_be_deleted' => false,
             'reserved_to_contact_information' => true,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -221,7 +221,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // labels
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Labels'),
@@ -229,7 +229,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'can_be_deleted' => false,
             'reserved_to_contact_information' => true,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -238,7 +238,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // companies
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Job information'),
@@ -246,7 +246,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'can_be_deleted' => false,
             'reserved_to_contact_information' => true,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -255,7 +255,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // religions
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Religions'),
@@ -263,7 +263,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'can_be_deleted' => false,
             'reserved_to_contact_information' => true,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -274,21 +274,21 @@ class SetupAccount extends QueuableService implements ServiceInterface
 
     private function addTemplatePageFeed(): void
     {
-        $templatePageFeed = (new CreateTemplatePage())->execute([
+        $templatePageFeed = (new CreateTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
             'name_translation_key' => trans_key('Activity feed'),
             'can_be_deleted' => true,
         ]);
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Contact feed'),
             'type' => Module::TYPE_FEED,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -299,7 +299,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
 
     private function addTemplatePageContact(): void
     {
-        $template = (new CreateTemplatePage())->execute([
+        $template = (new CreateTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -308,14 +308,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Addresses
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Addresses'),
             'type' => Module::TYPE_ADDRESSES,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -324,14 +324,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Contact information
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Contact information'),
             'type' => Module::TYPE_CONTACT_INFORMATION,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -342,7 +342,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
 
     private function addTemplatePageSocial(): void
     {
-        $templatePageSocial = (new CreateTemplatePage())->execute([
+        $templatePageSocial = (new CreateTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -351,14 +351,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Relationships
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Relationships'),
             'type' => Module::TYPE_RELATIONSHIPS,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -367,14 +367,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Pets
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Pets'),
             'type' => Module::TYPE_PETS,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -383,14 +383,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Groups
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Groups'),
             'type' => Module::TYPE_GROUPS,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -401,7 +401,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
 
     private function addTemplatePageLifeEvents(): void
     {
-        $templatePageSocial = (new CreateTemplatePage())->execute([
+        $templatePageSocial = (new CreateTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -410,14 +410,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // life events
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Life'),
             'type' => Module::TYPE_LIFE_EVENTS,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -426,14 +426,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // goals
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Goals'),
             'type' => Module::TYPE_GOALS,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -444,7 +444,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
 
     private function addTemplatePageInformation(): void
     {
-        $templatePageInformation = (new CreateTemplatePage())->execute([
+        $templatePageInformation = (new CreateTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -453,14 +453,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Documents
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Documents'),
             'type' => Module::TYPE_DOCUMENTS,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -469,14 +469,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Documents
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Photos'),
             'type' => Module::TYPE_PHOTOS,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -485,7 +485,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Notes
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Notes'),
@@ -493,7 +493,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'can_be_deleted' => false,
             'pagination' => 3,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -502,14 +502,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Reminders
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Reminders'),
             'type' => Module::TYPE_REMINDERS,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -518,14 +518,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Loans
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Loans'),
             'type' => Module::TYPE_LOANS,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -534,14 +534,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Tasks
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Tasks'),
             'type' => Module::TYPE_TASKS,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -550,14 +550,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Calls
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Calls'),
             'type' => Module::TYPE_CALLS,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -566,14 +566,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Posts
-        $module = (new CreateModule())->execute([
+        $module = (new CreateModule)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Posts'),
             'type' => Module::TYPE_POSTS,
             'can_be_deleted' => false,
         ]);
-        (new AssociateModuleToTemplatePage())->execute([
+        (new AssociateModuleToTemplatePage)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'template_id' => $this->template->id,
@@ -617,7 +617,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
                 'name_translation_key' => $type,
             ];
 
-            (new CreateGender())->execute($request);
+            (new CreateGender)->execute($request);
         }
     }
 
@@ -643,7 +643,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
                 'name_translation_key' => $pronoun,
             ];
 
-            (new CreatePronoun())->execute($request);
+            (new CreatePronoun)->execute($request);
         }
     }
 
@@ -652,49 +652,49 @@ class SetupAccount extends QueuableService implements ServiceInterface
      */
     private function addGroupTypes(): void
     {
-        $groupType = (new CreateGroupType())->execute([
+        $groupType = (new CreateGroupType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'label_translation_key' => trans_key('Family'),
         ]);
-        (new CreateGroupTypeRole())->execute([
+        (new CreateGroupTypeRole)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'group_type_id' => $groupType->id,
             'label_translation_key' => trans_key('Parent'),
         ]);
-        (new CreateGroupTypeRole())->execute([
+        (new CreateGroupTypeRole)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'group_type_id' => $groupType->id,
             'label_translation_key' => trans_key('Child'),
         ]);
 
-        $groupType = (new CreateGroupType())->execute([
+        $groupType = (new CreateGroupType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'label_translation_key' => trans_key('Couple'),
         ]);
-        (new CreateGroupTypeRole())->execute([
+        (new CreateGroupTypeRole)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'group_type_id' => $groupType->id,
             'label_translation_key' => trans_key('Partner'),
         ]);
 
-        $groupType = (new CreateGroupType())->execute([
+        $groupType = (new CreateGroupType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'label_translation_key' => trans_key('Club'),
         ]);
 
-        $groupType = (new CreateGroupType())->execute([
+        $groupType = (new CreateGroupType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'label_translation_key' => trans_key('Association'),
         ]);
 
-        $groupType = (new CreateGroupType())->execute([
+        $groupType = (new CreateGroupType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'label_translation_key' => trans_key('Roomates'),
@@ -704,7 +704,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
     private function addRelationshipTypes(): void
     {
         // Love type
-        $group = (new CreateRelationshipGroupType())->execute([
+        $group = (new CreateRelationshipGroupType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Love'),
@@ -758,7 +758,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Family type
-        $group = (new CreateRelationshipGroupType())->execute([
+        $group = (new CreateRelationshipGroupType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Family'),
@@ -812,7 +812,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Friend
-        $group = (new CreateRelationshipGroupType())->execute([
+        $group = (new CreateRelationshipGroupType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Friend'),
@@ -837,7 +837,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // Work
-        $group = (new CreateRelationshipGroupType())->execute([
+        $group = (new CreateRelationshipGroupType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Work'),
@@ -879,7 +879,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         foreach ($addresses as $address) {
-            (new CreateAddressType())->execute([
+            (new CreateAddressType)->execute([
                 'account_id' => $this->author->account_id,
                 'author_id' => $this->author->id,
                 'name_translation_key' => $address,
@@ -889,36 +889,36 @@ class SetupAccount extends QueuableService implements ServiceInterface
 
     private function addCallReasonTypes(): void
     {
-        $type = (new CreateCallReasonType())->execute([
+        $type = (new CreateCallReasonType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'label_translation_key' => trans_key('Personal'),
         ]);
-        (new CreateCallReason())->execute([
+        (new CreateCallReason)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'call_reason_type_id' => $type->id,
             'label_translation_key' => trans_key('For advice'),
         ]);
-        (new CreateCallReason())->execute([
+        (new CreateCallReason)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'call_reason_type_id' => $type->id,
             'label_translation_key' => trans_key('Just to say hello'),
         ]);
-        (new CreateCallReason())->execute([
+        (new CreateCallReason)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'call_reason_type_id' => $type->id,
             'label_translation_key' => trans_key('To see if they need anything'),
         ]);
-        (new CreateCallReason())->execute([
+        (new CreateCallReason)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'call_reason_type_id' => $type->id,
             'label_translation_key' => trans_key('Out of respect and appreciation'),
         ]);
-        (new CreateCallReason())->execute([
+        (new CreateCallReason)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'call_reason_type_id' => $type->id,
@@ -926,18 +926,18 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // business
-        $type = (new CreateCallReasonType())->execute([
+        $type = (new CreateCallReasonType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'label_translation_key' => trans_key('Business'),
         ]);
-        (new CreateCallReason())->execute([
+        (new CreateCallReason)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'call_reason_type_id' => $type->id,
             'label_translation_key' => trans_key('Discuss recent purchases'),
         ]);
-        (new CreateCallReason())->execute([
+        (new CreateCallReason)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'call_reason_type_id' => $type->id,
@@ -947,7 +947,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
 
     private function addContactInformation(): void
     {
-        $information = (new CreateContactInformationType())->execute([
+        $information = (new CreateContactInformationType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Email address'),
@@ -957,7 +957,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         $information->type = 'email';
         $information->save();
 
-        $information = (new CreateContactInformationType())->execute([
+        $information = (new CreateContactInformationType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Phone'),
@@ -967,37 +967,37 @@ class SetupAccount extends QueuableService implements ServiceInterface
         $information->type = 'phone';
         $information->save();
 
-        (new CreateContactInformationType())->execute([
+        (new CreateContactInformationType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name' => 'Facebook',
         ]);
-        (new CreateContactInformationType())->execute([
+        (new CreateContactInformationType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name' => 'Twitter',
         ]);
-        (new CreateContactInformationType())->execute([
+        (new CreateContactInformationType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name' => 'Whatsapp',
         ]);
-        (new CreateContactInformationType())->execute([
+        (new CreateContactInformationType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name' => 'Telegram',
         ]);
-        (new CreateContactInformationType())->execute([
+        (new CreateContactInformationType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name' => 'Hangouts',
         ]);
-        (new CreateContactInformationType())->execute([
+        (new CreateContactInformationType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name' => 'Linkedin',
         ]);
-        (new CreateContactInformationType())->execute([
+        (new CreateContactInformationType)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'name' => 'Instagram',
@@ -1020,7 +1020,7 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         foreach ($categories as $category) {
-            (new CreatePetCategory())->execute([
+            (new CreatePetCategory)->execute([
                 'account_id' => $this->author->account_id,
                 'author_id' => $this->author->id,
                 'name_translation_key' => $category,
@@ -1114,14 +1114,14 @@ class SetupAccount extends QueuableService implements ServiceInterface
     private function addPostTemplates(): void
     {
         // default template
-        $postTemplate = (new CreatePostTemplate())->execute([
+        $postTemplate = (new CreatePostTemplate)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'label_translation_key' => trans_key('Regular post'),
             'can_be_deleted' => false,
         ]);
 
-        (new CreatePostTemplateSection())->execute([
+        (new CreatePostTemplateSection)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'post_template_id' => $postTemplate->id,
@@ -1130,42 +1130,42 @@ class SetupAccount extends QueuableService implements ServiceInterface
         ]);
 
         // inspirational template
-        $postTemplate = (new CreatePostTemplate())->execute([
+        $postTemplate = (new CreatePostTemplate)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'label_translation_key' => trans_key('Inspirational post'),
             'can_be_deleted' => true,
         ]);
 
-        (new CreatePostTemplateSection())->execute([
+        (new CreatePostTemplateSection)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'post_template_id' => $postTemplate->id,
             'label_translation_key' => trans_key('I am grateful for'),
             'can_be_deleted' => true,
         ]);
-        (new CreatePostTemplateSection())->execute([
+        (new CreatePostTemplateSection)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'post_template_id' => $postTemplate->id,
             'label_translation_key' => trans_key('Daily affirmation'),
             'can_be_deleted' => true,
         ]);
-        (new CreatePostTemplateSection())->execute([
+        (new CreatePostTemplateSection)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'post_template_id' => $postTemplate->id,
             'label_translation_key' => trans_key('How could I have done this day better?'),
             'can_be_deleted' => true,
         ]);
-        (new CreatePostTemplateSection())->execute([
+        (new CreatePostTemplateSection)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'post_template_id' => $postTemplate->id,
             'label_translation_key' => trans_key('What would make today great?'),
             'can_be_deleted' => true,
         ]);
-        (new CreatePostTemplateSection())->execute([
+        (new CreatePostTemplateSection)->execute([
             'account_id' => $this->author->account_id,
             'author_id' => $this->author->id,
             'post_template_id' => $postTemplate->id,

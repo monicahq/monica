@@ -20,7 +20,7 @@ class VaultSettingsLifeEventCategoriesPositionController extends Controller
             'new_position' => $request->input('position'),
         ];
 
-        $lifeEventCategory = (new UpdateLifeEventCategoryPosition())->execute($data);
+        $lifeEventCategory = (new UpdateLifeEventCategoryPosition)->execute($data);
 
         return response()->json([
             'data' => VaultSettingsIndexViewHelper::dtoLifeEventCategory($lifeEventCategory),

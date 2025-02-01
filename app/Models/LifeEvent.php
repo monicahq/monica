@@ -16,7 +16,7 @@ class LifeEvent extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'timeline_event_id',
@@ -49,6 +49,8 @@ class LifeEvent extends Model
 
     /**
      * Get the timeline event associated with the life event.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\TimelineEvent, $this>
      */
     public function timelineEvent(): BelongsTo
     {
@@ -57,6 +59,8 @@ class LifeEvent extends Model
 
     /**
      * Get the life event type associated with the life event.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\LifeEventType, $this>
      */
     public function lifeEventType(): BelongsTo
     {
@@ -65,6 +69,8 @@ class LifeEvent extends Model
 
     /**
      * Get the currency associated with the life event.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Currency, $this>
      */
     public function currency(): BelongsTo
     {
@@ -73,6 +79,8 @@ class LifeEvent extends Model
 
     /**
      * Get the emotion associated with the life event.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Emotion, $this>
      */
     public function emotion(): BelongsTo
     {
@@ -81,6 +89,8 @@ class LifeEvent extends Model
 
     /**
      * Get the contact who paid for the life event.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
      */
     public function paidBy(): BelongsTo
     {
@@ -89,6 +99,8 @@ class LifeEvent extends Model
 
     /**
      * Get the contact records the life event is with.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Contact, $this>
      */
     public function participants(): BelongsToMany
     {

@@ -127,7 +127,7 @@ class GatesTest extends TestCase
     }
 
     /** @test */
-    public function it_checks_sliceOfLife_owner()
+    public function it_checks_slice_of_life_owner()
     {
         $user = $this->createUser();
         $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);

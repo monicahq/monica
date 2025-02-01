@@ -81,7 +81,7 @@ export default {
     return {
       processingSearch: false,
       form: {
-        searchTerm: '',
+        searchTerm: this.data.query || '',
         errors: [],
       },
       results: [],
@@ -92,6 +92,8 @@ export default {
     this.$nextTick().then(() => {
       this.$refs.searchField.focus();
     });
+
+    this.search();
   },
 
   methods: {

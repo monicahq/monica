@@ -15,7 +15,7 @@ class Template extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'account_id',
@@ -35,6 +35,8 @@ class Template extends Model
 
     /**
      * Get the account associated with the template.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {
@@ -43,6 +45,8 @@ class Template extends Model
 
     /**
      * Get the template page records associated with the template.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\TemplatePage, $this>
      */
     public function pages(): HasMany
     {
@@ -51,6 +55,8 @@ class Template extends Model
 
     /**
      * Get the contacts associated with the template.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Contact, $this>
      */
     public function contacts(): HasMany
     {

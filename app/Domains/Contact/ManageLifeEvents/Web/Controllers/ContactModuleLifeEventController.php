@@ -49,7 +49,7 @@ class ContactModuleLifeEventController extends Controller
             'participant_ids' => $participants,
         ];
 
-        $lifeEvent = (new CreateLifeEvent())->execute($data);
+        $lifeEvent = (new CreateLifeEvent)->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -93,7 +93,7 @@ class ContactModuleLifeEventController extends Controller
             'participant_ids' => $participants,
         ];
 
-        $lifeEvent = (new UpdateLifeEvent())->execute($data);
+        $lifeEvent = (new UpdateLifeEvent)->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -111,7 +111,7 @@ class ContactModuleLifeEventController extends Controller
             'life_event_id' => $lifeEventId,
         ];
 
-        (new DestroyLifeEvent())->execute($data);
+        (new DestroyLifeEvent)->execute($data);
 
         return response()->json([
             'data' => true,

@@ -28,7 +28,7 @@ class ContactModulePhotoController extends Controller
             'type' => File::TYPE_PHOTO,
         ];
 
-        $file = (new UploadFile())->execute($data);
+        $file = (new UploadFile)->execute($data);
 
         $contact = Contact::where('vault_id', $vaultId)->findOrFail($contactId);
 
@@ -48,7 +48,7 @@ class ContactModulePhotoController extends Controller
             'file_id' => $fileId,
         ];
 
-        (new DestroyFile())->execute($data);
+        (new DestroyFile)->execute($data);
 
         return response()->json([
             'data' => route('contact.photo.index', [

@@ -42,7 +42,7 @@ class ResetJobInformationTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new ResetJobInformation())->execute($request);
+        (new ResetJobInformation)->execute($request);
     }
 
     /** @test */
@@ -108,7 +108,7 @@ class ResetJobInformationTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        (new ResetJobInformation())->execute($request);
+        (new ResetJobInformation)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,

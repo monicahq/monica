@@ -18,9 +18,9 @@ class ImportGroupTest extends TestCase
         PHPUnitAssertions;
 
     /** @test */
-    public function it_imports_names_N()
+    public function it_imports_names_n()
     {
-        $importGroup = new ImportGroup();
+        $importGroup = new ImportGroup;
 
         $vcard = new VCard([
             'N' => ['NameGroup', '', '', '', ''],
@@ -31,12 +31,12 @@ class ImportGroupTest extends TestCase
     }
 
     /** @test */
-    public function it_imports_names_FN()
+    public function it_imports_names_fn()
     {
         $author = User::factory()->create();
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $author;
-        $importGroup = new ImportGroup();
+        $importGroup = new ImportGroup;
         $importGroup->setContext($importVCard);
 
         $vcard = new VCard([
@@ -48,12 +48,12 @@ class ImportGroupTest extends TestCase
     }
 
     /** @test */
-    public function it_imports_name_FN()
+    public function it_imports_name_fn()
     {
         $author = User::factory()->create();
-        $importVCard = new ImportVCard();
+        $importVCard = new ImportVCard;
         $importVCard->author = $author;
-        $importGroup = new ImportGroup();
+        $importGroup = new ImportGroup;
         $importGroup->setContext($importVCard);
 
         $vcard = new VCard([
@@ -68,7 +68,7 @@ class ImportGroupTest extends TestCase
     /** @test */
     public function it_imports_uuid_default()
     {
-        $importGroup = new ImportGroup();
+        $importGroup = new ImportGroup;
         $importGroup->setContext(new ImportVCard($this->app));
 
         $vcard = new VCard([
@@ -86,7 +86,7 @@ class ImportGroupTest extends TestCase
     public function it_updates_name()
     {
         $vault = $this->createVaultUser($user = User::factory()->create(), Vault::PERMISSION_MANAGE);
-        $importGroup = new ImportGroup();
+        $importGroup = new ImportGroup;
         $importGroup->setContext(tap(new ImportVCard($this->app), function ($importVCard) use ($user, $vault) {
             $importVCard->author = $user;
             $importVCard->vault = $vault;

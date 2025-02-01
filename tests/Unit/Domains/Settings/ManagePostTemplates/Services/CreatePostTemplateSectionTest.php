@@ -33,7 +33,7 @@ class CreatePostTemplateSectionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreatePostTemplateSection())->execute($request);
+        (new CreatePostTemplateSection)->execute($request);
     }
 
     /** @test */
@@ -69,7 +69,7 @@ class CreatePostTemplateSectionTest extends TestCase
             'can_be_deleted' => true,
         ];
 
-        $postTemplateSection = (new CreatePostTemplateSection())->execute($request);
+        $postTemplateSection = (new CreatePostTemplateSection)->execute($request);
 
         $this->assertDatabaseHas('post_template_sections', [
             'id' => $postTemplateSection->id,

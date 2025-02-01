@@ -403,9 +403,9 @@ class DavClient
      */
     public function propPatch(array $properties, string $url = ''): bool
     {
-        $propPatch = new PropPatch();
+        $propPatch = new PropPatch;
         $propPatch->properties = $properties;
-        $body = (new Service())->write(
+        $body = (new Service)->write(
             '{DAV:}propertyupdate',
             $propPatch
         );
@@ -524,7 +524,7 @@ class DavClient
      */
     private static function parseMultiStatus(string $body): array
     {
-        $multistatus = (new Service())
+        $multistatus = (new Service)
             ->expect('{DAV:}multistatus', $body);
 
         $result = [];

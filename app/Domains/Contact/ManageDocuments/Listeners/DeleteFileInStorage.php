@@ -5,8 +5,8 @@ namespace App\Domains\Contact\ManageDocuments\Listeners;
 use App\Domains\Contact\ManageDocuments\Events\FileDeleted;
 use App\Exceptions\EnvVariablesNotSetException;
 use App\Models\File;
-use Http\Client\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Uploadcare\Api;
 use Uploadcare\Configuration;
 use Uploadcare\Interfaces\File\FileInfoInterface;
@@ -31,9 +31,7 @@ class DeleteFileInStorage
     /**
      * Create the event listener.
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Handle the event.
@@ -49,11 +47,11 @@ class DeleteFileInStorage
     private function checkAPIKeyPresence(): void
     {
         if (is_null(config('services.uploadcare.private_key'))) {
-            throw new EnvVariablesNotSetException();
+            throw new EnvVariablesNotSetException;
         }
 
         if (is_null(config('services.uploadcare.public_key'))) {
-            throw new EnvVariablesNotSetException();
+            throw new EnvVariablesNotSetException;
         }
     }
 

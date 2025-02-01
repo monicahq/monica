@@ -23,8 +23,7 @@ class ReminderTriggered extends Notification
         private UserNotificationChannel $channel,
         private string $content,
         private string $contactName
-    ) {
-    }
+    ) {}
 
     /**
      * Get the notification's delivery channels.
@@ -58,7 +57,7 @@ class ReminderTriggered extends Notification
             'subject_line' => $this->content,
         ]);
 
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject(trans('Reminder for :name', ['name' => $this->contactName]))
             ->line(trans('You wanted to be reminded of the following:'))
             ->line($this->content)

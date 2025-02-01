@@ -38,7 +38,7 @@ class UpdateGroupTypeRoleTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateGroupTypeRole())->execute($request);
+        (new UpdateGroupTypeRole)->execute($request);
     }
 
     /** @test */
@@ -95,7 +95,7 @@ class UpdateGroupTypeRoleTest extends TestCase
             'label' => 'type label',
         ];
 
-        $groupTypeRole = (new UpdateGroupTypeRole())->execute($request);
+        $groupTypeRole = (new UpdateGroupTypeRole)->execute($request);
 
         $this->assertDatabaseHas('group_type_roles', [
             'id' => $groupTypeRole->id,

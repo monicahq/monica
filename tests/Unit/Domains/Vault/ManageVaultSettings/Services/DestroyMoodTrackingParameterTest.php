@@ -37,7 +37,7 @@ class DestroyMoodTrackingParameterTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyMoodTrackingParameter())->execute($request);
+        (new DestroyMoodTrackingParameter)->execute($request);
     }
 
     /** @test */
@@ -103,7 +103,7 @@ class DestroyMoodTrackingParameterTest extends TestCase
             'mood_tracking_parameter_id' => $moodTrackingParameter->id,
         ];
 
-        (new DestroyMoodTrackingParameter())->execute($request);
+        (new DestroyMoodTrackingParameter)->execute($request);
 
         $this->assertDatabaseMissing('mood_tracking_parameters', [
             'id' => $moodTrackingParameter->id,

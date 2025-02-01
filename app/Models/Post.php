@@ -21,7 +21,7 @@ class Post extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'journal_id',
@@ -46,6 +46,8 @@ class Post extends Model
 
     /**
      * Get the journal associated with the post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Journal, $this>
      */
     public function journal(): BelongsTo
     {
@@ -54,6 +56,8 @@ class Post extends Model
 
     /**
      * Get the slice of life associated with the post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\SliceOfLife, $this>
      */
     public function sliceOfLife(): BelongsTo
     {
@@ -62,6 +66,8 @@ class Post extends Model
 
     /**
      * Get the post sections associated with the post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PostSection, $this>
      */
     public function postSections(): HasMany
     {
@@ -70,6 +76,8 @@ class Post extends Model
 
     /**
      * Get the contacts associated with the post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Contact, $this>
      */
     public function contacts(): BelongsToMany
     {
@@ -78,6 +86,8 @@ class Post extends Model
 
     /**
      * Get the post's feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne<\App\Models\ContactFeedItem, $this>
      */
     public function feedItem(): MorphOne
     {
@@ -86,6 +96,8 @@ class Post extends Model
 
     /**
      * Get the tags associated with the post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Tag, $this>
      */
     public function tags(): BelongsToMany
     {
@@ -94,6 +106,8 @@ class Post extends Model
 
     /**
      * Get the files associated with the post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\App\Models\File, $this>
      */
     public function files(): MorphMany
     {
@@ -102,6 +116,8 @@ class Post extends Model
 
     /**
      * Get the post metrics associated with the post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PostMetric, $this>
      */
     public function postMetrics(): HasMany
     {

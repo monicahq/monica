@@ -42,7 +42,7 @@ class DestroyAvatarTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyAvatar())->execute($request);
+        (new DestroyAvatar)->execute($request);
     }
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact, File $file): void
@@ -57,7 +57,7 @@ class DestroyAvatarTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        (new DestroyAvatar())->execute($request);
+        (new DestroyAvatar)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,

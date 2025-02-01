@@ -117,12 +117,12 @@
     </div>
 
     <!-- list of existing users -->
-    <div class="mb-6 rounded border text-sm">
+    <div class="mb-6 rounded-sm border text-sm">
       <ul v-if="localUsersInVault.length > 0" class="rounded-b rounded-t bg-white dark:bg-gray-900">
         <li
           v-for="user in localUsersInVault"
           :key="user.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <div v-if="editedUser.id !== user.id" class="flex items-center justify-between px-5 py-2">
             <span>{{ user.name }}</span>
 

@@ -17,7 +17,7 @@ class PreferencesHelpController extends Controller
             'visibility' => ! Auth::user()->help_shown,
         ];
 
-        (new StoreHelpPreference())->execute($request);
+        (new StoreHelpPreference)->execute($request);
 
         return response()->json([
             'data' => UserPreferencesIndexViewHelper::dtoHelp(Auth::user()),

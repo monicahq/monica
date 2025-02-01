@@ -20,7 +20,7 @@ class ContactSortController extends Controller
             'sort_order' => $request->input('sort_order'),
         ];
 
-        (new UpdateContactSortOrder())->execute($data);
+        (new UpdateContactSortOrder)->execute($data);
 
         return response()->json([
             'data' => route('contact.index', [

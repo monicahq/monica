@@ -20,7 +20,7 @@ class VaultSettingsQuickFactTemplatePositionController extends Controller
             'new_position' => $request->input('position'),
         ];
 
-        $parameter = (new UpdateQuickFactTemplatePosition())->execute($data);
+        $parameter = (new UpdateQuickFactTemplatePosition)->execute($data);
 
         return response()->json([
             'data' => VaultSettingsIndexViewHelper::dtoQuickFactTemplateEntry($parameter),

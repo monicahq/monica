@@ -30,7 +30,7 @@ class ExportGenderTest extends TestCase
         $vault = $this->createVaultUser($user);
         $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportGender)->export($contact, $vCard);
 
         $this->assertCount(
@@ -56,7 +56,7 @@ class ExportGenderTest extends TestCase
             'gender_id' => $gender->id,
         ]);
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportGender)->export($contact, $vCard);
 
         $this->assertCount(
@@ -81,7 +81,7 @@ class ExportGenderTest extends TestCase
             'gender_id' => $gender->id,
         ]);
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportGender)->export($contact, $vCard);
 
         $this->assertCount(
@@ -107,7 +107,7 @@ class ExportGenderTest extends TestCase
             'gender_id' => $gender->id,
         ]);
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportGender)->export($contact, $vCard);
 
         $this->assertCount(
@@ -133,7 +133,7 @@ class ExportGenderTest extends TestCase
             'gender_id' => $gender->id,
         ]);
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportGender)->export($contact, $vCard);
 
         $this->assertCount(
@@ -159,7 +159,7 @@ class ExportGenderTest extends TestCase
             'gender_id' => $gender->id,
         ]);
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportGender)->export($contact, $vCard);
 
         $this->assertCount(

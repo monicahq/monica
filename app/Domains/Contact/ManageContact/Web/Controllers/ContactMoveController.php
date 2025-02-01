@@ -36,7 +36,7 @@ class ContactMoveController extends Controller
             'contact_id' => $contactId,
         ];
 
-        (new MoveContactToAnotherVault())->execute($data);
+        (new MoveContactToAnotherVault)->execute($data);
 
         return Redirect::route('contact.show', [
             'vault' => $request->input('other_vault_id'),

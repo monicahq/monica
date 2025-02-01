@@ -44,7 +44,7 @@ class DestroyLifeEventCategory extends BaseService implements ServiceInterface
             ->findOrFail($data['life_event_category_id']);
 
         if (! $category->can_be_deleted) {
-            throw new CantBeDeletedException();
+            throw new CantBeDeletedException;
         }
 
         $category->delete();

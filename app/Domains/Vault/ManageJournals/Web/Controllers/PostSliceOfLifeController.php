@@ -27,7 +27,7 @@ class PostSliceOfLifeController extends Controller
             'slice_of_life_id' => $request->input('slice_of_life_id'),
         ];
 
-        $slice = (new AddPostToSliceOfLife())->execute($data);
+        $slice = (new AddPostToSliceOfLife)->execute($data);
 
         return response()->json([
             'data' => SliceOfLifeShowViewHelper::dtoSlice($slice),
@@ -48,7 +48,7 @@ class PostSliceOfLifeController extends Controller
             'post_id' => $postId,
         ];
 
-        (new RemovePostFromSliceOfLife())->execute($data);
+        (new RemovePostFromSliceOfLife)->execute($data);
 
         return response()->json([
             'data' => null,

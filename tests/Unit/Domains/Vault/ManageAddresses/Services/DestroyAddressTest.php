@@ -38,7 +38,7 @@ class DestroyAddressTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyAddress())->execute($request);
+        (new DestroyAddress)->execute($request);
     }
 
     /** @test */
@@ -94,7 +94,7 @@ class DestroyAddressTest extends TestCase
             'address_id' => $address->id,
         ];
 
-        (new DestroyAddress())->execute($request);
+        (new DestroyAddress)->execute($request);
 
         $this->assertDatabaseMissing('addresses', [
             'id' => $address->id,

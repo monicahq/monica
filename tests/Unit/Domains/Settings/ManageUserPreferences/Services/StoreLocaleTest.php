@@ -30,7 +30,7 @@ class StoreLocaleTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new StoreLocale())->execute($request);
+        (new StoreLocale)->execute($request);
     }
 
     /** @test */
@@ -53,7 +53,7 @@ class StoreLocaleTest extends TestCase
             'locale' => 'fr',
         ];
 
-        $user = (new StoreLocale())->execute($request);
+        $user = (new StoreLocale)->execute($request);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,

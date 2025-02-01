@@ -53,7 +53,7 @@ class TelegramWebhookController extends Controller
         $channel->active = true;
         $channel->save();
 
-        (new ScheduleAllContactRemindersForNotificationChannel())->execute([
+        (new ScheduleAllContactRemindersForNotificationChannel)->execute([
             'account_id' => $channel->user->account_id,
             'author_id' => $channel->user->id,
             'user_notification_channel_id' => $channel->id,

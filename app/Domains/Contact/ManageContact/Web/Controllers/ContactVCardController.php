@@ -16,7 +16,7 @@ class ContactVCardController extends Controller
 {
     public function download(Request $request, Vault $vault, Contact $contact)
     {
-        $cardData = $this->exportVCard($vault->id, $contact->id);
+        $cardData = $this->exportVCard((string) $vault->id, $contact->id);
         $name = Str::of($contact->name)->slug(language: App::getLocale());
 
         return Redirect::back()->with('flash', [

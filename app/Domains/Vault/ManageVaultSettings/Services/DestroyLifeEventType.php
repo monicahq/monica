@@ -48,7 +48,7 @@ class DestroyLifeEventType extends BaseService implements ServiceInterface
             ->findOrFail($data['life_event_type_id']);
 
         if (! $type->can_be_deleted) {
-            throw new CantBeDeletedException();
+            throw new CantBeDeletedException;
         }
 
         $type->delete();

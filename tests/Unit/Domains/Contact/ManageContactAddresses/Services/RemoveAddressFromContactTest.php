@@ -44,7 +44,7 @@ class RemoveAddressFromContactTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new RemoveAddressFromContact())->execute($request);
+        (new RemoveAddressFromContact)->execute($request);
     }
 
     /** @test */
@@ -130,7 +130,7 @@ class RemoveAddressFromContactTest extends TestCase
             'address_id' => $address->id,
         ];
 
-        $address = (new RemoveAddressFromContact())->execute($request);
+        $address = (new RemoveAddressFromContact)->execute($request);
 
         $this->assertDatabaseMissing('contact_address', [
             'contact_id' => $contact->id,

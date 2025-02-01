@@ -32,7 +32,7 @@ class CreateVaultTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateVault())->execute($request);
+        (new CreateVault)->execute($request);
     }
 
     /** @test */
@@ -54,7 +54,7 @@ class CreateVaultTest extends TestCase
             'type' => Vault::TYPE_PERSONAL,
         ];
 
-        $vault = (new CreateVault())->execute($request);
+        $vault = (new CreateVault)->execute($request);
 
         $this->assertDatabaseHas('vaults', [
             'id' => $vault->id,

@@ -23,7 +23,7 @@ class MonetaryNumberHelper
     protected static function getCurrencies(): ISOCurrencies
     {
         if (self::$currencies === null) {
-            self::$currencies = new ISOCurrencies();
+            self::$currencies = new ISOCurrencies;
         }
 
         return self::$currencies;

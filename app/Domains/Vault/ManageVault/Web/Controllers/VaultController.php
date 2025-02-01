@@ -54,7 +54,7 @@ class VaultController extends Controller
             'description' => $request->input('description'),
         ];
 
-        (new CreateVault())->execute($data);
+        (new CreateVault)->execute($data);
 
         return response()->json([
             'data' => route('vault.index'),
@@ -94,7 +94,7 @@ class VaultController extends Controller
             'vault_id' => $vault->id,
         ];
 
-        (new DestroyVault())->execute($data);
+        (new DestroyVault)->execute($data);
 
         return response()->json([
             'data' => route('vault.index'),

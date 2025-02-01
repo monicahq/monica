@@ -44,8 +44,8 @@ class GetEtag extends BaseService implements ServiceInterface
         /** @var VCardResource */
         $entry = $data['entry'];
 
-        if ($entry->vault_id !== $this->vault->id) {
-            throw new ModelNotFoundException();
+        if ($entry->vault_id != $this->vault->id) {
+            throw new ModelNotFoundException;
         }
 
         return $entry->distant_etag ?? '"'.hash('sha256', $entry->vcard).'"';

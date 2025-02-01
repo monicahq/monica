@@ -13,7 +13,7 @@ class UserToken extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'user_id',
@@ -30,7 +30,7 @@ class UserToken extends Model
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'token',
@@ -41,7 +41,7 @@ class UserToken extends Model
     /**
      * The attributes that should be visible in serialization.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $visible = [
         'driver',
@@ -52,7 +52,7 @@ class UserToken extends Model
     /**
      * Get the user record associated with the company.
      *
-     * @return BelongsTo
+     * @return BelongsTo<User, $this>
      */
     public function user()
     {

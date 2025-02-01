@@ -40,7 +40,7 @@ class RemoveSliceOfLifeCoverImageTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new RemoveSliceOfLifeCoverImage())->execute($request);
+        (new RemoveSliceOfLifeCoverImage)->execute($request);
     }
 
     /** @test */
@@ -119,7 +119,7 @@ class RemoveSliceOfLifeCoverImageTest extends TestCase
             'slice_of_life_id' => $slice->id,
         ];
 
-        (new RemoveSliceOfLifeCoverImage())->execute($request);
+        (new RemoveSliceOfLifeCoverImage)->execute($request);
 
         $this->assertDatabaseHas('slice_of_lives', [
             'id' => $slice->id,

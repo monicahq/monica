@@ -33,7 +33,7 @@ class UpdateVaultTabVisibilityTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateVaultTabVisibility())->execute($request);
+        (new UpdateVaultTabVisibility)->execute($request);
     }
 
     /** @test */
@@ -85,7 +85,7 @@ class UpdateVaultTabVisibilityTest extends TestCase
             'show_calendar_tab' => true,
         ];
 
-        $vault = (new UpdateVaultTabVisibility())->execute($request);
+        $vault = (new UpdateVaultTabVisibility)->execute($request);
 
         $this->assertDatabaseHas('vaults', [
             'id' => $vault->id,

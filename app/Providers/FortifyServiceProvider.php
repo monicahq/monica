@@ -38,9 +38,7 @@ class FortifyServiceProvider extends ServiceProvider
     {
         $this->patchRoutes();
 
-        $loginController = $this->app->make(LoginController::class);
-
-        Fortify::loginView(fn ($request) => $loginController($request));
+        Fortify::loginView(fn ($request) => (new LoginController)($request));
         Fortify::confirmPasswordsUsing(fn ($user, ?string $password = null) => $user->password
                 ? app(StatefulGuard::class)->validate([
                     'email' => $user->email,
@@ -53,7 +51,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
-        Fortify::twoFactorChallengeView(fn () => new TwoFactorChallengeView());
+        Fortify::twoFactorChallengeView(fn () => new TwoFactorChallengeView);
 
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;

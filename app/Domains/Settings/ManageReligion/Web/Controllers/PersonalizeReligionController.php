@@ -32,7 +32,7 @@ class PersonalizeReligionController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $religion = (new CreateReligion())->execute($data);
+        $religion = (new CreateReligion)->execute($data);
 
         return response()->json([
             'data' => PersonalizeReligionViewHelper::dto($religion),
@@ -48,7 +48,7 @@ class PersonalizeReligionController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $religion = (new UpdateReligion())->execute($data);
+        $religion = (new UpdateReligion)->execute($data);
 
         return response()->json([
             'data' => PersonalizeReligionViewHelper::dto($religion),
@@ -63,7 +63,7 @@ class PersonalizeReligionController extends Controller
             'religion_id' => $religionId,
         ];
 
-        (new DestroyReligion())->execute($data);
+        (new DestroyReligion)->execute($data);
 
         return response()->json([
             'data' => true,

@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Attributes\SearchUsingFullText;
-use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 
 class Group extends VCardResource
@@ -27,7 +26,7 @@ class Group extends VCardResource
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'vault_id',
@@ -53,18 +52,14 @@ class Group extends VCardResource
     /**
      * Get the indexable data array for the model.
      *
-     *
      * @codeCoverageIgnore
      */
-    #[SearchUsingPrefix(['id', 'vault_id'])]
-    #[SearchUsingFullText(['name'])]
+    #[SearchUsingFullText(['name'], ['expanded' => true])]
     public function toSearchableArray(): array
     {
-        return [
-            'id' => $this->id,
-            'vault_id' => $this->vault_id,
-            'name' => $this->name,
-        ];
+        return array_merge(ScoutHelper::id($this), [
+            'name' => $this->name ?? '',
+        ]);
     }
 
     /**
@@ -74,11 +69,13 @@ class Group extends VCardResource
      */
     public function searchIndexShouldBeUpdated()
     {
-        return ScoutHelper::activated();
+        return ScoutHelper::isActivated();
     }
 
     /**
      * Get the vault associated with the group.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {
@@ -87,6 +84,8 @@ class Group extends VCardResource
 
     /**
      * Get the vault associated with the group.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\GroupType, $this>
      */
     public function groupType(): BelongsTo
     {
@@ -95,6 +94,8 @@ class Group extends VCardResource
 
     /**
      * Get the contacts associated with the group.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Contact, $this>
      */
     public function contacts(): BelongsToMany
     {
@@ -103,6 +104,8 @@ class Group extends VCardResource
 
     /**
      * Get the group's feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne<\App\Models\ContactFeedItem, $this>
      */
     public function feedItem(): MorphOne
     {

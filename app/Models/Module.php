@@ -67,7 +67,7 @@ class Module extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'account_id',
@@ -91,6 +91,8 @@ class Module extends Model
 
     /**
      * Get the account associated with the template.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {
@@ -99,6 +101,8 @@ class Module extends Model
 
     /**
      * Get the module rows associated with the module.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ModuleRow, $this>
      */
     public function rows(): HasMany
     {
@@ -107,6 +111,8 @@ class Module extends Model
 
     /**
      * Get the template pages associated with the module.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\TemplatePage, $this>
      */
     public function templatePages(): BelongsToMany
     {

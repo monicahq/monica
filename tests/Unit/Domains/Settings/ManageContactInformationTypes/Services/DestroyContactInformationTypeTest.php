@@ -34,7 +34,7 @@ class DestroyContactInformationTypeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyContactInformationType())->execute($request);
+        (new DestroyContactInformationType)->execute($request);
     }
 
     /** @test */
@@ -80,7 +80,7 @@ class DestroyContactInformationTypeTest extends TestCase
             'contact_information_type_id' => $type->id,
         ];
 
-        (new DestroyContactInformationType())->execute($request);
+        (new DestroyContactInformationType)->execute($request);
 
         $this->assertDatabaseMissing('contact_information_types', [
             'id' => $type->id,

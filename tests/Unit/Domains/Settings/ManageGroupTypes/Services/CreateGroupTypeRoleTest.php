@@ -35,7 +35,7 @@ class CreateGroupTypeRoleTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateGroupTypeRole())->execute($request);
+        (new CreateGroupTypeRole)->execute($request);
     }
 
     /** @test */
@@ -85,7 +85,7 @@ class CreateGroupTypeRoleTest extends TestCase
             'label' => 'type name',
         ];
 
-        $groupTypeRole = (new CreateGroupTypeRole())->execute($request);
+        $groupTypeRole = (new CreateGroupTypeRole)->execute($request);
 
         $this->assertDatabaseHas('group_type_roles', [
             'id' => $groupTypeRole->id,

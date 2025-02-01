@@ -68,7 +68,7 @@
             <pretty-link :href="data.url.back" :text="$t('Cancel')" :class="'me-3'" />
             <pretty-button
               :href="'data.url.vault.create'"
-              :text="$t('Add')"
+              :text="$t('Create')"
               :state="loadingState"
               :icon="'check'"
               :class="'save'" />

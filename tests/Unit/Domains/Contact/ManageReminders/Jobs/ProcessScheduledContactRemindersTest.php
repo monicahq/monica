@@ -39,7 +39,7 @@ class ProcessScheduledContactRemindersTest extends TestCase
             'triggered_at' => null,
         ]);
 
-        $job = new ProcessScheduledContactReminders();
+        $job = new ProcessScheduledContactReminders;
         $job->dispatch();
         $job->handle();
 
@@ -72,7 +72,7 @@ class ProcessScheduledContactRemindersTest extends TestCase
             'triggered_at' => null,
         ]);
 
-        $job = new ProcessScheduledContactReminders();
+        $job = new ProcessScheduledContactReminders;
         $job->dispatch();
         $job->handle();
 
@@ -103,7 +103,7 @@ class ProcessScheduledContactRemindersTest extends TestCase
 
         $contactReminder->contact->delete();
 
-        $job = new ProcessScheduledContactReminders();
+        $job = new ProcessScheduledContactReminders;
         $job->dispatch();
         $job->handle();
 
@@ -133,7 +133,7 @@ class ProcessScheduledContactRemindersTest extends TestCase
             'triggered_at' => null,
         ]);
 
-        $job = new ProcessScheduledContactReminders();
+        $job = new ProcessScheduledContactReminders;
         $job->dispatch();
         $job->handle();
 

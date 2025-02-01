@@ -21,7 +21,7 @@ class ContactModuleGoalController extends Controller
             'name' => $request->input('name'),
         ];
 
-        $goal = (new CreateGoal())->execute($data);
+        $goal = (new CreateGoal)->execute($data);
 
         $contact = Contact::find($contactId);
 

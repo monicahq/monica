@@ -40,7 +40,7 @@ class RemoveLabelTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new RemoveLabel())->execute($request);
+        (new RemoveLabel)->execute($request);
     }
 
     /** @test */
@@ -114,7 +114,7 @@ class RemoveLabelTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        (new RemoveLabel())->execute($request);
+        (new RemoveLabel)->execute($request);
 
         $this->assertDatabaseMissing('contact_label', [
             'contact_id' => $contact->id,

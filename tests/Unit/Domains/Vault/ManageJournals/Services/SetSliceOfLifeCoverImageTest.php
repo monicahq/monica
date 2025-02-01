@@ -42,7 +42,7 @@ class SetSliceOfLifeCoverImageTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new SetSliceOfLifeCoverImage())->execute($request);
+        (new SetSliceOfLifeCoverImage)->execute($request);
     }
 
     /** @test */
@@ -140,7 +140,7 @@ class SetSliceOfLifeCoverImageTest extends TestCase
             'file_id' => $file->id,
         ];
 
-        (new SetSliceOfLifeCoverImage())->execute($request);
+        (new SetSliceOfLifeCoverImage)->execute($request);
 
         $this->assertDatabaseHas('slice_of_lives', [
             'id' => $slice->id,

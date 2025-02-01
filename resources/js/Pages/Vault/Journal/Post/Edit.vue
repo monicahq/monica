@@ -226,7 +226,7 @@ const destroy = () => {
                 <li
                   v-for="photo in localPhotos"
                   :key="photo.id"
-                  class="item-list flex items-center justify-between border-b border-gray-200 p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                  class="item-list flex items-center justify-between border-b border-gray-200 p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
                   <div class="flex">
                     <img :src="photo.url.show" class="me-4" width="75" height="75" />
 
@@ -257,7 +257,7 @@ const destroy = () => {
                 <!-- case when there are no photos yet -->
                 <div
                   v-if="localPhotos.length === 0"
-                  class="mb-6 flex cursor-pointer flex-col items-center rounded-lg border border-gray-200 bg-white p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
+                  class="mb-6 flex cursor-pointer flex-col items-center rounded-lg border border-gray-200 bg-white p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-slate-800">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -277,7 +277,7 @@ const destroy = () => {
                 <!-- case when there are photos -->
                 <div v-else class="mb-6 flex items-center">
                   <p
-                    class="inline-block cursor-pointer rounded-lg border bg-slate-200 dark:bg-slate-700 px-1 py-1 text-xs hover:bg-slate-300 hover:dark:bg-slate-800">
+                    class="inline-block cursor-pointer rounded-lg border bg-slate-200 dark:bg-slate-700 px-1 py-1 text-xs hover:bg-slate-300 dark:hover:bg-slate-800">
                     {{ $t('+ add another photo') }}
                   </p>
                 </div>
@@ -382,7 +382,7 @@ const destroy = () => {
               class="mb-6 inline-block">
               <template #default="{ inputValue, inputEvents }">
                 <input
-                  class="rounded border bg-white px-2 py-1 dark:border-gray-700 dark:bg-gray-900"
+                  class="rounded-sm border bg-white px-2 py-1 dark:border-gray-700 dark:bg-gray-900"
                   :value="inputValue"
                   v-on="inputEvents" />
               </template>

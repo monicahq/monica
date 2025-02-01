@@ -39,7 +39,7 @@ class DestroyGroupTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyGroup())->execute($request);
+        (new DestroyGroup)->execute($request);
     }
 
     /** @test */
@@ -97,7 +97,7 @@ class DestroyGroupTest extends TestCase
             'group_id' => $group->id,
         ];
 
-        (new DestroyGroup())->execute($request);
+        (new DestroyGroup)->execute($request);
 
         $this->assertDatabaseMissing('groups', [
             'id' => $group->id,

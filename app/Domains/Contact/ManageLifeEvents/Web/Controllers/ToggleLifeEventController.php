@@ -18,7 +18,7 @@ class ToggleLifeEventController
             'life_event_id' => $lifeEventId,
         ];
 
-        (new ToggleLifeEvent())->execute($data);
+        (new ToggleLifeEvent)->execute($data);
 
         return response()->json([
             'data' => true,

@@ -33,7 +33,7 @@ class DestroyTemplatePageTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyTemplatePage())->execute($request);
+        (new DestroyTemplatePage)->execute($request);
     }
 
     /** @test */
@@ -69,7 +69,7 @@ class DestroyTemplatePageTest extends TestCase
             'template_page_id' => $templatePage->id,
         ];
 
-        (new DestroyTemplatePage())->execute($request);
+        (new DestroyTemplatePage)->execute($request);
 
         $this->assertDatabaseMissing('template_pages', [
             'id' => $templatePage->id,

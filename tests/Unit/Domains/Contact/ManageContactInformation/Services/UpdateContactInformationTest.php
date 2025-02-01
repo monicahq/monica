@@ -44,7 +44,7 @@ class UpdateContactInformationTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateContactInformation())->execute($request);
+        (new UpdateContactInformation)->execute($request);
     }
 
     /** @test */
@@ -147,7 +147,7 @@ class UpdateContactInformationTest extends TestCase
             'data' => '45322322',
         ];
 
-        $contactInfo = (new UpdateContactInformation())->execute($request);
+        $contactInfo = (new UpdateContactInformation)->execute($request);
 
         $this->assertDatabaseHas('contact_information', [
             'id' => $contactInfo->id,

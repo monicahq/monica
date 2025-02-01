@@ -2,6 +2,4 @@
 
 namespace App\Domains\Contact\DavClient\Services\Utils\Model;
 
-class ContactDeleteDto extends ContactDto
-{
-}
+class ContactDeleteDto extends ContactDto {}

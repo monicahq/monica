@@ -57,7 +57,7 @@ class ContactModuleCallController extends Controller
             'who_initiated' => $whoInitiated,
         ];
 
-        $call = (new CreateCall())->execute($data);
+        $call = (new CreateCall)->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -112,7 +112,7 @@ class ContactModuleCallController extends Controller
             'who_initiated' => $whoInitiated,
         ];
 
-        $call = (new UpdateCall())->execute($data);
+        $call = (new UpdateCall)->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -130,7 +130,7 @@ class ContactModuleCallController extends Controller
             'call_id' => $callId,
         ];
 
-        (new DestroyCall())->execute($data);
+        (new DestroyCall)->execute($data);
 
         return response()->json([
             'data' => true,

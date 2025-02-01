@@ -15,7 +15,7 @@ class ContactInformationController extends Controller
 {
     public function store(Request $request, string $vaultId, string $contactId)
     {
-        $info = (new CreateContactInformation())->execute([
+        $info = (new CreateContactInformation)->execute([
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'vault_id' => $vaultId,
@@ -43,7 +43,7 @@ class ContactInformationController extends Controller
             'data' => $request->input('data'),
         ];
 
-        $info = (new UpdateContactInformation())->execute($data);
+        $info = (new UpdateContactInformation)->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -61,7 +61,7 @@ class ContactInformationController extends Controller
             'contact_information_id' => $infoId,
         ];
 
-        (new DestroyContactInformation())->execute($data);
+        (new DestroyContactInformation)->execute($data);
 
         return response()->json([
             'data' => true,

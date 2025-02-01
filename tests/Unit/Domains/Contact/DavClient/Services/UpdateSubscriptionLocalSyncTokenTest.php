@@ -36,7 +36,7 @@ class UpdateSubscriptionLocalSyncTokenTest extends TestCase
                 ->andReturn($token);
         });
 
-        (new UpdateSubscriptionLocalSyncToken())->execute([
+        (new UpdateSubscriptionLocalSyncToken)->execute([
             'account_id' => $subscription->user->account_id,
             'addressbook_subscription_id' => $subscription->id,
         ]);
@@ -62,7 +62,7 @@ class UpdateSubscriptionLocalSyncTokenTest extends TestCase
                 ->andReturn(null);
         });
 
-        (new UpdateSubscriptionLocalSyncToken())->execute([
+        (new UpdateSubscriptionLocalSyncToken)->execute([
             'account_id' => $subscription->user->account_id,
             'addressbook_subscription_id' => $subscription->id,
         ]);

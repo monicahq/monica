@@ -9,11 +9,10 @@ class UserIndexViewHelper
 {
     public static function data(User $loggedUser): array
     {
+        /** @var \Illuminate\Database\Eloquent\Collection<int,User> */
         $users = $loggedUser->account->users;
 
-        $userCollection = $users->map(function ($user) use ($loggedUser) {
-            return self::dtoUser($user, $loggedUser);
-        });
+        $userCollection = $users->map(fn (User $user): array => self::dtoUser($user, $loggedUser));
 
         return [
             'users' => $userCollection,

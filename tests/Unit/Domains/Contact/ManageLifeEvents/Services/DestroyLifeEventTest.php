@@ -41,7 +41,7 @@ class DestroyLifeEventTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyLifeEvent())->execute($request);
+        (new DestroyLifeEvent)->execute($request);
     }
 
     /** @test */

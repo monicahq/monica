@@ -40,7 +40,7 @@ class RemoveModuleFromTemplatePageTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new RemoveModuleFromTemplatePage())->execute($request);
+        (new RemoveModuleFromTemplatePage)->execute($request);
     }
 
     /** @test */
@@ -88,7 +88,7 @@ class RemoveModuleFromTemplatePageTest extends TestCase
             'module_id' => $this->module->id,
         ];
 
-        (new RemoveModuleFromTemplatePage())->execute($request);
+        (new RemoveModuleFromTemplatePage)->execute($request);
 
         $this->assertDatabaseMissing('module_template_page', [
             'module_id' => $this->module->id,

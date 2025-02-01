@@ -12,8 +12,7 @@ class PrincipalBackend extends AbstractBackend
 {
     public function __construct(
         private User $user
-    ) {
-    }
+    ) {}
 
     /**
      * This is the prefix that will be used to generate principal urls.
@@ -96,9 +95,7 @@ class PrincipalBackend extends AbstractBackend
      * @param  string  $path
      * @param  \Sabre\DAV\PropPatch  $propPatch
      */
-    public function updatePrincipal($path, DAV\PropPatch $propPatch): void
-    {
-    }
+    public function updatePrincipal($path, DAV\PropPatch $propPatch): void {}
 
     /**
      * This method is used to search for principals matching a set of
@@ -188,7 +185,5 @@ class PrincipalBackend extends AbstractBackend
      *
      * @param  string  $principal
      */
-    public function setGroupMemberSet($principal, array $members): void
-    {
-    }
+    public function setGroupMemberSet($principal, array $members): void {}
 }

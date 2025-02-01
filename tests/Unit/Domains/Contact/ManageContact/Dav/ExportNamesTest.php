@@ -27,7 +27,7 @@ class ExportNamesTest extends TestCase
             'vault_id' => $vault->id,
         ]);
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportNames)->export($contact, $vCard);
 
         $this->assertCount(
@@ -48,7 +48,7 @@ class ExportNamesTest extends TestCase
             'vault_id' => $vault->id,
         ]);
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportNames)->export($contact, $vCard);
 
         $this->assertCount(

@@ -30,7 +30,7 @@ class JetstreamServiceProvider extends ServiceProvider
         $this->configurePermissions();
 
         Jetstream::deleteUsersUsing(DeleteUser::class);
-        Jetstream::inertia()->whenRendering('Profile/Show', new UserProfile());
+        Jetstream::inertia()->whenRendering('Profile/Show', new UserProfile);
         Jetstream::inertia()->whenRendering('API/Index', function ($request, $data) {
             // @codeCoverageIgnoreStart
             $data['layoutData'] = VaultIndexViewHelper::layoutData();

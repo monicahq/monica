@@ -107,7 +107,7 @@ class UserPreferencesIndexViewHelper
 
     public static function dtoNumberFormat(User $user): array
     {
-        $duser = new User();
+        $duser = new User;
         $duser->number_format = User::NUMBER_FORMAT_TYPE_LOCALE_DEFAULT;
         $default = MonetaryNumberHelper::formatValue($duser, 123456);
 

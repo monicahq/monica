@@ -28,7 +28,7 @@ class ModuleAvatarController extends Controller
             'type' => File::TYPE_AVATAR,
         ];
 
-        $file = (new UploadFile())->execute($data);
+        $file = (new UploadFile)->execute($data);
 
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -38,7 +38,7 @@ class ModuleAvatarController extends Controller
             'file_id' => $file->id,
         ];
 
-        (new UpdatePhotoAsAvatar())->execute($data);
+        (new UpdatePhotoAsAvatar)->execute($data);
 
         return response()->json([
             'data' => route('contact.show', [
@@ -57,7 +57,7 @@ class ModuleAvatarController extends Controller
             'contact_id' => $contactId,
         ];
 
-        (new DestroyAvatar())->execute($data);
+        (new DestroyAvatar)->execute($data);
 
         return response()->json([
             'data' => route('contact.show', [

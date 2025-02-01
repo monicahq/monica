@@ -38,7 +38,7 @@ class ContactModuleGroupController extends Controller
                 'name' => $request->input('name'),
             ];
 
-            $group = (new CreateGroup())->execute($data);
+            $group = (new CreateGroup)->execute($data);
             $groupId = $group->id;
         }
 

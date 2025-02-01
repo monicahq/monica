@@ -39,7 +39,7 @@ class CreateGroupTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateGroup())->execute($request);
+        (new CreateGroup)->execute($request);
     }
 
     /** @test */
@@ -98,7 +98,7 @@ class CreateGroupTest extends TestCase
             'name' => 'test',
         ];
 
-        $group = (new CreateGroup())->execute($request);
+        $group = (new CreateGroup)->execute($request);
 
         $this->assertDatabaseHas('groups', [
             'id' => $group->id,

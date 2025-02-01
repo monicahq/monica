@@ -111,7 +111,7 @@
           <li
             v-for="contactInformationType in localContactInformationTypes"
             :key="contactInformationType.id"
-            class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+            class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
             <!-- detail of the contact information type -->
             <div
               v-if="renameContactInformationTypeModalShownId !== contactInformationType.id"
@@ -146,7 +146,7 @@
             <!-- rename a contactInformationType modal -->
             <form
               v-if="renameContactInformationTypeModalShownId === contactInformationType.id"
-              class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
+              class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800"
               @submit.prevent="update(contactInformationType)">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />

@@ -24,8 +24,7 @@ class AuthenticateWithTokenOnBasicAuth
      */
     public function __construct(
         private Auth $auth
-    ) {
-    }
+    ) {}
 
     /**
      * Handle an incoming request.

@@ -42,7 +42,7 @@ class UpdateSliceOfLifeTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateSliceOfLife())->execute($request);
+        (new UpdateSliceOfLife)->execute($request);
     }
 
     /** @test */
@@ -126,7 +126,7 @@ class UpdateSliceOfLifeTest extends TestCase
             'description' => null,
         ];
 
-        $sliceOfLife = (new UpdateSliceOfLife())->execute($request);
+        $sliceOfLife = (new UpdateSliceOfLife)->execute($request);
 
         $this->assertDatabaseHas('slice_of_lives', [
             'id' => $sliceOfLife->id,

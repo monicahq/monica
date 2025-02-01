@@ -39,7 +39,7 @@ class CreateJournalMetricTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateJournalMetric())->execute($request);
+        (new CreateJournalMetric)->execute($request);
     }
 
     /** @test */
@@ -98,7 +98,7 @@ class CreateJournalMetricTest extends TestCase
             'label' => 'this is a title',
         ];
 
-        $journalMetric = (new CreateJournalMetric())->execute($request);
+        $journalMetric = (new CreateJournalMetric)->execute($request);
 
         $this->assertDatabaseHas('journal_metrics', [
             'id' => $journalMetric->id,

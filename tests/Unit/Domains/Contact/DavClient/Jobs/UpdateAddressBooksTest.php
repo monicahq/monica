@@ -21,7 +21,7 @@ class UpdateAddressBooksTest extends TestCase
 
         $subscription = AddressBookSubscription::factory()->create();
 
-        (new UpdateAddressBooks())->handle();
+        (new UpdateAddressBooks)->handle();
 
         Queue::assertPushed(SynchronizeAddressBooks::class, fn ($job) => $job->subscription->id === $subscription->id
         );
@@ -34,7 +34,7 @@ class UpdateAddressBooksTest extends TestCase
 
         $subscription = AddressBookSubscription::factory()->inactive()->create();
 
-        (new UpdateAddressBooks())->handle();
+        (new UpdateAddressBooks)->handle();
 
         Queue::assertNotPushed(SynchronizeAddressBooks::class, fn ($job) => $job->subscription->id === $subscription->id
         );
@@ -51,7 +51,7 @@ class UpdateAddressBooksTest extends TestCase
             'frequency' => 60,
         ])->create();
 
-        (new UpdateAddressBooks())->handle();
+        (new UpdateAddressBooks)->handle();
 
         Queue::assertPushed(SynchronizeAddressBooks::class, fn ($job) => $job->subscription->id === $subscription->id
         );
@@ -68,7 +68,7 @@ class UpdateAddressBooksTest extends TestCase
             'frequency' => 60,
         ])->create();
 
-        (new UpdateAddressBooks())->handle();
+        (new UpdateAddressBooks)->handle();
 
         Queue::assertNotPushed(SynchronizeAddressBooks::class, fn ($job) => $job->subscription->id === $subscription->id
         );

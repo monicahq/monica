@@ -55,7 +55,7 @@ class VaultShowViewHelper
         $remindersCollection = $contactRemindersScheduled->map(function ($reminder) use ($vault, $user) {
             $contact = $reminder->contact;
 
-            if ($contact->vault_id !== $vault->id) {
+            if ($contact->vault_id != $vault->id) {
                 return null;
             }
 

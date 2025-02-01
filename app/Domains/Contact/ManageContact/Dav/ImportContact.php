@@ -83,7 +83,7 @@ class ImportContact extends Importer implements ImportVCardResource
         $contact = null;
 
         if (($uri = Arr::get($this->context->data, 'uri')) !== null) {
-            $contact = $backend->getObject($this->vault()->id, $uri);
+            $contact = $backend->getObject((string) $this->vault()->id, $uri);
 
             if ($contact === null) {
                 $contact = Contact::firstWhere([
@@ -104,7 +104,7 @@ class ImportContact extends Importer implements ImportVCardResource
         }
 
         if ($contact !== null && $contact->vault_id !== $this->vault()->id) {
-            throw new ModelNotFoundException();
+            throw new ModelNotFoundException;
         }
 
         return $contact;

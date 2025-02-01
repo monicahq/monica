@@ -23,7 +23,7 @@ class VaultSettingsLifeEventTypesController extends Controller
             'can_be_deleted' => true,
         ];
 
-        $lifeEventType = (new CreateLifeEventType())->execute($data);
+        $lifeEventType = (new CreateLifeEventType)->execute($data);
 
         return response()->json([
             'data' => VaultSettingsIndexViewHelper::dtoType($lifeEventType->lifeEventCategory, $lifeEventType),
@@ -42,7 +42,7 @@ class VaultSettingsLifeEventTypesController extends Controller
             'can_be_deleted' => true,
         ];
 
-        $lifeEventType = (new UpdateLifeEventType())->execute($data);
+        $lifeEventType = (new UpdateLifeEventType)->execute($data);
 
         return response()->json([
             'data' => VaultSettingsIndexViewHelper::dtoType($lifeEventType->lifeEventCategory, $lifeEventType),
@@ -59,7 +59,7 @@ class VaultSettingsLifeEventTypesController extends Controller
             'life_event_type_id' => $lifeEventTypeId,
         ];
 
-        (new DestroyLifeEventType())->execute($data);
+        (new DestroyLifeEventType)->execute($data);
 
         return response()->json([
             'data' => true,

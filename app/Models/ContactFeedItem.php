@@ -95,7 +95,7 @@ class ContactFeedItem extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'author_id',
@@ -108,6 +108,8 @@ class ContactFeedItem extends Model
 
     /**
      * Get the user associated with the contact feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
      */
     public function author(): BelongsTo
     {
@@ -116,6 +118,8 @@ class ContactFeedItem extends Model
 
     /**
      * Get the contact associated with the contact feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
      */
     public function contact(): BelongsTo
     {

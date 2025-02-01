@@ -21,7 +21,7 @@ class PersonalizePostTemplateSectionPositionController extends Controller
             'new_position' => $request->input('position'),
         ];
 
-        $postTemplateSection = (new UpdatePostTemplateSectionPosition())->execute($data);
+        $postTemplateSection = (new UpdatePostTemplateSectionPosition)->execute($data);
 
         $postTemplate = PostTemplate::findOrFail($postTemplateId);
 

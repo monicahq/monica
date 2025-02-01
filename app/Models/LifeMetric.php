@@ -16,7 +16,7 @@ class LifeMetric extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'vault_id',
@@ -25,6 +25,8 @@ class LifeMetric extends Model
 
     /**
      * Get the vault associated with the life metric.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {
@@ -33,6 +35,8 @@ class LifeMetric extends Model
 
     /**
      * Get the contacts associated with the life metric.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Contact, $this>
      */
     public function contacts(): BelongsToMany
     {

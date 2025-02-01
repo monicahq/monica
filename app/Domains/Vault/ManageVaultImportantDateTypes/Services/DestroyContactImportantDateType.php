@@ -44,7 +44,7 @@ class DestroyContactImportantDateType extends BaseService implements ServiceInte
             ->findOrFail($data['contact_important_date_type_id']);
 
         if (! $type->can_be_deleted) {
-            throw new CantBeDeletedException();
+            throw new CantBeDeletedException;
         }
 
         $type->delete();

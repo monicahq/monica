@@ -43,7 +43,7 @@ class AddAddressBookTest extends TestCase
             'password' => 'test',
         ];
 
-        $subscription = (new CreateAddressBookSubscription())->execute($request);
+        $subscription = (new CreateAddressBookSubscription)->execute($request);
 
         $this->assertDatabaseHas('addressbook_subscriptions', [
             'id' => $subscription->id,

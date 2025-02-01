@@ -37,7 +37,7 @@ class RemovePronounTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new SetPronoun())->execute($request);
+        (new SetPronoun)->execute($request);
     }
 
     /** @test */
@@ -89,7 +89,7 @@ class RemovePronounTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        (new RemovePronoun())->execute($request);
+        (new RemovePronoun)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,

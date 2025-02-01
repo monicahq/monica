@@ -32,7 +32,7 @@ class ContactImportantDate extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'contact_id',
@@ -45,6 +45,8 @@ class ContactImportantDate extends Model
 
     /**
      * Get the contact associated with the contact date.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
      */
     public function contact(): BelongsTo
     {
@@ -53,6 +55,8 @@ class ContactImportantDate extends Model
 
     /**
      * Get the important date type associated with the contact date.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\ContactImportantDateType, $this>
      */
     public function contactImportantDateType(): BelongsTo
     {
@@ -61,6 +65,8 @@ class ContactImportantDate extends Model
 
     /**
      * Get the important date's feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne<\App\Models\ContactFeedItem, $this>
      */
     public function feedItem(): MorphOne
     {

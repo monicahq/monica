@@ -35,7 +35,7 @@ class CreateJournalTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateJournal())->execute($request);
+        (new CreateJournal)->execute($request);
     }
 
     /** @test */
@@ -74,7 +74,7 @@ class CreateJournalTest extends TestCase
             'name' => 'super journal',
         ];
 
-        $journal = (new CreateJournal())->execute($request);
+        $journal = (new CreateJournal)->execute($request);
 
         $this->assertDatabaseHas('journals', [
             'id' => $journal->id,

@@ -23,7 +23,7 @@ class PersonalizePostTemplateSectionController extends Controller
             'can_be_deleted' => true,
         ];
 
-        $postTemplateSection = (new CreatePostTemplateSection())->execute($data);
+        $postTemplateSection = (new CreatePostTemplateSection)->execute($data);
         $postTemplate = PostTemplate::findOrFail($postTemplateId);
 
         return response()->json([
@@ -41,7 +41,7 @@ class PersonalizePostTemplateSectionController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $postTemplateSection = (new UpdatePostTemplateSection())->execute($data);
+        $postTemplateSection = (new UpdatePostTemplateSection)->execute($data);
         $postTemplate = PostTemplate::findOrFail($postTemplateId);
 
         return response()->json([
@@ -58,7 +58,7 @@ class PersonalizePostTemplateSectionController extends Controller
             'post_template_section_id' => $postTemplateSectionId,
         ];
 
-        (new DestroyPostTemplateSection())->execute($data);
+        (new DestroyPostTemplateSection)->execute($data);
 
         return response()->json([
             'data' => true,

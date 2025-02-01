@@ -41,7 +41,7 @@ class RemoveTagTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new RemoveTag())->execute($request);
+        (new RemoveTag)->execute($request);
     }
 
     /** @test */
@@ -136,7 +136,7 @@ class RemoveTagTest extends TestCase
             'post_id' => $post->id,
         ];
 
-        (new RemoveTag())->execute($request);
+        (new RemoveTag)->execute($request);
 
         $this->assertDatabaseMissing('post_tag', [
             'post_id' => $post->id,

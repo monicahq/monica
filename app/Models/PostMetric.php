@@ -15,7 +15,7 @@ class PostMetric extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'post_id',
@@ -26,6 +26,8 @@ class PostMetric extends Model
 
     /**
      * Get the journal metric associated with the post metric.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\JournalMetric, $this>
      */
     public function journalMetric(): BelongsTo
     {
@@ -34,6 +36,8 @@ class PostMetric extends Model
 
     /**
      * Get the post associated with the post metric.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Post, $this>
      */
     public function post(): BelongsTo
     {

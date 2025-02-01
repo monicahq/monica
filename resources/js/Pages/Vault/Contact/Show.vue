@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue';
 import { Link, router, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods.js';
+import { onMounted } from 'vue';
 import JetDialogModal from '@/Components/Jetstream/DialogModal.vue';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 import JetButton from '@/Components/Button.vue';
@@ -151,6 +152,19 @@ const download = () => {
     },
   });
 };
+
+const selectedOption = ref('');
+
+onMounted(() => {
+  const selectedPage = Object.values(props.data.template_pages).find((page) => page.selected);
+  if (selectedPage) {
+    selectedOption.value = selectedPage.url.show;
+  }
+});
+
+const navigateToSelected = () => {
+  router.visit(selectedOption.value);
+};
 </script>
 
 <template>
@@ -288,7 +302,7 @@ const download = () => {
 
             <!-- family summary -->
             <div v-if="data.group_summary_information.length > 0">
-              <div class="mb-6 flex rounded border border-gray-200 p-3 dark:border-gray-700">
+              <div class="mb-6 flex rounded-sm border border-gray-200 p-3 dark:border-gray-700">
                 <img src="/img/group.svg" class="me-2 h-6 w-6" />
                 <ul>
                   <li class="me-2 inline">{{ $t('Part of') }}</li>
@@ -304,8 +318,8 @@ const download = () => {
               </div>
             </div>
 
-            <!-- all the pages -->
-            <div class="mb-8 w-full border-b border-gray-200 dark:border-gray-700">
+            <!-- page selector on desktop -->
+            <div class="hidden md:block mb-8 w-full border-b border-gray-200 dark:border-gray-700">
               <div class="flex overflow-x-hidden">
                 <div v-for="page in data.template_pages" :key="page.id" class="me-2 flex-none">
                   <Link
@@ -313,15 +327,28 @@ const download = () => {
                     :class="
                       page.selected
                         ? 'border-orange-500 hover:border-orange-500'
-                        : 'border-transparent hover:border-gray-200 hover:dark:border-gray-700'
+                        : 'border-transparent hover:border-gray-200 dark:hover:border-gray-700'
                     "
                     class="inline-block border-b-2 px-2 pb-2">
-                    <span class="mb-0 block rounded-sm px-3 py-1 hover:bg-gray-100 hover:dark:bg-gray-900">
+                    <span class="mb-0 block rounded-xs px-3 py-1 hover:bg-gray-100 dark:hover:bg-gray-900">
                       {{ page.name }}
                     </span>
                   </Link>
                 </div>
               </div>
+            </div>
+
+            <!-- page selector on mobile -->
+            <div class="md:hidden mb-8 w-full">
+              <p class="text-sm mb-2">{{ $t('Select a page') }}</p>
+              <select
+                v-model="selectedOption"
+                @change="navigateToSelected"
+                class="w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-blue-500 focus:outline-hidden focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                <option v-for="page in data.template_pages" :key="page.id" :value="page.url.show">
+                  {{ page.name }}
+                </option>
+              </select>
             </div>
 
             <!-- all the modules -->

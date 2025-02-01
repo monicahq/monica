@@ -39,7 +39,7 @@ class JournalMetricController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $journalMetric = (new CreateJournalMetric())->execute($data);
+        $journalMetric = (new CreateJournalMetric)->execute($data);
 
         return response()->json([
             'data' => JournalMetricIndexViewHelper::dto($journalMetric),
@@ -60,7 +60,7 @@ class JournalMetricController extends Controller
             'label' => $request->input('label'),
         ];
 
-        $journalMetric = (new UpdateJournalMetric())->execute($data);
+        $journalMetric = (new UpdateJournalMetric)->execute($data);
 
         return response()->json([
             'data' => JournalMetricIndexViewHelper::dto($journalMetric),
@@ -80,7 +80,7 @@ class JournalMetricController extends Controller
             'journal_metric_id' => $journalMetricId,
         ];
 
-        (new DestroyJournalMetric())->execute($data);
+        (new DestroyJournalMetric)->execute($data);
 
         return response()->json([
             'data' => true,

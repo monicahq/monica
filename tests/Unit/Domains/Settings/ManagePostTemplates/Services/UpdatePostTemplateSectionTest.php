@@ -37,7 +37,7 @@ class UpdatePostTemplateSectionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdatePostTemplateSection())->execute($request);
+        (new UpdatePostTemplateSection)->execute($request);
     }
 
     /** @test */
@@ -93,7 +93,7 @@ class UpdatePostTemplateSectionTest extends TestCase
             'label' => 'name',
         ];
 
-        (new UpdatePostTemplateSection())->execute($request);
+        (new UpdatePostTemplateSection)->execute($request);
 
         $this->assertDatabaseHas('post_template_sections', [
             'id' => $postTemplateSection->id,

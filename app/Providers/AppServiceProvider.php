@@ -63,9 +63,9 @@ class AppServiceProvider extends ServiceProvider
                     ],
                 ];
                 $environment = new Environment($config);
-                $environment->addExtension(new CommonMarkCoreExtension());
-                $environment->addExtension(new GithubFlavoredMarkdownExtension());
-                $environment->addExtension(new ExternalLinkExtension());
+                $environment->addExtension(new CommonMarkCoreExtension);
+                $environment->addExtension(new GithubFlavoredMarkdownExtension);
+                $environment->addExtension(new ExternalLinkExtension);
 
                 $converter = new MarkdownConverter($environment);
 
@@ -80,7 +80,7 @@ class AppServiceProvider extends ServiceProvider
         if (! Http::hasMacro('getDnsRecord')) {
             Http::macro('getDnsRecord', function (string $hostname, int $type): ?Collection {
                 try {
-                    if (($entries = \Safe\dns_get_record($hostname, $type)) !== null) {
+                    if (($entries = \Safe\dns_get_record($hostname, $type)) != null) {
                         return collect($entries);
                     }
                 } catch (\Safe\Exceptions\NetworkException) {

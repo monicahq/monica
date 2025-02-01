@@ -50,7 +50,7 @@ class CreateContactImportantDateTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateContactImportantDate())->execute($request);
+        (new CreateContactImportantDate)->execute($request);
     }
 
     /** @test */
@@ -110,7 +110,7 @@ class CreateContactImportantDateTest extends TestCase
             $request['contact_important_date_type_id'] = $contactImportantDateType->id;
         }
 
-        $date = (new CreateContactImportantDate())->execute($request);
+        $date = (new CreateContactImportantDate)->execute($request);
 
         $this->assertDatabaseHas('contact_important_dates', [
             'contact_id' => $contact->id,

@@ -39,7 +39,7 @@ class CreatePetTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreatePet())->execute($request);
+        (new CreatePet)->execute($request);
     }
 
     /** @test */
@@ -110,7 +110,7 @@ class CreatePetTest extends TestCase
             'name' => 'boubou',
         ];
 
-        $pet = (new CreatePet())->execute($request);
+        $pet = (new CreatePet)->execute($request);
 
         $this->assertDatabaseHas('pets', [
             'id' => $pet->id,

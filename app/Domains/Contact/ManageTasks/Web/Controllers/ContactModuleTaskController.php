@@ -41,7 +41,7 @@ class ContactModuleTaskController extends Controller
             'due_at' => $dueAt,
         ];
 
-        $task = (new CreateContactTask())->execute($data);
+        $task = (new CreateContactTask)->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -67,7 +67,7 @@ class ContactModuleTaskController extends Controller
             'due_at' => $dueAt === '' ? null : $dueAt,
         ];
 
-        $task = (new UpdateContactTask())->execute($data);
+        $task = (new UpdateContactTask)->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -87,7 +87,7 @@ class ContactModuleTaskController extends Controller
             'description' => null,
         ];
 
-        $task = (new ToggleContactTask())->execute($data);
+        $task = (new ToggleContactTask)->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -105,7 +105,7 @@ class ContactModuleTaskController extends Controller
             'contact_task_id' => $taskId,
         ];
 
-        (new DestroyContactTask())->execute($data);
+        (new DestroyContactTask)->execute($data);
 
         return response()->json([
             'data' => true,

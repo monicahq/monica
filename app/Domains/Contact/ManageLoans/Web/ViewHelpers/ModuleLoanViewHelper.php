@@ -17,11 +17,11 @@ class ModuleLoanViewHelper
         $loansAsLoaner = $contact->loansAsLoaner()->where('settled', false)->get();
         $loansAsLoanee = $contact->loansAsLoanee()->where('settled', false)->get();
 
-        $loans = $loansAsLoaner->concat($loansAsLoanee)->sortBy('loaned_at')->unique('id');
-
-        $loansAssociatedWithContactCollection = $loans->map(function ($loan) use ($contact, $user) {
-            return self::dtoLoan($loan, $contact, $user);
-        });
+        $loansAssociatedWithContactCollection = $loansAsLoaner
+            ->concat($loansAsLoanee)
+            ->sortBy('loaned_at')
+            ->unique('id')
+            ->map(fn (Loan $loan): array => self::dtoLoan($loan, $contact, $user)); // @phpstan-ignore-line
 
         return [
             'loans' => $loansAssociatedWithContactCollection,

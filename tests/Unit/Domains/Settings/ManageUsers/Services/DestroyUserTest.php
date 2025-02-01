@@ -95,7 +95,7 @@ class DestroyUserTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyUser())->execute($request);
+        (new DestroyUser)->execute($request);
     }
 
     /** @test */
@@ -116,7 +116,7 @@ class DestroyUserTest extends TestCase
             'user_id' => $user->id,
         ];
 
-        (new DestroyUser())->execute($request);
+        (new DestroyUser)->execute($request);
 
         $this->assertDatabaseMissing('users', [
             'id' => $user->id,

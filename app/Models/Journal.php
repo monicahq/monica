@@ -16,7 +16,7 @@ class Journal extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'vault_id',
@@ -26,6 +26,8 @@ class Journal extends Model
 
     /**
      * Get the vault associated with the journal.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {
@@ -34,6 +36,8 @@ class Journal extends Model
 
     /**
      * Get the posts associated with the journal.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Post, $this>
      */
     public function posts(): HasMany
     {
@@ -42,6 +46,8 @@ class Journal extends Model
 
     /**
      * Get the slices of life associated with the journal.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\SliceOfLife, $this>
      */
     public function slicesOfLife(): HasMany
     {
@@ -50,6 +56,8 @@ class Journal extends Model
 
     /**
      * Get the journal metrics associated with the journal.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\JournalMetric, $this>
      */
     public function journalMetrics(): HasMany
     {

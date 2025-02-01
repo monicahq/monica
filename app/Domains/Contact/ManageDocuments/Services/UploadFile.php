@@ -63,11 +63,11 @@ class UploadFile extends BaseService
     private function validate(): void
     {
         if (is_null(config('services.uploadcare.private_key'))) {
-            throw new EnvVariablesNotSetException();
+            throw new EnvVariablesNotSetException;
         }
 
         if (is_null(config('services.uploadcare.public_key'))) {
-            throw new EnvVariablesNotSetException();
+            throw new EnvVariablesNotSetException;
         }
 
         $this->validateRules($this->data);

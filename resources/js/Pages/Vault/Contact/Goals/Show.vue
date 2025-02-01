@@ -89,7 +89,7 @@
             </form>
 
             <!-- stats -->
-            <div class="mb-6 flex justify-between rounded border border-gray-200 p-3 dark:border-gray-700">
+            <div class="mb-6 flex justify-between rounded-sm border border-gray-200 p-3 dark:border-gray-700">
               <div class="me-6 flex items-center">
                 <div class="me-3 w-14 text-right text-sm text-gray-500">{{ $t('Total streaks') }}</div>
                 <div class="text-4xl">
@@ -119,12 +119,12 @@
                     <!-- there is a streak for this day -->
                     <div
                       v-if="!streak.not_yet_happened && streak.streak"
-                      class="h-3 w-3 cursor-pointer rounded border border-transparent bg-green-400 hover:border-green-500"></div>
+                      class="h-3 w-3 cursor-pointer rounded-sm border border-transparent bg-green-400 hover:border-green-500"></div>
 
                     <!-- there is not a streak for this day -->
                     <div
                       v-if="!streak.not_yet_happened && !streak.streak"
-                      class="h-3 w-3 cursor-pointer rounded bg-slate-200"></div>
+                      class="h-3 w-3 cursor-pointer rounded-sm bg-slate-200"></div>
                   </a-tooltip>
                 </div>
               </div>

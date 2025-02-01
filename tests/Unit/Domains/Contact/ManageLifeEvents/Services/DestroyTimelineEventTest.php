@@ -38,7 +38,7 @@ class DestroyTimelineEventTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyTimelineEvent())->execute($request);
+        (new DestroyTimelineEvent)->execute($request);
     }
 
     /** @test */

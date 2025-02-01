@@ -21,7 +21,7 @@ class ImportMembersTest extends TestCase
     /** @test */
     public function it_imports_a_member()
     {
-        $importGroup = new ImportMembers();
+        $importGroup = new ImportMembers;
         $importGroup->setContext(new ImportVCard($this->app));
 
         $vcard = new VCard([
@@ -36,10 +36,10 @@ class ImportMembersTest extends TestCase
     /** @test */
     public function it_imports_multiple_members()
     {
-        $importGroup = new ImportMembers();
+        $importGroup = new ImportMembers;
         $importGroup->setContext(new ImportVCard($this->app));
 
-        $vcard = new VCard();
+        $vcard = new VCard;
         $vcard->add('MEMBER', '31fdc242-c974-436e-98de-6b21624d6e34');
         $vcard->add('MEMBER', '61fdc242-c974-436e-98de-6b21624d6e34');
 
@@ -55,7 +55,7 @@ class ImportMembersTest extends TestCase
     public function it_updates_members()
     {
         $vault = $this->createVaultUser($user = User::factory()->create(), Vault::PERMISSION_MANAGE);
-        $importGroup = new ImportMembers();
+        $importGroup = new ImportMembers;
         $importGroup->setContext(tap(new ImportVCard($this->app), function ($importVCard) use ($user, $vault) {
             $importVCard->author = $user;
             $importVCard->vault = $vault;
@@ -84,7 +84,7 @@ class ImportMembersTest extends TestCase
     public function it_keeps_existing_members()
     {
         $vault = $this->createVaultUser($user = User::factory()->create(), Vault::PERMISSION_MANAGE);
-        $importGroup = new ImportMembers();
+        $importGroup = new ImportMembers;
         $importGroup->setContext(tap(new ImportVCard($this->app), function ($importVCard) use ($user, $vault) {
             $importVCard->author = $user;
             $importVCard->vault = $vault;
@@ -116,7 +116,7 @@ class ImportMembersTest extends TestCase
     public function it_keeps_existing_members_and_add_new()
     {
         $vault = $this->createVaultUser($user = User::factory()->create(), Vault::PERMISSION_MANAGE);
-        $importGroup = new ImportMembers();
+        $importGroup = new ImportMembers;
         $importGroup->setContext(tap(new ImportVCard($this->app), function ($importVCard) use ($user, $vault) {
             $importVCard->author = $user;
             $importVCard->vault = $vault;
@@ -151,7 +151,7 @@ class ImportMembersTest extends TestCase
     public function it_removes_old_members()
     {
         $vault = $this->createVaultUser($user = User::factory()->create(), Vault::PERMISSION_MANAGE);
-        $importGroup = new ImportMembers();
+        $importGroup = new ImportMembers;
         $importGroup->setContext(tap(new ImportVCard($this->app), function ($importVCard) use ($user, $vault) {
             $importVCard->author = $user;
             $importVCard->vault = $vault;

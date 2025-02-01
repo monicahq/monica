@@ -19,7 +19,7 @@ class PersonalizePostTemplatePositionController extends Controller
             'new_position' => $request->input('position'),
         ];
 
-        $postTemplate = (new UpdatePostTemplatePosition())->execute($data);
+        $postTemplate = (new UpdatePostTemplatePosition)->execute($data);
 
         return response()->json([
             'data' => PersonalizePostTemplateViewHelper::dto($postTemplate),

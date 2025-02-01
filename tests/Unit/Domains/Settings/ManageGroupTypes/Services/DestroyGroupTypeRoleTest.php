@@ -38,7 +38,7 @@ class DestroyGroupTypeRoleTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyGroupTypeRole())->execute($request);
+        (new DestroyGroupTypeRole)->execute($request);
     }
 
     /** @test */
@@ -94,7 +94,7 @@ class DestroyGroupTypeRoleTest extends TestCase
             'group_type_role_id' => $groupTypeRole->id,
         ];
 
-        (new DestroyGroupTypeRole())->execute($request);
+        (new DestroyGroupTypeRole)->execute($request);
 
         $this->assertDatabaseMissing('group_type_roles', [
             'id' => $groupTypeRole->id,

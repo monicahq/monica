@@ -40,7 +40,7 @@ class ExportContactInformationTest extends TestCase
             'data' => 'fake@email.com',
         ]);
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportContactInformation)->export($contact, $vCard);
 
         $this->assertCount(
@@ -70,7 +70,7 @@ class ExportContactInformationTest extends TestCase
             'data' => '1234567890',
         ]);
 
-        $vCard = new VCard();
+        $vCard = new VCard;
         (new ExportContactInformation)->export($contact, $vCard);
 
         $this->assertCount(

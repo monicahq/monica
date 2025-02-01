@@ -18,7 +18,7 @@ class AvatarHelper
      */
     public static function generateRandomAvatar(Contact $contact): string
     {
-        $multiavatar = new MultiAvatar();
+        $multiavatar = new MultiAvatar;
 
         if (is_null($contact->first_name)) {
             $name = Faker::create()->name();

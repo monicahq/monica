@@ -37,7 +37,7 @@ class DestroyLifeMetricTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyLifeMetric())->execute($request);
+        (new DestroyLifeMetric)->execute($request);
     }
 
     /** @test */
@@ -103,7 +103,7 @@ class DestroyLifeMetricTest extends TestCase
             'vault_id' => $vault->id,
         ];
 
-        (new DestroyLifeMetric())->execute($request);
+        (new DestroyLifeMetric)->execute($request);
 
         $this->assertDatabaseMissing('life_metrics', [
             'id' => $lifeMetric->id,

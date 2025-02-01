@@ -173,7 +173,7 @@ const destroy = (lifeMetric) => {
         <li
           v-for="lifeMetric in localLifeMetrics"
           :key="lifeMetric.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <div v-if="editedLifeMetricId !== lifeMetric.id" class="flex items-center justify-between p-3">
             <div class="me-8 flex w-full items-center justify-between">
               <div>

@@ -39,7 +39,7 @@ class ToggleTimelineEventTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new ToggleTimelineEvent())->execute($request);
+        (new ToggleTimelineEvent)->execute($request);
     }
 
     /** @test */
@@ -115,7 +115,7 @@ class ToggleTimelineEventTest extends TestCase
             'timeline_event_id' => $timelineEvent->id,
         ];
 
-        $timelineEvent = (new ToggleTimelineEvent())->execute($request);
+        $timelineEvent = (new ToggleTimelineEvent)->execute($request);
 
         $this->assertDatabaseHas('timeline_events', [
             'id' => $timelineEvent->id,

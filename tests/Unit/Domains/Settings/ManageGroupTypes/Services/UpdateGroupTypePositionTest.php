@@ -33,7 +33,7 @@ class UpdateGroupTypePositionTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateGroupTypePosition())->execute($request);
+        (new UpdateGroupTypePosition)->execute($request);
     }
 
     /** @test */
@@ -81,7 +81,7 @@ class UpdateGroupTypePositionTest extends TestCase
             'new_position' => 3,
         ];
 
-        $groupType = (new UpdateGroupTypePosition())->execute($request);
+        $groupType = (new UpdateGroupTypePosition)->execute($request);
 
         $this->assertDatabaseHas('group_types', [
             'id' => $groupType1->id,
@@ -106,7 +106,7 @@ class UpdateGroupTypePositionTest extends TestCase
 
         $request['new_position'] = 2;
 
-        $groupType = (new UpdateGroupTypePosition())->execute($request);
+        $groupType = (new UpdateGroupTypePosition)->execute($request);
 
         $this->assertDatabaseHas('group_types', [
             'id' => $groupType1->id,

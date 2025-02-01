@@ -39,7 +39,7 @@ class RemoveContactFromGroupTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new RemoveContactFromGroup())->execute($request);
+        (new RemoveContactFromGroup)->execute($request);
     }
 
     /** @test */
@@ -127,7 +127,7 @@ class RemoveContactFromGroupTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        (new RemoveContactFromGroup())->execute($request);
+        (new RemoveContactFromGroup)->execute($request);
 
         $this->assertDatabaseMissing('contact_group', [
             'contact_id' => $contact->id,

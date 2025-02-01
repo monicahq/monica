@@ -40,7 +40,7 @@ class ContactModuleTimelineEventController extends Controller
             'started_at' => $request->input('started_at'),
         ];
 
-        $timelineEvent = (new CreateTimelineEvent())->execute($data);
+        $timelineEvent = (new CreateTimelineEvent)->execute($data);
 
         // we also need to add the current contact to the list of participants
         // finally, just so we are sure that we don't have the same participant
@@ -75,7 +75,7 @@ class ContactModuleTimelineEventController extends Controller
             'participant_ids' => $participants,
         ];
 
-        $lifeEvent = (new CreateLifeEvent())->execute($data);
+        $lifeEvent = (new CreateLifeEvent)->execute($data);
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -92,7 +92,7 @@ class ContactModuleTimelineEventController extends Controller
             'timeline_event_id' => $timelineEventId,
         ];
 
-        (new DestroyTimelineEvent())->execute($data);
+        (new DestroyTimelineEvent)->execute($data);
 
         return response()->json([
             'data' => true,

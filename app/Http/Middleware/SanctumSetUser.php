@@ -17,8 +17,7 @@ class SanctumSetUser
      */
     public function __construct(
         private Auth $auth
-    ) {
-    }
+    ) {}
 
     /**
      * Handle an incoming request.
@@ -27,7 +26,7 @@ class SanctumSetUser
      */
     public function handle(Request $request, Closure $next)
     {
-        $this->sanctum()->setUser($request->user()->withAccessToken(new TransientToken));
+        $this->sanctum()->setUser($request->user()->withAccessToken(new TransientToken)); // @phpstan-ignore-line
 
         return $next($request);
     }

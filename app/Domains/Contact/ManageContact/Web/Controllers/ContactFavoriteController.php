@@ -20,7 +20,7 @@ class ContactFavoriteController extends Controller
             'contact_id' => $contactId,
         ];
 
-        (new ToggleFavoriteContact())->execute($data);
+        (new ToggleFavoriteContact)->execute($data);
 
         $contact = Contact::find($contactId);
 

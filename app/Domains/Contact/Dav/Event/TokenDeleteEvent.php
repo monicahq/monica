@@ -19,6 +19,5 @@ class TokenDeleteEvent
      */
     public function __construct(
         public SyncToken $token
-    ) {
-    }
+    ) {}
 }
