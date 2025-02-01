@@ -108,6 +108,9 @@ class VaultIndexViewHelper
                         'show' => route('vault.show', [
                             'vault' => $vault,
                         ]),
+                        'edit' => route('vault.edit', [
+                            'vault' => $vault,
+                        ]),
                         'settings' => route('vault.settings.index', [
                             'vault' => $vault->id,
                         ]),

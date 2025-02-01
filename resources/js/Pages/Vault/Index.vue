@@ -61,11 +61,25 @@
             v-for="vault in data.vaults"
             :key="vault.id"
             class="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-            <div class="vault-detail grid">
+            <div class="vault-detail grid relative">
               <InertiaLink
                 :href="vault.url.show"
                 class="border-b border-gray-200 px-3 py-1 text-lg font-medium hover:rounded-t-lg hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-300 dark:hover:bg-slate-800">
                 {{ vault.name }}
+              </InertiaLink>
+
+              <!-- Edit button -->
+              <InertiaLink
+                :href="vault.url.edit"
+                class="ml-2 px-2 py-1 text-sm font-medium text-blue-600 hover:text-white dark:text-blue-400 dark:border-blue-400 hover:dark:text-slate-900 absolute right-0 top-0">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  class="pointer h-5 w-5 text-gray-400 hover:text-gray-900 dark:text-gray-600 hover:dark:text-gray-100"
+                  fill="currentColor">
+                  <path
+                    d="M15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89H6.41421L15.7279 9.57627ZM17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785L17.1421 8.16206ZM7.24264 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L7.24264 20.89Z"></path>
+                </svg>
               </InertiaLink>
 
               <!-- description -->
