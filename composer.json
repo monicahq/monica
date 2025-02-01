@@ -10,7 +10,7 @@
   ],
   "license": "AGPL-3.0-or-later",
   "require": {
-    "php": "^8.2",
+    "php": "^8.3",
     "ext-fileinfo": "*",
     "ext-intl": "*",
     "asbiin/laravel-sentry-tunnel": "^2.0",
@@ -42,7 +42,7 @@
     "socialiteproviders/microsoft-azure": "^5.1",
     "stevebauman/location": "^7.0",
     "thecodingmachine/safe": "^2.5",
-    "tightenco/ziggy": "^2.5.0",
+    "tightenco/ziggy": "^2.5.1",
     "typesense/typesense-php": "^4.9",
     "uploadcare/uploadcare-php": "^4.1"
   },

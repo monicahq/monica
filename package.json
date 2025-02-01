@@ -16,9 +16,10 @@
     "@inertiajs/vue3": "^2.0.3",
     "@popperjs/core": "^2.11.8",
     "@sentry/tracing": "^7.120.3",
-    "@sentry/vue": "^8.51.0",
+    "@sentry/vue": "^8.53.0",
     "@simplewebauthn/browser": "^13.1.0",
     "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/vite": "^4.0.3",
     "@vitejs/plugin-basic-ssl": "^1.2.0",
     "@vitejs/plugin-vue": "^5.2.1",
     "ant-design-vue": "^4.2.6",
@@ -36,7 +37,7 @@
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "sass": "^1.83.4",
-    "tailwindcss": "^4.0.0",
+    "tailwindcss": "^4.0.3",
     "tiny-emitter": "^2.1.0",
     "uploadcare-vue": "^1.0.0",
     "v-calendar": "^3.1.2",
@@ -44,7 +45,7 @@
     "vue": "^3.5.13",
     "vue-clipboard3": "^2.0.0",
     "vuedraggable": "^4.1.0",
-    "ziggy-js": "2.5.0"
+    "ziggy-js": "2.5.1"
   },
   "lint-staged": {
     "*.js|resources/**/*.{vue,js}": [
@@ -58,8 +59,5 @@
       "vendor/bin/pint"
     ]
   },
-  "packageManager": "yarn@4.5.0",
-  "dependencies": {
-    "@tailwindcss/vite": "^4.0.0"
-  }
+  "packageManager": "yarn@4.6.0"
 }
