@@ -15,7 +15,7 @@ class ContactImportantDateType extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'vault_id',
@@ -35,6 +35,8 @@ class ContactImportantDateType extends Model
 
     /**
      * Get the vault associated with the contact date type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {

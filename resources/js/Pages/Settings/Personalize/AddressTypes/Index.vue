@@ -93,7 +93,7 @@
           <li
             v-for="addressType in localAddressTypes"
             :key="addressType.id"
-            class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+            class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
             <!-- detail of the address type -->
             <div
               v-if="renameAddressTypeModalShownId !== addressType.id"
@@ -114,7 +114,7 @@
             <!-- rename a addressType modal -->
             <form
               v-if="renameAddressTypeModalShownId === addressType.id"
-              class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
+              class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800"
               @submit.prevent="update(addressType)">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                 <errors :errors="form.errors" />

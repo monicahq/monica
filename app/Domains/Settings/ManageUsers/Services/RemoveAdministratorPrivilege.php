@@ -38,6 +38,7 @@ class RemoveAdministratorPrivilege extends BaseService implements ServiceInterfa
     {
         $this->validateRules($data);
 
+        /** @var User */
         $user = $this->account()->users()
             ->findOrFail($data['user_id']);
 

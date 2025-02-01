@@ -1,6 +1,6 @@
 <template>
   <div>
-    <avatar :data="data.avatar" :class="'mx-auto mb-6 w-32 sm:w-1/2'" :img-classes="'rounded sm:w-72'" />
+    <avatar :data="data.avatar" :class="'mx-auto mb-6 w-32 sm:w-1/2'" :img-classes="'rounded-sm sm:w-72'" />
   </div>
 </template>
 

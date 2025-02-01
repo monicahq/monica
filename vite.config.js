@@ -3,6 +3,7 @@ import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 import i18n from 'laravel-vue-i18n/vite';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
@@ -22,6 +23,7 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
+      tailwindcss(),
       i18n(),
       basicSsl(),
     ],

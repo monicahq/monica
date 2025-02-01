@@ -27,7 +27,7 @@
           <li
             v-for="relationshipType in relationshipGroupType.relationship_types"
             :key="relationshipType.id"
-            class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+            class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
             <div class="flex">
               <div class="me-2 flex items-center">
                 <avatar :data="relationshipType.contact.avatar" :class="'me-2 h-5 w-5'" />

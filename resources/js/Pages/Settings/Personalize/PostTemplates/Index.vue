@@ -60,7 +60,7 @@
         </div>
 
         <!-- help text -->
-        <div class="mb-6 flex rounded border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
+        <div class="mb-6 flex rounded-sm border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 grow pe-2"
@@ -123,7 +123,7 @@
             <template #item="{ element }">
               <div v-if="editPostTemplateId !== element.id">
                 <div
-                  class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
+                  class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-slate-800">
                   <div class="mb-3 flex items-center justify-between">
                     <!-- icon to move position -->
                     <div class="me-2 flex">
@@ -175,7 +175,7 @@
                       <template #item="{ element: element2 }">
                         <div v-if="editSectionId !== element2.id">
                           <div
-                            class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
+                            class="item-list mb-2 rounded-lg border border-gray-200 bg-white py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-slate-800">
                             <div class="flex items-center justify-between">
                               <!-- icon to move position -->
                               <div class="me-2 flex">
@@ -319,7 +319,7 @@
 
               <form
                 v-else
-                class="item-list mb-2 rounded-lg border border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
+                class="item-list mb-2 rounded-lg border border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800"
                 @submit.prevent="update(element)">
                 <div class="border-b border-gray-200 p-5 dark:border-gray-700">
                   <errors :errors="form.errors" />

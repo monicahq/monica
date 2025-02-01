@@ -8,7 +8,7 @@
       </h3>
     </div>
 
-    <div class="mb-6 rounded border text-sm">
+    <div class="mb-6 rounded-sm border text-sm">
       <!-- help text -->
       <div class="flex rounded-t border-b border-gray-200 bg-slate-50 px-3 py-2 dark:border-gray-700 dark:bg-slate-900">
         <svg
@@ -40,7 +40,7 @@
         <li
           v-for="template in localTemplates"
           :key="template.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <div class="flex items-center justify-between px-5 py-2">
             <span>{{ template.name }}</span>
 

@@ -79,7 +79,7 @@ const submit = () => {
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-400 hover:dark:text-gray-400">
+          class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-400">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -167,7 +167,7 @@ const submit = () => {
             :is-dark="isDark()">
             <template #default="{ inputValue, inputEvents }">
               <input
-                class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
                 :value="inputValue"
                 v-on="inputEvents" />
             </template>

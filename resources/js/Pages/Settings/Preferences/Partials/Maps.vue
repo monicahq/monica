@@ -17,7 +17,7 @@
     <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="px-5 py-2">
         <span class="mb-2 block">{{ $t('Current site used to display maps:') }}</span>
-        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{ currentMap }}</span>
+        <span class="mb-2 block rounded-sm bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{ currentMap }}</span>
       </p>
     </div>
 

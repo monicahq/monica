@@ -19,7 +19,7 @@
         <span class="mb-2 block">
           {{ $t('Current way of displaying distances:') }}
         </span>
-        <span class="mb-2 block rounded bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">
+        <span class="mb-2 block rounded-sm bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">
           {{ distance }}
         </span>
       </p>

@@ -15,7 +15,7 @@ class Goal extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'contact_id',
@@ -34,6 +34,8 @@ class Goal extends Model
 
     /**
      * Get the contact associated with the goal.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
      */
     public function contact(): BelongsTo
     {
@@ -42,6 +44,8 @@ class Goal extends Model
 
     /**
      * Get the streaks associated with the goal.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Streak, $this>
      */
     public function streaks(): HasMany
     {
@@ -50,6 +54,8 @@ class Goal extends Model
 
     /**
      * Get the goal's feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne<\App\Models\ContactFeedItem, $this>
      */
     public function feedItem(): MorphOne
     {

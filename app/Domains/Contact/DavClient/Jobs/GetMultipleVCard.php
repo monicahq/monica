@@ -55,7 +55,7 @@ class GetMultipleVCard implements ShouldQueue
         $data = $this->addressbookMultiget();
 
         $jobs = collect($data)
-            ->filter(fn (array $contact): bool => is_array($contact) && $contact['status'] === '200')
+            ->filter(fn (array $contact): bool => $contact['status'] === '200')
             ->map(fn (array $contact, string $href): ?UpdateVCard => $this->updateVCard($contact, $href))
             ->filter();
 
