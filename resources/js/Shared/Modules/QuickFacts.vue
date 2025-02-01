@@ -97,7 +97,7 @@ const destroy = (quickFact) => {
 </script>
 
 <template>
-  <div class="mb-8 rounded-lg border border-gray-200 bg-gray-50 p-3 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+  <div class="mb-8 rounded-lg border border-gray-200 bg-gray-50 p-3 shadow-xs dark:border-gray-700 dark:bg-gray-900">
     <div @click="toggle()" class="flex cursor-pointer items-center justify-between" :class="openState ? ' mb-4' : ''">
       <div class="me-1 flex items-center">
         <LampIcon />
@@ -122,7 +122,7 @@ const destroy = (quickFact) => {
               @click="get(template)"
               :class="
                 localTemplate.id === template.id
-                  ? 'rounded border border-gray-200 bg-white font-semibold dark:bg-gray-800'
+                  ? 'rounded-sm border border-gray-200 bg-white font-semibold dark:bg-gray-800'
                   : ''
               "
               class="cursor-pointer px-2 py-1 text-sm">
@@ -137,7 +137,7 @@ const destroy = (quickFact) => {
         <li
           v-for="quickFact in localQuickFacts"
           :key="quickFact.id"
-          class="border-b border-dotted border-gray-300 px-2 py-2 hover:bg-gray-100 hover:dark:bg-gray-800">
+          class="border-b border-dotted border-gray-300 px-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
           <!-- normal mode -->
           <div v-if="editedQuickFactId !== quickFact.id" class="flex items-center justify-between">
             <div class="flex items-center">

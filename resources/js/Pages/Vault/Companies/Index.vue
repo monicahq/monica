@@ -23,7 +23,7 @@ defineProps({
             <li
               v-for="company in data.companies"
               :key="company.id"
-              class="border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+              class="border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
               <p>{{ company.name }}</p>
 
               <div v-if="company.contacts" class="relative flex -space-x-2 overflow-hidden py-1">

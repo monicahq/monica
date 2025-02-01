@@ -152,7 +152,7 @@ const updatePosition = (event) => {
             <label
               :for="color.hex_color"
               class="ms-2 inline-block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-              <div class="rounded p-4" :class="color.hex_color" />
+              <div class="rounded-sm p-4" :class="color.hex_color" />
             </label>
           </div>
         </div>
@@ -165,7 +165,8 @@ const updatePosition = (event) => {
     </form>
 
     <!-- help text -->
-    <div class="mb-4 flex rounded border border-gray-200 bg-slate-50 px-3 py-2 dark:border-gray-700 dark:bg-slate-900">
+    <div
+      class="mb-4 flex rounded-sm border border-gray-200 bg-slate-50 px-3 py-2 dark:border-gray-700 dark:bg-slate-900">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 pe-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path
           stroke-linecap="round"
@@ -192,7 +193,7 @@ const updatePosition = (event) => {
         <template #item="{ element }">
           <div
             v-if="editMoodTrackingParameterId !== element.id"
-            class="item-list flex items-center justify-between border-b border-gray-200 py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+            class="item-list flex items-center justify-between border-b border-gray-200 py-2 pe-5 ps-4 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
             <!-- icon to move position -->
             <div class="me-2 flex items-center">
               <svg
@@ -232,7 +233,7 @@ const updatePosition = (event) => {
 
           <form
             v-else
-            class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
+            class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800"
             @submit.prevent="update(element)">
             <div class="border-b border-gray-200 p-5 dark:border-gray-700">
               <errors :errors="form.errors" />
@@ -268,7 +269,7 @@ const updatePosition = (event) => {
                   <label
                     :for="color.hex_color"
                     class="ms-2 inline-block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    <div class="rounded p-4" :class="color.hex_color" />
+                    <div class="rounded-sm p-4" :class="color.hex_color" />
                   </label>
                 </div>
               </div>

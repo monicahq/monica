@@ -101,7 +101,7 @@ class ImportantDateHelper
         }
 
         // case: only know the month and day. In this case, we can't calculate
-        //the age at all
+        // the age at all
         if ($date->day && $date->month && ! $date->year) {
             $type = ContactImportantDate::TYPE_MONTH_DAY;
         }

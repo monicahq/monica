@@ -34,7 +34,7 @@ class Vault extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'account_id',
@@ -67,7 +67,7 @@ class Vault extends Model
     ];
 
     /**
-     * Used to delete related objects from Meilisearch/Algolia instance.
+     * Used to delete related objects from scout driver instance.
      */
     protected static function boot(): void
     {
@@ -75,14 +75,16 @@ class Vault extends Model
 
         static::deleting(function (self $model) {
             foreach ($model->contacts as $contact) {
-                $contact->notes()->unsearchable();
+                $contact->notes()->unsearchable(); // @phpstan-ignore-line
             }
-            $model->contacts()->unsearchable();
+            $model->contacts()->unsearchable(); // @phpstan-ignore-line
         });
     }
 
     /**
      * Get the account associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {
@@ -91,6 +93,8 @@ class Vault extends Model
 
     /**
      * Get the template associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Template, $this>
      */
     public function template(): BelongsTo
     {
@@ -99,6 +103,8 @@ class Vault extends Model
 
     /**
      * Get the contact associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Contact, $this>
      */
     public function contacts(): HasMany
     {
@@ -107,6 +113,8 @@ class Vault extends Model
 
     /**
      * Get the labels associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Label, $this>
      */
     public function labels(): HasMany
     {
@@ -115,6 +123,8 @@ class Vault extends Model
 
     /**
      * Get the users associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\User, $this>
      */
     public function users(): BelongsToMany
     {
@@ -125,6 +135,8 @@ class Vault extends Model
 
     /**
      * Get the contact important date types associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ContactImportantDateType, $this>
      */
     public function contactImportantDateTypes(): HasMany
     {
@@ -133,6 +145,8 @@ class Vault extends Model
 
     /**
      * Get the companies associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Company, $this>
      */
     public function companies(): HasMany
     {
@@ -141,6 +155,8 @@ class Vault extends Model
 
     /**
      * Get the groups associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Group, $this>
      */
     public function groups(): HasMany
     {
@@ -149,6 +165,8 @@ class Vault extends Model
 
     /**
      * Get the journals associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Journal, $this>
      */
     public function journals(): HasMany
     {
@@ -157,6 +175,8 @@ class Vault extends Model
 
     /**
      * Get the tags associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Tag, $this>
      */
     public function tags(): HasMany
     {
@@ -165,6 +185,8 @@ class Vault extends Model
 
     /**
      * Get the loans associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Loan, $this>
      */
     public function loans(): HasMany
     {
@@ -173,6 +195,8 @@ class Vault extends Model
 
     /**
      * Get the files associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\File, $this>
      */
     public function files(): HasMany
     {
@@ -181,6 +205,8 @@ class Vault extends Model
 
     /**
      * Get the mood tracking parameters associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\MoodTrackingParameter, $this>
      */
     public function moodTrackingParameters(): HasMany
     {
@@ -189,6 +215,8 @@ class Vault extends Model
 
     /**
      * Get the life event categories associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\LifeEventCategory, $this>
      */
     public function lifeEventCategories(): HasMany
     {
@@ -197,6 +225,8 @@ class Vault extends Model
 
     /**
      * Get the timeline events associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\TimelineEvent, $this>
      */
     public function timelineEvents(): HasMany
     {
@@ -205,6 +235,8 @@ class Vault extends Model
 
     /**
      * Get the address records associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Address, $this>
      */
     public function addresses(): HasMany
     {
@@ -213,6 +245,8 @@ class Vault extends Model
 
     /**
      * Get the quick fact template entries records associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\VaultQuickFactsTemplate, $this>
      */
     public function quickFactsTemplateEntries(): HasMany
     {
@@ -221,6 +255,8 @@ class Vault extends Model
 
     /**
      * Get the life metric records associated with the vault.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\LifeMetric, $this>
      */
     public function lifeMetrics(): HasMany
     {

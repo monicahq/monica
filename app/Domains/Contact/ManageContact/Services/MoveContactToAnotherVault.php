@@ -91,7 +91,7 @@ class MoveContactToAnotherVault extends BaseService implements ServiceInterface
     {
         if ($this->contact->company) {
             if ($this->contact->company->contacts->count() === 1) {
-                $this->contact->company->vault_id = $this->newVault->id;
+                $this->contact->company->vault_id = (string) $this->newVault->id;
                 $this->contact->company->save();
             } else {
                 $newCompany = (new CreateCompany)->execute([

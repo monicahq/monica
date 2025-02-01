@@ -46,7 +46,7 @@ class SocialiteCallbackController extends Controller
             $this->checkProvider($driver);
             $this->checkForErrors($request, $driver);
 
-            return $this->loginPipeline($request)->then(function (/*$request*/) {
+            return $this->loginPipeline($request)->then(function (/* $request */) {
                 return Redirect::intended(route('home'));
             });
         } catch (ValidationException $e) {

@@ -16,7 +16,7 @@ class PostTemplateSection extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'post_template_id',
@@ -37,6 +37,8 @@ class PostTemplateSection extends Model
 
     /**
      * Get the post type associated with the post type section.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\PostTemplate, $this>
      */
     public function postTemplate(): BelongsTo
     {

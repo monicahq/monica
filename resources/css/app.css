@@ -1,12 +1,11 @@
-@import 'charts.css';
-@import 'ant-design-vue/dist/reset.css';
+@import 'tailwindcss';
+@import 'charts.css/dist/charts.css' layer(base);
+@plugin '@tailwindcss/forms';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@custom-variant dark (&:where(.dark, .dark *));
 
-body {
-  color: #343a4b;
+@theme {
+  --default-font-family: Nunito, var(--font-sans);
 }
 
 .icon-breadcrumb {

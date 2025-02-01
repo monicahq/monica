@@ -23,7 +23,7 @@ class UserProfile
             ]);
 
         $webauthnKeys = $request->user()->webauthnKeys
-            ->map(fn (WebauthnKey $key) => [
+            ->map(fn (WebauthnKey $key) => [ // @phpstan-ignore-line
                 'id' => $key->id,
                 'name' => $key->name,
                 'type' => $key->type,
