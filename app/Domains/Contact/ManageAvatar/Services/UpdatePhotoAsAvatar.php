@@ -73,7 +73,7 @@ class UpdatePhotoAsAvatar extends BaseService implements ServiceInterface
             $this->contact->file->delete();
         } else {
             return [
-                'Error' => 'Contact file not found';
+                'Error' => trans('Contact file not found');
             ];
         }
     }
