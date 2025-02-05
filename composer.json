@@ -58,6 +58,7 @@
     "laravel/sail": "^1.14",
     "mockery/mockery": "^1.4",
     "nunomaduro/collision": "^8.1",
+    "phpstan/extension-installer": "^1.4",
     "phpunit/phpunit": "^10.0",
     "roave/security-advisories": "dev-master",
     "spatie/laravel-ignition": "^2.4",
@@ -95,7 +96,8 @@
     "sort-packages": true,
     "allow-plugins": {
       "composer/package-versions-deprecated": true,
-      "php-http/discovery": true
+      "php-http/discovery": true,
+      "phpstan/extension-installer": true
     }
   },
   "minimum-stability": "stable",
