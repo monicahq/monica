@@ -63,7 +63,8 @@
     "roave/security-advisories": "dev-master",
     "spatie/laravel-ignition": "^2.4",
     "stichoza/google-translate-php": "^5.1",
-    "thecodingmachine/phpstan-safe-rule": "^1.2"
+    "thecodingmachine/phpstan-safe-rule": "^1.2",
+    "tomasvotruba/bladestan": "^0.8.0"
   },
   "autoload": {
     "psr-4": {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e143ecb50a0c47ab34e6b4440a2d7c5",
+    "content-hash": "f102824423cf3ff1afb7c6ce59324a8c",
     "packages": [
         {
             "name": "asbiin/laravel-sentry-tunnel",
@@ -17805,6 +17805,76 @@
                 }
             ],
             "time": "2024-03-03T12:36:25+00:00"
+        },
+        {
+            "name": "tomasvotruba/bladestan",
+            "version": "0.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bladestan/bladestan.git",
+                "reference": "8d4f9a5cbc6abdd64bb18324061b0c035ac80d7b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bladestan/bladestan/zipball/8d4f9a5cbc6abdd64bb18324061b0c035ac80d7b",
+                "reference": "8d4f9a5cbc6abdd64bb18324061b0c035ac80d7b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.0 || ^10.0 || ^11.0",
+                "illuminate/filesystem": "^9.0 || ^10.0 || ^11.0",
+                "illuminate/view": "^9.0 || ^10.0 || ^11.0",
+                "php": "^8.1",
+                "phpstan/phpstan": "^2.0"
+            },
+            "require-dev": {
+                "laravel/framework": "^10.40",
+                "livewire/livewire": "^2.0 || ^3.0",
+                "nikic/php-parser": "^5.3",
+                "phpunit/phpunit": "^10.0",
+                "rector/rector": "^2.0",
+                "symplify/easy-ci": "^11.3",
+                "symplify/easy-coding-standard": "^12.1",
+                "tomasvotruba/class-leak": "^0.2.6",
+                "tracy/tracy": "^2.9"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "config/extension.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Bladestan\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan rule for static analysis of Blade templates",
+            "keywords": [
+                "phpstan-extension",
+                "static analysis"
+            ],
+            "support": {
+                "issues": "https://github.com/bladestan/bladestan/issues",
+                "source": "https://github.com/bladestan/bladestan/tree/0.8.0"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/rectorphp",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/tomasvotruba",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-01-21T04:37:43+00:00"
         }
     ],
     "aliases": [],
@@ -17821,5 +17891,5 @@
         "ext-intl": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.6.0"
 }
