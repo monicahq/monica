@@ -160,5 +160,11 @@ class CreateCallTest extends TestCase
             'who_initiated' => 'contact',
             'emotion_id' => optional($emotion)->id,
         ]);
+
+        $this->assertDatabaseHas('contact_feed_items', [
+            'contact_id' => $contact->id,
+            'feedable_id' => $call->id,
+            'feedable_type' => 'App\Models\Call',
+        ]);
     }
 }
