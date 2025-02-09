@@ -3,6 +3,7 @@ import { Link, useForm } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import { trans } from 'laravel-vue-i18n';
+import { convertMentions } from '@/utils/mentionUtils.js';
 
 const props = defineProps({
   layoutData: Object,
@@ -184,7 +185,7 @@ const destroy = () => {
                               post.title
                             }}</Link></span
                           >
-                          <p v-if="post.excerpt">{{ post.excerpt }}</p>
+                          <p v-if="post.excerpt" v-html="convertMentions(post.excerpt)"></p>
                         </div>
 
                         <!-- photo -->

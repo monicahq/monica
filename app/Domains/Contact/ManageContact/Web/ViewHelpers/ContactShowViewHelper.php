@@ -47,6 +47,7 @@ class ContactShowViewHelper
         $templatesPagesCollection = self::getTemplatePagesList($templatePages, $contact, $firstPage);
 
         return [
+            'id' => $contact->id,
             'contact_name' => ModuleContactNameViewHelper::data($contact, $user),
             'listed' => $contact->listed,
             'template_pages' => $templatesPagesCollection,
@@ -101,6 +102,7 @@ class ContactShowViewHelper
         $templatePages = $contact->template->pages()->orderBy('position', 'asc')->get();
 
         return [
+            'id' => $contact->id,
             'contact_name' => ModuleContactNameViewHelper::data($contact, $user),
             'listed' => $contact->listed,
             'template_pages' => self::getTemplatePagesList($templatePages, $contact, $templatePage),
