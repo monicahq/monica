@@ -2,10 +2,11 @@
 import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
+import { convertMentions } from '@/utils/mentionUtils.js';
 
-defineProps({
+const props = defineProps({
   layoutData: Object,
-  data: Object,
+  data: Object, // Ensure data is correctly passed as a prop
 });
 </script>
 
@@ -138,7 +139,7 @@ defineProps({
                     {{ section.label }}
                   </div>
 
-                  <div class="mb-6" v-html="section.content"></div>
+                  <div class="mb-6" v-html="convertMentions(section.content, props.data.contacts)"></div>
                 </div>
               </div>
 

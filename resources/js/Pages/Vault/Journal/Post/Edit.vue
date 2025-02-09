@@ -1,6 +1,6 @@
 <script setup>
 import { Link, useForm } from '@inertiajs/vue3';
-import { watch, ref } from 'vue';
+import { watch, ref, defineProps, computed } from 'vue';
 import { debounce } from 'lodash';
 import { trans } from 'laravel-vue-i18n';
 import { DatePicker } from 'v-calendar';
@@ -30,7 +30,20 @@ const form = useForm({
   sections: props.data.sections.map((section) => ({
     id: section.id,
     label: section.label,
-    content: section.content,
+    content: (section.content || '').replace(
+      // not defined when dealing with a new post
+      /\{\{\{CONTACT-ID:([a-f0-9-]+)\|(.*?)\}\}\}/g,
+      (match, contactId, fallbackName) => {
+        let contact = props.data.contacts.find((c) => c.id === contactId);
+
+        if (contact) {
+          return `@"${contact.name.trim()}"`;
+        }
+
+        // If contact is missing, use fallback name
+        return `@${fallbackName} (contact no longer linked to post)`;
+      },
+    ),
   })),
   uuid: null,
   name: null,
@@ -40,6 +53,19 @@ const form = useForm({
   size: null,
 });
 
+const tributeOptions = computed(() => ({
+  trigger: '@',
+  allowSpaces: true,
+  values: form.contacts.map((contact) => ({
+    key: contact.name,
+    value: contact.name,
+    id: contact.id,
+    original: contact,
+  })),
+  selectTemplate: function (item) {
+    return `@"${item.original.key.trim()}"`;
+  },
+}));
 const saveInProgress = ref(false);
 const statistics = ref(props.data.statistics);
 const deletePhotoModalShown = ref(false);
@@ -131,8 +157,27 @@ const destroyPhoto = () => {
 const update = () => {
   saveInProgress.value = true;
 
+  // Clone form to avoid modifying the UI content
+  let processedForm = JSON.parse(JSON.stringify(form));
+
+  processedForm.sections.forEach((section) => {
+    if (section.content) {
+      section.content = section.content.replace(/@"([^']+)"/g, (match, name) => {
+        name = name.trim(); // Trim spaces from the mention name
+        let contact = processedForm.contacts.find((c) => c.name.trim() === name); // Trim contact names before matching
+
+        if (contact) {
+          return `{{{CONTACT-ID:${contact.id}|${name}}}}`;
+        }
+
+        // If no contact is found, remove apostrophes and add fallback text
+        return `@${name} (contact not linked to post)`;
+      });
+    }
+  });
+
   axios
-    .put(props.data.url.update, form)
+    .put(props.data.url.update, processedForm)
     .then((response) => {
       setTimeout(() => (saveInProgress.value = false), 350);
       statistics.value = response.data.data;
@@ -326,6 +371,7 @@ const destroy = () => {
                     :required="true"
                     :maxlength="65535"
                     :markdown="true"
+                    :tribute-options="tributeOptions"
                     :textarea-class="'block w-full'" />
                 </div>
               </div>
@@ -605,5 +651,91 @@ const destroy = () => {
   border-width: 1px;
   appearance: none;
   background-color: #fff;
+}
+</style>
+<style>
+.tribute-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  margin-top: 1.5rem;
+  display: block;
+  height: auto;
+  overflow-y: auto;
+  border-radius: 0.25rem;
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  max-height: 300px;
+  max-width: 500px;
+}
+
+.tribute-container ul {
+  list-style-type: none;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  padding: 0;
+}
+
+.tribute-container li {
+  cursor: pointer;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  padding: 0.5rem 1.5rem 0.5rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity));
+}
+
+@media (prefers-color-scheme: dark) {
+  .tribute-container li {
+    background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+    color: rgb(243 244 246 / var(--tw-text-opacity));
+  }
+}
+
+.tribute-container li.highlight,
+.tribute-container li:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 232 255 / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(107 33 168 / var(--tw-text-opacity));
+}
+
+@media (prefers-color-scheme: dark) {
+  .tribute-container li.highlight,
+  .tribute-container li:hover {
+    background-color: rgb(88 28 135 / var(--tw-bg-opacity));
+    color: rgb(216 180 254 / var(--tw-text-opacity));
+  }
+}
+
+.tribute-container li span,
+.tribute-container .menu-highlighted {
+  font-weight: 700;
+}
+
+.tribute-container li.no-match {
+  cursor: default;
+}
+
+.content-textarea {
+  width: 100%;
+  min-height: 10rem; /* Equivalent to rows="10" */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.5;
+  resize: vertical;
+  outline: none;
+}
+
+.content-textarea:focus {
+  border-color: #007bff; /* Optional: highlight on focus */
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
 }
 </style>

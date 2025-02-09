@@ -358,7 +358,7 @@ const navigateToSelected = () => {
 
                 <Reminders v-else-if="module.type === 'reminders'" :data="module.data" />
 
-                <Feed v-else-if="module.type === 'feed'" :url="module.data" />
+                <Feed v-else-if="module.type === 'feed'" :url="module.data" :contact-id="data.id" />
 
                 <Loans v-else-if="module.type === 'loans'" :data="module.data" :layout-data="layoutData" />
 
