@@ -14896,16 +14896,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.2",
+            "version": "2.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "7d08f569e582ade182a375c366cbd896eccadd3a"
+                "reference": "64ae44e48214f3deebdaeebf2694297a10a2bea9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/7d08f569e582ade182a375c366cbd896eccadd3a",
-                "reference": "7d08f569e582ade182a375c366cbd896eccadd3a",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/64ae44e48214f3deebdaeebf2694297a10a2bea9",
+                "reference": "64ae44e48214f3deebdaeebf2694297a10a2bea9",
                 "shasum": ""
             },
             "require": {
@@ -14950,7 +14950,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-21T14:54:06+00:00"
+            "time": "2025-02-07T15:05:24+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -17700,23 +17700,23 @@
         },
         {
             "name": "thecodingmachine/phpstan-safe-rule",
-            "version": "v1.3.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/phpstan-safe-rule.git",
-                "reference": "5b4522c3a9f3bd7bd09215e91c923a9e6d21a5a6"
+                "reference": "006df47d060224218c3cf1f4d71dffda9f13430c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/phpstan-safe-rule/zipball/5b4522c3a9f3bd7bd09215e91c923a9e6d21a5a6",
-                "reference": "5b4522c3a9f3bd7bd09215e91c923a9e6d21a5a6",
+                "url": "https://api.github.com/repos/thecodingmachine/phpstan-safe-rule/zipball/006df47d060224218c3cf1f4d71dffda9f13430c",
+                "reference": "006df47d060224218c3cf1f4d71dffda9f13430c",
                 "shasum": ""
             },
             "require": {
                 "nikic/php-parser": "^5",
                 "php": "^7.4 || ^8.0",
                 "phpstan/phpstan": "^2.0",
-                "thecodingmachine/safe": "^1.0 || ^2.0"
+                "thecodingmachine/safe": "^1.0 || ^2.0 || ^3.0"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.1",
@@ -17752,9 +17752,9 @@
             "description": "A PHPStan rule to detect safety issues. Must be used in conjunction with thecodingmachine/safe",
             "support": {
                 "issues": "https://github.com/thecodingmachine/phpstan-safe-rule/issues",
-                "source": "https://github.com/thecodingmachine/phpstan-safe-rule/tree/v1.3.0"
+                "source": "https://github.com/thecodingmachine/phpstan-safe-rule/tree/v1.3.1"
             },
-            "time": "2024-12-02T11:26:58+00:00"
+            "time": "2025-02-09T12:30:36+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -17891,5 +17891,5 @@
         "ext-intl": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
