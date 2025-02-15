@@ -2,10 +2,8 @@
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <DatabaseIcon />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <CloudUpload class="h-4 w-4 text-gray-600" />
 
         <span class="font-semibold">
           {{ $t('Documents') }}
@@ -89,13 +87,13 @@
 <script>
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
-import DatabaseIcon from '@/Shared/Icons/DatabaseIcon.vue';
+import { CloudUpload } from 'lucide-vue-next';
 
 export default {
   components: {
     PrettyButton,
     Uploadcare,
-    DatabaseIcon,
+    CloudUpload,
   },
 
   props: {

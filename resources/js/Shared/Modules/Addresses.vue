@@ -9,7 +9,7 @@ import Dropdown from '@/Shared/Form/Dropdown.vue';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 import JetDangerButton from '@/Components/Jetstream/DangerButton.vue';
 import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
-import MapPointerIcon from '@/Shared/Icons/MapPointerIcon.vue';
+import { MapPinHouse } from 'lucide-vue-next';
 
 const props = defineProps({
   layoutData: Object,
@@ -149,10 +149,8 @@ const destroy = () => {
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <MapPointerIcon />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <MapPinHouse class="h-4 w-4 text-gray-600" />
 
         <span class="font-semibold">
           {{ $t('Addresses') }}

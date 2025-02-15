@@ -8,6 +8,7 @@ import TextArea from '@/Shared/Form/TextArea.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
+import { CloudSun } from 'lucide-vue-next';
 
 const props = defineProps({
   data: Object,
@@ -71,21 +72,8 @@ const submit = () => {
 
 <template>
   <div class="mb-10">
-    <h3 class="mb-3 border-b border-gray-200 pb-1 font-medium dark:border-gray-700">
-      <span class="relative">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-400">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59" />
-        </svg>
-      </span>
+    <h3 class="mb-3 flex items-center gap-2 border-b border-gray-200 pb-1 font-medium dark:border-gray-700">
+      <CloudSun class="h-4 w-4" />
 
       {{ $t('Record your mood') }}
     </h3>

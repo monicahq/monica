@@ -2,10 +2,8 @@
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <PhotoIcon />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <FileImage class="h-4 w-4 text-gray-600" />
 
         <span class="font-semibold">
           {{ $t('Photos') }}
@@ -79,14 +77,14 @@
 import { Link } from '@inertiajs/vue3';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
-import PhotoIcon from '@/Shared/Icons/PhotoIcon.vue';
+import { FileImage } from 'lucide-vue-next';
 
 export default {
   components: {
     InertiaLink: Link,
     PrettyButton,
     Uploadcare,
-    PhotoIcon,
+    FileImage,
   },
 
   props: {

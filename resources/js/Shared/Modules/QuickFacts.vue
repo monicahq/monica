@@ -7,9 +7,9 @@ import Errors from '@/Shared/Form/Errors.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
-import LampIcon from '@/Shared/Icons/LampIcon.vue';
 import ChevronIcon from '@/Shared/Icons/ChevronIcon.vue';
 import ValideIcon from '@/Shared/Icons/ValideIcon.vue';
+import { Lightbulb } from 'lucide-vue-next';
 
 const props = defineProps({
   data: Object,
@@ -99,9 +99,8 @@ const destroy = (quickFact) => {
 <template>
   <div class="mb-8 rounded-lg border border-gray-200 bg-gray-50 p-3 shadow-xs dark:border-gray-700 dark:bg-gray-900">
     <div @click="toggle()" class="flex cursor-pointer items-center justify-between" :class="openState ? ' mb-4' : ''">
-      <div class="me-1 flex items-center">
-        <LampIcon />
-
+      <div class="flex items-center gap-2">
+        <Lightbulb class="h-4 w-4 text-gray-600" />
         <p class="text-sm font-bold">{{ $t('Quick facts') }}</p>
       </div>
 

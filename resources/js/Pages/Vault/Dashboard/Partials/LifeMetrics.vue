@@ -9,6 +9,7 @@ import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import HoverMenu from '@/Shared/HoverMenu.vue';
+import { ChartSpline } from 'lucide-vue-next';
 
 const props = defineProps({
   data: Object,
@@ -111,21 +112,8 @@ const destroy = (lifeMetric) => {
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="relative inline h-4 w-4">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
-          </svg>
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <ChartSpline class="h-4 w-4" />
 
         <span class="font-semibold"> {{ $t('Life metrics') }} </span>
       </div>

@@ -36,6 +36,7 @@ import Posts from '@/Shared/Modules/Posts.vue';
 import LifeEvent from '@/Shared/Modules/LifeEvent.vue';
 import QuickFacts from '@/Shared/Modules/QuickFacts.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
+import { ChevronRight } from 'lucide-vue-next';
 
 const props = defineProps({
   layoutData: Object,
@@ -170,37 +171,28 @@ const navigateToSelected = () => {
 <template>
   <Layout :layout-data="layoutData" :inside-vault="true">
     <!-- breadcrumb -->
-    <nav class="bg-white dark:bg-gray-900 sm:mt-20 sm:border-b">
+    <nav class="bg-white dark:bg-gray-900 sm:mt-20 sm:border-b sm:border-gray-300 dark:border-gray-700">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
-        <div class="flex items-baseline justify-between space-x-6">
-          <ul class="text-sm">
-            <li class="me-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('You are here:') }}
-            </li>
-            <li class="me-2 inline">
-              <Link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
-                {{ $t('Contacts') }}
-              </Link>
-            </li>
-            <li class="relative me-2 inline">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon-breadcrumb relative inline h-3 w-3"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </li>
-            <li class="inline">
-              {{ $t('Profile of :name', { name: data.contact_name.name }) }}
-            </li>
-          </ul>
+        <div class="flex items-center gap-1 text-sm">
+          <div class="text-gray-600 dark:text-gray-400">
+            {{ $t('You are here:') }}
+          </div>
+          <div class="inline">
+            <Link :href="layoutData.vault.url.contacts" class="text-blue-500 hover:underline">
+              {{ $t('Contacts') }}
+            </Link>
+          </div>
+          <div class="relative inline">
+            <ChevronRight class="h-3 w-3" />
+          </div>
+          <div class="inline">
+            {{ $t('Profile of :name', { name: data.contact_name.name }) }}
+          </div>
         </div>
       </div>
     </nav>
 
-    <main class="sm:mt-18 relative">
+    <main class="sm:mt-8 relative">
       <div class="mx-auto max-w-6xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <!-- banner if contact is archived -->
         <!-- this is based on the `listed` boolean on the contact object -->

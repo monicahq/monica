@@ -1,9 +1,9 @@
 <template>
   <div class="mb-4">
-    <div class="mb-3 items-center justify-between border-b border-gray-200 dark:border-gray-700 flex">
-      <div class="mb-2 text-xs sm:mb-0">{{ $t('Labels') }}</div>
+    <div class="pb-1 mb-2 items-center justify-between border-b border-gray-200 dark:border-gray-700 flex">
+      <div class="text-xs">{{ $t('Labels') }}</div>
       <span v-if="!editLabelModalShown" class="relative cursor-pointer" @click="showEditModal">
-        <EditIcon />
+        <Pencil class="h-3 w-3 text-gray-400" />
       </span>
 
       <!-- close button -->
@@ -87,15 +87,15 @@
 import { Link } from '@inertiajs/vue3';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
-import EditIcon from '@/Shared/Icons/EditIcon.vue';
 import CheckedIcon from '@/Shared/Icons/CheckedIcon.vue';
+import { Pencil } from 'lucide-vue-next';
 
 export default {
   components: {
     InertiaLink: Link,
     TextInput,
     Errors,
-    EditIcon,
+    Pencil,
     CheckedIcon,
   },
 

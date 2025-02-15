@@ -2,12 +2,8 @@
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <span class="relative me-1">
-            <FaceIcon :type="'dog'" />
-          </span>
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <Dog class="h-4 w-4 text-gray-600" />
 
         <span class="font-semibold"> {{ $t('Pets') }} </span>
       </div>
@@ -141,7 +137,7 @@ import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Dropdown from '@/Shared/Form/Dropdown.vue';
 import Errors from '@/Shared/Form/Errors.vue';
-import FaceIcon from '@/Shared/Icons/FaceIcon.vue';
+import { Dog } from 'lucide-vue-next';
 
 export default {
   components: {
@@ -150,7 +146,7 @@ export default {
     TextInput,
     Dropdown,
     Errors,
-    FaceIcon,
+    Dog,
   },
 
   props: {

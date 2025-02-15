@@ -2,10 +2,8 @@
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <BallIcon />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <Crosshair class="h-4 w-4 text-gray-600" />
 
         <span class="font-semibold"> {{ $t('Goals') }} </span>
       </div>
@@ -131,8 +129,7 @@ import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
-import BallIcon from '@/Shared/Icons/BallIcon.vue';
-import FaceIcon from '@/Shared/Icons/FaceIcon.vue';
+import { Crosshair } from 'lucide-vue-next';
 
 export default {
   components: {
@@ -141,8 +138,7 @@ export default {
     PrettySpan,
     TextInput,
     Errors,
-    BallIcon,
-    FaceIcon,
+    Crosshair,
   },
 
   props: {

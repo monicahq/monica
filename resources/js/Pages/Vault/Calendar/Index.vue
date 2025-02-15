@@ -4,7 +4,7 @@ import { Link } from '@inertiajs/vue3';
 import { Tooltip as ATooltip } from 'ant-design-vue';
 import Layout from '@/Shared/Layout.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
-
+import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
 defineProps({
   layoutData: Object,
   data: Object,
@@ -42,57 +42,42 @@ const get = (day) => {
                 <div class="inline-flex rounded-md shadow-xs">
                   <Link
                     :href="data.url.previous"
-                    class="inline-flex items-center rounded-s-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="me-2 h-4 w-4">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                    </svg>
+                    class="flex items-center gap-2 rounded-s-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                    <ChevronLeft class="h-4 w-4" />
 
                     {{ data.previous_month }}
                   </Link>
 
                   <Link
                     :href="data.url.next"
-                    class="inline-flex items-center rounded-e-md border-y border-e border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
+                    class="flex items-center gap-2 rounded-e-md border-y border-e border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
                     {{ data.next_month }}
 
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="ms-2 h-4 w-4">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                    </svg>
+                    <ChevronRight class="h-4 w-4" />
                   </Link>
                 </div>
               </div>
             </div>
 
             <!-- days -->
-            <div class="grid grid-cols-7 rounded-t-lg border-x border-t last:border-b dark:border-gray-700">
-              <div class="border-e p-2 text-center text-xs dark:border-gray-700">
+            <div
+              class="grid grid-cols-7 rounded-t-lg border-x border-t border-gray-200 last:border-b dark:border-gray-700">
+              <div class="border-e border-gray-200 p-2 text-center text-xs dark:border-gray-700">
                 {{ $t('Monday') }}
               </div>
-              <div class="border-e p-2 text-center text-xs dark:border-gray-700">
+              <div class="border-e border-gray-200 p-2 text-center text-xs dark:border-gray-700">
                 {{ $t('Tuesday') }}
               </div>
-              <div class="border-e p-2 text-center text-xs dark:border-gray-700">
+              <div class="border-e border-gray-200 p-2 text-center text-xs dark:border-gray-700">
                 {{ $t('Wednesday') }}
               </div>
-              <div class="border-e p-2 text-center text-xs dark:border-gray-700">
+              <div class="border-e border-gray-200 p-2 text-center text-xs dark:border-gray-700">
                 {{ $t('Thursday') }}
               </div>
-              <div class="border-e p-2 text-center text-xs dark:border-gray-700">
+              <div class="border-e border-gray-200 p-2 text-center text-xs dark:border-gray-700">
                 {{ $t('Friday') }}
               </div>
-              <div class="border-e p-2 text-center text-xs dark:border-gray-700">
+              <div class="border-e border-gray-200 p-2 text-center text-xs dark:border-gray-700">
                 {{ $t('Saturday') }}
               </div>
               <div class="p-2 text-center text-xs">{{ $t('Sunday') }}</div>
@@ -102,12 +87,12 @@ const get = (day) => {
             <div
               v-for="week in data.weeks"
               :key="week.id"
-              class="grid grid-cols-7 border-x border-t last:rounded-b-lg last:border-b dark:border-gray-700">
+              class="grid grid-cols-7 border-x border-t border-gray-200 last:rounded-b-lg last:border-b dark:border-gray-700">
               <div
                 v-for="day in week"
                 :key="day.id"
                 @click="get(day)"
-                class="h-32 border-e p-2 last:border-e-0 dark:border-gray-700"
+                class="h-32 border-e border-gray-200 p-2 last:border-e-0 dark:border-gray-700"
                 :class="day.is_in_month ? 'cursor-pointer' : 'bg-slate-50 dark:bg-slate-900'">
                 <!-- date of the day -->
                 <div class="flex items-center justify-between">

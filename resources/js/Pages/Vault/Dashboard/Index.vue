@@ -10,6 +10,7 @@ import LifeMetrics from '@/Pages/Vault/Dashboard/Partials/LifeMetrics.vue';
 import MoodTrackingEvents from '@/Pages/Vault/Dashboard/Partials/MoodTrackingEvents.vue';
 import Feed from '@/Shared/Modules/Feed.vue';
 import LifeEvent from '@/Shared/Modules/LifeEvent.vue';
+import { SquareActivity, Flame, ChartSpline } from 'lucide-vue-next';
 
 const props = defineProps({
   layoutData: Object,
@@ -67,19 +68,8 @@ const changeTab = (tab) => {
                       ? 'bg-gray-100 text-blue-700 dark:bg-gray-900 dark:text-blue-300'
                       : 'bg-white text-gray-900 dark:bg-gray-700 dark:text-white'
                   "
-                  class="inline-flex items-center rounded-s-lg border-y border-s border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-blue-300 dark:focus:ring-blue-500">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="me-2 h-4 w-4 fill-current">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25" />
-                  </svg>
+                  class="inline-flex cursor-pointer items-center rounded-s-lg border-y border-s border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-blue-300 dark:focus:ring-blue-500">
+                  <SquareActivity class="me-2 h-4 w-4" />
                   {{ $t('Activity in this vault') }}
                 </button>
 
@@ -92,23 +82,8 @@ const changeTab = (tab) => {
                       ? 'bg-gray-100 text-blue-700 dark:bg-gray-900 dark:text-blue-300'
                       : 'bg-white text-gray-900 dark:bg-gray-700 dark:text-white'
                   "
-                  class="inline-flex items-center border-y border-e border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-blue-300 dark:focus:ring-blue-500">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="me-2 h-4 w-4">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
-                  </svg>
+                  class="inline-flex cursor-pointer items-center border-y border-e border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-blue-300 dark:focus:ring-blue-500">
+                  <Flame class="me-2 h-4 w-4" />
                   {{ $t('Your life events') }}
                 </button>
 
@@ -121,19 +96,8 @@ const changeTab = (tab) => {
                       ? 'bg-gray-100 text-blue-700 dark:bg-gray-900 dark:text-blue-300'
                       : 'bg-white text-gray-900 dark:bg-gray-700 dark:text-white'
                   "
-                  class="inline-flex items-center rounded-e-lg border-y border-e border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-blue-300 dark:focus:ring-blue-500">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="me-2 h-4 w-4">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
-                  </svg>
+                  class="inline-flex cursor-pointer items-center rounded-e-lg border-y border-e border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-blue-300 dark:focus:ring-blue-500">
+                  <ChartSpline class="me-2 h-4 w-4" />
                   {{ $t('Life metrics') }}
                 </button>
               </div>

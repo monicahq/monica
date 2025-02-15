@@ -6,10 +6,10 @@ import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
 import HoverMenu from '@/Shared/HoverMenu.vue';
 import CreateLifeEvent from '@/Shared/Modules/CreateLifeEvent.vue';
-import FireIcon from '@/Shared/Icons/FireIcon.vue';
 import ChevronIcon from '@/Shared/Icons/ChevronIcon.vue';
 import ClockIcon from '@/Shared/Icons/ClockIcon.vue';
 import TwoPinMapIcon from '@/Shared/Icons/TwoPinMapIcon.vue';
+import { Flame } from 'lucide-vue-next';
 
 const props = defineProps({
   layoutData: Object,
@@ -109,10 +109,8 @@ const toggleLifeEventVisibility = (lifeEvent) => {
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <FireIcon />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <Flame class="h-4 w-4" />
 
         <span class="font-semibold"> {{ $t('Life events') }} </span>
       </div>

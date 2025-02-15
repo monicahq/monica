@@ -21,7 +21,7 @@
 
         <!-- search box -->
         <div v-if="insideVault" class="flew-grow relative">
-          <SearchIcon />
+          <ScanSearch class="absolute start-2 top-2 h-4 w-4 text-gray-400" />
           <input
             type="text"
             class="dark:highlight-white/5 block w-64 rounded-md border border-gray-300 px-2 py-1 text-center placeholder:text-gray-600 hover:cursor-pointer focus:border-indigo-500 focus:ring-indigo-500 dark:border-0 dark:border-gray-700 dark:bg-slate-900 dark:placeholder:text-gray-400 dark:hover:bg-slate-700 sm:text-sm"
@@ -30,36 +30,36 @@
         </div>
 
         <!-- icons -->
-        <div class="flew-grow">
-          <ul class="relative">
-            <li class="relative top-[3px] me-4 inline">
-              <label for="dark-mode-toggle" class="relative inline-flex cursor-pointer">
-                <input
-                  id="dark-mode-toggle"
-                  v-model="style.checked"
-                  type="checkbox"
-                  class="peer hidden"
-                  @click="toggleStyle" />
-                <div
-                  class="peer me-2 h-4 w-7 rounded-full bg-gray-200 after:absolute after:left-[2px] after:right-[14px] after:top-[2px] after:h-3 after:w-3 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-hidden peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
-                <DarkModeIcon :checked="style.checked" />
-              </label>
-            </li>
-            <li class="me-4 inline">
-              <InertiaLink :href="layoutData.url.settings" class="relative inline">
-                <SettingIcon />
+        <div class="flex items-center justify-end gap-4">
+          <div class="relative top-[3px] me-4 inline">
+            <label for="dark-mode-toggle" class="relative inline-flex cursor-pointer">
+              <input
+                id="dark-mode-toggle"
+                v-model="style.checked"
+                type="checkbox"
+                class="peer hidden"
+                @click="toggleStyle" />
+              <div
+                class="peer me-2 h-4 w-7 rounded-full bg-gray-200 after:absolute after:left-[2px] after:right-[14px] after:top-[2px] after:h-3 after:w-3 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-hidden peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
+              <DarkModeIcon :checked="style.checked" />
+            </label>
+          </div>
+          <InertiaLink :href="layoutData.url.settings" class="relative flex items-center gap-1">
+            <Settings
+              class="h-4 w-4 cursor-pointer text-gray-600 hover:text-gray-900 dark:text-gray-600 dark:hover:text-gray-100" />
 
-                <span class="text-sm dark:text-sky-400">{{ $t('Settings') }}</span>
-              </InertiaLink>
-            </li>
-            <li class="inline">
-              <InertiaLink class="inline" method="post" :href="route('logout')" as="button">
-                <DoorIcon />
+            <span class="text-sm dark:text-sky-400">{{ $t('Settings') }}</span>
+          </InertiaLink>
+          <InertiaLink
+            class="relative flex items-center gap-1 cursor-pointer"
+            method="post"
+            :href="route('logout')"
+            as="button">
+            <LogOut
+              class="h-4 w-4 cursor-pointer text-gray-600 hover:text-gray-900 dark:text-gray-600 dark:hover:text-gray-100" />
 
-                <span class="text-sm dark:text-sky-400">{{ $t('Logout') }}</span>
-              </InertiaLink>
-            </li>
-          </ul>
+            <span class="text-sm dark:text-sky-400">{{ $t('Logout') }}</span>
+          </InertiaLink>
         </div>
       </nav>
 
@@ -356,10 +356,8 @@ import { Link } from '@inertiajs/vue3';
 import Toaster from '@/Shared/Toaster.vue';
 import FooterLayout from '@/Layouts/FooterLayout.vue';
 import ChevronIcon from '@/Shared/Icons/ChevronIcon.vue';
-import SearchIcon from '@/Shared/Icons/SearchIcon.vue';
 import DarkModeIcon from '@/Shared/Icons/DarkModeIcon.vue';
-import SettingIcon from '@/Shared/Icons/SettingIcon.vue';
-import DoorIcon from '@/Shared/Icons/DoorIcon.vue';
+import { Settings, LogOut, ScanSearch } from 'lucide-vue-next';
 
 export default {
   components: {
@@ -367,10 +365,10 @@ export default {
     Toaster,
     FooterLayout,
     ChevronIcon,
-    SearchIcon,
+    ScanSearch,
     DarkModeIcon,
-    SettingIcon,
-    DoorIcon,
+    Settings,
+    LogOut,
   },
 
   props: {
