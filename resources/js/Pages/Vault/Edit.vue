@@ -65,8 +65,12 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-link :href="data.url.back" :text="$t('Cancel')" :class="'me-3'" />
-            <pretty-button
+            <InertiaLink
+              :href="data.url.back"
+              :text="$t('Cancel')"
+              class="cursor-pointer inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1 font-semibold text-gray-700 hover:shadow-xs transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25" />
+
+            <primary-button
               :href="'data.url.vault.update'"
               :text="$t('Update')"
               :state="loadingState"
@@ -82,8 +86,7 @@
 <script>
 import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
-import PrettyLink from '@/Shared/Form/PrettyLink.vue';
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrimaryButton from '@/Shared/Form/PrimaryButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import Help from '@/Shared/Help.vue';
@@ -92,8 +95,7 @@ export default {
   components: {
     InertiaLink: Link,
     Layout,
-    PrettyLink,
-    PrettyButton,
+    PrimaryButton,
     TextInput,
     TextArea,
     Help,

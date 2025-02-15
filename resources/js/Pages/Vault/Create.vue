@@ -1,32 +1,23 @@
 <template>
   <layout :layout-data="layoutData">
     <!-- breadcrumb -->
-    <nav class="bg-white dark:bg-gray-900 sm:border-b border-gray-200 dark:border-gray-700 dark:sm:border-black">
+    <nav class="bg-white dark:bg-gray-900 sm:border-b sm:border-gray-300 dark:border-gray-700">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
-        <div class="flex items-baseline justify-between space-x-6">
-          <ul class="text-sm">
-            <li class="me-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('You are here:') }}
-            </li>
-            <li class="me-2 inline">
-              <InertiaLink :href="data.url.back" class="text-blue-500 hover:underline">
-                {{ $t('All the vaults') }}
-              </InertiaLink>
-            </li>
-            <li class="relative me-2 inline">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon-breadcrumb relative inline h-3 w-3 dark:text-slate-200"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </li>
-            <li class="inline dark:text-slate-200">
-              {{ $t('Add a vault') }}
-            </li>
-          </ul>
+        <div class="flex items-center gap-1 text-sm">
+          <div class="text-gray-600 dark:text-gray-400">
+            {{ $t('You are here:') }}
+          </div>
+          <div class="inline">
+            <Link :href="data.url.back" class="text-blue-500 hover:underline">
+              {{ $t('All the vaults') }}
+            </Link>
+          </div>
+          <div class="relative inline">
+            <ChevronRight class="h-3 w-3" />
+          </div>
+          <div class="inline">
+            {{ $t('Add a vault') }}
+          </div>
         </div>
       </div>
     </nav>
@@ -57,6 +48,7 @@
               :required="true"
               :maxlength="255"
               :label="$t('Name')" />
+
             <text-area
               v-model="form.description"
               :label="$t('Description')"
@@ -65,13 +57,16 @@
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-link :href="data.url.back" :text="$t('Cancel')" :class="'me-3'" />
-            <pretty-button
+            <InertiaLink
+              :href="data.url.back"
+              :text="$t('Cancel')"
+              class="cursor-pointer inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1 font-semibold text-gray-700 hover:shadow-xs transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25" />
+
+            <primary-button
               :href="'data.url.vault.create'"
               :text="$t('Create')"
               :state="loadingState"
-              :icon="'check'"
-              :class="'save'" />
+              :icon="'check'" />
           </div>
         </form>
       </div>
@@ -82,21 +77,21 @@
 <script>
 import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
-import PrettyLink from '@/Shared/Form/PrettyLink.vue';
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrimaryButton from '@/Shared/Form/PrimaryButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import Help from '@/Shared/Help.vue';
+import { ChevronRight } from 'lucide-vue-next';
 
 export default {
   components: {
     InertiaLink: Link,
     Layout,
-    PrettyLink,
-    PrettyButton,
+    PrimaryButton,
     TextInput,
     TextArea,
     Help,
+    ChevronRight,
   },
 
   props: {

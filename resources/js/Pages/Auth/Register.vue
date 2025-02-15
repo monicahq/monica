@@ -6,7 +6,7 @@ import JetInput from '@/Components/Input.vue';
 import JetLabel from '@/Components/Label.vue';
 import JetValidationErrors from '@/Components/ValidationErrors.vue';
 import JetCheckbox from '@/Components/Checkbox.vue';
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrimaryButton from '@/Shared/Form/PrimaryButton.vue';
 
 const form = useForm({
   first_name: '',
@@ -139,7 +139,7 @@ const policy = () => {
           {{ $t('Already registered?') }}
         </Link>
 
-        <PrettyButton :text="$t('Register')" :state="loadingState" :class="'save'" />
+        <primary-button :text="$t('Register')" :state="loadingState" :class="'save'" />
       </div>
     </form>
   </JetGuestLayout>
