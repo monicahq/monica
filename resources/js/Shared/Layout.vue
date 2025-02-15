@@ -3,7 +3,7 @@
     <div class="sm:fixed top-0 z-10 w-full">
       <!-- main nav - only displayed on desktop -->
       <nav
-        class="hidden max-w-8xl mx-auto sm:flex h-10 items-center justify-between border-b bg-gray-50 px-3 dark:border-slate-600 dark:bg-gray-800 dark:text-slate-200 sm:px-6">
+        class="hidden max-w-8xl mx-auto sm:flex h-10 items-center justify-between border-b border-gray-300 bg-gray-50 px-3 dark:border-slate-600 dark:bg-gray-800 dark:text-slate-200 sm:px-6">
         <div
           class="dark:highlight-white/5 items-center rounded-lg border border-gray-200 bg-white px-2 py-1 text-sm dark:border-0 dark:border-gray-700 dark:bg-gray-400/20 dark:bg-gray-900 sm:flex">
           <InertiaLink :href="layoutData.url.vaults" class="shrink-0 dark:text-sky-400">
@@ -159,7 +159,9 @@
       </div>
 
       <!-- vault sub menu on desktop -->
-      <nav v-if="insideVault" class="hidden sm:block bg-white dark:border-slate-300/10 dark:bg-gray-900 sm:border-b">
+      <nav
+        v-if="insideVault"
+        class="hidden sm:block bg-white dark:border-slate-300/10 dark:bg-gray-900 sm:border-b sm:border-gray-300">
         <div class="max-w-8xl mx-auto px-4 py-2 sm:px-6 block">
           <ul class="list-none text-sm font-medium">
             <li class="inline">
@@ -331,7 +333,9 @@
     </div>
 
     <!-- Page Heading -->
-    <header v-if="$slots.header" class="relative mb-8 mt-10 bg-white dark:bg-gray-900 sm:border-b">
+    <header
+      v-if="$slots.header"
+      class="relative mb-8 mt-10 bg-white dark:bg-gray-900 sm:border-b border-gray-200 dark:border-gray-700">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <slot name="header" />
       </div>
