@@ -2,10 +2,8 @@
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <NoteIcon />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <NotebookPen class="h-4 w-4 text-gray-600" />
 
         <span class="font-semibold"> {{ $t('Notes') }} </span>
       </div>
@@ -111,22 +109,22 @@
           <!-- details -->
           <div
             class="flex justify-between border-t border-gray-200 px-3 py-1 text-xs text-gray-600 hover:rounded-b hover:bg-slate-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-slate-900">
-            <div class="flex items-center">
+            <div class="flex items-center gap-4">
               <!-- emotion -->
               <div v-if="note.emotion" class="relative me-3 inline">
                 {{ note.emotion.name }}
               </div>
 
               <!-- date -->
-              <div class="relative me-3 inline">
-                <ClockIcon :time="'four'" />
+              <div class="relative flex items-center gap-1">
+                <CalendarDays class="h-3 w-3" />
                 {{ note.written_at }}
               </div>
 
               <!-- author -->
               <div v-if="note.author" class="relative me-3 inline">
-                <div class="icon-avatar relative flex">
-                  <avatar :data="note.author.avatar" :class="'relative me-1 h-3 w-3 rounded-full'" />
+                <div class="icon-avatar flex items-center gap-1">
+                  <avatar :data="note.author.avatar" :class="'h-3 w-3 rounded-full'" />
                   <span>{{ note.author.name }}</span>
                 </div>
               </div>
@@ -225,8 +223,7 @@ import TextArea from '@/Shared/Form/TextArea.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 import Avatar from '@/Shared/Avatar.vue';
 import Pagination from '@/Components/Pagination.vue';
-import NoteIcon from '@/Shared/Icons/NoteIcon.vue';
-import ClockIcon from '@/Shared/Icons/ClockIcon.vue';
+import { NotebookPen, CalendarDays } from 'lucide-vue-next';
 
 export default {
   components: {
@@ -239,8 +236,8 @@ export default {
     Errors,
     Avatar,
     Pagination,
-    NoteIcon,
-    ClockIcon,
+    NotebookPen,
+    CalendarDays,
   },
 
   props: {

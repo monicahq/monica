@@ -1,7 +1,7 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
-import TagIcon from '@/Shared/Icons/TagIcon.vue';
 import ClockIcon from '@/Shared/Icons/ClockIcon.vue';
+import { PenTool } from 'lucide-vue-next';
 
 defineProps({
   data: Object,
@@ -12,10 +12,8 @@ defineProps({
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <TagIcon />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <PenTool class="h-4 w-4 text-gray-600" />
 
         <span class="font-semibold"> {{ $t('Posts') }} </span>
       </div>

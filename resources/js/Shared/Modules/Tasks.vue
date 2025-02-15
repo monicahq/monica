@@ -5,8 +5,8 @@ import { trans } from 'laravel-vue-i18n';
 import HoverMenu from '@/Shared/HoverMenu.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import CreateOrEditTask from '@/Shared/Modules/TaskItems/CreateOrEditTask.vue';
-import TaskIcon from '@/Shared/Icons/TaskIcon.vue';
 import DateIcon from '@/Shared/Icons/DateIcon.vue';
+import { LayoutList } from 'lucide-vue-next';
 
 const props = defineProps({
   data: Object,
@@ -91,10 +91,8 @@ const destroy = (task) => {
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <TaskIcon />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <LayoutList class="h-4 w-4 text-gray-600" />
 
         <span class="font-semibold"> {{ $t('Tasks') }} </span>
       </div>

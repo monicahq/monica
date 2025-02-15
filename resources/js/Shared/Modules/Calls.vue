@@ -10,7 +10,7 @@ import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import Errors from '@/Shared/Form/Errors.vue';
-import CallIcon from '@/Shared/Icons/CallIcon.vue';
+import { PhoneCall } from 'lucide-vue-next';
 
 const props = defineProps({
   data: Object,
@@ -152,10 +152,8 @@ const destroy = (call) => {
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <CallIcon :is-normal="true" />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <PhoneCall class="h-4 w-4 text-gray-600" />
 
         <span class="font-semibold"> {{ $t('Calls') }} </span>
       </div>

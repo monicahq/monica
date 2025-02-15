@@ -34,10 +34,7 @@ const update = () => {
           <div>
             <!-- labels -->
             <div class="mb-8">
-              <div class="mb-3 border-b border-gray-200 dark:border-gray-700">
-                <span class="me-1"> 🏷️ </span>
-                {{ $t('Labels') }}
-              </div>
+              <div class="mb-3 border-b border-gray-200 dark:border-gray-700">{{ $t('Labels') }}</div>
               <ul v-if="data.labels.length > 0">
                 <li class="mb-1">
                   <div v-if="data.current_label">
@@ -72,10 +69,7 @@ const update = () => {
           <div class="p-3 sm:px-3 sm:py-0">
             <!-- title + cta -->
             <div class="mb-3 flex items-center justify-between">
-              <h3>
-                <span class="me-1"> 🥸 </span>
-                {{ $t('All contacts in the vault') }}
-              </h3>
+              <h3>{{ $t('All contacts in the vault') }}</h3>
 
               <div class="flex items-center">
                 <dropdown

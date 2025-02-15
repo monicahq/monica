@@ -2,7 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
-
+import { CalendarDays } from 'lucide-vue-next';
 defineProps({
   layoutData: Object,
   data: Object,
@@ -40,21 +40,8 @@ defineProps({
                   journal.name
                 }}</Link>
 
-                <div v-if="journal.last_updated" class="mb-2 flex items-center text-sm sm:mb-0">
-                  <span class="me-1">
-                    <svg
-                      class="h-4 w-4 text-gray-500"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor">
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </span>
+                <div v-if="journal.last_updated" class="mb-2 flex items-center gap-2 text-sm sm:mb-0">
+                  <CalendarDays class="h-4 w-4 text-gray-400" />
 
                   {{ $t('Updated on :date', { date: journal.last_updated }) }}
                 </div>

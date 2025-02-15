@@ -1,13 +1,13 @@
 <template>
   <InertiaLink
-    :class="'dark:box-s relative border-zinc-900 bg-white text-sm dark:border-zinc-100 dark:bg-gray-800 dark:text-gray-100'"
+    :class="'flex items-center gap-1 dark:box-s relative border-zinc-900 bg-white text-sm dark:border-zinc-100 dark:bg-gray-800 dark:text-gray-100'"
     :href="href"
     preserve-scroll>
-    <PlusIcon v-if="icon === 'plus'" />
+    <Plus class="h-4 w-4" v-if="icon === 'plus'" />
 
-    <CheckedIcon v-else-if="icon === 'check'" />
+    <Check class="h-4 w-4" v-else-if="icon === 'check'" />
 
-    <DoorIcon :type="'entry'" v-else-if="icon === 'exit'" />
+    <DoorOpen class="h-4 w-4" v-else-if="icon === 'exit'" />
 
     <span>
       {{ text }}
@@ -17,16 +17,14 @@
 
 <script>
 import { Link } from '@inertiajs/vue3';
-import PlusIcon from '@/Shared/Icons/PlusIcon.vue';
-import CheckedIcon from '@/Shared/Icons/CheckedIcon.vue';
-import DoorIcon from '@/Shared/Icons/DoorIcon.vue';
+import { Plus, Check, DoorOpen } from 'lucide-vue-next';
 
 export default {
   components: {
     InertiaLink: Link,
-    PlusIcon,
-    CheckedIcon,
-    DoorIcon,
+    Plus,
+    Check,
+    DoorOpen,
   },
 
   props: {
@@ -56,8 +54,6 @@ a {
   border-radius: 0.25rem !important;
   border-width: 1px !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 transparent), var(--tw-ring-shadow, 0 0 transparent), var(--tw-shadow) !important;
-  display: inline-block !important;
-  position: relative !important;
   text-decoration: none !important;
   transition-duration: 0.15s !important;
   transition-property:

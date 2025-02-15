@@ -3,7 +3,7 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import Errors from '@/Shared/Form/Errors.vue';
-import SearchIcon from '@/Shared/Icons/SearchIcon.vue';
+import { ScanSearch } from 'lucide-vue-next';
 
 const props = defineProps({
   modelValue: {
@@ -175,7 +175,7 @@ const search = _.debounce(() => {
     <!-- mode to add a contact -->
     <div v-if="addContactMode">
       <div class="relative mb-3">
-        <SearchIcon />
+        <ScanSearch class="absolute start-2 top-2 h-4 w-4 text-gray-400" />
 
         <input
           ref="searchInput"

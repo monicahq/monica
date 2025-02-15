@@ -3188,6 +3188,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lucide-vue-next@npm:^0.475.0":
+  version: 0.475.0
+  resolution: "lucide-vue-next@npm:0.475.0"
+  peerDependencies:
+    vue: ">=3.0.1"
+  checksum: 10c0/cf3038b67872e782ed41c9480203f26d557caa39b3082cb1ba3315f0102222e603370ac15401834bd586480b395e6efbe09edf48a8b84b22807dbae359abe94c
+  languageName: node
+  linkType: hard
+
 "magic-string@npm:^0.30.10":
   version: 0.30.10
   resolution: "magic-string@npm:0.30.10"
@@ -3983,6 +3992,7 @@ __metadata:
     laravel-vue-i18n: "npm:^2.7.8"
     lint-staged: "npm:^15.4.3"
     lodash: "npm:^4.17.21"
+    lucide-vue-next: "npm:^0.475.0"
     mitt: "npm:^3.0.1"
     prettier: "npm:^3.4.2"
     prettier-plugin-tailwindcss: "npm:^0.6.11"
