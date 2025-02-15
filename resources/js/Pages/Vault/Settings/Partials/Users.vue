@@ -117,7 +117,7 @@
     </div>
 
     <!-- list of existing users -->
-    <div class="mb-6 rounded-sm border text-sm">
+    <div class="mb-6 rounded-sm border border-gray-200 text-sm dark:border-gray-700">
       <ul v-if="localUsersInVault.length > 0" class="rounded-b rounded-t bg-white dark:bg-gray-900">
         <li
           v-for="user in localUsersInVault"

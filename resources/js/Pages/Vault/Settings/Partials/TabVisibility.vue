@@ -31,7 +31,7 @@ const update = () => {
       </h3>
     </div>
 
-    <div class="mb-6 rounded-sm border text-sm">
+    <div class="mb-6 rounded-sm border border-gray-200 text-sm dark:border-gray-700">
       <!-- help text -->
       <div class="flex rounded-t border-b border-gray-200 bg-slate-50 px-3 py-2 dark:border-gray-700 dark:bg-slate-900">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 pe-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
