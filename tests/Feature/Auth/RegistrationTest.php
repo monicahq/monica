@@ -9,13 +9,15 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Response;
 use Laravel\Jetstream\Jetstream;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testAccessToRegistrationPage(): void
+    #[Test]
+    public function registration_screen_can_be_rendered(): void
     {
         $this->withoutVite();
 
@@ -37,7 +39,8 @@ class RegistrationTest extends TestCase
         $response->assertSeeText('Registration is currently disabled');
     }
 
-    public function testRegistration(): void
+    #[Test]
+    public function new_users_can_register(): void
     {
         $isSignupEnabled = null;
         $this->app->bind(SignupHelper::class, function () use (&$isSignupEnabled) {

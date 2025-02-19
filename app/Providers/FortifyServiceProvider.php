@@ -36,7 +36,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->patchRoutes();
+        $this->patchFortifyRoutes();
 
         Fortify::loginView(fn ($request) => (new LoginController)($request));
         Fortify::confirmPasswordsUsing(fn ($user, ?string $password = null) => $user->password
@@ -62,7 +62,7 @@ class FortifyServiceProvider extends ServiceProvider
         RateLimiter::for('two-factor', fn (Request $request) => Limit::perMinute(5)->by($request->session()->get('login.id')));
     }
 
-    protected function patchRoutes(): void
+    protected function patchFortifyRoutes(): void
     {
         if ($this->app->routesAreCached()) {
             return;
