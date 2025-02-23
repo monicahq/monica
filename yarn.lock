@@ -4313,14 +4313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:4.0.6":
-  version: 4.0.6
-  resolution: "tailwindcss@npm:4.0.6"
-  checksum: 10c0/e1d40616c2aa69844a065c74d022960efc820d974c86415faec6d485f841c0112776a52d9a150e8f3375c4e04d22b0b4c33c07086c35b9725487b314dc7a7f71
-  languageName: node
-  linkType: hard
-
-"tailwindcss@npm:^4.0.3":
+"tailwindcss@npm:4.0.6, tailwindcss@npm:^4.0.3":
   version: 4.0.6
   resolution: "tailwindcss@npm:4.0.6"
   checksum: 10c0/e1d40616c2aa69844a065c74d022960efc820d974c86415faec6d485f841c0112776a52d9a150e8f3375c4e04d22b0b4c33c07086c35b9725487b314dc7a7f71

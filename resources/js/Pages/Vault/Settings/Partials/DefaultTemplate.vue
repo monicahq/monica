@@ -97,7 +97,7 @@ export default {
       axios
         .put(this.data.url.template_update, this.form)
         .then(() => {
-          this.flash(this.$t('The vault have been updated'), 'success');
+          this.flash(this.$t('The vault has been updated'), 'success');
 
           // mark the previous default template as not default
           this.localTemplates.forEach((row) => {

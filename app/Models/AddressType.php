@@ -22,6 +22,7 @@ class AddressType extends Model
         'account_id',
         'name',
         'name_translation_key',
+        'type',
     ];
 
     /**

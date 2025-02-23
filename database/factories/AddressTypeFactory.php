@@ -23,6 +23,7 @@ class AddressTypeFactory extends Factory
         return [
             'account_id' => Account::factory(),
             'name' => $this->faker->name(),
+            'type' => $this->faker->randomElement(['home', 'work', 'other']),
         ];
     }
 }
