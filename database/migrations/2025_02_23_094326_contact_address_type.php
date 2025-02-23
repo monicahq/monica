@@ -14,6 +14,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasColumn('address_types', 'type')) {
+            return;
+        }
+
         $addresses = collect([
             '🏡 Home' => 'home',
             '🏠 Secondary residence' => 'secondary',
@@ -34,7 +38,7 @@ return new class extends Migration
             foreach ($addressTypes as $addressType) {
                 $address = $addresses[$addressType->name_translation_key] ?? null;
 
-                if ($address) {
+                if ($address && $addressType->type === null) {
                     DB::table('address_types')->where('id', $addressType->id)->update([
                         'type' => $address,
                     ]);

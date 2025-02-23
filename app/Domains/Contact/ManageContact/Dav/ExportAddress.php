@@ -25,7 +25,11 @@ class ExportAddress implements ExportVCardResource
     {
         $vcard->remove('ADR');
 
-        if (($addresses = $resource->addresses) !== null) {
+        $addresses = $resource->addresses()
+            ->wherePivot('is_past_address', false)
+            ->get();
+
+        if ($addresses !== null) {
             foreach ($addresses as $address) {
                 // https://datatracker.ietf.org/doc/html/rfc6350#section-6.3.1
                 $vcard->add('ADR', [
