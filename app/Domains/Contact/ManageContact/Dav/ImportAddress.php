@@ -69,7 +69,7 @@ class ImportAddress extends Importer implements ImportVCardResource
             try {
                 return AddressType::where([
                     'account_id' => $this->account()->id,
-                    'name' => $type->getValue(),
+                    'type' => $type->getValue(),
                 ])->firstOrFail();
             } catch (ModelNotFoundException) {
                 try {
@@ -77,6 +77,7 @@ class ImportAddress extends Importer implements ImportVCardResource
                         'account_id' => $this->account()->id,
                         'author_id' => $this->author()->id,
                         'name' => $type->getValue(),
+                        'type' => $type->getValue(),
                     ]);
                 } catch (NotEnoughPermissionException) {
                     // catch

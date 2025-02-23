@@ -37,7 +37,7 @@ class ExportAddress implements ExportVCardResource
                     $address->postal_code,
                     $address->country,
                 ], $address->addressType ? [
-                    'TYPE' => $address->addressType->name,
+                    'TYPE' => $address->addressType->type,
                 ] : []);
             }
         }
