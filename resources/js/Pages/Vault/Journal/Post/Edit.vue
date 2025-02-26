@@ -181,8 +181,9 @@ const update = () => {
           if (duplicateContacts.length > 0) {
             // If there are duplicate contacts with the same name and different IDs, mark as invalid
             invalidMentionsFound = true;
-            invalidMentionText = `${trans('Cannot mention a contact when there are 2 identical contacts linked: @name', { name })}`;
-            return `@${name} (duplicate contacts exist)`;
+            invalidMentionText =
+              trans('Cannot mention a contact when there are 2 identically named contacts linked') + `: @${name}`;
+            return '';
           }
 
           return `{{{CONTACT-ID:${contact.id}|${name}}}}`;
@@ -192,8 +193,7 @@ const update = () => {
         invalidMentionsFound = true;
         invalidMentionText = trans('Invalid mention') + `: @${name}`;
 
-        // If no contact is found, remove apostrophes and add fallback text
-        return `@${name} (contact not linked to post)`;
+        return '';
       });
     }
   });
