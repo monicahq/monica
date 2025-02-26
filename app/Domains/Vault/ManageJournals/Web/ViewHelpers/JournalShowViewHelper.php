@@ -3,6 +3,7 @@
 namespace App\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
 use App\Helpers\DateHelper;
+use App\Helpers\NameHelper;
 use App\Helpers\SliceOfLifeHelper;
 use App\Helpers\SQLHelper;
 use App\Models\Journal;
@@ -95,6 +96,18 @@ class JournalShowViewHelper
                             'post' => $post,
                         ]),
                     ],
+                    'contacts' => $post->contacts->map(function ($contact) use ($user) {
+                        // Format the contact name using the NameHelper
+                        $contact->name = NameHelper::formatContactName($user, $contact);
+
+                        // Generate the URL for the contact
+                        $contact->url = route('contact.show', [
+                            'vault' => $contact->vault_id,
+                            'contact' => $contact->id,
+                        ]);
+
+                        return $contact;
+                    }),
                 ]);
 
             $monthsCollection->push([

@@ -6,6 +6,7 @@ export default {
 
 <script setup>
 import { computed, ref } from 'vue';
+import VueTribute from 'vue-tribute';
 
 const props = defineProps({
   id: {
@@ -52,6 +53,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  tributeOptions: {
+    type: Object,
+    default: null, // If null, Vue-Tribute won't be used
+  },
 });
 
 const emit = defineEmits(['esc-key-pressed', 'update:modelValue']);
@@ -73,7 +78,6 @@ const charactersLeft = computed(() => {
   if (props.modelValue) {
     char = props.modelValue.length;
   }
-
   return `${props.maxlength - char} / ${props.maxlength}`;
 });
 
@@ -93,7 +97,9 @@ const showMaxLength = () => {
 };
 
 const focus = () => {
-  zone.value.focus();
+  if (zone.value) {
+    zone.value.focus();
+  }
 };
 
 defineExpose({
@@ -102,7 +108,7 @@ defineExpose({
 </script>
 
 <template>
-  <div>
+  <div class="mb-3">
     <label v-if="label" class="mb-2 block relative text-sm dark:text-gray-100" :for="id">
       {{ label }}
       <span v-if="!required" class="optional-badge rounded-sm px-[3px] py-px text-xs">
@@ -117,7 +123,25 @@ defineExpose({
     </label>
 
     <div class="relative">
+      <vue-tribute v-if="tributeOptions" :options="tributeOptions">
+        <textarea
+          :id="id"
+          v-model="proxyValue"
+          :class="localTextAreaClasses"
+          :required="required"
+          :type="type"
+          :autofocus="autofocus"
+          :rows="rows"
+          ref="zone"
+          :maxlength="maxlength"
+          @input="$emit('update:modelValue', $event.target.value)"
+          @keydown.esc="sendEscKey"
+          @focus="showMaxLength"
+          @blur="displayMaxLength = false" />
+      </vue-tribute>
+
       <textarea
+        v-else
         :id="id"
         v-model="proxyValue"
         :class="localTextAreaClasses"
@@ -132,6 +156,7 @@ defineExpose({
         @focus="showMaxLength"
         @blur="displayMaxLength = false" />
     </div>
+
     <p v-if="markdown" class="rounded-b-lg bg-slate-100 px-3 py-2 text-xs dark:bg-slate-900">
       <span>{{ $t('We support Markdown to format the text (bold, lists, headings, etc…).') }}</span>
 
@@ -166,5 +191,81 @@ defineExpose({
 }
 .dark .length {
   background-color: #2d2f33 !important;
+}
+</style>
+<style v-if="tributeOptions">
+/* Tribute Container */
+.tribute-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  margin-top: 1.5rem;
+  display: block;
+  height: auto;
+  overflow-y: auto;
+  border-radius: 0.5rem;
+  background-color: #f3e8ff; /* Light lavender */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  max-height: 300px;
+  max-width: 500px;
+  transition:
+    opacity 0.2s ease-in-out,
+    transform 0.15s ease-in-out;
+}
+
+/* Tribute List */
+.tribute-container ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+/* Tribute List Items */
+.tribute-container li {
+  cursor: pointer;
+  padding: 0.5rem 1.5rem 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  background-color: #e5d4ff; /* Softer lavender */
+  color: #4a0072; /* Deep purple */
+  transition:
+    background-color 0.15s ease-in-out,
+    color 0.15s ease-in-out;
+}
+
+/* Highlighted & Hovered List Items */
+.tribute-container li.highlight,
+.tribute-container li:hover {
+  background-color: #d1b3ff; /* More vibrant lavender */
+  color: #280046; /* Darker purple for contrast */
+}
+
+/* No Match Style */
+.tribute-container li.no-match {
+  cursor: default;
+  opacity: 0.5;
+}
+
+/* Dark Mode - Custom Standout Colors */
+@media (prefers-color-scheme: dark) {
+  .tribute-container {
+    background-color: #1e1b29; /* Deep navy */
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+  }
+
+  .tribute-container li {
+    background-color: #3c2d56; /* Muted purple */
+    color: #e9d5ff; /* Light lavender */
+  }
+
+  .tribute-container li.highlight,
+  .tribute-container li:hover {
+    background-color: #7c3aed; /* Vibrant violet */
+    color: #fff; /* White for strong contrast */
+  }
 }
 </style>
