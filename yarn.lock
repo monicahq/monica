@@ -3653,11 +3653,13 @@ __metadata:
     sass: "npm:^1.85.1"
     tailwindcss: "npm:^4.0.9"
     tiny-emitter: "npm:^2.1.0"
+    tributejs: "npm:^5.1.3"
     uploadcare-vue: "npm:^1.0.0"
     v-calendar: "npm:^3.1.2"
     vite: "npm:^6.2.0"
     vue: "npm:^3.5.13"
     vue-clipboard3: "npm:^2.0.0"
+    vue-tribute: "npm:^2.0.0"
     vuedraggable: "npm:^4.1.0"
     ziggy-js: "npm:2.5.1"
   languageName: unknown
@@ -4007,6 +4009,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tributejs@npm:^5.1.3":
+  version: 5.1.3
+  resolution: "tributejs@npm:5.1.3"
+  checksum: 10c0/5d119edb613d1b5d3d2eb5710cf5e06499cf3698697fceb11f2990a1396c2e70e1e69d4ee9992bb1fd9aa15391aea8e873422710c494dd39387822bb90039d85
+  languageName: node
+  linkType: hard
+
 "type-check@npm:^0.4.0, type-check@npm:~0.4.0":
   version: 0.4.0
   resolution: "type-check@npm:0.4.0"
@@ -4187,6 +4196,15 @@ __metadata:
   peerDependencies:
     vue: ^3.2.0
   checksum: 10c0/9279813c191df4c58d1084a45e62919bf274fa44b2cd46125605659360a6cf0e5144c6c3752d1f683ebafb4ad7e2c18ce6dcbad33311db201fe5fb7738c0724d
+  languageName: node
+  linkType: hard
+
+"vue-tribute@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "vue-tribute@npm:2.0.0"
+  peerDependencies:
+    tributejs: ">= 2.0.0"
+  checksum: 10c0/27f2dfd4bced476f58690250a5ff6703d750649bd34f55907530171e5b5d74b3c4653349b31cb418555b696caf52103cb65b4bcc71dd0ef731a1daef10fd13fa
   languageName: node
   linkType: hard
 
