@@ -60,7 +60,6 @@ const mentionErrorMessage = ref(''); // Error message for invalid mentions
 
 const tributeOptions = computed(() => ({
   trigger: '@',
-  allowSpaces: true,
   values: form.contacts.map((contact) => ({
     key: contact.name,
     value: contact.name,
