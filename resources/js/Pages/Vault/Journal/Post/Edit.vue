@@ -23,6 +23,8 @@ const props = defineProps({
   data: Object,
 });
 
+const namePattern = "[-A-Za-z.'’]+(?:\\s+[-A-Za-z.'’]+)*[-A-Za-z.'’]*";
+
 const form = useForm({
   title: props.data.title,
   contacts: props.data.contacts,
@@ -66,7 +68,13 @@ const tributeOptions = computed(() => ({
     original: contact,
   })),
   selectTemplate: function (item) {
-    return `@"${item.original.key.trim()}"`;
+    const name = item.original.key.trim();
+    const nameRegex = new RegExp(`^${namePattern}$`);
+    if (nameRegex.test(name)) {
+      return `@"${name}"`;
+    } else {
+      return ''; // Prevent insertion of unsupported names (i.e. usual characters that don't fit the expected pattern)
+    }
   },
 }));
 const saveInProgress = ref(false);
@@ -168,7 +176,9 @@ const update = () => {
 
   processedForm.sections.forEach((section) => {
     if (section.content) {
-      section.content = section.content.replace(/@"([A-Za-z.'’]+(?:\s+[A-Za-z.'’]+)*)"/g, (match, name) => {
+      const mentionPattern = new RegExp(`@"(${namePattern})"`, 'g');
+
+      section.content = section.content.replace(mentionPattern, (match, name) => {
         name = name.trim(); // Trim spaces from the mention name
         console.log('Matched Name:', name);
 
@@ -198,8 +208,11 @@ const update = () => {
     }
   });
 
-  // If invalid mentions were found, set the error state and stop the upload
-  if (invalidMentionsFound) {
+  if (!invalidMentionsFound) {
+    hasInvalidMentions.value = false;
+    mentionErrorMessage.value = '';
+  } else {
+    // If invalid mentions were found, set the error state and stop the upload
     hasInvalidMentions.value = true;
     mentionErrorMessage.value = invalidMentionText;
     saveInProgress.value = false;
