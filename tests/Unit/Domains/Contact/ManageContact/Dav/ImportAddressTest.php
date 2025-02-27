@@ -79,6 +79,7 @@ class ImportAddressTest extends TestCase
         AddressType::factory()->create([
             'account_id' => $user->account_id,
             'name' => 'home',
+            'type' => 'home',
         ]);
 
         $vcard = new VCard;

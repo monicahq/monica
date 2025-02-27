@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Domains\Contact\ManageContact\Dav;
+namespace Tests\Unit\Domains\Contact\ManageContactInformation\Dav;
 
-use App\Domains\Contact\ManageContact\Dav\ExportContactInformation;
+use App\Domains\Contact\ManageContactInformation\Dav\ExportContactInformation;
 use App\Models\Contact;
 use App\Models\ContactInformation;
 use App\Models\ContactInformationType;
