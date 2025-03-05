@@ -36,6 +36,7 @@
 - [Contribute](#contribute)
   - [Contribute as a community](#contribute-as-a-community)
   - [Contribute as a developer](#contribute-as-a-developer)
+  - [Branch Overview](#branch-overview)
 - [Principles, vision, goals and strategy](#principles-vision-goals-and-strategy)
   - [Principles](#principles)
   - [Vision](#vision)
@@ -44,6 +45,8 @@
   - [Patreon](#patreon)
 - [Contact](#contact)
 - [Team](#team)
+- [Next Updates](#next-updates)
+  - [Chandler](#chandler-the-next-evolution-of-monica)
 - [Thank you, open source](#thank-you-open-source)
 - [License](#license)
 
@@ -103,12 +106,29 @@ Here are some of the things you can do to help.
 
 ### Contribute as a developer
 
+- How to [clone git repository](https://github.com/monicahq/monica/blob/4.x/docs/installation/providers/generic.md#1-clone-the-repository) 
 - Read our [Contribution Guide](https://docs.monicahq.com/developers/contribution-guide).
 - Install [the developer version locally](https://docs.monicahq.com/developers/setup-local-development) so you can start contributing.
 - Look for [issues labelled ‘Bugs’](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) if you are looking to have an immediate impact on Monica.
 - Look for [issues labelled ‘Help Wanted’](https://github.com/monicahq/monica/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22). These are issues that you can solve relatively easily.
 - Look for [issues labelled ’Good First Issue’](https://github.com/monicahq/monica/labels/good%20first%20issue). These issues are for people who want to contribute, but try to work on a small feature first.
 - If you are an advanced developer, you can try to tackle [issues labelled ‘Feature Requests’](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22). These are harder to do and will require a lot of back-and-forth with the repository administrator to make sure we are going to the right direction with the product.
+
+## Command to clone the git repository
+ 
+> git clone https://github.com/monicahq/monica.git 
+
+### Branch Overview
+
+In this project, we use several branches to organize development and contributions. Each branch has a specific purpose, whether for new features, bug fixes, testing, or architectural improvements.
+
+For a detailed description of active branches and their purpose, please refer to the [BRANCHES.txt](https://github.com/monicahq/monica/blob/main/BRANCHES.txt) document. This file provides up-to-date information about:
+
+- **Main branches**: Such as `main` and `4.x`, which contain the development code and stable releases.
+- **Dependabot branches**: Automated dependency updates.
+- **Other active branches**: Such as `architecture`, which focuses on structural improvements to the project.
+
+We invite you to contribute and use the appropriate branches based on the type of changes you want to make!
 
 ## Principles, vision, goals and strategy
 
@@ -172,6 +192,31 @@ Our team is made of two core members:
 - [Alexis Saettler (asbiin)](https://github.com/asbiin)
 
 We are also fortunate to have an amazing [community of developers](https://github.com/monicahq/monica/graphs/contributors) who help us greatly.
+
+
+## Next updates
+
+### Chandler: The Next Evolution of Monica
+After 18 months of development, we have launched the beta version of our new Monica release, called Chandler. This version represents a complete reinvention of Monica, built from the ground up to offer a more robust, flexible, and personalized experience.
+
+**Key Features of Chandler**
+- Extensive Customization: Chandler allows you to tailor almost every aspect of the platform, from the interface design to the modules you enable and the data you choose to track.
+. New Design & Dark Mode: We've introduced a completely revamped interface along with the highly requested dark mode to enhance the user experience.
+- Open Source & Self-Hosted: Chandler remains open source and can be deployed on your own servers for free using Docker or manual installation via the command line.
+
+**Current Limitations of the Beta Version**
+- Separate Login System: Monica credentials cannot be used to log into Chandler.
+- No Data Migration: Currently, importing data from previous Monica versions is not supported.
+- No Bulk Contact Import: The ability to import contacts in bulk is not yet available.
+- No API Support: Chandler does not yet provide an API for integrations.
+
+We invite all users to try Chandler during this beta phase and share feedback to help us refine it before the official release.
+
+🔗 Access the beta version here: [Chandler on GitHub](https://github.com/monicahq/chandler)
+
+We greatly appreciate your support and hope you enjoy the improvements Chandler brings!
+
+
 
 ## Thank you, open source
 
