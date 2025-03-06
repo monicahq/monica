@@ -79,9 +79,7 @@ class AuthenticateWithTokenOnBasicAuth
     protected function sanctum(): RequestGuard
     {
         /** @var \Illuminate\Auth\RequestGuard */
-        $guard = $this->auth->guard('sanctum');
-
-        return $guard;
+        return $this->auth->guard('sanctum');
     }
 
     /**

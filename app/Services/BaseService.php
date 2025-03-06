@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\NotEnoughPermissionException;
+use App\Exceptions\UnknownPermissionException;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Group;
@@ -112,7 +113,7 @@ abstract class BaseService
         }
 
         if (($e = $permissions->diff(collect(self::$permissionDependencies)->keys()))->isNotEmpty()) {
-            throw new \Exception('Unknown permission: '.$e->first());
+            throw new \UnknownPermissionException('Unknown permission: '.$e->first());
         }
 
         return true;
