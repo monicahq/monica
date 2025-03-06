@@ -116,7 +116,7 @@ Here are some of the things you can do to help.
 
 ## Command to clone the git repository
  
-> git clone https://github.com/monicahq/monica.git 
+> git clone https://github.com/monicahq/monica.git
 
 ### Branch Overview
 
