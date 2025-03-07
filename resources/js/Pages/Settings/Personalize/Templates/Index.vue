@@ -304,7 +304,7 @@ export default {
           .delete(template.url.destroy)
           .then(() => {
             this.flash(this.$t('The template has been deleted'), 'success');
-            var id = this.localTemplates.findIndex((x) => x.id === template.id);
+            const id = this.localTemplates.findIndex((x) => x.id === template.id);
             this.localTemplates.splice(id, 1);
           })
           .catch((error) => {

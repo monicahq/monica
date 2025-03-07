@@ -288,7 +288,7 @@ export default {
           this.localUsersInVault.unshift(response.data.data);
 
           // remove user from the list of users in the account
-          var id = this.localUsersInAccount.findIndex((x) => x.id === this.form.user_id);
+          const id = this.localUsersInAccount.findIndex((x) => x.id === this.form.user_id);
           this.localUsersInAccount.splice(id, 1);
 
           this.addUserModalShown = false;
@@ -306,7 +306,7 @@ export default {
         .put(user.url.update, this.form)
         .then((response) => {
           this.flash(this.$t('The user has been updated'), 'success');
-          var id = this.localUsersInVault.findIndex((x) => x.id === user.id);
+          const id = this.localUsersInVault.findIndex((x) => x.id === user.id);
           this.localUsersInVault[id] = response.data.data;
           this.loadingState = '';
           this.editedUser = [];
@@ -324,7 +324,7 @@ export default {
           this.flash(this.$t('The user has been removed'), 'success');
 
           // remove the user from the list of users in the vault
-          var id = this.localUsersInVault.findIndex((x) => x.id === user.id);
+          const id = this.localUsersInVault.findIndex((x) => x.id === user.id);
           this.localUsersInVault.splice(id, 1);
 
           // add the user back to the list of users in the account

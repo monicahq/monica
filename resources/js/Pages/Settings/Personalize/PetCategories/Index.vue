@@ -261,7 +261,7 @@ export default {
           .delete(petCategory.url.destroy)
           .then(() => {
             this.flash(this.$t('The pet category has been deleted'), 'success');
-            var id = this.localPetCategories.findIndex((x) => x.id === petCategory.id);
+            const id = this.localPetCategories.findIndex((x) => x.id === petCategory.id);
             this.localPetCategories.splice(id, 1);
           })
           .catch((error) => {

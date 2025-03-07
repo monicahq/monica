@@ -305,36 +305,39 @@ class DavClient
      */
     private static function fetchProperties(\DOMDocument $dom, \DOMNode $prop, mixed $properties, array $namespaces): void
     {
-        if (is_string($properties)) {
-            $properties = [$properties];
-        }
-
+        // Asegurarse de que $properties sea un array
+        $properties = is_string($properties) ? [$properties] : $properties;
+    
         foreach ($properties as $property) {
-            if (is_array($property)) {
-                $propertyExt = $property;
-                $property = $propertyExt['name'];
-            }
-            [$namespace, $elementName] = Service::parseClarkNotation($property);
-
+            // Si es un array, extraemos el nombre
+            $propertyExt = is_array($property) ? $property : null;
+            $propertyName = $propertyExt['name'] ?? $property;
+            
+            // Obtener namespace y nombre de elemento
+            [$namespace, $elementName] = Service::parseClarkNotation($propertyName);
+    
+            // Crear el elemento con namespace adecuado
             $ns = Arr::get($namespaces, $namespace);
-            $element = $ns !== null
+            $element = $ns !== null 
                 ? $dom->createElement("$ns:$elementName")
                 : $dom->createElementNS($namespace, "x:$elementName");
-
+    
             $child = $prop->appendChild($element);
-
-            if (isset($propertyExt)) {
-                if (($nodeValue = Arr::get($propertyExt, 'value')) !== null) {
-                    $child->nodeValue = $nodeValue;
+    
+            // Si se proporcionaron extensiones de propiedad, manejarlas
+            if ($propertyExt) {
+                if ($value = Arr::get($propertyExt, 'value')) {
+                    $child->nodeValue = $value;
                 }
-                if (($attributes = Arr::get($propertyExt, 'attributes')) !== null) {
-                    foreach ($attributes as $name => $property) {
-                        $child->appendChild($dom->createAttribute($name))->nodeValue = $property;
+                if ($attributes = Arr::get($propertyExt, 'attributes')) {
+                    foreach ($attributes as $name => $value) {
+                        $child->appendChild($dom->createAttribute($name))->nodeValue = $value;
                     }
                 }
             }
         }
     }
+    
 
     /**
      * Get a WebDAV property.
@@ -402,38 +405,46 @@ class DavClient
      * @see https://datatracker.ietf.org/doc/html/rfc2518#section-12.13
      */
     public function propPatch(array $properties, string $url = ''): bool
-    {
-        $propPatch = new PropPatch;
-        $propPatch->properties = $properties;
-        $body = (new Service)->write(
-            '{DAV:}propertyupdate',
-            $propPatch
-        );
+{
+    // Preparar la petición y generar el cuerpo
+    $propPatch = new PropPatch;
+    $propPatch->properties = $properties;
+    $body = (new Service)->write('{DAV:}propertyupdate', $propPatch);
 
-        $response = $this->request('PROPPATCH', $url, $body);
+    // Realizar la solicitud
+    $response = $this->request('PROPPATCH', $url, $body);
 
-        if ($response->status() === 207) {
-            // If it's a 207, the request could still have failed, but the
-            // information is hidden in the response body.
-            $result = self::parseMultiStatus($response->body());
+    // Comprobar si el estado es 207
+    if ($response->status() === 207) {
+        $errorProperties = $this->handleMultiStatusError($response->body());
+        
+        if (!empty($errorProperties)) {
+            throw new DavClientException('PROPPATCH failed. The following properties errored: ' . implode(', ', $errorProperties));
+        }
+    }
 
-            $errorProperties = [];
-            foreach ($result as $statusList) {
-                foreach ($statusList['properties'] as $status => $properties) {
-                    if ($status >= 400) {
-                        foreach ($properties as $propName => $propValue) {
-                            $errorProperties[] = $propName.' ('.$status.')';
-                        }
-                    }
+    return true;
+}
+
+private function handleMultiStatusError(string $body): array
+{
+    $result = self::parseMultiStatus($body);
+    $errorProperties = [];
+
+    // Buscar propiedades con errores
+    foreach ($result as $statusList) {
+        foreach ($statusList['properties'] as $status => $properties) {
+            if ($status >= 400) {
+                foreach ($properties as $propName => $propValue) {
+                    $errorProperties[] = "$propName ($status)";
                 }
             }
-            if (! empty($errorProperties)) {
-                throw new DavClientException('PROPPATCH failed. The following properties errored: '.implode(', ', $errorProperties));
-            }
         }
-
-        return true;
     }
+
+    return $errorProperties;
+}
+
 
     /**
      * Performs an HTTP options request.

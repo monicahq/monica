@@ -1,9 +1,8 @@
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive,onMounted } from 'vue';
 import { Link, router, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods.js';
-import { onMounted } from 'vue';
 import JetDialogModal from '@/Components/Jetstream/DialogModal.vue';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 import JetButton from '@/Components/Button.vue';
@@ -295,7 +294,7 @@ const navigateToSelected = () => {
             <!-- family summary -->
             <div v-if="data.group_summary_information.length > 0">
               <div class="mb-6 flex rounded-sm border border-gray-200 p-3 dark:border-gray-700">
-                <img src="/img/group.svg" class="me-2 h-6 w-6" />
+                <img src="/img/group.svg" class="me-2 h-6 w-6" alt="Group" />
                 <ul>
                   <li class="me-2 inline">{{ $t('Part of') }}</li>
                   <li

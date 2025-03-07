@@ -12,9 +12,8 @@ class AddressBookHome extends BaseAddressBookHome
     private function getPrincipalUri(): string
     {
         /** @var string $principalUri */
-        $principalUri = $this->principalUri;
+        return $this->principalUri;
 
-        return $principalUri;
     }
 
     /**

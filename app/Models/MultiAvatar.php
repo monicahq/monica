@@ -45,9 +45,7 @@ class MultiAvatar
             }
         }
 
-        $resultFinal = $svgString;
-
-        return $resultFinal;
+        return $svgString;
     }
 
     public function generate($avatarId, $sansEnv, $ver)
@@ -609,51 +607,38 @@ class MultiAvatar
         // Get parts (range 0-15) + define themes
         foreach ($p as $key => $part) {
             $nr = $part;
-
+            $suffix = '';
+        
             if ($nr > 31) {
-                $nr = $nr - 32 .'';
-                if ($nr < 10) {
-                    $nr = '0'.$nr;
-                }
-                $p[$key] = $nr.'C';
+                $nr -= 32;
+                $suffix = 'C';
             } elseif ($nr > 15) {
-                $nr = $nr - 16;
-                if ($nr < 10) {
-                    $nr = '0'.$nr;
-                }
-                $p[$key] = $nr.'B';
+                $nr -= 16;
+                $suffix = 'B';
             } else {
-                if ($nr < 10) {
-                    $p[$key] = '0'.$nr.'A';
-                } else {
-                    $p[$key] = $nr.'A';
-                }
+                $suffix = 'A';
             }
+        
+            // Añadir el 0 si el número es menor a 10
+            $p[$key] = ($nr < 10 ? '0' : '') . $nr . $suffix;
         }
-
+        
         // Get the SVG code for each part
         $final = [];
-
         foreach ($p as $key => $part) {
-            $partV = substr($p[$key], 0, 2);
-            $theme = substr($p[$key], 2, 3);
-
-            if ($ver != null) {
-                $partV = $ver['part'];
-                $theme = $ver['theme'];
-            }
-
-            // Freeze a single base version
-            // $partV = '00'; $theme = 'A';
-
+            // Asignar 'partV' y 'theme' directamente si 'ver' no es nulo
+            $partV = $ver ? $ver['part'] : substr($part, 0, 2);
+            $theme = $ver ? $ver['theme'] : substr($part, 2, 3);
+        
             $final[$key] = $this->getFinal($key, $partV, $theme, $themes, $sP);
         }
-
+        
         // Without 'env'
         if ($sansEnv) {
             $final['env'] = '';
         }
-
-        return $svgStart.$final['env'].$final['head'].$final['clo'].$final['top'].$final['eyes'].$final['mouth'].$svgEnd;
+        
+        return $svgStart . implode('', $final) . $svgEnd;
+        
     }
 }

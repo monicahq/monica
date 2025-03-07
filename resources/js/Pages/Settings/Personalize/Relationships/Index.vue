@@ -481,7 +481,7 @@ export default {
           .delete(groupType.url.destroy)
           .then(() => {
             this.flash(this.$t('The group type has been deleted'), 'success');
-            var id = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
+            const id = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
             this.localGroupTypes.splice(id, 1);
           })
           .catch((error) => {
@@ -500,7 +500,7 @@ export default {
           this.flash(this.$t('The relationship type has been created'), 'success');
           this.loadingState = null;
           this.createRelationshipTypeModalId = 0;
-          var id = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
+          const id = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
           this.localGroupTypes[id].types.unshift(response.data.data);
         })
         .catch((error) => {
@@ -518,8 +518,8 @@ export default {
           this.flash(this.$t('The relationship type has been updated'), 'success');
           this.loadingState = null;
           this.renameRelationshipTypeModalId = 0;
-          var groupTypeId = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
-          var typeId = this.localGroupTypes[groupTypeId].types.findIndex((x) => x.id === type.id);
+          const groupTypeId = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
+          const typeId = this.localGroupTypes[groupTypeId].types.findIndex((x) => x.id === type.id);
           this.localGroupTypes[groupTypeId].types[typeId] = response.data.data;
         })
         .catch((error) => {
@@ -540,8 +540,8 @@ export default {
           .delete(type.url.destroy)
           .then(() => {
             this.flash(this.$t('The relationship type has been deleted'), 'success');
-            var groupTypeId = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
-            var typeId = this.localGroupTypes[groupTypeId].types.findIndex((x) => x.id === type.id);
+            const groupTypeId = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
+            const typeId = this.localGroupTypes[groupTypeId].types.findIndex((x) => x.id === type.id);
             this.localGroupTypes[groupTypeId].types.splice(typeId, 1);
           })
           .catch((error) => {

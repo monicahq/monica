@@ -400,7 +400,7 @@ export default {
           .delete(callReasonType.url.destroy)
           .then(() => {
             this.flash(this.$t('The call reason type has been deleted'), 'success');
-            var id = this.localCallReasonTypes.findIndex((x) => x.id === callReasonType.id);
+            const id = this.localCallReasonTypes.findIndex((x) => x.id === callReasonType.id);
             this.localCallReasonTypes.splice(id, 1);
           })
           .catch((error) => {
@@ -419,7 +419,7 @@ export default {
           this.flash(this.$t('The call reason has been created'), 'success');
           this.loadingState = null;
           this.createReasonModalId = 0;
-          var id = this.localCallReasonTypes.findIndex((x) => x.id === callReasonType.id);
+          const id = this.localCallReasonTypes.findIndex((x) => x.id === callReasonType.id);
           this.localCallReasonTypes[id].reasons.unshift(response.data.data);
         })
         .catch((error) => {
@@ -437,8 +437,8 @@ export default {
           this.flash(this.$t('The call reason has been updated'), 'success');
           this.loadingState = null;
           this.renameReasonModalId = 0;
-          var callReasonTypeId = this.localCallReasonTypes.findIndex((x) => x.id === callReasonType.id);
-          var typeId = this.localCallReasonTypes[callReasonTypeId].reasons.findIndex((x) => x.id === reason.id);
+          const callReasonTypeId = this.localCallReasonTypes.findIndex((x) => x.id === callReasonType.id);
+          const typeId = this.localCallReasonTypes[callReasonTypeId].reasons.findIndex((x) => x.id === reason.id);
           this.localCallReasonTypes[callReasonTypeId].reasons[typeId] = response.data.data;
         })
         .catch((error) => {
@@ -459,8 +459,8 @@ export default {
           .delete(reason.url.destroy)
           .then(() => {
             this.flash(this.$t('The call reason has been deleted'), 'success');
-            var callReasonTypeId = this.localCallReasonTypes.findIndex((x) => x.id === callReasonType.id);
-            var typeId = this.localCallReasonTypes[callReasonTypeId].reasons.findIndex((x) => x.id === reason.id);
+            const callReasonTypeId = this.localCallReasonTypes.findIndex((x) => x.id === callReasonType.id);
+            const typeId = this.localCallReasonTypes[callReasonTypeId].reasons.findIndex((x) => x.id === reason.id);
             this.localCallReasonTypes[callReasonTypeId].reasons.splice(typeId, 1);
           })
           .catch((error) => {

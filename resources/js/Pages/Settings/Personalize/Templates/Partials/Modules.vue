@@ -179,7 +179,7 @@ export default {
           this.flash(this.$t('The module has been removed'), 'success');
           this.localAllModules[this.localAllModules.findIndex((x) => x.id === module.id)].already_used = false;
 
-          var id = this.localPageModules.findIndex((x) => x.id === module.id);
+          const id = this.localPageModules.findIndex((x) => x.id === module.id);
           this.localPageModules.splice(id, 1);
         })
         .catch((error) => {

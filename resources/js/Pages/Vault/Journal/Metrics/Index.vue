@@ -49,7 +49,7 @@ const destroy = (metric) => {
     axios
       .delete(metric.url.destroy)
       .then(() => {
-        var id = localMetrics.value.findIndex((x) => x.id === metric.id);
+        const id = localMetrics.value.findIndex((x) => x.id === metric.id);
         localMetrics.value.splice(id, 1);
       })
       .catch((error) => {

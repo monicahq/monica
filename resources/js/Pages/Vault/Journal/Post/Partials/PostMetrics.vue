@@ -55,8 +55,8 @@ const store = (journalMetric) => {
 const destroy = (journalMetric, postMetric) => {
   if (confirm(trans('Are you sure? This action cannot be undone.'))) {
     axios.delete(postMetric.url.destroy).then(() => {
-      var id = localJournalMetrics.value.findIndex((x) => x.id === journalMetric.id);
-      var postMetricId = localJournalMetrics.value[id].post_metrics.findIndex((x) => x.id === postMetric.id);
+      const id = localJournalMetrics.value.findIndex((x) => x.id === journalMetric.id);
+      const postMetricId = localJournalMetrics.value[id].post_metrics.findIndex((x) => x.id === postMetric.id);
       localJournalMetrics.value[id].post_metrics.splice(postMetricId, 1);
     });
   }

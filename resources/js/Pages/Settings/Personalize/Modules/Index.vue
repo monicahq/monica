@@ -345,13 +345,13 @@ export default {
     },
 
     destroyRow(row) {
-      var id = this.form.rows.findIndex((x) => x.id === row.id);
+      const id = this.form.rows.findIndex((x) => x.id === row.id);
       this.form.rows.splice(id, 1);
     },
 
     addFieldToRight(row) {
-      var id = this.form.rows.findIndex((x) => x.id === row.id);
-      var highestId = this.form.rows[id].fields.reduce((a, b) => (Number(a.id) > Number(b.id) ? a : b));
+      const id = this.form.rows.findIndex((x) => x.id === row.id);
+      const highestId = this.form.rows[id].fields.reduce((a, b) => (Number(a.id) > Number(b.id) ? a : b));
 
       this.form.rows[id].fields.push({
         id: highestId + 1,

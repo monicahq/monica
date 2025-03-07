@@ -498,7 +498,7 @@ export default {
           .delete(groupType.url.destroy)
           .then(() => {
             this.flash(this.$t('The group type has been deleted'), 'success');
-            var id = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
+            const id = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
             this.localGroupTypes.splice(id, 1);
           })
           .catch((error) => {
@@ -530,7 +530,7 @@ export default {
         .post(groupType.url.store, this.form)
         .then((response) => {
           this.flash(this.$t('The role has been created'), 'success');
-          var id = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
+          const id = this.localGroupTypes.findIndex((x) => x.id === groupType.id);
           this.localGroupTypes[id].group_type_roles.push(response.data.data);
           this.loadingState = null;
           this.roleGroupTypeId = 0;
@@ -550,8 +550,8 @@ export default {
         .then((response) => {
           this.flash(this.$t('The role has been updated'), 'success');
 
-          var groupTypeId = this.localGroupTypes.findIndex((x) => x.id === role.group_type_id);
-          var roleId = this.localGroupTypes[groupTypeId].group_type_roles.findIndex((x) => x.id === role.id);
+          const groupTypeId = this.localGroupTypes.findIndex((x) => x.id === role.group_type_id);
+          const roleId = this.localGroupTypes[groupTypeId].group_type_roles.findIndex((x) => x.id === role.id);
           this.localGroupTypes[groupTypeId].group_type_roles[roleId] = response.data.data;
 
           this.loadingState = null;
@@ -571,8 +571,8 @@ export default {
           .then(() => {
             this.flash(this.$t('The role has been deleted'), 'success');
 
-            var groupTypeId = this.localGroupTypes.findIndex((x) => x.id === role.group_type_id);
-            var roleId = this.localGroupTypes[groupTypeId].group_type_roles.findIndex((x) => x.id === role.id);
+            const groupTypeId = this.localGroupTypes.findIndex((x) => x.id === role.group_type_id);
+            const roleId = this.localGroupTypes[groupTypeId].group_type_roles.findIndex((x) => x.id === role.id);
             this.localGroupTypes[groupTypeId].group_type_roles.splice(roleId, 1);
           })
           .catch((error) => {

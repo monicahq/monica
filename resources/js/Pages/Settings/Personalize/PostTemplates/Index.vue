@@ -490,7 +490,7 @@ export default {
           .delete(postTemplate.url.destroy)
           .then(() => {
             this.flash(this.$t('The post template has been deleted'), 'success');
-            var id = this.localPostTemplates.findIndex((x) => x.id === postTemplate.id);
+            const id = this.localPostTemplates.findIndex((x) => x.id === postTemplate.id);
             this.localPostTemplates.splice(id, 1);
           })
           .catch((error) => {
@@ -522,7 +522,7 @@ export default {
         .post(postTemplate.url.store, this.form)
         .then((response) => {
           this.flash(this.$t('The section has been created'), 'success');
-          var id = this.localPostTemplates.findIndex((x) => x.id === postTemplate.id);
+          const id = this.localPostTemplates.findIndex((x) => x.id === postTemplate.id);
           this.localPostTemplates[id].post_template_sections.push(response.data.data);
           this.loadingState = null;
           this.postTemplateId = 0;
@@ -542,8 +542,8 @@ export default {
         .then((response) => {
           this.flash(this.$t('The section has been updated'), 'success');
 
-          var postTemplateId = this.localPostTemplates.findIndex((x) => x.id === section.post_template_id);
-          var sectionId = this.localPostTemplates[postTemplateId].post_template_sections.findIndex(
+          const postTemplateId = this.localPostTemplates.findIndex((x) => x.id === section.post_template_id);
+          const sectionId = this.localPostTemplates[postTemplateId].post_template_sections.findIndex(
             (x) => x.id === section.id,
           );
           this.localPostTemplates[postTemplateId].post_template_sections[sectionId] = response.data.data;
@@ -565,8 +565,8 @@ export default {
           .then(() => {
             this.flash(this.$t('The section has been deleted'), 'success');
 
-            var postTemplateId = this.localPostTemplates.findIndex((x) => x.id === section.post_template_id);
-            var sectionId = this.localPostTemplates[postTemplateId].post_template_sections.findIndex(
+            const postTemplateId = this.localPostTemplates.findIndex((x) => x.id === section.post_template_id);
+            const sectionId = this.localPostTemplates[postTemplateId].post_template_sections.findIndex(
               (x) => x.id === section.id,
             );
             this.localPostTemplates[postTemplateId].post_template_sections.splice(sectionId, 1);

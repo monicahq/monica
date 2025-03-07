@@ -349,7 +349,7 @@ export default {
           .delete(note.url.destroy)
           .then(() => {
             this.flash(this.$t('The note has been deleted'), 'success');
-            var id = this.localNotes.findIndex((x) => x.id === note.id);
+            const id = this.localNotes.findIndex((x) => x.id === note.id);
             this.localNotes.splice(id, 1);
           })
           .catch((error) => {
