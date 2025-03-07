@@ -120,7 +120,7 @@ class Group extends VCardResource
     protected function uuid(): Attribute
     {
         return Attribute::make(
-            get: function (?string $value, array $attributes) {
+            get: function (array $attributes) {
                 if (! isset($attributes['uuid'])) {
                     return tap($this->newUniqueId(), function ($uuid) {
                         $this->forceFill(['uuid' => $uuid]);

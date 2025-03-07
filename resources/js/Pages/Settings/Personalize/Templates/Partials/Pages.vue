@@ -263,7 +263,7 @@ export default {
           .delete(page.url.destroy)
           .then(() => {
             this.flash(this.$t('The page has been deleted'), 'success');
-            var id = this.localPages.findIndex((x) => x.id === page.id);
+            const id = this.localPages.findIndex((x) => x.id === page.id);
             this.localPages.splice(id, 1);
           })
           .catch((error) => {

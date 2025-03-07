@@ -74,7 +74,7 @@ const destroy = (entry) => {
   axios
     .delete(entry.url.destroy)
     .then(() => {
-      var id = localEntries.value.findIndex((x) => x.id === entry.id);
+      const id = localEntries.value.findIndex((x) => x.id === entry.id);
       localEntries.value.splice(id, 1);
     })
     .catch((error) => {

@@ -80,7 +80,7 @@ const destroy = (moodTrackingParameter) => {
     axios
       .delete(moodTrackingParameter.url.destroy)
       .then(() => {
-        var id = localMoodTrackingParameters.value.findIndex((x) => x.id === moodTrackingParameter.id);
+        const id = localMoodTrackingParameters.value.findIndex((x) => x.id === moodTrackingParameter.id);
         localMoodTrackingParameters.value.splice(id, 1);
       })
       .catch((error) => {
@@ -149,10 +149,10 @@ const updatePosition = (event) => {
               type="radio"
               class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700"
               @click="form.hex_color = color.hex_color" />
-            <label
-              :for="color.hex_color"
-              class="ms-2 inline-block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-              <div class="rounded-sm p-4" :class="color.hex_color" />
+              <label
+                :for="'color-' + color.hex_color"
+                class="ms-2 inline-block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
+                <div class="rounded-sm p-4" :style="{ backgroundColor: color.hex_color }"></div>
             </label>
           </div>
         </div>

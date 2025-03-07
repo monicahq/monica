@@ -282,7 +282,7 @@ export default {
           .delete(giftOccasion.url.destroy)
           .then(() => {
             this.flash(this.$t('The gift occasion has been deleted'), 'success');
-            var id = this.localGiftOccasions.findIndex((x) => x.id === giftOccasion.id);
+            const id = this.localGiftOccasions.findIndex((x) => x.id === giftOccasion.id);
             this.localGiftOccasions.splice(id, 1);
           })
           .catch((error) => {

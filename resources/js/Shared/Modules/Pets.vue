@@ -233,7 +233,7 @@ export default {
           .delete(pet.url.destroy)
           .then(() => {
             this.flash(this.$t('The pet has been deleted'), 'success');
-            var id = this.localPets.findIndex((x) => x.id === pet.id);
+            const id = this.localPets.findIndex((x) => x.id === pet.id);
             this.localPets.splice(id, 1);
           })
           .catch((error) => {

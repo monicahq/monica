@@ -90,7 +90,7 @@ const update = (quickFact) => {
 
 const destroy = (quickFact) => {
   axios.delete(quickFact.url.destroy).then(() => {
-    var id = localQuickFacts.value.findIndex((x) => x.id === quickFact.id);
+    const id = localQuickFacts.value.findIndex((x) => x.id === quickFact.id);
     localQuickFacts.value.splice(id, 1);
   });
 };

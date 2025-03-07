@@ -284,7 +284,7 @@ export default {
           .delete(giftState.url.destroy)
           .then(() => {
             this.flash(this.$t('The gift state has been deleted'), 'success');
-            var id = this.localGiftStates.findIndex((x) => x.id === giftState.id);
+            const id = this.localGiftStates.findIndex((x) => x.id === giftState.id);
             this.localGiftStates.splice(id, 1);
           })
           .catch((error) => {
