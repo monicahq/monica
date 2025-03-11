@@ -9,19 +9,13 @@
     "social"
   ],
   "license": "AGPL-3.0-or-later",
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/laravel-shift/laravel-localizer"
-    }
-  ],
   "require": {
     "php": "^8.3",
     "ext-fileinfo": "*",
     "ext-intl": "*",
     "asbiin/laravel-sentry-tunnel": "^2.0",
     "asbiin/laravel-webauthn": "^5.0",
-    "codezero/laravel-localizer": "dev-l12-compatibility",
+    "asbiin/laravel-localizer": "^4.0",
     "doctrine/dbal": "^4.1",
     "guzzlehttp/guzzle": "^7.4",
     "http-interop/http-factory-guzzle": "^1.2",
