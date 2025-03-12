@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "253e58ee47c964c46ecefc521756d0bb",
+    "content-hash": "9cf1948a3092bfc5f8c584df551978cf",
     "packages": [
         {
             "name": "asbiin/laravel-localizer",
@@ -2505,16 +2505,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.1.1",
+            "version": "v12.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "9be5738f1ca1530055bb9d6db81f909a7ed34842"
+                "reference": "2fb06941bc69ea92f28b2888535ab144ee006889"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/9be5738f1ca1530055bb9d6db81f909a7ed34842",
-                "reference": "9be5738f1ca1530055bb9d6db81f909a7ed34842",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/2fb06941bc69ea92f28b2888535ab144ee006889",
+                "reference": "2fb06941bc69ea92f28b2888535ab144ee006889",
                 "shasum": ""
             },
             "require": {
@@ -2716,7 +2716,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-03-05T15:31:19+00:00"
+            "time": "2025-03-12T14:38:20+00:00"
         },
         {
             "name": "laravel/jetstream",
@@ -3124,16 +3124,16 @@
         },
         {
             "name": "laravel/telescope",
-            "version": "v5.5.0",
+            "version": "v5.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/telescope.git",
-                "reference": "2594b20b946155ba767002d8af971e33e1095637"
+                "reference": "4937ee4c7243fae39fdb3e990a18af2546c2ed3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/telescope/zipball/2594b20b946155ba767002d8af971e33e1095637",
-                "reference": "2594b20b946155ba767002d8af971e33e1095637",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/4937ee4c7243fae39fdb3e990a18af2546c2ed3b",
+                "reference": "4937ee4c7243fae39fdb3e990a18af2546c2ed3b",
                 "shasum": ""
             },
             "require": {
@@ -3187,9 +3187,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/telescope/issues",
-                "source": "https://github.com/laravel/telescope/tree/v5.5.0"
+                "source": "https://github.com/laravel/telescope/tree/v5.5.1"
             },
-            "time": "2025-02-11T15:01:27+00:00"
+            "time": "2025-03-10T17:13:23+00:00"
         },
         {
             "name": "league/commonmark",
@@ -11603,20 +11603,20 @@
         },
         {
             "name": "web-token/jwt-library",
-            "version": "4.0.3",
+            "version": "4.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-library.git",
-                "reference": "3009d118320dd78d9c1d4f4cc506a20647bf747a"
+                "reference": "650108fa2cdd6cbaaead0dc0ab5302e178b23b0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-library/zipball/3009d118320dd78d9c1d4f4cc506a20647bf747a",
-                "reference": "3009d118320dd78d9c1d4f4cc506a20647bf747a",
+                "url": "https://api.github.com/repos/web-token/jwt-library/zipball/650108fa2cdd6cbaaead0dc0ab5302e178b23b0a",
+                "reference": "650108fa2cdd6cbaaead0dc0ab5302e178b23b0a",
                 "shasum": ""
             },
             "require": {
-                "brick/math": "^0.12",
+                "brick/math": "^0.12 || ^0.13",
                 "ext-json": "*",
                 "php": ">=8.2",
                 "psr/clock": "^1.0",
@@ -11677,7 +11677,7 @@
             ],
             "support": {
                 "issues": "https://github.com/web-token/jwt-library/issues",
-                "source": "https://github.com/web-token/jwt-library/tree/4.0.3"
+                "source": "https://github.com/web-token/jwt-library/tree/4.0.4"
             },
             "funding": [
                 {
@@ -11689,7 +11689,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2025-01-03T17:50:45+00:00"
+            "time": "2025-03-12T11:25:35+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -14208,16 +14208,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v3.6.1",
+            "version": "v3.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "0df0a762698176d714e42e2dfed92b6b9e24b8e4"
+                "reference": "8f8914731f5eb43b6bb145d87c8d5a9edfc89313"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/0df0a762698176d714e42e2dfed92b6b9e24b8e4",
-                "reference": "0df0a762698176d714e42e2dfed92b6b9e24b8e4",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/8f8914731f5eb43b6bb145d87c8d5a9edfc89313",
+                "reference": "8f8914731f5eb43b6bb145d87c8d5a9edfc89313",
                 "shasum": ""
             },
             "require": {
@@ -14272,7 +14272,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v3.6.1"
+                "source": "https://github.com/livewire/livewire/tree/v3.6.2"
             },
             "funding": [
                 {
@@ -14280,7 +14280,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-04T21:48:52+00:00"
+            "time": "2025-03-12T20:24:15+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -15238,12 +15238,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "eab95f065c8f07444ff8ea062ae32a2df83e20ea"
+                "reference": "be77e1f2efc0e488f1c34b1843cd1f559c2a4a13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/eab95f065c8f07444ff8ea062ae32a2df83e20ea",
-                "reference": "eab95f065c8f07444ff8ea062ae32a2df83e20ea",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/be77e1f2efc0e488f1c34b1843cd1f559c2a4a13",
+                "reference": "be77e1f2efc0e488f1c34b1843cd1f559c2a4a13",
                 "shasum": ""
             },
             "conflict": {
@@ -15595,6 +15595,7 @@
                 "lms/routes": "<2.1.1",
                 "localizationteam/l10nmgr": "<7.4|>=8,<8.7|>=9,<9.2",
                 "luyadev/yii-helpers": "<1.2.1",
+                "macropay-solutions/laravel-crud-wizard-free": "<3.4.17",
                 "maestroerror/php-heic-to-jpg": "<1.0.5",
                 "magento/community-edition": "<2.4.5|==2.4.5|>=2.4.5.0-patch1,<2.4.5.0-patch11|==2.4.6|>=2.4.6.0-patch1,<2.4.6.0-patch9|>=2.4.7.0-beta1,<2.4.7.0-patch4|>=2.4.8.0-beta1,<2.4.8.0-beta2",
                 "magento/core": "<=1.9.4.5",
@@ -15742,7 +15743,7 @@
                 "pimcore/demo": "<10.3",
                 "pimcore/ecommerce-framework-bundle": "<1.0.10",
                 "pimcore/perspective-editor": "<1.5.1",
-                "pimcore/pimcore": "<11.2.4|>=11.4.2,<11.5.3",
+                "pimcore/pimcore": "<11.5.4",
                 "pixelfed/pixelfed": "<0.11.11",
                 "plotly/plotly.js": "<2.25.2",
                 "pocketmine/bedrock-protocol": "<8.0.2",
@@ -15827,8 +15828,8 @@
                 "silverstripe/userforms": "<3|>=5,<5.4.2",
                 "silverstripe/versioned-admin": ">=1,<1.11.1",
                 "simple-updates/phpwhois": "<=1",
-                "simplesamlphp/saml2": "<=4.6.15|>=5.0.0.0-alpha1,<=5.0.0.0-alpha19",
-                "simplesamlphp/saml2-legacy": "<=4.6.15",
+                "simplesamlphp/saml2": "<=4.16.15|>=5.0.0.0-alpha1,<=5.0.0.0-alpha19",
+                "simplesamlphp/saml2-legacy": "<=4.16.15",
                 "simplesamlphp/simplesamlphp": "<1.18.6",
                 "simplesamlphp/simplesamlphp-module-infocard": "<1.0.1",
                 "simplesamlphp/simplesamlphp-module-openid": "<1",
@@ -16106,7 +16107,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-11T21:04:43+00:00"
+            "time": "2025-03-12T16:06:08+00:00"
         },
         {
             "name": "sebastian/cli-parser",
