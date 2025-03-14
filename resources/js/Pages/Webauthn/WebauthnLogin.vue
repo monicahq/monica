@@ -40,12 +40,12 @@ onMounted(() => {
 
 const _errorMessage = (name, message) => {
   switch (name) {
-    case 'InvalidStateError':
-      return trans('Unexpected error on login.');
-    case 'NotAllowedError':
-      return trans('The operation either timed out or was not allowed.');
-    default:
-      return message;
+  case 'InvalidStateError':
+    return trans('Unexpected error on login.');
+  case 'NotAllowedError':
+    return trans('The operation either timed out or was not allowed.');
+  default:
+    return message;
   }
 };
 

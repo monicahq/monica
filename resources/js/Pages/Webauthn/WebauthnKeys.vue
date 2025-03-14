@@ -45,12 +45,12 @@ onMounted(() => {
 
 const _errorMessage = (name, message) => {
   switch (name) {
-    case 'InvalidStateError':
-      return trans('This key is already registered. It’s not necessary to register it again.');
-    case 'NotAllowedError':
-      return trans('The operation either timed out or was not allowed.');
-    default:
-      return message;
+  case 'InvalidStateError':
+    return trans('This key is already registered. It’s not necessary to register it again.');
+  case 'NotAllowedError':
+    return trans('The operation either timed out or was not allowed.');
+  default:
+    return message;
   }
 };
 
