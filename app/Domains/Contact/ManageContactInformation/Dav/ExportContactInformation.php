@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Contact\ManageContact\Dav;
+namespace App\Domains\Contact\ManageContactInformation\Dav;
 
 use App\Domains\Contact\Dav\Exporter;
 use App\Domains\Contact\Dav\ExportVCardResource;
