@@ -11,14 +11,8 @@ class VaultContactSearchViewHelper
     public static function data(Vault $vault, string $term): Collection
     {
         /** @var Collection<int, Contact> */
-        $contacts = Contact::where('vault_id', $vault->id)
-            ->where(function ($query) use ($term) {
-                $query->where('first_name', 'like', '%'.$term.'%')
-                    ->orWhere('middle_name', 'like', '%'.$term.'%')
-                    ->orWhere('last_name', 'like', '%'.$term.'%')
-                    ->orWhere('nickname', 'like', '%'.$term.'%')
-                    ->orWhere('maiden_name', 'like', '%'.$term.'%');
-            })
+        $contacts = Contact::search($term)
+            ->where('vault_id', $vault->id)
             ->orderBy('first_name')
             ->orderBy('last_name')
             ->take(5)
