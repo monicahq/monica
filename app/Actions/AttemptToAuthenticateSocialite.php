@@ -124,10 +124,14 @@ class AttemptToAuthenticateSocialite
     private function createUser(SocialiteUser $socialite): User
     {
         $names = Str::of($socialite->getName())->split('/ /', 2);
+        $names = Str::of($socialite->getName())->split('/ /', 2);
+
+        $firstName = addslashes($names[0]);
+        $lastName = addslashes($names[1] ?? $names[0]);
         $data = [
             'email' => $socialite->getEmail(),
-            'first_name' => $names[0],
-            'last_name' => $names[1] ?? $names[0],
+            'first_name' => $firstName,
+            'last_name' => $lastName,
             'terms' => true,
         ];
 
