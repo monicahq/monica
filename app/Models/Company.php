@@ -25,7 +25,7 @@ class Company extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'vault_id',
@@ -35,6 +35,8 @@ class Company extends Model
 
     /**
      * Get the vault associated with the company.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {
@@ -43,6 +45,8 @@ class Company extends Model
 
     /**
      * Get the contacts associated with the company.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Contact, $this>
      */
     public function contacts(): HasMany
     {

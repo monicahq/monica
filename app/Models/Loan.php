@@ -25,7 +25,7 @@ class Loan extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'vault_id',
@@ -57,11 +57,13 @@ class Loan extends Model
      */
     public function searchIndexShouldBeUpdated()
     {
-        return ScoutHelper::activated();
+        return ScoutHelper::isActivated();
     }
 
     /**
      * Get the vault associated with the loan.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
      */
     public function vault(): BelongsTo
     {
@@ -70,6 +72,8 @@ class Loan extends Model
 
     /**
      * Get the currency associated with the loan.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Currency, $this>
      */
     public function currency(): BelongsTo
     {
@@ -78,6 +82,8 @@ class Loan extends Model
 
     /**
      * Get the contact that did the loan.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Contact, $this>
      */
     public function loaners(): BelongsToMany
     {
@@ -86,6 +92,8 @@ class Loan extends Model
 
     /**
      * Get the contact records the loan was made to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Contact, $this>
      */
     public function loanees(): BelongsToMany
     {
@@ -94,6 +102,8 @@ class Loan extends Model
 
     /**
      * Get the loan's feed item.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne<\App\Models\ContactFeedItem, $this>
      */
     public function feedItem(): MorphOne
     {

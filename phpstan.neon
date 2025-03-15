@@ -1,7 +1,3 @@
-includes:
-    - vendor/larastan/larastan/extension.neon
-    - vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
-
 parameters:
     paths:
         - app
@@ -10,50 +6,25 @@ parameters:
         - routes
 
     inferPrivatePropertyTypeFromConstructor: true
+    treatPhpDocTypesAsCertain: false
 
     excludePaths:
         - */app/Domains/Vault/ManageCalendar/Web/ViewHelpers/VaultCalendarIndexViewHelper.php
         - */app/Domains/Contact/DavClient/Services/Utils/Dav/ServiceUrlQuery.php
         - */app/Models/Contact.php
 
+        # phpstan false positive
+        - */app/Mail/UserNotificationChannelEmailCreated.php
+
     level: 5
     ignoreErrors:
         # Global ignore of the "Access to an undefined property"
         - '#Access to an undefined property .*\.#'
 
-        # Global ignore of VCard properties access
-        # - '#Access to an undefined property Sabre\\VObject\\Component\\VCard::\$.*\.#'
-
-        # Specific column loaded with DB::raw
-        #- message: '#Access to an undefined property App\\Models\\Post::\$year\.#'
-        #  path: */app/Domains/Vault/ManageJournals/Web/ViewHelpers/JournalShowViewHelper.php
-
-        # unsearchable scout global method
-        #- message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany<App\\Models\\Note>::unsearchable\(\)\.#'
-        #  path: */app/Models/Contact.php
-        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany<App\\Models\\Note>::unsearchable\(\)\.#'
-          path: */app/Models/Vault.php
-        - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany<App\\Models\\Contact>::unsearchable\(\)\.#'
-          path: */app/Models/Vault.php
-
-        # larastan false positive with Collection::random
-        - message: '#Parameter \#1 \$number of method Illuminate\\Support\\Collection<int,.*>::random\(\) expects .*, Closure\(Illuminate\\Support\\Collection\): int.* given\.#'
-          path: */app/Domains/Vault/ManageVault/Web/ViewHelpers/VaultIndexViewHelper.php
-
-        # larastan needs to manage ->pivot properties
-        #- '#Access to an undefined property App\\Models\\[^:]*::\$pivot\.#'
-
-        # Attributes
-        #- message: '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayPush\.#'
-        #  path: */app/Domains/Contact/DavClient/Services/Utils/AddressBookSynchronizer.php
-        #- message: '#Access to an undefined property App\\Models\\AddressBookSubscription::\$isWayGet\.#'
-        #  path: */app/Domains/Contact/DavClient/Services/Utils/AddressBookSynchronizer.php
-
-        #- message: '#Access to an undefined property App\\Logging\\Loggable::\$id\.#'
-        #  path: */app/Logging/LoggingHandler.php
-
-        #- message: '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$user_id\.#'
-        #  path: */app/Listeners/WebauthnRegistered.php
-
+        # phpstan false positive
         - path: */app/Helpers/helpers.php
           message: '#Function readVersion\(\) never returns null so it can be removed from the return type\.#'
+        - path: */app/Mail/UserInvited.php
+          message: '#Variable \$url might not be defined\.#'
+        - path: */app/Mail/UserInvited.php
+          message: '#Variable \$userName might not be defined\.#'

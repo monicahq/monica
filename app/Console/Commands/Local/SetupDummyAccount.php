@@ -64,13 +64,14 @@ class SetupDummyAccount extends Command
 
         $this->start();
         $this->wipeAndMigrateDB();
-        $this->createFirstUsers();
+        $this->createFirstUser();
         $this->createVaults();
         $this->createContacts();
         $this->createNotes();
         $this->createTasks();
         $this->createGoals();
         $this->createJournals();
+        $this->createSecondUser();
         $this->stop();
     }
 
@@ -117,7 +118,7 @@ class SetupDummyAccount extends Command
         $this->info('Setup is done. Have fun.');
     }
 
-    private function createFirstUsers(): void
+    private function createFirstUser(): void
     {
         $this->info('☐ Create first user of the account');
 
@@ -297,6 +298,21 @@ class SetupDummyAccount extends Command
                 }
             }
         }
+    }
+
+    private function createSecondUser(): void
+    {
+        $this->info('☐ Create second user of the account');
+
+        $this->secondUser = app(CreateAccount::class)->execute([
+            'email' => 'blank@blank.com',
+            'password' => 'blank123',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+        ]);
+
+        $this->secondUser->email_verified_at = Carbon::now();
+        $this->secondUser->save();
     }
 
     private function artisan(string $message, string $command, array $arguments = []): void

@@ -2,10 +2,8 @@
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <PhotoIcon />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <FileImage class="h-4 w-4 text-gray-600" />
 
         <span class="font-semibold">
           {{ $t('Photos') }}
@@ -39,7 +37,7 @@
         <div
           v-for="photo in localPhotos"
           :key="photo.id"
-          class="rounded-md border border-gray-200 p-2 shadow-sm hover:bg-slate-50 hover:shadow-lg dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          class="rounded-md border border-gray-200 p-2 shadow-xs hover:bg-slate-50 hover:shadow-lg dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <InertiaLink :href="photo.url.show"><img :src="photo.url.display" :alt="photo.name" /></InertiaLink>
         </div>
       </div>
@@ -48,7 +46,7 @@
       <div class="text-center">
         <InertiaLink
           :href="data.url.index"
-          class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
+          class="rounded-sm border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
           {{ $t('View all') }}
         </InertiaLink>
       </div>
@@ -79,14 +77,14 @@
 import { Link } from '@inertiajs/vue3';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
-import PhotoIcon from '@/Shared/Icons/PhotoIcon.vue';
+import { FileImage } from 'lucide-vue-next';
 
 export default {
   components: {
     InertiaLink: Link,
     PrettyButton,
     Uploadcare,
-    PhotoIcon,
+    FileImage,
   },
 
   props: {

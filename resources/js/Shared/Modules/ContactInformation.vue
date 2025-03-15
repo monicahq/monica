@@ -2,10 +2,8 @@
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <WorldIcon />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <Headset class="h-4 w-4 text-gray-600" />
 
         <span class="font-semibold">
           {{ $t('Contact information') }}
@@ -67,7 +65,7 @@
         <li
           v-for="info in localContactInformation"
           :key="info.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <!-- contact information -->
           <div v-if="editedContactInformationId !== info.id" class="flex items-center justify-between px-3 py-2">
             <div>
@@ -152,7 +150,7 @@ import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Dropdown from '@/Shared/Form/Dropdown.vue';
 import Errors from '@/Shared/Form/Errors.vue';
-import WorldIcon from '@/Shared/Icons/WorldIcon.vue';
+import { Headset } from 'lucide-vue-next';
 
 export default {
   components: {
@@ -161,7 +159,7 @@ export default {
     TextInput,
     Dropdown,
     Errors,
-    WorldIcon,
+    Headset,
   },
 
   props: {

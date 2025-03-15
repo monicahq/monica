@@ -6,7 +6,7 @@ import JetInput from '@/Components/Input.vue';
 import JetLabel from '@/Components/Label.vue';
 import JetValidationErrors from '@/Components/ValidationErrors.vue';
 import JetCheckbox from '@/Components/Checkbox.vue';
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrimaryButton from '@/Shared/Form/PrimaryButton.vue';
 
 const form = useForm({
   first_name: '',
@@ -26,14 +26,14 @@ const submit = () => {
 const terms = () => {
   return `<a target="_blank" href="${route(
     'terms.show',
-  )}" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 hover:dark:text-gray-100">${trans(
+  )}" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">${trans(
     'Terms of Service',
   )}</a>`;
 };
 const policy = () => {
   return `<a target="_blank" href="${route(
     'policy.show',
-  )}" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 hover:dark:text-gray-100">${trans(
+  )}" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">${trans(
     'Privacy Policy',
   )}</a>`;
 };
@@ -139,7 +139,7 @@ const policy = () => {
           {{ $t('Already registered?') }}
         </Link>
 
-        <PrettyButton :text="$t('Register')" :state="loadingState" :class="'save'" />
+        <primary-button :text="$t('Register')" :state="loadingState" :class="'save'" />
       </div>
     </form>
   </JetGuestLayout>

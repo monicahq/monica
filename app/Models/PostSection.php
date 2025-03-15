@@ -15,7 +15,7 @@ class PostSection extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'post_id',
@@ -26,6 +26,8 @@ class PostSection extends Model
 
     /**
      * Get the post associated with the post section.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Post, $this>
      */
     public function post(): BelongsTo
     {

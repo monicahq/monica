@@ -6,7 +6,7 @@ import JetCheckbox from '@/Components/Checkbox.vue';
 import JetValidationErrors from '@/Components/ValidationErrors.vue';
 import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrimaryButton from '@/Shared/Form/PrimaryButton.vue';
 import WebauthnLogin from '@/Pages/Webauthn/WebauthnLogin.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 
@@ -165,7 +165,7 @@ const reload = () => {
                 {{ $t('Forgot your password?') }}
               </Link>
 
-              <PrettyButton :text="$t('Log in')" :state="loadingState" :class="'save ms-4'" />
+              <primary-button :text="$t('Log in')" :state="loadingState" :class="'save ms-4'" />
             </div>
 
             <div class="mt-3 block">

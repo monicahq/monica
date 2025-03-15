@@ -3,7 +3,7 @@ import { Link, useForm } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import { trans } from 'laravel-vue-i18n';
-
+import { ChevronRight } from 'lucide-vue-next';
 const props = defineProps({
   layoutData: Object,
   data: Object,
@@ -25,37 +25,28 @@ const destroy = () => {
 <template>
   <layout :layout-data="layoutData" :inside-vault="true">
     <!-- breadcrumb -->
-    <nav class="bg-white dark:bg-gray-900 sm:mt-20 sm:border-b">
+    <nav class="bg-white dark:bg-gray-900 sm:mt-20 sm:border-b sm:border-gray-300 dark:border-gray-700">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
-        <div class="flex items-baseline justify-between space-x-6">
-          <ul class="text-sm">
-            <li class="me-2 inline text-gray-600 dark:text-gray-400">
-              {{ $t('You are here:') }}
-            </li>
-            <li class="me-2 inline">
-              <Link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
-                {{ $t('Journals') }}
-              </Link>
-            </li>
-            <li class="relative me-2 inline">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon-breadcrumb relative inline h-3 w-3"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </li>
-            <li class="inline">
-              {{ data.name }}
-            </li>
-          </ul>
+        <div class="flex items-center gap-1 text-sm">
+          <div class="text-gray-600 dark:text-gray-400">
+            {{ $t('You are here:') }}
+          </div>
+          <div class="inline">
+            <Link :href="layoutData.vault.url.journals" class="text-blue-500 hover:underline">
+              {{ $t('Journals') }}
+            </Link>
+          </div>
+          <div class="relative inline">
+            <ChevronRight class="h-3 w-3" />
+          </div>
+          <div class="inline">
+            {{ data.name }}
+          </div>
         </div>
       </div>
     </nav>
 
-    <main class="sm:mt-18 relative">
+    <main class="sm:mt-10 relative">
       <div class="mx-auto max-w-6xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <h1 class="text-2xl" :class="data.description ? 'mb-4' : 'mb-8'">{{ data.name }}</h1>
 
@@ -63,10 +54,10 @@ const destroy = () => {
 
         <!-- tabs -->
         <div class="flex justify-center">
-          <div class="mb-8 inline-flex rounded-md shadow-sm">
+          <div class="mb-8 inline-flex rounded-md shadow-xs">
             <Link
               :href="data.url.show"
-              class="inline-flex items-center rounded-s-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-400 dark:font-bold dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
+              class="inline-flex items-center rounded-s-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-400 dark:font-bold dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -86,7 +77,7 @@ const destroy = () => {
             <Link
               :href="data.url.photo_index"
               :class="{ 'bg-gray-100 text-blue-700 dark:bg-gray-400 dark:font-bold': defaultTab === 'life_events' }"
-              class="inline-flex items-center rounded-e-md border-b border-s border-t border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white hover:dark:bg-gray-600 hover:dark:text-white dark:focus:text-white dark:focus:ring-blue-500">
+              class="inline-flex items-center rounded-e-md border-b border-s border-t border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -168,7 +159,7 @@ const destroy = () => {
                     <li
                       v-for="post in month.posts"
                       :key="post.id"
-                      class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                      class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
                       <!-- written at -->
                       <div class="me-4 rounded-lg border border-gray-200 p-2 text-center leading-tight">
                         <span class="block text-xs uppercase">{{ post.written_at_day }}</span>
@@ -179,18 +170,16 @@ const destroy = () => {
                       <div class="flex w-full items-center justify-between">
                         <!-- title and excerpt -->
                         <div>
-                          <span
-                            ><Link :href="post.url.show" class="text-blue-500 hover:underline">{{
-                              post.title
-                            }}</Link></span
-                          >
+                          <span>
+                            <Link :href="post.url.show" class="text-blue-500 hover:underline">{{ post.title }}</Link>
+                          </span>
                           <p v-if="post.excerpt">{{ post.excerpt }}</p>
                         </div>
 
                         <!-- photo -->
                         <div
                           v-if="post.photo"
-                          class="mr-2 rounded-md border border-gray-200 p-1 shadow-sm hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                          class="mr-2 rounded-md border border-gray-200 p-1 shadow-xs hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
                           <img :src="post.photo.url.show" :alt="post.photo.id" />
                         </div>
                       </div>
@@ -227,7 +216,7 @@ const destroy = () => {
               <div v-for="slice in data.slices" :key="slice.id" class="mb-6 last:mb-0">
                 <img v-if="slice.cover_image" class="h-32 w-full rounded-t" :src="slice.cover_image" alt="" />
                 <div
-                  class="rounded-b border-b border-s border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800"
+                  class="rounded-b border-b border-s border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800"
                   :class="slice.cover_image ? '' : 'border-t'">
                   <Link :href="slice.url.show" class="font-semibold">{{ slice.name }}</Link>
                   <p class="text-xs text-gray-600">{{ slice.date_range }}</p>

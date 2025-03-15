@@ -4,7 +4,7 @@
     :layout-data="layoutData"
   >
     <!-- breadcrumb -->
-    <nav class="bg-white dark:bg-gray-900 sm:border-b">
+    <nav class="bg-white dark:bg-gray-900 sm:border-b border-gray-200 dark:border-gray-700">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
         <div class="flex items-baseline justify-between space-x-6">
           <ul class="text-sm">
@@ -81,15 +81,15 @@
           <span class="me-1">🔽</span> {{ $t('Breakdown of the current usage') }}
         </p>
         <ul class="user-list mb-6 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-          <li class="border-b border-gray-200 dark:border-gray-700 hover:bg-slate-50 hover:dark:bg-slate-800 dark:bg-slate-900 flex justify-between p-3">
+          <li class="border-b border-gray-200 dark:border-gray-700 hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-900 flex justify-between p-3">
             <p>{{ $t('Photos') }}</p>
             <p>{{ data.statistics.photo.total }} <span class="text-gray-500 font-normal text-sm">({{ data.statistics.photo.size }} - {{ data.statistics.photo.total_percent }}%)</span></p>
           </li>
-          <li class="border-b border-gray-200 dark:border-gray-700 hover:bg-slate-50 hover:dark:bg-slate-800 dark:bg-slate-900 flex justify-between p-3">
+          <li class="border-b border-gray-200 dark:border-gray-700 hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-900 flex justify-between p-3">
             <p>{{ $t('Documents') }}</p>
             <p>{{ data.statistics.document.total }} <span class="text-gray-500 font-normal text-sm">({{ data.statistics.document.size }} - {{ data.statistics.document.total_percent }}%)</span></p>
           </li>
-          <li class="border-b border-gray-200 dark:border-gray-700 hover:bg-slate-50 hover:dark:bg-slate-800 dark:bg-slate-900 flex justify-between p-3">
+          <li class="border-b border-gray-200 dark:border-gray-700 hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-900 flex justify-between p-3">
             <p>{{ $t('Avatars') }}</p>
             <p>{{ data.statistics.avatar.total }} <span class="text-gray-500 font-normal text-sm">({{ data.statistics.avatar.size }} - {{ data.statistics.avatar.total_percent }}%)</span></p>
           </li>

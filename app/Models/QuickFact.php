@@ -15,7 +15,7 @@ class QuickFact extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'contact_id',
@@ -25,6 +25,8 @@ class QuickFact extends Model
 
     /**
      * Get the contact associated with the quick fact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
      */
     public function contact(): BelongsTo
     {
@@ -33,6 +35,8 @@ class QuickFact extends Model
 
     /**
      * Get the quick fact template associated with the quick fact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\VaultQuickFactsTemplate, $this>
      */
     public function vaultQuickFactsTemplate(): BelongsTo
     {

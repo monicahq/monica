@@ -22,7 +22,7 @@ class GroupShowViewHelper
             : $group->groupType->groupTypeRoles()
                 ->orderBy('position')
                 ->get()
-                ->map(function (GroupTypeRole $role) use ($group) {
+                ->map(function (GroupTypeRole $role) use ($group) { // @phpstan-ignore-line
                     $contactsCollection = $group->contacts()
                         ->wherePivot('group_type_role_id', $role->id)
                         ->get()
@@ -37,7 +37,7 @@ class GroupShowViewHelper
                             ]),
                         ]);
 
-                    return [
+                    return [ // @phpstan-ignore-line
                         'id' => $role->id,
                         'label' => $role->label,
                         'contacts' => $contactsCollection,

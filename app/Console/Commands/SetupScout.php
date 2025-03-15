@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\ScoutHelper;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -49,17 +50,18 @@ class SetupScout extends Command
      */
     protected function scoutConfigure(): void
     {
-        if (config('scout.driver') === 'meilisearch' && config('scout.meilisearch.host') !== '') {
-            $this->artisan('☐ Updating indexes on Meilisearch', 'scout:sync-index-settings', ['--verbose' => true]);
+        if (ScoutHelper::isIndexed()) {
+            $this->artisan('☐ Updating indexes', 'scout:sync-index-settings', ['--verbose' => true]);
         }
     }
 
     /**
-     * Import models.
+     * Flush indexes.
      */
     protected function scoutFlush(): void
     {
-        if (config('scout.driver') !== null && $this->option('flush')) {
+        if ($this->option('flush') && ScoutHelper::isIndexed()) {
+            // Using meilisearch config for any driver
             foreach (config('scout.meilisearch.index-settings') as $index => $settings) {
                 $name = (new $index)->getTable();
                 $this->artisan("☐ Flush {$name} index", 'scout:flush', ['model' => $index, '--verbose' => true]);
@@ -74,7 +76,8 @@ class SetupScout extends Command
      */
     protected function scoutImport(): void
     {
-        if (config('scout.driver') !== null && $this->option('import')) {
+        if ($this->option('import') && ScoutHelper::isIndexed()) {
+            // Using meilisearch config for any driver
             foreach (config('scout.meilisearch.index-settings') as $index => $settings) {
                 $name = (new $index)->getTable();
                 $this->artisan("☐ Import {$name}", 'scout:import', ['model' => $index, '--verbose' => true]);

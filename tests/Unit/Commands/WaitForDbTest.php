@@ -11,7 +11,7 @@ class WaitForDbTest extends TestCase
     use DatabaseTransactions;
 
     #[Test]
-    public function it_run_WaitForDb_command(): void
+    public function it_run_wait_for_db_command(): void
     {
         $this->artisan('waitfordb')
             ->expectsOutput('Database ready.')

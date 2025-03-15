@@ -25,7 +25,7 @@ class Emotion extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'account_id',
@@ -36,6 +36,8 @@ class Emotion extends Model
 
     /**
      * Get the account associated with the emotion.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {

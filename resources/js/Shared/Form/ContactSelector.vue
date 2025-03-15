@@ -3,7 +3,7 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import Errors from '@/Shared/Form/Errors.vue';
-import SearchIcon from '@/Shared/Icons/SearchIcon.vue';
+import { ScanSearch } from 'lucide-vue-next';
 
 const props = defineProps({
   modelValue: {
@@ -54,10 +54,10 @@ const displayAddContactButton = computed(() => {
 
 const localInputClasses = computed(() => {
   return [
-    'ps-8 w-full rounded-md shadow-sm',
+    'ps-8 w-full rounded-md shadow-xs',
     'bg-white dark:bg-slate-900 border-gray-300 dark:border-gray-700',
-    'focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50',
-    'disabled:bg-slate-50 disabled:dark:bg-slate-900',
+    'focus:border-indigo-300 focus:ring-3 focus:ring-indigo-200 focus:ring-opacity-50',
+    'disabled:bg-slate-50 dark:disabled:bg-slate-900',
     props.inputClass,
   ];
 });
@@ -138,7 +138,7 @@ const search = _.debounce(() => {
     <div>
       <label v-if="label" class="mb-2 block text-sm">
         {{ label }}
-        <span v-if="!required" class="optional-badge rounded px-[3px] py-px text-xs">
+        <span v-if="!required" class="optional-badge rounded-sm px-[3px] py-px text-xs">
           {{ $t('optional') }}
         </span>
       </label>
@@ -150,7 +150,7 @@ const search = _.debounce(() => {
         <li
           v-for="contact in localContacts"
           :key="contact.id"
-          class="item-list flex items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          class="item-list flex items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <Link :href="contact.url">
             {{ contact.name }}
           </Link>
@@ -166,7 +166,7 @@ const search = _.debounce(() => {
 
       <p
         v-if="displayAddContactButton"
-        class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300 dark:border-gray-700 dark:bg-slate-500 dark:text-gray-900 hover:dark:bg-slate-700"
+        class="inline-block cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-xs hover:bg-slate-300 dark:border-gray-700 dark:bg-slate-500 dark:text-gray-900 dark:hover:bg-slate-700"
         @click="showAddContactMode">
         {{ labelCta }}
       </p>
@@ -175,7 +175,7 @@ const search = _.debounce(() => {
     <!-- mode to add a contact -->
     <div v-if="addContactMode">
       <div class="relative mb-3">
-        <SearchIcon />
+        <ScanSearch class="absolute start-2 top-2 h-4 w-4 text-gray-400" />
 
         <input
           ref="searchInput"
@@ -187,7 +187,7 @@ const search = _.debounce(() => {
           :placeholder="placeholder"
           @keyup="search"
           @keydown.esc="sendEscKey" />
-        <span v-if="maxlength && displayMaxLength" class="length absolute rounded text-xs">
+        <span v-if="maxlength && displayMaxLength" class="length absolute rounded-sm text-xs">
           {{ charactersLeft }}
         </span>
       </div>
@@ -208,7 +208,7 @@ const search = _.debounce(() => {
           <li
             v-for="contact in mostConsultedContacts"
             :key="contact.id"
-            class="item-list flex items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+            class="item-list flex items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
             {{ contact.name }}
 
             <!-- actions -->
@@ -241,7 +241,7 @@ const search = _.debounce(() => {
           <li
             v-for="contact in searchResults"
             :key="contact.id"
-            class="item-list flex items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+            class="item-list flex items-center justify-between border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
             {{ contact.name }}
 
             <!-- actions -->

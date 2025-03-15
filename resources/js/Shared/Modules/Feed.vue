@@ -27,10 +27,10 @@
             </p>
 
             <!-- date of the action -->
-            <p class="mb-1 md:mb-0 flex items-center text-sm text-gray-400">
+            <p class="mb-1 md:mb-0 flex items-center gap-1 text-sm text-gray-400">
               <span>{{ feedItem.created_at }}</span>
 
-              <CalendarIcon :type="'empty'" />
+              <CalendarDays class="h-3 w-3" />
             </p>
           </div>
         </div>
@@ -168,7 +168,7 @@
     <div class="text-center" v-if="paginator.hasMorePages">
       <span
         @click="load()"
-        class="cursor-pointer rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
+        class="cursor-pointer rounded-sm border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
         {{ $t('Load previous entries') }}
       </span>
     </div>
@@ -187,7 +187,7 @@ import Pet from '@/Shared/Modules/FeedItems/Pet.vue';
 import Goal from '@/Shared/Modules/FeedItems/Goal.vue';
 import MoodTrackingEvent from '@/Shared/Modules/FeedItems/MoodTrackingEvent.vue';
 import Note from '@/Shared/Modules/FeedItems/Note.vue';
-import CalendarIcon from '@/Shared/Icons/CalendarIcon.vue';
+import { CalendarDays } from 'lucide-vue-next';
 
 export default {
   components: {
@@ -202,7 +202,7 @@ export default {
     Goal,
     MoodTrackingEvent,
     Note,
-    CalendarIcon,
+    CalendarDays,
   },
 
   props: {

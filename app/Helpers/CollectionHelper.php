@@ -70,10 +70,6 @@ class CollectionHelper
      */
     protected static function valueRetriever(callable|string $value): callable
     {
-        if (! is_string($value) && is_callable($value)) {
-            return $value;
-        }
-
-        return fn ($item) => data_get($item, $value);
+        return is_callable($value) ? $value : fn ($item) => data_get($item, $value);
     }
 }

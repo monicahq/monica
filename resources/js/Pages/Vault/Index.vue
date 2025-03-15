@@ -17,7 +17,10 @@
             }}
           </p>
           <div class="mb-1 text-center">
-            <pretty-link :href="data.url.vault.create" :text="$t('Create a vault')" :icon="'plus'" />
+            <InertiaLink
+              :href="data.url.vault.create"
+              :text="$t('Create a vault')"
+              class="cursor-pointer rounded-md border border-indigo-700 bg-indigo-500 px-3 py-2 font-semibold text-white shadow-xs hover:bg-indigo-700" />
           </div>
         </div>
 
@@ -32,13 +35,11 @@
             {{ $t('All the best,') }}
           </p>
           <p>
-            <a href="https://phpc.social/@regis" rel="noopener noreferrer" class="text-blue-500 hover:underline">
-              Régis
-            </a>
+            <a href="https://phpc.social/@regis" rel="noopener noreferrer" class="text-blue-500 hover:underline"
+              >Régis</a
+            >
             &amp;
-            <a href="https://mamot.fr/@asbin" rel="noopener noreferrer" class="text-blue-500 hover:underline">
-              Alexis
-            </a>
+            <a href="https://mamot.fr/@asbin" rel="noopener noreferrer" class="text-blue-500 hover:underline">Alexis</a>
           </p>
         </div>
       </div>
@@ -49,11 +50,10 @@
           <h3 class="mb-3 dark:text-slate-200 sm:mb-0">
             {{ $t('All the vaults in the account') }}
           </h3>
-          <pretty-link
+          <InertiaLink
             :href="data.url.vault.create"
             :text="$t('Create a vault')"
-            :icon="'plus'"
-            class="w-full md:w-auto" />
+            class="cursor-pointer inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1 font-semibold text-gray-700 hover:shadow-xs transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25" />
         </div>
 
         <div class="vault-list grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -61,12 +61,23 @@
             v-for="vault in data.vaults"
             :key="vault.id"
             class="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-            <div class="vault-detail grid">
-              <InertiaLink
-                :href="vault.url.show"
-                class="border-b border-gray-200 px-3 py-1 text-lg font-medium hover:rounded-t-lg hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-300 hover:dark:bg-slate-800">
-                {{ vault.name }}
-              </InertiaLink>
+            <div class="vault-detail grid relative">
+              <div
+                class="flex items-center justify-between border-b border-gray-200 hover:rounded-t-lg hover:bg-slate-50 dark:hover:bg-slate-800">
+                <InertiaLink
+                  :href="vault.url.show"
+                  class="px-3 py-1 text-lg font-medium dark:border-gray-700 dark:bg-slate-900 dark:text-gray-300">
+                  {{ vault.name }}
+                </InertiaLink>
+
+                <!-- Edit button -->
+                <InertiaLink
+                  :href="vault.url.edit"
+                  class="ml-2 px-2 py-1 text-sm font-medium text-blue-600 hover:text-white dark:text-blue-400 dark:border-blue-400 hover:dark:text-slate-900">
+                  <Pencil
+                    class="cursor-pointer h-4 w-4 text-gray-400 hover:text-gray-900 dark:text-gray-600 hover:dark:text-gray-100" />
+                </InertiaLink>
+              </div>
 
               <!-- description -->
               <div>
@@ -79,7 +90,7 @@
                   </div>
                   <div
                     v-if="vault.remaining_contacts !== 0"
-                    class="relative -start-[5px] -top-px flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-gray-700 text-xs font-medium text-white hover:bg-gray-600 dark:border-gray-800 dark:bg-gray-300 dark:text-gray-900 hover:dark:bg-gray-400">
+                    class="relative -start-[5px] -top-px flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-gray-700 text-xs font-medium text-white hover:bg-gray-600 dark:border-gray-800 dark:bg-gray-300 dark:text-gray-900 dark:hover:bg-gray-400">
                     + {{ vault.remaining_contacts }}
                   </div>
                 </div>
@@ -94,38 +105,13 @@
               <!-- actions -->
               <div class="flex items-center justify-between border-t border-gray-200 px-3 py-2 dark:border-gray-700">
                 <InertiaLink :href="vault.url.settings">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="pointer h-5 w-5 text-gray-400 hover:text-gray-900 dark:text-gray-600 hover:dark:text-gray-100"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
+                  <Settings
+                    class="h-5 w-5 text-gray-400 hover:text-gray-900 dark:text-gray-600 dark:hover:text-gray-100" />
                 </InertiaLink>
 
                 <InertiaLink :href="vault.url.show">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="pointer h-5 w-5 text-gray-400 hover:text-gray-900 dark:text-gray-600 hover:dark:text-gray-100"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
+                  <ArrowRight
+                    class="h-5 w-5 text-gray-400 hover:text-gray-900 dark:text-gray-600 dark:hover:text-gray-100" />
                 </InertiaLink>
               </div>
             </div>
@@ -139,15 +125,17 @@
 <script>
 import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
-import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import Avatar from '@/Shared/Avatar.vue';
+import { Pencil, Settings, ArrowRight } from 'lucide-vue-next';
 
 export default {
   components: {
     InertiaLink: Link,
     Layout,
-    PrettyLink,
     Avatar,
+    Pencil,
+    Settings,
+    ArrowRight,
   },
 
   props: {

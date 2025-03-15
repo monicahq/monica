@@ -1,9 +1,9 @@
 <template>
   <div class="mb-4">
-    <div class="mb-1 items-center justify-between border-b border-gray-200 dark:border-gray-700 flex">
-      <div class="mb-2 text-xs sm:mb-0">{{ $t('Name') }}</div>
+    <div class="pb-1 mb-2 items-center justify-between border-b border-gray-200 dark:border-gray-700 flex">
+      <div class="text-xs">{{ $t('Name') }}</div>
       <InertiaLink :href="data.url.edit" class="relative">
-        <EditIcon />
+        <Pencil class="h-3 w-3 text-gray-400" />
       </InertiaLink>
     </div>
 
@@ -27,15 +27,15 @@
 <script>
 import { Link } from '@inertiajs/vue3';
 import { Tooltip as ATooltip } from 'ant-design-vue';
-import EditIcon from '@/Shared/Icons/EditIcon.vue';
 import StarIcon from '@/Shared/Icons/StarIcon.vue';
+import { Pencil } from 'lucide-vue-next';
 
 export default {
   components: {
     InertiaLink: Link,
     ATooltip,
-    EditIcon,
     StarIcon,
+    Pencil,
   },
 
   props: {
@@ -70,9 +70,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.icon-sidebar {
-  top: -2px;
-}
-</style>

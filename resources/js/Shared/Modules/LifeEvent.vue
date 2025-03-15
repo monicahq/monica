@@ -6,10 +6,10 @@ import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
 import HoverMenu from '@/Shared/HoverMenu.vue';
 import CreateLifeEvent from '@/Shared/Modules/CreateLifeEvent.vue';
-import FireIcon from '@/Shared/Icons/FireIcon.vue';
 import ChevronIcon from '@/Shared/Icons/ChevronIcon.vue';
 import ClockIcon from '@/Shared/Icons/ClockIcon.vue';
 import TwoPinMapIcon from '@/Shared/Icons/TwoPinMapIcon.vue';
+import { Flame } from 'lucide-vue-next';
 
 const props = defineProps({
   layoutData: Object,
@@ -109,10 +109,8 @@ const toggleLifeEventVisibility = (lifeEvent) => {
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <FireIcon />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <Flame class="h-4 w-4" />
 
         <span class="font-semibold"> {{ $t('Life events') }} </span>
       </div>
@@ -138,7 +136,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
         <div v-for="timelineEvent in localTimelines" :key="timelineEvent.id" class="mb-4">
           <!-- timeline event name -->
           <div
-            class="mb-2 flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-900"
+            class="mb-2 flex cursor-pointer items-center justify-between rounded-lg border border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-slate-900"
             @click="toggleTimelineEventVisibility(timelineEvent)">
             <!-- timeline date / label / number of events -->
             <div>
@@ -182,18 +180,18 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                 <!-- name of life event -->
                 <div
                   :class="lifeEvent.collapsed ? 'rounded-lg border' : ''"
-                  class="flex cursor-pointer items-center justify-between rounded-t-lg border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 hover:dark:bg-slate-900">
+                  class="flex cursor-pointer items-center justify-between rounded-t-lg border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:hover:bg-slate-900">
                   <!-- title -->
                   <div @click="toggleLifeEventVisibility(lifeEvent)" class="flex items-center">
                     <p v-if="lifeEvent.summary" class="me-4 text-sm font-bold">{{ lifeEvent.summary }}</p>
                     <div>
                       <span
-                        class="rounded border bg-white px-2 py-1 font-mono text-sm dark:border-gray-700 dark:bg-gray-800">
+                        class="rounded-sm border bg-white px-2 py-1 font-mono text-sm dark:border-gray-700 dark:bg-gray-800">
                         {{ lifeEvent.life_event_type.category.label }}
                       </span>
                       >
                       <span
-                        class="rounded border bg-white px-2 py-1 font-mono text-sm dark:border-gray-700 dark:bg-gray-800">
+                        class="rounded-sm border bg-white px-2 py-1 font-mono text-sm dark:border-gray-700 dark:bg-gray-800">
                         {{ lifeEvent.life_event_type.label }}
                       </span>
                     </div>
@@ -284,7 +282,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
         <div class="text-center" v-if="paginator.hasMorePages">
           <span
             @click="loadMore()"
-            class="cursor-pointer rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
+            class="cursor-pointer rounded-sm border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
             {{ $t('Load previous entries') }}
           </span>
         </div>

@@ -11,8 +11,7 @@ import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Dropdown from '@/Shared/Form/Dropdown.vue';
 import Errors from '@/Shared/Form/Errors.vue';
-import ReminderIcon from '@/Shared/Icons/ReminderIcon.vue';
-import RefreshIcon from '@/Shared/Icons/RefreshIcon.vue';
+import { Bell } from 'lucide-vue-next';
 
 const props = defineProps({
   data: Object,
@@ -124,11 +123,8 @@ const destroy = (reminder) => {
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <ReminderIcon />
-        </span>
-
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <Bell class="h-4 w-4 text-gray-600" />
         <span class="font-semibold"> {{ $t('Reminders') }} </span>
       </div>
       <pretty-button
@@ -188,7 +184,7 @@ const destroy = (reminder) => {
               :is-dark="isDark()">
               <template #default="{ inputValue, inputEvents }">
                 <input
-                  class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                  class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
                   :value="inputValue"
                   v-on="inputEvents" />
               </template>
@@ -304,7 +300,7 @@ const destroy = (reminder) => {
         <li
           v-for="reminder in localReminders"
           :key="reminder.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <!-- reminder -->
           <div class="flex items-center justify-between px-3 py-2">
             <div class="flex items-center">
@@ -384,7 +380,7 @@ const destroy = (reminder) => {
                     :is-dark="isDark()">
                     <template #default="{ inputValue, inputEvents }">
                       <input
-                        class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                        class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
                         :value="inputValue"
                         v-on="inputEvents" />
                     </template>

@@ -187,7 +187,7 @@ const store = () => {
                 @click="loadTypes(category)"
                 v-for="category in data.life_event_categories"
                 :key="category.id"
-                class="item-list flex cursor-pointer border-b border-gray-200 px-3 py-1 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                class="item-list flex cursor-pointer border-b border-gray-200 px-3 py-1 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
                 <div
                   class="flex w-full justify-between"
                   :class="category.id === selectedLifeEventCategory.id ? 'font-bold' : ''">
@@ -211,7 +211,7 @@ const store = () => {
                 v-for="lifeEventType in selectedLifeEventCategory.life_event_types"
                 :key="lifeEventType.id"
                 @click="chooseType(lifeEventType)"
-                class="item-list flex cursor-pointer justify-between border-b border-gray-200 px-3 py-1 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                class="item-list flex cursor-pointer justify-between border-b border-gray-200 px-3 py-1 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
                 <span>{{ lifeEventType.label }}</span>
                 <span class="text-sm text-blue-500 hover:underline">{{ $t('Choose') }}</span>
               </li>
@@ -224,11 +224,11 @@ const store = () => {
       <div v-else class="flex items-center justify-between border-b border-gray-200 p-3 dark:border-gray-700">
         <div>
           <span class="text-sm">{{ $t('Chosen type:') }}</span>
-          <span class="rounded border bg-white px-2 py-1 font-mono text-sm dark:bg-gray-800">
+          <span class="rounded-sm border bg-white px-2 py-1 font-mono text-sm dark:bg-gray-800">
             {{ selectedLifeEventCategory.label }}
           </span>
           >
-          <span class="rounded border bg-white px-2 py-1 font-mono text-sm dark:bg-gray-800">
+          <span class="rounded-sm border bg-white px-2 py-1 font-mono text-sm dark:bg-gray-800">
             {{ selectedLifeEventType.label }}
           </span>
         </div>
@@ -262,7 +262,7 @@ const store = () => {
             :is-dark="isDark()">
             <template #default="{ inputValue, inputEvents }">
               <input
-                class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
                 :value="inputValue"
                 v-on="inputEvents" />
             </template>
@@ -378,7 +378,7 @@ const store = () => {
         <!-- summary -->
         <div v-if="!addSummaryFieldShown">
           <span
-            class="mb-2 me-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 hover:dark:bg-slate-700"
+            class="mb-2 me-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 dark:hover:bg-slate-700"
             @click="showAddSummaryField"
             >{{ $t('+ add summary') }}
           </span>
@@ -387,7 +387,7 @@ const store = () => {
         <!-- description -->
         <div v-if="!addDescriptionFieldShown">
           <span
-            class="mb-2 me-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 hover:dark:bg-slate-700"
+            class="mb-2 me-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 dark:hover:bg-slate-700"
             @click="showAddDescriptionField"
             >{{ $t('+ add description') }}
           </span>
@@ -396,7 +396,7 @@ const store = () => {
         <!-- distance -->
         <div v-if="!addDistanceFieldShown">
           <span
-            class="mb-2 me-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 hover:dark:bg-slate-700"
+            class="mb-2 me-2 cursor-pointer rounded-lg border bg-slate-200 px-1 py-1 text-sm hover:bg-slate-300 dark:border-gray-500 dark:bg-slate-800 dark:text-gray-50 dark:hover:bg-slate-700"
             @click="showAddDistanceField"
             >{{ $t('+ add distance') }}
           </span>

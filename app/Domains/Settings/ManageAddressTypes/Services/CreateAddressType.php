@@ -18,6 +18,7 @@ class CreateAddressType extends BaseService implements ServiceInterface
             'author_id' => 'required|uuid|exists:users,id',
             'name' => 'nullable|string|max:255',
             'name_translation_key' => 'nullable|string|max:255',
+            'type' => 'nullable|string|max:255',
         ];
     }
 
@@ -43,6 +44,7 @@ class CreateAddressType extends BaseService implements ServiceInterface
             'account_id' => $data['account_id'],
             'name' => $this->valueOrNull($data, 'name'),
             'name_translation_key' => $this->valueOrNull($data, 'name_translation_key'),
+            'type' => $this->valueOrNull($data, 'type') ?? 'custom',
         ]);
 
         return $type;

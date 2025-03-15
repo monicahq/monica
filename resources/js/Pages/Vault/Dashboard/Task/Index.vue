@@ -4,21 +4,8 @@
       <div class="mx-auto max-w-3xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <!-- title -->
         <div class="mb-5 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-          <div class="mb-2 sm:mb-0">
-            <span class="relative">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-700 hover:dark:text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-              </svg>
-            </span>
+          <div class="mb-2 sm:mb-0 flex items-center gap-2">
+            <LayoutList class="h-4 w-4 text-gray-600" />
 
             {{ $t('Due and upcoming tasks') }}
           </div>
@@ -39,14 +26,14 @@
             <li
               v-for="currentTask in task.tasks"
               :key="currentTask.id"
-              class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-800 hover:dark:bg-slate-900">
+              class="item-list border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-800 dark:hover:bg-slate-900">
               <div class="flex items-center">
                 <input
                   :id="currentTask.id"
                   v-model="currentTask.completed"
                   :name="currentTask.id"
                   type="checkbox"
-                  class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                  class="focus:ring-3 relative h-4 w-4 rounded-sm border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                   @change="toggle(currentTask)" />
 
                 <label
@@ -100,12 +87,14 @@
 import { Link } from '@inertiajs/vue3';
 import Layout from '@/Shared/Layout.vue';
 import Avatar from '@/Shared/Avatar.vue';
+import { LayoutList } from 'lucide-vue-next';
 
 export default {
   components: {
     InertiaLink: Link,
     Layout,
     Avatar,
+    LayoutList,
   },
 
   props: {

@@ -21,7 +21,8 @@ span {
   --tw-shadow: 2px 2px 0 #191a1b !important;
   border-radius: 0.25rem !important;
   border-width: 1px !important;
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 transparent), var(--tw-ring-shadow, 0 0 transparent), var(--tw-shadow) !important;
+  box-shadow:
+    var(--tw-ring-offset-shadow, 0 0 transparent), var(--tw-ring-shadow, 0 0 transparent), var(--tw-shadow) !important;
   display: inline-block !important;
   position: relative !important;
   text-decoration: none !important;

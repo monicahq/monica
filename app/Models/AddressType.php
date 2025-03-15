@@ -16,16 +16,19 @@ class AddressType extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'account_id',
         'name',
         'name_translation_key',
+        'type',
     ];
 
     /**
      * Get the account associated with the contact information type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Account, $this>
      */
     public function account(): BelongsTo
     {

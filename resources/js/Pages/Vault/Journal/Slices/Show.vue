@@ -130,7 +130,7 @@ const destroy = () => {
             @success="onSuccess"
             @error="onError">
             <div
-              class="mb-6 flex cursor-pointer flex-col items-center rounded-lg border border-gray-200 bg-white p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
+              class="mb-6 flex cursor-pointer flex-col items-center rounded-lg border border-gray-200 bg-white p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-slate-800">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -255,7 +255,7 @@ const destroy = () => {
               <li
                 v-for="post in data.posts"
                 :key="post.id"
-                class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+                class="flex items-center border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
                 <!-- written at -->
                 <div class="me-4 rounded-lg border border-gray-200 p-2 text-center leading-tight">
                   <span class="block text-xs uppercase">{{ post.written_at_day }}</span>

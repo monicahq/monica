@@ -2,10 +2,8 @@
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <BadgeIcon />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <Handshake class="h-4 w-4 text-gray-600" />
 
         <span class="font-semibold"> {{ $t('Groups') }} </span>
       </div>
@@ -86,7 +84,7 @@
       <li
         v-for="group in filteredGroups"
         :key="group.id"
-        class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+        class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
         <div>
           <p class="font-semibold">{{ group.name }}</p>
 
@@ -129,7 +127,7 @@ import TextInput from '@/Shared/Form/TextInput.vue';
 import Dropdown from '@/Shared/Form/Dropdown.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 import Avatar from '@/Shared/Avatar.vue';
-import BadgeIcon from '@/Shared/Icons/BadgeIcon.vue';
+import { Handshake } from 'lucide-vue-next';
 
 export default {
   components: {
@@ -140,7 +138,7 @@ export default {
     Dropdown,
     Errors,
     Avatar,
-    BadgeIcon,
+    Handshake,
   },
 
   props: {

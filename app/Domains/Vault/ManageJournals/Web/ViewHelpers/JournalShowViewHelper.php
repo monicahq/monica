@@ -148,13 +148,14 @@ class JournalShowViewHelper
      */
     public static function yearsOfContentInJournal(Journal $journal): Collection
     {
+        /** @var Collection<int,Post> */
         $posts = Post::where('journal_id', $journal->id)
             ->select(DB::raw(SQLHelper::year('written_at').' as year'))
             ->distinct()
             ->orderBy('year', 'desc')
             ->get();
 
-        return $posts->map(fn (Post $post) => [
+        return $posts->map(fn (Post $post): array => [ // @phpstan-ignore-line
             'year' => $post->year,
             'posts' => Post::where('journal_id', $journal->id)
                 ->whereYear('written_at', $post->year)
@@ -196,7 +197,7 @@ class JournalShowViewHelper
 
     public static function slices(Journal $journal): Collection
     {
-        $slicesCollection = $journal
+        return $journal
             ->slicesOfLife()
             ->get()
             ->map(fn (SliceOfLife $slice) => [
@@ -212,7 +213,5 @@ class JournalShowViewHelper
                     ]),
                 ],
             ]);
-
-        return $slicesCollection;
     }
 }

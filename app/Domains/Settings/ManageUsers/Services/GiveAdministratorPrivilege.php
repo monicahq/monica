@@ -38,6 +38,7 @@ class GiveAdministratorPrivilege extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
+        /** @var User */
         $user = $this->account()->users()
             ->findOrFail($data['user_id']);
 

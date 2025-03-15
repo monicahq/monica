@@ -2,10 +2,8 @@
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <PeopleIcon />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <UsersRound class="h-4 w-4 text-gray-600" />
 
         <span class="font-semibold"> {{ $t('Relationships') }} </span>
       </div>
@@ -27,7 +25,7 @@
           <li
             v-for="relationshipType in relationshipGroupType.relationship_types"
             :key="relationshipType.id"
-            class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+            class="item-list flex items-center justify-between border-b border-gray-200 px-5 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
             <div class="flex">
               <div class="me-2 flex items-center">
                 <avatar :data="relationshipType.contact.avatar" :class="'me-2 h-5 w-5'" />
@@ -76,14 +74,14 @@
 import { Link } from '@inertiajs/vue3';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import Avatar from '@/Shared/Avatar.vue';
-import PeopleIcon from '@/Shared/Icons/PeopleIcon.vue';
+import { UsersRound } from 'lucide-vue-next';
 
 export default {
   components: {
     InertiaLink: Link,
     PrettyLink,
     Avatar,
-    PeopleIcon,
+    UsersRound,
   },
 
   props: {
@@ -122,11 +120,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
 .item-list {
   &:hover:first-child {
     border-top-left-radius: 8px;

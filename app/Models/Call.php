@@ -26,7 +26,7 @@ class Call extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int,string>
+     * @var list<string>
      */
     protected $fillable = [
         'contact_id',
@@ -54,6 +54,8 @@ class Call extends Model
 
     /**
      * Get the contact associated with the call.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
      */
     public function contact(): BelongsTo
     {
@@ -62,6 +64,8 @@ class Call extends Model
 
     /**
      * Get the author associated with the call.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
      */
     public function author(): BelongsTo
     {
@@ -70,6 +74,8 @@ class Call extends Model
 
     /**
      * Get the call reason associated with the call.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\CallReason, $this>
      */
     public function callReason(): BelongsTo
     {
@@ -78,6 +84,8 @@ class Call extends Model
 
     /**
      * Get the emotion associated with the call.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Emotion, $this>
      */
     public function emotion(): BelongsTo
     {

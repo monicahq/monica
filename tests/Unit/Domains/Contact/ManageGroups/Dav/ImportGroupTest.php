@@ -18,7 +18,7 @@ class ImportGroupTest extends TestCase
         PHPUnitAssertions;
 
     /** @test */
-    public function it_imports_names_N()
+    public function it_imports_names_n()
     {
         $importGroup = new ImportGroup;
 
@@ -31,7 +31,7 @@ class ImportGroupTest extends TestCase
     }
 
     /** @test */
-    public function it_imports_names_FN()
+    public function it_imports_names_fn()
     {
         $author = User::factory()->create();
         $importVCard = new ImportVCard;
@@ -48,7 +48,7 @@ class ImportGroupTest extends TestCase
     }
 
     /** @test */
-    public function it_imports_name_FN()
+    public function it_imports_name_fn()
     {
         $author = User::factory()->create();
         $importVCard = new ImportVCard;

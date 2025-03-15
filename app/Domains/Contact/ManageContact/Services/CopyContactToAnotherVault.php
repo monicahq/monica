@@ -79,7 +79,7 @@ class CopyContactToAnotherVault extends BaseService implements ServiceInterface
         $this->newContact = new Contact;
 
         $this->newContact = $this->contact->replicate();
-        $this->newContact->vault_id = $this->newVault->id;
+        $this->newContact->vault_id = (string) $this->newVault->id;
         $this->newContact->save();
     }
 

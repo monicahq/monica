@@ -131,7 +131,7 @@ const destroy = () => {
         <div v-for="role in data.roles" :key="role.id" class="mb-8">
           <p
             v-if="role.contacts.length > 0"
-            class="mb-2 me-2 inline-block rounded bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800 last:me-0">
+            class="mb-2 me-2 inline-block rounded-sm bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800 last:me-0">
             {{ role.label }}
           </p>
 
@@ -139,7 +139,7 @@ const destroy = () => {
             <div
               v-for="contact in role.contacts"
               :key="contact.id"
-              class="rounded-lg border border-gray-200 bg-white p-3 text-center hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
+              class="rounded-lg border border-gray-200 bg-white p-3 text-center hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-slate-800">
               <avatar :data="contact.avatar" :class="'inline-block h-14 w-14 rounded-full'" />
 
               <Link :href="contact.url" class="text-blue-500 hover:underline">{{ contact.name }}</Link>

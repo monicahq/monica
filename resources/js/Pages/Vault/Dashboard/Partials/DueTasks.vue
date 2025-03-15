@@ -1,7 +1,7 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import Avatar from '@/Shared/Avatar.vue';
-
+import { LayoutList } from 'lucide-vue-next';
 defineProps({
   data: Object,
 });
@@ -15,21 +15,8 @@ const toggle = (task) => {
 
 <template>
   <div class="mb-10">
-    <h3 class="mb-3 border-b border-gray-200 pb-1 font-medium dark:border-gray-800">
-      <span class="relative">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-700 hover:dark:text-gray-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-        </svg>
-      </span>
+    <h3 class="mb-3 flex items-center gap-2 border-b border-gray-200 pb-1 font-medium dark:border-gray-800">
+      <LayoutList class="h-4 w-4 text-gray-600" />
 
       {{ $t('Due and upcoming tasks') }}
     </h3>
@@ -40,13 +27,13 @@ const toggle = (task) => {
         <li
           v-for="task in data.tasks"
           :key="task.id"
-          class="item-list flex border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-800 hover:dark:bg-slate-900">
+          class="item-list flex border-b border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-800 dark:hover:bg-slate-900">
           <input
             :id="task.id"
             v-model="task.completed"
             :name="task.id"
             type="checkbox"
-            class="focus:ring-3 relative h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-700 dark:bg-gray-900 dark:ring-offset-gray-800 focus:dark:ring-blue-700"
+            class="focus:ring-3 relative h-4 w-4 rounded-sm border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-700 dark:bg-gray-900 dark:ring-offset-gray-800 dark:focus:ring-blue-700"
             @change="toggle(task)" />
 
           <div>
@@ -106,7 +93,7 @@ const toggle = (task) => {
     <div class="text-center">
       <Link
         :href="data.url.index"
-        class="rounded border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
+        class="rounded-sm border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
         {{ $t('View all') }}
       </Link>
     </div>
@@ -114,11 +101,6 @@ const toggle = (task) => {
 </template>
 
 <style lang="scss" scoped>
-.icon-sidebar {
-  color: #737e8d;
-  top: -2px;
-}
-
 input[type='checkbox'] {
   top: 4px;
 }

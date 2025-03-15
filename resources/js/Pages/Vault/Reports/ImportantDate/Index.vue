@@ -50,7 +50,7 @@ defineProps({
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-700 hover:dark:text-gray-400">
+                class="icon-sidebar relative inline h-4 w-4 text-gray-300 hover:text-gray-600 dark:text-gray-700 dark:hover:text-gray-400">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -73,7 +73,7 @@ defineProps({
             <li
               v-for="date in month.important_dates"
               :key="date.id"
-              class="item-list flex items-center justify-between border-b border-gray-200 p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 hover:dark:bg-slate-800">
+              class="item-list flex items-center justify-between border-b border-gray-200 p-3 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
               <div>
                 <span class="me-3 font-mono text-xs text-gray-600">{{ date.happened_at }}</span>
                 <span>{{ date.label }}</span>

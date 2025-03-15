@@ -13,8 +13,8 @@ import Errors from '@/Shared/Form/Errors.vue';
 import ContactSelector from '@/Shared/Form/ContactSelector.vue';
 import Dropdown from '@/Shared/Form/Dropdown.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
-import DollarIcon from '@/Shared/Icons/DollarIcon.vue';
 import ArrowIcon from '@/Shared/Icons/ArrowIcon.vue';
+import { HandCoins } from 'lucide-vue-next';
 
 const props = defineProps({
   layoutData: Object,
@@ -150,10 +150,8 @@ const toggle = (loan) => {
   <div class="mb-10">
     <!-- title + cta -->
     <div class="mb-3 items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700 sm:flex">
-      <div class="mb-2 sm:mb-0">
-        <span class="relative me-1">
-          <DollarIcon />
-        </span>
+      <div class="mb-2 sm:mb-0 flex items-center gap-2">
+        <HandCoins class="h-4 w-4 text-gray-600" />
 
         <span class="font-semibold"> {{ $t('Loans') }} </span>
       </div>
@@ -263,7 +261,7 @@ const toggle = (loan) => {
               :is-dark="isDark()">
               <template #default="{ inputValue, inputEvents }">
                 <input
-                  class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                  class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
                   :value="inputValue"
                   v-on="inputEvents" />
               </template>
@@ -333,7 +331,7 @@ const toggle = (loan) => {
 
         <div
           v-if="editedLoanId !== loan.id"
-          class="item-list w-full rounded-lg border border-gray-200 bg-white hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 hover:dark:bg-slate-800">
+          class="item-list w-full rounded-lg border border-gray-200 bg-white hover:bg-slate-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-slate-800">
           <div class="border-b border-gray-200 px-3 py-2 dark:border-gray-700">
             <div class="flex items-center justify-between">
               <div>
@@ -479,7 +477,7 @@ const toggle = (loan) => {
                 :is-dark="isDark()">
                 <template #default="{ inputValue, inputEvents }">
                   <input
-                    class="rounded border bg-white px-2 py-1 dark:bg-gray-900"
+                    class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
                     :value="inputValue"
                     v-on="inputEvents" />
                 </template>

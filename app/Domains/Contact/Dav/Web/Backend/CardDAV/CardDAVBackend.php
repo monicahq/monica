@@ -85,7 +85,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
 
     private function getAddressBookDetails(Vault $vault): array
     {
-        $token = $this->getCurrentSyncToken($vault->id);
+        $token = $this->getCurrentSyncToken((string) $vault->id);
 
         $des = [
             'id' => $vault->id,
