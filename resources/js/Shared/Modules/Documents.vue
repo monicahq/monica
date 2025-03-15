@@ -152,7 +152,7 @@ export default {
           .delete(document.url.destroy)
           .then(() => {
             this.flash(this.$t('Are you sure? This will delete the document permanently.'), 'success');
-            var id = this.localDocuments.findIndex((x) => x.id === document.id);
+            const id = this.localDocuments.findIndex((x) => x.id === document.id);
             this.localDocuments.splice(id, 1);
           })
           .catch((error) => {

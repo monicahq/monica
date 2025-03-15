@@ -262,7 +262,7 @@ export default {
           .delete(pronoun.url.destroy)
           .then(() => {
             this.flash(this.$t('The pronoun has been deleted'), 'success');
-            var id = this.localPronouns.findIndex((x) => x.id === pronoun.id);
+            const id = this.localPronouns.findIndex((x) => x.id === pronoun.id);
             this.localPronouns.splice(id, 1);
           })
           .catch((error) => {

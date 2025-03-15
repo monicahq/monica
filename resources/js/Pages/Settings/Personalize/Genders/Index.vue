@@ -262,7 +262,7 @@ export default {
           .delete(gender.url.destroy)
           .then(() => {
             this.flash(this.$t('The gender has been deleted'), 'success');
-            var id = this.localGenders.findIndex((x) => x.id === gender.id);
+            const id = this.localGenders.findIndex((x) => x.id === gender.id);
             this.localGenders.splice(id, 1);
           })
           .catch((error) => {

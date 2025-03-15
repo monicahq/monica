@@ -281,7 +281,7 @@ export default {
           .delete(religion.url.destroy)
           .then(() => {
             this.flash(this.$t('The religion has been deleted'), 'success');
-            var id = this.localReligions.findIndex((x) => x.id === religion.id);
+            const id = this.localReligions.findIndex((x) => x.id === religion.id);
             this.localReligions.splice(id, 1);
           })
           .catch((error) => {

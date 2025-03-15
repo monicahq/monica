@@ -475,7 +475,7 @@ export default {
     },
 
     toggle() {
-      var temp = this.fromRelationship;
+      const temp = this.fromRelationship;
       this.fromRelationship = this.toRelationship;
       this.toRelationship = temp;
 
@@ -487,7 +487,7 @@ export default {
     },
 
     load(target) {
-      var id = this.data.relationship_types.findIndex((x) => x.id === parseInt(target));
+      const id = this.data.relationship_types.findIndex((x) => x.id === parseInt(target));
       this.fromRelationship = this.data.relationship_types[id].name;
       this.toRelationship = this.data.relationship_types[id].name_reverse_relationship;
       this.showRelationshipTypeDetails = true;

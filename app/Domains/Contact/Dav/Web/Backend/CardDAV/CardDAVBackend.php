@@ -305,9 +305,8 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
             )
             ->flatten();
 
-        $result = $contacts->merge($groups);
+        return $contacts->merge($groups);
 
-        return $result;
     }
 
     /**

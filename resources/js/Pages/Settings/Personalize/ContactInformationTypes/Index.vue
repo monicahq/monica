@@ -322,7 +322,7 @@ export default {
           .delete(contactInformationType.url.destroy)
           .then(() => {
             this.flash(this.$t('The contact information type has been deleted'), 'success');
-            var id = this.localContactInformationTypes.findIndex((x) => x.id === contactInformationType.id);
+            const id = this.localContactInformationTypes.findIndex((x) => x.id === contactInformationType.id);
             this.localContactInformationTypes.splice(id, 1);
           })
           .catch((error) => {

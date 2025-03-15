@@ -264,7 +264,7 @@ export default {
           .delete(addressType.url.destroy)
           .then(() => {
             this.flash(this.$t('The address type has been deleted'), 'success');
-            var id = this.localAddressTypes.findIndex((x) => x.id === addressType.id);
+            const id = this.localAddressTypes.findIndex((x) => x.id === addressType.id);
             this.localAddressTypes.splice(id, 1);
           })
           .catch((error) => {

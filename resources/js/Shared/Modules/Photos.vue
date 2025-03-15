@@ -38,7 +38,9 @@
           v-for="photo in localPhotos"
           :key="photo.id"
           class="rounded-md border border-gray-200 p-2 shadow-xs hover:bg-slate-50 hover:shadow-lg dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
-          <InertiaLink :href="photo.url.show"><img :src="photo.url.display" :alt="photo.name" /></InertiaLink>
+          <InertiaLink :href="photo.url.show">
+            <img :src="photo.url.display" />
+          </InertiaLink>
         </div>
       </div>
 
@@ -56,7 +58,7 @@
     <div
       v-if="localPhotos.length === 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-      <img src="/img/contact_blank_photo.svg" :alt="$t('Photos')" class="mx-auto mt-4 h-16 w-16" />
+      <img src="/img/contact_blank_photo.svg" class="mx-auto mt-4 h-16 w-16" />
       <p class="px-5 pb-5 pt-2 text-center">
         {{ $t('There are no photos yet.') }}
       </p>
@@ -144,7 +146,7 @@ export default {
           .delete(photo.url.destroy)
           .then(() => {
             this.flash(this.$t('The photo has been deleted'), 'success');
-            var id = this.localPhotos.findIndex((x) => x.id === photo.id);
+            const id = this.localPhotos.findIndex((x) => x.id === photo.id);
             this.localPhotos.splice(id, 1);
           })
           .catch((error) => {

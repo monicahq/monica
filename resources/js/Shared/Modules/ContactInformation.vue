@@ -251,7 +251,7 @@ export default {
           .delete(info.url.destroy)
           .then(() => {
             this.flash(this.$t('The contact information has been deleted'), 'success');
-            var id = this.localContactInformation.findIndex((x) => x.id === info.id);
+            const id = this.localContactInformation.findIndex((x) => x.id === info.id);
             this.localContactInformation.splice(id, 1);
           })
           .catch((error) => {

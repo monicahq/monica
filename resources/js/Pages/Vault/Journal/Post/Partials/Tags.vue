@@ -191,7 +191,7 @@ export default {
         .then((response) => {
           this.localTagsInVault[this.localTagsInVault.findIndex((x) => x.id === tag.id)] = response.data.data;
 
-          var id = this.localTags.findIndex((x) => x.id === tag.id);
+          const id = this.localTags.findIndex((x) => x.id === tag.id);
           this.localTags.splice(id, 1);
         })
         .catch((error) => {

@@ -119,7 +119,7 @@ const destroyPhoto = () => {
     .delete(photoToDelete.value.url.destroy)
     .then(() => {
       processPhotoDeletion.value = false;
-      var id = localPhotos.value.findIndex((x) => x.id === photoToDelete.value.id);
+      const id = localPhotos.value.findIndex((x) => x.id === photoToDelete.value.id);
       localPhotos.value.splice(id, 1);
       deletePhotoModalShown.value = false;
     })

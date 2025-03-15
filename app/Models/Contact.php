@@ -431,7 +431,7 @@ class Contact extends VCardResource
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: function ($value, $attributes) {
+            get: function ( $attributes) {
                 if (Auth::check()) {
                     return NameHelper::formatContactName(Auth::user(), $this);
                 }
@@ -455,7 +455,7 @@ class Contact extends VCardResource
     protected function age(): Attribute
     {
         return Attribute::make(
-            get: function ($value) {
+            get: function () {
                 $type = ContactImportantDateHelper::getImportantDateType(ContactImportantDate::TYPE_BIRTHDATE, $this->vault_id);
 
                 if (! $type) {
@@ -482,7 +482,7 @@ class Contact extends VCardResource
     protected function avatar(): Attribute
     {
         return Attribute::make(
-            get: function ($value) {
+            get: function () {
                 $type = self::AVATAR_TYPE_SVG;
                 $content = AvatarHelper::generateRandomAvatar($this);
 

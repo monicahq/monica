@@ -114,7 +114,7 @@ const destroy = (lifeEventCategory) => {
     axios
       .delete(lifeEventCategory.url.destroy)
       .then(() => {
-        var id = localLifeEventCategories.value.findIndex((x) => x.id === lifeEventCategory.id);
+        const id = localLifeEventCategories.value.findIndex((x) => x.id === lifeEventCategory.id);
         localLifeEventCategories.value.splice(id, 1);
       })
       .catch((error) => {
@@ -143,7 +143,7 @@ const submitLifeEventType = (lifeEventCategory) => {
   axios
     .post(lifeEventCategory.url.store, form)
     .then((response) => {
-      var id = localLifeEventCategories.value.findIndex((x) => x.id === lifeEventCategory.id);
+      const id = localLifeEventCategories.value.findIndex((x) => x.id === lifeEventCategory.id);
       localLifeEventCategories.value[id].life_event_types.push(response.data.data);
 
       loadingState.value = null;
@@ -162,8 +162,8 @@ const updateLifeEventType = (lifeEventType) => {
   axios
     .put(lifeEventType.url.update, form)
     .then((response) => {
-      var categoryId = localLifeEventCategories.value.findIndex((x) => x.id === lifeEventType.life_event_category_id);
-      var typeId = localLifeEventCategories.value[categoryId].life_event_types.findIndex(
+      const categoryId = localLifeEventCategories.value.findIndex((x) => x.id === lifeEventType.life_event_category_id);
+      const typeId = localLifeEventCategories.value[categoryId].life_event_types.findIndex(
         (x) => x.id === lifeEventType.id,
       );
       localLifeEventCategories.value[categoryId].life_event_types[typeId] = response.data.data;
@@ -183,10 +183,10 @@ const destroyLifeEventType = (lifeEventType) => {
     axios
       .delete(lifeEventType.url.destroy)
       .then(() => {
-        var lifeEventCategoryId = localLifeEventCategories.value.findIndex(
+        const lifeEventCategoryId = localLifeEventCategories.value.findIndex(
           (x) => x.id === lifeEventType.life_event_category_id,
         );
-        var lifeEventTypeId = localLifeEventCategories.value[lifeEventCategoryId].life_event_types.findIndex(
+        const lifeEventTypeId = localLifeEventCategories.value[lifeEventCategoryId].life_event_types.findIndex(
           (x) => x.id === lifeEventType.id,
         );
         localLifeEventCategories.value[lifeEventCategoryId].life_event_types.splice(lifeEventTypeId, 1);

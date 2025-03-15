@@ -212,7 +212,7 @@ export default {
           .delete(type.url.destroy)
           .then(() => {
             this.flash(this.$t('The type has been deleted'), 'success');
-            var id = this.localTypes.findIndex((x) => x.id === type.id);
+            const id = this.localTypes.findIndex((x) => x.id === type.id);
             this.localTypes.splice(id, 1);
           })
           .catch((error) => {

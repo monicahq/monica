@@ -53,7 +53,7 @@ const destroy = (timelineEvent) => {
     axios
       .delete(timelineEvent.url.destroy)
       .then(() => {
-        var id = localTimelines.value.findIndex((x) => x.id === timelineEvent.id);
+        const id = localTimelines.value.findIndex((x) => x.id === timelineEvent.id);
         localTimelines.value.splice(id, 1);
       })
       .catch(() => {});
@@ -65,8 +65,8 @@ const destroyLifeEvent = (timelineEvent, lifeEvent) => {
     axios
       .delete(lifeEvent.url.destroy)
       .then(() => {
-        var id = localTimelines.value.findIndex((x) => x.id === timelineEvent.id);
-        var lifeEventId = localTimelines.value[id].life_events.findIndex((x) => x.id === lifeEvent.id);
+        const id = localTimelines.value.findIndex((x) => x.id === timelineEvent.id);
+        const lifeEventId = localTimelines.value[id].life_events.findIndex((x) => x.id === lifeEvent.id);
         localTimelines.value[id].life_events.splice(lifeEventId, 1);
       })
       .catch(() => {});
@@ -84,7 +84,7 @@ const refreshTimelineEvents = (timelineEvent) => {
 };
 
 const refreshLifeEvents = (lifeEvent) => {
-  var id = localTimelines.value.findIndex((x) => x.id === lifeEvent.timeline_event.id);
+  const id = localTimelines.value.findIndex((x) => x.id === lifeEvent.timeline_event.id);
   localTimelines.value[id].life_events.unshift(lifeEvent);
 };
 
