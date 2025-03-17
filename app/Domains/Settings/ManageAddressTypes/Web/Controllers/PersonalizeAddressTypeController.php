@@ -28,6 +28,7 @@ class PersonalizeAddressTypeController extends Controller
             'account_id' => Auth::user()->account_id,
             'author_id' => Auth::id(),
             'name' => $request->input('name'),
+            'type' => $request->input('type'),
         ];
 
         $addressType = (new CreateAddressType)->execute($data);

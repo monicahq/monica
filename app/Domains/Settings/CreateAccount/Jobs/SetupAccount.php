@@ -872,17 +872,34 @@ class SetupAccount extends QueuableService implements ServiceInterface
     private function addAddressTypes(): void
     {
         $addresses = collect([
-            trans_key('🏡 Home'),
-            trans_key('🏠 Secondary residence'),
-            trans_key('🏢 Work'),
-            trans_key('🌳 Chalet'),
+            [
+                'type' => 'home',
+                'label' => trans_key('🏡 Home'),
+            ],
+            [
+                'type' => 'secondary',
+                'label' => trans_key('🏠 Secondary residence'),
+            ],
+            [
+                'type' => 'work',
+                'label' => trans_key('🏢 Work'),
+            ],
+            [
+                'type' => 'chalet',
+                'label' => trans_key('🌳 Chalet'),
+            ],
+            [
+                'type' => 'other',
+                'label' => trans_key('❔ Other'),
+            ],
         ]);
 
         foreach ($addresses as $address) {
             (new CreateAddressType)->execute([
                 'account_id' => $this->author->account_id,
                 'author_id' => $this->author->id,
-                'name_translation_key' => $address,
+                'name_translation_key' => $address['label'],
+                'type' => $address['type'],
             ]);
         }
     }
