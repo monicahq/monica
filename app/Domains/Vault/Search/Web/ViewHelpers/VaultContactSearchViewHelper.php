@@ -13,6 +13,8 @@ class VaultContactSearchViewHelper
         /** @var Collection<int, Contact> */
         $contacts = Contact::search($term)
             ->where('vault_id', $vault->id)
+            ->orderBy('first_name')
+            ->orderBy('last_name')
             ->take(5)
             ->get();
 
