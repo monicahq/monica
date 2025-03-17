@@ -7,5 +7,4 @@ return [
     App\Providers\FortifyServiceProvider::class,
     App\Providers\JetstreamServiceProvider::class,
     App\Providers\TelescopeServiceProvider::class,
-    \SocialiteProviders\Manager\ServiceProvider::class,
 ];
