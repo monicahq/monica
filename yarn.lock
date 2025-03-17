@@ -3971,17 +3971,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:4.0.14":
+"tailwindcss@npm:4.0.14, tailwindcss@npm:^4.0.11":
   version: 4.0.14
   resolution: "tailwindcss@npm:4.0.14"
   checksum: 10c0/6c04d1f68dc8382e974bb8704c4140dbff12cf1623e826b37a35726629402448c311ae6f5d70a3b490526ac427068430d5ddec48368f49e01799c4aa9c4159f9
-  languageName: node
-  linkType: hard
-
-"tailwindcss@npm:^4.0.11":
-  version: 4.0.11
-  resolution: "tailwindcss@npm:4.0.11"
-  checksum: 10c0/0da21789fc00f99b35be7f679575fc08f26488b764ced4134e8bc9c560f856a2875e2ef7c8737f7149b6d98f5a98399d7b2caa8ebc49f1b6a4d044841c65c970
   languageName: node
   linkType: hard
 
