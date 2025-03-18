@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -144,14 +143,74 @@ class Post extends Model
     }
 
     /**
-     * Get the post's body excerpt.
+     * Get the post's body excerpt limited to 200 characters.
+     * Considers mentions to be 20 character strings and will not stop inside a mention token
      *
      * @return Attribute<string,never>
      */
     protected function excerpt(): Attribute
     {
         return Attribute::make(
-            get: fn () => Str::limit(optional($this->postSections()->whereNotNull('content')->first())->content, 200)
+            get: function () {
+                $content = optional($this->postSections()->whereNotNull('content')->first())->content;
+
+                if (! $content) {
+                    return '';
+                }
+
+                $maxLength = 200; // Target character limit
+                $actualLength = 0; // Tracks the actual length considering tokens
+                $safeCutoff = strlen($content); // The last safe position to cut
+                $adjustedContent = ''; // Stores the truncated content
+
+                // Match all mention tokens
+                preg_match_all('/\{\{\{CONTACT-ID:[a-f0-9\-]+\|[^}]+\}\}\}/', $content, $matches, PREG_OFFSET_CAPTURE);
+                $tokenPositions = $matches[0]; // List of tokens and their positions
+
+                // Iterate through the content while respecting the maxLength
+                $index = 0;
+                while ($actualLength < $maxLength && $index < strlen($content)) {
+                    $isToken = false;
+
+                    // Check if current position is the start of a token
+                    foreach ($tokenPositions as $match) {
+                        $tokenText = $match[0];
+                        $tokenStart = $match[1];
+                        $tokenEnd = $tokenStart + strlen($tokenText);
+
+                        if ($index === $tokenStart) {
+                            // If adding this token exceeds max length, stop
+                            if ($actualLength + 20 > $maxLength) {
+                                break 2;
+                            }
+
+                            // Append the full token and count it as 20 characters
+                            $adjustedContent .= $tokenText;
+                            $actualLength += 20;
+                            $index = $tokenEnd; // Skip past the entire token
+                            $isToken = true;
+                            break;
+                        }
+                    }
+
+                    // If it's not a token, process character-by-character
+                    if (! $isToken) {
+                        $adjustedContent .= $content[$index];
+                        $actualLength++;
+                        $index++;
+                    }
+
+                    // Always track the last safe position before a token
+                    if (! $isToken) {
+                        $safeCutoff = $index;
+                    }
+                }
+
+                // Ensure we cut off safely before a token
+                $adjustedContent = substr($adjustedContent, 0, $safeCutoff);
+
+                return rtrim($adjustedContent).'...'; // Append ellipsis
+            }
         );
     }
 }
