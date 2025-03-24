@@ -204,7 +204,7 @@
                       name="name-order"
                       type="radio"
                       class="h-4 w-4 border-gray-300 text-sky-500 dark:border-gray-700"
-                      @click="displayContactSelector" />
+                      @input="displayContactSelector" />
                     <label
                       for="contact"
                       class="ms-3 block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
