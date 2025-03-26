@@ -1,6 +1,6 @@
 <script setup>
 import { Link, useForm } from '@inertiajs/vue3';
-import { watch, ref } from 'vue';
+import { watch, ref, defineProps, computed } from 'vue';
 import { debounce } from 'lodash';
 import { trans } from 'laravel-vue-i18n';
 import { DatePicker } from 'v-calendar';
@@ -23,6 +23,8 @@ const props = defineProps({
   data: Object,
 });
 
+const namePattern = "[-A-Za-z.'’]+(?:\\s+[-A-Za-z.'’]+)*[-A-Za-z.'’]*";
+
 const form = useForm({
   title: props.data.title,
   contacts: props.data.contacts,
@@ -30,7 +32,20 @@ const form = useForm({
   sections: props.data.sections.map((section) => ({
     id: section.id,
     label: section.label,
-    content: section.content,
+    content: (section.content || '').replace(
+      // not defined when dealing with a new post
+      /\{\{\{CONTACT-ID:([a-f0-9-]+)\|(.*?)\}\}\}/g,
+      (match, contactId, fallbackName) => {
+        let contact = props.data.contacts.find((c) => c.id === contactId);
+
+        if (contact) {
+          return `@"${contact.name.trim()}"`;
+        }
+
+        // If contact is missing, use fallback name
+        return `@${fallbackName} (contact no longer linked to post)`;
+      },
+    ),
   })),
   uuid: null,
   name: null,
@@ -40,6 +55,27 @@ const form = useForm({
   size: null,
 });
 
+const hasInvalidMentions = ref(false); // Track if there are invalid mentions
+const mentionErrorMessage = ref(''); // Error message for invalid mentions
+
+const tributeOptions = computed(() => ({
+  trigger: '@',
+  values: form.contacts.map((contact) => ({
+    key: contact.name,
+    value: contact.name,
+    id: contact.id,
+    original: contact,
+  })),
+  selectTemplate: function (item) {
+    const name = item.original.key.trim();
+    const nameRegex = new RegExp(`^${namePattern}$`);
+    if (nameRegex.test(name)) {
+      return `@"${name}"`;
+    } else {
+      return ''; // Prevent insertion of unsupported names (i.e. usual characters that don't fit the expected pattern)
+    }
+  },
+}));
 const saveInProgress = ref(false);
 const statistics = ref(props.data.statistics);
 const deletePhotoModalShown = ref(false);
@@ -131,8 +167,59 @@ const destroyPhoto = () => {
 const update = () => {
   saveInProgress.value = true;
 
+  // Clone form to avoid modifying the UI content
+  let processedForm = JSON.parse(JSON.stringify(form));
+
+  let invalidMentionsFound = false;
+  let invalidMentionText = '';
+
+  processedForm.sections.forEach((section) => {
+    if (section.content) {
+      const mentionPattern = new RegExp(`@"(${namePattern})"`, 'g');
+
+      section.content = section.content.replace(mentionPattern, (match, name) => {
+        name = name.trim(); // Trim spaces from the mention name
+        console.log('Matched Name:', name);
+
+        let contact = processedForm.contacts.find((c) => c.name.trim() === name); // Trim contact names before matching
+
+        if (contact) {
+          // Check if there are duplicate contacts with the same name and different IDs
+          const duplicateContacts = processedForm.contacts.filter((c) => c.name.trim() === name && c.id !== contact.id);
+
+          if (duplicateContacts.length > 0) {
+            // If there are duplicate contacts with the same name and different IDs, mark as invalid
+            invalidMentionsFound = true;
+            invalidMentionText =
+              trans('Cannot mention a contact when there are 2 identically named contacts linked') + `: @${name}`;
+            return '';
+          }
+
+          return `{{{CONTACT-ID:${contact.id}|${name}}}}`;
+        }
+
+        // If no contact is found, mark as invalid
+        invalidMentionsFound = true;
+        invalidMentionText = trans('Invalid mention') + `: @${name}`;
+
+        return '';
+      });
+    }
+  });
+
+  if (!invalidMentionsFound) {
+    hasInvalidMentions.value = false;
+    mentionErrorMessage.value = '';
+  } else {
+    // If invalid mentions were found, set the error state and stop the upload
+    hasInvalidMentions.value = true;
+    mentionErrorMessage.value = invalidMentionText;
+    saveInProgress.value = false;
+    return; // Prevent the form from being uploaded
+  }
+
   axios
-    .put(props.data.url.update, form)
+    .put(props.data.url.update, processedForm)
     .then((response) => {
       setTimeout(() => (saveInProgress.value = false), 350);
       statistics.value = response.data.data;
@@ -326,7 +413,15 @@ const destroy = () => {
                     :required="true"
                     :maxlength="65535"
                     :markdown="true"
-                    :textarea-class="'block w-full'" />
+                    :tribute-options="tributeOptions"
+                    :textarea-class="{
+                      'block w-full': true,
+                      'border-red-500': hasInvalidMentions, // Add the red border if invalid mentions
+                    }" />
+                </div>
+                <!-- Show error message if invalid mentions exist -->
+                <div v-if="hasInvalidMentions" class="text-red-500 text-sm mt-2">
+                  {{ mentionErrorMessage }}
                 </div>
               </div>
             </div>
@@ -343,7 +438,8 @@ const destroy = () => {
 
             <!-- auto save -->
             <div class="mb-6 text-sm">
-              <div v-if="!saveInProgress" class="flex items-center justify-center">
+              <!-- Show the auto-saved message unless there's an error with mentions -->
+              <div v-if="!hasInvalidMentions && !saveInProgress" class="flex items-center justify-center">
                 <svg
                   class="me-2 h-4 w-4 text-green-700"
                   xmlns="http://www.w3.org/2000/svg"
@@ -369,6 +465,10 @@ const destroy = () => {
 
                 <span>{{ $t('Saving in progress') }}</span>
               </div>
+            </div>
+
+            <div v-if="hasInvalidMentions" class="text-red-500 text-sm mt-2 flex items-center justify-center">
+              <span>{{ $t('Not saving until errors are fixed') }}</span>
             </div>
 
             <!-- written at -->
