@@ -93,20 +93,30 @@
                  :disabled="hasReachedAccountStorageLimit"
                  @change="uploadImg($event)"
           />
+          <label class="mt-2">Upload from Url</label>
+          <input
+            type="text"
+            class="form-control-file"
+            :disabled="hasReachedAccountStorageLimit"
+            @change="uploadImgFromUrl($event)"
+          />
           <small class="form-text text-muted">
-            {{ $t('people.information_edit_max_size2', { size: maxUploadSize }) }}
+            {{
+              $t('people.information_edit_max_size2', { size: maxUploadSize })
+            }}
           </small>
-          <img v-if="croppedImgUrl" class="mb4 pa2 ba b--gray-monica br3" style="width: 150px" :src="croppedImgUrl" alt="" />
+          <img v-if="croppedImgUrl" class="mb4 pa2 ba b--gray-monica br3" style="width: 150px" :src="croppedImgUrl" alt=""
+          />
         </div>
       </form-radio>
     </div>
     <sweet-modal ref="cropModal" :title="$t('people.avatar_crop_new_avatar_photo')" :blocking="true" :hide-close-button="true">
-      <clipper-basic ref="clipper" :src="uploadedImgUrl" :ratio="1" :init-width="100" :init-height="100" />
+      <clipper-basic ref="clipper" :src="uploadedImgUrl" :ratio="1" :init-width="100" :init-height="100"/>
       <div slot="button">
-        <a class="btn" href="" @click.prevent="cancelCrop">
+        <a class="btn" href='' @click.prevent="cancelCrop">
           {{ $t('app.cancel') }}
         </a>
-        <a class="btn btn-primary" href="" @click.prevent="setCroppedImg">
+        <a class="btn btn-primary" href='' @click.prevent="setCroppedImg">
           {{ $t('app.done') }}
         </a>
       </div>
@@ -119,10 +129,9 @@ import { clipperBasic } from 'vuejs-clipper';
 import { SweetModal } from 'sweet-modal-vue';
 
 export default {
-
   components: {
     clipperBasic,
-    SweetModal
+    SweetModal,
   },
   props: {
     avatar: {
@@ -167,13 +176,13 @@ export default {
   computed: {
     dirltr() {
       return this.$root.htmldir === 'ltr';
-    }
+    },
   },
 
   watch: {
     avatar(val) {
       this.selectedAvatar = val;
-    }
+    },
   },
 
   mounted() {
@@ -182,9 +191,9 @@ export default {
   },
 
   methods: {
-    uploadImg: function(e) {
+    uploadImg: function (e) {
       if (e.target.files.length !== 0) {
-        if(this.uploadedImgUrl) {
+        if (this.uploadedImgUrl) {
           URL.revokeObjectURL(this.uploadedImgUrl);
         }
         this.uploadedImgUrl = window.URL.createObjectURL(e.target.files[0]);
@@ -192,18 +201,52 @@ export default {
       }
     },
 
+    uploadImgFromUrl: function(e) {
+      const imageUrl = e.target.value;
+      if (!imageUrl) {
+        return;
+      }
+      fetch(imageUrl)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.blob();
+        })
+        .then((blob) => {
+          if (this.uploadedImgUrl) {
+            URL.revokeObjectURL(this.uploadedImgUrl);
+          }
+          this.uploadedImgUrl = URL.createObjectURL(blob);
+          this.$refs.cropModal.open();
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+    },
+    generateRandom: function() {
+      return Math.random().toString(36).substring(2, 15) + Math.random().toString(23).substring(2, 5);
+    },
     setCroppedImg: function () {
       const canvas = this.$refs.clipper.clip();
 
-      canvas.toBlob((blob) => {
-        const input = this.$refs.uploadedImg;
-        const file = new File([blob], input.files[0].name, { type: 'image/jpeg' });
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-        input.files = dataTransfer.files;
+      canvas.toBlob(
+        (blob) => {
+          const input = this.$refs.uploadedImg;
+          const file = new File(
+            [blob],
+            input.files[0]?.name ?? this.generateRandom(),
+            { type: "image/jpeg" }
+          );
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(file);
+          input.files = dataTransfer.files;
 
-        this.croppedImgUrl = window.URL.createObjectURL(blob);
-      }, 'image/jpeg', 1);
+          this.croppedImgUrl = window.URL.createObjectURL(blob);
+        },
+        "image/jpeg",
+        1
+      );
 
       this.$refs.cropModal.close();
     },
