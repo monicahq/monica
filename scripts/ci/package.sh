@@ -84,7 +84,9 @@ echo "package=$package.tar.bz2" >> $GITHUB_OUTPUT
 # ASSETS
 assets=monica-assets-$version
 mkdir -p $assets/public
+mkdir -p $assets/bootstrap
 ln -s $ROOT/public/build $assets/public/
+ln -s $ROOT/bootstrap/ssr $assets/bootstrap/
 
 tar chfj $assets.tar.bz2 --exclude .gitignore --exclude .gitkeep $assets
 sha512sum "$assets.tar.bz2" > "$assets.tar.bz2.sha512"
