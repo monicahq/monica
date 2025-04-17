@@ -22,6 +22,7 @@
     "@tailwindcss/vite": "^4.0.11",
     "@vitejs/plugin-basic-ssl": "^1.2.0",
     "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/server-renderer": "^3.5.13",
     "ant-design-vue": "^4.2.6",
     "axios": "^1.8.1",
     "charts.css": "^1.1.0",

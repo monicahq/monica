@@ -1191,7 +1191,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/server-renderer@npm:3.5.13":
+"@vue/server-renderer@npm:3.5.13, @vue/server-renderer@npm:^3.5.13":
   version: 3.5.13
   resolution: "@vue/server-renderer@npm:3.5.13"
   dependencies:
@@ -3650,6 +3650,7 @@ __metadata:
     "@tailwindcss/vite": "npm:^4.0.11"
     "@vitejs/plugin-basic-ssl": "npm:^1.2.0"
     "@vitejs/plugin-vue": "npm:^5.2.1"
+    "@vue/server-renderer": "npm:^3.5.13"
     ant-design-vue: "npm:^4.2.6"
     axios: "npm:^1.8.1"
     charts.css: "npm:^1.1.0"
