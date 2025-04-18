@@ -139,7 +139,7 @@ const policy = () => {
           {{ $t('Already registered?') }}
         </Link>
 
-        <primary-button :text="$t('Register')" :state="loadingState" :class="'save'" />
+        <primary-button :text="$t('Register')" :class="'save'" />
       </div>
     </form>
   </JetGuestLayout>

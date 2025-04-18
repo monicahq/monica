@@ -4,7 +4,9 @@ import { renderToString } from '@vue/server-renderer';
 import createServer from '@inertiajs/vue3/server';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from 'ziggy-js';
+import { i18nVue } from 'laravel-vue-i18n';
 import { sentry } from './sentry';
+import methods from './methods';
 
 createServer((page) =>
   createInertiaApp({
@@ -30,7 +32,7 @@ createServer((page) =>
           resolve: (lang) => resolvePageComponent(`../../lang/${lang}.json`, import.meta.glob('../../lang/*.json')),
         })
         .use(sentry, page.props.sentry)
-        .mixin({ methods: { route: window.route, ...methods } });
+        .mixin(methods);
     },
   }),
 );

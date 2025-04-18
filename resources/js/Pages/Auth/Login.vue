@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, computed } from 'vue';
 import { Link, router, useForm } from '@inertiajs/vue3';
-import { size } from 'lodash';
+import size from 'lodash/size';
 import JetCheckbox from '@/Components/Checkbox.vue';
 import JetValidationErrors from '@/Components/ValidationErrors.vue';
 import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
@@ -165,7 +165,7 @@ const reload = () => {
                 {{ $t('Forgot your password?') }}
               </Link>
 
-              <primary-button :text="$t('Log in')" :state="loadingState" :class="'save ms-4'" />
+              <primary-button :text="$t('Log in')" :class="'save ms-4'" />
             </div>
 
             <div class="mt-3 block">
