@@ -30,6 +30,7 @@
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.2",
     "eslint-plugin-vue": "^9.33.0",
+    "globals": "^16.0.0",
     "husky": "^9.1.7",
     "laravel-vite-plugin": "^1.2.0",
     "laravel-vue-i18n": "^2.7.8",

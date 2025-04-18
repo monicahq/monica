@@ -2829,6 +2829,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"globals@npm:^16.0.0":
+  version: 16.0.0
+  resolution: "globals@npm:16.0.0"
+  checksum: 10c0/8906d5f01838df64a81d6c2a7b7214312e2216cf65c5ed1546dc9a7d0febddf55ffa906cf04efd5b01eec2534d6f14859a89535d1a68241832810e41ef3fd5bb
+  languageName: node
+  linkType: hard
+
 "good-listener@npm:^1.2.2":
   version: 1.2.2
   resolution: "good-listener@npm:1.2.2"
@@ -4255,6 +4262,7 @@ __metadata:
     eslint: "npm:^9.21.0"
     eslint-config-prettier: "npm:^10.0.2"
     eslint-plugin-vue: "npm:^9.33.0"
+    globals: "npm:^16.0.0"
     husky: "npm:^9.1.7"
     laravel-vite-plugin: "npm:^1.2.0"
     laravel-vue-i18n: "npm:^2.7.8"
