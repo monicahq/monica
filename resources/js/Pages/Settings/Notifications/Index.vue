@@ -104,7 +104,6 @@ export default {
 
   data() {
     return {
-      loadingState: '',
       localEmails: [],
       testEmailSentId: 0,
       form: {

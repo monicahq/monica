@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { size } from 'lodash';
+import size from 'lodash/size';
 import Layout from '@/Shared/Layout.vue';
 import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm.vue';
 import LogoutOtherBrowserSessionsForm from '@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue';
