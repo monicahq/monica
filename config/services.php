@@ -79,6 +79,12 @@ return [
         'sp_acs' => env('SAML2_REDIRECT_URI', '/auth/saml2/callback'),
         'logo' => env('SAML2_LOGO', '/img/auth/saml2.svg'),
     ],
+    'kanidm' => [
+        'client_id' => env('KANIDM_CLIENT_ID'),
+        'client_secret' => env('KANIDM_CLIENT_SECRET'),
+        'redirect' => env('KANIDM_REDIRECT_URI'),
+        'base_url' => env('KANIDM_BASE_URL'),
+    ],
     'keycloak' => [
         'client_id' => env('KEYCLOAK_CLIENT_ID'),
         'client_secret' => env('KEYCLOAK_CLIENT_SECRET'),
