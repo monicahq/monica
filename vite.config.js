@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 import i18n from 'laravel-vue-i18n/vite';
 import tailwindcss from '@tailwindcss/vite';
+import { sentryVitePlugin } from '@sentry/vite-plugin';
 
 export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
@@ -13,6 +14,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       laravel({
         input: 'resources/js/app.js',
+        ssr: 'resources/js/ssr.js',
         refresh: true,
       }),
       vue({
@@ -26,6 +28,11 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
       i18n(),
       basicSsl(),
+      sentryVitePlugin({
+        disable: !env.SENTRY_ORG || !env.SENTRY_PROJECT,
+        org: env.SENTRY_ORG,
+        project: env.SENTRY_PROJECT,
+      }),
     ],
     server: {
       https: true,

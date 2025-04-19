@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'app_version' => readVersion(__DIR__.'/.version', 'git describe --abbrev=0 --tags', '0.0.0'),
+    'app_version' => env('APP_VERSION', readVersion(__DIR__.'/.version', 'git describe --abbrev=0 --tags', '0.0.0')),
 
     /*
     |--------------------------------------------------------------------------
@@ -32,7 +32,7 @@ return [
     |
     */
 
-    'commit' => readVersion(__DIR__.'/.commit', 'git log --pretty="%H" -n1 HEAD'),
+    'commit' => env('APP_COMMIT', readVersion(__DIR__.'/.commit', 'git log --pretty="%H" -n1 HEAD')),
 
     /*
     |--------------------------------------------------------------------------

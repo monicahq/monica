@@ -79,5 +79,12 @@ return [
         'sp_acs' => env('SAML2_REDIRECT_URI', '/auth/saml2/callback'),
         'logo' => env('SAML2_LOGO', '/img/auth/saml2.svg'),
     ],
+    'keycloak' => [
+        'client_id' => env('KEYCLOAK_CLIENT_ID'),
+        'client_secret' => env('KEYCLOAK_CLIENT_SECRET'),
+        'redirect' => env('KEYCLOAK_REDIRECT_URI', '/auth/keycloak/callback'),
+        'base_url' => env('KEYCLOAK_BASE_URL'),
+        'realms' => env('KEYCLOAK_REALM'),
+    ],
 
 ];

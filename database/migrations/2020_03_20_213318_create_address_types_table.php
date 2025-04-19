@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Account::class)->constrained()->cascadeOnDelete();
             $table->string('name')->nullable();
+            $table->string('type')->nullable();
             $table->string('name_translation_key')->nullable();
             $table->timestamps();
         });

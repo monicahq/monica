@@ -1,6 +1,6 @@
 {
   "name": "PHP & SQLite",
-  "image": "ghcr.io/asbiin/devcontainers/php:8.3",
+  "image": "ghcr.io/asbiin/devcontainers/php:8.4",
 
   // For use with PHP or Apache (e.g.php -S localhost:8080 or apache2ctl start)
   "forwardPorts": [8080],
