@@ -15,7 +15,7 @@ class SignupHelper
 
     protected function isDisabledByConfig(): bool
     {
-        return (bool) config('monica.disable_signup');
+        return config('monica.disable_signup');
     }
 
     protected function hasAtLeastOneAccount(): bool

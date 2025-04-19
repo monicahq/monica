@@ -1,15 +1,14 @@
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { Link, router, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods.js';
-import { onMounted } from 'vue';
 import JetDialogModal from '@/Components/Jetstream/DialogModal.vue';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 import JetButton from '@/Components/Button.vue';
 import JetDangerButton from '@/Components/Jetstream/DangerButton.vue';
 import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
-import Layout from '@/Shared/Layout.vue';
+import Layout from '@/Layouts/Layout.vue';
 import ContactName from '@/Shared/Modules/ContactName.vue';
 import ContactAvatar from '@/Shared/Modules/ContactAvatar.vue';
 import GenderPronoun from '@/Shared/Modules/GenderPronoun.vue';
@@ -169,7 +168,7 @@ const navigateToSelected = () => {
 </script>
 
 <template>
-  <Layout :layout-data="layoutData" :inside-vault="true">
+  <Layout :title="data.contact_name.name" :layout-data="layoutData" :inside-vault="true">
     <!-- breadcrumb -->
     <nav class="bg-white dark:bg-gray-900 sm:mt-20 sm:border-b sm:border-gray-300 dark:border-gray-700">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">

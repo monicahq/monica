@@ -1,7 +1,7 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import ApiTokenManager from '@/Pages/API/Partials/ApiTokenManager.vue';
-import Layout from '@/Shared/Layout.vue';
+import Layout from '@/Layouts/Layout.vue';
 
 defineProps({
   layoutData: Object,

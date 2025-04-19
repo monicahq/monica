@@ -21,7 +21,7 @@ return [
     | Disables registration of new users
     |
     */
-    'disable_signup' => env('APP_DISABLE_SIGNUP', false),
+    'disable_signup' => (bool) env('APP_DISABLE_SIGNUP', false),
 
     /*
     |--------------------------------------------------------------------------
