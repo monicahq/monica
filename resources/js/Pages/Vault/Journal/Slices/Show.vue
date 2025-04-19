@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
-import Layout from '@/Shared/Layout.vue';
+import Layout from '@/Layouts/Layout.vue';
 import ContactCard from '@/Shared/ContactCard.vue';
 import Uploadcare from '@/Components/Uploadcare.vue';
 

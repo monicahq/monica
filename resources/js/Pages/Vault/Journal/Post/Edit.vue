@@ -5,7 +5,7 @@ import { debounce } from 'lodash';
 import { trans } from 'laravel-vue-i18n';
 import { DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
-import Layout from '@/Shared/Layout.vue';
+import Layout from '@/Layouts/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';

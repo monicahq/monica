@@ -55,7 +55,7 @@
 
 <script>
 import { Link } from '@inertiajs/vue3';
-import Layout from '@/Shared/Layout.vue';
+import Layout from '@/Layouts/Layout.vue';
 import NameOrder from '@/Pages/Settings/Preferences/Partials/NameOrder.vue';
 import DateFormat from '@/Pages/Settings/Preferences/Partials/DateFormat.vue';
 import NumberFormat from '@/Pages/Settings/Preferences/Partials/NumberFormat.vue';
