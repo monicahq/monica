@@ -98,7 +98,7 @@ const reload = () => {
       class="mt-6 mb-12 flex w-full flex-col overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:max-w-4xl sm:rounded-lg md:flex-row">
       <img :src="wallpaperUrl" class="w-full sm:invisible sm:w-10/12 md:visible" :alt="$t('Wallpaper')" />
       <div class="w-full">
-        <div :class="{'border-b': isSignupEnabled}" class="border-gray-200 px-6 pb-6 pt-8 dark:border-gray-700">
+        <div :class="{ 'border-b': isSignupEnabled }" class="border-gray-200 px-6 pb-6 pt-8 dark:border-gray-700">
           <h1 class="mb-4 text-center text-xl text-gray-800 dark:text-gray-200">
             <span class="me-2"> 👋 </span>
             {{ $t('Sign in to your account') }}
