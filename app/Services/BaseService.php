@@ -113,7 +113,7 @@ abstract class BaseService
         }
 
         if (($e = $permissions->diff(collect(self::$permissionDependencies)->keys()))->isNotEmpty()) {
-            throw new \UnknownPermissionException('Unknown permission: '.$e->first());
+            throw new UnknownPermissionException('Unknown permission: '.$e->first());
         }
 
         return true;
