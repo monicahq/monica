@@ -50,7 +50,6 @@ class SetupApplication extends Command
             }
             if ($this->option('deploy') === true || ($this->option('build') === false && $this->option('deploy') === false)) {
                 $this->migrate();
-                $this->queue();
                 $this->scout();
             }
         }
@@ -114,14 +113,6 @@ class SetupApplication extends Command
     protected function migrate(): void
     {
         $this->artisan('✓ Performing migrations', 'migrate', ['--force' => true]);
-    }
-
-    /**
-     * Restart queue.
-     */
-    protected function queue(): void
-    {
-        $this->artisan('✓ Restarting queues', 'queue:restart');
     }
 
     /**
