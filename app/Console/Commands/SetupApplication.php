@@ -24,7 +24,9 @@ class SetupApplication extends Command
     protected $signature = 'monica:setup
                             {--force : Force the operation to run when in production.}
                             {--skip-storage-link : Skip storage link create.}
-                            {--skip-docs : Skip api docs generation.}';
+                            {--skip-docs : Skip api docs generation.}
+                            {--build : Run only build commands.}
+                            {--deploy : Run only deploy commands.}';
 
     /**
      * The console command description.
@@ -39,15 +41,17 @@ class SetupApplication extends Command
     public function handle(): void
     {
         if ($this->confirmToProceed()) {
-            $this->resetCache();
-            $this->clearConfig();
-            $this->symlink();
-            $this->migrate();
-            if ($this->option('skip-docs') !== true) {
+            if ($this->option('build') === true || ($this->option('build') === false && $this->option('deploy') === false)) {
+                $this->symlink();
+                $this->resetCache();
+                $this->clearConfig();
                 $this->documentation();
+                $this->cacheConfig();
             }
-            $this->cacheConfig();
-            $this->scout();
+            if ($this->option('deploy') === true || ($this->option('build') === false && $this->option('deploy') === false)) {
+                $this->migrate();
+                $this->scout();
+            }
         }
     }
 
@@ -69,7 +73,7 @@ class SetupApplication extends Command
         if ($this->getLaravel()->environment() == 'production') {
             $this->artisan('✓ Clear config cache', 'config:clear');
             $this->artisan('✓ Resetting route cache', 'route:cache');
-            $this->artisan('✓ Resetting view cache', 'view:clear');
+            $this->artisan('✓ Resetting view cache', 'view:cache');
             $this->artisan('✓ Resetting event cache', 'event:cache');
         } else {
             $this->artisan('✓ Clear config cache', 'config:clear');
@@ -124,7 +128,9 @@ class SetupApplication extends Command
      */
     protected function documentation(): void
     {
-        $this->artisan('✓ Generate api documentation', 'scribe:setup', ['--clean' => true, '--force' => true]);
+        if ($this->option('skip-docs') !== true) {
+            $this->artisan('✓ Generate api documentation', 'scribe:setup', ['--clean' => true, '--force' => true]);
+        }
     }
 
     private function artisan(string $message, string $command, array $options = [])
