@@ -3,6 +3,7 @@
 namespace App\Domains\Contact\ManageContactFeed\Web\ViewHelpers\Actions;
 
 use App\Helpers\MapHelper;
+use App\Models\Address;
 use App\Models\ContactFeedItem;
 use App\Models\User;
 
@@ -15,7 +16,7 @@ class ActionFeedAddress
 
         return [
             'address' => [
-                'object' => $address ? [
+                'object' => $address instanceof Address ? [
                     'id' => $address->id,
                     'line_1' => $address->line_1,
                     'line_2' => $address->line_2,
