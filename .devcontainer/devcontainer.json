@@ -2,13 +2,39 @@
   "name": "PHP & SQLite",
   "image": "ghcr.io/asbiin/devcontainers/php:8.4",
 
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "xdebug.php-debug",
+        "bmewburn.vscode-intelephense-client",
+        "xdebug.php-pack",
+        "devsense.phptools-vscode",
+        "mikestead.dotenv",
+        "editorconfig.editorconfig",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "vue.volar",
+        "qwtel.sqlite-viewer"
+      ]
+    }
+  },
+
   // For use with PHP or Apache (e.g.php -S localhost:8080 or apache2ctl start)
   "forwardPorts": [8080],
   "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": ".devcontainer/postCreate.sh",
-  "postStartCommand": ".devcontainer/postStart.sh"
+  "postStartCommand": ".devcontainer/postStart.sh",
+
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root",
+
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+  ]
 }
