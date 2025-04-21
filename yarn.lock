@@ -589,27 +589,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inertiajs/core@npm:2.0.5":
-  version: 2.0.5
-  resolution: "@inertiajs/core@npm:2.0.5"
+"@inertiajs/core@npm:2.0.8":
+  version: 2.0.8
+  resolution: "@inertiajs/core@npm:2.0.8"
   dependencies:
     axios: "npm:^1.8.2"
-    deepmerge: "npm:^4.0.0"
+    es-toolkit: "npm:^1.34.1"
     qs: "npm:^6.9.0"
-  checksum: 10c0/abb64167949b8e1835703425b2c2612561b8f150d3e9376e1886e343a0dce871168dc960949aa0b723708cafad695af05efb8a6f425ebb377de85f0935cf0f81
+  checksum: 10c0/7bfcdb50f8993eeaadba9f2c0a6acd155ab624876ea025f23cd938b9a874f54c275db2a03e6442caf69c694d03a34e05832cc47256920be9907e4889da169018
   languageName: node
   linkType: hard
 
 "@inertiajs/vue3@npm:^2.0.4":
-  version: 2.0.5
-  resolution: "@inertiajs/vue3@npm:2.0.5"
+  version: 2.0.8
+  resolution: "@inertiajs/vue3@npm:2.0.8"
   dependencies:
-    "@inertiajs/core": "npm:2.0.5"
-    lodash.clonedeep: "npm:^4.5.0"
-    lodash.isequal: "npm:^4.5.0"
+    "@inertiajs/core": "npm:2.0.8"
+    es-toolkit: "npm:^1.33.0"
   peerDependencies:
     vue: ^3.0.0
-  checksum: 10c0/58961a3f5b11b443fe8cfb060998f09cc127c263df1b9eca3b9e3f18be6c0539a23c2bde546239d5ed6b219494a2477f4976ade9ac42cca2f402233e84d9f713
+  checksum: 10c0/c4f9d5c37cb4fc8924d4fbfdd2a37fab057deadb4a6a480c74ecd548f376cf098db7a62d2c24f400a223d061ae6e7d609917d35efecb7d70affa8cebfc0efe18
   languageName: node
   linkType: hard
 
@@ -2073,13 +2072,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deepmerge@npm:^4.0.0":
-  version: 4.3.1
-  resolution: "deepmerge@npm:4.3.1"
-  checksum: 10c0/e53481aaf1aa2c4082b5342be6b6d8ad9dfe387bc92ce197a66dea08bd4265904a087e75e464f14d1347cf2ac8afe1e4c16b266e0561cc5df29382d3c5f80044
-  languageName: node
-  linkType: hard
-
 "delayed-stream@npm:~1.0.0":
   version: 1.0.0
   resolution: "delayed-stream@npm:1.0.0"
@@ -2256,6 +2248,18 @@ __metadata:
     has-tostringtag: "npm:^1.0.2"
     hasown: "npm:^2.0.2"
   checksum: 10c0/ef2ca9ce49afe3931cb32e35da4dcb6d86ab02592cfc2ce3e49ced199d9d0bb5085fc7e73e06312213765f5efa47cc1df553a6a5154584b21448e9fb8355b1af
+  languageName: node
+  linkType: hard
+
+"es-toolkit@npm:^1.33.0, es-toolkit@npm:^1.34.1":
+  version: 1.35.0
+  resolution: "es-toolkit@npm:1.35.0"
+  dependenciesMeta:
+    "@trivago/prettier-plugin-sort-imports@4.3.0":
+      unplugged: true
+    prettier-plugin-sort-re-exports@0.0.1:
+      unplugged: true
+  checksum: 10c0/05f95050c835efb6c0bdca04f311d0ecf6c26b6fd1d2df4ca7b58c6475bb48aa29ba842ce07b91157775b3343969db23eee64c6c06ffa47184cb43f25aa0b944
   languageName: node
   linkType: hard
 
@@ -3377,20 +3381,6 @@ __metadata:
   version: 4.17.21
   resolution: "lodash-es@npm:4.17.21"
   checksum: 10c0/fb407355f7e6cd523a9383e76e6b455321f0f153a6c9625e21a8827d10c54c2a2341bd2ae8d034358b60e07325e1330c14c224ff582d04612a46a4f0479ff2f2
-  languageName: node
-  linkType: hard
-
-"lodash.clonedeep@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "lodash.clonedeep@npm:4.5.0"
-  checksum: 10c0/2caf0e4808f319d761d2939ee0642fa6867a4bbf2cfce43276698828380756b99d4c4fa226d881655e6ac298dd453fe12a5ec8ba49861777759494c534936985
-  languageName: node
-  linkType: hard
-
-"lodash.isequal@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "lodash.isequal@npm:4.5.0"
-  checksum: 10c0/dfdb2356db19631a4b445d5f37868a095e2402292d59539a987f134a8778c62a2810c2452d11ae9e6dcac71fc9de40a6fedcb20e2952a15b431ad8b29e50e28f
   languageName: node
   linkType: hard
 
