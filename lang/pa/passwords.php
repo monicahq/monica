@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'reset' => 'Your password has been reset.',
-    'sent' => 'We have emailed your password reset link.',
-    'throttled' => 'Please wait before retrying.',
-    'token' => 'This password reset token is invalid.',
-    'user' => 'We can\'t find a user with that email address.',
+    'reset' => 'ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਰੀਸੈਟ ਕੀਤਾ ਗਿਆ ਹੈ।',
+    'sent' => 'ਅਸੀਂ ਤੁਹਾਡੇ ਪਾਸਵਰਡ ਰੀਸੈਟ ਲਿੰਕ ਨੂੰ ਈਮੇਲ ਕਰ ਦਿੱਤਾ ਹੈ।',
+    'throttled' => 'ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਉਡੀਕ ਕਰੋ।',
+    'token' => 'ਇਹ ਪਾਸਵਰਡ ਰੀਸੈਟ ਟੋਕਨ ਅਵੈਧ ਹੈ।',
+    'user' => 'ਅਸੀਂ ਉਸ ਈਮੇਲ ਪਤੇ ਵਾਲਾ ਕੋਈ ਉਪਭੋਗਤਾ ਨਹੀਂ ਲੱਭ ਸਕਦੇ।',
 ];

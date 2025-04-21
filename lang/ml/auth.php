@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'failed' => 'ലോഗിൻ വിജയകരമായില്ല.',
+    'failed' => 'ഈ യോഗ്യതാപത്രങ്ങൾ ഞങ്ങളുടെ റെക്കോർഡുകളുമായി പൊരുത്തപ്പെടുന്നില്ല.',
     'lang' => 'മലയാളം',
     'login_provider_azure' => 'Microsoft',
     'login_provider_facebook' => 'Facebook',
@@ -9,6 +9,6 @@ return [
     'login_provider_google' => 'Google',
     'login_provider_linkedin' => 'LinkedIn',
     'login_provider_saml2' => 'SAML 2.0 പ്രോവൈഡർ',
-    'password' => 'അസാധുവായ പാസ്സ്‌വേഡ്.',
-    'throttle' => 'ലോഗിൻ നിങ്ങളുടെ അക്കൗണ്ടിന് നൽകിയ ശ്രമങ്ങൾ കൂടുതൽ ആയിരിക്കുന്നു. ദയവായി :seconds സെക്കൻഡ് ശേഷം ശ്രമിക്കുക.',
+    'password' => 'പാസ്‌വേഡ് തെറ്റാണ്.',
+    'throttle' => 'വളരെയധികം ലോഗിൻ ശ്രമങ്ങൾ. :seconds സെക്കൻഡിനുള്ളിൽ വീണ്ടും ശ്രമിക്കുക.',
 ];

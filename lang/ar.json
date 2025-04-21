@@ -1,6 +1,6 @@
 {
   "(and :count more error)": "(و :count خطأ إضافي)",
-  "(and :count more errors)": "(و :count أخطاء إضافية)",
+  "(and :count more errors)": "(و :count خطأ إضافي)|(و :count أخطاء إضافية)|(و :count أخطاء إضافية)",
   "(Help)": "(يساعد)",
   "+ add a contact": "+ إضافة جهة اتصال",
   "+ add another": "+ إضافة آخر",
@@ -37,15 +37,20 @@
   ":Name called": "تم الاتصال بـ :Name",
   ":Name called, but I didn’t answer": "اتصل :Name لكني لم أرد",
   ":UserName invites you to join Monica, an open source personal CRM, designed to help you document your relationships.": "يدعوك :UserName للانضمام إلى Monica، وهو نظام إدارة علاقات عملاء (CRM) شخصي مفتوح المصدر، مصمم لمساعدتك في توثيق علاقاتك.",
+  "Accept": "موافقة",
+  "Accepted": "تمت الموافقة",
   "Accept Invitation": "قبول الدعوة",
   "Accept invitation and create your account": "اقبل الدعوة وقم بإنشاء حسابك",
   "Account and security": "الحساب والأمن",
   "Account settings": "إعدادت الحساب",
   "A contact information can be clickable. For instance, a phone number can be clickable and launch the default application in your computer. If you do not know the protocol for the type you are adding, you can simply omit this field.": "معلومات الاتصال يمكن النقر عليها. على سبيل المثال، يمكن النقر على رقم الهاتف وتشغيل التطبيق الافتراضي على جهاز الكمبيوتر الخاص بك. إذا كنت لا تعرف البروتوكول الخاص بالنوع الذي تقوم بإضافته، فيمكنك ببساطة حذف هذا الحقل.",
+  "Action": "الإجراء",
+  "Actions": "الإجراءات",
   "Activate": "تفعيل",
   "Activity feed": "خلاصة النشاط",
   "Activity in this vault": "النشاط في هذا القبو",
   "Add": "إضافة",
+  "Add :name": "إضافة :name",
   "add a call reason type": "إضافة نوع سبب الاتصال",
   "Add a contact": "أضف جهة اتصال",
   "Add a contact information": "إضافة معلومات الاتصال",
@@ -117,10 +122,13 @@
   "Address types let you classify contact addresses.": "تتيح لك أنواع العناوين تصنيف عناوين الاتصال.",
   "Add Team Member": "إضافة عضو للفريق",
   "Add to group": "إضافة إلى المجموعة",
+  "A decryption key is required.": "مطلوب مفتاح فك التشفير.",
+  "Admin": "مدير",
   "Administrator": "المدير",
   "Administrator users can perform any action.": "المدراء بإمكانهم تنفيذ أي إجراء.",
   "a father-son relation shown on the father page,": "علاقة الأب والابن المعروضة على صفحة الأب،",
   "after the next occurence of the date.": "بعد حدوث التاريخ التالي.",
+  "Agree": "موافقة",
   "A group is two or more people together. It can be a family, a household, a sport club. Whatever is important to you.": "المجموعة عبارة عن شخصين أو أكثر معًا. يمكن أن تكون عائلة أو أسرة أو نادي رياضي. كل ما هو مهم بالنسبة لك.",
   "All contacts in the vault": "جميع جهات الاتصال في القبو",
   "All files": "كل الملفات",
@@ -162,6 +170,7 @@
   "All users and vaults will be deleted immediately,": "سيتم حذف جميع المستخدمين والخزائن على الفور،",
   "All users in this account": "جميع المستخدمين في هذا الحساب",
   "Already registered?": "لديك حساب مسبقا؟",
+  "Already Reported": "تم التبليغ مسبقاً",
   "Already used on this page": "تم استخدامها بالفعل في هذه الصفحة",
   "A new verification link has been sent to the email address you provided during registration.": "تم إرسال رابط تحقق جديد إلى عنوان البريد الإلكتروني الذي قدمته أثناء التسجيل.",
   "A new verification link has been sent to the email address you provided in your profile settings.": "تم إرسال رابط تحقق جديد إلى عنوان البريد الإلكتروني الذي قمت بتعيينه في إعدادات الملف الشخصي.",
@@ -173,7 +182,7 @@
   "API Tokens": "رموز API",
   "API tokens allow third-party services to authenticate with our application on your behalf.": "تسمح رموز API لخدمات الطرف الثالث بالمصادقة مع تطبيقنا نيابة عنك.",
   "A post template defines how the content of a post should be displayed. You can define as many templates as you want, and choose which template should be used on which post.": "يحدد قالب المنشور كيفية عرض محتوى المنشور. يمكنك تحديد أي عدد تريده من القوالب، واختيار القالب الذي يجب استخدامه في أي مشاركة.",
-  "Archive": "أرشيف",
+  "Archive": "أرشفة",
   "Archive contact": "أرشفة جهة الاتصال",
   "archived the contact": "أرشفة جهة الاتصال",
   "Are you sure? The address will be deleted immediately.": "هل أنت متأكد؟ سيتم حذف العنوان على الفور.",
@@ -198,7 +207,9 @@
   "Are you sure you would like to remove this person from the team?": "هل أنت متأكد أنك تريد إزالة هذا الشخص من الفريق؟",
   "A slice of life lets you group posts by something meaningful to you. Add a slice of life in a post to see it here.": "تتيح لك شريحة من الحياة تجميع المشاركات حسب شيء ذي معنى بالنسبة لك. أضف شريحة من الحياة في منشور لرؤيتها هنا.",
   "a son-father relation shown on the son page.": "علاقة الابن والأب تظهر على صفحة الابن.",
+  "Assign": "تعيين",
   "assigned a label": "تم تعيين تسمية",
+  "Associate": "ربط",
   "Association": "منظمة",
   "At": "في",
   "at ": "في",
@@ -206,12 +217,17 @@
   "A template defines how contacts should be displayed. You can have as many templates as you want - they are defined in your Account settings. However, you might want to define a default template so all your contacts in this vault have this template by default.": "يحدد القالب كيفية عرض جهات الاتصال. يمكنك الحصول على أي عدد تريده من النماذج - يتم تحديدها في إعدادات حسابك. ومع ذلك، قد ترغب في تحديد قالب افتراضي بحيث يكون لدى جميع جهات الاتصال الخاصة بك في هذا المخزن هذا القالب بشكل افتراضي.",
   "A template is made of pages, and in each page, there are modules. How data is displayed is entirely up to you.": "يتكون القالب من صفحات، وفي كل صفحة هناك وحدات. إن كيفية عرض البيانات أمر متروك لك تمامًا.",
   "Atheist": "ملحد",
+  "A Timeout Occurred": "انتهت المهلة",
+  "Attach": "إرفاق",
   "At which time should we send the notification, when the reminder occurs?": "في أي وقت يجب أن نرسل الإشعار عند حدوث التذكير؟",
   "Audio-only call": "مكالمة صوتية فقط",
   "Auto saved a few seconds ago": "تم الحفظ تلقائيًا قبل بضع ثوانٍ",
   "Available modules:": "الوحدات المتاحة:",
   "Avatar": "الصورة الرمزية",
   "Avatars": "الآلهة",
+  "Bad Gateway": "بوابة غير صالحة",
+  "Bad Request": "طلب غير صالح",
+  "Bandwidth Limit Exceeded": "تم تجاوز حد النطاق الترددي",
   "Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.": "قبل المتابعة، هل يمكنك التحقق من بريدك الإلكتروني بالضغط على الرابط الذي أرسلناه لك الآن عبر البريد الإلكتروني؟ إذا لم يصلك البريد الإلكتروني، فيسعدنا أن نرسل لك بريداً إلكترونياً غيره بكل سرور.",
   "best friend": "أفضل صديق",
   "Bird": "طائر",
@@ -222,6 +238,7 @@
   "Bought": "مُشترى",
   "Breakdown of the current usage": "انهيار الاستخدام الحالي",
   "brother/sister": "أخ / أخت",
+  "Browse": "تصفح",
   "Browser Sessions": "جلسات المتصفح",
   "Buddhist": "بوذي",
   "Business": "عمل",
@@ -249,31 +266,42 @@
   "Change template": "تغيير القالب",
   "Child": "طفل",
   "child": "طفل",
-  "Choose": "يختار",
+  "Choose": "اختر",
+  "Choose :name": "اختر :name",
   "Choose a color": "اختيار اللون",
   "Choose an existing address": "اختر عنوانًا موجودًا",
   "Choose an existing contact": "اختر جهة اتصال موجودة",
   "Choose a template": "اختر قالبًا",
   "Choose a value": "اختر قيمة",
+  "Choose File": "اختر ملف",
+  "Choose Image": "اختر صورة",
   "Chosen type:": "النوع المختار:",
   "Christian": "مسيحي",
   "Christmas": "عيد الميلاد",
   "City": "مدينة",
   "Click here to re-send the verification email.": "اضغط هنا لإعادة إرسال بريد التحقق.",
   "Click on a day to see the details": "انقر على يوم لرؤية التفاصيل",
+  "Click to copy": "اضغط للنسخ",
+  "Client Closed Request": "أغلق العميل الطلب",
   "Close": "إغلاق",
   "close edit mode": "إغلاق وضع التحرير",
   "Club": "النادي",
   "Code": "الرمز",
+  "Collapse": "طي",
+  "Collapse All": "طي الكل",
   "colleague": "زميل",
+  "Comment": "تعليق",
   "Companies": "شركات",
   "Company name": "اسم الشركة",
   "Compared to Monica:": "مقارنة بـ Monica:",
   "Configure how we should notify you": "قم بتكوين الطريقة التي يجب أن نخطرك بها",
   "Confirm": "تأكيد",
   "Confirm Password": "تأكيد كلمة المرور",
-  "Connect": "يتصل",
+  "Conflict": "تعارض",
+  "Connect": "اتصال",
   "Connected": "متصل",
+  "Connection Closed Without Response": "تم إغلاق الاتصال دون استجابة",
+  "Connection Timed Out": "انتهت مهلة الاتصال",
   "Connect with your security key": "تواصل مع مفتاح الأمان الخاص بك",
   "Contact feed": "تغذية الاتصال",
   "Contact information": "معلومات الاتصال",
@@ -285,6 +313,7 @@
   "Contacts in this slice": "جهات الاتصال في هذه الشريحة",
   "Contacts will be shown as follow:": "سيتم عرض جهات الاتصال على النحو التالي:",
   "Content": "محتوى",
+  "Continue": "استمرار",
   "Copied.": "نسخ.",
   "Copy": "ينسخ",
   "Copy value into the clipboard": "انسخ القيمة إلى الحافظة",
@@ -293,6 +322,7 @@
   "Couple": "زوج",
   "cousin": "ابن عم",
   "Create": "إنشاء",
+  "Create :name": "إضافة :name",
   "Create account": "إنشاء حساب",
   "Create Account": "إنشاء حساب",
   "Create a contact": "قم بإنشاء جهة اتصال",
@@ -311,6 +341,7 @@
   "Create at least one template to use Monica.": "قم بإنشاء قالب واحد على الأقل لاستخدام Monica.",
   "Create a user": "إنشاء مستخدم",
   "Create a vault": "إنشاء قبو",
+  "Created": "تم الإنشاء",
   "Created.": "تم الإنشاء.",
   "created a goal": "خلق هدفا",
   "created the contact": "تم إنشاء جهة الاتصال",
@@ -347,6 +378,7 @@
   "Default template": "القالب الافتراضي",
   "Default template to display contacts": "القالب الافتراضي لعرض جهات الاتصال",
   "Delete": "حذف",
+  "Delete :name": "حذف :name",
   "Delete Account": "حذف الحساب",
   "Delete a new key": "حذف مفتاح جديد",
   "Delete API Token": "حذف رمز API",
@@ -368,10 +400,13 @@
   "Delete your account on https://customers.monicahq.com.": "احذف حسابك على https://customers.monicahq.com.",
   "Deleting the vault means deleting all the data inside this vault, forever. There is no turning back. Please be certain.": "حذف المخزن يعني حذف جميع البيانات الموجودة داخل هذا المخزن إلى الأبد. ليس هناك عودة الى الوراء. يرجى التأكد.",
   "Description": "وصف",
+  "Detach": "إلغاء الإرفاق",
   "Detail of a goal": "تفاصيل الهدف",
+  "Details": "التفاصيل",
   "Details in the last year": "التفاصيل في العام الماضي",
   "Disable": "تعطيل",
   "Disable all": "أوقف عمل الكل",
+  "Discard": "تجاهل",
   "Disconnect": "قطع الاتصال",
   "Discuss partnership": "مناقشة الشراكة",
   "Discuss recent purchases": "مناقشة المشتريات الأخيرة",
@@ -380,14 +415,19 @@
   "Distance": "مسافة",
   "Documents": "وثائق",
   "Dog": "كلب",
+  "Done": "مكتمل",
   "Done.": "تم.",
+  "Down": "أسفل",
   "Download": "تحميل",
   "Download as vCard": "قم بالتنزيل بتنسيق vCard",
   "Drank": "شربوا",
   "Drove": "قاد",
   "Due and upcoming tasks": "المهام المستحقة والقادمة",
-  "Edit": "يحرر",
+  "Duplicate": "نسخ",
+  "Duplicate :name": "نسخ :name",
+  "Edit": "تعديل",
   "edit": "يحرر",
+  "Edit :name": "تعديل :name",
   "Edit a contact": "تحرير جهة اتصال",
   "Edit a journal": "تحرير مجلة",
   "Edit a post": "تحرير مشاركة",
@@ -411,8 +451,13 @@
   "Email Password Reset Link": "رابط إعادة تعيين كلمة مرور عبر البريد الإلكتروني",
   "Enable": "تفعيل",
   "Enable all": "تمكين الكل",
+  "Encrypted environment file already exists.": "ملف البيئة المشفر موجود بالفعل.",
+  "Encrypted environment file not found.": "لم يتم العثور على ملف البيئة المشفرة.",
   "Ensure your account is using a long, random password to stay secure.": "تأكد من أن حسابك يستخدم كلمة مرور طويلة وعشوائية للبقاء آمنًا.",
   "Enter a number from 0 to 100000. No decimals.": "أدخل رقمًا من 0 إلى 100000. لا توجد أرقام عشرية.",
+  "Environment file already exists.": "ملف البيئة موجود بالفعل.",
+  "Environment file not found.": "لم يتم العثور على ملف البيئة.",
+  "errors": "أخطاء",
   "Events this month": "أحداث هذا الشهر",
   "Events this week": "أحداث هذا الأسبوع",
   "Events this year": "أحداث هذا العام",
@@ -420,12 +465,20 @@
   "ex-boyfriend": "صديقها السابق",
   "Exception:": "استثناء:",
   "Existing company": "الشركة القائمة",
+  "Expand": "توسيع",
+  "Expand All": "توسيع الكل",
+  "Expectation Failed": "فشل التوقع",
+  "Explanation": "توضيح",
+  "Export": "تصدير",
+  "Export :name": "تصدير :name",
   "External connections": "اتصالات خارجية",
   "Facebook": "فيسبوك",
+  "Failed Dependency": "فشل التبعية",
   "Family": "عائلة",
   "Family summary": "ملخص العائلة",
   "Favorites": "المفضلة",
   "Female": "أنثى",
+  "File": "ملف",
   "Files": "ملفات",
   "Filter": "منقي",
   "Filter list or create a new label": "تصفية القائمة أو إنشاء تصنيف جديد",
@@ -444,12 +497,13 @@
   "Forgot your password?": "نسيت كلمة المرور؟",
   "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "نسيت كلمة المرور؟ لا توجد مشكلة. ما عليك سوى إخبارنا بعنوان بريدك الإلكتروني وسنرسل لك عبره رابط إعادة تعيين كلمة المرور الذي سيسمح لك باختيار كلمة مرور جديدة.",
   "For your security, please confirm your password to continue.": "لحمايتك، يرجى تأكيد كلمة المرور الخاصة بك للمتابعة.",
-  "Found": "وجد",
+  "Found": "تم العثور",
   "Friday": "جمعة",
   "Friend": "صديق",
   "friend": "صديق",
   "From A to Z": "من الألف إلى الياء",
   "From Z to A": "من ي إلى أ",
+  "Gateway Timeout": "مهلة البوابة",
   "Gender": "جنس",
   "Gender and pronoun": "الجنس والضمير",
   "Genders": "الجنسين",
@@ -462,6 +516,8 @@
   "Go back": "عُد",
   "godchild": "إبن او إبنة بالمعمودية",
   "godparent": "عرابة",
+  "Go Home": "الرئيسية",
+  "Gone": "ذهب",
   "Google Maps": "خرائط جوجل",
   "Google Maps offers the best accuracy and details, but it is not ideal from a privacy standpoint.": "تقدم خرائط جوجل أفضل دقة وتفاصيل، ولكنها ليست مثالية من وجهة نظر الخصوصية.",
   "Got fired": "طردت",
@@ -483,10 +539,12 @@
   "Hello!": "أهلاً بك!",
   "Help": "يساعد",
   "Hi :name": "مرحبًا :name",
+  "Hide": "إخفاء",
+  "Hide :name": "إخفاء :name",
   "Hinduist": "هندوسي",
   "History of the notification sent": "تاريخ الإخطار المرسل",
   "Hobbies": "هوايات",
-  "Home": "بيت",
+  "Home": "الرئيسية",
   "Horse": "حصان",
   "How are you?": "كيف حالك؟",
   "How could I have done this day better?": "كيف كان بإمكاني أن أفعل هذا اليوم بشكل أفضل؟",
@@ -499,6 +557,8 @@
   "How should we display dates": "كيف يجب أن نعرض التواريخ",
   "How should we display distance values": "كيف ينبغي لنا أن نعرض قيم المسافة",
   "How should we display numerical values": "كيف ينبغي لنا أن نعرض القيم العددية",
+  "HTTP Version Not Supported": "إصدار HTTP غير مدعوم",
+  "I'm a teapot": "أنا إبريق الشاي",
   "I agree to the :terms and :policy": "أوافق على :terms و:policy",
   "I agree to the :terms_of_service and :privacy_policy": "أوافق على :terms_of_service و :privacy_policy",
   "I am grateful for": "أنا ممتن ل",
@@ -517,14 +577,25 @@
   "If you’ve received this invitation by mistake, please discard it.": "إذا تلقيت هذه الدعوة عن طريق الخطأ، فيرجى تجاهلها.",
   "I know the exact date, including the year": "أعرف التاريخ بالضبط، بما في ذلك السنة",
   "I know the name": "أنا أعرف الاسم",
+  "Image": "صورة",
+  "Impersonate": "اقتباس الهوية",
+  "Impersonation": "الاقتباس",
+  "Import": "استيراد",
+  "Import :name": "استيراد :name",
   "Important dates": "تواريخ مهمة",
   "Important date summary": "ملخص تاريخ مهم",
+  "IM Used": "IM مستخدمة",
   "in": "في",
   "Information": "معلومة",
   "Information from Wikipedia": "المعلومات من ويكيبيديا",
   "in love with": "في حب",
   "Inspirational post": "وظيفة ملهمة",
+  "Insufficient Storage": "مساحة تخزين غير كافية",
+  "Internal Server Error": "خطأ داخلي في الخادم",
+  "Introduction": "مقدمة",
+  "Invalid filename.": "اسم الملف غير صالح.",
   "Invalid JSON was returned from the route.": "تم إرجاع JSON غير صالح من المسار.",
+  "Invalid SSL Certificate": "شهادة SSL غير صالحة",
   "Invitation sent": "دعوة التي وجهت",
   "Invite a new user": "دعوة مستخدم جديد",
   "Invite someone": "قم بدعوة شخص ما",
@@ -558,6 +629,8 @@
   "Last used :date": "آخر استخدام :date",
   "Leave": "مغادرة",
   "Leave Team": "مغادرة الفريق",
+  "length": "الطول",
+  "Length Required": "المدة المطلوبة",
   "Life": "حياة",
   "Life & goals": "أهداف الحياة",
   "Life events": "أحداث الحياة",
@@ -566,29 +639,37 @@
   "Life event types and categories": "أنواع وفئات أحداث الحياة",
   "Life metrics": "مقاييس الحياة",
   "Life metrics let you track metrics that are important to you.": "تتيح لك مقاييس الحياة تتبع المقاييس التي تهمك.",
+  "Like": "إعجاب",
   "LinkedIn": "ينكدين",
   "List of addresses": "قائمة العناوين",
   "List of addresses of the contacts in the vault": "قائمة عناوين جهات الاتصال الموجودة في القبو",
   "List of all important dates": "قائمة بجميع التواريخ الهامة",
+  "Load": "تحميل",
   "Loading…": "تحميل…",
   "Load previous entries": "تحميل الإدخالات السابقة",
   "Loans": "القروض",
   "Locale default: :value": "اللغة الافتراضية: :value",
+  "Localize": "اللغة",
+  "Location": "موقع",
+  "Locked": "مقفل",
   "Log a call": "تسجيل مكالمة",
   "Log details": "تفاصيل السجل",
   "logged the mood": "سجلت المزاج",
   "Log in": "تسجيل الدخول",
+  "Log In": "تسجيل الدخول",
   "Login": "تسجيل الدخول",
   "Login with:": "تسجيل الدخول مع:",
   "Logout": "تسجيل الخروج",
   "Log Out": "تسجيل الخروج",
   "Log Out Other Browser Sessions": "تسجيل الخروج من جلساتك على المتصفحات الأخرى",
   "Longest streak": "أطول أثر",
+  "Loop Detected": "تم الكشف عن حلقة",
   "Love": "حب",
   "loved by": "محبوب من",
   "lover": "عاشق",
   "Made from all over the world. We ❤️ you.": "مصنوعة من جميع أنحاء العالم. نحن ❤️أنت.",
   "Maiden name": "الاسم قبل الزواج",
+  "Maintenance Mode": "نمط الصيانة",
   "Male": "ذكر",
   "Manage Account": "إدارة الحساب",
   "Manage accounts you have linked to your Customers account.": "إدارة الحسابات التي قمت بربطها بحساب العملاء الخاص بك.",
@@ -617,9 +698,11 @@
   "Mastodon": "مستودون",
   "Maybe one of these contacts?": "ربما واحدة من هذه الاتصالات؟",
   "mentor": "مُرشِد",
+  "Method Not Allowed": "الطريقة غير مسموحة",
   "Middle name": "الاسم الأوسط",
   "miles": "اميال",
   "miles (mi)": "ميل (ميل)",
+  "Misdirected Request": "طلب توجيه خاطئ",
   "Modules in this page": "الوحدات في هذه الصفحة",
   "Monday": "الاثنين",
   "Monica. All rights reserved. 2017 — :date.": "Monica. كل الحقوق محفوظة. 2017 — :date.",
@@ -633,6 +716,9 @@
   "More details": "المزيد من التفاصيل",
   "More errors": "المزيد من الأخطاء",
   "Move contact": "نقل الاتصال",
+  "Moved Permanently": "انتقل بشكل دائم",
+  "Multi-Status": "حالات متعددة",
+  "Multiple Choices": "خيارات متعددة",
   "Muslim": "مسلم",
   "Name": "الاسم",
   "Name of the pet": "اسم الحيوان الأليف",
@@ -640,13 +726,20 @@
   "Name of the reverse relationship": "اسم العلاقة العكسية",
   "Nature of the call": "طبيعة المكالمة",
   "nephew/niece": "ابن أخ / ابنة",
+  "Network Authentication Required": "مصادقة الشبكة المطلوبة",
+  "Network Connect Timeout Error": "خطأ مهلة الاتصال بالشبكة",
+  "Network Read Timeout Error": "خطأ في مهلة قراءة الشبكة",
+  "New": "جديد",
+  "New :name": "إضافة :name",
   "New Password": "كلمة مرور جديدة",
   "New to Monica?": "هل أنت جديد في Monica؟",
   "Next": "التالي",
   "nickname": "كنية",
   "Nickname": "كنية",
+  "No": "ﻻ",
   "No cities have been added yet in any contact’s addresses.": "لم تتم إضافة أي مدن حتى الآن في عناوين أي جهة اتصال.",
   "No contacts found.": "لم يتم العثور على جهات اتصال.",
+  "No Content": "لا يوجد محتوى",
   "No countries have been added yet in any contact’s addresses.": "لم تتم إضافة أي دولة حتى الآن في عناوين أي جهة اتصال.",
   "No dates in this month.": "لا يوجد تواريخ في هذا الشهر.",
   "No description yet.": "لا يوجد وصف بعد.",
@@ -654,22 +747,28 @@
   "No keys registered yet": "لم يتم تسجيل أي مفاتيح حتى الآن",
   "No labels yet.": "لا توجد تصنيفات حتى الآن.",
   "No life event types yet.": "لا توجد أنواع أحداث الحياة حتى الآن.",
+  "Non-Authoritative Information": "معلومات غير موثوق بها",
   "No notes found.": "لم يتم العثور على أي ملاحظات.",
   "No results found": "لم يتم العثور على نتائج",
   "No role": "لا دور",
   "No roles yet.": "لا يوجد أدوار بعد.",
+  "Not Acceptable": "غير مقبول",
   "No tasks.": "لا توجد مهام.",
   "Notes": "ملحوظات",
   "Note that removing a module from a page will not delete the actual data on your contact pages. It will simply hide it.": "لاحظ أن إزالة وحدة نمطية من الصفحة لن يؤدي إلى حذف البيانات الفعلية الموجودة على صفحات الاتصال الخاصة بك. سوف يخفيه ببساطة.",
+  "Not Extended": "غير موسعة",
   "Not Found": "غير متوفر",
   "Notification channels": "قنوات الإخطار",
   "Notification sent": "تم إرسال الإشعار",
+  "Not Implemented": "غير منفذة",
+  "Not Modified": "غير معدل",
   "Not set": "غير مضبوط",
   "No upcoming reminders.": "لا توجد تذكيرات قادمة.",
   "Number of hours slept": "عدد ساعات النوم",
   "Numerical value": "القيمة العددية",
   "of": "من",
   "Offered": "تقدم",
+  "OK": "موافق",
   "Once a team is deleted, all of its resources and data will be permanently deleted. Before deleting this team, please download any data or information regarding this team that you wish to retain.": "بمجرد حذف الفريق، سيتم حذف جميع مصادره وبياناته نهائيًا. قبل حذف هذا الفريق ، يرجى تنزيل أي بيانات أو معلومات بخصوص هذا الفريق ترغب في الاحتفاظ بها.",
   "Once two factor authentication is disabled, you will no longer be prompted for a secure, random token during authentication.": "بمجرد تعطيل مصادقة عاملين ، لن تتم مطالبتك برمزًا عشوائيًا آمنًا أثناء المصادقة.",
   "Once you cancel,": "بمجرد الإلغاء،",
@@ -677,12 +776,19 @@
   "Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.": "بمجرد حذف حسابك، سيتم حذف جميع مصادره وبياناته نهائياً. قبل حذف حسابك، يرجى تنزيل أي بيانات أو معلومات ترغب في الاحتفاظ بها.",
   "Only once, when the next occurence of the date occurs.": "مرة واحدة فقط، عند حدوث التكرار التالي للتاريخ.",
   "Oops! Something went wrong.": "أُووبس! هناك خطأ ما.",
+  "Open": "فتح",
+  "Open in a current window": "فتح في النافذة الحالية",
+  "Open in a new window": "افتح في نافذة جديدة",
+  "Open in a parent frame": "فتح في إطار الأصل",
+  "Open in the topmost frame": "افتح في الإطار العلوي",
+  "Open on the website": "فتح على الموقع",
   "Open Street Maps": "فتح خرائط الشوارع",
   "Open Street Maps is a great privacy alternative, but offers less details.": "تعد Open Street Maps بديلاً رائعًا للخصوصية، ولكنها تقدم تفاصيل أقل.",
   "Open Telegram to validate your identity": "افتح Telegram للتحقق من هويتك",
   "optional": "خياري",
   "Or create a new one": "أو إنشاء واحدة جديدة",
   "Or filter by type": "أو التصفية حسب النوع",
+  "Origin Is Unreachable": "لا يمكن الوصول إلى المنشأ",
   "Or remove the slice": "أو إزالة الشريحة",
   "Or reset the fields": "أو إعادة تعيين الحقول",
   "Other": "آخر",
@@ -692,15 +798,18 @@
   "Pagination Navigation": "التنقل بين الصفحات",
   "Parent": "الأبوين",
   "parent": "الأبوين",
+  "Partial Content": "محتوى جزئي",
   "Participants": "مشاركون",
   "Partner": "شريك",
   "Part of": "جزء من",
   "Password": "كلمة المرور",
+  "Payload Too Large": "الحمولة كبيرة جدا",
   "Payment Required": "مطلوب الدفع",
   "Pending Team Invitations": "دعوات معلقة للإنضمام لفريق",
   "per/per": "لكل / لكل",
   "Permanently delete this team.": "احذف هذا الفريق بشكل دائم.",
   "Permanently delete your account.": "احذف حسابك بشكل دائم.",
+  "Permanent Redirect": "إعادة توجيه دائمة",
   "Permission for :name": "إذن لـ :name",
   "Permissions": "الأذونات",
   "Personal": "شخصي",
@@ -742,10 +851,15 @@
   "Posts": "دعامات",
   "Posts in your journals": "المشاركات في المجلات الخاصة بك",
   "Post templates": "قوالب النشر",
+  "Precondition Failed": "فشل الشرط المسبق",
+  "Precondition Required": "الشرط المسبق مطلوب",
   "Prefix": "بادئة",
+  "Preview": "معاينة",
   "Previous": "سابق",
   "Previous addresses": "العناوين السابقة",
+  "Price": "السعر",
   "Privacy Policy": "سياسة الخصوصية",
+  "Processing": "جاري المعالجة",
   "Profile": "الملف الشخصي",
   "Profile and security": "الملف الشخصي والأمن",
   "Profile Information": "معلومات الملف الشخصي",
@@ -758,19 +872,24 @@
   "Protocol": "بروتوكول",
   "Protocol: :name": "البروتوكول: :name",
   "Province": "مقاطعة",
+  "Proxy Authentication Required": "مصادقة الوكيل مطلوبة",
   "Quick facts": "حقائق سريعة",
   "Quick facts let you document interesting facts about a contact.": "تتيح لك الحقائق السريعة توثيق الحقائق المثيرة للاهتمام حول جهة الاتصال.",
   "Quick facts template": "قالب الحقائق السريعة",
   "Quit job": "ترك الوظيفة",
   "Rabbit": "أرنب",
+  "Railgun Error": "خطأ Railgun",
   "Ran": "جرى",
+  "Range Not Satisfiable": "نطاق غير مقبول",
   "Rat": "فأر",
   "Read :count time|Read :count times": "إقرأ :count مرة|اقرأ :count مرات|اقرأ :count مرات|اقرأ :count مرات|اقرأ :count مرة",
+  "Record": "سجل",
   "Record a loan": "سجل القرض",
   "Record your mood": "سجل حالتك المزاجية",
   "Recovery Code": "رمز الاسترداد",
   "Regardless of where you are located in the world, have dates displayed in your own timezone.": "بغض النظر عن مكان تواجدك في العالم، قم بعرض التواريخ وفقًا لمنطقتك الزمنية.",
   "Regards": "مع التحية",
+  "Regards,": "مع التحية،",
   "Regenerate Recovery Codes": "إعادة إنشاء رموز الاسترداد",
   "Register": "تسجيل",
   "Register a new key": "تسجيل مفتاح جديد",
@@ -802,11 +921,17 @@
   "Rename": "إعادة تسمية",
   "Reports": "التقارير",
   "Reptile": "الزواحف",
+  "Request Header Fields Too Large": "حقول عنوان الطلب كبيرة جدا",
+  "Request Timeout": "انتهت مهلة الطلب",
   "Resend Verification Email": "إعادة ارسال بريد التحقق",
+  "Reset Content": "إعادة تعيين المحتوى",
   "Reset Password": "استعادة كلمة المرور",
   "Reset Password Notification": "تنبيه استعادة كلمة المرور",
+  "Restore": "استعادة",
+  "Restore :name": "استعادة :name",
   "results": "نتيجة",
   "Retry": "أعد المحاولة",
+  "Retry With": "إعادة المحاولة مع",
   "Revert": "يرجع",
   "Rode a bike": "ركب دراجة",
   "Role": "صلاحية",
@@ -814,23 +939,33 @@
   "Roomates": "زملاء السكن",
   "Saturday": "السبت",
   "Save": "حفظ",
+  "Save & Close": "حفظ وإغلاق",
+  "Save & Return": "حفظ وعودة",
+  "Save :name": "حفظ :name",
   "Saved.": "تم الحفظ.",
   "Saving in progress": "جارٍ الحفظ",
+  "Search": "بحث",
+  "Search :name": "بحث :name",
   "Searched": "بحثت",
   "Searching…": "يبحث…",
   "Search something": "ابحث عن شيء ما",
   "Search something in the vault": "ابحث عن شيء ما في القبو",
   "Sections:": "الأقسام:",
   "Security keys": "مفاتيح الأمان",
+  "See Other": "انظر الآخر",
+  "Select": "اختر",
   "Select a group or create a new one": "حدد مجموعة أو أنشئ مجموعة جديدة",
+  "Select All": "اختر الكل",
   "Select A New Photo": "اختيار صورة جديدة",
   "Select a page": "حدد صفحة",
   "Select a relationship type": "حدد نوع العلاقة",
+  "Send": "إرسال",
   "Send invitation": "إرسال دعوة",
   "Send test": "إرسال الاختبار",
   "Sent at :time": "تم الإرسال في :time",
   "Server Error": "خطأ في الإستضافة",
   "Service Unavailable": "الخدمة غير متوفرة",
+  "Session Has Expired": "انتهت الجلسة",
   "Set as default": "تعيين كافتراضي",
   "Set as favorite": "تعيين كمفضل",
   "Settings": "إعدادات",
@@ -841,6 +976,9 @@
   "Setup Telegram": "إعداد برقية",
   "she/her": "هي / لها",
   "Shintoist": "الشنتوية",
+  "Show": "عرض",
+  "Show :name": "عرض :name",
+  "Show All": "عرض الكل",
   "Show Calendar tab": "إظهار علامة تبويب التقويم",
   "Show Companies tab": "إظهار علامة تبويب الشركات",
   "Show completed tasks (:count)": "إظهار المهام المكتملة (:count)",
@@ -854,6 +992,7 @@
   "Show Reports tab": "إظهار علامة تبويب التقارير",
   "Show Tasks tab": "إظهار علامة تبويب المهام",
   "significant other": "هامة أخرى",
+  "Sign In": "تسجيل الدخول",
   "Sign in to your account": "تسجيل الدخول إلى حسابك",
   "Sign up for an account": "التسجيل للحصول على حساب",
   "Sikh": "السيخ",
@@ -862,21 +1001,30 @@
   "Slices of life": "شرائح من الحياة",
   "Small animal": "الحيوانات الصغيرة",
   "Social": "اجتماعي",
+  "Solve": "حل",
   "Some dates have a special type that we will use in the software to calculate an age.": "بعض التواريخ لها نوع خاص سنستخدمه في البرنامج لحساب العمر.",
   "So… it works 😼": "إذن... إنه يعمل 😼",
   "Sport": "رياضة",
   "spouse": "زوج",
+  "SSL Handshake Failed": "فشلت مصافحة SSL",
+  "Start": "بدء",
   "Statistics": "إحصائيات",
+  "Stop": "إيقاف",
   "Storage": "تخزين",
   "Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.": "قم بالاحتفاظ برموز الاسترداد هذه في مكان آمن. يمكن استخدامها لاستعادة الوصول إلى حسابك في حالة فقدان جهاز المصادقة الثنائية الخاص بك.",
-  "Submit": "يُقدِّم",
+  "Submit": "إرسال",
   "subordinate": "المرؤوس",
+  "Subscribe": "اشتراك",
   "Suffix": "لاحقة",
   "Summary": "ملخص",
   "Sunday": "الأحد",
+  "Switch": "تحويل",
+  "Switching Protocols": "تبديل البروتوكولات",
   "Switch role": "تبديل الدور",
   "Switch Teams": "تبديل الفرق",
+  "Switch To Role": "التحويل إلى صلاحية",
   "Tabs visibility": "رؤية علامات التبويب",
+  "Tag": "علامة",
   "Tags": "العلامات",
   "Tags let you classify journal posts using a system that matters to you.": "تتيح لك العلامات تصنيف منشورات اليومية باستخدام النظام الذي يهمك.",
   "Taoist": "طاوي",
@@ -890,6 +1038,7 @@
   "Telegram": "برقية",
   "Templates": "قوالب",
   "Templates let you customize what data should be displayed on your contacts. You can define as many templates as you want, and choose which template should be used on which contact.": "تتيح لك القوالب تخصيص البيانات التي يجب عرضها على جهات الاتصال الخاصة بك. يمكنك تحديد أي عدد تريده من القوالب، واختيار القالب الذي يجب استخدامه على جهة الاتصال.",
+  "Temporary Redirect": "إعادة توجيه مؤقتة",
   "Terms of Service": "شروط الاستخدام",
   "Test email for Monica": "اختبار البريد الإلكتروني لMonica",
   "Test email sent!": "تم إرسال البريد الإلكتروني التجريبي!",
@@ -1075,6 +1224,7 @@
   "The vault has been deleted": "تم حذف الخزنة",
   "The vault has been updated": "تم تحديث قبو",
   "they/them": "هم / لهم",
+  "This action is unauthorized.": "هذا الإجراء غير مصرح به.",
   "This address is not active anymore": "هذا العنوان لم يعد نشطا بعد الآن",
   "This device": "هذا الجهاز",
   "This email is a test email to check if Monica can send an email to this email address.": "يعد هذا البريد الإلكتروني بمثابة بريد إلكتروني تجريبي للتحقق مما إذا كان بإمكان Monica إرسال بريد إلكتروني إلى عنوان البريد الإلكتروني هذا.",
@@ -1104,6 +1254,7 @@
   "To hear their story": "لسماع قصتهم",
   "Token Name": "اسم الرمز",
   "Token name (for your reference only)": "اسم الرمز المميز (للرجوع إليه فقط)",
+  "Too Early": "مبكر جدا",
   "Took a new job": "حصلت على وظيفة جديدة",
   "Took the bus": "أخذت الحافلة",
   "Took the metro": "أخذت المترو",
@@ -1114,6 +1265,8 @@
   "Total:": "المجموع:",
   "Total streaks": "مجموع الشرائط",
   "Track a new metric": "تتبع مقياسًا جديدًا",
+  "Translate": "ترجمة",
+  "Translate It": "ترجمة",
   "Transportation": "مواصلات",
   "Tuesday": "يوم الثلاثاء",
   "Two-factor Confirmation": "التأكيد الثنائي",
@@ -1128,14 +1281,22 @@
   "Unarchive contact": "إلغاء أرشفة جهة الاتصال",
   "unarchived the contact": "تم إلغاء أرشفة جهة الاتصال",
   "Unauthorized": "غير مصرّح",
+  "Unavailable For Legal Reasons": "غير متوفر لأسباب قانونية",
   "uncle/aunt": "عم / خالة",
   "Undefined": "غير معرف",
   "Unexpected error on login.": "خطأ غير متوقع عند تسجيل الدخول.",
   "Unknown": "غير معروف",
   "unknown action": "عمل غير معروف",
   "Unknown age": "عمر غير معروف",
+  "Unknown Error": "خطأ غير معروف",
   "Unknown name": "اسم غير معروف",
+  "Unpack": "فك الضغط",
+  "Unprocessable Entity": "كيان غير قابل للمعالجة",
+  "Unsubscribe": "إلغاء الاشتراك",
+  "Unsupported Media Type": "نوع وسائط غير مدعوم",
+  "Up": "أعلى",
   "Update": "تحديث",
+  "Update :name": "تحديث :name",
   "Update a key.": "تحديث مفتاح.",
   "updated a contact information": "تم تحديث معلومات الاتصال",
   "updated a goal": "تم تحديث الهدف",
@@ -1149,11 +1310,15 @@
   "updated the religion": "تحديث الدين",
   "Update Password": "تحديث كلمة المرور",
   "Update your account's profile information and email address.": "قم بتحديث معلومات ملفك الشخصي وبريدك الإلكتروني.",
+  "Upgrade Required": "الترقية مطلوبة",
   "Upload photo as avatar": "تحميل الصورة كصورة رمزية",
+  "URI Too Long": "URI طويلة جدا",
   "Use": "يستخدم",
   "Use an authentication code": "استخدم رمز المصادقة",
   "Use a recovery code": "استخدم رمز الاسترداد",
   "Use a security key (Webauthn, or FIDO) to increase your account security.": "استخدم مفتاح الأمان (Webauthn أو FIDO) لزيادة أمان حسابك.",
+  "Use Proxy": "استخدام الوكيل",
+  "User": "مستخدم",
   "User preferences": "خيارات المستخدم",
   "Users": "المستخدمين",
   "User settings": "إعدادات المستخدم",
@@ -1162,6 +1327,7 @@
   "Use your security key": "استخدم مفتاح الأمان الخاص بك",
   "Validating key…": "جارٍ التحقق من المفتاح...",
   "Value copied into your clipboard": "تم نسخ القيمة إلى الحافظة الخاصة بك",
+  "Variant Also Negotiates": "البديل يتفاوض أيضا",
   "Vaults contain all your contacts data.": "تحتوي الخزائن على جميع بيانات جهات الاتصال الخاصة بك.",
   "Vault settings": "إعدادات الخزنة",
   "ve/ver": "لقد / الإصدار",
@@ -1173,7 +1339,8 @@
   "Version :version — commit [:short](:url).": "الإصدار :version — الالتزام [:short](:url).",
   "Via Telegram": "عبر برقية",
   "Video call": "مكالمة فيديو",
-  "View": "منظر",
+  "View": "عرض",
+  "View :name": "عرض :name",
   "View all": "عرض الكل",
   "View details": "عرض التفاصيل",
   "Viewer": "مشاهد",
@@ -1191,6 +1358,7 @@
   "Watch Netflix every day": "شاهد نتفليكس كل يوم",
   "Ways to connect": "طرق الاتصال",
   "WebAuthn only supports secure connections. Please load this page with https scheme.": "يدعم WebAuthn الاتصالات الآمنة فقط. يرجى تحميل هذه الصفحة بنظام https.",
+  "Web Server is Down": "خادم الويب متوقف",
   "We call them a relation, and its reverse relation. For each relation you define, you need to define its counterpart.": "نحن نسميها علاقة، وعلاقتها العكسية. لكل علاقة تحددها، تحتاج إلى تحديد نظيرتها.",
   "Wedding": "قِرَان",
   "Wednesday": "الأربعاء",
@@ -1228,6 +1396,7 @@
   "xe/xem": "xe / xem",
   "year": "سنة",
   "Years": "سنين",
+  "Yes": "نعم",
   "You are here:": "أنت هنا:",
   "You are invited to join Monica": "أنت مدعو للانضمام إلى Monica",
   "You are receiving this email because we received a password reset request for your account.": "لقد استلمت هذا الإيميل لأننا استقبلنا طلباً لاستعادة كلمة مرور حسابك.",

@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'next' => 'Trang trước ❯',
-    'previous' => '❮ Trang sau',
+    'next' => 'Trang sau ❯',
+    'previous' => '❮ Trang trước',
 ];
