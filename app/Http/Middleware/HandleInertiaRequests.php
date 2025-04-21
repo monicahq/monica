@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -23,6 +24,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
+        $this->storeCurrentUrl($request, session());
+
         return [
             ...parent::share($request),
             'help_links' => fn () => config('monica.help_links'),
@@ -58,5 +61,24 @@ class HandleInertiaRequests extends Middleware
         }
 
         return Str::markdownExternalLink($message, 'underline text-xs dark:text-gray-100 hover:text-gray-900 hover:dark:text-gray-200');
+    }
+
+    /**
+     * Store the current URL for the request if necessary.
+     *
+     * @param  \Illuminate\Contracts\Session\Session  $session
+     * @return void
+     *
+     * @see \Illuminate\Session\Middleware\StartSession::storeCurrentUrl()
+     */
+    protected function storeCurrentUrl(Request $request, $session)
+    {
+        if ($request->isMethod('GET') &&
+            $request->route() instanceof Route &&
+            ! ($request->ajax() && ! $request->inertia()) &&
+            ! $request->prefetch() &&
+            ! $request->isPrecognitive()) {
+            $session->setPreviousUrl($request->fullUrl());
+        }
     }
 }
