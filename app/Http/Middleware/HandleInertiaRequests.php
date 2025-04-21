@@ -24,7 +24,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
-        $this->storeCurrentUrl($request, session());
+        $this->storeCurrentUrl($request);
 
         return [
             ...parent::share($request),
@@ -66,19 +66,18 @@ class HandleInertiaRequests extends Middleware
     /**
      * Store the current URL for the request if necessary.
      *
-     * @param  \Illuminate\Contracts\Session\Session  $session
      * @return void
      *
      * @see \Illuminate\Session\Middleware\StartSession::storeCurrentUrl()
      */
-    protected function storeCurrentUrl(Request $request, $session)
+    protected function storeCurrentUrl(Request $request)
     {
         if ($request->isMethod('GET') &&
             $request->route() instanceof Route &&
             ! ($request->ajax() && ! $request->inertia()) &&
             ! $request->prefetch() &&
             ! $request->isPrecognitive()) {
-            $session->setPreviousUrl($request->fullUrl());
+            session()->setPreviousUrl($request->fullUrl());
         }
     }
 }
