@@ -52,7 +52,7 @@
         </div>
 
         <!-- help text -->
-        <div class="mb-10 flex rounded-sm border bg-slate-50 px-3 py-2 text-sm dark:bg-slate-900">
+        <div class="mb-10 flex rounded-xs border bg-slate-50 px-3 py-2 text-sm dark:bg-slate-900">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 pe-2"
@@ -134,13 +134,13 @@
             <!-- content of the module -->
             <div class="border-b border-gray-200 bg-gray-100 p-5 dark:border-gray-700">
               <div
-                class="mb-2 rounded-sm border border-gray-300 bg-white px-5 py-3 text-center dark:bg-gray-900"
+                class="mb-2 rounded-xs border border-gray-300 bg-white px-5 py-3 text-center dark:bg-gray-900"
                 @click="addRow()">
                 + Add row
               </div>
 
               <div v-for="row in form.rows" :key="row.realId" class="mb-2">
-                <div class="rounded-sm border border-gray-300 bg-white dark:bg-gray-900">
+                <div class="rounded-xs border border-gray-300 bg-white dark:bg-gray-900">
                   <!-- row options -->
                   <div class="flex justify-between border-b border-gray-200 px-3 py-1 text-xs dark:border-gray-700">
                     <div>

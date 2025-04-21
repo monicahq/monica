@@ -33,7 +33,7 @@ const toggle = (task) => {
             v-model="task.completed"
             :name="task.id"
             type="checkbox"
-            class="focus:ring-3 relative h-4 w-4 rounded-sm border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-700 dark:bg-gray-900 dark:ring-offset-gray-800 dark:focus:ring-blue-700"
+            class="focus:ring-3 relative h-4 w-4 rounded-xs border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-700 dark:bg-gray-900 dark:ring-offset-gray-800 dark:focus:ring-blue-700"
             @change="toggle(task)" />
 
           <div>
@@ -93,7 +93,7 @@ const toggle = (task) => {
     <div class="text-center">
       <Link
         :href="data.url.index"
-        class="rounded-sm border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
+        class="rounded-xs border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
         {{ $t('View all') }}
       </Link>
     </div>

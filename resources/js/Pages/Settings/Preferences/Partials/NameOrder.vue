@@ -84,7 +84,7 @@ const submit = () => {
     </div>
 
     <!-- help text -->
-    <div class="mb-6 flex rounded-sm border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
+    <div class="mb-6 flex rounded-xs border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-6 grow pe-2"
@@ -113,7 +113,7 @@ const submit = () => {
     <div v-if="!editMode" class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <p class="border-b border-gray-200 px-5 py-2 dark:border-gray-700">
         <span class="mb-2 block">{{ $t('Current way of displaying contact names:') }}</span>
-        <span class="mb-2 block rounded-sm bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{ localNameOrder }}</span>
+        <span class="mb-2 block rounded-xs bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">{{ localNameOrder }}</span>
       </p>
       <p class="example bg-orange-50 px-5 py-2 text-sm font-medium dark:bg-orange-900">
         <span class="font-light">{{ $t('Contacts will be shown as follow:') }}</span> {{ localNameExample }}
@@ -123,7 +123,7 @@ const submit = () => {
     <!-- edit mode -->
     <form
       v-if="editMode"
-      class="mb-6 rounded-lg border border-gray-200 bg-gray-50 bg-white dark:border-gray-700 dark:bg-gray-900"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="submit()">
       <div class="border-b border-gray-200 px-5 py-2 dark:border-gray-700">
         <errors :errors="form.errors" />

@@ -64,10 +64,10 @@ defineProps({
 
             <div
               v-if="data.wikipedia.description"
-              class="rounded-sm border border-gray-200 p-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
+              class="rounded-xs border border-gray-200 p-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
               <p class="mb-3">{{ data.wikipedia.description }}</p>
 
-              <img :src="data.wikipedia.thumbnail" :alt="'Image of ' + data.country" class="mb-2 rounded-sm" />
+              <img :src="data.wikipedia.thumbnail" :alt="'Image of ' + data.country" class="mb-2 rounded-xs" />
 
               <p class="text-xs">
                 <a :href="data.wikipedia.url" target="_blank">{{ $t('Information from Wikipedia') }}</a>

@@ -80,7 +80,7 @@ const charactersLeft = computed(() => {
 const localTextAreaClasses = computed(() => [
   'rounded-md shadow-xs',
   'bg-white dark:bg-slate-900 border-gray-300 dark:border-gray-700',
-  'focus:border-indigo-300 dark:focus:border-indigo-700 focus:ring-3 focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:ring-opacity-50',
+  'focus:border-indigo-300 dark:focus:border-indigo-700 focus:ring-3 focus:ring-indigo-200 dark:focus:ring-indigo-800/50',
   props.textareaClass,
 ]);
 
@@ -105,13 +105,13 @@ defineExpose({
   <div>
     <label v-if="label" class="mb-2 block relative text-sm dark:text-gray-100" :for="id">
       {{ label }}
-      <span v-if="!required" class="optional-badge rounded-sm px-[3px] py-px text-xs">
+      <span v-if="!required" class="optional-badge rounded-xs px-[3px] py-px text-xs">
         {{ $t('optional') }}
       </span>
 
       <span
         v-if="maxlength && displayMaxLength"
-        class="length absolute end-0 top-0 rounded-sm px-1 py-[3px] text-xs dark:text-gray-100">
+        class="length absolute end-0 top-0 rounded-xs px-1 py-[3px] text-xs dark:text-gray-100">
         {{ charactersLeft }}
       </span>
     </label>

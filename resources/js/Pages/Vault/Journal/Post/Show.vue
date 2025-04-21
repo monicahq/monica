@@ -104,7 +104,7 @@ defineProps({
               <div v-else>&nbsp;</div>
             </div>
 
-            <div class="post relative rounded-sm bg-white dark:bg-gray-900">
+            <div class="post relative rounded-xs bg-white dark:bg-gray-900">
               <!-- date of the post -->
               <p class="mb-2 text-sm text-gray-400">{{ data.written_at }}</p>
 
@@ -113,7 +113,7 @@ defineProps({
                 <li
                   v-for="tag in data.tags"
                   :key="tag.id"
-                  class="me-2 inline-block rounded-sm bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-500 last:me-0 dark:bg-neutral-800">
+                  class="me-2 inline-block rounded-xs bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-500 last:me-0 dark:bg-neutral-800">
                   {{ tag.name }}
                 </li>
               </ul>
@@ -163,7 +163,7 @@ defineProps({
               <p class="mb-2 text-sm font-semibold">{{ $t('Slice of life') }}</p>
               <div class="mb-6 last:mb-0">
                 <div
-                  class="rounded-sm border-b border-s border-t border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800"
+                  class="rounded-xs border-b border-s border-t border-gray-200 px-3 py-2 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800"
                   :class="data.sliceOfLife.cover_image ? '' : 'border-t'">
                   <Link :href="data.sliceOfLife.url.show" class="font-semibold">{{ data.sliceOfLife.name }}</Link>
                   <p class="text-xs text-gray-600">{{ data.sliceOfLife.date_range }}</p>
@@ -182,7 +182,7 @@ defineProps({
                 </div>
                 <ul
                   v-if="journalMetric.post_metrics.length > 0"
-                  class="mb-2 rounded-sm border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+                  class="mb-2 rounded-xs border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                   <li
                     v-for="postMetric in journalMetric.post_metrics"
                     :key="postMetric.id"

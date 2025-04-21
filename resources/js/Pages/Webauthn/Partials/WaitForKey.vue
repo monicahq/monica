@@ -13,7 +13,7 @@ defineEmits(['retry']);
   <div>
     <div v-if="errorMessage !== ''" class="form-error-message mb3">
       <div
-        class="relative rounded-sm border border-red-400 bg-red-100 px-4 py-3 dark:border-red-600 dark:bg-red-900"
+        class="relative rounded-xs border border-red-400 bg-red-100 px-4 py-3 dark:border-red-600 dark:bg-red-900"
         role="alert">
         <p class="font-bold text-red-700 dark:text-red-300">
           {{ errorMessage }}
