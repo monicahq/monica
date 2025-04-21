@@ -46,7 +46,7 @@
             <label
               :for="color.bg_color"
               class="ms-2 inline-block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-              <div class="rounded-sm p-4" :class="color.bg_color" />
+              <div class="rounded-xs p-4" :class="color.bg_color" />
             </label>
           </div>
         </div>
@@ -126,7 +126,7 @@
                 <label
                   :for="color.bg_color"
                   class="ms-2 inline-block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                  <div class="rounded-sm p-4" :class="color.bg_color" />
+                  <div class="rounded-xs p-4" :class="color.bg_color" />
                 </label>
               </div>
             </div>

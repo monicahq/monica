@@ -56,7 +56,7 @@ const localInputClasses = computed(() => {
   return [
     'ps-8 w-full rounded-md shadow-xs',
     'bg-white dark:bg-slate-900 border-gray-300 dark:border-gray-700',
-    'focus:border-indigo-300 focus:ring-3 focus:ring-indigo-200 focus:ring-opacity-50',
+    'focus:border-indigo-300 focus:ring-3 focus:ring-indigo-200/50',
     'disabled:bg-slate-50 dark:disabled:bg-slate-900',
     props.inputClass,
   ];
@@ -138,7 +138,7 @@ const search = _.debounce(() => {
     <div>
       <label v-if="label" class="mb-2 block text-sm">
         {{ label }}
-        <span v-if="!required" class="optional-badge rounded-sm px-[3px] py-px text-xs">
+        <span v-if="!required" class="optional-badge rounded-xs px-[3px] py-px text-xs">
           {{ $t('optional') }}
         </span>
       </label>
@@ -187,7 +187,7 @@ const search = _.debounce(() => {
           :placeholder="placeholder"
           @keyup="search"
           @keydown.esc="sendEscKey" />
-        <span v-if="maxlength && displayMaxLength" class="length absolute rounded-sm text-xs">
+        <span v-if="maxlength && displayMaxLength" class="length absolute rounded-xs text-xs">
           {{ charactersLeft }}
         </span>
       </div>

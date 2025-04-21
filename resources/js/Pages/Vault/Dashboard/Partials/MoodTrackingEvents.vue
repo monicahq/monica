@@ -155,7 +155,7 @@ const submit = () => {
             :is-dark="isDark()">
             <template #default="{ inputValue, inputEvents }">
               <input
-                class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
+                class="rounded-xs border bg-white px-2 py-1 dark:bg-gray-900"
                 :value="inputValue"
                 v-on="inputEvents" />
             </template>

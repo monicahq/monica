@@ -85,7 +85,7 @@
       <div
         v-for="note in localNotes"
         :key="note.id"
-        class="mb-4 rounded-sm border border-gray-200 last:mb-0 dark:border-gray-700 dark:bg-gray-900">
+        class="mb-4 rounded-xs border border-gray-200 last:mb-0 dark:border-gray-700 dark:bg-gray-900">
         <!-- body of the note, if not being edited -->
         <div v-if="editedNoteId !== note.id">
           <div
@@ -194,7 +194,7 @@
       <div v-if="moduleMode" class="text-center">
         <InertiaLink
           :href="data.url.index"
-          class="rounded-sm border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
+          class="rounded-xs border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
           {{ $t('View all') }}
         </InertiaLink>
       </div>

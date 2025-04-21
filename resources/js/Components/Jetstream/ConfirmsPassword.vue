@@ -2,10 +2,10 @@
 import { ref, reactive, nextTick } from 'vue';
 import { trans } from 'laravel-vue-i18n';
 import Button from '@/Components/Button.vue';
-import JetDialogModal from '@/Components/Jetstream/DialogModal.vue';
+import DialogModal from './DialogModal.vue';
 import Input from '@/Components/Input.vue';
 import InputError from '@/Components/InputError.vue';
-import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
+import SecondaryButton from './SecondaryButton.vue';
 
 const emit = defineEmits(['confirmed']);
 
@@ -79,7 +79,7 @@ const closeModal = () => {
       <slot />
     </span>
 
-    <JetDialogModal :show="confirmingPassword" @close="closeModal">
+    <DialogModal :show="confirmingPassword" @close="closeModal">
       <template #title>
         {{ title }}
       </template>
@@ -94,6 +94,7 @@ const closeModal = () => {
             type="password"
             class="mt-1 block w-3/4"
             :placeholder="$t('Password')"
+            autocomplete="current-password"
             @keyup.enter="confirmPassword" />
 
           <InputError :message="form.error" class="mt-2" />
@@ -101,9 +102,9 @@ const closeModal = () => {
       </template>
 
       <template #footer>
-        <JetSecondaryButton @click="closeModal">
+        <SecondaryButton @click="closeModal">
           {{ $t('Cancel') }}
-        </JetSecondaryButton>
+        </SecondaryButton>
 
         <Button
           class="ms-3"
@@ -113,6 +114,6 @@ const closeModal = () => {
           {{ button }}
         </Button>
       </template>
-    </JetDialogModal>
+    </DialogModal>
   </span>
 </template>

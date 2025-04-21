@@ -58,7 +58,7 @@
                   <!-- is administrator -->
                   <span
                     v-if="user.is_account_administrator"
-                    class="ms-2 rounded-sm bg-neutral-200 px-2 py-1 text-xs text-neutral-500"
+                    class="ms-2 rounded-xs bg-neutral-200 px-2 py-1 text-xs text-neutral-500"
                     >{{ $t('Administrator') }}</span
                   >
                 </span>
@@ -91,7 +91,7 @@
                   <!-- is administrator -->
                   <span
                     v-if="user.is_account_administrator"
-                    class="ms-2 rounded-sm bg-neutral-200 px-2 py-1 text-xs text-neutral-500"
+                    class="ms-2 rounded-xs bg-neutral-200 px-2 py-1 text-xs text-neutral-500"
                     >{{ $t('Administrator') }}</span
                   >
                 </span>

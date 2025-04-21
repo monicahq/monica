@@ -38,7 +38,9 @@
           v-for="photo in localPhotos"
           :key="photo.id"
           class="rounded-md border border-gray-200 p-2 shadow-xs hover:bg-slate-50 hover:shadow-lg dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
-          <InertiaLink :href="photo.url.show"><img :src="photo.url.display" :alt="photo.name" /></InertiaLink>
+          <InertiaLink :href="photo.url.show">
+            <img :src="photo.url.display" :alt="photo.name" />
+          </InertiaLink>
         </div>
       </div>
 
@@ -46,7 +48,7 @@
       <div class="text-center">
         <InertiaLink
           :href="data.url.index"
-          class="rounded-sm border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
+          class="rounded-xs border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
           {{ $t('View all') }}
         </InertiaLink>
       </div>

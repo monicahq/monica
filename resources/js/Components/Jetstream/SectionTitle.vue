@@ -31,7 +31,7 @@ defineProps({
     <!-- help text -->
     <div
       v-if="$slots.description"
-      class="mb-6 flex items-center rounded-sm border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
+      class="mb-6 flex items-center rounded-xs border bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-slate-900">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-6 flex-none pe-2"

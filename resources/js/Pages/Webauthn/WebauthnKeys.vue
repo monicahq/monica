@@ -177,7 +177,11 @@ const webauthnRegisterCallback = (data) => {
               {{ $t('Update') }}
             </JetSecondaryButton>
             <JetConfirmsPassword @confirmed="keyBeingDeleted = key.id">
-              <JetSecondaryButton class="pointer ms-2 text-indigo-400 hover:text-indigo-600" href="">
+              <JetSecondaryButton
+                class="pointer ms-2 text-indigo-400 hover:text-indigo-600"
+                :class="{ 'opacity-25': keyBeingDeleted === key.id }"
+                href=""
+                :disabled="keyBeingDeleted === key.id">
                 {{ $t('Delete') }}
               </JetSecondaryButton>
             </JetConfirmsPassword>

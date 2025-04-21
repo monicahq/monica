@@ -32,7 +32,7 @@ const localDropdownClasses = computed(() => {
   return [
     'py-2 px-3 ps-2 pe-5 ltr:bg-[right_3px_center] rtl:bg-[left_3px_center] rounded-md shadow-xs sm:text-sm',
     'bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700',
-    'focus:border-indigo-300 focus:ring-3 focus:ring-indigo-200 focus:ring-opacity-50 focus:outline-hidden',
+    'focus:border-indigo-300 focus:ring-3 focus:ring-indigo-200/50 focus:outline-hidden',
     props.dropdownClass,
   ];
 });
@@ -69,7 +69,7 @@ defineExpose({
   <div>
     <label v-if="label" class="mb-2 block text-sm" :for="id">
       {{ label }}
-      <span v-if="!required" class="optional-badge rounded-sm px-[3px] py-px text-xs">
+      <span v-if="!required" class="optional-badge rounded-xs px-[3px] py-px text-xs">
         {{ $t('optional') }}
       </span>
     </label>

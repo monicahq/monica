@@ -144,7 +144,7 @@ const destroy = (date) => {
 
                   <span
                     v-if="date.type"
-                    class="ms-2 inline-block rounded-sm bg-neutral-200 px-1 py-0 text-xs text-neutral-500 last:me-0">
+                    class="ms-2 inline-block rounded-xs bg-neutral-200 px-1 py-0 text-xs text-neutral-500 last:me-0">
                     {{ date.type.label }}
                   </span>
                 </span>
