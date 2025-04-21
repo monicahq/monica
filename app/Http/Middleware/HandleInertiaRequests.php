@@ -28,9 +28,6 @@ class HandleInertiaRequests extends Middleware
             'help_links' => fn () => config('monica.help_links'),
             'help_url' => fn () => config('monica.help_center_url'),
             'footer' => fn () => $this->footer(),
-            'auth' => fn () => [
-                'user' => auth()->user(),
-            ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

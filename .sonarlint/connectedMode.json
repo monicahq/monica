@@ -1,4 +1,5 @@
 {
   "sonarCloudOrganization": "monicahq",
-  "projectKey": "monica"
+  "projectKey": "monica",
+  "region": "EU"
 }

@@ -41,9 +41,6 @@ const enableTwoFactorAuthentication = () => {
     route('two-factor.enable'),
     {},
     {
-      headers: {
-        accept: 'application/json',
-      },
       preserveScroll: true,
       onSuccess: () => Promise.all([showQrCode(), showSetupKey(), showRecoveryCodes()]),
       onFinish: () => {
