@@ -31,6 +31,21 @@ class ContactRelationshipsController extends Controller
 
     public function store(Request $request, string $vaultId, string $contactId)
     {
+
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'nickname' => 'nullable|string|max:255',
+            'maiden_name' => 'nullable|string|max:255',
+            'gender_id' => 'nullable|integer|exists:genders,id', // Assuming gender_id refers to a foreign key
+            'pronoun_id' => 'nullable|integer|exists:pronouns,id', // Assuming pronoun_id refers to a foreign key
+            'relationship_type_id' => 'required|integer|exists:relationship_types,id', // Assuming relationship_type_id refers to a foreign key
+            'create_contact_entry' => 'nullable|boolean',
+            'base_contact_id' => 'required|integer|exists:contacts,id',
+            'other_contact_id' => 'nullable|array', // Assuming multiple contacts might be selected
+            'other_contact_id.*' => 'integer|exists:contacts,id', // Validating each contact ID
+        ]);
         // This is a complex controller method, sorry about that, future reader
         // It's complex because the form is really complex and can lead to
         // many different scenarios
