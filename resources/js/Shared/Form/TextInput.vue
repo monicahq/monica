@@ -1,4 +1,5 @@
 <script setup>
+import { uniqueId } from 'lodash';
 import { computed, onMounted, ref } from 'vue';
 
 const props = defineProps({
@@ -43,7 +44,7 @@ const displayMaxLength = ref(false);
 const input = ref(null);
 
 const realId = computed(() => {
-  return props.id ?? 'text-input-' + Math.random().toString(36).substring(2, 7);
+  return props.id ?? uniqueId('text-input-');
 });
 
 const charactersLeft = computed(() => {
