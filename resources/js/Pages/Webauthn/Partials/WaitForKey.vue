@@ -13,15 +13,15 @@ defineEmits(['retry']);
   <div>
     <div v-if="errorMessage !== ''" class="form-error-message mb3">
       <div
-        class="relative rounded-xs border border-red-400 bg-red-100 px-4 py-3 dark:border-red-600 dark:bg-red-900"
+        class="relative rounded-sm border border-red-400/10 bg-red-100/10 px-4 py-3 dark:border-red-600/10 dark:bg-red-900/10"
         role="alert">
         <p class="font-bold text-red-700 dark:text-red-300">
           {{ errorMessage }}
         </p>
-        <JetButton class="mt-4" @click="$emit('retry')">
-          {{ $t('Retry') }}
-        </JetButton>
       </div>
+      <JetButton class="mt-4" @click="$emit('retry')">
+        {{ $t('Retry') }}
+      </JetButton>
     </div>
     <template v-else>
       <div

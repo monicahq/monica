@@ -1,14 +1,15 @@
 <script setup>
-import { ref, watch, computed } from 'vue';
-import { Link, router, useForm } from '@inertiajs/vue3';
-import size from 'lodash/size';
+import { ref, watch, computed, onMounted } from 'vue';
+import { Link, useForm } from '@inertiajs/vue3';
+import JetButton from '@/Components/Button.vue';
 import JetCheckbox from '@/Components/Checkbox.vue';
 import JetValidationErrors from '@/Components/ValidationErrors.vue';
-import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import PrimaryButton from '@/Shared/Form/PrimaryButton.vue';
 import WebauthnLogin from '@/Pages/Webauthn/WebauthnLogin.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
+import Beta from './Beta.vue';
+import ExternalProviders from './ExternalProviders.vue';
 
 const props = defineProps({
   isSignupEnabled: Boolean,
@@ -17,17 +18,13 @@ const props = defineProps({
   wallpaperUrl: String,
   providers: Object,
   publicKey: Object,
-  userName: String,
+  userless: Boolean,
+  autologin: Boolean,
+  beta: Boolean,
 });
-const webauthn = ref(true);
-const publicKeyRef = ref(props.publicKey);
-
-const form = useForm({
-  email: '',
-  password: '',
-  remember: false,
-});
-const providerForm = useForm({});
+const webauthn = ref(false);
+const publicKeyRef = ref(null);
+const useSecurityKey = computed(() => (publicKeyRef.value !== null && props.autologin) || webauthn.value);
 
 watch(
   () => props.publicKey,
@@ -36,7 +33,22 @@ watch(
   },
 );
 
-const providersExists = computed(() => size(props.providers) > 0);
+onMounted(() => {
+  publicKeyRef.value = props.publicKey;
+});
+
+const form = useForm({
+  email: '',
+  password: '',
+  remember: true,
+});
+
+watch(
+  () => props.publicKey,
+  (value) => {
+    publicKeyRef.value = value;
+  },
+);
 
 const submit = () => {
   form
@@ -49,24 +61,9 @@ const submit = () => {
     });
 };
 
-const open = (provider) => {
-  providerForm
-    .transform(() => ({
-      redirect: location.href,
-      remember: form.remember ? 'on' : '',
-    }))
-    .get(route('login.provider', { driver: provider }), {
-      preserveScroll: true,
-      onFinish: () => {
-        providerForm.reset();
-      },
-    });
-};
-
-const reload = () => {
-  publicKeyRef.value = null;
+const useWebauthn = () => {
+  form.reset();
   webauthn.value = true;
-  router.reload({ only: ['publicKey'] });
 };
 </script>
 
@@ -76,133 +73,91 @@ const reload = () => {
       <AuthenticationCardLogo />
     </div>
 
-    <!-- beta mode-->
-    <div class="mb-4 rounded-lg border bg-amber-50 p-6 dark:bg-amber-950">
-      <p class="mb-2 text-center font-bold">
-        <span class="me-2">🚧</span> {{ $t('Chandler is in beta.') }}
-        <span class="ms-2">🚧</span>
-      </p>
-      <p class="mb-2">{{ $t('Compared to Monica:') }}</p>
-      <ul class="list mb-2 ps-3">
-        <li class="list-disc">
-          {{ $t('it misses some of the features, the most important ones being the API and gift management,') }}
-        </li>
-        <li class="list-disc">{{ $t("you can't import any data from your current Monica account(yet),") }}</li>
-        <li class="list-disc">{{ $t("you can't even use your current username or password to sign in,") }}</li>
-        <li class="list-disc">{{ $t("however, there are many, many new features that didn't exist before.") }}</li>
-      </ul>
-      <p>{{ $t("We hope you'll like it.") }}</p>
-    </div>
+    <Beta :beta="beta" />
+
+    <h1 class="mt-4 text-center text-xl text-gray-800 dark:text-gray-200">
+      <span class="me-2"> 👋 </span>
+      {{ $t('Sign in to your account') }}
+    </h1>
 
     <div
-      class="mt-6 mb-12 flex w-full flex-col overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:max-w-4xl sm:rounded-lg md:flex-row">
-      <img :src="wallpaperUrl" class="w-full sm:invisible sm:w-10/12 md:visible" :alt="$t('Wallpaper')" />
+      class="mt-6 mb-4 flex w-full flex-col overflow-hidden bg-white shadow-md/20 dark:bg-gray-800 sm:max-w-4xl rounded-lg md:flex-row border border-gray-100 dark:border-gray-600">
+      <img :src="wallpaperUrl" class="w-full hidden sm:w-10/12 md:block object-cover" :alt="$t('Wallpaper')" />
       <div class="w-full">
-        <div :class="{ 'border-b': isSignupEnabled }" class="border-gray-200 px-6 pb-6 pt-8 dark:border-gray-700">
-          <h1 class="mb-4 text-center text-xl text-gray-800 dark:text-gray-200">
-            <span class="me-2"> 👋 </span>
-            {{ $t('Sign in to your account') }}
-          </h1>
-
+        <div class="px-6 pb-6 pt-8">
           <JetValidationErrors class="mb-2" />
 
           <div v-if="status" class="mb-2 text-sm font-medium text-green-600 dark:text-green-400">
             {{ status }}
           </div>
 
-          <div v-if="publicKey && webauthn">
-            <div class="mb-4 text-center text-lg text-gray-900 dark:text-gray-100">
-              {{ userName }}
-            </div>
-            <div class="mb-4 max-w-xl text-gray-600 dark:text-gray-400">
-              {{ $t('Connect with your security key') }}
-            </div>
-
-            <WebauthnLogin :remember="true" :public-key="publicKeyRef" />
-
-            <JetSecondaryButton class="me-2 mt-4" @click.prevent="webauthn = false">
-              {{ $t('Use your password') }}
-            </JetSecondaryButton>
-          </div>
-
-          <form v-else @submit.prevent="submit" class="dark:text-gray-800">
+          <form @submit.prevent="submit" class="dark:text-gray-800">
             <div class="mb-3">
               <TextInput
                 v-model="form.email"
                 :label="$t('Email')"
                 :type="'email'"
+                :input-class="'block w-full'"
+                :required="true"
                 :autofocus="true"
-                :input-class="'block w-full'"
-                :required="true"
-                autocomplete="username"
+                :autocomplete="'username webauthn'"
                 :maxlength="255" />
             </div>
 
-            <div class="mb-3">
-              <TextInput
-                v-model="form.password"
-                :label="$t('Password')"
-                :type="'password'"
-                :input-class="'block w-full'"
-                :required="true"
-                autocomplete="current-password"
-                :maxlength="255" />
-            </div>
-
-            <div class="mb-3 block">
-              <label class="flex items-center">
-                <JetCheckbox v-model:checked="form.remember" name="remember" />
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">
-                  {{ $t('Remember me') }}
-                </span>
+            <div class="mb-3 relative">
+              <label class="mb-2 text-sm dark:text-gray-100" :for="'password'">
+                {{ $t('Password') }}
               </label>
-            </div>
 
-            <div class="flex items-center justify-end">
               <Link
                 v-if="canResetPassword"
                 :href="route('password.request')"
-                class="text-sm text-blue-500 hover:underline">
+                class="text-sm text-blue-500 hover:underline absolute right-0">
                 {{ $t('Forgot your password?') }}
               </Link>
 
-              <primary-button :text="$t('Log in')" :class="'save ms-4'" />
+              <TextInput
+                :id="'password'"
+                v-model="form.password"
+                :type="'password'"
+                :input-class="'block w-full'"
+                :required="true"
+                :autocomplete="'current-password'"
+                :maxlength="255" />
             </div>
 
-            <div class="mt-3 block">
-              <p v-if="providersExists" class="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                {{ $t('Login with:') }}
-              </p>
-              <div class="flex flex-wrap">
-                <JetSecondaryButton
-                  v-for="(provider, id) in providers"
-                  :key="id"
-                  class="mb-2 me-2 inline w-32 align-middle"
-                  :href="route('login.provider', { driver: id })"
-                  @click.prevent="open(id)">
-                  <img :src="provider.logo" :alt="provider.name" class="relative me-2 h-4 w-4 align-middle" />
-                  <span class="align-middle">
-                    {{ provider.name }}
-                  </span>
-                </JetSecondaryButton>
+            <div class="mb-3 flex justify-between">
+              <div>
+                <JetCheckbox id="remember" v-model:checked="form.remember" name="remember" />
+                <label for="remember" class="ms-2 text-sm text-gray-600 dark:text-gray-400">
+                  {{ $t('Remember me') }}
+                </label>
               </div>
-            </div>
 
-            <div v-if="publicKeyRef" class="mt-3 block">
-              <JetSecondaryButton class="me-2" @click.prevent="reload">
-                {{ $t('Use your security key') }}
-              </JetSecondaryButton>
+              <PrimaryButton :text="$t('Log in')" :class="'save ms-4'" />
             </div>
           </form>
         </div>
 
-        <div v-if="isSignupEnabled" class="px-6 py-6 text-sm dark:text-gray-50">
+        <div class="px-6 block" v-if="userless || publicKeyRef">
+          <div class="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <JetButton v-if="!useSecurityKey" class="block" @click.prevent="useWebauthn">
+              {{ $t('Sign in with a passkey') }}
+            </JetButton>
+          </div>
+
+          <WebauthnLogin v-if="useSecurityKey" :public-key="publicKeyRef" :remember="true" :autofill="true" />
+        </div>
+
+        <div v-if="isSignupEnabled" class="px-6 py-6 text-l dark:text-gray-50">
           {{ $t('New to Monica?') }}
-          <Link :href="route('register')" class="text-blue-500 hover:underline">
+          <Link :href="route('register')" class="text-blue-500 text-l hover:underline">
             {{ $t('Create an account') }}
           </Link>
         </div>
       </div>
     </div>
+
+    <ExternalProviders class="mt-3 block px-6" :providers="providers" />
   </div>
 </template>

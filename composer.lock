@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94593cad73b816aa5ab3535d3051f30b",
+    "content-hash": "32ee6cc1a9fbebff0766df7390ce94b6",
     "packages": [
         {
             "name": "asbiin/laravel-localizer",
@@ -161,16 +161,16 @@
         },
         {
             "name": "asbiin/laravel-webauthn",
-            "version": "5.0.1",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbiin/laravel-webauthn.git",
-                "reference": "9b68ae9a44bb485b920fb4bd1301f09dad0ad6e7"
+                "reference": "df9f2994292b89b649458e6f80b73812c088ae57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/9b68ae9a44bb485b920fb4bd1301f09dad0ad6e7",
-                "reference": "9b68ae9a44bb485b920fb4bd1301f09dad0ad6e7",
+                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/df9f2994292b89b649458e6f80b73812c088ae57",
+                "reference": "df9f2994292b89b649458e6f80b73812c088ae57",
                 "shasum": ""
             },
             "require": {
@@ -259,7 +259,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-11T10:29:49+00:00"
+            "time": "2025-04-27T17:53:10+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -17872,5 +17872,5 @@
         "ext-intl": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }

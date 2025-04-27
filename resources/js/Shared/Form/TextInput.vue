@@ -4,7 +4,7 @@ import { computed, onMounted, ref } from 'vue';
 const props = defineProps({
   id: {
     type: String,
-    default: 'text-input-',
+    default: null,
   },
   inputClass: String,
   modelValue: {
@@ -41,6 +41,10 @@ const emit = defineEmits(['esc-key-pressed', 'update:modelValue']);
 
 const displayMaxLength = ref(false);
 const input = ref(null);
+
+const realId = computed(() => {
+  return props.id ?? 'text-input-' + Math.random().toString(36).substring(2, 7);
+});
 
 const charactersLeft = computed(() => {
   let char = 0;
@@ -80,7 +84,7 @@ defineExpose({ focus: focus });
 
 <template>
   <div>
-    <label v-if="label" class="mb-2 block text-sm dark:text-gray-100" :for="id">
+    <label v-if="label" class="mb-2 block text-sm dark:text-gray-100" :for="realId">
       {{ label }}
       <span v-if="!required" class="optional-badge rounded-xs px-[3px] py-px text-xs">
         {{ $t('optional') }}
@@ -89,7 +93,7 @@ defineExpose({ focus: focus });
 
     <div class="relative">
       <input
-        :id="id"
+        :id="realId"
         ref="input"
         :class="localInputClasses"
         :value="modelValue"
