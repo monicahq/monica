@@ -14,9 +14,10 @@ class LoginControllerTest extends TestCase
     /** @test */
     public function it_get_login_without_webauthn(): void
     {
-        $user = User::factory()->create();
+        config(['webauthn.userless' => false]);
+
+        User::factory()->create();
         $response = $this->get('/login', [
-            'Cookie' => "webauthn_remember={$user->id}",
             'X-Inertia' => true,
             'X-Inertia-Version' => (new HandleInertiaRequests)->version(request()) ?? '',
         ]);
