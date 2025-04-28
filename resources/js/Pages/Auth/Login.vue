@@ -81,7 +81,10 @@ const useWebauthn = () => {
     </h1>
 
     <div
-      class="mt-6 mb-4 flex w-full flex-col overflow-hidden bg-white shadow-md/20 dark:bg-gray-800 sm:max-w-4xl rounded-lg md:flex-row border border-gray-100 dark:border-gray-600">
+      :class="[
+        'mt-6 mb-4 flex w-full flex-col overflow-hidden bg-white shadow-md/20 dark:shadow-md/80 dark:bg-gray-800 sm:max-w-4xl',
+        'rounded-lg md:flex-row border border-gray-100 dark:border-gray-600',
+      ]">
       <img :src="wallpaperUrl" class="w-full hidden sm:w-10/12 md:block object-cover" :alt="$t('Wallpaper')" />
       <div class="w-full">
         <div class="px-6 pb-6 pt-8">
