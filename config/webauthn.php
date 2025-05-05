@@ -111,6 +111,7 @@ return [
     'redirects' => [
         'login' => '/vaults',
         'register' => '/user/profile',
+        'key-confirmation' => '/user/profile',
     ],
 
     /*

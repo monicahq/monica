@@ -31,6 +31,13 @@ class HandleInertiaRequests extends Middleware
             'help_links' => fn () => config('monica.help_links'),
             'help_url' => fn () => config('monica.help_center_url'),
             'footer' => fn () => $this->footer(),
+            'hasKey' => fn () => function () use ($request) {
+                if (! $user = $request->user()) {
+                    return null;
+                }
+
+                return (bool) optional($user->webauthnKeys())->count() > 0;
+            },
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
