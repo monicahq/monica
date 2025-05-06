@@ -6,6 +6,7 @@ import JetButton from '@/Components/Button.vue';
 
 const props = defineProps({
   providers: Object,
+  remember: Boolean,
 });
 
 const providerForm = useForm({});
@@ -15,7 +16,7 @@ const open = (provider) => {
   providerForm
     .transform(() => ({
       redirect: location.href,
-      remember: form.remember ? 'on' : '',
+      remember: props.remember ? 'on' : '',
     }))
     .get(route('login.provider', { driver: provider }), {
       preserveScroll: true,
@@ -40,7 +41,7 @@ const open = (provider) => {
       <JetButton
         v-for="(provider, id) in providers"
         :key="id"
-        class="mb-2 me-2 inline w-32 align-middle !bg-white !text-gray-800 hover:!bg-gray-400 !focus:border-gray-100 !focus:ring-gray-700"
+        class="cursor-pointer mb-2 me-2 inline w-32 align-middle !bg-white !text-gray-800 hover:!bg-gray-400 !focus:border-gray-100 !focus:ring-gray-700"
         :href="route('login.provider', { driver: id })"
         @click.prevent="open(id)">
         <img :src="provider.logo" :alt="provider.name" class="relative me-2 h-4 w-4 align-middle bg-white" />

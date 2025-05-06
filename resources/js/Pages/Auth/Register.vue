@@ -134,6 +134,6 @@ const policy = () => {
       </div>
     </form>
 
-    <ExternalProviders class="mt-5" :providers="providers" />
+    <ExternalProviders class="mt-5" :providers="providers" :remember="true" />
   </JetGuestLayout>
 </template>
