@@ -57,10 +57,8 @@ class UserProfileTest extends TestCase
             'aaguid' => '',
             'credentialPublicKey' => '',
             'counter' => 0,
+            'used_at' => Carbon::now(),
         ]);
-        $key->forceFill([
-            'last_used' => Carbon::now()->subDay(),
-        ])->save();
 
         $request = $this->app->make(Request::class)
             ->setUserResolver(fn () => $user);

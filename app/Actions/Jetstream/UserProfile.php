@@ -27,7 +27,7 @@ class UserProfile
                 'id' => $key->id,
                 'name' => $key->name,
                 'type' => $key->type,
-                'used_at' => optional($key->used_at)->diffForHumans(),
+                'last_used' => optional($key->used_at)->diffForHumans(),
             ])
             ->toArray();
 
