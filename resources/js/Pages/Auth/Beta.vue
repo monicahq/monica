@@ -16,8 +16,9 @@ const closeBeta = () => {
 <template>
   <div v-if="betaRef" class="relative mb-4 rounded-lg border bg-amber-50 p-6 dark:bg-amber-950">
     <div
-      class="absolute top-0 end-0 mt-2 mr-2 cursor-pointer rounded-xs px-1 py-[3px] text-xs hover:bg-amber-150 dark:hover:bg-amber-850"
-      @click="closeBeta">
+      class="absolute top-0 end-0 mt-2 mr-2 cursor-pointer rounded px-1 py-[3px] text-xs hover:bg-amber-200/40 dark:hover:bg-amber-800/25"
+      @click="closeBeta"
+      :title="$t('Close')">
       <SquareX class="h-5 w-5" />
     </div>
     <p class="mb-2 text-center font-bold">

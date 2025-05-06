@@ -161,6 +161,6 @@ const useWebauthn = () => {
       </div>
     </div>
 
-    <ExternalProviders class="mt-3 block px-6" :providers="providers" />
+    <ExternalProviders class="mt-3 block px-6" :providers="providers" :remember="form.remember" />
   </div>
 </template>
