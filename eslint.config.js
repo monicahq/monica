@@ -1,23 +1,22 @@
 import js from '@eslint/js';
 import globals from 'globals';
-import vue from 'eslint-plugin-vue';
-import prettier from 'eslint-config-prettier';
+import pluginVue from 'eslint-plugin-vue';
+import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default [
   js.configs.recommended,
-  ...vue.configs['flat/essential'],
-  ...vue.configs['flat/strongly-recommended'],
-  ...vue.configs['flat/recommended'],
-  prettier,
+  ...pluginVue.configs['flat/essential'],
+  ...pluginVue.configs['flat/strongly-recommended'],
+  ...pluginVue.configs['flat/recommended'],
   {
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
       globals: globals.browser,
     },
-    files: ['**/*.js', '**/*.vue'],
+    files: ['**/*.{js,vue}'],
     plugins: {
-      vue: vue,
+      vue: pluginVue,
     },
     rules: {
       'array-bracket-spacing': ['error', 'never'],
@@ -64,4 +63,5 @@ export default [
       ],
     },
   },
+  eslintConfigPrettier,
 ];
