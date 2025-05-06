@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Helpers;
 
 use App\Helpers\SignupHelper;
-use Mockery;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -14,13 +14,19 @@ use Tests\TestCase;
 #[CoversClass(SignupHelper::class)]
 class SignupHelperTest extends TestCase
 {
+    use DatabaseTransactions;
+
     #[Test]
     #[DataProvider('is_enabled_data_provider')]
     public function check_is_enabled(bool $isSignupDisabled, bool $hasAtLeastOneAccount, bool $expectedResult): void
     {
-        $helper = Mockery::mock(SignupHelper::class)->shouldAllowMockingProtectedMethods()->makePartial();
-        $helper->shouldReceive('isDisabledByConfig')->andReturn($isSignupDisabled);
-        $helper->shouldReceive('hasAtLeastOneAccount')->andReturn($hasAtLeastOneAccount);
+        config(['monica.disable_signup' => $isSignupDisabled]);
+
+        if ($hasAtLeastOneAccount) {
+            $this->createAccount();
+        }
+
+        $helper = $this->app[SignupHelper::class];
 
         $this->assertEquals($expectedResult, $helper->isEnabled());
     }
@@ -41,7 +47,7 @@ class SignupHelperTest extends TestCase
     {
         config(['monica.disable_signup' => true]);
 
-        $helper = Mockery::mock(SignupHelper::class)->makePartial();
-        $this->assertTrue($helper->isDisabledByConfig());
+        $helper = $this->app[SignupHelper::class];
+        $this->assertTrue($this->invokePrivateMethod($helper, 'isDisabledByConfig'));
     }
 }

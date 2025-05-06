@@ -1,10 +1,11 @@
 <script setup>
+import { uniqueId } from 'lodash';
 import { computed, onMounted, ref } from 'vue';
 
 const props = defineProps({
   id: {
     type: String,
-    default: 'text-input-',
+    default: null,
   },
   inputClass: String,
   modelValue: {
@@ -42,6 +43,10 @@ const emit = defineEmits(['esc-key-pressed', 'update:modelValue']);
 const displayMaxLength = ref(false);
 const input = ref(null);
 
+const realId = computed(() => {
+  return props.id ?? uniqueId('text-input-');
+});
+
 const charactersLeft = computed(() => {
   let char = 0;
   if (props.modelValue) {
@@ -49,17 +54,6 @@ const charactersLeft = computed(() => {
   }
 
   return `${props.maxlength - char} / ${props.maxlength}`;
-});
-
-const localInputClasses = computed(() => {
-  return [
-    'rounded-md shadow-xs',
-    'bg-white dark:bg-slate-900 dark:text-gray-100 border-gray-300 dark:border-gray-700',
-    'placeholder:text-gray-600 dark:placeholder:text-gray-400',
-    'focus:border-indigo-300 dark:focus:border-indigo-700 focus:ring-3 focus:ring-indigo-200 dark:focus:ring-indigo-800/50',
-    'disabled:bg-slate-50 dark:disabled:bg-slate-900',
-    props.inputClass,
-  ];
 });
 
 onMounted(() => {
@@ -80,7 +74,7 @@ defineExpose({ focus: focus });
 
 <template>
   <div>
-    <label v-if="label" class="mb-2 block text-sm dark:text-gray-100" :for="id">
+    <label v-if="label" class="mb-2 block text-sm dark:text-gray-100" :for="realId">
       {{ label }}
       <span v-if="!required" class="optional-badge rounded-xs px-[3px] py-px text-xs">
         {{ $t('optional') }}
@@ -89,9 +83,16 @@ defineExpose({ focus: focus });
 
     <div class="relative">
       <input
-        :id="id"
+        :id="realId"
         ref="input"
-        :class="localInputClasses"
+        :class="[
+          'rounded-md shadow-xs',
+          'bg-white dark:bg-slate-900 dark:text-gray-100 border-gray-300 dark:border-gray-700',
+          'placeholder:text-gray-600 dark:placeholder:text-gray-400',
+          'focus:border-indigo-300 dark:focus:border-indigo-700 focus:ring-3 focus:ring-indigo-200 dark:focus:ring-indigo-800/50',
+          'disabled:bg-slate-50 dark:disabled:bg-slate-900',
+          props.inputClass,
+        ]"
         :value="modelValue"
         :type="type"
         :name="name"

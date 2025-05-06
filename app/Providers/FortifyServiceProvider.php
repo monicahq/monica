@@ -8,6 +8,7 @@ use App\Actions\Fortify\TwoFactorChallengeView;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
@@ -39,12 +40,13 @@ class FortifyServiceProvider extends ServiceProvider
         $this->patchFortifyRoutes();
 
         Fortify::loginView(fn ($request) => (new LoginController)($request));
+        Fortify::registerView(fn ($request) => (new RegisterController)($request));
         Fortify::confirmPasswordsUsing(fn ($user, ?string $password = null) => $user->password
-                ? app(StatefulGuard::class)->validate([
-                    'email' => $user->email,
-                    'password' => $password,
-                ])
-                : true
+            ? app(StatefulGuard::class)->validate([
+                'email' => $user->email,
+                'password' => $password,
+            ])
+            : true
         );
 
         Fortify::createUsersUsing(CreateNewUser::class);

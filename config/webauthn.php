@@ -1,6 +1,6 @@
 <?php
 
-use LaravelWebauthn\Models\WebauthnKey;
+use App\Models\WebauthnKey;
 
 return [
 
@@ -111,6 +111,7 @@ return [
     'redirects' => [
         'login' => '/vaults',
         'register' => '/user/profile',
+        'key-confirmation' => '/user/profile',
     ],
 
     /*
@@ -130,6 +131,20 @@ return [
         'authenticate' => null,
         'register' => null,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Webauthn logging
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the channel to which Webauthn will log messages.
+    | This value should correspond with one of your loggers that is already
+    | present in your "logging" configuration file. If left as null, it will
+    | use the default logger for the application.
+    |
+    */
+
+    'log' => null,
 
     /*
     |--------------------------------------------------------------------------
@@ -159,10 +174,11 @@ return [
     |--------------------------------------------------------------------------
     |
     | Time that the caller is willing to wait for the call to complete.
+    | See https://webauthn-doc.spomky-labs.com/symfony-bundle/configuration-references#timeout
     |
     */
 
-    'timeout' => 60000,
+    'timeout' => null,
 
     /*
     |--------------------------------------------------------------------------
@@ -204,18 +220,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Google Safetynet ApiKey
-    |--------------------------------------------------------------------------
-    |
-    | Api key to use Google Safetynet.
-    | See https://developer.android.com/training/safetynet/attestation
-    |
-    */
-
-    'google_safetynet_api_key' => env('GOOGLE_SAFETYNET_API_KEY'),
-
-    /*
-    |--------------------------------------------------------------------------
     | Webauthn Public Key Credential Parameters
     |--------------------------------------------------------------------------
     |
@@ -228,7 +232,7 @@ return [
         \Cose\Algorithms::COSE_ALGORITHM_ES256, // ECDSA with SHA-256
         \Cose\Algorithms::COSE_ALGORITHM_ES512, // ECDSA with SHA-512
         \Cose\Algorithms::COSE_ALGORITHM_RS256, // RSASSA-PKCS1-v1_5 with SHA-256
-        \Cose\Algorithms::COSE_ALGORITHM_EDDSA, // EdDSA
+        \Cose\Algorithms::COSE_ALGORITHM_EDDSA, // EDDSA
         \Cose\Algorithms::COSE_ALGORITHM_ES384, // ECDSA with SHA-384
     ],
 
@@ -268,14 +272,11 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Userless (One touch, Typeless) login
+    | The resident key
     |--------------------------------------------------------------------------
     |
-    | By default, users must input their email to receive a list of credentials
-    | ID to use for authentication, but they can also login without specifying
-    | one if the device can remember them, allowing for true one-touch login.
-    |
-    | If required or preferred, login verification will be always required.
+    | When userless is set to 'preferred' or 'required', the resident key will be
+    | forced to be 'required' automatically.
     |
     | See https://www.w3.org/TR/webauthn/#enum-residentKeyRequirement
     |
@@ -283,6 +284,25 @@ return [
     |
     */
 
-    'userless' => null,
+    'resident_key' => 'preferred',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Userless (One touch, Typeless) login
+    |--------------------------------------------------------------------------
+    |
+    | You may activate userless login, also known as one-touch login or typeless
+    | login for devices when they're being registered. It's recommended to change
+    | this to preferred in this case, since not all devices support this feature.
+    | If this is activated (not null or discouraged), login verification will be
+    | mandatory.
+    |
+    | This doesn't affect the login procedure; only the attestation (registration).
+    |
+    | Supported: "null", "required", "preferred", "discouraged".
+    |
+    */
+
+    'userless' => (bool) env('WEBAUTHN_USERLESS', true),
 
 ];

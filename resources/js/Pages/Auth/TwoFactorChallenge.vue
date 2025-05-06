@@ -57,7 +57,7 @@ defineProps({
         {{ $t('Please confirm access to your account by validating your security key.') }}
       </h1>
 
-      <WebauthnLogin :remember="remember" :public-key="publicKey" />
+      <WebauthnLogin :remember="remember" :public-key="publicKey" :autofill="false" />
     </div>
 
     <div v-if="twoFactor">
@@ -88,7 +88,7 @@ defineProps({
             inputmode="numeric"
             class="mt-1 block w-full"
             autofocus
-            autocomplete="one-time-code" />
+            :autocomplete="'one-time-code'" />
         </div>
 
         <div v-else>
@@ -99,7 +99,7 @@ defineProps({
             v-model="form.recovery_code"
             type="text"
             class="mt-1 block w-full"
-            autocomplete="one-time-code" />
+            :autocomplete="'one-time-code'" />
         </div>
 
         <div class="mt-4 flex items-center justify-end">

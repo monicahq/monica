@@ -11,6 +11,7 @@ import { startAuthentication, browserSupportsWebAuthn } from '@simplewebauthn/br
 const props = defineProps({
   publicKey: Object,
   remember: Boolean,
+  autofill: Boolean,
 });
 
 const isSupported = ref(true);
@@ -61,7 +62,7 @@ const stop = () => {
 const loginWaitForKey = (publicKey) => {
   processing.value = true;
   nextTick()
-    .then(() => startAuthentication(publicKey))
+    .then(() => startAuthentication({ optionsJSON: publicKey, useBrowserAutofill: props.autofill }))
     .then((data) => webauthnLoginCallback(data))
     .catch((error) => {
       errorMessage.value = _errorMessage(error.name, error.message);

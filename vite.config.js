@@ -38,6 +38,9 @@ export default defineConfig(({ mode }) => {
       https: true,
       host: 'localhost',
     },
+    ssr: {
+      noExternal: ['@inertiajs/server'],
+    },
     build: {
       sourcemap: env.VITE_PROD_SOURCE_MAPS,
     },

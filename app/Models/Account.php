@@ -25,9 +25,9 @@ class Account extends Model
     /**
      * Get the users associated with the account.
      *
-     * @return HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\User, $this>
      */
-    public function users()
+    public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
