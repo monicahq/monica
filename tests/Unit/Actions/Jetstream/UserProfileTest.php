@@ -58,6 +58,9 @@ class UserProfileTest extends TestCase
             'credentialPublicKey' => '',
             'counter' => 0,
         ]);
+        $key->forceFill([
+            'last_used' => Carbon::now()->subDay(),
+        ])->save();
 
         $request = $this->app->make(Request::class)
             ->setUserResolver(fn () => $user);
@@ -72,7 +75,7 @@ class UserProfileTest extends TestCase
                 'id' => $key->id,
                 'name' => 'name',
                 'type' => 'type',
-                'last_active' => '1 day ago',
+                'last_used' => '1 day ago',
             ],
         ], $data['webauthnKeys']);
     }

@@ -148,8 +148,8 @@ const webauthnRegisterCallback = (data) => {
             </div>
 
             <div class="text-xs text-gray-500">
-              <span>
-                {{ $t('Last active :date', { date: key.last_active }) }}
+              <span v-if="key.used_at !== null">
+                {{ $t('Last used :date', { date: key.used_at }) }}
               </span>
             </div>
           </div>

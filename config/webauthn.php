@@ -1,6 +1,6 @@
 <?php
 
-use LaravelWebauthn\Models\WebauthnKey;
+use App\Models\WebauthnKey;
 
 return [
 
