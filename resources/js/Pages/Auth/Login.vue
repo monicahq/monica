@@ -10,6 +10,7 @@ import WebauthnLogin from '@/Pages/Webauthn/WebauthnLogin.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import Beta from './Beta.vue';
 import ExternalProviders from './ExternalProviders.vue';
+import { platformAuthenticatorIsAvailable } from '@simplewebauthn/browser';
 
 const props = defineProps({
   isSignupEnabled: Boolean,
@@ -24,7 +25,10 @@ const props = defineProps({
 });
 const webauthn = ref(false);
 const publicKeyRef = ref(null);
-const useSecurityKey = computed(() => (publicKeyRef.value !== null && props.autologin) || webauthn.value);
+const platformAuthenticatorAvailable = ref(false);
+const useSecurityKey = computed(
+  () => (publicKeyRef.value !== null && props.autologin && platformAuthenticatorAvailable.value) || webauthn.value,
+);
 
 watch(
   () => props.publicKey,
@@ -35,6 +39,9 @@ watch(
 
 onMounted(() => {
   publicKeyRef.value = props.publicKey;
+  platformAuthenticatorIsAvailable().then((available) => {
+    platformAuthenticatorAvailable.value = available;
+  });
 });
 
 const form = useForm({
