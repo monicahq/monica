@@ -52,7 +52,7 @@ defineProps({
       <AuthenticationCardLogo />
     </template>
 
-    <div v-if="publicKey">
+    <div v-if="publicKey !== null">
       <h1 class="mb-4 max-w-xl text-gray-600 dark:text-gray-400">
         {{ $t('Please confirm access to your account by validating your security key.') }}
       </h1>

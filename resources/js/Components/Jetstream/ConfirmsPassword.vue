@@ -101,7 +101,7 @@ const closeModal = () => {
           </p>
 
           <Button class="mt-2 block" @click.prevent="webauthn.start()">
-            {{ $t('Confirm your passkey') }}
+            {{ $t('Confirm your passkey or security key') }}
           </Button>
 
           <WebauthnTest ref="webauthn" @success="confirm()" />

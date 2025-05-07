@@ -14,7 +14,7 @@ class LoginListener
      */
     public function handle(Login $event)
     {
-        if ($event->remember) {
+        if ($event->remember && $event->user->webauthnKeys()->count() > 0) {
             Cookie::queue('return', 'true', 60 * 24 * 365);
         }
     }
