@@ -63,6 +63,7 @@ class VaultShowViewHelper
 
             return [
                 'id' => $reminder->id,
+                'contact_reminder_id' => $reminder->contact_reminder_id,
                 'label' => $reminder->label,
                 'scheduled_at' => DateHelper::format($scheduledAtDate, $user),
                 'contact' => [
@@ -82,6 +83,9 @@ class VaultShowViewHelper
         // this line removes the null values that are added when the contact
         // is not in the vault (in the method above)
         $remindersCollection = $remindersCollection->filter(fn ($value) => $value != null);
+
+        // Filter out duplicate reminders going to each notification channel based on contact_reminder_id
+        $remindersCollection = $remindersCollection->unique(fn ($reminder) => $reminder['contact_reminder_id']);
 
         return [
             'reminders' => $remindersCollection,
