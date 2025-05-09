@@ -168,7 +168,7 @@
     <div class="text-center" v-if="paginator.hasMorePages">
       <span
         @click="load()"
-        class="cursor-pointer rounded-sm border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
+        class="cursor-pointer rounded-xs border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
         {{ $t('Load previous entries') }}
       </span>
     </div>

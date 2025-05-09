@@ -120,7 +120,7 @@ const alignmentClasses = computed(() => {
 <template>
   <div ref="main" class="relative" :class="$attrs.class">
     <div
-      class="flex rounded-md border border-gray-300 p-1 shadow-xs focus-within:border-indigo-300 focus-within:ring-3 focus-within:ring-indigo-200 focus-within:ring-opacity-50 dark:border-gray-600 dark:shadow-gray-700">
+      class="flex rounded-md border border-gray-300 p-1 shadow-xs focus-within:border-indigo-300 focus-within:ring-3 focus-within:ring-indigo-200/50 dark:border-gray-600 dark:shadow-gray-700">
       <input
         v-model="proxySelect"
         :id="$attrs.id"
@@ -192,7 +192,7 @@ const alignmentClasses = computed(() => {
         v-show="open"
         class="absolute z-50 mt-2 overflow-auto rounded-md shadow-lg dark:shadow-gray-700"
         :class="[widthClass, heightClass, alignmentClasses]">
-        <div class="rounded-md ring-1 ring-black ring-opacity-5" :class="contentClasses">
+        <div class="rounded-md ring-1 ring-black/5" :class="contentClasses">
           <div
             v-for="option in filtered"
             :key="option.id"

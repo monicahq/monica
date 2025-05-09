@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="dataerror || exception" class="border-red mb-3 rounded-sm border p-3" v-bind="$attrs">
+    <div v-if="dataerror || exception" class="border-red mb-3 rounded-xs border p-3" v-bind="$attrs">
       <p class="mb-2">{{ $t('Oops! Something went wrong.') }}</p>
       <template v-if="exception">
         <p class="mb0">

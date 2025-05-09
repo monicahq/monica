@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout.vue';
+import Layout from '@/Layouts/Layout.vue';
 import Delete from '@/Pages/Vault/Settings/Partials/Delete.vue';
 import DefaultTemplate from '@/Pages/Vault/Settings/Partials/DefaultTemplate.vue';
 import Labels from '@/Pages/Vault/Settings/Partials/Labels.vue';

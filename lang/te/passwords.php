@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'reset' => 'Your password has been reset.',
-    'sent' => 'We have emailed your password reset link.',
-    'throttled' => 'Please wait before retrying.',
-    'token' => 'This password reset token is invalid.',
-    'user' => 'We can\'t find a user with that email address.',
+    'reset' => 'మీ పాస్‌వర్డ్ రీసెట్ చేయబడింది.',
+    'sent' => 'మేము మీ పాస్‌వర్డ్ రీసెట్ లింక్‌ని ఇమెయిల్ చేసాము.',
+    'throttled' => 'దయచేసి మళ్లీ ప్రయత్నించే ముందు వేచి ఉండండి.',
+    'token' => 'ఈ పాస్‌వర్డ్ రీసెట్ టోకెన్ చెల్లదు.',
+    'user' => 'మేము ఆ ఇమెయిల్ చిరునామాతో వినియోగదారుని కనుగొనలేకపోయాము.',
 ];

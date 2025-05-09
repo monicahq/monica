@@ -1,22 +1,24 @@
 <script setup>
-import { ref, reactive, nextTick } from 'vue';
+import { ref, reactive, nextTick, computed } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import Button from '@/Components/Button.vue';
-import JetDialogModal from '@/Components/Jetstream/DialogModal.vue';
+import DialogModal from './DialogModal.vue';
 import Input from '@/Components/Input.vue';
 import InputError from '@/Components/InputError.vue';
-import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
+import SecondaryButton from './SecondaryButton.vue';
+import WebauthnTest from '@/Pages/Webauthn/WebauthnTest.vue';
 
 const emit = defineEmits(['confirmed']);
 
 defineProps({
   title: {
     type: String,
-    default: trans('Confirm Password'),
+    default: trans('Confirm access'),
   },
   content: {
     type: String,
-    default: trans('For your security, please confirm your password to continue.'),
+    default: trans('For your security, please confirm the access to continue.'),
   },
   button: {
     type: String,
@@ -33,6 +35,8 @@ const form = reactive({
 });
 
 const passwordInput = ref(null);
+const webauthn = ref('webauthn');
+const webauthnEnabled = computed(() => usePage().props.hasKey === true);
 
 const startConfirmingPassword = () => {
   axios.get(route('password.confirmation')).then((response) => {
@@ -56,14 +60,18 @@ const confirmPassword = () => {
     .then(() => {
       form.processing = false;
 
-      closeModal();
-      nextTick().then(() => emit('confirmed'));
+      confirm();
     })
     .catch((error) => {
       form.processing = false;
       form.error = error.response.data.errors.password[0];
       nextTick().then(() => passwordInput.value.focus());
     });
+};
+
+const confirm = () => {
+  closeModal();
+  nextTick().then(() => emit('confirmed'));
 };
 
 const closeModal = () => {
@@ -79,7 +87,7 @@ const closeModal = () => {
       <slot />
     </span>
 
-    <JetDialogModal :show="confirmingPassword" @close="closeModal">
+    <DialogModal :show="confirmingPassword" @close="closeModal">
       <template #title>
         {{ title }}
       </template>
@@ -87,13 +95,33 @@ const closeModal = () => {
       <template #content>
         {{ content }}
 
+        <div v-if="webauthnEnabled" class="mt-4">
+          <p>
+            {{ $t('When you are ready, authenticate using the button below:') }}
+          </p>
+
+          <Button class="mt-2 block" @click.prevent="webauthn.start()">
+            {{ $t('Confirm your passkey or security key') }}
+          </Button>
+
+          <WebauthnTest ref="webauthn" @success="confirm()" />
+        </div>
+
+        <fieldset v-if="webauthnEnabled" class="mt-5 border-t border-gray-300 dark:border-gray-700">
+          <legend class="mx-auto px-4 text-l italic text-gray-600 dark:text-gray-200">
+            {{ $t('Or') }}
+          </legend>
+        </fieldset>
+
         <div class="mt-4">
+          {{ $t('Authenticate using your password:') }}
           <Input
             ref="passwordInput"
             v-model="form.password"
             type="password"
             class="mt-1 block w-3/4"
             :placeholder="$t('Password')"
+            :autocomplete="'current-password'"
             @keyup.enter="confirmPassword" />
 
           <InputError :message="form.error" class="mt-2" />
@@ -101,9 +129,9 @@ const closeModal = () => {
       </template>
 
       <template #footer>
-        <JetSecondaryButton @click="closeModal">
+        <SecondaryButton @click="closeModal">
           {{ $t('Cancel') }}
-        </JetSecondaryButton>
+        </SecondaryButton>
 
         <Button
           class="ms-3"
@@ -113,6 +141,6 @@ const closeModal = () => {
           {{ button }}
         </Button>
       </template>
-    </JetDialogModal>
+    </DialogModal>
   </span>
 </template>

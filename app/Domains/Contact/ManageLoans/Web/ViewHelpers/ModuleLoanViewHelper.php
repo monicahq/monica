@@ -21,7 +21,7 @@ class ModuleLoanViewHelper
             ->concat($loansAsLoanee)
             ->sortBy('loaned_at')
             ->unique('id')
-            ->map(fn (Loan $loan): array => self::dtoLoan($loan, $contact, $user)); // @phpstan-ignore-line
+            ->map(fn (Loan $loan): array => self::dtoLoan($loan, $contact, $user));
 
         return [
             'loans' => $loansAssociatedWithContactCollection,

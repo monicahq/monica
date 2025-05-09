@@ -1,7 +1,6 @@
 <script setup>
 import JetSectionTitle from './SectionTitle.vue';
 
-defineEmits(['submit']);
 defineProps({
   danger: {
     type: Boolean,

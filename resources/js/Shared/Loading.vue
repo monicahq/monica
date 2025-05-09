@@ -1,14 +1,12 @@
 <template>
   <div class="inline-block">
-    <div class="hollow-dots-spinner" :style="spinnerStyle">
+    <div class="hollow-dots-spinner">
       <div class="dot" />
       <div class="dot" />
       <div class="dot" />
     </div>
   </div>
 </template>
-
-<script></script>
 
 <style lang="scss" scoped>
 .hollow-dots-spinner,

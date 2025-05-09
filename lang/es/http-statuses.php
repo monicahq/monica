@@ -14,7 +14,7 @@ return [
     '206' => 'Contenido parcial',
     '207' => 'Multiestado',
     '208' => 'Ya Reportado',
-    '226' => 'Estoy usado',
+    '226' => 'IM usado',
     '300' => 'Múltiples opciones',
     '301' => 'Movido permanentemente',
     '302' => 'Encontrado',

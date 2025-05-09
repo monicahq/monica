@@ -25,7 +25,6 @@ class MultiAvatar
 
     public function __invoke($avatarId, $sansEnv, $ver)
     {
-
         return $this->generate(strval($avatarId), $sansEnv, $ver);
     }
 

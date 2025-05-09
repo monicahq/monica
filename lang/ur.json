@@ -1,6 +1,6 @@
 {
   "(and :count more error)": "(اور :count مزید غلطی)",
-  "(and :count more errors)": "(اور :count مزید غلطیاں)",
+  "(and :count more errors)": "(اور :count مزید غلطی)|(اور :count مزید غلطیاں)|(اور :count مزید غلطیاں)",
   "(Help)": "(مدد)",
   "+ add a contact": "+ ایک رابطہ شامل کریں۔",
   "+ add another": "+ دوسرا شامل کریں۔",
@@ -37,15 +37,20 @@
   ":Name called": ":Name نے کال کی۔",
   ":Name called, but I didn’t answer": ":Name نے کال کی، لیکن میں نے جواب نہیں دیا۔",
   ":UserName invites you to join Monica, an open source personal CRM, designed to help you document your relationships.": ":UserName آپ کو Monica میں شامل ہونے کی دعوت دیتا ہے، ایک اوپن سورس پرسنل CRM، جو آپ کے تعلقات کو دستاویز کرنے میں آپ کی مدد کے لیے ڈیزائن کیا گیا ہے۔",
+  "Accept": "قبول کریں۔",
+  "Accepted": "قبول کر لیا",
   "Accept Invitation": "قبول دعوت",
   "Accept invitation and create your account": "دعوت قبول کریں اور اپنا اکاؤنٹ بنائیں",
   "Account and security": "اکاؤنٹ اور سیکیورٹی",
   "Account settings": "اکاؤنٹ کی ترتیبات",
   "A contact information can be clickable. For instance, a phone number can be clickable and launch the default application in your computer. If you do not know the protocol for the type you are adding, you can simply omit this field.": "رابطہ کی معلومات کلک کی جا سکتی ہے۔ مثال کے طور پر، ایک فون نمبر قابل کلک ہو سکتا ہے اور آپ کے کمپیوٹر میں ڈیفالٹ ایپلیکیشن لانچ کر سکتا ہے۔ اگر آپ اس قسم کے پروٹوکول کو نہیں جانتے جو آپ شامل کر رہے ہیں، تو آپ آسانی سے اس فیلڈ کو چھوڑ سکتے ہیں۔",
+  "Action": "کارروائی",
+  "Actions": "اعمال",
   "Activate": "محرک کریں",
   "Activity feed": "سرگرمی فیڈ",
   "Activity in this vault": "اس والٹ میں سرگرمی",
   "Add": "شامل کریں",
+  "Add :name": ":name شامل کریں۔",
   "add a call reason type": "کال کی وجہ کی قسم شامل کریں۔",
   "Add a contact": "ایک رابطہ شامل کریں۔",
   "Add a contact information": "رابطہ کی معلومات شامل کریں۔",
@@ -117,10 +122,13 @@
   "Address types let you classify contact addresses.": "پتے کی قسمیں آپ کو رابطے کے پتوں کی درجہ بندی کرنے دیتی ہیں۔",
   "Add Team Member": "شامل ٹیم کے رکن",
   "Add to group": "گروپ میں شامل کریں۔",
+  "A decryption key is required.": "ایک ڈکرپشن کلید درکار ہے۔",
+  "Admin": "ایڈمن",
   "Administrator": "ایڈمنسٹریٹر",
   "Administrator users can perform any action.": "ایڈمنسٹریٹر صارفین کو انجام دے سکتے ہیں کسی بھی کارروائی کی ہے.",
   "a father-son relation shown on the father page,": "باپ کے صفحے پر باپ بیٹے کا رشتہ دکھایا گیا ہے،",
   "after the next occurence of the date.": "تاریخ کے اگلے واقعہ کے بعد۔",
+  "Agree": "متفق",
   "A group is two or more people together. It can be a family, a household, a sport club. Whatever is important to you.": "ایک گروپ دو یا دو سے زیادہ افراد ایک ساتھ ہوتا ہے۔ یہ ایک خاندان، ایک گھریلو، ایک کھیل کلب ہو سکتا ہے. جو بھی آپ کے لیے اہم ہے۔",
   "All contacts in the vault": "والٹ میں تمام رابطے",
   "All files": "تمام فائلیں",
@@ -162,6 +170,7 @@
   "All users and vaults will be deleted immediately,": "تمام صارفین اور والٹس کو فوری طور پر حذف کر دیا جائے گا،",
   "All users in this account": "اس اکاؤنٹ کے تمام صارفین",
   "Already registered?": "پہلے سے رجسٹرڈ ؟",
+  "Already Reported": "پہلے ہی اطلاع دی گئی ہے۔",
   "Already used on this page": "اس صفحہ پر پہلے ہی استعمال ہو چکا ہے۔",
   "A new verification link has been sent to the email address you provided during registration.": "ایک نیا تصدیقی لنک اس ای میل ایڈریس پر بھیج دیا گیا ہے جو آپ نے رجسٹریشن کے دوران فراہم کیا تھا۔",
   "A new verification link has been sent to the email address you provided in your profile settings.": "ایک نیا تصدیقی لنک اس ای میل ایڈریس پر بھیجا گیا ہے جو آپ نے اپنی پروفائل کی ترتیبات میں فراہم کیا ہے۔",
@@ -173,7 +182,7 @@
   "API Tokens": "API ٹوکن",
   "API tokens allow third-party services to authenticate with our application on your behalf.": "API کے ٹوکن کی اجازت تیسری پارٹی کی خدمات کی توثیق کرنے کے لئے ہماری درخواست آپ کی جانب سے.",
   "A post template defines how the content of a post should be displayed. You can define as many templates as you want, and choose which template should be used on which post.": "پوسٹ ٹیمپلیٹ اس بات کی وضاحت کرتا ہے کہ پوسٹ کا مواد کس طرح ظاہر ہونا چاہیے۔ آپ جتنے چاہیں ٹیمپلیٹس کی وضاحت کر سکتے ہیں، اور منتخب کر سکتے ہیں کہ کون سا ٹیمپلیٹ کس پوسٹ پر استعمال کیا جائے۔",
-  "Archive": "محفوظ شدہ دستاویزات",
+  "Archive": "آرکائیو",
   "Archive contact": "آرکائیو رابطہ",
   "archived the contact": "رابطے کو محفوظ کیا",
   "Are you sure? The address will be deleted immediately.": "کیا تمہیں یقین ہے؟ پتہ فوری طور پر حذف کر دیا جائے گا۔",
@@ -189,6 +198,7 @@
   "Are you sure? This will remove the template from all contacts, but won’t delete the contacts themselves.": "کیا تمہیں یقین ہے؟ یہ تمام رابطوں سے ٹیمپلیٹ کو ہٹا دے گا، لیکن خود روابط کو حذف نہیں کرے گا۔",
   "Are you sure you want to delete this team? Once a team is deleted, all of its resources and data will be permanently deleted.": "ہیں آپ کو اس بات کا یقین آپ کو خارج کرنا چاہتے ہیں اس کی ٹیم? ایک بار ایک ٹیم سے خارج کر دیا ہے, اس کے تمام وسائل اور اعداد و شمار ہو جائے گا مستقل طور پر خارج کر دیا.",
   "Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.": "آپ چاہتے ہیں کو خارج کرنے کے لئے آپ کے اکاؤنٹ? ایک بار جب آپ کے اکاؤنٹ کو خارج کر دیا, اس کے تمام وسائل اور اعداد و شمار ہو جائے گا مستقل طور پر خارج کر دیا. براہ مہربانی آپ اپنا پاس ورڈ درج کرنے کے لئے اس بات کی تصدیق کرنے کے لئے چاہتے ہیں کو مستقل طور پر آپ کے اکاؤنٹ کو خارج.",
+  "Are you sure you want to disable two factor authentication?": "کیا آپ واقعی دو عنصر کی توثیق کو غیر فعال کرنا چاہتے ہیں؟",
   "Are you sure you would like to archive this contact?": "کیا آپ واقعی اس رابطے کو آرکائیو کرنا چاہیں گے؟",
   "Are you sure you would like to delete this API token?": "ہیں آپ کو اس بات کا یقین کرنے کے لئے چاہتے ہیں کو خارج کر دیں یہ API ٹوکن?",
   "Are you sure you would like to delete this contact? This will remove everything we know about this contact.": "کیا آپ واقعی اس رابطے کو حذف کرنا چاہیں گے؟ اس سے وہ سب کچھ ہٹ جائے گا جو ہم اس رابطے کے بارے میں جانتے ہیں۔",
@@ -197,7 +207,9 @@
   "Are you sure you would like to remove this person from the team?": "ہیں آپ کو اس بات کا یقین آپ کو اس کو دور کرنا چاہتے شخص کی ٹیم کی طرف سے?",
   "A slice of life lets you group posts by something meaningful to you. Add a slice of life in a post to see it here.": "زندگی کا ایک ٹکڑا آپ کو اپنے لیے معنی خیز چیز کے ذریعے گروپ پوسٹس کی اجازت دیتا ہے۔ اسے یہاں دیکھنے کے لیے ایک پوسٹ میں زندگی کا ایک ٹکڑا شامل کریں۔",
   "a son-father relation shown on the son page.": "بیٹے کے صفحے پر بیٹا باپ کا رشتہ دکھایا گیا ہے۔",
+  "Assign": "تفویض",
   "assigned a label": "ایک لیبل تفویض کیا",
+  "Associate": "ایسوسی ایٹ",
   "Association": "ایسوسی ایشن",
   "At": "پر",
   "at ": "پر",
@@ -205,12 +217,18 @@
   "A template defines how contacts should be displayed. You can have as many templates as you want - they are defined in your Account settings. However, you might want to define a default template so all your contacts in this vault have this template by default.": "ایک ٹیمپلیٹ اس بات کی وضاحت کرتا ہے کہ رابطوں کو کیسے ظاہر کیا جانا چاہیے۔ آپ جتنے چاہیں ٹیمپلیٹس رکھ سکتے ہیں - وہ آپ کے اکاؤنٹ کی ترتیبات میں بیان کیے گئے ہیں۔ تاہم، ہو سکتا ہے کہ آپ ڈیفالٹ ٹیمپلیٹ کی وضاحت کرنا چاہیں تاکہ اس والٹ میں موجود آپ کے تمام رابطوں میں یہ ٹیمپلیٹ بطور ڈیفالٹ ہو۔",
   "A template is made of pages, and in each page, there are modules. How data is displayed is entirely up to you.": "ایک ٹیمپلیٹ صفحات سے بنا ہے، اور ہر صفحے میں، ماڈیولز ہیں. ڈیٹا کیسے ظاہر ہوتا ہے یہ مکمل طور پر آپ پر منحصر ہے۔",
   "Atheist": "ملحد",
+  "A Timeout Occurred": "ایک ٹائم آؤٹ ہوا۔",
+  "Attach": "منسلک",
   "At which time should we send the notification, when the reminder occurs?": "ہمیں کس وقت نوٹیفکیشن بھیجنا چاہئے، جب یاد دہانی ہوتی ہے؟",
   "Audio-only call": "صرف آڈیو کال",
+  "Authenticate using your password:": "اپنے پاس ورڈ کا استعمال کرتے ہوئے توثیق کریں:",
   "Auto saved a few seconds ago": "چند سیکنڈ پہلے خود بخود محفوظ ہوا۔",
   "Available modules:": "دستیاب ماڈیولز:",
   "Avatar": "اوتار",
   "Avatars": "اوتار",
+  "Bad Gateway": "خراب گیٹ وے",
+  "Bad Request": "غلط فرمائش",
+  "Bandwidth Limit Exceeded": "بینڈوتھ کی حد سے تجاوز کر گیا۔",
   "Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.": "جاری رکھنے سے پہلے، کیا آپ اس لنک پر کلک کر کے اپنے ای میل ایڈریس کی تصدیق کر سکتے ہیں جو ہم نے ابھی آپ کو ای میل کیا ہے؟ اگر آپ کو ای میل موصول نہیں ہوئی تو ہم بخوشی آپ کو دوسرا بھیجیں گے۔",
   "best friend": "سب سے اچھی دوست",
   "Bird": "پرندہ",
@@ -221,6 +239,7 @@
   "Bought": "خریدا",
   "Breakdown of the current usage": "موجودہ استعمال کی خرابی۔",
   "brother/sister": "بھائی/بہن",
+  "Browse": "براؤز کریں۔",
   "Browser Sessions": "براؤزر کے سیشن",
   "Buddhist": "بدھسٹ",
   "Business": "کاروبار",
@@ -248,31 +267,44 @@
   "Change template": "ٹیمپلیٹ تبدیل کریں۔",
   "Child": "بچہ",
   "child": "بچہ",
-  "Choose": "منتخب کریں۔",
+  "Choose": "منتخب",
+  "Choose :name": ":name کا انتخاب کریں۔",
   "Choose a color": "ایک رنگ منتخب کریں۔",
   "Choose an existing address": "ایک موجودہ پتہ منتخب کریں۔",
   "Choose an existing contact": "ایک موجودہ رابطہ منتخب کریں۔",
   "Choose a template": "ایک ٹیمپلیٹ کا انتخاب کریں۔",
   "Choose a value": "ایک قدر منتخب کریں۔",
+  "Choose File": "منتخب کریں فائل",
+  "Choose Image": "تصویر کا انتخاب کریں۔",
   "Chosen type:": "منتخب کردہ قسم:",
   "Christian": "عیسائی",
   "Christmas": "کرسمس",
   "City": "شہر",
   "Click here to re-send the verification email.": "تصدیقی ای میل دوبارہ بھیجنے کے لیے یہاں کلک کریں۔",
   "Click on a day to see the details": "تفصیلات دیکھنے کے لیے ایک دن پر کلک کریں۔",
+  "Click to copy": "کاپی کرنے کے لیے کلک کریں۔",
+  "Client Closed Request": "کلائنٹ کی بند درخواست",
   "Close": "بند",
   "close edit mode": "ترمیم موڈ بند کریں",
   "Club": "کلب",
   "Code": "کوڈ",
+  "Collapse": "گرنے",
+  "Collapse All": "سبھی کو سکیڑیں۔",
   "colleague": "ساتھی",
+  "Comment": "تبصرہ",
   "Companies": "کمپنیاں",
   "Company name": "کمپنی کا نام",
   "Compared to Monica:": "Monica کے مقابلے:",
   "Configure how we should notify you": "ترتیب دیں کہ ہم آپ کو کیسے مطلع کریں۔",
   "Confirm": "اس بات کی تصدیق",
+  "Confirm access": "رسائی کی تصدیق کریں",
   "Confirm Password": "پاس ورڈ کی توثیق کریں",
+  "Confirm your passkey or security key": "اپنی پاسکی یا سیکیورٹی کلید کی تصدیق کریں",
+  "Conflict": "تنازعہ",
   "Connect": "جڑیں۔",
   "Connected": "جڑا ہوا",
+  "Connection Closed Without Response": "بغیر جواب کے کنکشن بند کر دیا گیا۔",
+  "Connection Timed Out": "کنکشن کا وقت ختم ہوگیا",
   "Connect with your security key": "اپنی سیکیورٹی کلید سے منسلک ہوں۔",
   "Contact feed": "فیڈ سے رابطہ کریں۔",
   "Contact information": "رابطے کی معلومات",
@@ -284,6 +316,7 @@
   "Contacts in this slice": "اس سلائس میں رابطے",
   "Contacts will be shown as follow:": "رابطے مندرجہ ذیل کے طور پر دکھائے جائیں گے:",
   "Content": "مواد",
+  "Continue": "جاری رہے",
   "Copied.": "کاپی",
   "Copy": "کاپی",
   "Copy value into the clipboard": "کلپ بورڈ میں قیمت کاپی کریں۔",
@@ -292,6 +325,7 @@
   "Couple": "جوڑے",
   "cousin": "کزن",
   "Create": "تخلیق",
+  "Create :name": ":name بنائیں",
   "Create account": "اکاؤنٹ بنائیں",
   "Create Account": "اکاؤنٹ بنائیں",
   "Create a contact": "ایک رابطہ بنائیں",
@@ -310,6 +344,7 @@
   "Create at least one template to use Monica.": "Monica کو استعمال کرنے کے لیے کم از کم ایک ٹیمپلیٹ بنائیں۔",
   "Create a user": "ایک صارف بنائیں",
   "Create a vault": "ایک والٹ بنائیں",
+  "Created": "بنایا",
   "Created.": "پیدا ہوتا ہے.",
   "created a goal": "ایک مقصد بنایا",
   "created the contact": "رابطہ بنایا",
@@ -346,6 +381,7 @@
   "Default template": "ڈیفالٹ ٹیمپلیٹ",
   "Default template to display contacts": "رابطوں کو ظاہر کرنے کے لیے ڈیفالٹ ٹیمپلیٹ",
   "Delete": "کو حذف کریں",
+  "Delete :name": ":name کو حذف کریں۔",
   "Delete Account": "اکاؤنٹ کو حذف کریں",
   "Delete a new key": "ایک نئی کلید کو حذف کریں۔",
   "Delete API Token": "کو حذف API ٹوکن",
@@ -367,10 +403,13 @@
   "Delete your account on https://customers.monicahq.com.": "https://customers.monicahq.com پر اپنا اکاؤنٹ حذف کریں۔",
   "Deleting the vault means deleting all the data inside this vault, forever. There is no turning back. Please be certain.": "والٹ کو حذف کرنے کا مطلب ہے کہ اس والٹ کے اندر موجود تمام ڈیٹا کو ہمیشہ کے لیے حذف کر دیا جائے۔ پیچھے مڑنے کی کوئی صورت نہیں ہے۔ براہ کرم یقین رکھیں۔",
   "Description": "تفصیل",
+  "Detach": "جدا",
   "Detail of a goal": "مقصد کی تفصیل",
+  "Details": "تفصیلات",
   "Details in the last year": "پچھلے سال کی تفصیلات",
   "Disable": "غیر فعال",
   "Disable all": "سبھی کو غیر فعال کریں۔",
+  "Discard": "رد کر دیں۔",
   "Disconnect": "منقطع کرنا",
   "Discuss partnership": "شراکت داری پر تبادلہ خیال کریں۔",
   "Discuss recent purchases": "حالیہ خریداریوں پر تبادلہ خیال کریں۔",
@@ -379,14 +418,19 @@
   "Distance": "فاصلے",
   "Documents": "دستاویزات",
   "Dog": "کتا",
+  "Done": "ہو گیا",
   "Done.": "کیا جاتا ہے.",
+  "Down": "نیچے",
   "Download": "ڈاؤن لوڈ کریں",
   "Download as vCard": "vCard کے بطور ڈاؤن لوڈ کریں۔",
   "Drank": "پیا۔",
   "Drove": "چلایا",
   "Due and upcoming tasks": "واجب الادا اور آنے والے کام",
-  "Edit": "ترمیم",
+  "Duplicate": "نقل",
+  "Duplicate :name": "نقل: نام",
+  "Edit": "میں ترمیم کریں",
   "edit": "ترمیم",
+  "Edit :name": ":name میں ترمیم کریں۔",
   "Edit a contact": "رابطے میں ترمیم کریں۔",
   "Edit a journal": "ایک جریدے میں ترمیم کریں۔",
   "Edit a post": "ایک پوسٹ میں ترمیم کریں۔",
@@ -410,8 +454,13 @@
   "Email Password Reset Link": "ای میل کے پاس ورڈ ری سیٹ لنک",
   "Enable": "چالو",
   "Enable all": "سبھی کو فعال کریں۔",
+  "Encrypted environment file already exists.": "انکرپٹ شدہ ماحول کی فائل پہلے سے موجود ہے۔",
+  "Encrypted environment file not found.": "خفیہ کردہ ماحول کی فائل نہیں ملی۔",
   "Ensure your account is using a long, random password to stay secure.": "کو یقینی بنانے کے آپ کے اکاؤنٹ کا استعمال کرتے ہوئے ایک طویل, بے ترتیب پاس ورڈ رہنے کے لئے محفوظ ہے.",
   "Enter a number from 0 to 100000. No decimals.": "0 سے 100000 تک نمبر درج کریں۔ کوئی اعشاریہ نہیں۔",
+  "Environment file already exists.": "ماحولیات کی فائل پہلے سے موجود ہے۔",
+  "Environment file not found.": "ماحولیات فائل نہیں ملی۔",
+  "errors": "غلطیاں",
   "Events this month": "اس مہینے کے واقعات",
   "Events this week": "اس ہفتے کے واقعات",
   "Events this year": "اس سال کے واقعات",
@@ -419,12 +468,20 @@
   "ex-boyfriend": "سابق بوائے فرینڈ",
   "Exception:": "رعایت:",
   "Existing company": "موجودہ کمپنی",
+  "Expand": "پھیلائیں۔",
+  "Expand All": "سبھی کو پھیلائیں۔",
+  "Expectation Failed": "توقع ناکام ہوگئی",
+  "Explanation": "وضاحت",
+  "Export": "برآمد کریں۔",
+  "Export :name": "Export :name",
   "External connections": "بیرونی روابط",
   "Facebook": "فیس بک",
+  "Failed Dependency": "ناکام انحصار",
   "Family": "خاندان",
   "Family summary": "خاندانی خلاصہ",
   "Favorites": "پسندیدہ",
   "Female": "عورت",
+  "File": "فائل",
   "Files": "فائلوں",
   "Filter": "فلٹر",
   "Filter list or create a new label": "فہرست کو فلٹر کریں یا نیا لیبل بنائیں",
@@ -442,13 +499,14 @@
   "Forbidden": "حرام",
   "Forgot your password?": "پاسورڈ بھول گئے ؟",
   "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "پاسورڈ بھول گئے ؟  کوئی مسئلہ نہیں. صرف ہمیں پتہ ہے کہ آپ کے ای میل ایڈریس اور ہم نے آپ کو ای میل ایک پاس ورڈ ری سیٹ کریں کے لنک کی اجازت دے گا کہ آپ کو منتخب کرنے کے لئے ایک نئی ایک.",
-  "For your security, please confirm your password to continue.": "آپ کی سیکورٹی کے لئے, براہ مہربانی اس بات کی تصدیق آپ کے پاس ورڈ کے لئے جاری رکھنے کے لئے.",
+  "For your security, please confirm the access to continue.": "آپ کی حفاظت کے ل please ، براہ کرم جاری رکھنے کے لئے رسائی کی تصدیق کریں۔",
   "Found": "ملا",
   "Friday": "جمعہ",
   "Friend": "دوست",
   "friend": "دوست",
   "From A to Z": "A سے Z تک",
   "From Z to A": "Z سے A تک",
+  "Gateway Timeout": "گیٹ وے ٹائم آؤٹ",
   "Gender": "صنف",
   "Gender and pronoun": "جنس اور ضمیر",
   "Genders": "جنس",
@@ -461,6 +519,8 @@
   "Go back": "واپس جاو",
   "godchild": "خدا کا بچہ",
   "godparent": "godparent",
+  "Go Home": "گھر جانے کے",
+  "Gone": "چلا گیا",
   "Google Maps": "گوگل نقشہ جات",
   "Google Maps offers the best accuracy and details, but it is not ideal from a privacy standpoint.": "Google Maps بہترین درستگی اور تفصیلات پیش کرتا ہے، لیکن رازداری کے نقطہ نظر سے یہ مثالی نہیں ہے۔",
   "Got fired": "نوکری سے برخاست ہو جانا",
@@ -482,6 +542,8 @@
   "Hello!": "ہیلو!",
   "Help": "مدد",
   "Hi :name": "ہیلو :name",
+  "Hide": "چھپائیں",
+  "Hide :name": ":name چھپائیں۔",
   "Hinduist": "ہندو پرست",
   "History of the notification sent": "بھیجے گئے نوٹیفکیشن کی تاریخ",
   "Hobbies": "شوق",
@@ -498,6 +560,8 @@
   "How should we display dates": "ہمیں تاریخیں کیسے ظاہر کرنی چاہئیں",
   "How should we display distance values": "ہمیں فاصلے کی قدروں کو کیسے ظاہر کرنا چاہئے؟",
   "How should we display numerical values": "ہمیں عددی اقدار کو کیسے ظاہر کرنا چاہئے۔",
+  "HTTP Version Not Supported": "HTTP ورژن تعاون یافتہ نہیں ہے۔",
+  "I'm a teapot": "میں چائے والا ہوں۔",
   "I agree to the :terms and :policy": "میں :terms اور :policy سے متفق ہوں",
   "I agree to the :terms_of_service and :privacy_policy": "میں اتفاق کرتا ہوں کے لئے :terms_of_service اور :privacy_policy",
   "I am grateful for": "میں شکر گزار ہوں۔",
@@ -516,14 +580,25 @@
   "If you’ve received this invitation by mistake, please discard it.": "اگر آپ کو یہ دعوت غلطی سے موصول ہوئی ہے، تو براہ کرم اسے رد کر دیں۔",
   "I know the exact date, including the year": "مجھے صحیح تاریخ معلوم ہے، بشمول سال",
   "I know the name": "میں نام جانتا ہوں۔",
+  "Image": "تصویر",
+  "Impersonate": "نقالی کرنا",
+  "Impersonation": "نقالی",
+  "Import": "درآمد کریں۔",
+  "Import :name": ":name درآمد کریں۔",
   "Important dates": "اہم تاریخیں",
   "Important date summary": "اہم تاریخ کا خلاصہ",
+  "IM Used": "میں استعمال کر رہا ہوں",
   "in": "میں",
   "Information": "معلومات",
   "Information from Wikipedia": "ویکیپیڈیا سے معلومات",
   "in love with": "پیار میں",
   "Inspirational post": "متاثر کن پوسٹ",
+  "Insufficient Storage": "ناکافی اسٹوریج",
+  "Internal Server Error": "اندرونی سرور کی خرابی",
+  "Introduction": "تعارف",
+  "Invalid filename.": "غلط فائل نام۔",
   "Invalid JSON was returned from the route.": "غلط JSON راستے سے واپس کر دیا گیا تھا۔",
+  "Invalid SSL Certificate": "غلط SSL سرٹیفکیٹ",
   "Invitation sent": "دعوت نامہ بھیج دیا گیا۔",
   "Invite a new user": "ایک نئے صارف کو مدعو کریں۔",
   "Invite someone": "کسی کو مدعو کریں۔",
@@ -557,6 +632,8 @@
   "Last used :date": "آخری بار استعمال کیا گیا :date",
   "Leave": "چھوڑ دو",
   "Leave Team": "چھوڑ کر ٹیم",
+  "length": "لمبائی",
+  "Length Required": "لمبائی درکار ہے۔",
   "Life": "زندگی",
   "Life & goals": "زندگی کے مقاصد",
   "Life events": "زندگی کے واقعات",
@@ -565,29 +642,37 @@
   "Life event types and categories": "زندگی کے واقعات کی اقسام اور زمرے",
   "Life metrics": "زندگی کی پیمائش",
   "Life metrics let you track metrics that are important to you.": "لائف میٹرکس آپ کو ان میٹرکس کو ٹریک کرنے دیتی ہیں جو آپ کے لیے اہم ہیں۔",
+  "Like": "پسند",
   "LinkedIn": "LinkedIn",
   "List of addresses": "پتوں کی فہرست",
   "List of addresses of the contacts in the vault": "والٹ میں رابطوں کے پتوں کی فہرست",
   "List of all important dates": "تمام اہم تاریخوں کی فہرست",
+  "Load": "لوڈ",
   "Loading…": "لوڈ ہو رہا ہے…",
   "Load previous entries": "پچھلی اندراجات لوڈ کریں۔",
   "Loans": "قرضے",
   "Locale default: :value": "لوکل ڈیفالٹ: :value",
+  "Localize": "مقامی بنانا",
+  "Location": "مقام",
+  "Locked": "مقفل",
   "Log a call": "کال لاگ ان کریں۔",
   "Log details": "لاگ تفصیلات",
   "logged the mood": "موڈ کو لاگو کیا",
   "Log in": "میں لاگ ان کریں",
+  "Log In": "لاگ ان کریں",
   "Login": "لاگ ان کریں",
   "Login with:": "کے ساتھ لاگ ان:",
   "Log Out": "باہر لاگ ان کریں",
   "Logout": "لاگ آوٹ",
   "Log Out Other Browser Sessions": "لاگ آؤٹ دیگر براؤزر سیشن",
   "Longest streak": "سب سے طویل سلسلہ",
+  "Loop Detected": "لوپ کا پتہ چلا",
   "Love": "محبت",
   "loved by": "کی طرف سے پیار کیا",
   "lover": "عاشق",
   "Made from all over the world. We ❤️ you.": "پوری دنیا سے تیار کردہ۔ ہم آپ کو ❤️",
   "Maiden name": "خاندانی نام",
+  "Maintenance Mode": "مرمت کی حالت میں",
   "Male": "مرد",
   "Manage Account": "اکاؤنٹ کا انتظام",
   "Manage accounts you have linked to your Customers account.": "ان اکاؤنٹس کا نظم کریں جنہیں آپ نے اپنے صارفین کے اکاؤنٹ سے منسلک کیا ہے۔",
@@ -616,9 +701,11 @@
   "Mastodon": "مستوڈن",
   "Maybe one of these contacts?": "شاید ان رابطوں میں سے ایک؟",
   "mentor": "اتالیق",
+  "Method Not Allowed": "اس طریقے کی اجازت نہیں",
   "Middle name": "درمیانی نام",
   "miles": "میل",
   "miles (mi)": "میل (میل)",
+  "Misdirected Request": "غلط ہدایت کی درخواست",
   "Modules in this page": "اس صفحہ میں ماڈیولز",
   "Monday": "پیر",
   "Monica. All rights reserved. 2017 — :date.": "Monica۔ جملہ حقوق محفوظ ہیں. 2017 — :date۔",
@@ -632,6 +719,9 @@
   "More details": "مزید تفصیلات",
   "More errors": "مزید غلطیاں",
   "Move contact": "رابطہ منتقل کریں۔",
+  "Moved Permanently": "مستقل طور پر منتقل ہو گیا۔",
+  "Multi-Status": "ملٹی سٹیٹس",
+  "Multiple Choices": "متعدد انتخاب",
   "Muslim": "مسلمان",
   "Name": "نام",
   "Name of the pet": "پالتو جانور کا نام",
@@ -639,13 +729,20 @@
   "Name of the reverse relationship": "معکوس تعلق کا نام",
   "Nature of the call": "کال کی نوعیت",
   "nephew/niece": "بھتیجا/بھتیجی",
+  "Network Authentication Required": "نیٹ ورک کی توثیق کی ضرورت ہے۔",
+  "Network Connect Timeout Error": "نیٹ ورک کنیکٹ ٹائم آؤٹ کی خرابی۔",
+  "Network Read Timeout Error": "نیٹ ورک پڑھنے کا ٹائم آؤٹ خرابی۔",
+  "New": "نئی",
+  "New :name": "نیا :name",
   "New Password": "نیا پاس ورڈ",
   "New to Monica?": "Monica کے لیے نئے ہیں؟",
   "Next": "اگلے",
   "nickname": "عرفی نام",
   "Nickname": "عرفی نام",
+  "No": "کوئی",
   "No cities have been added yet in any contact’s addresses.": "کسی بھی رابطے کے پتے میں ابھی تک کوئی شہر شامل نہیں کیا گیا ہے۔",
   "No contacts found.": "کوئی رابطے نہیں ملے۔",
+  "No Content": "کوئی مواد نہیں۔",
   "No countries have been added yet in any contact’s addresses.": "کسی بھی رابطے کے پتے میں ابھی تک کوئی ملک شامل نہیں کیا گیا ہے۔",
   "No dates in this month.": "اس مہینے میں کوئی تاریخ نہیں ہے۔",
   "No description yet.": "ابھی تک کوئی تفصیل نہیں۔",
@@ -653,34 +750,49 @@
   "No keys registered yet": "ابھی تک کوئی چابیاں رجسٹر نہیں ہوئی ہیں۔",
   "No labels yet.": "ابھی تک کوئی لیبل نہیں ہے۔",
   "No life event types yet.": "ابھی تک زندگی کے واقعات کی کوئی قسم نہیں ہے۔",
+  "Non-Authoritative Information": "غیر مستند معلومات",
   "No notes found.": "کوئی نوٹس نہیں ملا۔",
   "No results found": "کوئی نتیجہ نہیں",
   "No role": "کوئی کردار نہیں۔",
   "No roles yet.": "ابھی تک کوئی کردار نہیں۔",
+  "Not Acceptable": "ناقابل قبول",
   "No tasks.": "کوئی کام نہیں۔",
   "Notes": "نوٹس",
   "Note that removing a module from a page will not delete the actual data on your contact pages. It will simply hide it.": "نوٹ کریں کہ کسی صفحہ سے ماڈیول ہٹانے سے آپ کے رابطہ صفحات پر موجود اصل ڈیٹا حذف نہیں ہوگا۔ یہ صرف اسے چھپا دے گا۔",
+  "Not Extended": "توسیعی نہیں",
   "Not Found": "نہیں پایا",
   "Notification channels": "نوٹیفکیشن چینلز",
   "Notification sent": "اطلاع بھیج دی گئی۔",
+  "Not Implemented": "نافذ نہیں کیا گیا",
+  "Not Modified": "ترمیم شدہ نہیں",
   "Not set": "سیٹ نہیں ہے",
   "No upcoming reminders.": "کوئی آنے والی یاد دہانی نہیں",
   "Number of hours slept": "کتنے گھنٹے سوئے۔",
   "Numerical value": "عددی قدر",
   "of": "کی",
   "Offered": "پیشکش کی",
+  "OK": "ٹھیک ہے",
   "Once a team is deleted, all of its resources and data will be permanently deleted. Before deleting this team, please download any data or information regarding this team that you wish to retain.": "ایک بار ایک ٹیم سے خارج کر دیا ہے, اس کے تمام وسائل اور اعداد و شمار ہو جائے گا مستقل طور پر خارج کر دیا. اس سے پہلے حذف کر رہا ہے اس کی ٹیم, ڈاؤن لوڈ کریں کسی بھی ڈیٹا یا معلومات کے بارے میں اس کی ٹیم ہے کہ آپ کی خواہش کو برقرار رکھنے کے لئے.",
+  "Once two factor authentication is disabled, you will no longer be prompted for a secure, random token during authentication.": "ایک بار جب دو عنصر کی توثیق غیر فعال ہوجائے تو ، آپ کو تصدیق کے دوران محفوظ ، بے ترتیب ٹوکن کے لئے مزید اشارہ نہیں کیا جائے گا۔",
   "Once you cancel,": "ایک بار جب آپ منسوخ کر دیں،",
   "Once you click the Setup button below, you’ll have to open Telegram with the button we’ll provide you with. This will locate the Monica Telegram bot for you.": "نیچے دیے گئے سیٹ اپ بٹن پر کلک کرنے کے بعد، آپ کو اس بٹن کے ساتھ ٹیلیگرام کھولنا پڑے گا جو ہم آپ کو فراہم کریں گے۔ یہ آپ کے لیے Monica ٹیلیگرام بوٹ تلاش کرے گا۔",
   "Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.": "ایک بار جب آپ کے اکاؤنٹ کو خارج کر دیا, اس کے تمام وسائل اور اعداد و شمار ہو جائے گا مستقل طور پر خارج کر دیا. اس سے پہلے حذف کرنے سے آپ کے اکاؤنٹ, براہ مہربانی ڈاؤن لوڈ ، اتارنا کسی بھی ڈیٹا یا معلومات کو کہ آپ کی خواہش کو برقرار رکھنے کے لئے.",
   "Only once, when the next occurence of the date occurs.": "صرف ایک بار، جب تاریخ کا اگلا واقعہ ہوتا ہے۔",
   "Oops! Something went wrong.": "افوہ! کچھ غلط ہو گیا.",
+  "Open": "کھولیں۔",
+  "Open in a current window": "موجودہ ونڈو میں کھولیں۔",
+  "Open in a new window": "ایک نئی ونڈو میں کھولیں۔",
+  "Open in a parent frame": "پیرنٹ فریم میں کھولیں۔",
+  "Open in the topmost frame": "سب سے اوپر والے فریم میں کھولیں۔",
+  "Open on the website": "ویب سائٹ پر کھولیں۔",
   "Open Street Maps": "Street Maps کھولیں۔",
   "Open Street Maps is a great privacy alternative, but offers less details.": "Open Street Maps رازداری کا ایک بہترین متبادل ہے، لیکن کم تفصیلات پیش کرتا ہے۔",
   "Open Telegram to validate your identity": "اپنی شناخت کی تصدیق کے لیے ٹیلیگرام کھولیں۔",
   "optional": "اختیاری",
+  "Or": "یا",
   "Or create a new one": "یا ایک نیا بنائیں",
   "Or filter by type": "یا قسم کے لحاظ سے فلٹر کریں۔",
+  "Origin Is Unreachable": "اصل ناقابل رسائی ہے۔",
   "Or remove the slice": "یا ٹکڑا ہٹا دیں۔",
   "Or reset the fields": "یا فیلڈز کو ری سیٹ کریں۔",
   "Other": "دیگر",
@@ -690,15 +802,18 @@
   "Pagination Navigation": "صفحہ بندی نیویگیشن",
   "Parent": "والدین",
   "parent": "والدین",
+  "Partial Content": "جزوی مواد",
   "Participants": "امیدوار",
   "Partner": "ساتھی",
   "Part of": "کا حصہ",
   "Password": "پاس ورڈ",
+  "Payload Too Large": "پے لوڈ بہت بڑا ہے۔",
   "Payment Required": "ادائیگی کی ضرورت ہے۔",
   "Pending Team Invitations": "زیر التواء ٹیم کے دعوت نامے",
   "per/per": "فی/فی",
   "Permanently delete this team.": "مستقل طور پر خارج کر دیں اس کی ٹیم.",
   "Permanently delete your account.": "مستقل طور پر آپ کے اکاؤنٹ کو خارج.",
+  "Permanent Redirect": "مستقل ری ڈائریکٹ",
   "Permission for :name": ":Name کے لیے اجازت",
   "Permissions": "اجازت",
   "Personal": "ذاتی",
@@ -740,10 +855,15 @@
   "Posts": "پوسٹس",
   "Posts in your journals": "آپ کے روزناموں میں پوسٹس",
   "Post templates": "ٹیمپلیٹس پوسٹ کریں۔",
+  "Precondition Failed": "پیشگی شرط ناکام ہوگئی",
+  "Precondition Required": "پیشگی شرط درکار ہے۔",
   "Prefix": "سابقہ",
+  "Preview": "پیش نظارہ",
   "Previous": "پچھلا",
   "Previous addresses": "پچھلے پتے",
+  "Price": "قیمت",
   "Privacy Policy": "رازداری کی پالیسی",
+  "Processing": "پروسیسنگ",
   "Profile": "پروفائل",
   "Profile and security": "پروفائل اور سیکیورٹی",
   "Profile Information": "پروفائل کی معلومات",
@@ -756,23 +876,28 @@
   "Protocol": "پروٹوکول",
   "Protocol: :name": "پروٹوکول: :name",
   "Province": "صوبہ",
+  "Proxy Authentication Required": "پراکسی توثیق درکار ہے۔",
   "Quick facts": "فوری حقائق",
   "Quick facts let you document interesting facts about a contact.": "فوری حقائق آپ کو کسی رابطے کے بارے میں دلچسپ حقائق کی دستاویز کرنے دیتے ہیں۔",
   "Quick facts template": "فوری حقائق کا ٹیمپلیٹ",
   "Quit job": "نوکری چھوڑ دو",
   "Rabbit": "خرگوش",
+  "Railgun Error": "ریل گن کی خرابی۔",
   "Ran": "بھاگا۔",
+  "Range Not Satisfiable": "حد قابل اطمینان نہیں۔",
   "Rat": "چوہا",
   "Read :count time|Read :count times": ":count بار پڑھیں|:count بار پڑھیں",
+  "Record": "ریکارڈ",
   "Record a loan": "قرض ریکارڈ کریں۔",
   "Record your mood": "اپنے موڈ کو ریکارڈ کریں۔",
   "Recovery Code": "وصولی کے کوڈ",
   "Regardless of where you are located in the world, have dates displayed in your own timezone.": "اس سے قطع نظر کہ آپ دنیا میں کہاں ہیں، تاریخیں آپ کے اپنے ٹائم زون میں دکھائی دیں۔",
-  "Regards": "کے حوالے",
+  "Regards,": "کے حوالے,",
   "Regenerate Recovery Codes": "دوبارہ وصولی کے کوڈ",
   "Register": "رجسٹر کریں",
   "Register a new key": "ایک نئی کلید رجسٹر کریں۔",
   "Register a new key.": "ایک نئی کلید رجسٹر کریں۔",
+  "Registration is currently disabled": "رجسٹریشن فی الحال غیر فعال ہے",
   "Regular post": "باقاعدہ پوسٹ",
   "Regular user": "باقاعدہ صارف",
   "Relationships": "رشتے",
@@ -799,11 +924,17 @@
   "Rename": "نام تبدیل کریں۔",
   "Reports": "رپورٹس",
   "Reptile": "رینگنے والا جانور",
+  "Request Header Fields Too Large": "درخواست ہیڈر فیلڈز بہت بڑے ہیں۔",
+  "Request Timeout": "ٹائم آؤٹ کی درخواست کریں۔",
   "Resend Verification Email": "پھر بھیجیں ای میل کی توثیق",
+  "Reset Content": "مواد کو دوبارہ ترتیب دیں۔",
   "Reset Password": "پاس ورڈ ری سیٹ",
   "Reset Password Notification": "پاس ورڈ کی اطلاع دوبارہ ترتیب دیں",
+  "Restore": "بحال",
+  "Restore :name": "بحال کریں :name",
   "results": "نتائج",
   "Retry": "دوبارہ کوشش کریں۔",
+  "Retry With": "کے ساتھ دوبارہ کوشش کریں۔",
   "Revert": "واپس لوٹنا",
   "Rode a bike": "موٹر سائیکل پر سوار ہوئے۔",
   "Role": "کردار",
@@ -811,23 +942,33 @@
   "Roomates": "روم میٹس",
   "Saturday": "ہفتہ",
   "Save": "کو بچانے کے",
+  "Save & Close": "محفوظ کریں اور بند کریں۔",
+  "Save & Return": "محفوظ کریں اور واپس کریں۔",
+  "Save :name": ":name کو بچائیں۔",
   "Saved.": "بچا لیا.",
   "Saving in progress": "محفوظ کرنا جاری ہے۔",
+  "Search": "تلاش",
+  "Search :name": "تلاش کریں :name",
   "Searched": "تلاش کیا",
   "Searching…": "تلاش کر رہا ہے…",
   "Search something": "کچھ تلاش کریں۔",
   "Search something in the vault": "والٹ میں کچھ تلاش کریں۔",
   "Sections:": "حصے:",
   "Security keys": "سیکیورٹی کیز",
+  "See Other": "دیگر دیکھیں",
+  "Select": "منتخب کریں۔",
   "Select a group or create a new one": "ایک گروپ منتخب کریں یا ایک نیا بنائیں",
+  "Select All": "تمام منتخب کریں",
   "Select A New Photo": "ایک نئی تصویر کو منتخب کریں",
   "Select a page": "ایک صفحہ منتخب کریں",
   "Select a relationship type": "رشتے کی قسم منتخب کریں۔",
+  "Send": "بھیجیں",
   "Send invitation": "دعوت نامہ بھیج دیں",
   "Send test": "ٹیسٹ بھیجیں۔",
   "Sent at :time": ":time پر بھیجا گیا",
   "Server Error": "سرور کی خرابی",
   "Service Unavailable": "سروس دستیاب نہیں",
+  "Session Has Expired": "سیشن ختم ہو چکا ہے۔",
   "Set as default": "ڈیفالٹ کے طور پر مقرر",
   "Set as favorite": "پسندیدہ کے طور پر سیٹ کریں۔",
   "Settings": "ترتیبات",
@@ -838,6 +979,9 @@
   "Setup Telegram": "ٹیلیگرام سیٹ اپ کریں۔",
   "she/her": "وہ/وہ",
   "Shintoist": "شنٹوسٹ",
+  "Show": "دکھائیں۔",
+  "Show :name": "دکھائیں :name",
+  "Show All": "سارے دکھاو",
   "Show Calendar tab": "کیلنڈر ٹیب دکھائیں۔",
   "Show Companies tab": "کمپنیز ٹیب دکھائیں۔",
   "Show completed tasks (:count)": "مکمل شدہ کام دکھائیں (:count)",
@@ -851,29 +995,41 @@
   "Show Reports tab": "رپورٹس ٹیب دکھائیں۔",
   "Show Tasks tab": "ٹاسکس ٹیب دکھائیں۔",
   "significant other": "اہم دوسرے",
+  "Sign In": "سائن ان",
   "Sign in to your account": "اپنے اکاؤنٹ میں سائن ان کریں۔",
+  "Sign in with a passkey": "پاسکی کے ساتھ سائن ان کریں",
   "Sign up for an account": "ایک اکاؤنٹ کے لیے سائن اپ کریں۔",
   "Sikh": "سکھ",
+  "Simply connect with:": "بس کے ساتھ مربوط ہوں:",
   "Slept :count hour|Slept :count hours": ":count گھنٹہ سویا۔|:count گھنٹے سوئے۔",
   "Slice of life": "زندگی کا ٹکڑا",
   "Slices of life": "زندگی کے ٹکڑے",
   "Small animal": "چھوٹا جانور",
   "Social": "سماجی",
+  "Solve": "حل",
   "Some dates have a special type that we will use in the software to calculate an age.": "کچھ تاریخوں کی ایک خاص قسم ہوتی ہے جسے ہم سافٹ ویئر میں عمر کا حساب لگانے کے لیے استعمال کریں گے۔",
   "So… it works 😼": "تو… یہ کام کرتا ہے 😼",
   "Sport": "کھیل",
   "spouse": "شریک حیات",
+  "SSL Handshake Failed": "SSL ہینڈ شیک ناکام ہو گیا۔",
+  "Start": "شروع کریں۔",
   "Statistics": "شماریات",
+  "Stop": "رک جاؤ",
   "Storage": "ذخیرہ",
   "Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.": "دکان ان کی وصولی کوڈ میں ایک محفوظ پاس ورڈ مینیجر. وہ استعمال کیا جا سکتا ہے کی وصولی کے لئے تک رسائی حاصل کرنے کے لئے آپ کے اکاؤنٹ میں آپ کے دو عنصر کی تصدیق کے آلہ کھو دیا ہے.",
   "Submit": "جمع کرائیں",
   "subordinate": "ماتحت",
+  "Subscribe": "سبسکرائب",
   "Suffix": "لاحقہ",
   "Summary": "خلاصہ",
   "Sunday": "اتوار",
+  "Switch": "سوئچ کریں۔",
+  "Switching Protocols": "سوئچنگ پروٹوکول",
   "Switch role": "کردار تبدیل کریں۔",
   "Switch Teams": "سوئچ ٹیموں",
+  "Switch To Role": "رول پر سوئچ کریں۔",
   "Tabs visibility": "ٹیبز کی مرئیت",
+  "Tag": "ٹیگ",
   "Tags": "ٹیگز",
   "Tags let you classify journal posts using a system that matters to you.": "ٹیگز آپ کو ایسے سسٹم کا استعمال کرتے ہوئے جرنل پوسٹس کی درجہ بندی کرنے دیتے ہیں جو آپ کے لیے اہم ہے۔",
   "Taoist": "تاؤسٹ",
@@ -887,6 +1043,7 @@
   "Telegram": "ٹیلی گرام",
   "Templates": "ٹیمپلیٹس",
   "Templates let you customize what data should be displayed on your contacts. You can define as many templates as you want, and choose which template should be used on which contact.": "ٹیمپلیٹس آپ کو اپنی مرضی کے مطابق بنانے دیتے ہیں کہ آپ کے رابطوں پر کون سا ڈیٹا ڈسپلے ہونا چاہیے۔ آپ جتنے چاہیں ٹیمپلیٹس کی وضاحت کر سکتے ہیں، اور منتخب کر سکتے ہیں کہ کون سا ٹیمپلیٹ کس رابطے پر استعمال کیا جائے۔",
+  "Temporary Redirect": "عارضی ری ڈائریکٹ",
   "Terms of Service": "سروس کی شرائط",
   "Test email for Monica": "Monica کے لیے ای میل کی جانچ کریں۔",
   "Test email sent!": "ٹیسٹ ای میل بھیج دیا گیا!",
@@ -1072,7 +1229,9 @@
   "The vault has been deleted": "والٹ کو حذف کر دیا گیا ہے۔",
   "The vault has been updated": "والٹ کو اپ ڈیٹ کردیا گیا ہے",
   "they/them": "وہ/انہیں",
+  "This action is unauthorized.": "یہ کارروائی غیر مجاز ہے۔",
   "This address is not active anymore": "یہ پتہ اب فعال نہیں ہے۔",
+  "This browser does not support autofill.": "یہ براؤزر آٹو فیل کی حمایت نہیں کرتا ہے۔",
   "This device": "یہ آلہ",
   "This email is a test email to check if Monica can send an email to this email address.": "یہ ای میل ایک آزمائشی ای میل ہے کہ آیا Monica اس ای میل پتے پر ای میل بھیج سکتی ہے۔",
   "This is a secure area of the application. Please confirm your password before continuing.": "یہ ایک محفوظ علاقے کی درخواست ہے. براہ مہربانی تصدیق کریں آپ کے پاس ورڈ جاری رکھنے سے پہلے.",
@@ -1101,16 +1260,18 @@
   "To hear their story": "ان کی کہانی سننے کے لیے",
   "Token Name": "ٹوکن کے نام",
   "Token name (for your reference only)": "ٹوکن کا نام (صرف آپ کے حوالہ کے لیے)",
+  "Too Early": "بہت جلدی",
   "Took a new job": "نئی نوکری لی",
   "Took the bus": "بس پکڑ لی",
   "Took the metro": "میٹرو لے لی",
   "Too Many Requests": "بہت سے درخواستوں",
   "To see if they need anything": "یہ دیکھنے کے لیے کہ انہیں کسی چیز کی ضرورت ہے۔",
-  "To start, you need to create a vault.": "شروع کرنے کے لیے، آپ کو ایک والٹ بنانے کی ضرورت ہے۔",
   "To start, you need to create a vault. A vault is a private space where you can store your contacts.": "شروع کرنے کے لیے، آپ کو ایک والٹ بنانے کی ضرورت ہے۔ والٹ ایک نجی جگہ ہے جہاں آپ اپنے رابطوں کو محفوظ کر سکتے ہیں۔",
   "Total:": "کل:",
   "Total streaks": "کل لکیریں۔",
   "Track a new metric": "ایک نیا میٹرک ٹریک کریں۔",
+  "Translate": "ترجمہ کریں۔",
+  "Translate It": "اس کا ترجمہ کرو",
   "Transportation": "نقل و حمل",
   "Tuesday": "منگل",
   "Two-factor Confirmation": "دو عنصر کی تصدیق",
@@ -1125,14 +1286,22 @@
   "Unarchive contact": "رابطہ کو غیر محفوظ کریں۔",
   "unarchived the contact": "رابطہ کو غیر محفوظ کر دیا گیا۔",
   "Unauthorized": "غیر مجاز",
+  "Unavailable For Legal Reasons": "قانونی وجوہات کی بناء پر دستیاب نہیں ہے۔",
   "uncle/aunt": "چچا/چاچی",
   "Undefined": "غیر متعینہ",
   "Unexpected error on login.": "لاگ ان پر غیر متوقع خرابی۔",
   "Unknown": "نامعلوم",
   "unknown action": "نامعلوم کارروائی",
   "Unknown age": "نامعلوم عمر",
+  "Unknown Error": "نامعلوم خامی",
   "Unknown name": "نامعلوم نام",
+  "Unpack": "پیک کھولیں۔",
+  "Unprocessable Entity": "ناقابل عمل ہستی",
+  "Unsubscribe": "ان سبسکرائب کریں۔",
+  "Unsupported Media Type": "غیر تعاون یافتہ میڈیا کی قسم",
+  "Up": "اوپر",
   "Update": "اپ ڈیٹ",
+  "Update :name": "اپ ڈیٹ :name",
   "Update a key.": "ایک کلید کو اپ ڈیٹ کریں۔",
   "updated a contact information": "رابطے کی معلومات کو اپ ڈیٹ کیا",
   "updated a goal": "ایک مقصد کو اپ ڈیٹ کیا",
@@ -1146,11 +1315,15 @@
   "updated the religion": "مذہب کو اپ ڈیٹ کیا",
   "Update Password": "پاس ورڈ کو اپ ڈیٹ",
   "Update your account's profile information and email address.": "اپ ڈیٹ کریں آپ کی اکاؤنٹ کے پروفائل کی معلومات اور ای میل ایڈریس.",
+  "Upgrade Required": "اپ گریڈ کی ضرورت ہے۔",
   "Upload photo as avatar": "تصویر بطور اوتار اپ لوڈ کریں۔",
+  "URI Too Long": "URI بہت لمبا ہے۔",
   "Use": "استعمال کریں۔",
   "Use an authentication code": "استعمال کی تصدیق کے کوڈ",
   "Use a recovery code": "استعمال وصولی کے کوڈ",
   "Use a security key (Webauthn, or FIDO) to increase your account security.": "اپنے اکاؤنٹ کی سیکیورٹی بڑھانے کے لیے سیکیورٹی کلید (Webauthn، یا FIDO) استعمال کریں۔",
+  "Use Proxy": "پروکسی استعمال کرو",
+  "User": "صارف",
   "User preferences": "صارف کی ترجیحات",
   "Users": "صارفین",
   "User settings": "صارف کی ترتیبات",
@@ -1159,6 +1332,7 @@
   "Use your security key": "اپنی سیکیورٹی کلید استعمال کریں۔",
   "Validating key…": "کلید کی توثیق ہو رہی ہے…",
   "Value copied into your clipboard": "قدر آپ کے کلپ بورڈ میں کاپی ہو گئی۔",
+  "Variant Also Negotiates": "ویرینٹ بھی بات چیت کرتا ہے۔",
   "Vaults contain all your contacts data.": "والٹس میں آپ کے تمام رابطوں کا ڈیٹا ہوتا ہے۔",
   "Vault settings": "والٹ کی ترتیبات",
   "ve/ver": "ve/ver",
@@ -1170,7 +1344,8 @@
   "Version :version — commit [:short](:url).": "ورژن :version — کمٹ [:short](:url)۔",
   "Via Telegram": "ٹیلیگرام کے ذریعے",
   "Video call": "ویڈیو کال",
-  "View": "دیکھیں",
+  "View": "لنک",
+  "View :name": "دیکھیں :name",
   "View all": "سب دیکھیں",
   "View details": "تفصیلات دیکھیں",
   "Viewer": "ناظرین",
@@ -1178,6 +1353,7 @@
   "View log": "لاگ دیکھیں",
   "View on map": "نقشے پر دیکھیں",
   "Wait a few seconds for Monica (the application) to recognize you. We’ll send you a fake notification to see if it works.": "Monica (درخواست) آپ کو پہچاننے کے لیے چند سیکنڈ انتظار کریں۔ ہم آپ کو یہ دیکھنے کے لیے ایک جعلی اطلاع بھیجیں گے کہ آیا یہ کام کرتا ہے۔",
+  "Waiting for input from browser interaction…": "براؤزر کی بات چیت سے ان پٹ کا انتظار…",
   "Waiting for key…": "چابی کا انتظار کر رہا ہے…",
   "Walked": "چہل قدمی کی۔",
   "Wallpaper": "وال پیپر",
@@ -1188,6 +1364,7 @@
   "Watch Netflix every day": "ہر روز Netflix دیکھیں",
   "Ways to connect": "جڑنے کے طریقے",
   "WebAuthn only supports secure connections. Please load this page with https scheme.": "WebAuthn صرف محفوظ کنکشنز کو سپورٹ کرتا ہے۔ براہ کرم اس صفحہ کو https اسکیم کے ساتھ لوڈ کریں۔",
+  "Web Server is Down": "ویب سرور بند ہے۔",
   "We call them a relation, and its reverse relation. For each relation you define, you need to define its counterpart.": "ہم انہیں رشتہ کہتے ہیں، اور اس کا الٹا رشتہ۔ ہر تعلق کے لیے جو آپ بیان کرتے ہیں، آپ کو اس کے ہم منصب کی وضاحت کرنے کی ضرورت ہے۔",
   "Wedding": "شادی",
   "Wednesday": "بدھ",
@@ -1209,6 +1386,7 @@
   "When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may retrieve this token from your phone's Google Authenticator application.": "جب دو عنصر کی تصدیق کے چالو حالت میں ہے, آپ کو ہو جائے گا کی حوصلہ افزائی کے لئے ایک محفوظ ، بے ترتیب ٹوکن کے دوران تصدیق. آپ کر سکتے ہیں حاصل یہ ٹوکن کی طرف سے آپ کے فون کی گوگل Authenticator درخواست ہے.",
   "When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may retrieve this token from your phone’s Authenticator application.": "جب دو عنصر کی توثیق کو فعال کیا جاتا ہے، تو آپ کو تصدیق کے دوران ایک محفوظ، بے ترتیب ٹوکن کے لیے کہا جائے گا۔ آپ اس ٹوکن کو اپنے فون کی Authenticator ایپلیکیشن سے بازیافت کر سکتے ہیں۔",
   "When was the loan made?": "قرض کب دیا گیا؟",
+  "When you are ready, authenticate using the button below:": "جب آپ تیار ہوں تو ، نیچے دیئے گئے بٹن کا استعمال کرتے ہوئے توثیق کریں:",
   "When you define a relationship between two contacts, for instance a father-son relationship, Monica creates two relations, one for each contact:": "جب آپ دو رابطوں کے درمیان تعلق کی وضاحت کرتے ہیں، مثال کے طور پر باپ بیٹے کا رشتہ، Monica دو تعلقات بناتی ہے، ایک ہر رابطے کے لیے:",
   "Which email address should we send the notification to?": "ہمیں کس ای میل ایڈریس پر اطلاع بھیجنی چاہیے؟",
   "Who called?": "کس نے بلایا؟",
@@ -1225,6 +1403,7 @@
   "xe/xem": "xe/xem",
   "year": "سال",
   "Years": "سال",
+  "Yes": "جی ہاں",
   "You are here:": "آپ یہاں ہیں:",
   "You are invited to join Monica": "آپ کو Monica میں شامل ہونے کی دعوت دی جاتی ہے۔",
   "You are receiving this email because we received a password reset request for your account.": "آپ کو یہ ای میل موصول ہو رہا ہے کیونکہ ہم نے آپ کے اکاؤنٹ کے پاس پاسورٹ ری سیٹ کی درخواست موصول ہوئی ہے.",

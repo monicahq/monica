@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\SignupHelper;
 use App\Helpers\WallpaperHelper;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -30,20 +30,27 @@ class LoginController extends Controller
 
         $data = [];
 
-        if ($webauthnRemember = $request->cookie('webauthn_remember')) {
-            if (($user = User::find($webauthnRemember)) && $user->webauthnKeys()->count() > 0) {
-                $data['publicKey'] = Webauthn::prepareAssertion($user);
-                $data['userName'] = $user->name;
-            } else {
-                Cookie::expire('webauthn_remember');
-            }
+        if (Webauthn::userless()) {
+            $data['publicKey'] = Webauthn::prepareAssertion(null);
+            $data['userless'] = true;
+            $data['autologin'] = $request->cookie('return') === 'true';
         }
 
         return Inertia::render('Auth/Login', $data + [
+            'isSignupEnabled' => app(SignupHelper::class)->isEnabled(),
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
             'wallpaperUrl' => WallpaperHelper::getRandomWallpaper(),
             'providers' => $providers,
+            'beta' => $request->cookie('beta') !== 'false',
         ]);
+    }
+
+    /**
+     * Remove beta text box.
+     */
+    public function closeBeta(Request $request): HttpResponse
+    {
+        return response([])->cookie('beta', 'false', 60 * 24 * 365);
     }
 }

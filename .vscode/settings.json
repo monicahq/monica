@@ -1,0 +1,6 @@
+{
+  "sonarlint.connectedMode.project": {
+    "connectionId": "monicahq",
+    "projectKey": "monica"
+  }
+}

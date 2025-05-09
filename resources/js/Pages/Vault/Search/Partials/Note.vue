@@ -33,7 +33,7 @@
       <li
         v-for="note in localNotes"
         :key="note.id"
-        class="mb-4 rounded-sm border border-gray-200 last:mb-0 dark:border-gray-700">
+        class="mb-4 rounded-xs border border-gray-200 last:mb-0 dark:border-gray-700">
         <div
           v-if="note.title"
           class="mb-1 border-b border-gray-200 p-3 text-xs font-semibold text-gray-600 dark:border-gray-700 dark:text-gray-400">

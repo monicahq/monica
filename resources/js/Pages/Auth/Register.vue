@@ -7,6 +7,13 @@ import JetLabel from '@/Components/Label.vue';
 import JetValidationErrors from '@/Components/ValidationErrors.vue';
 import JetCheckbox from '@/Components/Checkbox.vue';
 import PrimaryButton from '@/Shared/Form/PrimaryButton.vue';
+import Beta from './Beta.vue';
+import ExternalProviders from './ExternalProviders.vue';
+
+defineProps({
+  providers: Object,
+  beta: Boolean,
+});
 
 const form = useForm({
   first_name: '',
@@ -56,7 +63,7 @@ const policy = () => {
           class="mt-1 block w-full"
           required
           autofocus
-          autocomplete="first_name" />
+          :autocomplete="'first_name'" />
       </div>
 
       <div class="mt-4">
@@ -67,7 +74,7 @@ const policy = () => {
           type="text"
           class="mt-1 block w-full"
           required
-          autocomplete="last_name" />
+          :autocomplete="'last_name'" />
       </div>
 
       <div class="mt-4">
@@ -116,31 +123,17 @@ const policy = () => {
         </JetLabel>
       </div>
 
-      <!-- beta mode-->
-      <div class="mb-4 rounded-lg border bg-amber-50 p-6">
-        <p class="mb-2 text-center font-bold">
-          <span class="me-2">🚧</span> {{ $t('Chandler is in beta.') }}
-          <span class="ms-2">🚧</span>
-        </p>
-        <p class="mb-2">{{ $t('Compared to Monica:') }}</p>
-        <ul class="list mb-2 ps-3">
-          <li class="list-disc">
-            {{ $t('it misses some of the features, the most important ones being the API and gift management,') }}
-          </li>
-          <li class="list-disc">{{ $t("you can't import any data from your current Monica account(yet),") }}</li>
-          <li class="list-disc">{{ $t("you can't even use your current username or password to sign in,") }}</li>
-          <li class="list-disc">{{ $t("however, there are many, many new features that didn't exist before.") }}</li>
-        </ul>
-        <p>{{ $t("We hope you'll like it.") }}</p>
-      </div>
+      <Beta :beta="beta" />
 
       <div class="mt-4 flex items-center justify-end">
-        <Link :href="route('login')" class="me-4 text-sm text-blue-500 hover:underline dark:text-gray-400">
+        <Link :href="route('login')" class="me-4 text-sm text-blue-500 hover:underline">
           {{ $t('Already registered?') }}
         </Link>
 
-        <primary-button :text="$t('Register')" :state="loadingState" :class="'save'" />
+        <PrimaryButton :text="$t('Register')" :class="'save'" />
       </div>
     </form>
+
+    <ExternalProviders class="mt-5" :providers="providers" :remember="true" />
   </JetGuestLayout>
 </template>

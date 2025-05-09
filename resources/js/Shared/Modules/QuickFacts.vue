@@ -121,7 +121,7 @@ const destroy = (quickFact) => {
               @click="get(template)"
               :class="
                 localTemplate.id === template.id
-                  ? 'rounded-sm border border-gray-200 bg-white font-semibold dark:bg-gray-800'
+                  ? 'rounded-xs border border-gray-200 bg-white font-semibold dark:bg-gray-800'
                   : ''
               "
               class="cursor-pointer px-2 py-1 text-sm">

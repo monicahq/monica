@@ -9,6 +9,7 @@ import JetInput from '@/Components/Input.vue';
 import JetInputError from '@/Components/InputError.vue';
 import JetLabel from '@/Components/Label.vue';
 import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
+import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 
 const props = defineProps({
   requiresConfirmation: Boolean,
@@ -20,6 +21,7 @@ const disabling = ref(false);
 const qrCode = ref(null);
 const setupKey = ref(null);
 const recoveryCodes = ref([]);
+const confirmDisabling = ref(false);
 
 const confirmationForm = useForm({
   code: '',
@@ -41,9 +43,6 @@ const enableTwoFactorAuthentication = () => {
     route('two-factor.enable'),
     {},
     {
-      headers: {
-        accept: 'application/json',
-      },
       preserveScroll: true,
       onSuccess: () => Promise.all([showQrCode(), showSetupKey(), showRecoveryCodes()]),
       onFinish: () => {
@@ -97,6 +96,9 @@ const disableTwoFactorAuthentication = () => {
     onSuccess: () => {
       disabling.value = false;
       confirming.value = false;
+    },
+    onFinish: () => {
+      confirmDisabling.value = false;
     },
   });
 };
@@ -237,11 +239,41 @@ const disableTwoFactorAuthentication = () => {
             </JetSecondaryButton>
           </JetConfirmsPassword>
 
-          <JetConfirmsPassword @confirmed="disableTwoFactorAuthentication">
-            <JetDangerButton v-if="!confirming" :class="{ 'opacity-25': disabling }" :disabled="disabling">
+          <JetConfirmsPassword @confirmed="confirmDisabling = true">
+            <JetDangerButton v-if="!confirming">
               {{ $t('Disable') }}
             </JetDangerButton>
           </JetConfirmsPassword>
+
+          <JetConfirmationModal :show="confirmDisabling" @close="confirmDisabling = false">
+            <template #title>
+              {{ $t('Are you sure you want to disable two factor authentication?') }}
+            </template>
+
+            <template #content>
+              {{
+                $t(
+                  'Once two factor authentication is disabled, you will no longer be prompted for a secure, random token during authentication.',
+                )
+              }}
+            </template>
+
+            <template #footer>
+              <JetSecondaryButton
+                @click="confirmDisabling = false"
+                :class="{ 'opacity-25': disabling }"
+                :disabled="disabling">
+                {{ $t('Cancel') }}
+              </JetSecondaryButton>
+              <JetButton
+                class="ms-2"
+                :class="{ 'opacity-25': disabling }"
+                :disabled="disabling"
+                @click="disableTwoFactorAuthentication">
+                {{ $t('Confirm') }}
+              </JetButton>
+            </template>
+          </JetConfirmationModal>
         </div>
       </div>
     </template>

@@ -34,7 +34,7 @@
     <main class="relative sm:mt-24">
       <div class="mx-auto max-w-3xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <h2 class="mb-6 text-center text-lg">{{ $t('Profile page of :name', { name: data.contact.name }) }}</h2>
-        <div class="mb-6 rounded-sm border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+        <div class="mb-6 rounded-xs border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <!-- help -->
           <div
             class="flex rounded-t border-b border-gray-200 bg-slate-50 px-3 py-2 dark:border-gray-700 dark:bg-slate-900">
@@ -94,7 +94,7 @@
 
 <script>
 import { Link } from '@inertiajs/vue3';
-import Layout from '@/Shared/Layout.vue';
+import Layout from '@/Layouts/Layout.vue';
 
 export default {
   components: {

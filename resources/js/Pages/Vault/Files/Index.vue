@@ -74,7 +74,7 @@
                     <span class="block truncate">{{ file.name }}</span>
 
                     <span class="ms-2">
-                      <span class="rounded-sm border bg-blue-50 px-1 py-0 font-mono text-xs text-blue-500">
+                      <span class="rounded-xs border bg-blue-50 px-1 py-0 font-mono text-xs text-blue-500">
                         {{ file.size }}
                       </span>
                     </span>
@@ -121,7 +121,7 @@
 
 <script>
 import { Link } from '@inertiajs/vue3';
-import Layout from '@/Shared/Layout.vue';
+import Layout from '@/Layouts/Layout.vue';
 import Avatar from '@/Shared/Avatar.vue';
 import Pagination from '@/Components/Pagination.vue';
 import Errors from '@/Shared/Form/Errors.vue';
