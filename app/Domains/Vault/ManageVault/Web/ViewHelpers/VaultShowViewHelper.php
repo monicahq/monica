@@ -84,7 +84,7 @@ class VaultShowViewHelper
         $remindersCollection = $remindersCollection->filter(fn ($value) => $value != null);
 
         // Filter out duplicate reminders going to each notification channel based on contact_reminder_id
-        // $remindersCollection = $remindersCollection->unique(fn ($reminder) => $reminder['id']);
+        $remindersCollection = $remindersCollection->unique(fn ($reminder) => $reminder['id']);
 
         return [
             'reminders' => $remindersCollection,
