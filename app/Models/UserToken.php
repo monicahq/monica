@@ -52,9 +52,9 @@ class UserToken extends Model
     /**
      * Get the user record associated with the company.
      *
-     * @return BelongsTo<User, $this>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

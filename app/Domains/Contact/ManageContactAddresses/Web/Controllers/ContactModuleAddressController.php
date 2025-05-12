@@ -77,7 +77,7 @@ class ContactModuleAddressController extends Controller
         $contact = Contact::find($contactId);
 
         // update pivot table
-        $contact->addresses()->where('address_id', $addressId)->update([
+        $contact->addresses()->updateExistingPivot($addressId, [
             'is_past_address' => $request->input('is_past_address'),
         ]);
 

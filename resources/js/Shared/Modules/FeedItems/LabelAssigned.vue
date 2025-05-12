@@ -19,7 +19,7 @@
       <!-- the label still exists in the system -->
       <span
         v-if="data.label.object"
-        class="mb-2 me-2 inline-block rounded-sm px-2 py-1 text-xs font-semibold last:me-0"
+        class="mb-2 me-2 inline-block rounded-xs px-2 py-1 text-xs font-semibold last:me-0"
         :class="data.label.object.bg_color + ' ' + data.label.object.text_color">
         <InertiaLink :href="data.label.object.url">{{ data.label.object.name }}</InertiaLink>
       </span>
@@ -27,7 +27,7 @@
       <!-- the label was deleted -->
       <span
         v-else
-        class="mb-2 me-2 inline-block rounded-sm bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800 last:me-0">
+        class="mb-2 me-2 inline-block rounded-xs bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800 last:me-0">
         <span>{{ data.label.description }}</span>
       </span>
     </div>

@@ -19,7 +19,7 @@
         <span class="mb-2 block">
           {{ $t('Current way of displaying distances:') }}
         </span>
-        <span class="mb-2 block rounded-sm bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">
+        <span class="mb-2 block rounded-xs bg-slate-100 px-5 py-2 text-sm dark:bg-slate-900">
           {{ distance }}
         </span>
       </p>
@@ -28,7 +28,7 @@
     <!-- edit mode -->
     <form
       v-if="editMode"
-      class="mb-6 rounded-lg border border-gray-200 bg-gray-50 bg-white dark:border-gray-700 dark:bg-gray-900"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="submit()">
       <div class="border-b border-gray-200 px-5 py-2 dark:border-gray-700">
         <errors :errors="form.errors" />

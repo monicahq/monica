@@ -1,16 +1,21 @@
 <script setup>
 import { ref, nextTick, watch, onMounted } from 'vue';
-import { router, useForm } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import JetInputError from '@/Components/InputError.vue';
-import JetButton from '@/Components/Button.vue';
 import WaitForKey from '@/Pages/Webauthn/Partials/WaitForKey.vue';
 import { webAuthnNotSupportedMessage } from '@/methods.js';
-import { startAuthentication, browserSupportsWebAuthn } from '@simplewebauthn/browser';
+import {
+  startAuthentication,
+  browserSupportsWebAuthn,
+  browserSupportsWebAuthnAutofill,
+  platformAuthenticatorIsAvailable,
+} from '@simplewebauthn/browser';
 
 const props = defineProps({
   publicKey: Object,
   remember: Boolean,
+  autofill: Boolean,
 });
 
 const isSupported = ref(true);
@@ -34,7 +39,13 @@ onMounted(() => {
   }
 
   if (props.publicKey) {
-    loginWaitForKey(props.publicKey);
+    platformAuthenticatorIsAvailable().then((available) => {
+      if (available) {
+        loginWaitForKey(props.publicKey);
+      } else {
+        errorMessage.value = trans('This browser does not support autofill.');
+      }
+    });
   }
 });
 
@@ -51,7 +62,9 @@ const _errorMessage = (name, message) => {
 
 const start = () => {
   errorMessage.value = '';
-  router.reload({ only: ['publicKey'] });
+  nextTick(() => {
+    loginWaitForKey(props.publicKey);
+  });
 };
 
 const stop = () => {
@@ -60,8 +73,10 @@ const stop = () => {
 
 const loginWaitForKey = (publicKey) => {
   processing.value = true;
-  nextTick()
-    .then(() => startAuthentication(publicKey))
+  browserSupportsWebAuthnAutofill()
+    .then((available) =>
+      startAuthentication({ optionsJSON: publicKey, useBrowserAutofill: props.autofill && available }),
+    )
     .then((data) => webauthnLoginCallback(data))
     .catch((error) => {
       errorMessage.value = _errorMessage(error.name, error.message);
@@ -95,10 +110,6 @@ const webauthnLoginCallback = (data) => {
       <WaitForKey :error-message="errorMessage" :form="authForm" @retry="start()" />
 
       <JetInputError :message="authForm.errors.data" class="mt-2" />
-
-      <JetButton class="ms-2" @click="start()" v-show="!processing">
-        {{ $t('Retry') }}
-      </JetButton>
     </div>
   </div>
 </template>

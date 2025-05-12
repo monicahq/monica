@@ -241,9 +241,9 @@ class Contact extends VCardResource
      * loan.
      * I know loaner is not a real word, but it's the best I could come up with.
      *
-     * @return BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Loan, $this>
      */
-    public function loansAsLoaner()
+    public function loansAsLoaner(): BelongsToMany
     {
         return $this->belongsToMany(Loan::class, 'contact_loan', 'loaner_id');
     }
@@ -253,9 +253,9 @@ class Contact extends VCardResource
      * loan.
      * I know loanee is not a real word, but it's the best I could come up with.
      *
-     * @return BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Loan, $this>
      */
-    public function loansAsLoanee()
+    public function loansAsLoanee(): BelongsToMany
     {
         return $this->belongsToMany(Loan::class, 'contact_loan', 'loanee_id');
     }

@@ -186,12 +186,12 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                     <p v-if="lifeEvent.summary" class="me-4 text-sm font-bold">{{ lifeEvent.summary }}</p>
                     <div>
                       <span
-                        class="rounded-sm border bg-white px-2 py-1 font-mono text-sm dark:border-gray-700 dark:bg-gray-800">
+                        class="rounded-xs border bg-white px-2 py-1 font-mono text-sm dark:border-gray-700 dark:bg-gray-800">
                         {{ lifeEvent.life_event_type.category.label }}
                       </span>
                       >
                       <span
-                        class="rounded-sm border bg-white px-2 py-1 font-mono text-sm dark:border-gray-700 dark:bg-gray-800">
+                        class="rounded-xs border bg-white px-2 py-1 font-mono text-sm dark:border-gray-700 dark:bg-gray-800">
                         {{ lifeEvent.life_event_type.label }}
                       </span>
                     </div>
@@ -282,7 +282,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
         <div class="text-center" v-if="paginator.hasMorePages">
           <span
             @click="loadMore()"
-            class="cursor-pointer rounded-sm border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
+            class="cursor-pointer rounded-xs border border-gray-200 px-3 py-1 text-sm text-blue-500 hover:border-gray-500 dark:border-gray-700">
             {{ $t('Load previous entries') }}
           </span>
         </div>

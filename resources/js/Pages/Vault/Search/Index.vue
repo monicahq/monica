@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import Layout from '@/Shared/Layout.vue';
+import Layout from '@/Layouts/Layout.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Contact from '@/Pages/Vault/Search/Partials/Contact.vue';
 import Note from '@/Pages/Vault/Search/Partials/Note.vue';

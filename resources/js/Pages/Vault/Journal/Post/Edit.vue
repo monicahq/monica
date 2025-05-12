@@ -5,7 +5,7 @@ import { debounce } from 'lodash';
 import { trans } from 'laravel-vue-i18n';
 import { DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
-import Layout from '@/Shared/Layout.vue';
+import Layout from '@/Layouts/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
@@ -382,7 +382,7 @@ const destroy = () => {
               class="mb-6 inline-block">
               <template #default="{ inputValue, inputEvents }">
                 <input
-                  class="rounded-sm border bg-white px-2 py-1 dark:border-gray-700 dark:bg-gray-900"
+                  class="rounded-xs border bg-white px-2 py-1 dark:border-gray-700 dark:bg-gray-900"
                   :value="inputValue"
                   v-on="inputEvents" />
               </template>

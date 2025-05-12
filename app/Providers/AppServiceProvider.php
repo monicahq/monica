@@ -33,6 +33,7 @@ use SocialiteProviders\Azure\AzureExtendSocialite;
 use SocialiteProviders\Facebook\FacebookExtendSocialite;
 use SocialiteProviders\GitHub\GitHubExtendSocialite;
 use SocialiteProviders\Google\GoogleExtendSocialite;
+use SocialiteProviders\Kanidm\KanidmExtendSocialite;
 use SocialiteProviders\Keycloak\KeycloakExtendSocialite;
 use SocialiteProviders\LinkedIn\LinkedInExtendSocialite;
 use SocialiteProviders\Manager\SocialiteWasCalled;
@@ -156,6 +157,7 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(SocialiteWasCalled::class, GitHubExtendSocialite::class);
         Event::listen(SocialiteWasCalled::class, GoogleExtendSocialite::class);
         Event::listen(SocialiteWasCalled::class, LinkedInExtendSocialite::class);
+        Event::listen(SocialiteWasCalled::class, KanidmExtendSocialite::class);
         Event::listen(SocialiteWasCalled::class, KeycloakExtendSocialite::class);
     }
 }

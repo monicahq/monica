@@ -72,7 +72,7 @@
       <span
         v-for="label in localLabels"
         :key="label.id"
-        class="mb-2 me-2 inline-block rounded-sm px-2 py-1 text-xs font-semibold last:me-0"
+        class="mb-2 me-2 inline-block rounded-xs px-2 py-1 text-xs font-semibold last:me-0"
         :class="label.bg_color + ' ' + label.text_color">
         <InertiaLink :href="label.url.show">{{ label.name }}</InertiaLink>
       </span>

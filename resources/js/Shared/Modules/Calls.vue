@@ -187,7 +187,7 @@ const destroy = (call) => {
               :max-date="new Date()">
               <template #default="{ inputValue, inputEvents }">
                 <input
-                  class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
+                  class="rounded-xs border bg-white px-2 py-1 dark:bg-gray-900"
                   :value="inputValue"
                   v-on="inputEvents" />
               </template>
@@ -317,7 +317,7 @@ const destroy = (call) => {
             id="types"
             v-model="form.call_reason_id"
             name="types"
-            class="w-full rounded-md border-gray-300 bg-white px-3 py-2 shadow-xs focus:border-indigo-300 focus:outline-hidden focus:ring-3 focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
+            class="w-full rounded-md border-gray-300 bg-white px-3 py-2 shadow-xs focus:border-indigo-300 focus:outline-hidden focus:ring-3 focus:ring-indigo-200/50 dark:bg-gray-900 sm:text-sm">
             <optgroup
               v-for="callReasonType in data.call_reason_types"
               :key="callReasonType.id"
@@ -399,12 +399,12 @@ const destroy = (call) => {
             <!-- who called -->
             <span
               v-if="call.who_initiated === 'me'"
-              class="me-2 rounded-sm border border-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800">
+              class="me-2 rounded-xs border border-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800">
               {{ $t('I called') }}
             </span>
             <span
               v-else
-              class="me-2 rounded-sm border border-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800">
+              class="me-2 rounded-xs border border-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800">
               {{ $t(':Name called', { name: data.contact_name }) }}
             </span>
 
@@ -437,7 +437,7 @@ const destroy = (call) => {
                   :max-date="new Date()">
                   <template #default="{ inputValue, inputEvents }">
                     <input
-                      class="rounded-sm border bg-white px-2 py-1 dark:bg-gray-900"
+                      class="rounded-xs border bg-white px-2 py-1 dark:bg-gray-900"
                       :value="inputValue"
                       v-on="inputEvents" />
                   </template>
@@ -569,7 +569,7 @@ const destroy = (call) => {
                 id="types"
                 v-model="form.call_reason_id"
                 name="types"
-                class="w-full rounded-md border-gray-300 bg-white px-3 py-2 shadow-xs focus:border-indigo-300 focus:outline-hidden focus:ring-3 focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 sm:text-sm">
+                class="w-full rounded-md border-gray-300 bg-white px-3 py-2 shadow-xs focus:border-indigo-300 focus:outline-hidden focus:ring-3 focus:ring-indigo-200/50 dark:bg-gray-900 sm:text-sm">
                 <optgroup
                   v-for="callReasonType in data.call_reason_types"
                   :key="callReasonType.id"

@@ -57,6 +57,7 @@ class UserProfileTest extends TestCase
             'aaguid' => '',
             'credentialPublicKey' => '',
             'counter' => 0,
+            'used_at' => Carbon::now(),
         ]);
 
         $request = $this->app->make(Request::class)
@@ -72,7 +73,7 @@ class UserProfileTest extends TestCase
                 'id' => $key->id,
                 'name' => 'name',
                 'type' => 'type',
-                'last_active' => '1 day ago',
+                'last_used' => '1 day ago',
             ],
         ], $data['webauthnKeys']);
     }

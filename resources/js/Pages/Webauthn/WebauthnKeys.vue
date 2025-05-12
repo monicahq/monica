@@ -11,6 +11,7 @@ import DeleteKeyModal from '@/Pages/Webauthn/Partials/DeleteKeyModal.vue';
 import UpdateKey from '@/Pages/Webauthn/Partials/UpdateKey.vue';
 import { webAuthnNotSupportedMessage } from '@/methods.js';
 import { startRegistration, browserSupportsWebAuthn } from '@simplewebauthn/browser';
+import { KeyRound } from 'lucide-vue-next';
 
 const props = defineProps({
   webauthnKeys: Array,
@@ -138,23 +139,7 @@ const webauthnRegisterCallback = (data) => {
         </div>
         <div v-else v-for="key in webauthnKeys" :key="key.id" class="mb-2 flex items-center">
           <div class="text-gray-500">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              stroke="currentColor"
-              class="h-8 w-8"
-              viewBox="-50 0 700 600">
-              <g transform="matrix(42.857142857142854,0,0,42.857142857142854,0,0)">
-                <g>
-                  <polyline points="5.62 7.38 11.5 1.5 13.5 3.5"></polyline>
-                  <line x1="9.25" y1="3.75" x2="11" y2="5.5"></line>
-                  <circle cx="3.5" cy="9.5" r="3"></circle>
-                </g>
-              </g>
-            </svg>
+            <KeyRound />
           </div>
 
           <div class="ms-3 w-48">
@@ -163,8 +148,8 @@ const webauthnRegisterCallback = (data) => {
             </div>
 
             <div class="text-xs text-gray-500">
-              <span>
-                {{ $t('Last active :date', { date: key.last_active }) }}
+              <span v-if="key.last_used !== null">
+                {{ $t('Last used :date', { date: key.last_used }) }}
               </span>
             </div>
           </div>
@@ -177,7 +162,11 @@ const webauthnRegisterCallback = (data) => {
               {{ $t('Update') }}
             </JetSecondaryButton>
             <JetConfirmsPassword @confirmed="keyBeingDeleted = key.id">
-              <JetSecondaryButton class="pointer ms-2 text-indigo-400 hover:text-indigo-600" href="">
+              <JetSecondaryButton
+                class="pointer ms-2 text-indigo-400 hover:text-indigo-600"
+                :class="{ 'opacity-25': keyBeingDeleted === key.id }"
+                href=""
+                :disabled="keyBeingDeleted === key.id">
                 {{ $t('Delete') }}
               </JetSecondaryButton>
             </JetConfirmsPassword>

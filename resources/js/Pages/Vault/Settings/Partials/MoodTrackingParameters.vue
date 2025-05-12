@@ -152,7 +152,7 @@ const updatePosition = (event) => {
             <label
               :for="color.hex_color"
               class="ms-2 inline-block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-              <div class="rounded-sm p-4" :class="color.hex_color" />
+              <div class="rounded-xs p-4" :class="color.hex_color" />
             </label>
           </div>
         </div>
@@ -166,7 +166,7 @@ const updatePosition = (event) => {
 
     <!-- help text -->
     <div
-      class="mb-4 flex rounded-sm border border-gray-200 bg-slate-50 px-3 py-2 dark:border-gray-700 dark:bg-slate-900">
+      class="mb-4 flex rounded-xs border border-gray-200 bg-slate-50 px-3 py-2 dark:border-gray-700 dark:bg-slate-900">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 pe-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path
           stroke-linecap="round"
@@ -269,7 +269,7 @@ const updatePosition = (event) => {
                   <label
                     :for="color.hex_color"
                     class="ms-2 inline-block cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
-                    <div class="rounded-sm p-4" :class="color.hex_color" />
+                    <div class="rounded-xs p-4" :class="color.hex_color" />
                   </label>
                 </div>
               </div>

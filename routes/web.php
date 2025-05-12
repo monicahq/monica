@@ -140,6 +140,7 @@ use App\Domains\Vault\Search\Web\Controllers\VaultContactSearchController;
 use App\Domains\Vault\Search\Web\Controllers\VaultMostConsultedContactsController;
 use App\Domains\Vault\Search\Web\Controllers\VaultSearchController;
 use App\Http\Controllers\Auth\AcceptInvitationController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\SocialiteCallbackController;
 use App\Http\Controllers\Profile\UserTokenController;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -157,6 +158,7 @@ Route::get('/', function () {
 
     return Redirect::intended(route('vault.index', absolute: false));
 })->name('home');
+Route::post('closeBeta', [LoginController::class, 'closeBeta'])->name('close_beta');
 
 // Redirect .well-known urls (https://en.wikipedia.org/wiki/List_of_/.well-known/_services_offered_by_webservers)
 Route::permanentRedirect('/.well-known/carddav', '/dav');

@@ -1,7 +1,7 @@
 <script setup>
 import { router, useForm, Link } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
-import Layout from '@/Shared/Layout.vue';
+import Layout from '@/Layouts/Layout.vue';
 import PrettyLink from '@/Shared/Form/PrettyLink.vue';
 import Avatar from '@/Shared/Avatar.vue';
 import Pagination from '@/Components/Pagination.vue';
@@ -26,7 +26,7 @@ const update = () => {
 </script>
 
 <template>
-  <layout :layout-data="layoutData" :inside-vault="true">
+  <layout :title="$t('Contacts')" :layout-data="layoutData" :inside-vault="true">
     <main class="relative sm:mt-24">
       <div class="mx-auto max-w-6xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <div class="special-grid grid grid-cols-1 gap-6 sm:grid-cols-3">

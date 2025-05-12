@@ -2,7 +2,7 @@
 import { ref, reactive } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
-import Layout from '@/Shared/Layout.vue';
+import Layout from '@/Layouts/Layout.vue';
 import Avatar from '@/Shared/Avatar.vue';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 import JetDangerButton from '@/Components/Jetstream/DangerButton.vue';
@@ -131,7 +131,7 @@ const destroy = () => {
         <div v-for="role in data.roles" :key="role.id" class="mb-8">
           <p
             v-if="role.contacts.length > 0"
-            class="mb-2 me-2 inline-block rounded-sm bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800 last:me-0">
+            class="mb-2 me-2 inline-block rounded-xs bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-800 last:me-0">
             {{ role.label }}
           </p>
 

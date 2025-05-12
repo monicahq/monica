@@ -44,7 +44,7 @@
             <span class="flex items-center">
               <span class="max-w-sm truncate">{{ document.name }}</span>
 
-              <span class="ms-2 rounded-sm border bg-blue-50 px-1 py-0 font-mono text-xs text-blue-500">
+              <span class="ms-2 rounded-xs border bg-blue-50 px-1 py-0 font-mono text-xs text-blue-500">
                 {{ document.size }}
               </span>
             </span>

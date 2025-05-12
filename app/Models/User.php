@@ -283,7 +283,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Get the user tokens for external login providers.
      *
-     * @return HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\UserToken, $this>
      */
     public function userTokens()
     {
