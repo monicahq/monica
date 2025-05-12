@@ -80,6 +80,9 @@ class VaultReminderIndexViewHelper
                 ]);
             }
 
+            // Filter out duplicate reminders going to each notification channel based on contact_reminder_id
+            $remindersCollection = $remindersCollection->unique(fn ($reminder) => $reminder['id']);
+
             $monthsReminderCollection->push([
                 'id' => $month,
                 'month' => DateHelper::formatMonthAndYear($date),
