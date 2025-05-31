@@ -90,6 +90,7 @@ return [
         'client_id' => env('AUTHENTIK_CLIENT_ID'),
         'client_secret' => env('AUTHENTIK_CLIENT_SECRET'),
         'redirect' => env('AUTHENTIK_REDIRECT_URI'),
+        'logo' => env('AUTHENTIK_LOGO', '/img/auth/authentik.svg'),
     ],
     'keycloak' => [
         'client_id' => env('KEYCLOAK_CLIENT_ID'),
