@@ -17582,16 +17582,16 @@
         },
         {
             "name": "stichoza/google-translate-php",
-            "version": "v5.2.0",
+            "version": "v5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Stichoza/google-translate-php.git",
-                "reference": "9429773d991c98f68a25bec40d20f590ea3312a0"
+                "reference": "2891310296cc115786d7c135a47a4ed53cd38df1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Stichoza/google-translate-php/zipball/9429773d991c98f68a25bec40d20f590ea3312a0",
-                "reference": "9429773d991c98f68a25bec40d20f590ea3312a0",
+                "url": "https://api.github.com/repos/Stichoza/google-translate-php/zipball/2891310296cc115786d7c135a47a4ed53cd38df1",
+                "reference": "2891310296cc115786d7c135a47a4ed53cd38df1",
                 "shasum": ""
             },
             "require": {
@@ -17631,7 +17631,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Stichoza/google-translate-php/issues",
-                "source": "https://github.com/Stichoza/google-translate-php/tree/v5.2.0"
+                "source": "https://github.com/Stichoza/google-translate-php/tree/v5.3.0"
             },
             "funding": [
                 {
@@ -17659,7 +17659,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2024-08-05T19:11:36+00:00"
+            "time": "2025-05-20T08:38:25+00:00"
         },
         {
             "name": "symfony/polyfill-php81",
