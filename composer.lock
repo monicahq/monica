@@ -3122,16 +3122,16 @@
         },
         {
             "name": "laravel/telescope",
-            "version": "v5.7.0",
+            "version": "v5.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/telescope.git",
-                "reference": "440908cb856cfbef9323244f7978ad4bf8cd2daa"
+                "reference": "9be1b8851b8ffe67689e7960135f8b32a966f23d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/telescope/zipball/440908cb856cfbef9323244f7978ad4bf8cd2daa",
-                "reference": "440908cb856cfbef9323244f7978ad4bf8cd2daa",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/9be1b8851b8ffe67689e7960135f8b32a966f23d",
+                "reference": "9be1b8851b8ffe67689e7960135f8b32a966f23d",
                 "shasum": ""
             },
             "require": {
@@ -3185,9 +3185,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/telescope/issues",
-                "source": "https://github.com/laravel/telescope/tree/v5.7.0"
+                "source": "https://github.com/laravel/telescope/tree/v5.8.0"
             },
-            "time": "2025-03-27T17:25:52+00:00"
+            "time": "2025-05-26T17:22:18+00:00"
         },
         {
             "name": "league/commonmark",
