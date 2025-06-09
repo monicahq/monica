@@ -1035,12 +1035,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry-internal/browser-utils@npm:9.27.0":
+  version: 9.27.0
+  resolution: "@sentry-internal/browser-utils@npm:9.27.0"
+  dependencies:
+    "@sentry/core": "npm:9.27.0"
+  checksum: 10c0/e963da0d77e5ca4f2bd6d7d253ac13eb2d26710895fa66d46101078a2426a718e4da93889a0b87e34a4b446695e1940323ed0af3aaaf749283089c1eda37ae01
+  languageName: node
+  linkType: hard
+
 "@sentry-internal/feedback@npm:9.26.0":
   version: 9.26.0
   resolution: "@sentry-internal/feedback@npm:9.26.0"
   dependencies:
     "@sentry/core": "npm:9.26.0"
   checksum: 10c0/12380f5f4d2cd54508fa21fb076011151fa4278f72d3ed2d3e8b3dd33dd1ddc05017a224f299e51f66bdf372c2e32cd74300ced1b88349e8604b13f2fa2dc669
+  languageName: node
+  linkType: hard
+
+"@sentry-internal/feedback@npm:9.27.0":
+  version: 9.27.0
+  resolution: "@sentry-internal/feedback@npm:9.27.0"
+  dependencies:
+    "@sentry/core": "npm:9.27.0"
+  checksum: 10c0/d423ba1539903b13bbc57762388b1d0e6af86181ee8552e933731822891dfb2611b7aec61181a2abcb515a43f27265eaec088fee6469fa99acb287d15432b2a2
   languageName: node
   linkType: hard
 
@@ -1054,6 +1072,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry-internal/replay-canvas@npm:9.27.0":
+  version: 9.27.0
+  resolution: "@sentry-internal/replay-canvas@npm:9.27.0"
+  dependencies:
+    "@sentry-internal/replay": "npm:9.27.0"
+    "@sentry/core": "npm:9.27.0"
+  checksum: 10c0/d5106ccdfdf0391c41cdeced09f2aa1a5d654c1581bd8d10504e5c40217dffc52fec6b763305a57f2a0da39e1c2f6819e171267967cf2f8aa079b9607a4c38f5
+  languageName: node
+  linkType: hard
+
 "@sentry-internal/replay@npm:9.26.0":
   version: 9.26.0
   resolution: "@sentry-internal/replay@npm:9.26.0"
@@ -1064,6 +1092,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry-internal/replay@npm:9.27.0":
+  version: 9.27.0
+  resolution: "@sentry-internal/replay@npm:9.27.0"
+  dependencies:
+    "@sentry-internal/browser-utils": "npm:9.27.0"
+    "@sentry/core": "npm:9.27.0"
+  checksum: 10c0/642ae511f4364e560f28d4fcd364d8364690462ffafd39d9e7ecc8d3886e9e377746c7e61e5c897f98e5420db347edbf240171dc3a8d99cc24b6d64f7572bc51
+  languageName: node
+  linkType: hard
+
 "@sentry/babel-plugin-component-annotate@npm:3.5.0":
   version: 3.5.0
   resolution: "@sentry/babel-plugin-component-annotate@npm:3.5.0"
@@ -1071,7 +1109,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:9.26.0, @sentry/browser@npm:^9.15.0":
+"@sentry/browser@npm:9.27.0":
+  version: 9.27.0
+  resolution: "@sentry/browser@npm:9.27.0"
+  dependencies:
+    "@sentry-internal/browser-utils": "npm:9.27.0"
+    "@sentry-internal/feedback": "npm:9.27.0"
+    "@sentry-internal/replay": "npm:9.27.0"
+    "@sentry-internal/replay-canvas": "npm:9.27.0"
+    "@sentry/core": "npm:9.27.0"
+  checksum: 10c0/f8dc8f4e52b786ad3a392e25e6efb4b1fafb26398e65e75537786a81953fd4f96fd5461a696959d69a8d4bbcd9160c7920d885a318f81907de5941b40766d008
+  languageName: node
+  linkType: hard
+
+"@sentry/browser@npm:^9.15.0":
   version: 9.26.0
   resolution: "@sentry/browser@npm:9.26.0"
   dependencies:
@@ -1193,6 +1244,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/core@npm:9.27.0":
+  version: 9.27.0
+  resolution: "@sentry/core@npm:9.27.0"
+  checksum: 10c0/c5a629b9dd3b83593adb9bc4fd2da761545188c37fe4239cf7646a8b847d62c698a368f25fd78e630fc92ae4e20976a574c7d4775f59749cd26bb7123d1a8f6a
+  languageName: node
+  linkType: hard
+
 "@sentry/vite-plugin@npm:^3.4.0":
   version: 3.5.0
   resolution: "@sentry/vite-plugin@npm:3.5.0"
@@ -1204,18 +1262,18 @@ __metadata:
   linkType: hard
 
 "@sentry/vue@npm:^9.15.0":
-  version: 9.26.0
-  resolution: "@sentry/vue@npm:9.26.0"
+  version: 9.27.0
+  resolution: "@sentry/vue@npm:9.27.0"
   dependencies:
-    "@sentry/browser": "npm:9.26.0"
-    "@sentry/core": "npm:9.26.0"
+    "@sentry/browser": "npm:9.27.0"
+    "@sentry/core": "npm:9.27.0"
   peerDependencies:
     pinia: 2.x || 3.x
     vue: 2.x || 3.x
   peerDependenciesMeta:
     pinia:
       optional: true
-  checksum: 10c0/b15e158e5ece9998caa8dd2447c794e46e9bd84299395033e1997366e0148c1fa028b817f604c5dc02ef3cadfccea28259670d6fae003f6e3fd4d4202f8a6b0d
+  checksum: 10c0/8be97cf041749b58208f871e0aa1ed0360d5ded2c86b8f911322a2b85d54f8f7a508371f0754384cfd02e16db745868fb2be23ce3f1dfa8bb732d9dd5313f8df
   languageName: node
   linkType: hard
 
