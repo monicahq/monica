@@ -12,13 +12,6 @@ class SyncToken extends Model
     protected $table = 'sync_tokens';
 
     /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array<string>|bool
-     */
-    protected $guarded = ['id'];
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
