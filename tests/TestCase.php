@@ -59,6 +59,7 @@ abstract class TestCase extends BaseTestCase
     {
         return tap(Vault::factory()->create([
             'account_id' => $user->account_id,
+            'description' => "Contacts for {$user->email}",
         ]), fn (Vault $vault) => $this->setPermissionInVault($user, $permission, $vault));
     }
 
