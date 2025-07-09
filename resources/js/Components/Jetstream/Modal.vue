@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue';
 
 const props = defineProps({
   show: {
@@ -17,7 +17,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['close']);
-const dialog = ref();
+const dialog = useTemplateRef('dialog');
 const showSlot = ref(props.show);
 
 watch(

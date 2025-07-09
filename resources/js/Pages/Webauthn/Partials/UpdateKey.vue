@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, nextTick } from 'vue';
+import { watch, nextTick, useTemplateRef } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
@@ -18,7 +18,7 @@ const props = defineProps({
 
 const emit = defineEmits(['close']);
 
-const nameInput = ref(null);
+const nameInput = useTemplateRef('nameInput');
 
 const updateKey = () => {
   form.put(route('webauthn.update', props.keyid), {

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, useTemplateRef } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods.js';
@@ -20,7 +20,7 @@ const form = useForm({
 });
 
 const createLifeMetricModalShown = ref(false);
-const labelField = ref(null);
+const labelField = useTemplateRef('labelField');
 const loadingState = ref('');
 const localLifeMetrics = ref(props.data.data);
 const editedLifeMetricId = ref(0);

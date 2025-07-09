@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, useTemplateRef } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods';
@@ -13,7 +13,7 @@ const props = defineProps({
   data: Object,
 });
 
-const nameOrder = ref(null);
+const nameOrder = useTemplateRef('nameOrder');
 const loadingState = ref('');
 const editMode = ref(false);
 const localNameOrder = ref(props.data.name_order);

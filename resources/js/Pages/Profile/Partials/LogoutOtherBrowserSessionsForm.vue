@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, useTemplateRef } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import JetActionMessage from '@/Components/Jetstream/ActionMessage.vue';
 import JetActionSection from '@/Components/Jetstream/ActionSection.vue';
@@ -15,7 +15,7 @@ defineProps({
 });
 
 const confirmingLogout = ref(false);
-const passwordInput = ref(null);
+const passwordInput = useTemplateRef('passwordInput');
 
 const form = useForm({
   password: '',

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, useTemplateRef } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import Loading from '@/Shared/Loading.vue';
 import HoverMenu from '@/Shared/HoverMenu.vue';
@@ -25,7 +25,7 @@ const createQuickFactModalShown = ref(false);
 const openState = ref(props.data.show_quick_facts);
 const localQuickFacts = ref(props.data.quick_facts.quick_facts);
 const localTemplate = ref(props.data.quick_facts.template);
-const contentField = ref(null);
+const contentField = useTemplateRef('contentField');
 const editedQuickFactId = ref(null);
 
 const toggle = () => {

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, useTemplateRef } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
@@ -15,7 +15,7 @@ const loadingState = ref(false);
 const createEntryModalShown = ref(false);
 const editEntryId = ref(0);
 const localEntries = ref(props.data.quick_fact_templates);
-const newEntry = ref(null);
+const newEntry = useTemplateRef('newEntry');
 
 const form = useForm({
   label: '',

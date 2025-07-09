@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
 
 const props = defineProps({
   id: {
@@ -57,7 +57,7 @@ const props = defineProps({
 const emit = defineEmits(['esc-key-pressed', 'update:modelValue']);
 
 const displayMaxLength = ref(false);
-const zone = ref(null);
+const zone = useTemplateRef('zone');
 
 const proxyValue = computed({
   get() {

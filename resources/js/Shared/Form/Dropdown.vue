@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, useTemplateRef } from 'vue';
 
 const props = defineProps({
   id: {
@@ -26,7 +26,7 @@ const props = defineProps({
 
 const emit = defineEmits(['esc-key-pressed', 'update:modelValue']);
 
-const input = ref(null);
+const input = useTemplateRef('input');
 
 const localDropdownClasses = computed(() => {
   return [

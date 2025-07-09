@@ -1,6 +1,6 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, useTemplateRef } from 'vue';
 import { DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
 import { isDark } from '@/methods.js';
@@ -17,9 +17,9 @@ const props = defineProps({
   data: Object,
 });
 
-const ageInput = ref(null);
-const monthInput = ref(null);
-const label = ref(null);
+const ageInput = useTemplateRef('ageInput');
+const monthInput = useTemplateRef('monthInput');
+const label = useTemplateRef('label');
 const loadingState = ref(null);
 
 const form = useForm({

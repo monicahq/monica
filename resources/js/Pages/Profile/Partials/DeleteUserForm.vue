@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import JetActionSection from '@/Components/Jetstream/ActionSection.vue';
 import JetDialogModal from '@/Components/Jetstream/DialogModal.vue';
@@ -9,7 +9,7 @@ import JetInputError from '@/Components/InputError.vue';
 import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
 
 const confirmingUserDeletion = ref(false);
-const passwordInput = ref(null);
+const passwordInput = useTemplateRef('passwordInput');
 
 const form = useForm({
   password: '',

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, useTemplateRef } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import draggable from 'vuedraggable';
@@ -19,10 +19,10 @@ const lifeEventCategoryId = ref(0);
 const editLifeEventCategoryId = ref(0);
 const editLifeEventTypeId = ref(0);
 const localLifeEventCategories = ref(props.data.life_event_categories);
-const newLifeEventCategory = ref(null);
-const renameLifeEventCategory = ref(null);
-const newLifeEventType = ref(null);
-const renameLifeEventType = ref(null);
+const newLifeEventCategory = useTemplateRef('newLifeEventCategory');
+const renameLifeEventCategory = useTemplateRef('renameLifeEventCategory');
+const newLifeEventType = useTemplateRef('newLifeEventType');
+const renameLifeEventType = useTemplateRef('renameLifeEventType');
 
 const form = useForm({
   label: '',
