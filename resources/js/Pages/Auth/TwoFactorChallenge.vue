@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, useTemplateRef } from 'vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import AuthenticationCard from '@/Layouts/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
@@ -16,8 +16,8 @@ const form = useForm({
   recovery_code: '',
 });
 
-const recoveryCodeInput = ref(null);
-const codeInput = ref(null);
+const recoveryCodeInput = useTemplateRef('recoveryCodeInput');
+const codeInput = useTemplateRef('codeInput');
 
 const toggleRecovery = async () => {
   recovery.value ^= true;

@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, useTemplateRef } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
@@ -16,7 +16,7 @@ const props = defineProps({
 });
 
 const loadingState = ref('');
-const labelInput = ref(null);
+const labelInput = useTemplateRef('labelInput');
 const masks = ref({
   modelValue: 'YYYY-MM-DD',
 });

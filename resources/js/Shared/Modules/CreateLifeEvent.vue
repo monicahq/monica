@@ -1,4 +1,6 @@
 <script setup>
+import { onMounted, ref, watch, nextTick, useTemplateRef } from 'vue';
+import { useForm } from '@inertiajs/vue3';
 import { DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
@@ -8,8 +10,6 @@ import TextInput from '@/Shared/Form/TextInput.vue';
 import TextArea from '@/Shared/Form/TextArea.vue';
 import Avatar from '@/Shared/Avatar.vue';
 import ArrowIcon from '@/Shared/Icons/ArrowIcon.vue';
-import { useForm } from '@inertiajs/vue3';
-import { onMounted, ref, watch, nextTick } from 'vue';
 
 const props = defineProps({
   layoutData: Object,
@@ -41,9 +41,9 @@ const modalShown = ref(false);
 const addSummaryFieldShown = ref(false);
 const addDescriptionFieldShown = ref(false);
 const addDistanceFieldShown = ref(false);
-const summaryField = ref(null);
-const descriptionField = ref(null);
-const distanceField = ref(null);
+const summaryField = useTemplateRef('summaryField');
+const descriptionField = useTemplateRef('descriptionField');
+const distanceField = useTemplateRef('distanceField');
 const masks = ref({
   modelValue: 'YYYY-MM-DD',
 });

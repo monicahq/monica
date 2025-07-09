@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { useTemplateRef } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import JetActionMessage from '@/Components/Jetstream/ActionMessage.vue';
 import JetButton from '@/Components/Button.vue';
@@ -8,8 +8,8 @@ import JetInput from '@/Components/Input.vue';
 import JetInputError from '@/Components/InputError.vue';
 import JetLabel from '@/Components/Label.vue';
 
-const passwordInput = ref(null);
-const currentPasswordInput = ref(null);
+const passwordInput = useTemplateRef('passwordInput');
+const currentPasswordInput = useTemplateRef('currentPasswordInput');
 
 const form = useForm({
   current_password: '',

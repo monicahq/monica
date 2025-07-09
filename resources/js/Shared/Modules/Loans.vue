@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, useTemplateRef } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { flash } from '@/methods';
 import { trans } from 'laravel-vue-i18n';
@@ -21,7 +21,7 @@ const props = defineProps({
   data: Object,
 });
 
-const nameInput = ref(null);
+const nameInput = useTemplateRef('nameInput');
 const loadingState = ref('');
 const createLoanModalShown = ref(false);
 const localLoans = ref(props.data.loans);

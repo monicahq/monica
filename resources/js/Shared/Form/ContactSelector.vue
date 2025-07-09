@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch, useTemplateRef } from 'vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import Errors from '@/Shared/Form/Errors.vue';
@@ -33,7 +33,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
-const searchInput = ref(null);
+const searchInput = useTemplateRef('searchInput');
 const addContactMode = ref(false);
 const processingSearch = ref(false);
 const localContacts = ref(props.modelValue);
