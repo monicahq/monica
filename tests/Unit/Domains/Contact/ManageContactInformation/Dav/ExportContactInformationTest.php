@@ -48,7 +48,7 @@ class ExportContactInformationTest extends TestCase
             $vCard->children()
         );
 
-        $this->assertStringContainsString("EMAIL:{$info->data}", $vCard->serialize());
+        $this->assertStringContainsString("EMAIL;PREF=1:{$info->data}", $vCard->serialize());
     }
 
     #[Group('dav')]
@@ -78,6 +78,6 @@ class ExportContactInformationTest extends TestCase
             $vCard->children()
         );
 
-        $this->assertStringContainsString("TEL:{$info->data}", $vCard->serialize());
+        $this->assertStringContainsString("TEL;PREF=1:{$info->data}", $vCard->serialize());
     }
 }

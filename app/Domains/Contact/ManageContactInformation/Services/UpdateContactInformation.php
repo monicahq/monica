@@ -73,7 +73,7 @@ class UpdateContactInformation extends BaseService implements ServiceInterface
     {
         $this->contactInformation->data = $this->data['data'];
         $this->contactInformation->type_id = $this->data['contact_information_type_id'];
-        $this->contactInformation->kind = $this->data['contact_information_kind'];
+        $this->contactInformation->kind = $this->valueOrNull($this->data, 'contact_information_kind');
         $this->contactInformation->save();
     }
 

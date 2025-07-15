@@ -74,7 +74,7 @@ class CreateContactInformation extends BaseService implements ServiceInterface
             'contact_id' => $this->contact->id,
             'type_id' => $this->contactInformationType->id,
             'data' => $this->data['data'],
-            'kind' => $this->data['contact_information_kind'],
+            'kind' => $this->valueOrNull($this->data, 'contact_information_kind'),
         ]);
     }
 

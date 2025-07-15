@@ -40,16 +40,26 @@ class ExportContactInformation extends Exporter implements ExportVCardResource
     {
         if (Str::is($contactInformation->contactInformationType->type, 'email', true)) {
             // https://datatracker.ietf.org/doc/html/rfc6350#section-6.4.2
-            $vcard->add('EMAIL', $contactInformation->data, [
-                'TYPE' => Str::upper($contactInformation->kind),
-                'PREF' => $contactInformation->pref ? 1 : 0,
-            ]);
+            $parameters = [];
+            if ($contactInformation->kind !== null) {
+                $parameters['TYPE'] = Str::upper($contactInformation->kind);
+            }
+            if ($contactInformation->pref) {
+                $parameters['PREF'] = 1;
+            }
+
+            $vcard->add('EMAIL', $contactInformation->data, $parameters);
         } elseif (Str::is($contactInformation->contactInformationType->type, 'phone', true)) {
             // https://datatracker.ietf.org/doc/html/rfc6350#section-6.4.1
-            $vcard->add('TEL', $contactInformation->data, [
-                'TYPE' => Str::upper($contactInformation->kind),
-                'PREF' => $contactInformation->pref ? 1 : 0,
-            ]);
+            $parameters = [];
+            if ($contactInformation->kind !== null) {
+                $parameters['TYPE'] = Str::upper($contactInformation->kind);
+            }
+            if ($contactInformation->pref) {
+                $parameters['PREF'] = 1;
+            }
+
+            $vcard->add('TEL', $contactInformation->data, $parameters);
         } elseif (Str::is($contactInformation->contactInformationType->type, 'X-SOCIAL-PROFILE', true)) {
             $vcard->add('X-SOCIAL-PROFILE', '', [
                 'TYPE' => $contactInformation->contactInformationType->name_translation_key,
