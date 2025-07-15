@@ -217,7 +217,7 @@ export default {
         .put(pet.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash(this.$t('The pet has been edited'), 'success');
+          this.flash(this.$t('The pet has been updated'), 'success');
           this.localPets[this.localPets.findIndex((x) => x.id === pet.id)] = response.data.data;
           this.editedPetId = 0;
         })

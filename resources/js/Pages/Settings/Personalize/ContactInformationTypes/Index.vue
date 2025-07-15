@@ -308,18 +308,19 @@ const destroy = () => {
 
         <JetConfirmationModal :show="contactInformationDeleting !== null" @close="contactInformationDeleting = null">
           <template #title>
-            {{ $t('Delete contact information Type') }}
+            {{ $t('Delete a contact information type') }}
           </template>
 
           <template #content>
             {{
               $t(
-                'Are you sure? This will remove the contact information types from all contacts, but won’t delete the contacts themselves.',
+                'Are you sure? This will remove the contact information type from all contacts, but won’t delete the contacts themselves.',
               )
             }}
           </template>
 
           <template #footer>
+            <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click.prevent="contactInformationDeleting = null" />
             <PrettyButton :text="$t('Delete')" :state="loadingState" @click="destroy" />
           </template>
         </JetConfirmationModal>

@@ -89,7 +89,7 @@ const update = (info) => {
     .put(info.url.update, form)
     .then((response) => {
       loadingState.value = '';
-      flash(trans('The contact information has been edited'), 'success');
+      flash(trans('The contact information has been updated'), 'success');
       localContactInformation.value[localContactInformation.value.findIndex((x) => x.id === info.id)] =
         response.data.data;
       editedContactInformationId.value = 0;
@@ -299,7 +299,7 @@ const destroy = () => {
 
     <JetConfirmationModal :show="contactInformationDeleting !== null" @close="contactInformationDeleting = null">
       <template #title>
-        {{ $t('Delete contact information') }}
+        {{ $t('Delete a contact information') }}
       </template>
 
       <template #content>
@@ -318,7 +318,7 @@ const destroy = () => {
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_contact.svg" :alt="$t('Contact informations')" class="mx-auto mt-4 h-20 w-20" />
       <p class="px-5 pb-5 pt-2 text-center">
-        {{ $t('There are no contact information yet.') }}
+        {{ $t('There are no contact informations yet.') }}
       </p>
     </div>
   </div>
