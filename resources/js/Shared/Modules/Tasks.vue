@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, useTemplateRef } from 'vue';
 import { flash } from '@/methods';
 import { trans } from 'laravel-vue-i18n';
 import HoverMenu from '@/Shared/HoverMenu.vue';
@@ -12,9 +12,9 @@ const props = defineProps({
   data: Object,
 });
 
-const createTaskForm = ref(null);
-const updateTaskForm = ref([]);
-const updateCompletedTaskForm = ref([]);
+const createTaskForm = useTemplateRef('createTaskForm');
+const updateTaskForm = useTemplateRef('updateTaskForm');
+const updateCompletedTaskForm = useTemplateRef('updateCompletedTaskForm');
 const createTaskModalShown = ref(false);
 const showCompletedTasks = ref(false);
 const localTasks = ref(props.data.tasks);

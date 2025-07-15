@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import { router, useForm } from '@inertiajs/vue3';
 import JetButton from '@/Components/Button.vue';
 import JetFormSection from '@/Components/Jetstream/FormSection.vue';
@@ -22,7 +22,7 @@ const form = useForm({
 });
 
 const photoPreview = ref(null);
-const photoInput = ref(null);
+const photoInput = useTemplateRef('photoInput');
 
 const updateProfileInformation = () => {
   if (photoInput.value) {

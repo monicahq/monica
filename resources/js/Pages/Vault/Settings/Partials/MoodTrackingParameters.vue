@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, useTemplateRef } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import draggable from 'vuedraggable';
@@ -16,7 +16,7 @@ const loadingState = ref('');
 const localMoodTrackingParameters = ref(props.data.mood_tracking_parameters);
 const createMoodTrackingParametersModalShown = ref(false);
 const editMoodTrackingParameterId = ref(0);
-const newMoodTrackingParameter = ref(null);
+const newMoodTrackingParameter = useTemplateRef('newMoodTrackingParameter');
 
 const form = useForm({
   label: '',

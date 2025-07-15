@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, ref } from 'vue';
+import { nextTick, ref, useTemplateRef } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { flash } from '@/methods';
 import { trans } from 'laravel-vue-i18n';
@@ -17,8 +17,8 @@ const props = defineProps({
   data: Object,
 });
 
-const label = ref(null);
-const labels = ref([]);
+const label = useTemplateRef('label');
+const labels = useTemplateRef('labels');
 const loadingState = ref('');
 const addReminderModalShown = ref(false);
 const localReminders = ref(props.data.reminders);
