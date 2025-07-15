@@ -9,6 +9,7 @@ import Dropdown from '@/Shared/Form/Dropdown.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 import { Headset } from 'lucide-vue-next';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
+import ComboBox from '../Form/ComboBox.vue';
 
 const props = defineProps({
   data: Object,
@@ -29,6 +30,7 @@ const form = reactive({
   data: '',
   contact_information_type_id: 0,
   contact_information_kind: null,
+  contact_information_kind_custom: null,
   errors: [],
 });
 
@@ -54,6 +56,7 @@ const showCreateContactInformationModal = () => {
   addContactInformationModalShown.value = true;
   form.contact_information_type_id = props.data.contact_information_types[0].id;
   form.contact_information_kind = null;
+  form.contact_information_kind_custom = null;
   form.data = '';
 };
 
@@ -62,11 +65,18 @@ const showEditContactInformationModal = (info) => {
   editedContactInformationId.value = info.id;
   form.contact_information_type_id = info.contact_information_type.id;
   form.contact_information_kind = info.contact_information_kind?.id;
+  if (info.contact_information_kind !== null && info.contact_information_kind.id == '-1') {
+    form.contact_information_kind_custom = info.contact_information_kind.name;
+  }
   form.data = info.data;
 };
 
 const submit = () => {
   loadingState.value = 'loading';
+
+  if (form.contact_information_kind_custom !== null) {
+    form.contact_information_kind = form.contact_information_kind_custom;
+  }
 
   axios
     .post(props.data.url.store, form)
@@ -84,6 +94,10 @@ const submit = () => {
 
 const update = (info) => {
   loadingState.value = 'loading';
+
+  if (form.contact_information_kind_custom !== null) {
+    form.contact_information_kind = form.contact_information_kind_custom;
+  }
 
   axios
     .put(info.url.update, form)
@@ -166,10 +180,12 @@ const destroy = () => {
             {{ $t('Content') }}
           </label>
           <div class="relative flex">
-            <Dropdown
+            <ComboBox
               v-if="contactInformationKinds !== null"
               class="me-3 flex-none"
               v-model="form.contact_information_kind"
+              v-model:new-value="form.contact_information_kind_custom"
+              :label="$t('Kind')"
               :data="contactInformationKinds"
               :required="false"
               :placeholder="$t('Choose a value')"
@@ -179,6 +195,7 @@ const destroy = () => {
               id="newData"
               class="flex-1"
               v-model="form.data"
+              :label="$t('Data')"
               :type="'text'"
               :autofocus="true"
               :input-class="'block w-full'"
@@ -263,10 +280,12 @@ const destroy = () => {
                   {{ $t('Content') }}
                 </label>
                 <div class="relative flex">
-                  <Dropdown
+                  <ComboBox
                     v-if="contactInformationKinds !== null"
                     class="me-3 flex-none"
                     v-model="form.contact_information_kind"
+                    v-model:new-value="form.contact_information_kind_custom"
+                    :label="$t('Kind')"
                     :data="contactInformationKinds"
                     :required="false"
                     :placeholder="$t('Choose a value')"
@@ -276,6 +295,7 @@ const destroy = () => {
                     id="rename"
                     class="flex-1"
                     v-model="form.data"
+                    :label="$t('Data')"
                     :type="'text'"
                     :autofocus="true"
                     :input-class="'block w-full'"

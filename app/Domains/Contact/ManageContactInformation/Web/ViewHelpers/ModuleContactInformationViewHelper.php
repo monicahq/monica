@@ -96,6 +96,16 @@ class ModuleContactInformationViewHelper
     public static function dto(Contact $contact, ContactInformation $info): array
     {
         $infoKinds = static::infoKinds();
+        $contactInformationKind = [];
+        if ($info->kind !== null) {
+            if ($infoKinds->has($info->contactInformationType->type) && ($kind = $infoKinds[$info->contactInformationType->type]->firstWhere('id', $info->kind)) !== null) {
+                $contactInformationKind['id'] = $kind['id'];
+                $contactInformationKind['name'] = $kind['name'] ?? '';
+            } else {
+                $contactInformationKind['id'] = '-1';
+                $contactInformationKind['name'] = $info->kind;
+            }
+        }
 
         return [
             'id' => $info->id,
@@ -107,10 +117,7 @@ class ModuleContactInformationViewHelper
                 'id' => $info->contactInformationType->id,
                 'name' => $info->contactInformationType->name,
             ],
-            'contact_information_kind' => $info->kind !== null && $infoKinds->has($info->contactInformationType->type) ? [
-                'id' => $info->kind,
-                'name' => $infoKinds[$info->contactInformationType->type]->firstWhere('id', $info->kind)['name'],
-            ] : null,
+            'contact_information_kind' => $info->kind !== null ? $contactInformationKind : null,
             'url' => [
                 'update' => route('contact.contact_information.update', [
                     'vault' => $contact->vault_id,
