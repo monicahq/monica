@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, nextTick, ref } from 'vue';
+import { onMounted, nextTick, ref, useTemplateRef } from 'vue';
 import { Link, router, useForm } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import Layout from '@/Layouts/Layout.vue';
@@ -21,7 +21,7 @@ const form = useForm({
 });
 
 const loadingState = ref(null);
-const nameField = ref(null);
+const nameField = useTemplateRef('nameField');
 
 onMounted(() => {
   nextTick().then(() => nameField.value.focus());

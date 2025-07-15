@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { computed, onMounted, onUnmounted, ref, useAttrs } from 'vue';
+import { computed, onMounted, onUnmounted, ref, useAttrs, useTemplateRef } from 'vue';
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -39,7 +39,7 @@ const props = defineProps({
 });
 
 const main = ref(null);
-const select = ref(null);
+const select = useTemplateRef('select');
 const open = ref(false);
 
 const proxySelect = computed({
