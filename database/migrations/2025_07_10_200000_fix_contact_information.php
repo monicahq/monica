@@ -17,7 +17,7 @@ return new class extends Migration
         DB::table('contact_information_types')
             ->whereIn('name', $map->keys()->toArray())
             ->whereNull('name_translation_key')
-            ->chunk(100, function ($types) use ($map) {
+            ->chunkById(100, function ($types) use ($map) {
 
                 foreach ($types as $type) {
                     ContactInformationType::where('id', $type->id)->update([
