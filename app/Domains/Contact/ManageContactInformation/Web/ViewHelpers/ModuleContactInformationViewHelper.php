@@ -47,41 +47,45 @@ class ModuleContactInformationViewHelper
             'email' => collect([
                 [
                     'id' => 'work',
-                    'name' => trans('Work'),
+                    'name' => trans('🏢 Work'),
                 ],
                 [
                     'id' => 'home',
-                    'name' => trans('Home House'),
+                    'name' => trans('🏡 Home'),
                 ],
                 [
                     'id' => 'personal',
-                    'name' => trans('Personal'),
+                    'name' => trans('🧑🏼 Personal'),
+                ],
+                [
+                    'id' => 'other',
+                    'name' => trans('❔ Other'),
                 ],
             ]),
             'phone' => collect([
                 [
                     'id' => 'work',
-                    'name' => trans('Work'),
+                    'name' => trans('🏢 Work'),
                 ],
                 [
                     'id' => 'home',
-                    'name' => trans('Home House'),
+                    'name' => trans('🏡 Home'),
                 ],
                 [
                     'id' => 'cell',
-                    'name' => trans('Mobile'),
-                ],
-                [
-                    'id' => 'text',
-                    'name' => trans('Text'),
+                    'name' => trans('📱 Mobile'),
                 ],
                 [
                     'id' => 'fax',
-                    'name' => trans('Fax'),
+                    'name' => trans('📠 Fax'),
                 ],
                 [
                     'id' => 'pager',
-                    'name' => trans('Pager'),
+                    'name' => trans('📟 Pager'),
+                ],
+                [
+                    'id' => 'other',
+                    'name' => trans('❔ Other'),
                 ],
             ]),
         ]);

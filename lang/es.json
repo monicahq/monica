@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "El código de recuperación de dos factores proporcionado no es válido.",
   "There are no active addresses yet.": "Aún no hay direcciones activas.",
   "There are no calls logged yet.": "Aún no hay llamadas registradas.",
-  "There are no contact information types yet.": "Todavía no hay tipos de información de contacto.",
   "There are no contact informations yet.": "Aún no hay información de contacto.",
+  "There are no contact information types yet.": "Todavía no hay tipos de información de contacto.",
   "There are no documents yet.": "Aún no hay documentos.",
   "There are no events on that day, future or past.": "No hay eventos en ese día, futuro o pasado.",
   "There are no files yet.": "Aún no hay archivos.",
@@ -1233,7 +1233,7 @@
   "The type has been created": "El tipo ha sido creado.",
   "The type has been deleted": "El tipo ha sido eliminado.",
   "The type has been updated": "El tipo ha sido actualizado.",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "El tipo de información de contacto. No lo cambies a menos que sepas lo que estás haciendo.",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "El tipo de información de contacto. No cambie esto a menos que sepa lo que está haciendo.",
   "The user has been added": "El usuario ha sido agregado.",
   "The user has been deleted": "El usuario ha sido eliminado.",
   "The user has been removed": "El usuario ha sido eliminado.",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 Residencia secundaria",
   "🏡 Home": "🏡 Inicio",
   "🏢 Work": "🏢 Trabajo",
+  "📟 Pager": "📟 Pager",
+  "📠 Fax": "📠 Fax",
+  "📱 Mobile": "📱 móvil",
   "🔔 Reminder: :label for :contactName": "🔔 Recordatorio: :label para :contactName",
   "😀 Good": "😀 Bueno",
   "😁 Positive": "😁 Positivo",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 Negativo",
   "😩 Awful": "😩 Horrible",
   "😶‍🌫️ Neutral": "😶‍🌫️ Neutro",
-  "🥳 Awesome": "🥳 Impresionante"
+  "🥳 Awesome": "🥳 Impresionante",
+  "🧑🏼 Personal": "🧑🏼 Personal"
 }

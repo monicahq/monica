@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "雙重證證復原碼無效。",
   "There are no active addresses yet.": "還沒有活動地址。",
   "There are no calls logged yet.": "尚未記錄任何呼叫。",
-  "There are no contact information types yet.": "尚無聯繫信息類型。",
   "There are no contact informations yet.": "目前還沒有聯絡資訊。",
+  "There are no contact information types yet.": "尚無聯繫信息類型。",
   "There are no documents yet.": "還沒有文件。",
   "There are no events on that day, future or past.": "那天、未來或過去沒有發生任何事件。",
   "There are no files yet.": "還沒有文件。",
@@ -1233,7 +1233,7 @@
   "The type has been created": "類型已建立",
   "The type has been deleted": "該類型已被刪除",
   "The type has been updated": "類型已更新",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "聯繫信息的類型。除非您知道自己在做什麼，否則不要更改它。",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "聯繫信息的類型。除非您知道自己在做什麼，否則不要改變這一點。",
   "The user has been added": "該用戶已新增",
   "The user has been deleted": "該用戶已被刪除",
   "The user has been removed": "該用戶已被刪除",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 第二居所",
   "🏡 Home": "🏡 首頁",
   "🏢 Work": "🏢 工作",
+  "📟 Pager": "Pager",
+  "📠 Fax": "📠傳真",
+  "📱 Mobile": "📱手機",
   "🔔 Reminder: :label for :contactName": "🔔 提醒：:label 為 :contactName",
   "😀 Good": "😀 好",
   "😁 Positive": "😁 積極",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 負面",
   "😩 Awful": "😩 太糟糕了",
   "😶‍🌫️ Neutral": "😶‍🌫️中性",
-  "🥳 Awesome": "🥳 太棒了"
+  "🥳 Awesome": "🥳 太棒了",
+  "🧑🏼 Personal": "🧑🏼個人"
 }

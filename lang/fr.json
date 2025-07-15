@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "Le code de récupération fourni pour l’authentification à deux facteurs est incorrect.",
   "There are no active addresses yet.": "Il n’y a pas encore d’adresse active.",
   "There are no calls logged yet.": "Il n’y a pas encore d’appel enregistré.",
-  "There are no contact information types yet.": "Il n’y a pas encore de type de coordonnée.",
   "There are no contact informations yet.": "Il n’y a pas encore de coordonnée.",
+  "There are no contact information types yet.": "Il n’y a pas encore de type de coordonnée.",
   "There are no documents yet.": "Il n’y a pas encore de document.",
   "There are no events on that day, future or past.": "Il n’y a aucun évènement ce jour-là, futur ou passé.",
   "There are no files yet.": "Il n’y a pas encore de fichier.",
@@ -1233,7 +1233,7 @@
   "The type has been created": "Le type a été créé",
   "The type has been deleted": "Le type a été supprimé",
   "The type has been updated": "Le type a été mis à jour",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "Le type de coordonnée. Ne changez pas ceci à moins que vous ne sachiez ce que vous faites.",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "Le type de coordonnée. Ne changez pas ceci à moins que vous ne sachiez ce que vous faites.",
   "The user has been added": "L’utilisateur a été ajouté",
   "The user has been deleted": "L’utilisateur a été supprimé",
   "The user has been removed": "L’utilisateur a été supprimé",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 Résidence secondaire",
   "🏡 Home": "🏡 Domicile",
   "🏢 Work": "🏢 Travail",
+  "📟 Pager": "📟 Biper",
+  "📠 Fax": "📠 Fax",
+  "📱 Mobile": "📱 Portable",
   "🔔 Reminder: :label for :contactName": "🔔 Rappel : :label pour :contactName",
   "😀 Good": "😀 Bien",
   "😁 Positive": "😁 Positif",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 Négatif",
   "😩 Awful": "😩 Horrible",
   "😶‍🌫️ Neutral": "😶‍🌫️ Neutre",
-  "🥳 Awesome": "🥳 Génial"
+  "🥳 Awesome": "🥳 Génial",
+  "🧑🏼 Personal": "🧑🏼 Personnel"
 }

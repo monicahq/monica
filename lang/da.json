@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "Den angivne gendannelseskode med to faktorer var ugyldig.",
   "There are no active addresses yet.": "Der er endnu ingen aktive adresser.",
   "There are no calls logged yet.": "Der er ingen opkald logget endnu.",
-  "There are no contact information types yet.": "Der er endnu ingen kontaktoplysningstyper.",
   "There are no contact informations yet.": "Der er endnu ingen kontaktoplysninger.",
+  "There are no contact information types yet.": "Der er endnu ingen kontaktoplysningstyper.",
   "There are no documents yet.": "Der er ingen dokumenter endnu.",
   "There are no events on that day, future or past.": "Der er ingen begivenheder på den dag, fremtid eller fortid.",
   "There are no files yet.": "Der er ingen filer endnu.",
@@ -1233,7 +1233,7 @@
   "The type has been created": "Typen er oprettet",
   "The type has been deleted": "Typen er blevet slettet",
   "The type has been updated": "Typen er blevet opdateret",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "Typen af kontaktoplysninger. Skift ikke det, medmindre du ved, hvad du laver.",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "Typen af kontaktoplysninger. Skift ikke dette, medmindre du ved, hvad du laver.",
   "The user has been added": "Brugeren er tilføjet",
   "The user has been deleted": "Brugeren er blevet slettet",
   "The user has been removed": "Brugeren er blevet fjernet",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 Sekundær bolig",
   "🏡 Home": "🏡 Hjem",
   "🏢 Work": "🏢 Arbejde",
+  "📟 Pager": "📟 Pager",
+  "📠 Fax": "📠 Fax",
+  "📱 Mobile": "📱 Mobil",
   "🔔 Reminder: :label for :contactName": "🔔 Påmindelse: :label for :contactName",
   "😀 Good": "😀 Godt",
   "😁 Positive": "😁 Positivt",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 Negativt",
   "😩 Awful": "😩 Forfærdeligt",
   "😶‍🌫️ Neutral": "😶‍🌫️ Neutral",
-  "🥳 Awesome": "🥳 Fantastisk"
+  "🥳 Awesome": "🥳 Fantastisk",
+  "🧑🏼 Personal": "🧑🏼 Personlig"
 }

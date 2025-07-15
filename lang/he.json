@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "קוד שחזור שני הגורמים שסופק היה לא חוקי.",
   "There are no active addresses yet.": "אין עדיין כתובות פעילות.",
   "There are no calls logged yet.": "עדיין לא נרשמו שיחות.",
-  "There are no contact information types yet.": "אין עדיין סוגי פרטי קשר.",
   "There are no contact informations yet.": "אין עדיין פרטים ליצירת קשר.",
+  "There are no contact information types yet.": "אין עדיין סוגי פרטי קשר.",
   "There are no documents yet.": "אין עדיין מסמכים.",
   "There are no events on that day, future or past.": "אין אירועים באותו יום, עתיד או עבר.",
   "There are no files yet.": "אין עדיין קבצים.",
@@ -1233,7 +1233,7 @@
   "The type has been created": "הסוג נוצר",
   "The type has been deleted": "הסוג נמחק",
   "The type has been updated": "הסוג עודכן",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "סוג פרטי הקשר. אל תשנה את זה אלא אם כן אתה יודע מה אתה עושה.",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "סוג פרטי הקשר. אל תשנה זאת אלא אם כן אתה יודע מה אתה עושה.",
   "The user has been added": "המשתמש נוסף",
   "The user has been deleted": "המשתמש נמחק",
   "The user has been removed": "המשתמש הוסר",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 מגורים משני",
   "🏡 Home": "🏡 הבית",
   "🏢 Work": "🏢 עבודה",
+  "📟 Pager": "📟 ביפר",
+  "📠 Fax": "📠 פקס",
+  "📱 Mobile": "📱 נייד",
   "🔔 Reminder: :label for :contactName": "🔔 תזכורת: :label עבור :contactName",
   "😀 Good": "😀 טוב",
   "😁 Positive": "😁 חיובי",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 שלילי",
   "😩 Awful": "😩 נורא",
   "😶‍🌫️ Neutral": "😶‍🌫️ ניטרלי",
-  "🥳 Awesome": "🥳 מדהים"
+  "🥳 Awesome": "🥳 מדהים",
+  "🧑🏼 Personal": "🧑🏼 אישי"
 }

@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "Mã xác minh hai yếu tố đã cung cấp không hợp lệ.",
   "There are no active addresses yet.": "Chưa có địa chỉ hoạt động nào.",
   "There are no calls logged yet.": "Chưa có cuộc gọi nào được ghi lại.",
-  "There are no contact information types yet.": "Không có loại thông tin liên lạc.",
   "There are no contact informations yet.": "Hiện chưa có thông tin liên lạc.",
+  "There are no contact information types yet.": "Không có loại thông tin liên lạc.",
   "There are no documents yet.": "Chưa có tài liệu nào.",
   "There are no events on that day, future or past.": "Không có sự kiện nào vào ngày đó, tương lai hay quá khứ.",
   "There are no files yet.": "Chưa có tập tin nào.",
@@ -1233,7 +1233,7 @@
   "The type has been created": "Loại đã được tạo",
   "The type has been deleted": "Loại đã bị xóa",
   "The type has been updated": "Loại đã được cập nhật",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "Loại thông tin liên lạc. Don Tiết thay đổi nó trừ khi bạn biết những gì bạn đang làm.",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "Loại thông tin liên lạc. Don Tiết thay đổi điều này trừ khi bạn biết những gì bạn đang làm.",
   "The user has been added": "Người dùng đã được thêm",
   "The user has been deleted": "Người dùng đã bị xóa",
   "The user has been removed": "Người dùng đã bị xóa",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 Nơi ở thứ hai",
   "🏡 Home": "🏡 Trang chủ",
   "🏢 Work": "🏢 Công việc",
+  "📟 Pager": "📟 PAGER",
+  "📠 Fax": "Fax",
+  "📱 Mobile": "📱 Di động",
   "🔔 Reminder: :label for :contactName": "🔔 Lời nhắc: :label cho :contactName",
   "😀 Good": "😀 Tốt",
   "😁 Positive": "😁 Tích cực",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 Tiêu cực",
   "😩 Awful": "😩 Kinh khủng",
   "😶‍🌫️ Neutral": "😶‍🌫️ Trung tính",
-  "🥳 Awesome": "🥳 Tuyệt vời"
+  "🥳 Awesome": "🥳 Tuyệt vời",
+  "🧑🏼 Personal": "🧑🏼 Cá nhân"
 }

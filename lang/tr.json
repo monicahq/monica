@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "Sağlanan iki faktörlü kurtarma kodu geçersizdi.",
   "There are no active addresses yet.": "Henüz aktif adres yok.",
   "There are no calls logged yet.": "Henüz kayıtlı bir çağrı yok.",
-  "There are no contact information types yet.": "Henüz iletişim bilgisi türü yok.",
   "There are no contact informations yet.": "Henüz iletişim bilgisi yok.",
+  "There are no contact information types yet.": "Henüz iletişim bilgisi türü yok.",
   "There are no documents yet.": "Henüz belge yok.",
   "There are no events on that day, future or past.": "O güne, geleceğe veya geçmişe ait hiçbir olay yoktur.",
   "There are no files yet.": "Henüz dosya yok.",
@@ -1233,7 +1233,7 @@
   "The type has been created": "Tür oluşturuldu",
   "The type has been deleted": "Tür silindi",
   "The type has been updated": "Tür güncellendi",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "İletişim bilgilerinin türü. Ne yaptığınızı bilmiyorsanız değiştirmeyin.",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "İletişim bilgilerinin türü. Ne yaptığınızı bilmediğiniz sürece bunu değiştirmeyin.",
   "The user has been added": "Kullanıcı eklendi",
   "The user has been deleted": "Kullanıcı silindi",
   "The user has been removed": "Kullanıcı kaldırıldı",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 İkincil ikamet",
   "🏡 Home": "🏡 Ana Sayfa",
   "🏢 Work": "🏢Çalışmak",
+  "📟 Pager": "📟 Cager",
+  "📠 Fax": "📠 Faks",
+  "📱 Mobile": "📱 Mobil",
   "🔔 Reminder: :label for :contactName": "🔔 Hatırlatma: :contactName için :label",
   "😀 Good": "😀 Güzel",
   "😁 Positive": "😁 Olumlu",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 Olumsuz",
   "😩 Awful": "😩 Berbat",
   "😶‍🌫️ Neutral": "😶‍🌫️ Nötr",
-  "🥳 Awesome": "🥳 Harika"
+  "🥳 Awesome": "🥳 Harika",
+  "🧑🏼 Personal": "🧑🏼 Kişisel"
 }

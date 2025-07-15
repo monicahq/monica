@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "Der angegebene Zwei-Faktor-Wiederherstellungscode war ungültig.",
   "There are no active addresses yet.": "Es sind noch keine aktiven Adressen vorhanden.",
   "There are no calls logged yet.": "Es sind noch keine Anrufe protokolliert.",
-  "There are no contact information types yet.": "Es gibt noch keine Kontaktinformationstypen.",
   "There are no contact informations yet.": "Es liegen noch keine Kontaktinformationen vor.",
+  "There are no contact information types yet.": "Es gibt noch keine Kontaktinformationstypen.",
   "There are no documents yet.": "Es liegen noch keine Dokumente vor.",
   "There are no events on that day, future or past.": "An diesem Tag gibt es keine Ereignisse, weder in der Zukunft noch in der Vergangenheit.",
   "There are no files yet.": "Es sind noch keine Dateien vorhanden.",
@@ -1233,7 +1233,7 @@
   "The type has been created": "Der Typ wurde erstellt",
   "The type has been deleted": "Der Typ wurde gelöscht",
   "The type has been updated": "Der Typ wurde aktualisiert",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "Die Art der Kontaktinformationen. Ändern Sie es nicht, es sei denn, Sie wissen, was Sie tun.",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "Die Art der Kontaktinformationen. Ändern Sie dies nicht, es sei denn, Sie wissen, was Sie tun.",
   "The user has been added": "Der Benutzer wurde hinzugefügt",
   "The user has been deleted": "Der Benutzer wurde gelöscht",
   "The user has been removed": "Der Benutzer wurde entfernt",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 Zweitwohnsitz",
   "🏡 Home": "🏡 Zuhause",
   "🏢 Work": "🏢 Arbeit",
+  "📟 Pager": "📟 Pager",
+  "📠 Fax": "📠 Fax",
+  "📱 Mobile": "📱 Mobile",
   "🔔 Reminder: :label for :contactName": "🔔 Erinnerung: :label für :contactName",
   "😀 Good": "😀 Gut",
   "😁 Positive": "😁 Positiv",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 Negativ",
   "😩 Awful": "😩 Schrecklich",
   "😶‍🌫️ Neutral": "😶‍🌫️ Neutral",
-  "🥳 Awesome": "🥳 Großartig"
+  "🥳 Awesome": "🥳 Großartig",
+  "🧑🏼 Personal": "🧑🏼 persönlich"
 }

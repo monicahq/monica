@@ -71,10 +71,10 @@ const submit = () => {
   axios
     .post(props.data.url.store, form)
     .then((response) => {
-      flash(trans('The contact information has been created'), 'success');
       localContactInformation.value.unshift(response.data.data);
       loadingState.value = '';
       addContactInformationModalShown.value = false;
+      flash(trans('The contact information has been created'), 'success');
     })
     .catch((error) => {
       loadingState.value = '';
@@ -89,10 +89,10 @@ const update = (info) => {
     .put(info.url.update, form)
     .then((response) => {
       loadingState.value = '';
-      flash(trans('The contact information has been updated'), 'success');
       localContactInformation.value[localContactInformation.value.findIndex((x) => x.id === info.id)] =
         response.data.data;
       editedContactInformationId.value = 0;
+      flash(trans('The contact information has been updated'), 'success');
     })
     .catch((error) => {
       loadingState.value = '';
@@ -107,10 +107,10 @@ const destroy = () => {
     .delete(contactInformationDeleting.value.url.destroy)
     .then(() => {
       loadingState.value = '';
-      flash(trans('The contact information has been deleted'), 'success');
       let id = localContactInformation.value.findIndex((x) => x.id === contactInformationDeleting.value.id);
       localContactInformation.value.splice(id, 1);
       contactInformationDeleting.value = null;
+      flash(trans('The contact information has been deleted'), 'success');
     })
     .catch((error) => {
       loadingState.value = '';

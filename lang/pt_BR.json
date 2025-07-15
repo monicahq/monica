@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "O código de recuperação de dois fatores fornecido era inválido.",
   "There are no active addresses yet.": "Ainda não há endereços ativos.",
   "There are no calls logged yet.": "Ainda não há chamadas registradas.",
-  "There are no contact information types yet.": "Ainda não há tipos de informações de contato.",
   "There are no contact informations yet.": "Ainda não há informações de contato.",
+  "There are no contact information types yet.": "Ainda não há tipos de informações de contato.",
   "There are no documents yet.": "Ainda não há documentos.",
   "There are no events on that day, future or past.": "Não há eventos naquele dia, futuros ou passados.",
   "There are no files yet.": "Ainda não há arquivos.",
@@ -1233,7 +1233,7 @@
   "The type has been created": "O tipo foi criado",
   "The type has been deleted": "O tipo foi excluído",
   "The type has been updated": "O tipo foi atualizado",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "O tipo de informação de contato. Não mude a menos que você saiba o que está fazendo.",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "O tipo de informação de contato. Não mude isso a menos que você saiba o que está fazendo.",
   "The user has been added": "O usuário foi adicionado",
   "The user has been deleted": "O usuário foi excluído",
   "The user has been removed": "O usuário foi removido",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 Residência secundária",
   "🏡 Home": "🏡 Casa",
   "🏢 Work": "🏢 Trabalho",
+  "📟 Pager": "📟 Pager",
+  "📠 Fax": "📠 Fax",
+  "📱 Mobile": "📱 Mobile",
   "🔔 Reminder: :label for :contactName": "🔔 Lembrete: :label para :contactName",
   "😀 Good": "😀 Bom",
   "😁 Positive": "😁 Positivo",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 Negativo",
   "😩 Awful": "😩 Horrível",
   "😶‍🌫️ Neutral": "😶‍🌫️ Neutro",
-  "🥳 Awesome": "🥳 Incrível"
+  "🥳 Awesome": "🥳 Incrível",
+  "🧑🏼 Personal": "🧑🏼 Pessoal"
 }

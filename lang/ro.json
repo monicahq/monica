@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "Codul de recuperare cu doi factori furnizat a fost nevalid.",
   "There are no active addresses yet.": "Nu există încă adrese active.",
   "There are no calls logged yet.": "Nu există apeluri înregistrate încă.",
-  "There are no contact information types yet.": "Încă nu există tipuri de informații de contact.",
   "There are no contact informations yet.": "Nu există încă informații de contact.",
+  "There are no contact information types yet.": "Încă nu există tipuri de informații de contact.",
   "There are no documents yet.": "Nu există încă documente.",
   "There are no events on that day, future or past.": "Nu există evenimente în acea zi, viitor sau trecut.",
   "There are no files yet.": "Nu există încă fișiere.",
@@ -1233,7 +1233,7 @@
   "The type has been created": "Tipul a fost creat",
   "The type has been deleted": "Tipul a fost șters",
   "The type has been updated": "Tipul a fost actualizat",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "Tipul de informații de contact. Nu -l schimbați decât dacă știți ce faceți.",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "Tipul de informații de contact. Nu schimbați acest lucru decât dacă știți ce faceți.",
   "The user has been added": "Utilizatorul a fost adăugat",
   "The user has been deleted": "Utilizatorul a fost șters",
   "The user has been removed": "Utilizatorul a fost eliminat",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 Reședință secundară",
   "🏡 Home": "🏡 Acasă",
   "🏢 Work": "🏢 Munca",
+  "📟 Pager": "📟 Pager",
+  "📠 Fax": "📠 Fax",
+  "📱 Mobile": "📱 Mobile",
   "🔔 Reminder: :label for :contactName": "🔔 Memento: :label pentru :contactName",
   "😀 Good": "😀 Bun",
   "😁 Positive": "😁 Pozitiv",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 Negativ",
   "😩 Awful": "😩 Îngrozitor",
   "😶‍🌫️ Neutral": "😶‍🌫️ Neutru",
-  "🥳 Awesome": "🥳 Minunat"
+  "🥳 Awesome": "🥳 Minunat",
+  "🧑🏼 Personal": "🧑🏼 Personal"
 }

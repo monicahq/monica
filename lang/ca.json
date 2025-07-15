@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "El codi de recuperació de dos factors proporcionat no era vàlid.",
   "There are no active addresses yet.": "Encara no hi ha adreces actives.",
   "There are no calls logged yet.": "Encara no hi ha trucades registrades.",
-  "There are no contact information types yet.": "Encara no hi ha cap tipus d’informació de contacte.",
   "There are no contact informations yet.": "Encara no hi ha informació de contacte.",
+  "There are no contact information types yet.": "Encara no hi ha cap tipus d’informació de contacte.",
   "There are no documents yet.": "Encara no hi ha documents.",
   "There are no events on that day, future or past.": "No hi ha esdeveniments en aquell dia, futur o passat.",
   "There are no files yet.": "Encara no hi ha fitxers.",
@@ -1233,7 +1233,7 @@
   "The type has been created": "S’ha creat el tipus",
   "The type has been deleted": "S’ha suprimit el tipus",
   "The type has been updated": "El tipus s’ha actualitzat",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "El tipus d’informació de contacte. No ho canvieu tret que sàpigues el que estàs fent.",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "El tipus d’informació de contacte. No ho canvieu a menys que sàpigues el que estàs fent.",
   "The user has been added": "S’ha afegit l’usuari",
   "The user has been deleted": "L’usuari ha estat suprimit",
   "The user has been removed": "L’usuari ha estat eliminat",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 Residència secundària",
   "🏡 Home": "🏡 A casa",
   "🏢 Work": "🏢 Treball",
+  "📟 Pager": "📟 Pager",
+  "📠 Fax": "📠 fax",
+  "📱 Mobile": "📱 Mobile",
   "🔔 Reminder: :label for :contactName": "🔔 Recordatori: :label per a :contactName",
   "😀 Good": "😀 Bé",
   "😁 Positive": "😁 Positiu",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 Negativa",
   "😩 Awful": "😩 Horrible",
   "😶‍🌫️ Neutral": "😶‍🌫️ Neutre",
-  "🥳 Awesome": "🥳 Genial"
+  "🥳 Awesome": "🥳 Genial",
+  "🧑🏼 Personal": "🧑🏼 personal"
 }

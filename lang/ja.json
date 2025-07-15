@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "二要素認証のリカバリーコードが無効です。",
   "There are no active addresses yet.": "アクティブなアドレスはまだありません。",
   "There are no calls logged yet.": "まだ通話は記録されていません。",
-  "There are no contact information types yet.": "連絡先情報はまだありません。",
   "There are no contact informations yet.": "連絡先情報はまだありません。",
+  "There are no contact information types yet.": "連絡先情報はまだありません。",
   "There are no documents yet.": "まだ書類はありません。",
   "There are no events on that day, future or past.": "その日、未来にも過去にも出来事はありません。",
   "There are no files yet.": "まだファイルがありません。",
@@ -1233,7 +1233,7 @@
   "The type has been created": "タイプが作成されました",
   "The type has been deleted": "タイプは削除されました",
   "The type has been updated": "タイプが更新されました",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "連絡先情報の種類。自分が何をしているのかわからない限り、変更しないでください。",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "連絡先情報の種類。あなたが何をしているのかわからない限り、これを変更しないでください。",
   "The user has been added": "ユーザーが追加されました",
   "The user has been deleted": "ユーザーは削除されました",
   "The user has been removed": "ユーザーが削除されました",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 二次住居",
   "🏡 Home": "🏡 ホーム",
   "🏢 Work": "🏢 仕事",
+  "📟 Pager": "pagerページャー",
+  "📠 Fax": "faxファックス",
+  "📱 Mobile": "mobileモバイル",
   "🔔 Reminder: :label for :contactName": "🔔 リマインダー: :contactName の :label",
   "😀 Good": "😀 いいですね",
   "😁 Positive": "😁 ポジティブ",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 ネガティブ",
   "😩 Awful": "😩 ひどい",
   "😶‍🌫️ Neutral": "😶‍🌫️中立",
-  "🥳 Awesome": "🥳 素晴らしい"
+  "🥳 Awesome": "🥳 素晴らしい",
+  "🧑🏼 Personal": "🧑🏼個人"
 }

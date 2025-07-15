@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "Den angivna tvåfaktorsåterställningskoden var ogiltig.",
   "There are no active addresses yet.": "Det finns inga aktiva adresser ännu.",
   "There are no calls logged yet.": "Det finns inga loggade samtal än.",
-  "There are no contact information types yet.": "Det finns inga kontaktinformationstyper än.",
   "There are no contact informations yet.": "Det finns inga kontaktuppgifter ännu.",
+  "There are no contact information types yet.": "Det finns inga kontaktinformationstyper än.",
   "There are no documents yet.": "Det finns inga dokument ännu.",
   "There are no events on that day, future or past.": "Det finns inga händelser den dagen, framtiden eller det förflutna.",
   "There are no files yet.": "Det finns inga filer än.",
@@ -1233,7 +1233,7 @@
   "The type has been created": "Typen har skapats",
   "The type has been deleted": "Typen har tagits bort",
   "The type has been updated": "Typen har uppdaterats",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "Typen av kontaktinformation. Ändra inte det om du inte vet vad du gör.",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "Typen av kontaktinformation. Ändra inte detta om du inte vet vad du gör.",
   "The user has been added": "Användaren har lagts till",
   "The user has been deleted": "Användaren har tagits bort",
   "The user has been removed": "Användaren har tagits bort",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 Sekundärbostad",
   "🏡 Home": "🏡 Hemma",
   "🏢 Work": "🏢 Jobba",
+  "📟 Pager": "📟 personsökare",
+  "📠 Fax": "📠 fax",
+  "📱 Mobile": "📱 Mobil",
   "🔔 Reminder: :label for :contactName": "🔔 Påminnelse: :label för :contactName",
   "😀 Good": "😀 Bra",
   "😁 Positive": "😁 Positivt",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 Negativt",
   "😩 Awful": "😩 Hemskt",
   "😶‍🌫️ Neutral": "😶‍🌫️ Neutral",
-  "🥳 Awesome": "🥳 Fantastiskt"
+  "🥳 Awesome": "🥳 Fantastiskt",
+  "🧑🏼 Personal": "🧑🏼 Personlig"
 }

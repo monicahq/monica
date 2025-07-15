@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "De gegeven twee-staps herstelcode was ongeldig.",
   "There are no active addresses yet.": "Er zijn nog geen actieve adressen.",
   "There are no calls logged yet.": "Er zijn nog geen oproepen geregistreerd.",
-  "There are no contact information types yet.": "Er zijn nog geen types voor contactinformatie.",
   "There are no contact informations yet.": "Er zijn nog geen contactgegevens.",
+  "There are no contact information types yet.": "Er zijn nog geen types voor contactinformatie.",
   "There are no documents yet.": "Er zijn nog geen documenten.",
   "There are no events on that day, future or past.": "Er zijn geen gebeurtenissen op die dag, toekomst of verleden.",
   "There are no files yet.": "Er zijn nog geen bestanden.",
@@ -1233,7 +1233,7 @@
   "The type has been created": "Het type is gemaakt",
   "The type has been deleted": "Het type is verwijderd",
   "The type has been updated": "Het type is bijgewerkt",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "Het type contactgegevens. Verander het niet tenzij je weet wat je doet.",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "Het type contactgegevens. Verander dit niet tenzij je weet wat je doet.",
   "The user has been added": "De gebruiker is toegevoegd",
   "The user has been deleted": "De gebruiker is verwijderd",
   "The user has been removed": "De gebruiker is verwijderd",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 Tweede verblijfplaats",
   "🏡 Home": "🏡Thuis",
   "🏢 Work": "🏢 Werk",
+  "📟 Pager": "📟 pager",
+  "📠 Fax": "📠 Fax",
+  "📱 Mobile": "📱 Mobiel",
   "🔔 Reminder: :label for :contactName": "🔔 Herinnering: :label voor :contactName",
   "😀 Good": "😀 Goed",
   "😁 Positive": "😁 Positief",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 Negatief",
   "😩 Awful": "😩 Verschrikkelijk",
   "😶‍🌫️ Neutral": "😶‍🌫️ Neutraal",
-  "🥳 Awesome": "🥳 Geweldig"
+  "🥳 Awesome": "🥳 Geweldig",
+  "🧑🏼 Personal": "🧑🏼 Persoonlijk"
 }

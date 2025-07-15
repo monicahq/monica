@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "كود استرداد المصادقة الثنائية الذي قمت بإدخاله غير صالح.",
   "There are no active addresses yet.": "لا توجد عناوين نشطة حتى الآن.",
   "There are no calls logged yet.": "لا توجد مكالمات مسجلة حتى الآن.",
-  "There are no contact information types yet.": "لا توجد أنواع معلومات الاتصال حتى الآن.",
   "There are no contact informations yet.": "لا توجد معلومات الاتصال بعد.",
+  "There are no contact information types yet.": "لا توجد أنواع معلومات الاتصال حتى الآن.",
   "There are no documents yet.": "لا توجد وثائق حتى الآن.",
   "There are no events on that day, future or past.": "لا توجد أحداث في ذلك اليوم، المستقبل أو الماضي.",
   "There are no files yet.": "لا توجد ملفات حتى الآن.",
@@ -1233,7 +1233,7 @@
   "The type has been created": "تم إنشاء النوع",
   "The type has been deleted": "تم حذف النوع",
   "The type has been updated": "تم تحديث النوع",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "نوع معلومات الاتصال. لا تغيره إلا إذا كنت تعرف ما تفعله.",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "نوع معلومات الاتصال. لا تغير هذا إلا إذا كنت تعرف ما تفعله.",
   "The user has been added": "تمت إضافة المستخدم",
   "The user has been deleted": "تم حذف المستخدم",
   "The user has been removed": "تمت إزالة المستخدم",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 الإقامة الثانوية",
   "🏡 Home": "🏡 المنزل",
   "🏢 Work": "🏢 العمل",
+  "📟 Pager": "pager",
+  "📠 Fax": "📠 الفاكس",
+  "📱 Mobile": "📱 Mobile",
   "🔔 Reminder: :label for :contactName": "🔔 تذكير: :label لـ :contactName",
   "😀 Good": "😀 جيد",
   "😁 Positive": "😁 إيجابي",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 سلبي",
   "😩 Awful": "😩 فظيعة",
   "😶‍🌫️ Neutral": "😶‍🌫️ محايد",
-  "🥳 Awesome": "🥳رائع"
+  "🥳 Awesome": "🥳رائع",
+  "🧑🏼 Personal": "🧑🏼 شخصية"
 }

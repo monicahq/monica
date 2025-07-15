@@ -50,10 +50,10 @@ const submit = () => {
   axios
     .post(props.data.url.contact_information_type_store, form)
     .then((response) => {
-      flash(trans('The contact information type has been created'), 'success');
       localContactInformationTypes.value.unshift(response.data.data);
       loadingState.value = null;
       creatingContactInformation.value = false;
+      flash(trans('The contact information type has been created'), 'success');
     })
     .catch((error) => {
       loadingState.value = null;
@@ -237,7 +237,6 @@ const destroy = () => {
               <!-- actions -->
               <ul class="text-sm">
                 <li
-                  v-if="contactInformationType.can_be_deleted"
                   class="inline cursor-pointer text-blue-500 hover:underline"
                   @click="updateAdressTypeModal(contactInformationType)">
                   {{ $t('Edit') }}
@@ -269,6 +268,7 @@ const destroy = () => {
                   :required="true"
                   :autocomplete="false"
                   :maxlength="255"
+                  :disabled="contactInformationType.can_be_deleted === false"
                   @esc-key-pressed="contactInformationEditing = 0" />
 
                 <TextInput
@@ -279,6 +279,7 @@ const destroy = () => {
                   :required="false"
                   :autocomplete="false"
                   :maxlength="255"
+                  :disabled="contactInformationType.can_be_deleted === false"
                   :help="
                     $t(
                       'A contact information can be clickable. For instance, a phone number can be clickable and launch the default application in your computer. If you do not know the protocol for the type you are adding, you can simply omit this field.',
@@ -294,7 +295,7 @@ const destroy = () => {
                   :required="false"
                   :autocomplete="false"
                   :maxlength="255"
-                  :help="$t('The type of contact information. Don’t change it unless you know what you are doing.')"
+                  :help="$t('The type of contact information. Don’t change this unless you know what you are doing.')"
                   @esc-key-pressed="creatingContactInformation = false" />
               </div>
 
@@ -321,7 +322,7 @@ const destroy = () => {
 
           <template #footer>
             <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click.prevent="contactInformationDeleting = null" />
-            <PrettyButton :text="$t('Delete')" :state="loadingState" @click="destroy" />
+            <PrettyButton :text="$t('Delete')" :state="loadingState" :icon="'trash'" :class="'save'" @click="destroy" />
           </template>
         </JetConfirmationModal>
 

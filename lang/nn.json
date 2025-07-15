@@ -1176,8 +1176,8 @@
   "The provided two factor recovery code was invalid.": "Den oppgitte tofaktorgjenopprettingskoden var ugyldig.",
   "There are no active addresses yet.": "Det er ingen aktive adresser ennå.",
   "There are no calls logged yet.": "Det er ingen anrop logget ennå.",
-  "There are no contact information types yet.": "Det er ingen kontaktinformasjonstyper ennå.",
   "There are no contact informations yet.": "Det er ingen kontaktinformasjon ennå.",
+  "There are no contact information types yet.": "Det er ingen kontaktinformasjonstyper ennå.",
   "There are no documents yet.": "Det er ingen dokumenter ennå.",
   "There are no events on that day, future or past.": "Det er ingen hendelser på den dagen, fremtiden eller fortiden.",
   "There are no files yet.": "Det er ingen filer ennå.",
@@ -1233,7 +1233,7 @@
   "The type has been created": "Typen er opprettet",
   "The type has been deleted": "Typen er slettet",
   "The type has been updated": "Typen er oppdatert",
-  "The type of contact information. Don’t change it unless you know what you are doing.": "Typen kontaktinformasjon. Ikke endre det med mindre du vet hva du gjør.",
+  "The type of contact information. Don’t change this unless you know what you are doing.": "Typen kontaktinformasjon. Ikke endre dette med mindre du vet hva du gjør.",
   "The user has been added": "Brukeren er lagt til",
   "The user has been deleted": "Brukeren er slettet",
   "The user has been removed": "Brukeren er fjernet",
@@ -1470,6 +1470,9 @@
   "🏠 Secondary residence": "🏠 Sekundærbolig",
   "🏡 Home": "🏡 Hjemme",
   "🏢 Work": "🏢 Jobb",
+  "📟 Pager": "📟 Pager",
+  "📠 Fax": "📠 Faks",
+  "📱 Mobile": "📱 mobil",
   "🔔 Reminder: :label for :contactName": "🔔 Påminnelse: :label for :contactName",
   "😀 Good": "😀 Bra",
   "😁 Positive": "😁 Positivt",
@@ -1478,5 +1481,6 @@
   "😡 Negative": "😡 Negativt",
   "😩 Awful": "😩 Forferdelig",
   "😶‍🌫️ Neutral": "😶‍🌫️ Nøytral",
-  "🥳 Awesome": "🥳 Fantastisk"
+  "🥳 Awesome": "🥳 Fantastisk",
+  "🧑🏼 Personal": "🧑🏼 Personlig"
 }
