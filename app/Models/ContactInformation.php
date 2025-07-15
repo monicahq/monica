@@ -23,6 +23,7 @@ class ContactInformation extends Model
         'contact_id',
         'type_id',
         'data',
+        'kind',
     ];
 
     /**
@@ -55,7 +56,7 @@ class ContactInformation extends Model
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: function ($value) {
+            get: function () {
                 $type = $this->contactInformationType;
 
                 if (! $type->can_be_deleted) {
@@ -65,6 +66,32 @@ class ContactInformation extends Model
                 }
             },
             set: fn ($value) => $value,
+        );
+    }
+
+    /**
+     * Get the content of the contact information.
+     * If the contact information type is a phone number or an email, return the
+     * content. If it's something else, return the contact information type's label.
+     *
+     * @return Attribute<string,string>
+     */
+    protected function dataWithProtocol(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if ($this->contactInformationType->protocol) {
+                    return $this->contactInformationType->protocol.$this->data;
+                }
+
+                $protocols = collect(config('app.socialProtocols'));
+
+                if ($protocols->has($this->contactInformationType->name_translation_key)) {
+                    return $protocols[$this->contactInformationType->name_translation_key].$this->data;
+                }
+
+                return null;
+            },
         );
     }
 
