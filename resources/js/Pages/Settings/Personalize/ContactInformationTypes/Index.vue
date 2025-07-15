@@ -1,5 +1,103 @@
+<script setup>
+import { ref, reactive } from 'vue';
+import { Link } from '@inertiajs/vue3';
+import { trans } from 'laravel-vue-i18n';
+import { flash } from '@/methods';
+import Layout from '@/Layouts/Layout.vue';
+import PrettyButton from '@/Shared/Form/PrettyButton.vue';
+import PrettySpan from '@/Shared/Form/PrettySpan.vue';
+import TextInput from '@/Shared/Form/TextInput.vue';
+import Errors from '@/Shared/Form/Errors.vue';
+import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
+
+const props = defineProps({
+  layoutData: Object,
+  data: Object,
+});
+
+const loadingState = ref('');
+const creatingContactInformation = ref(false);
+const contactInformationEditing = ref(0);
+const localContactInformationTypes = ref(props.data.contact_information_types);
+const contactInformationDeleting = ref(null);
+
+const form = reactive({
+  name: '',
+  protocol: '',
+  type: '',
+  errors: [],
+});
+
+const showContactInformationTypeModal = () => {
+  form.name = '';
+  form.protocol = '';
+  form.type = '';
+  creatingContactInformation.value = true;
+  contactInformationEditing.value = 0;
+};
+
+const updateAdressTypeModal = (contactInformationType) => {
+  form.name = contactInformationType.name;
+  form.protocol = contactInformationType.protocol;
+  form.type = contactInformationType.type;
+  contactInformationEditing.value = contactInformationType.id;
+  creatingContactInformation.value = false;
+};
+
+const submit = () => {
+  loadingState.value = 'loading';
+
+  axios
+    .post(props.data.url.contact_information_type_store, form)
+    .then((response) => {
+      flash(trans('The contact information type has been created'), 'success');
+      localContactInformationTypes.value.unshift(response.data.data);
+      loadingState.value = null;
+      creatingContactInformation.value = false;
+    })
+    .catch((error) => {
+      loadingState.value = null;
+      form.errors = error.response.data;
+    });
+};
+
+const update = (contactInformationType) => {
+  loadingState.value = 'loading';
+
+  axios
+    .put(contactInformationType.url.update, form)
+    .then((response) => {
+      let id = localContactInformationTypes.value.findIndex((x) => x.id === contactInformationType.id);
+      localContactInformationTypes.value[id] = response.data.data;
+      loadingState.value = null;
+      contactInformationEditing.value = 0;
+      flash(trans('The contact information type has been updated'), 'success');
+    })
+    .catch((error) => {
+      loadingState.value = null;
+      form.errors = error.response.data;
+    });
+};
+
+const destroy = () => {
+  axios
+    .delete(contactInformationDeleting.value.url.destroy)
+    .then(() => {
+      let id = localContactInformationTypes.value.findIndex((x) => x.id === contactInformationDeleting.value.id);
+      localContactInformationTypes.value.splice(id, 1);
+      contactInformationDeleting.value = null;
+      flash(trans('The contact information type has been deleted'), 'success');
+    })
+    .catch((error) => {
+      loadingState.value = null;
+      form.errors = error.response.data;
+      contactInformationDeleting.value = null;
+    });
+};
+</script>
+
 <template>
-  <layout :layout-data="layoutData">
+  <Layout :layout-data="layoutData">
     <!-- breadcrumb -->
     <nav class="bg-white dark:bg-gray-900 sm:border-b border-gray-200 dark:border-gray-700">
       <div class="max-w-8xl mx-auto hidden px-4 py-2 sm:px-6 md:block">
@@ -9,9 +107,9 @@
               {{ $t('You are here:') }}
             </li>
             <li class="me-2 inline">
-              <InertiaLink :href="data.url.settings" class="text-blue-500 hover:underline">
+              <Link :href="data.url.settings" class="text-blue-500 hover:underline">
                 {{ $t('Settings') }}
-              </InertiaLink>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -24,9 +122,9 @@
               </svg>
             </li>
             <li class="me-2 inline">
-              <InertiaLink :href="data.url.personalize" class="text-blue-500 hover:underline">
+              <Link :href="data.url.personalize" class="text-blue-500 hover:underline">
                 {{ $t('Personalize your account') }}
-              </InertiaLink>
+              </Link>
             </li>
             <li class="relative me-2 inline">
               <svg
@@ -54,8 +152,8 @@
             <span class="me-1"> ☎️ </span>
             {{ $t('All the contact information types') }}
           </h3>
-          <pretty-button
-            v-if="!createContactInformationTypeModalShown"
+          <PrettyButton
+            v-if="!creatingContactInformation"
             :text="$t('Add a type')"
             :icon="'plus'"
             @click="showContactInformationTypeModal" />
@@ -63,13 +161,13 @@
 
         <!-- modal to create a new contact information type -->
         <form
-          v-if="createContactInformationTypeModalShown"
+          v-if="creatingContactInformation"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
           @submit.prevent="submit()">
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-            <errors :errors="form.errors" />
+            <Errors :errors="form.errors" />
 
-            <text-input
+            <TextInput
               ref="newContactInformationType"
               v-model="form.name"
               :label="$t('Name')"
@@ -79,13 +177,12 @@
               :required="true"
               :autocomplete="false"
               :maxlength="255"
-              @esc-key-pressed="createContactInformationTypeModalShown = false" />
+              @esc-key-pressed="creatingContactInformation = false" />
 
-            <text-input
+            <TextInput
               v-model="form.protocol"
               :label="$t('Protocol')"
               :type="'text'"
-              :autofocus="true"
               :input-class="'block w-full'"
               :required="false"
               :autocomplete="false"
@@ -95,12 +192,22 @@
                   'A contact information can be clickable. For instance, a phone number can be clickable and launch the default application in your computer. If you do not know the protocol for the type you are adding, you can simply omit this field.',
                 )
               "
-              @esc-key-pressed="createContactInformationTypeModalShown = false" />
+              @esc-key-pressed="creatingContactInformation = false" />
+
+            <TextInput
+              v-model="form.type"
+              :label="$t('Type')"
+              :type="'text'"
+              :input-class="'block w-full'"
+              :required="false"
+              :autocomplete="false"
+              :maxlength="255"
+              @esc-key-pressed="creatingContactInformation = false" />
           </div>
 
           <div class="flex justify-between p-5">
-            <pretty-span :text="$t('Cancel')" :class="'me-3'" @click="createContactInformationTypeModalShown = false" />
-            <pretty-button :text="$t('Add')" :state="loadingState" :icon="'plus'" :class="'save'" />
+            <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click="creatingContactInformation = false" />
+            <PrettyButton :text="$t('Add')" :state="loadingState" :icon="'plus'" :class="'save'" />
           </div>
         </form>
 
@@ -114,7 +221,7 @@
             class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
             <!-- detail of the contact information type -->
             <div
-              v-if="renameContactInformationTypeModalShownId !== contactInformationType.id"
+              v-if="contactInformationEditing !== contactInformationType.id"
               class="flex items-center justify-between px-5 py-2">
               <div>
                 <span class="text-base">{{ contactInformationType.name }}</span>
@@ -130,14 +237,15 @@
               <!-- actions -->
               <ul class="text-sm">
                 <li
+                  v-if="contactInformationType.can_be_deleted"
                   class="inline cursor-pointer text-blue-500 hover:underline"
                   @click="updateAdressTypeModal(contactInformationType)">
-                  {{ $t('Rename') }}
+                  {{ $t('Edit') }}
                 </li>
                 <li
                   v-if="contactInformationType.can_be_deleted"
                   class="ms-4 inline cursor-pointer text-red-500 hover:text-red-900"
-                  @click="destroy(contactInformationType)">
+                  @click="contactInformationDeleting = contactInformationType">
                   {{ $t('Delete') }}
                 </li>
               </ul>
@@ -145,13 +253,13 @@
 
             <!-- rename a contactInformationType modal -->
             <form
-              v-if="renameContactInformationTypeModalShownId === contactInformationType.id"
+              v-if="contactInformationEditing === contactInformationType.id"
               class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800"
               @submit.prevent="update(contactInformationType)">
               <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-                <errors :errors="form.errors" />
+                <Errors :errors="form.errors" />
 
-                <text-input
+                <TextInput
                   ref="rename"
                   v-model="form.name"
                   :label="$t('Name')"
@@ -161,179 +269,73 @@
                   :required="true"
                   :autocomplete="false"
                   :maxlength="255"
-                  @esc-key-pressed="renameContactInformationTypeModalShownId = 0" />
+                  @esc-key-pressed="contactInformationEditing = 0" />
 
-                <text-input
+                <TextInput
                   v-model="form.protocol"
                   :label="$t('Protocol')"
                   :type="'text'"
-                  :autofocus="true"
                   :input-class="'block w-full'"
                   :required="false"
                   :autocomplete="false"
                   :maxlength="255"
-                  :help="'A contact information can be clickable. For instance, a phone number can be clickable and we will launch the default application in your computer associated with a phone number. If you do not know the protocol for the type you are adding, you can simply omit this field.'"
-                  @esc-key-pressed="createContactInformationTypeModalShown = false" />
+                  :help="
+                    $t(
+                      'A contact information can be clickable. For instance, a phone number can be clickable and launch the default application in your computer. If you do not know the protocol for the type you are adding, you can simply omit this field.',
+                    )
+                  "
+                  @esc-key-pressed="creatingContactInformation = false" />
+
+                <TextInput
+                  v-model="form.type"
+                  :label="$t('Type')"
+                  :type="'text'"
+                  :input-class="'block w-full'"
+                  :required="false"
+                  :autocomplete="false"
+                  :maxlength="255"
+                  :help="$t('The type of contact information. Don’t change it unless you know what you are doing.')"
+                  @esc-key-pressed="creatingContactInformation = false" />
               </div>
 
               <div class="flex justify-between p-5">
-                <pretty-span
-                  :text="$t('Cancel')"
-                  :class="'me-3'"
-                  @click.prevent="renameContactInformationTypeModalShownId = 0" />
-                <pretty-button :text="$t('Rename')" :state="loadingState" :icon="'check'" :class="'save'" />
+                <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click.prevent="contactInformationEditing = 0" />
+                <PrettyButton :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
               </div>
             </form>
           </li>
         </ul>
+
+        <JetConfirmationModal :show="contactInformationDeleting !== null" @close="contactInformationDeleting = null">
+          <template #title>
+            {{ $t('Delete contact information Type') }}
+          </template>
+
+          <template #content>
+            {{
+              $t(
+                'Are you sure? This will remove the contact information types from all contacts, but won’t delete the contacts themselves.',
+              )
+            }}
+          </template>
+
+          <template #footer>
+            <PrettyButton :text="$t('Delete')" :state="loadingState" @click="destroy" />
+          </template>
+        </JetConfirmationModal>
 
         <!-- blank state -->
         <div
           v-if="localContactInformationTypes.length === 0"
           class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
           <p class="p-5 text-center">
-            {{
-              $t(
-                'Are you sure? This will remove the contact information types from all contacts, but won’t delete the contacts themselves.',
-              )
-            }}
+            {{ $t('There are no contact information types yet.') }}
           </p>
         </div>
       </div>
     </main>
-  </layout>
+  </Layout>
 </template>
-
-<script>
-import { Link } from '@inertiajs/vue3';
-import Layout from '@/Layouts/Layout.vue';
-import PrettyButton from '@/Shared/Form/PrettyButton.vue';
-import PrettySpan from '@/Shared/Form/PrettySpan.vue';
-import TextInput from '@/Shared/Form/TextInput.vue';
-import Errors from '@/Shared/Form/Errors.vue';
-
-export default {
-  components: {
-    InertiaLink: Link,
-    Layout,
-    PrettyButton,
-    PrettySpan,
-    TextInput,
-    Errors,
-  },
-
-  props: {
-    layoutData: {
-      type: Object,
-      default: null,
-    },
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-
-  data() {
-    return {
-      loadingState: '',
-      createContactInformationTypeModalShown: false,
-      renameContactInformationTypeModalShownId: 0,
-      localContactInformationTypes: [],
-      form: {
-        name: '',
-        protocol: '',
-        errors: [],
-      },
-    };
-  },
-
-  mounted() {
-    this.localContactInformationTypes = this.data.contact_information_types;
-  },
-
-  methods: {
-    showContactInformationTypeModal() {
-      this.form.name = '';
-      this.form.protocol = '';
-      this.createContactInformationTypeModalShown = true;
-      this.renameContactInformationTypeModalShownId = 0;
-
-      this.$nextTick().then(() => {
-        this.$refs.newContactInformationType.focus();
-      });
-    },
-
-    updateAdressTypeModal(contactInformationType) {
-      this.form.name = contactInformationType.name;
-      this.form.protocol = contactInformationType.protocol;
-      this.renameContactInformationTypeModalShownId = contactInformationType.id;
-      this.createContactInformationTypeModalShown = false;
-
-      this.$nextTick().then(() => {
-        this.$refs.rename[0].focus();
-      });
-    },
-
-    submit() {
-      this.loadingState = 'loading';
-
-      axios
-        .post(this.data.url.contact_information_type_store, this.form)
-        .then((response) => {
-          this.flash(this.$t('The contact information type has been created'), 'success');
-          this.localContactInformationTypes.unshift(response.data.data);
-          this.loadingState = null;
-          this.createContactInformationTypeModalShown = false;
-        })
-        .catch((error) => {
-          this.loadingState = null;
-          this.form.errors = error.response.data;
-        });
-    },
-
-    update(contactInformationType) {
-      this.loadingState = 'loading';
-
-      axios
-        .put(contactInformationType.url.update, this.form)
-        .then((response) => {
-          this.flash(this.$t('The contact information type has been updated'), 'success');
-          this.localContactInformationTypes[
-            this.localContactInformationTypes.findIndex((x) => x.id === contactInformationType.id)
-          ] = response.data.data;
-          this.loadingState = null;
-          this.renameContactInformationTypeModalShownId = 0;
-        })
-        .catch((error) => {
-          this.loadingState = null;
-          this.form.errors = error.response.data;
-        });
-    },
-
-    destroy(contactInformationType) {
-      if (
-        confirm(
-          this.$t(
-            'Are you sure? This will remove the contact information types from all contacts, but won’t delete the contacts themselves.',
-          ),
-        )
-      ) {
-        axios
-          .delete(contactInformationType.url.destroy)
-          .then(() => {
-            this.flash(this.$t('The contact information type has been deleted'), 'success');
-            var id = this.localContactInformationTypes.findIndex((x) => x.id === contactInformationType.id);
-            this.localContactInformationTypes.splice(id, 1);
-          })
-          .catch((error) => {
-            this.loadingState = null;
-            this.form.errors = error.response.data;
-          });
-      }
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .item-list {

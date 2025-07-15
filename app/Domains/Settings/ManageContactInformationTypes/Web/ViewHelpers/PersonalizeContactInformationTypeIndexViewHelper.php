@@ -30,7 +30,8 @@ class PersonalizeContactInformationTypeIndexViewHelper
             'id' => $type->id,
             'name' => $type->name,
             'protocol' => $type->protocol,
-            'can_be_deleted' => $type->can_be_deleted,
+            'type' => $type->type,
+            'can_be_deleted' => $type->can_be_deleted ?? true,
             'url' => [
                 'update' => route('settings.personalize.contact_information_type.update', [
                     'type' => $type->id,

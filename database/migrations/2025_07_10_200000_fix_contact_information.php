@@ -18,9 +18,9 @@ return new class extends Migration
             ->whereIn('name', $map->keys()->toArray())
             ->whereNull('name_translation_key')
             ->chunkById(100, function ($types) use ($map) {
-
                 foreach ($types as $type) {
                     ContactInformationType::where('id', $type->id)->update([
+                        'name' => null,
                         'name_translation_key' => $map[$type->name]['name_translation_key'],
                         'type' => $map[$type->name]['type'],
                     ]);

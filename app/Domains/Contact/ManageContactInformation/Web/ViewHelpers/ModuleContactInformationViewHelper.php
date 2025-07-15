@@ -31,7 +31,7 @@ class ModuleContactInformationViewHelper
             'contact_information' => $infos,
             'contact_information_types' => $infoTypes,
             'contact_information_kinds' => static::infoKinds(),
-            'protocols' => config('app.socialProtocols'),
+            'protocols' => config('app.social_protocols'),
             'url' => [
                 'store' => route('contact.contact_information.store', [
                     'vault' => $contact->vault_id,

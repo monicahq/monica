@@ -84,10 +84,10 @@ class ContactInformation extends Model
                     return $this->contactInformationType->protocol.$this->data;
                 }
 
-                $protocols = collect(config('app.socialProtocols'));
+                $protocols = collect(config('app.social_protocols'));
 
                 if ($protocols->has($this->contactInformationType->name_translation_key)) {
-                    return $protocols[$this->contactInformationType->name_translation_key].$this->data;
+                    return $protocols[$this->contactInformationType->name_translation_key]['url'].$this->data;
                 }
 
                 return null;

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick, useTemplateRef, watch } from 'vue';
+import { ref, watch, reactive, useTemplateRef } from 'vue';
 import { flash } from '@/methods';
 import { trans } from 'laravel-vue-i18n';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
@@ -18,13 +18,14 @@ const loadingState = ref('');
 const addContactInformationModalShown = ref(false);
 const localContactInformation = ref(props.data.contact_information);
 const editedContactInformationId = ref(0);
-const newData = useTemplateRef('newData');
-const rename = useTemplateRef('rename');
 const contactInformationDeleting = ref(null);
 const contactInformationKinds = ref(null);
 const protocol = ref(null);
 
-const form = ref({
+const newDataRef = useTemplateRef('newData');
+const renameRef = useTemplateRef('rename');
+
+const form = reactive({
   data: '',
   contact_information_type_id: 0,
   contact_information_kind: null,
@@ -32,7 +33,7 @@ const form = ref({
 });
 
 watch(
-  () => form.value.contact_information_type_id,
+  () => form.contact_information_type_id,
   (newValue) => {
     let id = props.data.contact_information_types.findIndex((x) => x.id === newValue);
     if (id === -1) {
@@ -42,40 +43,33 @@ watch(
     }
     let type = props.data.contact_information_types[id];
     contactInformationKinds.value = props.data.contact_information_kinds[type.type] ?? null;
-    protocol.value = props.data.protocols[type.name_translation_key] ?? null;
+    let p = props.data.protocols[type.name_translation_key] ?? null;
+    protocol.value = p !== null ? p.url : null;
   },
   { immediate: true },
 );
 
 const showCreateContactInformationModal = () => {
-  form.value.errors = [];
+  form.errors = [];
   addContactInformationModalShown.value = true;
-  form.value.contact_information_type_id = props.data.contact_information_types[0].id;
-  form.value.contact_information_kind = null;
-  form.value.data = '';
-
-  nextTick().then(() => {
-    newData.value.focus();
-  });
+  form.contact_information_type_id = props.data.contact_information_types[0].id;
+  form.contact_information_kind = null;
+  form.data = '';
 };
 
 const showEditContactInformationModal = (info) => {
-  form.value.errors = [];
+  form.errors = [];
   editedContactInformationId.value = info.id;
-  form.value.contact_information_type_id = info.contact_information_type.id;
-  form.value.contact_information_kind = info.contact_information_kind?.id;
-  form.value.data = info.data;
-
-  nextTick().then(() => {
-    rename.value[0].focus();
-  });
+  form.contact_information_type_id = info.contact_information_type.id;
+  form.contact_information_kind = info.contact_information_kind?.id;
+  form.data = info.data;
 };
 
 const submit = () => {
   loadingState.value = 'loading';
 
   axios
-    .post(props.data.url.store, form.value)
+    .post(props.data.url.store, form)
     .then((response) => {
       flash(trans('The contact information has been created'), 'success');
       localContactInformation.value.unshift(response.data.data);
@@ -84,7 +78,7 @@ const submit = () => {
     })
     .catch((error) => {
       loadingState.value = '';
-      form.value.errors = error.response.data;
+      form.errors = error.response.data;
     });
 };
 
@@ -92,7 +86,7 @@ const update = (info) => {
   loadingState.value = 'loading';
 
   axios
-    .put(info.url.update, form.value)
+    .put(info.url.update, form)
     .then((response) => {
       loadingState.value = '';
       flash(trans('The contact information has been edited'), 'success');
@@ -102,7 +96,7 @@ const update = (info) => {
     })
     .catch((error) => {
       loadingState.value = '';
-      form.value.errors = error.response.data;
+      form.errors = error.response.data;
     });
 };
 
@@ -120,7 +114,7 @@ const destroy = () => {
     })
     .catch((error) => {
       loadingState.value = '';
-      form.value.errors = error.response.data;
+      form.errors = error.response.data;
       contactInformationDeleting.value = null;
     });
 };
@@ -162,7 +156,8 @@ const destroy = () => {
             :required="true"
             :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
-            :label="$t('Type')" />
+            :label="$t('Type')"
+            @change="newDataRef.focus()" />
         </div>
 
         <!-- content -->
@@ -171,9 +166,6 @@ const destroy = () => {
             {{ $t('Content') }}
           </label>
           <div class="relative flex">
-            <span v-if="protocol !== null" class="me-1 flex-none text-gray-500">
-              {{ protocol }}
-            </span>
             <Dropdown
               v-if="contactInformationKinds !== null"
               class="me-3 flex-none"
@@ -193,6 +185,7 @@ const destroy = () => {
               :required="true"
               :autocomplete="false"
               :maxlength="255"
+              :placeholder="protocol"
               @esc-key-pressed="addContactInformationModalShown = false" />
           </div>
         </div>
@@ -214,12 +207,16 @@ const destroy = () => {
           <!-- contact information -->
           <div v-if="editedContactInformationId !== info.id" class="flex items-center justify-between px-3 py-2">
             <div>
-              <span v-if="info.contact_information_kind" class="me-2 text-xs text-gray-500">
-                {{ info.contact_information_kind.name }}
-              </span>
-              <a :href="info.data_with_protocol" class="text-blue-500 hover:underline" rel="noopener noreferrer">
+              <a
+                :href="info.data_with_protocol"
+                class="text-blue-500 hover:underline"
+                rel="noopener noreferrer"
+                target="_blank">
                 {{ info.data }}
               </a>
+              <span v-if="info.contact_information_kind" class="me-2 text-xs text-gray-500">
+                — {{ info.contact_information_kind.name }}
+              </span>
               <span v-if="info.label !== info.data" class="ms-2 text-xs text-gray-500"> ({{ info.label }}) </span>
             </div>
 
@@ -256,7 +253,8 @@ const destroy = () => {
                   :required="true"
                   :placeholder="$t('Choose a value')"
                   :dropdown-class="'block w-full'"
-                  :label="$t('Type')" />
+                  :label="$t('Type')"
+                  @change="renameRef[0].focus()" />
               </div>
 
               <!-- content -->
@@ -265,9 +263,6 @@ const destroy = () => {
                   {{ $t('Content') }}
                 </label>
                 <div class="relative flex">
-                  <span v-if="protocol !== null" class="me-1 flex-none text-gray-500 self-center">
-                    {{ protocol }}
-                  </span>
                   <Dropdown
                     v-if="contactInformationKinds !== null"
                     class="me-3 flex-none"
@@ -287,6 +282,7 @@ const destroy = () => {
                     :required="true"
                     :autocomplete="false"
                     :maxlength="255"
+                    :placeholder="protocol"
                     @esc-key-pressed="editedContactInformationId = 0" />
                 </div>
               </div>
@@ -311,7 +307,8 @@ const destroy = () => {
       </template>
 
       <template #footer>
-        <PrettyButton :text="$t('Delete')" :state="loadingState" @click="destroy" />
+        <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click="contactInformationDeleting = null" />
+        <PrettyButton :text="$t('Delete')" :state="loadingState" :icon="'trash'" :class="'save'" @click="destroy" />
       </template>
     </JetConfirmationModal>
 
