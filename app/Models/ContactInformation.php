@@ -70,29 +70,25 @@ class ContactInformation extends Model
     }
 
     /**
-     * Get the content of the contact information.
-     * If the contact information type is a phone number or an email, return the
-     * content. If it's something else, return the contact information type's label.
+     * Get the content of the contact information with the protocol.
      *
-     * @return Attribute<string,string>
+     * @return Attribute<string,null>
      */
     protected function dataWithProtocol(): Attribute
     {
-        return Attribute::make(
-            get: function () {
-                if ($this->contactInformationType->protocol) {
-                    return $this->contactInformationType->protocol.$this->data;
-                }
+        return Attribute::get(function () {
+            if ($this->contactInformationType->protocol) {
+                return $this->contactInformationType->protocol.$this->data;
+            }
 
-                $protocols = collect(config('app.social_protocols'));
+            $protocols = collect(config('app.social_protocols'));
 
-                if ($protocols->has($this->contactInformationType->name_translation_key)) {
-                    return $protocols[$this->contactInformationType->name_translation_key]['url'].$this->data;
-                }
+            if (($protocol = $protocols->get($this->contactInformationType->name_translation_key)) !== null) {
+                return $protocol['url'].$this->data;
+            }
 
-                return null;
-            },
-        );
+            return null;
+        });
     }
 
     /**
