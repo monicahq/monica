@@ -2,25 +2,25 @@
 import { ref, watch, reactive, useTemplateRef } from 'vue';
 import { flash } from '@/methods';
 import { trans } from 'laravel-vue-i18n';
+import ComboBox from '@/Shared/Form/ComboBox.vue';
+import Dropdown from '@/Shared/Form/Dropdown.vue';
+import Errors from '@/Shared/Form/Errors.vue';
 import PrettyButton from '@/Shared/Form/PrettyButton.vue';
 import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
-import Dropdown from '@/Shared/Form/Dropdown.vue';
-import Errors from '@/Shared/Form/Errors.vue';
-import { Headset } from 'lucide-vue-next';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
-import ComboBox from '../Form/ComboBox.vue';
+import { Headset } from 'lucide-vue-next';
 
 const props = defineProps({
   data: Object,
 });
 
 const loadingState = ref('');
-const addContactInformationModalShown = ref(false);
-const localContactInformation = ref(props.data.contact_information);
-const editedContactInformationId = ref(0);
-const contactInformationDeleting = ref(null);
-const contactInformationKinds = ref(null);
+const adding = ref(false);
+const localData = ref(props.data.contact_information);
+const editingId = ref(0);
+const deleting = ref(null);
+const kinds = ref(null);
 const protocol = ref(null);
 
 const newDataRef = useTemplateRef('newData');
@@ -39,30 +39,30 @@ watch(
   (newValue) => {
     let id = props.data.contact_information_types.findIndex((x) => x.id === newValue);
     if (id === -1) {
-      contactInformationKinds.value = null;
+      kinds.value = null;
       protocol.value = null;
       return;
     }
     let type = props.data.contact_information_types[id];
-    contactInformationKinds.value = props.data.contact_information_kinds[type.type] ?? null;
+    kinds.value = props.data.contact_information_kinds[type.type] ?? null;
     let p = props.data.protocols[type.name_translation_key] ?? null;
     protocol.value = p !== null ? p.url : null;
   },
   { immediate: true },
 );
 
-const showCreateContactInformationModal = () => {
+const showCreateModal = () => {
   form.errors = [];
-  addContactInformationModalShown.value = true;
+  adding.value = true;
   form.contact_information_type_id = props.data.contact_information_types[0].id;
   form.contact_information_kind = null;
   form.contact_information_kind_custom = null;
   form.data = '';
 };
 
-const showEditContactInformationModal = (info) => {
+const showEditModal = (info) => {
   form.errors = [];
-  editedContactInformationId.value = info.id;
+  editingId.value = info.id;
   form.contact_information_type_id = info.contact_information_type.id;
   form.contact_information_kind = info.contact_information_kind?.id;
   if (info.contact_information_kind !== null && info.contact_information_kind.id == '-1') {
@@ -71,19 +71,22 @@ const showEditContactInformationModal = (info) => {
   form.data = info.data;
 };
 
+const preSubmit = () => {
+  if (form.contact_information_kind == -1) {
+    form.contact_information_kind = form.contact_information_kind_custom;
+  }
+};
+
 const submit = () => {
   loadingState.value = 'loading';
 
-  if (form.contact_information_kind_custom !== null) {
-    form.contact_information_kind = form.contact_information_kind_custom;
-  }
-
+  preSubmit();
   axios
     .post(props.data.url.store, form)
     .then((response) => {
-      localContactInformation.value.unshift(response.data.data);
+      localData.value.unshift(response.data.data);
       loadingState.value = '';
-      addContactInformationModalShown.value = false;
+      adding.value = false;
       flash(trans('The contact information has been created'), 'success');
     })
     .catch((error) => {
@@ -95,17 +98,13 @@ const submit = () => {
 const update = (info) => {
   loadingState.value = 'loading';
 
-  if (form.contact_information_kind_custom !== null) {
-    form.contact_information_kind = form.contact_information_kind_custom;
-  }
-
+  preSubmit();
   axios
     .put(info.url.update, form)
     .then((response) => {
       loadingState.value = '';
-      localContactInformation.value[localContactInformation.value.findIndex((x) => x.id === info.id)] =
-        response.data.data;
-      editedContactInformationId.value = 0;
+      localData.value[localData.value.findIndex((x) => x.id === info.id)] = response.data.data;
+      editingId.value = 0;
       flash(trans('The contact information has been updated'), 'success');
     })
     .catch((error) => {
@@ -118,18 +117,20 @@ const destroy = () => {
   loadingState.value = 'loading';
 
   axios
-    .delete(contactInformationDeleting.value.url.destroy)
+    .delete(deleting.value.url.destroy)
     .then(() => {
       loadingState.value = '';
-      let id = localContactInformation.value.findIndex((x) => x.id === contactInformationDeleting.value.id);
-      localContactInformation.value.splice(id, 1);
-      contactInformationDeleting.value = null;
+      localData.value.splice(
+        localData.value.findIndex((x) => x.id === deleting.value.id),
+        1,
+      );
+      deleting.value = null;
       flash(trans('The contact information has been deleted'), 'success');
     })
     .catch((error) => {
       loadingState.value = '';
       form.errors = error.response.data;
-      contactInformationDeleting.value = null;
+      deleting.value = null;
     });
 };
 </script>
@@ -149,12 +150,12 @@ const destroy = () => {
         :text="$t('Add a contact information')"
         :icon="'plus'"
         :class="'w-full sm:w-fit'"
-        @click="showCreateContactInformationModal" />
+        @click="showCreateModal" />
     </div>
 
     <!-- add a contact information modal -->
     <form
-      v-if="addContactInformationModalShown"
+      v-if="adding"
       class="mb-6 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
       @submit.prevent="submit()">
       <div class="border-b border-gray-200 dark:border-gray-700">
@@ -181,12 +182,12 @@ const destroy = () => {
           </label>
           <div class="relative flex">
             <ComboBox
-              v-if="contactInformationKinds !== null"
+              v-if="kinds !== null"
               class="me-3 flex-none"
               v-model="form.contact_information_kind"
               v-model:new-value="form.contact_information_kind_custom"
               :label="$t('Kind')"
-              :data="contactInformationKinds"
+              :data="kinds"
               :required="false"
               :placeholder="$t('Choose a value')"
               :dropdown-class="'block'" />
@@ -203,26 +204,26 @@ const destroy = () => {
               :autocomplete="false"
               :maxlength="255"
               :placeholder="protocol"
-              @esc-key-pressed="addContactInformationModalShown = false" />
+              @esc-key-pressed="adding = false" />
           </div>
         </div>
       </div>
 
       <div class="flex justify-between p-5">
-        <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click="addContactInformationModalShown = false" />
+        <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click="adding = false" />
         <PrettyButton :text="$t('Save')" :state="loadingState" :icon="'plus'" :class="'save'" />
       </div>
     </form>
 
     <!-- contact infos -->
-    <div v-if="localContactInformation.length > 0">
+    <div v-if="localData.length > 0">
       <ul class="mb-4 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
         <li
-          v-for="info in localContactInformation"
+          v-for="info in localData"
           :key="info.id"
           class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
           <!-- contact information -->
-          <div v-if="editedContactInformationId !== info.id" class="flex items-center justify-between px-3 py-2">
+          <div v-if="editingId !== info.id" class="flex items-center justify-between px-3 py-2">
             <div>
               <a
                 :href="info.data_with_protocol"
@@ -239,24 +240,17 @@ const destroy = () => {
 
             <!-- actions -->
             <ul class="text-sm">
-              <li
-                class="me-4 inline cursor-pointer text-blue-500 hover:underline"
-                @click="showEditContactInformationModal(info)">
+              <li class="me-4 inline cursor-pointer text-blue-500 hover:underline" @click="showEditModal(info)">
                 {{ $t('Edit') }}
               </li>
-              <li
-                class="inline cursor-pointer text-red-500 hover:text-red-900"
-                @click="contactInformationDeleting = info">
+              <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="deleting = info">
                 {{ $t('Delete') }}
               </li>
             </ul>
           </div>
 
           <!-- edit info modal -->
-          <form
-            v-if="editedContactInformationId === info.id"
-            class="bg-gray-50 dark:bg-gray-900"
-            @submit.prevent="update(info)">
+          <form v-if="editingId === info.id" class="bg-gray-50 dark:bg-gray-900" @submit.prevent="update(info)">
             <div class="border-b border-gray-200 dark:border-gray-700">
               <div v-if="form.errors.length > 0" class="p-5">
                 <Errors :errors="form.errors" />
@@ -281,12 +275,12 @@ const destroy = () => {
                 </label>
                 <div class="relative flex">
                   <ComboBox
-                    v-if="contactInformationKinds !== null"
+                    v-if="kinds !== null"
                     class="me-3 flex-none"
                     v-model="form.contact_information_kind"
                     v-model:new-value="form.contact_information_kind_custom"
                     :label="$t('Kind')"
-                    :data="contactInformationKinds"
+                    :data="kinds"
                     :required="false"
                     :placeholder="$t('Choose a value')"
                     :dropdown-class="'block'" />
@@ -303,13 +297,13 @@ const destroy = () => {
                     :autocomplete="false"
                     :maxlength="255"
                     :placeholder="protocol"
-                    @esc-key-pressed="editedContactInformationId = 0" />
+                    @esc-key-pressed="editingId = 0" />
                 </div>
               </div>
             </div>
 
             <div class="flex justify-between p-5">
-              <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click="editedContactInformationId = 0" />
+              <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click="editingId = 0" />
               <PrettyButton :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
             </div>
           </form>
@@ -317,7 +311,7 @@ const destroy = () => {
       </ul>
     </div>
 
-    <JetConfirmationModal :show="contactInformationDeleting !== null" @close="contactInformationDeleting = null">
+    <JetConfirmationModal :show="deleting !== null" @close="deleting = null">
       <template #title>
         {{ $t('Delete a contact information') }}
       </template>
@@ -327,14 +321,14 @@ const destroy = () => {
       </template>
 
       <template #footer>
-        <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click="contactInformationDeleting = null" />
+        <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click="deleting = null" />
         <PrettyButton :text="$t('Delete')" :state="loadingState" :icon="'trash'" :class="'save'" @click="destroy" />
       </template>
     </JetConfirmationModal>
 
     <!-- blank state -->
     <div
-      v-if="localContactInformation.length === 0"
+      v-if="localData.length === 0"
       class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
       <img src="/img/contact_blank_contact.svg" :alt="$t('Contact informations')" class="mx-auto mt-4 h-20 w-20" />
       <p class="px-5 pb-5 pt-2 text-center">
