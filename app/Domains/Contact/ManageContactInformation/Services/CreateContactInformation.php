@@ -28,6 +28,7 @@ class CreateContactInformation extends BaseService implements ServiceInterface
             'author_id' => 'required|uuid|exists:users,id',
             'contact_id' => 'required|uuid|exists:contacts,id',
             'contact_information_type_id' => 'required|integer|exists:contact_information_types,id',
+            'contact_information_kind' => 'nullable|string',
             'data' => 'required|string|max:255',
         ];
     }
@@ -73,6 +74,7 @@ class CreateContactInformation extends BaseService implements ServiceInterface
             'contact_id' => $this->contact->id,
             'type_id' => $this->contactInformationType->id,
             'data' => $this->data['data'],
+            'kind' => $this->valueOrNull($this->data, 'contact_information_kind'),
         ]);
     }
 

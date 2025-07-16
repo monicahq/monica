@@ -107,7 +107,7 @@ const update = (loan) => {
     .put(loan.url.update, form)
     .then((response) => {
       loadingState.value = '';
-      flash(trans('The loan has been edited'), 'success');
+      flash(trans('The loan has been updated'), 'success');
       localLoans.value[localLoans.value.findIndex((x) => x.id === loan.id)] = response.data.data;
       editedLoanId.value = 0;
     })

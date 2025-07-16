@@ -21,6 +21,7 @@ class ContactInformationController extends Controller
             'vault_id' => $vaultId,
             'contact_id' => $contactId,
             'contact_information_type_id' => $request->input('contact_information_type_id'),
+            'contact_information_kind' => $request->input('contact_information_kind'),
             'data' => $request->input('data'),
         ]);
 
@@ -40,6 +41,7 @@ class ContactInformationController extends Controller
             'contact_id' => $contactId,
             'contact_information_id' => $infoId,
             'contact_information_type_id' => $request->input('contact_information_type_id'),
+            'contact_information_kind' => $request->input('contact_information_kind'),
             'data' => $request->input('data'),
         ];
 

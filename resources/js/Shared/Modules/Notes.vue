@@ -333,7 +333,7 @@ export default {
         .put(note.url.update, this.form)
         .then((response) => {
           this.loadingState = '';
-          this.flash(this.$t('The note has been edited'), 'success');
+          this.flash(this.$t('The note has been updated'), 'success');
           this.localNotes[this.localNotes.findIndex((x) => x.id === note.id)] = response.data.data;
           this.editedNoteId = 0;
         })

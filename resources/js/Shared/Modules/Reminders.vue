@@ -92,7 +92,7 @@ const update = (reminder) => {
     .put(reminder.url.update, form)
     .then((response) => {
       loadingState.value = '';
-      flash(trans('The reminder has been edited'), 'success');
+      flash(trans('The reminder has been updated'), 'success');
       localReminders.value[localReminders.value.findIndex((x) => x.id === reminder.id)] = response.data.data;
       editedReminderId.value = 0;
     })

@@ -48,6 +48,7 @@ class PersonalizeContactInformationTypeIndexViewHelperTest extends TestCase
                     'update' => env('APP_URL').'/settings/personalize/contactInformationType/'.$contactInformationType->id,
                     'destroy' => env('APP_URL').'/settings/personalize/contactInformationType/'.$contactInformationType->id,
                 ],
+                'type' => 'email',
             ],
             $array
         );

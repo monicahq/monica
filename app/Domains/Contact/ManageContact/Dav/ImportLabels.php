@@ -14,7 +14,7 @@ use App\Models\Label;
 use Illuminate\Support\Collection;
 use Sabre\VObject\Component\VCard;
 
-#[Order(30)]
+#[Order(40)]
 class ImportLabels extends Importer implements ImportVCardResource
 {
     /**

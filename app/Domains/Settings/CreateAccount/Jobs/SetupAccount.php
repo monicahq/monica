@@ -969,9 +969,9 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Email address'),
             'protocol' => 'mailto:',
+            'type' => 'email',
         ]);
         $information->can_be_deleted = false;
-        $information->type = 'email';
         $information->save();
 
         $information = (new CreateContactInformationType)->execute([
@@ -979,46 +979,19 @@ class SetupAccount extends QueuableService implements ServiceInterface
             'author_id' => $this->author->id,
             'name_translation_key' => trans_key('Phone'),
             'protocol' => 'tel:',
+            'type' => 'phone',
         ]);
         $information->can_be_deleted = false;
-        $information->type = 'phone';
         $information->save();
 
-        (new CreateContactInformationType)->execute([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'name' => 'Facebook',
-        ]);
-        (new CreateContactInformationType)->execute([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'name' => 'Twitter',
-        ]);
-        (new CreateContactInformationType)->execute([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'name' => 'Whatsapp',
-        ]);
-        (new CreateContactInformationType)->execute([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'name' => 'Telegram',
-        ]);
-        (new CreateContactInformationType)->execute([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'name' => 'Hangouts',
-        ]);
-        (new CreateContactInformationType)->execute([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'name' => 'Linkedin',
-        ]);
-        (new CreateContactInformationType)->execute([
-            'account_id' => $this->author->account_id,
-            'author_id' => $this->author->id,
-            'name' => 'Instagram',
-        ]);
+        foreach (config('app.social_protocols') as $socialProtocol) {
+            (new CreateContactInformationType)->execute([
+                'account_id' => $this->author->account_id,
+                'author_id' => $this->author->id,
+                'name_translation_key' => $socialProtocol['name_translation_key'],
+                'type' => $socialProtocol['type'],
+            ]);
+        }
     }
 
     private function addPetCategories(): void

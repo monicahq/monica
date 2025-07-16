@@ -1,53 +1,43 @@
+<script setup>
+import PlusIcon from '@/Shared/Icons/PlusIcon.vue';
+import CheckedIcon from '@/Shared/Icons/CheckedIcon.vue';
+import MinusIcon from '@/Shared/Icons/MinusIcon.vue';
+import ArrowIcon from '@/Shared/Icons/ArrowIcon.vue';
+import { Trash2 } from 'lucide-vue-next';
+
+defineProps({
+  text: String,
+  icon: String,
+  state: String,
+});
+</script>
+
 <template>
   <button
     :class="'dark:box-s relative border-zinc-900 bg-white text-sm dark:border-zinc-100 dark:bg-gray-800 dark:text-gray-100 flex'"
     :disabled="state === 'loading' || state === 'disabled'"
     type="submit">
-    <span v-if="state === 'loading'"> {{ $t('Loading…') }} </span>
-
-    <PlusIcon v-if="icon === 'plus' && state !== 'loading'" />
-
-    <CheckedIcon v-if="icon === 'check' && state !== 'loading'" />
-
-    <MinusIcon v-if="icon === 'minus' && state !== 'loading'" />
-
-    <span v-if="state !== 'loading'">
-      {{ text }}
+    <span v-if="state === 'loading'">
+      {{ $t('Loading…') }}
     </span>
 
-    <ArrowIcon :type="'right'" :size="'big'" v-if="icon === 'arrow' && state !== 'loading'" />
+    <template v-else>
+      <PlusIcon v-if="icon === 'plus'" />
+
+      <CheckedIcon v-else-if="icon === 'check'" />
+
+      <MinusIcon v-else-if="icon === 'minus'" />
+
+      <Trash2 class="icon relative me-1 inline h-5 w-5" v-else-if="icon === 'trash'" />
+
+      <span>
+        {{ text }}
+      </span>
+
+      <ArrowIcon :type="'right'" :size="'big'" v-if="icon === 'arrow'" />
+    </template>
   </button>
 </template>
-
-<script>
-import PlusIcon from '@/Shared/Icons/PlusIcon.vue';
-import CheckedIcon from '@/Shared/Icons/CheckedIcon.vue';
-import MinusIcon from '@/Shared/Icons/MinusIcon.vue';
-import ArrowIcon from '@/Shared/Icons/ArrowIcon.vue';
-
-export default {
-  components: {
-    PlusIcon,
-    CheckedIcon,
-    MinusIcon,
-    ArrowIcon,
-  },
-  props: {
-    text: {
-      type: String,
-      default: '',
-    },
-    icon: {
-      type: String,
-      default: '',
-    },
-    state: {
-      type: String,
-      default: '',
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .icon {

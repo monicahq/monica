@@ -122,7 +122,7 @@ const update = (call) => {
     .put(call.url.update, form)
     .then((response) => {
       loadingState.value = '';
-      flash(trans('The call has been edited'), 'success');
+      flash(trans('The call has been updated'), 'success');
       localCalls.value[localCalls.value.findIndex((x) => x.id === call.id)] = response.data.data;
       editedCallId.value = 0;
     })
