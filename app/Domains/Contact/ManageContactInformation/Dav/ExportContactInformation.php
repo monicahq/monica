@@ -60,14 +60,15 @@ class ExportContactInformation extends Exporter implements ExportVCardResource
             }
 
             $vcard->add('TEL', $contactInformation->data, $parameters);
+        } elseif (Str::is($contactInformation->contactInformationType->type, 'IMPP', true)) {
+            // https://datatracker.ietf.org/doc/html/rfc4770
+            $vcard->add('IMPP', $contactInformation->data, [
+                'X-SERVICE-TYPE' => $contactInformation->contactInformationType->name,
+            ]);
         } elseif (Str::is($contactInformation->contactInformationType->type, 'X-SOCIAL-PROFILE', true)) {
             $vcard->add('X-SOCIAL-PROFILE', '', [
                 'TYPE' => $contactInformation->contactInformationType->name,
                 'X-USER' => $contactInformation->data,
-            ]);
-        } elseif (Str::is($contactInformation->contactInformationType->type, 'IMPP', true)) {
-            $vcard->add('IMPP', $contactInformation->data, [
-                'X-SERVICE-TYPE' => $contactInformation->contactInformationType->name,
             ]);
         } elseif (! empty($type = $contactInformation->contactInformationType->type)) {
             // If field isn't a supported social profile, but still has a protocol, then export it as a url.

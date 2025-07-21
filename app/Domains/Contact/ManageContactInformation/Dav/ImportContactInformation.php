@@ -63,8 +63,8 @@ class ImportContactInformation extends Importer implements ImportVCardResource
                     return ['EMAIL' => $info];
                 case 'phone':
                     return ['TEL' => $info];
-                case 'X-SOCIAL-PROFILE':
                 case 'IMPP':
+                case 'X-SOCIAL-PROFILE':
                     return [$info->contactInformationType->type => $info];
                 default:
                     // For other types, we use a generic key
@@ -118,16 +118,16 @@ class ImportContactInformation extends Importer implements ImportVCardResource
             $type = $this->account()->contactInformationTypes
                 ->where('type', 'phone')
                 ->first();
-        } elseif ($property->name === 'X-SOCIAL-PROFILE') {
-            $name = self::getParameter($property, 'TYPE');
-            $type = $this->account()->contactInformationTypes()
-                ->whereRaw('LOWER(type) LIKE ?', ['%x-social-profile%'])
-                ->where('name_translation_key', $name)
-                ->first();
         } elseif ($property->name === 'IMPP') {
             $name = self::getParameter($property, 'X-SERVICE-TYPE');
             $type = $this->account()->contactInformationTypes()
                 ->whereRaw('LOWER(type) LIKE ?', ['%impp%'])
+                ->where('name_translation_key', $name)
+                ->first();
+        } elseif ($property->name === 'X-SOCIAL-PROFILE') {
+            $name = self::getParameter($property, 'TYPE');
+            $type = $this->account()->contactInformationTypes()
+                ->whereRaw('LOWER(type) LIKE ?', ['%x-social-profile%'])
                 ->where('name_translation_key', $name)
                 ->first();
         } else {
