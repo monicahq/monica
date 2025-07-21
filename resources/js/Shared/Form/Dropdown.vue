@@ -1,5 +1,5 @@
 <script setup>
-import { computed, useTemplateRef } from 'vue';
+import { computed, onMounted, useTemplateRef } from 'vue';
 import { isObject, map, uniqueId } from 'lodash';
 
 const props = defineProps({
@@ -18,6 +18,7 @@ const props = defineProps({
   required: Boolean,
   disabled: Boolean,
   autocomplete: String,
+  autofocus: Boolean,
   placeholder: String,
 });
 
@@ -47,10 +48,6 @@ const localData = computed(() => {
   });
 });
 
-const sendEscKey = () => {
-  emit('esc-key-pressed');
-};
-
 const change = (event) => {
   emit('update:modelValue', event.target.value);
 };
@@ -59,11 +56,20 @@ const realId = computed(() => {
   return props.id ?? uniqueId('dropdown-');
 });
 
-defineExpose({
-  focus: () => {
-    input.value.focus();
-  },
+onMounted(() => {
+  if (props.autofocus) {
+    focus();
+  }
 });
+
+const sendEscKey = () => {
+  emit('esc-key-pressed');
+};
+const focus = () => {
+  input.value.focus();
+};
+
+defineExpose({ focus: focus });
 </script>
 
 <template>

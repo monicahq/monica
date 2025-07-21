@@ -15,23 +15,34 @@ class ModuleContactInformationViewHelper
         $infos = $contact->contactInformations()
             ->with('contactInformationType')
             ->get()
-            ->map(fn (ContactInformation $info) => self::dto($contact, $info));
+            ->groupBy(fn (ContactInformation $info) => $info->contactInformationType->type)
+            ->map(fn (Collection $collection) => $collection
+                ->map(fn (ContactInformation $info) => self::dto($contact, $info))
+            );
+        $groups = self::infoGroups();
 
         $infoTypes = $user->account
             ->contactInformationTypes()
             ->get()
-            ->map(fn (ContactInformationType $contactInformationType) => [
-                'id' => $contactInformationType->id,
-                'name' => $contactInformationType->name,
-                'type' => $contactInformationType->type,
-                'name_translation_key' => $contactInformationType->name_translation_key,
-            ])
-            ->sortByCollator('name');
+            ->groupBy('type')
+            ->map(fn (Collection $collection) => [
+                'optgroup' => $groups[$collection[0]->type],
+                'options' => $collection
+                    ->map(fn (ContactInformationType $contactInformationType) => [
+                        'id' => $contactInformationType->id,
+                        'name' => $contactInformationType->name,
+                        'type' => $contactInformationType->type,
+                        'name_translation_key' => $contactInformationType->name_translation_key,
+                    ])
+                    ->sortByCollator('name'),
+            ]
+            );
 
         return [
             'contact_information' => $infos,
             'contact_information_types' => $infoTypes,
             'contact_information_kinds' => static::infoKinds(),
+            'contact_information_groups' => self::infoGroups(),
             'protocols' => config('app.social_protocols'),
             'url' => [
                 'store' => route('contact.contact_information.store', [
@@ -94,6 +105,16 @@ class ModuleContactInformationViewHelper
         return $infoKinds->map(fn ($list) => collect([['id' => '', 'name' => '']])->merge($list->sortByCollator('name')));
     }
 
+    public static function infoGroups(): Collection
+    {
+        return collect([
+            'email' => trans('Email Address'),
+            'phone' => trans('Phone Number'),
+            'IMPP' => trans('Instant Messaging'),
+            'X-SOCIAL-PROFILE' => trans('Social Profile'),
+        ]);
+    }
+
     public static function dto(Contact $contact, ContactInformation $info): array
     {
         $infoKinds = static::infoKinds();
@@ -117,6 +138,7 @@ class ModuleContactInformationViewHelper
             'contact_information_type' => [
                 'id' => $info->contactInformationType->id,
                 'name' => $info->contactInformationType->name,
+                'type' => $info->contactInformationType->type,
             ],
             'contact_information_kind' => $info->kind !== null ? $contactInformationKind : null,
             'url' => [

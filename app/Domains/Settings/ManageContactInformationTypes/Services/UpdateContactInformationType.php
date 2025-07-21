@@ -17,8 +17,8 @@ class UpdateContactInformationType extends BaseService implements ServiceInterfa
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
             'contact_information_type_id' => 'required|integer|exists:contact_information_types,id',
+            'type' => 'required|string|max:255',
             'name' => 'required|string|max:255',
-            'type' => 'nullable|string|max:255',
             'protocol' => 'nullable|string|max:255',
         ];
     }

@@ -37,16 +37,20 @@ const form = reactive({
 watch(
   () => form.contact_information_type_id,
   (newValue) => {
-    let id = props.data.contact_information_types.findIndex((x) => x.id === newValue);
-    if (id === -1) {
-      kinds.value = null;
-      protocol.value = null;
+    for (const optgroup in props.data.contact_information_types) {
+      let types = props.data.contact_information_types[optgroup].options;
+      let id = types.findIndex((x) => x.id === newValue);
+      if (id === -1) {
+        continue;
+      }
+      let type = types[id];
+      kinds.value = props.data.contact_information_kinds[type.type] ?? null;
+      let p = props.data.protocols[type.name_translation_key] ?? null;
+      protocol.value = p !== null ? p.url : null;
       return;
     }
-    let type = props.data.contact_information_types[id];
-    kinds.value = props.data.contact_information_kinds[type.type] ?? null;
-    let p = props.data.protocols[type.name_translation_key] ?? null;
-    protocol.value = p !== null ? p.url : null;
+    kinds.value = null;
+    protocol.value = null;
   },
   { immediate: true },
 );
@@ -54,7 +58,7 @@ watch(
 const showCreateModal = () => {
   form.errors = [];
   adding.value = true;
-  form.contact_information_type_id = props.data.contact_information_types[0].id;
+  form.contact_information_type_id = props.data.contact_information_types.email.options[0].id;
   form.contact_information_kind = null;
   form.contact_information_kind_custom = null;
   form.data = '';
@@ -84,7 +88,14 @@ const submit = () => {
   axios
     .post(props.data.url.store, form)
     .then((response) => {
-      localData.value.unshift(response.data.data);
+      const type = response.data.data.contact_information_type.type;
+      if (localData.value.length === 0) {
+        localData.value = {};
+      }
+      if (localData.value[type] === undefined) {
+        localData.value[type] = [];
+      }
+      localData.value[type].unshift(response.data.data);
       loadingState.value = '';
       adding.value = false;
       flash(trans('The contact information has been created'), 'success');
@@ -103,7 +114,8 @@ const update = (info) => {
     .put(info.url.update, form)
     .then((response) => {
       loadingState.value = '';
-      localData.value[localData.value.findIndex((x) => x.id === info.id)] = response.data.data;
+      const type = response.data.data.contact_information_type.type;
+      localData.value[type][localData.value[type].findIndex((x) => x.id === info.id)] = response.data.data;
       editingId.value = 0;
       flash(trans('The contact information has been updated'), 'success');
     })
@@ -120,8 +132,9 @@ const destroy = () => {
     .delete(deleting.value.url.destroy)
     .then(() => {
       loadingState.value = '';
-      localData.value.splice(
-        localData.value.findIndex((x) => x.id === deleting.value.id),
+      const type = deleting.value.contact_information_type.type;
+      localData.value[type].splice(
+        localData.value[type].findIndex((x) => x.id === deleting.value.id),
         1,
       );
       deleting.value = null;
@@ -166,12 +179,14 @@ const destroy = () => {
         <!-- contact information types -->
         <div class="p-5">
           <Dropdown
+            ref="newType"
             v-model.number="form.contact_information_type_id"
             :data="data.contact_information_types"
             :required="true"
             :placeholder="$t('Choose a value')"
             :dropdown-class="'block w-full'"
             :label="$t('Type')"
+            :autofocus="true"
             @change="newDataRef.focus()" />
         </div>
 
@@ -198,7 +213,6 @@ const destroy = () => {
               v-model="form.data"
               :label="$t('Data')"
               :type="'text'"
-              :autofocus="true"
               :input-class="'block w-full'"
               :required="true"
               :autocomplete="false"
@@ -216,100 +230,113 @@ const destroy = () => {
     </form>
 
     <!-- contact infos -->
-    <div v-if="localData.length > 0">
-      <ul class="mb-4 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-        <li
-          v-for="info in localData"
-          :key="info.id"
-          class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
-          <!-- contact information -->
-          <div v-if="editingId !== info.id" class="flex items-center justify-between px-3 py-2">
-            <div>
-              <a
-                :href="info.data_with_protocol"
-                class="text-blue-500 hover:underline"
-                rel="noopener noreferrer"
-                target="_blank">
-                {{ info.data }}
-              </a>
-              <span v-if="info.contact_information_kind" class="me-2 text-xs text-gray-500">
-                — {{ info.contact_information_kind.name }}
-              </span>
-              <span v-if="info.label !== info.data" class="ms-2 text-xs text-gray-500"> ({{ info.label }}) </span>
+    <!-- blank state -->
+    <div
+      v-if="localData.length === 0"
+      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+      <img src="/img/contact_blank_contact.svg" :alt="$t('Contact informations')" class="mx-auto mt-4 h-20 w-20" />
+      <p class="px-5 pb-5 pt-2 text-center">
+        {{ $t('There are no contact informations yet.') }}
+      </p>
+    </div>
+
+    <template v-else v-for="(contactInformationGroup, gid) in data.contact_information_groups" :key="gid">
+      <div v-if="localData[gid] !== undefined && localData[gid].length > 0">
+        <p>{{ contactInformationGroup }}</p>
+        <ul class="mb-4 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+          <li
+            v-for="info in localData[gid]"
+            :key="info.id"
+            class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
+            <!-- contact information -->
+            <div v-if="editingId !== info.id" class="flex items-center justify-between px-3 py-2">
+              <div>
+                <a
+                  :href="info.data_with_protocol"
+                  class="text-blue-500 hover:underline"
+                  rel="noopener noreferrer"
+                  target="_blank">
+                  {{ info.data }}
+                </a>
+                <span v-if="info.contact_information_kind" class="me-2 text-xs text-gray-500">
+                  — {{ info.contact_information_kind.name }}
+                </span>
+                <span v-if="info.label !== info.data" class="ms-2 text-xs text-gray-500"> ({{ info.label }}) </span>
+              </div>
+
+              <!-- actions -->
+              <ul class="text-sm">
+                <li class="me-4 inline cursor-pointer text-blue-500 hover:underline" @click="showEditModal(info)">
+                  {{ $t('Edit') }}
+                </li>
+                <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="deleting = info">
+                  {{ $t('Delete') }}
+                </li>
+              </ul>
             </div>
 
-            <!-- actions -->
-            <ul class="text-sm">
-              <li class="me-4 inline cursor-pointer text-blue-500 hover:underline" @click="showEditModal(info)">
-                {{ $t('Edit') }}
-              </li>
-              <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="deleting = info">
-                {{ $t('Delete') }}
-              </li>
-            </ul>
-          </div>
+            <!-- edit info modal -->
+            <form v-if="editingId === info.id" class="bg-gray-50 dark:bg-gray-900" @submit.prevent="update(info)">
+              <div class="border-b border-gray-200 dark:border-gray-700">
+                <div v-if="form.errors.length > 0" class="p-5">
+                  <Errors :errors="form.errors" />
+                </div>
 
-          <!-- edit info modal -->
-          <form v-if="editingId === info.id" class="bg-gray-50 dark:bg-gray-900" @submit.prevent="update(info)">
-            <div class="border-b border-gray-200 dark:border-gray-700">
-              <div v-if="form.errors.length > 0" class="p-5">
-                <Errors :errors="form.errors" />
-              </div>
-
-              <!-- contact information types -->
-              <div class="p-5">
-                <Dropdown
-                  v-model.number="form.contact_information_type_id"
-                  :data="data.contact_information_types"
-                  :required="true"
-                  :placeholder="$t('Choose a value')"
-                  :dropdown-class="'block w-full'"
-                  :label="$t('Type')"
-                  @change="renameRef[0].focus()" />
-              </div>
-
-              <!-- content -->
-              <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-                <label class="mb-2 block text-sm dark:text-gray-100" for="rename">
-                  {{ $t('Content') }}
-                </label>
-                <div class="relative flex">
-                  <ComboBox
-                    v-if="kinds !== null"
-                    class="me-3 flex-none"
-                    v-model="form.contact_information_kind"
-                    v-model:new-value="form.contact_information_kind_custom"
-                    :label="$t('Kind')"
-                    :data="kinds"
-                    :required="false"
-                    :placeholder="$t('Choose a value')"
-                    :dropdown-class="'block'" />
-                  <TextInput
-                    ref="rename"
-                    id="rename"
-                    class="flex-1"
-                    v-model="form.data"
-                    :label="$t('Data')"
-                    :type="'text'"
-                    :autofocus="true"
-                    :input-class="'block w-full'"
+                <!-- contact information types -->
+                <div class="p-5">
+                  <Dropdown
+                    v-model.number="form.contact_information_type_id"
+                    :data="data.contact_information_types"
                     :required="true"
-                    :autocomplete="false"
-                    :maxlength="255"
-                    :placeholder="protocol"
-                    @esc-key-pressed="editingId = 0" />
+                    :placeholder="$t('Choose a value')"
+                    :dropdown-class="'block w-full'"
+                    :label="$t('Type')"
+                    @change="renameRef[0].focus()" />
+                </div>
+
+                <!-- content -->
+                <div class="border-b border-gray-200 p-5 dark:border-gray-700">
+                  <label class="mb-2 block text-sm dark:text-gray-100" for="rename">
+                    {{ $t('Content') }}
+                  </label>
+                  <div class="relative flex">
+                    <ComboBox
+                      v-if="kinds !== null"
+                      class="me-3 flex-none"
+                      v-model="form.contact_information_kind"
+                      v-model:new-value="form.contact_information_kind_custom"
+                      :label="$t('Kind')"
+                      :data="kinds"
+                      :required="false"
+                      :placeholder="$t('Choose a value')"
+                      :dropdown-class="'block'" />
+                    <TextInput
+                      ref="rename"
+                      id="rename"
+                      class="flex-1"
+                      v-model="form.data"
+                      :label="$t('Data')"
+                      :type="'text'"
+                      :autofocus="true"
+                      :input-class="'block w-full'"
+                      :required="true"
+                      :autocomplete="false"
+                      :maxlength="255"
+                      :placeholder="protocol"
+                      @esc-key-pressed="editingId = 0" />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="flex justify-between p-5">
-              <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click="editingId = 0" />
-              <PrettyButton :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
-            </div>
-          </form>
-        </li>
-      </ul>
-    </div>
+              <div class="flex justify-between p-5">
+                <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click="editingId = 0" />
+                <PrettyButton :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
+              </div>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </template>
 
     <JetConfirmationModal :show="deleting !== null" @close="deleting = null">
       <template #title>
@@ -325,16 +352,6 @@ const destroy = () => {
         <PrettyButton :text="$t('Delete')" :state="loadingState" :icon="'trash'" :class="'save'" @click="destroy" />
       </template>
     </JetConfirmationModal>
-
-    <!-- blank state -->
-    <div
-      v-if="localData.length === 0"
-      class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-      <img src="/img/contact_blank_contact.svg" :alt="$t('Contact informations')" class="mx-auto mt-4 h-20 w-20" />
-      <p class="px-5 pb-5 pt-2 text-center">
-        {{ $t('There are no contact informations yet.') }}
-      </p>
-    </div>
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods';
@@ -9,6 +9,8 @@ import PrettySpan from '@/Shared/Form/PrettySpan.vue';
 import TextInput from '@/Shared/Form/TextInput.vue';
 import Errors from '@/Shared/Form/Errors.vue';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
+import Dropdown from '@/Shared/Form/Dropdown.vue';
+import { filter } from 'lodash';
 
 const props = defineProps({
   layoutData: Object,
@@ -20,6 +22,10 @@ const creatingContactInformation = ref(false);
 const contactInformationEditing = ref(0);
 const localContactInformationTypes = ref(props.data.contact_information_types);
 const contactInformationDeleting = ref(null);
+
+const groupsFiltered = computed(() =>
+  filter(props.data.contact_information_groups, (_, key) => key !== 'email' && key !== 'phone'),
+);
 
 const form = reactive({
   name: '',
@@ -67,8 +73,10 @@ const update = (contactInformationType) => {
   axios
     .put(contactInformationType.url.update, form)
     .then((response) => {
-      let id = localContactInformationTypes.value.findIndex((x) => x.id === contactInformationType.id);
-      localContactInformationTypes.value[id] = response.data.data;
+      let id = localContactInformationTypes.value[contactInformationType.type].findIndex(
+        (x) => x.id === contactInformationType.id,
+      );
+      localContactInformationTypes.value[contactInformationType.type][id] = response.data.data;
       loadingState.value = null;
       contactInformationEditing.value = 0;
       flash(trans('The contact information type has been updated'), 'success');
@@ -167,6 +175,14 @@ const destroy = () => {
           <div class="border-b border-gray-200 p-5 dark:border-gray-700">
             <Errors :errors="form.errors" />
 
+            <Dropdown
+              v-model="form.type"
+              dropdown-class="mb-2"
+              :label="$t('Type')"
+              :required="true"
+              :data="groupsFiltered"
+              @esc-key-pressed="creatingContactInformation = false" />
+
             <TextInput
               ref="newContactInformationType"
               v-model="form.name"
@@ -193,16 +209,6 @@ const destroy = () => {
                 )
               "
               @esc-key-pressed="creatingContactInformation = false" />
-
-            <TextInput
-              v-model="form.type"
-              :label="$t('Type')"
-              :type="'text'"
-              :input-class="'block w-full'"
-              :required="false"
-              :autocomplete="false"
-              :maxlength="255"
-              @esc-key-pressed="creatingContactInformation = false" />
           </div>
 
           <div class="flex justify-between p-5">
@@ -212,100 +218,91 @@ const destroy = () => {
         </form>
 
         <!-- list of groups types -->
-        <ul
-          v-if="localContactInformationTypes.length > 0"
-          class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-          <li
-            v-for="contactInformationType in localContactInformationTypes"
-            :key="contactInformationType.id"
-            class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
-            <!-- detail of the contact information type -->
-            <div
-              v-if="contactInformationEditing !== contactInformationType.id"
-              class="flex items-center justify-between px-5 py-2">
-              <div>
-                <span class="text-base">{{ contactInformationType.name }}</span>
-                <code v-if="contactInformationType.protocol" class="code ms-3 text-xs"
-                  >[{{
-                    $t('Protocol: :name', {
-                      name: contactInformationType.protocol,
-                    })
-                  }}]</code
-                >
+        <template v-for="(contactInformationGroup, gid) in data.contact_information_groups" :key="gid">
+          <span>{{ contactInformationGroup }}</span>
+          <ul
+            v-if="localContactInformationTypes[gid].length > 0"
+            class="mb-6 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+            <li
+              v-for="contactInformationType in localContactInformationTypes[gid]"
+              :key="contactInformationType.id"
+              class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800">
+              <!-- detail of the contact information type -->
+              <div
+                v-if="contactInformationEditing !== contactInformationType.id"
+                class="flex items-center justify-between px-5 py-2">
+                <div>
+                  <span class="text-base">{{ contactInformationType.name }}</span>
+                  <code v-if="contactInformationType.protocol" class="code ms-3 text-xs"
+                    >[{{
+                      $t('Protocol: :name', {
+                        name: contactInformationType.protocol,
+                      })
+                    }}]</code
+                  >
+                </div>
+
+                <!-- actions -->
+                <ul class="text-sm">
+                  <li
+                    class="inline cursor-pointer text-blue-500 hover:underline"
+                    @click="updateAdressTypeModal(contactInformationType)">
+                    {{ $t('Edit') }}
+                  </li>
+                  <li
+                    v-if="contactInformationType.can_be_deleted"
+                    class="ms-4 inline cursor-pointer text-red-500 hover:text-red-900"
+                    @click="contactInformationDeleting = contactInformationType">
+                    {{ $t('Delete') }}
+                  </li>
+                </ul>
               </div>
 
-              <!-- actions -->
-              <ul class="text-sm">
-                <li
-                  class="inline cursor-pointer text-blue-500 hover:underline"
-                  @click="updateAdressTypeModal(contactInformationType)">
-                  {{ $t('Edit') }}
-                </li>
-                <li
-                  v-if="contactInformationType.can_be_deleted"
-                  class="ms-4 inline cursor-pointer text-red-500 hover:text-red-900"
-                  @click="contactInformationDeleting = contactInformationType">
-                  {{ $t('Delete') }}
-                </li>
-              </ul>
-            </div>
+              <!-- rename a contactInformationType modal -->
+              <form
+                v-if="contactInformationEditing === contactInformationType.id"
+                class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800"
+                @submit.prevent="update(contactInformationType)">
+                <div class="border-b border-gray-200 p-5 dark:border-gray-700">
+                  <Errors :errors="form.errors" />
 
-            <!-- rename a contactInformationType modal -->
-            <form
-              v-if="contactInformationEditing === contactInformationType.id"
-              class="item-list border-b border-gray-200 hover:bg-slate-50 dark:border-gray-700 dark:bg-slate-900 dark:hover:bg-slate-800"
-              @submit.prevent="update(contactInformationType)">
-              <div class="border-b border-gray-200 p-5 dark:border-gray-700">
-                <Errors :errors="form.errors" />
+                  <TextInput
+                    ref="rename"
+                    v-model="form.name"
+                    :label="$t('Name')"
+                    :type="'text'"
+                    :autofocus="true"
+                    :input-class="'block w-full mb-3'"
+                    :required="true"
+                    :autocomplete="false"
+                    :maxlength="255"
+                    @esc-key-pressed="contactInformationEditing = 0" />
 
-                <TextInput
-                  ref="rename"
-                  v-model="form.name"
-                  :label="$t('Name')"
-                  :type="'text'"
-                  :autofocus="true"
-                  :input-class="'block w-full mb-3'"
-                  :required="true"
-                  :autocomplete="false"
-                  :maxlength="255"
-                  :disabled="contactInformationType.can_be_deleted === false"
-                  @esc-key-pressed="contactInformationEditing = 0" />
+                  <TextInput
+                    v-model="form.protocol"
+                    :label="$t('Protocol')"
+                    :type="'text'"
+                    :input-class="'block w-full'"
+                    :required="false"
+                    :autocomplete="false"
+                    :maxlength="255"
+                    :disabled="contactInformationType.can_be_deleted === false"
+                    :help="
+                      $t(
+                        'A contact information can be clickable. For instance, a phone number can be clickable and launch the default application in your computer. If you do not know the protocol for the type you are adding, you can simply omit this field.',
+                      )
+                    "
+                    @esc-key-pressed="creatingContactInformation = false" />
+                </div>
 
-                <TextInput
-                  v-model="form.protocol"
-                  :label="$t('Protocol')"
-                  :type="'text'"
-                  :input-class="'block w-full'"
-                  :required="false"
-                  :autocomplete="false"
-                  :maxlength="255"
-                  :disabled="contactInformationType.can_be_deleted === false"
-                  :help="
-                    $t(
-                      'A contact information can be clickable. For instance, a phone number can be clickable and launch the default application in your computer. If you do not know the protocol for the type you are adding, you can simply omit this field.',
-                    )
-                  "
-                  @esc-key-pressed="creatingContactInformation = false" />
-
-                <TextInput
-                  v-model="form.type"
-                  :label="$t('Type')"
-                  :type="'text'"
-                  :input-class="'block w-full'"
-                  :required="false"
-                  :autocomplete="false"
-                  :maxlength="255"
-                  :help="$t('The type of contact information. Don’t change this unless you know what you are doing.')"
-                  @esc-key-pressed="creatingContactInformation = false" />
-              </div>
-
-              <div class="flex justify-between p-5">
-                <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click.prevent="contactInformationEditing = 0" />
-                <PrettyButton :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
-              </div>
-            </form>
-          </li>
-        </ul>
+                <div class="flex justify-between p-5">
+                  <PrettySpan :text="$t('Cancel')" :class="'me-3'" @click.prevent="contactInformationEditing = 0" />
+                  <PrettyButton :text="$t('Save')" :state="loadingState" :icon="'check'" :class="'save'" />
+                </div>
+              </form>
+            </li>
+          </ul>
+        </template>
 
         <JetConfirmationModal :show="contactInformationDeleting !== null" @close="contactInformationDeleting = null">
           <template #title>
