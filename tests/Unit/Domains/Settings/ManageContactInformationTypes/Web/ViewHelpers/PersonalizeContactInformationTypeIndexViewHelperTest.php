@@ -19,7 +19,7 @@ class PersonalizeContactInformationTypeIndexViewHelperTest extends TestCase
         $contactInformationType = ContactInformationType::factory()->create();
         $array = PersonalizeContactInformationTypeIndexViewHelper::data($contactInformationType->account);
         $this->assertEquals(
-            2,
+            3,
             count($array)
         );
         $this->assertArrayHasKey('contact_information_types', $array);

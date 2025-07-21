@@ -34,7 +34,8 @@ class ModuleContactInformationViewHelper
                         'type' => $contactInformationType->type,
                         'name_translation_key' => $contactInformationType->name_translation_key,
                     ])
-                    ->sortByCollator('name'),
+                    ->sortByCollator('name')
+                    ->toArray(),
             ]
             );
 
