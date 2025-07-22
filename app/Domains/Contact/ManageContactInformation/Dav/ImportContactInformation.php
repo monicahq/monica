@@ -121,13 +121,13 @@ class ImportContactInformation extends Importer implements ImportVCardResource
         } elseif ($property->name === 'IMPP') {
             $name = self::getParameter($property, 'X-SERVICE-TYPE');
             $type = $this->account()->contactInformationTypes()
-                ->whereRaw('LOWER(type) LIKE ?', ['%impp%'])
+                ->whereRaw('UPPER(type) LIKE ?', ['%IMPP%'])
                 ->where('name_translation_key', $name)
                 ->first();
         } elseif ($property->name === 'X-SOCIAL-PROFILE') {
             $name = self::getParameter($property, 'TYPE');
             $type = $this->account()->contactInformationTypes()
-                ->whereRaw('LOWER(type) LIKE ?', ['%x-social-profile%'])
+                ->whereRaw('UPPER(type) LIKE ?', ['%X-SOCIAL-PROFILE%'])
                 ->where('name_translation_key', $name)
                 ->first();
         } else {
@@ -137,7 +137,7 @@ class ImportContactInformation extends Importer implements ImportVCardResource
 
         if (! $type) {
             $type = $this->account()->contactInformationTypes()
-                ->whereRaw('LOWER(type) LIKE ?', ['%'.Str::lower($property->name).'%'])
+                ->whereRaw('UPPER(type) LIKE ?', ['%'.Str::upper($property->name).'%'])
                 ->where('name', $name)
                 ->first();
         }
@@ -147,7 +147,7 @@ class ImportContactInformation extends Importer implements ImportVCardResource
                 'account_id' => $this->account()->id,
                 'author_id' => $this->author()->id,
                 'name' => $name,
-                'type' => Str::lower($property->name),
+                'type' => Str::upper($property->name),
             ]);
         }
 
