@@ -24,7 +24,7 @@ class ContactInformationFactory extends Factory
         return [
             'contact_id' => Contact::factory(),
             'type_id' => ContactInformationType::factory(),
-            'data' => $this->faker->name(),
+            'data' => $this->faker->email(),
         ];
     }
 }

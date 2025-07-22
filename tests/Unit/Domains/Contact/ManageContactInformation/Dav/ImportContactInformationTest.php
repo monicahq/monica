@@ -5,8 +5,10 @@ namespace Tests\Unit\Domains\Contact\ManageContactInformation\Dav;
 use App\Domains\Contact\Dav\Services\ImportVCard;
 use App\Domains\Contact\ManageContactInformation\Dav\ImportContactInformation;
 use App\Models\Contact;
+use App\Models\ContactInformation;
 use App\Models\ContactInformationType;
 use App\Models\Vault;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -269,6 +271,82 @@ class ImportContactInformationTest extends TestCase
         $this->assertEquals($value, $socialProfile->data);
         $this->assertEquals('IMPP', $socialProfile->contactInformationType->type);
         $this->assertEquals($type, $socialProfile->contactInformationType->name_translation_key);
+    }
+
+    #[Group('dav')]
+    #[Test]
+    public function it_updates_email_address()
+    {
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        $type = ContactInformationType::factory()->create([
+            'account_id' => $vault->account_id,
+        ]);
+        $contactInformation = ContactInformation::factory()->create([
+            'contact_id' => $contact->id,
+            'type_id' => $type->id,
+        ]);
+
+        $importVCard = new ImportVCard;
+        $importVCard->author = $user;
+        $importVCard->vault = $vault;
+        $importer = new ImportContactInformation;
+        $importer->setContext($importVCard);
+
+        $vcard = new VCard([
+            'EMAIL' => 'test@test.com',
+        ]);
+
+        $contact = $importer->import($vcard, $contact);
+
+        $contactInformation->refresh();
+
+        $this->assertCount(1, $contact->contactInformations);
+        $this->assertEquals('test@test.com', $contactInformation->data);
+        $this->assertEquals('email', $contactInformation->contactInformationType->type);
+    }
+
+    #[Group('dav')]
+    #[Test]
+    public function it_destroys_email_address()
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        $type = ContactInformationType::factory()->create([
+            'account_id' => $vault->account_id,
+        ]);
+        $contactInformation = ContactInformation::factory()->create([
+            'contact_id' => $contact->id,
+            'type_id' => $type->id,
+        ]);
+        ContactInformationType::factory()->create([
+            'account_id' => $vault->account_id,
+            'type' => 'phone',
+            'protocol' => 'tel:',
+        ]);
+
+        $importVCard = new ImportVCard;
+        $importVCard->author = $user;
+        $importVCard->vault = $vault;
+        $importer = new ImportContactInformation;
+        $importer->setContext($importVCard);
+
+        $vcard = new VCard;
+        $vcard->add('TEL', '1234567890', [
+            'TYPE' => 'cell',
+        ]);
+
+        $contact = $importer->import($vcard, $contact);
+
+        $contactInformation->refresh();
     }
 
     public static function impps(): iterable

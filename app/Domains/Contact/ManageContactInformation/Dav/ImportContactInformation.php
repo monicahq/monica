@@ -79,6 +79,7 @@ class ImportContactInformation extends Importer implements ImportVCardResource
         $info = $contactInformations->get($key, collect());
 
         $current = $info->map(fn (ContactInformation $contactInformation) => [
+            'id' => $contactInformation->id,
             'value' => $contactInformation->data,
             'parameters' => [
                 'TYPE' => $contactInformation->kind,
@@ -188,28 +189,31 @@ class ImportContactInformation extends Importer implements ImportVCardResource
         ]);
     }
 
-    private function removeContactInformation(Contact $contact, ContactInformation $info): void
+    private function removeContactInformation(Contact $contact, array $info): void
     {
         (new DestroyContactInformation)->execute([
             'account_id' => $this->account()->id,
             'vault_id' => $this->vault()->id,
             'author_id' => $this->author()->id,
             'contact_id' => $contact->id,
-            'contact_information_id' => $info->id,
+            'contact_information_id' => $info['id'],
         ]);
     }
 
-    private function updateContactInformation(Contact $contact, ContactInformation $info, Property $data, int $typeId): void
+    private function updateContactInformation(Contact $contact, array $info, Property $data, int $typeId): void
     {
-        (new UpdateContactInformation)->execute([
-            'account_id' => $this->account()->id,
-            'vault_id' => $this->vault()->id,
-            'author_id' => $this->author()->id,
-            'contact_id' => $contact->id,
-            'contact_information_id' => $info->id,
-            'contact_information_type_id' => $typeId,
-            'contact_information_kind' => self::getParameter($data),
-            'data' => self::getValue($data),
-        ]);
+        if (($kind = self::getParameter($data)) !== $info['parameters']['TYPE']
+            || ($value = self::getValue($data)) !== $info['value']) {
+            (new UpdateContactInformation)->execute([
+                'account_id' => $this->account()->id,
+                'vault_id' => $this->vault()->id,
+                'author_id' => $this->author()->id,
+                'contact_id' => $contact->id,
+                'contact_information_id' => $info['id'],
+                'contact_information_type_id' => $typeId,
+                'contact_information_kind' => $kind,
+                'data' => $value,
+            ]);
+        }
     }
 }
