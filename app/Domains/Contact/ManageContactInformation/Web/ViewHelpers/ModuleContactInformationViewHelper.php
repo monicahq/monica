@@ -43,7 +43,7 @@ class ModuleContactInformationViewHelper
             'contact_information' => $infos,
             'contact_information_types' => $infoTypes,
             'contact_information_kinds' => static::infoKinds(),
-            'contact_information_groups' => self::infoGroups(),
+            'contact_information_groups' => static::infoGroups(),
             'protocols' => config('app.social_protocols'),
             'url' => [
                 'store' => route('contact.contact_information.store', [
@@ -54,71 +54,29 @@ class ModuleContactInformationViewHelper
         ];
     }
 
-    public static function infoKinds(): Collection
+    private static function infoKinds(): Collection
     {
-        $infoKinds = collect([
-            'email' => collect([
-                [
-                    'id' => 'work',
-                    'name' => trans('🏢 Work'),
-                ],
-                [
-                    'id' => 'home',
-                    'name' => trans('🏡 Home'),
-                ],
-                [
-                    'id' => 'personal',
-                    'name' => trans('🧑🏼 Personal'),
-                ],
-                [
-                    'id' => 'other',
-                    'name' => trans('❔ Other'),
-                ],
-            ]),
-            'phone' => collect([
-                [
-                    'id' => 'work',
-                    'name' => trans('🏢 Work'),
-                ],
-                [
-                    'id' => 'home',
-                    'name' => trans('🏡 Home'),
-                ],
-                [
-                    'id' => 'cell',
-                    'name' => trans('📱 Mobile'),
-                ],
-                [
-                    'id' => 'fax',
-                    'name' => trans('📠 Fax'),
-                ],
-                [
-                    'id' => 'pager',
-                    'name' => trans('📟 Pager'),
-                ],
-                [
-                    'id' => 'other',
-                    'name' => trans('❔ Other'),
-                ],
-            ]),
-        ]);
-
-        return $infoKinds->map(fn ($list) => collect([['id' => '', 'name' => '']])->merge($list->sortByCollator('name')));
+        return collect(config('app.contact_information_kinds'))
+            ->map(fn (array $list) => collect($list)
+                ->map(fn (array $kind) => [
+                    'id' => $kind['id'],
+                    'name' => __($kind['name_translation_key']),
+                ])
+                ->sortByCollator('name')
+                ->prepend(['id' => '', 'name' => ''])
+            );
     }
 
     public static function infoGroups(): Collection
     {
-        return collect([
-            'email' => trans('Email Address'),
-            'phone' => trans('Phone Number'),
-            'IMPP' => trans('Instant Messaging'),
-            'X-SOCIAL-PROFILE' => trans('Social Profile'),
-        ]);
+        return collect(config('app.contact_information_groups'))
+            ->map(fn (array $group) => __($group['name_translation_key']));
     }
 
     public static function dto(Contact $contact, ContactInformation $info): array
     {
         $infoKinds = static::infoKinds();
+
         $contactInformationKind = [];
         if ($info->kind !== null) {
             if ($infoKinds->has($info->contactInformationType->type) && ($kind = $infoKinds[$info->contactInformationType->type]->firstWhere('id', $info->kind)) !== null) {

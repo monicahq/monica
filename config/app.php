@@ -195,4 +195,86 @@ return [
             'type' => 'X-SOCIAL-PROFILE',
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Contact Information Groups
+    |--------------------------------------------------------------------------
+    |
+    | This array defines the groups of contact information types. Each group
+    | has a name translation key that is used for display purposes.
+    |
+     */
+
+    'contact_information_groups' => [
+        'email' => [
+            'name_translation_key' => trans_key('Email Address'),
+        ],
+        'phone' => [
+            'name_translation_key' => trans_key('Phone Number'),
+        ],
+        'IMPP' => [
+            'name_translation_key' => trans_key('Instant Messaging'),
+        ],
+        'X-SOCIAL-PROFILE' => [
+            'name_translation_key' => trans_key('Social Profile'),
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Contact Information Kinds
+    |--------------------------------------------------------------------------
+    |
+    | This array defines the base kinds of contact information. This is used
+    | for email and phone numbers. You can add more kinds as needed.
+    |
+     */
+
+    'contact_information_kinds' => [
+        'email' => [
+            [
+                'id' => 'work',
+                'name_translation_key' => trans_key('🏢 Work'),
+            ],
+            [
+                'id' => 'home',
+                'name_translation_key' => trans_key('🏡 Home'),
+            ],
+            [
+                'id' => 'personal',
+                'name_translation_key' => trans_key('🧑🏼 Personal'),
+            ],
+            [
+                'id' => 'other',
+                'name_translation_key' => trans_key('❔ Other'),
+            ],
+        ],
+        'phone' => [
+            [
+                'id' => 'work',
+                'name_translation_key' => trans_key('🏢 Work'),
+            ],
+            [
+                'id' => 'home',
+                'name_translation_key' => trans_key('🏡 Home'),
+            ],
+            [
+                'id' => 'cell',
+                'name_translation_key' => trans_key('📱 Mobile'),
+            ],
+            [
+                'id' => 'fax',
+                'name_translation_key' => trans_key('📠 Fax'),
+            ],
+            [
+                'id' => 'pager',
+                'name_translation_key' => trans_key('📟 Pager'),
+            ],
+            [
+                'id' => 'other',
+                'name_translation_key' => trans_key('❔ Other'),
+            ],
+        ],
+    ],
 ];
