@@ -234,6 +234,7 @@
   "Bird": "پرندہ",
   "Birthdate": "تاریخ پیدائش",
   "Birthday": "سالگرہ",
+  "Bluesky": "بلوسکی",
   "Body": "جسم",
   "boss": "باس",
   "Bought": "خریدا",
@@ -519,6 +520,7 @@
   "Gift occasions let you categorize all your gifts.": "تحفے کے مواقع آپ کو اپنے تمام تحائف کی درجہ بندی کرنے دیتے ہیں۔",
   "Gift states": "گفٹ اسٹیٹس",
   "Gift states let you define the various states for your gifts.": "تحفے کی ریاستیں آپ کو اپنے تحائف کے لیے مختلف ریاستوں کی وضاحت کرنے دیتی ہیں۔",
+  "GitHub": "گٹ ہب",
   "Give this email address a name": "اس ای میل ایڈریس کو ایک نام دیں۔",
   "Goals": "اہداف",
   "Go back": "واپس جاو",
@@ -601,6 +603,7 @@
   "in love with": "پیار میں",
   "Inspirational post": "متاثر کن پوسٹ",
   "Instagram": "انسٹاگرام",
+  "Instant messaging": "فوری پیغام رسانی",
   "Insufficient Storage": "ناکافی اسٹوریج",
   "Internal Server Error": "اندرونی سرور کی خرابی",
   "Introduction": "تعارف",
@@ -835,6 +838,7 @@
   "Pet category": "پالتو جانوروں کے زمرے",
   "Pets": "پالتو جانور",
   "Phone": "فون",
+  "Phone number": "فون نمبر",
   "Photo": "تصویر",
   "Photos": "تصاویر",
   "Played basketball": "باسکٹ بال کھیلا۔",
@@ -1018,6 +1022,7 @@
   "Slices of life": "زندگی کے ٹکڑے",
   "Small animal": "چھوٹا جانور",
   "Social": "سماجی",
+  "Social profile": "سوشل پروفائل",
   "Solve": "حل",
   "Some dates have a special type that we will use in the software to calculate an age.": "کچھ تاریخوں کی ایک خاص قسم ہوتی ہے جسے ہم سافٹ ویئر میں عمر کا حساب لگانے کے لیے استعمال کریں گے۔",
   "So… it works 😼": "تو… یہ کام کرتا ہے 😼",
@@ -1265,6 +1270,7 @@
   "This user has already been invited to the team.": "یہ صارف پہلے ہی مدعو کرنے کے لئے ٹیم.",
   "This user will be part of your account, but won’t get access to all the vaults in this account unless you give specific access to them. This person will be able to create vaults as well.": "یہ صارف آپ کے اکاؤنٹ کا حصہ ہو گا، لیکن اسے اس اکاؤنٹ کے تمام والٹس تک رسائی حاصل نہیں ہو گی جب تک کہ آپ انہیں مخصوص رسائی نہ دیں۔ یہ شخص والٹ بھی بنا سکے گا۔",
   "This will immediately:": "یہ فوری طور پر کرے گا:",
+  "Threads": "دھاگے",
   "Three things that happened today": "تین چیزیں جو آج ہوئیں",
   "Thursday": "جمعرات",
   "Timezone": "ٹائم زون",

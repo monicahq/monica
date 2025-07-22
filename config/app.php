@@ -208,16 +208,16 @@ return [
 
     'contact_information_groups' => [
         'email' => [
-            'name_translation_key' => trans_key('Email Address'),
+            'name_translation_key' => trans_key('Email address'),
         ],
         'phone' => [
-            'name_translation_key' => trans_key('Phone Number'),
+            'name_translation_key' => trans_key('Phone number'),
         ],
         'IMPP' => [
-            'name_translation_key' => trans_key('Instant Messaging'),
+            'name_translation_key' => trans_key('Instant messaging'),
         ],
         'X-SOCIAL-PROFILE' => [
-            'name_translation_key' => trans_key('Social Profile'),
+            'name_translation_key' => trans_key('Social profile'),
         ],
     ],
 
