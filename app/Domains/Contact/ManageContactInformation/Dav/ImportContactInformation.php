@@ -202,8 +202,10 @@ class ImportContactInformation extends Importer implements ImportVCardResource
 
     private function updateContactInformation(Contact $contact, array $info, Property $data, int $typeId): void
     {
-        if (($kind = self::getParameter($data)) !== $info['parameters']['TYPE']
-            || ($value = self::getValue($data)) !== $info['value']) {
+        $kind = self::getParameter($data);
+        $value = self::getValue($data);
+
+        if ($kind !== $info['parameters']['TYPE'] || $value !== $info['value']) {
             (new UpdateContactInformation)->execute([
                 'account_id' => $this->account()->id,
                 'vault_id' => $this->vault()->id,

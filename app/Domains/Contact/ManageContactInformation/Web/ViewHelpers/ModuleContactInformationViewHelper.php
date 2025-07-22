@@ -42,8 +42,8 @@ class ModuleContactInformationViewHelper
         return [
             'contact_information' => $infos,
             'contact_information_types' => $infoTypes,
-            'contact_information_kinds' => static::infoKinds(),
-            'contact_information_groups' => static::infoGroups(),
+            'contact_information_kinds' => self::infoKinds(),
+            'contact_information_groups' => self::infoGroups(),
             'protocols' => config('app.social_protocols'),
             'url' => [
                 'store' => route('contact.contact_information.store', [
@@ -75,7 +75,7 @@ class ModuleContactInformationViewHelper
 
     public static function dto(Contact $contact, ContactInformation $info): array
     {
-        $infoKinds = static::infoKinds();
+        $infoKinds = self::infoKinds();
 
         $contactInformationKind = [];
         if ($info->kind !== null) {
