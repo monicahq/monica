@@ -115,7 +115,7 @@ class ImportContactInformationTest extends TestCase
         $this->assertCount(1, $contact->contactInformations);
         $email = $contact->contactInformations->first();
         $this->assertEquals('test@test.com', $email->data);
-        $this->assertEquals('email', $email->contactInformationType->type);
+        $this->assertEquals('EMAIL', $email->contactInformationType->type);
         $this->assertEquals('home', $email->kind);
     }
 

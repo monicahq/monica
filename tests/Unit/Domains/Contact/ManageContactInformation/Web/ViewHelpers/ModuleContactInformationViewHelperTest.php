@@ -43,7 +43,7 @@ class ModuleContactInformationViewHelperTest extends TestCase
         $this->assertEquals(
             [
                 'email' => [
-                    'optgroup' => 'Email Address',
+                    'optgroup' => 'Email address',
                     'options' => [
                         0 => [
                             'id' => $type->id,
