@@ -18,8 +18,8 @@ use App\Logging\CleanLogs;
 */
 
 Schedule::command('model:prune', 'daily');
-Schedule::command('queue:prune-batches', 'daily');
-Schedule::command('queue:prune-failed', 'daily');
+Schedule::command('queue:prune-batches --hours=48 --unfinished=72 --cancelled=72', 'daily');
+Schedule::command('queue:prune-failed --hours=48', 'daily');
 if (config('telescope.enabled')) {
     Schedule::command('telescope:prune', 'daily');
 }

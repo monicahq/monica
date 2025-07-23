@@ -96,12 +96,12 @@ class ImportAddress extends Importer implements ImportVCardResource
             'author_id' => $this->author()->id,
             'address_id' => $address->id,
             'address_type_id' => optional($addressType)->id,
-            'line_1' => $adr->getParts()[1],
-            'line_2' => $adr->getParts()[2],
-            'city' => $adr->getParts()[3],
-            'province' => $adr->getParts()[4],
-            'postal_code' => $adr->getParts()[5],
-            'country' => $adr->getParts()[6],
+            'line_1' => Arr::get($adr->getParts(), 1),
+            'line_2' => Arr::get($adr->getParts(), 2),
+            'city' => Arr::get($adr->getParts(), 3),
+            'province' => Arr::get($adr->getParts(), 4),
+            'postal_code' => Arr::get($adr->getParts(), 5),
+            'country' => Arr::get($adr->getParts(), 6),
         ]);
     }
 
@@ -110,12 +110,12 @@ class ImportAddress extends Importer implements ImportVCardResource
         $address = Address::where([
             'vault_id' => $this->vault()->id,
             'address_type_id' => optional($addressType)->id,
-            'line_1' => $adr->getParts()[1],
-            'line_2' => $adr->getParts()[2],
-            'city' => $adr->getParts()[3],
-            'province' => $adr->getParts()[4],
-            'postal_code' => $adr->getParts()[5],
-            'country' => $adr->getParts()[6],
+            'line_1' => Arr::get($adr->getParts(), 1),
+            'line_2' => Arr::get($adr->getParts(), 2),
+            'city' => Arr::get($adr->getParts(), 3),
+            'province' => Arr::get($adr->getParts(), 4),
+            'postal_code' => Arr::get($adr->getParts(), 5),
+            'country' => Arr::get($adr->getParts(), 6),
         ])->first();
 
         if ($address === null) {
@@ -124,12 +124,12 @@ class ImportAddress extends Importer implements ImportVCardResource
                 'vault_id' => $this->vault()->id,
                 'author_id' => $this->author()->id,
                 'address_type_id' => optional($addressType)->id,
-                'line_1' => $adr->getParts()[1],
-                'line_2' => $adr->getParts()[2],
-                'city' => $adr->getParts()[3],
-                'province' => $adr->getParts()[4],
-                'postal_code' => $adr->getParts()[5],
-                'country' => $adr->getParts()[6],
+                'line_1' => Arr::get($adr->getParts(), 1),
+                'line_2' => Arr::get($adr->getParts(), 2),
+                'city' => Arr::get($adr->getParts(), 3),
+                'province' => Arr::get($adr->getParts(), 4),
+                'postal_code' => Arr::get($adr->getParts(), 5),
+                'country' => Arr::get($adr->getParts(), 6),
             ]);
         }
 
