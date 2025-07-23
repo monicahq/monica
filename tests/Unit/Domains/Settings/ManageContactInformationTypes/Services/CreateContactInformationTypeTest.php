@@ -59,6 +59,7 @@ class CreateContactInformationTypeTest extends TestCase
             'account_id' => $account->id,
             'author_id' => $author->id,
             'name' => 'type name',
+            'type' => 'IMPP',
         ];
 
         $type = (new CreateContactInformationType)->execute($request);

@@ -195,7 +195,7 @@ export default {
       axios
         .put(this.localGoal.url.update, this.form)
         .then((response) => {
-          this.flash(this.$t('The goal has been edited'), 'success');
+          this.flash(this.$t('The goal has been updated'), 'success');
           this.localGoal = response.data.data;
           this.editMode = false;
         })

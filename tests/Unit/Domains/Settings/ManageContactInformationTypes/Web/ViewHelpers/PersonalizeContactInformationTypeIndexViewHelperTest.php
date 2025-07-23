@@ -19,7 +19,7 @@ class PersonalizeContactInformationTypeIndexViewHelperTest extends TestCase
         $contactInformationType = ContactInformationType::factory()->create();
         $array = PersonalizeContactInformationTypeIndexViewHelper::data($contactInformationType->account);
         $this->assertEquals(
-            2,
+            3,
             count($array)
         );
         $this->assertArrayHasKey('contact_information_types', $array);
@@ -48,6 +48,7 @@ class PersonalizeContactInformationTypeIndexViewHelperTest extends TestCase
                     'update' => env('APP_URL').'/settings/personalize/contactInformationType/'.$contactInformationType->id,
                     'destroy' => env('APP_URL').'/settings/personalize/contactInformationType/'.$contactInformationType->id,
                 ],
+                'type' => 'email',
             ],
             $array
         );

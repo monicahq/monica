@@ -20,7 +20,7 @@ use Illuminate\Support\Arr;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Property;
 
-#[Order(20)]
+#[Order(40)]
 class ImportAddress extends Importer implements ImportVCardResource
 {
     /**

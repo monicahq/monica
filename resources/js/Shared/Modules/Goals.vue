@@ -200,7 +200,7 @@ export default {
       axios
         .put(goal.url.streak_update, this.form)
         .then((response) => {
-          this.flash(this.$t('The goal has been edited'), 'success');
+          this.flash(this.$t('The goal has been updated'), 'success');
           this.localGoals[this.localGoals.findIndex((x) => x.id === goal.id)] = response.data.data;
           this.editedGoalId = 0;
         })

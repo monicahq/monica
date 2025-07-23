@@ -229,7 +229,7 @@ export default {
       axios
         .post(this.data.url.update, this.form)
         .then((response) => {
-          localStorage.success = this.$t('The contact has been edited');
+          localStorage.success = this.$t('The contact has been updated');
           this.$inertia.visit(response.data.data);
         })
         .catch((error) => {

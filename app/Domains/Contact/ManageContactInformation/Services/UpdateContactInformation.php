@@ -26,6 +26,7 @@ class UpdateContactInformation extends BaseService implements ServiceInterface
             'contact_id' => 'required|uuid|exists:contacts,id',
             'contact_information_type_id' => 'required|integer|exists:contact_information_types,id',
             'contact_information_id' => 'required|integer|exists:contact_information,id',
+            'contact_information_kind' => 'nullable|string',
             'data' => 'required|string|max:255',
         ];
     }
@@ -72,6 +73,7 @@ class UpdateContactInformation extends BaseService implements ServiceInterface
     {
         $this->contactInformation->data = $this->data['data'];
         $this->contactInformation->type_id = $this->data['contact_information_type_id'];
+        $this->contactInformation->kind = $this->valueOrNull($this->data, 'contact_information_kind');
         $this->contactInformation->save();
     }
 

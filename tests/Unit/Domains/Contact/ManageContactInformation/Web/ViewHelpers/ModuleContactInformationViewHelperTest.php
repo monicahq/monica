@@ -32,7 +32,7 @@ class ModuleContactInformationViewHelperTest extends TestCase
         $array = ModuleContactInformationViewHelper::data($contact, $user);
 
         $this->assertEquals(
-            3,
+            6,
             count($array)
         );
 
@@ -42,9 +42,16 @@ class ModuleContactInformationViewHelperTest extends TestCase
 
         $this->assertEquals(
             [
-                0 => [
-                    'id' => $type->id,
-                    'name' => $type->name,
+                'email' => [
+                    'optgroup' => 'Email address',
+                    'options' => [
+                        0 => [
+                            'id' => $type->id,
+                            'name' => $type->name,
+                            'type' => 'email',
+                            'name_translation_key' => null,
+                        ],
+                    ],
                 ],
             ],
             $array['contact_information_types']->toArray()
@@ -84,7 +91,9 @@ class ModuleContactInformationViewHelperTest extends TestCase
                 'contact_information_type' => [
                     'id' => $type->id,
                     'name' => 'Facebook shit',
+                    'type' => 'email',
                 ],
+                'contact_information_kind' => null,
                 'url' => [
                     'update' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/contactInformation/'.$info->id,
                     'destroy' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/contactInformation/'.$info->id,

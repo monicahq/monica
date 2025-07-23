@@ -90,7 +90,7 @@ defineExpose({ focus: focus });
           'bg-white dark:bg-slate-900 dark:text-gray-100 border-gray-300 dark:border-gray-700',
           'placeholder:text-gray-600 dark:placeholder:text-gray-400',
           'focus:border-indigo-300 dark:focus:border-indigo-700 focus:ring-3 focus:ring-indigo-200 dark:focus:ring-indigo-800/50',
-          'disabled:bg-slate-50 dark:disabled:bg-slate-900',
+          'disabled:bg-slate-50 dark:disabled:bg-slate-700',
           props.inputClass,
         ]"
         :value="modelValue"
@@ -100,7 +100,7 @@ defineExpose({ focus: focus });
         :required="required"
         :autofocus="autofocus"
         :autocomplete="typeof autocomplete === 'string' ? autocomplete : autocomplete ? '' : 'off'"
-        :disabled="disabled"
+        :disabled="disabled ? 'disabled' : null"
         :min="min"
         :max="max"
         :step="step"

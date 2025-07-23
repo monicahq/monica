@@ -17,6 +17,7 @@ class UpdateContactInformationType extends BaseService implements ServiceInterfa
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
             'contact_information_type_id' => 'required|integer|exists:contact_information_types,id',
+            'type' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'protocol' => 'nullable|string|max:255',
         ];
@@ -44,6 +45,7 @@ class UpdateContactInformationType extends BaseService implements ServiceInterfa
             ->findOrFail($data['contact_information_type_id']);
 
         $type->name = $data['name'];
+        $type->type = $this->valueOrNull($data, 'type');
         $type->protocol = $this->valueOrNull($data, 'protocol');
         $type->save();
 

@@ -2,8 +2,10 @@
 
 namespace App\Domains\Settings\ManageContactInformationTypes\Web\ViewHelpers;
 
+use App\Domains\Contact\ManageContactInformation\Web\ViewHelpers\ModuleContactInformationViewHelper;
 use App\Models\Account;
 use App\Models\ContactInformationType;
+use Illuminate\Support\Collection;
 
 class PersonalizeContactInformationTypeIndexViewHelper
 {
@@ -11,11 +13,15 @@ class PersonalizeContactInformationTypeIndexViewHelper
     {
         $types = $account->contactInformationTypes()
             ->get()
-            ->sortByCollator('name')
-            ->map(fn (ContactInformationType $type) => self::dtoContactInformationType($type));
+            ->groupBy('type')
+            ->map(fn (Collection $collection) => $collection
+                ->sortByCollator('name')
+                ->map(fn (ContactInformationType $type) => self::dtoContactInformationType($type))
+            );
 
         return [
             'contact_information_types' => $types,
+            'contact_information_groups' => ModuleContactInformationViewHelper::infoGroups(),
             'url' => [
                 'settings' => route('settings.index'),
                 'personalize' => route('settings.personalize.index'),
@@ -30,7 +36,8 @@ class PersonalizeContactInformationTypeIndexViewHelper
             'id' => $type->id,
             'name' => $type->name,
             'protocol' => $type->protocol,
-            'can_be_deleted' => $type->can_be_deleted,
+            'type' => $type->type,
+            'can_be_deleted' => $type->can_be_deleted ?? true,
             'url' => [
                 'update' => route('settings.personalize.contact_information_type.update', [
                     'type' => $type->id,

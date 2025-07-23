@@ -1,10 +1,11 @@
 <script setup>
-import { computed, useTemplateRef } from 'vue';
+import { computed, onMounted, useTemplateRef } from 'vue';
+import { isObject, map, uniqueId } from 'lodash';
 
 const props = defineProps({
   id: {
     type: String,
-    default: 'dropdown-',
+    default: null,
   },
   data: Object,
   dropdownClass: String,
@@ -12,15 +13,12 @@ const props = defineProps({
     type: [String, Number],
     default: '',
   },
-  name: {
-    type: String,
-    default: 'input',
-  },
   help: String,
   label: String,
   required: Boolean,
   disabled: Boolean,
   autocomplete: String,
+  autofocus: Boolean,
   placeholder: String,
 });
 
@@ -38,8 +36,8 @@ const localDropdownClasses = computed(() => {
 });
 
 const localData = computed(() => {
-  return _.map(props.data, (value) => {
-    if (_.isObject(value)) {
+  return map(props.data, (value) => {
+    if (isObject(value)) {
       return value;
     } else {
       return {
@@ -50,24 +48,33 @@ const localData = computed(() => {
   });
 });
 
-const sendEscKey = () => {
-  emit('esc-key-pressed');
-};
-
 const change = (event) => {
   emit('update:modelValue', event.target.value);
 };
 
-defineExpose({
-  focus: () => {
-    input.value.focus();
-  },
+const realId = computed(() => {
+  return props.id ?? uniqueId('dropdown-');
 });
+
+onMounted(() => {
+  if (props.autofocus) {
+    focus();
+  }
+});
+
+const sendEscKey = () => {
+  emit('esc-key-pressed');
+};
+const focus = () => {
+  input.value.focus();
+};
+
+defineExpose({ focus: focus });
 </script>
 
 <template>
   <div>
-    <label v-if="label" class="mb-2 block text-sm" :for="id">
+    <label v-if="label" class="mb-2 block text-sm" :for="realId">
       {{ label }}
       <span v-if="!required" class="optional-badge rounded-xs px-[3px] py-px text-xs">
         {{ $t('optional') }}
@@ -76,7 +83,7 @@ defineExpose({
 
     <div class="component relative">
       <select
-        :id="id"
+        :id="realId"
         ref="input"
         :value="modelValue"
         :class="localDropdownClasses"

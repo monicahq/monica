@@ -79,6 +79,7 @@ class UpdateContactInformationTypeTest extends TestCase
             'author_id' => $author->id,
             'contact_information_type_id' => $type->id,
             'name' => 'type name',
+            'type' => $type->type,
         ];
 
         $type = (new UpdateContactInformationType)->execute($request);

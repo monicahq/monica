@@ -127,4 +127,154 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Social Protocols
+    |--------------------------------------------------------------------------
+    |
+    | This array contains the protocols used for social media links. The keys
+    | are the names of the social media platforms, and the values are the
+    | base URLs for those platforms. You can add or remove protocols as needed.
+    |
+    | */
+
+    'social_protocols' => [
+        'Facebook' => [
+            'name_translation_key' => trans_key('Facebook'),
+            'url' => 'https://www.facebook.com/',
+            'type' => 'X-SOCIAL-PROFILE',
+        ],
+        'Whatsapp' => [
+            'name_translation_key' => trans_key('Whatsapp'),
+            'url' => 'https://wa.me/',
+            'type' => 'X-SOCIAL-PROFILE',
+        ],
+        'Telegram' => [
+            'name_translation_key' => trans_key('Telegram'),
+            'url' => 'https://t.me/',
+            'type' => 'IMPP',
+        ],
+        'LinkedIn' => [
+            'name_translation_key' => trans_key('LinkedIn'),
+            'url' => 'https://www.linkedin.com/in/',
+            'type' => 'X-SOCIAL-PROFILE',
+        ],
+        'Instagram' => [
+            'name_translation_key' => trans_key('Instagram'),
+            'url' => 'https://www.instagram.com/',
+            'type' => 'X-SOCIAL-PROFILE',
+        ],
+        'Twitter' => [
+            'name_translation_key' => trans_key('Twitter'),
+            'url' => 'https://twitter.com/',
+            'type' => 'IMPP',
+        ],
+        'Hangouts' => [
+            'name_translation_key' => trans_key('Hangouts'),
+            'url' => 'https://hangouts.google.com/chat/person/',
+            'type' => 'IMPP',
+        ],
+        'Mastodon' => [
+            'name_translation_key' => trans_key('Mastodon'),
+            'url' => '',
+            'type' => 'X-SOCIAL-PROFILE',
+        ],
+        'Bluesky' => [
+            'name_translation_key' => trans_key('Bluesky'),
+            'url' => 'https://bsky.app/profile/',
+            'type' => 'X-SOCIAL-PROFILE',
+        ],
+        'Threads' => [
+            'name_translation_key' => trans_key('Threads'),
+            'url' => 'https://www.threads.net/@',
+            'type' => 'X-SOCIAL-PROFILE',
+        ],
+        'GitHub' => [
+            'name_translation_key' => trans_key('GitHub'),
+            'url' => 'https://github.com/',
+            'type' => 'X-SOCIAL-PROFILE',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Contact Information Groups
+    |--------------------------------------------------------------------------
+    |
+    | This array defines the groups of contact information types. Each group
+    | has a name translation key that is used for display purposes.
+    |
+     */
+
+    'contact_information_groups' => [
+        'email' => [
+            'name_translation_key' => trans_key('Email address'),
+        ],
+        'phone' => [
+            'name_translation_key' => trans_key('Phone number'),
+        ],
+        'IMPP' => [
+            'name_translation_key' => trans_key('Instant messaging'),
+        ],
+        'X-SOCIAL-PROFILE' => [
+            'name_translation_key' => trans_key('Social profile'),
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Contact Information Kinds
+    |--------------------------------------------------------------------------
+    |
+    | This array defines the base kinds of contact information. This is used
+    | for email and phone numbers. You can add more kinds as needed.
+    |
+     */
+
+    'contact_information_kinds' => [
+        'email' => [
+            [
+                'id' => 'work',
+                'name_translation_key' => trans_key('🏢 Work'),
+            ],
+            [
+                'id' => 'home',
+                'name_translation_key' => trans_key('🏡 Home'),
+            ],
+            [
+                'id' => 'personal',
+                'name_translation_key' => trans_key('🧑🏼 Personal'),
+            ],
+            [
+                'id' => 'other',
+                'name_translation_key' => trans_key('❔ Other'),
+            ],
+        ],
+        'phone' => [
+            [
+                'id' => 'work',
+                'name_translation_key' => trans_key('🏢 Work'),
+            ],
+            [
+                'id' => 'home',
+                'name_translation_key' => trans_key('🏡 Home'),
+            ],
+            [
+                'id' => 'cell',
+                'name_translation_key' => trans_key('📱 Mobile'),
+            ],
+            [
+                'id' => 'fax',
+                'name_translation_key' => trans_key('📠 Fax'),
+            ],
+            [
+                'id' => 'pager',
+                'name_translation_key' => trans_key('📟 Pager'),
+            ],
+            [
+                'id' => 'other',
+                'name_translation_key' => trans_key('❔ Other'),
+            ],
+        ],
+    ],
 ];

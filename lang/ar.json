@@ -193,7 +193,7 @@
   "Are you sure? This will delete the document permanently.": "هل أنت متأكد؟ سيؤدي هذا إلى حذف المستند نهائيًا.",
   "Are you sure? This will delete the goal and all the streaks permanently.": "هل أنت متأكد؟ سيؤدي هذا إلى حذف الهدف وجميع الخطوط بشكل دائم.",
   "Are you sure? This will remove the address types from all contacts, but won’t delete the contacts themselves.": "هل أنت متأكد؟ سيؤدي هذا إلى إزالة أنواع العناوين من جميع جهات الاتصال، لكنه لن يحذف جهات الاتصال نفسها.",
-  "Are you sure? This will remove the contact information types from all contacts, but won’t delete the contacts themselves.": "هل أنت متأكد؟ سيؤدي هذا إلى إزالة أنواع معلومات الاتصال من كافة جهات الاتصال، لكنه لن يحذف جهات الاتصال نفسها.",
+  "Are you sure? This will remove the contact information type from all contacts, but won’t delete the contacts themselves.": "هل أنت متأكد؟ سيؤدي ذلك إلى إزالة نوع معلومات الاتصال من جميع جهات الاتصال ، ولكنه لن يحذف جهات الاتصال نفسها.",
   "Are you sure? This will remove the genders from all contacts, but won’t delete the contacts themselves.": "هل أنت متأكد؟ سيؤدي هذا إلى إزالة الأجناس من جميع جهات الاتصال، لكنه لن يحذف جهات الاتصال نفسها.",
   "Are you sure? This will remove the template from all contacts, but won’t delete the contacts themselves.": "هل أنت متأكد؟ سيؤدي هذا إلى إزالة القالب من كافة جهات الاتصال، لكنه لن يحذف جهات الاتصال نفسها.",
   "Are you sure you want to delete this team? Once a team is deleted, all of its resources and data will be permanently deleted.": "هل أنت متأكد أنك تريد حذف هذا الفريق؟ بمجرد حذف الفريق ، سيتم حذف جميع مصادره وبياناته نهائيًا.",
@@ -234,6 +234,7 @@
   "Bird": "طائر",
   "Birthdate": "تاريخ الميلاد",
   "Birthday": "عيد ميلاد",
+  "Bluesky": "بلوزكي",
   "Body": "جسم",
   "boss": "رئيس",
   "Bought": "مُشترى",
@@ -367,8 +368,10 @@
   "Current way of displaying numbers:": "الطريقة الحالية لعرض الأرقام:",
   "Customize how contacts should be displayed": "تخصيص كيفية عرض جهات الاتصال",
   "Custom name order": "ترتيب الاسم المخصص",
+  "Custom…": "مخصص…",
   "Daily affirmation": "التأكيد اليومي",
   "Dashboard": "لوحة التحكم",
+  "Data": "بيانات",
   "date": "تاريخ",
   "Date of the event": "تاريخ الحدث",
   "Date of the event:": "تاريخ الحدث:",
@@ -383,6 +386,8 @@
   "Delete": "حذف",
   "Delete :name": "حذف :name",
   "Delete Account": "حذف الحساب",
+  "Delete a contact information": "حذف معلومات الاتصال",
+  "Delete a contact information type": "حذف نوع معلومات الاتصال",
   "Delete a new key": "حذف مفتاح جديد",
   "Delete API Token": "حذف رمز API",
   "Delete contact": "حذف اتصال",
@@ -480,6 +485,7 @@
   "Family": "عائلة",
   "Family summary": "ملخص العائلة",
   "Favorites": "المفضلة",
+  "Fax": "الفاكس",
   "Female": "أنثى",
   "File": "ملف",
   "Files": "ملفات",
@@ -514,6 +520,7 @@
   "Gift occasions let you categorize all your gifts.": "تتيح لك مناسبات الهدايا تصنيف جميع هداياك.",
   "Gift states": "دول الهدية",
   "Gift states let you define the various states for your gifts.": "تتيح لك حالات الهدايا تحديد الحالات المختلفة لهداياك.",
+  "GitHub": "جيثب",
   "Give this email address a name": "قم بتسمية عنوان البريد الإلكتروني هذا",
   "Goals": "الأهداف",
   "Go back": "عُد",
@@ -537,6 +544,7 @@
   "Group types let you group people together.": "تتيح لك أنواع المجموعات تجميع الأشخاص معًا.",
   "Had a promotion": "كان ترقية",
   "Hamster": "الهامستر",
+  "Hangouts": "Hangouts",
   "Have a great day,": "أتمنى لك يوماً عظيماً،",
   "he/him": "هو / له",
   "Hello!": "أهلاً بك!",
@@ -548,6 +556,7 @@
   "History of the notification sent": "تاريخ الإخطار المرسل",
   "Hobbies": "هوايات",
   "Home": "الرئيسية",
+  "Home House": "منزل المنزل",
   "Horse": "حصان",
   "How are you?": "كيف حالك؟",
   "How could I have done this day better?": "كيف كان بإمكاني أن أفعل هذا اليوم بشكل أفضل؟",
@@ -593,6 +602,8 @@
   "Information from Wikipedia": "المعلومات من ويكيبيديا",
   "in love with": "في حب",
   "Inspirational post": "وظيفة ملهمة",
+  "Instagram": "Instagram",
+  "Instant messaging": "المراسلة الفورية",
   "Insufficient Storage": "مساحة تخزين غير كافية",
   "Internal Server Error": "خطأ داخلي في الخادم",
   "Introduction": "مقدمة",
@@ -618,6 +629,7 @@
   "Just to say hello": "فقط أن أقول مرحبا",
   "Key name": "اسم المفتاح",
   "kilometers (km)": "كيلومتر (كم)",
+  "Kind": "عطوف",
   "km": "كم",
   "Label:": "ملصق:",
   "Labels": "تسميات",
@@ -706,6 +718,7 @@
   "miles": "اميال",
   "miles (mi)": "ميل (ميل)",
   "Misdirected Request": "طلب توجيه خاطئ",
+  "Mobile": "متحرك",
   "Modules in this page": "الوحدات في هذه الصفحة",
   "Monday": "الاثنين",
   "Monica. All rights reserved. 2017 — :date.": "Monica. كل الحقوق محفوظة. 2017 — :date.",
@@ -751,6 +764,7 @@
   "No labels yet.": "لا توجد تصنيفات حتى الآن.",
   "No life event types yet.": "لا توجد أنواع أحداث الحياة حتى الآن.",
   "Non-Authoritative Information": "معلومات غير موثوق بها",
+  "None": "لا أحد",
   "No notes found.": "لم يتم العثور على أي ملاحظات.",
   "No results found": "لم يتم العثور على نتائج",
   "No role": "لا دور",
@@ -798,6 +812,7 @@
   "Other": "آخر",
   "Out of respect and appreciation": "من باب الإحترام والتقدير",
   "Page Expired": "الصفحة منتهية الصلاحية",
+  "Pager": "بيجر",
   "Pages": "الصفحات",
   "Pagination Navigation": "التنقل بين الصفحات",
   "Parent": "الأبوين",
@@ -823,6 +838,7 @@
   "Pet category": "فئة الحيوانات الأليفة",
   "Pets": "حيوانات أليفة",
   "Phone": "هاتف",
+  "Phone number": "رقم التليفون",
   "Photo": "صورة",
   "Photos": "الصور",
   "Played basketball": "لعبت كرة السلة",
@@ -1006,6 +1022,7 @@
   "Slices of life": "شرائح من الحياة",
   "Small animal": "الحيوانات الصغيرة",
   "Social": "اجتماعي",
+  "Social profile": "الملف الاجتماعي",
   "Solve": "حل",
   "Some dates have a special type that we will use in the software to calculate an age.": "بعض التواريخ لها نوع خاص سنستخدمه في البرنامج لحساب العمر.",
   "So… it works 😼": "إذن... إنه يعمل 😼",
@@ -1047,6 +1064,7 @@
   "Terms of Service": "شروط الاستخدام",
   "Test email for Monica": "اختبار البريد الإلكتروني لMonica",
   "Test email sent!": "تم إرسال البريد الإلكتروني التجريبي!",
+  "Text": "نص",
   "Thanks,": "شكرًا،",
   "Thanks for giving Monica a try.": "شكرا لإعطاء Monica المحاولة.",
   "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn’t receive the email, we will gladly send you another.": "شكرا لتسجيلك! قبل البدء، هل يمكنك التحقق من عنوان بريدك الإلكتروني عن طريق النقر على الرابط الذي أرسلناه إليك للتو عبر البريد الإلكتروني؟ إذا لم تتلق رسالة البريد الإلكتروني، فسنرسل لك بكل سرور رسالة أخرى.",
@@ -1065,7 +1083,7 @@
   "The address type has been updated": "تم تحديث نوع العنوان",
   "The call has been created": "تم إنشاء المكالمة",
   "The call has been deleted": "تم حذف المكالمة",
-  "The call has been edited": "تم تحرير المكالمة",
+  "The call has been updated": "تم تحديث المكالمة",
   "The call reason has been created": "تم إنشاء سبب الاتصال",
   "The call reason has been deleted": "تم حذف سبب المكالمة",
   "The call reason has been updated": "تم تحديث سبب الاتصال",
@@ -1077,11 +1095,11 @@
   "The contact does not belong to any group yet.": "جهة الاتصال لا تنتمي إلى أي مجموعة حتى الآن.",
   "The contact has been added": "تمت إضافة جهة الاتصال",
   "The contact has been deleted": "تم حذف جهة الاتصال",
-  "The contact has been edited": "تم تحرير جهة الاتصال",
   "The contact has been removed from the group": "تمت إزالة جهة الاتصال من المجموعة",
+  "The contact has been updated": "تم تحديث جهة الاتصال",
   "The contact information has been created": "تم إنشاء معلومات الاتصال",
   "The contact information has been deleted": "تم حذف معلومات الاتصال",
-  "The contact information has been edited": "تم تعديل معلومات الاتصال",
+  "The contact information has been updated": "تم تحديث معلومات الاتصال",
   "The contact information type has been created": "تم إنشاء نوع معلومات جهة الاتصال",
   "The contact information type has been deleted": "تم حذف نوع معلومات جهة الاتصال",
   "The contact information type has been updated": "تم تحديث نوع معلومات الاتصال",
@@ -1108,7 +1126,7 @@
   "The given data was invalid.": "البيانات المدخلة غير صالحة.",
   "The goal has been created": "تم إنشاء الهدف",
   "The goal has been deleted": "تم حذف الهدف",
-  "The goal has been edited": "تم تعديل الهدف",
+  "The goal has been updated": "تم تحديث الهدف",
   "The group has been added": "تمت إضافة المجموعة",
   "The group has been deleted": "تم حذف المجموعة",
   "The group has been updated": "تم تحديث المجموعة",
@@ -1128,15 +1146,15 @@
   "The life metric has been updated": "تم تحديث مقياس الحياة",
   "The loan has been created": "تم إنشاء القرض",
   "The loan has been deleted": "تم حذف القرض",
-  "The loan has been edited": "تم تعديل القرض",
   "The loan has been settled": "تمت تسوية القرض",
+  "The loan has been updated": "تم تحديث القرض",
   "The loan is an object": "القرض كائن",
   "The loan is monetary": "القرض نقدي",
   "The module has been added": "تمت إضافة الوحدة",
   "The module has been removed": "تمت إزالة الوحدة",
   "The note has been created": "تم إنشاء المذكرة",
   "The note has been deleted": "تم حذف المذكرة",
-  "The note has been edited": "تم تعديل المذكرة",
+  "The note has been updated": "تم تحديث الملاحظة",
   "The notification has been sent": "تم إرسال الإخطار",
   "The operation either timed out or was not allowed.": "انتهت مهلة العملية أو لم يتم السماح بها.",
   "The page has been added": "تمت إضافة الصفحة",
@@ -1149,7 +1167,7 @@
   "The pet category has been updated": "تم تحديث فئة الحيوانات الأليفة",
   "The pet has been added": "تمت إضافة الحيوان الأليف",
   "The pet has been deleted": "تم حذف الحيوان الأليف",
-  "The pet has been edited": "تم تحرير الحيوان الأليف",
+  "The pet has been updated": "تم تحديث الحيوانات الأليفة",
   "The photo has been added": "تمت إضافة الصورة",
   "The photo has been deleted": "تم حذف الصورة",
   "The position has been saved": "تم حفظ الموقف",
@@ -1165,7 +1183,8 @@
   "The provided two factor recovery code was invalid.": "كود استرداد المصادقة الثنائية الذي قمت بإدخاله غير صالح.",
   "There are no active addresses yet.": "لا توجد عناوين نشطة حتى الآن.",
   "There are no calls logged yet.": "لا توجد مكالمات مسجلة حتى الآن.",
-  "There are no contact information yet.": "لا توجد معلومات الاتصال بعد.",
+  "There are no contact informations yet.": "لا توجد معلومات الاتصال بعد.",
+  "There are no contact information types yet.": "لا توجد أنواع معلومات الاتصال حتى الآن.",
   "There are no documents yet.": "لا توجد وثائق حتى الآن.",
   "There are no events on that day, future or past.": "لا توجد أحداث في ذلك اليوم، المستقبل أو الماضي.",
   "There are no files yet.": "لا توجد ملفات حتى الآن.",
@@ -1194,7 +1213,7 @@
   "The religion has been updated": "تم تحديث الدين",
   "The reminder has been created": "تم إنشاء التذكير",
   "The reminder has been deleted": "تم حذف التذكير",
-  "The reminder has been edited": "تم تعديل التذكير",
+  "The reminder has been updated": "تم تحديث التذكير",
   "The response is not a streamed response.": "الاستجابة ليست استجابة متدفقة.",
   "The response is not a view.": "الاستجابة ليست صفحة عرض.",
   "The role has been created": "تم إنشاء الدور",
@@ -1210,7 +1229,7 @@
   "The tag has been updated": "تم تحديث العلامة",
   "The task has been created": "تم إنشاء المهمة",
   "The task has been deleted": "تم حذف المهمة",
-  "The task has been edited": "تم تحرير المهمة",
+  "The task has been updated": "تم تحديث المهمة",
   "The team's name and owner information.": "اسم الفريق ومعلومات المالك.",
   "The Telegram channel has been deleted": "تم حذف قناة التلجرام",
   "The template has been created": "تم إنشاء القالب",
@@ -1250,6 +1269,7 @@
   "This user has already been invited to the team.": "تمت دعوة هذا المستخدم بالفعل إلى الفريق.",
   "This user will be part of your account, but won’t get access to all the vaults in this account unless you give specific access to them. This person will be able to create vaults as well.": "سيكون هذا المستخدم جزءًا من حسابك، لكنه لن يتمكن من الوصول إلى جميع الخزائن الموجودة في هذا الحساب إلا إذا منحت حق الوصول المحدد إليها. سيكون هذا الشخص قادرًا على إنشاء خزائن أيضًا.",
   "This will immediately:": "وهذا على الفور:",
+  "Threads": "المواضيع",
   "Three things that happened today": "ثلاثة أشياء حدثت اليوم",
   "Thursday": "يوم الخميس",
   "Timezone": "وحدة زمنية",
@@ -1274,6 +1294,7 @@
   "Translate It": "ترجمة",
   "Transportation": "مواصلات",
   "Tuesday": "يوم الثلاثاء",
+  "Twitter": "تغريد",
   "Two-factor Confirmation": "التأكيد الثنائي",
   "Two Factor Authentication": "المصادقة الثنائية",
   "Two factor authentication is now enabled. Scan the following QR code using your phone's authenticator application or enter the setup key.": "لقد تم تمكين المصادقة الثنائية لحسابك. قم بمسح رمز الاستجابة السريعة التالي باستخدام تطبيق المصادقة بهاتفك أو قم بإدخال مفتاح الإعداد.",
@@ -1456,6 +1477,9 @@
   "🏠 Secondary residence": "🏠 الإقامة الثانوية",
   "🏡 Home": "🏡 المنزل",
   "🏢 Work": "🏢 العمل",
+  "📟 Pager": "pager",
+  "📠 Fax": "📠 الفاكس",
+  "📱 Mobile": "📱 Mobile",
   "🔔 Reminder: :label for :contactName": "🔔 تذكير: :label لـ :contactName",
   "😀 Good": "😀 جيد",
   "😁 Positive": "😁 إيجابي",
@@ -1464,5 +1488,6 @@
   "😡 Negative": "😡 سلبي",
   "😩 Awful": "😩 فظيعة",
   "😶‍🌫️ Neutral": "😶‍🌫️ محايد",
-  "🥳 Awesome": "🥳رائع"
+  "🥳 Awesome": "🥳رائع",
+  "🧑🏼 Personal": "🧑🏼 شخصية"
 }

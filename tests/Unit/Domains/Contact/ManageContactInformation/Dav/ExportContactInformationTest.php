@@ -48,7 +48,7 @@ class ExportContactInformationTest extends TestCase
             $vCard->children()
         );
 
-        $this->assertStringContainsString("EMAIL:{$info->data}", $vCard->serialize());
+        $this->assertStringContainsString("EMAIL;PREF=1:{$info->data}", $vCard->serialize());
     }
 
     #[Group('dav')]
@@ -78,6 +78,96 @@ class ExportContactInformationTest extends TestCase
             $vCard->children()
         );
 
-        $this->assertStringContainsString("TEL:{$info->data}", $vCard->serialize());
+        $this->assertStringContainsString("TEL;PREF=1:{$info->data}", $vCard->serialize());
+    }
+
+    #[Group('dav')]
+    #[Test]
+    public function it_adds_social_profile_to_vcard()
+    {
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user);
+        $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
+        $type = ContactInformationType::factory()->create([
+            'account_id' => $vault->account_id,
+            'name' => null,
+            'name_translation_key' => 'GitHub',
+            'type' => 'x-social-profile',
+        ]);
+        $info = ContactInformation::factory()->create([
+            'contact_id' => $contact->id,
+            'type_id' => $type->id,
+            'data' => 'github',
+        ]);
+
+        $vCard = new VCard;
+        (new ExportContactInformation)->export($contact, $vCard);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+
+        $this->assertStringContainsString("X-SOCIAL-PROFILE;TYPE=GitHub;X-USER={$info->data}:", $vCard->serialize());
+    }
+
+    #[Group('dav')]
+    #[Test]
+    public function it_adds_social_profile_to_vcard_name()
+    {
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user);
+        $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
+        $type = ContactInformationType::factory()->create([
+            'account_id' => $vault->account_id,
+            'name' => 'GitHub',
+            'name_translation_key' => 'Facebook',
+            'type' => 'x-social-profile',
+        ]);
+        $info = ContactInformation::factory()->create([
+            'contact_id' => $contact->id,
+            'type_id' => $type->id,
+            'data' => 'github',
+        ]);
+
+        $vCard = new VCard;
+        (new ExportContactInformation)->export($contact, $vCard);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+
+        $this->assertStringContainsString("X-SOCIAL-PROFILE;TYPE=GitHub;X-USER={$info->data}:", $vCard->serialize());
+    }
+
+    #[Group('dav')]
+    #[Test]
+    public function it_adds_impp_to_vcard()
+    {
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user);
+        $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
+        $type = ContactInformationType::factory()->create([
+            'account_id' => $vault->account_id,
+            'name' => null,
+            'name_translation_key' => 'Telegram',
+            'type' => 'impp',
+        ]);
+        $info = ContactInformation::factory()->create([
+            'contact_id' => $contact->id,
+            'type_id' => $type->id,
+            'data' => 'yo',
+        ]);
+
+        $vCard = new VCard;
+        (new ExportContactInformation)->export($contact, $vCard);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+
+        $this->assertStringContainsString("IMPP;X-SERVICE-TYPE=Telegram:{$info->data}", $vCard->serialize());
     }
 }

@@ -54,13 +54,13 @@ const created = (task) => {
 };
 
 const updated = (task) => {
-  flash(trans('The task has been edited'), 'success');
+  flash(trans('The task has been updated'), 'success');
   localTasks.value[localTasks.value.findIndex((x) => x.id === task.id)] = task;
   editedTaskId.value = 0;
 };
 
 const updatedCompleted = (task) => {
-  flash(trans('The task has been edited'), 'success');
+  flash(trans('The task has been updated'), 'success');
   localCompletedTasks.value[localCompletedTasks.value.findIndex((x) => x.id === task.id)] = task;
   editedCompletedTaskId.value = 0;
 };
