@@ -204,7 +204,7 @@ class ImportContactInformation extends Importer implements ImportVCardResource
         $kind = self::getParameter($data);
         $value = self::getValue($data);
 
-        if ($value !== $info['value'] || $kind !== $info['parameters']['TYPE']) {
+        if ($value !== $info['value'] || ! Str::is($kind, $info['parameters']['TYPE'], true)) {
             (new UpdateContactInformation)->execute([
                 'account_id' => $this->account()->id,
                 'vault_id' => $this->vault()->id,
