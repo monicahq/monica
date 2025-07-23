@@ -26,14 +26,17 @@ class ExportContactInformation extends Exporter implements ExportVCardResource
      */
     public function export(mixed $resource, VCard $vcard): void
     {
+        /** @var Contact $contact */
+        $contact = $resource;
+
         $vcard->remove('TEL');
         $vcard->remove('EMAIL');
         $vcard->remove('X-SOCIAL-PROFILE');
         $vcard->remove('IMPP');
         $vcard->remove('URL');
 
-        $resource->contactInformations
-            ->each(fn ($contactInformation) => $this->addContactInformationToVCard($vcard, $contactInformation));
+        $contact->contactInformations
+            ->each(fn (ContactInformation $contactInformation) => $this->addContactInformationToVCard($vcard, $contactInformation));
     }
 
     private function addContactInformationToVCard(VCard $vcard, ContactInformation $contactInformation)

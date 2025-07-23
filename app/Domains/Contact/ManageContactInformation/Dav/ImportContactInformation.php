@@ -58,14 +58,14 @@ class ImportContactInformation extends Importer implements ImportVCardResource
     private static function getContactInformations(Contact $contact): Collection
     {
         return $contact->contactInformations->mapToGroups(function (ContactInformation $info): array {
-            switch ($info->contactInformationType->type) {
+            switch ($type = $info->contactInformationType->type) {
                 case 'email':
                     return ['EMAIL' => $info];
                 case 'phone':
                     return ['TEL' => $info];
                 case 'IMPP':
                 case 'X-SOCIAL-PROFILE':
-                    return [$info->contactInformationType->type => $info];
+                    return [$type => $info];
                 default:
                     // For other types, we use a generic key
                     return ['OTHER' => $info];
@@ -76,15 +76,14 @@ class ImportContactInformation extends Importer implements ImportVCardResource
     private function importContacts(VCard $vcard, Contact $contact, string $key, Collection $contactInformations): void
     {
         $cardInfos = self::getCardInformations($vcard, $key);
-        $info = $contactInformations->get($key, collect());
-
-        $current = $info->map(fn (ContactInformation $contactInformation) => [
-            'id' => $contactInformation->id,
-            'value' => $contactInformation->data,
-            'parameters' => [
-                'TYPE' => $contactInformation->kind,
-            ],
-        ]);
+        $current = $contactInformations->get($key, collect())
+            ->map(fn (ContactInformation $contactInformation) => [
+                'id' => $contactInformation->id,
+                'value' => $contactInformation->data,
+                'parameters' => [
+                    'TYPE' => $contactInformation->kind,
+                ],
+            ]);
 
         for ($i = 0; $i < $cardInfos->count() || $i < $current->count(); $i++) {
             try {
@@ -205,7 +204,7 @@ class ImportContactInformation extends Importer implements ImportVCardResource
         $kind = self::getParameter($data);
         $value = self::getValue($data);
 
-        if ($kind !== $info['parameters']['TYPE'] || $value !== $info['value']) {
+        if ($value !== $info['value'] || $kind !== $info['parameters']['TYPE']) {
             (new UpdateContactInformation)->execute([
                 'account_id' => $this->account()->id,
                 'vault_id' => $this->vault()->id,
