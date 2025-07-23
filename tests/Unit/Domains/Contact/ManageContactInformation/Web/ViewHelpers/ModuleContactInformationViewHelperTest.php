@@ -79,7 +79,7 @@ class ModuleContactInformationViewHelperTest extends TestCase
             'type_id' => $type->id,
         ]);
 
-        $array = ModuleContactInformationViewHelper::dto($contact, $info);
+        $array = ModuleContactInformationViewHelper::dto($info);
 
         $this->assertEquals(
             [

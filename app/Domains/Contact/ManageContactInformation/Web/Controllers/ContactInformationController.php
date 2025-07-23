@@ -7,7 +7,6 @@ use App\Domains\Contact\ManageContactInformation\Services\DestroyContactInformat
 use App\Domains\Contact\ManageContactInformation\Services\UpdateContactInformation;
 use App\Domains\Contact\ManageContactInformation\Web\ViewHelpers\ModuleContactInformationViewHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,10 +24,8 @@ class ContactInformationController extends Controller
             'data' => $request->input('data'),
         ]);
 
-        $contact = Contact::find($contactId);
-
         return response()->json([
-            'data' => ModuleContactInformationViewHelper::dto($contact, $info),
+            'data' => ModuleContactInformationViewHelper::dto($info),
         ], 201);
     }
 
@@ -46,10 +43,9 @@ class ContactInformationController extends Controller
         ];
 
         $info = (new UpdateContactInformation)->execute($data);
-        $contact = Contact::find($contactId);
 
         return response()->json([
-            'data' => ModuleContactInformationViewHelper::dto($contact, $info),
+            'data' => ModuleContactInformationViewHelper::dto($info),
         ], 200);
     }
 

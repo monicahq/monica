@@ -7,6 +7,7 @@ use App\Models\ContactInformation;
 use App\Models\ContactInformationType;
 use App\Models\User;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class ModuleContactInformationViewHelper
 {
@@ -17,7 +18,7 @@ class ModuleContactInformationViewHelper
             ->get()
             ->groupBy(fn (ContactInformation $info) => $info->contactInformationType->type)
             ->map(fn (Collection $collection) => $collection
-                ->map(fn (ContactInformation $info) => self::dto($contact, $info))
+                ->map(fn (ContactInformation $info) => self::dto($info))
             );
         $groups = self::infoGroups();
 
@@ -73,13 +74,13 @@ class ModuleContactInformationViewHelper
             ->map(fn (array $group) => __($group['name_translation_key']));
     }
 
-    public static function dto(Contact $contact, ContactInformation $info): array
+    public static function dto(ContactInformation $info): array
     {
         $infoKinds = self::infoKinds();
 
         $contactInformationKind = [];
         if ($info->kind !== null) {
-            if ($infoKinds->has($info->contactInformationType->type) && ($kind = $infoKinds[$info->contactInformationType->type]->firstWhere('id', $info->kind)) !== null) {
+            if ($infoKinds->has($info->contactInformationType->type) && ($kind = $infoKinds[$info->contactInformationType->type]->firstWhere('id', Str::lower($info->kind))) !== null) {
                 $contactInformationKind['id'] = $kind['id'];
                 $contactInformationKind['name'] = $kind['name'] ?? '';
             } else {
@@ -102,13 +103,13 @@ class ModuleContactInformationViewHelper
             'contact_information_kind' => $info->kind !== null ? $contactInformationKind : null,
             'url' => [
                 'update' => route('contact.contact_information.update', [
-                    'vault' => $contact->vault_id,
-                    'contact' => $contact->id,
+                    'vault' => $info->contact->vault_id,
+                    'contact' => $info->contact_id,
                     'info' => $info->id,
                 ]),
                 'destroy' => route('contact.contact_information.destroy', [
-                    'vault' => $contact->vault_id,
-                    'contact' => $contact->id,
+                    'vault' => $info->contact->vault_id,
+                    'contact' => $info->contact_id,
                     'info' => $info->id,
                 ]),
             ],
