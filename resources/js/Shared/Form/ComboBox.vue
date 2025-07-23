@@ -1,9 +1,9 @@
 <script setup>
 import { computed, nextTick, useTemplateRef } from 'vue';
-import TextInput from './TextInput.vue';
-import Dropdown from './Dropdown.vue';
 import { concat, uniqueId } from 'lodash';
 import { trans } from 'laravel-vue-i18n';
+import TextInput from './TextInput.vue';
+import Dropdown from './Dropdown.vue';
 
 const props = defineProps({
   id: {

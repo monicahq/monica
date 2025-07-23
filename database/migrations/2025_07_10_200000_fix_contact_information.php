@@ -1,5 +1,7 @@
 <?php
 
+use App\Domains\Settings\ManageContactInformationTypes\Services\CreateContactInformationType;
+use App\Models\Account;
 use App\Models\ContactInformationType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         $map = collect(config('app.social_protocols'));
+        $list = $map->pluck('name_translation_key');
         $map['Linkedin'] = $map['LinkedIn']; // Fix the typo in LinkedIn
 
         DB::table('contact_information_types')
@@ -26,5 +29,24 @@ return new class extends Migration
                     ]);
                 }
             });
+
+        Account::chunkById(100, function ($accounts) use ($map, $list) {
+            foreach ($accounts as $account) {
+                // Ensure that the default contact information types are created
+                $types = $account->contactInformationTypes
+                    ->where(fn ($type) => $type->type !== 'email' && $type->type !== 'phone')
+                    ->pluck('name_translation_key');
+                $list->diff($types)
+                    ->each(function ($name) use ($account, $map) {
+                        (new CreateContactInformationType)->execute([
+                            'account_id' => $account->id,
+                            'author_id' => $account->users->first()->id,
+                            'name' => null,
+                            'name_translation_key' => $map[$name]['name_translation_key'],
+                            'type' => $map[$name]['type'],
+                        ]);
+                    });
+            }
+        });
     }
 };
