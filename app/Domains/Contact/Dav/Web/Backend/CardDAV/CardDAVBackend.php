@@ -91,9 +91,11 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
             'id' => $vault->id,
             'uri' => $vault->name,
             'principaluri' => PrincipalBackend::getPrincipalUser($this->user),
-            '{DAV:}displayname' => trans('Contacts'),
-            '{'.CardDav::NS_CARDDAV.'}addressbook-description' => $vault->name,
+            '{DAV:}displayname' => $vault->name,
         ];
+        if ($vault->description !== null && $vault->description !== '') {
+            $des['{'.CardDav::NS_CARDDAV.'}addressbook-description'] = $vault->description;
+        }
         if ($token) {
             $des += [
                 '{DAV:}sync-token' => $token->id,

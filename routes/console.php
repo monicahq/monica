@@ -19,6 +19,7 @@ use App\Logging\CleanLogs;
 
 Schedule::command('model:prune', 'daily');
 Schedule::command('queue:prune-batches', 'daily');
+Schedule::command('queue:prune-failed', 'daily');
 if (config('telescope.enabled')) {
     Schedule::command('telescope:prune', 'daily');
 }

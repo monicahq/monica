@@ -98,7 +98,7 @@ class CardDAVTest extends TestCase
               "<d:href>/dav/addressbooks/{$user->email}/$vaultname/</d:href>".
               '<d:propstat>'.
                 '<d:prop>'.
-                  '<d:displayname>Contacts</d:displayname>'.
+                  "<d:displayname>$vault->name</d:displayname>".
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
               '</d:propstat>'.

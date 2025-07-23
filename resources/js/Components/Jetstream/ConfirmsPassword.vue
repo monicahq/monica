@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, nextTick, computed } from 'vue';
+import { ref, reactive, nextTick, computed, useTemplateRef } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import Button from '@/Components/Button.vue';
@@ -35,7 +35,7 @@ const form = reactive({
 });
 
 const passwordInput = ref(null);
-const webauthn = ref('webauthn');
+const webauthn = useTemplateRef('webauthn');
 const webauthnEnabled = computed(() => usePage().props.hasKey === true);
 
 const startConfirmingPassword = () => {

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, nextTick, computed, onMounted } from 'vue';
+import { ref, watch, nextTick, computed, onMounted, useTemplateRef } from 'vue';
 import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
 import JetInputError from '@/Components/InputError.vue';
@@ -17,7 +17,7 @@ const emit = defineEmits(['start', 'stop', 'register', 'update:name']);
 
 const registering = ref(false);
 const error = ref(props.errorMessage);
-const nameInput = ref(null);
+const nameInput = useTemplateRef('nameInput');
 
 onMounted(() => {
   props.form.reset();

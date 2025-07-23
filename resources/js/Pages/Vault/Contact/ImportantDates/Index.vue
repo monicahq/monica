@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, useTemplateRef } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { trans } from 'laravel-vue-i18n';
 import { flash } from '@/methods.js';
@@ -16,8 +16,8 @@ const props = defineProps({
 const editedDateId = ref(0);
 const createDateModalShown = ref(false);
 const localDates = ref(props.data.dates);
-const createForm = ref(null);
-const editForm = ref([]);
+const createForm = useTemplateRef('createForm');
+const editForm = useTemplateRef('editForm');
 const errors = ref(null);
 
 const showCreateModal = () => {

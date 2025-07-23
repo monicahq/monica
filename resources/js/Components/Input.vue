@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, useTemplateRef } from 'vue';
 
 defineProps({
   modelValue: String,
@@ -7,7 +7,7 @@ defineProps({
 
 defineEmits(['update:modelValue']);
 
-const input = ref(null);
+const input = useTemplateRef('input');
 const focus = () => nextTick().then(() => input.value.focus());
 
 onMounted(() => {

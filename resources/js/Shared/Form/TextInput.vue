@@ -1,6 +1,6 @@
 <script setup>
 import { uniqueId } from 'lodash';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, useTemplateRef } from 'vue';
 
 const props = defineProps({
   id: {
@@ -41,7 +41,7 @@ const props = defineProps({
 const emit = defineEmits(['esc-key-pressed', 'update:modelValue']);
 
 const displayMaxLength = ref(false);
-const input = ref(null);
+const input = useTemplateRef('input');
 
 const realId = computed(() => {
   return props.id ?? uniqueId('text-input-');

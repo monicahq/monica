@@ -48,13 +48,6 @@ class AddressBookSubscription extends Model implements Loggable
     ];
 
     /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array<string>|bool
-     */
-    protected $guarded = ['id'];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string,string>
