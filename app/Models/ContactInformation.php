@@ -77,13 +77,13 @@ class ContactInformation extends Model
     protected function dataWithProtocol(): Attribute
     {
         return Attribute::get(function () {
-            if ($this->contactInformationType->protocol) {
+            if ($this->contactInformationType->protocol !== null) {
                 return $this->contactInformationType->protocol.$this->data;
             }
 
             $protocols = collect(config('app.social_protocols'));
 
-            if (($protocol = $protocols->get($this->contactInformationType->name_translation_key)) !== null) {
+            if (($protocol = $protocols->firstWhere('name_translation_key', $this->contactInformationType->name_translation_key)) !== null) {
                 return $protocol['url'].$this->data;
             }
 
