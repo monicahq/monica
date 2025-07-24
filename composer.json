@@ -44,7 +44,7 @@
     "socialiteproviders/microsoft-azure": "^5.1",
     "stevebauman/location": "^7.0",
     "thecodingmachine/safe": "^3.0",
-    "tightenco/ziggy": "2.5.2",
+    "tightenco/ziggy": "2.5.3",
     "typesense/typesense-php": "^5.0",
     "uploadcare/uploadcare-php": "^4.1"
   },
