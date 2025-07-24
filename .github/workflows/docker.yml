@@ -31,7 +31,7 @@ jobs:
           - name: apache
             file: scripts/docker/Dockerfile
             tag: main
-            suffix:
+            suffix: ''
           - name: fpm
             file: scripts/docker/Dockerfile-fpm
             tag: main-fpm
