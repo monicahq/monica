@@ -100,7 +100,7 @@
         <!-- actions -->
         <ul class="text-sm">
           <li class="me-4 inline cursor-pointer">
-            <InertiaLink :href="group.url.show" class="text-blue-500 hover:underline">{{ $t('View') }}</InertiaLink>
+            <InertiaLink :href="group.url.show" class="text-blue-500 hover:underline">{{ $t('Show') }}</InertiaLink>
           </li>
           <li class="inline cursor-pointer text-red-500 hover:text-red-900" @click="destroy(group)">
             {{ $t('Leave') }}
