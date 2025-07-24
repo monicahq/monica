@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
@@ -159,5 +160,7 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(SocialiteWasCalled::class, LinkedInExtendSocialite::class);
         Event::listen(SocialiteWasCalled::class, KanidmExtendSocialite::class);
         Event::listen(SocialiteWasCalled::class, KeycloakExtendSocialite::class);
+
+        Vite::prefetch(concurrency: 3);
     }
 }
