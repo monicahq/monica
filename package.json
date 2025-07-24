@@ -15,9 +15,9 @@
   "devDependencies": {
     "@inertiajs/vue3": "^2.0.17",
     "@popperjs/core": "^2.11.8",
-    "@sentry/browser": "^9.40.0",
+    "@sentry/browser": "^9.41.0",
     "@sentry/vite-plugin": "^3.6.1",
-    "@sentry/vue": "^9.40.0",
+    "@sentry/vue": "^9.41.0",
     "@simplewebauthn/browser": "^13.1.2",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/vite": "^4.1.11",
