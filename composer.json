@@ -26,10 +26,10 @@
     "laravel/framework": "^12.0",
     "laravel/jetstream": "^5.0",
     "laravel/nightwatch": "^1.11",
+    "laravel/pulse": "^1.4",
     "laravel/sanctum": "^4.0",
     "laravel/scout": "^10.2",
     "laravel/socialite": "^5.5",
-    "laravel/telescope": "^5.0",
     "matriphe/iso-639": "^2.0",
     "meilisearch/meilisearch-php": "^1.12.0",
     "moneyphp/money": "^4.3",
@@ -82,6 +82,13 @@
   "autoload-dev": {
     "psr-4": {
       "Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "dont-discover": [
+        "laravel/telescope"
+      ]
     }
   },
   "scripts": {

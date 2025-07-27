@@ -23,6 +23,8 @@
     <env name="SESSION_DRIVER" value="array"/>
     <env name="IGNITION_ENABLE_RUNNABLE_SOLUTIONS" value="false"/>
     <env name="SCOUT_DRIVER" value="collection"/>
+    <env name="PULSE_ENABLED" value="false"/>
+    <env name="TELESCOPE_ENABLED" value="false"/>
   </php>
   <source>
     <include>

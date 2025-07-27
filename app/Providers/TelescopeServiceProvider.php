@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
@@ -62,6 +63,8 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      */
     protected function gate()
     {
-        Gate::define('viewTelescope', fn ($user) => $user->is_instance_administrator);
+        if (! $this->app->environment('local')) {
+            Gate::define('viewTelescope', fn (User $user) => $user->is_instance_administrator);
+        }
     }
 }
