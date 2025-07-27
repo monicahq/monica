@@ -59,6 +59,7 @@
     "laravel-lang/common": "^6.0",
     "laravel/pint": "^1.13",
     "laravel/sail": "^1.41",
+    "laravel/telescope": "^5.10",
     "mockery/mockery": "^1.6",
     "nunomaduro/collision": "^8.6",
     "phpstan/extension-installer": "^1.4",
