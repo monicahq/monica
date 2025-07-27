@@ -15,8 +15,8 @@ use function Safe\json_encode;
 /**
  * @codeCoverageIgnore
  */
-#[AsCommand(name: 'monica:localize')]
-class MonicaLocalize extends Command
+#[AsCommand(name: 'atlas:localize')]
+class AtlasLocalize extends Command
 {
     private GoogleTranslate $googleTranslate;
 
@@ -25,7 +25,7 @@ class MonicaLocalize extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:localize
+    protected $signature = 'atlas:localize
                             {--update : Update the current locales.}
                             {--remove-missing : Remove missing translations.}
                             {--restart : Restart translation of all messages.}';
@@ -35,7 +35,7 @@ class MonicaLocalize extends Command
      *
      * @var string
      */
-    protected $description = 'Generate locale files for Monica.';
+    protected $description = 'Generate locale files for Atlas.';
 
     /**
      * Execute the console command.

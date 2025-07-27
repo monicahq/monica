@@ -12,7 +12,7 @@ class AvatarHelper
      * Generate a new random avatar.
      *
      * The Multiavatar library takes a name to generate a unique avatar.
-     * However, contacts can be created in Monica without a name. When this case
+     * However, contacts can be created in Atlas without a name. When this case
      * happens, we'll generate a fake name for the contact, and generate an avatar
      * based on that name.
      */

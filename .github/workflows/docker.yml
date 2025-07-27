@@ -61,9 +61,9 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
           labels: |
-            org.opencontainers.image.description="This is MonicaHQ, your personal memory! MonicaHQ is like a CRM but for the friends, family, and acquaintances around you."
-            org.opencontainers.image.title="MonicaHQ, the Personal Relationship Manager"
-            org.opencontainers.image.vendor="Monica"
+            org.opencontainers.image.description="This is Atlas, your personal memory! Atlas is like a CRM but for the friends, family, and acquaintances around you."
+            org.opencontainers.image.title="Atlas, the Personal Relationship Manager"
+            org.opencontainers.image.vendor="Atlas"
           flavor: |
             latest=${{ matrix.flavor.tag == 'main' && 'auto' || 'false' }}
             suffix=${{ matrix.flavor.suffix }}
@@ -94,7 +94,7 @@ jobs:
           file: ${{ matrix.flavor.file }}
           context: .
           platforms: ${{ (github.event_name != 'pull_request') && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
-          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=This is MonicaHQ your personal memory! MonicaHQ is like a CRM but for the friends family and acquaintances around you.
+          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=This is Atlas your personal memory! Atlas is like a CRM but for the friends family and acquaintances around you.
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

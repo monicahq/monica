@@ -7,9 +7,9 @@ labels: enhancement
 <!--
 Thanks for filing an issue and for your interest in the project.
 
-Note: This is the **issue tracker of Monica**, please do NOT use this to get answers to your questions or get help for fixing your installation. This is a place to report bugs to developers, after your instance has been debugged.
+Note: This is the **issue tracker of Atlas**, please do NOT use this to get answers to your questions or get help for fixing your installation. This is a place to report bugs to developers, after your instance has been debugged.
 
-Please note Monica is a **free and open-source** project. We take our own time to help you, so please, be patient.
+Please note Atlas is a **free and open-source** project. We take our own time to help you, so please, be patient.
 
 -->
 
@@ -28,7 +28,7 @@ A clear and concise description of what the problem is. Ex.
 
 - I'm always frustrated when [...]
 - Current feature X is awesome but doesn't fill the need of [...]
-- Monica doesn't have feature X which is essential as [...]
+- Atlas doesn't have feature X which is essential as [...]
 
 **Describe the solution you'd like**
 A clear and concise description of what you want to happen.

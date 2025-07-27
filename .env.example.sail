@@ -6,7 +6,7 @@
 #  docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/html laravelsail/php83-composer:latest composer install --ignore-platform-reqs
 #  ./vendor/bin/sail up -d
 
-APP_NAME=Monica
+APP_NAME=Atlas
 APP_ENV=local
 APP_KEY=
 APP_DEBUG=true

@@ -627,7 +627,7 @@ attach them to the start of each source file to most effectively state
 the exclusion of warranty; and each file should have at least the
 "copyright" line and a pointer to where the full notice is found.
 
-        The software is called Monica and is a personal relationship management system.
+        The software is called Atlas and is a personal relationship management system.
         Copyright (C) 2016-2023 Maazarin & asbin
 
         This program is free software: you can redistribute it and/or modify

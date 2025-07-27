@@ -20,7 +20,7 @@ class NewAddressBookSubscription extends Command
      * @var string
      */
     protected $signature = 'monica:newaddressbooksubscription
-                            {--email= : Monica account to add subscription to}
+                            {--email= : Atlas account to add subscription to}
                             {--vaultId= : Id of the vault to add subscription to}
                             {--url= : CardDAV url of the address book}
                             {--login= : Login}

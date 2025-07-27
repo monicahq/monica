@@ -68,7 +68,7 @@ class DavClient
      */
     public function getRequest(): PendingRequest
     {
-        $request = Http::withUserAgent('Monica DavClient '.config('monica.app_version').'/Guzzle');
+        $request = Http::withUserAgent('Atlas DavClient '.config('atlas.app_version').'/Guzzle');
 
         if (App::environment('local')) {
             $request = $request->withoutVerifying();

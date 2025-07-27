@@ -17,7 +17,7 @@ body:
           required: true
         - label: This issue is **not** already reported on [Github](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) _(I've searched it)_.
           required: true
-        - label: I agree to follow Monica's [Code of Conduct](https://github.com/monicahq/monica/blob/main/CODE_OF_CONDUCT.md).
+        - label: I agree to follow Atlas's [Code of Conduct](https://github.com/monicahq/monica/blob/main/CODE_OF_CONDUCT.md).
           required: true
   - type: input
     id: description
@@ -62,9 +62,9 @@ body:
   - type: input
     id: version
     attributes:
-      label: Version of Monica
+      label: Version of Atlas
       description: |
-        Monica's semver version or commit number.
+        Atlas's semver version or commit number.
   - type: dropdown
     id: install-method
     attributes:
@@ -81,7 +81,7 @@ body:
     attributes:
       label: Web server
       description: |
-        Select Webserver serving Monica Server.
+        Select Webserver serving Atlas Server.
         _Describe in the "Additional info" section if you chose "Other"._
       options:
         - Apache
@@ -92,7 +92,7 @@ body:
     attributes:
       label: Database engine version
       description: |
-        Select Database engine serving Monica Server.
+        Select Database engine serving Atlas Server.
         _Describe in the "Additional info" section if you chose "Other"._
       options:
         - MySQL

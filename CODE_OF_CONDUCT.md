@@ -6,7 +6,7 @@ In the interest of fostering an open and welcoming environment, we as contributo
 
 ## Our Standards
 
-We want everyone to be able to participate to our project no matter what they are or are from, as long as you don't bring drama or something irrelevant to the project. We are here to discuss Monica, its direction and the code around Monica - that's it. We will never judge someone, no matter the differences. On the contrary, we welcome differences. We will only judge the code that is submitted, and it will never be personal.
+We want everyone to be able to participate to our project no matter what they are or are from, as long as you don't bring drama or something irrelevant to the project. We are here to discuss Atlas, its direction and the code around Atlas - that's it. We will never judge someone, no matter the differences. On the contrary, we welcome differences. We will only judge the code that is submitted, and it will never be personal.
 
 To summarize, don't be an ass - we are here to create something good, and something that is useful for the world. Don't bring your personal story and everything will be alright.
 

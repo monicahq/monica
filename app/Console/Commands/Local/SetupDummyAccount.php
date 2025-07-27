@@ -100,7 +100,7 @@ class SetupDummyAccount extends Command
         $this->line('');
         $this->line('-----------------------------');
         $this->line('|');
-        $this->line('| Welcome to Monica');
+        $this->line('| Welcome to Atlas');
         $this->line('|');
         $this->line('-----------------------------');
         $this->info('| You can now sign in with one of these two accounts:');
@@ -226,7 +226,7 @@ class SetupDummyAccount extends Command
         $goals = collect([
             'Lose 5 kgs',
             'Practice sport every day',
-            'Develop Monica every day',
+            'Develop Atlas every day',
             'Kiss my wife',
         ]);
 
