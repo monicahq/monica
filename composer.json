@@ -25,6 +25,7 @@
     "laravel/fortify": "^1.25",
     "laravel/framework": "^12.0",
     "laravel/jetstream": "^5.0",
+    "laravel/nightwatch": "^1.11",
     "laravel/sanctum": "^4.0",
     "laravel/scout": "^10.2",
     "laravel/socialite": "^5.5",
