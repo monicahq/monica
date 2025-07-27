@@ -150,6 +150,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         'email_verified_at' => 'datetime',
         'invitation_accepted_at' => 'datetime',
         'is_account_administrator' => 'boolean',
+        'is_instance_administrator' => 'boolean',
         'help_shown' => 'boolean',
     ];
 

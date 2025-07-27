@@ -120,8 +120,6 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
-
-        Gate::define('viewPulse', fn (User $user) => $user->is_instance_administrator);
     }
 
     /**
@@ -150,12 +148,8 @@ class AppServiceProvider extends ServiceProvider
                 : Password::min(4);
         });
 
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
-        });
-        RateLimiter::for('oauth2-socialite', function (Request $request) {
-            return Limit::perMinute(5)->by(optional($request->user())->id ?: $request->ip());
-        });
+        RateLimiter::for('api', fn (Request $request) => Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip()));
+        RateLimiter::for('oauth2-socialite', fn (Request $request) => Limit::perMinute(5)->by(optional($request->user())->id ?: $request->ip()));
 
         Webauthn::updateViewResponseUsing(WebauthnUpdateResponse::class);
         Webauthn::destroyViewResponseUsing(WebauthnDestroyResponse::class);
@@ -171,5 +165,7 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(SocialiteWasCalled::class, KeycloakExtendSocialite::class);
 
         Vite::prefetch(concurrency: 3);
+
+        Gate::define('viewPulse', fn (User $user) => $user->is_instance_administrator || $this->app->environment('local'));
     }
 }
