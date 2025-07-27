@@ -90,7 +90,12 @@ if (! function_exists('subClasses')) {
         $namespace = App::getNamespace();
         $appPath = app_path();
 
-        foreach ((new Finder)->files()->in($appPath)->name('*.php')->notName('helpers.php') as $file) {
+        $files = (new Finder)->files()
+            ->in($appPath)
+            ->name('*.php')
+            ->notName(['helpers.php', 'TelescopeServiceProvider.php']);
+
+        foreach ($files as $file) {
             $file = $namespace.str_replace(
                 ['/', '.php'],
                 ['\\', ''],
