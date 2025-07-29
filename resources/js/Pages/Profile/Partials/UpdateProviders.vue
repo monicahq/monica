@@ -63,6 +63,7 @@ defineProps({
             <span class="text-sm text-green-600 dark:text-green-400">
               {{ $t('Connected') }}
             </span>
+            <span v-if="provider.email" class="text-sm"> ({{ provider.email }}) </span>
             <JetSecondaryButton class="ms-3" @click.prevent="deleteProvider(id)">
               {{ $t('Disconnect') }}
             </JetSecondaryButton>

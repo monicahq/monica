@@ -79,6 +79,10 @@ class VaultSearchIndexViewHelper
         return $groups->map(fn (Group $group) => [
             'id' => $group->id,
             'name' => $group->name,
+            'url' => route('group.show', [
+                'vault' => $group->vault_id,
+                'group' => $group->id,
+            ]),
         ]);
     }
 }

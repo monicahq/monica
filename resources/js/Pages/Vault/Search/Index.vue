@@ -1,5 +1,51 @@
+<script setup>
+import { ref, onMounted, reactive } from 'vue';
+import { debounce } from 'lodash';
+import Layout from '@/Layouts/Layout.vue';
+import TextInput from '@/Shared/Form/TextInput.vue';
+import Contact from '@/Pages/Vault/Search/Partials/Contact.vue';
+import Note from '@/Pages/Vault/Search/Partials/Note.vue';
+import Group from '@/Pages/Vault/Search/Partials/Group.vue';
+import Loading from '@/Shared/Loading.vue';
+
+const props = defineProps({
+  layoutData: Object,
+  data: Object,
+});
+
+const processingSearch = ref(false);
+const form = reactive({
+  searchTerm: props.data.query || '',
+  errors: [],
+});
+const results = ref([]);
+
+onMounted(() => {
+  search();
+});
+
+const search = debounce(() => {
+  if (form.searchTerm !== undefined && form.searchTerm.length >= 3) {
+    processingSearch.value = true;
+
+    axios
+      .post(props.data.url.search, form)
+      .then((response) => {
+        results.value = response.data.data;
+        processingSearch.value = false;
+      })
+      .catch((error) => {
+        form.errors = error.response.data;
+        processingSearch.value = false;
+      });
+  } else {
+    results.value = [];
+  }
+}, 300);
+</script>
+
 <template>
-  <layout :layout-data="layoutData" :inside-vault="true">
+  <Layout :layout-data="layoutData" :inside-vault="true">
     <main class="relative sm:mt-24">
       <div class="mx-auto max-w-4xl px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
         <form
@@ -9,7 +55,7 @@
             <h1 class="text-center text-2xl font-medium">{{ $t('Search something in the vault') }}</h1>
           </div>
           <div class="p-5">
-            <text-input
+            <TextInput
               ref="searchField"
               v-model="form.searchTerm"
               :type="'text'"
@@ -25,18 +71,18 @@
 
         <!-- search results -->
         <div v-if="!processingSearch && Object.keys(results).length !== 0">
-          <contact :data="results.contacts" />
+          <Contact :data="results.contacts" />
 
-          <group :data="results.groups" />
+          <Group :data="results.groups" />
 
-          <note :data="results.notes" />
+          <Note :data="results.notes" />
         </div>
 
         <!-- searching results -->
         <div
           v-if="processingSearch"
           class="mb-6 rounded-lg border border-gray-200 bg-white p-6 text-center text-gray-500 dark:border-gray-700 dark:bg-gray-900">
-          <loading />
+          <Loading />
         </div>
 
         <!-- not enough characters -->
@@ -47,74 +93,5 @@
         </div>
       </div>
     </main>
-  </layout>
+  </Layout>
 </template>
-
-<script>
-import Layout from '@/Layouts/Layout.vue';
-import TextInput from '@/Shared/Form/TextInput.vue';
-import Contact from '@/Pages/Vault/Search/Partials/Contact.vue';
-import Note from '@/Pages/Vault/Search/Partials/Note.vue';
-import Group from '@/Pages/Vault/Search/Partials/Group.vue';
-
-export default {
-  components: {
-    Layout,
-    TextInput,
-    Contact,
-    Note,
-    Group,
-  },
-
-  props: {
-    layoutData: {
-      type: Object,
-      default: null,
-    },
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
-
-  data() {
-    return {
-      processingSearch: false,
-      form: {
-        searchTerm: this.data.query || '',
-        errors: [],
-      },
-      results: [],
-    };
-  },
-
-  mounted() {
-    this.$nextTick().then(() => {
-      this.$refs.searchField.focus();
-    });
-
-    this.search();
-  },
-
-  methods: {
-    search: _.debounce(function () {
-      if (this.form.searchTerm !== '' && this.form.searchTerm.length >= 3) {
-        this.processingSearch = true;
-
-        axios
-          .post(this.data.url.search, this.form)
-          .then((response) => {
-            this.results = response.data.data;
-            this.processingSearch = false;
-          })
-          .catch((error) => {
-            this.form.errors = error.response.data;
-            this.processingSearch = false;
-          });
-      } else {
-        this.results = [];
-      }
-    }, 300),
-  },
-};
-</script>
