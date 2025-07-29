@@ -6,6 +6,8 @@ use App\Domains\Contact\ManageContact\Services\CreateContact;
 use App\Domains\Contact\ManageContactImportantDates\Services\CreateContactImportantDate;
 use App\Domains\Contact\ManageGoals\Services\CreateGoal;
 use App\Domains\Contact\ManageGoals\Services\ToggleStreak;
+use App\Domains\Contact\ManageGroups\Services\AddContactToGroup;
+use App\Domains\Contact\ManageGroups\Services\CreateGroup;
 use App\Domains\Contact\ManageNotes\Services\CreateNote;
 use App\Domains\Contact\ManageTasks\Services\CreateContactTask;
 use App\Domains\Settings\CreateAccount\Services\CreateAccount;
@@ -67,6 +69,7 @@ class SetupDummyAccount extends Command
         $this->createFirstUser();
         $this->createVaults();
         $this->createContacts();
+        $this->createGroups();
         $this->createNotes();
         $this->createTasks();
         $this->createGoals();
@@ -122,12 +125,13 @@ class SetupDummyAccount extends Command
     {
         $this->info('☐ Create first user of the account');
 
-        $this->firstUser = app(CreateAccount::class)->execute([
+        $this->firstUser = (new CreateAccount)->execute([
             'email' => 'admin@admin.com',
             'password' => 'admin123',
             'first_name' => 'Michael',
             'last_name' => 'Scott',
         ]);
+
         $this->firstUser->email_verified_at = Carbon::now();
         $this->firstUser->save();
     }
@@ -152,6 +156,10 @@ class SetupDummyAccount extends Command
         $this->info('☐ Create contacts');
 
         foreach (Vault::all() as $vault) {
+            $birthDateType = $vault->contactImportantDateTypes
+                ->where('internal_type', ContactImportantDate::TYPE_BIRTHDATE)
+                ->first();
+
             for ($i = 0; $i < rand(2, 13); $i++) {
                 $date = $this->faker->dateTimeThisCentury();
                 $birthDate = Carbon::parse($date);
@@ -177,8 +185,50 @@ class SetupDummyAccount extends Command
                     'day' => $birthDate->day,
                     'month' => $birthDate->month,
                     'year' => rand(1, 2) == 1 ? $birthDate->year : null,
-                    'type' => ContactImportantDate::TYPE_BIRTHDATE,
+                    'contact_important_date_type_id' => $birthDateType->id,
                 ]);
+            }
+        }
+    }
+
+    private function createGroups(): void
+    {
+        $this->info('☐ Create groups');
+
+        foreach (Vault::all() as $vault) {
+            for ($i = 0; $i < rand(2, 5); $i++) {
+                $groupType = rand(1, 2) == 1 ? $this->firstUser->account->groupTypes->random() : null;
+                $group = (new CreateGroup)->execute([
+                    'account_id' => $this->firstUser->account_id,
+                    'vault_id' => $vault->id,
+                    'author_id' => $this->firstUser->id,
+                    'group_type_id' => optional($groupType)->id,
+                    'name' => $this->faker->word(),
+                ]);
+
+                // Add random contacts to the group
+                $contacts = Contact::where('vault_id', $vault->id)
+                    ->inRandomOrder()
+                    ->take(rand(1, 5))
+                    ->get();
+
+                foreach ($contacts as $contact) {
+                    $groupTypeRoles = $groupType !== null && rand(1, 2) == 1 ? $groupType->groupTypeRoles : null;
+                    if ($groupTypeRoles !== null && $groupTypeRoles->isNotEmpty()) {
+                        $role = $groupTypeRoles->random();
+                    } else {
+                        $role = null;
+                    }
+
+                    (new AddContactToGroup)->dispatch([
+                        'account_id' => $this->firstUser->account_id,
+                        'vault_id' => $vault->id,
+                        'author_id' => $this->firstUser->id,
+                        'group_id' => $group->id,
+                        'contact_id' => $contact->id,
+                        'group_type_role_id' => optional($role)->id,
+                    ]);
+                }
             }
         }
     }
@@ -304,7 +354,7 @@ class SetupDummyAccount extends Command
     {
         $this->info('☐ Create second user of the account');
 
-        $this->secondUser = app(CreateAccount::class)->execute([
+        $this->secondUser = (new CreateAccount)->execute([
             'email' => 'blank@blank.com',
             'password' => 'blank123',
             'first_name' => 'John',
