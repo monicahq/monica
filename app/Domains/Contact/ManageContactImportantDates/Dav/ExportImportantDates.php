@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Contact\ManageContact\Dav;
+namespace App\Domains\Contact\ManageContactImportantDates\Dav;
 
 use App\Domains\Contact\Dav\Exporter;
 use App\Domains\Contact\Dav\ExportVCardResource;
@@ -34,7 +34,7 @@ class ExportImportantDates extends Exporter implements ExportVCardResource
 
     public function addImportantDateToVCard(VCard $vcard, ContactImportantDate $importantDate)
     {
-        if (($type = $importantDate->contactImportantDateType) !== null && mb_strtolower($type->label) === ContactImportantDate::TYPE_BIRTHDATE) {
+        if (optional($importantDate->contactImportantDateType)->internal_type === ContactImportantDate::TYPE_BIRTHDATE) {
             $date = $importantDate->year ? Str::padLeft((string) $importantDate->year, 2, '0') : '--';
             $date .= $importantDate->month ? Str::padLeft((string) $importantDate->month, 2, '0') : '--';
             $date .= $importantDate->day ? Str::padLeft((string) $importantDate->day, 2, '0') : '--';

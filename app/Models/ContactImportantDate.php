@@ -44,6 +44,17 @@ class ContactImportantDate extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'day' => 'integer',
+        'month' => 'integer',
+        'year' => 'integer',
+    ];
+
+    /**
      * Get the contact associated with the contact date.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
