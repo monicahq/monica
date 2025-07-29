@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Domains\Contact\ManageContact\Dav;
+namespace Tests\Unit\Domains\Contact\ManageContactImportantDates\Dav;
 
-use App\Domains\Contact\ManageContact\Dav\ExportImportantDates;
+use App\Domains\Contact\ManageContactImportantDates\Dav\ExportImportantDates;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
