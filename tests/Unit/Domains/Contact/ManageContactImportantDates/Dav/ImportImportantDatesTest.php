@@ -54,7 +54,7 @@ class ImportImportantDatesTest extends TestCase
 
     #[Group('dav')]
     #[Test]
-    public function it_imports_bday_part()
+    public function it_imports_bday_year()
     {
         $user = $this->createUser();
         $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
@@ -72,7 +72,7 @@ class ImportImportantDatesTest extends TestCase
         ]);
 
         $vcard = new VCard([
-            'BDAY' => '2025----',
+            'BDAY' => '2025',
         ]);
 
         $contact = $importer->import($vcard, $contact);
@@ -82,6 +82,134 @@ class ImportImportantDatesTest extends TestCase
         $this->assertNull($importantDate->day);
         $this->assertNull($importantDate->month);
         $this->assertEquals(2025, $importantDate->year);
+    }
+
+    #[Group('dav')]
+    #[Test]
+    public function it_imports_bday_year_month()
+    {
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
+        $importVCard = new ImportVCard;
+        $importVCard->author = $user;
+        $importVCard->vault = $vault;
+        $importer = new ImportImportantDates;
+        $importer->setContext($importVCard);
+
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        ContactImportantDateType::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+
+        $vcard = new VCard([
+            'BDAY' => '202510',
+        ]);
+
+        $contact = $importer->import($vcard, $contact);
+
+        $this->assertCount(1, $contact->importantDates);
+        $importantDate = $contact->importantDates->first();
+        $this->assertNull($importantDate->day);
+        $this->assertEquals(10, $importantDate->month);
+        $this->assertEquals(2025, $importantDate->year);
+    }
+
+    #[Group('dav')]
+    #[Test]
+    public function it_imports_bday_year_month2()
+    {
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
+        $importVCard = new ImportVCard;
+        $importVCard->author = $user;
+        $importVCard->vault = $vault;
+        $importer = new ImportImportantDates;
+        $importer->setContext($importVCard);
+
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        ContactImportantDateType::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+
+        $vcard = new VCard([
+            'BDAY' => '2025-10',
+        ]);
+
+        $contact = $importer->import($vcard, $contact);
+
+        $this->assertCount(1, $contact->importantDates);
+        $importantDate = $contact->importantDates->first();
+        $this->assertNull($importantDate->day);
+        $this->assertEquals(10, $importantDate->month);
+        $this->assertEquals(2025, $importantDate->year);
+    }
+
+    #[Group('dav')]
+    #[Test]
+    public function it_imports_bday_month_day()
+    {
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
+        $importVCard = new ImportVCard;
+        $importVCard->author = $user;
+        $importVCard->vault = $vault;
+        $importer = new ImportImportantDates;
+        $importer->setContext($importVCard);
+
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        ContactImportantDateType::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+
+        $vcard = new VCard([
+            'BDAY' => '--0415',
+        ]);
+
+        $contact = $importer->import($vcard, $contact);
+
+        $this->assertCount(1, $contact->importantDates);
+        $importantDate = $contact->importantDates->first();
+        $this->assertEquals(15, $importantDate->day);
+        $this->assertEquals(4, $importantDate->month);
+        $this->assertNull($importantDate->year);
+    }
+
+    #[Group('dav')]
+    #[Test]
+    public function it_imports_bday_month_day2()
+    {
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
+        $importVCard = new ImportVCard;
+        $importVCard->author = $user;
+        $importVCard->vault = $vault;
+        $importer = new ImportImportantDates;
+        $importer->setContext($importVCard);
+
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        ContactImportantDateType::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+
+        $vcard = new VCard([
+            'BDAY' => '--04-15',
+        ]);
+
+        $contact = $importer->import($vcard, $contact);
+
+        $this->assertCount(1, $contact->importantDates);
+        $importantDate = $contact->importantDates->first();
+        $this->assertEquals(15, $importantDate->day);
+        $this->assertEquals(4, $importantDate->month);
+        $this->assertNull($importantDate->year);
     }
 
     #[Group('dav')]

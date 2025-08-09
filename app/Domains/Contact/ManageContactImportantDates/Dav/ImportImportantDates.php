@@ -11,8 +11,8 @@ use App\Domains\Contact\ManageContactImportantDates\Services\DestroyContactImpor
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Sabre\VObject\Component\VCard;
+use Sabre\VObject\DateTimeParser;
 use Sabre\VObject\Property;
 
 #[Order(40)]
@@ -58,12 +58,8 @@ class ImportImportantDates extends Importer implements ImportVCardResource
         return $contact->importantDates
             ->filter(fn (ContactImportantDate $importantDate) => optional($importantDate->contactImportantDateType)->internal_type === ContactImportantDate::TYPE_BIRTHDATE)
             ->mapWithKeys(function (ContactImportantDate $importantDate): array {
-                $date = $importantDate->year ? Str::padLeft((string) $importantDate->year, 2, '0') : '--';
-                $date .= $importantDate->month ? Str::padLeft((string) $importantDate->month, 2, '0') : '--';
-                $date .= $importantDate->day ? Str::padLeft((string) $importantDate->day, 2, '0') : '--';
-
                 return [
-                    $date => $importantDate,
+                    $importantDate->getVCardDate() => $importantDate,
                 ];
             });
     }
@@ -71,10 +67,10 @@ class ImportImportantDates extends Importer implements ImportVCardResource
     private function getBday(VCard $vcard): Collection
     {
         return collect($vcard->BDAY)
-            ->map(fn (Property $bday) => $bday->getValue());
+            ->map(fn (Property $bday) => DateTimeParser::parseVCardDateTime($bday->getValue()));
     }
 
-    private function createContactImportantDate(Contact $contact, string $date): void
+    private function createContactImportantDate(Contact $contact, array $date): void
     {
         (new CreateContactImportantDate)->execute([
             'account_id' => $this->account()->id,
@@ -86,9 +82,9 @@ class ImportImportantDates extends Importer implements ImportVCardResource
                 ->firstOrFail()
                 ->id,
             'label' => trans('Birthday', [], $this->author()->locale),
-            'day' => intval(Str::replace('-', '', Str::substr($date, 6, 2))),
-            'month' => intval(Str::replace('-', '', Str::substr($date, 4, 2))),
-            'year' => intval(Str::replace('-', '', Str::substr($date, 0, 4))),
+            'day' => intval($date['date']),
+            'month' => intval($date['month']),
+            'year' => intval($date['year']),
         ]);
     }
 

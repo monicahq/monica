@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Str;
 
 class ContactImportantDate extends Model
 {
@@ -82,5 +83,23 @@ class ContactImportantDate extends Model
     public function feedItem(): MorphOne
     {
         return $this->morphOne(ContactFeedItem::class, 'feedable');
+    }
+
+    /**
+     * Get the date as a VCard formatted string.
+     *
+     * @see https://datatracker.ietf.org/doc/html/rfc6350#section-6.2.5
+     */
+    public function getVCardDate(): string
+    {
+        $date = $this->year ? Str::padLeft((string) $this->year, 2, '0') : '--';
+        if ($this->month === null && $this->day === null) {
+            return $date;
+        }
+
+        $date .= $this->month ? Str::padLeft((string) $this->month, 2, '0') : '-';
+        $date .= $this->day ? Str::padLeft((string) $this->day, 2, '0') : '';
+
+        return $date;
     }
 }
