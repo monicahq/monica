@@ -67,7 +67,7 @@ class ImportImportantDates extends Importer implements ImportVCardResource
     private function getBday(VCard $vcard): Collection
     {
         return collect($vcard->BDAY)
-            ->map(fn (Property $bday) => DateTimeParser::parseVCardDateTime($bday->getValue()));
+            ->map(fn (Property $bday): array => DateTimeParser::parseVCardDateTime($bday->getValue()));
     }
 
     private function createContactImportantDate(Contact $contact, array $date): void
