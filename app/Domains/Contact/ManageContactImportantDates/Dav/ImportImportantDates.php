@@ -112,7 +112,7 @@ class ImportImportantDates extends Importer implements ImportVCardResource
                 'contact_id' => $contact->id,
                 'contact_important_date_id' => $importantDate->id,
                 'contact_important_date_type_id' => $this->birthdateType->id,
-                'label' => $importantDate->label || trans('Birthday', [], $this->author()->locale),
+                'label' => $importantDate->label,
                 'day' => $importantDate->day,
                 'month' => $importantDate->month,
                 'year' => $importantDate->year,
