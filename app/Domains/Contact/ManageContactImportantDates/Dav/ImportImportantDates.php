@@ -82,9 +82,9 @@ class ImportImportantDates extends Importer implements ImportVCardResource
                 ->firstOrFail()
                 ->id,
             'label' => trans('Birthday', [], $this->author()->locale),
-            'day' => intval($date['date']),
-            'month' => intval($date['month']),
-            'year' => intval($date['year']),
+            'day' => $date['date'] === null ? null : intval($date['date']),
+            'month' => $date['month'] === null ? null : intval($date['month']),
+            'year' => $date['year'] === null ? null : intval($date['year']),
         ]);
     }
 
