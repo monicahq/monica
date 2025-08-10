@@ -25,7 +25,7 @@ class UpdateContactImportantDate extends BaseService implements ServiceInterface
             'vault_id' => 'required|uuid|exists:vaults,id',
             'author_id' => 'required|uuid|exists:users,id',
             'contact_id' => 'required|uuid|exists:contacts,id',
-            'contact_important_date_id' => 'required|integer|exists:contact_important_dates,id',
+            'contact_important_date_id' => 'required|uuid|exists:contact_important_dates,id',
             'contact_important_date_type_id' => 'nullable|integer|exists:contact_important_date_types,id',
             'label' => 'required|string|max:255',
             'day' => 'nullable|integer',

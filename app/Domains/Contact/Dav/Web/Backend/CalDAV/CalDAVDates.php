@@ -1,0 +1,147 @@
+<?php
+
+namespace App\Domains\Contact\Dav\Web\Backend\CalDAV;
+
+use App\Domains\Contact\Dav\Services\ExportVCalendar;
+use App\Domains\Contact\ManageContactImportantDates\Services\DestroyContactImportantDate;
+use App\Models\Contact;
+use App\Models\ContactImportantDate;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Bus;
+use Sabre\CalDAV\Plugin as CalDAVPlugin;
+use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
+use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
+use Sabre\DAV\Server as SabreServer;
+
+class CalDAVDates extends AbstractCalDAVBackend
+{
+    /**
+     * Returns the id for this backend.
+     */
+    public function backendId(): string
+    {
+        return "dates-{$this->vault->id}";
+    }
+
+    /**
+     * Returns the uri for this backend.
+     */
+    public function backendUri(): string
+    {
+        return "dates-{$this->vault->name}";
+    }
+
+    public function getDescription(): array
+    {
+        return parent::getDescription()
+        + [
+            '{DAV:}displayname' => trans('Contacts Important Dates'),
+            '{'.SabreServer::NS_SABREDAV.'}read-only' => true,
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => trans('Contact important dates of :name', ['name' => $this->vault->name]),
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => $this->user->timezone,
+            '{'.CalDAVPlugin::NS_CALDAV.'}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VEVENT']),
+            '{'.CalDAVPlugin::NS_CALDAV.'}schedule-calendar-transp' => new ScheduleCalendarTransp(ScheduleCalendarTransp::TRANSPARENT),
+        ];
+    }
+
+    /**
+     * Extension for Calendar objects.
+     */
+    public function getExtension(): string
+    {
+        return '.ics';
+    }
+
+    /**
+     * Datas for this date.
+     */
+    public function prepareData(mixed $obj): array
+    {
+        if ($obj instanceof ContactImportantDate) {
+            $calendardata = $this->refreshObject($obj);
+
+            return [
+                'id' => $obj->id,
+                'uri' => $this->encodeUri($obj),
+                'calendardata' => $calendardata,
+                'etag' => '"'.sha1($calendardata).'"',
+                'lastmodified' => $obj->updated_at->timestamp,
+            ];
+        }
+
+        return [];
+    }
+
+    /**
+     * Get the new exported version of the object.
+     */
+    protected function refreshObject(mixed $obj): string
+    {
+        $vcal = (new ExportVCalendar)
+            ->execute([
+                'account_id' => $this->user->account_id,
+                'author_id' => $this->user->id,
+                'vault_id' => $this->vault->id,
+                'contact_important_date_id' => $obj->id,
+            ]);
+
+        return $vcal->serialize();
+    }
+
+    /**
+     * Returns the date for the specific uuid.
+     */
+    public function getObjectUuid(?string $collectionId, string $uuid): mixed
+    {
+        return $this->vault->contacts
+            ->map(fn (Contact $contact) => $contact->importantDates->find($uuid))
+            ->filter()
+            ->first();
+    }
+
+    /**
+     * Returns the collection of contact's dates.
+     */
+    public function getObjects(?string $collectionId): Collection
+    {
+        return $this->vault->contacts
+            ->map(fn (Contact $contact) => $contact->importantDates)
+            ->flatten(1);
+    }
+
+    /**
+     * Returns the collection of deleted dates.
+     */
+    public function getDeletedObjects(?string $collectionId): Collection
+    {
+        return $this->vault->contacts
+            ->map(fn (Contact $contact) => $contact->importantDates()->onlyTrashed()->get())
+            ->flatten(1);
+    }
+
+    public function updateOrCreateCalendarObject(?string $calendarId, ?string $objectUri, ?string $calendarData): ?string
+    {
+        // TODO
+        return null;
+    }
+
+    public function deleteCalendarObject(?string $objectUri): void
+    {
+        $importantDate = $this->getObject($this->backendUri(), $objectUri);
+
+        if ($importantDate) {
+            $job = new DestroyContactImportantDate([
+                'account_id' => $this->user->account_id,
+                'author_id' => $this->user->id,
+                'vault_id' => $this->vault->id,
+                'contact_id' => $importantDate->contact_id,
+                'contact_important_date_id' => $importantDate->id,
+            ]);
+
+            Bus::batch([$job])
+                ->allowFailures()
+                ->onQueue('high')
+                ->dispatch();
+        }
+    }
+}

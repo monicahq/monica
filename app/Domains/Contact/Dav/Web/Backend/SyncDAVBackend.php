@@ -128,7 +128,7 @@ trait SyncDAVBackend
      *
      * The limit is 'suggestive'. You are free to ignore it.
      */
-    public function getChanges(string $collectionId, ?string $syncToken): ?array
+    public function getChanges(?string $collectionId, ?string $syncToken): ?array
     {
         $token = null;
         $timestamp = null;

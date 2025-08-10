@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Domains\Contact\Dav\Web\Auth\AuthBackend;
+use App\Domains\Contact\Dav\Web\Backend\CalDAV\CalDAVBackend;
 use App\Domains\Contact\Dav\Web\Backend\CardDAV\AddressBookRoot;
 use App\Domains\Contact\Dav\Web\Backend\CardDAV\CardDAVBackend;
 use App\Domains\Contact\Dav\Web\DAVACL\PrincipalBackend;
@@ -11,6 +12,9 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use LaravelSabre\LaravelSabre;
+use Sabre\CalDAV\CalendarRoot;
+use Sabre\CalDAV\ICSExportPlugin;
+use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use Sabre\CardDAV\VCFExportPlugin;
 use Sabre\DAV\Auth\Plugin as AuthPlugin;
@@ -42,10 +46,12 @@ class DAVServiceProvider extends ServiceProvider
         // Initiate custom backends for link between Sabre and Monica
         $principalBackend = app(PrincipalBackend::class, ['user' => $user]);
         $carddavBackend = app(CardDAVBackend::class)->withUser($user);
+        $caldavBackend = app(CalDAVBackend::class)->withUser($user);
 
         return [
             new PrincipalCollection($principalBackend),
             new AddressBookRoot($principalBackend, $carddavBackend),
+            new CalendarRoot($principalBackend, $caldavBackend),
         ];
     }
 
@@ -65,8 +71,8 @@ class DAVServiceProvider extends ServiceProvider
         yield new VCFExportPlugin;
 
         // CalDAV plugin
-        // yield new CalDAVPlugin();
-        // yield new ICSExportPlugin();
+        yield new CalDAVPlugin;
+        yield new ICSExportPlugin;
 
         // Sync Plugin - rfc6578
         yield new SyncPlugin;

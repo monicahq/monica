@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Domains\Contact\Dav\VCardResource;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ContactTask extends Model
+class ContactTask extends VCardResource
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
+    use SoftDeletes;
 
     protected $table = 'contact_tasks';
 

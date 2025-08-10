@@ -6,15 +6,16 @@ use App\Domains\Contact\Dav\Jobs\UpdateVCard;
 use App\Domains\Contact\Dav\Services\ExportVCard;
 use App\Domains\Contact\Dav\Services\GetEtag;
 use App\Domains\Contact\Dav\VCardResource;
+use App\Domains\Contact\Dav\Web\Backend\GetVaults;
 use App\Domains\Contact\Dav\Web\Backend\IDAVBackend;
 use App\Domains\Contact\Dav\Web\Backend\SyncDAVBackend;
+use App\Domains\Contact\Dav\Web\Backend\WithUser;
 use App\Domains\Contact\Dav\Web\DAVACL\PrincipalBackend;
 use App\Domains\Contact\ManageContact\Services\DestroyContact;
 use App\Domains\Contact\ManageGroups\Services\DestroyGroup;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Contact;
 use App\Models\Group;
-use App\Models\User;
 use App\Models\Vault;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -39,16 +40,9 @@ use Sabre\VObject\Reader;
  */
 class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
 {
+    use GetVaults;
     use SyncDAVBackend;
-
-    private User $user;
-
-    public function withUser(User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
+    use WithUser;
 
     /**
      * Returns the uri for this backend.
@@ -76,9 +70,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
      */
     public function getAddressBooksForUser($principalUri): array
     {
-        return $this->user->vaults()
-            ->wherePivot('permission', '<=', Vault::PERMISSION_VIEW)
-            ->get()
+        return $this->vaults()
             ->map(fn (Vault $vault) => $this->getAddressBookDetails($vault))
             ->toArray();
     }
@@ -257,9 +249,8 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
      */
     public function getObjectUuid(?string $collectionId, string $uuid): ?VCardResource
     {
-        $vault = $this->user->vaults()
-            ->wherePivot('permission', '<=', Vault::PERMISSION_VIEW)
-            ->find($collectionId);
+        $vault = $this->vaults($collectionId)
+            ->first();
 
         if (! $vault) {
             throw new NotEnoughPermissionException;
@@ -287,21 +278,16 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
      */
     public function getObjects(?string $collectionId): Collection
     {
-        $vaults = $this->user->vaults()
-            ->wherePivot('permission', '<=', Vault::PERMISSION_VIEW);
+        $vaults = $this->vaults($collectionId);
 
-        if ($collectionId !== null) {
-            $vaults = $vaults->where('id', $collectionId);
-        }
-
-        $contacts = $vaults->get()
+        $contacts = $vaults
             ->map(fn (Vault $vault): Collection => $vault->contacts()
                 ->active()
                 ->get()
             )
             ->flatten();
 
-        $groups = $vaults->get()
+        $groups = $vaults
             ->map(fn (Vault $vault): Collection => $vault->groups()
                 ->get()
             )
@@ -319,21 +305,16 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
      */
     public function getDeletedObjects(?string $collectionId): Collection
     {
-        $vaults = $this->user->vaults()
-            ->wherePivot('permission', '<=', Vault::PERMISSION_VIEW);
+        $vaults = $this->vaults($collectionId);
 
-        if ($collectionId !== null) {
-            $vaults = $vaults->where('id', $collectionId);
-        }
-
-        $contacts = $vaults->get()
+        $contacts = $vaults
             ->map(fn (Vault $vault): Collection => $vault->contacts()
                 ->onlyTrashed()
                 ->get()
             )
             ->flatten();
 
-        $groups = $vaults->get()
+        $groups = $vaults
             ->map(fn (Vault $vault): Collection => $vault->groups()
                 ->onlyTrashed()
                 ->get()
@@ -447,9 +428,8 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
      */
     public function updateCard($addressBookId, $cardUri, $cardData): ?string
     {
-        $vault = $this->user->vaults()
-            ->wherePivot('permission', '<=', Vault::PERMISSION_EDIT)
-            ->findOrFail($addressBookId);
+        $vault = $this->vaults($addressBookId)
+            ->firstOrFail();
 
         $job = new UpdateVCard([
             'account_id' => $this->user->account_id,

@@ -32,27 +32,7 @@ class ContactImportantDatesController extends Controller
 
     public function store(Request $request, string $vaultId, string $contactId)
     {
-        $day = '';
-        $month = '';
-        $year = '';
-
-        if ($request->input('choice') === ContactImportantDate::TYPE_FULL_DATE) {
-            $year = Carbon::parse($request->input('date'))->year;
-            $month = Carbon::parse($request->input('date'))->month;
-            $day = Carbon::parse($request->input('date'))->day;
-        }
-
-        if ($request->input('choice') === ContactImportantDate::TYPE_MONTH_DAY) {
-            $month = $request->input('month');
-            $day = $request->input('day');
-            $year = '';
-        }
-
-        if ($request->input('choice') === ContactImportantDate::TYPE_YEAR) {
-            $month = '';
-            $day = '';
-            $year = Carbon::now()->subYears($request->input('age'))->format('Y');
-        }
+        [$day, $month, $year] = $this->getDateParts($request);
 
         $date = (new CreateContactImportantDate)->execute([
             'account_id' => Auth::user()->account_id,
@@ -88,29 +68,9 @@ class ContactImportantDatesController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, string $vaultId, string $contactId, int $dateId)
+    public function update(Request $request, string $vaultId, string $contactId, string $dateId)
     {
-        $day = '';
-        $month = '';
-        $year = '';
-
-        if ($request->input('choice') === ContactImportantDate::TYPE_FULL_DATE) {
-            $year = Carbon::parse($request->input('date'))->year;
-            $month = Carbon::parse($request->input('date'))->month;
-            $day = Carbon::parse($request->input('date'))->day;
-        }
-
-        if ($request->input('choice') === ContactImportantDate::TYPE_MONTH_DAY) {
-            $month = $request->input('month');
-            $day = $request->input('day');
-            $year = '';
-        }
-
-        if ($request->input('choice') === ContactImportantDate::TYPE_YEAR) {
-            $month = '';
-            $day = '';
-            $year = Carbon::now()->subYears($request->input('age'))->format('Y');
-        }
+        [$day, $month, $year] = $this->getDateParts($request);
 
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -134,7 +94,33 @@ class ContactImportantDatesController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, string $vaultId, string $contactId, int $dateId)
+    private function getDateParts(Request $request): array
+    {
+        $day = '';
+        $month = '';
+        $year = '';
+
+        switch ($request->input('choice')) {
+            case ContactImportantDate::TYPE_FULL_DATE:
+                $year = Carbon::parse($request->input('date'))->year;
+                $month = Carbon::parse($request->input('date'))->month;
+                $day = Carbon::parse($request->input('date'))->day;
+                break;
+            case ContactImportantDate::TYPE_MONTH_DAY:
+                $month = $request->input('month');
+                $day = $request->input('day');
+                break;
+            case ContactImportantDate::TYPE_YEAR:
+                $year = Carbon::now()->subYears($request->input('age'))->format('Y');
+                break;
+            default:
+                throw new \InvalidArgumentException('Invalid date type');
+        }
+
+        return compact('day', 'month', 'year');
+    }
+
+    public function destroy(Request $request, string $vaultId, string $contactId, string $dateId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
