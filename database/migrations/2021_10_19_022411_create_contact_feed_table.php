@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
             $table->string('action');
             $table->string('description')->nullable();
-            $table->nullableMorphs('feedable');
+            $table->nullableNumericMorphs('feedable');
             $table->timestamps();
         });
     }
