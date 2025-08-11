@@ -6,6 +6,7 @@ use App\Interfaces\ServiceInterface;
 use App\Models\ContactImportantDate;
 use App\Services\BaseService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
 
@@ -20,7 +21,7 @@ class ExportVCalendar extends BaseService implements ServiceInterface
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
             'vault_id' => 'required|uuid|exists:vaults,id',
-            'contact_important_date_id' => 'required|uuid|exists:contact_important_dates,id',
+            'contact_important_date_id' => 'required|integer|exists:contact_important_dates,id',
         ];
     }
 
@@ -61,6 +62,11 @@ class ExportVCalendar extends BaseService implements ServiceInterface
     private function export(ContactImportantDate $importantDate): VCalendar
     {
         // The standard for most of these fields can be found on https://datatracker.ietf.org/doc/html/rfc5545
+        if (! $importantDate->uuid) {
+            $importantDate->forceFill([
+                'uuid' => Str::uuid(),
+            ])->save();
+        }
 
         $vcal = new VCalendar;
         $vevent = $vcal->create('VEVENT');
@@ -81,7 +87,7 @@ class ExportVCalendar extends BaseService implements ServiceInterface
 
     private function exportDate(ContactImportantDate $importantDate, VEvent $vevent)
     {
-        $vevent->UID = $importantDate->id;
+        $vevent->UID = $importantDate->uuid;
         $vevent->SUMMARY = $importantDate->label;
         $vevent->DTSTART = $importantDate->date->format('Ymd');
         $vevent->DTSTART['VALUE'] = 'DATE';

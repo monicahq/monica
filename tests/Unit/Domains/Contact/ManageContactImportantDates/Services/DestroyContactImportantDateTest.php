@@ -9,8 +9,10 @@ use App\Models\Contact;
 use App\Models\ContactImportantDate;
 use App\Models\User;
 use App\Models\Vault;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -108,6 +110,9 @@ class DestroyContactImportantDateTest extends TestCase
 
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ContactImportantDate $date): void
     {
+        Queue::fake();
+        Carbon::setTestNow(now());
+
         $request = [
             'account_id' => $account->id,
             'vault_id' => $vault->id,
@@ -118,8 +123,9 @@ class DestroyContactImportantDateTest extends TestCase
 
         (new DestroyContactImportantDate)->execute($request);
 
-        $this->assertDatabaseMissing('contact_important_dates', [
+        $this->assertDatabaseHas('contact_important_dates', [
             'id' => $date->id,
+            'deleted_at' => now(),
         ]);
     }
 }

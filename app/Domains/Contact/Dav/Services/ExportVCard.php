@@ -31,7 +31,7 @@ class ExportVCard extends BaseService implements ServiceInterface
             'author_id' => 'required|uuid|exists:users,id',
             'vault_id' => 'required|uuid|exists:vaults,id',
             'contact_id' => 'required_if:group_id,null|uuid|exists:contacts,id',
-            'group_id' => 'required_if:contact_id,null|int|exists:groups,id',
+            'group_id' => 'required_if:contact_id,null|integer|exists:groups,id',
         ];
     }
 

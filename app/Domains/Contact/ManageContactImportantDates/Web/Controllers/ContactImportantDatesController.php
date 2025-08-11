@@ -7,6 +7,7 @@ use App\Domains\Contact\ManageContactImportantDates\Services\DestroyContactImpor
 use App\Domains\Contact\ManageContactImportantDates\Services\UpdateContactImportantDate;
 use App\Domains\Contact\ManageContactImportantDates\Web\ViewHelpers\ContactImportantDatesViewHelper;
 use App\Domains\Contact\ManageReminders\Services\CreateContactReminder;
+use App\Domains\Contact\ManageReminders\Services\UpdateContactReminder;
 use App\Domains\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
@@ -87,6 +88,23 @@ class ContactImportantDatesController extends Controller
 
         $date = (new UpdateContactImportantDate)->execute($data);
 
+        if ($request->input('reminder')) {
+            // TODO - not working yet
+            (new UpdateContactReminder)->execute([
+                'account_id' => Auth::user()->account_id,
+                'author_id' => Auth::id(),
+                'vault_id' => $vaultId,
+                'contact_id' => $contactId,
+                'contact_reminder_id' => $request->input('contact_reminder_id'),
+                'label' => $request->input('label'),
+                'day' => $day,
+                'month' => $month,
+                'year' => $year,
+                'type' => $request->input('reminderChoice'),
+                'frequency_number' => 1,
+            ]);
+        }
+
         $contact = Contact::find($contactId);
 
         return response()->json([
@@ -117,7 +135,7 @@ class ContactImportantDatesController extends Controller
                 throw new \InvalidArgumentException('Invalid date type');
         }
 
-        return compact('day', 'month', 'year');
+        return [$day, $month, $year];
     }
 
     public function destroy(Request $request, string $vaultId, string $contactId, string $dateId)
@@ -131,6 +149,8 @@ class ContactImportantDatesController extends Controller
         ];
 
         (new DestroyContactImportantDate)->execute($data);
+
+        // TODO - delete the reminder if it exists
 
         return response()->json([
             'data' => true,

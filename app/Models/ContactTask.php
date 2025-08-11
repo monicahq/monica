@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use App\Domains\Contact\Dav\VCardResource;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ContactTask extends VCardResource
 {
-    use HasFactory, HasUuids;
+    use HasFactory;
     use SoftDeletes;
 
     protected $table = 'contact_tasks';
@@ -23,6 +23,7 @@ class ContactTask extends VCardResource
     protected $fillable = [
         'contact_id',
         'author_id',
+        'uuid',
         'author_name',
         'label',
         'description',
@@ -62,12 +63,14 @@ class ContactTask extends VCardResource
         return $this->belongsTo(User::class);
     }
 
-    public function scopeNotCompleted($query)
+    #[Scope]
+    public function notCompleted($query)
     {
         return $query->where('completed', false);
     }
 
-    public function scopeCompleted($query)
+    #[Scope]
+    public function completed($query)
     {
         return $query->where('completed', true);
     }

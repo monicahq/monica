@@ -69,17 +69,10 @@ class CalDAVTasks extends AbstractCalDAVBackend
     public function getObjectUuid(?string $collectionId, string $uuid): mixed
     {
         return $this->vault->contacts
-            ->map(fn (Contact $contact) => $contact->tasks->find($uuid))
+            ->map(fn (Contact $contact) => $contact->tasks()->where('uuid', $uuid)->get())
+            ->flatten(1)
             ->filter()
             ->first();
-    }
-
-    /**
-     * Extension for Calendar objects.
-     */
-    public function getExtension(): string
-    {
-        return '.ics';
     }
 
     /**
@@ -88,15 +81,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
     public function prepareData(mixed $obj): array
     {
         if ($obj instanceof ContactTask) {
-            $calendardata = $this->refreshObject($obj);
-
-            return [
-                'id' => $obj->id,
-                'uri' => $this->encodeUri($obj),
-                'calendardata' => $calendardata,
-                'etag' => '"'.sha1($calendardata).'"',
-                'lastmodified' => $obj->updated_at->timestamp,
-            ];
+            return $this->exportData($obj);
         }
 
         return [];
@@ -112,7 +97,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
                 'account_id' => $this->user->account_id,
                 'author_id' => $this->user->id,
                 'vault_id' => $this->vault->id,
-                'task_id' => $obj->id,
+                'contact_task_id' => $obj->id,
             ]);
 
         return $vcal->serialize();

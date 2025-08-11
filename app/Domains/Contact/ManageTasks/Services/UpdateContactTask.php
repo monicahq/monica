@@ -21,7 +21,7 @@ class UpdateContactTask extends BaseService implements ServiceInterface
             'vault_id' => 'required|uuid|exists:vaults,id',
             'author_id' => 'required|uuid|exists:users,id',
             'contact_id' => 'required|uuid|exists:contacts,id',
-            'contact_task_id' => 'required|uuid|exists:contact_tasks,id',
+            'contact_task_id' => 'required|integer|exists:contact_tasks,id',
             'label' => 'required|string|max:255',
             'description' => 'nullable|string|max:65535',
             'due_at' => 'nullable|date',

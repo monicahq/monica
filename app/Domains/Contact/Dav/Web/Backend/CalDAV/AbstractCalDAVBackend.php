@@ -46,4 +46,31 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
      * Get the new exported version of the object.
      */
     abstract protected function refreshObject(mixed $obj): string;
+
+    /**
+     * Extension for Calendar objects.
+     */
+    public function getExtension(): string
+    {
+        return '.ics';
+    }
+
+    /**
+     * Datas for this object.
+     */
+    public function exportData(mixed $obj): array
+    {
+        $calendardata = $this->refreshObject($obj);
+        if (! $obj->uuid) {
+            $obj->refresh();
+        }
+
+        return [
+            'id' => $obj->id,
+            'uri' => $this->encodeUri($obj),
+            'calendardata' => $calendardata,
+            'etag' => '"'.hash('sha256', $calendardata).'"',
+            'lastmodified' => $obj->updated_at->timestamp,
+        ];
+    }
 }

@@ -45,28 +45,12 @@ class CalDAVDates extends AbstractCalDAVBackend
     }
 
     /**
-     * Extension for Calendar objects.
-     */
-    public function getExtension(): string
-    {
-        return '.ics';
-    }
-
-    /**
      * Datas for this date.
      */
     public function prepareData(mixed $obj): array
     {
         if ($obj instanceof ContactImportantDate) {
-            $calendardata = $this->refreshObject($obj);
-
-            return [
-                'id' => $obj->id,
-                'uri' => $this->encodeUri($obj),
-                'calendardata' => $calendardata,
-                'etag' => '"'.sha1($calendardata).'"',
-                'lastmodified' => $obj->updated_at->timestamp,
-            ];
+            return $this->exportData($obj);
         }
 
         return [];
@@ -94,7 +78,8 @@ class CalDAVDates extends AbstractCalDAVBackend
     public function getObjectUuid(?string $collectionId, string $uuid): mixed
     {
         return $this->vault->contacts
-            ->map(fn (Contact $contact) => $contact->importantDates->find($uuid))
+            ->map(fn (Contact $contact) => $contact->importantDates()->where('uuid', $uuid)->get())
+            ->flatten(1)
             ->filter()
             ->first();
     }

@@ -6,7 +6,7 @@ use App\Interfaces\ServiceInterface;
 use App\Models\ContactTask;
 use App\Services\BaseService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VTodo;
 
@@ -21,7 +21,7 @@ class ExportTask extends BaseService implements ServiceInterface
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
             'vault_id' => 'required|uuid|exists:vaults,id',
-            'task_id' => 'required|uuid|exists:contact_tasks,id',
+            'contact_task_id' => 'required|integer|exists:contact_tasks,id',
         ];
     }
 
@@ -44,7 +44,7 @@ class ExportTask extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $task = ContactTask::find($data['task_id']);
+        $task = ContactTask::find($data['contact_task_id']);
         if ($task->contact->vault_id !== $data['vault_id']) {
             throw new ModelNotFoundException;
         }
@@ -55,6 +55,11 @@ class ExportTask extends BaseService implements ServiceInterface
     private function export(ContactTask $task): VCalendar
     {
         // The standard for most of these fields can be found on https://datatracker.ietf.org/doc/html/rfc5545
+        if (! $task->uuid) {
+            $task->forceFill([
+                'uuid' => Str::uuid(),
+            ])->save();
+        }
 
         // Basic information
         $vcal = new VCalendar;
@@ -70,13 +75,13 @@ class ExportTask extends BaseService implements ServiceInterface
     private function exportTimezone(VCalendar $vcal)
     {
         $vcal->add('VTIMEZONE', [
-            'TZID' => Auth::user()->timezone,
+            'TZID' => $this->author->timezone,
         ]);
     }
 
     private function exportVTodo(ContactTask $task, VTodo $vtodo)
     {
-        $vtodo->UID = $task->id;
+        $vtodo->UID = $task->uuid;
         $vtodo->SUMMARY = $task->label;
 
         if ($task->created_at) {
