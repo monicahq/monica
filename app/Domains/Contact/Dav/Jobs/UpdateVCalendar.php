@@ -3,7 +3,7 @@
 namespace App\Domains\Contact\Dav\Jobs;
 
 use App\Domains\Contact\Dav\Services\GetEtag;
-use App\Domains\Contact\Dav\Services\ImportVCard;
+use App\Domains\Contact\Dav\Services\ImportVCalendar;
 use App\Interfaces\ServiceInterface;
 use App\Services\QueuableService;
 use Closure;
@@ -12,7 +12,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Traits\Localizable;
 
-class UpdateVCard extends QueuableService implements ServiceInterface
+class UpdateVCalendar extends QueuableService implements ServiceInterface
 {
     use Batchable, Localizable;
 
@@ -28,7 +28,7 @@ class UpdateVCard extends QueuableService implements ServiceInterface
             'uri' => 'required|string',
             'etag' => 'nullable|string',
             'external' => 'nullable|boolean',
-            'card' => [
+            'calendar' => [
                 'required',
                 function (string $attribute, mixed $value, Closure $fail) {
                     if (! is_string($value) && ! is_resource($value)) {
@@ -62,46 +62,45 @@ class UpdateVCard extends QueuableService implements ServiceInterface
         $this->validateRules($data);
 
         $this->withLocale($this->author->preferredLocale(), function () {
-            $newtag = $this->updateCard($this->data['uri'], $this->data['card']);
+            $newtag = $this->updateCalendar($this->data['uri'], $this->data['calendar']);
 
             if ($newtag !== null && ($etag = Arr::get($this->data, 'etag')) !== null && $newtag !== $etag) {
                 Log::channel('database')->warning(__CLASS__.' '.__FUNCTION__." wrong etag when updating contact. Expected [$etag], got [$newtag]", [
                     'contacturl' => $this->data['uri'],
-                    'carddata' => $this->data['card'],
+                    'calendardata' => $this->data['calendar'],
                 ]);
             }
         });
     }
 
     /**
-     * Update the contact with the carddata.
+     * Update the contact with the calendardata.
      */
-    private function updateCard(string $uri, mixed $card): ?string
+    private function updateCalendar(string $uri, mixed $calendar): ?string
     {
         try {
-            $result = app(ImportVCard::class)->execute([
+            $result = app(ImportVCalendar::class)->execute([
                 'account_id' => $this->author->account_id,
                 'author_id' => $this->author->id,
                 'vault_id' => $this->vault->id,
-                'entry' => $card,
+                'entry' => $calendar,
                 'etag' => Arr::get($this->data, 'etag'),
                 'uri' => $uri,
                 'external' => Arr::get($this->data, 'external', false),
-                'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
             ]);
 
             if (! Arr::has($result, 'error')) {
-                return app(GetEtag::class)->execute([
+                return (new GetEtag)->execute([
                     'account_id' => $this->author->account_id,
                     'author_id' => $this->author->id,
                     'vault_id' => $this->vault->id,
-                    'vcard' => $result['entry'],
+                    'vcalendar' => $result['entry'],
                 ]);
             }
         } catch (\Exception $e) {
             Log::channel('database')->error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
                 'uri' => $uri,
-                'carddata' => $card,
+                'calendardata' => $calendar,
                 $e,
             ]);
             throw $e;

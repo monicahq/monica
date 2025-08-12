@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Domains\Contact\Dav\VCardResource;
+use App\Domains\Contact\Dav\VCalendarResource;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
-class ContactImportantDate extends VCardResource
+class ContactImportantDate extends VCalendarResource
 {
     use HasFactory;
     use SoftDeletes;
@@ -94,7 +94,7 @@ class ContactImportantDate extends VCardResource
     /**
      * Get the date as a Carbon instance.
      *
-     * @return Attribute<string,null>
+     * @return Attribute<Carbon,null>
      */
     public function date(): Attribute
     {

@@ -9,15 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property string $id
- * @property ?string $vault_id
- * @property ?string $distant_etag
- * @property ?string $vcard
+ * @property ?string $vcalendar
  * @property ?Carbon $updated_at
  * @property ?Carbon $created_at
  * @property ?Carbon $deleted_at
  */
 #[AllowDynamicProperties]
-abstract class VCardResource extends Model implements IDavResource
+abstract class VCalendarResource extends Model implements IDavResource
 {
     use SoftDeletes;
 }

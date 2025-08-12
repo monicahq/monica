@@ -61,13 +61,12 @@ class CalDAVDates extends AbstractCalDAVBackend
      */
     protected function refreshObject(mixed $obj): string
     {
-        $vcal = (new ExportVCalendar)
-            ->execute([
-                'account_id' => $this->user->account_id,
-                'author_id' => $this->user->id,
-                'vault_id' => $this->vault->id,
-                'contact_important_date_id' => $obj->id,
-            ]);
+        $vcal = (new ExportVCalendar)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'vault_id' => $this->vault->id,
+            'contact_important_date_id' => $obj->id,
+        ]);
 
         return $vcal->serialize();
     }

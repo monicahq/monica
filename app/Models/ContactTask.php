@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Domains\Contact\Dav\VCardResource;
+use App\Domains\Contact\Dav\VCalendarResource;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ContactTask extends VCardResource
+class ContactTask extends VCalendarResource
 {
     use HasFactory;
     use SoftDeletes;
@@ -23,7 +23,6 @@ class ContactTask extends VCardResource
     protected $fillable = [
         'contact_id',
         'author_id',
-        'uuid',
         'author_name',
         'label',
         'description',

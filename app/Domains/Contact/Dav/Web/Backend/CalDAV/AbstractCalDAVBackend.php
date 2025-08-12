@@ -2,11 +2,14 @@
 
 namespace App\Domains\Contact\Dav\Web\Backend\CalDAV;
 
+use App\Domains\Contact\Dav\Services\GetEtag;
+use App\Domains\Contact\Dav\VCalendarResource;
 use App\Domains\Contact\Dav\Web\Backend\IDAVBackend;
 use App\Domains\Contact\Dav\Web\Backend\SyncDAVBackend;
 use App\Domains\Contact\Dav\Web\Backend\WithUser;
 use App\Domains\Contact\Dav\Web\DAVACL\PrincipalBackend;
 use App\Models\Vault;
+use Illuminate\Support\Facades\Log;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
@@ -30,7 +33,7 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
      */
     public function getDescription(): array
     {
-        $token = DAVSyncPlugin::SYNCTOKEN_PREFIX.$this->refreshSyncToken($this->vault->id)->id;
+        $token = DAVSyncPlugin::SYNCTOKEN_PREFIX.$this->refreshSyncToken($this->backendId())->id;
 
         return [
             'id' => $this->backendId(),
@@ -58,19 +61,41 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
     /**
      * Datas for this object.
      */
-    public function exportData(mixed $obj): array
+    public function exportData(VCalendarResource $resource): array
     {
-        $calendardata = $this->refreshObject($obj);
-        if (! $obj->uuid) {
-            $obj->refresh();
+        $calendardata = $resource->vcalendar;
+        try {
+            // if ($calendardata) {
+            //     $timestamp = $this->rev($calendardata);
+            // }
+
+            if ($calendardata === null || empty($calendardata)) { // || $timestamp === null || $timestamp < $resource->updated_at) {
+                $calendardata = $this->refreshObject($resource);
+            }
+
+            $etag = (new GetEtag)->execute([
+                'account_id' => $this->user->account_id,
+                'author_id' => $this->user->id,
+                'vault_id' => $this->vault->id,
+                'vcalendar' => $resource->refresh(),
+            ]);
+
+            return [
+                'id' => $resource->uuid,
+                'uri' => $this->encodeUri($resource),
+                'calendardata' => $calendardata,
+                'etag' => $etag,
+                'distant_etag' => $resource->distant_etag,
+                'lastmodified' => $resource->updated_at->timestamp,
+            ];
+        } catch (\Exception $e) {
+            Log::channel('database')->error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
+                'calendardata' => $calendardata,
+                'id' => $resource->id,
+                $e,
+            ]);
+            throw $e;
         }
 
-        return [
-            'id' => $obj->id,
-            'uri' => $this->encodeUri($obj),
-            'calendardata' => $calendardata,
-            'etag' => '"'.hash('sha256', $calendardata).'"',
-            'lastmodified' => $obj->updated_at->timestamp,
-        ];
     }
 }

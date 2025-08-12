@@ -2,16 +2,27 @@
 
 namespace App\Domains\Contact\Dav\Services;
 
+use App\Domains\Contact\Dav\ExportVCalendarResource;
+use App\Domains\Contact\Dav\Order;
+use App\Domains\Contact\Dav\VCalendarResource;
 use App\Interfaces\ServiceInterface;
+use App\Models\Contact;
 use App\Models\ContactImportantDate;
+use App\Models\ContactTask;
 use App\Services\BaseService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use ReflectionClass;
 use Sabre\VObject\Component\VCalendar;
-use Sabre\VObject\Component\VEvent;
+use Sabre\VObject\ParseException;
+use Sabre\VObject\Reader;
 
 class ExportVCalendar extends BaseService implements ServiceInterface
 {
+    /** @var Collection<array-key,ExportVCalendarResource>|null */
+    private static ?Collection $exporters = null;
+
     /**
      * Get the validation rules that apply to the service.
      */
@@ -21,7 +32,8 @@ class ExportVCalendar extends BaseService implements ServiceInterface
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
             'vault_id' => 'required|uuid|exists:vaults,id',
-            'contact_important_date_id' => 'required|integer|exists:contact_important_dates,id',
+            'contact_important_date_id' => 'required_if:contact_task_id,null|integer|exists:contact_important_dates,id',
+            'contact_task_id' => 'required_if:contact_important_date_id,null|integer|exists:contact_tasks,id',
         ];
     }
 
@@ -44,75 +56,96 @@ class ExportVCalendar extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $importantDate = ContactImportantDate::find($data['contact_important_date_id']);
-        if ($importantDate->contact->vault_id !== $data['vault_id']) {
+        if (isset($data['contact_task_id'])) {
+            $obj = ContactTask::find($data['contact_task_id']);
+            if ($obj->contact->vault_id !== $data['vault_id']) {
+                throw new ModelNotFoundException;
+            }
+        } elseif (isset($data['contact_important_date_id'])) {
+            $obj = ContactImportantDate::find($data['contact_important_date_id']);
+            if ($obj->contact->vault_id !== $data['vault_id']) {
+                throw new ModelNotFoundException;
+            }
+        } else {
             throw new ModelNotFoundException;
         }
 
-        $vcard = $this->export($importantDate);
+        $vcalendar = $this->export($obj);
 
-        // $obj::withoutTimestamps(function () use ($obj, $vcard): void {
-        //     $obj->vcard = $vcard->serialize();
-        //     $obj->save();
-        // });
+        $obj::withoutTimestamps(function () use ($obj, $vcalendar): void {
+            $obj->vcalendar = $vcalendar->serialize();
+            $obj->save();
+        });
 
-        return $vcard;
+        return $vcalendar;
     }
 
-    private function export(ContactImportantDate $importantDate): VCalendar
+    private function export(VCalendarResource $obj): VCalendar
     {
         // The standard for most of these fields can be found on https://datatracker.ietf.org/doc/html/rfc5545
-        if (! $importantDate->uuid) {
-            $importantDate->forceFill([
+        if (! $obj->uuid) {
+            $obj->forceFill([
                 'uuid' => Str::uuid(),
             ])->save();
         }
 
-        $vcal = new VCalendar;
-        $vevent = $vcal->create('VEVENT');
-        $vcal->add($vevent);
-
-        $this->exportTimezone($vcal);
-        $this->exportDate($importantDate, $vevent);
-
-        return $vcal;
-    }
-
-    private function exportTimezone(VCalendar $vcal)
-    {
-        $vcal->add('VTIMEZONE', [
-            'TZID' => $this->author->timezone,
-        ]);
-    }
-
-    private function exportDate(ContactImportantDate $importantDate, VEvent $vevent)
-    {
-        $vevent->UID = $importantDate->uuid;
-        $vevent->SUMMARY = $importantDate->label;
-        $vevent->DTSTART = $importantDate->date->format('Ymd');
-        $vevent->DTSTART['VALUE'] = 'DATE';
-        $vevent->DTEND = $importantDate->date->addDays(1)->format('Ymd');
-        $vevent->DTEND['VALUE'] = 'DATE';
-
-        if (optional($importantDate->contactImportantDateType)->internal_type === ContactImportantDate::TYPE_BIRTHDATE) {
-            $vevent->RRULE = "FREQ=YEARLY;BYMONTH={$importantDate->month};BYMONTHDAY={$importantDate->day}";
+        if ($obj->vcard) {
+            try {
+                /** @var VCalendar */
+                $vcalendar = Reader::read($obj->vcard, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
+                if (! $vcalendar->UID) {
+                    $vcalendar->UID = $obj->uuid;
+                }
+            } catch (ParseException $e) {
+                // Ignore error
+            }
         }
 
-        if ($importantDate->created_at) {
-            $vevent->DTSTAMP = $importantDate->created_at;
-            $vevent->CREATED = $importantDate->created_at;
+        if (! isset($vcalendar)) {
+            // Basic information
+            $vcalendar = new VCalendar([
+                'UID' => $obj->uuid,
+                'SOURCE' => $this->getSource($obj),
+                'VERSION' => '2.0',
+            ]);
         }
 
-        $url = route('contact.show', [
-            'vault' => $importantDate->contact->vault->id,
-            'contact' => $importantDate->contact->id,
-        ]);
+        $exporters = $this->exporters($obj::class);
 
-        // $name = $contact->name;
-        $vevent->ATTACH = $url;
-        $vevent->DESCRIPTION = trans('See :name profile :url', [
-            'name' => $importantDate->contact->name,
-            'url' => $url,
-        ]);
+        foreach ($exporters as $exporter) {
+            $exporter->export($obj, $vcalendar);
+        }
+
+        return $vcalendar;
+    }
+
+    private function getSource(VCalendarResource $vcalendar): string
+    {
+        if ($vcalendar->contact instanceof Contact) {
+            return route('contact.show', [
+                'vault' => $vcalendar->contact->vault,
+                'contact' => $vcalendar->contact,
+            ]);
+        } else {
+            throw new ModelNotFoundException;
+        }
+    }
+
+    /**
+     * Get exporter instances.
+     *
+     * @param  class-string  $resourceClass
+     * @return Collection<array-key,ExportVCalendarResource>
+     */
+    private function exporters(string $resourceClass): Collection
+    {
+        if (self::$exporters === null) {
+            self::$exporters = collect(subClasses(ExportVCalendarResource::class))
+                ->sortBy(fn (ReflectionClass $exporter) => Order::get($exporter))
+                ->map(fn (ReflectionClass $exporter): ExportVCalendarResource => $exporter->newInstance());
+        }
+
+        return self::$exporters
+            ->filter(fn (ExportVCalendarResource $exporter): bool => $exporter->getType() === $resourceClass);
     }
 }

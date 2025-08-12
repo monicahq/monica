@@ -2,11 +2,13 @@
 
 namespace App\Domains\Contact\Dav\Web\Backend\CalDAV;
 
-use App\Domains\Contact\Dav\Jobs\ImportTask;
-use App\Domains\Contact\Dav\Services\ExportTask;
+use App\Domains\Contact\Dav\Services\ExportVCalendar;
+use App\Domains\Contact\Dav\Services\GetEtag;
+use App\Domains\Contact\Dav\Services\ImportVCalendar;
 use App\Domains\Contact\ManageTasks\Services\DestroyContactTask;
 use App\Models\Contact;
 use App\Models\ContactTask;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
@@ -92,13 +94,12 @@ class CalDAVTasks extends AbstractCalDAVBackend
      */
     protected function refreshObject(mixed $obj): string
     {
-        $vcal = (new ExportTask)
-            ->execute([
-                'account_id' => $this->user->account_id,
-                'author_id' => $this->user->id,
-                'vault_id' => $this->vault->id,
-                'contact_task_id' => $obj->id,
-            ]);
+        $vcal = (new ExportVCalendar)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'vault_id' => $this->vault->id,
+            'contact_task_id' => $obj->id,
+        ]);
 
         return $vcal->serialize();
     }
@@ -118,27 +119,35 @@ class CalDAVTasks extends AbstractCalDAVBackend
      */
     public function updateOrCreateCalendarObject(?string $calendarId, ?string $objectUri, ?string $calendarData): ?string
     {
-        $task_id = null;
-        if ($objectUri) {
-            $task = $this->getObject($this->backendUri(), $objectUri);
+        // $job = new UpdateVCalendar([
+        //     'account_id' => $this->user->account_id,
+        //     'author_id' => $this->user->id,
+        //     'vault_id' => $this->vault->id,
+        //     'uri' => $objectUri,
+        //     'calendar' => $calendarData,
+        // ]);
 
-            if ($task) {
-                $task_id = $task->id;
-            }
-        }
+        // Bus::batch([$job])
+        //     ->allowFailures()
+        //     ->onQueue('high')
+        //     ->dispatch();
 
-        $job = new ImportTask([
+        $result = app(ImportVCalendar::class)->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'vault_id' => $this->vault->id,
-            'task_id' => $task_id,
+            'uri' => $objectUri,
             'entry' => $calendarData,
         ]);
 
-        Bus::batch([$job])
-            ->allowFailures()
-            ->onQueue('high')
-            ->dispatch();
+        if (! Arr::has($result, 'error')) {
+            return (new GetEtag)->execute([
+                'account_id' => $this->user->account_id,
+                'author_id' => $this->user->id,
+                'vault_id' => $this->vault->id,
+                'vcalendar' => $result['entry'],
+            ]);
+        }
 
         return null;
     }

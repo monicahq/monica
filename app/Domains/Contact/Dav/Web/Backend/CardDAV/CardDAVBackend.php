@@ -186,7 +186,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
                 'account_id' => $this->user->account_id,
                 'author_id' => $this->user->id,
                 'vault_id' => $resource->vault_id,
-                'entry' => $resource->refresh(),
+                'vcard' => $resource->refresh(),
             ]);
 
             return [

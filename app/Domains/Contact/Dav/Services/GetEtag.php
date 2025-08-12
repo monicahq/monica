@@ -2,6 +2,7 @@
 
 namespace App\Domains\Contact\Dav\Services;
 
+use App\Domains\Contact\Dav\VCalendarResource;
 use App\Domains\Contact\Dav\VCardResource;
 use App\Interfaces\ServiceInterface;
 use App\Services\BaseService;
@@ -18,7 +19,8 @@ class GetEtag extends BaseService implements ServiceInterface
             'account_id' => 'required|uuid|exists:accounts,id',
             'author_id' => 'required|uuid|exists:users,id',
             'vault_id' => 'required|uuid|exists:vaults,id',
-            'entry' => 'required',
+            'vcard' => 'required_if:vcalendar,null',
+            'vcalendar' => 'required_if:vcard,null',
         ];
     }
 
@@ -41,13 +43,30 @@ class GetEtag extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        /** @var VCardResource */
-        $entry = $data['entry'];
+        if (isset($data['vcalendar'])) {
+            $entry = $data['vcalendar'];
+            if (! $entry instanceof VCalendarResource) {
+                throw new ModelNotFoundException;
+            }
 
-        if ($entry->vault_id != $this->vault->id) {
+            if ($entry->contact->vault_id !== $this->vault->id) {
+                throw new ModelNotFoundException;
+            }
+
+            return $entry->distant_etag ?? '"'.hash('sha256', $entry->vcalendar).'"';
+        } elseif (isset($data['vcard'])) {
+            $entry = $data['vcard'];
+            if (! $entry instanceof VCardResource) {
+                throw new ModelNotFoundException;
+            }
+
+            if ($entry->vault_id != $this->vault->id) {
+                throw new ModelNotFoundException;
+            }
+
+            return $entry->distant_etag ?? '"'.hash('sha256', $entry->vcard).'"';
+        } else {
             throw new ModelNotFoundException;
         }
-
-        return $entry->distant_etag ?? '"'.hash('sha256', $entry->vcard).'"';
     }
 }
