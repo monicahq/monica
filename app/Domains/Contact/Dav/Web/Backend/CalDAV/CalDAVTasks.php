@@ -2,6 +2,7 @@
 
 namespace App\Domains\Contact\Dav\Web\Backend\CalDAV;
 
+use App\Domains\Contact\Dav\IDavResource;
 use App\Domains\Contact\Dav\Services\ExportVCalendar;
 use App\Domains\Contact\Dav\Services\GetEtag;
 use App\Domains\Contact\Dav\Services\ImportVCalendar;
@@ -92,7 +93,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Get the new exported version of the object.
      */
-    protected function refreshObject(mixed $obj): string
+    protected function refreshObject(IDavResource $obj): string
     {
         $vcal = (new ExportVCalendar)->execute([
             'account_id' => $this->user->account_id,

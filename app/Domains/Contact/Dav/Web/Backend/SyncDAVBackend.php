@@ -5,7 +5,6 @@ namespace App\Domains\Contact\Dav\Web\Backend;
 use App\Domains\Contact\Dav\IDavResource;
 use App\Models\SyncToken;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -75,7 +74,7 @@ trait SyncDAVBackend
     public function getLastModified(?string $collectionId): ?Carbon
     {
         return $this->getObjects($collectionId)
-            ->map(fn (Model $object) => $object->updated_at)
+            ->map(fn (IDavResource $object) => $object->updated_at)
             ->max();
     }
 
@@ -269,5 +268,5 @@ trait SyncDAVBackend
     /**
      * Get the new exported version of the object.
      */
-    // abstract protected function refreshObject(IDavResource $obj): string;
+    abstract protected function refreshObject(IDavResource $obj): string;
 }

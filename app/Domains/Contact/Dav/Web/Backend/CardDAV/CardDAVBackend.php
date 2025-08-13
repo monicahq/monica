@@ -2,6 +2,7 @@
 
 namespace App\Domains\Contact\Dav\Web\Backend\CardDAV;
 
+use App\Domains\Contact\Dav\IDavResource;
 use App\Domains\Contact\Dav\Jobs\UpdateVCard;
 use App\Domains\Contact\Dav\Services\ExportVCard;
 use App\Domains\Contact\Dav\Services\GetEtag;
@@ -224,7 +225,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
     /**
      * Get the new exported version of the object.
      */
-    protected function refreshObject(VCardResource $obj): string
+    protected function refreshObject(IDavResource $obj): string
     {
         $request = [
             'account_id' => $this->user->account_id,
@@ -274,7 +275,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
     /**
      * Returns the collection of all active contacts.
      *
-     * @return \Illuminate\Support\Collection<array-key,VCardResource>
+     * @return \Illuminate\Support\Collection<array-key,IDavResource>
      */
     public function getObjects(?string $collectionId): Collection
     {
@@ -301,7 +302,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
     /**
      * Returns the collection of deleted contacts.
      *
-     * @return \Illuminate\Support\Collection<array-key,VCardResource>
+     * @return \Illuminate\Support\Collection<array-key,IDavResource>
      */
     public function getDeletedObjects(?string $collectionId): Collection
     {
@@ -344,6 +345,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
      */
     public function getCards($addressbookId): array
     {
+        /** @var Collection<array-key,VCardResource> $cards */
         $cards = $this->getObjects($addressbookId);
 
         return $cards

@@ -2,6 +2,7 @@
 
 namespace App\Domains\Contact\Dav\Web\Backend\CalDAV;
 
+use App\Domains\Contact\Dav\IDavResource;
 use App\Domains\Contact\Dav\Services\GetEtag;
 use App\Domains\Contact\Dav\VCalendarResource;
 use App\Domains\Contact\Dav\Web\Backend\IDAVBackend;
@@ -48,7 +49,7 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
     /**
      * Get the new exported version of the object.
      */
-    abstract protected function refreshObject(mixed $obj): string;
+    abstract protected function refreshObject(IDavResource $obj): string;
 
     /**
      * Extension for Calendar objects.

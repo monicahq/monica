@@ -2,6 +2,7 @@
 
 namespace App\Domains\Contact\Dav\Web\Backend\CalDAV;
 
+use App\Domains\Contact\Dav\IDavResource;
 use App\Domains\Contact\Dav\Services\ExportVCalendar;
 use App\Domains\Contact\ManageContactImportantDates\Services\DestroyContactImportantDate;
 use App\Models\Contact;
@@ -59,7 +60,7 @@ class CalDAVDates extends AbstractCalDAVBackend
     /**
      * Get the new exported version of the object.
      */
-    protected function refreshObject(mixed $obj): string
+    protected function refreshObject(IDavResource $obj): string
     {
         $vcal = (new ExportVCalendar)->execute([
             'account_id' => $this->user->account_id,

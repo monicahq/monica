@@ -57,8 +57,7 @@ class ImportContactTask extends VCalendarImporter implements ImportVCalendarReso
             $task = app(UpdateContactTask::class)->execute($data);
         }
 
-        $updated = false;
-        $updated = $this->importCompleted($task, $vcalendar) || $updated;
+        $updated = $this->importCompleted($task, $vcalendar);
         $updated = $this->importTaskUid($task, $vcalendar) || $updated;
         $updated = $this->importTimestamp($task, $vcalendar) || $updated;
 
@@ -177,6 +176,7 @@ class ImportContactTask extends VCalendarImporter implements ImportVCalendarReso
     private function importTimestamp(ContactTask $task, VCalendar $entry): bool
     {
         if (empty($task->created_at)) {
+            $created_at = null;
             if ($entry->VTODO->DTSTAMP) {
                 $created_at = Carbon::parse($entry->VTODO->DTSTAMP->getDateTime());
             } elseif ($entry->VTODO->CREATED) {
