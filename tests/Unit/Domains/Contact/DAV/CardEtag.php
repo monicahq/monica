@@ -3,6 +3,7 @@
 namespace Tests\Unit\Domains\Contact\DAV;
 
 use App\Models\Contact;
+use App\Models\ContactTask;
 
 trait CardEtag
 {
@@ -53,6 +54,44 @@ trait CardEtag
         if ($realFormat) {
             $data = mb_ereg_replace("\n", "\r\n", $data);
         }
+
+        return $data;
+    }
+
+    protected function getTask(ContactTask $task): string
+    {
+        $task = $task->refresh();
+        $url = route('contact.show', [
+            'vault' => $task->contact->vault_id,
+            'contact' => $task->contact,
+        ]);
+        $sabreversion = \Sabre\VObject\Version::VERSION;
+
+        $data = $this->append('BEGIN:VCALENDAR');
+        $data = $this->append('VERSION:2.0', $data);
+        $data = $this->append("PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN", $data);
+        $data = $this->append('CALSCALE:GREGORIAN', $data);
+        $data = $this->append("UID:{$task->uuid}", $data);
+        $data = $this->append("SOURCE:{$url}", $data);
+
+        $data = $this->append('BEGIN:VTIMEZONE', $data);
+        $data = $this->append('TZID:UTC', $data);
+        $data = $this->append('END:VTIMEZONE', $data);
+
+        $data = $this->append('BEGIN:VTODO', $data);
+        $data = $this->append("UID:{$task->uuid}", $data);
+        $data = $this->append("SUMMARY:{$task->label}", $data);
+        $data = $this->append("DTSTAMP:{$task->created_at->format('Ymd\THis\Z')}", $data);
+        $data = $this->append("CREATED:{$task->created_at->format('Ymd\THis\Z')}", $data);
+        if ($task->due_at) {
+            $data = $this->append("DUE:{$task->due_at->format('Ymd\THis\Z')}", $data);
+        }
+
+        $data = $this->append("ATTACH:{$url}", $data);
+        $data = $this->append('END:VTODO', $data);
+        $data = $this->append('END:VCALENDAR', $data);
+
+        $data = mb_ereg_replace("\n", "\r\n", $data);
 
         return $data;
     }

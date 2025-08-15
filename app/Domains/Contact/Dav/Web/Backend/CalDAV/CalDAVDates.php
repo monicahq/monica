@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Bus;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
-use Sabre\DAV\Server as SabreServer;
 
 class CalDAVDates extends AbstractCalDAVBackend
 {
@@ -36,8 +35,7 @@ class CalDAVDates extends AbstractCalDAVBackend
     {
         return parent::getDescription()
         + [
-            '{DAV:}displayname' => trans('Contacts Important Dates'),
-            '{'.SabreServer::NS_SABREDAV.'}read-only' => true,
+            '{DAV:}displayname' => trans('Contact important dates of :name', ['name' => $this->vault->name]),
             '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => trans('Contact important dates of :name', ['name' => $this->vault->name]),
             '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => $this->user->timezone,
             '{'.CalDAVPlugin::NS_CALDAV.'}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VEVENT']),
@@ -102,12 +100,6 @@ class CalDAVDates extends AbstractCalDAVBackend
         return $this->vault->contacts
             ->map(fn (Contact $contact) => $contact->importantDates()->onlyTrashed()->get())
             ->flatten(1);
-    }
-
-    public function updateOrCreateCalendarObject(?string $calendarId, ?string $objectUri, ?string $calendarData): ?string
-    {
-        // TODO
-        return null;
     }
 
     public function deleteCalendarObject(?string $objectUri): void

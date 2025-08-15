@@ -4,12 +4,14 @@ namespace App\Domains\Contact\Dav\Web\Backend\CalDAV;
 
 use App\Domains\Contact\Dav\IDavResource;
 use App\Domains\Contact\Dav\Services\GetEtag;
+use App\Domains\Contact\Dav\Services\ImportVCalendar;
 use App\Domains\Contact\Dav\VCalendarResource;
 use App\Domains\Contact\Dav\Web\Backend\IDAVBackend;
 use App\Domains\Contact\Dav\Web\Backend\SyncDAVBackend;
 use App\Domains\Contact\Dav\Web\Backend\WithUser;
 use App\Domains\Contact\Dav\Web\DAVACL\PrincipalBackend;
 use App\Models\Vault;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\DAV\Server as SabreServer;
@@ -97,6 +99,53 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
             ]);
             throw $e;
         }
+    }
 
+    /**
+     * Updates an existing calendarobject, based on it's uri.
+     *
+     * The object uri is only the basename, or filename and not a full path.
+     *
+     * It is possible return an etag from this function, which will be used in
+     * the response to this PUT request. Note that the ETag must be surrounded
+     * by double-quotes.
+     *
+     * However, you should only really return this ETag if you don't mangle the
+     * calendar-data. If the result of a subsequent GET to this object is not
+     * the exact same as this request body, you should omit the ETag.
+     */
+    public function updateOrCreateCalendarObject(?string $calendarId, ?string $objectUri, ?string $calendarData): ?string
+    {
+        // $job = new UpdateVCalendar([
+        //     'account_id' => $this->user->account_id,
+        //     'author_id' => $this->user->id,
+        //     'vault_id' => $this->vault->id,
+        //     'uri' => $objectUri,
+        //     'calendar' => $calendarData,
+        // ]);
+
+        // Bus::batch([$job])
+        //     ->allowFailures()
+        //     ->onQueue('high')
+        //     ->dispatch();
+
+        $result = app(ImportVCalendar::class)->execute([
+            'account_id' => $this->user->account_id,
+            'author_id' => $this->user->id,
+            'vault_id' => $this->vault->id,
+            'uri' => $objectUri,
+            'entry' => $calendarData,
+        ]);
+
+        if (! Arr::has($result, 'error')) {
+            return (new GetEtag)->execute([
+                'account_id' => $this->user->account_id,
+                'author_id' => $this->user->id,
+                'vault_id' => $this->vault->id,
+                'vcalendar' => $result['entry'],
+            ]);
+        }
+
+        return null;
     }
 }

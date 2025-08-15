@@ -25,14 +25,6 @@ class ImportContactTask extends VCalendarImporter implements ImportVCalendarReso
      */
     public function handle(VCalendar $vcalendar): bool
     {
-        return true;
-    }
-
-    /**
-     * Can import ImportantDates.
-     */
-    public function can(VCalendar $vcalendar): bool
-    {
         return $vcalendar->VTODO !== null;
     }
 

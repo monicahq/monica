@@ -32,6 +32,7 @@ class UserFactory extends Factory
             'date_format' => 'MMM DD, YYYY',
             'default_map_site' => User::MAPS_SITE_GOOGLE_MAPS,
             'help_shown' => true,
+            'timezone' => 'UTC',
         ];
     }
 
