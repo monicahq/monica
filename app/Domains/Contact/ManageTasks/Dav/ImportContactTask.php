@@ -14,6 +14,7 @@ use App\Models\ContactTask;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 use Sabre\VObject\Component\VCalendar;
 
@@ -154,10 +155,8 @@ class ImportContactTask extends VCalendarImporter implements ImportVCalendarReso
 
     private function importTaskUid(ContactTask $task, VCalendar $entry): bool
     {
-        if (empty($task->uuid) && Uuid::isValid((string) $entry->VTODO->UID)) {
-            $task->forceFill([
-                'uuid' => (string) $entry->VTODO->UID,
-            ]);
+        if (Str::isUuid((string) $entry->VTODO->UID)) {
+            $task->uuid = (string) $entry->VTODO->UID;
 
             return true;
         }

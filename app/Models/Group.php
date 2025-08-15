@@ -4,8 +4,7 @@ namespace App\Models;
 
 use App\Domains\Contact\Dav\VCardResource;
 use App\Helpers\ScoutHelper;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use App\Traits\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -32,22 +31,11 @@ class Group extends VCardResource
         'vault_id',
         'group_type_id',
         'name',
-        'uuid',
         'vcard',
         'distant_uuid',
         'distant_etag',
         'distant_uri',
     ];
-
-    /**
-     * Get the columns that should receive a unique identifier.
-     *
-     * @return array
-     */
-    public function uniqueIds()
-    {
-        return ['uuid'];
-    }
 
     /**
      * Get the indexable data array for the model.
@@ -110,25 +98,5 @@ class Group extends VCardResource
     public function feedItem(): MorphOne
     {
         return $this->morphOne(ContactFeedItem::class, 'feedable');
-    }
-
-    /**
-     * Get the uuid of the group.
-     *
-     * @return Attribute<string,never>
-     */
-    protected function uuid(): Attribute
-    {
-        return Attribute::make(
-            get: function (?string $value, array $attributes) {
-                if (! isset($attributes['uuid'])) {
-                    return tap($this->newUniqueId(), function ($uuid) {
-                        $this->forceFill(['uuid' => $uuid]);
-                    });
-                }
-
-                return $attributes['uuid'];
-            }
-        );
     }
 }

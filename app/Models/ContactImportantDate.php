@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Domains\Contact\Dav\VCalendarResource;
+use App\Traits\HasUuids;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,6 +17,7 @@ use Illuminate\Support\Str;
 class ContactImportantDate extends VCalendarResource
 {
     use HasFactory;
+    use HasUuids;
     use SoftDeletes;
 
     protected $table = 'contact_important_dates';

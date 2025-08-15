@@ -12,7 +12,6 @@ use App\Models\ContactTask;
 use App\Services\BaseService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use ReflectionClass;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\ParseException;
@@ -22,6 +21,8 @@ class ExportVCalendar extends BaseService implements ServiceInterface
 {
     /** @var Collection<array-key,ExportVCalendarResource>|null */
     private static ?Collection $exporters = null;
+
+    private ?VCalendarResource $resource = null;
 
     /**
      * Get the validation rules that apply to the service.
@@ -56,45 +57,49 @@ class ExportVCalendar extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        if (isset($data['contact_task_id'])) {
-            $obj = ContactTask::find($data['contact_task_id']);
-            if ($obj->contact->vault_id !== $data['vault_id']) {
+        $vcalendar = $this->export();
+
+        $this->resource::withoutTimestamps(function () use ($vcalendar): void {
+            $this->resource->vcalendar = $vcalendar->serialize();
+            $this->resource->save();
+        });
+
+        return $vcalendar;
+    }
+
+    #[\Override]
+    public function validateRules(array $data): bool
+    {
+        if (! parent::validateRules($data)) {
+            return false;
+        }
+
+        if (isset($data['contact_important_date_id'])) {
+            $this->resource = ContactImportantDate::find($data['contact_important_date_id']);
+            if ($this->resource->contact->vault_id !== $data['vault_id']) {
                 throw new ModelNotFoundException;
             }
-        } elseif (isset($data['contact_important_date_id'])) {
-            $obj = ContactImportantDate::find($data['contact_important_date_id']);
-            if ($obj->contact->vault_id !== $data['vault_id']) {
+        } elseif (isset($data['contact_task_id'])) {
+            $this->resource = ContactTask::find($data['contact_task_id']);
+            if ($this->resource->contact->vault_id !== $data['vault_id']) {
                 throw new ModelNotFoundException;
             }
         } else {
             throw new ModelNotFoundException;
         }
 
-        $vcalendar = $this->export($obj);
-
-        $obj::withoutTimestamps(function () use ($obj, $vcalendar): void {
-            $obj->vcalendar = $vcalendar->serialize();
-            $obj->save();
-        });
-
-        return $vcalendar;
+        return true;
     }
 
-    private function export(VCalendarResource $obj): VCalendar
+    private function export(): VCalendar
     {
         // The standard for most of these fields can be found on https://datatracker.ietf.org/doc/html/rfc5545
-        if (! $obj->uuid) {
-            $obj->forceFill([
-                'uuid' => Str::uuid(),
-            ])->save();
-        }
-
-        if ($obj->vcard) {
+        if ($this->resource->vcard) {
             try {
                 /** @var VCalendar */
-                $vcalendar = Reader::read($obj->vcard, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
+                $vcalendar = Reader::read($this->resource->vcard, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
                 if (! $vcalendar->UID) {
-                    $vcalendar->UID = $obj->uuid;
+                    $vcalendar->UID = $this->resource->uuid;
                 }
             } catch (ParseException $e) {
                 // Ignore error
@@ -104,16 +109,16 @@ class ExportVCalendar extends BaseService implements ServiceInterface
         if (! isset($vcalendar)) {
             // Basic information
             $vcalendar = new VCalendar([
-                'UID' => $obj->uuid,
-                'SOURCE' => $this->getSource($obj),
+                'UID' => $this->resource->uuid,
+                'SOURCE' => $this->getSource($this->resource),
                 'VERSION' => '2.0',
             ]);
         }
 
-        $exporters = $this->exporters($obj::class);
+        $exporters = $this->exporters($this->resource::class);
 
         foreach ($exporters as $exporter) {
-            $exporter->export($obj, $vcalendar);
+            $exporter->export($this->resource, $vcalendar);
         }
 
         return $vcalendar;

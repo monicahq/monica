@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Domains\Contact\Dav\VCalendarResource;
+use App\Traits\HasUuids;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ContactTask extends VCalendarResource
 {
     use HasFactory;
+    use HasUuids;
     use SoftDeletes;
 
     protected $table = 'contact_tasks';

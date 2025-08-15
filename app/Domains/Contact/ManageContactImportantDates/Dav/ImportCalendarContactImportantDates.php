@@ -14,6 +14,7 @@ use App\Models\ContactImportantDate;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 use Sabre\VObject\Component\VCalendar;
 
@@ -148,10 +149,8 @@ class ImportCalendarContactImportantDates extends VCalendarImporter implements I
 
     private function ImportImportantDateUid(ContactImportantDate $importantDate, VCalendar $entry): bool
     {
-        if (empty($importantDate->uuid) && Uuid::isValid((string) $entry->VEVENT->UID)) {
-            $importantDate->forceFill([
-                'uuid' => (string) $entry->VEVENT->UID,
-            ]);
+        if (Str::isUuid((string) $entry->VEVENT->UID)) {
+            $importantDate->uuid = (string) $entry->VEVENT->UID;
 
             return true;
         }
