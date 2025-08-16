@@ -51,7 +51,7 @@ class ExportContactTask extends Exporter implements ExportVCalendarResource
 
         $vtodo->DTSTAMP = $task->created_at;
         $vtodo->CREATED = $task->created_at;
-        $vtodo->LAST_MODIFIED = $task->updated_at;
+        $vtodo->{'LAST-MODIFIED'} = $task->updated_at;
 
         if ($task->description != '') {
             $vtodo->DESCRIPTION = $task->description;

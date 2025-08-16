@@ -71,7 +71,6 @@ trait CardEtag
         $data = $this->append('VERSION:2.0', $data);
         $data = $this->append("PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN", $data);
         $data = $this->append('CALSCALE:GREGORIAN', $data);
-        $data = $this->append("UID:{$task->uuid}", $data);
         $data = $this->append("SOURCE:{$url}", $data);
 
         $data = $this->append('BEGIN:VTIMEZONE', $data);
@@ -83,6 +82,7 @@ trait CardEtag
         $data = $this->append("SUMMARY:{$task->label}", $data);
         $data = $this->append("DTSTAMP:{$task->created_at->format('Ymd\THis\Z')}", $data);
         $data = $this->append("CREATED:{$task->created_at->format('Ymd\THis\Z')}", $data);
+        $data = $this->append("LAST-MODIFIED:{$task->updated_at->format('Ymd\THis\Z')}", $data);
         if ($task->due_at) {
             $data = $this->append("DUE:{$task->due_at->format('Ymd\THis\Z')}", $data);
         }

@@ -57,7 +57,7 @@ class ExportCalendarImportantDates extends Exporter implements ExportVCalendarRe
 
         $vevent->DTSTAMP = $importantDate->created_at;
         $vevent->CREATED = $importantDate->created_at;
-        $vevent->LAST_MODIFIED = $importantDate->updated_at;
+        $vevent->{'LAST-MODIFIED'} = $importantDate->updated_at;
 
         $url = route('contact.show', [
             'vault' => $importantDate->contact->vault->id,

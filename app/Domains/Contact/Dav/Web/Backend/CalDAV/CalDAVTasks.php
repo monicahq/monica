@@ -137,7 +137,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
             /** @var VCalendar */
             $vcalendar = Reader::read($card, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
 
-            return Carbon::parse(optional($vcalendar->VTODO)->LAST_MODIFIED);
+            return Carbon::parse(optional($vcalendar->VTODO)->{'LAST-MODIFIED'});
         } catch (ParseException $e) {
             // Ignore error
         }

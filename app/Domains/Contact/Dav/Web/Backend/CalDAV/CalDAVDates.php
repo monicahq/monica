@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Bus;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
+use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\ParseException;
 use Sabre\VObject\Reader;
 
@@ -132,7 +133,7 @@ class CalDAVDates extends AbstractCalDAVBackend
             /** @var VCalendar */
             $vcalendar = Reader::read($card, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
 
-            return Carbon::parse(optional($vcalendar->VEVENT)->LAST_MODIFIED);
+            return Carbon::parse(optional($vcalendar->VEVENT)->{'LAST-MODIFIED'});
         } catch (ParseException $e) {
             // Ignore error
         }
