@@ -11,6 +11,7 @@ use App\Domains\Contact\Dav\Web\Backend\SyncDAVBackend;
 use App\Domains\Contact\Dav\Web\Backend\WithUser;
 use App\Domains\Contact\Dav\Web\DAVACL\PrincipalBackend;
 use App\Models\Vault;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
@@ -68,11 +69,11 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
     {
         $calendardata = $resource->vcalendar;
         try {
-            // if ($calendardata) {
-            //     $timestamp = $this->rev($calendardata);
-            // }
+            if ($calendardata) {
+                $timestamp = $this->lastModified($calendardata);
+            }
 
-            if ($calendardata === null || empty($calendardata)) { // || $timestamp === null || $timestamp < $resource->updated_at) {
+            if ($calendardata === null || empty($calendardata) || $timestamp === null || $timestamp < $resource->updated_at) {
                 $calendardata = $this->refreshObject($resource);
             }
 
@@ -100,6 +101,8 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
             throw $e;
         }
     }
+
+    abstract protected function lastModified(string $card): ?Carbon;
 
     /**
      * Updates an existing calendarobject, based on it's uri.

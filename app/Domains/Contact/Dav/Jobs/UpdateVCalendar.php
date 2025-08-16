@@ -6,7 +6,6 @@ use App\Domains\Contact\Dav\Services\GetEtag;
 use App\Domains\Contact\Dav\Services\ImportVCalendar;
 use App\Interfaces\ServiceInterface;
 use App\Services\QueuableService;
-use Closure;
 use Illuminate\Bus\Batchable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -30,7 +29,7 @@ class UpdateVCalendar extends QueuableService implements ServiceInterface
             'external' => 'nullable|boolean',
             'calendar' => [
                 'required',
-                function (string $attribute, mixed $value, Closure $fail) {
+                function (string $attribute, mixed $value, \Closure $fail) {
                     if (! is_string($value) && ! is_resource($value)) {
                         $fail($attribute.' must be a string or a resource.');
                     }
@@ -65,6 +64,7 @@ class UpdateVCalendar extends QueuableService implements ServiceInterface
             $newtag = $this->updateCalendar($this->data['uri'], $this->data['calendar']);
 
             if ($newtag !== null && ($etag = Arr::get($this->data, 'etag')) !== null && $newtag !== $etag) {
+                optional($this->job)->fail(new \Exception('Wrong etag when updating contact. Expected ['.$etag.'], got ['.$newtag.']'));
                 Log::channel('database')->warning(__CLASS__.' '.__FUNCTION__." wrong etag when updating contact. Expected [$etag], got [$newtag]", [
                     'contacturl' => $this->data['uri'],
                     'calendardata' => $this->data['calendar'],
@@ -98,6 +98,7 @@ class UpdateVCalendar extends QueuableService implements ServiceInterface
                 ]);
             }
         } catch (\Exception $e) {
+            optional($this->job)->fail($e);
             Log::channel('database')->error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
                 'uri' => $uri,
                 'calendardata' => $calendar,

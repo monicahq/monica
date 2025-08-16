@@ -14,9 +14,9 @@ use App\Models\ContactTask;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 use Sabre\VObject\Component\VCalendar;
+use Sabre\VObject\Component\VTodo;
 
 #[Order(1)]
 class ImportContactTask extends VCalendarImporter implements ImportVCalendarResource
@@ -36,13 +36,14 @@ class ImportContactTask extends VCalendarImporter implements ImportVCalendarReso
     {
         $task = $this->getExistingTask($vcalendar);
 
-        $data = $this->getContactData($task);
+        $data = $this->getContactTaskData($task);
         $original = $data;
 
-        $data = $this->importUid($data, $vcalendar);
-        $data = $this->importSummary($data, $vcalendar);
-        $data = $this->importDescription($data, $vcalendar);
-        $data = $this->importDue($data, $vcalendar);
+        $vtodo = $vcalendar->VTODO;
+        // $data = $this->importUid($data, $vtodo);
+        $data = $this->importSummary($data, $vtodo);
+        $data = $this->importDescription($data, $vtodo);
+        $data = $this->importDue($data, $vtodo);
 
         if ($task === null) {
             $task = app(CreateContactTask::class)->execute($data);
@@ -50,9 +51,8 @@ class ImportContactTask extends VCalendarImporter implements ImportVCalendarReso
             $task = app(UpdateContactTask::class)->execute($data);
         }
 
-        $updated = $this->importCompleted($task, $vcalendar);
-        $updated = $this->importTaskUid($task, $vcalendar) || $updated;
-        $updated = $this->importTimestamp($task, $vcalendar) || $updated;
+        $updated = $this->importCompleted($task, $vtodo);
+        $updated = $this->importTimestamp($task, $vtodo) || $updated;
 
         if ($this->context->external && $task->distant_uuid === null) {
             $task->distant_uuid = $this->getUid($vcalendar);
@@ -112,9 +112,22 @@ class ImportContactTask extends VCalendarImporter implements ImportVCalendarReso
     }
 
     /**
+     * Get uid of the task.
+     */
+    #[\Override]
+    protected function getUid(VCalendar $entry): ?string
+    {
+        if (! empty($uuid = (string) $entry->VTODO->UID)) {
+            return $uuid;
+        }
+
+        return null;
+    }
+
+    /**
      * Get contact data.
      */
-    private function getContactData(?ContactTask $task): array
+    private function getContactTaskData(?ContactTask $task): array
     {
         return [
             'account_id' => $this->account()->id,
@@ -128,50 +141,39 @@ class ImportContactTask extends VCalendarImporter implements ImportVCalendarReso
         ];
     }
 
-    private function importSummary(array $data, VCalendar $entry): array
+    private function importSummary(array $data, VTodo $entry): array
     {
-        $data['label'] = $this->formatValue($entry->VTODO->SUMMARY);
+        $data['label'] = $this->formatValue($entry->SUMMARY);
 
         return $data;
     }
 
-    private function importDescription(array $data, VCalendar $entry): array
+    private function importDescription(array $data, VTodo $entry): array
     {
-        if ($entry->VTODO->DESCRIPTION) {
-            $data['description'] = $this->formatValue($entry->VTODO->DESCRIPTION);
+        if ($entry->DESCRIPTION) {
+            $data['description'] = $this->formatValue($entry->DESCRIPTION);
         }
 
         return $data;
     }
 
-    private function importDue(array $data, VCalendar $entry): array
+    private function importDue(array $data, VTodo $entry): array
     {
-        if ($entry->VTODO->DUE) {
-            $data['due_at'] = Carbon::parse($entry->VTODO->DUE->getDateTime());
+        if ($entry->DUE) {
+            $data['due_at'] = Carbon::parse($entry->DUE->getDateTime());
         }
 
         return $data;
     }
 
-    private function importTaskUid(ContactTask $task, VCalendar $entry): bool
-    {
-        if (Str::isUuid((string) $entry->VTODO->UID)) {
-            $task->uuid = (string) $entry->VTODO->UID;
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private function importTimestamp(ContactTask $task, VCalendar $entry): bool
+    private function importTimestamp(ContactTask $task, VTodo $entry): bool
     {
         if (empty($task->created_at)) {
             $created_at = null;
-            if ($entry->VTODO->DTSTAMP) {
-                $created_at = Carbon::parse($entry->VTODO->DTSTAMP->getDateTime());
-            } elseif ($entry->VTODO->CREATED) {
-                $created_at = Carbon::parse($entry->VTODO->CREATED->getDateTime());
+            if ($entry->DTSTAMP) {
+                $created_at = Carbon::parse($entry->DTSTAMP->getDateTime());
+            } elseif ($entry->CREATED) {
+                $created_at = Carbon::parse($entry->CREATED->getDateTime());
             }
 
             if ($task->created_at !== $created_at) {
@@ -184,15 +186,15 @@ class ImportContactTask extends VCalendarImporter implements ImportVCalendarReso
         return false;
     }
 
-    private function importCompleted(ContactTask $task, VCalendar $entry): bool
+    private function importCompleted(ContactTask $task, VTodo $entry): bool
     {
-        $completed = ((string) $entry->VTODO->STATUS) == 'COMPLETED';
+        $completed = ((string) $entry->STATUS) == 'COMPLETED';
 
         if ($completed !== $task->completed) {
             if (! $task->completed) {
                 $task->completed_at = null;
-            } elseif ($entry->VTODO->COMPLETED) {
-                $task->completed_at = Carbon::parse($entry->VTODO->COMPLETED->getDateTime());
+            } elseif ($entry->COMPLETED) {
+                $task->completed_at = Carbon::parse($entry->COMPLETED->getDateTime());
             }
 
             $task->contact->last_updated_at = Carbon::now();

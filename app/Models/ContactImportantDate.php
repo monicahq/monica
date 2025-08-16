@@ -50,6 +50,10 @@ class ContactImportantDate extends VCalendarResource
         'month',
         'year',
         'contact_important_date_type_id',
+        'vcalendar',
+        'distant_uuid',
+        'distant_etag',
+        'distant_uri',
     ];
 
     /**

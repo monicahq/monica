@@ -31,6 +31,10 @@ class ContactTask extends VCalendarResource
         'completed',
         'completed_at',
         'due_at',
+        'vcalendar',
+        'distant_uuid',
+        'distant_etag',
+        'distant_uri',
     ];
 
     /**

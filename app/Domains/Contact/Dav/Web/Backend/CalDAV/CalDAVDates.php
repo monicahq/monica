@@ -7,11 +7,14 @@ use App\Domains\Contact\Dav\Services\ExportVCalendar;
 use App\Domains\Contact\ManageContactImportantDates\Services\DestroyContactImportantDate;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
+use Sabre\VObject\ParseException;
+use Sabre\VObject\Reader;
 
 class CalDAVDates extends AbstractCalDAVBackend
 {
@@ -120,5 +123,20 @@ class CalDAVDates extends AbstractCalDAVBackend
                 ->onQueue('high')
                 ->dispatch();
         }
+    }
+
+    #[\Override]
+    protected function lastModified(string $card): ?Carbon
+    {
+        try {
+            /** @var VCalendar */
+            $vcalendar = Reader::read($card, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
+
+            return Carbon::parse(optional($vcalendar->VEVENT)->LAST_MODIFIED);
+        } catch (ParseException $e) {
+            // Ignore error
+        }
+
+        return null;
     }
 }

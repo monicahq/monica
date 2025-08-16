@@ -18,7 +18,7 @@ class CleanSyncToken extends QueuableService implements ServiceInterface
      */
     public function execute(array $data): void
     {
-        $this->timefix = now()->addDays(-7);
+        $this->timefix = now()->addDays(-1 * intval(config('dav.sync_token_keep_days')));
 
         DB::table('sync_tokens')
             ->orderBy('user_id')

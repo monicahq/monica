@@ -14,9 +14,9 @@ use App\Models\ContactImportantDate;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 use Sabre\VObject\Component\VCalendar;
+use Sabre\VObject\Component\VEvent;
 
 #[Order(1)]
 class ImportCalendarContactImportantDates extends VCalendarImporter implements ImportVCalendarResource
@@ -39,9 +39,9 @@ class ImportCalendarContactImportantDates extends VCalendarImporter implements I
         $data = $this->getContactData($importantDate);
         $original = $data;
 
-        $data = $this->importUid($data, $vcalendar);
-        $data = $this->importSummary($data, $vcalendar);
-        $data = $this->importDate($data, $vcalendar);
+        $vevent = $vcalendar->VEVENT;
+        $data = $this->importSummary($data, $vevent);
+        $data = $this->importDate($data, $vevent);
 
         if ($importantDate === null) {
             $importantDate = app(CreateContactImportantDate::class)->execute($data);
@@ -49,8 +49,7 @@ class ImportCalendarContactImportantDates extends VCalendarImporter implements I
             $importantDate = app(UpdateContactImportantDate::class)->execute($data);
         }
 
-        $updated = $this->ImportImportantDateUid($importantDate, $vcalendar);
-        $updated = $this->importTimestamp($importantDate, $vcalendar) || $updated;
+        $updated = $this->importTimestamp($importantDate, $vevent);
 
         if ($this->context->external && $importantDate->distant_uuid === null) {
             $importantDate->distant_uuid = $this->getUid($vcalendar);
@@ -110,6 +109,19 @@ class ImportCalendarContactImportantDates extends VCalendarImporter implements I
     }
 
     /**
+     * Get uid of the task.
+     */
+    #[\Override]
+    protected function getUid(VCalendar $entry): ?string
+    {
+        if (! empty($uuid = (string) $entry->VEVENT->UID)) {
+            return $uuid;
+        }
+
+        return null;
+    }
+
+    /**
      * Get contact data.
      */
     private function getContactData(?ContactImportantDate $importantDate): array
@@ -128,17 +140,17 @@ class ImportCalendarContactImportantDates extends VCalendarImporter implements I
         ];
     }
 
-    private function importSummary(array $data, VCalendar $entry): array
+    private function importSummary(array $data, VEvent $entry): array
     {
-        $data['label'] = $this->formatValue($entry->VEVENT->SUMMARY);
+        $data['label'] = $this->formatValue($entry->SUMMARY);
 
         return $data;
     }
 
-    private function importDate(array $data, VCalendar $entry): array
+    private function importDate(array $data, VEvent $entry): array
     {
-        if ($entry->VEVENT->DTSTART) {
-            $date = Carbon::parse($entry->VEVENT->DTSTART->getDateTime());
+        if ($entry->DTSTART) {
+            $date = Carbon::parse($entry->DTSTART->getDateTime());
             $data['day'] = $date->day;
             $data['month'] = $date->month;
             $data['year'] = $date->year;
@@ -147,25 +159,14 @@ class ImportCalendarContactImportantDates extends VCalendarImporter implements I
         return $data;
     }
 
-    private function ImportImportantDateUid(ContactImportantDate $importantDate, VCalendar $entry): bool
-    {
-        if (Str::isUuid((string) $entry->VEVENT->UID)) {
-            $importantDate->uuid = (string) $entry->VEVENT->UID;
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private function importTimestamp(ContactImportantDate $importantDate, VCalendar $entry): bool
+    private function importTimestamp(ContactImportantDate $importantDate, VEvent $entry): bool
     {
         if (empty($importantDate->created_at)) {
             $created_at = null;
-            if ($entry->VEVENT->DTSTAMP) {
-                $created_at = Carbon::parse($entry->VEVENT->DTSTAMP->getDateTime());
-            } elseif ($entry->VEVENT->CREATED) {
-                $created_at = Carbon::parse($entry->VEVENT->CREATED->getDateTime());
+            if ($entry->DTSTAMP) {
+                $created_at = Carbon::parse($entry->DTSTAMP->getDateTime());
+            } elseif ($entry->CREATED) {
+                $created_at = Carbon::parse($entry->CREATED->getDateTime());
             }
 
             if ($importantDate->created_at !== $created_at) {

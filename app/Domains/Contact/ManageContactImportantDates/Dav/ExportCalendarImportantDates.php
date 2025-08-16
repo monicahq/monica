@@ -44,7 +44,7 @@ class ExportCalendarImportantDates extends Exporter implements ExportVCalendarRe
 
     private function exportDate(ContactImportantDate $importantDate, VEvent $vevent)
     {
-        $vevent->UID = $importantDate->uuid;
+        $vevent->UID = $importantDate->distant_uuid ?? $importantDate->uuid;
         $vevent->SUMMARY = $importantDate->label;
         $vevent->DTSTART = $importantDate->date->format('Ymd');
         $vevent->DTSTART['VALUE'] = 'DATE';
@@ -55,10 +55,9 @@ class ExportCalendarImportantDates extends Exporter implements ExportVCalendarRe
             $vevent->RRULE = "FREQ=YEARLY;BYMONTH={$importantDate->month};BYMONTHDAY={$importantDate->day}";
         }
 
-        if ($importantDate->created_at) {
-            $vevent->DTSTAMP = $importantDate->created_at;
-            $vevent->CREATED = $importantDate->created_at;
-        }
+        $vevent->DTSTAMP = $importantDate->created_at;
+        $vevent->CREATED = $importantDate->created_at;
+        $vevent->LAST_MODIFIED = $importantDate->updated_at;
 
         $url = route('contact.show', [
             'vault' => $importantDate->contact->vault->id,

@@ -46,13 +46,13 @@ class ExportContactTask extends Exporter implements ExportVCalendarResource
 
     private function exportVTodo(ContactTask $task, VTodo $vtodo)
     {
-        $vtodo->UID = $task->uuid;
+        $vtodo->UID = $task->distant_uuid ?? $task->uuid;
         $vtodo->SUMMARY = $task->label;
 
-        if ($task->created_at) {
-            $vtodo->DTSTAMP = $task->created_at;
-            $vtodo->CREATED = $task->created_at;
-        }
+        $vtodo->DTSTAMP = $task->created_at;
+        $vtodo->CREATED = $task->created_at;
+        $vtodo->LAST_MODIFIED = $task->updated_at;
+
         if ($task->description != '') {
             $vtodo->DESCRIPTION = $task->description;
         }

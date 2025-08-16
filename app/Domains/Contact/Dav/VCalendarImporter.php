@@ -66,21 +66,14 @@ abstract class VCalendarImporter implements ImportVCalendarResource
     /**
      * Get uid of the card.
      */
-    protected function getUid(VCalendar $entry): ?string
-    {
-        if (! empty($uuid = (string) $entry->UID)) {
-            return $uuid;
-        }
-
-        return null;
-    }
+    abstract protected function getUid(VCalendar $entry): ?string;
 
     /**
      * Import UID.
      */
     protected function importUid(array $data, VCalendar $entry): array
     {
-        if (($uuid = $this->getUid($entry)) !== null && Uuid::isValid($uuid)) {
+        if (($uuid = $this->getUid($entry)) !== null && Uuid::isValid($uuid) && ! $this->context->external) {
             $data['id'] = $uuid;
         }
 
