@@ -140,7 +140,7 @@ return [
         'index-settings' => [
             Contact::class => [
                 'filterableAttributes' => ['id', 'vault_id'],
-                'sortableAttributes' => ['updated_at'],
+                'sortableAttributes' => ['updated_at', 'first_name', 'last_name'],
             ],
             Group::class => [
                 'filterableAttributes' => ['id', 'vault_id'],
