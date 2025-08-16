@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Bus;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
+use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\ParseException;
 use Sabre\VObject\Reader;
 
@@ -21,7 +22,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
     /**
      * Returns the id for this backend.
      */
-    public function backendId(): string
+    public function backendId(?string $collectionId = null): string
     {
         return "tasks-{$this->vault->id}";
     }
@@ -39,7 +40,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
         return parent::getDescription()
         + [
             '{DAV:}displayname' => trans('Tasks of :name', ['name' => $this->vault->name]),
-            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => trans('Tasks of :name', ['name' => $this->vault->name]),
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => $this->vault->name,
             '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => $this->user->timezone,
             '{'.CalDAVPlugin::NS_CALDAV.'}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VTODO']),
             '{'.CalDAVPlugin::NS_CALDAV.'}schedule-calendar-transp' => new ScheduleCalendarTransp(ScheduleCalendarTransp::TRANSPARENT),

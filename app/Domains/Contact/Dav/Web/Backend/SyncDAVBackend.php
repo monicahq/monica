@@ -21,7 +21,7 @@ trait SyncDAVBackend
         return SyncToken::where([
             'account_id' => $this->user->account_id,
             'user_id' => $this->user->id,
-            'name' => "{$this->backendUri()}-$collectionId",
+            'name' => $this->backendId($collectionId),
         ])
             ->orderBy('created_at', 'desc')
             ->first();
@@ -50,7 +50,7 @@ trait SyncDAVBackend
         return SyncToken::where([
             'account_id' => $this->user->account_id,
             'user_id' => $this->user->id,
-            'name' => "{$this->backendUri()}-$collectionId",
+            'name' => $this->backendId($collectionId),
         ])
             ->find($syncTokenId);
     }
@@ -63,7 +63,7 @@ trait SyncDAVBackend
         return SyncToken::create([
             'account_id' => $this->user->account_id,
             'user_id' => $this->user->id,
-            'name' => "{$this->backendUri()}-$collectionId",
+            'name' => $this->backendId($collectionId),
             'timestamp' => now(),
         ]);
     }

@@ -22,7 +22,7 @@ class CalDAVDates extends AbstractCalDAVBackend
     /**
      * Returns the id for this backend.
      */
-    public function backendId(): string
+    public function backendId(?string $collectionId = null): string
     {
         return "dates-{$this->vault->id}";
     }

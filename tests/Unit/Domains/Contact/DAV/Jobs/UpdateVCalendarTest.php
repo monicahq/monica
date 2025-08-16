@@ -6,6 +6,7 @@ use App\Domains\Contact\Dav\Jobs\UpdateVCalendar;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Tests\Unit\Domains\Contact\DAV\CardEtag;
@@ -16,6 +17,7 @@ class UpdateVCalendarTest extends TestCase
     use DatabaseTransactions;
 
     #[Test]
+    #[Group('dav')]
     public function it_creates_a_task()
     {
         $user = User::factory()->create();
@@ -56,6 +58,7 @@ END:VCALENDAR
     }
 
     #[Test]
+    #[Group('dav')]
     public function it_creates_a_date()
     {
         $user = User::factory()->create();

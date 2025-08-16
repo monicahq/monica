@@ -3,6 +3,7 @@
 namespace Tests\Unit\Domains\Contact\DAV;
 
 use App\Models\Contact;
+use App\Models\ContactImportantDate;
 use App\Models\ContactTask;
 
 trait CardEtag
@@ -12,6 +13,10 @@ trait CardEtag
         $data = '';
         if ($obj instanceof Contact) {
             $data = $this->getCard($obj, true);
+        } elseif ($obj instanceof ContactTask) {
+            $data = $this->getTask($obj, true);
+        } elseif ($obj instanceof ContactImportantDate) {
+            $data = $this->getDate($obj, true);
         }
 
         $etag = hash('sha256', $data);
@@ -96,16 +101,57 @@ trait CardEtag
         return $data;
     }
 
+    protected function getDate(ContactImportantDate $date): string
+    {
+        $date = $date->refresh();
+        $url = route('contact.show', [
+            'vault' => $date->contact->vault_id,
+            'contact' => $date->contact,
+        ]);
+        $sabreversion = \Sabre\VObject\Version::VERSION;
+
+        $data = $this->append('BEGIN:VCALENDAR');
+        $data = $this->append('VERSION:2.0', $data);
+        $data = $this->append("PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN", $data);
+        $data = $this->append('CALSCALE:GREGORIAN', $data);
+        $data = $this->append("SOURCE:{$url}", $data);
+
+        $data = $this->append('BEGIN:VTIMEZONE', $data);
+        $data = $this->append('TZID:UTC', $data);
+        $data = $this->append('END:VTIMEZONE', $data);
+
+        $data = $this->append('BEGIN:VEVENT', $data);
+        $data = $this->append("UID:{$date->uuid}", $data);
+        $data = $this->append("SUMMARY:{$date->label}", $data);
+        $data = $this->append("DTSTART;VALUE=DATE:{$date->year}{$date->month}{$date->day}", $data);
+        $day = $date->day + 1;
+        $data = $this->append("DTEND;VALUE=DATE:{$date->year}{$date->month}{$day}", $data);
+        $data = $this->append("RRULE:FREQ=YEARLY;BYMONTH={$date->month};BYMONTHDAY={$date->day}", $data);
+
+        $data = $this->append("DTSTAMP:{$date->created_at->format('Ymd\THis\Z')}", $data);
+        $data = $this->append("CREATED:{$date->created_at->format('Ymd\THis\Z')}", $data);
+        $data = $this->append("LAST-MODIFIED:{$date->updated_at->format('Ymd\THis\Z')}", $data);
+
+        $data = $this->append("ATTACH:{$url}", $data);
+        $data = $this->append("DESCRIPTION:See {$date->contact->name} profile {$url}", $data);
+        $data = $this->append('END:VEVENT', $data);
+        $data = $this->append('END:VCALENDAR', $data);
+
+        $data = mb_ereg_replace("\n", "\r\n", $data);
+
+        return $data;
+    }
+
     /**
      * Append content to the vcf, and split if the line is greater than 76 characters.
      */
     protected function append(string $content, string $data = ''): string
     {
         $tab = '';
-        while (mb_strlen($content) > 75) {
-            $chunk = mb_substr($content, 0, 75);
-            $content = mb_substr($content, 75);
-            $data .= $tab.$chunk."\n";
+        while (mb_strlen($tab.$content) > 75) {
+            $chunk = mb_substr($tab.$content, 0, 75);
+            $content = mb_substr($tab.$content, 75);
+            $data .= $chunk."\n";
             $tab = ' ';
         }
         $data .= $tab.$content."\n";

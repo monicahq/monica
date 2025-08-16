@@ -46,6 +46,14 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
     use WithUser;
 
     /**
+     * Returns the id for this backend.
+     */
+    public function backendId(?string $collectionId = null): string
+    {
+        return "contacts-$collectionId";
+    }
+
+    /**
      * Returns the uri for this backend.
      */
     public function backendUri(): string

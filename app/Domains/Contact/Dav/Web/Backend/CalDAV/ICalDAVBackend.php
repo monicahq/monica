@@ -7,7 +7,7 @@ interface ICalDAVBackend
     /**
      * Returns the id for this backend.
      */
-    public function backendId(): string;
+    public function backendId(?string $collectionId = null): string;
 
     /**
      * Returns a list of properties for a principal.
