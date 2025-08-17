@@ -16,8 +16,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use ReflectionClass;
 use Sabre\VObject\Component\VCalendar;
-use Sabre\VObject\ParseException;
-use Sabre\VObject\Reader;
 
 class ImportVCalendar extends BaseService implements ServiceInterface
 {
@@ -132,9 +130,11 @@ class ImportVCalendar extends BaseService implements ServiceInterface
         $entry = $vcalendar = $data['entry'];
 
         if (! $entry instanceof VCalendar) {
-            try {
-                $entry = Reader::read($entry, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
-            } catch (ParseException $e) {
+            $entry = (new ReadVObject)->execute([
+                'entry' => $entry,
+            ]);
+
+            if ($entry === null) {
                 return [null, $vcalendar];
             }
         }

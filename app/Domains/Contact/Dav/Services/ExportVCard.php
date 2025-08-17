@@ -13,8 +13,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use ReflectionClass;
 use Sabre\VObject\Component\VCard;
-use Sabre\VObject\ParseException;
-use Sabre\VObject\Reader;
 
 class ExportVCard extends BaseService implements ServiceInterface
 {
@@ -81,14 +79,12 @@ class ExportVCard extends BaseService implements ServiceInterface
     {
         // The standard for most of these fields can be found on https://datatracker.ietf.org/doc/html/rfc6350
         if ($resource->vcard) {
-            try {
-                /** @var VCard */
-                $vcard = Reader::read($resource->vcard, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
-                if (! $vcard->UID) {
-                    $vcard->UID = $resource->distant_uuid ?? $resource->uuid ?? $resource->id;
-                }
-            } catch (ParseException $e) {
-                // Ignore error
+            /** @var VCard */
+            $vcard = (new ReadVObject)->execute([
+                'entry' => $resource->vcard,
+            ]);
+            if ($vcard !== null && ! $vcard->UID) {
+                $vcard->UID = $resource->distant_uuid ?? $resource->uuid ?? $resource->id;
             }
         }
 

@@ -14,8 +14,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use ReflectionClass;
 use Sabre\VObject\Component\VCalendar;
-use Sabre\VObject\ParseException;
-use Sabre\VObject\Reader;
 
 class ExportVCalendar extends BaseService implements ServiceInterface
 {
@@ -95,12 +93,10 @@ class ExportVCalendar extends BaseService implements ServiceInterface
     {
         // The standard for most of these fields can be found on https://datatracker.ietf.org/doc/html/rfc5545
         if ($this->resource->vcalendar) {
-            try {
-                /** @var VCalendar */
-                $vcalendar = Reader::read($this->resource->vcalendar, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
-            } catch (ParseException $e) {
-                // Ignore error
-            }
+            /** @var VCalendar */
+            $vcalendar = (new ReadVObject)->execute([
+                'entry' => $this->resource->vcalendar,
+            ]);
         }
 
         if (! isset($vcalendar)) {

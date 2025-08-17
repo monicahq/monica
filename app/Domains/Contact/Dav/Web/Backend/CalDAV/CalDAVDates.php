@@ -4,6 +4,7 @@ namespace App\Domains\Contact\Dav\Web\Backend\CalDAV;
 
 use App\Domains\Contact\Dav\IDavResource;
 use App\Domains\Contact\Dav\Services\ExportVCalendar;
+use App\Domains\Contact\Dav\Services\ReadVObject;
 use App\Domains\Contact\ManageContactImportantDates\Services\DestroyContactImportantDate;
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
@@ -14,8 +15,6 @@ use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Sabre\VObject\Component\VCalendar;
-use Sabre\VObject\ParseException;
-use Sabre\VObject\Reader;
 
 class CalDAVDates extends AbstractCalDAVBackend
 {
@@ -127,17 +126,17 @@ class CalDAVDates extends AbstractCalDAVBackend
     }
 
     #[\Override]
-    protected function lastModified(string $card): ?Carbon
+    protected function lastModified(string $entry): ?Carbon
     {
-        try {
-            /** @var VCalendar */
-            $vcalendar = Reader::read($card, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
+        /** @var VCalendar */
+        $vcalendar = (new ReadVObject)->execute([
+            'entry' => $entry,
+        ]);
 
-            return Carbon::parse(optional($vcalendar->VEVENT)->{'LAST-MODIFIED'});
-        } catch (ParseException $e) {
-            // Ignore error
+        if ($vcalendar === null) {
+            return null;
         }
 
-        return null;
+        return Carbon::parse(optional($vcalendar->VEVENT)->{'LAST-MODIFIED'});
     }
 }

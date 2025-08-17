@@ -6,6 +6,7 @@ use App\Domains\Contact\Dav\IDavResource;
 use App\Domains\Contact\Dav\Jobs\UpdateVCard;
 use App\Domains\Contact\Dav\Services\ExportVCard;
 use App\Domains\Contact\Dav\Services\GetEtag;
+use App\Domains\Contact\Dav\Services\ReadVObject;
 use App\Domains\Contact\Dav\VCardResource;
 use App\Domains\Contact\Dav\Web\Backend\GetVaults;
 use App\Domains\Contact\Dav\Web\Backend\IDAVBackend;
@@ -30,8 +31,6 @@ use Sabre\DAV;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
 use Sabre\VObject\Component\VCard;
-use Sabre\VObject\ParseException;
-use Sabre\VObject\Reader;
 
 /**
  * @template TValue of ?Contact
@@ -215,18 +214,18 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
         }
     }
 
-    private function rev(string $card): ?Carbon
+    private function rev(string $entry): ?Carbon
     {
-        try {
-            /** @var VCard */
-            $vcard = Reader::read($card, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
+        /** @var VCard */
+        $vcard = (new ReadVObject)->execute([
+            'entry' => $entry,
+        ]);
 
-            return Carbon::parse($vcard->REV);
-        } catch (ParseException $e) {
-            // Ignore error
+        if ($vcard === null) {
+            return null;
         }
 
-        return null;
+        return Carbon::parse($vcard->REV);
     }
 
     /**

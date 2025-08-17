@@ -14,8 +14,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use ReflectionClass;
 use Sabre\VObject\Component\VCard;
-use Sabre\VObject\ParseException;
-use Sabre\VObject\Reader;
 
 class ImportVCard extends BaseService implements ServiceInterface
 {
@@ -150,9 +148,11 @@ class ImportVCard extends BaseService implements ServiceInterface
         $entry = $vcard = $data['entry'];
 
         if (! $entry instanceof VCard) {
-            try {
-                $entry = Reader::read($entry, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
-            } catch (ParseException $e) {
+            $entry = (new ReadVObject)->execute([
+                'entry' => $entry,
+            ]);
+
+            if ($entry === null) {
                 return [null, $vcard];
             }
         }
