@@ -4,6 +4,7 @@ namespace App\Domains\Contact\Dav\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Services\BaseService;
+use Closure;
 use Sabre\VObject\Document;
 use Sabre\VObject\ParseException;
 use Sabre\VObject\Reader;
@@ -18,7 +19,7 @@ class ReadVObject extends BaseService implements ServiceInterface
         return [
             'entry' => [
                 'required',
-                function (string $attribute, mixed $value, \Closure $fail) {
+                function (string $attribute, mixed $value, Closure $fail) {
                     if (! is_string($value) && ! is_resource($value)) {
                         $fail($attribute.' must be a string or a resource.');
                     }

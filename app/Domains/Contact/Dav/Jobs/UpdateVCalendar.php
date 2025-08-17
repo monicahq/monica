@@ -6,6 +6,7 @@ use App\Domains\Contact\Dav\Services\GetEtag;
 use App\Domains\Contact\Dav\Services\ImportVCalendar;
 use App\Interfaces\ServiceInterface;
 use App\Services\BaseService;
+use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
@@ -25,7 +26,7 @@ class UpdateVCalendar extends BaseService implements ServiceInterface
             'external' => 'nullable|boolean',
             'calendar' => [
                 'required',
-                function (string $attribute, mixed $value, \Closure $fail) {
+                function (string $attribute, mixed $value, Closure $fail) {
                     if (! is_string($value) && ! is_resource($value)) {
                         $fail($attribute.' must be a string or a resource.');
                     }
