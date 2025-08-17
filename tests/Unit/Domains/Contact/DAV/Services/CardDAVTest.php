@@ -183,12 +183,12 @@ class CardDAVTest extends TestCase
         $this->assertGreaterThan(0, $tokens->count());
         $token = $tokens->last();
 
-        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav">', false);
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">', false);
         $response->assertSee('<d:response>'.
             "<d:href>/dav/addressbooks/{$user->email}/$vaultname/</d:href>".
             '<d:propstat>'.
                 '<d:prop>'.
-                    "<x1:getctag xmlns:x1=\"http://calendarserver.org/ns/\">http://sabre.io/ns/sync/{$token->id}</x1:getctag>".
+                    "<cs:getctag>http://sabre.io/ns/sync/{$token->id}</cs:getctag>".
                     "<d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>".
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
@@ -302,12 +302,12 @@ class CardDAVTest extends TestCase
         $this->assertGreaterThan(0, $tokens->count());
         $token = $tokens->last();
 
-        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav">', false);
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">', false);
         $response->assertSee('<d:response>'.
             "<d:href>/dav/addressbooks/{$user->email}/$vaultname/</d:href>".
             '<d:propstat>'.
                 '<d:prop>'.
-                    "<x1:getctag xmlns:x1=\"http://calendarserver.org/ns/\">http://sabre.io/ns/sync/{$token->id}</x1:getctag>".
+                    "<cs:getctag>http://sabre.io/ns/sync/{$token->id}</cs:getctag>".
                     "<d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>".
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
@@ -464,7 +464,7 @@ class CardDAVTest extends TestCase
             ->get()
             ->last();
 
-        $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\">
+        $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\" xmlns:cal=\"urn:ietf:params:xml:ns:caldav\" xmlns:cs=\"http://calendarserver.org/ns/\">
  <d:response>
   <d:href>/dav/addressbooks/{$user->email}/$vaultname/{$contact->id}.vcf</d:href>
   <d:status>HTTP/1.1 404 Not Found</d:status>

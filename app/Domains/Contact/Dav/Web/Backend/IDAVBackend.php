@@ -10,6 +10,11 @@ use Illuminate\Support\Collection;
 interface IDAVBackend
 {
     /**
+     * Returns the id for this backend.
+     */
+    public function backendId(?string $collectionId = null): string;
+
+    /**
      * Returns the uri for this backend.
      */
     public function backendUri(): string;

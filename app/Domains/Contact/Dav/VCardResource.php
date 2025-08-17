@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property ?Carbon $deleted_at
  */
 #[AllowDynamicProperties]
-abstract class VCardResource extends Model
+abstract class VCardResource extends Model implements IDavResource
 {
     use SoftDeletes;
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -41,5 +43,14 @@ class ContactImportantDateType extends Model
     public function vault(): BelongsTo
     {
         return $this->belongsTo(Vault::class);
+    }
+
+    /**
+     * Get the birthday date types.
+     */
+    #[Scope]
+    public function birthday(Builder $query): Builder
+    {
+        return $query->where('internal_type', ContactImportantDate::TYPE_BIRTHDATE);
     }
 }

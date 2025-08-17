@@ -47,6 +47,7 @@ END:VCARD';
             'first_name' => 'Test',
             'vcard' => $card,
             'distant_etag' => $etag,
+            'distant_uuid' => 'affacde9-b2fe-4371-9acb-6612aaee6971',
         ]);
     }
 }

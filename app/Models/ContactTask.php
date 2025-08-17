@@ -2,13 +2,18 @@
 
 namespace App\Models;
 
+use App\Domains\Contact\Dav\VCalendarResource;
+use App\Traits\HasUuids;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ContactTask extends Model
+class ContactTask extends VCalendarResource
 {
     use HasFactory;
+    use HasUuids;
+    use SoftDeletes;
 
     protected $table = 'contact_tasks';
 
@@ -26,6 +31,10 @@ class ContactTask extends Model
         'completed',
         'completed_at',
         'due_at',
+        'vcalendar',
+        'distant_uuid',
+        'distant_etag',
+        'distant_uri',
     ];
 
     /**
@@ -59,12 +68,14 @@ class ContactTask extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function scopeNotCompleted($query)
+    #[Scope]
+    public function notCompleted($query)
     {
         return $query->where('completed', false);
     }
 
-    public function scopeCompleted($query)
+    #[Scope]
+    public function completed($query)
     {
         return $query->where('completed', true);
     }

@@ -3,13 +3,14 @@
 namespace App\Domains\Contact\ManageTasks\Services;
 
 use App\Interfaces\ServiceInterface;
-use App\Models\ContactTask;
-use App\Services\BaseService;
+use App\Services\QueuableService;
 use Carbon\Carbon;
+use Illuminate\Bus\Batchable;
+use Illuminate\Support\Traits\Localizable;
 
-class DestroyContactTask extends BaseService implements ServiceInterface
+class DestroyContactTask extends QueuableService implements ServiceInterface
 {
-    private ContactTask $task;
+    use Batchable, Localizable;
 
     /**
      * Get the validation rules that apply to the service.
@@ -45,10 +46,10 @@ class DestroyContactTask extends BaseService implements ServiceInterface
     {
         $this->validateRules($data);
 
-        $this->task = $this->contact->tasks()
+        $task = $this->contact->tasks()
             ->findOrFail($data['contact_task_id']);
 
-        $this->task->delete();
+        $task->delete();
 
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();

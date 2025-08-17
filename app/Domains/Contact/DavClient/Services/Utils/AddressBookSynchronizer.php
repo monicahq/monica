@@ -2,6 +2,7 @@
 
 namespace App\Domains\Contact\DavClient\Services\Utils;
 
+use App\Domains\Contact\Dav\VCardResource;
 use App\Domains\Contact\DavClient\Jobs\DeleteVCard;
 use App\Domains\Contact\DavClient\Jobs\PushVCard;
 use App\Domains\Contact\DavClient\Services\UpdateSubscriptionLocalSyncToken;
@@ -96,6 +97,7 @@ class AddressBookSynchronizer
     private function forcesync(): Collection
     {
         // Get current list of contacts
+        /** @var Collection<array-key,VCardResource> $localContacts */
         $localContacts = $this->backend()->getObjects($this->subscription->vault_id);
         $localUuids = $localContacts->pluck('id');
 

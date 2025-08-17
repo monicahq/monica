@@ -95,7 +95,7 @@ class UpdateVCard extends QueuableService implements ServiceInterface
                     'account_id' => $this->author->account_id,
                     'author_id' => $this->author->id,
                     'vault_id' => $this->vault->id,
-                    'entry' => $result['entry'],
+                    'vcard' => $result['entry'],
                 ]);
             }
         } catch (\Exception $e) {

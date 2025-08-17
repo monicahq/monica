@@ -28,6 +28,7 @@ class ContactTaskFactory extends Factory
             'label' => $this->faker->sentence(),
             'completed' => false,
             'due_at' => $this->faker->dateTimeThisCentury(),
+            'uuid' => $this->faker->uuid,
         ];
     }
 }

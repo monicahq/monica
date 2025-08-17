@@ -2,7 +2,7 @@
 
 namespace App\Domains\Contact\Dav\Web\Backend;
 
-use App\Domains\Contact\Dav\VCardResource;
+use App\Domains\Contact\Dav\IDavResource;
 use App\Models\SyncToken;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -21,7 +21,7 @@ trait SyncDAVBackend
         return SyncToken::where([
             'account_id' => $this->user->account_id,
             'user_id' => $this->user->id,
-            'name' => "{$this->backendUri()}-$collectionId",
+            'name' => $this->backendId($collectionId),
         ])
             ->orderBy('created_at', 'desc')
             ->first();
@@ -50,7 +50,7 @@ trait SyncDAVBackend
         return SyncToken::where([
             'account_id' => $this->user->account_id,
             'user_id' => $this->user->id,
-            'name' => "{$this->backendUri()}-$collectionId",
+            'name' => $this->backendId($collectionId),
         ])
             ->find($syncTokenId);
     }
@@ -63,7 +63,7 @@ trait SyncDAVBackend
         return SyncToken::create([
             'account_id' => $this->user->account_id,
             'user_id' => $this->user->id,
-            'name' => "{$this->backendUri()}-$collectionId",
+            'name' => $this->backendId($collectionId),
             'timestamp' => now(),
         ]);
     }
@@ -74,7 +74,7 @@ trait SyncDAVBackend
     public function getLastModified(?string $collectionId): ?Carbon
     {
         return $this->getObjects($collectionId)
-            ->map(fn (VCardResource $object) => $object->updated_at)
+            ->map(fn (IDavResource $object) => $object->updated_at)
             ->max();
     }
 
@@ -128,7 +128,7 @@ trait SyncDAVBackend
      *
      * The limit is 'suggestive'. You are free to ignore it.
      */
-    public function getChanges(string $collectionId, ?string $syncToken): ?array
+    public function getChanges(?string $collectionId, ?string $syncToken): ?array
     {
         $token = null;
         $timestamp = null;
@@ -158,7 +158,7 @@ trait SyncDAVBackend
      */
     private function getAdded(Collection $objs, ?Carbon $timestamp): array
     {
-        return $objs->filter(fn (VCardResource $obj): bool => $timestamp === null ||
+        return $objs->filter(fn (IDavResource $obj): bool => $timestamp === null ||
             $obj->created_at >= $timestamp
         )
             ->map(fn ($obj): string => $this->encodeUri($obj))
@@ -171,11 +171,11 @@ trait SyncDAVBackend
      */
     private function getModified(Collection $objs, ?Carbon $timestamp): array
     {
-        return $objs->filter(fn (VCardResource $obj): bool => $timestamp !== null &&
+        return $objs->filter(fn (IDavResource $obj): bool => $timestamp !== null &&
             $obj->updated_at > $timestamp &&
             $obj->created_at < $timestamp
         )
-            ->map(function (VCardResource $obj): string {
+            ->map(function (IDavResource $obj): string {
                 $this->refreshObject($obj);
 
                 return $this->encodeUri($obj);
@@ -190,15 +190,15 @@ trait SyncDAVBackend
     private function getDeleted(string $collectionId, ?Carbon $timestamp): array
     {
         return $this->getDeletedObjects($collectionId)
-            ->filter(fn (VCardResource $obj): bool => $timestamp === null ||
+            ->filter(fn (IDavResource $obj): bool => $timestamp === null ||
                 $obj->deleted_at >= $timestamp
             )
-            ->map(fn (VCardResource $obj): string => $this->encodeUri($obj))
+            ->map(fn (IDavResource $obj): string => $this->encodeUri($obj))
             ->values()
             ->toArray();
     }
 
-    protected function encodeUri(VCardResource $obj): string
+    protected function encodeUri(IDavResource $obj): string
     {
         $id = null;
         if (isset($obj->distant_uuid)) {
@@ -249,14 +249,14 @@ trait SyncDAVBackend
     /**
      * Returns the collection of objects.
      *
-     * @return \Illuminate\Support\Collection<array-key,VCardResource>
+     * @return \Illuminate\Support\Collection<array-key,IDavResource>
      */
     abstract public function getObjects(?string $collectionId): Collection;
 
     /**
      * Returns the collection of objects.
      *
-     * @return \Illuminate\Support\Collection<array-key,VCardResource>
+     * @return \Illuminate\Support\Collection<array-key,IDavResource>
      */
     abstract public function getDeletedObjects(?string $collectionId): Collection;
 
@@ -268,5 +268,5 @@ trait SyncDAVBackend
     /**
      * Get the new exported version of the object.
      */
-    abstract protected function refreshObject(VCardResource $obj): string;
+    abstract protected function refreshObject(IDavResource $obj): string;
 }

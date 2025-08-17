@@ -9,6 +9,7 @@ use App\Models\Contact;
 use App\Models\ContactTask;
 use App\Models\User;
 use App\Models\Vault;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
@@ -110,6 +111,7 @@ class DestroyContactTaskTest extends TestCase
     private function executeService(User $author, Account $account, Vault $vault, Contact $contact, ContactTask $task): void
     {
         Queue::fake();
+        Carbon::setTestNow(now());
 
         $request = [
             'account_id' => $account->id,
@@ -121,8 +123,9 @@ class DestroyContactTaskTest extends TestCase
 
         (new DestroyContactTask)->execute($request);
 
-        $this->assertDatabaseMissing('contact_tasks', [
+        $this->assertDatabaseHas('contact_tasks', [
             'id' => $task->id,
+            'deleted_at' => now(),
         ]);
     }
 }

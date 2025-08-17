@@ -6,11 +6,15 @@ use App\Helpers\ImportantDateHelper;
 use App\Interfaces\ServiceInterface;
 use App\Models\ContactFeedItem;
 use App\Models\ContactImportantDate;
-use App\Services\BaseService;
+use App\Services\QueuableService;
 use Carbon\Carbon;
+use Illuminate\Bus\Batchable;
+use Illuminate\Support\Traits\Localizable;
 
-class DestroyContactImportantDate extends BaseService implements ServiceInterface
+class DestroyContactImportantDate extends QueuableService implements ServiceInterface
 {
+    use Batchable, Localizable;
+
     private ContactImportantDate $date;
 
     /**
@@ -41,7 +45,7 @@ class DestroyContactImportantDate extends BaseService implements ServiceInterfac
     }
 
     /**
-     * Delete a contact address.
+     * Delete a contact important date.
      */
     public function execute(array $data): void
     {

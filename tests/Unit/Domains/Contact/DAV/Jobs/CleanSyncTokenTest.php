@@ -54,13 +54,13 @@ class CleanSyncTokenTest extends TestCase
             'account_id' => $account->id,
             'user_id' => $user->id,
             'name' => 'contacts',
-            'timestamp' => now()->addDays(-10),
+            'timestamp' => now()->addDays(-31),
         ]);
         $s3 = SyncToken::create([
             'account_id' => $account->id,
             'user_id' => $user->id,
             'name' => 'contacts',
-            'timestamp' => now()->addDays(-15),
+            'timestamp' => now()->addDays(-45),
         ]);
         $s4 = SyncToken::create([
             'account_id' => $account->id,
