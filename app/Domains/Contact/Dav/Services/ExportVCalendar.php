@@ -98,9 +98,6 @@ class ExportVCalendar extends BaseService implements ServiceInterface
             try {
                 /** @var VCalendar */
                 $vcalendar = Reader::read($this->resource->vcalendar, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
-                // if (! $vcalendar->UID) {
-                //     $vcalendar->UID = $this->resource->distant_uuid ?? $this->resource->uuid ?? $this->resource->id;
-                // }
             } catch (ParseException $e) {
                 // Ignore error
             }
@@ -109,7 +106,6 @@ class ExportVCalendar extends BaseService implements ServiceInterface
         if (! isset($vcalendar)) {
             // Basic information
             $vcalendar = new VCalendar([
-                // 'UID' => $this->resource->uuid,
                 'SOURCE' => $this->getSource($this->resource),
                 'VERSION' => '2.0',
             ]);

@@ -5,7 +5,6 @@ namespace App\Domains\Contact\Dav\Web\Backend\CalDAV;
 use App\Domains\Contact\Dav\IDavResource;
 use App\Domains\Contact\Dav\Jobs\UpdateVCalendar;
 use App\Domains\Contact\Dav\Services\GetEtag;
-use App\Domains\Contact\Dav\Services\ImportVCalendar;
 use App\Domains\Contact\Dav\VCalendarResource;
 use App\Domains\Contact\Dav\Web\Backend\IDAVBackend;
 use App\Domains\Contact\Dav\Web\Backend\SyncDAVBackend;
@@ -13,7 +12,6 @@ use App\Domains\Contact\Dav\Web\Backend\WithUser;
 use App\Domains\Contact\Dav\Web\DAVACL\PrincipalBackend;
 use App\Models\Vault;
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\DAV\Server as SabreServer;
@@ -127,24 +125,5 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
             'uri' => $objectUri,
             'calendar' => $calendarData,
         ]);
-
-        // $result = app(ImportVCalendar::class)->execute([
-        //     'account_id' => $this->user->account_id,
-        //     'author_id' => $this->user->id,
-        //     'vault_id' => $this->vault->id,
-        //     'uri' => $objectUri,
-        //     'entry' => $calendarData,
-        // ]);
-
-        // if (! Arr::has($result, 'error')) {
-        //     return (new GetEtag)->execute([
-        //         'account_id' => $this->user->account_id,
-        //         'author_id' => $this->user->id,
-        //         'vault_id' => $this->vault->id,
-        //         'vcalendar' => $result['entry'],
-        //     ]);
-        // }
-
-        // return null;
     }
 }

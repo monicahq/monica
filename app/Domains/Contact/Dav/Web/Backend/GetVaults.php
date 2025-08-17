@@ -12,10 +12,10 @@ trait GetVaults
      *
      * @return \Illuminate\Support\Collection<array-key,Vault>
      */
-    public function vaults(?string $collectionId = null): Collection
+    public function vaults(?string $collectionId = null, int $permission = Vault::PERMISSION_VIEW): Collection
     {
         $vaults = $this->user->vaults()
-            ->wherePivot('permission', '<=', Vault::PERMISSION_VIEW);
+            ->wherePivot('permission', '<=', $permission);
 
         if ($collectionId !== null) {
             $vaults = $vaults->where('id', $collectionId);

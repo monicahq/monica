@@ -25,6 +25,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->index('uuid');
         });
+
         Schema::table('contact_tasks', function (Blueprint $table) {
             $table->uuid('uuid')->after('author_id')->nullable();
 
@@ -52,6 +53,7 @@ return new class extends Migration
             $table->dropColumn('distant_uri');
             $table->dropSoftDeletes();
         });
+
         Schema::table('contact_important_dates', function (Blueprint $table) {
             $table->dropIndex(['uuid']);
             $table->dropColumn('uuid');

@@ -22,7 +22,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
-use ReturnTypeWillChange;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Backend\SyncSupport;
@@ -373,7 +372,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
      * @param  string  $cardUri
      * @return array|bool
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function getCard($addressBookId, $cardUri)
     {
         $card = $this->getObject($addressBookId, $cardUri);
@@ -438,7 +437,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
      */
     public function updateCard($addressBookId, $cardUri, $cardData): ?string
     {
-        $vault = $this->vaults($addressBookId)
+        $vault = $this->vaults($addressBookId, permission: Vault::PERMISSION_EDIT)
             ->firstOrFail();
 
         $job = new UpdateVCard([

@@ -49,7 +49,7 @@ class ContactModuleTaskController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, string $vaultId, string $contactId, string $taskId)
+    public function update(Request $request, string $vaultId, string $contactId, int $taskId)
     {
         $dueAt = '';
         if ($request->input('due_at_checked')) {
@@ -75,7 +75,7 @@ class ContactModuleTaskController extends Controller
         ], 200);
     }
 
-    public function toggle(Request $request, string $vaultId, string $contactId, string $taskId)
+    public function toggle(Request $request, string $vaultId, string $contactId, int $taskId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
@@ -95,7 +95,7 @@ class ContactModuleTaskController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, string $vaultId, string $contactId, string $taskId)
+    public function destroy(Request $request, string $vaultId, string $contactId, int $taskId)
     {
         $data = [
             'account_id' => Auth::user()->account_id,
