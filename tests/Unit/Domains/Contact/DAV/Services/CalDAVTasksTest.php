@@ -5,8 +5,10 @@ namespace Tests\Unit\Domains\Contact\DAV\Services;
 use App\Models\Contact;
 use App\Models\ContactTask;
 use App\Models\SyncToken;
+use App\Models\Vault;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -72,7 +74,7 @@ class CalDAVTasksTest extends TestCase
 
     #[Test]
     #[Group('dav')]
-    public function test_caldav_propfind_one_date()
+    public function test_caldav_propfind_one_task()
     {
         $user = $this->createUser();
         $vault = $this->createVaultUser($user);
@@ -162,7 +164,7 @@ class CalDAVTasksTest extends TestCase
 
     #[Test]
     #[Group('dav')]
-    public function test_caldav_getctag_dates()
+    public function test_caldav_getctag_tasks()
     {
         $user = $this->createUser();
         $vault = $this->createVaultUser($user);
@@ -315,5 +317,74 @@ class CalDAVTasksTest extends TestCase
   </d:propstat>
  </d:response>
  <d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>", false);
+    }
+
+    #[Test]
+    #[Group('dav')]
+    public function test_caldav_update_one_task()
+    {
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
+        $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
+        $task = ContactTask::factory()->create([
+            'contact_id' => $contact->id,
+            'label' => 'Old Label',
+        ]);
+        $vaultname = rawurlencode($vault->name);
+
+        $data = $this->getTask($task);
+        $data = Str::replace('Old Label', 'New Label', $data);
+
+        $response = $this->call('PUT', "/dav/calendars/{$user->email}/tasks-$vaultname/{$task->uuid}.ics", [], [], [],
+            [
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            $data
+        );
+
+        $response->assertStatus(204);
+        $response->assertHeader('X-Sabre-Version');
+
+        $this->assertDatabaseHas('contact_tasks', [
+            'id' => $task->id,
+            'label' => 'New Label',
+        ]);
+    }
+
+    #[Test]
+    #[Group('dav')]
+    public function test_caldav_put_one_task()
+    {
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
+        $vaultname = rawurlencode($vault->name);
+
+        $data = 'BEGIN:VCALENDAR
+PRODID:-//Sabre//Sabre VObject 4.5.3//EN
+VERSION:2.0
+BEGIN:VTODO
+CREATED:20250729T000000Z
+LAST-MODIFIED:20250814T000000Z
+DTSTAMP:20250814T000000Z
+UID:3a7baf23-50b6-43dd-b441-7d70362f6356
+SUMMARY:My Task
+END:VTODO
+END:VCALENDAR
+';
+
+        $response = $this->call('PUT', "/dav/calendars/{$user->email}/tasks-$vaultname/3a7baf23-50b6-43dd-b441-7d70362f6356.ics", [], [], [],
+            [
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            $data
+        );
+
+        $response->assertStatus(201);
+        $response->assertHeader('X-Sabre-Version');
+
+        $this->assertDatabaseHas('contact_tasks', [
+            'label' => 'My Task',
+            'uuid' => '3a7baf23-50b6-43dd-b441-7d70362f6356',
+        ]);
     }
 }

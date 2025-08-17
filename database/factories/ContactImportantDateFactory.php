@@ -27,7 +27,9 @@ class ContactImportantDateFactory extends Factory
             'day' => 29,
             'month' => 10,
             'year' => 1981,
-            'contact_important_date_type_id' => ContactImportantDateType::factory(),
+            'contact_important_date_type_id' => fn ($attributes) => ContactImportantDateType::factory()->create([
+                'vault_id' => Contact::find($attributes['contact_id'])->vault_id,
+            ]),
         ];
     }
 }

@@ -47,7 +47,7 @@ END:VCALENDAR
             'external' => true,
         ];
 
-        (new UpdateVCalendar($data))->handle();
+        (new UpdateVCalendar)->execute($data);
 
         $this->assertDatabaseHas('contact_tasks', [
             'label' => 'My Task',
@@ -69,7 +69,7 @@ PRODID:-//Sabre//Sabre VObject 4.5.3//EN
 VERSION:2.0
 BEGIN:VEVENT
 CREATED:20250814T000000Z
-LAST-MODIFIED:20250814T0000Z
+LAST-MODIFIED:20250814T000000Z
 DTSTAMP:20250814T000000Z
 UID:36ee6e82-5262-404f-aea1-98859c631892
 SUMMARY:Réunion importante
@@ -91,7 +91,7 @@ END:VCALENDAR
             'external' => true,
         ];
 
-        (new UpdateVCalendar($data))->handle();
+        (new UpdateVCalendar)->execute($data);
 
         $this->assertDatabaseHas('contact_important_dates', [
             'label' => 'Réunion importante',

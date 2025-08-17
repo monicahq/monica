@@ -4,9 +4,12 @@ namespace Tests\Unit\Domains\Contact\DAV\Services;
 
 use App\Models\Contact;
 use App\Models\ContactImportantDate;
+use App\Models\ContactImportantDateType;
 use App\Models\SyncToken;
+use App\Models\Vault;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -315,5 +318,80 @@ class CalDAVDatesTest extends TestCase
   </d:propstat>
  </d:response>
  <d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>", false);
+    }
+
+    #[Test]
+    #[Group('dav')]
+    public function test_caldav_update_one_date()
+    {
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
+        $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
+        $date = ContactImportantDate::factory()->create([
+            'contact_id' => $contact->id,
+            'label' => 'Old Label',
+        ]);
+        $vaultname = rawurlencode($vault->name);
+
+        $data = $this->getDate($date);
+        $data = Str::replace('Old Label', 'New Label', $data);
+
+        $response = $this->call('PUT', "/dav/calendars/{$user->email}/dates-$vaultname/{$date->uuid}.ics", [], [], [],
+            [
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            $data
+        );
+
+        $response->assertStatus(204);
+        $response->assertHeader('X-Sabre-Version');
+
+        $this->assertDatabaseHas('contact_important_dates', [
+            'id' => $date->id,
+            'label' => 'New Label',
+        ]);
+    }
+
+    #[Test]
+    #[Group('dav')]
+    public function test_caldav_put_one_date()
+    {
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
+        ContactImportantDateType::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        $vaultname = rawurlencode($vault->name);
+
+        $data = 'BEGIN:VCALENDAR
+PRODID:-//Sabre//Sabre VObject 4.5.3//EN
+VERSION:2.0
+BEGIN:VEVENT
+CREATED:20250814T000000Z
+LAST-MODIFIED:20250814T000000Z
+DTSTAMP:20250814T000000Z
+UID:36ee6e82-5262-404f-aea1-98859c631892
+SUMMARY:Réunion importante
+DTSTART;VALUE=DATE:20250813
+DTEND;VALUE=DATE:20250814
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR
+';
+
+        $response = $this->call('PUT', "/dav/calendars/{$user->email}/dates-$vaultname/36ee6e82-5262-404f-aea1-98859c631892.ics", [], [], [],
+            [
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            $data
+        );
+
+        $response->assertStatus(201);
+        $response->assertHeader('X-Sabre-Version');
+
+        $this->assertDatabaseHas('contact_important_dates', [
+            'label' => 'Réunion importante',
+            'uuid' => '36ee6e82-5262-404f-aea1-98859c631892',
+        ]);
     }
 }

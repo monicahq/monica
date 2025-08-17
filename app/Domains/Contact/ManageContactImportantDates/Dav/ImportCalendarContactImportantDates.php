@@ -43,13 +43,16 @@ class ImportCalendarContactImportantDates extends VCalendarImporter implements I
         $data = $this->importSummary($data, $vevent);
         $data = $this->importDate($data, $vevent);
 
+        $updated = false;
         if ($importantDate === null) {
             $importantDate = app(CreateContactImportantDate::class)->execute($data);
+            $importantDate->uuid = $this->getUid($vcalendar);
+            $updated = true;
         } elseif ($data !== $original) {
             $importantDate = app(UpdateContactImportantDate::class)->execute($data);
         }
 
-        $updated = $this->importTimestamp($importantDate, $vevent);
+        $updated = $this->importTimestamp($importantDate, $vevent) || $updated;
 
         if ($this->context->external && $importantDate->distant_uuid === null) {
             $importantDate->distant_uuid = $this->getUid($vcalendar);

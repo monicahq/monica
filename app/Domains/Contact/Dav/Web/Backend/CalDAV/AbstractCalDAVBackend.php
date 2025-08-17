@@ -3,6 +3,7 @@
 namespace App\Domains\Contact\Dav\Web\Backend\CalDAV;
 
 use App\Domains\Contact\Dav\IDavResource;
+use App\Domains\Contact\Dav\Jobs\UpdateVCalendar;
 use App\Domains\Contact\Dav\Services\GetEtag;
 use App\Domains\Contact\Dav\Services\ImportVCalendar;
 use App\Domains\Contact\Dav\VCalendarResource;
@@ -119,36 +120,31 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
      */
     public function updateOrCreateCalendarObject(?string $calendarId, ?string $objectUri, ?string $calendarData): ?string
     {
-        // $job = new UpdateVCalendar([
-        //     'account_id' => $this->user->account_id,
-        //     'author_id' => $this->user->id,
-        //     'vault_id' => $this->vault->id,
-        //     'uri' => $objectUri,
-        //     'calendar' => $calendarData,
-        // ]);
-
-        // Bus::batch([$job])
-        //     ->allowFailures()
-        //     ->onQueue('high')
-        //     ->dispatch();
-
-        $result = app(ImportVCalendar::class)->execute([
+        return (new UpdateVCalendar)->execute([
             'account_id' => $this->user->account_id,
             'author_id' => $this->user->id,
             'vault_id' => $this->vault->id,
             'uri' => $objectUri,
-            'entry' => $calendarData,
+            'calendar' => $calendarData,
         ]);
 
-        if (! Arr::has($result, 'error')) {
-            return (new GetEtag)->execute([
-                'account_id' => $this->user->account_id,
-                'author_id' => $this->user->id,
-                'vault_id' => $this->vault->id,
-                'vcalendar' => $result['entry'],
-            ]);
-        }
+        // $result = app(ImportVCalendar::class)->execute([
+        //     'account_id' => $this->user->account_id,
+        //     'author_id' => $this->user->id,
+        //     'vault_id' => $this->vault->id,
+        //     'uri' => $objectUri,
+        //     'entry' => $calendarData,
+        // ]);
 
-        return null;
+        // if (! Arr::has($result, 'error')) {
+        //     return (new GetEtag)->execute([
+        //         'account_id' => $this->user->account_id,
+        //         'author_id' => $this->user->id,
+        //         'vault_id' => $this->vault->id,
+        //         'vcalendar' => $result['entry'],
+        //     ]);
+        // }
+
+        // return null;
     }
 }

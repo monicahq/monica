@@ -40,18 +40,20 @@ class ImportContactTask extends VCalendarImporter implements ImportVCalendarReso
         $original = $data;
 
         $vtodo = $vcalendar->VTODO;
-        // $data = $this->importUid($data, $vtodo);
         $data = $this->importSummary($data, $vtodo);
         $data = $this->importDescription($data, $vtodo);
         $data = $this->importDue($data, $vtodo);
 
+        $updated = false;
         if ($task === null) {
             $task = app(CreateContactTask::class)->execute($data);
+            $task->uuid = $this->getUid($vcalendar);
+            $updated = true;
         } elseif ($data !== $original) {
             $task = app(UpdateContactTask::class)->execute($data);
         }
 
-        $updated = $this->importCompleted($task, $vtodo);
+        $updated = $this->importCompleted($task, $vtodo) || $updated;
         $updated = $this->importTimestamp($task, $vtodo) || $updated;
 
         if ($this->context->external && $task->distant_uuid === null) {

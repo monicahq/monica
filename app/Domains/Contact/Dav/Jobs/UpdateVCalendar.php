@@ -5,16 +5,12 @@ namespace App\Domains\Contact\Dav\Jobs;
 use App\Domains\Contact\Dav\Services\GetEtag;
 use App\Domains\Contact\Dav\Services\ImportVCalendar;
 use App\Interfaces\ServiceInterface;
-use App\Services\QueuableService;
-use Illuminate\Bus\Batchable;
+use App\Services\BaseService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Traits\Localizable;
 
-class UpdateVCalendar extends QueuableService implements ServiceInterface
+class UpdateVCalendar extends BaseService implements ServiceInterface
 {
-    use Batchable, Localizable;
-
     /**
      * Get the validation rules that apply to the service.
      */
@@ -54,29 +50,26 @@ class UpdateVCalendar extends QueuableService implements ServiceInterface
     /**
      * Update or create a contact using the VCard data.
      */
-    public function execute(array $data): void
+    public function execute(array $data): ?string
     {
-        $this->data = $data;
-
         $this->validateRules($data);
 
-        $this->withLocale($this->author->preferredLocale(), function () {
-            $newtag = $this->updateCalendar($this->data['uri'], $this->data['calendar']);
+        $newtag = $this->updateCalendar($data['uri'], $data['calendar'], Arr::get($data, 'etag'), Arr::get($data, 'external', false));
 
-            if ($newtag !== null && ($etag = Arr::get($this->data, 'etag')) !== null && $newtag !== $etag) {
-                optional($this->job)->fail(new \Exception('Wrong etag when updating contact. Expected ['.$etag.'], got ['.$newtag.']'));
-                Log::channel('database')->warning(__CLASS__.' '.__FUNCTION__." wrong etag when updating contact. Expected [$etag], got [$newtag]", [
-                    'contacturl' => $this->data['uri'],
-                    'calendardata' => $this->data['calendar'],
-                ]);
-            }
-        });
+        if ($newtag !== null && ($etag = Arr::get($data, 'etag')) !== null && $newtag !== $etag) {
+            Log::channel('database')->warning(__CLASS__.' '.__FUNCTION__." wrong etag when updating contact. Expected [$etag], got [$newtag]", [
+                'contacturl' => $data['uri'],
+                'calendardata' => $data['calendar'],
+            ]);
+        }
+
+        return $newtag;
     }
 
     /**
      * Update the contact with the calendardata.
      */
-    private function updateCalendar(string $uri, mixed $calendar): ?string
+    private function updateCalendar(string $uri, mixed $calendar, ?string $etag, ?bool $external): ?string
     {
         try {
             $result = app(ImportVCalendar::class)->execute([
@@ -84,9 +77,9 @@ class UpdateVCalendar extends QueuableService implements ServiceInterface
                 'author_id' => $this->author->id,
                 'vault_id' => $this->vault->id,
                 'entry' => $calendar,
-                'etag' => Arr::get($this->data, 'etag'),
+                'etag' => $etag,
                 'uri' => $uri,
-                'external' => Arr::get($this->data, 'external', false),
+                'external' => $external,
             ]);
 
             if (! Arr::has($result, 'error')) {
@@ -98,7 +91,6 @@ class UpdateVCalendar extends QueuableService implements ServiceInterface
                 ]);
             }
         } catch (\Exception $e) {
-            optional($this->job)->fail($e);
             Log::channel('database')->error(__CLASS__.' '.__FUNCTION__.': '.$e->getMessage(), [
                 'uri' => $uri,
                 'calendardata' => $calendar,
