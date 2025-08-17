@@ -23,7 +23,7 @@ trait HasUuids
     /**
      * Get the uuid of the group.
      *
-     * @return Attribute<string,never>
+     * @return Attribute<string,?string>
      */
     protected function uuid(): Attribute
     {
