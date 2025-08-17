@@ -171,15 +171,15 @@ class ImportContactTask extends VCalendarImporter implements ImportVCalendarReso
     private function importTimestamp(ContactTask $task, VTodo $entry): bool
     {
         if (empty($task->created_at)) {
-            $created_at = null;
+            $createdAt = null;
             if ($entry->DTSTAMP) {
-                $created_at = Carbon::parse($entry->DTSTAMP->getDateTime());
+                $createdAt = Carbon::parse($entry->DTSTAMP->getDateTime());
             } elseif ($entry->CREATED) {
-                $created_at = Carbon::parse($entry->CREATED->getDateTime());
+                $createdAt = Carbon::parse($entry->CREATED->getDateTime());
             }
 
-            if ($task->created_at !== $created_at) {
-                $task->created_at = $created_at;
+            if ($task->created_at !== $createdAt) {
+                $task->created_at = $createdAt;
 
                 return true;
             }

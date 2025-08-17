@@ -165,15 +165,15 @@ class ImportCalendarContactImportantDates extends VCalendarImporter implements I
     private function importTimestamp(ContactImportantDate $importantDate, VEvent $entry): bool
     {
         if (empty($importantDate->created_at)) {
-            $created_at = null;
+            $createdAt = null;
             if ($entry->DTSTAMP) {
-                $created_at = Carbon::parse($entry->DTSTAMP->getDateTime());
+                $createdAt = Carbon::parse($entry->DTSTAMP->getDateTime());
             } elseif ($entry->CREATED) {
-                $created_at = Carbon::parse($entry->CREATED->getDateTime());
+                $createdAt = Carbon::parse($entry->CREATED->getDateTime());
             }
 
-            if ($importantDate->created_at !== $created_at) {
-                $importantDate->created_at = $created_at;
+            if ($importantDate->created_at !== $createdAt) {
+                $importantDate->created_at = $createdAt;
 
                 return true;
             }

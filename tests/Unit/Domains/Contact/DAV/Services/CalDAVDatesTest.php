@@ -394,4 +394,28 @@ END:VCALENDAR
             'uuid' => '36ee6e82-5262-404f-aea1-98859c631892',
         ]);
     }
+
+    #[Test]
+    #[Group('dav')]
+    public function test_caldav_delete_one_date()
+    {
+        Carbon::setTestNow();
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
+        $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
+        $date = ContactImportantDate::factory()->create(['contact_id' => $contact->id]);
+        $vaultname = rawurlencode($vault->name);
+
+        $response = $this->call('DELETE', "/dav/calendars/{$user->email}/dates-$vaultname/{$date->uuid}.ics");
+
+        $response->assertStatus(204);
+        $response->assertHeader('X-Sabre-Version');
+
+        $this->assertDatabaseHas('contact_important_dates', [
+            'id' => $date->id,
+            'deleted_at' => now(),
+        ]);
+        $date->refresh();
+        $this->assertTrue($date->trashed());
+    }
 }

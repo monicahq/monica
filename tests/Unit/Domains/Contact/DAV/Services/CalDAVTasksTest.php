@@ -387,4 +387,28 @@ END:VCALENDAR
             'uuid' => '3a7baf23-50b6-43dd-b441-7d70362f6356',
         ]);
     }
+
+    #[Test]
+    #[Group('dav')]
+    public function test_caldav_delete_one_task()
+    {
+        Carbon::setTestNow();
+        $user = $this->createUser();
+        $vault = $this->createVaultUser($user, Vault::PERMISSION_MANAGE);
+        $contact = Contact::factory()->random()->create(['vault_id' => $vault->id]);
+        $task = ContactTask::factory()->create(['contact_id' => $contact->id]);
+        $vaultname = rawurlencode($vault->name);
+
+        $response = $this->call('DELETE', "/dav/calendars/{$user->email}/tasks-$vaultname/{$task->uuid}.ics");
+
+        $response->assertStatus(204);
+        $response->assertHeader('X-Sabre-Version');
+
+        $this->assertDatabaseHas('contact_tasks', [
+            'id' => $task->id,
+            'deleted_at' => now(),
+        ]);
+        $task->refresh();
+        $this->assertTrue($task->trashed());
+    }
 }
