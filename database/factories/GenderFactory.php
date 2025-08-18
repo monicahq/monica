@@ -23,7 +23,7 @@ class GenderFactory extends Factory
         return [
             'account_id' => Account::factory(),
             'name' => $this->faker->name(),
-            'type' => Gender::LIST[rand(0, 4)],
+            'type' => Gender::LIST[random_int(0, 4)],
         ];
     }
 }
