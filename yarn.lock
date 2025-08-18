@@ -624,26 +624,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inertiajs/core@npm:2.0.17":
-  version: 2.0.17
-  resolution: "@inertiajs/core@npm:2.0.17"
+"@inertiajs/core@npm:2.1.2":
+  version: 2.1.2
+  resolution: "@inertiajs/core@npm:2.1.2"
   dependencies:
     axios: "npm:^1.8.2"
     es-toolkit: "npm:^1.34.1"
     qs: "npm:^6.9.0"
-  checksum: 10c0/7eb25eeca4e785a9eaf436926df079347e4a70e25ba3913de785296c70e1859c519a951947be6d9931e627f804bcce84cdebe56b41325664bd7bb5998af49238
+  checksum: 10c0/043b53f309613eb52003ec0640d40765b3e7be573d9851bb5335aa9e369521f9dc27f2ce4ad8b3904de3168a0ee51fea9f495a51d307fd72e58cabb38cbdb478
   languageName: node
   linkType: hard
 
 "@inertiajs/vue3@npm:^2.0.17":
-  version: 2.0.17
-  resolution: "@inertiajs/vue3@npm:2.0.17"
+  version: 2.1.2
+  resolution: "@inertiajs/vue3@npm:2.1.2"
   dependencies:
-    "@inertiajs/core": "npm:2.0.17"
+    "@inertiajs/core": "npm:2.1.2"
     es-toolkit: "npm:^1.33.0"
   peerDependencies:
     vue: ^3.0.0
-  checksum: 10c0/375a63bdb708ab66b15e32302232bb28d06560fec019e1a59ce64e460a757043fe236bd21c1f4f621759763daa03edd93df759893545f2ae754ce9631b68112f
+  checksum: 10c0/a2f619d5bf4321ff6770c71d9755ef4b6247768cff1a8334add8e5fde0d1c24f4cda51f23da4f41ddce7f5fc7f505f937d12a571b60eab09edb092649e54c5d9
   languageName: node
   linkType: hard
 
