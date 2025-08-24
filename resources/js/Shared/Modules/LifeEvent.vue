@@ -246,7 +246,7 @@ const toggleLifeEventVisibility = (lifeEvent) => {
                 </div>
 
                 <!-- participants -->
-                <div v-if="!lifeEvent.collapsed" class="flex p-3 pb-1">
+                <div v-if="!lifeEvent.collapsed" class="flex flex-wrap p-3 pb-1">
                   <div v-for="contact in lifeEvent.participants" :key="contact.id" class="me-4">
                     <contact-card
                       :contact="contact"
