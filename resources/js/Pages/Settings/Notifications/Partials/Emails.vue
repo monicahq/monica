@@ -310,7 +310,7 @@ export default {
           .delete(channel.url.destroy)
           .then(() => {
             this.flash(this.$t('The email address has been deleted'), 'success');
-            var id = this.localEmails.findIndex((x) => x.id === channel.id);
+            let id = this.localEmails.findIndex((x) => x.id === channel.id);
             this.localEmails.splice(id, 1);
           })
           .catch((error) => {
