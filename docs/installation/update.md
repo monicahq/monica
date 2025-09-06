@@ -25,7 +25,8 @@ or if you have installed Monica on your own server, you need to follow the steps
        # Clone the desired version
        git checkout tags/v2.18.0
        ```
-    2. Or check out `main`
+       Git might complain about unsafe directory. You can ignore this by using command ```git config --global --add safe.directory /var/www/monica```
+    3. Or check out `main`
        ```sh
        git pull origin main
        ```
@@ -33,8 +34,16 @@ or if you have installed Monica on your own server, you need to follow the steps
    ```sh
    composer install --no-interaction --no-dev
    ```
+   ***NOTE:*** This will fail on version 4.1.2, as some Composer packages require PHP8.2. Install PHP8.2 and all required modules (```apt install php8.2-cli php8.2-common php8.2-opcache php8.2-readline php8.2-fpm php8.2-gd php8.2-gmp php8.2-intl php8.2-bcmath php8.2-redis php8.2-xml php8.2-curl```)
 6. Run `yarn install` to install frontend packages, then `yarn run production` to build the assets (js, css).
-7. Then, run the following command to make the proper update:
+   ***NOTE:*** Upgrade your nodejs to atleast version 20.x for Monica 4.1.2:
+   ```
+   sudo apt-get install -y curl
+   curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+   sudo apt-get install -y nodejs
+   node -v
+   ```
+8. Then, run the following command to make the proper update:
    ```sh
    php artisan monica:update --force
    ```
