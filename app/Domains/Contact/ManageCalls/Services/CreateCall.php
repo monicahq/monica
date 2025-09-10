@@ -4,6 +4,7 @@ namespace App\Domains\Contact\ManageCalls\Services;
 
 use App\Interfaces\ServiceInterface;
 use App\Models\Call;
+use App\Models\ContactFeedItem;
 use App\Services\BaseService;
 use Carbon\Carbon;
 
@@ -57,6 +58,7 @@ class CreateCall extends BaseService implements ServiceInterface
 
         $this->createCall();
         $this->updateLastEditedDate();
+        $this->createFeedItem();
 
         return $this->call;
     }
@@ -92,5 +94,15 @@ class CreateCall extends BaseService implements ServiceInterface
     {
         $this->contact->last_updated_at = Carbon::now();
         $this->contact->save();
+    }
+
+    private function createFeedItem(): void
+    {
+        $feedItem = ContactFeedItem::create([
+            'author_id' => $this->author->id,
+            'contact_id' => $this->contact->id,
+            'action' => ContactFeedItem::ACTION_CALL_CREATED,
+        ]);
+        $this->call->feedItem()->save($feedItem);
     }
 }
