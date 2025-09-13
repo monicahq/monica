@@ -100,6 +100,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         'locale',
         'help_shown',
         'contact_sort_order',
+        'avatar_style',
     ];
 
     /**
