@@ -624,26 +624,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inertiajs/core@npm:2.0.17":
-  version: 2.0.17
-  resolution: "@inertiajs/core@npm:2.0.17"
+"@inertiajs/core@npm:2.1.6":
+  version: 2.1.6
+  resolution: "@inertiajs/core@npm:2.1.6"
   dependencies:
-    axios: "npm:^1.8.2"
-    es-toolkit: "npm:^1.34.1"
+    "@types/lodash-es": "npm:^4.17.12"
+    axios: "npm:^1.11.0"
+    lodash-es: "npm:^4.17.21"
     qs: "npm:^6.9.0"
-  checksum: 10c0/7eb25eeca4e785a9eaf436926df079347e4a70e25ba3913de785296c70e1859c519a951947be6d9931e627f804bcce84cdebe56b41325664bd7bb5998af49238
+  checksum: 10c0/b22640a825e1479e190094a0608f77eafbeb6f9bcb90e04ab90459a69a83a2446f49bce6abc328796139a76d4ee611c408a54a4eb0d0aff363bd5bb129b17e25
   languageName: node
   linkType: hard
 
 "@inertiajs/vue3@npm:^2.0.17":
-  version: 2.0.17
-  resolution: "@inertiajs/vue3@npm:2.0.17"
+  version: 2.1.6
+  resolution: "@inertiajs/vue3@npm:2.1.6"
   dependencies:
-    "@inertiajs/core": "npm:2.0.17"
-    es-toolkit: "npm:^1.33.0"
+    "@inertiajs/core": "npm:2.1.6"
+    "@types/lodash-es": "npm:^4.17.12"
+    lodash-es: "npm:^4.17.21"
   peerDependencies:
     vue: ^3.0.0
-  checksum: 10c0/375a63bdb708ab66b15e32302232bb28d06560fec019e1a59ce64e460a757043fe236bd21c1f4f621759763daa03edd93df759893545f2ae754ce9631b68112f
+  checksum: 10c0/0caa6b35612a519920b8e9c3ac34b73bf4b994e2458e6d34abf8781b2b34809695c450ebcc7c2d5500ca0770951799cbe922c1ec72284c91fff2be7a368868b9
   languageName: node
   linkType: hard
 
@@ -1486,6 +1488,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash-es@npm:^4.17.12":
+  version: 4.17.12
+  resolution: "@types/lodash-es@npm:4.17.12"
+  dependencies:
+    "@types/lodash": "npm:*"
+  checksum: 10c0/5d12d2cede07f07ab067541371ed1b838a33edb3c35cb81b73284e93c6fd0c4bbeaefee984e69294bffb53f62d7272c5d679fdba8e595ff71e11d00f2601dde0
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*":
+  version: 4.17.20
+  resolution: "@types/lodash@npm:4.17.20"
+  checksum: 10c0/98cdd0faae22cbb8079a01a3bb65aa8f8c41143367486c1cbf5adc83f16c9272a2a5d2c1f541f61d0d73da543c16ee1d21cf2ef86cb93cd0cc0ac3bced6dd88f
+  languageName: node
+  linkType: hard
+
 "@types/lodash@npm:^4.14.165":
   version: 4.17.15
   resolution: "@types/lodash@npm:4.17.15"
@@ -1916,17 +1934,6 @@ __metadata:
     form-data: "npm:^4.0.4"
     proxy-from-env: "npm:^1.1.0"
   checksum: 10c0/5de273d33d43058610e4d252f0963cc4f10714da0bfe872e8ef2cbc23c2c999acc300fd357b6bce0fc84a2ca9bd45740fa6bb28199ce2c1266c8b1a393f2b36e
-  languageName: node
-  linkType: hard
-
-"axios@npm:^1.8.2":
-  version: 1.8.4
-  resolution: "axios@npm:1.8.4"
-  dependencies:
-    follow-redirects: "npm:^1.15.6"
-    form-data: "npm:^4.0.0"
-    proxy-from-env: "npm:^1.1.0"
-  checksum: 10c0/450993c2ba975ffccaf0d480b68839a3b2435a5469a71fa2fb0b8a55cdb2c2ae47e609360b9c1e2b2534b73dfd69e2733a1cf9f8215bee0bcd729b72f801b0ce
   languageName: node
   linkType: hard
 
@@ -2472,18 +2479,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-toolkit@npm:^1.33.0, es-toolkit@npm:^1.34.1":
-  version: 1.35.0
-  resolution: "es-toolkit@npm:1.35.0"
-  dependenciesMeta:
-    "@trivago/prettier-plugin-sort-imports@4.3.0":
-      unplugged: true
-    prettier-plugin-sort-re-exports@0.0.1:
-      unplugged: true
-  checksum: 10c0/05f95050c835efb6c0bdca04f311d0ecf6c26b6fd1d2df4ca7b58c6475bb48aa29ba842ce07b91157775b3343969db23eee64c6c06ffa47184cb43f25aa0b944
-  languageName: node
-  linkType: hard
-
 "esbuild@npm:^0.25.0":
   version: 0.25.0
   resolution: "esbuild@npm:0.25.0"
@@ -2899,7 +2894,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"form-data@npm:^4.0.0, form-data@npm:^4.0.4":
+"form-data@npm:^4.0.4":
   version: 4.0.4
   resolution: "form-data@npm:4.0.4"
   dependencies:
@@ -3586,7 +3581,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash-es@npm:^4.17.15":
+"lodash-es@npm:^4.17.15, lodash-es@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash-es@npm:4.17.21"
   checksum: 10c0/fb407355f7e6cd523a9383e76e6b455321f0f153a6c9625e21a8827d10c54c2a2341bd2ae8d034358b60e07325e1330c14c224ff582d04612a46a4f0479ff2f2
