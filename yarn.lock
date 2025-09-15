@@ -1050,12 +1050,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry-internal/browser-utils@npm:10.11.0":
+  version: 10.11.0
+  resolution: "@sentry-internal/browser-utils@npm:10.11.0"
+  dependencies:
+    "@sentry/core": "npm:10.11.0"
+  checksum: 10c0/d1d82d1624f3ffd011bafc80bd088e580d7c23b388a8bbd5d8e0d3ae79500d925a627c7b1205325b7d00f727a9ac5738b257400c476228a09cd48166a22ae6b0
+  languageName: node
+  linkType: hard
+
 "@sentry-internal/browser-utils@npm:10.3.0":
   version: 10.3.0
   resolution: "@sentry-internal/browser-utils@npm:10.3.0"
   dependencies:
     "@sentry/core": "npm:10.3.0"
   checksum: 10c0/1b0be8c42b15aa02457606fbc43bd3a7b3066cfbac843414d1f2859f0fc7d481b9d1cd26101bf737601adcd526975844d2d7de61589cc2b8a0212a5d52e614b9
+  languageName: node
+  linkType: hard
+
+"@sentry-internal/feedback@npm:10.11.0":
+  version: 10.11.0
+  resolution: "@sentry-internal/feedback@npm:10.11.0"
+  dependencies:
+    "@sentry/core": "npm:10.11.0"
+  checksum: 10c0/770b86259ffa921d88da4fc3eb3d3790b87c8cf948565613028cd19059c03b01b6d4aa68448a60aad2d6f13e87f06050b9a39b735e0cb33aa7862dc0bd98a7c4
   languageName: node
   linkType: hard
 
@@ -1068,6 +1086,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry-internal/replay-canvas@npm:10.11.0":
+  version: 10.11.0
+  resolution: "@sentry-internal/replay-canvas@npm:10.11.0"
+  dependencies:
+    "@sentry-internal/replay": "npm:10.11.0"
+    "@sentry/core": "npm:10.11.0"
+  checksum: 10c0/fde19c4f25cc7259623af4a23270be6495e35d93d9cfd34537d4ec719606a704548332333d000900410ad0faac7685e3b86be244001f774fed49230aca31408b
+  languageName: node
+  linkType: hard
+
 "@sentry-internal/replay-canvas@npm:10.3.0":
   version: 10.3.0
   resolution: "@sentry-internal/replay-canvas@npm:10.3.0"
@@ -1075,6 +1103,16 @@ __metadata:
     "@sentry-internal/replay": "npm:10.3.0"
     "@sentry/core": "npm:10.3.0"
   checksum: 10c0/87b746a0f54359f9e52111b792e08efa63c8f669a4de40a61fd94e5eb42b50a3453af77d777461117ea8bc0358cda62bb2f77a748b7fc16ab756b7f9a7082293
+  languageName: node
+  linkType: hard
+
+"@sentry-internal/replay@npm:10.11.0":
+  version: 10.11.0
+  resolution: "@sentry-internal/replay@npm:10.11.0"
+  dependencies:
+    "@sentry-internal/browser-utils": "npm:10.11.0"
+    "@sentry/core": "npm:10.11.0"
+  checksum: 10c0/15abde796e132a17818c8fa36ae336bb0851e093418d5151a93efe78ad06189e4dd806b8fdf75e174c5d4e22827c34de98c42e5ee169834dc0a628457f726722
   languageName: node
   linkType: hard
 
@@ -1095,7 +1133,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:10.3.0, @sentry/browser@npm:^10.3.0":
+"@sentry/browser@npm:10.11.0":
+  version: 10.11.0
+  resolution: "@sentry/browser@npm:10.11.0"
+  dependencies:
+    "@sentry-internal/browser-utils": "npm:10.11.0"
+    "@sentry-internal/feedback": "npm:10.11.0"
+    "@sentry-internal/replay": "npm:10.11.0"
+    "@sentry-internal/replay-canvas": "npm:10.11.0"
+    "@sentry/core": "npm:10.11.0"
+  checksum: 10c0/43d129e2f239bb5c0a0ca8bcea7844ff424f95f317c41b580e96ecad0ea31a6d4a4b9305aa4eb642dbc3cbd1c9044381d0468d9efafebbdec557e3460e46e34d
+  languageName: node
+  linkType: hard
+
+"@sentry/browser@npm:^10.3.0":
   version: 10.3.0
   resolution: "@sentry/browser@npm:10.3.0"
   dependencies:
@@ -1220,6 +1271,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/core@npm:10.11.0":
+  version: 10.11.0
+  resolution: "@sentry/core@npm:10.11.0"
+  checksum: 10c0/3b6890e5f409baa9018e3c0faaeda240248551240569a4c2efc4b5824b0d776a6158581b53aa8c32ed51bc2803f80d54876ea8f7c7580b9cb3e0a993be7555b7
+  languageName: node
+  linkType: hard
+
 "@sentry/core@npm:10.3.0":
   version: 10.3.0
   resolution: "@sentry/core@npm:10.3.0"
@@ -1238,18 +1296,18 @@ __metadata:
   linkType: hard
 
 "@sentry/vue@npm:^10.3.0":
-  version: 10.3.0
-  resolution: "@sentry/vue@npm:10.3.0"
+  version: 10.11.0
+  resolution: "@sentry/vue@npm:10.11.0"
   dependencies:
-    "@sentry/browser": "npm:10.3.0"
-    "@sentry/core": "npm:10.3.0"
+    "@sentry/browser": "npm:10.11.0"
+    "@sentry/core": "npm:10.11.0"
   peerDependencies:
     pinia: 2.x || 3.x
     vue: 2.x || 3.x
   peerDependenciesMeta:
     pinia:
       optional: true
-  checksum: 10c0/9c55eea1136b4249316177f3764fe2f0c37cd430b1c9d03096d4808c4aa5c8da5b85b5bc811a55a03544ef2ee56cc5e4670aca6ab22b5c6ead9bf34a28c823ad
+  checksum: 10c0/41dcc33766788cf07578902aef2040f4d0de3b41ef1464602021a773659295b242974bbb25186d0e5bc0f1b4aedcabf2da411644ef2d41aee46d07f21505e7b0
   languageName: node
   linkType: hard
 
