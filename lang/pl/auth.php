@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'failed' => 'Błędny login lub hasło.',
+    'failed' => 'Login lub hasło są błędne',
     'lang' => 'Polski',
-    'password' => 'Hasło jest nieprawidłowe.',
+    'password' => 'Podane hasło jest nieprawidłowe.',
     'throttle' => 'Za dużo nieudanych prób logowania. Proszę spróbować za :seconds sekund.',
 ];
