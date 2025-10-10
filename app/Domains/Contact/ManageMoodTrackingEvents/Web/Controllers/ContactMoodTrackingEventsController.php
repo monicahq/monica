@@ -3,6 +3,7 @@
 namespace App\Domains\Contact\ManageMoodTrackingEvents\Web\Controllers;
 
 use App\Domains\Contact\ManageMoodTrackingEvents\Services\CreateMoodTrackingEvent;
+use App\Domains\Contact\ManageMoodTrackingEvents\Services\DestroyMoodTrackingEvent;
 use App\Domains\Vault\ManageVault\Web\ViewHelpers\VaultShowViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
@@ -35,5 +36,23 @@ class ContactMoodTrackingEventsController extends Controller
         return response()->json([
             'data' => VaultShowViewHelper::dtoMoodTrackingEvent($moodTrackingEvent, Auth::user()),
         ], 201);
+    }
+
+    public function destroy(Request $request, string $vaultId, string $contactId, string $moodTrackingEventId): JsonResponse
+    {
+        $data = [
+            'account_id' => Auth::user()->account_id,
+            'author_id' => Auth::id(),
+            'vault_id' => $vaultId,
+            'contact_id' => $contactId,
+            'mood_tracking_event_id' => $moodTrackingEventId,
+        ];
+
+        (new DestroyMoodTrackingEvent)->execute($data);
+
+        return response()->json([
+            'data' => true,
+        ], 200);
+
     }
 }
