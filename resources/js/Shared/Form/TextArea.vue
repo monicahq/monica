@@ -52,9 +52,13 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  submitOnCtrlEnter: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-const emit = defineEmits(['esc-key-pressed', 'update:modelValue']);
+const emit = defineEmits(['esc-key-pressed', 'update:modelValue', 'ctrl-enter']);
 
 const displayMaxLength = ref(false);
 const zone = useTemplateRef('zone');
@@ -90,6 +94,13 @@ const sendEscKey = () => {
 
 const showMaxLength = () => {
   displayMaxLength.value = true;
+};
+
+const maybeEmitCtrlEnter = (e) => {
+  if (props.submitOnCtrlEnter && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    emit('ctrl-enter');
+  }
 };
 
 const focus = () => {
@@ -129,6 +140,7 @@ defineExpose({
         :maxlength="maxlength"
         @input="$emit('update:modelValue', $event.target.value)"
         @keydown.esc="sendEscKey"
+        @keydown.enter="maybeEmitCtrlEnter"
         @focus="showMaxLength"
         @blur="displayMaxLength = false" />
     </div>
