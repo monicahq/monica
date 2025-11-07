@@ -1,0 +1,225 @@
+╔═══════════════════════════════════════════════════════════════════╗
+║                                                                   ║
+║        💜  MONICA PORTABLE - SCHNELLSTART ANLEITUNG  💜          ║
+║                                                                   ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+
+⚡ WICHTIG: AKTUALISIERTE INSTALLATION ⚡
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Monica ist eine Laravel-Anwendung und benötigt PHP + Composer.
+Bitte folgen Sie ALLEN drei Schritten:
+
+
+🚀 INSTALLATION IN 3 SCHRITTEN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ┌─────────────────────────────────────────────────────────────────┐
+  │  SCHRITT 1: PHP INSTALLIEREN                                    │
+  └─────────────────────────────────────────────────────────────────┘
+
+  📌 Doppelklick auf:  setup-php.bat
+
+     Was passiert:
+     - PHP wird heruntergeladen (automatisch oder manuell)
+     - PHP Extensions werden aktiviert
+     - php.ini wird konfiguriert
+
+     Dauer: 2-5 Minuten
+
+     ⚠️  Falls automatischer Download fehlschlägt:
+         1. Manuell herunterladen von: https://windows.php.net/download/
+         2. "PHP 8.3.x VS16 x64 Thread Safe" (ZIP) wählen
+         3. Entpacken in: portable/php/
+         4. setup-php.bat erneut ausführen
+
+
+  ┌─────────────────────────────────────────────────────────────────┐
+  │  SCHRITT 2: COMPOSER & DEPENDENCIES INSTALLIEREN                │
+  └─────────────────────────────────────────────────────────────────┘
+
+  📌 Doppelklick auf:  setup-composer.bat
+
+     Was passiert:
+     - Composer wird heruntergeladen
+     - Alle Monica-Abhängigkeiten werden installiert
+     - vendor/ Ordner wird erstellt
+
+     Dauer: 5-15 Minuten (abhängig von Internetgeschwindigkeit)
+
+     ⚠️  WICHTIG:
+         - Internetverbindung erforderlich!
+         - Schließen Sie das Fenster NICHT während der Installation
+         - Bei Fehlern: Als Administrator ausführen
+
+
+  ┌─────────────────────────────────────────────────────────────────┐
+  │  SCHRITT 3: MONICA STARTEN                                      │
+  └─────────────────────────────────────────────────────────────────┘
+
+  📌 Doppelklick auf:  start-monica.bat
+
+     Was passiert:
+     - Beim ersten Mal: Automatische Datenbank-Initialisierung
+     - PHP Server wird gestartet
+     - Browser öffnet sich automatisch
+
+     Dauer: 1-3 Minuten beim ersten Start
+
+     ✅ Fertig! Monica läuft jetzt!
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+📋 CHECKLISTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Vor dem ersten Start von Monica:
+
+  ☐ setup-php.bat ausgeführt
+  ☐ PHP Extensions geprüft (wird von setup-php.bat angezeigt)
+  ☐ setup-composer.bat ausgeführt
+  ☐ vendor/ Ordner existiert
+  ☐ Internetverbindung vorhanden (für Composer)
+
+Falls alle Punkte erfüllt sind:
+
+  ☐ start-monica.bat ausführen
+  ☐ Auf Initialisierung warten
+  ☐ Browser öffnet sich automatisch
+  ☐ Account erstellen
+  ☐ Monica nutzen! 🎉
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+🆘 PROBLEMLÖSUNG
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Problem: "PHP Extensions können nicht geladen werden"
+  ├─ Ursache: php.ini zeigt auf falsches Verzeichnis
+  └─ Lösung: setup-php.bat ERNEUT ausführen
+             (setzt extension_dir korrekt)
+
+
+  Problem: "vendor/autoload.php nicht gefunden"
+  ├─ Ursache: Composer Dependencies nicht installiert
+  └─ Lösung: 1. setup-composer.bat ausführen
+             2. Warten bis fertig (5-15 Min)
+             3. start-monica.bat erneut versuchen
+
+
+  Problem: "Composer Install schlägt fehl"
+  ├─ Ursachen: - Keine Internetverbindung
+  │            - Zu wenig RAM
+  │            - Keine Berechtigungen
+  └─ Lösung: 1. Internetverbindung prüfen
+             2. Andere Programme schließen
+             3. Als Administrator ausführen
+             4. Falls persistent: Manuell installieren
+                (siehe SETUP.md)
+
+
+  Problem: "Migration fehlgeschlagen"
+  ├─ Ursachen: - PHP Extensions fehlen
+  │            - Datenbank beschädigt
+  └─ Lösung: 1. setup-php.bat erneut ausführen
+             2. database/database.sqlite löschen
+             3. start-monica.bat erneut ausführen
+
+
+  Problem: "Seite lädt nicht"
+  ├─ Ursache: Server braucht Zeit zum Starten
+  └─ Lösung: 10-15 Sekunden warten, dann:
+             http://127.0.0.1:8000 öffnen
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+📊 SYSTEMANFORDERUNGEN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Minimum:
+  - Windows 7 oder höher
+  - 1 GB RAM
+  - 1 GB freier Speicherplatz
+  - Internetverbindung (für Setup)
+
+  Empfohlen:
+  - Windows 10/11
+  - 4 GB RAM
+  - 2 GB freier Speicherplatz
+  - USB 3.0 (für USB-Stick-Nutzung)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+📂 DATEIEN-ÜBERSICHT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  🔴 PFLICHT (in dieser Reihenfolge):
+
+     1. setup-php.bat          PHP installieren
+     2. setup-composer.bat     Dependencies installieren
+     3. start-monica.bat       Monica starten
+
+
+  🟢 OPTIONAL (nach erfolgreicher Installation):
+
+     maintenance.bat           Wartungsmenü
+     backup.bat               Backup erstellen
+     restore.bat              Backup wiederherstellen
+     reset.bat                Zurücksetzen
+
+
+  📖 DOKUMENTATION:
+
+     SCHNELLSTART.txt         Diese Datei
+     SETUP.md                 Ausführliche Anleitung
+     README.md                Vollständiges Handbuch
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+💡 TIPPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ✅ Nach der Installation können Sie Monica offline nutzen
+
+  ✅ Alle Daten werden lokal in database/database.sqlite gespeichert
+
+  ✅ Erstellen Sie regelmäßig Backups mit backup.bat
+
+  ✅ Bei Problemen: maintenance.bat starten und
+     System-Informationen [6] prüfen
+
+  ✅ Das Konsolenfenster NICHT schließen während Monica läuft
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+🎯 TÄGLICHE NUTZUNG (nach Installation)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Jeden Tag nur noch:
+
+  1. start-monica.bat starten
+  2. Mit Monica arbeiten
+  3. STRG+C zum Beenden
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+Viel Erfolg mit Monica! ❤️
+
+Bei Fragen: SETUP.md oder README.md lesen
+
+Version: Monica Portable Edition v2.0

@@ -1,0 +1,198 @@
+╔═══════════════════════════════════════════════════════════════════╗
+║                                                                   ║
+║              💜  MONICA PORTABLE - SCHNELLSTART  💜              ║
+║                                                                   ║
+║              Personal Relationship Management (CRM)               ║
+║                    Portable Windows Edition                       ║
+║                                                                   ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+
+🚀 SCHNELLSTART IN 3 SCHRITTEN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  SCHRITT 1: PHP Setup (nur beim ersten Mal)
+  ═══════════════════════════════════════════
+
+  📌 Doppelklick auf:  setup-php.bat
+
+     - Folgen Sie den Anweisungen auf dem Bildschirm
+     - PHP wird automatisch heruntergeladen
+     - PHP Extensions werden aktiviert
+     - Dauert ca. 2-5 Minuten
+
+
+  SCHRITT 2: Composer & Dependencies (nur beim ersten Mal)
+  ═══════════════════════════════════════════
+
+  📌 Doppelklick auf:  setup-composer.bat
+
+     - Composer wird heruntergeladen
+     - Alle Monica-Abhängigkeiten werden installiert
+     - Internetverbindung erforderlich!
+     - Dauert ca. 5-15 Minuten
+
+
+  SCHRITT 3: Monica starten
+  ═══════════════════════════════════════════
+
+  📌 Doppelklick auf:  start-monica.bat
+
+     - Der Browser öffnet sich automatisch
+     - Beim ersten Start: Initialisierung läuft automatisch
+     - Erstellen Sie Ihren ersten Account
+     - Fertig! 🎉
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+📁 DATEI-ÜBERSICHT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  🔴 SETUP (nur beim ersten Mal):
+
+     setup-php.bat        📥 PHP installieren (Schritt 1)
+     setup-composer.bat   📦 Dependencies installieren (Schritt 2)
+
+
+  🟢 HAUPTDATEIEN (tägliche Nutzung):
+
+     start-monica.bat     ⭐ Monica starten (Hauptdatei!)
+     start.html           🌐 Alternative: Browser-Launcher
+     maintenance.bat      🔧 Wartungs-Menü (Backup, Optimierung, etc.)
+
+
+  🔵 DOKUMENTATION:
+
+     WO-LIEGT-WAS.txt     📁 Dateistruktur & Pfade erklärt (NEU!)
+     SCHNELLSTART.txt     🚀 Schnellstart-Anleitung
+     SETUP.md             📖 Ausführliche Setup-Anleitung
+     README.md            📚 Vollständiges Benutzerhandbuch
+
+
+  🟡 WARTUNG & VERWALTUNG:
+
+     backup.bat           💾 Backup Ihrer Daten erstellen
+     restore.bat          ♻️  Backup wiederherstellen
+     reset.bat            🔄 Monica zurücksetzen (löscht Daten!)
+     maintenance.bat      🛠️  Alles-in-einem Wartungsmenü
+
+
+  🔴 INTERNE DATEIEN (nicht direkt verwenden):
+
+     init-monica.bat      ⚙️  Initialisierung (wird automatisch aufgerufen)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+💡 TIPPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ✅  Schließen Sie das schwarze Konsolenfenster NICHT während Monica läuft
+
+  ✅  Erstellen Sie regelmäßig Backups (backup.bat oder maintenance.bat)
+
+  ✅  Bei Problemen: Lesen Sie SETUP.md oder README.md
+
+  ✅  Monica läuft unter: http://127.0.0.1:8000
+
+  ✅  Zum Beenden: STRG+C im Konsolenfenster oder Fenster schließen
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+🆘 PROBLEMLÖSUNG
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Problem: "PHP Extensions können nicht geladen werden"
+  ➜ Lösung: setup-php.bat ERNEUT ausführen
+            (setzt extension_dir korrekt)
+
+  Problem: "vendor/autoload.php nicht gefunden"
+  ➜ Lösung: setup-composer.bat ausführen und warten
+
+  Problem: "Composer Install schlägt fehl"
+  ➜ Lösung: 1. Internetverbindung prüfen
+            2. Als Administrator ausführen
+            3. Andere Programme schließen (mehr RAM)
+
+  Problem: Port bereits belegt
+  ➜ Lösung: Wird automatisch gelöst (versucht Port 8001)
+
+  Problem: Seite lädt nicht
+  ➜ Lösung: Warten Sie 10-15 Sekunden, dann versuchen Sie:
+            http://127.0.0.1:8000 oder http://127.0.0.1:8001
+
+  Problem: Monica ist langsam
+  ➜ Lösung: maintenance.bat → Option [4] Cache leeren
+
+  Problem: Irgendetwas funktioniert nicht mehr
+  ➜ Lösung: maintenance.bat → Option [6] System-Informationen prüfen
+
+  ⭐ TIPP: Siehe SCHNELLSTART.txt für detaillierte Problemlösungen!
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+📱 PORTABLE NUTZUNG (USB-STICK)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. Kopieren Sie den gesamten "monica" Ordner auf Ihren USB-Stick
+
+  2. Auf jedem Computer:
+     - USB-Stick einstecken
+     - Zu monica/portable/ navigieren
+     - start-monica.bat ausführen
+
+  3. ⚠️  WICHTIG: Beenden Sie Monica ordnungsgemäß (STRG+C)
+     bevor Sie den USB-Stick entfernen!
+
+  💡 TIPP: Verwenden Sie einen USB 3.0 Stick für bessere Performance
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+🔐 SICHERHEIT & DATENSCHUTZ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ✓  Alle Daten werden lokal gespeichert (keine Cloud)
+  ✓  Keine Verbindung zu externen Servern
+  ✓  Funktioniert komplett offline
+  ✓  Open Source & transparent
+
+  📍 Ihre Daten befinden sich hier:
+     ../database/database.sqlite
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+📚 WEITERE INFORMATIONEN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  📖 README.md       Vollständiges Benutzerhandbuch mit allen Features
+  📖 SETUP.md        Detaillierte Installations- und Setup-Anleitung
+
+  🌐 Offizielle Website: https://www.monicahq.com
+  💬 GitHub: https://github.com/monicahq/monica
+  📚 Dokumentation: https://docs.monicahq.com
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+Viel Erfolg mit Monica! ❤️
+
+Bei Fragen lesen Sie bitte die README.md oder besuchen Sie die offizielle
+Dokumentation.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Version: Monica Portable Edition
+Lizenz: AGPL-3.0
