@@ -64,5 +64,8 @@
       "vendor/bin/pint"
     ]
   },
-  "packageManager": "yarn@4.6.0"
+  "packageManager": "yarn@4.6.0",
+  "dependencies": {
+    "quill": "^2.0.3"
+  }
 }

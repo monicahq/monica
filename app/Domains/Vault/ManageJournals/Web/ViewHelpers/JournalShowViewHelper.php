@@ -79,7 +79,7 @@ class JournalShowViewHelper
                 ->map(fn (Post $post) => [
                     'id' => $post->id,
                     'title' => $post->title,
-                    'excerpt' => $post->excerpt,
+                    'excerpt' => Str::of($post->excerpt)->stripTags(),
                     'written_at_day' => Str::upper(DateHelper::formatShortDay($post->written_at)),
                     'written_at_day_number' => DateHelper::formatDayNumber($post->written_at),
                     'photo' => optional(optional($post)->files)->first() ? [
