@@ -217,7 +217,7 @@
                       v-model="form.other_contact_id"
                       :search-url="layoutData.vault.url.search_contacts_only"
                       :most-consulted-contacts-url="layoutData.vault.url.get_most_consulted_contacts"
-                      :display-most-consulted-contacts="false"
+                      :display-most-consulted-contacts="true"
                       :add-multiple-contacts="false"
                       :required="true"
                       :class="'flex-1 border-gray-200 dark:border-gray-700'" />
