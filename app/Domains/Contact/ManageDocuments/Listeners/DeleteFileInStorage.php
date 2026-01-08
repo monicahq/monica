@@ -5,6 +5,7 @@ namespace App\Domains\Contact\ManageDocuments\Listeners;
 use App\Domains\Contact\ManageDocuments\Events\FileDeleted;
 use App\Exceptions\EnvVariablesNotSetException;
 use App\Models\File;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Uploadcare\Api;
@@ -34,9 +35,38 @@ class DeleteFileInStorage
     public function handle(FileDeleted $event)
     {
         $this->file = $event->file;
+        
+        // Check if file is stored locally (not on Uploadcare)
+        if ($this->isLocalFile()) {
+            $this->deleteLocalFile();
+            return;
+        }
+        
+        // Otherwise, delete from Uploadcare
         $this->checkAPIKeyPresence();
         $this->getFileFromUploadcare();
         $this->deleteFile();
+    }
+
+    private function isLocalFile(): bool
+    {
+        // Local files have asset() URLs, not Uploadcare CDN URLs
+        return str_starts_with($this->file->cdn_url ?? '', config('app.url'));
+    }
+
+    private function deleteLocalFile(): void
+    {
+        // Extract the path from the URL
+        // URL format: http://localhost:9092/storage/avatars/{vault_id}/{uuid}.{ext}
+        $url = $this->file->cdn_url ?? $this->file->original_url;
+        
+        if (preg_match('#/storage/(.+)$#', $url, $matches)) {
+            $path = $matches[1];
+            
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+        }
     }
 
     private function checkAPIKeyPresence(): void

@@ -87,6 +87,8 @@ class ImportVCard extends BaseService implements ServiceInterface
             'etag' => 'nullable|string',
             'uri' => 'nullable|string',
             'external' => 'nullable|boolean',
+            'session_key' => 'nullable|string',    // For photo import from temp storage
+            'contact_index' => 'nullable|integer', // For photo import from temp storage
         ];
     }
 
