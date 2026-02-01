@@ -21,6 +21,7 @@ trait ContactBase
             'hash_id' => $this->getHashId(),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
+            'middle_name' => $this->middle_name,
             'nickname' => $this->nickname,
             'complete_name' => $this->name,
             'initials' => $this->getInitials(),
