@@ -152,12 +152,10 @@ class PostEditViewHelper
             'id' => $contact->id,
             'name' => $contact->name,
             'avatar' => $contact->avatar,
-            'url' => [
-                'show' => route('contact.show', [
-                    'vault' => $contact->vault_id,
-                    'contact' => $contact->id,
-                ]),
-            ],
+            'url' => route('contact.show', [
+                'vault' => $contact->vault_id,
+                'contact' => $contact->id,
+            ]),
         ];
     }
 

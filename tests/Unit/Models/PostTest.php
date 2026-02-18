@@ -138,4 +138,36 @@ class PostTest extends TestCase
             $post->excerpt
         );
     }
+
+    /** @test */
+    public function it_keeps_full_excerpt_when_not_truncated_even_with_mentions(): void
+    {
+        $post = Post::factory()->create();
+
+        PostSection::factory()->create([
+            'post_id' => $post->id,
+            'content' => 'hello {{{CONTACT-ID:aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa|Regis Troyat}}} world',
+        ]);
+
+        $this->assertEquals(
+            'hello {{{CONTACT-ID:aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa|Regis Troyat}}} world',
+            $post->excerpt
+        );
+    }
+
+    /** @test */
+    public function it_truncates_excerpt_without_cutting_mention_tokens(): void
+    {
+        $post = Post::factory()->create();
+        $content = str_repeat('a', 185).' {{{CONTACT-ID:bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb|Ross Geller}}} end';
+
+        PostSection::factory()->create([
+            'post_id' => $post->id,
+            'content' => $content,
+        ]);
+
+        $this->assertStringEndsWith('...', $post->excerpt);
+        $this->assertStringNotContainsString('CONTACT-ID:bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb|Ross Geller}}', $post->excerpt);
+        $this->assertStringNotContainsString('{{{CONTACT-ID:bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb|Ross Geller', $post->excerpt);
+    }
 }

@@ -2,9 +2,12 @@
 
 namespace App\Domains\Vault\Search\Web\ViewHelpers;
 
+use App\Helpers\NameHelper;
 use App\Models\Contact;
+use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class VaultContactSearchViewHelper
 {
@@ -18,10 +21,17 @@ class VaultContactSearchViewHelper
             ->take(5)
             ->get();
 
-        return $contacts->map(function (Contact $contact): array {
+        // Get the current user
+        $user = Auth::user();
+        if (! $user instanceof User) {
+            return collect();
+        }
+
+        return $contacts->map(function (Contact $contact) use ($user): array {
             return [
                 'id' => $contact->id,
-                'name' => $contact->first_name.' '.$contact->last_name.' '.$contact->nickname.' '.$contact->maiden_name.' '.$contact->middle_name,
+                // Format the name using the NameHelper to ensure consistency
+                'name' => NameHelper::formatContactName($user, $contact),
                 'url' => route('contact.show', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
