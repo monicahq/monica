@@ -130,7 +130,7 @@
               :dropdown-class="'block w-full'"
               :label="$t('Gender')" />
 
-            <!-- pronouns -->
+            <!-- pronouns (dropdown) -->
             <dropdown
               v-if="showPronounField"
               v-model="form.pronoun_id"
@@ -139,7 +139,16 @@
               :class="'mb-5'"
               :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
-              :label="$t('Pronoun')" />
+              :label="$t('Pronoun (preset)')" />
+
+            <!-- preferred pronouns (text) -->
+            <text-input
+              v-model="form.pronouns"
+              :class="'mb-5'"
+              :input-class="'block w-full text-sm'"
+              :required="false"
+              :maxlength="255"
+              :label="$t('Preferred pronouns (e.g. they/them, she/her)')" />
 
             <!-- templates -->
             <dropdown
@@ -273,6 +282,7 @@ export default {
         maiden_name: '',
         gender_id: '',
         pronoun_id: '',
+        pronouns: '',
         template_id: '',
         errors: [],
       },
