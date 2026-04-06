@@ -48,4 +48,23 @@ class ModuleGenderPronounViewHelperTest extends TestCase
             $array
         );
     }
+
+    /** @test */
+    public function it_gets_the_pronouns_from_the_text_field_if_set(): void
+    {
+        $pronoun = Pronoun::factory()->create([
+            'name' => 'pronoun preset',
+        ]);
+        $contact = Contact::factory()->create([
+            'pronoun_id' => $pronoun->id,
+            'pronouns' => 'they/them/theirs',
+        ]);
+
+        $array = ModuleGenderPronounViewHelper::data($contact);
+
+        $this->assertEquals(
+            'they/them/theirs',
+            $array['pronoun']
+        );
+    }
 }
