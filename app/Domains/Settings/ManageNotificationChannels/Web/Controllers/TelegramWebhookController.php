@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\UserNotificationChannel;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 
 class TelegramWebhookController extends Controller
@@ -14,14 +15,14 @@ class TelegramWebhookController extends Controller
     /**
      * Store Telegram Chat ID from telegram webhook message.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
         try {
             $messageText = $request->message['text'];
-        } catch (Exception $e) { /** @phpstan-ignore-line */
-            return response()->json([
+        } catch (Exception $e) {
+            return response()->json([ // @phpstan-ignore return.type
                 'code' => $e->getCode(),
                 'message' => 'Accepted with error: \''.$e->getMessage().'\'',
             ], 202);

@@ -13,5 +13,5 @@ jobs:
     name: Static analysis
     uses: monicahq/workflows/.github/workflows/static.yml@v2
     with:
-      php-version: 8.3
+      php-version: 8.4
       with: phpstan

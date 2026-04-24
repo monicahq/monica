@@ -28,6 +28,7 @@ use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Backend\SyncSupport;
 use Sabre\CardDAV\Plugin as CardDav;
 use Sabre\DAV;
+use Sabre\DAV\PropPatch;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
 use Sabre\VObject\Component\VCard;
@@ -281,7 +282,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
     /**
      * Returns the collection of all active contacts.
      *
-     * @return \Illuminate\Support\Collection<array-key,IDavResource>
+     * @return Collection<array-key,IDavResource>
      */
     public function getObjects(?string $collectionId): Collection
     {
@@ -300,15 +301,13 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
             )
             ->flatten();
 
-        $result = $contacts->merge($groups);
-
-        return $result;
+        return $contacts->merge($groups); // @phpstan-ignore return.type
     }
 
     /**
      * Returns the collection of deleted contacts.
      *
-     * @return \Illuminate\Support\Collection<array-key,IDavResource>
+     * @return Collection<array-key,IDavResource>
      */
     public function getDeletedObjects(?string $collectionId): Collection
     {
@@ -328,7 +327,7 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
             )
             ->flatten();
 
-        return $contacts->merge($groups);
+        return $contacts->merge($groups); // @phpstan-ignore return.type
     }
 
     /**
@@ -501,9 +500,8 @@ class CardDAVBackend extends AbstractBackend implements IDAVBackend, SyncSupport
      * Read the PropPatch documentation for more info and examples.
      *
      * @param  string  $addressBookId
-     * @param  \Sabre\DAV\PropPatch  $propPatch
      */
-    public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch): ?bool
+    public function updateAddressBook($addressBookId, PropPatch $propPatch): ?bool
     {
         return null;
     }

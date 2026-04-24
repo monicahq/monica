@@ -24,7 +24,3 @@ parameters:
         # phpstan false positive
         - path: */app/Helpers/helpers.php
           message: '#Function readVersion\(\) never returns null so it can be removed from the return type\.#'
-        - path: */app/Mail/UserInvited.php
-          message: '#Variable \$url might not be defined\.#'
-        - path: */app/Mail/UserInvited.php
-          message: '#Variable \$userName might not be defined\.#'
