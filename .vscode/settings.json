@@ -2,5 +2,8 @@
   "sonarlint.connectedMode.project": {
     "connectionId": "monicahq",
     "projectKey": "monica"
-  }
+  },
+  "i18n-ally.localesPaths": [
+    "lang"
+  ]
 }
