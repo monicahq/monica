@@ -269,6 +269,12 @@ const navigateToSelected = () => {
                   {{ $t('Move contact') }}
                 </Link>
               </li>
+              <!-- merge contact with another contact -->
+              <li class="mb-2">
+                <Link :href="data.url.merge_contact" class="cursor-pointer text-blue-500 hover:underline">
+                  {{ $t('Merge with another contact') }}
+                </Link>
+              </li>
               <!-- download as vcard -->
               <li class="mb-2">
                 <Link @click.prevent="download()" class="cursor-pointer text-blue-500 hover:underline">

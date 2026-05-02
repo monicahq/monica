@@ -3,6 +3,7 @@
 namespace App\Domains\Contact\ManageContact\Web\Controllers;
 
 use App\Domains\Contact\ManageContact\Services\MergeContacts;
+use App\Domains\Contact\ManageContact\Web\ViewHelpers\ContactShowMergeViewHelper;
 use App\Domains\Vault\ManageVault\Web\ViewHelpers\VaultIndexViewHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
+use Redirect;
 
 class ContactMergeController extends Controller
 {
@@ -21,12 +23,7 @@ class ContactMergeController extends Controller
 
         return Inertia::render('Vault/Contact/Merge', [
             'layoutData' => VaultIndexViewHelper::layoutData($vault),
-            'data' => [
-                'contact' => [
-                    'id' => $contact->id,
-                    'name' => $contact->name,
-                ],
-            ],
+            'data' => ContactShowMergeViewHelper::data($contact, Auth::user(), $vault),
         ]);
     }
 
@@ -44,11 +41,9 @@ class ContactMergeController extends Controller
 
         (new MergeContacts)->execute($data);
 
-        return response()->json([
-            'data' => route('contact.show', [
-                'vault' => $vaultId,
-                'contact' => $contactId,
-            ]),
-        ], 200);
+        return Redirect::route('contact.show', [
+            'vault' => $vaultId,
+            'contact' => $contactId,
+        ]);
     }
 }

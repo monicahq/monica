@@ -317,17 +317,43 @@ class MergeContacts extends BaseService implements ServiceInterface
 
     private function mergeRelationships(): void
     {
-        $existingRelationshipIds = $this->primaryContact->relationships->pluck('id');
+        $existingRelatedContactIds = $this->primaryContact->relationships->pluck('id');
 
         foreach ($this->duplicateContact->relationships as $relatedContact) {
-            if (! $existingRelationshipIds->contains($relatedContact->id) && $relatedContact->id !== $this->primaryContact->id) {
+            if (! $existingRelatedContactIds->contains($relatedContact->id) && $relatedContact->id !== $this->primaryContact->id) {
                 $this->primaryContact->relationships()->attach($relatedContact->id);
+                $existingRelatedContactIds->push($relatedContact->id);
             }
         }
 
-        DB::table('relationships')
+        $incomingRelationships = DB::table('relationships')
             ->where('related_contact_id', $this->duplicateContact->id)
-            ->update(['related_contact_id' => $this->primaryContact->id]);
+            ->get();
+
+        foreach ($incomingRelationships as $relationship) {
+            if ($relationship->contact_id === $this->primaryContact->id) {
+                DB::table('relationships')
+                    ->where('id', $relationship->id)
+                    ->delete();
+
+                continue;
+            }
+
+            $exists = DB::table('relationships')
+                ->where('contact_id', $relationship->contact_id)
+                ->where('related_contact_id', $this->primaryContact->id)
+                ->exists();
+
+            if ($exists) {
+                DB::table('relationships')
+                    ->where('id', $relationship->id)
+                    ->delete();
+            } else {
+                DB::table('relationships')
+                    ->where('id', $relationship->id)
+                    ->update(['related_contact_id' => $this->primaryContact->id]);
+            }
+        }
 
         DB::table('relationships')
             ->where('contact_id', $this->duplicateContact->id)
