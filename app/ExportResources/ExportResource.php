@@ -104,7 +104,7 @@ class ExportResource extends JsonResource
      * @param  array  $data
      * @return array|null
      */
-    protected function export(array $columns, array $properties = null, array $data = null): ?array
+    protected function export(array $columns, ?array $properties = null, ?array $data = null): ?array
     {
         $result = [];
 

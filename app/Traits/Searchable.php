@@ -18,7 +18,7 @@ trait Searchable
      * @param  string  $sortOrder
      * @return Builder|null
      */
-    public function scopeSearch(Builder $builder, string $needle, int $accountId, string $orderByColumn, string $orderByDirection = 'asc', string $sortOrder = null): ?Builder
+    public function scopeSearch(Builder $builder, string $needle, int $accountId, string $orderByColumn, string $orderByDirection = 'asc', ?string $sortOrder = null): ?Builder
     {
         if ($this->searchable_columns == null) {
             return null;

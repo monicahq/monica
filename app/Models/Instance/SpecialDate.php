@@ -51,13 +51,6 @@ class SpecialDate extends Model
     protected $touches = ['contact'];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array<string>
-     */
-    protected $dates = ['date'];
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array<string>
@@ -75,6 +68,7 @@ class SpecialDate extends Model
     protected $casts = [
         'is_age_based' => 'boolean',
         'is_year_unknown' => 'boolean',
+        'date' => 'datetime',
     ];
 
     /**

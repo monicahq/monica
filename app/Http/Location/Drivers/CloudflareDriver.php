@@ -2,48 +2,32 @@
 
 namespace App\Http\Location\Drivers;
 
-use App\Helpers\RequestHelper;
 use Illuminate\Support\Fluent;
 use Stevebauman\Location\Position;
-use Illuminate\Support\Facades\Request;
+use Stevebauman\Location\Request;
 use Stevebauman\Location\Drivers\Driver;
 
 class CloudflareDriver extends Driver
 {
-    /**
-     * @return string
-     */
-    public function url($ip)
-    {
-        return '';
-    }
-
-    protected function hydrate(Position $position, Fluent $location)
-    {
-        $position->countryCode = $location->country_code;
-
-        return $position;
-    }
-
-    protected function process($ip = null)
+    protected function process(Request $request): Fluent|false
     {
         try {
-            return $this->getCountry($ip);
+            $country = $request->getHeader('Cf-Ipcountry');
+
+            if (! is_null($country)) {
+                return new Fluent(['country_code' => $country]);
+            }
+
+            return false;
         } catch (\Exception $e) {
             return false;
         }
     }
 
-    private function getCountry($ip = null)
+    protected function hydrate(Position $position, Fluent $location): Position
     {
-        $country = Request::header('Cf-Ipcountry');
+        $position->countryCode = $location->country_code;
 
-        if (! is_null($country)) {
-            $response = ['country_code' => $country];
-
-            return new Fluent($response);
-        }
-
-        return $this->fallback->get($ip ?: RequestHelper::ip());
+        return $position;
     }
 }

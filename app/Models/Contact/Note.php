@@ -35,10 +35,7 @@ class Note extends Model
      */
     protected $casts = [
         'is_favorited' => 'boolean',
-    ];
-
-    protected $dates = [
-        'favorited_at',
+        'favorited_at' => 'datetime',
     ];
 
     /**

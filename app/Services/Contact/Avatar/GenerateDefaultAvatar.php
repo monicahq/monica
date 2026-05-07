@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Cache;
-use Laravolt\Avatar\Facade as Avatar;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
@@ -70,31 +69,47 @@ class GenerateDefaultAvatar extends BaseService
     }
 
     /**
-     * Create a new avatar for the contact based on the name of the contact.
+     * Create a new SVG avatar for the contact based on the initials of the contact name.
      *
      * @param  Contact  $contact
      * @return string
      */
-    private function createNewAvatar(Contact $contact)
+    private function createNewAvatar(Contact $contact): string
     {
-        $img = null;
-        try {
-            $img = Avatar::create($contact->name)
-                ->setBackground($contact->default_avatar_color)
-                ->getImageObject()
-                ->encode('jpg');
+        $initials = $this->getInitials($contact->name);
 
-            $filename = 'avatars/'.$contact->uuid.'.jpg';
-            Storage::disk(config('filesystems.default'))
-                ->put($filename, $img, config('filesystems.default_visibility'));
+        $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">'
+            .'<rect width="100" height="100" fill="'.htmlspecialchars($contact->default_avatar_color, ENT_XML1, 'UTF-8').'"/>'
+            .'<text x="50" y="50" text-anchor="middle" dominant-baseline="central" '
+            .'font-family="sans-serif" font-size="40" fill="white" font-weight="bold">'
+            .htmlspecialchars($initials, ENT_XML1, 'UTF-8')
+            .'</text></svg>';
 
-            // This will force the browser to reload the new avatar
-            return $filename.'?'.now()->format('U');
-        } finally {
-            if ($img) {
-                $img->destroy();
-            }
+        $filename = 'avatars/'.$contact->uuid.'.svg';
+        Storage::disk(config('filesystems.default'))
+            ->put($filename, $svg, config('filesystems.default_visibility'));
+
+        return $filename.'?'.now()->format('U');
+    }
+
+    /**
+     * Extract up to two initials from a full name.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    private function getInitials(string $name): string
+    {
+        $words = preg_split('/\s+/', trim($name), -1, PREG_SPLIT_NO_EMPTY);
+        if (empty($words)) {
+            return '?';
         }
+        $initials = mb_strtoupper(mb_substr($words[0], 0, 1));
+        if (count($words) > 1) {
+            $initials .= mb_strtoupper(mb_substr(end($words), 0, 1));
+        }
+
+        return $initials;
     }
 
     /**

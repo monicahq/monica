@@ -32,7 +32,10 @@ class AddForeignKeysToActivities extends Migration
 
         Schema::table('activities', function (Blueprint $table) {
             $table->unsignedInteger('account_id')->change();
-            $table->unsignedInteger('activity_type_id')->change();
+            $table->unsignedInteger('activity_type_id')->nullable()->change();
+        });
+
+        Schema::table('activities', function (Blueprint $table) {
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('activity_type_id')->references('id')->on('activity_types')->onDelete('set null');
         });

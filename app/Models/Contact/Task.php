@@ -30,16 +30,6 @@ class Task extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array<string>
-     */
-    protected $dates = [
-        'completed_at',
-        'archived_at',
-    ];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
@@ -47,6 +37,8 @@ class Task extends Model
     protected $casts = [
         'completed' => 'boolean',
         'archived' => 'boolean',
+        'completed_at' => 'datetime',
+        'archived_at' => 'datetime',
     ];
 
     /**

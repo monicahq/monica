@@ -31,8 +31,8 @@ class JournalEntry extends Model
 
     protected $table = 'journal_entries';
 
-    protected $dates = [
-        'date',
+    protected $casts = [
+        'date' => 'datetime',
     ];
 
     /**

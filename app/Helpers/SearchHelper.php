@@ -19,7 +19,7 @@ class SearchHelper
      * @param  string|null  $addressBookName
      * @return Builder
      */
-    public static function searchContacts(string $needle, string $orderByColumn, string $orderByDirection = 'asc', string $addressBookName = null): Builder
+    public static function searchContacts(string $needle, string $orderByColumn, string $orderByDirection = 'asc', ?string $addressBookName = null): Builder
     {
         $accountId = Auth::user()->account_id;
 
