@@ -36,20 +36,12 @@ class Gift extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array<string>
-     */
-    protected $dates = [
-        'date',
-    ];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
     protected $casts = [
+        'date' => 'datetime',
     ];
 
     /**

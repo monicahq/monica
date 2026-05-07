@@ -28,7 +28,6 @@ use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Prunable;
 use App\Models\ModelBindingHasher as Model;
-use LaravelAdorable\Facades\LaravelAdorable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -48,14 +47,6 @@ class Contact extends Model
 {
     use Searchable, SoftDeletes, Prunable, HasUuid;
 
-    /** @var array<string> */
-    protected $dates = [
-        'last_talked_to',
-        'last_consulted_at',
-        'stay_in_touch_trigger_date',
-        'created_at',
-        'updated_at',
-    ];
 
     /**
      * The list of columns we want the Searchable trait to use.
@@ -158,6 +149,9 @@ class Contact extends Model
         'is_starred' => 'boolean',
         'is_active' => 'boolean',
         'stay_in_touch_frequency' => 'integer',
+        'last_talked_to' => 'datetime',
+        'last_consulted_at' => 'datetime',
+        'stay_in_touch_trigger_date' => 'datetime',
     ];
 
     /**
@@ -593,7 +587,7 @@ class Contact extends Model
      * @param  Builder  $query
      * @return Builder
      */
-    public function scopeNotes($query, int $accountId = null, string $needle)
+    public function scopeNotes($query, ?int $accountId = null, string $needle)
     {
         $maccountId = $accountId ?? Auth::user()->account_id;
 
@@ -611,7 +605,7 @@ class Contact extends Model
      * @param  Builder  $query
      * @return Builder
      */
-    public function scopeIntroductionAdditionalInformation($query, int $accountId = null, string $needle)
+    public function scopeIntroductionAdditionalInformation($query, ?int $accountId = null, string $needle)
     {
         $maccountId = $accountId ?? Auth::user()->account_id;
 
@@ -630,7 +624,7 @@ class Contact extends Model
      * @param  string|null  $addressBookName
      * @return Builder
      */
-    public function scopeAddressBook($query, int $accountId = null, string $addressBookName = null)
+    public function scopeAddressBook($query, ?int $accountId = null, ?string $addressBookName = null)
     {
         $addressBook = null;
         if ($accountId && $addressBookName) {
@@ -1016,7 +1010,7 @@ class Contact extends Model
      * @param  string  $lastName
      * @return bool
      */
-    public function setName(string $firstName, string $lastName = null, string $middleName = null)
+    public function setName(string $firstName, ?string $lastName = null, ?string $middleName = null)
     {
         if ($firstName === '') {
             return false;
@@ -1144,7 +1138,7 @@ class Contact extends Model
     public function getAvatarAdorableDataUrlAttribute(?string $value): ?string
     {
         if (isset($this->avatar_adorable_uuid) && $this->avatar_adorable_uuid !== '') {
-            return LaravelAdorable::get(config('monica.avatar_size'), $this->avatar_adorable_uuid);
+            return sprintf('https://api.adorable.io/avatars/%d/%s', config('monica.avatar_size'), $this->avatar_adorable_uuid);
         }
 
         return null;
@@ -1211,7 +1205,7 @@ class Contact extends Model
      * @param  Filesystem  $storage
      * @param  int  $size
      */
-    private function deleteAvatarSize(Filesystem $storage, int $size = null)
+    private function deleteAvatarSize(Filesystem $storage, ?int $size = null)
     {
         $avatarFileName = $this->avatar_file_name;
 

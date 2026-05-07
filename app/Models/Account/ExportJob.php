@@ -57,13 +57,13 @@ class ExportJob extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast to native types.
      *
-     * @var array<string>
+     * @var array<string, string>
      */
-    protected $dates = [
-        'started_at',
-        'ended_at',
+    protected $casts = [
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
     ];
 
     /**

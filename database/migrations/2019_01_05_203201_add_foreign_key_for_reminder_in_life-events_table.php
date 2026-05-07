@@ -30,11 +30,12 @@ class AddForeignKeyForReminderInLifeEventsTable extends Migration
                 }
             });
 
-        Schema::disableForeignKeyConstraints();
         Schema::table('life_events', function (Blueprint $table) {
-            $table->unsignedInteger('reminder_id')->change();
+            $table->unsignedInteger('reminder_id')->nullable()->change();
+        });
+
+        Schema::table('life_events', function (Blueprint $table) {
             $table->foreign('reminder_id')->references('id')->on('reminders')->onDelete('set null');
         });
-        Schema::enableForeignKeyConstraints();
     }
 }

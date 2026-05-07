@@ -62,9 +62,12 @@ class AddForeignKeyToContacts extends Migration
             });
 
         Schema::table('contacts', function (Blueprint $table) {
-            $table->unsignedInteger('birthday_special_date_id')->change();
-            $table->unsignedInteger('first_met_special_date_id')->change();
-            $table->unsignedInteger('deceased_special_date_id')->change();
+            $table->unsignedInteger('birthday_special_date_id')->nullable()->change();
+            $table->unsignedInteger('first_met_special_date_id')->nullable()->change();
+            $table->unsignedInteger('deceased_special_date_id')->nullable()->change();
+        });
+
+        Schema::table('contacts', function (Blueprint $table) {
             $table->foreign('birthday_special_date_id')->references('id')->on('special_dates')->onDelete('set null');
             $table->foreign('first_met_special_date_id')->references('id')->on('special_dates')->onDelete('set null');
             $table->foreign('deceased_special_date_id')->references('id')->on('special_dates')->onDelete('set null');

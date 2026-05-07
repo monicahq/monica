@@ -16,12 +16,12 @@ class Changelog extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast to native types.
      *
-     * @var array<string>
+     * @var array<string, string>
      */
-    protected $dates = [
-        'created_at',
+    protected $casts = [
+        'created_at' => 'datetime',
     ];
 
     /**

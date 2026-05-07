@@ -19,19 +19,13 @@ class Message extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array<string>
-     */
-    protected $dates = ['written_at'];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
     protected $casts = [
         'written_by_me' => 'boolean',
+        'written_at' => 'datetime',
     ];
 
     /**

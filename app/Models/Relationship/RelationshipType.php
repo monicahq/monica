@@ -70,7 +70,7 @@ class RelationshipType extends Model
      * @param  string  $gender
      * @return string|null|\Illuminate\Contracts\Translation\Translator
      */
-    public function getLocalizedName(Contact $contact = null, bool $includeOpposite = false, string $gender = null)
+    public function getLocalizedName(?Contact $contact = null, bool $includeOpposite = false, ?string $gender = null)
     {
         $defaultGender = AccountHelper::getDefaultGender($this->account);
 

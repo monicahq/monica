@@ -37,7 +37,7 @@ class ExportAccount implements ShouldQueue
      * @param  ExportJob  $exportJob
      * @param  string|null  $path
      */
-    public function __construct(ExportJob $exportJob, string $path = null)
+    public function __construct(ExportJob $exportJob, ?string $path = null)
     {
         $exportJob->status = ExportJob::EXPORT_TODO;
         $exportJob->save();

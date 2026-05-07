@@ -110,7 +110,7 @@ class Account extends Model
      * @param  string|null  $addressBookName
      * @return HasMany<Contact>
      */
-    public function contacts(string $addressBookName = null)
+    public function contacts(?string $addressBookName = null)
     {
         $contacts = $this->allContacts();
 

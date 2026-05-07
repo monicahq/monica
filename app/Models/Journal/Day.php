@@ -20,8 +20,8 @@ class Day extends Model implements IsJournalableInterface
      */
     protected $guarded = ['id'];
 
-    protected $dates = [
-        'date',
+    protected $casts = [
+        'date' => 'datetime',
     ];
 
     /**

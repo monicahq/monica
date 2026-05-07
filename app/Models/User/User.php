@@ -17,6 +17,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -215,7 +216,14 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
      */
     public function getGoogle2faSecretAttribute($value): ?string
     {
-        return is_null($value) ? null : decrypt($value);
+        if (is_null($value)) {
+            return null;
+        }
+        try {
+            return decrypt($value);
+        } catch (DecryptException) {
+            return null;
+        }
     }
 
     /**

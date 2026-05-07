@@ -36,11 +36,13 @@ class Activity extends Model implements IsJournalableInterface
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast to native types.
      *
-     * @var array<string>
+     * @var array<string, string>
      */
-    protected $dates = ['happened_at'];
+    protected $casts = [
+        'happened_at' => 'datetime',
+    ];
 
     /**
      * The relations to eager load on every query.

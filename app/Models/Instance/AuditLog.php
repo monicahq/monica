@@ -30,21 +30,13 @@ class AuditLog extends Model
     ];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array<string>
-     */
-    protected $dates = [
-        'audited_at',
-    ];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
     protected $casts = [
         'should_appear_on_dashboard' => 'boolean',
+        'audited_at' => 'datetime',
     ];
 
     /**

@@ -610,6 +610,9 @@ class AddForeignKeys extends Migration
             $table->unsignedInteger('account_id')->change();
             $table->unsignedInteger('currency_id')->nullable()->change();
             $table->unsignedInteger('invited_by_user_id')->nullable()->change();
+        });
+
+        Schema::table('users', function (Blueprint $table) {
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('set null');
             $table->foreign('invited_by_user_id')->references('id')->on('users')->onDelete('set null');
@@ -641,7 +644,10 @@ class AddForeignKeys extends Migration
 
         Schema::table('contacts', function (Blueprint $table) {
             $table->unsignedInteger('account_id')->change();
-            $table->unsignedInteger('avatar_photo_id')->change();
+            $table->unsignedInteger('avatar_photo_id')->nullable()->change();
+        });
+
+        Schema::table('contacts', function (Blueprint $table) {
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('avatar_photo_id')->references('id')->on('photos')->onDelete('set null');
         });

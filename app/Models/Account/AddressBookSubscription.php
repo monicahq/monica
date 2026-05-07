@@ -48,15 +48,6 @@ class AddressBookSubscription extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array<string>
-     */
-    protected $dates = [
-        'last_synchronized_at',
-    ];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
@@ -65,6 +56,7 @@ class AddressBookSubscription extends Model
         'readonly' => 'boolean',
         'active' => 'boolean',
         'localSyncToken' => 'integer',
+        'last_synchronized_at' => 'datetime',
     ];
 
     /**

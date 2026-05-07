@@ -41,7 +41,7 @@ class ServiceQueue implements ShouldQueue
      * @param  QueuableService  $service
      * @param  array|null  $data
      */
-    public function __construct(QueuableService $service, array $data = null)
+    public function __construct(QueuableService $service, ?array $data = null)
     {
         $this->service = $service;
         $this->data = $data;
