@@ -311,7 +311,7 @@ const navigateToSelected = () => {
 
             <!-- page selector on desktop -->
             <div class="hidden md:block mb-8 w-full border-b border-gray-200 dark:border-gray-700">
-              <div class="flex overflow-x-hidden">
+              <div class="flex overflow-x-auto scrollbar-hidden">
                 <div v-for="page in data.template_pages" :key="page.id" class="me-2 flex-none">
                   <Link
                     :href="page.url.show"
