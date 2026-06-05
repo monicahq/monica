@@ -30,6 +30,7 @@
     "laravel/sanctum": "^4.0",
     "laravel/scout": "^10.2",
     "laravel/socialite": "^5.5",
+    "laravel/tinker": "^3.0",
     "matriphe/iso-639": "^2.0",
     "meilisearch/meilisearch-php": "^1.12.0",
     "moneyphp/money": "^4.3",
