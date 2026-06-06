@@ -21,6 +21,8 @@ class Tag extends Model
         'vault_id',
         'name',
         'slug',
+        'tag_category', // NEW: optional group e.g. "Personal", "Work"
+        'color',        // NEW: hex color for API consumers e.g. "#FF5733"
     ];
 
     /**
@@ -51,5 +53,28 @@ class Tag extends Model
     public function feedItem(): MorphOne
     {
         return $this->morphOne(ContactFeedItem::class, 'feedable');
+    }
+
+    /**
+     * Get the contacts associated with the tag.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Contact, $this>
+     */
+    public function contacts(): BelongsToMany
+    {
+        return $this->belongsToMany(Contact::class);
+    }
+
+    /**
+     * Polymorphic relation to the taggables pivot.
+     * Allows tags to be attached to any model in the future
+     * (contacts today, activities/notes tomorrow).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\App\Models\Taggable, $this>
+     */
+    public function taggables(): MorphMany
+    {
+        // We store the inverse via the Taggable model
+        return $this->hasMany(Taggable::class);
     }
 }

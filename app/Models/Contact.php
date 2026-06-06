@@ -21,6 +21,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Scout\Attributes\SearchUsingFullText;
 use Laravel\Scout\Searchable;
+use App\Models\Tag;
 
 class Contact extends VCardResource
 {
@@ -497,5 +498,10 @@ class Contact extends VCardResource
                 ];
             }
         );
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
     }
 }
