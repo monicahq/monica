@@ -10,7 +10,6 @@ services:
       - 'host.docker.internal:host-gateway'
     ports:
       - '${APP_PORT:-80}:80'
-      - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
     environment:
       WWWUSER: '${WWWUSER}'
       LARAVEL_SAIL: 1
@@ -30,9 +29,11 @@ services:
   laravel.queue:
     <<: *app
     command: 'php artisan queue:work --sleep=10 --timeout=0 --tries=3 --queue=high,default,low'
+    ports: []
   laravel.cron:
     <<: *app
     command: 'php artisan schedule:run'
+    ports: []
   mariadb:
     image: 'mariadb:10'
     ports:

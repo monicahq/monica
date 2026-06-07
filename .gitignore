@@ -38,3 +38,4 @@ npm-debug.log
 yarn-error.log
 monica.db
 sail
+.vite-cache

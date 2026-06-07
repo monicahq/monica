@@ -1,184 +1,428 @@
-<p align="center">
+# Monica Import Notes
 
-![Monica’s Logo](https://user-images.githubusercontent.com/61099/242266547-63d98bd9-35f3-4dfe-92f4-a4a8dd75aa5c.png)
+This README explains the Monica import work in plain language.
 
-</p>
-<h1 align="center">Document your life</h1>
+If you are reviewing the project quickly, start with:
+- what the feature does
+- how it is built
+- how to run it locally
+- what tradeoffs were made
 
-<div align="center">
+---
 
-[![Docker pulls](https://img.shields.io/docker/pulls/library/monica)](https://hub.docker.com/_/monica/)
-![Lines of code](https://sloc.xyz/github/monicahq/monica/)
-[![Code coverage](https://img.shields.io/sonar/coverage/monica?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&label=Coverage%20Status)](https://sonarcloud.io/project/activity?custom_metrics=coverage&graph=custom&id=monica)
-[![License](https://img.shields.io/github/license/monicahq/monica)](https://github.com/monicahq/monica/blob/main/LICENSE.md)
+## Legacy Monica Import Notes
 
-</div>
+The rest of this README is the more technical background for the Monica import work.
+It is kept here so reviewers can still see the architecture, API details, and testing notes.
 
-<p align="center">
-  <a href="https://docs.monicahq.com">Docs</a>
-  -
-  <a href="https://github.com/monicahq/monica/issues/new?assignees=&amp;labels=bug&amp;template=bug_report.md">Bug report</a>
-</p>
+---
 
-## Monica is an open source personal relationship management system, that lets you document your life.
+## Problem Analysis
 
-> [!WARNING]
-> This branch is in development. It’s our beta version.
->
-> If you want to browse the stable and current version, see the [4.x branch](https://github.com/monicahq/monica/tree/4.x).
+Before redesigning the system, the existing import implementation was thoroughly analyzed.
 
-## Table of contents
+### What the original Monica does
 
-- [Introduction](#introduction)
-  - [Features](#features)
-  - [Who is it for?](#who-is-it-for)
-  - [What Monica isn’t](#what-monica-isnt)
-- [Contribute](#contribute)
-  - [Contribute as a community](#contribute-as-a-community)
-  - [Contribute as a developer](#contribute-as-a-developer)
-- [Principles, vision, goals and strategy](#principles-vision-goals-and-strategy)
-  - [Principles](#principles)
-  - [Vision](#vision)
-  - [Goals](#goals)
-  - [Why Open Source?](#why-open-source)
-  - [Patreon](#patreon)
-- [Contact](#contact)
-- [Team](#team)
-- [Thank you, open source](#thank-you-open-source)
-- [License](#license)
+Monica's original import flow works like this:
 
-## Introduction
+- **`app/Http/Controllers/Api/` (web layer):** The import form sends the file during the same HTTP request.
+- **`app/Domains/Contact/ImportVCard/`:** Monica's *existing* import domain processes vCard (`.vcf`) files. Key classes:
+  - `ImportVCard` parses each vCard entry one by one.
+  - Everything runs in the same PHP process as the HTTP request.
+  - There is no `import_jobs` table, so there is no persistent import history.
+  - There is no row-by-row error handling, so one bad row can stop the import.
+- **File handling:** The uploaded file stays in memory for the life of the request.
 
-Monica is an open-source web application that enables you to document your life, organize, and log your interactions with your family and friends. We call it a PRM, or Personal Relationship Management. Imagine a CRM—a commonly used tool by sales teams in the corporate world—for your friends and family.
+### Current flow before the redesign
 
-### Features
+```
+User uploads CSV/VCF
+        ↓
+HTTP Controller receives the file
+        ↓
+ImportVCard service iterates every contact inline
+        ↓
+Contact is created directly in the database (synchronous)
+        ↓
+HTTP Response returned after ALL contacts are processed
+```
 
-- Add and manage contacts
-- Define relationships between contacts
-- Reminders
-- Automatic reminders for birthdays
-- Ability to add notes to a contact
-- Ability to record how you met someone
-- Management of activities with a contact
-- Management of tasks
-- Management of addresses and all the different ways to contact someone
-- Management of contact field types
-- Management of a contact’s pets
-- Top of the art diary to keep track of what’s happening in your life
-- Ability to record how your day went
-- Upload documents and photos
-- Ability to define custom genders
-- Ability to define custom activity types
-- Ability to favorite contacts
-- Multiple vaults and users
-- Labels to organize contacts
-- Ability to define what section should appear on the contact sheet
-- Multiple currencies
-- Translated in 27 languages
+### Problems with that flow
 
-### Who is it for?
+| Problem | Why it matters |
+|---------|----------------|
+| Synchronous processing during the request | Large files can time out |
+| No progress tracking | Users cannot tell how far the import has gone |
+| No row-level error isolation | One bad row can stop everything |
+| No import history | Past imports are hard to review or retry |
+| No duplicate detection | The same file can be imported twice by mistake |
+| No observability | Failed or stuck imports are easy to miss |
+| Memory usage grows with the file | Large CSV files become expensive to process |
 
-This project is for people who want to document their lives and those who have difficulty remembering details about the lives of people they care about.
+---
 
-We’ve also had a lot of positive reviews from people with Asperger syndrome, Alzheimer’s disease, and introverts who use our app every day.
+## 🏗️ Redesigned Architecture
 
-### What Monica isn’t
+The new import system uses a **two-stage asynchronous pipeline** to decouple file uploads from heavy database writes:
 
-- Monica is not a social network and **it never will be**. It’s not meant to be social. It’s designed to be the opposite: it’s for your eyes only.
-- Monica is not a smart assistant. It won’t guess what you want to do. It’s actually pretty dumb: it will only send you emails for the things you asked to be reminded of.
-- Monica does not have built-in AI with integrations like ChatGPT.
-- Monica is not a tool that will scan your data and do nasty things with it. It’s your data, your server, do whatever you want with it. You’re in control of your data.
+```
+Client Upload (POST /api/import)
+        ↓
+ImportController — validates file, stores to disk, creates ImportJob (status: pending)
+        ↓                ↓
+  HTTP 201 <500ms    Dispatches ProcessImportJob
+                          ↓
+              [Queue Worker] ProcessImportJob
+              - Reads CSV headers, strips UTF-8 BOM
+              - Maps column names to normalized fields
+              - Counts total rows
+              - Dispatches batches of 50 → ProcessImportBatch jobs
+              - Deletes CSV file from disk (cleanup)
+                          ↓
+              [Queue Workers] ProcessImportBatch × N
+              - Per-row validation and error isolation
+              - Creates contacts via existing CreateContact service
+              - Atomically updates processed_rows/failed_rows (lockForUpdate)
+              - Marks import completed/failed when all rows accounted for
+```
 
-## Contribute
+### Component Responsibilities
 
-Do you want to lend a hand? That’s great! We accept contributions from everyone, regardless of form.
+| Component | File | Role |
+|-----------|------|------|
+| `ImportController` | `app/Http/Controllers/Api/ImportController.php` | Thin HTTP layer, delegates to service |
+| `StoreImportRequest` | `app/Http/Requests/StoreImportRequest.php` | Validates `vault_id` + `file` inputs |
+| `ImportJobResource` | `app/Http/Resources/ImportJobResource.php` | Consistent JSON API output format |
+| `CreateImportJob` | `app/Domains/Contact/Import/Services/CreateImportJob.php` | Creates DB record, checks duplicates, dispatches |
+| `ProcessImportJob` | `app/Jobs/ProcessImportJob.php` | CSV orchestrator — parses, chunks, dispatches batches |
+| `ProcessImportBatch` | `app/Jobs/ProcessImportBatch.php` | Worker — creates contacts, tracks per-row errors |
+| `RecoverImports` | `app/Console/Commands/RecoverImports.php` | Artisan command to recover stuck imports |
+| `ImportJob` | `app/Models/ImportJob.php` | Eloquent model with `progress_pct` accessor |
 
-Here are some of the things you can do to help.
+---
 
-### Contribute as a community
+## 💾 Database Schema — `import_jobs` Table
 
-- Unlike Fight Club, the best way to help is **to actually talk about Monica** as much as you can in blog posts and articles, or on social media.
-- You can answer questions in [the issue tracker](https://github.com/monicahq/monica/issues) to help other community members.
-- You can financially support Monica’s development [on Patreon](https://www.patreon.com/monicahq) or by subscribing to [a paid account](https://monicahq.com/pricing).
+```sql
+CREATE TABLE import_jobs (
+    id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    account_id      CHAR(36) NOT NULL,   -- Scoping to account (multi-tenancy / sharding key)
+    user_id         CHAR(36) NOT NULL,   -- Audit: who initiated the import
+    vault_id        CHAR(36) NOT NULL,   -- Contacts belong to a vault
+    filename        VARCHAR(255),        -- Original filename shown in the UI
+    file_path       VARCHAR(255),        -- Temporary path on local disk (deleted after parsing)
+    file_hash       VARCHAR(255),        -- SHA-256 hash for duplicate detection (indexed)
+    total_rows      INT DEFAULT 0,       -- Set by orchestrator after CSV parsing
+    processed_rows  INT DEFAULT 0,       -- Incremented atomically by batch workers
+    failed_rows     INT DEFAULT 0,       -- Incremented atomically by batch workers
+    status          VARCHAR(20),         -- pending | processing | completed | failed | cancelled
+    errors          LONGTEXT NULL,       -- JSON array of per-row errors with row number + raw data
+    started_at      TIMESTAMP NULL,      -- When ProcessImportJob began
+    completed_at    TIMESTAMP NULL,      -- When all batches finished (or cancelled/failed)
+    created_at      TIMESTAMP,
+    updated_at      TIMESTAMP,
+    INDEX (file_hash),
+    INDEX (status)
+);
+```
 
-### Contribute as a developer
+**Additional columns beyond the assignment minimum — Justification:**
 
-- Read our [Contribution Guide](https://docs.monicahq.com/developers/contribution-guide).
-- Install [the developer version locally](https://docs.monicahq.com/developers/setup-local-development) so you can start contributing.
-- Look for [issues labelled ‘Bugs’](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) if you are looking to have an immediate impact on Monica.
-- Look for [issues labelled ‘Help Wanted’](https://github.com/monicahq/monica/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22). These are issues that you can solve relatively easily.
-- Look for [issues labelled ’Good First Issue’](https://github.com/monicahq/monica/labels/good%20first%20issue). These issues are for people who want to contribute, but try to work on a small feature first.
-- If you are an advanced developer, you can try to tackle [issues labelled ‘Feature Requests’](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22). These are harder to do and will require a lot of back-and-forth with the repository administrator to make sure we are going to the right direction with the product.
+| Column | Reason Added |
+|--------|-------------|
+| `vault_id` | Contacts in Monica are scoped to vaults; required for authorization and contact creation |
+| `file_path` | Required to read the file in the orchestrator job |
+| `file_hash` | SHA-256 hash enables O(1) duplicate detection without re-reading the file |
+| `errors` (JSON) | Stores `[{row, data, message}]` so the original row data can be reconstructed for the error CSV |
 
-## Principles, vision, goals and strategy
+---
 
-We want to use technology in a way that does not harm human relationships, unlike big social networks.
+## 🔑 API Endpoints
 
-### Principles
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/api/import` | Upload a CSV file for import |
+| `GET` | `/api/import` | List recent imports (paginated, `?page=1&per_page=10`) |
+| `GET` | `/api/import/:id` | Get detailed status: progress %, ETA, errors so far |
+| `POST` | `/api/import/:id/cancel` | Cancel a running import |
+| `GET` | `/api/import/:id/errors` | Paginated list of per-row errors |
+| `GET` | `/api/import/:id/errors.csv` | Download error CSV with original row data + error column |
 
-Monica has a few principles.
+All endpoints require `Authorization: Bearer <sanctum-token>`.
 
-- It should help improve relationships.
-- It should be simple to use, simple to contribute to, simple to understand, extremely simple to maintain.
-- It is not a social network and never will be.
-- It is not and never will be ad-supported.
-- Users are not and never will be tracked.
-- It should be transparent.
-- It should be open-source.
-- It should do one thing (documenting your life) extremely well, and nothing more.
-- It should be well documented.
+### Sample Responses
 
-### Vision
+**`POST /api/import` → 201**
+```json
+{
+  "data": {
+    "id": 1,
+    "filename": "contacts.csv",
+    "total_rows": 0,
+    "processed_rows": 0,
+    "failed_rows": 0,
+    "status": "pending",
+    "progress_pct": 0,
+    "created_at": "2026-06-03T12:00:00+00:00"
+  }
+}
+```
+> **Note:** `total_rows` is `0` immediately after upload because CSV row counting happens asynchronously in the orchestrator job. It is updated within seconds. This is an intentional architectural trade-off documented in ADR 3.
 
-Monica’s vision is to **help people have more meaningful relationships**.
+**`GET /api/import/1` → 200**
+```json
+{
+  "data": {
+    "id": 1,
+    "filename": "contacts.csv",
+    "total_rows": 500,
+    "processed_rows": 320,
+    "failed_rows": 2,
+    "status": "processing",
+    "progress_pct": 64.4,
+    "errors": [
+      { "row": 42, "message": "Invalid email: 'not-an-email'" },
+      { "row": 87, "message": "Missing required field: name" }
+    ],
+    "started_at": "2026-06-03T12:00:05+00:00",
+    "estimated_remaining_sec": 45,
+    "completed_at": null,
+    "created_at": "2026-06-03T12:00:00+00:00"
+  }
+}
+```
 
-### Goals
+**`GET /api/import?page=1&per_page=10` → 200**
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "filename": "contacts.csv",
+      "total_rows": 500,
+      "processed_rows": 500,
+      "failed_rows": 2,
+      "status": "completed",
+      "progress_pct": 100,
+      "created_at": "2026-06-03T12:00:00+00:00"
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "per_page": 10,
+    "total": 1,
+    "last_page": 1
+  }
+}
+```
 
-We want to provide a platform that is:
+---
 
-- **really easy to use**: we value simplicity over anything else.
-- **open-source**: we believe everyone should be able to contribute to this tool, and see for themselves that nothing nasty is done behind the scenes that would go against the best interests of the users. We also want to leverage the community to build attractive features and do things that would not be possible otherwise.
-- **easy to contribute to**: we want to keep the codebase as simple as possible. This has two big advantages: anyone can contribute, and it’s easily maintainable on the long run.
-- **available everywhere**: Monica should be able to run on any desktop OS or mobile phone easily. This will be made possible by making sure the tool is easily installable by anyone who wants to either contribute or host the platform themselves.
+## 💾 Architecture Decision Records (ADRs)
 
-### Why Open Source?
+### ADR 1: Database vs Redis for Progress Tracking
 
-Why is Monica open source? Is it risky? Could someone steal my code and use it to start a for-profit business that could hurt my own? Why reveal our strategy to the world? We’ve already received these kinds of questions in our emails.
+- **Context:** Progress counters (`processed_rows`, `failed_rows`) are updated concurrently by multiple queue workers.
+- **Options Considered:**
+  1. **Redis Counters:** `INCR` is atomic and extremely fast. Use `HSET import:<id> processed N`.
+  2. **Database with row locks:** `SELECT ... FOR UPDATE` inside a transaction ensures ACID guarantees.
+  3. **Append-only event log:** Each batch appends a row; a query aggregates totals.
+- **Decision: Database (MySQL) with `lockForUpdate()`.**
+- **Rationale:**
+  - Redis can lose data under memory pressure (eviction) or before an AOF fsync — causing phantom progress.
+  - Since an `import_jobs` record must exist in MySQL for audit history anyway, using a double-write to Redis adds complexity with no clear benefit at this scale.
+  - `lockForUpdate()` prevents the TOCTOU race when two batches finish simultaneously and both try to set `status = completed`.
+  - At 10x scale (hundreds of concurrent imports), switching to Redis + periodic DB sync or an event-sourced approach would be justified — documented as a known scaling path.
 
-The answer is simple: yes, you can fork Monica and create a competing project, make money from it (even if the license is not ideal for that) and we won’t be aware. But that’s okay, we don’t mind.
+### ADR 2: Batch Size — 50 Contacts per Batch
 
-We wanted to open source Monica for several reasons:
+- **Context:** Choosing batch size controls the memory/throughput/latency tradeoff.
+- **Options Considered:**
+  1. **1 contact per job:** Maximum parallelism, but extreme queue overhead (10k jobs for 10k contacts).
+  2. **50 contacts per job:** Balanced. Each job runs in ~1–2s, low memory, moderate parallelism.
+  3. **500 contacts per job:** Fewer jobs, but high memory usage, long transaction locks, risk of timeout.
+- **Decision: 50 contacts per batch.**
+- **Rationale:** Keeps individual job memory under ~10MB, stays well within default `max_execution_time`, and produces granular enough progress updates that the UI feels responsive. Batch size can be made configurable via `config/import.php` in a future iteration.
 
-- **We believe that this tool can really change people’s lives.**
-  We aim to make money from this project, but also want everyone to benefit. Open sourcing it will help Monica become much bigger than we imagine. We believe the software should follow our vision, but we must be humble enough to recognize that ideas come from everywhere and people may have better ideas than us.
-- **You can’t make something great alone.**
-  While Monica could become a company and hire a bunch of super smart people to work on it, you can’t beat the manpower of an entire community. Open sourcing the product means bugs will be fixed faster, features will be developed faster, and more importantly, developers will be able to contribute to a tool that positively changes their own lives and the lives of other people.
-- **Doing things in a transparent way leads to formidable things.**
-  People respect the project more when they can see how it’s being worked on. You can’t hide nasty things in the code. You can’t do things behind the backs of your users. Doing everything in the open is a major driving force that motivates you to keep doing what’s right.
-- **Once you’ve created a community of passionate developers around your project, you’ve won.**
-  Developers are powerful influencers: they create apps, discuss your product on forums, and share it with their networks. Nurture your relationship with developers – users will follow.
+### ADR 3: total_rows is 0 on POST /api/import Response
 
-### Patreon
+- **Context:** The assignment sample output shows `total_rows: 500` immediately in the upload response. But to count rows, we must read and parse the CSV — which can take seconds for large files.
+- **Decision:** Return `total_rows: 0` on the upload response. The orchestrator updates it within seconds.
+- **Rationale:** The HTTP endpoint must respond in `<500ms`. Reading a 50k-row CSV synchronously to count rows would violate this. Clients should poll `GET /api/import/:id` to get the live count.
+- **Alternative Considered:** Read only the first N bytes to estimate row count — rejected because it would be inaccurate and still adds latency.
 
-You can support the development of Monica [on Patreon](https://www.patreon.com/monicahq). Thanks for your help.
+---
 
-## Contact
+## 🔒 Concurrency, Idempotency & Recovery
 
-## Team
+### 1. Duplicate Upload Prevention
 
-Our team is made of two core members:
+- **Mechanism:** SHA-256 hash of the uploaded file content is computed before storage.
+- **Check:** If a file with the same hash exists for the same vault in the last 24 hours → `409 Conflict`.
+- **Why SHA-256:** Content-addressable deduplication is immune to filename or filesize spoofing. Two differently-named files with the same content are correctly identified as duplicates.
+- **Trade-off:** Hashing is O(file size) — for a 100MB CSV this adds ~50ms. Acceptable since upload response time is still well under 500ms.
 
-- [Regis (djaiss)](https://github.com/djaiss)
-- [Alexis Saettler (asbiin)](https://github.com/asbiin)
+### 2. Stuck Import Recovery
 
-We are also fortunate to have an amazing [community of developers](https://github.com/monicahq/monica/graphs/contributors) who help us greatly.
+- **Problem:** A queue worker can crash mid-job (OOM, server restart, DB disconnect). The job remains `processing` indefinitely with no signal.
+- **Solution:** `php artisan monica:recover-imports` — scheduled hourly via `routes/console.php`:
+  - Queries for imports where `status = 'processing' AND started_at <= NOW() - INTERVAL 30 MINUTE`
+  - Marks them `failed`, logs a timeout error entry in `errors`, sets `completed_at`
+- **Alerting:** Recovered imports can trigger notifications (see Observability section).
 
-## Thank you, open source
+### 3. Graceful Cancellation
 
-Monica makes use of numerous open-source projects and we are deeply grateful. We hope that by offering Monica as a free, open-source project, we can help others in the same way these programs have helped us.
+When `POST /api/import/:id/cancel` is called:
+1. The `import_jobs.status` is set to `cancelled` atomically.
+2. Any `ProcessImportBatch` job that hasn't started yet checks status at entry — exits immediately.
+3. For jobs already running, the row loop checks `status` every 10 iterations via a raw DB query — breaking out and discarding partial work when cancelled.
 
-## License
+**Edge Case:** If a batch is between the status check and its DB write, it may commit a few contacts. This is a known trade-off — stopping mid-transaction is impossible without distributed coordination. The completed contact count and error log will accurately reflect what was saved.
 
-Copyright © 2016–2023
+---
 
-Licensed under [the AGPL License](/LICENSE.md).
+## 📊 Observability & Alerting
+
+### Metrics to Track
+
+| Metric | How to Collect |
+|--------|---------------|
+| Imports started / hour | Count `import_jobs` records created |
+| Imports completed / failed / cancelled | Count by status |
+| Avg processing time (sec/row) | `(completed_at - started_at) / total_rows` |
+| Batch failure rate | `failed_rows / total_rows` across recent imports |
+| Stuck imports count | Query below |
+| File upload size distribution | Log at upload time |
+
+### SQL: Detect Stuck Imports (> 30 minutes)
+
+```sql
+SELECT
+    id,
+    account_id,
+    user_id,
+    filename,
+    total_rows,
+    processed_rows,
+    failed_rows,
+    status,
+    started_at,
+    TIMESTAMPDIFF(MINUTE, started_at, NOW()) AS minutes_stuck
+FROM
+    import_jobs
+WHERE
+    status = 'processing'
+    AND started_at <= NOW() - INTERVAL 30 MINUTE
+ORDER BY
+    started_at ASC;
+```
+
+### SQL: Import Failure Rate Alert (Last 1 Hour)
+
+```sql
+SELECT
+    COUNT(*) AS total_imports,
+    SUM(total_rows) AS total_rows_processed,
+    SUM(failed_rows) AS total_failed_rows,
+    ROUND(SUM(failed_rows) / NULLIF(SUM(total_rows), 0) * 100, 2) AS failure_rate_pct
+FROM
+    import_jobs
+WHERE
+    completed_at >= NOW() - INTERVAL 1 HOUR
+    AND status IN ('completed', 'failed');
+```
+
+**Alert Rule:** If `failure_rate_pct > 20.0`, trigger a PagerDuty/Slack alert:
+> ⚠️ Import failure rate is **{failure_rate_pct}%** in the last hour — exceeds 20% threshold. Investigate `import_jobs` table.
+
+### Prometheus Metrics (Proposed)
+
+If the team adopts Prometheus, emit these counters from queue job callbacks:
+
+```
+monica_import_jobs_total{status="completed"} 42
+monica_import_jobs_total{status="failed"} 3
+monica_import_rows_processed_total 18500
+monica_import_rows_failed_total 130
+monica_import_batch_duration_seconds_histogram
+```
+
+---
+
+## 🔄 Production Readiness Notes
+
+### Rolling Back the Feature
+
+The entire import feature is additive:
+- New table: `import_jobs` (rollback via `down()` in the migration)
+- New queue jobs registered via `ShouldQueue` — removing the dispatch call in `CreateImportJob` instantly disables the feature
+- New routes under `/api/import` — can be feature-flagged via a middleware gate
+
+### Debugging a Stuck Import
+
+1. Run `php artisan monica:recover-imports` to immediately recover.
+2. Inspect `import_jobs.errors` JSON for the stuck job — the last logged error shows where processing stopped.
+3. Check Laravel queue logs: `storage/logs/laravel.log` for `Import row N failed:` entries.
+4. Verify queue workers are running: `php artisan queue:status` or check Horizon dashboard.
+
+### What Happens at 10x Scale (Millions of Imports)
+
+| Challenge | Mitigation |
+|-----------|-----------|
+| `import_jobs` table grows large | Add `created_at` index; archive/prune records > 90 days |
+| `lockForUpdate()` contention | Shard progress updates via Redis INCR; batch-write to DB every N rows |
+| File storage fills up | Move CSV storage to S3/GCS with lifecycle policies (presigned upload URLs) |
+| Single queue overwhelmed | Dedicated `imports` queue with priority; Horizon auto-scaling |
+| Error JSON column grows huge | Cap stored errors at 1000 per import; truncate remainder |
+
+---
+
+## 🧪 Running the Test Suite
+
+The test suite uses an in-memory SQLite database and covers the complete import lifecycle.
+
+### Prerequisites
+
+Ensure your Docker/Sail environment is running:
+```bash
+./vendor/bin/sail up -d
+```
+
+### Run All Tests
+
+```bash
+./vendor/bin/sail test
+```
+
+### Run Only Import Tests (Faster)
+
+```bash
+./vendor/bin/sail test --filter=ImportTest
+```
+
+### Without Sail (direct PHP)
+
+```bash
+php artisan test --filter=ImportTest
+```
+
+### Included Import Tests (16 total)
+
+| Test | What It Covers |
+|------|---------------|
+| `test_submitting_import_requires_authenticated_user` | Auth middleware blocks unauthenticated requests |
+| `test_submitting_import_requires_valid_vault` | 404 when vault doesn't belong to user |
+| `test_submitting_import_validates_file` | 422 when file is missing or wrong mime type |
+| `test_submitting_valid_import_succeeds_and_dispatches_job` | 201 response, DB record created, job dispatched |
+| `test_duplicate_upload_is_prevented` | 409 on second upload of same file content (SHA-256 check) |
+| `test_process_import_job_counts_rows_and_dispatches_batches` | Orchestrator counts rows, dispatches batch jobs, deletes CSV |
+| `test_process_import_batch_creates_contacts_and_isolates_errors` | Batch creates valid contacts, skips invalid, records errors |
+| `test_get_import_progress` | Progress endpoint returns correct progress_pct and estimated_remaining_sec |
+| `test_cancel_import_job` | Cancel sets status, subsequent batch jobs exit without creating contacts |
+| `test_download_error_csv` | Streamed CSV response with original row data and error column |
+| `test_stuck_import_recovery_command` | Artisan command marks 30min+ stuck imports as failed; ignores active ones |
+| `test_index_filters_imports_by_vault_id` | Index ?vault_id= filter correctly scopes results |
+| `test_process_import_job_handles_utf8_bom` | UTF-8 BOM stripped from CSV header before parsing |
+| `test_submitting_import_deletes_file_on_exception` | File cleaned up from disk on 409 duplicate rejection |
+| `test_errors_endpoint_returns_paginated_errors` | GET /api/import/:id/errors returns paginated errors with meta |
+| `test_index_returns_pagination_metadata` | GET /api/import returns correct meta.current_page, per_page, total, last_page |

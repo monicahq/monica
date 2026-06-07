@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
   const env = loadEnv(mode, process.cwd(), '');
   return {
+    cacheDir: '.vite-cache',
     plugins: [
       laravel({
         input: 'resources/js/app.js',
@@ -27,7 +28,6 @@ export default defineConfig(({ mode }) => {
       }),
       tailwindcss(),
       i18n(),
-      basicSsl(),
       sentryVitePlugin({
         disable: !env.SENTRY_ORG || !env.SENTRY_PROJECT,
         org: env.SENTRY_ORG,
@@ -35,8 +35,12 @@ export default defineConfig(({ mode }) => {
       }),
     ],
     server: {
-      https: true,
-      host: 'localhost',
+      https: false,
+      host: '0.0.0.0',
+      origin: 'http://localhost:5173',
+      cors: {
+        origin: '*',
+      },
     },
     ssr: {
       noExternal: ['@inertiajs/server'],
