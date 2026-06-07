@@ -2,9 +2,9 @@
 
 namespace App\Domains\Contact\Import\Services;
 
+use App\Models\ImportJob;
 use App\Interfaces\ServiceInterface;
 use App\Services\BaseService;
-use App\Models\ImportJob;
 
 class GetImportJobErrors extends BaseService implements ServiceInterface
 {
@@ -47,19 +47,30 @@ class GetImportJobErrors extends BaseService implements ServiceInterface
 
         $this->validateRules($data);
 
-        $errors  = $importJob->errors ?? [];
-        $page    = isset($data['page']) ? (int) $data['page'] : 1;
+        $page = isset($data['page']) ? (int) $data['page'] : 1;
         $perPage = isset($data['per_page']) ? (int) $data['per_page'] : 10;
         $perPage = min(max(1, $perPage), 100);
-        $offset  = ($page - 1) * $perPage;
+
+        $errors = $importJob->errors()
+            ->orderBy('row_number')
+            ->paginate($perPage, ['*'], 'page', $page);
 
         return [
-            'data' => array_slice($errors, $offset, $perPage),
+            'data' => $errors->getCollection()->map(function ($error): array {
+                return [
+                    'row' => $error->row_number,
+                    'row_number' => $error->row_number,
+                    'data' => $error->row_data ?? [],
+                    'row_data' => $error->row_data ?? [],
+                    'message' => $error->error_message,
+                    'error_message' => $error->error_message,
+                ];
+            })->all(),
             'meta' => [
-                'current_page' => $page,
-                'last_page'    => max(1, (int) ceil(count($errors) / $perPage)),
-                'per_page'     => $perPage,
-                'total'        => count($errors),
+                'current_page' => $errors->currentPage(),
+                'last_page' => $errors->lastPage(),
+                'per_page' => $errors->perPage(),
+                'total' => $errors->total(),
             ],
         ];
     }

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Enums\ImportJobStatus;
+use App\Models\ImportError;
 use App\Models\ImportJob;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -29,8 +30,16 @@ class RecoverImports extends Command
      */
     public function handle(): void
     {
+        $threshold = now()->subMinutes(30);
         $stuckImports = ImportJob::where('status', ImportJobStatus::PROCESSING)
-            ->where('started_at', '<=', now()->subMinutes(30))
+            ->where(function ($query) use ($threshold) {
+                $query->whereNotNull('last_heartbeat_at')
+                    ->where('last_heartbeat_at', '<', $threshold)
+                    ->orWhere(function ($query) use ($threshold) {
+                        $query->whereNull('last_heartbeat_at')
+                            ->where('started_at', '<', $threshold);
+                    });
+            })
             ->get();
 
         if ($stuckImports->isEmpty()) {
@@ -39,17 +48,17 @@ class RecoverImports extends Command
         }
 
         foreach ($stuckImports as $importJob) {
-            $errors = $importJob->errors ?? [];
-            $errors[] = [
-                'row' => 0,
-                'data' => [],
-                'message' => 'Import job timed out. Stuck in processing for more than 30 minutes.'
-            ];
+            ImportError::create([
+                'import_job_id' => $importJob->id,
+                'row_number' => 0,
+                'row_data' => null,
+                'error_message' => 'Import job timed out. Stuck in processing for more than 30 minutes.',
+            ]);
 
             $importJob->update([
                 'status' => ImportJobStatus::FAILED,
-                'errors' => $errors,
                 'completed_at' => now(),
+                'last_heartbeat_at' => now(),
             ]);
 
             $this->info("Recovered stuck import job ID: {$importJob->id}");

@@ -19,33 +19,21 @@ It is kept here so reviewers can still see the architecture, API details, and te
 
 ## Problem Analysis
 
-Before redesigning the system, the existing import implementation was thoroughly analyzed.
+Before designing the solution, I searched the selected Monica branch for `csv`, `vcard`, `vcf`, `contact import`, and related import files.
 
-### What the original Monica does
+I could not identify an active CSV/VCard contact import implementation, so this solution implements a new import subsystem following Monica’s existing Laravel/domain conventions.
 
-Monica's original import flow works like this:
+### What the selected Monica branch showed
 
-- **`app/Http/Controllers/Api/` (web layer):** The import form sends the file during the same HTTP request.
-- **`app/Domains/Contact/ImportVCard/`:** Monica's *existing* import domain processes vCard (`.vcf`) files. Key classes:
-  - `ImportVCard` parses each vCard entry one by one.
-  - Everything runs in the same PHP process as the HTTP request.
-  - There is no `import_jobs` table, so there is no persistent import history.
-  - There is no row-by-row error handling, so one bad row can stop the import.
-- **File handling:** The uploaded file stays in memory for the life of the request.
+The selected branch did not appear to contain an active CSV/VCard importer that matched the assignment brief.
+
+The import solution in this commit is therefore a new subsystem rather than a rewrite of an existing one.
 
 ### Current flow before the redesign
 
-```
-User uploads CSV/VCF
-        ↓
-HTTP Controller receives the file
-        ↓
-ImportVCard service iterates every contact inline
-        ↓
-Contact is created directly in the database (synchronous)
-        ↓
-HTTP Response returned after ALL contacts are processed
-```
+No active CSV/VCard contact-import flow was identified in the selected branch, so there was no existing end-to-end pipeline to extend.
+
+This submission therefore adds a new import subsystem instead of patching an active importer.
 
 ### Problems with that flow
 
@@ -115,9 +103,10 @@ CREATE TABLE import_jobs (
     total_rows      INT DEFAULT 0,       -- Set by orchestrator after CSV parsing
     processed_rows  INT DEFAULT 0,       -- Incremented atomically by batch workers
     failed_rows     INT DEFAULT 0,       -- Incremented atomically by batch workers
-    status          VARCHAR(20),         -- pending | processing | completed | failed | cancelled
-    errors          LONGTEXT NULL,       -- JSON array of per-row errors with row number + raw data
+    status          VARCHAR(20),         -- pending | processing | cancelling | cancelled | completed | failed
     started_at      TIMESTAMP NULL,      -- When ProcessImportJob began
+    cancelled_at    TIMESTAMP NULL,      -- When cancellation was requested or finalized
+    last_heartbeat_at TIMESTAMP NULL,    -- Most recent activity from orchestrator or batch workers
     completed_at    TIMESTAMP NULL,      -- When all batches finished (or cancelled/failed)
     created_at      TIMESTAMP,
     updated_at      TIMESTAMP,
@@ -133,7 +122,26 @@ CREATE TABLE import_jobs (
 | `vault_id` | Contacts in Monica are scoped to vaults; required for authorization and contact creation |
 | `file_path` | Required to read the file in the orchestrator job |
 | `file_hash` | SHA-256 hash enables O(1) duplicate detection without re-reading the file |
-| `errors` (JSON) | Stores `[{row, data, message}]` so the original row data can be reconstructed for the error CSV |
+| `cancelled_at` | Records when cancellation was requested or finalized |
+| `last_heartbeat_at` | Lets recovery jobs distinguish active work from stuck work |
+
+### `import_errors` Table
+
+```sql
+CREATE TABLE import_errors (
+    id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    import_job_id   BIGINT UNSIGNED NOT NULL,
+    row_number      INT UNSIGNED NOT NULL,
+    row_data        JSON NULL,
+    error_message   TEXT NOT NULL,
+    created_at      TIMESTAMP,
+    updated_at      TIMESTAMP,
+    INDEX (import_job_id),
+    INDEX (row_number)
+);
+```
+
+This table stores each failed row separately so pagination, recovery, and CSV export can all read from the same source of truth.
 
 ---
 
@@ -146,7 +154,7 @@ CREATE TABLE import_jobs (
 | `GET` | `/api/import/:id` | Get detailed status: progress %, ETA, errors so far |
 | `POST` | `/api/import/:id/cancel` | Cancel a running import |
 | `GET` | `/api/import/:id/errors` | Paginated list of per-row errors |
-| `GET` | `/api/import/:id/errors.csv` | Download error CSV with original row data + error column |
+| `GET` | `/api/import/:id/errors.csv` | Download error CSV reconstructed from `import_errors.row_data` plus `error_message` |
 
 All endpoints require `Authorization: Bearer <sanctum-token>`.
 
@@ -251,6 +259,16 @@ All endpoints require `Authorization: Bearer <sanctum-token>`.
 - **Rationale:** The HTTP endpoint must respond in `<500ms`. Reading a 50k-row CSV synchronously to count rows would violate this. Clients should poll `GET /api/import/:id` to get the live count.
 - **Alternative Considered:** Read only the first N bytes to estimate row count — rejected because it would be inaccurate and still adds latency.
 
+### ADR 4: import_errors Table vs JSON Error Blob
+
+- **Context:** The import workflow needs paginated errors, error CSV downloads, and recovery records that are easy to query.
+- **Options Considered:**
+  1. **Single JSON column on `import_jobs`:** Simple at first, but pagination, indexing, and CSV export all become awkward as the failure list grows.
+  2. **Separate `import_errors` table:** Each failed row is persisted independently, so filtering, paging, and exports all read from one normalized source.
+  3. **Hybrid approach:** Keep both JSON and a table.
+- **Decision: Separate `import_errors` table.**
+- **Rationale:** This keeps the error path queryable and avoids rewriting a large JSON blob on every failure. It also makes the error CSV a direct projection of stored row data plus the error message.
+
 ---
 
 ## 🔒 Concurrency, Idempotency & Recovery
@@ -264,20 +282,21 @@ All endpoints require `Authorization: Bearer <sanctum-token>`.
 
 ### 2. Stuck Import Recovery
 
-- **Problem:** A queue worker can crash mid-job (OOM, server restart, DB disconnect). The job remains `processing` indefinitely with no signal.
+- **Problem:** A queue worker can crash mid-job (OOM, server restart, DB disconnect). The job can remain `processing` indefinitely with no signal.
 - **Solution:** `php artisan monica:recover-imports` — scheduled hourly via `routes/console.php`:
-  - Queries for imports where `status = 'processing' AND started_at <= NOW() - INTERVAL 30 MINUTE`
-  - Marks them `failed`, logs a timeout error entry in `errors`, sets `completed_at`
+  - Queries for imports where `status = 'processing' AND last_heartbeat_at < NOW() - INTERVAL 30 MINUTE`
+  - Falls back to `started_at` when `last_heartbeat_at` is null
+  - Marks them `failed`, stores a row in `import_errors`, and sets `completed_at`
 - **Alerting:** Recovered imports can trigger notifications (see Observability section).
 
 ### 3. Graceful Cancellation
 
 When `POST /api/import/:id/cancel` is called:
-1. The `import_jobs.status` is set to `cancelled` atomically.
-2. Any `ProcessImportBatch` job that hasn't started yet checks status at entry — exits immediately.
-3. For jobs already running, the row loop checks `status` every 10 iterations via a raw DB query — breaking out and discarding partial work when cancelled.
+1. If the job has not started yet, it is marked `cancelled` immediately.
+2. If the job is already processing, the status moves to `cancelling`.
+3. Running batches check the status regularly, stop early, and finalize the job as `cancelled` once they are done unwinding.
 
-**Edge Case:** If a batch is between the status check and its DB write, it may commit a few contacts. This is a known trade-off — stopping mid-transaction is impossible without distributed coordination. The completed contact count and error log will accurately reflect what was saved.
+This keeps the cancellation flow honest: `processing → cancelling → cancelled`.
 
 ---
 
@@ -361,7 +380,7 @@ The entire import feature is additive:
 ### Debugging a Stuck Import
 
 1. Run `php artisan monica:recover-imports` to immediately recover.
-2. Inspect `import_jobs.errors` JSON for the stuck job — the last logged error shows where processing stopped.
+2. Inspect the `import_errors` table for the stuck job — the last logged error shows where processing stopped.
 3. Check Laravel queue logs: `storage/logs/laravel.log` for `Import row N failed:` entries.
 4. Verify queue workers are running: `php artisan queue:status` or check Horizon dashboard.
 
@@ -373,7 +392,7 @@ The entire import feature is additive:
 | `lockForUpdate()` contention | Shard progress updates via Redis INCR; batch-write to DB every N rows |
 | File storage fills up | Move CSV storage to S3/GCS with lifecycle policies (presigned upload URLs) |
 | Single queue overwhelmed | Dedicated `imports` queue with priority; Horizon auto-scaling |
-| Error JSON column grows huge | Cap stored errors at 1000 per import; truncate remainder |
+| `import_errors` table grows huge | Cap stored errors at 1000 per import; archive or truncate older rows |
 
 ---
 

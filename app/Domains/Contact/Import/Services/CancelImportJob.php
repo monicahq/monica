@@ -4,8 +4,10 @@ namespace App\Domains\Contact\Import\Services;
 
 use App\Enums\ImportJobStatus;
 use App\Interfaces\ServiceInterface;
-use App\Services\BaseService;
 use App\Models\ImportJob;
+use App\Services\BaseService;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class CancelImportJob extends BaseService implements ServiceInterface
 {
@@ -39,20 +41,35 @@ class CancelImportJob extends BaseService implements ServiceInterface
      */
     public function execute(array $data): ImportJob
     {
-        $importJob = ImportJob::where('account_id', $data['account_id'])
-            ->findOrFail($data['import_job_id']);
+        return DB::transaction(function () use ($data): ImportJob {
+            $importJob = ImportJob::where('account_id', $data['account_id'])
+                ->lockForUpdate()
+                ->findOrFail($data['import_job_id']);
 
-        $data['vault_id'] = $importJob->vault_id;
+            $data['vault_id'] = $importJob->vault_id;
 
-        $this->validateRules($data);
+            $this->validateRules($data);
 
-        if (in_array($importJob->status, [ImportJobStatus::PENDING, ImportJobStatus::PROCESSING])) {
-            $importJob->update([
-                'status'       => ImportJobStatus::CANCELLED,
-                'completed_at' => now(),
-            ]);
-        }
+            if ($importJob->status === ImportJobStatus::PENDING) {
+                $importJob->update([
+                    'status'             => ImportJobStatus::CANCELLED,
+                    'cancelled_at'       => now(),
+                    'completed_at'       => now(),
+                    'last_heartbeat_at'  => now(),
+                ]);
 
-        return $importJob;
+                if ($importJob->file_path) {
+                    Storage::disk('local')->delete($importJob->file_path);
+                }
+            } elseif ($importJob->status === ImportJobStatus::PROCESSING) {
+                $importJob->update([
+                    'status'             => ImportJobStatus::CANCELLING,
+                    'cancelled_at'       => now(),
+                    'last_heartbeat_at'  => now(),
+                ]);
+            }
+
+            return $importJob;
+        });
     }
 }

@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
 use App\Domains\Contact\Import\Services\CreateImportJob;
-use App\Domains\Contact\Import\Services\ListImportJobs;
-use App\Domains\Contact\Import\Services\GetImportJob;
 use App\Domains\Contact\Import\Services\CancelImportJob;
+use App\Domains\Contact\Import\Services\GetImportJob;
 use App\Domains\Contact\Import\Services\GetImportJobErrors;
+use App\Domains\Contact\Import\Services\ListImportJobs;
 use App\Exceptions\DuplicateImportJobException;
-use App\Models\ImportJob;
 use App\Http\Requests\StoreImportRequest;
 use App\Http\Resources\ImportJobResource;
 use Illuminate\Http\JsonResponse;
@@ -128,17 +127,26 @@ class ImportController extends ApiController
             'import_job_id' => $id,
         ]);
 
-        $errors = $importJob->errors ?? [];
+        $errors = $importJob->errors()
+            ->orderBy('row_number')
+            ->get();
 
-        if (empty($errors)) {
+        if ($errors->isEmpty()) {
             $callback = function () {
                 $handle = fopen('php://output', 'w');
-                fputcsv($handle, ['error']);
+                fputcsv($handle, ['error_message']);
                 fclose($handle);
             };
         } else {
-            $headers   = array_keys($errors[0]['data'] ?? []);
-            $headers[] = 'error';
+            $headers = [];
+            foreach ($errors as $error) {
+                foreach (array_keys($error->row_data ?? []) as $header) {
+                    if (! in_array($header, $headers, true)) {
+                        $headers[] = $header;
+                    }
+                }
+            }
+            $headers[] = 'error_message';
 
             $callback = function () use ($errors, $headers) {
                 $handle = fopen('php://output', 'w');
@@ -147,9 +155,9 @@ class ImportController extends ApiController
                 foreach ($errors as $error) {
                     $row = [];
                     foreach ($headers as $header) {
-                        $row[] = $header === 'error'
-                            ? $error['message']
-                            : ($error['data'][$header] ?? '');
+                        $row[] = $header === 'error_message'
+                            ? $error->error_message
+                            : ($error->row_data[$header] ?? '');
                     }
                     fputcsv($handle, $row);
                 }

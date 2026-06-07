@@ -3,6 +3,7 @@
 namespace Tests\Feature\Api;
 
 use App\Models\ImportJob;
+use App\Models\ImportError;
 use App\Enums\ImportJobStatus;
 use App\Models\Contact;
 use App\Models\ContactInformation;
@@ -10,7 +11,7 @@ use App\Models\ContactInformationType;
 use App\Models\Vault;
 use App\Jobs\ProcessImportJob;
 use App\Jobs\ProcessImportBatch;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
@@ -18,7 +19,7 @@ use Tests\TestCase;
 
 class ImportTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     protected function setUp(): void
     {
@@ -296,13 +297,18 @@ class ImportTest extends TestCase
             'nickname' => 'NickOnly',
         ]);
 
-        // Verify errors column contains row 2 and row 3 validation failures
-        $this->assertCount(2, $importJob->errors);
-        $this->assertEquals(2, $importJob->errors[0]['row']);
-        $this->assertStringContainsString('At least one name field', $importJob->errors[0]['message']);
-
-        $this->assertEquals(3, $importJob->errors[1]['row']);
-        $this->assertStringContainsString('Invalid email address format', $importJob->errors[1]['message']);
+        // Verify row-level failures were written to import_errors
+        $this->assertCount(2, $importJob->errors()->get());
+        $this->assertDatabaseHas('import_errors', [
+            'import_job_id' => $importJob->id,
+            'row_number' => 2,
+            'error_message' => 'At least one name field (first name, last name, nickname, or full name) is required.',
+        ]);
+        $this->assertDatabaseHas('import_errors', [
+            'import_job_id' => $importJob->id,
+            'row_number' => 3,
+            'error_message' => 'Invalid email address format.',
+        ]);
     }
 
     public function test_get_import_progress()
@@ -358,12 +364,13 @@ class ImportTest extends TestCase
         $response = $this->postJson("/api/import/{$importJob->id}/cancel");
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'status' => 'cancelled',
+            'status' => 'cancelling',
         ]);
 
         $importJob->refresh();
-        $this->assertEquals(ImportJobStatus::CANCELLED, $importJob->status);
-        $this->assertNotNull($importJob->completed_at);
+        $this->assertEquals(ImportJobStatus::CANCELLING, $importJob->status);
+        $this->assertNotNull($importJob->cancelled_at);
+        $this->assertNull($importJob->completed_at);
 
         // Ensure subsequent ProcessImportBatch processing is skipped
         $rows = [[
@@ -372,6 +379,10 @@ class ImportTest extends TestCase
             'raw' => ['First Name' => 'CancelCheck']
         ]];
         (new ProcessImportBatch($importJob->id, $rows))->handle();
+
+        $importJob->refresh();
+        $this->assertEquals(ImportJobStatus::CANCELLED, $importJob->status);
+        $this->assertNotNull($importJob->completed_at);
 
         $this->assertDatabaseMissing('contacts', [
             'first_name' => 'CancelCheck'
@@ -391,17 +402,17 @@ class ImportTest extends TestCase
             'file_hash' => 'hash3',
             'total_rows' => 100,
             'status' => 'failed',
-            'errors' => [
-                [
-                    'row' => 2,
-                    'data' => [
-                        'First Name' => '',
-                        'Last Name' => '',
-                        'Email Address' => 'xyz',
-                    ],
-                    'message' => 'Validation error message example'
-                ]
+        ]);
+
+        ImportError::create([
+            'import_job_id' => $importJob->id,
+            'row_number' => 2,
+            'row_data' => [
+                'First Name' => '',
+                'Last Name' => '',
+                'Email Address' => 'xyz',
             ],
+            'error_message' => 'Validation error message example',
         ]);
 
         $response = $this->get("/api/import/{$importJob->id}/errors.csv");
@@ -409,7 +420,7 @@ class ImportTest extends TestCase
         $response->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
 
         $content = $response->streamedContent();
-        $expectedCsv = "\"First Name\",\"Last Name\",\"Email Address\",error\r\n,,xyz,\"Validation error message example\"\r\n";
+        $expectedCsv = "\"First Name\",\"Last Name\",\"Email Address\",error_message\r\n,,xyz,\"Validation error message example\"\r\n";
         
         // Normalize line endings for comparison
         $this->assertEquals(
@@ -431,7 +442,8 @@ class ImportTest extends TestCase
             'file_hash' => 'hash4',
             'total_rows' => 100,
             'status' => 'processing',
-            'started_at' => now()->subMinutes(35),
+            'started_at' => now()->subMinutes(5),
+            'last_heartbeat_at' => now()->subMinutes(35),
         ]);
 
         $activeJob = ImportJob::create([
@@ -456,8 +468,8 @@ class ImportTest extends TestCase
 
         $this->assertEquals(ImportJobStatus::FAILED, $stuckJob->status);
         $this->assertNotNull($stuckJob->completed_at);
-        $this->assertCount(1, $stuckJob->errors);
-        $this->assertStringContainsString('Import job timed out', $stuckJob->errors[0]['message']);
+        $this->assertCount(1, $stuckJob->errors()->get());
+        $this->assertStringContainsString('Import job timed out', $stuckJob->errors()->first()->error_message);
 
         $this->assertEquals(ImportJobStatus::PROCESSING, $activeJob->status);
         $this->assertNull($activeJob->completed_at);
@@ -564,11 +576,25 @@ class ImportTest extends TestCase
             'file_hash'  => 'hashpaged',
             'total_rows' => 3,
             'status'     => 'completed',
-            'errors'     => [
-                ['row' => 1, 'data' => [], 'message' => 'Error on row 1'],
-                ['row' => 2, 'data' => [], 'message' => 'Error on row 2'],
-                ['row' => 3, 'data' => [], 'message' => 'Error on row 3'],
-            ],
+        ]);
+
+        ImportError::create([
+            'import_job_id' => $importJob->id,
+            'row_number' => 1,
+            'row_data' => [],
+            'error_message' => 'Error on row 1',
+        ]);
+        ImportError::create([
+            'import_job_id' => $importJob->id,
+            'row_number' => 2,
+            'row_data' => [],
+            'error_message' => 'Error on row 2',
+        ]);
+        ImportError::create([
+            'import_job_id' => $importJob->id,
+            'row_number' => 3,
+            'row_data' => [],
+            'error_message' => 'Error on row 3',
         ]);
 
         $response = $this->getJson("/api/import/{$importJob->id}/errors?per_page=2&page=1");
@@ -591,6 +617,7 @@ class ImportTest extends TestCase
         $this->assertEquals(3, $response->json('meta.total'));
         $this->assertEquals('Error on row 1', $response->json('data.0.message'));
         $this->assertEquals(1, $response->json('data.0.row'));
+        $this->assertEquals(1, $response->json('data.0.row_number'));
     }
 
     public function test_index_returns_pagination_metadata()
@@ -759,9 +786,13 @@ class ImportTest extends TestCase
             'file_hash' => 'hash3',
             'total_rows' => 100,
             'status' => 'failed',
-            'errors' => [
-                ['row' => 2, 'data' => [], 'message' => 'Error']
-            ],
+        ]);
+
+        ImportError::create([
+            'import_job_id' => $job->id,
+            'row_number' => 2,
+            'row_data' => [],
+            'error_message' => 'Error',
         ]);
 
         // 1. Errors JSON endpoint
@@ -773,5 +804,3 @@ class ImportTest extends TestCase
         $response2->assertStatus(403);
     }
 }
-
-

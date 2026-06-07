@@ -6,6 +6,7 @@ use App\Enums\ImportJobStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ImportJob extends Model
 {
@@ -27,9 +28,10 @@ class ImportJob extends Model
         'processed_rows',
         'failed_rows',
         'status',
-        'errors',
         'started_at',
         'completed_at',
+        'cancelled_at',
+        'last_heartbeat_at',
     ];
 
     /**
@@ -48,12 +50,13 @@ class ImportJob extends Model
      */
     protected $casts = [
         'status' => ImportJobStatus::class,
-        'errors' => 'array',
         'total_rows' => 'integer',
         'processed_rows' => 'integer',
         'failed_rows' => 'integer',
         'started_at' => 'datetime',
         'completed_at' => 'datetime',
+        'cancelled_at' => 'datetime',
+        'last_heartbeat_at' => 'datetime',
     ];
 
     /**
@@ -78,6 +81,14 @@ class ImportJob extends Model
     public function vault(): BelongsTo
     {
         return $this->belongsTo(Vault::class);
+    }
+
+    /**
+     * Get the errors associated with the import job.
+     */
+    public function errors(): HasMany
+    {
+        return $this->hasMany(ImportError::class);
     }
 
     /**
