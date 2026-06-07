@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Contact\ManageContact\Api\Controllers\ContactImportController;
 use App\Domains\Settings\ManageUsers\Api\Controllers\UserController;
 use App\Domains\Vault\ManageVault\Api\Controllers\VaultController;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,10 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
 
     // vaults
     Route::apiResource('vaults', VaultController::class);
+
+    // import
+    Route::get('import', [ContactImportController::class, 'index']);
+    Route::post('import', [ContactImportController::class, 'store']);
+    Route::get('import/{importJob}/errors.csv', [ContactImportController::class, 'errorsCsv']);
+    Route::get('import/{importJob}', [ContactImportController::class, 'show']);
 });
