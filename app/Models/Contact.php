@@ -498,4 +498,9 @@ class Contact extends VCardResource
             }
         );
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'contact_tag', 'contact_id', 'tag_id');
+    }
 }

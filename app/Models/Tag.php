@@ -21,6 +21,8 @@ class Tag extends Model
         'vault_id',
         'name',
         'slug',
+        'tag_category',
+        'color',
     ];
 
     /**
@@ -51,5 +53,10 @@ class Tag extends Model
     public function feedItem(): MorphOne
     {
         return $this->morphOne(ContactFeedItem::class, 'feedable');
+    }
+
+    public function contacts()
+    {
+        return $this->belongsToMany(Contact::class, 'contact_tag', 'tag_id', 'contact_id');
     }
 }

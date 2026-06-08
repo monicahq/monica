@@ -20,6 +20,18 @@ $config = [
 
     /*
     |--------------------------------------------------------------------------
+    | Tag List Cache Store
+    |--------------------------------------------------------------------------
+    |
+    | The cache store used for vault tag list caching. Defaults to Redis in
+    | production; override with TAG_CACHE_STORE for local/testing environments.
+    |
+    */
+
+    'tags_store' => env('TAG_CACHE_STORE', 'redis'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Cache Stores
     |--------------------------------------------------------------------------
     |

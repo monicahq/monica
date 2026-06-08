@@ -191,6 +191,20 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
+     * Resolve the user's active vault id for API tag/contact operations.
+     */
+    protected function vaultId(): Attribute
+    {
+        return Attribute::get(function (): ?string {
+            if (array_key_exists('vault_id', $this->attributes)) {
+                return $this->attributes['vault_id'];
+            }
+
+            return $this->vaults()->first()?->id;
+        });
+    }
+
+    /**
      * Get the contact records associated with the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Contact, $this>
