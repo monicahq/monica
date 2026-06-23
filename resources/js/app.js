@@ -8,6 +8,7 @@ import { ZiggyVue } from 'ziggy-js';
 import { i18nVue } from 'laravel-vue-i18n';
 import { sentry } from './sentry';
 import methods from './methods';
+import { resolveLang } from './locale';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Monica';
 
@@ -29,7 +30,7 @@ createInertiaApp({
       .use(plugin)
       .use(ZiggyVue, window.Ziggy)
       .use(i18nVue, {
-        resolve: (lang) => resolvePageComponent(`../../lang/${lang}.json`, import.meta.glob('../../lang/*.json')),
+        resolve: resolveLang,
       })
       .use(sentry, props.initialPage.props.sentry)
       .mixin({ methods: { route: window.route, ...methods } })
