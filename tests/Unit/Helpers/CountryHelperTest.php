@@ -4,6 +4,7 @@ namespace Tests\Unit\Helpers;
 
 use Tests\FeatureTestCase;
 use App\Helpers\CountriesHelper;
+use Illuminate\Support\Facades\App;
 
 class CountryHelperTest extends FeatureTestCase
 {
@@ -120,6 +121,38 @@ class CountryHelperTest extends FeatureTestCase
             ['ru', 'Europe/Moscow'],
             ['tr', 'Europe/Istanbul'],
             ['ja', 'Asia/Tokyo'],
+        ];
+    }
+
+    /**
+     * @dataProvider countryLocalesNotInCountryTranslationsProvider
+     */
+    public function test_country_get_does_not_fallback_to_wrong_language($locale, $iso)
+    {
+        App::setLocale($locale);
+
+        $country = CountriesHelper::getCountry($iso);
+        $expectedName = $country->getName();
+
+        $name = CountriesHelper::get($iso);
+
+        $this->assertEquals(
+            $expectedName,
+            $name
+        );
+    }
+
+    public function countryLocalesNotInCountryTranslationsProvider()
+    {
+        return [
+            ['ar', 'US'],
+            ['da', 'US'],
+            ['el', 'US'],
+            ['fa', 'US'],
+            ['he', 'US'],
+            ['id', 'US'],
+            ['no', 'US'],
+            ['ar', 'AD'],
         ];
     }
 }

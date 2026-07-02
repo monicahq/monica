@@ -46,6 +46,17 @@ class DateHelperTest extends FeatureTestCase
         );
     }
 
+    public function testGetShortDateWithEnGBLocale()
+    {
+        $date = Carbon::parse('2017-01-22 17:56:03');
+        App::setLocale('en-GB');
+
+        $this->assertEquals(
+            '22 Jan 2017',
+            DateHelper::getShortDate($date)
+        );
+    }
+
     public function testGetFullDateWithEnglishLocale()
     {
         $date = Carbon::parse('2017-01-22 17:56:03');

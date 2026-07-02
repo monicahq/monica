@@ -73,7 +73,12 @@ class CountriesHelper
         $locale = App::getLocale();
         $lang = LocaleHelper::getLocaleAlpha($locale);
 
-        return $country->getTranslation($lang)['common'];
+        $translations = $country->getTranslations();
+        if (! isset($translations[$lang])) {
+            return $country->getName();
+        }
+
+        return $translations[$lang]['common'];
     }
 
     /**

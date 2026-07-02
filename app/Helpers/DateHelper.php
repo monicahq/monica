@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use function Safe\date;
 use function Safe\strtotime;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class DateHelper
@@ -217,7 +218,7 @@ class DateHelper
      */
     private static function formatDate(Carbon $date, string $format, bool $withTimezone = false): string
     {
-        $format = trans($format, [], Carbon::getLocale());
+        $format = trans($format, [], App::getLocale());
         if ($withTimezone) {
             $date = $date->setTimezone(static::getTimezone());
         }
@@ -260,7 +261,7 @@ class DateHelper
     public static function getMonthAndYear(int $month): string
     {
         $date = Carbon::now(static::getTimezone())->addMonthsNoOverflow($month);
-        $format = trans('format.short_month_year', [], Carbon::getLocale());
+        $format = trans('format.short_month_year', [], App::getLocale());
 
         return $date->translatedFormat($format) ?: '';
     }
@@ -314,7 +315,7 @@ class DateHelper
     {
         $months = collect([]);
         $currentDate = Carbon::parse('2000-01-01');
-        $format = trans('format.full_month', [], Carbon::getLocale());
+        $format = trans('format.full_month', [], App::getLocale());
 
         for ($month = 1; $month <= 12; $month++) {
             $currentDate->month = $month;
@@ -350,7 +351,7 @@ class DateHelper
     public static function getListOfHours(): Collection
     {
         $currentDate = Carbon::parse('2000-01-01 00:00:00');
-        $format = trans('format.full_hour', [], Carbon::getLocale());
+        $format = trans('format.full_hour', [], App::getLocale());
 
         $hours = collect([]);
         for ($hour = 1; $hour <= 24; $hour++) {

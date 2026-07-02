@@ -103,6 +103,34 @@ class LocaleHelperTest extends FeatureTestCase
     }
 
     /**
+     * @dataProvider localeHelperGetLocaleAlphaProvider
+     */
+    public function test_locale_get_locale_alpha($locale, $expect)
+    {
+        $alpha = LocaleHelper::getLocaleAlpha($locale);
+
+        $this->assertEquals(
+            $expect,
+            $alpha
+        );
+    }
+
+    public function localeHelperGetLocaleAlphaProvider()
+    {
+        return [
+            ['en', 'eng'],
+            ['de', 'deu'],
+            ['fr', 'fra'],
+            ['en-GB', 'eng'],
+            ['en-gb', 'eng'],
+            ['en_GB', 'eng'],
+            ['pt-BR', 'por'],
+            ['zh-TW', 'zho'],
+            ['xx-YY', ''],
+        ];
+    }
+
+    /**
      * @dataProvider localeHelperGetCountryProvider
      */
     public function test_locale_get_country($locale, $expect)

@@ -167,18 +167,18 @@ class LocaleHelper
         if (Arr::has(static::$locales, $locale)) {
             return Arr::get(static::$locales, $locale);
         }
-        $locale = mb_strtolower($locale);
+        $lang = self::getLang($locale);
         $languages = (new ISO639)->allLanguages();
-        $lang = '';
+        $alpha3 = '';
         foreach ($languages as $l) {
-            if ($l[0] == $locale) {
-                $lang = $l[1];
+            if ($l[0] == $lang) {
+                $alpha3 = $l[1];
                 break;
             }
         }
-        static::$locales[$locale] = $lang;
+        static::$locales[$locale] = $alpha3;
 
-        return $lang;
+        return $alpha3;
     }
 
     /**
