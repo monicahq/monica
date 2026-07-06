@@ -64,6 +64,8 @@ class Contact extends VCardResource
         'distant_uri',
         'prefix',
         'suffix',
+        'is_favorite',
+        'personal_note',
     ];
 
     /**
@@ -76,6 +78,7 @@ class Contact extends VCardResource
         'can_be_deleted' => 'boolean',
         'listed' => 'boolean',
         'show_quick_facts' => 'boolean',
+        'is_favorite' => 'boolean',
         'last_updated_at' => 'datetime',
     ];
 

@@ -87,6 +87,10 @@ class ToggleFavoriteContact extends BaseService implements ServiceInterface
                 'number_of_views' => 1,
             ]);
         }
+
+        // Update the contact model's is_favorite field
+        $this->contact->is_favorite = ! $this->isFavorite;
+        $this->contact->save();
     }
 
     private function updateLastEditedDate(): void
