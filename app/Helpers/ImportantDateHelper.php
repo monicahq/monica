@@ -54,7 +54,9 @@ class ImportantDateHelper
         }
 
         if (self::determineType($date) === ContactImportantDate::TYPE_MONTH_DAY) {
-            $date = Carbon::parse('1900-'.$date->month.'-'.$date->day);
+            // Use a leap year so that a February 29th date remains valid
+            // instead of overflowing to March 1st.
+            $date = Carbon::parse('2000-'.$date->month.'-'.$date->day);
 
             $dateAsString = match ($user->date_format) {
                 'MMM DD, YYYY' => Carbon::parse($date)->isoFormat('MMM DD'),
