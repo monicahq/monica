@@ -25,7 +25,9 @@ class ContactReminderHelper
         }
 
         if ($reminder->day && $reminder->month && ! $reminder->year) {
-            $carbonDate = Carbon::parse('1900-'.$reminder->month.'-'.$reminder->day);
+            // Use a leap year so that a February 29th date remains valid
+            // instead of overflowing to March 1st.
+            $carbonDate = Carbon::parse('2000-'.$reminder->month.'-'.$reminder->day);
 
             $reminderAsString = match ($user->date_format) {
                 'MMM DD, YYYY' => Carbon::parse($carbonDate)->isoFormat('MMM DD'),
