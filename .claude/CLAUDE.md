@@ -17,7 +17,6 @@
 
 - Backend: PHP 8.4+ / latest version of Laravel
 - Frontend: Blade / Tailwind CSS / Alpine Ajax / Alpine.js
-- Stricly follow PHP guidelines in ./php-guidelines.md.
 
 ## Application structure
 

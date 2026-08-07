@@ -13,11 +13,14 @@
 - Avoid using the `final` keyword; assume users write tests for overridden behavior.
 - Prefer short nullable notation (`?string`) over union types with null.
 - Use the `void` return type when a method returns nothing.
+- Class names use PascalCase; methods and variables use camelCase.
+- Prefer string interpolation over concatenation.
 
 ## Typed Properties & Type Hints
 
 - Always type properties when possible.
 - Use actual type declarations instead of docblock `@var` annotations.
+- Always specify return types, including `void`.
 
 ## Enums
 
@@ -57,15 +60,20 @@
 
 ## Comments
 
-- Minimize comments by writing expressive code.
+- Minimize comments by writing expressive code. Adding a comment should never be the first tactic to make code readable.
+- Comments often become outdated and mislead over time, so be critical about adding them.
+- Only explain *why* something non-obvious is done, never *what* the code does.
+- Prefer a descriptive variable name over a generic name plus a comment.
 - Format single-line comments with a space before the text.
 - Multi-line comments use `/*` with a single `*` on the first line.
 - Refactor comments into named functions when possible.
+- Never add comments to tests; the test names should be descriptive enough.
 
 ## Test Classes
 
 - A test file MUST contain the test class and nothing else.
 - Every class a test needs (a mailable, a stub, a fake) MUST live in its own file under `tests/Fixtures`, in a namespace that mirrors the application (e.g. `Tests\Fixtures\Mail\NewLoginDetected`), whether or not it is used by a single test.
+- Use descriptive test method names and follow the arrange, act, assert pattern.
 
 ## Whitespace
 
@@ -110,6 +118,10 @@
 ## Views
 
 - View files use kebab-case.
+
+## Migrations
+
+- Write only the `up()` method; never write a `down()` method.
 
 ## Validation
 
