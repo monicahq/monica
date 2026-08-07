@@ -13,11 +13,11 @@ You MUST follow these steps, in order:
    ```php
    'supported_locales' => ['en', 'fr_FR', 'es_ES'],
    ```
-2. You MUST update the `composer.json` `kollek:locale` script with the same locale list:
+2. You MUST update the `composer.json` `monica:locale` script with the same locale list:
    ```json
-   "kollek:locale": "php artisan kollek:localize en,fr_FR,es_ES"
+   "monica:locale": "php artisan monica:localize en,fr_FR,es_ES"
    ```
 3. You MUST add any user-facing locale option labels to the English source language file.
 4. You MUST update the UI controls that expose locale choices, such as `resources/views/app/settings/_detail.blade.php`.
-5. You MUST run `composer kollek:locale`.
+5. You MUST run `composer monica:locale`.
 6. You MUST fill the new locale files completely, and you MUST NOT leave the generated empty strings in place.

@@ -14,7 +14,7 @@ class LocaleController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'locale' => ['required', 'string', Rule::in(array_keys(config('officelife.locales')))],
+            'locale' => ['required', 'string', Rule::in(array_keys(config('monica.locales')))],
         ]);
 
         $request->session()->put('locale', $validated['locale']);

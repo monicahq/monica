@@ -49,7 +49,7 @@ return [
     |
     */
 
-    'remember_duration_days' => env('OFFICELIFE_REMEMBER_DURATION_DAYS', 30),
+    'remember_duration_days' => env('MONICA_REMEMBER_DURATION_DAYS', 30),
 
     /*
     |--------------------------------------------------------------------------
@@ -62,7 +62,7 @@ return [
     |
     */
 
-    'magic_link_duration_minutes' => env('OFFICELIFE_MAGIC_LINK_DURATION_MINUTES', 5),
+    'magic_link_duration_minutes' => env('MONICA_MAGIC_LINK_DURATION_MINUTES', 5),
 
     /*
     |--------------------------------------------------------------------------
@@ -75,8 +75,8 @@ return [
     |
     */
 
-    'terms_url' => env('OFFICELIFE_TERMS_URL', 'https://officelife.io/terms'),
+    'terms_url' => env('MONICA_TERMS_URL', 'https://monicahq.com/terms'),
 
-    'privacy_url' => env('OFFICELIFE_PRIVACY_URL', 'https://officelife.io/privacy'),
+    'privacy_url' => env('MONICA_PRIVACY_URL', 'https://monicahq.com/privacy'),
 
 ];

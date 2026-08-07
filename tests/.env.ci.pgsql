@@ -1,5 +1,5 @@
 # ENV FILE FOR THE GITHUB ACTION RUNNING POSTGRESQL
-APP_NAME=OfficeLife
+APP_NAME=Monica
 APP_ENV=testing
 APP_KEY=base64:1zIqSKT/IRwsdzeakTeYfC/In+k0BxaCtfnzw9ApxnA=
 APP_DEBUG=true
@@ -7,8 +7,8 @@ APP_URL=http://localhost
 
 DB_HOST=localhost
 DB_PORT=5432
-DB_DATABASE=officelife
-DB_USERNAME=officelife
+DB_DATABASE=monica
+DB_USERNAME=monica
 DB_PASSWORD=secret
 
 BROADCAST_CONNECTION=log

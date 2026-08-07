@@ -131,7 +131,7 @@
         </x-box>
 
         <x-notice>
-          {{ __('Joining a company that already uses OfficeLife? Ask an administrator to invite you, rather than creating a second account.') }}
+          {{ __('Joining a company that already uses Monica? Ask an administrator to invite you, rather than creating a second account.') }}
         </x-notice>
 
         <div class="flex items-center gap-3">

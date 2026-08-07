@@ -8,6 +8,6 @@ class MagicLinkViewModel extends GuestViewModel
 {
     public function minutes(): int
     {
-        return (int) config('officelife.magic_link_duration_minutes');
+        return (int) config('monica.magic_link_duration_minutes');
     }
 }

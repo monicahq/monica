@@ -29,7 +29,7 @@ class RegisterViewModelTest extends TestCase
         $this->assertEquals([
             'label' => 'English',
             'region' => 'United Kingdom',
-            'flag' => config('officelife.locales.en.flag'),
+            'flag' => config('monica.locales.en.flag'),
             'code' => 'en',
         ], $locales[0]);
     }
@@ -39,7 +39,7 @@ class RegisterViewModelTest extends TestCase
     {
         $viewModel = new RegisterViewModel;
 
-        $this->assertEquals(config('officelife.terms_url'), $viewModel->termsUrl());
-        $this->assertEquals(config('officelife.privacy_url'), $viewModel->privacyUrl());
+        $this->assertEquals(config('monica.terms_url'), $viewModel->termsUrl());
+        $this->assertEquals(config('monica.privacy_url'), $viewModel->privacyUrl());
     }
 }

@@ -8,11 +8,11 @@ class RegisterViewModel extends GuestViewModel
 {
     public function termsUrl(): string
     {
-        return config('officelife.terms_url');
+        return config('monica.terms_url');
     }
 
     public function privacyUrl(): string
     {
-        return config('officelife.privacy_url');
+        return config('monica.privacy_url');
     }
 }

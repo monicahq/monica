@@ -4,7 +4,7 @@
 <x-mail::message>
 # {{ __('Confirm your email address') }}
 
-{{ __('Welcome to OfficeLife. Click the button below to confirm this address, and your account is ready.') }}
+{{ __('Welcome to Monica. Click the button below to confirm this address, and your account is ready.') }}
 
 <x-mail::button :url="$url">
 {{ __('Confirm my email address') }}

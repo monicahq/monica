@@ -83,7 +83,7 @@ class AttemptLogin
         // exactly that rather than the five years Laravel defaults to. Only the
         // session guard knows how to be told, which is the only one we use.
         if ($guard instanceof SessionGuard) {
-            $guard->setRememberDuration((int) config('officelife.remember_duration_days') * 24 * 60);
+            $guard->setRememberDuration((int) config('monica.remember_duration_days') * 24 * 60);
         }
 
         $candidate = User::query()->where('email', $this->email)->first();

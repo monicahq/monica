@@ -28,7 +28,7 @@ class PreferenceController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'locale' => ['required', 'string', Rule::in(array_keys(config('officelife.locales')))],
+            'locale' => ['required', 'string', Rule::in(array_keys(config('monica.locales')))],
             'time_format' => ['required', 'string', Rule::enum(TimeFormatEnum::class)],
         ]);
 

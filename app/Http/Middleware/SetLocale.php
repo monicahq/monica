@@ -23,7 +23,7 @@ class SetLocale
     {
         $locale = $this->preferred($request);
 
-        if (array_key_exists($locale, config('officelife.locales'))) {
+        if (array_key_exists($locale, config('monica.locales'))) {
             app()->setLocale($locale);
         }
 

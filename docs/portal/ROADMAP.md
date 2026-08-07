@@ -1,6 +1,6 @@
 # Documentation Portal Roadmap
 
-A roadmap for the OfficeLife product documentation portal.
+A roadmap for the Monica product documentation portal.
 
 This document describes what the portal should contain, section by section and page by page. It is an implementation plan, not the documentation itself. A writing agent should be able to build every page from this roadmap without having to rethink the structure.
 
@@ -12,7 +12,7 @@ Read this section first. It sets the scope, the audiences, and the conventions u
 
 ### What the product is
 
-OfficeLife is an open source HR application. The interface calls itself "Open source HR" on the guest screens, and the public site lives at `officelife.io`.
+Monica is an open source HR application. The interface calls itself "Open source HR" on the guest screens, and the public site lives at `monicahq.com`.
 
 The mental model the whole product rests on, and the one the portal must teach first, comes straight from the schema:
 
@@ -25,7 +25,7 @@ That separation between "a person who works here" and "an account that can sign 
 
 ### The state of the product, and what that means for the portal
 
-**Read this before writing a single page.** OfficeLife is early. As of this roadmap, the user facing surfaces that exist are the guest and authentication screens, plus one screen inside the application: the profile, where somebody edits their own employee record, uploads a photo of themselves, and fills in their emergency contact. There is no dashboard, no employee directory, and no billing screen. There is no API either, though the screen that hands out keys for one exists, which is a distinction the writer has to keep: see `security.api-keys`. `routes/web.php` still sends `/` to a landing page, with a comment saying it stands in "until there is a dashboard to send people to."
+**Read this before writing a single page.** Monica is early. As of this roadmap, the user facing surfaces that exist are the guest and authentication screens, plus one screen inside the application: the profile, where somebody edits their own employee record, uploads a photo of themselves, and fills in their emergency contact. There is no dashboard, no employee directory, and no billing screen. There is no API either, though the screen that hands out keys for one exists, which is a distinction the writer has to keep: see `security.api-keys`. `routes/web.php` still sends `/` to a landing page, with a comment saying it stands in "until there is a dashboard to send people to."
 
 This has two consequences the writer must respect:
 
@@ -46,7 +46,7 @@ Every page below names its audience.
 
 ### Where the portal lives
 
-There is no documentation route today. `/docs` is free, and is the natural home. The portal is written as Markdown under `docs/portal/{locale}/`, mirroring the four locales the application already ships: `en`, `fr_FR`, `de_DE`, `es_ES` (see `config/officelife.php`). Write `en` first and completely; the others are translations of it.
+There is no documentation route today. `/docs` is free, and is the natural home. The portal is written as Markdown under `docs/portal/{locale}/`, mirroring the four locales the application already ships: `en`, `fr_FR`, `de_DE`, `es_ES` (see `config/monica.php`). Write `en` first and completely; the others are translations of it.
 
 ### Conventions for every page entry
 
@@ -69,21 +69,21 @@ Sections are ordered by how somebody actually meets the product: find out what i
 
 ## Section 1: Introduction
 
-**Why this section exists.** The portal needs a front door: one page that says what OfficeLife is, who it is for, and where to go next. It is also the only honest place to set expectations about how young the product is.
+**Why this section exists.** The portal needs a front door: one page that says what Monica is, who it is for, and where to go next. It is also the only honest place to set expectations about how young the product is.
 
 **Who it is for.** Everybody.
 
 **On disk.** `1-introduction.md` at the portal root. Section value `portal`, slug `portal`.
 
-### Welcome to OfficeLife
+### Welcome to Monica
 
 - **id.** `portal.introduction`
 - **Purpose.** Orient a first time reader in under a minute and route them to the right section.
 - **Audience.** All three.
-- **Summary.** What OfficeLife is: open source HR software a company runs for its own people. The one line model, stated early and plainly: a company holds employees, and some of those employees have an account they sign in with. Who the product suits. That it is open source and can be run by you. A short map of the portal: start with Getting started; owners should read Your company and your people; operators should jump to Running your own instance. Then a candid paragraph, in plain language, that the product is in early development and this portal currently documents accounts, signing in, and security, with the rest arriving as it is built. No roadmap promises and no dates.
+- **Summary.** What Monica is: open source HR software a company runs for its own people. The one line model, stated early and plainly: a company holds employees, and some of those employees have an account they sign in with. Who the product suits. That it is open source and can be run by you. A short map of the portal: start with Getting started; owners should read Your company and your people; operators should jump to Running your own instance. Then a candid paragraph, in plain language, that the product is in early development and this portal currently documents accounts, signing in, and security, with the rest arriving as it is built. No roadmap promises and no dates.
 - **Prerequisites.** None. This is the true entry point.
 - **Complexity.** Low.
-- **Related pages.** `getting.what-is-officelife`, `getting.create-account`, `hosting.introduction`.
+- **Related pages.** `getting.what-is-monica`, `getting.create-account`, `hosting.introduction`.
 
 ---
 
@@ -100,14 +100,14 @@ Sections are ordered by how somebody actually meets the product: find out what i
 - **id.** `getting.introduction`
 - **Purpose.** Section index. Say what the reader will have achieved by the end of it.
 - **Audience.** New users.
-- **Summary.** Three outcomes: you understand what OfficeLife is, you have a company and an account, and you have confirmed your email address. List the pages in order.
+- **Summary.** Three outcomes: you understand what Monica is, you have a company and an account, and you have confirmed your email address. List the pages in order.
 - **Prerequisites.** None.
 - **Complexity.** Low.
 - **Related pages.** Every page in this section.
 
-### What is OfficeLife
+### What is Monica
 
-- **id.** `getting.what-is-officelife`
+- **id.** `getting.what-is-monica`
 - **Purpose.** Tell a newcomer what the product does and whether it fits them, before they invest any time.
 - **Audience.** Employees and prospective owners.
 - **Summary.** The problem it addresses: companies keeping people information in spreadsheets, inboxes and memory. The model in one paragraph: one company, its employees, and accounts for the ones who need to sign in. That it is open source, so you can read every line and run it yourself. Be explicit and unembarrassed about scope: today the product handles accounts, sign in and company creation, and more is being built. A reader who discovers that limitation on their own after signing up will not come back.
@@ -115,13 +115,13 @@ Sections are ordered by how somebody actually meets the product: find out what i
 - **Complexity.** Low.
 - **Related pages.** `getting.cloud-or-self-hosted`, `concepts.model`.
 
-### Using officelife.io or running it yourself
+### Using monicahq.com or running it yourself
 
 - **id.** `getting.cloud-or-self-hosted`
-- **Purpose.** Help the reader choose how they will run OfficeLife before they create anything.
+- **Purpose.** Help the reader choose how they will run Monica before they create anything.
 - **Audience.** Prospective owners and operators.
 - **Summary.** Two ways to run it: use the hosted service, or install it on your own server. The application knows which it is (`companies.is_self_hosted`) but the software is the same either way. State clearly what the portal can and cannot promise about the hosted service: the codebase has a `plan` field on every company and a thirty day `trial_ends_at` set at signup, but **no billing, payment or subscription code exists**, nothing reads either field, and no screen shows a plan. So: do not write pricing, do not describe upgrade paths, do not mention tiers. Say that self hosting is free and point at the self hosting section.
-- **Prerequisites.** `getting.what-is-officelife`.
+- **Prerequisites.** `getting.what-is-monica`.
 - **Complexity.** Medium. The temptation to invent a pricing story here is the main risk.
 - **Related pages.** `hosting.introduction`, `concepts.company`.
 
@@ -129,9 +129,9 @@ Sections are ordered by how somebody actually meets the product: find out what i
 
 - **id.** `getting.create-account`
 - **Purpose.** Walk somebody through the sign up form and explain what it creates.
-- **Audience.** The person starting a company in OfficeLife.
+- **Audience.** The person starting a company in Monica.
 - **Summary.** A `::::steps` walkthrough of `/register`: first name, last name, company name, email address, password, and the terms checkbox. What each field does and what it becomes. Explain, because the screen says so and users ask, that you can rename the company later and that you become its first administrator. Then the part nobody expects: submitting this form creates three things at once, a company, your user account, and your own employee record, and it makes you the owner. Cover the rules the form enforces, in the reader's words rather than the validator's: a password of at least eight characters, typed twice; an email address that no other account already uses; disposable or throwaway addresses are refused (the `disposable_email` rule); agreeing to the terms of use and the privacy policy is required, and links to both come from configuration so a self hosted instance can point at its own. Mention the human check that may appear (Cloudflare Turnstile), which is off by default and switched on per instance. Finish by saying what happens next: you are signed in and sent straight to the email confirmation screen.
-- **Prerequisites.** `getting.what-is-officelife`.
+- **Prerequisites.** `getting.what-is-monica`.
 - **Complexity.** Medium.
 - **Related pages.** `getting.confirm-email`, `concepts.owner`, `concepts.employee-vs-user`.
 
@@ -163,7 +163,7 @@ The screen also carries a line telling people joining an existing company to ask
 
 ## Section 3: Core concepts
 
-**Why this section exists.** OfficeLife makes one distinction that no amount of clicking will teach you: employees and accounts are different things. Every later page leans on it. Concepts stay here, tasks stay elsewhere.
+**Why this section exists.** Monica makes one distinction that no amount of clicking will teach you: employees and accounts are different things. Every later page leans on it. Concepts stay here, tasks stay elsewhere.
 
 **Who it is for.** Everybody, but especially owners.
 
@@ -179,7 +179,7 @@ The screen also carries a line telling people joining an existing company to ask
 - **Complexity.** Low.
 - **Related pages.** All pages in this section.
 
-### How OfficeLife is organised
+### How Monica is organised
 
 - **id.** `concepts.model`
 - **Purpose.** Give the reader the mental picture the whole product assumes.
@@ -192,7 +192,7 @@ The screen also carries a line telling people joining an existing company to ask
 ### Your company
 
 - **id.** `concepts.company`
-- **Purpose.** Explain what a company is in OfficeLife and what it records.
+- **Purpose.** Explain what a company is in Monica and what it records.
 - **Audience.** Owners.
 - **Summary.** The company is the workspace and the boundary. What it holds: a name, a URL friendly identifier derived from that name, a legal name, a logo, a website, an industry, a size range, a founding date, a timezone, a language, a currency, and how the company works (fully remote, hybrid, or office based). Explain the two that are not self evident: the size range is a declared band rather than a headcount the product counts, and the timezone and language act as the default for everyone who has not chosen their own. Be explicit that **there is no screen to edit any of this yet**: the fields are set when you sign up, and the ability to change them is coming. Do not describe a settings page.
 - **Prerequisites.** `concepts.model`.
@@ -382,7 +382,7 @@ The screen also carries a line telling people joining an existing company to ask
 ### Your account and its security
 
 - **id.** `security.introduction`
-- **Purpose.** Section index, and a short account of how OfficeLife protects you without being asked.
+- **Purpose.** Section index, and a short account of how Monica protects you without being asked.
 - **Audience.** All.
 - **Summary.** What is on by default for everyone: passwords are stored hashed and never recoverable, sign in attempts are rate limited, failed attempts and sign ins from a new place email you, sign in links are single use and short lived, and only the fingerprint of a sign in link is ever stored so the link in your inbox cannot be rebuilt from the database. Then what you can add: a stronger password, and a code from your phone. Link onwards.
 - **Prerequisites.** An account.
@@ -467,7 +467,7 @@ Do not write this page as an API tutorial, and do not show a request carrying th
 - **Complexity.** High. Get the consequences exactly right and put them in a `:::warning`.
 - **Related pages.** `concepts.employee-vs-user`, `concepts.activity-log`, `security.privacy`.
 
-### What OfficeLife knows about you
+### What Monica knows about you
 
 - **id.** `security.privacy`
 - **Purpose.** Answer the privacy question directly, for a product that by its nature holds personal data.
@@ -541,7 +541,7 @@ Do not promise that the time format changes how times look everywhere. The choic
 - **Complexity.** Low.
 - **Related pages.** `language.change`, `appearance.mobile`.
 
-### Using OfficeLife on a phone
+### Using Monica on a phone
 
 - **id.** `appearance.mobile`
 - **Purpose.** Tell somebody on a small screen where the navigation went, so they do not conclude the product has fewer screens on a phone than on a laptop.
@@ -557,7 +557,7 @@ Do not describe this as an app. There is no native application and no app store 
 
 ---
 
-## Section 8: Emails from OfficeLife
+## Section 8: Emails from Monica
 
 **Why this section exists.** Five emails exist, three of them are security warnings, and a reader who receives one arrives at the portal with that exact subject line in their hand. A page per email, findable by its subject, is the fastest possible answer. This section is also where the "we keep a copy of what we sent you" fact belongs.
 
@@ -565,7 +565,7 @@ Do not describe this as an app. There is no native application and no app store 
 
 **On disk.** `8-emails/`. Section value `emails`.
 
-### Emails from OfficeLife
+### Emails from Monica
 
 - **id.** `email.introduction`
 - **Purpose.** Section index and a complete inventory.
@@ -639,7 +639,7 @@ Do not describe this as an app. There is no native application and no app store 
 
 ## Section 9: Running your own instance
 
-**Why this section exists.** OfficeLife is open source, and self hosting is a first class way to use it. This audience is entirely different from every other section: they read commands, not walkthroughs. Everything here is grounded in the composer scripts, the environment file, and the configuration.
+**Why this section exists.** Monica is open source, and self hosting is a first class way to use it. This audience is entirely different from every other section: they read commands, not walkthroughs. Everything here is grounded in the composer scripts, the environment file, and the configuration.
 
 **Who it is for.** Operators and developers only. Say so at the top of every page.
 
@@ -655,7 +655,7 @@ Do not describe this as an app. There is no native application and no app store 
 - **Complexity.** Medium.
 - **Related pages.** Every page in this section.
 
-### Install OfficeLife
+### Install Monica
 
 - **id.** `hosting.install`
 - **Purpose.** Take an operator from a clone to a running instance.
@@ -670,7 +670,7 @@ Do not describe this as an app. There is no native application and no app store 
 - **id.** `hosting.configuration`
 - **Purpose.** A reference for every setting an operator can change, in one scannable place.
 - **Audience.** Operators.
-- **Summary.** A reference page, tables rather than prose. Application basics: name, environment, key, URL, debug, default and fallback locale. Database. Session driver and lifetime. Queue connection. Cache. Then the settings specific to OfficeLife, each with its default and, crucially, what the user sees change: how many days "remember me" lasts (thirty, and the sign in screen names this number, so changing it changes what you promise your users), how many minutes a sign in link stays valid (five, deliberately short, and the email names it), and the URLs of the terms of use and the privacy policy, which point at officelife.io by default and which any instance running its own documents must repoint. Mail settings and the Cloudflare Turnstile keys get their own pages below.
+- **Summary.** A reference page, tables rather than prose. Application basics: name, environment, key, URL, debug, default and fallback locale. Database. Session driver and lifetime. Queue connection. Cache. Then the settings specific to Monica, each with its default and, crucially, what the user sees change: how many days "remember me" lasts (thirty, and the sign in screen names this number, so changing it changes what you promise your users), how many minutes a sign in link stays valid (five, deliberately short, and the email names it), and the URLs of the terms of use and the privacy policy, which point at monicahq.com by default and which any instance running its own documents must repoint. Mail settings and the Cloudflare Turnstile keys get their own pages below.
 - **Prerequisites.** `hosting.install`.
 - **Complexity.** High. Completeness and accuracy matter more than prose here.
 - **Related pages.** `hosting.email`, `hosting.turnstile`, `hosting.locales`.
@@ -735,7 +735,7 @@ Do not describe this as an app. There is no native application and no app store 
 - **Complexity.** Medium.
 - **Related pages.** `hosting.upgrade`, `security.privacy`.
 
-### Contribute to OfficeLife
+### Contribute to Monica
 
 - **id.** `hosting.contributing`
 - **Purpose.** Turn interested readers into contributors, which for an open source product is a documentation job.
@@ -775,7 +775,7 @@ Do not describe this as an app. There is no native application and no app store 
 - **Complexity.** Medium.
 - **Related pages.** `signin.password`, `signin.magic-link`, `security.two-factor`.
 
-### I am not receiving emails from OfficeLife
+### I am not receiving emails from Monica
 
 - **id.** `troubleshoot.no-email`
 - **Purpose.** Solve the single most common support request for any product that emails links.
@@ -815,7 +815,7 @@ Do not describe this as an app. There is no native application and no app store 
 - **Complexity.** Low.
 - **Related pages.** All pages in this section.
 
-### Words OfficeLife uses
+### Words Monica uses
 
 - **id.** `reference.glossary`
 - **Purpose.** A glossary, so no page has to stop and define its terms twice.
@@ -863,7 +863,7 @@ Each entry names the evidence, what is missing, and the page it should become.
 
 - **Any API, though the keys for one exist.** Somebody can now mint and revoke personal API keys on the Security and access screen, and `security.api-keys` documents that screen. Nothing else is built: there is no API route file, no API controller, no resource, and no guard that accepts a key, so a key authenticates nothing and its "last used" column can never fill in. **The portal must not contain an API section, and no page may show a request carrying a key.** `security.api-keys` is the only page that may mention keys at all, and it must say plainly that there is nothing to point one at yet.
 
-- **The application itself, past the profile screen.** There is no dashboard, no employee directory, no home screen, and the only navigation is the settings sidebar. `/` renders a landing page rather than anything signed in. `getting.what-works-today` is the page that tells readers this, and it is the page to revisit first as the product grows. Note for `appearance.mobile`: the signed in screens respond to the width of the window, but `/` is still the untouched framework landing page and is not part of the product's design, so no page may present it as a screen of OfficeLife on any size of device.
+- **The application itself, past the profile screen.** There is no dashboard, no employee directory, no home screen, and the only navigation is the settings sidebar. `/` renders a landing page rather than anything signed in. `getting.what-works-today` is the page that tells readers this, and it is the page to revisit first as the product grows. Note for `appearance.mobile`: the signed in screens respond to the width of the window, but `/` is still the untouched framework landing page and is not part of the product's design, so no page may present it as a screen of Monica on any size of device.
 
 ---
 
@@ -871,7 +871,7 @@ Each entry names the evidence, what is missing, and the page it should become.
 
 Build the portal in this order. Each block is independently publishable, so the portal is useful before it is complete.
 
-1. **First pass, the essentials.** `portal.introduction`, `getting.introduction`, `getting.what-is-officelife`, `getting.create-account`, `getting.confirm-email`, `signin.introduction`, `signin.password`, `signin.magic-link`, `signin.forgot-password`. This alone answers most of what a real user will ask today.
+1. **First pass, the essentials.** `portal.introduction`, `getting.introduction`, `getting.what-is-monica`, `getting.create-account`, `getting.confirm-email`, `signin.introduction`, `signin.password`, `signin.magic-link`, `signin.forgot-password`. This alone answers most of what a real user will ask today.
 2. **Second pass, the model.** All of Section 3, plus `getting.what-works-today`. This is where the product becomes comprehensible rather than merely usable.
 3. **Third pass, the screens there are.** All of Section 5, ending with `profile.logs` and `profile.emails`, which need `concepts.activity-log` and `email.record` written first. Then `preferences.screen`, pulled forward out of Section 7 because it documents a screen rather than a behaviour, and because `profile.introduction` sends readers to it. It is short, it is the only part of the portal a reader can follow with the product open in front of them, and it makes Section 3 concrete.
 4. **Fourth pass, security and email.** Sections 6 and 8. These are the pages people arrive at from an inbox, under stress, so they benefit from being written together and in one voice.

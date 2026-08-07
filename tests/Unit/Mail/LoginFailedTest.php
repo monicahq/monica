@@ -13,10 +13,10 @@ class LoginFailedTest extends TestCase
     #[Test]
     public function it_has_a_subject(): void
     {
-        config(['app.name' => 'OfficeLife']);
+        config(['app.name' => 'Monica']);
 
         $this->assertEquals(
-            'Failed sign-in attempt on your OfficeLife account',
+            'Failed sign-in attempt on your Monica account',
             (new LoginFailed)->envelope()->subject,
         );
     }

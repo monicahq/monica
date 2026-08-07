@@ -37,7 +37,7 @@ When translating logs, you MUST match the convention for each language:
 
 1. You MUST run the locale generation command:
    ```bash
-   composer kollek:locale
+   composer monica:locale
    ```
 2. You MUST confirm the command completes successfully before making any edits.
 

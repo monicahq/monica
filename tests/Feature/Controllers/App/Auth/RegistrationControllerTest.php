@@ -48,8 +48,8 @@ class RegistrationControllerTest extends TestCase
     {
         $response = $this->get(route('auth.register.new'));
 
-        $response->assertSee(config('officelife.terms_url'));
-        $response->assertSee(config('officelife.privacy_url'));
+        $response->assertSee(config('monica.terms_url'));
+        $response->assertSee(config('monica.privacy_url'));
     }
 
     #[Test]

@@ -13,10 +13,10 @@ class NewLoginDetectedTest extends TestCase
     #[Test]
     public function it_has_a_subject(): void
     {
-        config(['app.name' => 'OfficeLife']);
+        config(['app.name' => 'Monica']);
 
         $this->assertEquals(
-            'You signed in to OfficeLife without a password',
+            'You signed in to Monica without a password',
             (new NewLoginDetected(ip: '10.0.0.1'))->envelope()->subject,
         );
     }

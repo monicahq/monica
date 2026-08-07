@@ -73,7 +73,7 @@ class CreateMagicLinkTest extends TestCase
     public function it_gives_the_link_a_short_life(): void
     {
         Queue::fake();
-        config(['officelife.magic_link_duration_minutes' => 5]);
+        config(['monica.magic_link_duration_minutes' => 5]);
 
         User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 

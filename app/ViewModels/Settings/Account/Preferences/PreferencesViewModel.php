@@ -29,7 +29,7 @@ class PreferencesViewModel
     {
         $current = $this->locale();
 
-        return collect(config('officelife.locales'))
+        return collect(config('monica.locales'))
             ->map(fn (array $locale, string $code): array => [
                 'value' => $code,
                 'label' => $locale['label'],
@@ -46,7 +46,7 @@ class PreferencesViewModel
      */
     public function localeLabel(): string
     {
-        return config('officelife.locales')[$this->locale()]['label'];
+        return config('monica.locales')[$this->locale()]['label'];
     }
 
     /**
@@ -116,7 +116,7 @@ class PreferencesViewModel
     {
         $locale = app()->getLocale();
 
-        return array_key_exists($locale, config('officelife.locales'))
+        return array_key_exists($locale, config('monica.locales'))
             ? $locale
             : config('app.locale');
     }

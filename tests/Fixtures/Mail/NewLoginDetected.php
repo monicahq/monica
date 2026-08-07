@@ -14,14 +14,14 @@ class NewLoginDetected extends Mailable implements HasEnvelope
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'A new login on your OfficeLife account',
+            subject: 'A new login on your Monica account',
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            htmlString: '<p>Someone just signed in. <a href="https://officelife.test">Was this you?</a></p>',
+            htmlString: '<p>Someone just signed in. <a href="https://monica.test">Was this you?</a></p>',
         );
     }
 }
