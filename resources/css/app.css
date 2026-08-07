@@ -1,0 +1,205 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/* Class-based dark mode: the `.dark` class on <html> drives every `dark:` variant. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Semantic surfaces & text — they resolve to the runtime variables below, which flip for dark. */
+    --color-page: var(--page);
+    --color-canvas: var(--canvas);
+    --color-card: var(--card);
+    --color-sunken: var(--sunken);
+    --color-input: var(--input);
+    --color-hairline: var(--hairline);
+    --color-hairline-strong: var(--hairline-strong);
+    --color-hairline-soft: var(--hairline-soft);
+    --color-hover: var(--hover);
+    --color-focus: var(--focus);
+    --color-ink: var(--ink);
+    --color-body: var(--body);
+    --color-muted: var(--muted);
+    --color-muted-soft: var(--muted-soft);
+    --color-placeholder: var(--placeholder);
+    --color-primary: var(--primary);
+    --color-on-primary: var(--on-primary);
+    --color-disabled: var(--disabled);
+    --color-on-disabled: var(--on-disabled);
+    --color-brand: var(--brand);
+
+    /* Fixed semantic colors, they read the same in both themes. */
+    --color-success: #4f8a49;
+    --color-warning: #9a6a24;
+    --color-error: #9a3f2b;
+
+    /* Primary button tokens follow the primary, so they invert in dark. */
+    --color-accent: var(--primary);
+    --color-accent-foreground: var(--on-primary);
+
+    --radius-md: 8px;
+    --radius-lg: 11px;
+    --radius-xl: 13px;
+
+    /*
+     * The toast that confirms a save. It rises into place, draws its check mark,
+     * pulses a ring behind the icon once, drains a bar along its bottom edge, and
+     * collapses out of the stack.
+     *
+     * The 4500ms of the bar is the same number as the auto-dismiss timeout in
+     * components/toaster.blade.php. The bar reaching zero and the toast leaving
+     * have to be the same moment, so the two must be changed together.
+     */
+    --animate-toast-in: toast-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    --animate-toast-out: toast-out 200ms ease-in forwards;
+    --animate-toast-tick: toast-tick 420ms 90ms ease-out both;
+    --animate-toast-ring: toast-ring 900ms ease-out forwards;
+    --animate-toast-timer: toast-timer 4500ms linear forwards;
+
+    @keyframes toast-in {
+        from {
+            opacity: 0;
+            transform: translateY(14px) scale(0.97);
+        }
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @keyframes toast-out {
+        from {
+            opacity: 1;
+            max-height: 120px;
+        }
+        to {
+            opacity: 0;
+            transform: translateY(6px) scale(0.98);
+            max-height: 0;
+            margin-bottom: -10px;
+        }
+    }
+
+    @keyframes toast-tick {
+        from {
+            stroke-dashoffset: 22;
+        }
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    @keyframes toast-ring {
+        from {
+            transform: scale(0.5);
+            opacity: 0.55;
+        }
+        to {
+            transform: scale(1.9);
+            opacity: 0;
+        }
+    }
+
+    @keyframes toast-timer {
+        from {
+            transform: scaleX(1);
+        }
+        to {
+            transform: scaleX(0);
+        }
+    }
+}
+
+:root {
+    --page: #f7f7f6;
+    --canvas: #ffffff;
+    --card: #fafafa;
+    --sunken: #fbfbfa;
+    --input: #ffffff;
+    --hairline: #e7e7e4;
+    --hairline-strong: #e2e2de;
+    --hairline-soft: #f1f1ee;
+    --hover: #f4f4f1;
+    --focus: #b9b9b3;
+    --ink: #1d1d20;
+    --body: #74747a;
+    --muted: #8b8b90;
+    --muted-soft: #a0a0a4;
+    --placeholder: #b4b4b8;
+    --primary: #1d1d20;
+    --on-primary: #ffffff;
+    --disabled: #e9e9e5;
+    --on-disabled: #a0a0a4;
+    --brand: #3f5fd0;
+
+    /* The bands of the gradient behind the quote, from top left to bottom right. */
+    --quote-bands: #dfe4f6, #e6e2f2, #efe4ee, #f4e8e6, #f6eee2, #f2f0e2;
+    --quote-shadow: rgba(29, 29, 32, 0.22);
+
+    color-scheme: light;
+}
+
+.dark {
+    --page: #111113;
+    --canvas: #1a1a1d;
+    --card: #202024;
+    --sunken: #161619;
+    --input: #1a1a1d;
+    --hairline: #2b2b31;
+    --hairline-strong: #33333a;
+    --hairline-soft: #26262b;
+    --hover: #26262c;
+    --focus: #55555f;
+    --ink: #f0f0ee;
+    --body: #9d9da4;
+    --muted: #8a8a91;
+    --muted-soft: #71717a;
+    --placeholder: #5c5c65;
+    --primary: #f0f0ee;
+    --on-primary: #111113;
+    --disabled: #26262c;
+    --on-disabled: #6a6a73;
+    --brand: #93a7f0;
+
+    --quote-bands: #1b1f34, #221d33, #2c1e2e, #301f24, #2c2419, #20221a;
+    --quote-shadow: rgba(0, 0, 0, 0.5);
+
+    color-scheme: dark;
+}
+
+@layer utilities {
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+/* Somebody who asked for less motion still gets the toast, it just stops moving. */
+@media (prefers-reduced-motion: reduce) {
+    .animate-toast-in,
+    .animate-toast-out,
+    .animate-toast-tick,
+    .animate-toast-ring,
+    .animate-toast-timer {
+        animation: none;
+    }
+}
+
+::selection {
+    background: #e4e9fb;
+    color: #1d1d20;
+}
+
+/* The panel that carries the quote on the guest screens, and the card on it. */
+.quote-panel {
+    background: linear-gradient(155deg, var(--quote-bands));
+}
+
+.quote-card {
+    box-shadow: 0 18px 40px -22px var(--quote-shadow);
+}

@@ -1,0 +1,131 @@
+name: Unit tests
+
+# The tests only need to read the code they run against.
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  # Also on pushes to main, so anything that lands without going through a pull
+  # request is still tested.
+  push:
+    branches: [main]
+  release:
+    types: [created]
+  workflow_dispatch:
+
+concurrency:
+  group: Build ${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  #############
+  # Run tests
+  #############
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    name: PHP ${{ matrix.php-version }} + ${{ matrix.connection }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.4']
+        connection: [sqlite, mysql, pgsql]
+
+    # Selects the database connection for every step, including the plain
+    # `artisan migrate` (phpunit.xml pins DB_CONNECTION to "testing", so this
+    # env is what actually drives the connection at runtime).
+    env:
+      DB_CONNECTION: ${{ matrix.connection }}
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v6
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          # gd is what the image manipulation runs on, so the photo tests need
+          # it. The runner image does not guarantee it, so it is asked for here.
+          extensions: mbstring, dom, fileinfo, gd, ${{ matrix.connection }}
+          coverage: none
+
+      - name: Check PHP Version
+        run: php -v
+
+      - name: Check Composer Version
+        run: composer -V
+
+      - name: Check PHP Extensions
+        run: php -m
+
+      # Composer
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache composer files
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.php-version }}
+            ${{ runner.os }}-composer-
+
+      - name: Install composer dependencies
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+
+      # The tests render Blade views, so @vite needs a manifest. Building the
+      # real assets is the job of the Static analysis workflow, so a stub is
+      # enough here.
+      - name: Prepare environment
+        run: |
+          cp tests/.env.ci.${{ matrix.connection }} .env
+          mkdir -p public/build/assets
+          : > public/build/assets/app.js
+          : > public/build/assets/app.css
+          cat > public/build/manifest.json <<'JSON'
+          {
+              "resources/js/app.js": {"file": "assets/app.js", "src": "resources/js/app.js", "isEntry": true},
+              "resources/css/app.css": {"file": "assets/app.css", "src": "resources/css/app.css", "isEntry": true}
+          }
+          JSON
+
+      - name: Create sqlite database
+        if: matrix.connection == 'sqlite'
+        run: touch database/database.sqlite
+
+      - name: Create mysql database
+        if: matrix.connection == 'mysql'
+        run: |
+          sudo systemctl start mysql.service
+          mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS officelife CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+      - name: Create pgsql database
+        if: matrix.connection == 'pgsql'
+        run: |
+          sudo systemctl start postgresql.service
+          sudo -u postgres psql --command="CREATE USER officelife PASSWORD 'secret'" --command="\du"
+          sudo -u postgres psql --command="ALTER USER officelife CREATEDB"
+          sudo -u postgres createdb --owner=officelife officelife
+          PGPASSWORD=secret psql --username=officelife --host=localhost --list officelife
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Run migrations
+        run: php artisan migrate --no-interaction -vvv
+
+      # Paratest gives each process its own database, named after the one above
+      # with the process number appended, and migrates it. The connection user
+      # therefore has to be allowed to create databases, which is why the
+      # postgres step above grants CREATEDB.
+      - name: Run tests
+        run: php artisan test --parallel

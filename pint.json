@@ -1,0 +1,10 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "declare_strict_types": true,
+        "nullable_type_declaration": {
+            "syntax": "question_mark"
+        },
+        "single_trait_insert_per_statement": true
+    }
+}

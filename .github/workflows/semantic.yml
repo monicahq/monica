@@ -1,0 +1,24 @@
+name: Do not pollute commit logs
+
+# Reading the title is all this workflow does, so that is all it may do.
+permissions:
+  pull-requests: read
+
+on:
+  # pull_request, not pull_request_target. A pull request from a fork does run
+  # this workflow, and the token it gets is read only, which is all that reading
+  # a title needs. pull_request_target would hand a write token to a workflow
+  # running against a branch somebody else controls, and buys nothing here.
+  pull_request:
+    types: [opened, edited, synchronize]
+  workflow_dispatch:
+
+jobs:
+  main:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: amannn/action-semantic-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
