@@ -11,8 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Put the interface in the right language. A choice made in this session wins,
  * because it is the most recent thing the visitor asked for, then the language
- * on their account, then the one their company runs in, then the fallback of
- * the application.
+ * on their account, then the fallback of the application.
  */
 class SetLocale
 {
@@ -44,6 +43,6 @@ class SetLocale
             return config('app.locale');
         }
 
-        return $user->locale ?? $user->company->locale ?? config('app.locale');
+        return $user->locale ?? config('app.locale');
     }
 }

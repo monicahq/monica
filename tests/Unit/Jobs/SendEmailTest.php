@@ -6,7 +6,7 @@ namespace Tests\Unit\Jobs;
 
 use App\Enums\EmailType;
 use App\Jobs\SendEmail;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,15 +31,15 @@ class SendEmailTest extends TestCase
         Config::set('mail.from.address', 'noreply@monica.test');
         Mail::fake();
 
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
         $user = User::factory()->create([
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'email' => 'michael.scott@dundermifflin.com',
         ]);
 
         new SendEmail(
             mailable: new NewLoginDetected,
-            company: $company,
+            account: $account,
             emailType: EmailType::NewLogin,
             user: $user,
         )->handle();
@@ -54,7 +54,7 @@ class SendEmailTest extends TestCase
 
         $emailSent = EmailSent::query()->latest()->first();
 
-        $this->assertEquals($company->id, $emailSent->company_id);
+        $this->assertEquals($account->id, $emailSent->account_id);
         $this->assertEquals($user->id, $emailSent->user_id);
         $this->assertEquals(EmailType::NewLogin->value, $emailSent->email_type);
         $this->assertEquals('michael.scott@dundermifflin.com', $emailSent->email_address);
@@ -92,15 +92,15 @@ class SendEmailTest extends TestCase
 
         app()->instance('resend', $resendMock);
 
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
         $user = User::factory()->create([
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'email' => 'michael.scott@dundermifflin.com',
         ]);
 
         new SendEmail(
             mailable: new NewLoginDetected,
-            company: $company,
+            account: $account,
             emailType: EmailType::NewLogin,
             user: $user,
         )->handle();
@@ -117,11 +117,11 @@ class SendEmailTest extends TestCase
         Config::set('app.use_resend', false);
         Mail::fake();
 
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
 
         new SendEmail(
             mailable: new NewLoginDetected,
-            company: $company,
+            account: $account,
             emailType: EmailType::MagicLinkCreated,
             emailAddress: 'jan.levinson@dundermifflin.com',
         )->handle();
@@ -133,7 +133,7 @@ class SendEmailTest extends TestCase
 
         $emailSent = EmailSent::query()->latest()->first();
 
-        $this->assertEquals($company->id, $emailSent->company_id);
+        $this->assertEquals($account->id, $emailSent->account_id);
         $this->assertNull($emailSent->user_id);
         $this->assertEquals('jan.levinson@dundermifflin.com', $emailSent->email_address);
     }
@@ -144,15 +144,15 @@ class SendEmailTest extends TestCase
         Config::set('app.use_resend', false);
         Mail::fake();
 
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
         $user = User::factory()->create([
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'email' => 'michael.scott@dundermifflin.com',
         ]);
 
         new SendEmail(
             mailable: new NewLoginDetected,
-            company: $company,
+            account: $account,
             emailType: EmailType::NewLogin,
             user: $user,
             emailAddress: 'michael.scarn@dundermifflin.com',
@@ -172,11 +172,11 @@ class SendEmailTest extends TestCase
         Config::set('app.use_resend', false);
         Mail::fake();
 
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
 
         new SendEmail(
             mailable: new NewLoginDetected,
-            company: $company,
+            account: $account,
             emailType: EmailType::NewLogin,
         )->handle();
     }

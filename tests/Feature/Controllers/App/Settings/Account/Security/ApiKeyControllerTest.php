@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Security;
 
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -109,9 +109,9 @@ class ApiKeyControllerTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $michael = User::factory()->create(['company_id' => $company->id]);
-        $dwight = User::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $michael = User::factory()->create(['account_id' => $account->id]);
+        $dwight = User::factory()->create(['account_id' => $account->id]);
         $apiKey = $dwight->createToken('Beet farm sync')->accessToken;
 
         $response = $this->actingAs($michael)->delete(route('settings.apiKeys.destroy', $apiKey->id));

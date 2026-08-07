@@ -112,7 +112,7 @@ class AttemptLogin
         if ($candidate !== null) {
             SendEmail::dispatch(
                 mailable: new LoginFailed,
-                company: $candidate->company,
+                account: $candidate->account,
                 emailType: EmailType::LoginFailed,
                 user: $candidate,
             )->onQueue('high');
@@ -137,7 +137,7 @@ class AttemptLogin
     private function log(): void
     {
         LogUserAction::dispatch(
-            company: $this->user->company,
+            account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::UserLogin,
         )->onQueue('low');

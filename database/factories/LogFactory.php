@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\UserActionEnum;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\Log;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,10 +23,10 @@ class LogFactory extends Factory
     public function definition(): array
     {
         return [
-            'company_id' => Company::factory(),
+            'account_id' => Account::factory(),
             'user_id' => User::factory(),
             'user_email' => fake()->safeEmail(),
-            'action' => UserActionEnum::CompanyUpdate->value,
+            'action' => UserActionEnum::AccountCreation->value,
             'parameters' => null,
         ];
     }

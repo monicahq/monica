@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Settings\Account\Preferences;
 
 use App\Enums\TimeFormatEnum;
-use App\Models\Company;
-use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -20,16 +18,9 @@ class PreferenceControllerTest extends TestCase
     #[Test]
     public function it_shows_the_preferences_screen(): void
     {
-        $company = Company::factory()->create(['name' => 'Dunder Mifflin']);
-        $employee = Employee::factory()->create([
-            'company_id' => $company->id,
+        $user = User::factory()->create([
             'first_name' => 'Michael',
             'last_name' => 'Scott',
-            'display_name' => null,
-        ]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
             'locale' => 'en',
             'time_format' => TimeFormatEnum::TwentyFourHour,
         ]);
@@ -43,7 +34,6 @@ class PreferenceControllerTest extends TestCase
         $response->assertSee('24-hour', escape: false);
         $response->assertSee('Français', escape: false);
         $response->assertSee('Michael Scott', escape: false);
-        $response->assertSee('Dunder Mifflin', escape: false);
     }
 
     #[Test]

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\ViewModels\Settings\Account\Preferences;
 
 use App\Enums\TimeFormatEnum;
-use App\Models\Employee;
 use App\Models\User;
 
 /**
@@ -16,7 +15,6 @@ class PreferencesViewModel
 {
     public function __construct(
         private readonly User $user,
-        private readonly ?Employee $employee,
     ) {}
 
     /**
@@ -82,26 +80,11 @@ class PreferencesViewModel
     }
 
     /**
-     * The name to show and to draw initials from. Somebody whose account is not
-     * attached to an employee record has only an email address to go by.
+     * Who is signed in, so the sidebar can show their name and their photo.
      */
-    public function name(): string
+    public function user(): User
     {
-        return $this->employee->name ?? $this->user->email;
-    }
-
-    /**
-     * The record the avatar draws from, so the sidebar can show the photo when
-     * there is one. An account that belongs to nobody who works here has none.
-     */
-    public function employee(): ?Employee
-    {
-        return $this->employee;
-    }
-
-    public function companyName(): string
-    {
-        return $this->user->company->name;
+        return $this->user;
     }
 
     /**

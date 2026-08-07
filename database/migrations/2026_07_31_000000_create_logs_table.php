@@ -15,23 +15,15 @@ return new class extends Migration
     {
         Schema::create('logs', function (Blueprint $table): void {
             $table->id()->comment('primary key');
-            $table->unsignedBigInteger('company_id')->comment('company the action was performed in');
+            $table->unsignedBigInteger('account_id')->comment('account the action was performed in');
             $table->unsignedBigInteger('user_id')->nullable()->comment('user who performed the action, null once that user is deleted');
             $table->string('user_email')->comment('email address of the user at the time of the action, kept so the log still says who acted once the user is gone');
             $table->string('action')->comment('action that was performed, also used as translation key');
             $table->json('parameters')->nullable()->comment('parameters for the translation');
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies')->cascadeOnDelete();
+            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
         });
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('logs');
     }
 };

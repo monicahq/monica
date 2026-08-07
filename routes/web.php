@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Http\Controllers\App\Settings\Account\Logs\EmailSentController;
 use App\Http\Controllers\App\Settings\Account\Logs\LogController;
 use App\Http\Controllers\App\Settings\Account\Preferences\PreferenceController;
-use App\Http\Controllers\App\Settings\Account\Profile\EmergencyContactController;
 use App\Http\Controllers\App\Settings\Account\Profile\PhotoController;
 use App\Http\Controllers\App\Settings\Account\Profile\ProfileController;
 use App\Http\Controllers\App\Settings\Account\Security\ApiKeyController;
@@ -42,9 +41,7 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     Route::post('settings/account/security/api-keys', [ApiKeyController::class, 'create'])->name('settings.apiKeys.create');
     Route::delete('settings/account/security/api-keys/{apiKey}', [ApiKeyController::class, 'destroy'])->whereNumber('apiKey')->name('settings.apiKeys.destroy');
 
-    Route::put('settings/account/profile/emergency-contact', [EmergencyContactController::class, 'update'])->name('settings.emergencyContact.update');
-
     Route::post('settings/account/profile/photo', [PhotoController::class, 'update'])->name('settings.photo.update');
     Route::delete('settings/account/profile/photo', [PhotoController::class, 'destroy'])->name('settings.photo.destroy');
-    Route::get('settings/account/profile/photo/{employee}/{size}', [PhotoController::class, 'show'])->whereNumber(['employee', 'size'])->name('settings.photo.show');
+    Route::get('settings/account/profile/photo/{user}/{size}', [PhotoController::class, 'show'])->whereNumber(['user', 'size'])->name('settings.photo.show');
 });

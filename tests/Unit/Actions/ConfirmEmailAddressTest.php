@@ -34,7 +34,7 @@ class ConfirmEmailAddressTest extends TestCase
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::EmailConfirmation
                 && $job->user->id === $user->id
-                && $job->company->id === $user->company_id,
+                && $job->account->id === $user->account_id,
         );
     }
 }

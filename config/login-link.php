@@ -42,8 +42,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | Whether an unknown email address creates a user on the fly. It is off, as
-    | a user here belongs to a company and an account made out of thin air
-    | would have none, so the link only opens seeded accounts.
+    | a user here belongs to an account, and one made out of thin air would
+    | have none, so the link only opens seeded accounts.
     |
     */
 

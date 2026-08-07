@@ -16,7 +16,7 @@ use RuntimeException;
  * cropped away.
  *
  * Anything that needs a picture at a given size goes through here, which is why
- * the action knows nothing about employees or avatars.
+ * the action knows nothing about users or avatars.
  */
 class ResizeImage
 {

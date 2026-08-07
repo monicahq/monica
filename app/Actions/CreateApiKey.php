@@ -37,7 +37,7 @@ class CreateApiKey
     private function log(): void
     {
         LogUserAction::dispatch(
-            company: $this->user->company,
+            account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::ApiKeyCreation,
             parameters: ['name' => $this->name],

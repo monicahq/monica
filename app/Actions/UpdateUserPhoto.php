@@ -6,25 +6,23 @@ namespace App\Actions;
 
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 /**
- * Set the photo an employee shows their colleagues. Two square versions are
- * written, one at the size the app displays and one at twice it, so a dense
- * screen has a sharp one to pick from. Somebody may only do this to their own
- * record, which is why the action takes the user rather than the employee.
+ * Set the photo a user shows. Two square versions are written, one at the size
+ * the app displays and one at twice it, so a dense screen has a sharp one to
+ * pick from. Somebody may only do this to their own profile, so the action
+ * edits whoever is signed in.
  *
- * An employee only ever has one photo, so an earlier one is removed once the
- * new one is in place.
+ * A user only ever has one photo, so an earlier one is removed once the new one
+ * is in place.
  */
-class UpdateEmployeePhoto
+class UpdateUserPhoto
 {
     /**
      * The mime types we accept. Anything else is rejected, whatever the
@@ -38,8 +36,6 @@ class UpdateEmployeePhoto
 
     private const int MAX_SIZE_IN_BYTES = 5 * 1024 * 1024;
 
-    private Employee $employee;
-
     private ?string $previousPath = null;
 
     private string $path;
@@ -49,7 +45,7 @@ class UpdateEmployeePhoto
         private readonly UploadedFile $file,
     ) {}
 
-    public function execute(): Employee
+    public function execute(): User
     {
         $this->validate();
         $this->store();
@@ -57,25 +53,15 @@ class UpdateEmployeePhoto
         $this->removePrevious();
         $this->log();
 
-        return $this->employee;
+        return $this->user;
     }
 
     /**
-     * An account does not always belong to somebody who works for the company,
-     * and one that does not has no record to put a photo on. The file is
-     * checked here as well as in the controller, on what it actually is rather
-     * than on what its name claims.
+     * The file is checked here as well as in the controller, on what it
+     * actually is rather than on what its name claims.
      */
     private function validate(): void
     {
-        $employee = $this->user->employee;
-
-        if ($employee === null) {
-            throw new ModelNotFoundException('Employee not found');
-        }
-
-        $this->employee = $employee;
-
         if (! in_array($this->file->getMimeType(), self::ALLOWED_MIME_TYPES, true)) {
             throw new InvalidArgumentException('The file must be a jpeg, png or webp image');
         }
@@ -86,17 +72,17 @@ class UpdateEmployeePhoto
     }
 
     /**
-     * The name the employee gave the file never reaches the disk: we generate a
+     * The name the user gave the file never reaches the disk: we generate a
      * random one instead, and the two versions are named after it.
      */
     private function store(): void
     {
-        $this->previousPath = $this->employee->photo_path;
+        $this->previousPath = $this->user->photo_path;
 
-        $directory = 'photos/'.$this->employee->id;
+        $directory = 'photos/'.$this->user->id;
         $stem = Str::uuid()->toString();
 
-        foreach (Employee::photoPixelSizes() as $pixels) {
+        foreach (User::photoPixelSizes() as $pixels) {
             new ResizeImage(
                 file: $this->file,
                 width: $pixels,
@@ -112,15 +98,15 @@ class UpdateEmployeePhoto
 
     private function save(): void
     {
-        $this->employee->photo_path = $this->path;
-        $this->employee->last_saved_at = now();
-        $this->employee->save();
+        $this->user->photo_path = $this->path;
+        $this->user->last_saved_at = now();
+        $this->user->save();
     }
 
     /**
      * The files of the earlier photo are only removed once the new one is
-     * saved, so a failure halfway through leaves the employee with a working
-     * photo rather than none.
+     * saved, so a failure halfway through leaves the user with a working photo
+     * rather than none.
      */
     private function removePrevious(): void
     {
@@ -128,7 +114,7 @@ class UpdateEmployeePhoto
             return;
         }
 
-        foreach (Employee::photoPixelSizes() as $pixels) {
+        foreach (User::photoPixelSizes() as $pixels) {
             $this->disk()->delete($this->previousPath.'_'.$pixels.'.webp');
         }
     }
@@ -149,10 +135,10 @@ class UpdateEmployeePhoto
     private function log(): void
     {
         LogUserAction::dispatch(
-            company: $this->user->company,
+            account: $this->user->account,
             user: $this->user,
-            action: UserActionEnum::EmployeePhotoUpdate,
-            parameters: ['name' => $this->employee->name],
+            action: UserActionEnum::UserPhotoUpdate,
+            parameters: ['name' => $this->user->name],
         )->onQueue('low');
     }
 }

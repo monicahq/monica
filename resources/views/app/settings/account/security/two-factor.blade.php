@@ -9,7 +9,7 @@
 --}}
 <x-app-layout :title="__('Two factor authentication')">
   <x-slot:sidebar>
-    <x-settings.sidebar :company-name="$viewModel->companyName()" :name="$viewModel->name()" :employee="$viewModel->employee()" current="security" />
+    <x-settings.sidebar :user="$viewModel->user()" current="security" />
   </x-slot:sidebar>
 
   <x-slot:breadcrumb>

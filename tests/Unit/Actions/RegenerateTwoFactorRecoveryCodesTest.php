@@ -7,7 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\RegenerateTwoFactorRecoveryCodes;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,8 +24,8 @@ class RegenerateTwoFactorRecoveryCodesTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $user = User::factory()->twoFactor()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->twoFactor()->create(['account_id' => $account->id]);
 
         new RegenerateTwoFactorRecoveryCodes(user: $user)->execute();
 
@@ -41,8 +41,8 @@ class RegenerateTwoFactorRecoveryCodesTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $user = User::factory()->twoFactor()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->twoFactor()->create(['account_id' => $account->id]);
 
         new RegenerateTwoFactorRecoveryCodes(user: $user)->execute();
 

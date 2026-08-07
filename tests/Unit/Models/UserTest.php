@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\EmailSent;
-use App\Models\Employee;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,26 +18,33 @@ class UserTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_a_company(): void
+    public function it_belongs_to_an_account(): void
     {
-        $company = Company::factory()->create(['name' => 'Dunder Mifflin']);
-        $user = User::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
 
-        $this->assertTrue($user->company()->exists());
-        $this->assertEquals('Dunder Mifflin', $user->company->name);
+        $this->assertTrue($user->account()->exists());
+        $this->assertTrue($account->is($user->account));
     }
 
     #[Test]
-    public function it_belongs_to_an_employee(): void
+    public function it_gives_the_name_the_user_is_called_by(): void
     {
-        $employee = Employee::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
-        $user = User::factory()->create([
-            'company_id' => $employee->company_id,
-            'employee_id' => $employee->id,
-        ]);
+        $user = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
 
-        $this->assertTrue($user->employee()->exists());
-        $this->assertEquals('Michael Scott', $user->employee->name);
+        $this->assertEquals('Michael Scott', $user->name);
+    }
+
+    #[Test]
+    public function it_knows_whether_it_has_a_photo(): void
+    {
+        $withPhoto = User::factory()->create(['photo_path' => 'photos/1/abc']);
+        $withoutPhoto = User::factory()->create(['photo_path' => null]);
+
+        $this->assertTrue($withPhoto->hasPhoto());
+        $this->assertFalse($withoutPhoto->hasPhoto());
+        $this->assertEquals('photos/1/abc_96.webp', $withPhoto->photoVariantPath(96));
+        $this->assertEquals([96, 192], User::photoPixelSizes());
     }
 
     #[Test]
@@ -46,7 +52,7 @@ class UserTest extends TestCase
     {
         $user = User::factory()->create();
         EmailSent::factory()->create([
-            'company_id' => $user->company_id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'subject' => 'Somebody signed in from a new place',
         ]);

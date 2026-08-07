@@ -16,7 +16,6 @@ class EmailSentController extends Controller
         return view('app.settings.account.logs.emails', [
             'viewModel' => new EmailsSentViewModel(
                 user: $request->user(),
-                employee: $request->user()->employee,
             ),
         ]);
     }

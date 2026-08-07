@@ -77,7 +77,7 @@ class CreateMagicLink
                 url: route('auth.magicLink.show', ['token' => $this->token]),
                 minutes: $this->minutes(),
             ),
-            company: $this->user->company,
+            account: $this->user->account,
             emailType: EmailType::MagicLinkCreated,
             user: $this->user,
         )->onQueue('high');
@@ -86,7 +86,7 @@ class CreateMagicLink
     private function log(): void
     {
         LogUserAction::dispatch(
-            company: $this->user->company,
+            account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::MagicLinkCreation,
         )->onQueue('low');

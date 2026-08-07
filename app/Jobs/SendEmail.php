@@ -7,7 +7,7 @@ namespace App\Jobs;
 use App\Actions\CreateEmailSent;
 use App\Enums\EmailType;
 use App\Interfaces\HasEnvelope;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -27,18 +27,18 @@ class SendEmail implements ShouldQueue
     private ?string $uuid = null;
 
     /**
-     * Send an email on behalf of the given company.
+     * Send an email on behalf of the given account.
      * We need to use this abstraction because for our own use case in production,
      * we use Resend and all its capabilities (including webhooks), so we need
      * to capture the UUID Resend sends.
      * In any other context, the default Laravel Mail class is used, allowing
      * you to send emails the way Laravel Mail does.
-     * The email is not always sent to a user of the company, so the recipient
+     * The email is not always sent to a user of the account, so the recipient
      * can be given as a plain address instead.
      */
     public function __construct(
         public Mailable&HasEnvelope $mailable,
-        public Company $company,
+        public Account $account,
         public EmailType $emailType,
         public ?User $user = null,
         public ?string $emailAddress = null,
@@ -97,7 +97,7 @@ class SendEmail implements ShouldQueue
     private function recordEmailSent(): void
     {
         new CreateEmailSent(
-            company: $this->company,
+            account: $this->account,
             user: $this->user,
             uuid: $this->uuid,
             emailType: $this->emailType->value,

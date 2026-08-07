@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Auth;
 
 use App\Enums\EmailType;
-use App\Models\Company;
-use App\Models\Employee;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -26,7 +25,6 @@ class RegistrationControllerTest extends TestCase
         return array_merge([
             'first_name' => 'Michael',
             'last_name' => 'Scott',
-            'company_name' => 'Dunder Mifflin',
             'email' => 'michael.scott@dundermifflin.com',
             'password' => 'thatswhatshesaid',
             'password_confirmation' => 'thatswhatshesaid',
@@ -53,7 +51,7 @@ class RegistrationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_creates_a_company_an_owner_and_an_employee(): void
+    public function it_creates_an_account_and_its_first_user(): void
     {
         Queue::fake();
 
@@ -64,11 +62,9 @@ class RegistrationControllerTest extends TestCase
 
         $user = User::query()->where('email', 'michael.scott@dundermifflin.com')->firstOrFail();
 
-        $this->assertEquals(1, Company::query()->count());
-        $this->assertEquals('Dunder Mifflin', $user->company->name);
-        $this->assertEquals($user->id, $user->company->owner_user_id);
-        $this->assertEquals(1, Employee::query()->count());
-        $this->assertEquals('Michael Scott', $user->employee->name);
+        $this->assertEquals(1, Account::query()->count());
+        $this->assertEquals(1, $user->account->users()->count());
+        $this->assertEquals('Michael Scott', $user->name);
     }
 
     #[Test]
@@ -79,7 +75,7 @@ class RegistrationControllerTest extends TestCase
         $user = User::query()->where('email', 'michael.scott@dundermifflin.com')->firstOrFail();
 
         $this->assertDatabaseHas('emails_sent', [
-            'company_id' => $user->company_id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'email_type' => EmailType::EmailVerification->value,
             'email_address' => 'michael.scott@dundermifflin.com',

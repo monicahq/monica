@@ -7,7 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\DestroyApiKey;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,8 +24,8 @@ class DestroyApiKeyTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $user = User::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
         $apiKey = $user->createToken('Dundie awards bot')->accessToken;
 
         new DestroyApiKey(user: $user, apiKeyId: $apiKey->id)->execute();
@@ -39,9 +39,9 @@ class DestroyApiKeyTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $michael = User::factory()->create(['company_id' => $company->id]);
-        $dwight = User::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $michael = User::factory()->create(['account_id' => $account->id]);
+        $dwight = User::factory()->create(['account_id' => $account->id]);
         $apiKey = $dwight->createToken('Beet farm sync')->accessToken;
 
         $this->expectException(ModelNotFoundException::class);
@@ -58,8 +58,8 @@ class DestroyApiKeyTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $user = User::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
         $apiKey = $user->createToken('Dundie awards bot')->accessToken;
 
         new DestroyApiKey(user: $user, apiKeyId: $apiKey->id)->execute();
@@ -68,7 +68,7 @@ class DestroyApiKeyTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ApiKeyDeletion
-                && $job->company->id === $company->id
+                && $job->account->id === $account->id
                 && $job->user->id === $user->id
                 && $job->parameters === ['name' => 'Dundie awards bot'],
         );

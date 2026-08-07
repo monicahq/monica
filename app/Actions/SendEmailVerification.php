@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\URL;
 /**
  * Send the email that asks somebody to confirm the address they signed up with.
  * The link is signed and expires. Every email the application sends goes
- * through the SendEmail job, so it is recorded in emails_sent and the company
+ * through the SendEmail job, so it is recorded in emails_sent and the account
  * can see what was sent, which is why the framework notification is not used.
  */
 class SendEmailVerification
@@ -33,7 +33,7 @@ class SendEmailVerification
     {
         SendEmail::dispatch(
             mailable: new VerifyEmail(url: $this->url()),
-            company: $this->user->company,
+            account: $this->user->account,
             emailType: EmailType::EmailVerification,
             user: $this->user,
         )->onQueue('high');

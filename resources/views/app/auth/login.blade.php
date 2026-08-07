@@ -77,7 +77,7 @@
 
         <x-box padding="p-4" class="rounded-lg text-center text-sm text-body">
           {{ __('New to :app?', ['app' => config('app.name')]) }}
-          <x-link turbo :href="route('auth.register.new')" class="font-semibold text-ink">{{ __('Create a company') }}</x-link>
+          <x-link turbo :href="route('auth.register.new')" class="font-semibold text-ink">{{ __('Create an account') }}</x-link>
         </x-box>
 
         <div class="flex items-center gap-3">

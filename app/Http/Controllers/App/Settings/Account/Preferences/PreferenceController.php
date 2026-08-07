@@ -20,7 +20,6 @@ class PreferenceController extends Controller
         return view('app.settings.account.preferences.index', [
             'viewModel' => new PreferencesViewModel(
                 user: $request->user(),
-                employee: $request->user()->employee,
             ),
         ]);
     }

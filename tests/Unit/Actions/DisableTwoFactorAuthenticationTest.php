@@ -7,7 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\DisableTwoFactorAuthentication;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -23,8 +23,8 @@ class DisableTwoFactorAuthenticationTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $user = User::factory()->twoFactor()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->twoFactor()->create(['account_id' => $account->id]);
 
         $result = new DisableTwoFactorAuthentication(user: $user)->execute();
 
@@ -43,8 +43,8 @@ class DisableTwoFactorAuthenticationTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $user = User::factory()->twoFactor()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->twoFactor()->create(['account_id' => $account->id]);
 
         new DisableTwoFactorAuthentication(user: $user)->execute();
 
@@ -52,7 +52,7 @@ class DisableTwoFactorAuthenticationTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::TwoFactorDisabled
-                && $job->company->id === $company->id
+                && $job->account->id === $account->id
                 && $job->user->id === $user->id,
         );
     }

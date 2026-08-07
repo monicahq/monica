@@ -9,7 +9,7 @@
 --}}
 <x-app-layout :title="__('Logs')">
   <x-slot:sidebar>
-    <x-settings.sidebar :company-name="$viewModel->companyName()" :name="$viewModel->name()" :employee="$viewModel->employee()" current="logs" />
+    <x-settings.sidebar :user="$viewModel->user()" current="logs" />
   </x-slot:sidebar>
 
   <x-slot:breadcrumb>
@@ -28,7 +28,7 @@
   <x-box :title="__('Logs')" id="logs-container" x-merge="append" padding="p-0">
     <x-slot:help>
       <x-help :title="__('Logs')">
-        {{ __('Every action you take that touches your account or your company is written down here, so you can tell what happened and when.') }}
+        {{ __('Every action you take that touches your account is written down here, so you can tell what happened and when.') }}
       </x-help>
     </x-slot:help>
 

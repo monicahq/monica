@@ -40,7 +40,7 @@ class CheckLastLogin implements ShouldQueue
                 email: $this->user->email,
                 ip: $this->ip,
             ),
-            company: $this->user->company,
+            account: $this->user->account,
             emailType: EmailType::UserIpChanged,
             user: $this->user,
         )->onQueue('high');

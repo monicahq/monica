@@ -47,7 +47,7 @@ class UpdateUserPasswordTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserPasswordUpdate
-                && $job->company->id === $user->company_id
+                && $job->account->id === $user->account_id
                 && $job->user->id === $user->id,
         );
     }

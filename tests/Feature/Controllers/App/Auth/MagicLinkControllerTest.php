@@ -60,7 +60,7 @@ class MagicLinkControllerTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('emails_sent', [
-            'company_id' => $user->company_id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'email_type' => EmailType::MagicLinkCreated->value,
             'email_address' => 'michael.scott@dundermifflin.com',

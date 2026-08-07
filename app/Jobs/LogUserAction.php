@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Enums\UserActionEnum;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\Log;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -19,7 +19,7 @@ class LogUserAction implements ShouldQueue
      * @param  array<string, mixed>|null  $parameters
      */
     public function __construct(
-        public Company $company,
+        public Account $account,
         public User $user,
         public UserActionEnum $action,
         public ?array $parameters = null,
@@ -31,7 +31,7 @@ class LogUserAction implements ShouldQueue
     public function handle(): void
     {
         Log::query()->create([
-            'company_id' => $this->company->id,
+            'account_id' => $this->account->id,
             'user_id' => $this->user->id,
             'user_email' => $this->user->email,
             'action' => $this->action->value,

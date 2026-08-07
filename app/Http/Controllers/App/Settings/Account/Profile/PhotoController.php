@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Settings\Account\Profile;
 
-use App\Actions\DestroyEmployeePhoto;
-use App\Actions\UpdateEmployeePhoto;
+use App\Actions\DestroyUserPhoto;
+use App\Actions\UpdateUserPhoto;
 use App\Http\Controllers\Controller;
-use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -21,7 +21,7 @@ class PhotoController extends Controller
             'photo' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
         ]);
 
-        new UpdateEmployeePhoto(
+        new UpdateUserPhoto(
             user: $request->user(),
             file: $validated['photo'],
         )->execute();
@@ -33,7 +33,7 @@ class PhotoController extends Controller
 
     public function destroy(Request $request): RedirectResponse
     {
-        new DestroyEmployeePhoto(user: $request->user())->execute();
+        new DestroyUserPhoto(user: $request->user())->execute();
 
         return redirect()->route('settings.profile.index')
             ->with('status', __('Your photo is removed.'))
@@ -41,28 +41,28 @@ class PhotoController extends Controller
     }
 
     /**
-     * Serve one version of an employee's photo. Photos are personal, so they
-     * live on the private disk and are read through here rather than from a
-     * public URL, and only by the people who work at the same company.
+     * Serve one version of a user's photo. Photos are personal, so they live on
+     * the private disk and are read through here rather than from a public URL,
+     * and only by the people in the same account.
      */
-    public function show(Request $request, Employee $employee, int $size): StreamedResponse
+    public function show(Request $request, User $user, int $size): StreamedResponse
     {
-        if ($employee->company_id !== $request->user()->company_id) {
+        if ($user->account_id !== $request->user()->account_id) {
             abort(404);
         }
 
-        if (! $employee->hasPhoto()) {
+        if (! $user->hasPhoto()) {
             abort(404);
         }
 
         // Only the sizes actually written to disk, so this cannot be turned
         // into an endpoint that resizes whatever it is asked for.
-        if (! in_array($size, Employee::photoPixelSizes(), true)) {
+        if (! in_array($size, User::photoPixelSizes(), true)) {
             abort(404);
         }
 
         $disk = Storage::disk((string) config('filesystems.default'));
-        $path = $employee->photoVariantPath($size);
+        $path = $user->photoVariantPath($size);
 
         if (! $disk->exists($path)) {
             abort(404);

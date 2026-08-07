@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Actions\CreateCompany;
-use App\Models\Employee;
+use App\Actions\CreateAccount;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,8 +18,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $company = new CreateCompany(
-            name: 'Dunder Mifflin',
+        $user = new CreateAccount(
             firstName: 'Michael',
             lastName: 'Scott',
             email: 'michael.scott@dundermifflin.com',
@@ -28,11 +26,7 @@ class DatabaseSeeder extends Seeder
         )->execute();
 
         User::factory()->count(5)->create([
-            'company_id' => $company->id,
-        ]);
-
-        Employee::factory()->count(10)->withPrivateInformation()->create([
-            'company_id' => $company->id,
+            'account_id' => $user->account_id,
         ]);
     }
 }

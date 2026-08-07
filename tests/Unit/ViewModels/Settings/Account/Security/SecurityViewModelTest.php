@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Settings\Account\Security;
 
-use App\Models\Company;
-use App\Models\Employee;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Security\SecurityViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,39 +15,17 @@ class SecurityViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_gives_the_name_and_the_company_of_the_signed_in_person(): void
-    {
-        $company = Company::factory()->create(['name' => 'Dunder Mifflin']);
-        $employee = Employee::factory()->create([
-            'company_id' => $company->id,
-            'first_name' => 'Jim',
-            'last_name' => 'Halpert',
-            'display_name' => 'Big Tuna',
-        ]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
-        ]);
-
-        $viewModel = new SecurityViewModel(user: $user, employee: $employee);
-
-        $this->assertEquals('Big Tuna', $viewModel->name());
-        $this->assertEquals('Dunder Mifflin', $viewModel->companyName());
-        $this->assertTrue($viewModel->employee()->is($employee));
-    }
-
-    #[Test]
-    public function it_falls_back_to_the_email_when_there_is_no_employee_record(): void
+    public function it_gives_the_person_who_is_signed_in(): void
     {
         $user = User::factory()->create([
-            'employee_id' => null,
-            'email' => 'accountant@vancerefrigeration.com',
+            'first_name' => 'Michael',
+            'last_name' => 'Scott',
         ]);
 
-        $viewModel = new SecurityViewModel(user: $user, employee: null);
+        $viewModel = new SecurityViewModel(user: $user);
 
-        $this->assertEquals('accountant@vancerefrigeration.com', $viewModel->name());
-        $this->assertNull($viewModel->employee());
+        $this->assertTrue($user->is($viewModel->user()));
+        $this->assertEquals('Michael Scott', $viewModel->user()->name);
     }
 
     #[Test]
@@ -57,7 +33,7 @@ class SecurityViewModelTest extends TestCase
     {
         $user = User::factory()->create(['password_changed_at' => now()->subDays(2)]);
 
-        $viewModel = new SecurityViewModel(user: $user, employee: null);
+        $viewModel = new SecurityViewModel(user: $user);
 
         $this->assertEquals('2 days ago', $viewModel->passwordChangedAt());
     }
@@ -67,7 +43,7 @@ class SecurityViewModelTest extends TestCase
     {
         $user = User::factory()->create(['password_changed_at' => null]);
 
-        $viewModel = new SecurityViewModel(user: $user, employee: null);
+        $viewModel = new SecurityViewModel(user: $user);
 
         $this->assertNull($viewModel->passwordChangedAt());
     }
@@ -76,12 +52,12 @@ class SecurityViewModelTest extends TestCase
     public function it_says_whether_the_account_signs_in_through_a_provider(): void
     {
         $user = User::factory()->create();
-        $viewModel = new SecurityViewModel(user: $user, employee: null);
+        $viewModel = new SecurityViewModel(user: $user);
 
         $this->assertFalse($viewModel->usesSingleSignOn());
 
         $singleSignOnUser = User::factory()->singleSignOn()->create();
-        $singleSignOnViewModel = new SecurityViewModel(user: $singleSignOnUser, employee: null);
+        $singleSignOnViewModel = new SecurityViewModel(user: $singleSignOnUser);
 
         $this->assertTrue($singleSignOnViewModel->usesSingleSignOn());
     }
@@ -91,7 +67,7 @@ class SecurityViewModelTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $viewModel = new SecurityViewModel(user: $user, employee: null);
+        $viewModel = new SecurityViewModel(user: $user);
 
         $this->assertSame([], $viewModel->apiKeys());
         $this->assertEquals('Active · no API keys', $viewModel->apiKeysHeader());
@@ -107,7 +83,7 @@ class SecurityViewModelTest extends TestCase
 
         $user->createToken('Dundie awards bot');
 
-        $apiKeys = new SecurityViewModel(user: $user, employee: null)->apiKeys();
+        $apiKeys = new SecurityViewModel(user: $user)->apiKeys();
 
         $this->assertCount(2, $apiKeys);
         $this->assertEquals('Dundie awards bot', $apiKeys[0]['name']);
@@ -121,7 +97,7 @@ class SecurityViewModelTest extends TestCase
         $user = User::factory()->create();
         $user->createToken('Dundie awards bot');
 
-        $apiKeys = new SecurityViewModel(user: $user, employee: null)->apiKeys();
+        $apiKeys = new SecurityViewModel(user: $user)->apiKeys();
 
         $this->assertNull($apiKeys[0]['lastUsedAt']);
     }
@@ -133,7 +109,7 @@ class SecurityViewModelTest extends TestCase
         $apiKey = $user->createToken('Dundie awards bot')->accessToken;
         $apiKey->forceFill(['last_used_at' => now()->subHours(5)])->save();
 
-        $apiKeys = new SecurityViewModel(user: $user, employee: null)->apiKeys();
+        $apiKeys = new SecurityViewModel(user: $user)->apiKeys();
 
         $this->assertEquals('5 hours ago', $apiKeys[0]['lastUsedAt']);
     }
@@ -144,10 +120,10 @@ class SecurityViewModelTest extends TestCase
         $user = User::factory()->create();
         $user->createToken('Dundie awards bot');
 
-        $this->assertEquals('Active · 1 API key', new SecurityViewModel(user: $user, employee: null)->apiKeysHeader());
+        $this->assertEquals('Active · 1 API key', new SecurityViewModel(user: $user)->apiKeysHeader());
 
         $user->createToken('Beet farm sync');
 
-        $this->assertEquals('Active · 2 API keys', new SecurityViewModel(user: $user, employee: null)->apiKeysHeader());
+        $this->assertEquals('Active · 2 API keys', new SecurityViewModel(user: $user)->apiKeysHeader());
     }
 }

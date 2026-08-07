@@ -24,7 +24,6 @@ class TwoFactorController extends Controller
         return view('app.settings.account.security.two-factor', [
             'viewModel' => new TwoFactorEnrolmentViewModel(
                 user: $request->user(),
-                employee: $request->user()->employee,
                 secret: $enrolment['secret'],
                 qrCode: $enrolment['qrCode'],
             ),

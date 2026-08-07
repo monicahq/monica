@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Settings\Account\Preferences;
 
 use App\Enums\TimeFormatEnum;
-use App\Models\Company;
-use App\Models\Employee;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Preferences\PreferencesViewModel;
 use Carbon\Carbon;
@@ -19,39 +17,17 @@ class PreferencesViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_gives_the_name_and_the_company_of_the_signed_in_person(): void
-    {
-        $company = Company::factory()->create(['name' => 'Dunder Mifflin']);
-        $employee = Employee::factory()->create([
-            'company_id' => $company->id,
-            'first_name' => 'Pam',
-            'last_name' => 'Beesly',
-            'display_name' => null,
-        ]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
-        ]);
-
-        $viewModel = new PreferencesViewModel(user: $user, employee: $employee);
-
-        $this->assertEquals('Pam Beesly', $viewModel->name());
-        $this->assertEquals('Dunder Mifflin', $viewModel->companyName());
-        $this->assertTrue($viewModel->employee()->is($employee));
-    }
-
-    #[Test]
-    public function it_falls_back_to_the_email_when_there_is_no_employee_record(): void
+    public function it_gives_the_person_who_is_signed_in(): void
     {
         $user = User::factory()->create([
-            'employee_id' => null,
-            'email' => 'accountant@vancerefrigeration.com',
+            'first_name' => 'Michael',
+            'last_name' => 'Scott',
         ]);
 
-        $viewModel = new PreferencesViewModel(user: $user, employee: null);
+        $viewModel = new PreferencesViewModel(user: $user);
 
-        $this->assertEquals('accountant@vancerefrigeration.com', $viewModel->name());
-        $this->assertNull($viewModel->employee());
+        $this->assertTrue($user->is($viewModel->user()));
+        $this->assertEquals('Michael Scott', $viewModel->user()->name);
     }
 
     #[Test]
@@ -61,7 +37,7 @@ class PreferencesViewModelTest extends TestCase
 
         $user = User::factory()->create(['locale' => 'fr_FR']);
 
-        $viewModel = new PreferencesViewModel(user: $user, employee: null);
+        $viewModel = new PreferencesViewModel(user: $user);
 
         $locales = $viewModel->locales();
 
@@ -79,7 +55,7 @@ class PreferencesViewModelTest extends TestCase
 
         $user = User::factory()->create(['locale' => null]);
 
-        $viewModel = new PreferencesViewModel(user: $user, employee: null);
+        $viewModel = new PreferencesViewModel(user: $user);
 
         $this->assertEquals(config('app.locale'), $viewModel->locale());
     }
@@ -89,7 +65,7 @@ class PreferencesViewModelTest extends TestCase
     {
         $user = User::factory()->create(['time_format' => TimeFormatEnum::TwelveHour]);
 
-        $viewModel = new PreferencesViewModel(user: $user, employee: null);
+        $viewModel = new PreferencesViewModel(user: $user);
 
         $formats = $viewModel->timeFormats();
 
@@ -107,7 +83,7 @@ class PreferencesViewModelTest extends TestCase
 
         $user = User::factory()->create(['time_format' => TimeFormatEnum::TwelveHour]);
 
-        $viewModel = new PreferencesViewModel(user: $user, employee: null);
+        $viewModel = new PreferencesViewModel(user: $user);
 
         $this->assertEquals('5:45 PM', $viewModel->timePreview());
     }

@@ -2,11 +2,10 @@
 
 A chronological list of every feature and improvement shipped during development. Newest entries go at the end.
 
-* Foundation: Added the company and user models.
-* Foundation: Added the employee model, separate from the user account that signs in.
+* Foundation: Added the account and user models.
 * Emails: Sent transactional emails and recorded what was sent to whom.
 * Logs: Recorded the actions users perform.
-* Auth: Added the registration screen, which creates the company and its first owner.
+* Auth: Added the registration screen, which creates the account and its first user.
 * Auth: Added the login screen.
 * Auth: Made the guest screens accessible to screen readers and keyboard users.
 * App-wide: Added Turbo, Alpine Ajax and instant.page so screens update without a full reload.
@@ -30,3 +29,5 @@ A chronological list of every feature and improvement shipped during development
 * App-wide: Gave cancel and back actions a secondary button.
 * Settings/account/security: Let somebody create and revoke their own API keys.
 * Settings/account/security: Created and revoked an API key without reloading the page.
+* Foundation: Dropped companies and employees. An account holds users, and every user of an account can do the same things.
+* Settings/account/profile: Let somebody change the email address they sign in with.

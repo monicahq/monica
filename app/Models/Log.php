@@ -15,10 +15,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * Class Log
  *
- * Represents an action a user performed in a company.
+ * Represents an action a user performed in an account.
  *
  * @property int $id
- * @property int $company_id
+ * @property int $account_id
  * @property int|null $user_id
  * @property string $user_email
  * @property string $action
@@ -41,7 +41,7 @@ class Log extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'company_id',
+        'account_id',
         'user_id',
         'user_email',
         'action',
@@ -61,13 +61,13 @@ class Log extends Model
     }
 
     /**
-     * Get the company the action was performed in.
+     * Get the account the action was performed in.
      *
-     * @return BelongsTo<Company, $this>
+     * @return BelongsTo<Account, $this>
      */
-    public function company(): BelongsTo
+    public function account(): BelongsTo
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Account::class);
     }
 
     /**
@@ -81,16 +81,16 @@ class Log extends Model
     }
 
     /**
-     * Get who performed the action. A log outlives the account behind it, so it
-     * falls back to the email address recorded at the time once that account,
-     * or the employee record under it, is gone.
+     * Get who performed the action. A log outlives the user behind it, so it
+     * falls back to the email address recorded at the time once that user is
+     * gone.
      *
      * @return Attribute<string, never>
      */
     protected function author(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => $this->user->employee->name ?? $this->user_email,
+            get: fn (): string => $this->user->name ?? $this->user_email,
         );
     }
 

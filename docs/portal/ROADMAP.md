@@ -16,16 +16,16 @@ Monica is an open source HR application. The interface calls itself "Open source
 
 The mental model the whole product rests on, and the one the portal must teach first, comes straight from the schema:
 
-- A **company** is the workspace. Everything belongs to one.
-- An **employee** is somebody who works for that company. The employee record exists on its own, before they arrive and after they leave, and does not need a login.
-- A **user** is a login. It belongs to a company, and it usually points at the employee it gives access to. It does not have to.
-- The first person to sign up creates the company, becomes its **owner**, and gets both a user and an employee record in one move.
+- An **account** is the workspace. Everything belongs to one.
+- A **user** is somebody who signs in. A user belongs to exactly one account.
+- The first person to sign up creates the account and becomes the first user in it.
+- Every user of an account can do the same things. There are no roles, no administrators, and no permission system of any kind.
 
-That separation between "a person who works here" and "an account that can sign in" is the single most important idea in the product, and several sections below exist only to make it land.
+That flatness is deliberate and worth stating early, because readers arrive expecting the opposite. Several pages below exist only to make it land.
 
 ### The state of the product, and what that means for the portal
 
-**Read this before writing a single page.** Monica is early. As of this roadmap, the user facing surfaces that exist are the guest and authentication screens, plus one screen inside the application: the profile, where somebody edits their own employee record, uploads a photo of themselves, and fills in their emergency contact. There is no dashboard, no employee directory, and no billing screen. There is no API either, though the screen that hands out keys for one exists, which is a distinction the writer has to keep: see `security.api-keys`. `routes/web.php` still sends `/` to a landing page, with a comment saying it stands in "until there is a dashboard to send people to."
+**Read this before writing a single page.** Monica is early. As of this roadmap, the user facing surfaces that exist are the guest and authentication screens, plus one screen inside the application: the profile, where somebody edits their own name, the address they sign in with, and the photo shown beside them. There is no dashboard, no directory of the people in an account, and no billing screen. There is no API either, though the screen that hands out keys for one exists, which is a distinction the writer has to keep: see `security.api-keys`. `routes/web.php` still sends `/` to a landing page, with a comment saying it stands in "until there is a dashboard to send people to."
 
 This has two consequences the writer must respect:
 
@@ -38,9 +38,10 @@ Never present a planned capability as finished. When a page has to mention somet
 
 Three audiences, needing different pages:
 
-1. **Employees.** The people who sign in and use the product. Not developers. Most of the portal serves them.
-2. **Company owners and administrators.** The person who signed up, plus anyone they later put in charge. Today the owner is the only distinguished role in the code: `companies.owner_user_id`, checked directly in `DestroyUser`, `DestroyCompany`, and `UpdateUserInformation`. There is no roles table and no permission system beyond that single check. Do not write about "roles" or "permission levels" in the plural.
-3. **Operators.** Whoever installs, configures, and runs an instance. Developers and sysadmins.
+1. **Users.** The people who sign in and use the product. Not developers. Most of the portal serves them, and they are all the same as one another: there is no second class of reader with extra powers.
+2. **Operators.** Whoever installs, configures, and runs an instance. Developers and sysadmins.
+
+Do not write about "roles", "administrators" or "permission levels" anywhere. No such thing exists in the code, and inventing one in the portal would be the fastest way to mislead a reader.
 
 Every page below names its audience.
 
@@ -80,7 +81,7 @@ Sections are ordered by how somebody actually meets the product: find out what i
 - **id.** `portal.introduction`
 - **Purpose.** Orient a first time reader in under a minute and route them to the right section.
 - **Audience.** All three.
-- **Summary.** What Monica is: open source HR software a company runs for its own people. The one line model, stated early and plainly: a company holds employees, and some of those employees have an account they sign in with. Who the product suits. That it is open source and can be run by you. A short map of the portal: start with Getting started; owners should read Your company and your people; operators should jump to Running your own instance. Then a candid paragraph, in plain language, that the product is in early development and this portal currently documents accounts, signing in, and security, with the rest arriving as it is built. No roadmap promises and no dates.
+- **Summary.** What Monica is: open source software a group of people runs for itself. The one line model, stated early and plainly: an account holds users, and every one of them can do the same things. Who the product suits. That it is open source and can be run by you. A short map of the portal: start with Getting started; then Core concepts; operators should jump to Running your own instance. Then a candid paragraph, in plain language, that the product is in early development and this portal currently documents accounts, signing in, and security, with the rest arriving as it is built. No roadmap promises and no dates.
 - **Prerequisites.** None. This is the true entry point.
 - **Complexity.** Low.
 - **Related pages.** `getting.what-is-monica`, `getting.create-account`, `hosting.introduction`.
@@ -91,7 +92,7 @@ Sections are ordered by how somebody actually meets the product: find out what i
 
 **Why this section exists.** The shortest path from "I found this" to "I have an account and I am inside." Everything advanced is deferred.
 
-**Who it is for.** Anyone creating a company, and anyone evaluating whether to.
+**Who it is for.** Anyone creating an account, and anyone evaluating whether to.
 
 **On disk.** `2-getting-started/`. Section value `getting-started`.
 
@@ -100,7 +101,7 @@ Sections are ordered by how somebody actually meets the product: find out what i
 - **id.** `getting.introduction`
 - **Purpose.** Section index. Say what the reader will have achieved by the end of it.
 - **Audience.** New users.
-- **Summary.** Three outcomes: you understand what Monica is, you have a company and an account, and you have confirmed your email address. List the pages in order.
+- **Summary.** Three outcomes: you understand what Monica is, you have an account, and you have confirmed your email address. List the pages in order.
 - **Prerequisites.** None.
 - **Complexity.** Low.
 - **Related pages.** Every page in this section.
@@ -109,8 +110,8 @@ Sections are ordered by how somebody actually meets the product: find out what i
 
 - **id.** `getting.what-is-monica`
 - **Purpose.** Tell a newcomer what the product does and whether it fits them, before they invest any time.
-- **Audience.** Employees and prospective owners.
-- **Summary.** The problem it addresses: companies keeping people information in spreadsheets, inboxes and memory. The model in one paragraph: one company, its employees, and accounts for the ones who need to sign in. That it is open source, so you can read every line and run it yourself. Be explicit and unembarrassed about scope: today the product handles accounts, sign in and company creation, and more is being built. A reader who discovers that limitation on their own after signing up will not come back.
+- **Audience.** Anyone weighing the product up.
+- **Summary.** The problem it addresses: people information kept in spreadsheets, inboxes and memory. The model in one paragraph: an account, and the users who sign in to it, all of them equal. That it is open source, so you can read every line and run it yourself. Be explicit and unembarrassed about scope: today the product handles accounts, sign in and profiles, and more is being built. A reader who discovers that limitation on their own after signing up will not come back.
 - **Prerequisites.** None.
 - **Complexity.** Low.
 - **Related pages.** `getting.cloud-or-self-hosted`, `concepts.model`.
@@ -119,25 +120,24 @@ Sections are ordered by how somebody actually meets the product: find out what i
 
 - **id.** `getting.cloud-or-self-hosted`
 - **Purpose.** Help the reader choose how they will run Monica before they create anything.
-- **Audience.** Prospective owners and operators.
-- **Summary.** Two ways to run it: use the hosted service, or install it on your own server. The application knows which it is (`companies.is_self_hosted`) but the software is the same either way. State clearly what the portal can and cannot promise about the hosted service: the codebase has a `plan` field on every company and a thirty day `trial_ends_at` set at signup, but **no billing, payment or subscription code exists**, nothing reads either field, and no screen shows a plan. So: do not write pricing, do not describe upgrade paths, do not mention tiers. Say that self hosting is free and point at the self hosting section.
+- **Audience.** Prospective users and operators.
+- **Summary.** Two ways to run it: use the hosted service, or install it on your own server. The application knows which it is (`accounts.is_self_hosted`) but the software is the same either way. State clearly what the portal can and cannot promise about the hosted service: the codebase has a `plan` field on every account and a thirty day `trial_ends_at` set at signup, but **no billing, payment or subscription code exists**, nothing reads either field, and no screen shows a plan. So: do not write pricing, do not describe upgrade paths, do not mention tiers. Say that self hosting is free and point at the self hosting section.
 - **Prerequisites.** `getting.what-is-monica`.
 - **Complexity.** Medium. The temptation to invent a pricing story here is the main risk.
-- **Related pages.** `hosting.introduction`, `concepts.company`.
+- **Related pages.** `hosting.introduction`, `concepts.account`.
 
-### Create your company and your account
+### Create your account
 
 - **id.** `getting.create-account`
 - **Purpose.** Walk somebody through the sign up form and explain what it creates.
-- **Audience.** The person starting a company in Monica.
-- **Summary.** A `::::steps` walkthrough of `/register`: first name, last name, company name, email address, password, and the terms checkbox. What each field does and what it becomes. Explain, because the screen says so and users ask, that you can rename the company later and that you become its first administrator. Then the part nobody expects: submitting this form creates three things at once, a company, your user account, and your own employee record, and it makes you the owner. Cover the rules the form enforces, in the reader's words rather than the validator's: a password of at least eight characters, typed twice; an email address that no other account already uses; disposable or throwaway addresses are refused (the `disposable_email` rule); agreeing to the terms of use and the privacy policy is required, and links to both come from configuration so a self hosted instance can point at its own. Mention the human check that may appear (Cloudflare Turnstile), which is off by default and switched on per instance. Finish by saying what happens next: you are signed in and sent straight to the email confirmation screen.
+- **Audience.** The person starting an account in Monica.
+- **Summary.** A `::::steps` walkthrough of `/register`: first name, last name, email address, password, and the terms checkbox. What each field does and what it becomes. Then the part worth saying plainly: submitting this form creates two things at once, an account and the first user in it, which is you. The account has no name and nothing to configure, so do not send the reader looking for a settings screen. Cover the rules the form enforces, in the reader's words rather than the validator's: a password of at least eight characters, typed twice; an email address that no other user already signs in with; disposable or throwaway addresses are refused (the `disposable_email` rule); agreeing to the terms of use and the privacy policy is required, and links to both come from configuration so a self hosted instance can point at its own. Mention the human check that may appear (Cloudflare Turnstile), which is off by default and switched on per instance. Finish by saying what happens next: you are signed in and sent straight to the email confirmation screen.
 - **Prerequisites.** `getting.what-is-monica`.
 - **Complexity.** Medium.
-- **Related pages.** `getting.confirm-email`, `concepts.owner`, `concepts.employee-vs-user`.
+- **Related pages.** `getting.confirm-email`, `concepts.model`, `concepts.permissions`.
 
 :::note for the writer
-The screen also carries a line telling people joining an existing company to ask an administrator to invite them rather than signing up again. Repeat that advice on this page, but do **not** describe an invitation flow: no invitation code, route, mail or screen exists yet. Say only that a second signup creates a second, separate company, which is almost never what they want, and that they should ask whoever runs their company for an account.
-:::
+The screen also carries a line telling people joining an existing account to ask somebody in it to invite them rather than signing up again. Repeat that advice on this page, but do **not** describe an invitation flow: no invitation code, route, mail or screen exists yet. Say only that a second signup creates a second, separate account, which is almost never what they want, and that they should ask whoever already has the account to add them.
 
 ### Confirm your email address
 
@@ -153,8 +153,8 @@ The screen also carries a line telling people joining an existing company to ask
 
 - **id.** `getting.what-works-today`
 - **Purpose.** Set honest expectations for somebody who just got in and is looking at a bare page.
-- **Audience.** New owners.
-- **Summary.** A short, factual page. What exists: your company, your account, your employee record, the profile screen where you edit it, the preferences screen where you choose your language and how times are written, two factor authentication, the list of emails the product has sent you, and everything in the account and security sections of this portal. What does not exist yet: any screen for browsing employees, editing your company, or managing accounts. Where the project is going, only insofar as the code shows it, with no dates. Where to follow along or contribute, since it is open source.
+- **Audience.** New users.
+- **Summary.** A short, factual page. What exists: your account, your user, the profile screen where you edit your name, address and photo, the preferences screen where you choose your language and how times are written, two factor authentication, the list of emails the product has sent you, and everything in the account and security sections of this portal. What does not exist yet: any screen for browsing the other people in your account, or for adding and removing them. Where the project is going, only insofar as the code shows it, with no dates. Where to follow along or contribute, since it is open source.
 - **Prerequisites.** `getting.create-account`.
 - **Complexity.** Low, but must be revisited every time a feature ships. Flag it in the page as the portal's "what is built" page.
 - **Related pages.** `portal.introduction`, `concepts.introduction`.
@@ -163,9 +163,9 @@ The screen also carries a line telling people joining an existing company to ask
 
 ## Section 3: Core concepts
 
-**Why this section exists.** Monica makes one distinction that no amount of clicking will teach you: employees and accounts are different things. Every later page leans on it. Concepts stay here, tasks stay elsewhere.
+**Why this section exists.** Monica's model is small, and its most surprising property is what it does *not* have: no roles, no administrators, no permissions. A reader who assumes otherwise will misread every later page. Concepts stay here, tasks stay elsewhere.
 
-**Who it is for.** Everybody, but especially owners.
+**Who it is for.** Everybody.
 
 **On disk.** `3-core-concepts/`. Section value `core-concepts`.
 
@@ -174,7 +174,7 @@ The screen also carries a line telling people joining an existing company to ask
 - **id.** `concepts.introduction`
 - **Purpose.** Section index and the shortest possible statement of the model.
 - **Audience.** All.
-- **Summary.** Company, employee, user, owner, in one paragraph each, each linking to its page. Say why the reader should care: it explains why somebody can leave the company without their record disappearing, and why an account can exist for somebody who does not work here.
+- **Summary.** Account, user, and the flat permission model, in one paragraph each, each linking to its page. Say why the reader should care: it explains what the boundary around their data is, and why nobody in the product can do anything to them that they cannot do back.
 - **Prerequisites.** None.
 - **Complexity.** Low.
 - **Related pages.** All pages in this section.
@@ -184,57 +184,47 @@ The screen also carries a line telling people joining an existing company to ask
 - **id.** `concepts.model`
 - **Purpose.** Give the reader the mental picture the whole product assumes.
 - **Audience.** All.
-- **Summary.** One company at the top. Employees belong to it. Accounts belong to it too, and each account may point at one employee. Draw it in prose (and mark a diagram placeholder). Explain the boundary that follows from it: everything you can see is inside your company, and there is no way to reach another company's data. State the current limit plainly: an account belongs to exactly one company, so somebody who genuinely works for two needs two accounts with two addresses.
+- **Summary.** One account at the top. Users belong to it. That is the entire structure, and saying so plainly is the point of the page (mark a diagram placeholder all the same). Explain the boundary that follows from it: everything you can see is inside your account, and there is no way to reach another account's data. State the current limit plainly: a user belongs to exactly one account, so somebody who needs two needs two addresses.
 - **Prerequisites.** None.
-- **Complexity.** Medium.
-- **Related pages.** `concepts.company`, `concepts.employee-vs-user`.
+- **Complexity.** Low.
+- **Related pages.** `concepts.account`, `concepts.permissions`.
 
-### Your company
+### Your account
 
-- **id.** `concepts.company`
-- **Purpose.** Explain what a company is in Monica and what it records.
-- **Audience.** Owners.
-- **Summary.** The company is the workspace and the boundary. What it holds: a name, a URL friendly identifier derived from that name, a legal name, a logo, a website, an industry, a size range, a founding date, a timezone, a language, a currency, and how the company works (fully remote, hybrid, or office based). Explain the two that are not self evident: the size range is a declared band rather than a headcount the product counts, and the timezone and language act as the default for everyone who has not chosen their own. Be explicit that **there is no screen to edit any of this yet**: the fields are set when you sign up, and the ability to change them is coming. Do not describe a settings page.
+- **id.** `concepts.account`
+- **Purpose.** Explain what an account is in Monica and what it records.
+- **Audience.** All.
+- **Summary.** The account is the workspace and the boundary. What it holds is short, and the shortness is the message: a plan, whether the instance is self hosted, a billing address, and when the trial ends. It has no name, no logo and no settings, because nothing yet needs them. Be explicit that **there is no screen to see or edit any of this**: the fields are set when you sign up and nothing reads them. Do not describe a settings page, and do not describe the plan as something the reader has chosen.
 - **Prerequisites.** `concepts.model`.
-- **Complexity.** Medium. The honesty about the missing screen is the whole difficulty.
-- **Related pages.** `concepts.owner`, `language.company-default`.
+- **Complexity.** Low. The honesty about the missing screen is the whole difficulty.
+- **Related pages.** `concepts.permissions`, `getting.cloud-or-self-hosted`.
 
-### Employees and accounts are not the same thing
+### Everybody can do the same things
 
-- **id.** `concepts.employee-vs-user`
-- **Purpose.** Teach the distinction that everything else depends on.
-- **Audience.** All, above all owners.
-- **Summary.** Lead with a scenario rather than a definition. Pam works in the warehouse and has no computer: she is an employee with no account. Michael runs the branch: he is an employee with an account. The bookkeeper who visits on Fridays has an account but is not on the payroll: an account with no employee. Then the definitions. An employee record holds who somebody is at work: their name, the name they go by if it differs, a work email, a job title, the country and timezone they work from, when they were hired, when they left, and the private details they fill in themselves (personal email and phone, date of birth, home address, emergency contact). An account holds only what is needed to sign in. Explain the two consequences that matter: deleting an account does not erase the person's employment record, and somebody who has left keeps their record. Explain "still employed" as the product defines it, which surprises people: somebody serving a notice period has a departure date in the future and still works here until that date arrives.
+- **id.** `concepts.permissions`
+- **Purpose.** State the product's flat permission model, and forestall the assumption every reader arrives with.
+- **Audience.** All.
+- **Summary.** Lead with the claim, not a hedge: every user of an account can do exactly what every other user of that account can do. There is no owner, no administrator, no roles table, no groups and no per feature permission. The person who signed up holds no special position and cannot be given one. What the code actually enforces, which is one rule and no more: you can act on your own account and on the users inside it, and never on anything belonging to another account. The one guard worth naming, because a reader will find it: somebody cannot delete their own user, since that would sign them out of the screen they are standing on. Then the honest consequence, stated without alarm: an account is a group of people who trust each other, and Monica does not currently offer a way to make it anything else.
 - **Prerequisites.** `concepts.model`.
-- **Complexity.** High. This is the most important page in the portal.
-- **Related pages.** `concepts.employee-record`, `concepts.owner`.
+- **Complexity.** Medium. Resist every temptation to soften this with "for now" language beyond one sentence.
+- **Related pages.** `concepts.model`, `account.delete`.
 
-### What an employee record holds
+### What Monica knows about you
 
-- **id.** `concepts.employee-record`
-- **Purpose.** Say exactly what the product knows about a person, which is a question people ask about HR software before they ask anything else.
-- **Audience.** Employees and owners.
-- **Summary.** A plain inventory, grouped by who it is for. Work facts: employee number as used by payroll, legal first and last name, the name they go by, photo, work email, job title, country, timezone, hire date, departure date. Personal facts: personal email and phone, date of birth, home address, and an emergency contact with their relationship to the employee. Explain the naming rule the product applies, because it shows up everywhere: the product calls you by the name you go by when you have given one, and by your legal name otherwise. Be clear about what is not stored: no salary, no compensation, no performance record, none of it exists in the product today. Be equally clear about which of it you can reach: the profile screen edits four of these fields on your own record, no screen creates an employee except the one the product makes for you when you sign up, and nothing lets you see or edit anybody else's.
-- **Prerequisites.** `concepts.employee-vs-user`.
-- **Complexity.** Medium.
-- **Related pages.** `concepts.employee-vs-user`, `security.privacy`.
-
-### The company owner
-
-- **id.** `concepts.owner`
-- **Purpose.** Explain the one privileged position in the product.
-- **Audience.** Owners.
-- **Summary.** Who the owner is: the person who created the company. What being owner means today, stated as the code actually enforces it: only the owner can delete another account in the company, only the owner can delete the company, and the owner can edit another member's account details where an ordinary member can only edit their own. The two safeguards: the owner cannot delete their own account, because a company always needs one, and nobody can act on an account outside their own company. Then the honest caveat: there is no roles or permissions system beyond this. There is no administrator role, no groups, no per feature permission. Ownership cannot currently be transferred through any screen.
+- **id.** `concepts.user-record`
+- **Purpose.** Say exactly what the product stores about a person, which is a question people ask before they ask anything else.
+- **Audience.** All.
+- **Summary.** A plain inventory. Who you are: first name, last name, and a photo. How you sign in: your email address, whether it has been confirmed, your password as a hash, whether you use an identity provider instead, and your two factor secret and recovery codes if you have enrolled. What the product has noticed: when and from which address you last signed in, and when you last saved your profile. What you chose: your language and whether times are written on a 24 or a 12 hour clock. Be clear about what is **not** stored, because in a product with this lineage people assume otherwise: no job title, no hire date, no home address, no date of birth, no emergency contact, no salary and no performance record. None of it exists. Be equally clear about what you can reach: the profile screen edits your name, your address and your photo, and nothing lets you see or edit anybody else's.
 - **Prerequisites.** `concepts.model`.
 - **Complexity.** Medium.
-- **Related pages.** `concepts.company`, `account.delete`.
+- **Related pages.** `concepts.permissions`, `security.privacy`.
 
 ### The activity log
 
 - **id.** `concepts.activity-log`
 - **Purpose.** Explain that the product keeps a record of what people do, and what it means for the reader.
-- **Audience.** Owners, and privacy conscious employees.
-- **Summary.** What is recorded, listed exactly and no more: a company created, a company updated, account details updated, a password changed, an account deleted, an employee created, an employee's details updated, an emergency contact updated, an email address confirmed, a sign in, and a sign in link requested. Each entry keeps who did it, when, and the email address they had at the time, so the record still says who acted after their account is gone. Why that design choice was made. That the log belongs to the company, while the screens that display it only ever show the reader their own entries. Then the two limits worth stating: nobody can read another person's entries anywhere in the product today, and an action this version of the product no longer recognises is shown by its raw name rather than a sentence. Send the reader to `profile.logs` for how to read their own.
+- **Audience.** All, and privacy conscious readers in particular.
+- **Summary.** What is recorded, listed exactly and no more: an account created, a profile updated, a photo changed or removed, account details updated, a password changed, preferences changed, a user deleted, an email address confirmed, two factor authentication turned on or off, recovery codes regenerated, a sign in, a sign in link requested, and an API key created or revoked. Each entry keeps who did it, when, and the email address they had at the time, so the record still says who acted after their user is gone. Why that design choice was made. That the log belongs to the account, while the screens that display it only ever show the reader their own entries. Then the two limits worth stating: nobody can read another person's entries anywhere in the product today, and an action this version of the product no longer recognises is shown by its raw name rather than a sentence. Send the reader to `profile.logs` for how to read their own.
 - **Prerequisites.** `concepts.model`.
 - **Complexity.** Low.
 - **Related pages.** `profile.logs`, `security.privacy`, `email.record`.
@@ -264,7 +254,7 @@ The screen also carries a line telling people joining an existing company to ask
 - **id.** `signin.password`
 - **Purpose.** Get somebody in, and explain the choices the screen offers.
 - **Audience.** All.
-- **Summary.** The form, and the two things on it worth explaining. **Remember me**, which keeps you signed in for thirty days by default on that browser (the screen names the number, and a self hosted instance can change it), and what that means on a shared machine. What happens after a correct password when two factor authentication is on: you are not in yet, you get the code screen. Then the two behaviours that generate support requests, explained rather than apologised for. First, every refusal says the same thing, "these credentials do not match our records", whether the password was wrong, the account is suspended, or no account exists, because saying which would let a stranger find out who has an account here. Second, after five failed attempts from the same address and place you are locked out for a few minutes and told how many seconds remain. Add that a failed attempt sends an email to the address's owner, and link to it.
+- **Summary.** The form, and the two things on it worth explaining. **Remember me**, which keeps you signed in for thirty days by default on that browser (the screen names the number, and a self hosted instance can change it), and what that means on a shared machine. What happens after a correct password when two factor authentication is on: you are not in yet, you get the code screen. Then the two behaviours that generate support requests, explained rather than apologised for. First, every refusal says the same thing, "these credentials do not match our records", whether the password was wrong, the user is suspended, or no user exists, because saying which would let a stranger find out who signs in here. Second, after five failed attempts from the same address and place you are locked out for a few minutes and told how many seconds remain. Add that a failed attempt sends an email to the address's owner, and link to it.
 - **Prerequisites.** An account.
 - **Complexity.** Medium.
 - **Related pages.** `signin.magic-link`, `signin.forgot-password`, `security.two-factor`, `email.login-failed`.
@@ -303,9 +293,9 @@ The screen also carries a line telling people joining an existing company to ask
 
 ## Section 5: Your profile and your logs
 
-**Why this section exists.** The profile screen is the first and, so far, the only place in the signed in application where somebody changes something about themselves. It is what a new user reaches for once they are in, and it is where the abstract distinction between an employee and an account finally becomes something you can click. It also holds the one piece of genuinely private information the product asks for, which deserves its own page rather than a paragraph. Beside it in the sidebar sits **Logs**, the second screen of the signed in application, where somebody reads what they have done and what the product sent them. The two belong together in the portal because they are the two things the sidebar offers, and because a reader who has just changed something goes looking for the record of it.
+**Why this section exists.** The profile screen is the first and, so far, the only place in the signed in application where somebody changes something about themselves. It is what a new user reaches for once they are in. Beside it in the sidebar sits **Logs**, the second screen of the signed in application, where somebody reads what they have done and what the product sent them. The two belong together in the portal because they are the two things the sidebar offers, and because a reader who has just changed something goes looking for the record of it.
 
-**Who it is for.** Every employee with an account.
+**Who it is for.** Everybody who signs in.
 
 **On disk.** `5-your-profile/`. Section value `your-profile`.
 
@@ -314,47 +304,37 @@ The screen also carries a line telling people joining an existing company to ask
 - **id.** `profile.introduction`
 - **Purpose.** Section index, and the reader's first tour of a screen inside the application.
 - **Audience.** All.
-- **Summary.** Where the screen is and how to reach it: **Settings**, then **Profile**, at `/settings/account/profile`. What it is made of, in the order it appears: your avatar, the details your colleagues can see, and your emergency contact, which they cannot. Make the connection to the concepts section explicit, because this is where it lands: this screen edits your **employee record**, not your account, which is why your sign in address is nowhere on it. Note what the sidebar shows and what it does not: under **Profile** sit **Logs**, which holds the record of what you have done and the emails the product sent you, **Security and access**, where you change your password and look after your API keys, and **Preferences**, where you choose the language of the interface and the clock times are written on. Because this is the first page in the portal to send somebody to the sidebar, add one sentence for readers who cannot see one: on a phone that sidebar is behind the menu button at the top left of the screen, and `appearance.mobile` explains it.
-- **Prerequisites.** `concepts.employee-vs-user`.
+- **Summary.** Where the screen is and how to reach it: **Settings**, then **Profile**, at `/settings/account/profile`. What it is made of, in the order it appears: your avatar, then your details, which are your name and the address you sign in with. Note what the sidebar shows and what it does not: under **Profile** sit **Logs**, which holds the record of what you have done and the emails the product sent you, **Security and access**, where you change your password and look after your API keys, and **Preferences**, where you choose the language of the interface and the clock times are written on. Because this is the first page in the portal to send somebody to the sidebar, add one sentence for readers who cannot see one: on a phone that sidebar is behind the menu button at the top left of the screen, and `appearance.mobile` explains it.
+- **Prerequisites.** `concepts.model`.
 - **Complexity.** Low.
-- **Related pages.** The three pages below, `concepts.employee-record`, `security.introduction`, `appearance.mobile`.
+- **Related pages.** The two pages below, `concepts.user-record`, `security.introduction`, `appearance.mobile`.
 
 ### Edit your details
 
 - **id.** `profile.details`
 - **Purpose.** Walk somebody through the only editing form the product has, and explain the one field whose behavior is not obvious.
 - **Audience.** All.
-- **Summary.** The four fields, and which are required: **first name** and **last name** are, **display name** and **work email** are not. Explain the display name properly, since it is the field people ask about: it is the name you go by, and when you give one the product calls you by it everywhere, including the sidebar and your initials; leave it empty and your legal name is used instead. Say plainly who sees all of this: everyone in your company. Describe what saving looks like, because it is not what a reader expects from a web form: the page does not reload, a short confirmation slides into the bottom right corner and leaves on its own after a few seconds (it can be dismissed sooner with its close button), and the **Last saved** line under the fields updates in place. Note that saving is recorded in the company's activity log. Point at `profile.photo` for the avatar box rather than covering it here.
+- **Summary.** The three fields, all required: **first name**, **last name**, and **email address**. The first two are what the product calls you, everywhere, including the sidebar and the initials it draws when you have no photo. The third is the one that needs care, because it does two jobs at once: it is the address you sign in with, and changing it unconfirms it, so the product will ask you to confirm the new one before it trusts it. Say what that means in practice and send the reader to `getting.confirm-email`. Note the rule the form enforces: no two users can sign in with the same address. Say plainly who sees all of this: everyone in your account. Describe what saving looks like, because it is not what a reader expects from a web form: the page does not reload, a short confirmation slides into the bottom right corner and leaves on its own after a few seconds (it can be dismissed sooner with its close button), and the **Last saved** line under the fields updates in place. Note that saving is recorded in the account's activity log. Point at `profile.photo` for the avatar box rather than covering it here.
 - **Prerequisites.** `profile.introduction`.
-- **Complexity.** Low.
-- **Related pages.** `concepts.employee-record`, `concepts.activity-log`, `profile.photo`, `profile.logs`, `profile.emergency-contact`.
+- **Complexity.** Medium, because the address does two jobs and the page has to keep them apart.
+- **Related pages.** `concepts.user-record`, `concepts.activity-log`, `profile.photo`, `profile.logs`, `getting.confirm-email`.
 
 ### Add a profile photo
 
 - **id.** `profile.photo`
 - **Purpose.** Walk somebody through putting a face to their name, and answer the two questions they will have about it: who can see it, and how to get rid of it.
 - **Audience.** All.
-- **Summary.** What the avatar is and where it turns up: beside your name across the product, in the sidebar and on your profile. What the product accepts, in the screen's own words: a JPEG, PNG or WebP up to 5 MB, square for the best result, because the avatar is shown in a circle and anything else is cropped to the middle rather than squashed. What happens after you choose a file and press **Upload**: the picture is converted to WebP and kept at two sizes, one for an ordinary screen and one for a sharp one, so it stays crisp on a laptop without costing a phone extra data. Say that the file you picked is not the file that is stored: it is resized, renamed, and the name you gave it is discarded. Be exact about who can see it, because this is where a reader looks for that: the photo is not on a public address, it is served through the application, and only to people who work at the same company. Then removal: **Remove the photo** asks once more before it goes, and taking it away brings back the initials the product drew before. Note that both uploading and removing are recorded in the company's activity log, and that neither is something an administrator can do on your behalf today.
+- **Summary.** What the avatar is and where it turns up: beside your name across the product, in the sidebar and on your profile. What the product accepts, in the screen's own words: a JPEG, PNG or WebP up to 5 MB, square for the best result, because the avatar is shown in a circle and anything else is cropped to the middle rather than squashed. What happens after you choose a file and press **Upload**: the picture is converted to WebP and kept at two sizes, one for an ordinary screen and one for a sharp one, so it stays crisp on a laptop without costing a phone extra data. Say that the file you picked is not the file that is stored: it is resized, renamed, and the name you gave it is discarded. Be exact about who can see it, because this is where a reader looks for that: the photo is not on a public address, it is served through the application, and only to people in the same account. Then removal: **Remove the photo** asks once more before it goes, and taking it away brings back the initials the product drew before. Note that both uploading and removing are recorded in the account's activity log, and that neither is something anybody else can do on your behalf today.
 - **Prerequisites.** `profile.introduction`.
 - **Complexity.** Low.
-- **Related pages.** `profile.details`, `concepts.employee-record`, `concepts.activity-log`, `security.privacy`.
-
-### Add an emergency contact
-
-- **id.** `profile.emergency-contact`
-- **Purpose.** Explain the one form in the product that asks for somebody else's personal details, and be exact about who can read them.
-- **Audience.** All.
-- **Summary.** What it is for, in the product's own framing: who to call if something happens to you at work. The three fields, all optional: **name**, **phone number**, **relationship**. Be precise about privacy, because this is the page where a reader will be looking for it. What the code actually does: the details are stored on your employee record, they are never written into the activity log, which records only that they changed, and no screen in the product shows them to anybody but you. Note that the screen tells you your company administrators can see this, and that no such screen exists yet, so today the honest answer is that only you can read them in the application. Tell the reader they can empty the fields and save to remove the contact, and that saving here behaves exactly as it does on the details form: no reload, and a confirmation in the bottom right corner that goes away by itself.
-- **Prerequisites.** `profile.introduction`.
-- **Complexity.** Medium, because the privacy claim has to be worded carefully.
-- **Related pages.** `security.privacy`, `concepts.employee-record`, `concepts.activity-log`.
+- **Related pages.** `profile.details`, `concepts.user-record`, `concepts.activity-log`, `security.privacy`.
 
 ### Read what you have done
 
 - **id.** `profile.logs`
 - **Purpose.** Show somebody where their own record of activity is, and teach them to read a line of it.
 - **Audience.** All, and particularly anybody who has had an email about a sign in they do not recognise.
-- **Summary.** Where it is: **Logs** in the settings sidebar, under **Profile**, at `/settings/account/logs`, where the **Logs** box is the first thing on the screen. Say plainly whose actions these are: your own, and only your own. Read one line apart, because each part answers a different question: the name of whoever acted, the short technical name of the action in a monospaced face, which is the thing to quote when asking for help, the sentence describing what happened, and how long ago it was, with the exact date and time available by resting the pointer on it. That the newest is first. How the screen loads more: five at a time, with a **Load more** link that adds the next five under the ones already there without leaving the page, and which disappears when there is nothing left. What a new account sees instead of rows, since that is what most readers will meet first: a blank panel saying **No activity yet**, explaining that nothing has happened on the account and that changes made by the reader or by an administrator will show up here. Say that this is the normal state of a fresh account and not a fault. Two honest notes: an action the product no longer recognises shows its raw name in place of a sentence, and there is no way to filter, search or export the log today.
+- **Summary.** Where it is: **Logs** in the settings sidebar, under **Profile**, at `/settings/account/logs`, where the **Logs** box is the first thing on the screen. Say plainly whose actions these are: your own, and only your own. Read one line apart, because each part answers a different question: the name of whoever acted, the short technical name of the action in a monospaced face, which is the thing to quote when asking for help, the sentence describing what happened, and how long ago it was, with the exact date and time available by resting the pointer on it. That the newest is first. How the screen loads more: five at a time, with a **Load more** link that adds the next five under the ones already there without leaving the page, and which disappears when there is nothing left. What a new account sees instead of rows, since that is what most readers will meet first: a blank panel saying **No activity yet**, explaining that nothing has happened on the account and that changes will show up here as they are made. Say that this is the normal state of a fresh account and not a fault. Two honest notes: an action the product no longer recognises shows its raw name in place of a sentence, and there is no way to filter, search or export the log today.
 - **Prerequisites.** `profile.introduction`, `concepts.activity-log`.
 - **Complexity.** Low.
 - **Related pages.** `concepts.activity-log`, `security.suspicious-activity`, `email.record`.
@@ -375,7 +355,7 @@ The screen also carries a line telling people joining an existing company to ask
 
 **Why this section exists.** Account and security questions are the ones users ask under pressure, when something looks wrong. They need direct, calm answers in one place. This section also has to be scrupulous about which protections are on by default, which are optional, and which are half built.
 
-**Who it is for.** Everybody, plus owners for the parts about other people's accounts.
+**Who it is for.** Everybody who signs in.
 
 **On disk.** `6-account-and-security/`. Section value `account-and-security`.
 
@@ -394,7 +374,7 @@ The screen also carries a line telling people joining an existing company to ask
 - **id.** `security.password`
 - **Purpose.** Explain what the product requires of a password and what changing one does.
 - **Audience.** All.
-- **Summary.** Where the screen is: **Security and access** in the settings sidebar, at `/settings/account/security`, whose first box changes the password. What it asks for and why all three fields are there: the current password, because we hold only a hash and cannot show you the old one, then the new one twice. The rule, which is short: at least eight characters. Advice on choosing one, in the screen's own framing, that long beats complicated. What saving looks like, since it is not what a reader expects from a web form: the page does not reload, a confirmation slides into the bottom right corner, and the fields come back empty. What a wrong current password looks like: a message under that field, and nothing changed. The line to the left of the Save button, which answers the question the box invites: **Last changed**, followed by how long ago it was, in words rather than a date. Explain what it counts, because it is not only what the reader did on this screen: the clock starts when the password was first set, at registration, and is reset by a change made here or through a reset link, so a brand new account already shows the day it signed up. Say what it means when the line is absent, since a reader will meet that case: the account has never had a password set, which today means it signs in through an identity provider. That the change is recorded in the company's activity log, so it can be read back on the Logs screen. That you stay signed in on this browser, and that the product cannot end your other sessions today, so a password nobody else should know is worth changing from every device you use. That an account which signs in through an identity provider sees a line of explanation in place of the form, because there is no password to change. Close with the other way in, for somebody who cannot remember the current one: the forgotten password flow, in one line, with a link.
+- **Summary.** Where the screen is: **Security and access** in the settings sidebar, at `/settings/account/security`, whose first box changes the password. What it asks for and why all three fields are there: the current password, because we hold only a hash and cannot show you the old one, then the new one twice. The rule, which is short: at least eight characters. Advice on choosing one, in the screen's own framing, that long beats complicated. What saving looks like, since it is not what a reader expects from a web form: the page does not reload, a confirmation slides into the bottom right corner, and the fields come back empty. What a wrong current password looks like: a message under that field, and nothing changed. The line to the left of the Save button, which answers the question the box invites: **Last changed**, followed by how long ago it was, in words rather than a date. Explain what it counts, because it is not only what the reader did on this screen: the clock starts when the password was first set, at registration, and is reset by a change made here or through a reset link, so a brand new account already shows the day it signed up. Say what it means when the line is absent, since a reader will meet that case: the account has never had a password set, which today means it signs in through an identity provider. That the change is recorded in the account's activity log, so it can be read back on the Logs screen. That you stay signed in on this browser, and that the product cannot end your other sessions today, so a password nobody else should know is worth changing from every device you use. That an account which signs in through an identity provider sees a line of explanation in place of the form, because there is no password to change. Close with the other way in, for somebody who cannot remember the current one: the forgotten password flow, in one line, with a link.
 - **Prerequisites.** An account.
 - **Complexity.** Medium.
 - **Related pages.** `signin.forgot-password`, `concepts.activity-log`, `security.suspicious-activity`.
@@ -403,7 +383,7 @@ The screen also carries a line telling people joining an existing company to ask
 
 - **id.** `security.two-factor`
 - **Purpose.** Explain what two factor authentication is, why it is worth the trouble, and what changes about signing in once it is on.
-- **Audience.** Employees, and operators.
+- **Audience.** All, and operators.
 - **Summary.** What two factor authentication is and why it helps: a password can be guessed, reused or stolen from a distance, and a code that changes every thirty seconds on a phone in a pocket cannot. Where the switch is: **Settings**, then **Security and access**, the box under the password. What it looks like when it is off, and what turning it on gives you. Then how the challenge works from then on: after your password is accepted you are not signed in, you are asked for the six digits your authenticator app is showing, and only then are you in. That the same happens after a sign in link, since a link that skipped the password must not also skip the code. That a recovery code works in place of the app's code, that each one works once and is spent the moment it is used, and that this is what you use when you have lost your phone. What "that code is not right" and "that took too long, please sign in again" mean, the second being a session that expired between the two screens. That attempts at the challenge are rate limited.
 - **Prerequisites.** `signin.password`.
 - **Complexity.** Medium.
@@ -413,7 +393,7 @@ The screen also carries a line telling people joining an existing company to ask
 
 - **id.** `security.two-factor-set-up`
 - **Purpose.** Walk somebody through enrolling, with their phone in one hand, without them fearing they will lock themselves out.
-- **Audience.** Employees.
+- **Audience.** All.
 - **Summary.** A tutorial, in the order the screens come. What you need first: an authenticator app on your phone, any of them. **Settings**, then **Security and access**, then **Turn it on**, which lands on a screen with two numbered steps. Step one: point the app's camera at the square, or, when the app is on the same machine you are reading this on and there is no camera to point, type in the secret printed beside it, which is the same thing in letters. That the app files the account under your email address, which is how you will recognise it in a list. Step two: type back the six digits the app is showing, and press the button. Say plainly what the screen says, because it is the sentence that stops people hesitating: nothing about your account changes until that code is accepted, so leaving halfway through leaves you exactly as you were. What happens next: you land back on Security and access, the box now says the feature is on, and your recovery codes are printed underneath. Send the reader to `security.recovery-codes` before they close the tab. Then how to turn it off, and what turning it off costs: the secret and the codes are both forgotten, so turning it on again means pairing the app afresh, and until then your password is all it takes to sign in. Note that the screen asks you to confirm before it does either of those things.
 - **Prerequisites.** `security.two-factor`.
 - **Complexity.** Medium.
@@ -423,7 +403,7 @@ The screen also carries a line telling people joining an existing company to ask
 
 - **id.** `security.recovery-codes`
 - **Purpose.** Make sure somebody actually saves the codes, and knows what to do when they run low.
-- **Audience.** Employees who have turned two factor authentication on.
+- **Audience.** Anybody who has turned two factor authentication on.
 - **Summary.** What they are: eight codes, each of which signs you in once in place of the code your app would show, for the day the phone is lost, broken or wiped. Where they are: on the Security and access screen, under the two factor box, for as long as the feature is on. Where to keep them, which is anywhere that is not the phone the app is on. That a code disappears from the list the moment it is used, so the list doubles as a count of how many you have left. How to get a fresh set, with the warning the screen gives: asking for new ones stops every old one working, immediately, so do it when you have somewhere to put them. When to do it: when you are running low, or when you think somebody else has seen the list. What the screen says when you have spent them all, and why you should not wait for that. That both handing out a new set and turning the feature on or off are written to your logs.
 - **Prerequisites.** `security.two-factor-set-up`.
 - **Complexity.** Low.
@@ -437,7 +417,7 @@ Recovery codes are stored encrypted but they are recoverable, which is why the s
 
 - **id.** `security.api-keys`
 - **Purpose.** Explain what an API key is, how to make one and revoke one, and be straight about the fact that nothing accepts one yet.
-- **Audience.** Employees and operators who write scripts, and anybody who finds the box and wonders what it is for.
+- **Audience.** Anybody who writes scripts, and anybody who finds the box and wonders what it is for.
 - **Summary.** What a key is, in the screen's own framing: a password for machines, which lets a script or another system act as you with exactly the access you have. Where the box is: **Settings**, then **Security and access**, the third box, under two factor authentication. Say the limitation first rather than burying it, because the screen does: there is nothing to point a key at today, since the API that would accept one is not built, and a key made now starts working the moment it lands. How to make one: **Create key**, which opens a field for a name in place of the button, a name of at least three characters, and what the name is for, which is telling one key from another in a year's time. What happens next, and the one sentence that matters most on the page: the key is printed once, in a block at the top of the box, and only a hash of it is kept, so a key you fail to copy is replaced rather than looked up. That it is gone from the screen as soon as you reload. What a row shows: the name, how long ago it was made, and when it was last used, which reads "never used" until something uses it, and will keep reading that until there is an API. How to revoke one: **Revoke**, which asks first, and takes effect immediately. That keys are personal, so a colleague cannot see or revoke yours and you cannot see theirs. That making and revoking a key are both written to your logs, with the name of the key in the entry.
 - **Prerequisites.** An account.
 - **Complexity.** Low.
@@ -452,7 +432,7 @@ Do not write this page as an API tutorial, and do not show a request carrying th
 - **id.** `security.suspicious-activity`
 - **Purpose.** Give a worried reader one page that tells them what happened and what to do.
 - **Audience.** All.
-- **Summary.** Organised by what landed in their inbox. "A failed sign in attempt": somebody typed your address and the wrong password; if it was not you, change your password, because somebody knows your address and is guessing. "A sign in from a new place": you signed in from an address the product has not seen before; travelling, a VPN, a new phone or a browser update all cause this, so it is often nothing, but if you do not recognise it, change your password. "You signed in without a password": somebody used a sign in link for your account; the link only works once and is already spent, but whoever used it can read your email, so change your password. For each, the concrete steps, in order: change your password, sign out, tell whoever runs your company. Point out the one fact the Security and access screen gives a worried reader for free: the **Last changed** line next to the Save button says how long ago the password was last set, so somebody who suspects a change they did not make can check it in a glance. Explain what the product does and does not check, so nobody over trusts it: it compares your sign in address with the previous one and only notices a change, it does not geolocate, score risk, or block anything.
+- **Summary.** Organised by what landed in their inbox. "A failed sign in attempt": somebody typed your address and the wrong password; if it was not you, change your password, because somebody knows your address and is guessing. "A sign in from a new place": you signed in from an address the product has not seen before; travelling, a VPN, a new phone or a browser update all cause this, so it is often nothing, but if you do not recognise it, change your password. "You signed in without a password": somebody used a sign in link for your account; the link only works once and is already spent, but whoever used it can read your email, so change your password. For each, the concrete steps, in order: change your password, sign out, tell whoever else uses your account. Point out the one fact the Security and access screen gives a worried reader for free: the **Last changed** line next to the Save button says how long ago the password was last set, so somebody who suspects a change they did not make can check it in a glance. Explain what the product does and does not check, so nobody over trusts it: it compares your sign in address with the previous one and only notices a change, it does not geolocate, score risk, or block anything.
 - **Prerequisites.** `security.introduction`.
 - **Complexity.** Medium.
 - **Related pages.** `email.login-failed`, `email.new-login`, `email.ip-changed`, `security.password`.
@@ -460,20 +440,20 @@ Do not write this page as an API tutorial, and do not show a request carrying th
 ### Suspended and deleted accounts
 
 - **id.** `account.delete`
-- **Purpose.** Explain what happens to an account and its data when somebody leaves, which is an HR product's most predictable question.
-- **Audience.** Owners, and employees asking about themselves.
-- **Summary.** Two different things, kept apart. **Suspending**: an account can be marked inactive, which stops it signing in entirely, including by sign in link, without deleting anything. Note that this is a state the product supports but no screen sets today. **Deleting**: only the owner can delete an account in their company, and the owner cannot delete their own. What deletion leaves behind, which is the part people need to understand: the employee record survives, because the person still worked here, and the activity log keeps the email address of anybody who acted, so the history still says who did what. Deleting the whole company, which only the owner can do, removes its people, its accounts, its logs and its record of emails with it. Note that neither deletion has a screen yet.
-- **Prerequisites.** `concepts.owner`, `concepts.employee-vs-user`.
+- **Purpose.** Explain what happens to a user and their data when somebody leaves.
+- **Audience.** All.
+- **Summary.** Two different things, kept apart. **Suspending**: a user can be marked inactive, which stops them signing in entirely, including by sign in link, without deleting anything. Note that this is a state the product supports but no screen sets today. **Deleting**: anybody in an account can delete anybody else in it, and nobody can delete themselves. What deletion leaves behind, which is the part people need to understand: the user is soft deleted rather than erased, and the activity log keeps the email address of anybody who acted, so the history still says who did what. Deleting the whole account removes its users, its logs and its record of emails with it. Note that neither deletion has a screen yet.
+- **Prerequisites.** `concepts.permissions`.
 - **Complexity.** High. Get the consequences exactly right and put them in a `:::warning`.
-- **Related pages.** `concepts.employee-vs-user`, `concepts.activity-log`, `security.privacy`.
+- **Related pages.** `concepts.permissions`, `concepts.activity-log`, `security.privacy`.
 
 ### What Monica knows about you
 
 - **id.** `security.privacy`
 - **Purpose.** Answer the privacy question directly, for a product that by its nature holds personal data.
-- **Audience.** Employees.
-- **Summary.** What is stored about a person, pointing at the employee record page for the full list rather than repeating it. What is stored about an account: your address, when and from where you last signed in, your language. What is stored about your activity, pointing at the log page. What is stored about the emails sent to you: every one, with its subject and body, so your company can see what it sent, with the links stripped out. What is protected: passwords are hashed, two factor secrets and recovery codes are encrypted, and only the fingerprint of a sign in link is stored. Who can see what, as the code actually allows: everything is scoped to your company, and the owner has the extra powers listed on the owner page. Where the privacy policy and terms live, and that a self hosted instance points at its own.
-- **Prerequisites.** `concepts.employee-record`.
+- **Audience.** All.
+- **Summary.** What is stored about you, pointing at `concepts.user-record` for the full list rather than repeating it. What is stored about your activity, pointing at the log page. What is stored about the emails sent to you: every one, with its subject and body, with the links stripped out. What is protected: passwords are hashed, two factor secrets and recovery codes are encrypted, and only the fingerprint of a sign in link is stored. Who can see what, as the code actually allows: everything is scoped to your account, and inside it everybody is equal, so there is nobody with a wider view than yours. Where the privacy policy and terms live, and that a self hosted instance points at its own.
+- **Prerequisites.** `concepts.user-record`.
 - **Complexity.** Medium.
 - **Related pages.** `concepts.activity-log`, `email.record`, `account.delete`.
 
@@ -492,7 +472,7 @@ Do not write this page as an API tutorial, and do not show a request carrying th
 - **id.** `language.introduction`
 - **Purpose.** Section index.
 - **Audience.** All.
-- **Summary.** Five short pages: pick your language, keep that choice on your account along with the clock times are written on, understand which language setting wins, pick light or dark, and find your way around on a phone.
+- **Summary.** Four short pages: pick your language and understand which setting wins, keep that choice on your account along with the clock times are written on, pick light or dark, and find your way around on a phone.
 - **Prerequisites.** None.
 - **Complexity.** Low.
 - **Related pages.** Every page below.
@@ -502,10 +482,10 @@ Do not write this page as an API tutorial, and do not show a request carrying th
 - **id.** `language.change`
 - **Purpose.** Show the picker and explain which setting wins.
 - **Audience.** All.
-- **Summary.** Where the picker is and how to use it, including that it works before you sign in. The four languages currently shipped: English, French, German and Spanish. Then the precedence rule, in the reader's terms and in order: what you picked in this session wins, because it is the most recent thing you asked for; failing that, the language on your account; failing that, your company's language; failing that, the application's own default. The practical consequence: a choice made from the picker on a guest screen lasts as long as your session, which is why the interface can revert when you next visit, and why the way to make a language stick is to choose it on the Preferences screen once you are signed in. Point at `preferences.screen` for that rather than explaining it twice. That translations are community maintained and how to help.
+- **Summary.** Where the picker is and how to use it, including that it works before you sign in. The four languages currently shipped: English, French, German and Spanish. Then the precedence rule, in the reader's terms and in order: what you picked in this session wins, because it is the most recent thing you asked for; failing that, the language saved on your account; failing that, the application's own default. The practical consequence: a choice made from the picker on a guest screen lasts as long as your session, which is why the interface can revert when you next visit, and why the way to make a language stick is to choose it on the Preferences screen once you are signed in. Point at `preferences.screen` for that rather than explaining it twice. That translations are community maintained and how to help.
 - **Prerequisites.** None.
 - **Complexity.** Medium. The precedence chain is the whole page.
-- **Related pages.** `preferences.screen`, `language.company-default`, `hosting.locales`.
+- **Related pages.** `preferences.screen`, `hosting.locales`.
 
 ### Your preferences
 
@@ -520,16 +500,6 @@ Do not write this page as an API tutorial, and do not show a request carrying th
 :::note for the writer
 Do not promise that the time format changes how times look everywhere. The choice is stored on the account and the screen shows it back to the reader, but the screens that display times, the logs and the emails sent, still write them their own way; the setting is not yet threaded through them. Say what is true: you choose it here, and it is what the rest of the product will use as it is built. Do not list screens it affects, because today there are none.
 :::
-
-### Your company's default language
-
-- **id.** `language.company-default`
-- **Purpose.** Explain the company wide setting for the person who chooses it.
-- **Audience.** Owners.
-- **Summary.** What the company language is for: the language anybody sees who has not chosen one. That it is set to English when the company is created, alongside a timezone of UTC. That changing it has no screen yet. Keep this page short and link back to the precedence rule rather than restating it.
-- **Prerequisites.** `language.change`, `concepts.company`.
-- **Complexity.** Low.
-- **Related pages.** `concepts.company`, `hosting.locales`.
 
 ### Light and dark
 
@@ -546,7 +516,7 @@ Do not promise that the time format changes how times look everywhere. The choic
 - **id.** `appearance.mobile`
 - **Purpose.** Tell somebody on a small screen where the navigation went, so they do not conclude the product has fewer screens on a phone than on a laptop.
 - **Audience.** All.
-- **Summary.** The one thing worth saying first: nothing is missing on a phone, it is only folded away. On a wide screen the settings sidebar is a column down the left; below roughly a laptop width it becomes a menu that slides in over the page, and the button that opens it is the three lines at the left of the bar at the top of every signed in screen. What the menu holds, which is exactly what the column held: your company, the light and dark toggle, **Profile**, **Logs**, **Security and access**, **Preferences**, and your own name at the foot. The three ways to close it: the cross beside the toggle, a tap on the dimmed page behind it, or the escape key on a device with a keyboard. That picking a destination closes it and takes you there. Then the smaller adjustments a reader may notice and wonder about, each in a sentence: the email address in the top bar is hidden on the narrowest screens because the menu already says who you are signed in as, the "?" help bubbles open along the bottom edge of the screen instead of beside the thing they explain, and the rows on the Logs screen let the time drop onto its own line rather than squeezing the sentence. Close by saying the product is the same product either way, with no separate mobile version and nothing to install.
+- **Summary.** The one thing worth saying first: nothing is missing on a phone, it is only folded away. On a wide screen the settings sidebar is a column down the left; below roughly a laptop width it becomes a menu that slides in over the page, and the button that opens it is the three lines at the left of the bar at the top of every signed in screen. What the menu holds, which is exactly what the column held: the product's name, the light and dark toggle, **Profile**, **Logs**, **Security and access**, **Preferences**, and your own name at the foot. The three ways to close it: the cross beside the toggle, a tap on the dimmed page behind it, or the escape key on a device with a keyboard. That picking a destination closes it and takes you there. Then the smaller adjustments a reader may notice and wonder about, each in a sentence: the email address in the top bar is hidden on the narrowest screens because the menu already says who you are signed in as, the "?" help bubbles open along the bottom edge of the screen instead of beside the thing they explain, and the rows on the Logs screen let the time drop onto its own line rather than squeezing the sentence. Close by saying the product is the same product either way, with no separate mobile version and nothing to install.
 - **Prerequisites.** Being signed in.
 - **Complexity.** Low.
 - **Related pages.** `profile.introduction`, `appearance.theme`, `profile.logs`.
@@ -561,7 +531,7 @@ Do not describe this as an app. There is no native application and no app store 
 
 **Why this section exists.** Five emails exist, three of them are security warnings, and a reader who receives one arrives at the portal with that exact subject line in their hand. A page per email, findable by its subject, is the fastest possible answer. This section is also where the "we keep a copy of what we sent you" fact belongs.
 
-**Who it is for.** Employees who received something, and owners who want to know what the product sends.
+**Who it is for.** Anybody who received something, and anybody who wants to know what the product sends.
 
 **On disk.** `8-emails/`. Section value `emails`.
 
@@ -629,8 +599,8 @@ Do not describe this as an app. There is no native application and no app store 
 
 - **id.** `email.record`
 - **Purpose.** Explain that the product keeps a copy of every email it sends.
-- **Audience.** Owners and privacy conscious employees.
-- **Summary.** What is kept: the type of email, the address it went to, the subject, the body, and when it was sent, delivered, or bounced. Why: so a company can see exactly what was sent on its behalf, and to whom. The one deliberate omission: links are stripped out of the stored copy, because a stored sign in link would be a stored way into somebody's account. That delivery and bounce information is only filled in on instances using a mail provider that reports it back. Where to read it, in one line, with the walkthrough left to the profile section: the **Emails sent** box on your profile.
+- **Audience.** All, and privacy conscious readers in particular.
+- **Summary.** What is kept: the type of email, the address it went to, the subject, the body, and when it was sent, delivered, or bounced. Why: so an account can see exactly what was sent on its behalf, and to whom. The one deliberate omission: links are stripped out of the stored copy, because a stored sign in link would be a stored way into somebody's account. That delivery and bounce information is only filled in on instances using a mail provider that reports it back. Where to read it, in one line, with the walkthrough left to the profile section: the **Emails sent** box on your profile.
 - **Prerequisites.** `security.privacy`.
 - **Complexity.** Medium.
 - **Related pages.** `profile.emails`, `security.privacy`, `hosting.email`.
@@ -710,7 +680,7 @@ Do not describe this as an app. There is no native application and no app store 
 - **id.** `hosting.locales`
 - **Purpose.** Explain how languages are configured and how to add one.
 - **Audience.** Operators and translators.
-- **Summary.** Where the shipped languages are declared, and that each is a locale key, a label, a region and a flag drawn in CSS rather than shipped as an image. Where the translated strings live: one JSON file per locale, keyed by the English sentence. How the application default relates to the per company and per user settings, linking to the precedence page rather than repeating it. How to add a language: register the locale, add its file, translate it, contribute it back. That translations are community maintained.
+- **Summary.** Where the shipped languages are declared, and that each is a locale key, a label, a region and a flag drawn in CSS rather than shipped as an image. Where the translated strings live: one JSON file per locale, keyed by the English sentence. How the application default relates to the per user setting, linking to the precedence page rather than repeating it. How to add a language: register the locale, add its file, translate it, contribute it back. That translations are community maintained.
 - **Prerequisites.** `hosting.configuration`.
 - **Complexity.** Medium.
 - **Related pages.** `language.change`, `hosting.contributing`.
@@ -770,7 +740,7 @@ Do not describe this as an app. There is no native application and no app store 
 - **id.** `troubleshoot.cannot-sign-in`
 - **Purpose.** Work through every reason a sign in fails, in the order they are likely.
 - **Audience.** All.
-- **Summary.** Symptom by symptom. "These credentials do not match our records": your password is wrong, or your account has been suspended, or that address has no account here; the message is the same for all three on purpose, and here is how to tell them apart in practice, by asking for a sign in link and seeing whether one arrives, or by asking whoever runs your company. "Too many sign in attempts": wait the number of seconds you were told. "That link no longer works": the link was used already or has expired, ask for another. "That code is not right" and "that took too long": the two factor cases. Somebody who has genuinely been suspended cannot get in by any route, including a link, and only the person running their company can fix it.
+- **Summary.** Symptom by symptom. "These credentials do not match our records": your password is wrong, or your account has been suspended, or that address has no account here; the message is the same for all three on purpose, and here is how to tell them apart in practice, by asking for a sign in link and seeing whether one arrives, or by asking whoever else uses your account. "Too many sign in attempts": wait the number of seconds you were told. "That link no longer works": the link was used already or has expired, ask for another. "That code is not right" and "that took too long": the two factor cases. Somebody who has genuinely been suspended cannot get in by any route, including a link, and no screen can undo it today.
 - **Prerequisites.** `signin.introduction`.
 - **Complexity.** Medium.
 - **Related pages.** `signin.password`, `signin.magic-link`, `security.two-factor`.
@@ -779,7 +749,7 @@ Do not describe this as an app. There is no native application and no app store 
 
 - **id.** `troubleshoot.no-email`
 - **Purpose.** Solve the single most common support request for any product that emails links.
-- **Audience.** Employees, with a clearly separated part for operators.
+- **Audience.** All, with a clearly separated part for operators.
 - **Summary.** For the reader: it can take a minute, check spam, check you typed the address you actually signed up with, and remember that the confirmation screen says the same thing whether or not that address has an account. Then, plainly, if none of that helps, the problem is on the instance rather than with you, and here is what to tell whoever runs it. For the operator, a short checklist under its own heading: is a queue worker running, is mail configured, are messages going to the log instead of out, and is the from address one your provider accepts.
 - **Prerequisites.** None.
 - **Complexity.** Medium.
@@ -793,7 +763,7 @@ Do not describe this as an app. There is no native application and no app store 
 - **Summary.** Why the interface may not be in the language you expect, and why a choice you made earlier may have reverted: the picker's choice lasts for your session, and there is no per account language setting reachable from any screen yet. What to do about it. Link to the precedence rule rather than restating it.
 - **Prerequisites.** `language.change`.
 - **Complexity.** Low.
-- **Related pages.** `language.change`, `language.company-default`.
+- **Related pages.** `language.change`, `preferences.screen`.
 
 ---
 
@@ -820,7 +790,7 @@ Do not describe this as an app. There is no native application and no app store 
 - **id.** `reference.glossary`
 - **Purpose.** A glossary, so no page has to stop and define its terms twice.
 - **Audience.** All.
-- **Summary.** Company, employee, user, account, owner, display name, legal name, employee number, work mode, size range, sign in link, recovery code, activity log. One or two sentences each, each linking to the page that explains it properly. Include the terms that mean something specific here and something looser elsewhere, above all employee and user.
+- **Summary.** Account, user, plan, trial, self hosted, sign in link, recovery code, activity log. One or two sentences each, each linking to the page that explains it properly. Include the terms that mean something specific here and something looser elsewhere, above all account, which is the workspace rather than the login.
 - **Prerequisites.** None.
 - **Complexity.** Medium.
 - **Related pages.** `concepts.introduction`.
@@ -843,17 +813,17 @@ Everything below is anticipated by the database, an enum, or a model method, but
 
 Each entry names the evidence, what is missing, and the page it should become.
 
-- **Plans, trials and billing.** Every company carries a plan (free, starter, business, enterprise), a billing email address, and a trial end date set to thirty days at signup, and the model can answer whether it is still on trial. Nothing reads any of it. There is no billing code, no payment provider, no subscription library, and no screen. **Do not write pricing, plans, trials, invoices, or upgrade documentation.** When billing exists it becomes a section of its own, and `getting.cloud-or-self-hosted` will need rewriting.
+- **Plans, trials and billing.** Every account carries a plan (free, starter, business, enterprise), a billing email address, and a trial end date set to thirty days at signup, and the model can answer whether it is still on trial. Nothing reads any of it. There is no billing code, no payment provider, no subscription library, and no screen. **Do not write pricing, plans, trials, invoices, or upgrade documentation.** When billing exists it becomes a section of its own, and `getting.cloud-or-self-hosted` will need rewriting.
 
 - **Single sign on.** Accounts carry an identity provider field, the model can answer whether an account uses one, sign in refuses such accounts a password path, and password changes are refused for them with a specific message. No provider integration, configuration or route exists, so no account can be created this way. `security.password` may mention the message a user could see; nothing may describe setting SSO up.
 
-- **Suspending an account.** Accounts have an active flag that is honoured everywhere, including by sign in links. Nothing sets it to false. `account.delete` explains the state; no page may describe how to suspend somebody.
+- **Suspending a user.** Users have an active flag that is honoured everywhere, including by sign in links. Nothing sets it to false. `account.delete` explains the state; no page may describe how to suspend somebody.
 
-- **Inviting people, and adding employees.** The registration screen tells people joining an existing company to ask an administrator to invite them, but no invitation exists: no route, no mail, no token, no screen. Creating an employee works as business logic and is exercised by tests, but the only employee ever created is the founder's own, during signup. **No page may describe inviting a colleague or adding an employee.** When it ships it is the most important tutorial in the portal.
+- **Inviting people, and adding users.** The registration screen tells people joining an existing account to ask somebody in it to invite them, but no invitation exists: no route, no mail, no token, no screen. Creating a user works as business logic and is exercised by tests, but the only user ever created is the founder's own, during signup. **No page may describe inviting a colleague or adding a user.** When it ships it is the most important tutorial in the portal.
 
-- **Editing your company, your account, or somebody else's employee record.** The business logic for all three exists and is tested. Only your own employee record has a screen, covered by Section 5; nothing reaches the other three. Several pages above are shaped around this absence and say so; when the screens land, those caveats come out and the pages become how-tos.
+- **Editing or deleting somebody else, and deleting an account.** The business logic for all three exists and is tested. Only your own profile has a screen, covered by Section 5; nothing reaches the others. Several pages above are shaped around this absence and say so; when the screens land, those caveats come out and the pages become how-tos.
 
-- **Reading somebody else's activity, or the emails sent to them.** The log and the record of sent emails both belong to the company and both name the person they concern, but every screen filters to the signed in person's own entries, and no screen shows a company wide view. **No page may describe reading a colleague's activity or their emails, or an owner overseeing the company's.**
+- **Reading somebody else's activity, or the emails sent to them.** The log and the record of sent emails both belong to the account and both name the person they concern, but every screen filters to the signed in person's own entries, and no screen shows an account wide view. **No page may describe reading a colleague's activity or their emails.**
 
 - **Filtering, searching or exporting the activity log or the emails sent.** Both screens read newest first, a page at a time, and offer nothing else. No page may promise a date range, a filter by action, or an export.
 
@@ -863,7 +833,7 @@ Each entry names the evidence, what is missing, and the page it should become.
 
 - **Any API, though the keys for one exist.** Somebody can now mint and revoke personal API keys on the Security and access screen, and `security.api-keys` documents that screen. Nothing else is built: there is no API route file, no API controller, no resource, and no guard that accepts a key, so a key authenticates nothing and its "last used" column can never fill in. **The portal must not contain an API section, and no page may show a request carrying a key.** `security.api-keys` is the only page that may mention keys at all, and it must say plainly that there is nothing to point one at yet.
 
-- **The application itself, past the profile screen.** There is no dashboard, no employee directory, no home screen, and the only navigation is the settings sidebar. `/` renders a landing page rather than anything signed in. `getting.what-works-today` is the page that tells readers this, and it is the page to revisit first as the product grows. Note for `appearance.mobile`: the signed in screens respond to the width of the window, but `/` is still the untouched framework landing page and is not part of the product's design, so no page may present it as a screen of Monica on any size of device.
+- **The application itself, past the profile screen.** There is no dashboard, no directory of the people in an account, no home screen, and the only navigation is the settings sidebar. `/` renders a landing page rather than anything signed in. `getting.what-works-today` is the page that tells readers this, and it is the page to revisit first as the product grows. Note for `appearance.mobile`: the signed in screens respond to the width of the window, but `/` is still the untouched framework landing page and is not part of the product's design, so no page may present it as a screen of Monica on any size of device.
 
 ---
 
@@ -872,7 +842,7 @@ Each entry names the evidence, what is missing, and the page it should become.
 Build the portal in this order. Each block is independently publishable, so the portal is useful before it is complete.
 
 1. **First pass, the essentials.** `portal.introduction`, `getting.introduction`, `getting.what-is-monica`, `getting.create-account`, `getting.confirm-email`, `signin.introduction`, `signin.password`, `signin.magic-link`, `signin.forgot-password`. This alone answers most of what a real user will ask today.
-2. **Second pass, the model.** All of Section 3, plus `getting.what-works-today`. This is where the product becomes comprehensible rather than merely usable.
+2. **Second pass, the model.** All of Section 3, plus `getting.what-works-today`. It is four short pages, but `concepts.permissions` is the one that stops readers assuming a hierarchy that is not there.
 3. **Third pass, the screens there are.** All of Section 5, ending with `profile.logs` and `profile.emails`, which need `concepts.activity-log` and `email.record` written first. Then `preferences.screen`, pulled forward out of Section 7 because it documents a screen rather than a behaviour, and because `profile.introduction` sends readers to it. It is short, it is the only part of the portal a reader can follow with the product open in front of them, and it makes Section 3 concrete.
 4. **Fourth pass, security and email.** Sections 6 and 8. These are the pages people arrive at from an inbox, under stress, so they benefit from being written together and in one voice.
 5. **Fifth pass, operators.** Section 9. A different audience and a different register; writing it in one block keeps it consistent.

@@ -6,7 +6,7 @@ namespace Tests\Unit\Jobs;
 
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\Log;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,40 +20,40 @@ class LogUserActionTest extends TestCase
     #[Test]
     public function it_logs_the_action_of_the_user(): void
     {
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
         $user = User::factory()->create([
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'email' => 'michael.scott@dundermifflin.com',
         ]);
 
         new LogUserAction(
-            company: $company,
+            account: $account,
             user: $user,
-            action: UserActionEnum::CompanyUpdate,
-            parameters: ['name' => 'Dunder Mifflin'],
+            action: UserActionEnum::UserProfileUpdate,
+            parameters: ['name' => 'Michael Scott'],
         )->handle();
 
         $this->assertDatabaseHas('logs', [
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'user_id' => $user->id,
             'user_email' => 'michael.scott@dundermifflin.com',
-            'action' => UserActionEnum::CompanyUpdate->value,
+            'action' => UserActionEnum::UserProfileUpdate->value,
         ]);
 
-        $this->assertEquals(['name' => 'Dunder Mifflin'], Log::query()->latest()->first()->parameters);
+        $this->assertEquals(['name' => 'Michael Scott'], Log::query()->latest()->first()->parameters);
     }
 
     #[Test]
     public function it_keeps_the_email_of_the_user_once_they_are_deleted(): void
     {
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
         $user = User::factory()->create([
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'email' => 'michael.scott@dundermifflin.com',
         ]);
 
         new LogUserAction(
-            company: $company,
+            account: $account,
             user: $user,
             action: UserActionEnum::UserPasswordUpdate,
         )->handle();

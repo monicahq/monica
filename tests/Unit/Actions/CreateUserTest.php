@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\CreateUser;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -17,12 +17,14 @@ class CreateUserTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_creates_a_user_in_the_company(): void
+    public function it_creates_a_user_in_the_account(): void
     {
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
 
         $user = new CreateUser(
-            company: $company,
+            account: $account,
+            firstName: 'Jim',
+            lastName: 'Halpert',
             email: 'jim.halpert@dundermifflin.com',
             password: 'bearsbeatsbattlestar',
         )->execute();
@@ -30,7 +32,9 @@ class CreateUserTest extends TestCase
         $this->assertInstanceOf(User::class, $user);
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'company_id' => $company->id,
+            'account_id' => $account->id,
+            'first_name' => 'Jim',
+            'last_name' => 'Halpert',
             'email' => 'jim.halpert@dundermifflin.com',
             'is_active' => true,
         ]);
@@ -46,10 +50,12 @@ class CreateUserTest extends TestCase
     #[Test]
     public function it_creates_a_user_without_a_password_when_they_sign_in_through_sso(): void
     {
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
 
         $user = new CreateUser(
-            company: $company,
+            account: $account,
+            firstName: 'Pam',
+            lastName: 'Beesly',
             email: 'pam.beesly@dundermifflin.com',
             ssoProvider: 'google',
         )->execute();

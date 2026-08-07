@@ -21,8 +21,8 @@ class UserActionEnumTest extends TestCase
     #[Test]
     public function it_describes_an_action_with_the_parameters_it_was_logged_with(): void
     {
-        $this->assertEquals('Updated the profile of :name', UserActionEnum::EmployeeInformationUpdate->description());
-        $this->assertEquals('Changed the photo of :name', UserActionEnum::EmployeePhotoUpdate->description());
-        $this->assertEquals('Removed the photo of :name', UserActionEnum::EmployeePhotoDeletion->description());
+        $this->assertEquals('Updated the profile of :name', UserActionEnum::UserProfileUpdate->description());
+        $this->assertEquals('Changed the photo of :name', UserActionEnum::UserPhotoUpdate->description());
+        $this->assertEquals('Removed the photo of :name', UserActionEnum::UserPhotoDeletion->description());
     }
 }

@@ -1,12 +1,12 @@
 {{--
-  Where somebody edits their own employee record: how colleagues see them, and
-  who to call if something happens to them.
+  Where somebody edits their own profile: the name they go by, the address they
+  sign in with, and the photo shown beside them.
 
   @var \App\ViewModels\Settings\Account\Profile\ProfileViewModel $viewModel
 --}}
 <x-app-layout :title="__('Profile')">
   <x-slot:sidebar>
-    <x-settings.sidebar :company-name="$viewModel->companyName()" :name="$viewModel->name()" :employee="$viewModel->employee()" current="profile" />
+    <x-settings.sidebar :user="$viewModel->user()" current="profile" />
   </x-slot:sidebar>
 
   <x-slot:breadcrumb>
@@ -19,7 +19,7 @@
 
   <x-page-header
     :title="__('Profile')"
-    :description="__('Manage your personal details and how colleagues see you.')"
+    :description="__('Manage your personal details and how you are shown.')"
   />
 
   <x-box :title="__('Avatar')">
@@ -37,7 +37,7 @@
       </div>
 
       <div class="flex flex-wrap items-center gap-4">
-        <x-avatar id="profile-avatar" :employee="$viewModel->employee()" :name="$viewModel->name()" :size="74" />
+        <x-avatar id="profile-avatar" :user="$viewModel->user()" :size="74" />
 
         {{--
           These two forms reload the page rather than updating it in place, the
@@ -106,8 +106,8 @@
 
     <div class="grid gap-9 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
       <div class="space-y-2.5 text-sm leading-relaxed text-body">
-        <p>{{ __('These details are shown on your profile. Everyone in your company can see them.') }}</p>
-        <p>{{ __('The details you keep private, such as your emergency contact, are never shown to your colleagues.') }}</p>
+        <p>{{ __('These details are shown on your profile.') }}</p>
+        <p>{{ __('Your name appears everywhere the application refers to you, and your address is what you sign in with.') }}</p>
       </div>
 
       <x-form
@@ -136,20 +136,14 @@
         </div>
 
         <x-input
-          id="display_name"
-          :label="__('Display name')"
-          :value="$viewModel->details()['display_name']"
-          :placeholder="__('Shown instead of your real name')"
-          :help="__('Optional.')"
-          :error="$errors->get('display_name')"
-        />
-
-        <x-input
           type="email"
-          id="work_email"
-          :label="__('Work email')"
-          :value="$viewModel->details()['work_email']"
-          :error="$errors->get('work_email')"
+          id="email"
+          :label="__('Email address')"
+          :value="$viewModel->details()['email']"
+          autocomplete="username"
+          :help="__('This is what you sign in with. Change it and we will ask you to confirm the new one.')"
+          :error="$errors->get('email')"
+          required
         />
 
         <div class="flex items-center gap-3 pt-1">
@@ -159,57 +153,6 @@
             @endif
           </span>
 
-          <x-button class="ml-auto">{{ __('Save') }}</x-button>
-        </div>
-      </x-form>
-    </div>
-  </x-box>
-
-  <x-box :title="__('Emergency contact')">
-    <x-slot:help>
-      <x-help :title="__('Emergency contact')">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.
-      </x-help>
-    </x-slot:help>
-
-    <div class="grid gap-9 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-      <div class="space-y-2.5 text-sm leading-relaxed text-body">
-        <p>{{ __('Who we should call if something happens to you at work.') }}</p>
-        <p>{{ __('Only you and your company administrators can see this.') }}</p>
-      </div>
-
-      <x-form
-        method="put"
-        :action="route('settings.emergencyContact.update')"
-        id="emergency-contact-form"
-        x-target="emergency-contact-form last-saved"
-        class="space-y-3.5 transition-opacity [&[aria-busy]]:opacity-60"
-      >
-        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <x-input
-            id="name"
-            :label="__('Name')"
-            :value="$viewModel->emergencyContact()['name']"
-            :error="$errors->get('name')"
-          />
-
-          <x-input
-            id="phone"
-            :label="__('Phone number')"
-            :value="$viewModel->emergencyContact()['phone']"
-            :error="$errors->get('phone')"
-          />
-        </div>
-
-        <x-input
-          id="relationship"
-          :label="__('Relationship')"
-          :value="$viewModel->emergencyContact()['relationship']"
-          :placeholder="__('Partner, parent, friend')"
-          :error="$errors->get('relationship')"
-        />
-
-        <div class="flex items-center pt-1">
           <x-button class="ml-auto">{{ __('Save') }}</x-button>
         </div>
       </x-form>

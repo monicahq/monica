@@ -7,7 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\UpdateUserInformation;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,9 +24,9 @@ class UpdateUserInformationTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
         $user = User::factory()->create([
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'email' => 'jim.halpert@dundermifflin.com',
         ]);
 
@@ -48,33 +48,30 @@ class UpdateUserInformationTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserInformationUpdate
-                && $job->company->id === $company->id
+                && $job->account->id === $account->id
                 && $job->user->id === $user->id,
         );
     }
 
     #[Test]
-    public function it_lets_the_owner_update_another_user(): void
+    public function it_lets_anybody_in_the_account_update_another_user(): void
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $owner = User::factory()->create(['company_id' => $company->id]);
-        $company->owner_user_id = $owner->id;
-        $company->save();
-
-        $member = User::factory()->create([
-            'company_id' => $company->id,
+        $account = Account::factory()->create();
+        $author = User::factory()->create(['account_id' => $account->id]);
+        $colleague = User::factory()->create([
+            'account_id' => $account->id,
             'email' => 'kevin.malone@dundermifflin.com',
         ]);
 
         new UpdateUserInformation(
-            author: $owner,
-            user: $member,
+            author: $author,
+            user: $colleague,
             email: 'kevin.malone@dundermifflin.co.uk',
         )->execute();
 
-        $this->assertEquals('kevin.malone@dundermifflin.co.uk', $member->refresh()->email);
+        $this->assertEquals('kevin.malone@dundermifflin.co.uk', $colleague->refresh()->email);
     }
 
     #[Test]
@@ -82,9 +79,9 @@ class UpdateUserInformationTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
         $user = User::factory()->create([
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'email' => 'pam.beesly@dundermifflin.com',
             'email_verified_at' => now(),
         ]);
@@ -103,9 +100,9 @@ class UpdateUserInformationTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
         $user = User::factory()->create([
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'email' => 'pam.beesly@dundermifflin.com',
             'email_verified_at' => now(),
         ]);
@@ -120,27 +117,7 @@ class UpdateUserInformationTest extends TestCase
     }
 
     #[Test]
-    public function it_throws_when_another_member_updates_a_user(): void
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $company = Company::factory()->create();
-        $owner = User::factory()->create(['company_id' => $company->id]);
-        $company->owner_user_id = $owner->id;
-        $company->save();
-
-        $member = User::factory()->create(['company_id' => $company->id]);
-        $otherMember = User::factory()->create(['company_id' => $company->id]);
-
-        new UpdateUserInformation(
-            author: $otherMember,
-            user: $member,
-            email: 'toby.flenderson@dundermifflin.com',
-        )->execute();
-    }
-
-    #[Test]
-    public function it_throws_when_the_author_belongs_to_another_company(): void
+    public function it_throws_when_the_author_belongs_to_another_account(): void
     {
         $this->expectException(ModelNotFoundException::class);
 

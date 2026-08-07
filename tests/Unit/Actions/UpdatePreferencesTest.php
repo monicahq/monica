@@ -8,7 +8,7 @@ use App\Actions\UpdatePreferences;
 use App\Enums\TimeFormatEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -24,9 +24,9 @@ class UpdatePreferencesTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
         $user = User::factory()->create([
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'locale' => 'en',
             'time_format' => TimeFormatEnum::TwentyFourHour,
         ]);
@@ -51,8 +51,8 @@ class UpdatePreferencesTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $user = User::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
 
         new UpdatePreferences(
             user: $user,
@@ -64,7 +64,7 @@ class UpdatePreferencesTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserPreferencesUpdate
-                && $job->company->id === $company->id
+                && $job->account->id === $account->id
                 && $job->user->id === $user->id,
         );
     }

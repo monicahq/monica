@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Logs;
 
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\EmailSent;
-use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -19,18 +18,14 @@ class EmailSentControllerTest extends TestCase
     #[Test]
     public function it_shows_the_emails_sent_screen(): void
     {
-        $company = Company::factory()->create(['name' => 'Dunder Mifflin']);
-        $employee = Employee::factory()->create([
-            'company_id' => $company->id,
+        $account = Account::factory()->create();
+        $user = User::factory()->create([
+            'account_id' => $account->id,
             'first_name' => 'Pam',
             'last_name' => 'Beesly',
         ]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
-        ]);
         EmailSent::factory()->create([
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'user_id' => $user->id,
             'email_address' => 'pam.beesly@dundermifflin.com',
             'subject' => 'A sign-in from a new place',
@@ -42,7 +37,6 @@ class EmailSentControllerTest extends TestCase
         $response->assertSee('pam.beesly@dundermifflin.com', escape: false);
         $response->assertSee('A sign-in from a new place', escape: false);
         $response->assertSee('Pam Beesly', escape: false);
-        $response->assertSee('Dunder Mifflin', escape: false);
     }
 
     #[Test]
@@ -60,11 +54,11 @@ class EmailSentControllerTest extends TestCase
     #[Test]
     public function it_hides_the_emails_sent_to_somebody_else(): void
     {
-        $company = Company::factory()->create();
-        $user = User::factory()->create(['company_id' => $company->id]);
-        $colleague = User::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
+        $colleague = User::factory()->create(['account_id' => $account->id]);
         EmailSent::factory()->create([
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'user_id' => $colleague->id,
             'subject' => 'Your magic link',
         ]);
@@ -80,7 +74,7 @@ class EmailSentControllerTest extends TestCase
     {
         $user = User::factory()->create();
         EmailSent::factory()->count(11)->create([
-            'company_id' => $user->company_id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
         ]);
 
@@ -96,7 +90,7 @@ class EmailSentControllerTest extends TestCase
     {
         $user = User::factory()->create();
         EmailSent::factory()->count(10)->create([
-            'company_id' => $user->company_id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
         ]);
 

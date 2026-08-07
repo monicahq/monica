@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Delete a company. Only its owner may do so.
+ * Delete an account, and every user in it. Only somebody who belongs to the
+ * account may do so.
  */
-class DestroyCompany
+class DestroyAccount
 {
     public function __construct(
         private readonly User $user,
-        private readonly Company $company,
+        private readonly Account $account,
     ) {}
 
     public function execute(): void
@@ -26,13 +27,13 @@ class DestroyCompany
 
     private function validate(): void
     {
-        if ($this->company->owner_user_id !== $this->user->id) {
-            throw new ModelNotFoundException('Company not found');
+        if ($this->user->account_id !== $this->account->id) {
+            throw new ModelNotFoundException('Account not found');
         }
     }
 
     private function destroy(): void
     {
-        $this->company->delete();
+        $this->account->delete();
     }
 }

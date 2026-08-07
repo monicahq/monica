@@ -83,7 +83,7 @@ class ConsumeMagicLink
     {
         SendEmail::dispatch(
             mailable: new NewLoginDetected(ip: $this->ip ?? ''),
-            company: $this->user->company,
+            account: $this->user->account,
             emailType: EmailType::NewLogin,
             user: $this->user,
         )->onQueue('high');
@@ -92,7 +92,7 @@ class ConsumeMagicLink
     private function log(): void
     {
         LogUserAction::dispatch(
-            company: $this->user->company,
+            account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::UserLogin,
         )->onQueue('low');

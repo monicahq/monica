@@ -1,6 +1,6 @@
 {{--
-  The column beside the settings screens: which company you are in, what you can
-  change about your own account, and who you are signed in as.
+  The column beside the settings screens: what you can change about your own
+  account, and who you are signed in as.
 
   Below lg the column has nowhere to go, so it becomes a drawer that slides in
   over the screen, opened by the button in the bar. It is still the same aside
@@ -13,15 +13,11 @@
   the closed one both write the same custom property, and which of the two won
   would otherwise come down to the order tailwind happened to emit them in.
 
-  @var string $companyName
-  @var string $name
-  @var \App\Models\Employee|null $employee
+  @var \App\Models\User $user
   @var string $current
 --}}
 @props([
-  'companyName',
-  'name',
-  'employee' => null,
+  'user',
   'current' => 'profile',
 ])
 
@@ -35,9 +31,9 @@
   class="fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-hairline bg-sunken transition-transform duration-200 ease-out max-lg:-translate-x-full lg:sticky lg:top-0 lg:h-screen lg:w-auto lg:translate-x-0"
 >
   <div class="flex items-center gap-2.5 px-4 pt-3.5 pb-2.5">
-    <x-avatar-initials :name="$companyName" :size="26" />
+    <x-logo :size="26" />
 
-    <span class="truncate text-sm font-semibold tracking-tight text-ink">{{ $companyName }}</span>
+    <span class="truncate text-sm font-semibold tracking-tight text-ink">{{ config('app.name') }}</span>
 
     <x-theme-toggle class="ml-auto" />
 
@@ -112,8 +108,8 @@
   </nav>
 
   <div id="sidebar-identity" class="flex items-center gap-2 border-t border-hairline-soft px-3 py-2.5">
-    <x-avatar :employee="$employee" :name="$name" :size="26" />
+    <x-avatar :user="$user" :size="26" />
 
-    <span class="truncate text-xs font-semibold text-ink">{{ $name }}</span>
+    <span class="truncate text-xs font-semibold text-ink">{{ $user->name }}</span>
   </div>
 </aside>

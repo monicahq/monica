@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\User;
 use Stevebauman\Purify\Facades\Purify;
 
 /**
  * Create an Email Sent object.
- * This lets the company know exactly which emails have been sent, to whom, and
+ * This lets the account know exactly which emails have been sent, to whom, and
  * the content of those emails.
  * Links are purged in each email, since they could contain links that
  * are not valid anymore.
@@ -23,7 +23,7 @@ class CreateEmailSent
     private string $updatedBody = '';
 
     public function __construct(
-        private readonly Company $company,
+        private readonly Account $account,
         private readonly ?User $user,
         private readonly ?string $uuid,
         private readonly string $emailType,
@@ -53,7 +53,7 @@ class CreateEmailSent
     private function create(): void
     {
         $this->emailSent = EmailSent::query()->create([
-            'company_id' => $this->company->id,
+            'account_id' => $this->account->id,
             'user_id' => $this->user?->id,
             'uuid' => $this->uuid,
             'email_type' => $this->emailType,

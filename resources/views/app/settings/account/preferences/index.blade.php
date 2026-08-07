@@ -10,7 +10,7 @@
 --}}
 <x-app-layout :title="__('Preferences')">
   <x-slot:sidebar>
-    <x-settings.sidebar :company-name="$viewModel->companyName()" :name="$viewModel->name()" :employee="$viewModel->employee()" current="preferences" />
+    <x-settings.sidebar :user="$viewModel->user()" current="preferences" />
   </x-slot:sidebar>
 
   <x-slot:breadcrumb>
@@ -30,7 +30,7 @@
     <x-box :title="__('General')" padding="p-0">
       <x-slot:help>
         <x-help :title="__('General')" align="right">
-          {{ __('These are yours alone. Changing them here changes nothing for your colleagues, and nothing about how your company is set up.') }}
+          {{ __('These are yours alone. Changing them here changes nothing for anybody else in your account.') }}
         </x-help>
       </x-slot:help>
 

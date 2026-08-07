@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Models;
 
 use App\Enums\UserActionEnum;
-use App\Models\Company;
-use App\Models\Employee;
+use App\Models\Account;
 use App\Models\Log;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,13 +17,13 @@ class LogTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_a_company(): void
+    public function it_belongs_to_an_account(): void
     {
-        $company = Company::factory()->create(['name' => 'Dunder Mifflin']);
-        $log = Log::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $log = Log::factory()->create(['account_id' => $account->id]);
 
-        $this->assertTrue($log->company()->exists());
-        $this->assertEquals('Dunder Mifflin', $log->company->name);
+        $this->assertTrue($log->account()->exists());
+        $this->assertTrue($account->is($log->account));
     }
 
     #[Test]
@@ -32,7 +31,7 @@ class LogTest extends TestCase
     {
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
         $log = Log::factory()->create([
-            'company_id' => $user->company_id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
         ]);
 
@@ -51,17 +50,12 @@ class LogTest extends TestCase
     #[Test]
     public function it_gives_the_name_of_whoever_performed_the_action(): void
     {
-        $employee = Employee::factory()->create([
+        $user = User::factory()->create([
             'first_name' => 'Michael',
             'last_name' => 'Scott',
-            'display_name' => null,
-        ]);
-        $user = User::factory()->create([
-            'company_id' => $employee->company_id,
-            'employee_id' => $employee->id,
         ]);
         $log = Log::factory()->create([
-            'company_id' => $user->company_id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
         ]);
 
@@ -83,11 +77,11 @@ class LogTest extends TestCase
     public function it_describes_the_action_with_its_parameters(): void
     {
         $log = Log::factory()->create([
-            'action' => UserActionEnum::CompanyUpdate->value,
-            'parameters' => ['name' => 'Dunder Mifflin'],
+            'action' => UserActionEnum::UserProfileUpdate->value,
+            'parameters' => ['name' => 'Michael Scott'],
         ]);
 
-        $this->assertEquals('Updated the company called Dunder Mifflin', $log->description);
+        $this->assertEquals('Updated the profile of Michael Scott', $log->description);
     }
 
     #[Test]

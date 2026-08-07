@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,13 +16,13 @@ class EmailSentTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_a_company(): void
+    public function it_belongs_to_an_account(): void
     {
-        $company = Company::factory()->create(['name' => 'Dunder Mifflin']);
-        $emailSent = EmailSent::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $emailSent = EmailSent::factory()->create(['account_id' => $account->id]);
 
-        $this->assertTrue($emailSent->company()->exists());
-        $this->assertEquals('Dunder Mifflin', $emailSent->company->name);
+        $this->assertTrue($emailSent->account()->exists());
+        $this->assertTrue($account->is($emailSent->account));
     }
 
     #[Test]
@@ -30,7 +30,7 @@ class EmailSentTest extends TestCase
     {
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
         $emailSent = EmailSent::factory()->create([
-            'company_id' => $user->company_id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
         ]);
 

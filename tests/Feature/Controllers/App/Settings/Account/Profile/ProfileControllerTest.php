@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Profile;
 
-use App\Models\Company;
-use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -19,15 +17,10 @@ class ProfileControllerTest extends TestCase
     #[Test]
     public function it_shows_the_profile_screen(): void
     {
-        $company = Company::factory()->create(['name' => 'Dunder Mifflin']);
-        $employee = Employee::factory()->create([
-            'company_id' => $company->id,
+        $user = User::factory()->create([
             'first_name' => 'Pam',
             'last_name' => 'Beesly',
-        ]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
+            'email' => 'pam.beesly@dundermifflin.com',
         ]);
 
         $response = $this->actingAs($user)->get(route('settings.profile.index'));
@@ -35,41 +28,31 @@ class ProfileControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Pam', escape: false);
         $response->assertSee('Beesly', escape: false);
-        $response->assertSee('Dunder Mifflin', escape: false);
+        $response->assertSee('pam.beesly@dundermifflin.com', escape: false);
     }
 
     #[Test]
     public function it_shows_the_toast_of_the_previous_save(): void
     {
-        $company = Company::factory()->create();
-        $employee = Employee::factory()->create(['company_id' => $company->id]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)
             ->withSession([
                 'status' => 'Your details are saved.',
-                'status_description' => 'Your colleagues see them right away.',
+                'status_description' => 'They appear everywhere your name does.',
             ])
             ->get(route('settings.profile.index'));
 
         $response->assertStatus(200);
         $response->assertSee('id="notifications"', escape: false);
         $response->assertSee('Your details are saved.', escape: false);
-        $response->assertSee('Your colleagues see them right away.', escape: false);
+        $response->assertSee('They appear everywhere your name does.', escape: false);
     }
 
     #[Test]
     public function it_points_to_the_logs_screen(): void
     {
-        $company = Company::factory()->create();
-        $employee = Employee::factory()->create(['company_id' => $company->id]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('settings.profile.index'));
 
@@ -90,66 +73,82 @@ class ProfileControllerTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $employee = Employee::factory()->create(['company_id' => $company->id]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->put(route('settings.profile.update'), [
             'first_name' => 'Michael',
             'last_name' => 'Scott',
-            'display_name' => 'The Boss',
-            'work_email' => 'michael.scott@dundermifflin.com',
+            'email' => 'michael.scott@dundermifflin.com',
         ]);
 
         $response->assertRedirect(route('settings.profile.index'));
         $response->assertSessionHas('status', 'Your details are saved.');
-        $response->assertSessionHas('status_description', 'Your colleagues see them right away.');
+        $response->assertSessionHas('status_description', 'They appear everywhere your name does.');
 
-        $employee->refresh();
+        $user->refresh();
 
-        $this->assertEquals('Michael', $employee->first_name);
-        $this->assertEquals('Scott', $employee->last_name);
-        $this->assertEquals('The Boss', $employee->display_name);
-        $this->assertEquals('michael.scott@dundermifflin.com', $employee->work_email);
+        $this->assertEquals('Michael', $user->first_name);
+        $this->assertEquals('Scott', $user->last_name);
+        $this->assertEquals('michael.scott@dundermifflin.com', $user->email);
     }
 
     #[Test]
     public function it_refuses_details_without_a_name(): void
     {
-        $company = Company::factory()->create();
-        $employee = Employee::factory()->create(['company_id' => $company->id]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->put(route('settings.profile.update'), [
             'first_name' => '',
             'last_name' => '',
+            'email' => $user->email,
         ]);
 
         $response->assertSessionHasErrors(['first_name', 'last_name']);
     }
 
     #[Test]
-    public function it_refuses_a_work_email_that_is_not_an_email(): void
+    public function it_refuses_an_email_that_is_not_an_email(): void
     {
-        $company = Company::factory()->create();
-        $employee = Employee::factory()->create(['company_id' => $company->id]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->put(route('settings.profile.update'), [
             'first_name' => 'Angela',
             'last_name' => 'Martin',
-            'work_email' => 'not-an-email',
+            'email' => 'not-an-email',
         ]);
 
-        $response->assertSessionHasErrors('work_email');
+        $response->assertSessionHasErrors('email');
+    }
+
+    #[Test]
+    public function it_refuses_an_email_another_user_already_signs_in_with(): void
+    {
+        $user = User::factory()->create();
+        $colleague = User::factory()->create(['email' => 'oscar.martinez@dundermifflin.com']);
+
+        $response = $this->actingAs($user)->put(route('settings.profile.update'), [
+            'first_name' => 'Oscar',
+            'last_name' => 'Martinez',
+            'email' => $colleague->email,
+        ]);
+
+        $response->assertSessionHasErrors('email');
+    }
+
+    #[Test]
+    public function it_accepts_the_email_the_user_already_signs_in_with(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['email' => 'kelly.kapoor@dundermifflin.com']);
+
+        $response = $this->actingAs($user)->put(route('settings.profile.update'), [
+            'first_name' => 'Kelly',
+            'last_name' => 'Kapoor',
+            'email' => 'kelly.kapoor@dundermifflin.com',
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(route('settings.profile.index'));
     }
 }

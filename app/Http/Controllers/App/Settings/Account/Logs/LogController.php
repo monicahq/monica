@@ -16,7 +16,6 @@ class LogController extends Controller
         return view('app.settings.account.logs.index', [
             'viewModel' => new LogsViewModel(
                 user: $request->user(),
-                employee: $request->user()->employee,
             ),
         ]);
     }

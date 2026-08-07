@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Security;
 
-use App\Models\Company;
-use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -18,16 +16,9 @@ class SecurityControllerTest extends TestCase
     #[Test]
     public function it_shows_the_security_screen(): void
     {
-        $company = Company::factory()->create(['name' => 'Dunder Mifflin']);
-        $employee = Employee::factory()->create([
-            'company_id' => $company->id,
+        $user = User::factory()->create([
             'first_name' => 'Dwight',
             'last_name' => 'Schrute',
-            'display_name' => null,
-        ]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
             'password_changed_at' => now()->subDays(2),
         ]);
 
@@ -38,7 +29,6 @@ class SecurityControllerTest extends TestCase
         $response->assertSee('Change password', escape: false);
         $response->assertSee('Current password', escape: false);
         $response->assertSee('Dwight Schrute', escape: false);
-        $response->assertSee('Dunder Mifflin', escape: false);
         $response->assertSee('Last changed 2 days ago', escape: false);
     }
 

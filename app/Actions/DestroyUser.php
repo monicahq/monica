@@ -10,8 +10,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Delete a user. Only the owner of the company may do so, and the owner cannot
- * delete themselves, since a company always needs an owner.
+ * Delete a user. Anybody in the account may delete anybody else in it, but not
+ * themselves: leaving the account through this door would sign the person out
+ * of a screen they are still standing on.
  */
 class DestroyUser
 {
@@ -30,7 +31,7 @@ class DestroyUser
     private function log(): void
     {
         LogUserAction::dispatch(
-            company: $this->author->company,
+            account: $this->author->account,
             user: $this->author,
             action: UserActionEnum::UserDeletion,
             parameters: ['email' => $this->user->email],
@@ -39,11 +40,7 @@ class DestroyUser
 
     private function validate(): void
     {
-        if ($this->author->company_id !== $this->user->company_id) {
-            throw new ModelNotFoundException('User not found');
-        }
-
-        if ($this->user->company->owner_user_id !== $this->author->id) {
+        if ($this->author->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('User not found');
         }
 

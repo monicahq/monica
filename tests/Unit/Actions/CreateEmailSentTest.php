@@ -6,7 +6,7 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\CreateEmailSent;
 use App\Enums\EmailType;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,11 +23,11 @@ class CreateEmailSentTest extends TestCase
     {
         Date::setTestNow(Date::create(2026, 7, 31));
 
-        $company = Company::factory()->create();
-        $user = User::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
 
         $emailSent = new CreateEmailSent(
-            company: $company,
+            account: $account,
             user: $user,
             uuid: 'd27cee22-b10f-46c4-a7dc-af3b46820d80',
             emailType: EmailType::NewLogin->value,
@@ -39,7 +39,7 @@ class CreateEmailSentTest extends TestCase
         $this->assertInstanceOf(EmailSent::class, $emailSent);
         $this->assertDatabaseHas('emails_sent', [
             'id' => $emailSent->id,
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'user_id' => $user->id,
             'uuid' => 'd27cee22-b10f-46c4-a7dc-af3b46820d80',
             'email_type' => EmailType::NewLogin->value,
@@ -52,10 +52,10 @@ class CreateEmailSentTest extends TestCase
     #[Test]
     public function it_creates_an_email_sent_without_a_user(): void
     {
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
 
         $emailSent = new CreateEmailSent(
-            company: $company,
+            account: $account,
             user: null,
             uuid: null,
             emailType: EmailType::MagicLinkCreated->value,
@@ -66,7 +66,7 @@ class CreateEmailSentTest extends TestCase
 
         $this->assertDatabaseHas('emails_sent', [
             'id' => $emailSent->id,
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'user_id' => null,
             'uuid' => null,
         ]);

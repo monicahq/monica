@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Represents an email that has been sent in the system.
  *
  * @property int $id
- * @property int $company_id
+ * @property int $account_id
  * @property int|null $user_id
  * @property string|null $uuid
  * @property string $email_type
@@ -42,7 +42,7 @@ class EmailSent extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'company_id',
+        'account_id',
         'user_id',
         'uuid',
         'email_type',
@@ -69,13 +69,13 @@ class EmailSent extends Model
     }
 
     /**
-     * Get the company the email was sent on behalf of.
+     * Get the account the email was sent on behalf of.
      *
-     * @return BelongsTo<Company, $this>
+     * @return BelongsTo<Account, $this>
      */
-    public function company(): BelongsTo
+    public function account(): BelongsTo
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Account::class);
     }
 
     /**

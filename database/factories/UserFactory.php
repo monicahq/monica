@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -29,7 +29,9 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'company_id' => Company::factory(),
+            'account_id' => Account::factory(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password_hash' => self::$password ??= Hash::make('password'),

@@ -1,5 +1,5 @@
 {{--
-  Where somebody creates a company and the account that administers it.
+  Where somebody creates an account and the first user in it.
 
   @var \App\ViewModels\Auth\RegisterViewModel $viewModel
 --}}
@@ -22,7 +22,7 @@
             <x-theme-toggle class="ml-auto" />
           </div>
 
-          <p class="text-sm text-body">{{ __('You will be the first administrator of this company.') }}</p>
+          <p class="text-sm text-body">{{ __('You will be the first person in this account.') }}</p>
         </div>
 
         <x-status :message="session('status')" />
@@ -57,18 +57,6 @@
                   required
                 />
               </div>
-
-              <x-input
-                id="company_name"
-                :label="__('Company name')"
-                :value="old('company_name')"
-                placeholder="Dunder Mifflin"
-                autocomplete="organization"
-                :help="__('You can rename it later.')"
-                :error="$errors->get('company_name')"
-                allowPasswordManager
-                required
-              />
 
               <x-input
                 type="email"
@@ -131,7 +119,7 @@
         </x-box>
 
         <x-notice>
-          {{ __('Joining a company that already uses Monica? Ask an administrator to invite you, rather than creating a second account.') }}
+          {{ __('Joining an account that already uses Monica? Ask somebody in it to invite you, rather than creating a second account.') }}
         </x-notice>
 
         <div class="flex items-center gap-3">

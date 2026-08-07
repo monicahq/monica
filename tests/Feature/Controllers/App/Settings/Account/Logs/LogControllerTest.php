@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Settings\Account\Logs;
 
 use App\Enums\UserActionEnum;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\EmailSent;
-use App\Models\Employee;
 use App\Models\Log;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,31 +20,24 @@ class LogControllerTest extends TestCase
     #[Test]
     public function it_shows_the_logs_screen(): void
     {
-        $company = Company::factory()->create(['name' => 'Dunder Mifflin']);
-        $employee = Employee::factory()->create([
-            'company_id' => $company->id,
+        $user = User::factory()->create([
             'first_name' => 'Michael',
             'last_name' => 'Scott',
-            'display_name' => null,
-        ]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
         ]);
 
         Log::factory()->create([
-            'company_id' => $company->id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
-            'action' => UserActionEnum::CompanyUpdate->value,
-            'parameters' => ['name' => 'Dunder Mifflin'],
+            'action' => UserActionEnum::UserProfileUpdate->value,
+            'parameters' => ['name' => 'Michael Scott'],
         ]);
 
         $response = $this->actingAs($user)->get(route('settings.logs.index'));
 
         $response->assertStatus(200);
         $response->assertSee('Michael Scott', escape: false);
-        $response->assertSee('company_updated', escape: false);
-        $response->assertSee('Updated the company called Dunder Mifflin', escape: false);
+        $response->assertSee('user_profile_updated', escape: false);
+        $response->assertSee('Updated the profile of Michael Scott', escape: false);
     }
 
     #[Test]
@@ -65,21 +57,21 @@ class LogControllerTest extends TestCase
     #[Test]
     public function it_hides_the_logs_of_somebody_else(): void
     {
-        $company = Company::factory()->create();
-        $user = User::factory()->create(['company_id' => $company->id]);
-        $colleague = User::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
+        $colleague = User::factory()->create(['account_id' => $account->id]);
 
         Log::factory()->create([
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'user_id' => $colleague->id,
-            'action' => UserActionEnum::CompanyUpdate->value,
-            'parameters' => ['name' => 'Vance Refrigeration'],
+            'action' => UserActionEnum::UserProfileUpdate->value,
+            'parameters' => ['name' => 'Bob Vance'],
         ]);
 
         $response = $this->actingAs($user)->get(route('settings.logs.index'));
 
         $response->assertStatus(200);
-        $response->assertDontSee('Updated the company called Vance Refrigeration', escape: false);
+        $response->assertDontSee('Updated the profile of Bob Vance', escape: false);
     }
 
     #[Test]
@@ -88,7 +80,7 @@ class LogControllerTest extends TestCase
         $user = User::factory()->create();
 
         Log::factory()->count(11)->create([
-            'company_id' => $user->company_id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
         ]);
 
@@ -105,7 +97,7 @@ class LogControllerTest extends TestCase
         $user = User::factory()->create();
 
         Log::factory()->count(3)->create([
-            'company_id' => $user->company_id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
         ]);
 
@@ -120,12 +112,12 @@ class LogControllerTest extends TestCase
     {
         $user = User::factory()->create();
         EmailSent::factory()->count(7)->create([
-            'company_id' => $user->company_id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'sent_at' => now()->subWeek(),
         ]);
         EmailSent::factory()->create([
-            'company_id' => $user->company_id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
             'email_address' => 'creed.bratton@dundermifflin.com',
             'subject' => 'Confirm your email address',
@@ -146,7 +138,7 @@ class LogControllerTest extends TestCase
     {
         $user = User::factory()->create();
         EmailSent::factory()->count(5)->create([
-            'company_id' => $user->company_id,
+            'account_id' => $user->account_id,
             'user_id' => $user->id,
         ]);
 
@@ -160,9 +152,9 @@ class LogControllerTest extends TestCase
     public function it_hides_the_emails_sent_to_somebody_else(): void
     {
         $user = User::factory()->create();
-        $colleague = User::factory()->create(['company_id' => $user->company_id]);
+        $colleague = User::factory()->create(['account_id' => $user->account_id]);
         EmailSent::factory()->create([
-            'company_id' => $user->company_id,
+            'account_id' => $user->account_id,
             'user_id' => $colleague->id,
             'subject' => 'Your beet order is on its way',
         ]);

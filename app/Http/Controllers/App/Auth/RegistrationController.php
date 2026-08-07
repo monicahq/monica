@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Auth;
 
-use App\Actions\CreateCompany;
+use App\Actions\CreateAccount;
 use App\Actions\SendEmailVerification;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -30,7 +30,6 @@ class RegistrationController extends Controller
         $rules = [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'company_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class, 'disposable_email'],
             'password' => ['required', 'string', 'max:255', 'confirmed', Password::min(8)],
             'terms' => ['accepted'],
@@ -44,15 +43,12 @@ class RegistrationController extends Controller
             'terms.accepted' => __('You have to agree with the terms of use and the privacy policy to create an account.'),
         ]);
 
-        $company = new CreateCompany(
-            name: $validated['company_name'],
+        $user = new CreateAccount(
             firstName: $validated['first_name'],
             lastName: $validated['last_name'],
             email: $validated['email'],
             password: $validated['password'],
         )->execute();
-
-        $user = $company->owner;
 
         new SendEmailVerification(user: $user)->execute();
 

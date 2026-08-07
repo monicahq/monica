@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
-use App\Actions\UpdateEmployeePhoto;
+use App\Actions\UpdateUserPhoto;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Models\Company;
-use App\Models\Employee;
 use App\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
@@ -19,7 +16,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class UpdateEmployeePhotoTest extends TestCase
+class UpdateUserPhotoTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -29,40 +26,34 @@ class UpdateEmployeePhotoTest extends TestCase
         Queue::fake();
         Storage::fake('local');
 
-        $company = Company::factory()->create();
-        $employee = Employee::factory()->create([
-            'company_id' => $company->id,
+        $user = User::factory()->create([
             'first_name' => 'Dwight',
             'last_name' => 'Schrute',
         ]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
-        ]);
 
-        $result = new UpdateEmployeePhoto(
+        $result = new UpdateUserPhoto(
             user: $user,
             file: UploadedFile::fake()->image('dwight.jpg', 400, 400),
         )->execute();
 
-        $this->assertInstanceOf(Employee::class, $result);
-        $this->assertStringStartsWith('photos/'.$employee->id.'/', (string) $result->photo_path);
+        $this->assertInstanceOf(User::class, $result);
+        $this->assertStringStartsWith('photos/'.$user->id.'/', (string) $result->photo_path);
 
         // The name somebody gave the file never reaches the disk, and the base
         // path carries no extension of its own.
         $this->assertStringNotContainsString('dwight', (string) $result->photo_path);
         $this->assertStringNotContainsString('.webp', (string) $result->photo_path);
 
-        $this->assertDatabaseHas('employees', [
-            'id' => $employee->id,
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
             'photo_path' => $result->photo_path,
         ]);
 
         Queue::assertPushedOn(
             queue: 'low',
             job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::EmployeePhotoUpdate
-                && $job->company->id === $company->id
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserPhotoUpdate
+                && $job->account->id === $user->account_id
                 && $job->user->id === $user->id,
         );
     }
@@ -73,19 +64,14 @@ class UpdateEmployeePhotoTest extends TestCase
         Queue::fake();
         Storage::fake('local');
 
-        $company = Company::factory()->create();
-        $employee = Employee::factory()->create(['company_id' => $company->id]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
-        ]);
+        $user = User::factory()->create();
 
-        $result = new UpdateEmployeePhoto(
+        $result = new UpdateUserPhoto(
             user: $user,
             file: UploadedFile::fake()->image('michael.jpg', 800, 200),
         )->execute();
 
-        foreach (Employee::photoPixelSizes() as $pixels) {
+        foreach (User::photoPixelSizes() as $pixels) {
             $path = $result->photoVariantPath($pixels);
 
             Storage::disk('local')->assertExists($path);
@@ -97,7 +83,7 @@ class UpdateEmployeePhotoTest extends TestCase
             $this->assertEquals('image/webp', $size['mime']);
         }
 
-        $this->assertEquals([96, 192], Employee::photoPixelSizes());
+        $this->assertEquals([96, 192], User::photoPixelSizes());
     }
 
     #[Test]
@@ -106,57 +92,44 @@ class UpdateEmployeePhotoTest extends TestCase
         Queue::fake();
         Storage::fake('local');
 
-        $company = Company::factory()->create();
-        $employee = Employee::factory()->create(['company_id' => $company->id]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
-        ]);
+        $user = User::factory()->create();
 
-        $first = new UpdateEmployeePhoto(
+        $first = new UpdateUserPhoto(
             user: $user,
             file: UploadedFile::fake()->image('pam.jpg', 400, 400),
         )->execute();
 
         $firstPath = (string) $first->photo_path;
 
-        $second = new UpdateEmployeePhoto(
+        $second = new UpdateUserPhoto(
             user: $user->fresh(),
             file: UploadedFile::fake()->image('jim.jpg', 400, 400),
         )->execute();
 
         $this->assertNotEquals($firstPath, $second->photo_path);
 
-        foreach (Employee::photoPixelSizes() as $pixels) {
+        foreach (User::photoPixelSizes() as $pixels) {
             Storage::disk('local')->assertMissing($firstPath.'_'.$pixels.'.webp');
             Storage::disk('local')->assertExists($second->photoVariantPath($pixels));
         }
     }
 
     #[Test]
-    public function it_stamps_when_the_record_was_last_saved(): void
+    public function it_stamps_when_the_profile_was_last_saved(): void
     {
         Queue::fake();
         Storage::fake('local');
 
-        $company = Company::factory()->create();
-        $employee = Employee::factory()->create([
-            'company_id' => $company->id,
-            'last_saved_at' => null,
-        ]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
-        ]);
+        $user = User::factory()->create(['last_saved_at' => null]);
 
-        new UpdateEmployeePhoto(
+        new UpdateUserPhoto(
             user: $user,
             file: UploadedFile::fake()->image('angela.jpg', 400, 400),
         )->execute();
 
         $this->assertEqualsWithDelta(
             now()->timestamp,
-            $employee->refresh()->last_saved_at?->timestamp,
+            $user->refresh()->last_saved_at?->timestamp,
             2,
         );
     }
@@ -168,14 +141,9 @@ class UpdateEmployeePhotoTest extends TestCase
 
         Storage::fake('local');
 
-        $company = Company::factory()->create();
-        $employee = Employee::factory()->create(['company_id' => $company->id]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
-        ]);
+        $user = User::factory()->create();
 
-        new UpdateEmployeePhoto(
+        new UpdateUserPhoto(
             user: $user,
             file: UploadedFile::fake()->create('beets.pdf', 10, 'application/pdf'),
         )->execute();
@@ -188,29 +156,11 @@ class UpdateEmployeePhotoTest extends TestCase
 
         Storage::fake('local');
 
-        $company = Company::factory()->create();
-        $employee = Employee::factory()->create(['company_id' => $company->id]);
-        $user = User::factory()->create([
-            'company_id' => $company->id,
-            'employee_id' => $employee->id,
-        ]);
+        $user = User::factory()->create();
 
-        new UpdateEmployeePhoto(
+        new UpdateUserPhoto(
             user: $user,
             file: UploadedFile::fake()->image('creed.jpg')->size(6 * 1024),
-        )->execute();
-    }
-
-    #[Test]
-    public function it_throws_when_the_user_has_no_employee_record(): void
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $user = User::factory()->create(['employee_id' => null]);
-
-        new UpdateEmployeePhoto(
-            user: $user,
-            file: UploadedFile::fake()->image('mose.jpg', 400, 400),
         )->execute();
     }
 }

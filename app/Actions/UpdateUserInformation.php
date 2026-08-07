@@ -11,8 +11,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Update the information of a user. A user may only be updated by themselves or
- * by the owner of their company.
+ * Update the details a user signs in with. Anybody in the account may do this
+ * to anybody else in it.
  */
 class UpdateUserInformation
 {
@@ -36,7 +36,7 @@ class UpdateUserInformation
     private function log(): void
     {
         LogUserAction::dispatch(
-            company: $this->author->company,
+            account: $this->author->account,
             user: $this->author,
             action: UserActionEnum::UserInformationUpdate,
             parameters: ['email' => $this->email],
@@ -45,14 +45,7 @@ class UpdateUserInformation
 
     private function validate(): void
     {
-        if ($this->author->company_id !== $this->user->company_id) {
-            throw new ModelNotFoundException('User not found');
-        }
-
-        $isSelf = $this->author->id === $this->user->id;
-        $isOwner = $this->user->company->owner_user_id === $this->author->id;
-
-        if (! $isSelf && ! $isOwner) {
+        if ($this->author->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('User not found');
         }
     }

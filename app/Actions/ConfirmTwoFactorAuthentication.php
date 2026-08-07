@@ -65,7 +65,7 @@ class ConfirmTwoFactorAuthentication
     private function log(): void
     {
         LogUserAction::dispatch(
-            company: $this->user->company,
+            account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::TwoFactorEnabled,
         )->onQueue('low');

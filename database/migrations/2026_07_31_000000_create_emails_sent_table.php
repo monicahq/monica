@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('emails_sent', function (Blueprint $table): void {
             $table->id()->comment('primary key');
-            $table->unsignedBigInteger('company_id')->comment('company the email was sent on behalf of');
+            $table->unsignedBigInteger('account_id')->comment('account the email was sent on behalf of');
             $table->unsignedBigInteger('user_id')->nullable()->comment('user who received the email, null when the system sent it to someone who has no account');
             $table->string('uuid')->nullable()->comment('identifier given to the email by Resend');
             $table->string('email_type')->comment('type of email sent');
@@ -27,16 +27,8 @@ return new class extends Migration
             $table->datetime('bounced_at')->nullable()->comment('when the email bounced');
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies')->cascadeOnDelete();
+            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
         });
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('emails_sent');
     }
 };

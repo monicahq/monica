@@ -7,7 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\CreateApiKey;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -23,8 +23,8 @@ class CreateApiKeyTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $user = User::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
 
         $key = new CreateApiKey(user: $user, name: 'Dundie awards bot')->execute();
 
@@ -48,8 +48,8 @@ class CreateApiKeyTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $user = User::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
 
         $key = new CreateApiKey(user: $user, name: 'Deployment script')->execute();
 
@@ -66,8 +66,8 @@ class CreateApiKeyTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $user = User::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
 
         new CreateApiKey(user: $user, name: 'Deployment script')->execute();
 
@@ -79,8 +79,8 @@ class CreateApiKeyTest extends TestCase
     {
         Queue::fake();
 
-        $company = Company::factory()->create();
-        $user = User::factory()->create(['company_id' => $company->id]);
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
 
         new CreateApiKey(user: $user, name: 'Dundie awards bot')->execute();
 
@@ -88,7 +88,7 @@ class CreateApiKeyTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ApiKeyCreation
-                && $job->company->id === $company->id
+                && $job->account->id === $account->id
                 && $job->user->id === $user->id
                 && $job->parameters === ['name' => 'Dundie awards bot'],
         );

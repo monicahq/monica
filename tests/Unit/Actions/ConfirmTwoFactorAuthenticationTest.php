@@ -7,7 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\ConfirmTwoFactorAuthentication;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Models\Company;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -27,9 +27,9 @@ class ConfirmTwoFactorAuthenticationTest extends TestCase
         $google2fa = new Google2FA;
         $secret = $google2fa->generateSecretKey();
 
-        $company = Company::factory()->create();
+        $account = Account::factory()->create();
         $user = User::factory()->create([
-            'company_id' => $company->id,
+            'account_id' => $account->id,
             'two_factor_secret' => $secret,
             'two_factor_confirmed_at' => null,
             'two_factor_recovery_codes' => null,

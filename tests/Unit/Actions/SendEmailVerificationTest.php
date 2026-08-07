@@ -33,7 +33,7 @@ class SendEmailVerificationTest extends TestCase
             job: SendEmail::class,
             callback: fn (SendEmail $job): bool => $job->emailType === EmailType::EmailVerification
                 && $job->user->id === $user->id
-                && $job->company->id === $user->company_id,
+                && $job->account->id === $user->account_id,
         );
     }
 
