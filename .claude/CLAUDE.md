@@ -44,3 +44,9 @@
 ## Writing something
 
 Never use dashes (— or -) as punctuation in documentation or README files. Rephrase sentences using periods, commas, or parentheses instead.
+
+
+## Checklist for each feature or change
+
+- You MUST translate any new or updated strings in the UI, matching all configured locales
+- You MUST make sure what you wrote is covered by a test
