@@ -25,7 +25,7 @@ class RegisterViewModelTest extends TestCase
     {
         $locales = new RegisterViewModel()->locales();
 
-        $this->assertCount(4, $locales);
+        $this->assertCount(count(config('monica.locales')), $locales);
         $this->assertEquals([
             'label' => 'English',
             'region' => 'United Kingdom',

@@ -36,6 +36,16 @@ return [
             'region' => 'España',
             'flag' => 'linear-gradient(to bottom, #aa151b 0 25%, #f1bf00 25% 75%, #aa151b 75%)',
         ],
+        'pt_PT' => [
+            'label' => 'Português',
+            'region' => 'Portugal',
+            'flag' => 'linear-gradient(to right, #006600 0 40%, #ff0000 40%)',
+        ],
+        'nl_NL' => [
+            'label' => 'Nederlands',
+            'region' => 'Nederland',
+            'flag' => 'linear-gradient(to bottom, #ae1c28 0 33%, #fff 33% 66%, #21468b 66%)',
+        ],
     ],
 
     /*
