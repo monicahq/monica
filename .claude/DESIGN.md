@@ -1,506 +1,359 @@
----
-version: alpha
-name: kollek-design-analysis
-description: A clean software interface anchored on white canvas with black primary CTAs and simple typography. The system reads as friendly modern SaaS — generous whitespace, soft-rounded cards (~12px), product UI fragments shown directly inside cards, and a dark navy footer that visually closes long-scroll pages.
+# Monica v3 — Design guidelines
 
-colors:
-  primary: "#111111"
-  primary-active: "#242424"
-  primary-disabled: "#e5e7eb"
-  ink: "#111111"
-  body: "#374151"
-  muted: "#6b7280"
-  muted-soft: "#898989"
-  hairline: "#e5e7eb"
-  hairline-soft: "#f3f4f6"
-  canvas: "#ffffff"
-  surface-soft: "#f8f9fa"
-  surface-card: "#f5f5f5"
-  surface-strong: "#e5e7eb"
-  surface-dark: "#101010"
-  surface-dark-elevated: "#1a1a1a"
-  on-primary: "#ffffff"
-  on-dark: "#ffffff"
-  on-dark-soft: "#a1a1aa"
-  brand-accent: "#3b82f6"
-  success: "#10b981"
-  warning: "#f59e0b"
-  error: "#ef4444"
-  badge-orange: "#fb923c"
-  badge-pink: "#ec4899"
-  badge-violet: "#8b5cf6"
-  badge-emerald: "#34d399"
+## 1. Direction
 
-typography:
-  display-xl:
-    fontFamily: "Inter, sans-serif"
-    fontSize: 64px
-    fontWeight: 600
-    lineHeight: 1.05
-    letterSpacing: -2px
-  display-lg:
-    fontFamily: "Inter, sans-serif"
-    fontSize: 48px
-    fontWeight: 600
-    lineHeight: 1.1
-    letterSpacing: -1.5px
-  display-md:
-    fontFamily: "Inter, sans-serif"
-    fontSize: 36px
-    fontWeight: 600
-    lineHeight: 1.15
-    letterSpacing: -1px
-  display-sm:
-    fontFamily: "Inter, sans-serif"
-    fontSize: 28px
-    fontWeight: 600
-    lineHeight: 1.2
-    letterSpacing: -0.5px
-  title-lg:
-    fontFamily: "Inter, sans-serif"
-    fontSize: 22px
-    fontWeight: 600
-    lineHeight: 1.3
-    letterSpacing: -0.3px
-  title-md:
-    fontFamily: "Inter, sans-serif"
-    fontSize: 18px
-    fontWeight: 600
-    lineHeight: 1.4
-    letterSpacing: 0
-  title-sm:
-    fontFamily: "Inter, sans-serif"
-    fontSize: 16px
-    fontWeight: 600
-    lineHeight: 1.4
-    letterSpacing: 0
-  body-md:
-    fontFamily: "Inter, sans-serif"
-    fontSize: 16px
-    fontWeight: 400
-    lineHeight: 1.5
-    letterSpacing: 0
-  body-sm:
-    fontFamily: "Inter, sans-serif"
-    fontSize: 14px
-    fontWeight: 400
-    lineHeight: 1.5
-    letterSpacing: 0
-  caption:
-    fontFamily: "Inter, sans-serif"
-    fontSize: 13px
-    fontWeight: 500
-    lineHeight: 1.4
-    letterSpacing: 0
-  code:
-    fontFamily: "JetBrains Mono, ui-monospace, monospace"
-    fontSize: 14px
-    fontWeight: 400
-    lineHeight: 1.5
-    letterSpacing: 0
-  button:
-    fontFamily: "Inter, sans-serif"
-    fontSize: 14px
-    fontWeight: 600
-    lineHeight: 1
-    letterSpacing: 0
-  nav-link:
-    fontFamily: "Inter, sans-serif"
-    fontSize: 14px
-    fontWeight: 500
-    lineHeight: 1.4
-    letterSpacing: 0
+**Reference:** a dense, neutral, border-driven console. Left sidebar with a scope switcher at the top, a quiet content area built from bordered panels and separator-based rows, monospace for machine values, colour used almost nowhere.
 
-rounded:
-  xs: 4px
-  sm: 6px
-  md: 8px
-  lg: 12px
-  xl: 16px
-  pill: 9999px
-  full: 9999px
+**Take from it:** the shell, the panel-with-header, the row density, the restraint.
 
-spacing:
-  xxs: 4px
-  xs: 8px
-  sm: 12px
-  md: 16px
-  lg: 24px
-  xl: 32px
-  xxl: 48px
-  section: 96px
+**Change from it:** contrast. The product ships WCAG 2.2 AA everywhere, so every grey in this document is darker than the console grey it's derived from. Where the reference uses a hairline no one can see, we use a hairline that everyone can see.
 
-components:
-  button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
-    typography: "{typography.button}"
-    rounded: "{rounded.md}"
-    padding: 12px 20px
-    height: 40px
-  button-primary-active:
-    backgroundColor: "{colors.primary-active}"
-    textColor: "{colors.on-primary}"
-    rounded: "{rounded.md}"
-  button-primary-disabled:
-    backgroundColor: "{colors.primary-disabled}"
-    textColor: "{colors.muted}"
-    rounded: "{rounded.md}"
-  button-secondary:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    typography: "{typography.button}"
-    rounded: "{rounded.md}"
-    padding: 12px 20px
-    height: 40px
-  button-icon-circular:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.full}"
-    size: 36px
-  button-text-link:
-    backgroundColor: transparent
-    textColor: "{colors.ink}"
-    typography: "{typography.button}"
-  text-link:
-    backgroundColor: transparent
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-  top-nav:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    typography: "{typography.nav-link}"
-    height: 64px
-  nav-pill-group:
-    backgroundColor: "{colors.surface-soft}"
-    textColor: "{colors.ink}"
-    typography: "{typography.nav-link}"
-    rounded: "{rounded.pill}"
-    padding: 6px
-  hero-band:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    typography: "{typography.display-xl}"
-    padding: 96px
-  hero-app-mockup-card:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.xl}"
-  feature-card:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.ink}"
-    typography: "{typography.title-md}"
-    rounded: "{rounded.lg}"
-    padding: 32px
-  feature-icon-card:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    typography: "{typography.title-sm}"
-    rounded: "{rounded.lg}"
-    padding: 24px
-  product-mockup-card:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.lg}"
-    padding: 24px
-  testimonial-card:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.lg}"
-    padding: 24px
-  pricing-tier-card:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    typography: "{typography.title-lg}"
-    rounded: "{rounded.lg}"
-    padding: 32px
-  pricing-tier-card-featured:
-    backgroundColor: "{colors.surface-dark}"
-    textColor: "{colors.on-dark}"
-    typography: "{typography.title-lg}"
-    rounded: "{rounded.lg}"
-    padding: 32px
-  text-input:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    padding: 10px 14px
-    height: 40px
-  text-input-focused:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-  category-tab:
-    backgroundColor: transparent
-    textColor: "{colors.muted}"
-    typography: "{typography.nav-link}"
-    padding: 8px 14px
-    rounded: "{rounded.md}"
-  category-tab-active:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    typography: "{typography.nav-link}"
-    rounded: "{rounded.md}"
-  avatar-circle:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.full}"
-    size: 36px
-  badge-pill:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.ink}"
-    typography: "{typography.caption}"
-    rounded: "{rounded.pill}"
-    padding: 4px 12px
-  rating-stars:
-    backgroundColor: transparent
-    textColor: "{colors.badge-orange}"
-    typography: "{typography.caption}"
-  cta-band-light:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.ink}"
-    typography: "{typography.display-sm}"
-    rounded: "{rounded.lg}"
-    padding: 48px
-  footer:
-    backgroundColor: "{colors.surface-dark}"
-    textColor: "{colors.on-dark-soft}"
-    typography: "{typography.body-sm}"
-    padding: 64px
+**It should feel:** precise, calm, slightly technical, personal without being decorative.
+
+**It should not feel like:** a social network, an enterprise CRM, a wall of cards, a marketing template.
+
+Three rules that decide most arguments:
+
+1. **User data outranks chrome.** Names, dates, notes and relationships get more visual weight than the containers around them.
+2. **Structure comes from lines, space and type.** No shadows, no gradients, no glass, no elevation.
+3. **Nothing changes under someone's feet.** This is the product's first principle (spec 3.1) and it is a *visual* rule too: no layout that silently re-flows, no destructive action without a named consequence, no auto-applied structure update.
+
 ---
 
-## Overview
+## 2. Accessibility contract
 
-KolleK is a clean, friendly modern-SaaS interface — white canvas (`{colors.canvas}` — #ffffff) with black primary CTAs (`{colors.primary}` — #111111), Inter display typography, and `{colors.surface-card}` (#f5f5f5) light-gray cards holding product UI fragments. The system reads as confidently engineered without trying to impress — every band has clear hierarchy, generous whitespace, and a single primary action.
+AA is a delivery condition, not a phase. Two consequences specific to this product:
 
-KolleK doesn't paint marketing illustrations of the product; it shows the actual product chrome at small scale embedded in the marketing flow.
+**Fields are generated, not hand-built.** A screen is assembled from user-defined templates, so accessibility can't be retrofitted screen by screen. Each *field type* is made accessible once, in its component, and every template inherits it. A template author can produce an ugly page; they must not be able to produce an inaccessible one.
 
-KolleK doesn't use illustrations inside the logged app; it only displays icons and text to deliver value.
+**The builder is a product surface.** Creating a template, reordering sections and editing a repeater must all work with keyboard and screen reader. It's the hardest screen in the product and it doesn't get an exemption.
 
-KolleK's design is simple. It has long separators (borders) that take the entire available width and height. It is aimed for efficiency, and for geeks who prefer efficiency and clarity over complexity.
+Non-negotiables on every screen:
 
-Everything needed to build UI is in this file: **YAML above** (every color hex, type scale, spacing,
-corner radii, border widths, and a few control "recipes") plus **this prose** (how the pieces fit
-together). Rules use RFC 2119: MUST, MUST NOT, SHOULD, MAY.
+- Keyboard-complete, logical tab order, visible focus, no traps outside modals.
+- Text 4.5:1, large text 3:1, control boundaries and focus indicators 3:1.
+- Meaning never carried by colour alone — always a word or a shape too.
+- Persistent labels; placeholders are never labels.
+- Readable at 200% zoom and at 320px width.
+- `prefers-reduced-motion` removes motion rather than shortening it.
+- Errors programmatically tied to their field; dynamic results announced.
 
-**Key Characteristics:**
-- White canvas with black primary CTA (`{colors.primary}` — #111111). Buttons are `{rounded.md}` (8px) with confident weight-600 labels. Standard friendly-SaaS button.
-- Avatars are circular (`{rounded.full}`), 36px diameter.
-- Footer is dark navy (`{colors.surface-dark}` — #101010) with light text (`{colors.on-dark-soft}` — #a1a1aa).
-- Spacing rhythm is `{spacing.section}` (96px) between major bands — tight enough to feel modern-SaaS but generous enough to breathe.
-- Border radius is hierarchical: `{rounded.md}` (8px) for buttons + inputs, `{rounded.lg}` (12px) for content cards, `{rounded.xl}` (16px) for the hero app-mockup container, `{rounded.pill}` for nav-pill-group + badges, `{rounded.full}` for avatars + icon buttons.
+---
 
-### Atmosphere rules
+## 3. Tokens
 
-- **MUST** default to neutral backgrounds (`surface`, `background-neutral`) for the ~90% of the
-  canvas that is not communicating meaning.
-- **MUST** reserve saturated color for one of: semantic roles (brand, danger, warning, success,
-  information, discovery), decorative accents (tags, file types, avatar chips), or data
-  visualization.
-- **MUST** compose layouts on the 8px grid via the `spacing` scale (`space-100`, `space-200`, etc.
-- **MUST** pair every elevated surface with its matching shadow token.
-- **MUST NOT** imitate Material's depth theatre (floating cards everywhere), generic Shadcn/Tailwind
-  neutral gradients, or marketing site branding; this system is for practical product UI.
-- **SHOULD** prefer whitespace and borders for grouping before reaching for elevation.
-- **SHOULD** let the canvas be mostly quiet so that color and motion (when used) carry actual
-  signal.
+Semantic tokens only in components. Never a raw hex, px radius or px font size in a feature view.
 
-## Colors
+### 3.1 Colour — light (canonical)
 
-### Brand & Accent
-- **Primary** (`{colors.primary}` — #111111): The dominant action color. All primary CTAs, h1/h2 display type. Press state shifts to `{colors.primary-active}` (#242424).
-- **Brand Accent** (`{colors.brand-accent}` — #3b82f6): Used sparely on inline links and on a small badge / "Customer story" highlight. KolleK is a near-monochrome brand — the blue appears rarely.
-- **Badge Pastels** — A small pastel set for category badges and avatar fills: `{colors.badge-orange}` (#fb923c), `{colors.badge-pink}` (#ec4899), `{colors.badge-violet}` (#8b5cf6), `{colors.badge-emerald}` (#34d399). These appear on tag pills and small accent moments inside product UI fragments — never on hero CTAs.
+| Token | Value | On white | Use |
+|---|---|---|---|
+| `--canvas` | `#FFFFFF` | — | Page background |
+| `--surface` | `#FFFFFF` | — | Panels, menus, dialogs |
+| `--surface-subtle` | `#F7F7F7` | — | Panel headers, inset regions, hover |
+| `--surface-muted` | `#EFEFEF` | — | Selected neutral surface |
+| `--surface-inverse` | `#171717` | — | Marketing footer, tooltips |
+| `--border-subtle` | `#E4E4E4` | 1.3:1 | Row separators only (decorative) |
+| `--border` | `#D0D0D0` | 1.6:1 | Panel and section edges |
+| `--border-control` | `#8A8A8A` | 3.5:1 | **Inputs, checkboxes, switches, any control edge** |
+| `--border-strong` | `#171717` | 17.9:1 | Selected / active boundary |
+| `--text` | `#171717` | 17.9:1 | Primary text |
+| `--text-secondary` | `#525252` | 7.8:1 | Supporting text |
+| `--text-muted` | `#616161` | 6.2:1 | Metadata, placeholders |
+| `--text-disabled` | `#767676` | 4.6:1 | Disabled text (still legible) |
+| `--text-inverse` | `#FFFFFF` | — | Text on dark |
+| `--primary` | `#171717` | — | Primary button fill |
+| `--primary-hover` | `#2E2E2E` | — | |
+| `--primary-active` | `#000000` | — | |
+| `--accent` | `#1D4ED8` | 6.7:1 | Links, selection, active nav |
+| `--accent-subtle` | `#EFF4FF` | — | Selected informational surface |
+| `--focus` | `#1D4ED8` | 6.7:1 | Focus ring |
+| `--success` | `#166534` | 7.1:1 | |
+| `--success-subtle` | `#F0FDF4` | — | |
+| `--warning` | `#854D0E` | 6.9:1 | |
+| `--warning-subtle` | `#FEFAEB` | — | |
+| `--danger` | `#B91C1C` | 6.5:1 | |
+| `--danger-subtle` | `#FEF2F2` | — | |
 
-### Surface
-- **Canvas** (`{colors.canvas}` — #ffffff): The default page floor.
-- **Surface Soft** (`{colors.surface-soft}` — #f8f9fa): Nav-pill-group background, very-soft section dividers.
-- **Surface Card** (`{colors.surface-card}` — #f5f5f5): Feature cards, testimonial cards, badge pills, default avatar fills.
-- **Surface Strong** (`{colors.surface-strong}` — #e5e7eb): Hairline border alternative; disabled button background.
-- **Surface Dark** (`{colors.surface-dark}` — #101010): The footer background — the only dark surface on every page. Also used for the featured pricing tier card.
-- **Surface Dark Elevated** (`{colors.surface-dark-elevated}` — #1a1a1a): Used for nested cards inside the dark footer or featured pricing card.
-- **Hairline** (`{colors.hairline}` — #e5e7eb): The 1px border tone on light surfaces. Used on input borders, table dividers, content card outlines (sometimes).
-- **Hairline Soft** (`{colors.hairline-soft}` — #f3f4f6): A barely-visible divider used between sections that share the white canvas.
+Two rules people get wrong:
 
-### Text
-- **Ink** (`{colors.ink}` — #111111): All headlines and primary text.
-- **Body** (`{colors.body}` — #374151): Default running-text color.
-- **Muted** (`{colors.muted}` — #6b7280): Secondary text — sub-headings, breadcrumbs, footer body.
-- **Muted Soft** (`{colors.muted-soft}` — #898989): Tertiary text — captions, fine-print, copyright lines.
-- **On Primary / On Dark** (`{colors.on-primary}` / `{colors.on-dark}` — #ffffff): Text on primary buttons and dark footer.
-- **On Dark Soft** (`{colors.on-dark-soft}` — #a1a1aa): Footer body text — slightly muted white for the link rows.
+- `--border-subtle` is **decorative**. If a border is the only thing telling you where a control begins, it must be `--border-control` or darker.
+- The accent is **functional**. Links, focus, selection, active nav indicator, informational status. Primary buttons stay near-black.
 
-### Semantic
-- **Success** (`{colors.success}` — #10b981): Confirmation states, success badges in product UI.
-- **Warning** (`{colors.warning}` — #f59e0b): Warning callouts.
-- **Error** (`{colors.error}` — #ef4444): Validation errors.
+### 3.2 Colour — dark
 
-## Typography
+Same hierarchy, same border logic. Verify every semantic colour independently — none of these are derived by inversion.
 
-### Font Family
-The system runs **Inter** for everything. The fallback stack walks `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif` for both families.
+| Token | Value |
+|---|---|
+| `--canvas` | `#0F0F0F` |
+| `--surface` | `#171717` |
+| `--surface-subtle` | `#1E1E1E` |
+| `--surface-muted` | `#282828` |
+| `--border-subtle` | `#2C2C2C` |
+| `--border` | `#3D3D3D` |
+| `--border-control` | `#767676` |
+| `--border-strong` | `#F5F5F5` |
+| `--text` | `#F5F5F5` |
+| `--text-secondary` | `#C7C7C7` |
+| `--text-muted` | `#A1A1A1` |
+| `--text-disabled` | `#8A8A8A` |
+| `--primary` | `#F5F5F5` (dark text on it) |
+| `--accent` | `#8FB3FF` |
+| `--success` | `#5CCB82` |
+| `--warning` | `#E2B44A` |
+| `--danger` | `#F08A8A` |
 
-### Hierarchy
+Never: glowing borders, coloured shadows, pure black everywhere, reduced text contrast, stacked surface layers.
 
-| Token | Size | Weight | Line Height | Letter Spacing | Use |
-|---|---|---|---|---|---|
-| `{typography.display-xl}` | 64px | 600 | 1.05 | -2px | Homepage h1 ("The better way to schedule your meetings") — Inter |
-| `{typography.display-lg}` | 48px | 600 | 1.1 | -1.5px | Section heads ("Your all-purpose scheduling app") — Inter |
-| `{typography.display-md}` | 36px | 600 | 1.15 | -1px | Sub-section heads, card titles — Inter |
-| `{typography.display-sm}` | 28px | 600 | 1.2 | -0.5px | CTA-band heads, pricing tier prices — Inter |
-| `{typography.title-lg}` | 22px | 600 | 1.3 | -0.3px | Pricing plan names — Inter |
-| `{typography.title-md}` | 18px | 600 | 1.4 | 0 | Feature card titles, intro paragraphs |
-| `{typography.title-sm}` | 16px | 600 | 1.4 | 0 | Small card titles, list labels |
-| `{typography.body-md}` | 16px | 400 | 1.5 | 0 | Default running-text |
-| `{typography.body-sm}` | 14px | 400 | 1.5 | 0 | Footer body, fine-print |
-| `{typography.caption}` | 13px | 500 | 1.4 | 0 | Badge labels, captions |
-| `{typography.code}` | 14px | 400 | 1.5 | 0 | Code snippets, API examples — JetBrains Mono |
-| `{typography.button}` | 14px | 600 | 1.0 | 0 | Standard button labels |
-| `{typography.nav-link}` | 14px | 500 | 1.4 | 0 | Top-nav menu items |
+### 3.3 Type
 
-### Principles
-Inter is the brand voice — every display headline uses it. Inter handles the supporting type. The boundary is strict: never put body copy in never put a display headline in Inter. Inter without negative letter-spacing reads as off-brand — the -0.5 to -2px tracking is part of the voice.
+One sans family, one mono. Bundled — no runtime font CDN.
 
-Display weight stays at 600 across all sizes — never 700, never 500. The middle weight is what makes Inter feel modern and confident without becoming bombastic.
+```
+--font-sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+--font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+```
 
-## Layout
+**Application scale**
 
-### Spacing System
-- **Base unit:** 4px.
-- **Tokens:** `{spacing.xxs}` 4px · `{spacing.xs}` 8px · `{spacing.sm}` 12px · `{spacing.md}` 16px · `{spacing.lg}` 24px · `{spacing.xl}` 32px · `{spacing.xxl}` 48px · `{spacing.section}` 96px.
-- **Section padding:** `{spacing.section}` (96px) — the universal vertical rhythm between editorial bands.
-- **Card internal padding:** `{spacing.xl}` (32px) for feature cards and pricing tier cards; `{spacing.lg}` (24px) for testimonial and product-mockup cards.
-- **Gutters:** `{spacing.lg}` (24px) between cards in 3-up grids; `{spacing.md}` (16px) inside footer columns.
-
-### Grid & Container
-- **Max content width:** ~1200px centered on marketing pages.
-- **Editorial body:** Single 12-column grid; hero band often uses 7/5 split (h1 left, app mockup card right).
-- **Feature card grids:** 3-up at desktop, 2-up at tablet, 1-up at mobile.
-- **Pricing grid:** 4-up at desktop, 2-up at tablet, 1-up at mobile.
-- **Footer:** 4-column link list at desktop, wrapping to 2-up at tablet, 1-up at mobile.
-
-### Whitespace Philosophy
-KolleK uses generous but not excessive whitespace — section padding sits at 96px (modern-SaaS standard), and card internal padding stays at 32px. The rhythm is calibrated for fast scanning: every band has a single h1 + h2 + supporting cards, never densely packed lists. The result reads as confident-not-shouting.
-
-## Elevation & Depth
-
-| Level | Treatment | Use |
+| Token | Size / weight / line-height | Use |
 |---|---|---|
-| Flat | No shadow, no border | Body sections, top nav, hero bands |
-| Soft hairline | 1px `{colors.hairline}` border | Inputs, table dividers, occasionally on cards |
-| Card surface | `{colors.surface-card}` background — no shadow | Feature cards, testimonials |
-| Subtle drop shadow | Faint shadow at low alpha | Pricing tier cards, hover-elevated states (the system uses `0 1px 2px rgba(0,0,0,0.05)` and `0 4px 12px rgba(0,0,0,0.08)`) |
-| Featured tier | `{colors.surface-dark}` background, no shadow needed | The featured pricing tier inverts to dark surface — color contrast does the elevation work |
+| `page-title` | 20 / 600 / 1.3 | Page heading |
+| `section-title` | 15 / 600 / 1.4 | Panel and section headings |
+| `body` | 14 / 400 / 1.5 | Default |
+| `body-strong` | 14 / 500 / 1.5 | Values that matter |
+| `small` | 13 / 400 / 1.45 | Secondary text |
+| `caption` | 12 / 500 / 1.4 | Labels, metadata |
+| `mono` | 12.5 / 400 / 1.5 | Technical values |
+| `button` | 14 / 500 / 1 | Buttons |
 
-The elevation philosophy is **soft and modern** — small drop shadows on elevated cards, color-block contrast for emphasis. No heavy shadows, no neumorphism, no glassmorphism.
+App headings never exceed 20px. Personal information is not marketing typography.
 
-### Decorative Depth
-- Calendar widgets and product UI fragments embedded inside marketing cards carry their own internal shadows from the product UI itself — these are not system tokens, they're product chrome shown as content.
-- Avatar circles in testimonial sections sometimes carry pastel fill colors (`{colors.badge-orange}`, `{colors.badge-pink}`, etc.) — adds a small chromatic flourish without breaking the monochrome brand voice.
+**Marketing scale:** 52 / 40 / 30 / 24 display sizes at 600, tight tracking (−0.02em), body 17–18/1.55. Same family as the app.
 
-## Shapes
+**Mono is for:** IDs, API tokens and keys, webhook event names, keyboard shortcuts, field slugs, import references, changelog values, code. **Never** for names, notes, journal entries or ordinary dates.
 
-### Border Radius Scale
+**Rules:** weight before colour for hierarchy; size before weight 700; no uppercase headings (uppercase allowed for 11–12px metadata labels); reading width 65–75 characters; never below 400 for body.
 
-| Token | Value | Use |
-|---|---|---|
-| `{rounded.xs}` | 4px | Almost no use — reserved for badge accents |
-| `{rounded.sm}` | 6px | Small inline buttons, dropdown items |
-| `{rounded.md}` | 8px | Standard CTA buttons, text inputs, category tabs |
-| `{rounded.lg}` | 12px | Content cards (feature cards, testimonial cards, pricing tier cards) |
-| `{rounded.xl}` | 16px | Hero app-mockup card (a slightly larger radius for the marquee component) |
-| `{rounded.pill}` | 9999px | Nav-pill-group, badge pills |
-| `{rounded.full}` | 9999px / 50% | Avatars, icon buttons |
+### 3.4 Space, shape, motion
 
-### Photography Geometry
-Avatar photos use `{rounded.full}` (perfect circles) at 36px or 40px. Product UI fragments inside marketing cards retain their native chrome (which often has its own internal radii — e.g., calendar grid cells, button rows). Hero illustration zones use 16:9 or 4:3 ratios with `{rounded.xl}` corners.
+Base unit 4px: `1:4 2:8 3:12 4:16 5:20 6:24 8:32 10:40 12:48 16:64 20:80 24:96`.
 
-## Components
+App defaults: page padding 24 (16 mobile) · section gap 32 · heading→content 12 · row padding 10/12 · panel body 16 · dialog 20 · field gap 16 · label→control 6 · inline 8. Marketing may breathe: 80–96 between sections.
 
-### Top Navigation
+Radius: `xs 3` indicators · `sm 4` badges · `md 6` inputs, buttons · `lg 8` panels, menus, dialogs · `full` avatars only. Nothing above 8px in the app. Buttons are never pills.
 
-**`top-nav`** — White nav bar pinned to the top of every page. 64px tall, `{colors.canvas}` background. Carries the KolleK wordmark + logo at left (the lowercase "KolleK" with the brand circle), primary horizontal menu (Product, Solutions, Resources, Pricing, Enterprise) center, right-side cluster with "Sign in" text-link, "Sign up free" `{component.button-primary}`, and a sometimes-visible language selector. Menu items in `{typography.nav-link}` (Inter 14px / 500).
+Motion: `fast 100ms` feedback · `standard 150ms` menus · `slow 200ms` dialogs and panels. Allowed: opacity, small translation, height, spinner, progress. Not allowed: spring, bounce, overshoot, parallax, zoom, hover movement.
 
-**`nav-pill-group`** — A small pill-radius wrapper around 2-3 sub-nav segments (e.g., the product-mode switcher between "Personal" / "Teams" / "Enterprise"). Background `{colors.surface-soft}` with internal padding 6px, rounded `{rounded.pill}`. Active segment renders as a white-canvas pill with a subtle drop shadow inside the wrapper. The pill-in-pill treatment is one of KolleK's signature interactive components.
+---
 
-### Buttons
+## 4. Shell
 
-**`button-primary`** — The signature primary CTA. Background `{colors.primary}` (#111111), text `{colors.on-primary}`, type `{typography.button}` (Inter 14px / 600), padding 12px × 20px, height 40px, rounded `{rounded.md}` (8px). Active state `button-primary-active` shifts to `{colors.primary-active}` (#242424).
+```
+┌──────────────┬────────────────────────────────────────────┐
+│ vault switch │  breadcrumb                    search  ⌘K  │ 56
+├──────────────┼────────────────────────────────────────────┤
+│ ⌘K search    │  Page title              [Secondary][Add]  │
+│              │  ─────────────────────────────────────────  │
+│ nav group    │  ┌──────────────────────────────────────┐  │
+│  · item      │  │ Panel header             [action]    │  │
+│  · item      │  ├──────────────────────────────────────┤  │
+│              │  │ row                                  │  │
+│ nav group    │  │ row                                  │  │
+│  · item      │  └──────────────────────────────────────┘  │
+│              │                                            │
+│ account      │                                            │
+└──────────────┴────────────────────────────────────────────┘
+```
 
-**`button-secondary`** — White button with hairline outline. Background `{colors.canvas}`, text `{colors.ink}`, 1px hairline border, same padding + height + radius as primary.
+Sidebar 248px (collapsed 56) · top bar 56 · page header min 52 · content padding 24 · right detail panel 360–400.
 
-**`button-icon-circular`** — 36 × 36px circular icon button. Background `{colors.canvas}`, hairline border, ink-color icon. Used for share, "view more", carousel arrows.
+Sticky regions (sidebar, page header, table header, dialog action bar) use a solid background and a one-pixel bottom border. Never a shadow.
 
-**`button-text-link`** — Inline text button, no background. Used for "Sign in" in the top nav and inline CTA links inside cards.
+Content widths: forms and settings 720 · reading content 720 · contact profile 1120 · tables use the available width · marketing 1200.
 
-**`text-link`** — Inline body links in `{colors.ink}` (the brand keeps inline links monochrome). Underlined on hover (not documented per the no-hover policy, but mentioned for context).
+---
 
-### Inputs & Forms
+## 5. Sidebar and the vault switcher
 
-**`text-input`** — Standard text input. Background `{colors.canvas}`, text `{colors.ink}`, type `{typography.body-md}`, rounded `{rounded.md}` (8px), padding 10px × 14px, height 40px. 1px hairline border in `{colors.hairline}`.
+The sidebar has **two scopes**, and it is always obvious which one you're in.
 
-**`text-input-focused`** — Focus state. Border thickens or shifts to `{colors.ink}` for emphasis.
+### 5.1 Vault scope
 
-### Tags / Badges
+The switcher sits at the very top, above search, and is the first thing in the tab order.
 
-**`badge-pill`** — Small pill label used for category tags ("Product", "Article", "New") and pastel-fill avatar substitutes. Background `{colors.surface-card}` or one of the badge pastels (`{colors.badge-orange}`, `{colors.badge-pink}`, etc.), text `{colors.ink}`, type `{typography.caption}` (13px / 500), rounded `{rounded.pill}`, padding 4px × 12px.
+```
+┌────────────────────────────┐
+│ ▪ Famille              ⌃⌄ │  44px
+└────────────────────────────┘
+```
 
-**`avatar-circle`** — 36px diameter, rounded `{rounded.full}`. Either holds a photo or a pastel fill with initials in `{typography.caption}`.
+- Full-width row, 44px, 8px side margin, radius 6, `--surface-subtle` background, `--border-control` edge.
+- Contents: 20px monogram tile (radius 4, neutral fill, 2 initials), vault name at `body-strong` truncated with an accessible full name, up/down chevron 16px right-aligned.
+- It is a `<button aria-haspopup="menu" aria-expanded>`. Accessible name: *"Vault: Famille. Change vault."*
+- Never colour-coded alone. A vault may carry an accent, but the name and monogram always identify it.
 
-**`rating-stars`** — Inline star rating in `{colors.badge-orange}` (#fb923c). Used near testimonial avatars to display a 5-star satisfaction score.
+**The menu:** current vault first with a checkmark (a shape, not a highlight) · other vaults, each with contact count · a filter input above the list when there are more than 8 · separator · *Vault settings* · *New vault* · *All vaults*. Solid surface, `--border-strong`, radius 8, 4px padding, 32px items, no shadow. Arrow keys move, Enter selects, Escape closes, focus returns to the trigger.
 
-### Tab / Filter
+**Switching is a navigation, not a re-render.** Go to the target vault's home. Never keep the user on the same page with different data underneath — that breaks principle 3.1 and is disorienting on a screen reader. Announce the new scope in a live region.
 
-**`category-tab`** + **`category-tab-active`** — Used inside the nav-pill-group. Inactive: transparent background, `{colors.muted}` text. Active: `{colors.canvas}` background, `{colors.ink}` text, subtle drop shadow inside the pill-group wrapper. Padding 8px × 14px, rounded `{rounded.md}`.
+**Vault navigation:** Journal · People · Entities · Groups · Reminders. Group labels are 12/500 `--text-muted`, sentence case, not uppercase.
 
-### CTA / Footer
+### 5.2 Account scope
 
-**`cta-band-light`** — A pre-footer "Smarter, simpler scheduling" CTA card. Background `{colors.surface-card}`, rounded `{rounded.lg}`, padding `{spacing.xxl}` (48px). Carries an h2 in `{typography.display-sm}`, a sub-line, and a `{component.button-primary}` centered.
+Settings, structures, marketplace, webhooks, API tokens, changelog. The switcher is replaced by an account row with the same anatomy — no chevron pretending to be a vault picker. A single **← Back to Famille** row returns to the last vault.
 
-**`footer`** — Dark navy footer that closes every page. Background `{colors.surface-dark}` (#101010), text `{colors.on-dark-soft}`. 4-column link list at desktop covering Product / Solutions / Company / Resources. Vertical padding 64px. The KolleK wordmark sits at the top-left in `{colors.on-dark}`. The footer is the only dark surface on every page — the deliberate inversion visually closes the page.
+### 5.3 Nav items
 
-## Do's and Don'ts
+32px tall, radius 6, 16px icon + 14/400 label, 8px gap. Hover `--surface-subtle`. Active: `--surface-muted`, label at 500, and a 2px accent bar on the leading edge — three signals, only one of which is colour. `aria-current="page"`. Expandable groups use `aria-expanded` and a chevron; the parent row is itself clickable.
 
-### Do
-- Reserve `{colors.primary}` (#111111) for primary CTAs and h1/h2 type. KolleK's button is near-black, not blue.
-- Use Inter for every display headline. Pair with Inter body. Never blur the boundary.
-- Apply negative letter-spacing on display sizes (-0.5 to -2px). Inter without it reads as off-brand.
-- Use `{component.feature-card}` (light gray) and `{component.product-mockup-card}` (white with chrome) deliberately — the gray cards signal "abstract feature claim", white cards signal "look at the actual product".
-- Embed real product UI fragments inside marketing cards. Don't paint marketing illustrations of the product when you can show the product itself.
-- Keep avatar circles at 36px, perfect circles, sometimes with pastel fills. Avatars are the only place where badge pastels appear.
-- Use `{component.nav-pill-group}` for grouped sub-nav segments. The pill-in-pill treatment is signature.
-- End every page with the dark footer. The light-to-dark transition is part of the editorial rhythm.
+Keep the list short. Everything else lives in the command palette (⌘K / Ctrl K): navigation, contact search, create actions, recent contacts, settings, shortcut discovery. Fully keyboard operable, and never the only route to a feature.
 
-### Don't
-- Don't use accent colors (`{colors.brand-accent}`, badge pastels) on primary CTAs. The system is monochrome at the action layer.
-- Don't bold display weight beyond 600. Inter at 700 reads as bombastic.
-- Don't use rounded radius beyond `{rounded.xl}` (16px) on cards. Larger radii read as consumer-app, not professional booking software.
-- Don't put dark surface cards anywhere except the footer and the featured pricing tier. The dark surface is a deliberate, scarce signal.
-- Don't repeat the same surface mode in two consecutive bands. KolleK's pacing alternates white → light-gray → white → product-mockup-card → white → dark-footer.
-- Don't add hover state styling beyond what the system already encodes — primary darkens on press; nothing else changes.
+---
 
-## Responsive Behavior
+## 6. Surfaces
 
-### Breakpoints
+**Page** — the canvas. Never inside a card.
 
-| Name | Width | Key Changes |
-|---|---|---|
-| Mobile | < 768px | Hamburger nav; hero h1 64→32px; hero-app-mockup-card stacks below content; feature grids 1-up; pricing 1-up; footer 4 cols → 1 |
-| Tablet | 768–1024px | Top nav stays horizontal but tightens; nav-pill-group wraps; feature cards 2-up; pricing 2-up |
-| Desktop | 1024–1440px | Full top-nav with all menu items; 3-up feature cards; 4-up pricing tiers |
-| Wide | > 1440px | Same as desktop with more outer breathing room; max content width caps at 1200px |
+**Section** — a semantic group, separated by spacing and a heading. Reach for this first.
 
-### Touch Targets
-- `{component.button-primary}` at minimum 40 × 40px.
-- `{component.button-icon-circular}` at exactly 36 × 36 — slightly under WCAG's 44 × 44 but the centered icon and full-circle silhouette compensate.
-- `{component.text-input}` height is 40px.
-- `{component.category-tab}` rendered inside nav-pill-group has 8 × 14 padding; effective tap area meets 44px+ with the surrounding pill.
+**Panel** — a bounded unit with a header. This is the workhorse of the console look:
 
-### Collapsing Strategy
-- Top nav collapses to hamburger at < 768px; menu opens as a full-screen sheet.
-- Hero band's 7-5 grid collapses to single-column on mobile — h1 + sub-head + buttons first, then the app-mockup card below.
-- Feature grids reduce columns rather than scaling cards down.
-- Pricing tier cards collapse 4 → 2 → 1; featured-tier dark surface stays visually distinct at every breakpoint.
-- Nav-pill-group wraps to multi-row on tablet if the segments don't fit horizontally.
+- 1px `--border`, radius 8, `--surface` body, no shadow.
+- Header: `--surface-subtle`, min 44px, `section-title`, optional right-aligned action. Bottom border.
+- Body: 16px padding, or zero when it contains rows.
+
+Use a panel when the content is an independent unit — a profile section, a settings group, a reminder list, an import summary. **Do not wrap every paragraph.** If a heading and 24px of space would do the same job, use the heading.
+
+**Inset region** — `--surface-subtle`, no border, for metadata, read-only summaries, provenance and technical values.
+
+**Row group** — related rows separated by 1px `--border-subtle`, no box per item. Default for contact lists, relationships, reminders, activities, settings, custom fields.
+
+---
+
+## 7. Components
+
+**Buttons** — 36px tall (ghost may be 32), radius 6, 14/500, 14px horizontal padding, icon 16px, no shadow.
+Primary: `--primary` fill, inverse text. One per region.
+Secondary: surface fill, `--border-control` edge.
+Ghost: transparent, hover `--surface-subtle`.
+Destructive: starts as secondary or ghost; a filled red button appears only at the final confirmation.
+Icon button: 32–36 visible, 44 effective target, accessible name required.
+
+**Inputs** — 36px, radius 6, 10px padding, 14px, `--border-control`, `--surface`. Textarea min 96px. Labels 13/500 above the control, always visible. Required stated in text. Errors sit under the field, tied by `aria-describedby`, with an icon and a sentence.
+
+**Select / combobox** — native select unless the user needs search, creation, multi-select or large datasets. Combobox menus: solid surface, border, radius 8, no shadow, full ARIA combobox pattern.
+
+**Checkbox / radio / switch** — native semantics, 16–18px visible, whole label row clickable, custom Monica checkmark. Checked state must have a mark, not just a fill. Switches only for settings that apply immediately; checkboxes for forms that submit.
+
+**Badge** — 22px, 0 8px padding, **radius 4** (not a pill), 12/500, neutral fill by default. Semantic colour only when the status is semantic, and always with a word. Use for: status, activity nature, relationship certainty, field type, sensitivity, marketplace state.
+
+**Tabs** — horizontal row, bottom border across the whole list, active tab in `--text` with a 2px bottom border. No enclosing pill, no card-style active state. Segmented control only for compact mode switches.
+
+**Table** — header 36px, rows 44px (56 when two-line), horizontal separators only, no vertical rules, text left, numbers right, actions in the final column. Row actions are visible on focus and hover but never *only* on hover; important actions keep their label. Rows are not cards. Sortable headers are buttons with an announced state.
+
+**Menu** — solid surface, `--border-strong`, radius 8, 4px padding, 32px items, no shadow, destructive actions after a separator.
+
+**Dialog** — width fits content, border, radius 8, dark translucent backdrop, no shadow. Title, optional description, actions at the bottom, focus trapped and restored, Escape closes unless unsafe. Not for multi-section editing — use a page.
+
+**Side panel** — preserves context while inspecting a contact, reminder, relationship or activity. Left border, no shadow, sticky header, full-screen sheet on mobile.
+
+**Tooltip** — dark surface, light text, 12px, radius 4, no shadow. Explains icon-only controls. Never holds essential instructions or interactive content.
+
+**Toast** — one line, optional undo, auto-dismiss only when safe, persistent when action is required, announced. No stacks.
+
+**Empty state** — one line icon, a title, one sentence, one action. No illustrations. For a small empty section, a single muted sentence is enough. Not every empty box is an onboarding opportunity.
+
+---
+
+## 8. Product patterns
+
+**Contact list** — rows, not a grid of cards. Name, photo or initials, relationship summary, last interaction, next reminder. Real photos allowed; otherwise initials on a neutral fill. Never generate synthetic faces.
+
+**Contact profile** — a stable spine regardless of template: identity header · primary actions · highlighted fields · sections from the assigned template · relationships · timeline · reminders · files · metadata on request. Sections are headings and dividers, panels only where a section is genuinely independent.
+
+**Generated fields** — every field type has one accessible rendering used identically in view, edit, import, search and the API docs. Layout elements (separator, subheading, help text) are real headings and real descriptions, not styled divs. Custom fields look exactly like built-in fields; never demote them into a "custom data" box.
+
+**Sensitive fields** — masked by default, revealed by an explicit control with an accessible name (*"Show national ID"*), the mask indicated in text as well as visually. Never revealed by hover. Excluded from private links by default, and the exclusion is stated where the link is created.
+
+**Relationships** — direction is written, never implied by an arrow: *"Alex is Jordan's parent" / "Jordan is Alex's child."* Show type, qualifiers as badges, period, and certainty (certain / probable / uncertain) as a word. Deduced and suggested relationships are visually distinguishable from confirmed ones and say where they came from. Editing a relationship states the reciprocal that will be created.
+
+**Timeline** — a chronological list. Thin vertical line, date grouping, compact rows, small nature icons, expandable detail, an explicit distinction between event date and recorded date. Activities and relationship events share one stream. No decorative timeline graphics.
+
+**Journal** — a day is a page: activities, the day's own narrative, a mood. An empty day stays empty; no nudging, no streaks, no gamification. Quick capture is a first-class path, not a reduced form — reachable from the palette, a contact, and the day.
+
+**Reminders** — subject, related contact, due date, recurrence, delivery status, state. Overdue uses a word and an icon, not red alone. *Snooze*, *skip*, *complete* and *turn off the rule* are four distinct labelled actions and the interface says which occurrences each one affects.
+
+**Destructive actions** — name the object and the consequence. Not "Are you sure?" but *"Delete this relationship? This removes the link between Alex and Jordan. Both contacts stay."* When something is disabled rather than deleted (a rule whose source field disappeared), say so where the user will look for it, with the reason and a way back.
+
+**Marketplace and versioning** — a template shows its version, its language, its origin and its install count. An available update is an offer: change note, diff, accept or stay. Never a silent apply, never a nag.
+
+---
+
+## 9. States
+
+Every interactive component defines: default, hover, focus-visible, active, selected, disabled, loading, error.
+
+**Hover** — subtle background, border or text change. No movement, no scale, no shadow. Never the only way to find an important action.
+
+**Focus** — `outline: 2px solid var(--focus); outline-offset: 2px;` on every focusable element, `:focus-visible` where appropriate, never removed without an equally visible replacement.
+
+**Loading** — disable the trigger, inline spinner, preserve the button width, keep the label. Skeletons only where they match the final layout; no shimmer under reduced motion. No indefinite spinner without a sentence.
+
+**Disabled** — stays legible (`--text-disabled` at 4.6:1) and explains itself. Never used to hide a permission or a validation rule.
+
+**Announced** — contact created, changes saved, reminder completed, import finished, validation failed, undo done, vault switched. Not hover or decoration.
+
+---
+
+## 10. Responsive
+
+Breakpoints: mobile <640 · tablet 640–1023 · desktop 1024–1439 · wide ≥1440. Driven by content, not device names.
+
+On mobile: sidebar becomes a drawer, with the vault switcher at its top and the current vault named in the header bar. Padding 16. Page actions stay near the title. Multi-column profiles stack. Tables become row lists when horizontal comparison isn't essential. Detail panels become full-screen sheets.
+
+Adapt, don't shrink: reduce columns, stack regions, move non-essential metadata behind detail views, allow horizontal scroll for genuinely tabular data, preserve touch targets. Never scale type down to make a desktop layout fit, and never hide data to save space.
+
+---
+
+## 11. Icons
+
+Original Monica SVGs only, in the Monica repository. No third-party icon libraries, icon fonts, unicode symbols, emoji or raster icons.
+
+24×24 viewBox, rendered at 16/18/20/24, stroke 1.5, fill none, `stroke="currentColor"`, round caps and joins, ~2px optical padding, simple geometry. Filled variants only for selected nav, status marks and very small shapes. Decorative icons `aria-hidden="true"`; icon-only controls carry an accessible name. Don't animate, don't rotate a generic icon to mean something else.
+
+Activity natures carry a user-chosen icon and colour — from our set, never uploaded, and always beside a label.
+
+---
+
+## 12. Marketing
+
+Same tokens, same type, same icons, more whitespace. Not a second brand.
+
+Hero: one headline, one paragraph, one primary action, one optional secondary, one real Monica screen. Feature sections alternate explanation and real interface. Screenshots come from the running product with demonstration data — no device frames, no fake browser chrome, no stock photography, no abstract SaaS illustration, no generated screenshots, no composited controls. Crop deliberately rather than shrinking a desktop screen until its text is unreadable.
+
+Open-source signals belong in plain sight: source, licence, self-hosting, contributing, changelog, privacy. The inverse surface is used once, in the footer.
+
+Voice: direct, calm, human, specific, non-judgemental. *Add a relationship. Save changes. Complete reminder.* Not *Create relationship entity. Submit. You're all set! Level up your relationships.* Death, separation, estrangement, illness and conflict get neutral, respectful wording — this is a product about people someone cares about.
+
+---
+
+## 13. Review checklist
+
+- Could a border here be replaced by spacing? Is anything wrapped in a panel that didn't need one?
+- Is the primary action obvious, and is there exactly one per region?
+- Are all values from tokens? Any radius above 8? Any raw hex?
+- Do control boundaries reach 3:1? Does every status read without colour?
+- Complete by keyboard, focus always visible, focus restored after overlays?
+- Are hover-only actions reachable another way?
+- Does every field type render accessibly in view, edit, import and search?
+- Are destructive consequences named, and is nothing applied silently?
+- Does it still work with 5,000 contacts, a 40-field template, a 60-character name and German labels?
+- Is this real Monica UI, and does the user's own data dominate the screen?
+
+---
+
+## 14. Do not
+
+Shadows · gradients · glassmorphism · a card per section · radii above 8px · pill-shaped buttons · stock photos · device mockups · fabricated screenshots · third-party icons · emoji as icons · hover-only actions · colour-only meaning · placeholder-as-label · oversized numbers filling space · decorative dashboards · social-media-style profiles · animation without a reason · density bought with accessibility.
