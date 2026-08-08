@@ -10,6 +10,7 @@ use App\Exceptions\LogIsAppendOnly;
 use App\Models\Account;
 use App\Models\Log;
 use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -39,6 +40,28 @@ class LogTest extends TestCase
 
         $this->assertTrue($log->user()->exists());
         $this->assertEquals('michael.scott@dundermifflin.com', $log->user->email);
+    }
+
+    #[Test]
+    public function it_belongs_to_the_vault_the_action_touched(): void
+    {
+        $vault = Vault::factory()->create(['name' => 'Schrute Farms']);
+        $log = Log::factory()->create([
+            'account_id' => $vault->account_id,
+            'vault_id' => $vault->id,
+        ]);
+
+        $this->assertTrue($log->vault()->exists());
+        $this->assertEquals('Schrute Farms', $log->vault->name);
+    }
+
+    #[Test]
+    public function it_touches_no_vault_when_the_action_is_about_the_whole_account(): void
+    {
+        $log = Log::factory()->create();
+
+        $this->assertNull($log->vault_id);
+        $this->assertNull($log->vault);
     }
 
     #[Test]

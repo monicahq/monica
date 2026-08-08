@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\Log;
 use App\Models\User;
+use App\Models\Vault;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -25,6 +26,16 @@ class AccountTest extends TestCase
 
         $this->assertTrue($account->user()->exists());
         $this->assertTrue($user->is($account->user));
+    }
+
+    #[Test]
+    public function it_has_many_vaults(): void
+    {
+        $account = Account::factory()->create();
+        Vault::factory()->create(['account_id' => $account->id, 'name' => 'Schrute Farms']);
+
+        $this->assertTrue($account->vaults()->exists());
+        $this->assertEquals('Schrute Farms', $account->vaults->first()->name);
     }
 
     #[Test]

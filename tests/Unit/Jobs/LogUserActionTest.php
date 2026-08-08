@@ -10,6 +10,7 @@ use App\Jobs\LogUserAction;
 use App\Models\Account;
 use App\Models\Log;
 use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -84,6 +85,36 @@ class LogUserActionTest extends TestCase
 
         $this->assertTrue($user->is($log->loggable));
         $this->assertEquals(['last_name' => ['before' => 'Levinson', 'after' => 'Levinson-Gould']], $log->changes);
+    }
+
+    #[Test]
+    public function it_logs_the_vault_the_action_touched(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        new LogUserAction(
+            account: $user->account,
+            user: $user,
+            action: UserActionEnum::VaultCreation,
+            vault: $vault,
+        )->handle();
+
+        $this->assertEquals($vault->id, Log::query()->latest()->first()->vault_id);
+    }
+
+    #[Test]
+    public function it_touches_no_vault_unless_it_is_given_one(): void
+    {
+        $user = User::factory()->create();
+
+        new LogUserAction(
+            account: $user->account,
+            user: $user,
+            action: UserActionEnum::UserProfileUpdate,
+        )->handle();
+
+        $this->assertNull(Log::query()->latest()->first()->vault_id);
     }
 
     #[Test]

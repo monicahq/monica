@@ -22,6 +22,12 @@ enum UserActionEnum: string implements Translatable
     case MagicLinkCreation = 'magic_link_created';
     case ApiKeyCreation = 'api_key_created';
     case ApiKeyDeletion = 'api_key_deleted';
+    case VaultCreation = 'vault_created';
+    case VaultUpdate = 'vault_updated';
+    case VaultPositionUpdate = 'vault_position_updated';
+    case VaultDefaultSet = 'vault_default_set';
+    case VaultDeletion = 'vault_deleted';
+    case VaultRestoration = 'vault_restored';
 
     /**
      * What the action reads as in the logs, written about whoever performed it.
@@ -45,6 +51,12 @@ enum UserActionEnum: string implements Translatable
             self::MagicLinkCreation => 'Asked for a sign-in link',
             self::ApiKeyCreation => 'Created the API key called :name',
             self::ApiKeyDeletion => 'Revoked the API key called :name',
+            self::VaultCreation => 'Created the vault :name',
+            self::VaultUpdate => 'Updated the vault :name',
+            self::VaultPositionUpdate => 'Moved the vault :name in the list',
+            self::VaultDefaultSet => 'Made :name the vault new records land in',
+            self::VaultDeletion => 'Deleted the vault :name',
+            self::VaultRestoration => 'Brought the vault :name back',
         };
     }
 

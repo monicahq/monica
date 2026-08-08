@@ -1,6 +1,6 @@
 # 007. Vault
 
-**Status:** to create
+**Status:** exists (`app/Models/Vault.php`), built as far as the models it depends on allow
 **Spec:** 3.2, 4, 4.2, 11, 13, 14.3
 
 ## What it is
@@ -44,6 +44,15 @@ deleted_at                  datetime
 - Moving a record from one vault to another is an explicit action, logged, and it must carry its dependants with it or refuse. Moving a contact that participates in an activity in the old vault is the interesting case, and the resolution belongs in the action, not here.
 - Deleting a vault is soft, and it is the most destructive thing a user can do short of deleting the account. It must warn, state what it contains, and be reversible for a grace period.
 - Files are stored under a path derived from account then vault (11), and no predictable name may allow crossing that boundary.
+
+## Not done yet
+
+- The vault holds nothing yet. Contacts, entities, activities, groups, journal days, files, default templates and share links are each their own model, and the `hasMany` sides arrive with them. So does the filter on `vault_id`, which cannot be written before there is something to filter.
+- `contact_count` is a column that stays at zero. The contact model keeps it in step, and there is no contact model.
+- `last_visited_at` is a column that stays null. Nothing opens a vault yet, since there is no screen to open one on.
+- Nothing warns before a deletion or says what the vault holds, because there is no screen. `DestroyVault` refuses to take the last vault and hands the default over to the first one left; `RestoreVault` brings a vault back. The grace period is not enforced: a deleted vault stays deleted and nothing purges it, which is the safe half of the rule to leave unfinished.
+- Moving a record from one vault to another. There is no record to move.
+- The `Moi` contact seeded in the first vault (4.3), which waits on [Contact](019-contact.md), and the contact default template of [VaultDefaultTemplate](018-vault-default-template.md).
 
 ## Open questions
 

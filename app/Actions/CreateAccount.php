@@ -11,9 +11,13 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Create an account and the one user in it. The user is returned rather than
- * the account, because whoever asks for an account next has to sign that person
- * in.
+ * Create an account, the one user in it, and the vault their contacts go in.
+ * The user is returned rather than the account, because whoever asks for an
+ * account next has to sign that person in.
+ *
+ * An account always has at least one vault, so the first one is made here
+ * rather than asked for. It is named in the language the account was created
+ * in, and whoever owns it renames it to whatever they please.
  */
 class CreateAccount
 {
@@ -34,6 +38,7 @@ class CreateAccount
         DB::transaction(function (): void {
             $this->createAccount();
             $this->createUser();
+            $this->createFirstVault();
         });
 
         $this->log();
@@ -62,6 +67,14 @@ class CreateAccount
             email: $this->email,
             password: $this->password,
             timezone: $this->timezone,
+        )->execute();
+    }
+
+    private function createFirstVault(): void
+    {
+        new CreateVault(
+            user: $this->user,
+            name: __('Personal'),
         )->execute();
     }
 

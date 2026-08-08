@@ -79,6 +79,16 @@ class Account extends Model
     }
 
     /**
+     * Get the vaults the account is divided into.
+     *
+     * @return HasMany<Vault, $this>
+     */
+    public function vaults(): HasMany
+    {
+        return $this->hasMany(Vault::class);
+    }
+
+    /**
      * Get the actions performed in the account.
      *
      * @return HasMany<Log, $this>

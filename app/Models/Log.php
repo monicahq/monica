@@ -50,6 +50,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
  * @property-read User|null $user
+ * @property-read Vault|null $vault
  * @property-read Model|null $loggable
  * @property-read string $author
  * @property-read string $description
@@ -126,6 +127,16 @@ class Log extends Model
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the vault the action touched, if it was performed inside one.
+     *
+     * @return BelongsTo<Vault, $this>
+     */
+    public function vault(): BelongsTo
+    {
+        return $this->belongsTo(Vault::class);
     }
 
     /**

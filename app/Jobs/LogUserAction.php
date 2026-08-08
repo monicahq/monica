@@ -9,6 +9,7 @@ use App\Enums\UserActionEnum;
 use App\Models\Account;
 use App\Models\Log;
 use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Queue\Queueable;
@@ -22,7 +23,8 @@ use Illuminate\Foundation\Queue\Queueable;
  * Nothing needs to ask whether there is one: a request built from a command
  * line has no address to give, and the column is null for exactly that case.
  *
- * A user of null means the application acted on its own.
+ * A user of null means the application acted on its own, and a vault of null
+ * that the action was not performed inside one.
  */
 class LogUserAction implements ShouldQueue
 {
@@ -38,6 +40,7 @@ class LogUserAction implements ShouldQueue
         public Account $account,
         public ?User $user,
         public UserActionEnum $action,
+        public ?Vault $vault = null,
         public ?array $parameters = null,
         public ?Model $loggable = null,
         public ?array $changes = null,
@@ -55,6 +58,7 @@ class LogUserAction implements ShouldQueue
     {
         Log::query()->create([
             'account_id' => $this->account->id,
+            'vault_id' => $this->vault?->id,
             'user_id' => $this->user?->id,
             'user_email' => $this->user->email ?? Log::SYSTEM,
             'action' => $this->action->value,

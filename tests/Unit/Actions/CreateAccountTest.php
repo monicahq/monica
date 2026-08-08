@@ -58,6 +58,32 @@ class CreateAccountTest extends TestCase
     }
 
     #[Test]
+    public function it_gives_the_account_a_vault_to_put_contacts_in(): void
+    {
+        Queue::fake();
+
+        $user = new CreateAccount(
+            firstName: 'Michael',
+            lastName: 'Scott',
+            email: 'michael.scott@dundermifflin.com',
+            password: 'thatswhatshesaid',
+        )->execute();
+
+        $vault = $user->account->vaults()->sole();
+
+        $this->assertEquals('Personal', $vault->name);
+        $this->assertSame(1, $vault->position);
+        $this->assertTrue($vault->is_default);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultCreation
+                && $job->vault->id === $vault->id,
+        );
+    }
+
+    #[Test]
     public function it_gives_the_account_the_storage_of_the_free_offer(): void
     {
         Queue::fake();

@@ -43,8 +43,8 @@ Section 3.4 removes the subscription the table used to carry: the hosted version
 
 ## Not done yet
 
-- The seeding rule. Creating an account creates the user and nothing else. The default vault, value lists, activity types, moods, relationship types and qualifiers, group types, contact template and the `Moi` contact all wait on models 007 and later.
-- The relationships to the models that do not exist yet. Only user, logs and emails sent are wired.
+- The rest of the seeding rule. Creating an account creates the user and the default vault, named in the language the account was created in. The value lists, activity types, moods, relationship types and qualifiers, group types, contact template and the `Moi` contact all wait on models 009 and later.
+- The relationships to the models that do not exist yet. Only user, vaults, logs and emails sent are wired.
 - One user per account is a `hasOne` on the model, but the database does not enforce it. The unique index on `users.account_id` belongs to [User](002-user.md).
 - The rest of the account deletion. `DestroyAccount` is wired to the profile screen, behind a warning and the address typed out in full, and it clears the photo files and the API keys before cascading through the foreign keys. Every new table has to join that cascade, and anything it writes outside the database has to be removed there too.
 
