@@ -12,8 +12,9 @@ return [
     | The languages the interface is translated into. The key is the locale, and
     | matches the name of the file in the lang folder. The flag is a css value
     | for the background property, drawn rather than shipped as an image. The
-    | date format is the order that language reads dates in, used for whoever
-    | has not picked one of their own.
+    | date format is the order that language reads dates in, and the number
+    | format the separators it writes numbers with, both used for whoever has
+    | not picked one of their own.
     |
     */
 
@@ -22,36 +23,42 @@ return [
             'label' => 'English',
             'region' => 'United Kingdom',
             'date_format' => 'd/m/Y',
+            'number_format' => 'comma_dot',
             'flag' => 'linear-gradient(to bottom, transparent 40%, #C8102E 40% 60%, transparent 60%), linear-gradient(to right, transparent 38%, #C8102E 38% 62%, transparent 62%), linear-gradient(to bottom, transparent 30%, #fff 30% 70%, transparent 70%), linear-gradient(to right, transparent 28%, #fff 28% 72%, transparent 72%), linear-gradient(to bottom right, transparent 44%, #fff 44% 56%, transparent 56%), linear-gradient(to bottom left, transparent 44%, #fff 44% 56%, transparent 56%), #012169',
         ],
         'fr_FR' => [
             'label' => 'Français',
             'region' => 'France',
             'date_format' => 'd/m/Y',
+            'number_format' => 'space_comma',
             'flag' => 'linear-gradient(to right, #002395 0 33%, #fff 33% 66%, #ed2939 66%)',
         ],
         'de_DE' => [
             'label' => 'Deutsch',
             'region' => 'Deutschland',
             'date_format' => 'd.m.Y',
+            'number_format' => 'dot_comma',
             'flag' => 'linear-gradient(to bottom, #000 0 33%, #dd0000 33% 66%, #ffce00 66%)',
         ],
         'es_ES' => [
             'label' => 'Español',
             'region' => 'España',
             'date_format' => 'd/m/Y',
+            'number_format' => 'dot_comma',
             'flag' => 'linear-gradient(to bottom, #aa151b 0 25%, #f1bf00 25% 75%, #aa151b 75%)',
         ],
         'pt_PT' => [
             'label' => 'Português',
             'region' => 'Portugal',
             'date_format' => 'd/m/Y',
+            'number_format' => 'space_comma',
             'flag' => 'linear-gradient(to right, #006600 0 40%, #ff0000 40%)',
         ],
         'nl_NL' => [
             'label' => 'Nederlands',
             'region' => 'Nederland',
             'date_format' => 'd-m-Y',
+            'number_format' => 'dot_comma',
             'flag' => 'linear-gradient(to bottom, #ae1c28 0 33%, #fff 33% 66%, #21468b 66%)',
         ],
     ],

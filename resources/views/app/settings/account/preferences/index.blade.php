@@ -1,15 +1,20 @@
 {{--
   What somebody chose about the way the application reads to them: the language
-  of the interface, the clock times are written on, and the order dates read in.
+  of the interface, the clock times are written on, the order dates read in, and
+  the separators numbers are written with.
 
   Each row is its own form, and carries the other rows' current values along so
-  that saving one never quietly resets the others. Which also means a row that
-  saves has to refresh the rows carrying the value it just changed. The formats
-  save over ajax; the language reloads the page, since every word on it is drawn
-  in it, the two examples included.
+  that saving one never quietly resets the others, which the partial below does
+  for all of them. Which also means a row that saves has to refresh the rows
+  carrying the value it just changed, and by now that is every other row. The
+  formats save over ajax; the language reloads the page, since every word on it
+  is drawn in it, the examples included.
 
   @var \App\ViewModels\Settings\Account\Preferences\PreferencesViewModel $viewModel
 --}}
+@php
+  $rows = 'language-form time-format-form date-format-form number-format-form preview';
+@endphp
 <x-app-layout :title="__('Preferences')">
   <x-slot:sidebar>
     <x-settings.sidebar :user="$viewModel->user()" current="preferences" />
@@ -43,8 +48,7 @@
         </div>
 
         <x-form method="put" :action="route('settings.preferences.update')" id="language-form">
-          <input type="hidden" name="time_format" value="{{ $viewModel->timeFormat()->value }}" />
-          <input type="hidden" name="date_format" value="{{ $viewModel->dateFormat()?->value }}" />
+          @include('app.settings.account.preferences._carried-values', ['owns' => 'locale'])
 
           <x-dropdown
             name="locale"
@@ -61,20 +65,14 @@
           <p class="mt-0.5 text-sm text-muted">{{ __('How times are written across the application.') }}</p>
         </div>
 
-        {{--
-          The other two menus are refreshed along with this one, since they carry
-          the time format along and would otherwise send back the value being
-          replaced.
-        --}}
         <x-form
           method="put"
           :action="route('settings.preferences.update')"
           id="time-format-form"
-          x-target="time-format-form language-form date-format-form preview"
+          x-target="{{ $rows }}"
           class="transition-opacity [&[aria-busy]]:opacity-60"
         >
-          <input type="hidden" name="locale" value="{{ $viewModel->locale() }}" />
-          <input type="hidden" name="date_format" value="{{ $viewModel->dateFormat()?->value }}" />
+          @include('app.settings.account.preferences._carried-values', ['owns' => 'time_format'])
 
           <x-dropdown
             name="time_format"
@@ -96,17 +94,41 @@
           method="put"
           :action="route('settings.preferences.update')"
           id="date-format-form"
-          x-target="date-format-form language-form time-format-form preview"
+          x-target="{{ $rows }}"
           class="transition-opacity [&[aria-busy]]:opacity-60"
         >
-          <input type="hidden" name="locale" value="{{ $viewModel->locale() }}" />
-          <input type="hidden" name="time_format" value="{{ $viewModel->timeFormat()->value }}" />
+          @include('app.settings.account.preferences._carried-values', ['owns' => 'date_format'])
 
           <x-dropdown
             name="date_format"
             :label="$viewModel->dateFormatLabel()"
             :options="$viewModel->dateFormats()"
             :title="__('Date format')"
+            monospaced-hints
+          />
+        </x-form>
+      </x-box.row>
+
+      <x-box.row class="grid gap-x-6 gap-y-3 px-4.5 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+        <div class="min-w-0">
+          <p class="text-sm font-medium text-ink">{{ __('Number format') }}</p>
+          <p class="mt-0.5 text-sm text-muted">{{ __('The separators between the thousands and before the decimals.') }}</p>
+        </div>
+
+        <x-form
+          method="put"
+          :action="route('settings.preferences.update')"
+          id="number-format-form"
+          x-target="{{ $rows }}"
+          class="transition-opacity [&[aria-busy]]:opacity-60"
+        >
+          @include('app.settings.account.preferences._carried-values', ['owns' => 'number_format'])
+
+          <x-dropdown
+            name="number_format"
+            :label="$viewModel->numberFormatLabel()"
+            :options="$viewModel->numberFormats()"
+            :title="__('Number format')"
             monospaced-hints
           />
         </x-form>

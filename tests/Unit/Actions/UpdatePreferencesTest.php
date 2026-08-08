@@ -6,6 +6,7 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\UpdatePreferences;
 use App\Enums\DateFormatEnum;
+use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
@@ -37,6 +38,7 @@ class UpdatePreferencesTest extends TestCase
             locale: 'fr_FR',
             timeFormat: TimeFormatEnum::TwelveHour,
             dateFormat: DateFormatEnum::MonthFirst,
+            numberFormat: NumberFormatEnum::SpaceAndComma,
         )->execute();
 
         $this->assertInstanceOf(User::class, $result);
@@ -46,15 +48,19 @@ class UpdatePreferencesTest extends TestCase
             'locale' => 'fr_FR',
             'time_format' => '12',
             'date_format' => 'm/d/Y',
+            'number_format' => 'space_comma',
         ]);
     }
 
     #[Test]
-    public function it_hands_the_date_back_to_the_language_when_no_format_is_given(): void
+    public function it_hands_the_date_and_the_numbers_back_to_the_language_when_no_format_is_given(): void
     {
         Queue::fake();
 
-        $user = User::factory()->create(['date_format' => DateFormatEnum::YearFirst]);
+        $user = User::factory()->create([
+            'date_format' => DateFormatEnum::YearFirst,
+            'number_format' => NumberFormatEnum::DotAndComma,
+        ]);
 
         new UpdatePreferences(
             user: $user,
@@ -65,6 +71,7 @@ class UpdatePreferencesTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
             'date_format' => null,
+            'number_format' => null,
         ]);
     }
 

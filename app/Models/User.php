@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\DateFormatEnum;
 use App\Enums\NameOrderEnum;
+use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
 use Carbon\Carbon;
 use Database\Factories\UserFactory;
@@ -41,7 +42,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property TimeFormatEnum $time_format
  * @property DateFormatEnum|null $date_format
  * @property NameOrderEnum $name_order
- * @property string|null $number_format
+ * @property NumberFormatEnum|null $number_format
  * @property Carbon|null $last_login_at
  * @property string|null $last_login_ip
  * @property string|null $two_factor_secret
@@ -127,6 +128,7 @@ class User extends Authenticatable
             'time_format' => TimeFormatEnum::class,
             'date_format' => DateFormatEnum::class,
             'name_order' => NameOrderEnum::class,
+            'number_format' => NumberFormatEnum::class,
             'last_login_at' => 'datetime',
             'is_active' => 'boolean',
             'password' => 'hashed',

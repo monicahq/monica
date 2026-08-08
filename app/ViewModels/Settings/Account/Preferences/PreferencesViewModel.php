@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\ViewModels\Settings\Account\Preferences;
 
 use App\Enums\DateFormatEnum;
+use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
 use App\Models\User;
 
 /**
  * What the preferences screen shows: the language the interface is in, the
- * clock times are written on, the order dates read in, and the shell around it.
+ * clock times are written on, the order dates read in, the separators numbers
+ * are written with, and the shell around it.
  */
 class PreferencesViewModel
 {
@@ -134,6 +136,45 @@ class PreferencesViewModel
     }
 
     /**
+     * Every set of separators a number can be written with, each next to the
+     * same number written that way. As with the dates, the first entry hands
+     * the decision back to the language.
+     *
+     * @return array<int, array{value: string, label: string, hint: string, selected: bool}>
+     */
+    public function numberFormats(): array
+    {
+        $current = $this->numberFormat();
+
+        $formats = [[
+            'value' => '',
+            'label' => __('Follow the language'),
+            'hint' => $this->languageNumberFormat()->example(),
+            'selected' => $current === null,
+        ]];
+
+        foreach (NumberFormatEnum::cases() as $format) {
+            $formats[] = [
+                'value' => $format->value,
+                'label' => __($format->label()),
+                'hint' => $format->example(),
+                'selected' => $format === $current,
+            ];
+        }
+
+        return $formats;
+    }
+
+    /**
+     * What the button that opens the menu says. It shows the number rather than
+     * the name of the separators, for the same reason the date menu shows a day.
+     */
+    public function numberFormatLabel(): string
+    {
+        return ($this->numberFormat() ?? $this->languageNumberFormat())->example();
+    }
+
+    /**
      * Who is signed in, so the sidebar can show their name and their photo.
      */
     public function user(): User
@@ -183,5 +224,23 @@ class PreferencesViewModel
     private function languageDateExample(): string
     {
         return DateFormatEnum::write(now()->setDay(21), $this->languageDateFormat());
+    }
+
+    /**
+     * The separators the account writes numbers with, null while it follows the
+     * language.
+     */
+    public function numberFormat(): ?NumberFormatEnum
+    {
+        return $this->user->number_format;
+    }
+
+    /**
+     * The separators the language being read writes numbers with, which is what
+     * somebody who has never touched this setting gets.
+     */
+    private function languageNumberFormat(): NumberFormatEnum
+    {
+        return NumberFormatEnum::from(config('monica.locales')[$this->locale()]['number_format']);
     }
 }

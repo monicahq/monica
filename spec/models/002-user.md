@@ -60,9 +60,9 @@ No role, no permission, no invitation, no membership. Section 4.1 removes them, 
 
 ## Not done yet
 
-- The screen for the rest of the preferences. The preferences screen offers the language, the clock and the order dates read in. `timezone` is filled from the browser at sign up and cannot be changed afterwards, and `number_format` and `name_order` are stored and never asked for (3.7).
+- The screen for the rest of the preferences. The preferences screen offers the language, the clock, the order dates read in and the separators numbers are written with. `timezone` is filled from the browser at sign up and cannot be changed afterwards, and `name_order` is stored and never asked for (3.7).
 - Nothing reads `timezone` yet. Dates are rendered in the time zone of the instance, and the rule that freezes it belongs to [Reminder](040-reminder.md).
-- Nothing reads `date_format` outside the screen that sets it. Every date in the application is still written as how long ago it was, so the choice has nowhere else to show yet.
+- Nothing reads `date_format` or `number_format` outside the screen that sets them. Every date in the application is still written as how long ago it was, and no screen shows a number worth grouping, so those choices have nowhere else to show yet.
 - The relationship to [Notification](042-notification.md), which does not exist yet.
 
 ## Open questions

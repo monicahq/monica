@@ -30,6 +30,7 @@ class RegisterViewModelTest extends TestCase
             'label' => 'English',
             'region' => 'United Kingdom',
             'date_format' => 'd/m/Y',
+            'number_format' => 'comma_dot',
             'flag' => config('monica.locales.en.flag'),
             'code' => 'en',
         ], $locales[0]);

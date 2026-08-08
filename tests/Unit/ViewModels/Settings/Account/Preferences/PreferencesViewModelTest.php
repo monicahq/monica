@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Settings\Account\Preferences;
 
 use App\Enums\DateFormatEnum;
+use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Preferences\PreferencesViewModel;
@@ -147,5 +148,38 @@ class PreferencesViewModelTest extends TestCase
         $viewModel = new PreferencesViewModel(user: $user);
 
         $this->assertEquals('31-07-2026', $viewModel->datePreview());
+    }
+
+    #[Test]
+    public function it_lists_every_number_format_and_ticks_the_one_in_use(): void
+    {
+        $user = User::factory()->create(['number_format' => NumberFormatEnum::DotAndComma]);
+
+        $viewModel = new PreferencesViewModel(user: $user);
+
+        $formats = $viewModel->numberFormats();
+
+        $this->assertCount(count(NumberFormatEnum::cases()) + 1, $formats);
+        $this->assertEquals(NumberFormatEnum::DotAndComma, $viewModel->numberFormat());
+        $this->assertEquals('1.234,56', $viewModel->numberFormatLabel());
+        $this->assertTrue(collect($formats)->firstWhere('value', 'dot_comma')['selected']);
+        $this->assertFalse(collect($formats)->firstWhere('value', '')['selected']);
+    }
+
+    #[Test]
+    public function it_writes_numbers_the_way_the_language_does_when_nothing_was_chosen(): void
+    {
+        app()->setLocale('fr_FR');
+
+        $user = User::factory()->create(['number_format' => null]);
+
+        $viewModel = new PreferencesViewModel(user: $user);
+
+        $followTheLanguage = collect($viewModel->numberFormats())->firstWhere('value', '');
+
+        $this->assertNull($viewModel->numberFormat());
+        $this->assertTrue($followTheLanguage['selected']);
+        $this->assertEquals("1\u{00A0}234,56", $followTheLanguage['hint']);
+        $this->assertEquals("1\u{00A0}234,56", $viewModel->numberFormatLabel());
     }
 }
