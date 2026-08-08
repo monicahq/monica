@@ -49,6 +49,15 @@
             <span class="text-hairline-strong max-sm:hidden" aria-hidden="true">|</span>
 
             <span class="font-mono text-xs wrap-anywhere text-muted max-sm:w-full">{{ $log->action }}</span>
+
+            {{-- The address is what makes this screen worth reading: the entry
+                 that came from somewhere you have never been is the one to find.
+                 There is none when the application acted on its own. --}}
+            @if ($log->ip_address)
+              <span class="text-hairline-strong max-sm:hidden" aria-hidden="true">|</span>
+
+              <span class="font-mono text-xs whitespace-nowrap text-muted-soft" title="{{ __('Where: :ip', ['ip' => $log->ip_address]) }}">{{ $log->ip_address }}</span>
+            @endif
           </p>
 
           <p class="mt-0.5 text-sm text-body">{{ $log->description }}</p>

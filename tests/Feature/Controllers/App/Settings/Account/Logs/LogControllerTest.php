@@ -40,6 +40,41 @@ class LogControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_shows_the_address_each_action_came_from(): void
+    {
+        $user = User::factory()->create();
+
+        Log::factory()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'ip_address' => '198.51.100.24',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('settings.logs.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('198.51.100.24', escape: false);
+        $response->assertSee('Where: 198.51.100.24', escape: false);
+    }
+
+    #[Test]
+    public function it_shows_no_address_for_an_action_that_came_from_nowhere(): void
+    {
+        $user = User::factory()->create();
+
+        Log::factory()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'ip_address' => null,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('settings.logs.index'));
+
+        $response->assertStatus(200);
+        $response->assertDontSee('Where:', escape: false);
+    }
+
+    #[Test]
     public function it_shows_a_blank_state_when_there_is_nothing_to_read_yet(): void
     {
         $user = User::factory()->create();
