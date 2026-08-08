@@ -11,13 +11,18 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Create an account, the one user in it, and the vault their contacts go in.
- * The user is returned rather than the account, because whoever asks for an
- * account next has to sign that person in.
+ * Create an account, the one user in it, the vault their contacts go in, and
+ * the value lists the fields of that vault pick from. The user is returned
+ * rather than the account, because whoever asks for an account next has to
+ * sign that person in.
  *
- * An account always has at least one vault, so the first one is made here
- * rather than asked for. It is named in the language the account was created
- * in, and whoever owns it renames it to whatever they please.
+ * The product has to be usable in the first minute, so none of the seeding is
+ * optional and none of it is asked for. Everything it writes is ordinary data
+ * the user renames, reorders or throws away.
+ *
+ * An account always has at least one vault, so the first one is made here. It
+ * is named in the language the account was created in, unlike the value lists,
+ * which are stored as translation keys and follow the interface language.
  */
 class CreateAccount
 {
@@ -39,6 +44,7 @@ class CreateAccount
             $this->createAccount();
             $this->createUser();
             $this->createFirstVault();
+            $this->createDefaultValueLists();
         });
 
         $this->log();
@@ -76,6 +82,11 @@ class CreateAccount
             user: $this->user,
             name: __('Personal'),
         )->execute();
+    }
+
+    private function createDefaultValueLists(): void
+    {
+        new CreateDefaultValueLists(user: $this->user)->execute();
     }
 
     private function log(): void

@@ -28,6 +28,17 @@ enum UserActionEnum: string implements Translatable
     case VaultDefaultSet = 'vault_default_set';
     case VaultDeletion = 'vault_deleted';
     case VaultRestoration = 'vault_restored';
+    case ValueListsSeeded = 'value_lists_seeded';
+    case ValueListCreation = 'value_list_created';
+    case ValueListUpdate = 'value_list_updated';
+    case ValueListPositionUpdate = 'value_list_position_updated';
+    case ValueListDeletion = 'value_list_deleted';
+    case ValueListItemCreation = 'value_list_item_created';
+    case ValueListItemUpdate = 'value_list_item_updated';
+    case ValueListItemPositionUpdate = 'value_list_item_position_updated';
+    case ValueListItemDisabled = 'value_list_item_disabled';
+    case ValueListItemEnabled = 'value_list_item_enabled';
+    case ValueListItemDeletion = 'value_list_item_deleted';
 
     /**
      * What the action reads as in the logs, written about whoever performed it.
@@ -57,6 +68,17 @@ enum UserActionEnum: string implements Translatable
             self::VaultDefaultSet => 'Made :name the vault new records land in',
             self::VaultDeletion => 'Deleted the vault :name',
             self::VaultRestoration => 'Brought the vault :name back',
+            self::ValueListsSeeded => 'Set up the value lists the account starts with',
+            self::ValueListCreation => 'Created the value list :name',
+            self::ValueListUpdate => 'Updated the value list :name',
+            self::ValueListPositionUpdate => 'Moved the value list :name',
+            self::ValueListDeletion => 'Deleted the value list :name',
+            self::ValueListItemCreation => 'Added :label to the value list :name',
+            self::ValueListItemUpdate => 'Updated :label in the value list :name',
+            self::ValueListItemPositionUpdate => 'Moved :label in the value list :name',
+            self::ValueListItemDisabled => 'Stopped offering :label in the value list :name',
+            self::ValueListItemEnabled => 'Offered :label in the value list :name again',
+            self::ValueListItemDeletion => 'Removed :label from the value list :name',
         };
     }
 

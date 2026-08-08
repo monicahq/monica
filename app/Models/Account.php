@@ -89,6 +89,16 @@ class Account extends Model
     }
 
     /**
+     * Get the sets of choices the fields of the account pick from.
+     *
+     * @return HasMany<ValueList, $this>
+     */
+    public function valueLists(): HasMany
+    {
+        return $this->hasMany(ValueList::class);
+    }
+
+    /**
      * Get the actions performed in the account.
      *
      * @return HasMany<Log, $this>

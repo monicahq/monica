@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\Log;
 use App\Models\User;
+use App\Models\ValueList;
 use App\Models\Vault;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -36,6 +37,16 @@ class AccountTest extends TestCase
 
         $this->assertTrue($account->vaults()->exists());
         $this->assertEquals('Schrute Farms', $account->vaults->first()->name);
+    }
+
+    #[Test]
+    public function it_has_many_value_lists(): void
+    {
+        $account = Account::factory()->create();
+        ValueList::factory()->create(['account_id' => $account->id, 'name' => 'Phone labels']);
+
+        $this->assertTrue($account->valueLists()->exists());
+        $this->assertEquals('Phone labels', $account->valueLists->first()->name);
     }
 
     #[Test]

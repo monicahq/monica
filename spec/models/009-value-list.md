@@ -1,6 +1,6 @@
 # 009. ValueList
 
-**Status:** to create
+**Status:** exists (`app/Models/ValueList.php`), built as far as the models it depends on allow
 **Spec:** 5.4, 3.3, 3.7, 9.3, 9.4
 
 ## What it is
@@ -38,6 +38,13 @@ deleted_at                  datetime
 - A list is never deleted while a field points at it. It is disabled, and the field explains why (3.3).
 - Renaming a list, or renaming an item inside it, must never change the behaviour of a published section (6). This is the reason a published section stores the resolved item and not just a pointer. See [SectionVersion](015-section-version.md).
 - Country, language and currency lists are seeded from `database/data`, where the project already keeps that kind of reference data.
+
+## Not done yet
+
+- Three of the six lists section 5.4 names. Genders, phone labels and contact categories are seeded; countries, languages and currencies are not. They are reference data of a different size, six hundred rows an account and six hundred labels a locale, and they wait on `database/data` and on the field types that need them.
+- Nothing stops a list being deleted while a field points at it, because there is no [Field](017-field.md) to point. `DestroyValueList` deletes softly and takes the items with it. The rule arrives with the field.
+- Nothing reads a list yet. The fields that pick from one are model 017, and until they exist a list is a set of choices nothing offers.
+- The supplied names and labels are held as cases of an enum, one per list, so `monica:localize` finds them the way it finds any other translated string. A list seeded from a data file could not be found that way, which is one more thing countries and currencies need before they arrive.
 
 ## Open questions
 

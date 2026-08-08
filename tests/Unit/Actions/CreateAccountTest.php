@@ -84,6 +84,34 @@ class CreateAccountTest extends TestCase
     }
 
     #[Test]
+    public function it_gives_the_account_the_value_lists_it_starts_with(): void
+    {
+        Queue::fake();
+
+        $user = new CreateAccount(
+            firstName: 'Michael',
+            lastName: 'Scott',
+            email: 'michael.scott@dundermifflin.com',
+            password: 'thatswhatshesaid',
+        )->execute();
+
+        $lists = $user->account->valueLists()->orderBy('position')->get();
+
+        $this->assertEquals(
+            ['genders', 'phone_labels', 'contact_categories'],
+            $lists->pluck('key')->all(),
+        );
+        $this->assertEquals('Phone labels', $lists->firstWhere('key', 'phone_labels')->name);
+        $this->assertEquals(5, $lists->firstWhere('key', 'phone_labels')->items()->count());
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListsSeeded,
+        );
+    }
+
+    #[Test]
     public function it_gives_the_account_the_storage_of_the_free_offer(): void
     {
         Queue::fake();

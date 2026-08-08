@@ -1,6 +1,6 @@
 # 010. ValueListItem
 
-**Status:** to create
+**Status:** exists (`app/Models/ValueListItem.php`), built as far as the models it depends on allow
 **Spec:** 5.4, 3.3
 
 ## What it is
@@ -40,6 +40,12 @@ deleted_at                  datetime
 - Deleting an item is only allowed when `usage_count` is zero. Otherwise the user is offered disabling instead, with the count shown.
 - Position is user controlled and must survive an item being disabled and re-enabled.
 - `usage_count` is maintained on write. Counting on read means aggregating the value table, which is the largest table in the product.
+
+## Not done yet
+
+- `usage_count` is a column that stays at zero. [FieldValue](022-field-value.md) is what keeps it in step, and it does not exist. The guard is written all the same: `DestroyValueListItem` refuses an item the count says is used, so the rule is true the day something starts counting.
+- Disabling hides an item from every picker, once there is a picker. `is_active` is set and read by nothing else yet.
+- Merging one item into another. Untouched, and still an open question rather than a task.
 
 ## Open questions
 

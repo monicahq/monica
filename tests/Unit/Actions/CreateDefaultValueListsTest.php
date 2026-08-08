@@ -1,0 +1,133 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\Actions;
+
+use App\Actions\CreateDefaultValueLists;
+use App\Enums\PhoneLabelEnum;
+use App\Enums\UserActionEnum;
+use App\Enums\ValueListEnum;
+use App\Jobs\LogUserAction;
+use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class CreateDefaultValueListsTest extends TestCase
+{
+    use RefreshDatabase;
+
+    #[Test]
+    public function it_gives_the_account_every_list_the_product_supplies(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        $lists = new CreateDefaultValueLists(user: $user)->execute();
+
+        $this->assertCount(count(ValueListEnum::cases()), $lists);
+
+        foreach (ValueListEnum::cases() as $position => $case) {
+            $this->assertDatabaseHas('value_lists', [
+                'account_id' => $user->account_id,
+                'key' => $case->value,
+                'name' => null,
+                'name_translation_key' => $case->label(),
+                'description' => $case->description(),
+                'is_system' => true,
+                'allows_user_values' => true,
+                'position' => $position + 1,
+            ]);
+        }
+    }
+
+    #[Test]
+    public function it_fills_every_list_with_the_choices_it_starts_with(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        new CreateDefaultValueLists(user: $user)->execute();
+
+        $list = ValueList::query()->firstWhere('key', ValueListEnum::PhoneLabels->value);
+
+        $this->assertEquals(
+            ['Mobile', 'Home', 'Work', 'Fax', 'Other'],
+            $list->items()->orderBy('position')->pluck('label_translation_key')->all(),
+        );
+        $this->assertEquals([1, 2, 3, 4, 5], $list->items()->orderBy('position')->pluck('position')->all());
+    }
+
+    #[Test]
+    public function it_gives_every_supplied_choice_a_key_the_product_can_rely_on(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        new CreateDefaultValueLists(user: $user)->execute();
+
+        $item = ValueListItem::query()->firstWhere('key', PhoneLabelEnum::Mobile->value);
+
+        $this->assertEquals($user->account_id, $item->account_id);
+        $this->assertNull($item->getRawOriginal('label'));
+        $this->assertTrue($item->is_system);
+        $this->assertTrue($item->is_active);
+        $this->assertSame(0, $item->usage_count);
+    }
+
+    #[Test]
+    public function it_reads_the_supplied_lists_in_the_language_of_whoever_is_looking(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        new CreateDefaultValueLists(user: $user)->execute();
+
+        $this->app->setLocale('fr_FR');
+
+        $list = ValueList::query()->firstWhere('key', ValueListEnum::ContactCategories->value);
+
+        $this->assertEquals('Catégories de contact', $list->name);
+        $this->assertEquals('Famille', $list->items()->orderBy('position')->first()->label);
+    }
+
+    #[Test]
+    public function it_leaves_the_lists_of_other_accounts_alone(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $elsewhere = User::factory()->create();
+
+        new CreateDefaultValueLists(user: $user)->execute();
+
+        $this->assertEquals(0, ValueList::query()->where('account_id', $elsewhere->account_id)->count());
+    }
+
+    #[Test]
+    public function it_logs_the_seeding_once_rather_than_list_by_list(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        new CreateDefaultValueLists(user: $user)->execute();
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListsSeeded
+                && $job->account->id === $user->account_id
+                && $job->user->id === $user->id,
+        );
+        Queue::assertPushed(LogUserAction::class, 1);
+    }
+}
