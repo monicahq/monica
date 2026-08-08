@@ -7,6 +7,8 @@ use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListController;
 use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListItemActivationController;
 use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListItemController;
 use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListItemPositionController;
+use App\Http\Controllers\App\Settings\Account\EntityTypes\EntityTypeController;
+use App\Http\Controllers\App\Settings\Account\EntityTypes\EntityTypePositionController;
 use App\Http\Controllers\App\Settings\Account\Logs\EmailSentController;
 use App\Http\Controllers\App\Settings\Account\Logs\LogController;
 use App\Http\Controllers\App\Settings\Account\Preferences\PreferenceController;
@@ -45,6 +47,14 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     Route::delete('settings/account/default-values/values/{valueListItem}', [ValueListItemController::class, 'destroy'])->whereNumber('valueListItem')->name('settings.valueListItems.destroy');
     Route::put('settings/account/default-values/values/{valueListItem}/position', [ValueListItemPositionController::class, 'update'])->whereNumber('valueListItem')->name('settings.valueListItemPosition.update');
     Route::put('settings/account/default-values/values/{valueListItem}/active', [ValueListItemActivationController::class, 'update'])->whereNumber('valueListItem')->name('settings.valueListItemActivation.update');
+
+    Route::get('settings/account/entity-types', [EntityTypeController::class, 'index'])->name('settings.entityTypes.index');
+    Route::get('settings/account/entity-types/new', [EntityTypeController::class, 'new'])->name('settings.entityTypes.new');
+    Route::post('settings/account/entity-types', [EntityTypeController::class, 'create'])->name('settings.entityTypes.create');
+    Route::get('settings/account/entity-types/{entityType}/edit', [EntityTypeController::class, 'edit'])->name('settings.entityTypes.edit');
+    Route::put('settings/account/entity-types/{entityType}', [EntityTypeController::class, 'update'])->name('settings.entityTypes.update');
+    Route::delete('settings/account/entity-types/{entityType}', [EntityTypeController::class, 'destroy'])->name('settings.entityTypes.destroy');
+    Route::put('settings/account/entity-types/{entityType}/position', [EntityTypePositionController::class, 'update'])->name('settings.entityTypePosition.update');
 
     Route::get('settings/account/security', [SecurityController::class, 'index'])->name('settings.security.index');
     Route::put('settings/account/security/password', [PasswordController::class, 'update'])->name('settings.password.update');

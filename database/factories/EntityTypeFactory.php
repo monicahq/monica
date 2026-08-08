@@ -27,7 +27,7 @@ class EntityTypeFactory extends Factory
             'name_plural' => 'Animals',
             'slug' => Str::slug(fake()->unique()->words(3, true)),
             'description' => fake()->sentence(),
-            'icon' => null,
+            'icon' => EntityType::DEFAULT_ICON,
             'colour' => EntityType::DEFAULT_COLOUR,
             'position' => 1,
             'is_active' => true,

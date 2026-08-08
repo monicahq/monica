@@ -119,6 +119,16 @@
       </svg>
       {{ __('Default values') }}
     </a>
+
+    <a
+      href="{{ route('settings.entityTypes.index') }}"
+      data-turbo="true"
+      @if ($current === 'entities') aria-current="page" @endif
+      class="{{ $item }} {{ $current === 'entities' ? 'bg-hover font-semibold text-ink' : 'text-body hover:bg-hover' }}"
+    >
+      <x-entity-icon name="device" />
+      {{ __('Entity types') }}
+    </a>
   </nav>
 
   <div id="sidebar-identity" class="flex items-center gap-2 border-t border-hairline-soft px-3 py-2.5">

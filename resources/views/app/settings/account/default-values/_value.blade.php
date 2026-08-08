@@ -24,7 +24,7 @@
 @endphp
 
 <div
-  data-value-id="{{ $value['id'] }}"
+  data-row-id="{{ $value['id'] }}"
   x-data="{ editing: {{ $valueErrors->has('label') ? 'true' : 'false' }} }"
   class="relative border-b border-hairline-soft transition-colors duration-150 first:rounded-t-xl last:rounded-b-xl last:border-b-0 hover:bg-hover"
 >

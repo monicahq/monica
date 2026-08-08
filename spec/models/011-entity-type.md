@@ -52,12 +52,13 @@ deleted_at                  datetime
 - `entity_count` is written once, as zero, and never moved. Nothing creates an entity to count. It is kept on the row rather than aggregated on read for the same reason `contact_count` is on the vault, and the action that keeps it in step arrives with model 020.
 - The rule that deleting is only offered when the type holds no records is enforced against `entity_count`, which is the only thing there is to ask. `DestroyEntityType` throws `CannotDeleteAnEntityTypeInUse` above zero. Once entities exist that count has to become true, or the check has to start counting rows.
 - Nothing stops a record being created for an inactive type, because there is no record to create. `is_active` is stored and honoured by the actions that set it; what reads it is the entity builder, which is model 020.
-- No screen and no API. This is the model and its actions only, in the dependency order the models README sets out.
+- No API. The settings screens exist: the list that orders the types, and the form that declares one and changes it.
 
 ## Decisions taken while building it
 
 - **The slug is built from the singular name and never rebuilt.** The spec calls it stable and says it travels in URLs and through the API, so a rename leaves it alone: "Animal" becoming "Pet" is the same type, and a link that already went out has to keep working. Uniqueness within the account is kept by counting up, and a deleted type does not release its slug, so a link cannot later land on something else.
-- **The slug is the route key; the uuid stays for the API.** The spec gives the type both, describing the slug as readable and the uuid as unguessable. A settings URL wants the readable one.
+- **The slug is the route key; the uuid stays for the API.** The spec gives the type both, describing the slug as readable and the uuid as unguessable. A settings URL wants the readable one. Because the slug is only unique within an account, the model resolves a route binding against the account of whoever is signed in: two accounts that both invented "animals" would otherwise race for the same row.
+- **The icon is a name, not markup.** A type stores one of a fixed set of words and `<x-entity-icon>` draws it, so the glyph on the list, the glyph in the picker and the glyph in the navigation cannot drift apart. The colour is likewise one of six rather than free, so a navigation of a dozen types stays readable in both themes.
 
 ## Open questions
 

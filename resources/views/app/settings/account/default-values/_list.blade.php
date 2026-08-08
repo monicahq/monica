@@ -90,7 +90,7 @@
       </x-form>
     </x-slot:description>
 
-    <div x-data="sortableValues" data-sortable>
+    <div x-data="sortableRows" data-sortable>
       @forelse ($list['values'] as $value)
         @include('app.settings.account.default-values._value', ['value' => $value, 'target' => $target])
       @empty

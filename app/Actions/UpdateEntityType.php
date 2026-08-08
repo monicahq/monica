@@ -52,7 +52,7 @@ class UpdateEntityType
         $this->nameSingular = TextSanitizer::plainText($this->nameSingular);
         $this->namePlural = TextSanitizer::plainText($this->namePlural);
         $this->description = TextSanitizer::nullablePlainText($this->description);
-        $this->icon = TextSanitizer::nullablePlainText($this->icon);
+        $this->icon = TextSanitizer::nullablePlainText($this->icon) ?? EntityType::DEFAULT_ICON;
         $this->colour = mb_strtolower(TextSanitizer::nullablePlainText($this->colour) ?? EntityType::DEFAULT_COLOUR);
     }
 

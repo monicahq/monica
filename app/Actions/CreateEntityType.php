@@ -24,6 +24,9 @@ use Illuminate\Support\Str;
  *
  * The slug is built here and never rebuilt. It travels in URLs and through the
  * API, so a rename must not break a link that already went out.
+ *
+ * A type can be declared inactive from the start, for somebody setting up the
+ * account before anybody is meant to file anything under it.
  */
 class CreateEntityType
 {
@@ -36,6 +39,7 @@ class CreateEntityType
         private ?string $description = null,
         private ?string $icon = null,
         private ?string $colour = null,
+        private readonly bool $isActive = true,
     ) {}
 
     public function execute(): EntityType
@@ -52,7 +56,7 @@ class CreateEntityType
         $this->nameSingular = TextSanitizer::plainText($this->nameSingular);
         $this->namePlural = TextSanitizer::plainText($this->namePlural);
         $this->description = TextSanitizer::nullablePlainText($this->description);
-        $this->icon = TextSanitizer::nullablePlainText($this->icon);
+        $this->icon = TextSanitizer::nullablePlainText($this->icon) ?? EntityType::DEFAULT_ICON;
         $this->colour = mb_strtolower(TextSanitizer::nullablePlainText($this->colour) ?? EntityType::DEFAULT_COLOUR);
     }
 
@@ -71,7 +75,7 @@ class CreateEntityType
             'icon' => $this->icon,
             'colour' => $this->colour,
             'position' => ($positions->max() ?? 0) + 1,
-            'is_active' => true,
+            'is_active' => $this->isActive,
             'entity_count' => 0,
         ]);
     }

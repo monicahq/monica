@@ -56,9 +56,25 @@ class EntityType extends Model
     use SoftDeletes;
 
     /**
-     * The colour a type is given when whoever created it did not pick one.
+     * The colours a type may be drawn in, and the one it is given when whoever
+     * created it did not pick. A short list rather than a free colour, so that
+     * a navigation of a dozen types stays readable against both themes.
+     *
+     * @var list<string>
      */
-    public const string DEFAULT_COLOUR = '#0ea5e9';
+    public const array COLOURS = ['#3f5fd0', '#4f8a49', '#9a6a24', '#9a3f2b', '#5d5f96', '#1d1d20'];
+
+    public const string DEFAULT_COLOUR = '#3f5fd0';
+
+    /**
+     * The icons a type may be marked with. They are names rather than markup,
+     * so the drawing lives in one component and a type stores a word.
+     *
+     * @var list<string>
+     */
+    public const array ICONS = ['profile', 'logs', 'security', 'preferences', 'key', 'device', 'info', 'activity', 'mail', 'sun', 'moon', 'check'];
+
+    public const string DEFAULT_ICON = 'profile';
 
     /**
      * How long a slug may be, which the column enforces and the action that
@@ -120,6 +136,23 @@ class EntityType extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    /**
+     * Find the type a URL points at. The slug is only unique within an account,
+     * so the account has to be part of the lookup: two accounts that both
+     * invented "animals" would otherwise race for the same row, and whichever
+     * of them lost would be shown a 404 for a type it owns.
+     *
+     * @param  string  $value
+     * @param  string|null  $field
+     */
+    public function resolveRouteBinding($value, $field = null): ?self
+    {
+        return $this->query()
+            ->where($field ?? $this->getRouteKeyName(), $value)
+            ->where('account_id', auth()->user()?->account_id)
+            ->first();
     }
 
     /**

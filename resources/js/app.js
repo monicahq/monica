@@ -35,7 +35,23 @@ window.oversizedFiles = (fileList, maxKilobytes) =>
     Array.from(fileList ?? []).filter((file) => file.size > maxKilobytes * 1024);
 
 /*
- * Dragging the rows of one list into another order. The component sits on the
+ * The slug a name would be given, for a form that wants to show one before the
+ * server has settled it. It mirrors Laravel's `Str::slug` closely enough for a
+ * preview, accents included; what is stored is always what the server decides.
+ */
+window.slugify = (value) =>
+    (value ?? '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 64);
+
+/*
+ * Dragging the rows of one list into another order. Any screen whose rows are
+ * numbered by a position can use it. The component sits on the
  * container of the rows and only keeps track of what is being dragged and what
  * it is hovering over, so the panel can grey the row that left and draw the line
  * where it would land.
@@ -50,7 +66,7 @@ window.oversizedFiles = (fileList, maxKilobytes) =>
  * written in a row runs in a scope stack whose `$el` is that row, not the
  * container these methods belong to.
  */
-Alpine.data('sortableValues', () => ({
+Alpine.data('sortableRows', () => ({
     draggingId: null,
     hoveringId: null,
 
@@ -79,7 +95,7 @@ Alpine.data('sortableValues', () => ({
             return;
         }
 
-        const ids = Array.from(rows.querySelectorAll('[data-value-id]')).map((row) => Number(row.dataset.valueId));
+        const ids = Array.from(rows.querySelectorAll('[data-row-id]')).map((row) => Number(row.dataset.rowId));
         const from = ids.indexOf(draggedId);
         const to = ids.indexOf(targetId);
 
