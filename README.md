@@ -56,18 +56,19 @@ Here is how the new system work:
 - **`CreateContact` Service:** The core logic for validating and inserting a contact was retained and reused within the background job. This ensures that all existing business rules, relationships (like account/vault ownership), and feed item creations are respected.
 - **Models & Factories:** Existing user, vault, and contact models were heavily utilized and leveraged in testing.
 
-### Important Assumptions
+### Important Assumptions & Database Decisions
 
-- The uploaded file is a valid CSV with headers `first_name` and `last_name` at a minimum.
-- Only the `vault_id` is supplied in the request; `account_id` and `user_id` are derived from the authenticated user.
-- A user must have `PERMISSION_MANAGE` access to a vault to import contacts into it.
+- **CSV Format:** The uploaded file is a valid CSV with headers `first_name` and `last_name` at a minimum.
+- **Derived Fields:** Only the `vault_id` is supplied in the request; `account_id` and `user_id` are derived from the authenticated user.
+- **Permissions:** A user must have `PERMISSION_MANAGE` access to a vault to import contacts into it.
+- **Significant Database Additions:** I added a `last_processed_row_index` column to the `import_jobs` table to handle safe chunk-based retries, and a `file_hash` column to prevent duplicate file uploads.
 
 ### Transaction, Idempotency, and Retry Safety
 
 The background job reads the CSV file in manageable chunks (e.g., 50 rows). For each chunk, it processes rows within a single `DB::transaction()`.
 
 - **Idempotency Strategy:** The `ImportJob` model tracks a `last_processed_row_index`. If the job crashes mid-chunk, the database transaction for that chunk rolls back. When the job is retried, it skips rows up to `last_processed_row_index`. This guarantees that a row is never processed twice, effectively preventing duplicate contact creation during retries.
-- **Error Handling:** If a row fails validation, an `ImportError` record is created, and the failure is isolated. The overall chunk still commits successfully, meaning one bad row will not discard 49 good rows.
+- **Error Handling & `import_errors` Table:** If a row fails validation, an `ImportError` record is created, and the failure is isolated. The overall chunk still commits successfully, meaning one bad row will not discard 49 good rows. **Justification:** I decided to use a separate `import_errors` table (one-to-many) to record row-level errors instead of a JSON column in `import_jobs`. This keeps the main table lightweight and makes it extremely easy to generate downloadable error CSVs or build paginated UI views for failed rows in the future.
 
 ### What if the job crashes after creating a contact but before updating progress?
 
