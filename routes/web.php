@@ -3,6 +3,10 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\App\Settings\Account\AccountController;
+use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListController;
+use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListItemActivationController;
+use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListItemController;
+use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListItemPositionController;
 use App\Http\Controllers\App\Settings\Account\Logs\EmailSentController;
 use App\Http\Controllers\App\Settings\Account\Logs\LogController;
 use App\Http\Controllers\App\Settings\Account\Preferences\PreferenceController;
@@ -30,6 +34,17 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
 
     Route::get('settings/account/preferences', [PreferenceController::class, 'index'])->name('settings.preferences.index');
     Route::put('settings/account/preferences', [PreferenceController::class, 'update'])->name('settings.preferences.update');
+
+    Route::get('settings/account/default-values', [ValueListController::class, 'index'])->name('settings.valueLists.index');
+    Route::post('settings/account/default-values', [ValueListController::class, 'create'])->name('settings.valueLists.create');
+    Route::put('settings/account/default-values/{valueList}', [ValueListController::class, 'update'])->whereNumber('valueList')->name('settings.valueLists.update');
+    Route::delete('settings/account/default-values/{valueList}', [ValueListController::class, 'destroy'])->whereNumber('valueList')->name('settings.valueLists.destroy');
+
+    Route::post('settings/account/default-values/{valueList}/values', [ValueListItemController::class, 'create'])->whereNumber('valueList')->name('settings.valueListItems.create');
+    Route::put('settings/account/default-values/values/{valueListItem}', [ValueListItemController::class, 'update'])->whereNumber('valueListItem')->name('settings.valueListItems.update');
+    Route::delete('settings/account/default-values/values/{valueListItem}', [ValueListItemController::class, 'destroy'])->whereNumber('valueListItem')->name('settings.valueListItems.destroy');
+    Route::put('settings/account/default-values/values/{valueListItem}/position', [ValueListItemPositionController::class, 'update'])->whereNumber('valueListItem')->name('settings.valueListItemPosition.update');
+    Route::put('settings/account/default-values/values/{valueListItem}/active', [ValueListItemActivationController::class, 'update'])->whereNumber('valueListItem')->name('settings.valueListItemActivation.update');
 
     Route::get('settings/account/security', [SecurityController::class, 'index'])->name('settings.security.index');
     Route::put('settings/account/security/password', [PasswordController::class, 'update'])->name('settings.password.update');

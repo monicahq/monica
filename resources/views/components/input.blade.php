@@ -2,8 +2,12 @@
   A text field, with its label, its hint and its validation messages. The id is
   also the name of the field, so one prop drives both.
 
+  A screen that repeats the same field on every row of a list gives `name`
+  separately, since the name is the same on each of them and the id cannot be.
+
   @var string $type
   @var string|null $id
+  @var string|null $name
   @var string|null $label
   @var string|null $value
   @var string|null $placeholder
@@ -18,6 +22,7 @@
 @props([
   'type' => 'text',
   'id' => null,
+  'name' => null,
   'label' => null,
   'value' => null,
   'placeholder' => null,
@@ -58,7 +63,7 @@
 
   <input
     id="{{ $id }}"
-    name="{{ $id }}"
+    name="{{ $name ?? $id }}"
     type="{{ $type }}"
     value="{{ $value }}"
     placeholder="{{ $placeholder }}"

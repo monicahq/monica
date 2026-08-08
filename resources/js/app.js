@@ -35,6 +35,70 @@ window.oversizedFiles = (fileList, maxKilobytes) =>
     Array.from(fileList ?? []).filter((file) => file.size > maxKilobytes * 1024);
 
 /*
+ * Dragging the rows of one list into another order. The component sits on the
+ * container of the rows and only keeps track of what is being dragged and what
+ * it is hovering over, so the panel can grey the row that left and draw the line
+ * where it would land.
+ *
+ * Saving is left to Blade: every row carries a hidden form aimed at the position
+ * route, and the drop writes the position into it and submits it. That keeps the
+ * csrf token, the method spoofing and the ajax target where the rest of the app
+ * puts them.
+ *
+ * The rows are reached from the dropped-on element rather than from `$el`. Every
+ * row declares an `x-data` of its own for the field it opens, so an expression
+ * written in a row runs in a scope stack whose `$el` is that row, not the
+ * container these methods belong to.
+ */
+Alpine.data('sortableValues', () => ({
+    draggingId: null,
+    hoveringId: null,
+
+    start(event, id) {
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', String(id));
+        this.draggingId = id;
+    },
+
+    over(event, id) {
+        event.dataTransfer.dropEffect = 'move';
+        this.hoveringId = id;
+    },
+
+    stop() {
+        this.draggingId = null;
+        this.hoveringId = null;
+    },
+
+    drop(event, targetId) {
+        const draggedId = this.draggingId;
+        const rows = event.currentTarget.closest('[data-sortable]');
+        this.stop();
+
+        if (! draggedId || draggedId === targetId || ! rows) {
+            return;
+        }
+
+        const ids = Array.from(rows.querySelectorAll('[data-value-id]')).map((row) => Number(row.dataset.valueId));
+        const from = ids.indexOf(draggedId);
+        const to = ids.indexOf(targetId);
+
+        if (from < 0 || to < 0) {
+            return;
+        }
+
+        /*
+         * A row always lands in front of the one it was dropped on. The server
+         * takes it out of the list before putting it back, so the position it is
+         * asked for is where the target sits once the dragged row is gone.
+         */
+        const form = rows.querySelector(`[data-position-form="${draggedId}"]`);
+        form.querySelector('input[name="position"]').value = to > from ? to : to + 1;
+        form.requestSubmit();
+    },
+}));
+
+/*
  * The theme the visitor picked, kept in local storage so it survives a reload.
  * The `.dark` class on <html> is what every token in app.css reads, and the
  * inline script in partials/meta sets it before the first paint so there is no

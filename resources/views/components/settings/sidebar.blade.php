@@ -105,6 +105,20 @@
       </svg>
       {{ __('Preferences') }}
     </a>
+
+    <a
+      href="{{ route('settings.valueLists.index') }}"
+      data-turbo="true"
+      @if ($current === 'defaults') aria-current="page" @endif
+      class="{{ $item }} {{ $current === 'defaults' ? 'bg-hover font-semibold text-ink' : 'text-body hover:bg-hover' }}"
+    >
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" class="shrink-0" aria-hidden="true">
+        <line x1="4" y1="4.4" x2="13" y2="4.4"></line>
+        <line x1="4" y1="8" x2="13" y2="8"></line>
+        <line x1="4" y1="11.6" x2="13" y2="11.6"></line>
+      </svg>
+      {{ __('Default values') }}
+    </a>
   </nav>
 
   <div id="sidebar-identity" class="flex items-center gap-2 border-t border-hairline-soft px-3 py-2.5">
