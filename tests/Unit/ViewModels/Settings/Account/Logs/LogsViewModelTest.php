@@ -60,6 +60,22 @@ class LogsViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_gives_the_entries_the_application_wrote_on_its_own(): void
+    {
+        $user = User::factory()->create();
+
+        Log::factory()->bySystem()->create([
+            'account_id' => $user->account_id,
+            'action' => UserActionEnum::UserLogin->value,
+        ]);
+
+        $viewModel = new LogsViewModel(user: $user);
+
+        $this->assertCount(1, $viewModel->logs());
+        $this->assertEquals('The system', $viewModel->logs()->first()->author);
+    }
+
+    #[Test]
     public function it_gives_five_logs_a_page(): void
     {
         $user = User::factory()->create();

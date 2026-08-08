@@ -54,6 +54,24 @@ class LogControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_shows_what_the_application_did_on_its_own(): void
+    {
+        $user = User::factory()->create();
+
+        Log::factory()->bySystem()->create([
+            'account_id' => $user->account_id,
+            'action' => UserActionEnum::UserProfileUpdate->value,
+            'parameters' => ['name' => 'Michael Scott'],
+        ]);
+
+        $response = $this->actingAs($user)->get(route('settings.logs.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('The system', escape: false);
+        $response->assertSee('Updated the profile of Michael Scott', escape: false);
+    }
+
+    #[Test]
     public function it_hides_the_logs_of_somebody_else(): void
     {
         $user = User::factory()->create();

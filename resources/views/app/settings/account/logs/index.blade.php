@@ -70,7 +70,7 @@
           </svg>
         </x-slot:icon>
 
-        {{ __('Nothing has happened on your account yet. When you or an administrator change your details, it shows up here.') }}
+        {{ __('Nothing has happened on your account yet. As soon as you change something, it shows up here.') }}
       </x-empty-state>
     @endforelse
 

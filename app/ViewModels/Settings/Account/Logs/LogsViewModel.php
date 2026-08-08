@@ -37,15 +37,22 @@ class LogsViewModel
     ) {}
 
     /**
-     * The actions of the signed in person, newest first. The author of each
-     * entry is read off the user, so both are loaded up front. The screen asks
-     * for the page more than once, and one page is one query.
+     * Everything written down about the account, newest first.
+     *
+     * The journal belongs to the account rather than to the person, and under
+     * one person per account those are the same set but for one case: an entry
+     * the application wrote on its own has nobody behind it, and scoping to the
+     * user would hide exactly the entries somebody has not seen happen.
+     *
+     * The author of each entry is read off the user, so both are loaded up
+     * front. The screen asks for the page more than once, and one page is one
+     * query.
      *
      * @return CursorPaginator<int, Log>
      */
     public function logs(): CursorPaginator
     {
-        return $this->logs ??= $this->user->logs()
+        return $this->logs ??= $this->user->account->logs()
             ->with('user')
             ->latest()
             ->cursorPaginate(self::PER_PAGE);
