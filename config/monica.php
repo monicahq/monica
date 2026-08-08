@@ -89,4 +89,31 @@ return [
 
     'privacy_url' => env('MONICA_PRIVACY_URL', 'https://monicahq.com/privacy'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Self hosted
+    |--------------------------------------------------------------------------
+    |
+    | Whether this instance runs outside of the cloud one. An account created on
+    | a self hosted instance is never metered: it has no storage ceiling and no
+    | rate limit applies to it.
+    |
+    */
+
+    'self_hosted' => env('MONICA_SELF_HOSTED', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Free storage
+    |--------------------------------------------------------------------------
+    |
+    | How many bytes of files an account gets on the free offer of the cloud
+    | instance, before the one time purchase. The ceiling is stored on the
+    | account when it is created, so raising this number here does not raise it
+    | for the accounts that already exist.
+    |
+    */
+
+    'free_storage_limit_in_bytes' => env('MONICA_FREE_STORAGE_LIMIT_IN_BYTES', 104857600),
+
 ];

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\PlanEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
@@ -12,7 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Create an account and the first user in it. The user is returned rather than
+ * Create an account and the one user in it. The user is returned rather than
  * the account, because whoever asks for an account next has to sign that person
  * in.
  */
@@ -27,7 +26,6 @@ class CreateAccount
         private readonly string $lastName,
         private readonly string $email,
         private readonly string $password,
-        private readonly PlanEnum $plan = PlanEnum::Free,
     ) {}
 
     public function execute(): User
@@ -44,10 +42,13 @@ class CreateAccount
 
     private function createAccount(): void
     {
+        $isSelfHosted = (bool) config('monica.self_hosted');
+
         $this->account = Account::query()->create([
-            'plan' => $this->plan,
-            'is_self_hosted' => false,
-            'trial_ends_at' => now()->addDays(30),
+            'is_self_hosted' => $isSelfHosted,
+            'has_lifetime_access' => false,
+            'storage_used_in_bytes' => 0,
+            'storage_limit_in_bytes' => $isSelfHosted ? null : config('monica.free_storage_limit_in_bytes'),
         ]);
     }
 

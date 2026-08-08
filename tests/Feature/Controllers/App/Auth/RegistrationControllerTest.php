@@ -63,7 +63,7 @@ class RegistrationControllerTest extends TestCase
         $user = User::query()->where('email', 'michael.scott@dundermifflin.com')->firstOrFail();
 
         $this->assertEquals(1, Account::query()->count());
-        $this->assertEquals(1, $user->account->users()->count());
+        $this->assertTrue($user->is($user->account->user));
         $this->assertEquals('Michael Scott', $user->name);
     }
 

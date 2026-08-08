@@ -1,6 +1,6 @@
 # 001. Account
 
-**Status:** exists (`app/Models/Account.php`), changes needed
+**Status:** exists (`app/Models/Account.php`), built as far as the models it depends on allow
 **Spec:** 3.4, 4, 4.1, 11
 
 ## What it is
@@ -24,15 +24,7 @@ created_at                  datetime
 updated_at                  datetime
 ```
 
-## What changes
-
-The table today carries `plan` (a `PlanEnum`) and `trial_ends_at`, both of which describe a subscription. Section 3.4 removes the subscription: the hosted version has a limited free offer and a single purchase that unlocks everything, with no plan to manage and no trial to expire.
-
-- Drop `plan` and `PlanEnum`. Replace with `has_lifetime_access` and `purchased_at`.
-- Drop `trial_ends_at` and `isOnTrial()`. The free offer replaces the trial, and it does not end.
-- Add `storage_used_in_bytes` and `storage_limit_in_bytes` (11). The used total is maintained by the file model rather than recomputed, because the quota is shown on every upload screen.
-- The `users()` relationship becomes `hasOne` rather than `hasMany` (4.1).
-- Add the relationships to everything the account owns: vaults, value lists, activity types, moods, templates, sections, entity types, relationship types, group types, share links, webhook subscriptions, modules, notification preferences.
+Section 3.4 removes the subscription the table used to carry: the hosted version has a limited free offer and a single purchase that unlocks everything, with no plan to manage and no trial to expire. The used storage total is maintained by the file model rather than recomputed, because the quota is shown on every upload screen.
 
 ## Relationships
 
@@ -49,7 +41,14 @@ The table today carries `plan` (a `PlanEnum`) and `trial_ends_at`, both of which
 - A self hosted account is never metered: `storage_limit_in_bytes` is null and no rate limit applies (3.4, 14.5).
 - Deleting an account deletes everything under it. This is the one hard delete in the product, and it must go through a confirmed, explicit action with a warning, per the standing rule on destructive actions.
 
+## Not done yet
+
+- The seeding rule. Creating an account creates the user and nothing else. The default vault, value lists, activity types, moods, relationship types and qualifiers, group types, contact template and the `Moi` contact all wait on models 007 and later.
+- The relationships to the models that do not exist yet. Only user, logs and emails sent are wired.
+- One user per account is a `hasOne` on the model, but the database does not enforce it. The unique index on `users.account_id` belongs to [User](002-user.md).
+- Deleting an account. `DestroyAccount` exists and cascades through the foreign keys of the tables that exist, but nothing calls it: there is no route, no screen and no confirmation. Every new table has to join that cascade.
+
 ## Open questions
 
-- Does the free offer limit contacts, vaults, storage, or all three? The specification says "limitée" without saying limited in what. Until it is answered, only `storage_limit_in_bytes` is modelled, and any other limit is read from configuration rather than stored per account.
+- Does the free offer limit contacts, vaults, storage, or all three? The specification says "limitée" without saying limited in what. Until it is answered, only `storage_limit_in_bytes` is modelled, and any other limit is read from configuration rather than stored per account. The storage ceiling is copied from `monica.free_storage_limit_in_bytes` onto the account when it is created, so raising the number does not raise it for the accounts that already exist. Whether the purchase lifts that ceiling, and to what, is not settled either, so the purchase leaves it alone for now.
 - The specification asks for an admin surface (section 16, last bullet). Whatever it turns out to be, it reads accounts. Nothing here should assume the account is only ever read by the person who owns it.

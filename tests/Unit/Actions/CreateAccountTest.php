@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\CreateAccount;
-use App\Enums\PlanEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\User;
@@ -34,7 +33,9 @@ class CreateAccountTest extends TestCase
         $this->assertInstanceOf(User::class, $user);
         $this->assertDatabaseHas('accounts', [
             'id' => $user->account_id,
-            'plan' => PlanEnum::Free->value,
+            'is_self_hosted' => false,
+            'has_lifetime_access' => false,
+            'storage_used_in_bytes' => 0,
         ]);
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -45,7 +46,7 @@ class CreateAccountTest extends TestCase
         ]);
 
         $this->assertTrue(Hash::check('thatswhatshesaid', $user->password_hash));
-        $this->assertEquals(1, $user->account->users()->count());
+        $this->assertTrue($user->is($user->account->user));
 
         Queue::assertPushedOn(
             queue: 'low',
@@ -57,9 +58,10 @@ class CreateAccountTest extends TestCase
     }
 
     #[Test]
-    public function it_starts_the_account_on_a_trial(): void
+    public function it_gives_the_account_the_storage_of_the_free_offer(): void
     {
         Queue::fake();
+        config(['monica.free_storage_limit_in_bytes' => 4096]);
 
         $user = new CreateAccount(
             firstName: 'Michael',
@@ -68,22 +70,25 @@ class CreateAccountTest extends TestCase
             password: 'thatswhatshesaid',
         )->execute();
 
-        $this->assertTrue($user->account->isOnTrial());
+        $this->assertSame(4096, $user->account->storage_limit_in_bytes);
+        $this->assertTrue($user->account->isMetered());
     }
 
     #[Test]
-    public function it_accepts_a_plan(): void
+    public function it_never_meters_an_account_on_a_self_hosted_instance(): void
     {
         Queue::fake();
+        config(['monica.self_hosted' => true]);
 
         $user = new CreateAccount(
             firstName: 'Michael',
             lastName: 'Scott',
             email: 'michael.scott@dundermifflin.com',
             password: 'thatswhatshesaid',
-            plan: PlanEnum::Business,
         )->execute();
 
-        $this->assertEquals(PlanEnum::Business, $user->account->plan);
+        $this->assertTrue($user->account->is_self_hosted);
+        $this->assertNull($user->account->storage_limit_in_bytes);
+        $this->assertFalse($user->account->isMetered());
     }
 }

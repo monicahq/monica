@@ -4,24 +4,28 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\PlanEnum;
 use Carbon\Carbon;
 use Database\Factories\AccountFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class Account
  *
- * What everything in the application belongs to. An account holds users, and
- * every one of them can do the same things.
+ * The root of everything. Every row of user data hangs off an account, directly
+ * or through a vault. An account holds exactly one person, and is what storage
+ * is counted against and what a purchase is attached to.
  *
  * @property int $id
- * @property PlanEnum $plan
  * @property bool $is_self_hosted
+ * @property bool $has_lifetime_access
+ * @property Carbon|null $purchased_at
  * @property string|null $billing_email
- * @property Carbon|null $trial_ends_at
+ * @property int $storage_used_in_bytes
+ * @property int|null $storage_limit_in_bytes
+ * @property Carbon|null $onboarding_completed_at
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
  */
@@ -38,10 +42,13 @@ class Account extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'plan',
         'is_self_hosted',
+        'has_lifetime_access',
+        'purchased_at',
         'billing_email',
-        'trial_ends_at',
+        'storage_used_in_bytes',
+        'storage_limit_in_bytes',
+        'onboarding_completed_at',
     ];
 
     /**
@@ -52,27 +59,51 @@ class Account extends Model
     protected function casts(): array
     {
         return [
-            'plan' => PlanEnum::class,
-            'trial_ends_at' => 'datetime',
             'is_self_hosted' => 'boolean',
+            'has_lifetime_access' => 'boolean',
+            'purchased_at' => 'datetime',
+            'storage_used_in_bytes' => 'integer',
+            'storage_limit_in_bytes' => 'integer',
+            'onboarding_completed_at' => 'datetime',
         ];
     }
 
     /**
-     * Get the users who belong to the account.
+     * Get the person the account belongs to.
      *
-     * @return HasMany<User, $this>
+     * @return HasOne<User, $this>
      */
-    public function users(): HasMany
+    public function user(): HasOne
     {
-        return $this->hasMany(User::class);
+        return $this->hasOne(User::class);
     }
 
     /**
-     * Get whether the account is still within its trial period.
+     * Get the actions performed in the account.
+     *
+     * @return HasMany<Log, $this>
      */
-    public function isOnTrial(): bool
+    public function logs(): HasMany
     {
-        return $this->trial_ends_at !== null && $this->trial_ends_at->isFuture();
+        return $this->hasMany(Log::class);
+    }
+
+    /**
+     * Get the emails sent on behalf of the account.
+     *
+     * @return HasMany<EmailSent, $this>
+     */
+    public function emailsSent(): HasMany
+    {
+        return $this->hasMany(EmailSent::class);
+    }
+
+    /**
+     * Get whether the account is metered. A self hosted instance never is, and
+     * neither is an account with no ceiling on the cloud one.
+     */
+    public function isMetered(): bool
+    {
+        return ! $this->is_self_hosted && $this->storage_limit_in_bytes !== null;
     }
 }
