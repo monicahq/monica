@@ -100,7 +100,7 @@ class ProcessImportJob implements ShouldQueue
                     return;
                 }
                 
-                $this->processChunk($chunk, $header, $firstNameIndex, $lastNameIndex, $emailIndex, $phoneIndex);
+                $this->processChunk($chunk, $firstNameIndex, $lastNameIndex, $emailIndex, $phoneIndex);
                 $chunk = [];
             }
         }
@@ -108,7 +108,7 @@ class ProcessImportJob implements ShouldQueue
         if (!empty($chunk)) {
             $this->importJob->refresh();
             if ($this->importJob->status !== 'cancelled') {
-                $this->processChunk($chunk, $header, $firstNameIndex, $lastNameIndex, $emailIndex, $phoneIndex);
+                $this->processChunk($chunk, $firstNameIndex, $lastNameIndex, $emailIndex, $phoneIndex);
             }
         }
 
@@ -132,7 +132,7 @@ class ProcessImportJob implements ShouldQueue
         }
     }
 
-    private function processChunk(array $chunk, array $header, $firstNameIndex, $lastNameIndex, $emailIndex, $phoneIndex): void
+    private function processChunk(array $chunk, $firstNameIndex, $lastNameIndex, $emailIndex, $phoneIndex): void
     {
         $emailType = ContactInformationType::where('account_id', $this->importJob->account_id)
             ->where('type', 'email')
@@ -142,7 +142,7 @@ class ProcessImportJob implements ShouldQueue
             ->where('type', 'phone')
             ->first();
 
-        DB::transaction(function () use ($chunk, $header, $firstNameIndex, $lastNameIndex, $emailIndex, $emailType, $phoneIndex, $phoneType) {
+        DB::transaction(function () use ($chunk, $firstNameIndex, $lastNameIndex, $emailIndex, $emailType, $phoneIndex, $phoneType) {
             $processedCount = 0;
             $failedCount = 0;
             $lastIndex = 0;
