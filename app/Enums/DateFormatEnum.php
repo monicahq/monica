@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
+use App\Contracts\Translatable;
 use Carbon\CarbonInterface;
 
-enum DateFormatEnum: string
+enum DateFormatEnum: string implements Translatable
 {
     case DayFirst = 'd/m/Y';
     case MonthFirst = 'm/d/Y';
@@ -50,5 +51,15 @@ enum DateFormatEnum: string
     public static function write(CarbonInterface $date, string $format): string
     {
         return $date->locale(app()->getLocale())->translatedFormat($format);
+    }
+
+    /**
+     * The name of this case, which the screen that offers the choice reads.
+     *
+     * @return list<string>
+     */
+    public function translationKeys(): array
+    {
+        return [$this->label()];
     }
 }

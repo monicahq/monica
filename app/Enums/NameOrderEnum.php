@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum NameOrderEnum: string
+use App\Contracts\Translatable;
+
+enum NameOrderEnum: string implements Translatable
 {
     case GivenFirst = 'given_first';
     case FamilyFirst = 'family_first';
@@ -31,5 +33,15 @@ enum NameOrderEnum: string
             self::GivenFirst => trim("{$firstName} {$lastName}"),
             self::FamilyFirst => trim("{$lastName} {$firstName}"),
         };
+    }
+
+    /**
+     * The name of this case, which the screen that offers the choice reads.
+     *
+     * @return list<string>
+     */
+    public function translationKeys(): array
+    {
+        return [$this->label()];
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum NumberFormatEnum: string
+use App\Contracts\Translatable;
+
+enum NumberFormatEnum: string implements Translatable
 {
     case CommaAndDot = 'comma_dot';
     case DotAndComma = 'dot_comma';
@@ -58,5 +60,15 @@ enum NumberFormatEnum: string
             self::CommaAndDot, self::NoSeparator => '.',
             self::DotAndComma, self::SpaceAndComma => ',',
         };
+    }
+
+    /**
+     * The name of this case, which the screen that offers the choice reads.
+     *
+     * @return list<string>
+     */
+    public function translationKeys(): array
+    {
+        return [$this->label()];
     }
 }

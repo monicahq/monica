@@ -1,61 +1,33 @@
 ---
 name: translations
-description: Update Laravel PHP translation files by fixing missing or empty translations in lang/**/*.php. Use when UI copy changes, new keys are added, or locale files are out of sync. Trigger whenever translation keys, lang files, i18n, or __() / @lang() strings are mentioned.
+description: Keep the lang/*.json files in step with the code using the monica:localize command. Use when UI copy changes, new strings are added, or locale files are out of sync. Trigger whenever translation keys, lang files, i18n, or __() / @lang() strings are mentioned.
 ---
 
-# Translations Updater
+# Translations
 
-This skill keeps Laravel translation files consistent and complete.
+The strings themselves are the keys, in one JSON file per locale under `lang/`. A key missing from a locale falls back to the key, which is the English sentence, so a missing translation reads as English rather than as a blank.
 
-## Key conventions
+`php artisan monica:localize` is what keeps those files in step with the code. You MUST NOT add, remove or reorder a key by hand.
 
-This project uses **translation keys** in JSON files.
+## What the command does
 
-## When to use this Skill
+- Reads every `__()`, `trans()`, `trans_choice()` and `@lang()` in `app/` and `resources/views/`, with comments taken out first.
+- Reads every case of every enum in `app/Enums` implementing `App\Contracts\Translatable`, since those strings are wrapped only where they are read.
+- Writes `lang/en.json` with every string found, each its own value.
+- Leaves every other locale holding only what has been translated, dropping any key the code no longer asks for and reporting what it dropped.
+- `--check` writes nothing and fails when a string is missing or stale. A test runs it against the shipped files, so the suite fails when this has not been run.
 
-You MUST use this skill when:
+## When you change or add copy
 
-- New UI text or translation keys were introduced.
-- Modules, pages, or components added new strings.
-- Translation files contain empty or missing values.
-- Locale files are out of sync with the codebase.
-- A supported language is added or removed.
+1. Write the string in the code as usual. A string in an enum belongs in `translationKeys()`, and the enum MUST implement `Translatable`.
+2. Run `php artisan monica:localize`. Read what it says it added and removed.
+3. Translate every string it reports as missing, in every locale of `config('monica.locales')`.
+4. Run `php artisan monica:localize --check` and confirm it passes.
 
-## Voice and tense per locale for logs
+## Writing a translation
 
-When translating logs, you MUST match the convention for each language:
-
-| Locale | Convention | Example |
-|---|---|---|
-| `en` | Simple past, active | "Created an account" |
-| `fr_FR` | Passé composé, actif | "A créé un compte" |
-| `de` | Perfekt, active (Hat + Partizip) | "Hat ein Konto erstellt" |
-
-## Instructions
-
-### Step 1: Regenerate locale files
-
-1. You MUST run the locale generation command:
-   ```bash
-   composer monica:locale
-   ```
-2. You MUST confirm the command completes successfully before making any edits.
-
-### Step 2: Identify missing or empty translations
-
-- For each new entry in the `en.json` file, you MUST check all the other locale files of the project and fix any missing or empty translation.
-- You MUST NOT remove keys unless they are confirmed unused.
-- You MUST replace empty or invalid values with an appropriate human-readable translation.
-- You MUST preserve placeholders exactly, and you MUST NOT alter tokens like `:name`, `:count`, `:seconds`, `{value}`.
-- You MUST preserve embedded HTML or Markdown: the structure MUST be identical across locales.
-- You MUST keep translations consistent:
-   - Same tense and tone as the surrounding keys.
-   - Same terminology used elsewhere in the locale file.
-   - No informal register, unless the file already uses it.
-
-### Step 3: Quality checks
-
-1. No empty string, null value, or `TODO` placeholder MUST remain.
-2. When a translation is uncertain, you SHOULD prefer literal and conservative wording.
-3. You MUST maintain the existing key order, unless the project explicitly requires sorting.
-4. You MUST run `bash scripts/check-translations.sh` after translation changes. It checks all PHP short-key language files and fails on empty strings.
+- You MUST preserve placeholders exactly: `:name`, `:count`, `:app`, `:time`.
+- You MUST preserve any HTML or Markdown, identically across locales.
+- You MUST match the tense, tone and terminology already used in that locale's file. The English is plain and calm, and the translations are too.
+- You MUST NOT leave a value empty. An empty string is a real translation as far as Laravel is concerned, and renders as nothing at all. Leave the key out instead, which the command does for you.
+- Logs read as something somebody did, and each language has its own way of saying it: simple past in English ("Created the account"), passé composé in French ("A créé le compte"), Perfekt in German ("Hat das Konto erstellt").

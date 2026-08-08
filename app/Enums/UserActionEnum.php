@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum UserActionEnum: string
+use App\Contracts\Translatable;
+
+enum UserActionEnum: string implements Translatable
 {
     case AccountCreation = 'account_created';
     case UserProfileUpdate = 'user_profile_updated';
@@ -44,5 +46,15 @@ enum UserActionEnum: string
             self::ApiKeyCreation => 'Created the API key called :name',
             self::ApiKeyDeletion => 'Revoked the API key called :name',
         };
+    }
+
+    /**
+     * The sentence this action reads as in the logs.
+     *
+     * @return list<string>
+     */
+    public function translationKeys(): array
+    {
+        return [$this->description()];
     }
 }
