@@ -152,7 +152,6 @@ class ProcessImportJobTest extends TestCase
         $this->assertEquals(3, $importJob->processed_rows);
         $this->assertEquals(3, $importJob->last_processed_row_index);
 
-        // There should only be 3 contacts in total
         $this->assertEquals($initialContactCount + 2, Contact::where('vault_id', $vault->id)->count());
         $this->assertDatabaseHas('contacts', ['first_name' => 'Two']);
         $this->assertDatabaseHas('contacts', ['first_name' => 'Three']);
