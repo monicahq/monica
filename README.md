@@ -65,7 +65,7 @@ The background job reads the CSV file in manageable chunks (e.g., 50 rows). For 
 By wrapping the row iteration and the progress update (`$this->importJob->update(...)`) within the same chunk-level database transaction, atomicity is guaranteed. If the job crashes after creating a contact but before the `ImportJob`'s progress is updated, the entire chunk (including the contact insertion) is rolled back. When retried, the system safely restarts from the beginning of that chunk.
 
 ### Preventing Duplicates
-Duplicates caused by crashes and retries are prevented using the transactional chunking and index-tracking strategy described above. Business-level duplicate prevention (e.g., checking if a contact named "John Doe" already exists) was not explicitly implemented in this redesign but would typically involve looking up existing contacts by name or email before calling the `CreateContact` service.
+Duplicates caused by crashes and retries are prevented using the transactional chunking and index-tracking strategy described above. Furthermore, **strict business-level duplicate prevention was fully implemented**: before inserting any row, the background worker queries the database to see if the provided email or phone number already exists inside the target vault. If it finds a match, it gracefully rejects that specific row as a duplicate and logs it in the `import_errors` table without halting the rest of the file.
 
 ### Remaining Limitations
 - Large files must be physically stored on the server's disk (e.g., via `storage/app/imports`). If the queue worker runs on a separate server, a shared filesystem like AWS S3 must be configured instead of the local disk.
