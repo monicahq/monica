@@ -4,6 +4,8 @@ namespace Tests\Feature\Jobs;
 
 use App\Jobs\ProcessImportJob;
 use App\Models\Contact;
+use App\Models\ContactInformation;
+use App\Models\ContactInformationType;
 use App\Models\ImportJob;
 use App\Models\User;
 use App\Models\Vault;
@@ -71,7 +73,6 @@ class ProcessImportJobTest extends TestCase
         ]);
         $this->setPermissionInVault($user, Vault::PERMISSION_MANAGE, $vault);
 
-        // Second row is missing required name
         $csvContent = "first_name,last_name\nValid,User\n,\nAnother,Valid\n";
         $filePath = 'imports/test_errors.csv';
         Storage::put($filePath, $csvContent);
@@ -113,7 +114,6 @@ class ProcessImportJobTest extends TestCase
         ]);
         $this->setPermissionInVault($user, Vault::PERMISSION_MANAGE, $vault);
 
-        // 3 rows total
         $csvContent = "first_name,last_name\nOne,User\nTwo,User\nThree,User\n";
         $filePath = 'imports/test_retry.csv';
         Storage::put($filePath, $csvContent);
@@ -125,15 +125,14 @@ class ProcessImportJobTest extends TestCase
             'file_path' => $filePath,
         ]);
 
-        // Simulate that row 1 was already processed and job crashed.
-        // The last_processed_row_index would be 1, processed_rows 1.
+     
         $importJob->update([
             'processed_rows' => 1,
             'last_processed_row_index' => 1,
             'total_rows' => 3,
         ]);
         
-        // Manually create the first contact to simulate it was already inserted
+     
         Contact::factory()->create([
             'vault_id' => $vault->id,
             'first_name' => 'One',
@@ -143,13 +142,13 @@ class ProcessImportJobTest extends TestCase
         $initialContactCount = Contact::where('vault_id', $vault->id)->count();
 
         $job = new ProcessImportJob($importJob);
-        $job->handle(); // This is the retry
+        $job->handle(); 
 
         $importJob->refresh();
 
         $this->assertEquals('completed', $importJob->status);
         $this->assertEquals(3, $importJob->total_rows);
-        // It processed the remaining 2 rows, plus the 1 we simulated earlier = 3
+     
         $this->assertEquals(3, $importJob->processed_rows);
         $this->assertEquals(3, $importJob->last_processed_row_index);
 
@@ -177,7 +176,7 @@ class ProcessImportJobTest extends TestCase
             'user_id' => $user->id,
             'vault_id' => $vault->id,
             'file_path' => $path,
-            'status' => 'cancelled', // Pretend cancelled before running
+            'status' => 'cancelled', 
         ]);
         
         $job = new ProcessImportJob($importJob);
@@ -187,8 +186,7 @@ class ProcessImportJobTest extends TestCase
         $this->assertEquals('cancelled', $importJob->status);
         $this->assertEquals(0, $importJob->processed_rows);
         
-        // Let's test cancelling mid-flight by mocking refresh?
-        // Actually, just testing that a cancelled job returns early is good enough for basic coverage.
+    
     }
     public function test_rejects_duplicate_email()
     {
@@ -200,14 +198,14 @@ class ProcessImportJobTest extends TestCase
         ]);
         $this->setPermissionInVault($user, Vault::PERMISSION_MANAGE, $vault);
         
-        $emailType = \App\Models\ContactInformationType::factory()->create([
+        $emailType = ContactInformationType::factory()->create([
             'account_id' => $user->account_id,
             'type' => 'email',
             'name' => 'Email',
         ]);
 
         $existingContact = Contact::factory()->create(['vault_id' => $vault->id]);
-        \App\Models\ContactInformation::factory()->create([
+        ContactInformation::factory()->create([
             'contact_id' => $existingContact->id,
             'type_id' => $emailType->id,
             'data' => 'duplicate@example.com',
@@ -250,14 +248,14 @@ class ProcessImportJobTest extends TestCase
         ]);
         $this->setPermissionInVault($user, Vault::PERMISSION_MANAGE, $vault);
         
-        $phoneType = \App\Models\ContactInformationType::factory()->create([
+        $phoneType = ContactInformationType::factory()->create([
             'account_id' => $user->account_id,
             'type' => 'phone',
             'name' => 'Phone',
         ]);
 
         $existingContact = Contact::factory()->create(['vault_id' => $vault->id]);
-        \App\Models\ContactInformation::factory()->create([
+        ContactInformation::factory()->create([
             'contact_id' => $existingContact->id,
             'type_id' => $phoneType->id,
             'data' => '555-9999',
