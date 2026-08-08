@@ -158,4 +158,49 @@
       </x-form>
     </div>
   </x-box>
+
+  {{--
+    The one thing on these screens that cannot be undone. It asks twice: the
+    button opens the form rather than sending it, and the form only goes through
+    once the address has been typed out, which is hard to do by accident.
+  --}}
+  <x-box :title="__('Delete your account')">
+    <div class="grid gap-9 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]" x-data="{ confirming: @js($errors->has('confirm_email')) }">
+      <div class="space-y-2.5 text-sm leading-relaxed text-body">
+        <p>{{ __('Everything you have put in :app goes with it, and none of it can be brought back.', ['app' => config('app.name')]) }}</p>
+        <p>{{ __('We keep no copy, so there is nobody to ask afterwards.') }}</p>
+      </div>
+
+      <div>
+        <x-button.secondary type="button" x-show="! confirming" @click="confirming = true" class="max-sm:w-full">
+          {{ __('Delete your account') }}
+        </x-button.secondary>
+
+        <x-form
+          method="delete"
+          :action="route('settings.account.destroy')"
+          x-cloak
+          x-show="confirming"
+          class="space-y-3.5"
+        >
+          <p class="text-sm text-error">{{ __('This deletes your account for good. Type :email below to confirm.', ['email' => $viewModel->details()['email']]) }}</p>
+
+          <x-input
+            type="email"
+            id="confirm_email"
+            :label="__('Email address')"
+            autocomplete="off"
+            :error="$errors->get('confirm_email')"
+            required
+          />
+
+          <div class="flex flex-wrap items-center gap-3 max-sm:flex-col max-sm:items-stretch">
+            <x-button.secondary type="button" @click="confirming = false">{{ __('Keep my account') }}</x-button.secondary>
+
+            <x-button class="bg-error hover:bg-error/88 max-sm:w-full">{{ __('Delete it for good') }}</x-button>
+          </div>
+        </x-form>
+      </div>
+    </div>
+  </x-box>
 </x-app-layout>

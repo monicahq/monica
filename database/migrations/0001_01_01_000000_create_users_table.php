@@ -15,18 +15,22 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table): void {
             $table->id()->comment('primary key');
-            $table->unsignedBigInteger('account_id')->comment('account the user belongs to');
+            $table->unsignedBigInteger('account_id')->unique()->comment('account the user belongs to, unique because an account holds exactly one person');
             $table->string('first_name')->comment('first name of the user');
             $table->string('last_name')->comment('last name of the user');
             $table->string('photo_path')->nullable()->comment('path of the photo file');
             $table->string('email')->unique()->comment('email address the user logs in with');
             $table->timestamp('email_verified_at')->nullable()->comment('when the email address was verified');
-            $table->string('password_hash')->nullable()->comment('hashed password, null when the user signs in through SSO');
+            $table->string('password')->nullable()->comment('hashed password, null when the user signs in through SSO');
             $table->datetime('password_changed_at')->nullable()->comment('when the user last changed or set their password, null when the user signs in through SSO');
             $table->string('sso_provider')->nullable()->comment('SSO provider the user signs in with');
-            $table->boolean('is_active')->default(true)->comment('whether the user can sign in, so a user can be suspended without being deleted');
+            $table->boolean('is_active')->default(true)->comment('whether the user can sign in, so an account can be suspended without being deleted');
             $table->string('locale', 5)->nullable()->comment('language of the interface, falls back to the language of the application');
+            $table->string('timezone', 64)->default('UTC')->comment('IANA time zone every date is rendered in, and the one a new reminder rule is frozen with');
             $table->string('time_format', 2)->default('24')->comment('whether times are shown on a 24 hour or a 12 hour clock');
+            $table->string('date_format', 20)->nullable()->comment('order the parts of a date read in, null to follow the locale');
+            $table->string('name_order', 20)->default('given_first')->comment('order the name reads in, which the locale cannot always decide');
+            $table->string('number_format', 20)->nullable()->comment('separators used for numbers, null to follow the locale');
             $table->datetime('last_login_at')->nullable()->comment('when the user last signed in');
             $table->string('last_login_ip', 45)->nullable()->comment('ip address the user last signed in from, so a sign-in from somewhere new can be flagged');
             $table->text('two_factor_secret')->nullable()->comment('encrypted TOTP secret, null until the user enrols in two factor authentication');

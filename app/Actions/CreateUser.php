@@ -25,6 +25,7 @@ class CreateUser
         private readonly ?string $password = null,
         private ?string $ssoProvider = null,
         private readonly ?string $locale = null,
+        private readonly ?string $timezone = null,
     ) {}
 
     public function execute(): User
@@ -50,11 +51,12 @@ class CreateUser
             'first_name' => $this->firstName,
             'last_name' => $this->lastName,
             'email' => $this->email,
-            'password_hash' => $this->password === null ? null : Hash::make($this->password),
+            'password' => $this->password === null ? null : Hash::make($this->password),
             'password_changed_at' => $this->password === null ? null : now(),
             'sso_provider' => $this->ssoProvider,
             'is_active' => true,
             'locale' => $this->locale,
+            'timezone' => $this->timezone ?? config('app.timezone'),
         ]);
     }
 }

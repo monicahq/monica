@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
+use App\Enums\NameOrderEnum;
 use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
@@ -28,11 +30,33 @@ class UserTest extends TestCase
     }
 
     #[Test]
+    public function it_is_the_only_user_of_its_account(): void
+    {
+        $account = Account::factory()->create();
+        User::factory()->create(['account_id' => $account->id]);
+
+        $this->expectException(QueryException::class);
+
+        User::factory()->create(['account_id' => $account->id]);
+    }
+
+    #[Test]
     public function it_gives_the_name_the_user_is_called_by(): void
     {
         $user = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
 
         $this->assertEquals('Michael Scott', $user->name);
+    }
+
+    #[Test]
+    public function it_gives_the_name_family_name_first_when_the_user_asked_for_it(): void
+    {
+        $user = User::factory()->familyNameFirst()->create([
+            'first_name' => 'Michael',
+            'last_name' => 'Scott',
+        ]);
+
+        $this->assertEquals('Scott Michael', $user->name);
     }
 
     #[Test]
@@ -62,20 +86,20 @@ class UserTest extends TestCase
     }
 
     #[Test]
-    public function it_returns_the_password_hash_as_the_authentication_password(): void
+    public function it_authenticates_against_the_password_column(): void
     {
-        $user = User::factory()->create(['password_hash' => Hash::make('dwightschrute')]);
+        $user = User::factory()->create(['password' => Hash::make('dwightschrute')]);
 
-        $this->assertEquals($user->password_hash, $user->getAuthPassword());
+        $this->assertEquals($user->password, $user->getAuthPassword());
         $this->assertTrue(Hash::check('dwightschrute', $user->getAuthPassword()));
     }
 
     #[Test]
-    public function it_returns_an_empty_authentication_password_when_the_user_signs_in_through_sso(): void
+    public function it_has_no_authentication_password_when_the_user_signs_in_through_sso(): void
     {
         $user = User::factory()->singleSignOn()->create();
 
-        $this->assertEquals('', $user->getAuthPassword());
+        $this->assertNull($user->getAuthPassword());
     }
 
     #[Test]
@@ -89,11 +113,11 @@ class UserTest extends TestCase
     }
 
     #[Test]
-    public function it_hides_the_password_hash_when_serialized(): void
+    public function it_hides_the_password_when_serialized(): void
     {
         $user = User::factory()->create();
 
-        $this->assertArrayNotHasKey('password_hash', $user->toArray());
+        $this->assertArrayNotHasKey('password', $user->toArray());
         $this->assertArrayNotHasKey('remember_token', $user->toArray());
     }
 
@@ -111,6 +135,39 @@ class UserTest extends TestCase
         $this->assertNotNull($user->last_login_at);
         $this->assertNotNull($user->email_verified_at);
         $this->assertInstanceOf(Carbon::class, $user->password_changed_at);
+    }
+
+    #[Test]
+    public function it_carries_the_preferences_that_decide_how_things_are_rendered(): void
+    {
+        $user = User::factory()->create([
+            'locale' => 'fr_FR',
+            'timezone' => 'America/New_York',
+            'date_format' => 'd/m/Y',
+            'number_format' => '1 234,56',
+            'name_order' => NameOrderEnum::FamilyFirst,
+        ]);
+
+        $user->refresh();
+
+        $this->assertEquals('fr_FR', $user->locale);
+        $this->assertEquals('America/New_York', $user->timezone);
+        $this->assertEquals('d/m/Y', $user->date_format);
+        $this->assertEquals('1 234,56', $user->number_format);
+        $this->assertEquals(NameOrderEnum::FamilyFirst, $user->name_order);
+    }
+
+    #[Test]
+    public function it_falls_back_to_the_time_zone_of_the_instance_and_to_the_given_name_first(): void
+    {
+        $user = User::factory()->create();
+
+        $user->refresh();
+
+        $this->assertEquals('UTC', $user->timezone);
+        $this->assertEquals(NameOrderEnum::GivenFirst, $user->name_order);
+        $this->assertNull($user->date_format);
+        $this->assertNull($user->number_format);
     }
 
     #[Test]

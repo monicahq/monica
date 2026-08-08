@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Settings\Account\Logs;
 
 use App\Enums\UserActionEnum;
-use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\Log;
 use App\Models\User;
@@ -47,13 +46,12 @@ class LogsViewModelTest extends TestCase
     #[Test]
     public function it_leaves_out_the_logs_of_somebody_else(): void
     {
-        $account = Account::factory()->create();
-        $user = User::factory()->create(['account_id' => $account->id]);
-        $colleague = User::factory()->create(['account_id' => $account->id]);
+        $user = User::factory()->create();
+        $stranger = User::factory()->create();
 
         Log::factory()->create([
-            'account_id' => $account->id,
-            'user_id' => $colleague->id,
+            'account_id' => $stranger->account_id,
+            'user_id' => $stranger->id,
         ]);
 
         $viewModel = new LogsViewModel(user: $user);
@@ -114,10 +112,10 @@ class LogsViewModelTest extends TestCase
     public function it_hides_the_emails_sent_to_somebody_else(): void
     {
         $user = User::factory()->create();
-        $colleague = User::factory()->create(['account_id' => $user->account_id]);
+        $stranger = User::factory()->create();
         EmailSent::factory()->create([
-            'account_id' => $user->account_id,
-            'user_id' => $colleague->id,
+            'account_id' => $stranger->account_id,
+            'user_id' => $stranger->id,
         ]);
 
         $viewModel = new LogsViewModel(user: $user);

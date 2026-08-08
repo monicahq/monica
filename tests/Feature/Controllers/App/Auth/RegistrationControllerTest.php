@@ -157,6 +157,29 @@ class RegistrationControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_the_time_zone_the_browser_reported(): void
+    {
+        $this->post(route('auth.register.create'), $this->validPayload([
+            'timezone' => 'America/New_York',
+        ]));
+
+        $user = User::query()->where('email', 'michael.scott@dundermifflin.com')->firstOrFail();
+
+        $this->assertEquals('America/New_York', $user->timezone);
+    }
+
+    #[Test]
+    public function it_refuses_a_time_zone_that_does_not_exist(): void
+    {
+        $response = $this->post(route('auth.register.create'), $this->validPayload([
+            'timezone' => 'Dunder/Mifflin',
+        ]));
+
+        $response->assertSessionHasErrors('timezone');
+        $this->assertGuest();
+    }
+
+    #[Test]
     public function it_refuses_the_registration_when_cloudflare_rejects_the_human_check(): void
     {
         config(['turnstile.enabled' => true]);

@@ -38,7 +38,7 @@ class CreateUserTest extends TestCase
             'email' => 'jim.halpert@dundermifflin.com',
             'is_active' => true,
         ]);
-        $this->assertTrue(Hash::check('bearsbeatsbattlestar', $user->password_hash));
+        $this->assertTrue(Hash::check('bearsbeatsbattlestar', $user->password));
 
         $this->assertEqualsWithDelta(
             now()->timestamp,
@@ -60,9 +60,42 @@ class CreateUserTest extends TestCase
             ssoProvider: 'google',
         )->execute();
 
-        $this->assertNull($user->password_hash);
+        $this->assertNull($user->password);
         $this->assertNull($user->password_changed_at);
         $this->assertEquals('google', $user->sso_provider);
         $this->assertTrue($user->usesSingleSignOn());
+    }
+
+    #[Test]
+    public function it_stores_the_time_zone_the_user_signed_up_from(): void
+    {
+        $account = Account::factory()->create();
+
+        $user = new CreateUser(
+            account: $account,
+            firstName: 'Dwight',
+            lastName: 'Schrute',
+            email: 'dwight.schrute@dundermifflin.com',
+            password: 'beetsbearsbattlestar',
+            timezone: 'America/New_York',
+        )->execute();
+
+        $this->assertEquals('America/New_York', $user->timezone);
+    }
+
+    #[Test]
+    public function it_falls_back_to_the_time_zone_of_the_instance_when_the_browser_did_not_say(): void
+    {
+        $account = Account::factory()->create();
+
+        $user = new CreateUser(
+            account: $account,
+            firstName: 'Dwight',
+            lastName: 'Schrute',
+            email: 'dwight.schrute@dundermifflin.com',
+            password: 'beetsbearsbattlestar',
+        )->execute();
+
+        $this->assertEquals(config('app.timezone'), $user->timezone);
     }
 }

@@ -25,7 +25,7 @@ class UpdateUserPasswordTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create([
-            'password_hash' => Hash::make('beets'),
+            'password' => Hash::make('beets'),
             'password_changed_at' => null,
         ]);
 
@@ -35,7 +35,7 @@ class UpdateUserPasswordTest extends TestCase
         )->execute();
 
         $this->assertInstanceOf(User::class, $result);
-        $this->assertTrue(Hash::check('bearsbeatsbattlestar', $user->refresh()->password_hash));
+        $this->assertTrue(Hash::check('bearsbeatsbattlestar', $user->refresh()->password));
 
         $this->assertEqualsWithDelta(
             now()->timestamp,

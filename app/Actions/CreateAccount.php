@@ -26,6 +26,7 @@ class CreateAccount
         private readonly string $lastName,
         private readonly string $email,
         private readonly string $password,
+        private readonly ?string $timezone = null,
     ) {}
 
     public function execute(): User
@@ -60,6 +61,7 @@ class CreateAccount
             lastName: $this->lastName,
             email: $this->email,
             password: $this->password,
+            timezone: $this->timezone,
         )->execute();
     }
 

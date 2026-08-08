@@ -42,10 +42,10 @@ class EmailsSentViewModelTest extends TestCase
     public function it_hides_the_emails_sent_to_somebody_else(): void
     {
         $user = User::factory()->create();
-        $colleague = User::factory()->create(['account_id' => $user->account_id]);
+        $stranger = User::factory()->create();
         EmailSent::factory()->create([
-            'account_id' => $user->account_id,
-            'user_id' => $colleague->id,
+            'account_id' => $stranger->account_id,
+            'user_id' => $stranger->id,
         ]);
 
         $viewModel = new EmailsSentViewModel(user: $user);

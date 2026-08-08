@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\NameOrderEnum;
 use App\Models\Account;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -34,7 +35,7 @@ class UserFactory extends Factory
             'last_name' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password_hash' => self::$password ??= Hash::make('password'),
+            'password' => self::$password ??= Hash::make('password'),
             'password_changed_at' => now(),
             'is_active' => true,
             'locale' => 'en',
@@ -58,9 +59,19 @@ class UserFactory extends Factory
     public function singleSignOn(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'password_hash' => null,
+            'password' => null,
             'password_changed_at' => null,
             'sso_provider' => 'google',
+        ]);
+    }
+
+    /**
+     * Indicate that the user reads their name family name first.
+     */
+    public function familyNameFirst(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'name_order' => NameOrderEnum::FamilyFirst,
         ]);
     }
 

@@ -32,6 +32,7 @@ class RegistrationController extends Controller
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class, 'disposable_email'],
             'password' => ['required', 'string', 'max:255', 'confirmed', Password::min(8)],
+            'timezone' => ['nullable', 'string', 'timezone:all'],
             'terms' => ['accepted'],
         ];
 
@@ -48,6 +49,7 @@ class RegistrationController extends Controller
             lastName: $validated['last_name'],
             email: $validated['email'],
             password: $validated['password'],
+            timezone: $validated['timezone'] ?? null,
         )->execute();
 
         new SendEmailVerification(user: $user)->execute();

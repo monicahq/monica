@@ -50,7 +50,7 @@ class UpdateUserPassword
 
     private function update(): void
     {
-        $this->user->password_hash = Hash::make($this->password);
+        $this->user->password = Hash::make($this->password);
         $this->user->password_changed_at = now();
         $this->user->save();
     }

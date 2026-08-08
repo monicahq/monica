@@ -23,7 +23,7 @@ class PasswordControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create([
-            'password_hash' => Hash::make('beets-bears-battlestar'),
+            'password' => Hash::make('beets-bears-battlestar'),
             'password_changed_at' => null,
         ]);
 
@@ -37,7 +37,7 @@ class PasswordControllerTest extends TestCase
         $response->assertSessionHas('status', 'Your password is changed.');
         $response->assertSessionHas('status_description', 'Use it the next time you sign in.');
 
-        $this->assertTrue(Hash::check('schrute-farms-2005', $user->refresh()->password_hash));
+        $this->assertTrue(Hash::check('schrute-farms-2005', $user->refresh()->password));
 
         $this->assertEqualsWithDelta(
             now()->timestamp,
@@ -57,7 +57,7 @@ class PasswordControllerTest extends TestCase
     public function it_refuses_a_wrong_current_password(): void
     {
         $user = User::factory()->create([
-            'password_hash' => Hash::make('beets-bears-battlestar'),
+            'password' => Hash::make('beets-bears-battlestar'),
         ]);
 
         $response = $this->actingAs($user)->put(route('settings.password.update'), [
@@ -68,14 +68,14 @@ class PasswordControllerTest extends TestCase
 
         $response->assertSessionHasErrors('current_password');
 
-        $this->assertTrue(Hash::check('beets-bears-battlestar', $user->refresh()->password_hash));
+        $this->assertTrue(Hash::check('beets-bears-battlestar', $user->refresh()->password));
     }
 
     #[Test]
     public function it_refuses_a_new_password_that_is_not_confirmed(): void
     {
         $user = User::factory()->create([
-            'password_hash' => Hash::make('beets-bears-battlestar'),
+            'password' => Hash::make('beets-bears-battlestar'),
         ]);
 
         $response = $this->actingAs($user)->put(route('settings.password.update'), [
@@ -86,14 +86,14 @@ class PasswordControllerTest extends TestCase
 
         $response->assertSessionHasErrors('new_password');
 
-        $this->assertTrue(Hash::check('beets-bears-battlestar', $user->refresh()->password_hash));
+        $this->assertTrue(Hash::check('beets-bears-battlestar', $user->refresh()->password));
     }
 
     #[Test]
     public function it_refuses_a_new_password_that_is_too_short(): void
     {
         $user = User::factory()->create([
-            'password_hash' => Hash::make('beets-bears-battlestar'),
+            'password' => Hash::make('beets-bears-battlestar'),
         ]);
 
         $response = $this->actingAs($user)->put(route('settings.password.update'), [

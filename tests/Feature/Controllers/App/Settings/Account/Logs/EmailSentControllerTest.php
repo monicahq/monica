@@ -54,12 +54,11 @@ class EmailSentControllerTest extends TestCase
     #[Test]
     public function it_hides_the_emails_sent_to_somebody_else(): void
     {
-        $account = Account::factory()->create();
-        $user = User::factory()->create(['account_id' => $account->id]);
-        $colleague = User::factory()->create(['account_id' => $account->id]);
+        $user = User::factory()->create();
+        $stranger = User::factory()->create();
         EmailSent::factory()->create([
-            'account_id' => $account->id,
-            'user_id' => $colleague->id,
+            'account_id' => $stranger->account_id,
+            'user_id' => $stranger->id,
             'subject' => 'Your magic link',
         ]);
 

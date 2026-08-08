@@ -22,7 +22,7 @@
             <x-theme-toggle class="ml-auto" />
           </div>
 
-          <p class="text-sm text-body">{{ __('You will be the first person in this account.') }}</p>
+          <p class="text-sm text-body">{{ __('An account holds one person, and everything in it is yours alone.') }}</p>
         </div>
 
         <x-status :message="session('status')" />
@@ -102,6 +102,12 @@
                 <p class="text-xs text-muted">{{ __('Minimum 8 characters.') }}</p>
               </div>
 
+              {{-- The browser is the only thing that knows where somebody is, and every
+                   date in the application is written in that time zone afterwards. A
+                   browser that will not say leaves the field empty, and the server falls
+                   back to the time zone of the instance. --}}
+              <input type="hidden" name="timezone" x-data x-init="$el.value = Intl.DateTimeFormat().resolvedOptions().timeZone ?? ''">
+
               <x-checkbox id="terms" x-model="terms" :checked="(bool) old('terms')" :error="$errors->get('terms')" required>
                 {!! __('I agree with the :terms and the :privacy.', ['terms' => $terms, 'privacy' => $privacy]) !!}
               </x-checkbox>
@@ -117,10 +123,6 @@
           {{ __('Already have an account?') }}
           <x-link turbo :href="route('auth.login.new')" class="font-semibold text-ink">{{ __('Sign in instead') }}</x-link>
         </x-box>
-
-        <x-notice>
-          {{ __('Joining an account that already uses Monica? Ask somebody in it to invite you, rather than creating a second account.') }}
-        </x-notice>
 
         <div class="flex items-center gap-3">
           <x-language-picker :locales="$viewModel->locales()" :current="$viewModel->currentLocale()" />

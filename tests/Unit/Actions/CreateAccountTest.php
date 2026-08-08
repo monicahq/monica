@@ -45,7 +45,7 @@ class CreateAccountTest extends TestCase
             'email' => 'michael.scott@dundermifflin.com',
         ]);
 
-        $this->assertTrue(Hash::check('thatswhatshesaid', $user->password_hash));
+        $this->assertTrue(Hash::check('thatswhatshesaid', $user->password));
         $this->assertTrue($user->is($user->account->user));
 
         Queue::assertPushedOn(

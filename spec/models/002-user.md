@@ -1,6 +1,6 @@
 # 002. User
 
-**Status:** exists (`app/Models/User.php`), changes needed
+**Status:** exists (`app/Models/User.php`), built as far as the models it depends on allow
 **Spec:** 3.7, 4.1, 10.3, 10.4
 
 ## What it is
@@ -19,7 +19,7 @@ last_name                   string (255)                    last name of the use
 photo_path                  string (255)                    base path of the photo file, without extension or size suffix
 email                       string (255)                    address the user signs in with, unique across the instance
 email_verified_at           datetime                        when the address was verified
-password_hash               string (255)                    hashed password, null when the user signs in through SSO
+password                    string (255)                    hashed password, null when the user signs in through SSO
 password_changed_at         datetime                        when the password was last set, null when the user signs in through SSO
 sso_provider                string (255)                    SSO provider the user signs in with
 is_active                   boolean                         whether the user can sign in, so an account can be suspended without being deleted
@@ -41,12 +41,9 @@ updated_at                  datetime
 deleted_at                  datetime
 ```
 
-## What changes
+`account_id` is unique: one account holds one user (4.1), and the database enforces it rather than the application. `password` is the column Laravel authenticates against by default, so nothing has to tell the guard where to look. `timezone` is not a nicety: section 10.3 says a reminder rule freezes the time zone it was created in and that changing the personal time zone later never shifts an existing reminder, and neither half of that can be implemented without a stored time zone. Name order cannot be derived from the interface language, since somebody reading Monica in English may still want their family name first.
 
-- `account_id` becomes unique. One account holds one user (4.1). The database enforces it, not the application.
-- Add `timezone`. This is not a nicety. Section 10.3 says a reminder rule freezes the time zone it was created in, and that changing the personal time zone later never shifts an existing reminder. Neither half of that rule can be implemented without a stored time zone.
-- Add `date_format`, `number_format` and `name_order` (3.7). Name order in particular cannot be derived from the interface language: someone reading Erica in English may still want family name first.
-- No role, no permission, no invitation, no membership. Section 4.1 removes them, and nothing should be added that quietly reintroduces them.
+No role, no permission, no invitation, no membership. Section 4.1 removes them, and nothing should be added that quietly reintroduces them.
 
 ## Relationships
 
@@ -60,6 +57,12 @@ deleted_at                  datetime
 - `timezone` must be a valid IANA identifier. It defaults from the browser at sign up and is editable afterwards.
 - Changing `timezone`, `locale` or any format never rewrites stored data. It changes rendering only, and it never shifts an already computed reminder occurrence (3.1, 10.3).
 - The user is not the `Moi` contact. `Moi` is a contact in a vault ([Contact](019-contact.md)) and carries the fields, activities and relations. The user carries the credentials. Renaming one does not rename the other, and the specification does not ask it to.
+
+## Not done yet
+
+- The screen for the new preferences. `timezone` is filled from the browser at sign up, but `date_format`, `number_format` and `name_order` are stored and never asked for. The preferences screen still offers the language and the clock only (3.7).
+- Nothing reads `timezone` yet. Dates are rendered in the time zone of the instance, and the rule that freezes it belongs to [Reminder](040-reminder.md).
+- The relationship to [Notification](042-notification.md), which does not exist yet.
 
 ## Open questions
 

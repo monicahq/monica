@@ -39,9 +39,8 @@ class DestroyApiKeyTest extends TestCase
     {
         Queue::fake();
 
-        $account = Account::factory()->create();
-        $michael = User::factory()->create(['account_id' => $account->id]);
-        $dwight = User::factory()->create(['account_id' => $account->id]);
+        $michael = User::factory()->create();
+        $dwight = User::factory()->create();
         $apiKey = $dwight->createToken('Beet farm sync')->accessToken;
 
         $this->expectException(ModelNotFoundException::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\NameOrderEnum;
 use App\Enums\TimeFormatEnum;
 use Carbon\Carbon;
 use Database\Factories\UserFactory;
@@ -19,8 +20,9 @@ use Laravel\Sanctum\HasApiTokens;
 /**
  * Class User
  *
- * Somebody who signs in. A user always belongs to an account, and every user of
- * an account can do the same things.
+ * The person who signs in. There is exactly one per account. The user carries
+ * the credentials, and the preferences that decide how everything is rendered:
+ * language, time zone, clock, name order.
  *
  * @property int $id
  * @property int $account_id
@@ -29,12 +31,16 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string|null $photo_path
  * @property string $email
  * @property Carbon|null $email_verified_at
- * @property string|null $password_hash
+ * @property string|null $password
  * @property Carbon|null $password_changed_at
  * @property string|null $sso_provider
  * @property bool $is_active
  * @property string|null $locale
+ * @property string $timezone
  * @property TimeFormatEnum $time_format
+ * @property string|null $date_format
+ * @property NameOrderEnum $name_order
+ * @property string|null $number_format
  * @property Carbon|null $last_login_at
  * @property string|null $last_login_ip
  * @property string|null $two_factor_secret
@@ -78,12 +84,16 @@ class User extends Authenticatable
         'photo_path',
         'email',
         'email_verified_at',
-        'password_hash',
+        'password',
         'password_changed_at',
         'sso_provider',
         'is_active',
         'locale',
+        'timezone',
         'time_format',
+        'date_format',
+        'name_order',
+        'number_format',
         'last_login_at',
         'last_login_ip',
         'two_factor_secret',
@@ -98,7 +108,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        'password_hash',
+        'password',
         'remember_token',
         'two_factor_secret',
         'two_factor_recovery_codes',
@@ -114,9 +124,10 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'time_format' => TimeFormatEnum::class,
+            'name_order' => NameOrderEnum::class,
             'last_login_at' => 'datetime',
             'is_active' => 'boolean',
-            'password_hash' => 'hashed',
+            'password' => 'hashed',
             'password_changed_at' => 'datetime',
             'two_factor_secret' => 'encrypted',
             'two_factor_confirmed_at' => 'datetime',
@@ -166,24 +177,18 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the name the user is called by.
+     * Get the name the user is called by, in the order they asked their name to
+     * read in. The interface language cannot decide that order: somebody
+     * reading Monica in English may still want their family name first.
      *
      * @return Attribute<string, never>
      */
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => $this->first_name.' '.$this->last_name,
+            get: fn (): string => ($this->name_order ?? NameOrderEnum::GivenFirst)
+                ->format($this->first_name, $this->last_name),
         );
-    }
-
-    /**
-     * Get the password of the user. The column is named password_hash, so the
-     * guard needs to be told where to look.
-     */
-    public function getAuthPassword(): string
-    {
-        return (string) $this->password_hash;
     }
 
     /**

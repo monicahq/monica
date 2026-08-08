@@ -23,7 +23,7 @@ Every file follows the same shape.
 | # | Model | Status |
 |---|---|---|
 | 001 | [Account](001-account.md) | exists, built as far as the models it depends on allow |
-| 002 | [User](002-user.md) | exists, changes needed |
+| 002 | [User](002-user.md) | exists, built as far as the models it depends on allow |
 | 003 | [MagicLink](003-magic-link.md) | exists, no change |
 | 004 | [Log](004-log.md) | exists, changes needed |
 | 005 | [EmailSent](005-email-sent.md) | exists, minor changes |
