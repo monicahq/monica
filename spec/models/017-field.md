@@ -1,0 +1,92 @@
+# 017. Field
+
+**Status:** to create
+**Spec:** 5.2, 5.5, 5.6, 3.5, 10.2, 13
+
+## What it is
+
+The smallest unit of the personalisation engine: "Street", "City", "Shoe size", "Diet". A field belongs to a section version, has a type, and carries its own constraints.
+
+It is where three separate parts of the product meet. Section 3.5 makes accessibility a delivery condition and points out why it lands here: because pages are generated from structures users invented, a field type has to render accessibly by construction, once, or every template anybody builds becomes a new source of problems nobody can fix on their behalf. Section 10.2 makes any recurring date field a possible reminder source, not just a birthday. Section 13 requires every field to be searchable and filterable with no configuration at all.
+
+## Fields
+
+```
+id                          int                             primary key
+account_id                  int                             account the field belongs to
+section_version_id          int                             section version the field belongs to
+type                        string (32)                     what kind of field it is, from the catalogue below
+key                         string (64)                     stable identifier within the section, used by the API and by imports
+label                       string (255)                    label shown next to the input, null when it falls back to its translation key
+label_translation_key       string (255)                    translation key of a supplied label
+help_text                   string (255)                    clarification shown under the input
+placeholder                 string (255)                    hint shown inside an empty input
+position                    int                             order the field appears in inside the section
+is_required                 boolean                         whether a value must be given before the record can be saved
+is_sensitive                boolean                         whether the value is masked until revealed, and excluded from share links
+is_highlighted              boolean                         whether the field also appears in the header area of the record
+is_unique                   boolean                         whether two records in the vault may not hold the same value
+value_list_id               int                             list the choices come from, for the choice types, null otherwise
+default_value               json                            value a new record starts with, null when it starts empty
+options                     json                            settings specific to the type, such as min, max, decimals, accepted mime types
+validation                  json                            extra constraints, expressed so the API and the interface enforce the same ones
+is_repeatable               boolean                         whether the field is a repeater, letting the same block be filled several times
+repeat_min                  int                             fewest repetitions allowed, null for no floor
+repeat_max                  int                             most repetitions allowed, null for no ceiling
+parent_field_id             int                             repeater this field sits inside, null when it sits directly in the section
+is_reminder_source          boolean                         whether a recurring date field here may drive a reminder rule
+relation_target             enum (contact, entity)          what a relation field points at, null for other types
+relation_entity_type_id     int                             entity type a relation field points at, null when it points at contacts
+created_at                  datetime
+updated_at                  datetime
+```
+
+## The type catalogue
+
+Section 5.5 lists the families. The ones in the first version (15) are marked.
+
+| Family | Types | In v1 |
+|---|---|---|
+| Simple | `text`, `textarea`, `number`, `boolean`, `url`, `email`, `phone` | yes |
+| Choice | `select`, `multiselect`, `radio` | yes |
+| Choice | `tags` | later |
+| Date | `date`, `recurring_date` | yes |
+| Date | `duration` | later |
+| Relation | `relation` | yes |
+| Relation | `qualified_relation` | later |
+| File | `file`, `image` | yes |
+| File | `avatar` | yes |
+| Composite | `address`, `repeater` | yes |
+| Composite | `money`, `full_name` | later |
+| Layout | `divider`, `heading`, `help` | yes |
+| Other | `rating`, `rich_text`, `colour`, `location` | later |
+| Calculated | `computed` | later |
+
+## Relationships
+
+- `belongsTo` [Account](001-account.md)
+- `belongsTo` [SectionVersion](015-section-version.md)
+- `belongsTo` [ValueList](009-value-list.md)
+- `belongsTo` self as the parent repeater
+- `belongsTo` [EntityType](011-entity-type.md) as a relation target
+- `hasMany` [FieldValue](022-field-value.md)
+- referenced by [Reminder](040-reminder.md) as a source
+
+## Rules
+
+- Every field type renders accessibly by construction (3.5). The label is bound to the input, the error is announced, the required state is programmatic and not only visual, and the whole thing works with a keyboard alone. This is a property of the type, implemented once, not something checked per template. The builder screen itself is held to the same standard.
+- `recurring_date` allows an unknown year (5.5). A birthday whose year nobody knows is a normal case, not an error, and the storage in [FieldValue](022-field-value.md) reflects that.
+- A `recurring_date` field is a reminder source (10.2). A birthday is one case among many, and nothing in the reminder machinery may special case it.
+- The layout types store nothing. They carry no value row and are skipped by search, export and share links.
+- A repeater holds its children through `parent_field_id`. A repeater inside a repeater is refused. Section 16 already names the repeater as the most exposed field for accessibility, and nesting it would compound that for no stated need.
+- `is_sensitive` masks on screen and excludes from share links by default (5.6, 4.4). It is protection from a glance over the shoulder, not an authorisation mechanism, and nothing in the product may treat it as one. The owner can always reveal it.
+- `is_highlighted` puts the field in the header area, rendered according to its type: a pill for tags, a countdown for a recurring date (5.6).
+- A field is created, edited and deleted only on a draft section version. On a published one it is frozen (6).
+- Removing a field from a new version does not delete its stored values. They are marked as detached and remain restorable (3.3). Any reminder rule that read from it is disabled with an explanation rather than removed (10.3).
+- `key` is stable and unique inside the section. Renaming a label never changes the key, which is what lets an import, an export or an API caller keep working after a rename.
+
+## Open questions
+
+- The builder interface itself, which section 16 calls the most delicate point in the product. Nothing above depends on how it looks, but it is where the personalisation either becomes a superpower or an unusable machine.
+- Whether `validation` is a free form structure or a fixed vocabulary. Free form is flexible and cannot be enforced identically by the API and the interface, which section 3.6 effectively requires. A fixed vocabulary is the safer choice.
+- Whether a field can be conditional on another field's value. Not in the specification, commonly wanted, and it would change how required fields are evaluated. Worth deciding before the builder is built rather than after.

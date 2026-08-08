@@ -1,0 +1,66 @@
+# 002. User
+
+**Status:** exists (`app/Models/User.php`), changes needed
+**Spec:** 3.7, 4.1, 10.3, 10.4
+
+## What it is
+
+The person who signs in. There is exactly one per account (4.1). The user carries authentication, and it carries the preferences that decide how everything is rendered: language, clock, time zone, name order.
+
+The distinction with the account matters and is worth stating once. The account owns the data. The user owns the way that data is presented and the credentials that reach it. A preference that changes how a date reads belongs here. A configuration that changes what a record contains belongs to the account.
+
+## Fields
+
+```
+id                          int                             primary key
+account_id                  int                             account the user belongs to
+first_name                  string (255)                    first name of the user
+last_name                   string (255)                    last name of the user
+photo_path                  string (255)                    base path of the photo file, without extension or size suffix
+email                       string (255)                    address the user signs in with, unique across the instance
+email_verified_at           datetime                        when the address was verified
+password_hash               string (255)                    hashed password, null when the user signs in through SSO
+password_changed_at         datetime                        when the password was last set, null when the user signs in through SSO
+sso_provider                string (255)                    SSO provider the user signs in with
+is_active                   boolean                         whether the user can sign in, so an account can be suspended without being deleted
+locale                      string (5)                      language of the interface, falls back to the language of the instance
+timezone                    string (64)                     IANA time zone, used to render every date and to seed new reminder rules
+time_format                 string (2)                      whether times read on a 24 hour or a 12 hour clock
+date_format                 string (20)                     order the parts of a date read in, null to follow the locale
+name_order                  enum (given_first, family_first) order the name reads in, which the locale cannot always decide
+number_format               string (20)                     separators used for numbers, null to follow the locale
+last_login_at               datetime                        when the user last signed in
+last_login_ip               string (45)                     address the last sign in came from, so a new one can be flagged
+two_factor_secret           text                            encrypted TOTP secret, null until the user enrols
+two_factor_confirmed_at     datetime                        when enrolment finished, null while two factor is not in use
+two_factor_recovery_codes   text                            encrypted list of single use recovery codes
+last_saved_at               datetime                        when the user last saved their own profile, shown on that screen
+remember_token              string (100)                    remember token
+created_at                  datetime
+updated_at                  datetime
+deleted_at                  datetime
+```
+
+## What changes
+
+- `account_id` becomes unique. One account holds one user (4.1). The database enforces it, not the application.
+- Add `timezone`. This is not a nicety. Section 10.3 says a reminder rule freezes the time zone it was created in, and that changing the personal time zone later never shifts an existing reminder. Neither half of that rule can be implemented without a stored time zone.
+- Add `date_format`, `number_format` and `name_order` (3.7). Name order in particular cannot be derived from the interface language: someone reading Erica in English may still want family name first.
+- No role, no permission, no invitation, no membership. Section 4.1 removes them, and nothing should be added that quietly reintroduces them.
+
+## Relationships
+
+- `belongsTo` [Account](001-account.md)
+- `hasMany` [MagicLink](003-magic-link.md), [Log](004-log.md), [EmailSent](005-email-sent.md), [Notification](042-notification.md)
+- `morphMany` [PersonalAccessToken](006-personal-access-token.md)
+
+## Rules
+
+- A user is soft deleted. A hard delete would orphan logs, which must survive the user they describe (see [Log](004-log.md)).
+- `timezone` must be a valid IANA identifier. It defaults from the browser at sign up and is editable afterwards.
+- Changing `timezone`, `locale` or any format never rewrites stored data. It changes rendering only, and it never shifts an already computed reminder occurrence (3.1, 10.3).
+- The user is not the `Moi` contact. `Moi` is a contact in a vault ([Contact](019-contact.md)) and carries the fields, activities and relations. The user carries the credentials. Renaming one does not rename the other, and the specification does not ask it to.
+
+## Open questions
+
+- Should signing up create the `Moi` contact from the user's first and last name, or leave it blank? Copying is friendlier and matches what section 4.3 describes as a real contact. Nothing later depends on the answer.
