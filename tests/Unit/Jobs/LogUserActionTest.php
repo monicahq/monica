@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Jobs;
 
+use App\Enums\LogSourceEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
@@ -64,5 +65,94 @@ class LogUserActionTest extends TestCase
 
         $this->assertNull($log->user_id);
         $this->assertEquals('michael.scott@dundermifflin.com', $log->user_email);
+    }
+
+    #[Test]
+    public function it_logs_what_the_action_was_performed_on_and_what_it_changed(): void
+    {
+        $user = User::factory()->create();
+
+        new LogUserAction(
+            account: $user->account,
+            user: $user,
+            action: UserActionEnum::UserProfileUpdate,
+            loggable: $user,
+            changes: ['last_name' => ['before' => 'Levinson', 'after' => 'Levinson-Gould']],
+        )->handle();
+
+        $log = Log::query()->latest()->first();
+
+        $this->assertTrue($user->is($log->loggable));
+        $this->assertEquals(['last_name' => ['before' => 'Levinson', 'after' => 'Levinson-Gould']], $log->changes);
+    }
+
+    #[Test]
+    public function it_logs_the_interface_the_action_came_from(): void
+    {
+        $user = User::factory()->create();
+
+        new LogUserAction(
+            account: $user->account,
+            user: $user,
+            action: UserActionEnum::ApiKeyCreation,
+            source: LogSourceEnum::Api,
+            sourceDetail: 'Dundie awards bot',
+            ipAddress: '10.0.0.1',
+        )->handle();
+
+        $log = Log::query()->latest()->first();
+
+        $this->assertEquals(LogSourceEnum::Api, $log->source);
+        $this->assertEquals('Dundie awards bot', $log->source_detail);
+        $this->assertEquals('10.0.0.1', $log->ip_address);
+    }
+
+    #[Test]
+    public function it_takes_the_action_for_a_web_one_unless_told_otherwise(): void
+    {
+        $user = User::factory()->create();
+
+        new LogUserAction(
+            account: $user->account,
+            user: $user,
+            action: UserActionEnum::UserLogin,
+        )->handle();
+
+        $this->assertEquals(LogSourceEnum::Web, Log::query()->latest()->first()->source);
+    }
+
+    #[Test]
+    public function it_keeps_the_address_the_request_came_from(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->get(route('settings.profile.index'));
+
+        new LogUserAction(
+            account: $user->account,
+            user: $user,
+            action: UserActionEnum::UserLogin,
+        )->handle();
+
+        $this->assertEquals('127.0.0.1', Log::query()->latest()->first()->ip_address);
+    }
+
+    #[Test]
+    public function it_logs_an_action_nobody_was_behind(): void
+    {
+        $account = Account::factory()->create();
+
+        new LogUserAction(
+            account: $account,
+            user: null,
+            action: UserActionEnum::UserLogin,
+            source: LogSourceEnum::System,
+        )->handle();
+
+        $log = Log::query()->latest()->first();
+
+        $this->assertNull($log->user_id);
+        $this->assertEquals(Log::SYSTEM, $log->user_email);
+        $this->assertTrue($log->wasPerformedBySystem());
     }
 }

@@ -4,27 +4,53 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\LogSourceEnum;
 use App\Enums\UserActionEnum;
+use App\Exceptions\LogIsAppendOnly;
 use Carbon\Carbon;
 use Database\Factories\LogFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * Class Log
  *
- * Represents an action a user performed in an account.
+ * An action performed in an account: who did it, what to, when, from which
+ * value and through which interface. It exists to explain, which is a different
+ * job from going back to a former state.
+ *
+ * A row is written once and never touched again, so the model refuses to update
+ * or delete one. Whatever it describes may be gone: the author is remembered by
+ * the address they had, and the object acted on carries no foreign key.
+ *
+ * The `changes` column reads `['field' => ['before' => x, 'after' => y]]`. A
+ * field the user marked sensitive records that it changed and not what to,
+ * until the specification settles how those values may be kept.
+ *
+ * Careful with that column from inside this class: Eloquent keeps its own
+ * protected `$changes` for dirty tracking, so `$this->changes` is not the
+ * column. Reach for it with `$this->getAttribute('changes')`.
  *
  * @property int $id
  * @property int $account_id
+ * @property int|null $vault_id
  * @property int|null $user_id
  * @property string $user_email
  * @property string $action
  * @property array<string, mixed>|null $parameters
+ * @property string|null $loggable_type
+ * @property int|null $loggable_id
+ * @property array<string, mixed>|null $changes
+ * @property LogSourceEnum $source
+ * @property string|null $source_detail
+ * @property string|null $ip_address
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
+ * @property-read User|null $user
+ * @property-read Model|null $loggable
  * @property-read string $author
  * @property-read string $description
  */
@@ -32,6 +58,13 @@ class Log extends Model
 {
     /** @use HasFactory<LogFactory> */
     use HasFactory;
+
+    /**
+     * What stands in the place of an email address when nobody was behind the
+     * action, such as a webhook subscription the application switched off after
+     * failing to reach it.
+     */
+    public const string SYSTEM = 'system';
 
     protected $table = 'logs';
 
@@ -42,10 +75,17 @@ class Log extends Model
      */
     protected $fillable = [
         'account_id',
+        'vault_id',
         'user_id',
         'user_email',
         'action',
         'parameters',
+        'loggable_type',
+        'loggable_id',
+        'changes',
+        'source',
+        'source_detail',
+        'ip_address',
     ];
 
     /**
@@ -57,7 +97,25 @@ class Log extends Model
     {
         return [
             'parameters' => 'array',
+            'changes' => 'array',
+            'source' => LogSourceEnum::class,
         ];
+    }
+
+    /**
+     * A log is written and then left alone. It is the record of what happened,
+     * and a record that can be rewritten is worth nothing. Only a retention
+     * policy may ever remove one, and there is none yet.
+     */
+    protected static function booted(): void
+    {
+        static::updating(function (): never {
+            throw new LogIsAppendOnly('A log entry cannot be changed once it is written.');
+        });
+
+        static::deleting(function (): never {
+            throw new LogIsAppendOnly('A log entry cannot be deleted.');
+        });
     }
 
     /**
@@ -81,17 +139,43 @@ class Log extends Model
     }
 
     /**
+     * Get the object the action was performed on, which may be anything the
+     * application holds, and may no longer exist.
+     *
+     * @return MorphTo<Model, $this>
+     */
+    public function loggable(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    /**
      * Get who performed the action. A log outlives the user behind it, so it
      * falls back to the email address recorded at the time once that user is
-     * gone.
+     * gone, and to a name for the application itself when nobody was behind it.
      *
      * @return Attribute<string, never>
      */
     protected function author(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => $this->user->name ?? $this->user_email,
+            // A user who was soft deleted leaves the relation empty while the
+            // column still points at them, so the fallback has to cover more
+            // than a null column.
+            get: fn (): string => match (true) {
+                $this->wasPerformedBySystem() => __('The system'),
+                default => $this->user->name ?? $this->user_email,
+            },
         );
+    }
+
+    /**
+     * Get whether the application performed the action on its own, rather than
+     * somebody asking it to.
+     */
+    public function wasPerformedBySystem(): bool
+    {
+        return $this->user_email === self::SYSTEM;
     }
 
     /**
