@@ -39,6 +39,12 @@ enum UserActionEnum: string implements Translatable
     case ValueListItemDisabled = 'value_list_item_disabled';
     case ValueListItemEnabled = 'value_list_item_enabled';
     case ValueListItemDeletion = 'value_list_item_deleted';
+    case EntityTypeCreation = 'entity_type_created';
+    case EntityTypeUpdate = 'entity_type_updated';
+    case EntityTypePositionUpdate = 'entity_type_position_updated';
+    case EntityTypeActivated = 'entity_type_activated';
+    case EntityTypeDeactivated = 'entity_type_deactivated';
+    case EntityTypeDeletion = 'entity_type_deleted';
 
     /**
      * What the action reads as in the logs, written about whoever performed it.
@@ -79,6 +85,12 @@ enum UserActionEnum: string implements Translatable
             self::ValueListItemDisabled => 'Stopped offering :label in the value list :name',
             self::ValueListItemEnabled => 'Offered :label in the value list :name again',
             self::ValueListItemDeletion => 'Removed :label from the value list :name',
+            self::EntityTypeCreation => 'Created the kind of record :name',
+            self::EntityTypeUpdate => 'Updated the kind of record :name',
+            self::EntityTypePositionUpdate => 'Moved the kind of record :name',
+            self::EntityTypeActivated => 'Allowed new :name to be created again',
+            self::EntityTypeDeactivated => 'Stopped new :name being created',
+            self::EntityTypeDeletion => 'Deleted the kind of record :name',
         };
     }
 

@@ -99,6 +99,17 @@ class Account extends Model
     }
 
     /**
+     * Get the kinds of object the account invented for itself, beyond the
+     * contacts every account has.
+     *
+     * @return HasMany<EntityType, $this>
+     */
+    public function entityTypes(): HasMany
+    {
+        return $this->hasMany(EntityType::class);
+    }
+
+    /**
      * Get the actions performed in the account.
      *
      * @return HasMany<Log, $this>
