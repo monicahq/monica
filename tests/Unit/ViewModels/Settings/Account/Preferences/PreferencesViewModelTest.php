@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Settings\Account\Preferences;
 
+use App\Enums\DateFormatEnum;
 use App\Enums\TimeFormatEnum;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Preferences\PreferencesViewModel;
@@ -86,5 +87,65 @@ class PreferencesViewModelTest extends TestCase
         $viewModel = new PreferencesViewModel(user: $user);
 
         $this->assertEquals('5:45 PM', $viewModel->timePreview());
+    }
+
+    #[Test]
+    public function it_lists_every_date_format_and_ticks_the_one_in_use(): void
+    {
+        $user = User::factory()->create(['date_format' => DateFormatEnum::MonthFirst]);
+
+        $viewModel = new PreferencesViewModel(user: $user);
+
+        $formats = $viewModel->dateFormats();
+
+        $this->assertCount(count(DateFormatEnum::cases()) + 1, $formats);
+        $this->assertEquals(DateFormatEnum::MonthFirst, $viewModel->dateFormat());
+        $this->assertTrue(collect($formats)->firstWhere('value', 'm/d/Y')['selected']);
+        $this->assertFalse(collect($formats)->firstWhere('value', '')['selected']);
+    }
+
+    #[Test]
+    public function it_offers_the_way_back_to_the_language_and_ticks_it_when_nothing_was_chosen(): void
+    {
+        Carbon::setTestNow(Carbon::create(2026, 7, 31));
+        app()->setLocale('de_DE');
+
+        $user = User::factory()->create(['date_format' => null]);
+
+        $viewModel = new PreferencesViewModel(user: $user);
+
+        $followTheLanguage = collect($viewModel->dateFormats())->firstWhere('value', '');
+
+        $this->assertNull($viewModel->dateFormat());
+        $this->assertTrue($followTheLanguage['selected']);
+        $this->assertEquals('Der Sprache folgen', $followTheLanguage['label']);
+        $this->assertEquals('21.07.2026', $followTheLanguage['hint']);
+        $this->assertEquals('21.07.2026', $viewModel->dateFormatLabel());
+    }
+
+    #[Test]
+    public function it_writes_the_date_the_way_the_account_asked_for(): void
+    {
+        Carbon::setTestNow(Carbon::create(2026, 7, 31));
+
+        $user = User::factory()->create(['date_format' => DateFormatEnum::YearFirst]);
+
+        $viewModel = new PreferencesViewModel(user: $user);
+
+        $this->assertEquals('2026-07-31', $viewModel->datePreview());
+        $this->assertEquals('2026-07-21', $viewModel->dateFormatLabel());
+    }
+
+    #[Test]
+    public function it_writes_the_date_the_way_the_language_does_when_nothing_was_chosen(): void
+    {
+        Carbon::setTestNow(Carbon::create(2026, 7, 31));
+        app()->setLocale('nl_NL');
+
+        $user = User::factory()->create(['date_format' => null]);
+
+        $viewModel = new PreferencesViewModel(user: $user);
+
+        $this->assertEquals('31-07-2026', $viewModel->datePreview());
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
+use App\Enums\DateFormatEnum;
 use App\Enums\NameOrderEnum;
 use App\Models\Account;
 use App\Models\EmailSent;
@@ -143,7 +144,7 @@ class UserTest extends TestCase
         $user = User::factory()->create([
             'locale' => 'fr_FR',
             'timezone' => 'America/New_York',
-            'date_format' => 'd/m/Y',
+            'date_format' => DateFormatEnum::DayFirst,
             'number_format' => '1 234,56',
             'name_order' => NameOrderEnum::FamilyFirst,
         ]);
@@ -152,7 +153,7 @@ class UserTest extends TestCase
 
         $this->assertEquals('fr_FR', $user->locale);
         $this->assertEquals('America/New_York', $user->timezone);
-        $this->assertEquals('d/m/Y', $user->date_format);
+        $this->assertEquals(DateFormatEnum::DayFirst, $user->date_format);
         $this->assertEquals('1 234,56', $user->number_format);
         $this->assertEquals(NameOrderEnum::FamilyFirst, $user->name_order);
     }

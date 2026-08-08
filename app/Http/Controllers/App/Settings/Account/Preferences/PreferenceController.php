@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\App\Settings\Account\Preferences;
 
 use App\Actions\UpdatePreferences;
+use App\Enums\DateFormatEnum;
 use App\Enums\TimeFormatEnum;
 use App\Http\Controllers\Controller;
 use App\ViewModels\Settings\Account\Preferences\PreferencesViewModel;
@@ -29,12 +30,17 @@ class PreferenceController extends Controller
         $validated = $request->validate([
             'locale' => ['required', 'string', Rule::in(array_keys(config('monica.locales')))],
             'time_format' => ['required', 'string', Rule::enum(TimeFormatEnum::class)],
+            'date_format' => ['nullable', 'string', Rule::enum(DateFormatEnum::class)],
         ]);
 
+        // An empty date format reaches here as null, and stays null: it is how
+        // somebody says their dates follow the language rather than a format
+        // they picked.
         new UpdatePreferences(
             user: $request->user(),
             locale: $validated['locale'],
             timeFormat: TimeFormatEnum::from($validated['time_format']),
+            dateFormat: DateFormatEnum::tryFrom($validated['date_format'] ?? ''),
         )->execute();
 
         // The session holds whatever language was last asked for, and it wins

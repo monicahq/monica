@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Preferences;
 
+use App\Enums\DateFormatEnum;
 use App\Enums\TimeFormatEnum;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,6 +33,9 @@ class PreferenceControllerTest extends TestCase
         $response->assertSee('Language', escape: false);
         $response->assertSee('Time format', escape: false);
         $response->assertSee('24-hour', escape: false);
+        $response->assertSee('Date format', escape: false);
+        $response->assertSee('Month spelled out', escape: false);
+        $response->assertSee('Follow the language', escape: false);
         $response->assertSee('Français', escape: false);
         $response->assertSee('Michael Scott', escape: false);
     }
@@ -112,5 +116,73 @@ class PreferenceControllerTest extends TestCase
 
         $response->assertSessionHasErrors('time_format');
         $this->assertEquals(TimeFormatEnum::TwentyFourHour, $user->refresh()->time_format);
+    }
+
+    #[Test]
+    public function it_saves_the_date_format(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['date_format' => null]);
+
+        $response = $this->actingAs($user)->put(route('settings.preferences.update'), [
+            'locale' => 'en',
+            'time_format' => '24',
+            'date_format' => 'm/d/Y',
+        ]);
+
+        $response->assertRedirect(route('settings.preferences.index'));
+
+        $this->assertEquals(DateFormatEnum::MonthFirst, $user->refresh()->date_format);
+    }
+
+    #[Test]
+    public function it_hands_the_date_back_to_the_language_when_the_format_is_left_empty(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['date_format' => DateFormatEnum::MonthFirst]);
+
+        $this->actingAs($user)->put(route('settings.preferences.update'), [
+            'locale' => 'en',
+            'time_format' => '24',
+            'date_format' => '',
+        ]);
+
+        $this->assertNull($user->refresh()->date_format);
+    }
+
+    #[Test]
+    public function it_refuses_a_date_format_that_does_not_exist(): void
+    {
+        $user = User::factory()->create(['date_format' => DateFormatEnum::DayFirst]);
+
+        $response = $this->actingAs($user)->put(route('settings.preferences.update'), [
+            'locale' => 'en',
+            'time_format' => '24',
+            'date_format' => 'the-day-of-the-beet-harvest',
+        ]);
+
+        $response->assertSessionHasErrors('date_format');
+        $this->assertEquals(DateFormatEnum::DayFirst, $user->refresh()->date_format);
+    }
+
+    #[Test]
+    public function it_keeps_the_date_format_when_another_row_is_saved(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['date_format' => DateFormatEnum::YearFirst]);
+
+        $this->actingAs($user)->put(route('settings.preferences.update'), [
+            'locale' => 'en',
+            'time_format' => '12',
+            'date_format' => 'Y-m-d',
+        ]);
+
+        $user->refresh();
+
+        $this->assertEquals(TimeFormatEnum::TwelveHour, $user->time_format);
+        $this->assertEquals(DateFormatEnum::YearFirst, $user->date_format);
     }
 }

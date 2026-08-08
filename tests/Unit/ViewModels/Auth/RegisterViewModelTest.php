@@ -29,6 +29,7 @@ class RegisterViewModelTest extends TestCase
         $this->assertEquals([
             'label' => 'English',
             'region' => 'United Kingdom',
+            'date_format' => 'd/m/Y',
             'flag' => config('monica.locales.en.flag'),
             'code' => 'en',
         ], $locales[0]);

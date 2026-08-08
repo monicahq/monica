@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Settings\Account\Preferences;
 
+use App\Enums\DateFormatEnum;
 use App\Enums\TimeFormatEnum;
 use App\Models\User;
 
 /**
  * What the preferences screen shows: the language the interface is in, the
- * clock times are written on, and the shell around it.
+ * clock times are written on, the order dates read in, and the shell around it.
  */
 class PreferencesViewModel
 {
@@ -80,6 +81,59 @@ class PreferencesViewModel
     }
 
     /**
+     * Every order a date can read in, each next to the same day written that
+     * way. The first entry is the way out of the choice: it hands the decision
+     * back to the language, which is where somebody starts.
+     *
+     * @return array<int, array{value: string, label: string, hint: string, selected: bool}>
+     */
+    public function dateFormats(): array
+    {
+        $current = $this->dateFormat();
+
+        $formats = [[
+            'value' => '',
+            'label' => __('Follow the language'),
+            'hint' => $this->languageDateExample(),
+            'selected' => $current === null,
+        ]];
+
+        foreach (DateFormatEnum::cases() as $format) {
+            $formats[] = [
+                'value' => $format->value,
+                'label' => __($format->label()),
+                'hint' => $format->example(),
+                'selected' => $format === $current,
+            ];
+        }
+
+        return $formats;
+    }
+
+    /**
+     * What the button that opens the menu says. It shows the day rather than
+     * the name of the order, since the point of the choice is what it looks
+     * like and the names all read alike.
+     */
+    public function dateFormatLabel(): string
+    {
+        return $this->dateFormat()?->example() ?? $this->languageDateExample();
+    }
+
+    /**
+     * Today written the way the account asked for, so somebody can see what
+     * they picked before they leave the screen.
+     */
+    public function datePreview(): string
+    {
+        $format = $this->dateFormat();
+
+        return $format === null
+            ? DateFormatEnum::write(now(), $this->languageDateFormat())
+            : $format->format(now());
+    }
+
+    /**
      * Who is signed in, so the sidebar can show their name and their photo.
      */
     public function user(): User
@@ -107,5 +161,27 @@ class PreferencesViewModel
     public function timeFormat(): TimeFormatEnum
     {
         return $this->user->time_format ?? TimeFormatEnum::TwentyFourHour;
+    }
+
+    /**
+     * The order the account reads dates in, null while it follows the language.
+     */
+    public function dateFormat(): ?DateFormatEnum
+    {
+        return $this->user->date_format;
+    }
+
+    /**
+     * The order the language being read writes dates in, which is what somebody
+     * who has never touched this setting gets.
+     */
+    private function languageDateFormat(): string
+    {
+        return config('monica.locales')[$this->locale()]['date_format'];
+    }
+
+    private function languageDateExample(): string
+    {
+        return DateFormatEnum::write(now()->setDay(21), $this->languageDateFormat());
     }
 }
