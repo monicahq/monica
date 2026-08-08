@@ -13,9 +13,9 @@ Several things in the product need to tell the user something, and they should a
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used by the API
 account_id                  int                             account the notification belongs to
 user_id                     int                             user it is for
-uuid                        string (36)                     unguessable identifier used by the API
 type                        string (64)                     what it is about, such as reminder_due or marketplace_update_available
 channel                     enum (in_app, email, push)      how it was delivered
 notifiable_type             string (255)                    class of what it is about, an occurrence, an installation, a subscription

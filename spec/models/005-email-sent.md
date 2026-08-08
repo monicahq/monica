@@ -13,7 +13,7 @@ A record of every email the application sent, with what the provider did with it
 id                          int                             primary key
 account_id                  int                             account the email was sent on behalf of
 user_id                     int                             user who received it, null when it went to someone with no account
-uuid                        string (255)                    identifier the provider gave the email
+provider_uuid               string (255)                    identifier the provider gave the email, which is theirs and not ours
 email_type                  string (255)                    type of email sent
 email_address               string (255)                    address it was sent to
 locale                      string (5)                      language it was rendered in
@@ -29,6 +29,7 @@ updated_at                  datetime
 
 ## What changes
 
+- Rename `uuid` to `provider_uuid`. The column exists today and holds the identifier Resend gave the email. Everywhere else in the product `uuid` now means our own public identifier, so leaving this one named `uuid` would make it the single exception to a rule applied across fifty tables. This is the one existing column this specification renames purely for clarity.
 - Add `locale` (3.7). Every email is rendered in a language and the record should say which, otherwise a translation bug is invisible after the fact.
 - Add `complained_at`. A spam complaint has to stop further sending to that address, and the current columns cannot express it.
 - Extend `EmailType` as the product grows: reminder digest, marketplace update available, webhook subscription disabled, share link expiring.

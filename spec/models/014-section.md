@@ -15,6 +15,7 @@ Like a template, this model is the stable identity. The content lives in [Sectio
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used by the API, alongside the readable slug
 account_id                  int                             account the section belongs to
 name                        string (255)                    name the user gave it, null when it falls back to its translation key
 name_translation_key        string (255)                    translation key of a supplied name

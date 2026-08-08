@@ -15,6 +15,7 @@ Three things can be templated in the first version: a contact, an entity of a gi
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used by the API, alongside the readable slug
 account_id                  int                             account the template belongs to
 applies_to                  enum (contact, entity, activity)  what kind of record the template describes
 entity_type_id              int                             type it applies to when applies_to is entity, null otherwise

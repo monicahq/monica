@@ -18,9 +18,9 @@ Reminders are in the core (3.2), not because every use needs them, but because t
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used by the API
 account_id                  int                             account the rule belongs to
 vault_id                    int                             vault it lives in, null for an account level rule
-uuid                        string (36)                     unguessable identifier used by the API
 name                        string (255)                    what the reminder says when it fires
 description                 text                            anything more the user wants said
 kind                        enum (one_off, recurring, field_based, activity_based, inactivity)  which of the five types it is

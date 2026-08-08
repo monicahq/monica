@@ -13,9 +13,9 @@ The model exists separately from the value that points at it for three reasons s
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used in every path and URL, never the id
 account_id                  int                             account the file belongs to
 vault_id                    int                             vault the file belongs to, null for account level files such as the user photo
-uuid                        string (36)                     unguessable identifier used in every path and URL, never the id
 disk                        string (32)                     Laravel disk the file was written to, so a moved instance still resolves old files
 path                        string (512)                    path on that disk, always under the account and vault prefix
 original_name               string (255)                    name the file had on the machine it came from

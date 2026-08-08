@@ -15,6 +15,7 @@ It comes before the template in the implementation order because a template that
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used by the API, alongside the readable slug
 account_id                  int                             account the type belongs to
 name_singular               string (255)                    what one of them is called, used in headers and buttons
 name_plural                 string (255)                    what several of them are called, used in list titles

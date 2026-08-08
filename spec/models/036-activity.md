@@ -15,10 +15,10 @@ Section 9.2 explains why the concept is frozen while its nature is not. The prod
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used in URLs and by the API
 account_id                  int                             account the activity belongs to
 vault_id                    int                             vault it lives in
 activity_type_id            int                             nature of the activity
-uuid                        string (36)                     unguessable identifier used in URLs and by the API
 happened_on                 date                            the day it happened, or the first day when it spans several
 ended_on                    date                            the last day, null when it happened on a single day
 date_precision              enum (day, month, year, decade, unknown)  how precisely the date is known, so a rebuilt past is not forced to lie

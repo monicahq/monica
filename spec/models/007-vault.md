@@ -15,6 +15,7 @@ The vault is in the immutable core (3.2). Its nature is never personalisable, th
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used in URLs and by the API
 account_id                  int                             account the vault belongs to
 name                        string (255)                    name the user gave the vault
 description                 text                            what the vault is for, shown on the vault list

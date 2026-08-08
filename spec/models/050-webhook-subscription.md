@@ -13,9 +13,9 @@ Section 14.1 explains why this exists as a first class feature rather than an af
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used by the API
 account_id                  int                             account the subscription belongs to
 vault_id                    int                             vault it is confined to, null when it covers the whole account
-uuid                        string (36)                     unguessable identifier used by the API
 name                        string (255)                    name the user gave it, so several are tellable apart
 url                         string (512)                    address events are posted to
 secret                      string (255)                    encrypted shared secret the receiver verifies the signature with

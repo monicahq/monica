@@ -17,10 +17,10 @@ Two special states live here. `Moi` is the contact representing the user (4.3), 
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used in URLs, share links and by the API
 account_id                  int                             account the contact belongs to
 vault_id                    int                             vault the contact lives in
 template_version_id         int                             exact structure version the page renders from
-uuid                        string (36)                     unguessable identifier used in URLs, share links and by the API
 prefix                      string (50)                     civility, such as Dr or Mrs
 first_name                  string (255)                    first name
 middle_name                 string (255)                    middle name

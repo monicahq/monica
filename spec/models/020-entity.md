@@ -13,11 +13,11 @@ An entity is thinner than a contact because almost nothing about it is imposed. 
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used in URLs and by the API
 account_id                  int                             account the entity belongs to
 vault_id                    int                             vault the entity lives in
 entity_type_id              int                             type of object it is, which never changes
 template_version_id         int                             exact structure version the page renders from
-uuid                        string (36)                     unguessable identifier used in URLs and by the API
 name                        string (255)                    what the record is called, used in lists, headers and search
 sort_name                   string (255)                    precomputed string the list sorts on
 avatar_file_id              int                             image standing in for it, null when a generated one is used

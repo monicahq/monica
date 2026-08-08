@@ -13,10 +13,10 @@ Section 8.2 is unusually firm about why this is separate from relationships, and
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used in URLs and by the API
 account_id                  int                             account the group belongs to
 vault_id                    int                             vault the group lives in
 group_type_id               int                             kind of group it is
-uuid                        string (36)                     unguessable identifier used in URLs and by the API
 name                        string (255)                    name of the group, such as the Halpert household
 description                 text                            what it is, in the user's own words
 started_on                  date                            when the group came into being, null when unknown

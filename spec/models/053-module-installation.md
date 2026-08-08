@@ -13,6 +13,7 @@ It is separate from [Module](052-module.md) because the module is instance level
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used by the API
 account_id                  int                             account that installed it
 module_id                   int                             module installed
 version                     string (32)                     version currently running here

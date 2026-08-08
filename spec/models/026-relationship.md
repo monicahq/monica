@@ -15,6 +15,7 @@ One row holds both sides. The relationship is entered once and read from either 
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used in URLs and by the API
 account_id                  int                             account the relationship belongs to
 vault_id                    int                             vault both contacts live in
 relationship_type_id        int                             structure of the link

@@ -17,6 +17,7 @@ Because it is built on the same engine, an activity type is publishable on the m
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used by the API
 account_id                  int                             account the type belongs to
 key                         string (64)                     stable identifier of a supplied type, null for a user made one
 name                        string (255)                    label of the type, null when it falls back to its translation key

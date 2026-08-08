@@ -15,6 +15,7 @@ It also states the tone the product takes, which is a design constraint and not 
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used in URLs and by the API
 account_id                  int                             account the day belongs to
 vault_id                    int                             vault the day is written in
 date                        date                            the day itself

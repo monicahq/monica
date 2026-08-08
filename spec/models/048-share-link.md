@@ -15,6 +15,7 @@ Section 4.4 lists what every link must be, and every item on that list is a colu
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier of the link itself, never the secret token in the URL
 account_id                  int                             account that created the link
 vault_id                    int                             vault being shared, or the vault of the contact being shared
 shareable_type              string (255)                    class of what is shared, a contact or a vault

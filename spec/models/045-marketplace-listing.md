@@ -15,6 +15,7 @@ The listing is the stable public identity. The content lives in [MarketplaceList
 
 ```
 id                          int                             primary key
+uuid                        string (36)                     unguessable identifier used by the API, alongside the public slug
 account_id                  int                             account that published it
 marketplace_category_id     int                             category it was filed under
 listable_type               string (255)                    class of what is published, a template, a section or an activity type
