@@ -53,7 +53,7 @@ Here is how the new system work:
 
 ### Reused Components
 
-- **`CreateContact` Service:** The core logic for validating and inserting a contact was retained and reused within the background job. This ensures that all existing business rules, relationships (like account/vault ownership), and feed item creations are respected.
+- **`CreateContact` & `CreateContactInformation` Services:** The core logic for validating and inserting a contact, along with attaching their information (like emails and phone numbers), was retained and reused within the background job. This ensures that all existing business rules, relationships (like account/vault ownership), and feed item creations are respected.
 - **Models & Factories:** Existing user, vault, and contact models were heavily utilized and leveraged in testing.
 
 ### Important Assumptions & Database Decisions
