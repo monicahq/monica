@@ -203,6 +203,14 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
+     * Helper to access import jobs created by the account this user belongs to.
+     */
+    public function importJobs()
+    {
+        return $this->account->importJobs();
+    }
+
+    /**
      * Get the note records associated with the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Note, $this>
