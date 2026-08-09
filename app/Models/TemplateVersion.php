@@ -161,6 +161,18 @@ class TemplateVersion extends Model
     }
 
     /**
+     * Get the contacts rendering from this version. They stay on it until
+     * somebody deliberately moves them, and `record_count` is what says how
+     * many there are without counting them.
+     *
+     * @return HasMany<Contact, $this>
+     */
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    /**
      * Get the assembly: which section versions this version carries, in order.
      *
      * @return HasMany<TemplateVersionSection, $this>

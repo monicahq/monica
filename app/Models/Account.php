@@ -89,6 +89,16 @@ class Account extends Model
     }
 
     /**
+     * Get the contacts documented in the account, across every vault.
+     *
+     * @return HasMany<Contact, $this>
+     */
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    /**
      * Get the sets of choices the fields of the account pick from.
      *
      * @return HasMany<ValueList, $this>

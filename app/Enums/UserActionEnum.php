@@ -74,6 +74,14 @@ enum UserActionEnum: string implements Translatable
     case FieldUpdate = 'field_updated';
     case FieldPositionUpdate = 'field_position_updated';
     case FieldDeletion = 'field_deleted';
+    case ContactCreation = 'contact_created';
+    case ContactNameUpdate = 'contact_name_updated';
+    case ContactArchived = 'contact_archived';
+    case ContactUnarchived = 'contact_unarchived';
+    case ContactFavourited = 'contact_favourited';
+    case ContactUnfavourited = 'contact_unfavourited';
+    case ContactDeletion = 'contact_deleted';
+    case ContactRestoration = 'contact_restored';
 
     /**
      * What the action reads as in the logs, written about whoever performed it.
@@ -149,6 +157,14 @@ enum UserActionEnum: string implements Translatable
             self::FieldUpdate => 'Updated the field :label in the section :name',
             self::FieldPositionUpdate => 'Moved the field :label in the section :name',
             self::FieldDeletion => 'Removed the field :label from the section :name',
+            self::ContactCreation => 'Wrote down the contact :name',
+            self::ContactNameUpdate => 'Changed the name of :name',
+            self::ContactArchived => 'Archived the contact :name',
+            self::ContactUnarchived => 'Brought the contact :name back into the lists',
+            self::ContactFavourited => 'Pinned the contact :name to the top of the list',
+            self::ContactUnfavourited => 'Unpinned the contact :name',
+            self::ContactDeletion => 'Deleted the contact :name',
+            self::ContactRestoration => 'Brought the contact :name back',
         };
     }
 

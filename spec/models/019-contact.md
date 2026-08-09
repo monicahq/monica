@@ -1,6 +1,6 @@
 # 019. Contact
 
-**Status:** to create
+**Status:** exists (`app/Models/Contact.php`), built as far as the models it depends on allow
 **Spec:** 3.2, 4, 4.3, 5.7, 8.2, 9.5, 13
 
 ## What it is
@@ -65,7 +65,27 @@ deleted_at                  datetime
 - Changing the applied template version writes a [RecordSnapshot](023-record-snapshot.md) first, always (6).
 - Every field on the page, including ones invented yesterday, is searchable and filterable with no configuration (13).
 
+## Not done yet
+
+- **Nothing is written on the page.** [FieldValue](022-field-value.md) and [FieldValueRow](021-field-value-row.md) are ahead, so a contact points at a structure and holds nothing in it. The `hasMany` side arrives with them, and so does the promise that every field is searchable with no configuration (13).
+- **The contact cannot be moved to another template version.** That move writes a [RecordSnapshot](023-record-snapshot.md) first, always, and there is no snapshot model. Until there is, a contact stays on the version it was created on, which is the safe half of the rule to leave unfinished.
+- **The version is given to `CreateContact` rather than looked up.** [VaultDefaultTemplate](018-vault-default-template.md) is what says which structure a new contact starts on in a vault, and it does not exist. The caller names the version, and nothing here picks the latest one.
+- **`avatar_file_id` is a column with no foreign key.** [File](008-file.md) has no table yet. The column is there so the avatar arrives without a migration that rewrites the contact table, and the constraint arrives with the files table.
+- **`last_activity_at`, `activity_count` and `last_consulted_at` stay null and zero.** They are maintained on write by the models that produce them, and neither [Activity](036-activity.md) nor a screen to consult a contact on exists.
+- **Deleting a contact cancels nothing.** [Reminder](040-reminder.md) is ahead, so the cancelling of future occurrences and their restoration wait for it.
+- **A partial contact is created by passing a flag.** Nothing produces one on its own, since a mention comes from [Relationship](026-relationship.md). What exists is the state and the fact that the main lists ignore it.
+- **Merging is not here.** [ContactMerge](034-contact-merge.md) is its own model, and with it the rule that a partial contact stops being partial when it is merged.
+- **No screen and no API.** Model and actions only.
+
+## Decisions taken while building it
+
+- **`sort_name` is written by the model, not by the actions.** One `saving` hook builds it, so no path that writes a name can forget to keep it in step. It reads family name first whatever order the contact itself reads in, since a list sorted one way for some rows and another way for others is sorted no way at all, and it is lowercased so the order does not depend on the collation of the database underneath.
+- **The rule that a contact needs a name is enforced in the same place.** Building the sort name is exactly the moment the question "is there a name at all" gets asked, and a contact left with none of the parts is refused there rather than in each action.
+- **One `Moi` per vault.** Section 4.3 says the contact is unique in the account and section 4.2 says a contact belongs to one vault; those cannot both be literally true. Vault isolation is the stronger guarantee, so each vault holds its own contact flagged `is_me`, and `CreateContact` refuses a second one in the same vault. See [Vault](007-vault.md).
+- **`contact_count` counts every contact the vault holds**, including the archived and the partial ones. It is the size of what the vault carries, which is what somebody about to delete one needs to be told; the count of what a list shows is the list's business.
+- **A contact is put on a published version only.** A draft is something somebody is still editing, and a contact rendering from it would change under them; a retired version is no longer offered for anything new.
+- **Archiving, favouriting and deleting are each their own action**, as they are for every other model here, rather than one action taking a flag.
+
 ## Open questions
 
-- **One `Moi` per account or one per vault.** See [Vault](007-vault.md). This file assumes one per vault, each flagged `is_me`, unique within its vault. If the account wide reading wins instead, `is_me` becomes account unique and every query that assumes a contact is confined to a vault has to be revisited, which is why the decision cannot be postponed past this model.
 - Whether an archived contact still triggers reminders. Probably not, and the specification does not say.

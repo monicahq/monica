@@ -47,14 +47,17 @@ deleted_at                  datetime
 
 ## Not done yet
 
-- The vault holds nothing yet. Contacts, entities, activities, groups, journal days, files, default templates and share links are each their own model, and the `hasMany` sides arrive with them. So does the filter on `vault_id`, which cannot be written before there is something to filter.
-- `contact_count` is a column that stays at zero. The contact model keeps it in step, and there is no contact model.
+- The vault holds contacts and nothing else yet. Entities, activities, groups, journal days, files, default templates and share links are each their own model, and the `hasMany` sides arrive with them. So does the filter on `vault_id` for everything but contacts.
+- `contact_count` is kept in step by the actions that write a contact down, delete one and bring one back. It counts every contact the vault holds, archived and partial ones included.
 - `last_visited_at` is a column that stays null. Nothing opens a vault yet, since there is no screen to open one on.
 - Nothing warns before a deletion or says what the vault holds, because there is no screen. `DestroyVault` refuses to take the last vault and hands the default over to the first one left; `RestoreVault` brings a vault back. The grace period is not enforced: a deleted vault stays deleted and nothing purges it, which is the safe half of the rule to leave unfinished.
-- Moving a record from one vault to another. There is no record to move.
-- The `Moi` contact seeded in the first vault (4.3), which waits on [Contact](019-contact.md), and the contact default template of [VaultDefaultTemplate](018-vault-default-template.md).
+- Moving a contact from one vault to another. The action does not exist, and neither does the resolution of what happens to what the contact took part in.
+- Nothing seeds the `Moi` contact of a vault (4.3). [Contact](019-contact.md) knows how to create one and refuses a second in the same vault. What is missing is the seeding itself, which waits on [VaultDefaultTemplate](018-vault-default-template.md), since seeding a contact means naming the version it starts on.
+
+## Decisions taken while building it
+
+- **`Moi` lives once per vault.** Section 4.3 says the contact is unique in the account and section 4.2 says a contact belongs to one vault, and those cannot both be literally true. Each vault holds its own contact flagged `is_me`, all representing the same person, because vault isolation is the stronger guarantee: breaking it for one row would leak across compartments in search, activities and share links.
 
 ## Open questions
 
-- **Where `Moi` lives.** Section 4.3 says the `Moi` contact is unique in the account. Section 4.2 says a contact belongs to one vault. Those two cannot both be literally true. The reading taken in [Contact](019-contact.md) is one `Moi` contact per vault, all representing the same person, because vault isolation is the stronger guarantee and breaking it for one row would leak across compartments in search, activities and share links. If the other reading is chosen instead, this file and [Contact](019-contact.md) both change.
 - Moving an activity between vaults when its participants do not all move. Undecided.

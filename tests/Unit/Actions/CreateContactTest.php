@@ -1,0 +1,348 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\Actions;
+
+use App\Actions\CreateContact;
+use App\Enums\NameOrderEnum;
+use App\Enums\UserActionEnum;
+use App\Exceptions\ContactNeedsAName;
+use App\Exceptions\VaultAlreadyHasAMeContact;
+use App\Jobs\LogUserAction;
+use App\Models\Account;
+use App\Models\Contact;
+use App\Models\Template;
+use App\Models\TemplateVersion;
+use App\Models\User;
+use App\Models\Vault;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
+use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class CreateContactTest extends TestCase
+{
+    use RefreshDatabase;
+
+    #[Test]
+    public function it_writes_a_contact_down(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user->account);
+
+        $contact = new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $version,
+            prefix: 'Mr',
+            firstName: 'Michael',
+            middleName: 'Gary',
+            lastName: 'Scott',
+            suffix: 'Jr',
+            nickname: 'Prison Mike',
+            nameOrder: NameOrderEnum::GivenFirst,
+        )->execute();
+
+        $this->assertInstanceOf(Contact::class, $contact);
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'template_version_id' => $version->id,
+            'prefix' => 'Mr',
+            'first_name' => 'Michael',
+            'middle_name' => 'Gary',
+            'last_name' => 'Scott',
+            'suffix' => 'Jr',
+            'nickname' => 'Prison Mike',
+            'name_order' => NameOrderEnum::GivenFirst->value,
+            'sort_name' => 'scott michael gary',
+            'is_me' => false,
+            'is_partial' => false,
+            'is_archived' => false,
+            'is_favourite' => false,
+            'activity_count' => 0,
+        ]);
+    }
+
+    #[Test]
+    public function it_gives_the_contact_a_colour_to_draw_their_initials_on(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $contact = new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $this->publishedContactVersion($user->account),
+            firstName: 'Pam',
+            lastName: 'Beesly',
+        )->execute();
+
+        $this->assertContains($contact->avatar_colour, Contact::AVATAR_COLOURS);
+    }
+
+    #[Test]
+    public function it_counts_the_contact_in_the_vault_and_on_the_version(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 4]);
+        $version = $this->publishedContactVersion($user->account);
+
+        new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $version,
+            firstName: 'Jim',
+            lastName: 'Halpert',
+        )->execute();
+
+        $this->assertSame(5, $vault->fresh()->contact_count);
+        $this->assertSame(1, $version->fresh()->record_count);
+    }
+
+    #[Test]
+    public function it_writes_down_somebody_who_was_only_mentioned(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $contact = new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $this->publishedContactVersion($user->account),
+            firstName: 'Jack',
+            isPartial: true,
+        )->execute();
+
+        $this->assertTrue($contact->is_partial);
+        $this->assertEquals('jack', $contact->sort_name);
+    }
+
+    #[Test]
+    public function it_writes_down_the_contact_representing_the_user(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $contact = new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $this->publishedContactVersion($user->account),
+            firstName: 'Michael',
+            lastName: 'Scott',
+            isMe: true,
+        )->execute();
+
+        $this->assertTrue($contact->is_me);
+    }
+
+    #[Test]
+    public function it_refuses_a_second_contact_representing_the_user_in_the_same_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Contact::factory()->me()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        $this->expectException(VaultAlreadyHasAMeContact::class);
+
+        new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $this->publishedContactVersion($user->account),
+            firstName: 'Michael',
+            lastName: 'Scott',
+            isMe: true,
+        )->execute();
+    }
+
+    #[Test]
+    public function it_lets_each_vault_hold_its_own_contact_representing_the_user(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $family = Vault::factory()->create(['account_id' => $user->account_id]);
+        $work = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user->account);
+
+        Contact::factory()->me()->create(['vault_id' => $family->id, 'account_id' => $user->account_id]);
+
+        $contact = new CreateContact(
+            user: $user,
+            vault: $work,
+            templateVersion: $version,
+            firstName: 'Michael',
+            lastName: 'Scott',
+            isMe: true,
+        )->execute();
+
+        $this->assertTrue($contact->is_me);
+        $this->assertEquals($work->id, $contact->vault_id);
+    }
+
+    #[Test]
+    public function it_refuses_a_contact_with_no_part_of_a_name(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->expectException(ContactNeedsAName::class);
+
+        new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $this->publishedContactVersion($user->account),
+            prefix: 'Dr',
+        )->execute();
+    }
+
+    #[Test]
+    public function it_strips_the_markup_out_of_what_it_is_given(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $contact = new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $this->publishedContactVersion($user->account),
+            firstName: '<script>alert("Dwight")</script>Dwight',
+            lastName: '<b>Schrute</b>',
+        )->execute();
+
+        $this->assertEquals('Dwight', $contact->first_name);
+        $this->assertEquals('Schrute', $contact->last_name);
+    }
+
+    #[Test]
+    public function it_refuses_a_vault_in_another_account(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create();
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $this->publishedContactVersion($user->account),
+            firstName: 'Dwight',
+        )->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_template_version_in_another_account(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $this->publishedContactVersion(Account::factory()->create()),
+            firstName: 'Dwight',
+        )->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_template_that_does_not_describe_a_contact(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $template = Template::factory()->forEntity()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $version,
+            firstName: 'Dwight',
+        )->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_version_that_is_still_a_draft(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $version,
+            firstName: 'Dwight',
+        )->execute();
+    }
+
+    #[Test]
+    public function it_logs_the_creation(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $contact = new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $this->publishedContactVersion($user->account),
+            firstName: 'Michael',
+            lastName: 'Scott',
+        )->execute();
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactCreation
+                && $job->account->id === $user->account_id
+                && $job->user->id === $user->id
+                && $job->vault->id === $vault->id
+                && $job->loggable->is($contact)
+                && $job->parameters === ['name' => 'Michael Scott'],
+        );
+    }
+
+    private function publishedContactVersion(Account $account): TemplateVersion
+    {
+        $template = Template::factory()->create(['account_id' => $account->id]);
+
+        return TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+    }
+}

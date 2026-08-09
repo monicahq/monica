@@ -47,7 +47,7 @@ updated_at                  datetime
 
 ## Not done yet
 
-- **Nothing points at a version, so nothing moves between versions.** [Contact](019-contact.md), [Entity](020-entity.md) and [ActivityType](035-activity-type.md) are all ahead. `record_count` is written once as zero and never moves, and the deliberate move of a record from one version to another, along with the [RecordSnapshot](023-record-snapshot.md) it has to write first, arrives with the records themselves.
+- **Contacts point at a version, and nothing moves between versions yet.** [Contact](019-contact.md) keeps `record_count` in step as contacts are written down, deleted and brought back; [Entity](020-entity.md) and [ActivityType](035-activity-type.md) are still ahead. The deliberate move of a record from one version to another, along with the [RecordSnapshot](023-record-snapshot.md) it has to write first, waits on the snapshot model.
 - **Retiring a version is enforced against `record_count` only.** The rule that a version is never deleted while records point at it lives on the model and reads that column, which is the only thing there is to ask. Once records exist that count has to become true, or the check has to start counting rows.
 - **No API.** The builder starts a draft, publishes a version and throws a draft away. None of it is exposed over the API yet.
 - **Retiring a version has no screen.** The action exists and nothing calls it: a version is retired when a template stops being offered, and that decision is taken on the template rather than the version.
