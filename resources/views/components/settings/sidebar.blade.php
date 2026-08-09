@@ -51,7 +51,7 @@
   </div>
 
   <nav class="min-h-0 flex-1 space-y-px overflow-y-auto px-2 pt-2 pb-3">
-    <h2 class="px-2.5 pt-1.5 pb-1.25 text-xs tracking-widest text-muted-soft uppercase">{{ __('Your account') }}</h2>
+    <h2 class="px-2.5 pt-1.5 pb-1.25 text-xs text-muted-soft uppercase">{{ __('Your account') }}</h2>
 
     <a
       href="{{ route('settings.profile.index') }}"

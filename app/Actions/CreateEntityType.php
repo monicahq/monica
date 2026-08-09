@@ -22,8 +22,11 @@ use Illuminate\Support\Str;
  * Both names are asked for rather than one being made from the other, since a
  * plural derived in English is wrong in most other languages.
  *
- * The slug is built here and never rebuilt. It travels in URLs and through the
- * API, so a rename must not break a link that already went out.
+ * The slug is settled here and never rebuilt. It travels in URLs and through
+ * the API, so a rename must not break a link that already went out. Whoever
+ * declares the type may choose it; what they give is cleaned the same way a
+ * derived one is, so nothing can put a space or an accent in a URL. Left out,
+ * it is made from the singular name.
  *
  * A type can be declared inactive from the start, for somebody setting up the
  * account before anybody is meant to file anything under it.
@@ -40,6 +43,7 @@ class CreateEntityType
         private ?string $icon = null,
         private ?string $colour = null,
         private readonly bool $isActive = true,
+        private ?string $slug = null,
     ) {}
 
     public function execute(): EntityType
@@ -58,6 +62,7 @@ class CreateEntityType
         $this->description = TextSanitizer::nullablePlainText($this->description);
         $this->icon = TextSanitizer::nullablePlainText($this->icon) ?? EntityType::DEFAULT_ICON;
         $this->colour = mb_strtolower(TextSanitizer::nullablePlainText($this->colour) ?? EntityType::DEFAULT_COLOUR);
+        $this->slug = TextSanitizer::nullablePlainText($this->slug);
     }
 
     private function create(): void
@@ -81,8 +86,11 @@ class CreateEntityType
     }
 
     /**
-     * Build a slug from the singular name, and keep it unique within the
-     * account by counting up until nothing answers to it.
+     * Settle the slug, and keep it unique within the account by counting up
+     * until nothing answers to it. A caller that asked for one it cannot have
+     * gets the next one along rather than an exception, because the screen
+     * checks availability before it ever gets here and an action called from
+     * anywhere else still has to produce a type.
      *
      * A name written in a script `Str::slug` leaves nothing of, such as one
      * entirely in Japanese, would otherwise produce an empty slug, so the word
@@ -90,7 +98,7 @@ class CreateEntityType
      */
     private function slug(): string
     {
-        $stem = Str::limit(Str::slug($this->nameSingular), EntityType::SLUG_LENGTH, '') ?: 'type';
+        $stem = Str::limit(Str::slug($this->slug ?? $this->nameSingular), EntityType::SLUG_LENGTH, '') ?: 'type';
         $slug = $stem;
         $suffix = 1;
 

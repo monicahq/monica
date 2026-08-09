@@ -81,6 +81,63 @@ class CreateEntityTypeTest extends TestCase
     }
 
     #[Test]
+    public function it_takes_the_slug_it_is_given_rather_than_one_made_from_the_name(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        $entityType = new CreateEntityType(
+            user: $user,
+            nameSingular: 'Wine bottle',
+            namePlural: 'Wine bottles',
+            slug: 'cellar',
+        )->execute();
+
+        $this->assertEquals('cellar', $entityType->slug);
+    }
+
+    /**
+     * The screen checks a slug is free before it ever gets here, so this is
+     * about an action called from somewhere else: it produces a type rather
+     * than refusing, and the counter keeps the account consistent.
+     */
+    #[Test]
+    public function it_counts_up_when_the_slug_it_is_given_is_taken(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        EntityType::factory()->create(['account_id' => $user->account_id, 'slug' => 'cellar']);
+
+        $entityType = new CreateEntityType(
+            user: $user,
+            nameSingular: 'Wine bottle',
+            namePlural: 'Wine bottles',
+            slug: 'cellar',
+        )->execute();
+
+        $this->assertEquals('cellar-2', $entityType->slug);
+    }
+
+    #[Test]
+    public function it_cleans_a_slug_it_is_given(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        $entityType = new CreateEntityType(
+            user: $user,
+            nameSingular: 'Wine bottle',
+            namePlural: 'Wine bottles',
+            slug: 'La Cavé',
+        )->execute();
+
+        $this->assertEquals('la-cave', $entityType->slug);
+    }
+
+    #[Test]
     public function it_counts_up_when_the_slug_it_wants_is_taken(): void
     {
         Queue::fake();

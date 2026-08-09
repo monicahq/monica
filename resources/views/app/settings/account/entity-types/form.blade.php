@@ -55,13 +55,16 @@
       namePlural: @js($values['namePlural']),
       icon: @js($values['icon']),
       colour: @js($values['colour']),
-      storedSlug: @js($viewModel->slug()),
-      get slug() { return this.storedSlug ?? window.slugify(this.nameSingular) },
+      slug: @js($values['slug']),
+      slugTouched: @js($values['slug'] !== ''),
       get previewSlug() { return this.slug || '…' },
       get previewName() { return this.namePlural.trim() || this.nameSingular.trim() || @js(__('Your new type')) },
       get named() { return this.nameSingular.trim() !== '' && this.namePlural.trim() !== '' },
       get tint() { return `color-mix(in srgb, ${this.colour} 12%, transparent)` },
     }"
+    @if ($viewModel->slugIsEditable())
+      x-effect="if (! slugTouched) slug = window.slugify(nameSingular)"
+    @endif
     class="space-y-8.5"
   >
     <x-form id="entity-type-form" :method="$viewModel->method()" :action="$viewModel->action()" class="space-y-8.5">
@@ -98,25 +101,49 @@
               />
             </div>
 
-            <div class="space-y-1.5">
-              <x-label for="slug" :value="__('Slug')" />
-
-              <input
+            @if ($viewModel->slugIsEditable())
+              {{--
+                Blanking the field puts it back under the name's control, which
+                is why the flag is read from what was typed rather than merely
+                set. Tidying happens on the way out rather than on every key,
+                since stripping the dash somebody just typed makes the field
+                impossible to use.
+              --}}
+              <x-input
                 id="slug"
-                type="text"
-                :value="slug"
-                readonly
-                disabled
-                aria-describedby="slug-help"
-                class="block w-full appearance-none rounded-md border border-hairline-strong bg-input px-3 py-2.5 font-mono text-base text-ink opacity-60 sm:text-sm"
+                x-model="slug"
+                @input="slugTouched = $event.target.value.trim() !== ''"
+                @blur="slug = window.slugify(slug)"
+                :value="$values['slug']"
+                :label="__('Slug')"
+                :placeholder="__('animal')"
+                :help="$viewModel->slugHelp()"
+                :error="$errors->get('slug')"
+                :maxlength="\App\Models\EntityType::SLUG_LENGTH"
+                class="font-mono"
               />
+            @else
+              <div class="space-y-1.5">
+                <x-label for="slug" :value="__('Slug')" />
 
-              <p id="slug-help" class="text-xs text-muted">{{ $viewModel->slugHelp() }}</p>
-            </div>
+                <input
+                  id="slug"
+                  type="text"
+                  value="{{ $values['slug'] }}"
+                  readonly
+                  disabled
+                  aria-describedby="slug-help"
+                  class="block w-full appearance-none rounded-md border border-hairline-strong bg-input px-3 py-2.5 font-mono text-base text-ink opacity-60 sm:text-sm"
+                />
+
+                <p id="slug-help" class="text-xs text-muted">{{ $viewModel->slugHelp() }}</p>
+              </div>
+            @endif
 
             <x-textarea
               id="description"
               :label="__('Description')"
+              optional
               :value="$values['description']"
               :placeholder="__('Cats, dogs, the neighbour’s parrot.')"
               :help="__('Only you see this, on this screen.')"

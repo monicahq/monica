@@ -41,7 +41,13 @@ class EntityTypeController extends Controller
 
     public function create(Request $request): RedirectResponse
     {
-        $validated = $request->validate($this->rules());
+        $validated = $request->validate(
+            $this->rules() + ['slug' => $this->slugRules($request)],
+            [
+                'slug.regex' => __('Use lowercase letters, numbers and dashes only, with no spaces and no accents.'),
+                'slug.unique' => __('Another type in this account already uses that slug.'),
+            ],
+        );
 
         new CreateEntityType(
             user: $request->user(),
@@ -51,6 +57,7 @@ class EntityTypeController extends Controller
             icon: $validated['icon'],
             colour: $validated['colour'],
             isActive: $request->boolean('is_active'),
+            slug: $validated['slug'] ?? null,
         )->execute();
 
         return redirect()->route('settings.entityTypes.index')
@@ -116,6 +123,28 @@ class EntityTypeController extends Controller
         return redirect()->route('settings.entityTypes.index')
             ->with('status', __('The type is deleted.'))
             ->with('status_description', __('Nothing was filed under it.'));
+    }
+
+    /**
+     * The slug is only asked for while a type is being declared. Once one
+     * exists the field is read only, because the slug is what URLs and the API
+     * were given and a link that already went out has to keep working.
+     *
+     * A slug is unique within the account and nowhere wider, and it stays taken
+     * once its type is deleted, so a stale link cannot land on something else.
+     * That is why the rule ignores the soft delete the model applies.
+     *
+     * @return array<int, mixed>
+     */
+    private function slugRules(Request $request): array
+    {
+        return [
+            'nullable',
+            'string',
+            'max:'.EntityType::SLUG_LENGTH,
+            'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+            Rule::unique('entity_types', 'slug')->where('account_id', $request->user()->account_id),
+        ];
     }
 
     /**

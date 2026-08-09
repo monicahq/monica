@@ -67,7 +67,7 @@ class EntityTypeFormViewModel
     /**
      * What the fields start out holding.
      *
-     * @return array{nameSingular: string, namePlural: string, description: string, icon: string, colour: string, isActive: bool}
+     * @return array{nameSingular: string, namePlural: string, slug: string, description: string, icon: string, colour: string, isActive: bool}
      */
     public function values(): array
     {
@@ -76,6 +76,7 @@ class EntityTypeFormViewModel
         return [
             'nameSingular' => (string) old('name_singular', $stored['name_singular']),
             'namePlural' => (string) old('name_plural', $stored['name_plural']),
+            'slug' => (string) old('slug', $stored['slug']),
             'description' => (string) old('description', $stored['description']),
             'icon' => (string) old('icon', $stored['icon']),
             'colour' => (string) old('colour', $stored['colour']),
@@ -87,7 +88,7 @@ class EntityTypeFormViewModel
      * What the fields hold before anybody has typed: a type that exists, or
      * the defaults a new one starts on.
      *
-     * @return array{name_singular: string, name_plural: string, description: string, icon: string, colour: string, is_active: bool}
+     * @return array{name_singular: string, name_plural: string, slug: string, description: string, icon: string, colour: string, is_active: bool}
      */
     private function stored(): array
     {
@@ -95,6 +96,7 @@ class EntityTypeFormViewModel
             return [
                 'name_singular' => '',
                 'name_plural' => '',
+                'slug' => '',
                 'description' => '',
                 'icon' => EntityType::DEFAULT_ICON,
                 'colour' => EntityType::DEFAULT_COLOUR,
@@ -105,6 +107,7 @@ class EntityTypeFormViewModel
         return [
             'name_singular' => $this->entityType->name_singular,
             'name_plural' => $this->entityType->name_plural,
+            'slug' => $this->entityType->slug,
             'description' => $this->entityType->description ?? '',
             'icon' => $this->entityType->icon ?? EntityType::DEFAULT_ICON,
             'colour' => $this->entityType->colour,
@@ -136,13 +139,23 @@ class EntityTypeFormViewModel
         return $this->entityType?->slug;
     }
 
+    /**
+     * Whether the slug can still be typed. It can be chosen while the type is
+     * being declared and never again, since it is what URLs and the API were
+     * given and a link that already went out has to keep working.
+     */
+    public function slugIsEditable(): bool
+    {
+        return $this->entityType === null;
+    }
+
     public function slugHelp(): string
     {
         if ($this->entityType === null) {
-            return __('Set from the singular name when you save. Used in URLs and by the API.');
+            return __('Lowercase letters, numbers and dashes only: no spaces, no accents, no capitals. It follows the singular name until you change it, and it cannot be changed once the type exists.');
         }
 
-        return __('Used in URLs and by the API. It does not change once the type exists.');
+        return __('Used in URLs and by the API. It cannot be changed now the type exists, so the links that already went out keep working.');
     }
 
     /**

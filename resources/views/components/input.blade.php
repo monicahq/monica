@@ -9,6 +9,7 @@
   @var string|null $id
   @var string|null $name
   @var string|null $label
+  @var bool $optional
   @var string|null $value
   @var string|null $placeholder
   @var string|null $help
@@ -24,6 +25,7 @@
   'id' => null,
   'name' => null,
   'label' => null,
+  'optional' => false,
   'value' => null,
   'placeholder' => null,
   'help' => null,
@@ -58,7 +60,7 @@
 
 <div class="space-y-1.5">
   @if ($label)
-    <x-label :for="$id" :value="$label" />
+    <x-label :for="$id" :value="$label" :optional="$optional" />
   @endif
 
   <input
