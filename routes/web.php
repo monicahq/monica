@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\App\GettingStartedController;
+use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\Settings\Account\AccountController;
 use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListController;
 use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListItemActivationController;
@@ -32,13 +34,14 @@ use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicati
 use App\Http\Controllers\App\Vaults\VaultController;
 use Illuminate\Support\Facades\Route;
 
-// The landing page, until there is a dashboard to send people to.
-Route::get('/', function () {
-    return view('welcome');
-})->name('home.index');
+// The front door, which sends whoever is signed in wherever their account is up to.
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 // The screens where somebody looks after their vaults.
 Route::middleware(['auth', 'set.locale'])->group(function (): void {
+    Route::get('getting-started', [GettingStartedController::class, 'index'])->name('gettingStarted.index');
+
+    Route::get('vaults', [VaultController::class, 'index'])->name('vaults.index');
     Route::get('vaults/new', [VaultController::class, 'new'])->name('vaults.new');
     Route::post('vaults', [VaultController::class, 'create'])->name('vaults.create');
 });

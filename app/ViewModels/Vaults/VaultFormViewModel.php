@@ -48,12 +48,11 @@ class VaultFormViewModel
     }
 
     /**
-     * Where the screen leads out of. The list of vaults is not built yet, so
-     * both the breadcrumb and the way out land on the home page until it is.
+     * Where the screen leads out of, which is the list it was opened from.
      */
     public function backUrl(): string
     {
-        return route('home.index');
+        return route('vaults.index');
     }
 
     /**

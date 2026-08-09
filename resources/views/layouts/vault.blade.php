@@ -52,7 +52,11 @@
       </div>
     @endisset
 
-    <main class="mx-auto max-w-240 space-y-8.5 px-4 pt-7.5 pb-22 sm:px-7">
+    {{--
+      A screen with a breadcrumb already has a strip between it and the bar, so
+      it starts closer to the top than one that opens on its own title.
+    --}}
+    <main class="mx-auto max-w-240 space-y-8.5 px-4 pb-22 sm:px-7 {{ isset($breadcrumb) ? 'pt-7.5' : 'pt-14' }}">
       {{ $slot }}
     </main>
 

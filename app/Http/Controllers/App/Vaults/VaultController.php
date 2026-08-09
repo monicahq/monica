@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Models\TemplateVersion;
 use App\Models\Vault;
 use App\ViewModels\Vaults\VaultFormViewModel;
+use App\ViewModels\Vaults\VaultsViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -20,6 +21,15 @@ use Illuminate\View\View;
 
 class VaultController extends Controller
 {
+    public function index(Request $request): View
+    {
+        return view('app.vaults.index', [
+            'viewModel' => new VaultsViewModel(
+                user: $request->user(),
+            ),
+        ]);
+    }
+
     public function new(Request $request): View
     {
         return view('app.vaults.form', [
@@ -55,7 +65,7 @@ class VaultController extends Controller
             new SetDefaultVault(user: $request->user(), vault: $vault)->execute();
         }
 
-        return redirect()->route('home.index')
+        return redirect()->route('vaults.index')
             ->with('status', __('The vault is created.'))
             ->with('status_description', __('Everything you put in it stays in it.'));
     }

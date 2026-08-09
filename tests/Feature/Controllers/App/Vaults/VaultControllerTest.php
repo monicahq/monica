@@ -20,6 +20,34 @@ class VaultControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
+    public function it_lists_the_vaults_of_the_account(): void
+    {
+        $user = User::factory()->create();
+        Vault::factory()->default()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+            'description' => 'Everybody at the Scranton branch',
+        ]);
+        Vault::factory()->create(['name' => 'Schrute Farms']);
+
+        $this->actingAs($user)->get(route('vaults.index'))
+            ->assertStatus(200)
+            ->assertSee('Dunder Mifflin')
+            ->assertSee('Everybody at the Scranton branch')
+            ->assertDontSee('Schrute Farms');
+    }
+
+    #[Test]
+    public function it_says_the_list_is_empty_rather_than_showing_nothing(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->get(route('vaults.index'))
+            ->assertStatus(200)
+            ->assertSee('No vault yet');
+    }
+
+    #[Test]
     public function it_shows_the_form_that_opens_a_vault(): void
     {
         $user = User::factory()->create();
@@ -60,7 +88,7 @@ class VaultControllerTest extends TestCase
             'colour' => '#4f8a49',
         ]);
 
-        $response->assertRedirect(route('home.index'));
+        $response->assertRedirect(route('vaults.index'));
         $response->assertSessionHas('status');
         $this->assertDatabaseHas('vaults', [
             'account_id' => $user->account_id,
