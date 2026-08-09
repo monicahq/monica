@@ -185,6 +185,14 @@ class Account extends Model
     }
 
     /**
+     * Import jobs created for this account.
+     */
+    public function importJobs()
+    {
+        return $this->hasMany(\App\Models\ImportJob::class, 'account_id');
+    }
+
+    /**
      * Get the post templates associated with the account.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PostTemplate, $this>
