@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\CreateVault;
+use App\Enums\TemplateAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\Template;
+use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
@@ -124,6 +128,40 @@ class CreateVaultTest extends TestCase
         $vault = new CreateVault(user: $user, name: 'Dunder Mifflin', description: '  ')->execute();
 
         $this->assertNull($vault->description);
+    }
+
+    #[Test]
+    public function it_gives_the_vault_the_template_new_contacts_start_from(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'is_system' => true]);
+        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $template->published_version_id = $version->id;
+        $template->save();
+
+        $vault = new CreateVault(user: $user, name: 'Dunder Mifflin')->execute();
+
+        $this->assertDatabaseHas('vault_default_templates', [
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'applies_to' => TemplateAppliesToEnum::Contact->value,
+            'entity_type_id' => null,
+            'template_version_id' => $version->id,
+        ]);
+    }
+
+    #[Test]
+    public function it_leaves_the_vault_without_a_default_while_the_account_has_no_supplied_template(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        $vault = new CreateVault(user: $user, name: 'Dunder Mifflin')->execute();
+
+        $this->assertEquals(0, VaultDefaultTemplate::query()->where('vault_id', $vault->id)->count());
     }
 
     #[Test]

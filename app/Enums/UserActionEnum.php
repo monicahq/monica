@@ -28,6 +28,8 @@ enum UserActionEnum: string implements Translatable
     case VaultDefaultSet = 'vault_default_set';
     case VaultDeletion = 'vault_deleted';
     case VaultRestoration = 'vault_restored';
+    case VaultDefaultTemplateSet = 'vault_default_template_set';
+    case VaultDefaultTemplateRemoved = 'vault_default_template_removed';
     case ValueListsSeeded = 'value_lists_seeded';
     case ValueListCreation = 'value_list_created';
     case ValueListUpdate = 'value_list_updated';
@@ -111,6 +113,8 @@ enum UserActionEnum: string implements Translatable
             self::VaultDefaultSet => 'Made :name the vault new records land in',
             self::VaultDeletion => 'Deleted the vault :name',
             self::VaultRestoration => 'Brought the vault :name back',
+            self::VaultDefaultTemplateSet => 'Made :name the template new records start from here',
+            self::VaultDefaultTemplateRemoved => 'Stopped starting new records from :name here',
             self::ValueListsSeeded => 'Set up the value lists the account starts with',
             self::ValueListCreation => 'Created the value list :name',
             self::ValueListUpdate => 'Updated the value list :name',

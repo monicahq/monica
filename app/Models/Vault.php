@@ -126,4 +126,16 @@ class Vault extends Model
     {
         return $this->hasMany(Contact::class);
     }
+
+    /**
+     * Get the structures a new record starts on here, one per kind of record.
+     * They differ from vault to vault, since a work contact and a family
+     * contact do not start from the same page.
+     *
+     * @return HasMany<VaultDefaultTemplate, $this>
+     */
+    public function defaultTemplates(): HasMany
+    {
+        return $this->hasMany(VaultDefaultTemplate::class);
+    }
 }

@@ -6,6 +6,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Account;
 use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -64,6 +65,16 @@ class VaultTest extends TestCase
         $this->assertSame(0, $vault->contact_count);
         $this->assertFalse($vault->is_default);
         $this->assertNull($vault->last_visited_at);
+    }
+
+    #[Test]
+    public function it_holds_the_structures_a_new_record_starts_on(): void
+    {
+        $vault = Vault::factory()->create();
+        $default = VaultDefaultTemplate::factory()->create(['vault_id' => $vault->id]);
+
+        $this->assertTrue($vault->defaultTemplates()->exists());
+        $this->assertTrue($default->is($vault->defaultTemplates->first()));
     }
 
     #[Test]

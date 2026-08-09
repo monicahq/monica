@@ -9,12 +9,14 @@ use App\Enums\TemplateAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\VaultAlreadyHasAMeContact;
+use App\Exceptions\VaultHasNoContactDefault;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -24,11 +26,9 @@ use InvalidArgumentException;
  * Write somebody down. The name is all the product imposes, and everything else
  * the page will hold comes from the template version the contact is put on.
  *
- * The version is given rather than looked up. Which structure a new contact
- * starts on is a default held per vault and per kind of record, and until that
- * model exists the caller says which version, so that nothing here quietly
- * picks the latest one and breaks the promise that a record follows the version
- * it was assigned.
+ * The version is the vault's contact default unless the caller names another
+ * one. The default is a version and never a template, so a contact written down
+ * today does not silently follow whatever gets published tomorrow.
  *
  * The version has to be published. A draft is something somebody is still
  * editing, and a contact rendering from it would change under them; a retired
@@ -38,10 +38,12 @@ class CreateContact
 {
     private Contact $contact;
 
+    private TemplateVersion $version;
+
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
-        private readonly TemplateVersion $templateVersion,
+        private readonly ?TemplateVersion $templateVersion = null,
         private ?string $prefix = null,
         private ?string $firstName = null,
         private ?string $middleName = null,
@@ -57,6 +59,7 @@ class CreateContact
     public function execute(): Contact
     {
         $this->sanitize();
+        $this->readTheVaultDefault();
         $this->validate();
         $this->create();
         $this->log();
@@ -75,21 +78,47 @@ class CreateContact
         $this->nickname = TextSanitizer::nullablePlainText($this->nickname);
     }
 
-    private function validate(): void
+    /**
+     * Find the structure the vault starts a contact on, unless the caller named
+     * one. The vault is checked here rather than in the validation that follows,
+     * since reading the default of a vault in another account would answer a
+     * question nobody is allowed to ask.
+     */
+    private function readTheVaultDefault(): void
     {
         if ($this->vault->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('This vault is in another account.');
         }
 
-        if ($this->templateVersion->account_id !== $this->user->account_id) {
+        if ($this->templateVersion instanceof TemplateVersion) {
+            $this->version = $this->templateVersion;
+
+            return;
+        }
+
+        $default = VaultDefaultTemplate::query()
+            ->where('vault_id', $this->vault->id)
+            ->where('applies_to', TemplateAppliesToEnum::Contact)
+            ->first();
+
+        if ($default === null) {
+            throw new VaultHasNoContactDefault('This vault has no template for new contacts to start from.');
+        }
+
+        $this->version = $default->templateVersion;
+    }
+
+    private function validate(): void
+    {
+        if ($this->version->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('This template version is in another account.');
         }
 
-        if ($this->templateVersion->template->applies_to !== TemplateAppliesToEnum::Contact) {
+        if ($this->version->template->applies_to !== TemplateAppliesToEnum::Contact) {
             throw new InvalidArgumentException('This template does not describe a contact.');
         }
 
-        if ($this->templateVersion->status !== VersionStatusEnum::Published) {
+        if ($this->version->status !== VersionStatusEnum::Published) {
             throw new InvalidArgumentException('A contact can only be put on a published version.');
         }
 
@@ -113,7 +142,7 @@ class CreateContact
             $this->contact = Contact::query()->create([
                 'account_id' => $this->user->account_id,
                 'vault_id' => $this->vault->id,
-                'template_version_id' => $this->templateVersion->id,
+                'template_version_id' => $this->version->id,
                 'prefix' => $this->prefix,
                 'first_name' => $this->firstName,
                 'middle_name' => $this->middleName,
@@ -128,7 +157,7 @@ class CreateContact
             ]);
 
             $this->vault->increment('contact_count');
-            $this->templateVersion->increment('record_count');
+            $this->version->increment('record_count');
         });
     }
 

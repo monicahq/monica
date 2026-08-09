@@ -9,6 +9,7 @@ use App\Enums\NameOrderEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\ContactNeedsAName;
 use App\Exceptions\VaultAlreadyHasAMeContact;
+use App\Exceptions\VaultHasNoContactDefault;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
 use App\Models\Contact;
@@ -16,6 +17,7 @@ use App\Models\Template;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -69,6 +71,69 @@ class CreateContactTest extends TestCase
             'is_favourite' => false,
             'activity_count' => 0,
         ]);
+    }
+
+    #[Test]
+    public function it_starts_the_contact_on_the_template_the_vault_defaults_to(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user->account);
+        VaultDefaultTemplate::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'template_version_id' => $version->id,
+        ]);
+
+        $contact = new CreateContact(
+            user: $user,
+            vault: $vault,
+            firstName: 'Michael',
+            lastName: 'Scott',
+        )->execute();
+
+        $this->assertEquals($version->id, $contact->template_version_id);
+        $this->assertSame(1, $version->fresh()->record_count);
+    }
+
+    #[Test]
+    public function it_prefers_the_version_it_is_given_to_the_one_the_vault_defaults_to(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        VaultDefaultTemplate::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'template_version_id' => $this->publishedContactVersion($user->account)->id,
+        ]);
+        $chosen = $this->publishedContactVersion($user->account);
+
+        $contact = new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $chosen,
+            firstName: 'Michael',
+            lastName: 'Scott',
+        )->execute();
+
+        $this->assertEquals($chosen->id, $contact->template_version_id);
+    }
+
+    #[Test]
+    public function it_refuses_a_vault_with_nothing_for_a_new_contact_to_start_from(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->expectException(VaultHasNoContactDefault::class);
+
+        new CreateContact(user: $user, vault: $vault, firstName: 'Michael')->execute();
     }
 
     #[Test]

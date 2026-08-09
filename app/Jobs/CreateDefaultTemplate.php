@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Actions\CreateVault;
 use App\Enums\DefaultFieldEnum;
 use App\Enums\DefaultSectionEnum;
 use App\Enums\DefaultTemplateEnum;
+use App\Enums\TemplateAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
@@ -18,6 +20,8 @@ use App\Models\TemplateVersion;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
+use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\DB;
@@ -79,6 +83,7 @@ class CreateDefaultTemplate implements ShouldQueue
             $this->createTemplate();
             $this->createSections();
             $this->publish();
+            $this->seedTheVaultDefaults();
         });
 
         $this->log();
@@ -244,6 +249,31 @@ class CreateDefaultTemplate implements ShouldQueue
 
         $this->template->published_version_id = $this->version->id;
         $this->template->save();
+    }
+
+    /**
+     * Point every vault of the account at the version that was just published.
+     * The vaults of a fresh account are made before this job runs, so nothing
+     * else can have given them a default; {@see CreateVault} gives
+     * one to every vault opened afterwards.
+     */
+    private function seedTheVaultDefaults(): void
+    {
+        Vault::query()
+            ->where('account_id', $this->user->account_id)
+            ->each(function (Vault $vault): void {
+                VaultDefaultTemplate::query()->updateOrCreate(
+                    [
+                        'vault_id' => $vault->id,
+                        'applies_to' => TemplateAppliesToEnum::Contact,
+                        'entity_type_id' => null,
+                    ],
+                    [
+                        'account_id' => $this->user->account_id,
+                        'template_version_id' => $this->version->id,
+                    ],
+                );
+            });
     }
 
     private function log(): void

@@ -20,6 +20,8 @@ use App\Models\Section;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\ValueList;
+use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
@@ -252,6 +254,43 @@ class CreateDefaultTemplateTest extends TestCase
                 && $job->loggable->is(Template::query()->sole()),
         );
         Queue::assertPushed(LogUserAction::class, 1);
+    }
+
+    #[Test]
+    public function it_points_the_vaults_of_the_account_at_the_version_it_published(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+        $family = Vault::factory()->create(['account_id' => $user->account_id]);
+        $work = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        $version = Template::query()->sole()->published_version_id;
+
+        foreach ([$family, $work] as $vault) {
+            $this->assertDatabaseHas('vault_default_templates', [
+                'account_id' => $user->account_id,
+                'vault_id' => $vault->id,
+                'applies_to' => TemplateAppliesToEnum::Contact->value,
+                'entity_type_id' => null,
+                'template_version_id' => $version,
+            ]);
+        }
+    }
+
+    #[Test]
+    public function it_leaves_the_vaults_of_another_account_alone(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+        $elsewhere = Vault::factory()->create();
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        $this->assertEquals(0, VaultDefaultTemplate::query()->where('vault_id', $elsewhere->id)->count());
     }
 
     private function userWithValueLists(): User
