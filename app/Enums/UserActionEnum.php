@@ -45,6 +45,34 @@ enum UserActionEnum: string implements Translatable
     case EntityTypeActivated = 'entity_type_activated';
     case EntityTypeDeactivated = 'entity_type_deactivated';
     case EntityTypeDeletion = 'entity_type_deleted';
+    case TemplateCreation = 'template_created';
+    case TemplateUpdate = 'template_updated';
+    case TemplateDuplication = 'template_duplicated';
+    case TemplatePositionUpdate = 'template_position_updated';
+    case TemplateActivated = 'template_activated';
+    case TemplateDeactivated = 'template_deactivated';
+    case TemplateDeletion = 'template_deleted';
+    case TemplateVersionDrafted = 'template_version_drafted';
+    case TemplateVersionPublished = 'template_version_published';
+    case TemplateVersionRetired = 'template_version_retired';
+    case TemplateVersionDeletion = 'template_version_deleted';
+    case SectionCreation = 'section_created';
+    case SectionUpdate = 'section_updated';
+    case SectionActivated = 'section_activated';
+    case SectionDeactivated = 'section_deactivated';
+    case SectionDeletion = 'section_deleted';
+    case SectionVersionDrafted = 'section_version_drafted';
+    case SectionVersionPublished = 'section_version_published';
+    case SectionVersionRetired = 'section_version_retired';
+    case SectionVersionDeletion = 'section_version_deleted';
+    case SectionAddedToTemplate = 'section_added_to_template';
+    case SectionRemovedFromTemplate = 'section_removed_from_template';
+    case TemplateSectionUpdate = 'template_section_updated';
+    case TemplateSectionPositionUpdate = 'template_section_position_updated';
+    case FieldCreation = 'field_created';
+    case FieldUpdate = 'field_updated';
+    case FieldPositionUpdate = 'field_position_updated';
+    case FieldDeletion = 'field_deleted';
 
     /**
      * What the action reads as in the logs, written about whoever performed it.
@@ -91,6 +119,34 @@ enum UserActionEnum: string implements Translatable
             self::EntityTypeActivated => 'Allowed new :name to be created again',
             self::EntityTypeDeactivated => 'Stopped new :name being created',
             self::EntityTypeDeletion => 'Deleted the kind of record :name',
+            self::TemplateCreation => 'Created the template :name',
+            self::TemplateUpdate => 'Updated the template :name',
+            self::TemplateDuplication => 'Copied the template :source into :name',
+            self::TemplatePositionUpdate => 'Moved the template :name',
+            self::TemplateActivated => 'Offered the template :name again',
+            self::TemplateDeactivated => 'Stopped offering the template :name',
+            self::TemplateDeletion => 'Deleted the template :name',
+            self::TemplateVersionDrafted => 'Started version :version of the template :name',
+            self::TemplateVersionPublished => 'Published version :version of the template :name',
+            self::TemplateVersionRetired => 'Retired version :version of the template :name',
+            self::TemplateVersionDeletion => 'Threw away version :version of the template :name',
+            self::SectionCreation => 'Created the section :name',
+            self::SectionUpdate => 'Updated the section :name',
+            self::SectionActivated => 'Offered the section :name again',
+            self::SectionDeactivated => 'Stopped offering the section :name',
+            self::SectionDeletion => 'Deleted the section :name',
+            self::SectionVersionDrafted => 'Started version :version of the section :name',
+            self::SectionVersionPublished => 'Published version :version of the section :name',
+            self::SectionVersionRetired => 'Retired version :version of the section :name',
+            self::SectionVersionDeletion => 'Threw away version :version of the section :name',
+            self::SectionAddedToTemplate => 'Put the section :section on the template :name',
+            self::SectionRemovedFromTemplate => 'Took the section :section off the template :name',
+            self::TemplateSectionUpdate => 'Changed how the section :section reads on the template :name',
+            self::TemplateSectionPositionUpdate => 'Moved the section :section on the template :name',
+            self::FieldCreation => 'Added the field :label to the section :name',
+            self::FieldUpdate => 'Updated the field :label in the section :name',
+            self::FieldPositionUpdate => 'Moved the field :label in the section :name',
+            self::FieldDeletion => 'Removed the field :label from the section :name',
         };
     }
 

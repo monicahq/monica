@@ -1,0 +1,132 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Models;
+
+use App\Exceptions\PublishedVersionIsFrozen;
+use Carbon\Carbon;
+use Database\Factories\TemplateVersionSectionFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+/**
+ * Class TemplateVersionSection
+ *
+ * The assembly. It says which section versions a template version contains, and
+ * in which order.
+ *
+ * It is a pivot with attributes rather than a plain join, because the same
+ * section can appear in several templates at different positions, under a
+ * different title, folded in one and open in another. The title override is
+ * display only and changes no identity: it exists so a shared section can be
+ * reused without being duplicated just to rename its header.
+ *
+ * The foreign key points at a section version, never at a section. That is the
+ * whole mechanism by which freezing a template version freezes the fields the
+ * record ends up showing.
+ *
+ * @property int $id
+ * @property int $account_id
+ * @property int $template_version_id
+ * @property int $section_version_id
+ * @property int $position
+ * @property string|null $title_override
+ * @property bool $is_collapsed_by_default
+ * @property Carbon $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Account $account
+ * @property-read TemplateVersion $templateVersion
+ * @property-read SectionVersion $sectionVersion
+ */
+class TemplateVersionSection extends Model
+{
+    /** @use HasFactory<TemplateVersionSectionFactory> */
+    use HasFactory;
+
+    protected $table = 'template_version_sections';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'account_id',
+        'template_version_id',
+        'section_version_id',
+        'position',
+        'title_override',
+        'is_collapsed_by_default',
+    ];
+
+    /**
+     * A row is as frozen as the version it belongs to. Once the template version has been
+     * published, nothing may be added to it, taken out of it or moved within
+     * it, since all three would change what an already published version
+     * renders.
+     */
+    protected static function booted(): void
+    {
+        static::saving(function (TemplateVersionSection $row): void {
+            $row->refuseWhenTheTemplateIsPublished();
+        });
+
+        static::deleting(function (TemplateVersionSection $row): void {
+            $row->refuseWhenTheTemplateIsPublished();
+        });
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'position' => 'integer',
+            'is_collapsed_by_default' => 'boolean',
+        ];
+    }
+
+    /**
+     * Get the account the assembly belongs to.
+     *
+     * @return BelongsTo<Account, $this>
+     */
+    public function account(): BelongsTo
+    {
+        return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the template version the section is placed in.
+     *
+     * @return BelongsTo<TemplateVersion, $this>
+     */
+    public function templateVersion(): BelongsTo
+    {
+        return $this->belongsTo(TemplateVersion::class);
+    }
+
+    /**
+     * Get the exact section that is placed.
+     *
+     * @return BelongsTo<SectionVersion, $this>
+     */
+    public function sectionVersion(): BelongsTo
+    {
+        return $this->belongsTo(SectionVersion::class);
+    }
+
+    private function refuseWhenTheTemplateIsPublished(): void
+    {
+        $version = $this->templateVersion;
+
+        if ($version !== null && ! $version->status->isEditable()) {
+            throw new PublishedVersionIsFrozen("Version {$version->version_number} of this template has been published. Make a draft from it instead.");
+        }
+    }
+}

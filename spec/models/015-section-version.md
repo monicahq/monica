@@ -1,6 +1,6 @@
 # 015. SectionVersion
 
-**Status:** to create
+**Status:** exists (`app/Models/SectionVersion.php`), built as far as the models it depends on allow
 **Spec:** 6, 3.1, 5.4
 
 ## What it is
@@ -42,6 +42,20 @@ updated_at                  datetime
 - `resolved_value_lists` holds the items each list contained at publication, with their keys and labels. It is what makes the freeze real across the value list boundary (6). Reading a stored value still resolves through the live [ValueListItem](010-value-list-item.md) when it is still there, so a relabelled option reads with its new label. The snapshot is what answers when the item is gone, and it is what travels to another account on install.
 - Retiring a version leaves every template version already containing it untouched.
 - A published version is never deleted. A draft can be.
+
+## Not done yet
+
+- **Nothing reads `resolved_value_lists` back.** It is written at publication and it is correct, but the reader that resolves a stored value through the live [ValueListItem](010-value-list-item.md) and falls back to the snapshot when the item has gone is [FieldValue](022-field-value.md), which does not exist. Until then the snapshot is written and never consulted.
+- **Nothing travels to another account.** The other half of what the snapshot is for is installation, which is [MarketplaceInstallation](047-marketplace-installation.md).
+- **No screens and no API.**
+
+## Decisions taken while building it
+
+- **The snapshot holds only the lists the fields actually reference.** This is the open question below, answered the smaller way: a section has nothing to do with the lists it does not use, and copying the whole account into every published version would grow without bound. The tidiness argument for full copies belongs to installation, and it can be revisited in [MarketplaceInstallation](047-marketplace-installation.md) without changing what is written here.
+- **The snapshot stores labels as they sit in the database, translation key and all.** Resolving them through `__()` at publication would bake the interface language of whoever pressed the button into a structure meant to outlive them. Each item is stored with its raw `label`, its `label_translation_key`, its key, its position and whether it was active; each list with its raw `name`, its `name_translation_key` and its key.
+- **The freeze is enforced on the model, exactly as on [TemplateVersion](013-template-version.md),** and `resolved_value_lists` is one of the columns publication freezes. A snapshot that could be rewritten afterwards would be worth nothing.
+- **Drafting from a version copies every field, repeaters first.** Fields belong to the version and never to the section, so a new draft needs its own. Copying a child before its repeater would leave it pointing at the old parent and the two versions would silently share a field, so the copy walks the parents first and maps old identifiers to new ones.
+- **A draft is not deletable while any template version points at it.** `usage_count` counts drafts as well as published assemblies, which is right here: the foreign key cascades, so deleting would quietly take the section off somebody's template rather than refusing.
 
 ## Open questions
 

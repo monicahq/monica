@@ -1,6 +1,6 @@
 # 012. Template
 
-**Status:** to create
+**Status:** exists (`app/Models/Template.php`), built as far as the models it depends on allow
 **Spec:** 5.2, 5.3, 6, 7, 9.3
 
 ## What it is
@@ -50,6 +50,22 @@ deleted_at                  datetime
 - A template is private by default (7). Publishing is a separate, deliberate act.
 - Deleting a template is refused while any record points at one of its versions. The template is deactivated instead, which stops it being applied to anything new (3.3).
 - Every account is seeded with one contact template, so a contact page is usable before anybody opens the builder (2.1).
+
+## Not done yet
+
+- **The activity case.** `applies_to` offers `contact` and `entity` and nothing else. An activity template is reached from [ActivityType](035-activity-type.md), which does not exist, so a template applying to one would be a template nothing could ever read. The enum case arrives with the model that reads it.
+- **Everything the marketplace needs.** `installed_from_listing_version_id` and the `hasOne` [MarketplaceListing](045-marketplace-listing.md) are not in the schema. Both point at tables that do not exist, and adding a nullable column with no foreign key would only look like support for something absent.
+- **No account is seeded with a contact template.** The rule stands, but the structure it would seed cannot be read by anything: [Contact](019-contact.md), [FieldValue](022-field-value.md) and the renderer are all still ahead. `CreateAccount` is untouched, and seeding arrives with the model that reads what is seeded.
+- **Nothing moves `record_count` on any version.** As with `entity_count` on [EntityType](011-entity-type.md), the column is written once as zero. `DestroyTemplate` refuses against the sum of it across the versions, which is the only thing there is to ask until records exist.
+- **No screens and no API.** The models and the actions are here; nothing renders them.
+
+## Decisions taken while building it
+
+- **A template is created with its first draft version.** A template with no version at all is a name nothing can be done with, so `CreateTemplate` writes both in one transaction. The version is empty and unpublished, which is exactly the state a template somebody has just named should be in.
+- **The slug follows the rules already settled for [EntityType](011-entity-type.md).** Choosable, cleaned the same way whether given or derived, counted up for uniqueness within the account, never rebuilt on a rename, and not released by a soft delete. The three places that now need this share one helper rather than three copies of the loop.
+- **`applies_to` and `entity_type_id` cannot be changed after creation.** `UpdateTemplate` touches the name, the description and the locale only. Pointing a template at a different kind of record would leave every record already on it rendering something never meant for it, which is a new template rather than an edit.
+- **Duplicating copies one version and always produces a draft.** The copy is an ordinary template of the user's from the first moment, never marked as supplied. Nothing is published on their behalf: publishing is the moment to notice what needs changing, and skipping it would defeat the point of copying.
+- **A copy carries the same section versions, not copies of them.** A section version is frozen and can sit in any number of template versions, so duplicating a template is cheap and changing a shared section still means drafting a new version of that section.
 
 ## Open questions
 

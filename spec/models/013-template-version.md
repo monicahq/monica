@@ -1,6 +1,6 @@
 # 013. TemplateVersion
 
-**Status:** to create
+**Status:** exists (`app/Models/TemplateVersion.php`), built as far as the models it depends on allow
 **Spec:** 6, 3.1, 7
 
 ## What it is
@@ -44,6 +44,20 @@ updated_at                  datetime
 - A record never follows "latest". Moving a record to another version is deliberate, per record or in bulk, and it always writes a [RecordSnapshot](023-record-snapshot.md) first so it can be undone (6).
 - Retiring a version stops it being applied to anything new and leaves every record already on it exactly as it is.
 - A version is never deleted while `record_count` is above zero, and a published version is never deleted at all. A draft can be deleted freely.
+
+## Not done yet
+
+- **Nothing points at a version, so nothing moves between versions.** [Contact](019-contact.md), [Entity](020-entity.md) and [ActivityType](035-activity-type.md) are all ahead. `record_count` is written once as zero and never moves, and the deliberate move of a record from one version to another, along with the [RecordSnapshot](023-record-snapshot.md) it has to write first, arrives with the records themselves.
+- **Retiring a version is enforced against `record_count` only.** The rule that a version is never deleted while records point at it lives on the model and reads that column, which is the only thing there is to ask. Once records exist that count has to become true, or the check has to start counting rows.
+- **No screens and no API.**
+
+## Decisions taken while building it
+
+- **The freeze is enforced on the model, not in the actions.** A `updating` guard refuses any change to what the version contains once its status is published, and a `deleting` guard refuses the deletion of anything that is not a draft. The specification says the application refuses the write and that every code path goes through a check; one guard below the actions is the only way to make that true, rather than trusting twenty-eight actions and every future one to remember.
+- **What publication freezes is listed explicitly.** The version number, the change note, the publication date, the lineage and the account are frozen. The status, the retirement date and `record_count` are not: retiring a version and counting the records on it describe where the version stands rather than what it renders, and both have to keep working after publication.
+- **Publishing refuses while the assembly still carries a draft section version.** Freezing a template version that points at a section somebody is still editing would freeze nothing. The refusal is explicit rather than quietly publishing those sections on the user's behalf, which section 3.1 rules out.
+- **A change note is required from the second version on.** The first version has nothing to have changed from, so asking for a note there would only teach people to type something meaningless.
+- **Retiring the version a template offers clears `published_version_id`.** A retired version cannot go on being what a new record is handed. The template is then left offering nothing until something else is published, which is deliberate and visible.
 
 ## Open questions
 

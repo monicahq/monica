@@ -1,6 +1,6 @@
 # 014. Section
 
-**Status:** to create
+**Status:** exists (`app/Models/Section.php`), built as far as the models it depends on allow
 **Spec:** 5.2, 7
 
 ## What it is
@@ -47,6 +47,19 @@ deleted_at                  datetime
 - A section can be published to the marketplace on its own, without a template around it (7).
 - Deleting a section is refused while any published template version contains one of its versions.
 - The account is seeded with the sections the default contact template needs, so the product works out of the box.
+
+## Not done yet
+
+- **Everything the marketplace needs.** `installed_from_listing_version_id` and the `hasOne` [MarketplaceListing](045-marketplace-listing.md) are not in the schema, for the same reason they are absent from [Template](012-template.md): the tables they point at do not exist. Publishing a section on its own is what section 7 says lowers the barrier to contributing, and it is the first thing the marketplace models should make possible.
+- **The account is seeded with no sections.** The default contact template is not seeded either, and the sections exist to serve it. Both arrive together, with the model that reads what they describe.
+- **No screens and no API.**
+
+## Decisions taken while building it
+
+- **A section is created with its first draft version.** A section with no version is a name that asks for nothing, so `CreateSection` writes both in one transaction, exactly as a template does.
+- **A section carries no position, and the schema has no column for one.** Where a section sits is a property of the assembly and lives on [TemplateVersionSection](016-template-version-section.md). Giving the section one as well would let the two disagree.
+- **Deleting is refused only while a published template version carries one of its versions.** A section sitting in somebody's abandoned draft goes freely: nothing has been promised about a draft, and refusing there would leave sections nobody can get rid of. The check joins through the assembly to the status of the template version rather than reading `usage_count`, which counts drafts too.
+- **Deactivating is what a shared section gets instead of deletion.** It stops the section turning up when somebody assembles a template and leaves every template version already carrying it untouched.
 
 ## Open questions
 

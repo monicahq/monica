@@ -1,6 +1,6 @@
 # 017. Field
 
-**Status:** to create
+**Status:** exists (`app/Models/Field.php`), built as far as the models it depends on allow
 **Spec:** 5.2, 5.5, 5.6, 3.5, 10.2, 13
 
 ## What it is
@@ -84,6 +84,26 @@ Section 5.5 lists the families. The ones in the first version (15) are marked.
 - A field is created, edited and deleted only on a draft section version. On a published one it is frozen (6).
 - Removing a field from a new version does not delete its stored values. They are marked as detached and remain restorable (3.3). Any reminder rule that read from it is disabled with an explanation rather than removed (10.3).
 - `key` is stable and unique inside the section. Renaming a label never changes the key, which is what lets an import, an export or an API caller keep working after a rename.
+
+## Not done yet
+
+- **Nothing renders a field, so nothing is accessible or inaccessible yet.** The rule that a type renders accessibly by construction is a property of the rendering, and the catalogue is at present a list of names with the behaviour that follows from each. That rule is the delivery condition for the screens, not for these rows.
+- **The three things a field promises about stored values are all ahead.** `is_sensitive` masks nothing, `is_unique` is not enforced against anything, and `default_value` is never handed to a new record, because [FieldValue](022-field-value.md) does not exist. The same goes for values surviving the removal of a field as detached and restorable (3.3).
+- **`is_reminder_source` is stored and read by nothing.** [Reminder](040-reminder.md) is the model that reads it.
+- **`options` and `validation` are stored and interpreted by nothing.** Both are cast to json and written as given. Which of them is a free form structure and which a fixed vocabulary is an open question below, and section 3.6 effectively requires the answer before either can be enforced, so nothing enforces either yet.
+- **Search and filtering with no configuration (13) is untouched.** [SearchIndexEntry](054-search-index-entry.md) is where it starts.
+- **Six of the families named in section 5.5 are not in the enum.** `tags`, `duration`, `qualified_relation`, `money`, `full_name`, `rating`, `rich_text`, `colour`, `location` and `computed` each arrive with the storage and the rendering they need, rather than as a string somebody can already write into the column.
+- **No screens and no API.**
+
+## Decisions taken while building it
+
+- **The type catalogue is an enum, and it carries the behaviour that follows from a type.** Whether a type stores a value, reads from a value list, points at another record, can drive a reminder or is a repeater is asked of the enum rather than repeated at every call site. Only the types the first version ships with are cases: an unimplemented type that can already be written to the column is a promise the product cannot keep.
+- **Settings a type cannot honour are dropped rather than stored.** A field that is not a choice keeps no value list, one that is not a relation points at nothing, one that is not a repeater carries no repetition limits, and only a `recurring_date` gets `is_reminder_source`. Storing a setting the type will never read would be storing a lie, and the next person to read the row would believe it.
+- **`is_repeatable` is derived from the type and never asked for.** It is not a second, independent switch: the repeater type is what makes a field repeatable, and letting the two disagree would mean deciding which one wins.
+- **The key is settled once, in underscores, and never rebuilt.** It is unique within the whole section version rather than among a field's siblings, so a field moving in or out of a repeater does not have to change identity. Underscores rather than the dashes used for a slug, because what reads a key is code and not a person.
+- **The type cannot be changed after the field is added.** Changing it under values already written would quietly turn them into something else, and every type-dependent setting on the row would have to be re-derived. Removing the field and adding the one that was wanted is the honest path, and it is the one the builder should offer. The value list a choice field reads from can be swapped, since the values keep meaning what they said.
+- **A choice field must name the list it offers.** A field of that type with nothing to offer is not a field somebody is part way through configuring; it is a field that cannot render.
+- **Both the freeze and the repeater rule are enforced on the model,** for the reason given in [TemplateVersion](013-template-version.md): the specification says the application refuses the write on every path, and one guard below the actions is the only way to mean it.
 
 ## Open questions
 

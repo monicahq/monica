@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\UserActionEnum;
+use App\Helpers\SlugBuilder;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\EntityType;
 use App\Models\User;
-use Illuminate\Support\Str;
 
 /**
  * Declare a kind of object the account wants to keep, when nothing the product
@@ -86,37 +86,22 @@ class CreateEntityType
     }
 
     /**
-     * Settle the slug, and keep it unique within the account by counting up
-     * until nothing answers to it. A caller that asked for one it cannot have
-     * gets the next one along rather than an exception, because the screen
-     * checks availability before it ever gets here and an action called from
-     * anywhere else still has to produce a type.
-     *
-     * A name written in a script `Str::slug` leaves nothing of, such as one
-     * entirely in Japanese, would otherwise produce an empty slug, so the word
-     * "type" stands in and the counter does the rest.
+     * Settle the slug. A deleted type does not release its own, so a link that
+     * already went out cannot later land on something else.
      */
     private function slug(): string
     {
-        $stem = Str::limit(Str::slug($this->slug ?? $this->nameSingular), EntityType::SLUG_LENGTH, '') ?: 'type';
-        $slug = $stem;
-        $suffix = 1;
-
-        while ($this->slugIsTaken($slug)) {
-            $suffix++;
-            $slug = Str::limit($stem, EntityType::SLUG_LENGTH - mb_strlen("-{$suffix}"), '')."-{$suffix}";
-        }
-
-        return $slug;
-    }
-
-    private function slugIsTaken(string $slug): bool
-    {
-        return EntityType::query()
-            ->withTrashed()
-            ->where('account_id', $this->user->account_id)
-            ->where('slug', $slug)
-            ->exists();
+        return SlugBuilder::build(
+            wanted: $this->slug,
+            derivedFrom: $this->nameSingular,
+            maxLength: EntityType::SLUG_LENGTH,
+            whenEmpty: 'type',
+            isTaken: fn (string $slug): bool => EntityType::query()
+                ->withTrashed()
+                ->where('account_id', $this->user->account_id)
+                ->where('slug', $slug)
+                ->exists(),
+        );
     }
 
     private function log(): void
