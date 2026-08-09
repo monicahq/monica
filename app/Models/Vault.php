@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\VaultColourEnum;
 use Carbon\Carbon;
 use Database\Factories\VaultFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -50,8 +51,9 @@ class Vault extends Model
 
     /**
      * The colour a vault is given when whoever created it did not pick one.
+     * Every colour on offer is a case of {@see VaultColourEnum}.
      */
-    public const string DEFAULT_COLOUR = '#0ea5e9';
+    public const string DEFAULT_COLOUR = VaultColourEnum::Blue->value;
 
     protected $table = 'vaults';
 

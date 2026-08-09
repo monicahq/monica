@@ -29,12 +29,19 @@ use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionControlle
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPositionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicationController;
+use App\Http\Controllers\App\Vaults\VaultController;
 use Illuminate\Support\Facades\Route;
 
 // The landing page, until there is a dashboard to send people to.
 Route::get('/', function () {
     return view('welcome');
 })->name('home.index');
+
+// The screens where somebody looks after their vaults.
+Route::middleware(['auth', 'set.locale'])->group(function (): void {
+    Route::get('vaults/new', [VaultController::class, 'new'])->name('vaults.new');
+    Route::post('vaults', [VaultController::class, 'create'])->name('vaults.create');
+});
 
 // The screens where somebody looks after their own account.
 Route::middleware(['auth', 'set.locale'])->group(function (): void {

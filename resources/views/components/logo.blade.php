@@ -7,8 +7,12 @@
   'size' => 30,
 ])
 
+@php
+  $letter = mb_strtoupper(mb_substr(config('app.name'), 0, 1));
+@endphp
+
 <span
   {{ $attributes->class(['flex shrink-0 items-center justify-center rounded-md bg-primary font-semibold tracking-tight text-on-primary']) }}
   style="width: {{ $size }}px; height: {{ $size }}px; font-size: {{ round($size * 0.47) }}px;"
   aria-hidden="true"
->O</span>
+>{{ $letter }}</span>
