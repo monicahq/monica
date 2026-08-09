@@ -57,7 +57,8 @@ deleted_at                  datetime
 - **Everything the marketplace needs.** `installed_from_listing_version_id` and the `hasOne` [MarketplaceListing](045-marketplace-listing.md) are not in the schema. Both point at tables that do not exist, and adding a nullable column with no foreign key would only look like support for something absent.
 - **No account is seeded with a contact template.** The rule stands, but the structure it would seed cannot be read by anything: [Contact](019-contact.md), [FieldValue](022-field-value.md) and the renderer are all still ahead. `CreateAccount` is untouched, and seeding arrives with the model that reads what is seeded.
 - **Nothing moves `record_count` on any version.** As with `entity_count` on [EntityType](011-entity-type.md), the column is written once as zero. `DestroyTemplate` refuses against the sum of it across the versions, which is the only thing there is to ask until records exist.
-- **No screens and no API.** The models and the actions are here; nothing renders them.
+- **No API.** The screens exist: the list that groups templates into what somebody built and what the product supplied, the form that names one, and the builder. Nothing is exposed over the API yet.
+- **No record preview.** The builder cannot show what a record made with the template would look like, because the renderer and [Contact](019-contact.md) are both still ahead.
 
 ## Decisions taken while building it
 

@@ -47,7 +47,8 @@ updated_at                  datetime
 
 - **Nothing reads `resolved_value_lists` back.** It is written at publication and it is correct, but the reader that resolves a stored value through the live [ValueListItem](010-value-list-item.md) and falls back to the snapshot when the item has gone is [FieldValue](022-field-value.md), which does not exist. Until then the snapshot is written and never consulted.
 - **Nothing travels to another account.** The other half of what the snapshot is for is installation, which is [MarketplaceInstallation](047-marketplace-installation.md).
-- **No screens and no API.**
+- **Drafting a section version is never asked for.** It happens underneath the builder: editing a field on a section that is published, or that another template carries, gives the section a new version and repoints only the template being edited. `MakeSectionVersionEditable` is that step, and the builder says on the section beforehand that it will happen.
+- **No API.**
 
 ## Decisions taken while building it
 

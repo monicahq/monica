@@ -19,6 +19,16 @@ use App\Http\Controllers\App\Settings\Account\Security\PasswordController;
 use App\Http\Controllers\App\Settings\Account\Security\RecoveryCodeController;
 use App\Http\Controllers\App\Settings\Account\Security\SecurityController;
 use App\Http\Controllers\App\Settings\Account\Security\TwoFactorController;
+use App\Http\Controllers\App\Settings\Account\Templates\FieldController;
+use App\Http\Controllers\App\Settings\Account\Templates\FieldPositionController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplateActivationController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplateBuilderController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplateController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplateCopyController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPositionController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicationController;
 use Illuminate\Support\Facades\Route;
 
 // The landing page, until there is a dashboard to send people to.
@@ -55,6 +65,31 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     Route::put('settings/account/entity-types/{entityType}', [EntityTypeController::class, 'update'])->name('settings.entityTypes.update');
     Route::delete('settings/account/entity-types/{entityType}', [EntityTypeController::class, 'destroy'])->name('settings.entityTypes.destroy');
     Route::put('settings/account/entity-types/{entityType}/position', [EntityTypePositionController::class, 'update'])->name('settings.entityTypePosition.update');
+
+    Route::get('settings/account/templates', [TemplateController::class, 'index'])->name('settings.templates.index');
+    Route::get('settings/account/templates/new', [TemplateController::class, 'new'])->name('settings.templates.new');
+    Route::post('settings/account/templates', [TemplateController::class, 'create'])->name('settings.templates.create');
+    Route::get('settings/account/templates/{template}/edit', [TemplateController::class, 'edit'])->name('settings.templates.edit');
+    Route::put('settings/account/templates/{template}', [TemplateController::class, 'update'])->name('settings.templates.update');
+    Route::delete('settings/account/templates/{template}', [TemplateController::class, 'destroy'])->name('settings.templates.destroy');
+    Route::post('settings/account/templates/{template}/copy', [TemplateCopyController::class, 'create'])->name('settings.templateCopy.create');
+    Route::put('settings/account/templates/{template}/active', [TemplateActivationController::class, 'update'])->name('settings.templateActivation.update');
+
+    Route::get('settings/account/templates/{template}/builder', [TemplateBuilderController::class, 'index'])->name('settings.templateBuilder.index');
+    Route::post('settings/account/templates/{template}/versions', [TemplateVersionController::class, 'create'])->name('settings.templateVersions.create');
+    Route::delete('settings/account/templates/{template}/versions/{templateVersion}', [TemplateVersionController::class, 'destroy'])->whereNumber('templateVersion')->name('settings.templateVersions.destroy');
+    Route::put('settings/account/templates/{template}/versions/{templateVersion}/published', [TemplateVersionPublicationController::class, 'update'])->whereNumber('templateVersion')->name('settings.templateVersionPublication.update');
+
+    Route::post('settings/account/templates/{template}/sections', [TemplateSectionController::class, 'create'])->name('settings.templateSections.create');
+    Route::put('settings/account/templates/{template}/sections/{templateVersionSection}', [TemplateSectionController::class, 'update'])->whereNumber('templateVersionSection')->name('settings.templateSections.update');
+    Route::delete('settings/account/templates/{template}/sections/{templateVersionSection}', [TemplateSectionController::class, 'destroy'])->whereNumber('templateVersionSection')->name('settings.templateSections.destroy');
+    Route::put('settings/account/templates/{template}/sections/{templateVersionSection}/position', [TemplateSectionPositionController::class, 'update'])->whereNumber('templateVersionSection')->name('settings.templateSectionPosition.update');
+
+    Route::get('settings/account/templates/{template}/sections/{templateVersionSection}/fields/new', [FieldController::class, 'new'])->whereNumber('templateVersionSection')->name('settings.fields.new');
+    Route::post('settings/account/templates/{template}/sections/{templateVersionSection}/fields', [FieldController::class, 'create'])->whereNumber('templateVersionSection')->name('settings.fields.create');
+    Route::put('settings/account/templates/{template}/sections/{templateVersionSection}/fields/{field}', [FieldController::class, 'update'])->whereNumber(['templateVersionSection', 'field'])->name('settings.fields.update');
+    Route::delete('settings/account/templates/{template}/sections/{templateVersionSection}/fields/{field}', [FieldController::class, 'destroy'])->whereNumber(['templateVersionSection', 'field'])->name('settings.fields.destroy');
+    Route::put('settings/account/templates/{template}/sections/{templateVersionSection}/fields/{field}/position', [FieldPositionController::class, 'update'])->whereNumber(['templateVersionSection', 'field'])->name('settings.fieldPosition.update');
 
     Route::get('settings/account/security', [SecurityController::class, 'index'])->name('settings.security.index');
     Route::put('settings/account/security/password', [PasswordController::class, 'update'])->name('settings.password.update');

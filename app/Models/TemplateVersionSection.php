@@ -92,6 +92,22 @@ class TemplateVersionSection extends Model
     }
 
     /**
+     * Whether this row is one the given user may reach through the given
+     * template.
+     *
+     * The rows are addressed by their own number in a URL, under the template
+     * they sit on, and neither half can be trusted on its own: the account has
+     * to match, and the row has to be on a version of the template the URL
+     * actually names. Without the second half, somebody could put a field on
+     * one of their templates while the URL said another.
+     */
+    public function isReachableThrough(User $user, Template $template): bool
+    {
+        return $this->account_id === $user->account_id
+            && $this->templateVersion->template_id === $template->id;
+    }
+
+    /**
      * Get the account the assembly belongs to.
      *
      * @return BelongsTo<Account, $this>

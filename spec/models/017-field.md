@@ -93,7 +93,8 @@ Section 5.5 lists the families. The ones in the first version (15) are marked.
 - **`options` and `validation` are stored and interpreted by nothing.** Both are cast to json and written as given. Which of them is a free form structure and which a fixed vocabulary is an open question below, and section 3.6 effectively requires the answer before either can be enforced, so nothing enforces either yet.
 - **Search and filtering with no configuration (13) is untouched.** [SearchIndexEntry](054-search-index-entry.md) is where it starts.
 - **Six of the families named in section 5.5 are not in the enum.** `tags`, `duration`, `qualified_relation`, `money`, `full_name`, `rating`, `rich_text`, `colour`, `location` and `computed` each arrive with the storage and the rendering they need, rather than as a string somebody can already write into the column.
-- **No screens and no API.**
+- **No API.** The screens exist: the catalogue that picks a type, and the inspector that edits everything else about a field.
+- **The inspector edits four things and shows the rest.** The label, the help text, the placeholder and the three switches. The value list, the repetition limits, what a relation points at and the type itself are settled when the field is added and have no screen yet.
 
 ## Decisions taken while building it
 

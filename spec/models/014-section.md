@@ -52,7 +52,8 @@ deleted_at                  datetime
 
 - **Everything the marketplace needs.** `installed_from_listing_version_id` and the `hasOne` [MarketplaceListing](045-marketplace-listing.md) are not in the schema, for the same reason they are absent from [Template](012-template.md): the tables they point at do not exist. Publishing a section on its own is what section 7 says lowers the barrier to contributing, and it is the first thing the marketplace models should make possible.
 - **The account is seeded with no sections.** The default contact template is not seeded either, and the sections exist to serve it. Both arrive together, with the model that reads what they describe.
-- **No screens and no API.**
+- **A section has no screen of its own.** It is created, retitled and taken off from inside the builder of the template carrying it, since a section with no template around it is not yet something anybody has a reason to open. The screen that lists sections for their own sake arrives with the marketplace, which is what makes a bare section worth having.
+- **No API.**
 
 ## Decisions taken while building it
 

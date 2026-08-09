@@ -129,6 +129,20 @@
       <x-entity-icon name="device" />
       {{ __('Entity types') }}
     </a>
+
+    <a
+      href="{{ route('settings.templates.index') }}"
+      data-turbo="true"
+      @if ($current === 'templates') aria-current="page" @endif
+      class="{{ $item }} {{ $current === 'templates' ? 'bg-hover font-semibold text-ink' : 'text-body hover:bg-hover' }}"
+    >
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" class="shrink-0" aria-hidden="true">
+        <rect x="2.6" y="2.6" width="10.8" height="10.8" rx="1.6"></rect>
+        <line x1="2.6" y1="6.2" x2="13.4" y2="6.2"></line>
+        <line x1="6.2" y1="6.2" x2="6.2" y2="13.4"></line>
+      </svg>
+      {{ __('Templates') }}
+    </a>
   </nav>
 
   <div id="sidebar-identity" class="flex items-center gap-2 border-t border-hairline-soft px-3 py-2.5">
