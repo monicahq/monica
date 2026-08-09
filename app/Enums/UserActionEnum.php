@@ -45,6 +45,7 @@ enum UserActionEnum: string implements Translatable
     case EntityTypeActivated = 'entity_type_activated';
     case EntityTypeDeactivated = 'entity_type_deactivated';
     case EntityTypeDeletion = 'entity_type_deleted';
+    case DefaultTemplateSeeded = 'default_template_seeded';
     case TemplateCreation = 'template_created';
     case TemplateUpdate = 'template_updated';
     case TemplateDuplication = 'template_duplicated';
@@ -119,6 +120,7 @@ enum UserActionEnum: string implements Translatable
             self::EntityTypeActivated => 'Allowed new :name to be created again',
             self::EntityTypeDeactivated => 'Stopped new :name being created',
             self::EntityTypeDeletion => 'Deleted the kind of record :name',
+            self::DefaultTemplateSeeded => 'Set up the template :name the account starts with',
             self::TemplateCreation => 'Created the template :name',
             self::TemplateUpdate => 'Updated the template :name',
             self::TemplateDuplication => 'Copied the template :source into :name',

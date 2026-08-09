@@ -8,11 +8,10 @@ use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Helpers\TextSanitizer;
+use App\Helpers\ValueListSnapshot;
 use App\Jobs\LogUserAction;
 use App\Models\SectionVersion;
 use App\Models\User;
-use App\Models\ValueList;
-use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
@@ -21,22 +20,9 @@ use InvalidArgumentException;
  * Freeze a draft of a section, so template versions can be built on something that will not
  * move under them.
  *
- * Publishing also takes a copy of every value list the fields here read from.
- * Without it the freeze would stop at the edge of this table: somebody renaming
- * an option on the settings screen would change what a section published last
- * month says, and that is exactly what publication is supposed to rule out.
- *
- * The copy is not what gets read day to day. A stored value still resolves
- * through the live item while it is still there, so an option somebody
- * relabelled reads with its new label. The copy is what answers when the item
- * has gone, and it is what travels when the section is installed somewhere else.
- *
- * Only the lists the fields actually point at are copied. The rest of the
- * account's lists have nothing to do with this section.
- *
- * The labels are stored as they sit in the database, translation key and all,
- * rather than translated on the way in. Translating here would bake the
- * language of whoever pressed the button into the snapshot.
+ * Publishing also takes a copy of every value list the fields here read from,
+ * which is what stops the freeze at the edge of this table from meaning
+ * nothing. What that copy holds and why is explained where it is taken.
  */
 class PublishSectionVersion
 {
@@ -81,7 +67,7 @@ class PublishSectionVersion
         DB::transaction(function (): void {
             $this->sectionVersion->status = VersionStatusEnum::Published;
             $this->sectionVersion->change_note = $this->changeNote;
-            $this->sectionVersion->resolved_value_lists = $this->resolveValueLists();
+            $this->sectionVersion->resolved_value_lists = ValueListSnapshot::of($this->sectionVersion);
             $this->sectionVersion->published_at = now();
             $this->sectionVersion->save();
 
@@ -89,37 +75,6 @@ class PublishSectionVersion
             $section->published_version_id = $this->sectionVersion->id;
             $section->save();
         });
-    }
-
-    /**
-     * @return array<int, array<string, mixed>>
-     */
-    private function resolveValueLists(): array
-    {
-        $ids = $this->sectionVersion->fields()->whereNotNull('value_list_id')->pluck('value_list_id')->unique();
-
-        $lists = ValueList::query()->whereIn('id', $ids)->get();
-
-        $snapshot = [];
-
-        foreach ($lists as $list) {
-            $snapshot[$list->id] = [
-                'id' => $list->id,
-                'key' => $list->key,
-                'name' => $list->getRawOriginal('name'),
-                'name_translation_key' => $list->name_translation_key,
-                'items' => $list->items()->orderBy('position')->get()->map(fn (ValueListItem $item): array => [
-                    'id' => $item->id,
-                    'key' => $item->key,
-                    'label' => $item->getRawOriginal('label'),
-                    'label_translation_key' => $item->label_translation_key,
-                    'position' => $item->position,
-                    'is_active' => $item->is_active,
-                ])->all(),
-            ];
-        }
-
-        return $snapshot;
     }
 
     private function log(): void

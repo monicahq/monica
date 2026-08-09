@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\UserActionEnum;
+use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
 use App\Models\User;
@@ -13,8 +14,8 @@ use Illuminate\Support\Facades\DB;
 /**
  * Create an account, the one user in it, the vault their contacts go in, and
  * the value lists the fields of that vault pick from. The user is returned
- * rather than the account, because whoever asks for an account next has to
- * sign that person in.
+ * rather than the account, because whoever asks for an account next has to sign
+ * that person in.
  *
  * The product has to be usable in the first minute, so none of the seeding is
  * optional and none of it is asked for. Everything it writes is ordinary data
@@ -23,6 +24,11 @@ use Illuminate\Support\Facades\DB;
  * An account always has at least one vault, so the first one is made here. It
  * is named in the language the account was created in, unlike the value lists,
  * which are stored as translation keys and follow the interface language.
+ *
+ * The template a contact is written down with is asked for rather than written
+ * here, since nobody is looking at it while the sign-up page is still open. It
+ * is asked for once the rows above are committed, so that a worker reaching for
+ * the user cannot arrive before the user exists.
  */
 class CreateAccount
 {
@@ -47,6 +53,7 @@ class CreateAccount
             $this->createDefaultValueLists();
         });
 
+        $this->createDefaultTemplate();
         $this->log();
 
         return $this->user;
@@ -87,6 +94,15 @@ class CreateAccount
     private function createDefaultValueLists(): void
     {
         new CreateDefaultValueLists(user: $this->user)->execute();
+    }
+
+    /**
+     * The template comes after the lists, since two of its fields read their
+     * choices from them.
+     */
+    private function createDefaultTemplate(): void
+    {
+        CreateDefaultTemplate::dispatch(user: $this->user)->onQueue('high');
     }
 
     private function log(): void

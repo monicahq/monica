@@ -6,7 +6,10 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\CreateAccount;
 use App\Enums\UserActionEnum;
+use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
+use App\Models\Field;
+use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -108,6 +111,47 @@ class CreateAccountTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListsSeeded,
+        );
+    }
+
+    #[Test]
+    public function it_asks_for_the_template_the_account_writes_a_contact_down_with(): void
+    {
+        Queue::fake();
+
+        $user = new CreateAccount(
+            firstName: 'Michael',
+            lastName: 'Scott',
+            email: 'michael.scott@dundermifflin.com',
+            password: 'thatswhatshesaid',
+        )->execute();
+
+        Queue::assertPushedOn(
+            queue: 'high',
+            job: CreateDefaultTemplate::class,
+            callback: fn (CreateDefaultTemplate $job): bool => $job->user->id === $user->id,
+        );
+    }
+
+    #[Test]
+    public function it_asks_for_the_template_only_once_the_account_it_belongs_to_exists(): void
+    {
+        $user = new CreateAccount(
+            firstName: 'Michael',
+            lastName: 'Scott',
+            email: 'michael.scott@dundermifflin.com',
+            password: 'thatswhatshesaid',
+        )->execute();
+
+        $template = Template::query()->where('account_id', $user->account_id)->sole();
+
+        $this->assertEquals('Basic contact', $template->name);
+        $this->assertTrue($template->is_system);
+        $this->assertNotNull($template->published_version_id);
+        $this->assertCount(3, $template->publishedVersion->assembly);
+        $this->assertEquals(
+            'contact_categories',
+            Field::query()->firstWhere('key', 'category')->valueList->key,
         );
     }
 
