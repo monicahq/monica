@@ -73,6 +73,23 @@ class ProfileControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_groups_the_last_entries_under_the_personalization_heading(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('settings.profile.index'));
+
+        $response->assertStatus(200);
+        $response->assertSeeInOrder([
+            'Your account',
+            'Personalization',
+            route('settings.valueLists.index'),
+            route('settings.entityTypes.index'),
+            route('settings.templates.index'),
+        ], escape: false);
+    }
+
+    #[Test]
     public function it_redirects_a_visitor_who_is_not_signed_in(): void
     {
         $response = $this->get(route('settings.profile.index'));

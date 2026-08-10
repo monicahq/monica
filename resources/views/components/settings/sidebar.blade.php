@@ -126,6 +126,8 @@
       {{ __('Preferences') }}
     </a>
 
+    <h2 class="px-2.5 pt-4.5 pb-1.25 text-xs text-muted-soft uppercase">{{ __('Personalization') }}</h2>
+
     <a
       href="{{ route('settings.valueLists.index') }}"
       data-turbo="true"
