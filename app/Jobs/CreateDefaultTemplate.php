@@ -13,6 +13,7 @@ use App\Enums\UserActionEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\ValueListSnapshot;
+use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\Template;
@@ -208,7 +209,7 @@ class CreateDefaultTemplate implements ShouldQueue
             'usage_count' => 0,
         ]);
 
-        $this->createFields($version, $case);
+        $this->createFields($version, $case->fields());
 
         $version->status = VersionStatusEnum::Published;
         $version->resolved_value_lists = ValueListSnapshot::of($version);
@@ -221,12 +222,22 @@ class CreateDefaultTemplate implements ShouldQueue
         return $version;
     }
 
-    private function createFields(SectionVersion $version, DefaultSectionEnum $case): void
+    /**
+     * Write what the section asks for, and then what each of its repeaters asks
+     * for on every repetition.
+     *
+     * The positions start again inside a repeater, since a position is read
+     * among siblings. Nothing recurses further than this: a repeater inside a
+     * repeater is refused, and the fields the product supplies keep to that.
+     *
+     * @param  list<DefaultFieldEnum>  $fields
+     */
+    private function createFields(SectionVersion $version, array $fields, ?Field $parent = null): void
     {
         $position = 1;
 
-        foreach ($case->fields() as $field) {
-            $version->fields()->create([
+        foreach ($fields as $field) {
+            $row = $version->fields()->create([
                 'account_id' => $this->user->account_id,
                 'type' => $field->type(),
                 'key' => $field->value,
@@ -241,16 +252,18 @@ class CreateDefaultTemplate implements ShouldQueue
                 'is_unique' => false,
                 'value_list_id' => $this->valueListId($field),
                 'default_value' => null,
-                'options' => null,
+                'options' => $field->options(),
                 'validation' => null,
-                'is_repeatable' => false,
+                'is_repeatable' => $field->type()->isRepeater(),
                 'repeat_min' => null,
                 'repeat_max' => null,
-                'parent_field_id' => null,
+                'parent_field_id' => $parent?->id,
                 'is_reminder_source' => $field->isReminderSource(),
                 'relation_target' => null,
                 'relation_entity_type_id' => null,
             ]);
+
+            $this->createFields($version, $field->children(), $row);
 
             $position++;
         }

@@ -63,6 +63,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Account $account
  * @property-read Vault $vault
  * @property-read TemplateVersion $templateVersion
+ * @property-read File|null $avatar
  * @property-read string $name
  * @property-read string $initials
  */
@@ -205,6 +206,17 @@ class Contact extends Model
     public function templateVersion(): BelongsTo
     {
         return $this->belongsTo(TemplateVersion::class);
+    }
+
+    /**
+     * Get the uploaded avatar, which is null when the contact is shown as the
+     * initials the product draws instead.
+     *
+     * @return BelongsTo<File, $this>
+     */
+    public function avatar(): BelongsTo
+    {
+        return $this->belongsTo(File::class, 'avatar_file_id');
     }
 
     /**

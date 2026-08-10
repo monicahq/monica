@@ -8,6 +8,7 @@ use App\Enums\NameOrderEnum;
 use App\Exceptions\ContactNeedsAName;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\File;
 use App\Models\TemplateVersion;
 use App\Models\Vault;
 use Carbon\Carbon;
@@ -47,6 +48,33 @@ class ContactTest extends TestCase
 
         $this->assertTrue($contact->templateVersion()->exists());
         $this->assertTrue($version->is($contact->templateVersion));
+    }
+
+    #[Test]
+    public function it_belongs_to_the_file_its_avatar_was_uploaded_as(): void
+    {
+        $vault = Vault::factory()->create();
+        $file = File::factory()->create([
+            'account_id' => $vault->account_id,
+            'vault_id' => $vault->id,
+        ]);
+        $contact = Contact::factory()->create([
+            'account_id' => $vault->account_id,
+            'vault_id' => $vault->id,
+            'avatar_file_id' => $file->id,
+        ]);
+
+        $this->assertTrue($contact->avatar()->exists());
+        $this->assertTrue($file->is($contact->avatar));
+    }
+
+    #[Test]
+    public function it_has_no_avatar_when_it_is_shown_as_the_initials_the_product_draws(): void
+    {
+        $contact = Contact::factory()->create();
+
+        $this->assertNull($contact->avatar_file_id);
+        $this->assertNull($contact->avatar);
     }
 
     #[Test]

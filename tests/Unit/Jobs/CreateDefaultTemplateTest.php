@@ -156,9 +156,65 @@ class CreateDefaultTemplateTest extends TestCase
 
             $this->assertEquals(
                 array_map(fn (DefaultFieldEnum $field): string => $field->value, $case->fields()),
-                $version->fields()->pluck('key')->all(),
+                $version->fields()->whereNull('parent_field_id')->pluck('key')->all(),
             );
         }
+    }
+
+    #[Test]
+    public function it_lets_the_documents_and_the_photos_be_added_to_again(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        $document = Field::query()->firstWhere('key', DefaultFieldEnum::Document->value);
+        $photo = Field::query()->firstWhere('key', DefaultFieldEnum::Photo->value);
+
+        foreach ([$document, $photo] as $repeater) {
+            $this->assertSame(FieldTypeEnum::Repeater, $repeater->type);
+            $this->assertTrue($repeater->is_repeatable);
+            $this->assertNull($repeater->repeat_min);
+            $this->assertNull($repeater->repeat_max);
+            $this->assertNull($repeater->parent_field_id);
+            $this->assertEquals([1, 2], $repeater->children->pluck('position')->all());
+        }
+
+        $this->assertEquals(['file', 'description'], $document->children->pluck('key')->all());
+        $this->assertEquals(['image', 'caption'], $photo->children->pluck('key')->all());
+        $this->assertSame(FieldTypeEnum::File, $document->children[0]->type);
+        $this->assertSame(FieldTypeEnum::Image, $photo->children[0]->type);
+
+        $this->assertEquals(
+            ['document', 'photo'],
+            Field::query()->where('is_repeatable', true)->orderBy('id')->pluck('key')->all(),
+        );
+    }
+
+    #[Test]
+    public function it_says_what_may_be_uploaded_into_the_fields_that_take_a_file(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        $file = Field::query()->firstWhere('key', DefaultFieldEnum::File->value);
+        $image = Field::query()->firstWhere('key', DefaultFieldEnum::Image->value);
+
+        $this->assertContains('application/pdf', $file->options['accepted_mime_types']);
+        $this->assertEquals(
+            ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+            $image->options['accepted_mime_types'],
+        );
+
+        $this->assertEquals(
+            ['file', 'image'],
+            Field::query()->whereNotNull('options')->orderBy('id')->pluck('key')->all(),
+        );
     }
 
     #[Test]
@@ -172,10 +228,9 @@ class CreateDefaultTemplateTest extends TestCase
 
         $fields = Field::query()->where('account_id', $user->account_id)->get();
 
-        $this->assertCount(10, $fields);
+        $this->assertCount(14, $fields);
         $this->assertEmpty($fields->filter(fn (Field $field): bool => $field->is_required));
         $this->assertEmpty($fields->filter(fn (Field $field): bool => $field->is_sensitive));
-        $this->assertEmpty($fields->filter(fn (Field $field): bool => $field->is_repeatable));
     }
 
     #[Test]

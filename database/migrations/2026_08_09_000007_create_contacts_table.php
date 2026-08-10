@@ -45,6 +45,7 @@ return new class extends Migration
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
             $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();
             $table->foreign('template_version_id')->references('id')->on('template_versions');
+            $table->foreign('avatar_file_id')->references('id')->on('files')->nullOnDelete();
         });
     }
 };

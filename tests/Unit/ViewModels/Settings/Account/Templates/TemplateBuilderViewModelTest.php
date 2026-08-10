@@ -91,6 +91,36 @@ class TemplateBuilderViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_shows_what_a_repeater_asks_for_inside_it_rather_than_beside_it(): void
+    {
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $repeater = Field::factory()->create([
+            'section_version_id' => $row->section_version_id,
+            'label' => 'Document',
+            'type' => FieldTypeEnum::Repeater,
+            'is_repeatable' => true,
+        ]);
+        $child = Field::factory()->create([
+            'section_version_id' => $row->section_version_id,
+            'label' => 'File',
+            'type' => FieldTypeEnum::File,
+            'parent_field_id' => $repeater->id,
+        ]);
+
+        $sections = new TemplateBuilderViewModel(user: $user, template: $template->fresh())->sections();
+
+        $this->assertCount(1, $sections[0]['fields']);
+        $this->assertEquals($repeater->id, $sections[0]['fields'][0]['id']);
+        $this->assertEquals('2 fields', $sections[0]['fieldLabel']);
+
+        $this->assertCount(1, $sections[0]['fields'][0]['children']);
+        $this->assertEquals($child->id, $sections[0]['fields'][0]['children'][0]['id']);
+        $this->assertEquals('File', $sections[0]['fields'][0]['children'][0]['label']);
+        $this->assertEquals([], $sections[0]['fields'][0]['children'][0]['children']);
+    }
+
+    #[Test]
     public function it_shows_the_heading_this_template_gave_the_section(): void
     {
         $user = User::factory()->create();

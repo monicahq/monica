@@ -11,6 +11,7 @@ use App\Models\TemplateVersion;
 use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * What the builder shows: one version of a template, the sections it carries,
@@ -239,23 +240,42 @@ class TemplateBuilderViewModel
                 'willBeCopied' => $this->willBeCopied($row),
                 'fieldLabel' => self::fieldLabel($row->sectionVersion->fields->count()),
                 'fields' => $row->sectionVersion->fields
-                    ->map(fn (Field $field): array => [
-                        'id' => $field->id,
-                        'label' => $field->label,
-                        'help' => $field->help_text,
-                        'typeLabel' => FieldCatalogueViewModel::labelFor($field->type),
-                        'isSensitive' => $field->is_sensitive,
-                        'isSelected' => $field->id === $this->selectedFieldId,
-                        'url' => route('settings.templateBuilder.field', [
-                            'template' => $this->template,
-                            'page' => $page->key,
-                            'field' => $field->id,
-                        ]),
-                    ])
+                    ->whereNull('parent_field_id')
+                    ->map(fn (Field $field): array => $this->field($field, $page, $row->sectionVersion->fields))
+                    ->values()
                     ->all(),
             ])
             ->values()
             ->all();
+    }
+
+    /**
+     * One field on the list, with whatever sits inside it when it is a repeater.
+     * A repeater cannot hold another, so this goes one level down and stops.
+     *
+     * @param  Collection<int, Field>  $siblings
+     * @return array<string, mixed>
+     */
+    private function field(Field $field, TemplateVersionPage $page, Collection $siblings): array
+    {
+        return [
+            'id' => $field->id,
+            'label' => $field->label,
+            'help' => $field->help_text,
+            'typeLabel' => FieldCatalogueViewModel::labelFor($field->type),
+            'isSensitive' => $field->is_sensitive,
+            'isSelected' => $field->id === $this->selectedFieldId,
+            'url' => route('settings.templateBuilder.field', [
+                'template' => $this->template,
+                'page' => $page->key,
+                'field' => $field->id,
+            ]),
+            'children' => $siblings
+                ->where('parent_field_id', $field->id)
+                ->map(fn (Field $child): array => $this->field($child, $page, new Collection))
+                ->values()
+                ->all(),
+        ];
     }
 
     /**
