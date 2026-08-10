@@ -32,6 +32,8 @@ use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPositionC
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicationController;
 use App\Http\Controllers\App\Vaults\VaultController;
+use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
+use App\Http\Controllers\App\Vaults\VaultSettingsController;
 use Illuminate\Support\Facades\Route;
 
 // The front door, which sends whoever is signed in wherever their account is up to.
@@ -45,6 +47,10 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     Route::get('vaults/new', [VaultController::class, 'new'])->name('vaults.new');
     Route::post('vaults', [VaultController::class, 'create'])->name('vaults.create');
     Route::get('vaults/{vault}', [VaultController::class, 'show'])->name('vaults.show');
+    Route::delete('vaults/{vault}', [VaultController::class, 'destroy'])->name('vaults.destroy');
+
+    Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
+    Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');
 });
 
 // The screens where somebody looks after their own account.

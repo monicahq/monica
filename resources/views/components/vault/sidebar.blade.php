@@ -8,9 +8,9 @@
   to where you already are.
 
   Most of the navigation points nowhere yet. Contacts, the journal, tasks,
-  reminders, files and the settings of a vault are each their own screen and
-  none of them exists, so those entries are drawn and not offered: a link that
-  leads nowhere is worse than a word that does not move.
+  reminders and files are each their own screen and none of them exists, so
+  those entries are drawn and not offered: a link that leads nowhere is worse
+  than a word that does not move.
 
   Below lg the column becomes a drawer over the screen, opened from the bar,
   which is the layout's doing rather than this component's.
@@ -39,7 +39,7 @@
     ['key' => 'tasks', 'label' => __('Tasks'), 'icon' => 'check', 'url' => null, 'badge' => $taskCount === null ? null : (string) $taskCount],
     ['key' => 'reminders', 'label' => __('Reminders'), 'icon' => 'mail', 'url' => null, 'badge' => null],
     ['key' => 'files', 'label' => __('Files'), 'icon' => 'device', 'url' => null, 'badge' => null],
-    ['key' => 'vault-settings', 'label' => __('Vault settings'), 'icon' => 'security', 'url' => null, 'badge' => null],
+    ['key' => 'vault-settings', 'label' => __('Vault settings'), 'icon' => 'security', 'url' => route('vaults.settings.index', $vault), 'badge' => null],
   ];
 @endphp
 

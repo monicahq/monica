@@ -282,6 +282,50 @@ class VaultControllerTest extends TestCase
         $this->assertEquals($supplied->published_version_id, $default->template_version_id);
     }
 
+    #[Test]
+    public function it_deletes_a_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+        Vault::factory()->default()->create(['account_id' => $user->account_id, 'name' => 'Schrute Farms']);
+
+        $response = $this->actingAs($user)->delete(route('vaults.destroy', $vault));
+
+        $response->assertRedirect(route('vaults.index'));
+        $response->assertSessionHas('status');
+        $this->assertSoftDeleted('vaults', ['id' => $vault->id]);
+    }
+
+    #[Test]
+    public function it_keeps_the_last_vault_of_the_account(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+
+        $response = $this->actingAs($user)->delete(route('vaults.destroy', $vault));
+
+        $response->assertRedirect(route('vaults.settings.index', $vault));
+        $response->assertSessionHas('error');
+        $this->assertNotSoftDeleted('vaults', ['id' => $vault->id]);
+    }
+
+    #[Test]
+    public function it_does_not_delete_a_vault_of_another_account(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $elsewhere = Vault::factory()->create(['name' => 'Vance Refrigeration']);
+
+        $this->actingAs($user)->delete(route('vaults.destroy', $elsewhere))->assertNotFound();
+
+        $this->assertNotSoftDeleted('vaults', ['id' => $elsewhere->id]);
+    }
+
     private function publishedContactTemplate(User $user, string $name, bool $system = false): Template
     {
         $template = Template::factory()->create([
