@@ -5,11 +5,17 @@
   A screen that repeats the same field on every row of a list gives `name`
   separately, since the name is the same on each of them and the id cannot be.
 
+  `required` makes the browser refuse an empty field; `requiredMark` writes the
+  word beside the label. They are separate because most forms here require most
+  of their fields, and a badge on nearly every line says nothing. A form where
+  almost everything is optional asks for the mark on the one field that is not.
+
   @var string $type
   @var string|null $id
   @var string|null $name
   @var string|null $label
   @var bool $optional
+  @var bool $requiredMark
   @var string|null $value
   @var string|null $placeholder
   @var string|null $help
@@ -26,6 +32,7 @@
   'name' => null,
   'label' => null,
   'optional' => false,
+  'requiredMark' => false,
   'value' => null,
   'placeholder' => null,
   'help' => null,
@@ -60,7 +67,7 @@
 
 <div class="space-y-1.5">
   @if ($label)
-    <x-label :for="$id" :value="$label" :optional="$optional" />
+    <x-label :for="$id" :value="$label" :optional="$optional" :required="$requiredMark" />
   @endif
 
   <input

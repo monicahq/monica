@@ -1,0 +1,169 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\ViewModels\Vaults;
+
+use App\Enums\NameOrderEnum;
+use App\Enums\TemplateAppliesToEnum;
+use App\Models\Template;
+use App\Models\TemplateVersion;
+use App\Models\User;
+use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
+use App\ViewModels\Vaults\ContactFormViewModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class ContactFormViewModelTest extends TestCase
+{
+    use RefreshDatabase;
+
+    #[Test]
+    public function it_starts_the_form_empty_and_on_the_template_the_vault_uses(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $version = $this->contactDefaultOf($vault);
+
+        $values = new ContactFormViewModel(user: $user, vault: $vault)->values();
+
+        $this->assertEquals('', $values['firstName']);
+        $this->assertEquals('', $values['lastName']);
+        $this->assertEquals('', $values['nameOrder']);
+        $this->assertEquals((string) $version, $values['templateVersionId']);
+        $this->assertFalse($values['isFavourite']);
+        $this->assertFalse($values['isPartial']);
+        $this->assertFalse($values['keepGoing']);
+    }
+
+    #[Test]
+    public function it_offers_the_template_only_when_the_account_has_more_than_one(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->assertFalse(new ContactFormViewModel(user: $user, vault: $vault)->showsTemplates());
+
+        $this->publishedContactTemplate($user, 'Work contact');
+
+        $viewModel = new ContactFormViewModel(user: $user, vault: $vault);
+
+        $this->assertTrue($viewModel->showsTemplates());
+        $this->assertCount(2, $viewModel->templates());
+    }
+
+    #[Test]
+    public function it_leaves_the_templates_of_other_accounts_out(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $this->publishedContactTemplate(User::factory()->create(), 'Beet varieties');
+
+        $names = array_column(new ContactFormViewModel(user: $user, vault: $vault)->templates(), 'name');
+
+        $this->assertNotContains('Beet varieties', $names);
+    }
+
+    #[Test]
+    public function it_offers_following_your_own_preference_before_either_order(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $orders = new ContactFormViewModel(user: $user, vault: $vault)->nameOrders();
+
+        $this->assertCount(3, $orders);
+        $this->assertEquals(['value' => '', 'label' => 'Follow your own preference'], $orders[0]);
+        $this->assertEquals(NameOrderEnum::GivenFirst->value, $orders[1]['value']);
+        $this->assertEquals(NameOrderEnum::FamilyFirst->value, $orders[2]['value']);
+    }
+
+    #[Test]
+    public function it_offers_the_two_flags_and_not_the_contact_representing_you(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $flags = new ContactFormViewModel(user: $user, vault: $vault)->flags();
+
+        $this->assertEquals(['is_favourite', 'is_partial'], array_column($flags, 'id'));
+        $this->assertNotContains('is_me', array_column($flags, 'id'));
+    }
+
+    #[Test]
+    public function it_stays_quiet_while_the_form_can_do_its_job(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $viewModel = new ContactFormViewModel(user: $user, vault: $vault);
+
+        $this->assertTrue($viewModel->canCreate());
+        $this->assertNull($viewModel->blocker());
+    }
+
+    #[Test]
+    public function it_says_so_when_the_vault_has_nothing_to_start_a_contact_from(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $viewModel = new ContactFormViewModel(user: $user, vault: $vault);
+
+        $this->assertFalse($viewModel->canCreate());
+        $this->assertStringContainsString('no template for new contacts', (string) $viewModel->blocker());
+    }
+
+    #[Test]
+    public function it_marks_the_vault_being_written_into_in_the_switcher(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Schrute Farms']);
+
+        $vaults = new ContactFormViewModel(user: $user, vault: $vault)->vaults();
+
+        $this->assertCount(2, $vaults);
+        $this->assertEquals([true, false], array_column($vaults, 'current'));
+    }
+
+    private function vaultReadyForContacts(User $user, string $name = 'Basic contact'): Vault
+    {
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $template = $this->publishedContactTemplate($user, $name);
+
+        VaultDefaultTemplate::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'applies_to' => TemplateAppliesToEnum::Contact,
+            'template_version_id' => $template->published_version_id,
+        ]);
+
+        return $vault;
+    }
+
+    private function contactDefaultOf(Vault $vault): int
+    {
+        return (int) VaultDefaultTemplate::query()
+            ->where('vault_id', $vault->id)
+            ->where('applies_to', TemplateAppliesToEnum::Contact)
+            ->value('template_version_id');
+    }
+
+    private function publishedContactTemplate(User $user, string $name): Template
+    {
+        $template = Template::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => $name,
+        ]);
+
+        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+
+        $template->published_version_id = $version->id;
+        $template->save();
+
+        return $template;
+    }
+}

@@ -33,6 +33,11 @@ use InvalidArgumentException;
  * The version has to be published. A draft is something somebody is still
  * editing, and a contact rendering from it would change under them; a retired
  * one is no longer offered for anything new.
+ *
+ * The three flags are the state the contact is born in, written in the same
+ * insert as the rest of it. Changing any of them afterwards is its own action,
+ * which is a different question from what somebody ticked on the form that
+ * wrote them down.
  */
 class CreateContact
 {
@@ -54,6 +59,7 @@ class CreateContact
         private readonly ?NameOrderEnum $nameOrder = null,
         private readonly bool $isMe = false,
         private readonly bool $isPartial = false,
+        private readonly bool $isFavourite = false,
     ) {}
 
     public function execute(): Contact
@@ -153,6 +159,7 @@ class CreateContact
                 'name_order' => $this->nameOrder,
                 'is_me' => $this->isMe,
                 'is_partial' => $this->isPartial,
+                'is_favourite' => $this->isFavourite,
                 'avatar_colour' => Arr::random(Contact::AVATAR_COLOURS),
             ]);
 

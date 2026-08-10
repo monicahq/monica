@@ -34,6 +34,7 @@ use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPageContr
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPositionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicationController;
+use App\Http\Controllers\App\Vaults\ContactController;
 use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
 use App\Http\Controllers\App\Vaults\VaultSettingsController;
@@ -51,6 +52,9 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     Route::post('vaults', [VaultController::class, 'create'])->name('vaults.create');
     Route::get('vaults/{vault}', [VaultController::class, 'show'])->name('vaults.show');
     Route::delete('vaults/{vault}', [VaultController::class, 'destroy'])->name('vaults.destroy');
+
+    Route::get('vaults/{vault}/contacts/new', [ContactController::class, 'new'])->name('contacts.new');
+    Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
 
     Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
     Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');

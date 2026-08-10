@@ -58,6 +58,15 @@ class VaultDashboardViewModel
     }
 
     /**
+     * Where the button in the bar leads, which is the one thing on this screen
+     * somebody can actually do.
+     */
+    public function newContactUrl(): string
+    {
+        return route('contacts.new', $this->vault);
+    }
+
+    /**
      * The vaults the switcher offers, the one being looked at marked rather
      * than offered as a link to where you already are.
      *

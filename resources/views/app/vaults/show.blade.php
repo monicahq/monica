@@ -47,8 +47,7 @@
       class="hidden w-55 rounded-md border border-hairline-strong bg-input px-2.5 py-1.5 text-[13px] text-ink placeholder-placeholder opacity-60 md:block"
     />
 
-    {{-- Writing somebody down has no screen either, so the button is drawn and refuses to be pressed. --}}
-    <x-button type="button" size="small" disabled title="{{ __('Adding a contact arrives with the contact screens.') }}">{{ __('Add contact') }}</x-button>
+    <x-button :href="$viewModel->newContactUrl()" size="small" data-turbo="true">{{ __('Add contact') }}</x-button>
   </x-slot:actions>
 
   <div class="flex flex-wrap items-start justify-between gap-6">

@@ -144,7 +144,17 @@
           @endif
         </a>
       @else
-        <span aria-disabled="true" class="{{ $item }} border-transparent text-muted-soft">
+        {{--
+          A section with no screen of its own is drawn quiet and does nothing.
+          It can still be where you are: writing a contact down is a contacts
+          screen even though the list of them is not built, and a nav that
+          highlights nothing while you stand on it says you are nowhere.
+        --}}
+        <span
+          aria-disabled="true"
+          @if ($current === $section['key']) aria-current="page" @endif
+          class="{{ $item }} {{ $current === $section['key'] ? 'border-hairline-strong bg-canvas font-semibold text-ink' : 'border-transparent text-muted-soft' }}"
+        >
           <x-entity-icon :name="$section['icon']" />
           {{ $section['label'] }}
 

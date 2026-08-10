@@ -197,6 +197,25 @@ class CreateContactTest extends TestCase
     }
 
     #[Test]
+    public function it_writes_a_contact_down_already_pinned_to_the_top_of_the_list(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $contact = new CreateContact(
+            user: $user,
+            vault: $vault,
+            templateVersion: $this->publishedContactVersion($user->account),
+            firstName: 'Pam',
+            isFavourite: true,
+        )->execute();
+
+        $this->assertTrue($contact->is_favourite);
+    }
+
+    #[Test]
     public function it_writes_down_the_contact_representing_the_user(): void
     {
         Queue::fake();

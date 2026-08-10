@@ -9,10 +9,18 @@
   body after a turbo navigation, so state declared above it would never be
   walked again.
 
+  A screen whose actions have to stay reachable through a long form puts them
+  in the `footer` slot. It is a bar of its own at the foot of the window rather
+  than a row at the end of the page, and it spans the screen the way the bar at
+  the top does: what sits inside it lines up with the content column, but the
+  rule and the background it draws run the whole width, or it reads as a strip
+  that stopped short.
+
   @var string|null $title
   @var \Illuminate\View\ComponentSlot $sidebar
   @var \Illuminate\View\ComponentSlot|null $breadcrumb
   @var \Illuminate\View\ComponentSlot|null $actions
+  @var \Illuminate\View\ComponentSlot|null $footer
 --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -40,7 +48,12 @@
         aria-hidden="true"
       ></div>
 
-      <main class="min-w-0">
+      {{--
+        A screen carrying a footer becomes a column, so the content between the
+        two bars grows and the footer is at the foot of a short screen instead of
+        stranded halfway up it. Screens without one are left exactly as they were.
+      --}}
+      <main @class(['min-w-0', 'flex flex-col' => isset($footer)])>
         <header class="sticky top-0 z-5 flex h-13 items-center gap-3.5 border-b border-hairline bg-page/90 px-4 backdrop-blur-md sm:px-7">
           <button
             type="button"
@@ -75,9 +88,23 @@
           @endisset
         </header>
 
-        <div class="mx-auto max-w-240 space-y-8.5 px-4 pt-6 pb-14 sm:px-7 sm:pt-7.5 sm:pb-17.5">
+        <div
+          @class([
+            'mx-auto w-full max-w-240 space-y-8.5 px-4 pt-6 sm:px-7 sm:pt-7.5',
+            'flex-1 pb-8' => isset($footer),
+            'pb-14 sm:pb-17.5' => ! isset($footer),
+          ])
+        >
           {{ $slot }}
         </div>
+
+        @isset($footer)
+          <footer class="sticky bottom-0 z-5 border-t border-hairline bg-canvas">
+            <div class="mx-auto flex max-w-240 flex-wrap items-center gap-4 px-4 py-3 sm:px-7">
+              {{ $footer }}
+            </div>
+          </footer>
+        @endisset
       </main>
     </div>
 
