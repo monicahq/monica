@@ -13,13 +13,13 @@
   </x-slot:sidebar>
 
   <x-slot:breadcrumb>
-    <nav class="text-sm text-muted" aria-label="{{ __('Breadcrumb') }}">
-      {{ __('Settings') }}
-      <span class="px-1 text-placeholder" aria-hidden="true">/</span>
-      <x-link :href="route('settings.logs.index')" turbo>{{ __('Logs') }}</x-link>
-      <span class="px-1 text-placeholder" aria-hidden="true">/</span>
-      <span class="text-ink" aria-current="page">{{ __('Emails sent') }}</span>
-    </nav>
+    <x-breadcrumb
+      :items="[
+        ['label' => __('Settings')],
+        ['label' => __('Logs'), 'url' => route('settings.logs.index')],
+        ['label' => __('Emails sent')],
+      ]"
+    />
   </x-slot:breadcrumb>
 
   <x-page-header

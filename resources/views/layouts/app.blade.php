@@ -12,6 +12,7 @@
   @var string|null $title
   @var \Illuminate\View\ComponentSlot $sidebar
   @var \Illuminate\View\ComponentSlot|null $breadcrumb
+  @var \Illuminate\View\ComponentSlot|null $actions
 --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -60,7 +61,18 @@
             {{ $breadcrumb }}
           @endisset
 
-          <span class="ml-auto hidden text-sm text-muted sm:block">{{ auth()->user()?->email }}</span>
+          {{--
+            A screen with something to do from the bar puts it here. The ones
+            that have nothing say who is signed in instead, which is what the
+            settings screens have always shown there.
+          --}}
+          @isset($actions)
+            <div class="ml-auto flex min-w-0 items-center gap-2.5">
+              {{ $actions }}
+            </div>
+          @else
+            <span class="ml-auto hidden text-sm text-muted sm:block">{{ auth()->user()?->email }}</span>
+          @endisset
         </header>
 
         <div class="mx-auto max-w-240 space-y-8.5 px-4 pt-6 pb-14 sm:px-7 sm:pt-7.5 sm:pb-17.5">

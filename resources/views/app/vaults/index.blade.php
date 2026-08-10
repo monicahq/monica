@@ -2,12 +2,12 @@
   The list of compartments the account is divided into.
 
   It is a placeholder, standing in until the list has a design of its own: a
-  name, what the vault is for, and how much it holds. Nothing on a row leads
-  anywhere yet, because there is no screen for one vault to lead to.
+  name, what the vault is for, and how much it holds. A row leads into the
+  vault, which is the one thing it can already do.
 
   @var \App\ViewModels\Vaults\VaultsViewModel $viewModel
 --}}
-<x-vault-layout :title="$viewModel->title()">
+<x-account-layout :title="$viewModel->title()">
   <div class="flex flex-wrap items-end justify-between gap-4">
     <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
@@ -16,7 +16,7 @@
 
   <x-box padding="p-0">
     @forelse ($viewModel->vaults() as $vault)
-      <div class="flex items-start gap-3 px-4 py-3.5 not-first:border-t not-first:border-hairline-soft">
+      <a href="{{ $vault['url'] }}" data-turbo="true" class="flex items-start gap-3 px-4 py-3.5 transition-colors duration-150 not-first:border-t not-first:border-hairline-soft hover:bg-hover">
         <span style="background: {{ $vault['colour'] }}" class="mt-1 size-3 shrink-0 rounded-sm" aria-hidden="true"></span>
 
         <div class="min-w-0 flex-1 space-y-0.5">
@@ -34,7 +34,7 @@
         </div>
 
         <span class="mt-px shrink-0 text-xs text-muted-soft">{{ $vault['contactCount'] }}</span>
-      </div>
+      </a>
     @empty
       <x-empty-state :title="__('No vault yet')">
         <x-slot:icon>
@@ -48,4 +48,4 @@
       </x-empty-state>
     @endforelse
   </x-box>
-</x-vault-layout>
+</x-account-layout>

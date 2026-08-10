@@ -44,6 +44,7 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     Route::get('vaults', [VaultController::class, 'index'])->name('vaults.index');
     Route::get('vaults/new', [VaultController::class, 'new'])->name('vaults.new');
     Route::post('vaults', [VaultController::class, 'create'])->name('vaults.create');
+    Route::get('vaults/{vault}', [VaultController::class, 'show'])->name('vaults.show');
 });
 
 // The screens where somebody looks after their own account.

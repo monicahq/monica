@@ -109,6 +109,23 @@ class Vault extends Model
     }
 
     /**
+     * Find the vault a URL points at, within the account of whoever is asking.
+     * A vault of another account is not merely forbidden, it is not found: the
+     * compartment is the whole point, and saying "you may not" would already
+     * say that it exists.
+     *
+     * @param  string  $value
+     * @param  string|null  $field
+     */
+    public function resolveRouteBinding($value, $field = null): ?self
+    {
+        return $this->query()
+            ->where($field ?? $this->getRouteKeyName(), $value)
+            ->where('account_id', auth()->user()?->account_id)
+            ->first();
+    }
+
+    /**
      * Get the account the vault belongs to.
      *
      * @return BelongsTo<Account, $this>

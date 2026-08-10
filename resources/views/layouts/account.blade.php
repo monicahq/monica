@@ -1,8 +1,10 @@
 {{--
-  The shell of the screens where somebody looks after their vaults and what is
-  in them. It is not the settings shell: there is no column of links, because
-  the vaults are the product rather than a corner of it, and what a screen needs
-  to say about where you are fits in one line under the bar.
+  The shell of the screens that stand outside any one vault: the list of them,
+  the form that opens one, and the screen somebody lands on before they have
+  made anything. There is no column of links, because none of those screens is
+  inside anything to navigate, and what they need to say about where you are
+  fits in one line under the bar. Once you are in a vault the sidebar shell
+  takes over, with the vault's own navigation down the left.
 
   The bar carries the mark, the way to the settings and who is signed in. The
   strip under it carries the breadcrumb, and a screen that has nowhere to come

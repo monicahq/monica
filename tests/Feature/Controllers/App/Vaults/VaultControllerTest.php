@@ -48,6 +48,49 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_opens_a_vault(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+            'description' => 'Everybody at the Scranton branch',
+            'contact_count' => 148,
+        ]);
+
+        $this->actingAs($user)->get(route('vaults.show', $vault))
+            ->assertStatus(200)
+            ->assertSee('Dunder Mifflin')
+            ->assertSee('Everybody at the Scranton branch')
+            ->assertSee('148')
+            ->assertSee('Coming up')
+            ->assertSee('Recently opened');
+    }
+
+    #[Test]
+    public function it_offers_every_vault_of_the_account_in_the_switcher(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+        Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Schrute Farms', 'position' => 2]);
+        Vault::factory()->create(['name' => 'Vance Refrigeration']);
+
+        $this->actingAs($user)->get(route('vaults.show', $vault))
+            ->assertStatus(200)
+            ->assertSee('Schrute Farms')
+            ->assertDontSee('Vance Refrigeration');
+    }
+
+    #[Test]
+    public function it_does_not_find_a_vault_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $elsewhere = Vault::factory()->create(['name' => 'Vance Refrigeration']);
+
+        $this->actingAs($user)->get(route('vaults.show', $elsewhere))->assertNotFound();
+    }
+
+    #[Test]
     public function it_shows_the_form_that_opens_a_vault(): void
     {
         $user = User::factory()->create();

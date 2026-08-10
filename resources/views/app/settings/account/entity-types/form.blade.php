@@ -25,13 +25,13 @@
   </x-slot:sidebar>
 
   <x-slot:breadcrumb>
-    <nav class="text-sm text-muted" aria-label="{{ __('Breadcrumb') }}">
-      {{ __('Settings') }}
-      <span class="px-1 text-placeholder" aria-hidden="true">/</span>
-      <a href="{{ route('settings.entityTypes.index') }}" data-turbo="true" class="hover:text-ink">{{ __('Entity types') }}</a>
-      <span class="px-1 text-placeholder" aria-hidden="true">/</span>
-      <span class="text-ink" aria-current="page">{{ $viewModel->isEdit() ? $values['nameSingular'] : __('New type') }}</span>
-    </nav>
+    <x-breadcrumb
+      :items="[
+        ['label' => __('Settings')],
+        ['label' => __('Entity types'), 'url' => route('settings.entityTypes.index')],
+        ['label' => $viewModel->isEdit() ? $values['nameSingular'] : __('New type')],
+      ]"
+    />
   </x-slot:breadcrumb>
 
   <div class="space-y-1.5">

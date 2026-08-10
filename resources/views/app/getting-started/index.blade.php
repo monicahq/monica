@@ -8,7 +8,7 @@
 
   @var \App\ViewModels\GettingStarted\GettingStartedViewModel $viewModel
 --}}
-<x-vault-layout :title="$viewModel->greeting()">
+<x-account-layout :title="$viewModel->greeting()">
   <div class="space-y-2">
     <div class="space-y-0.5">
       <h1 class="text-2xl font-semibold tracking-tight text-ink">{{ $viewModel->greeting() }}</h1>
@@ -101,4 +101,4 @@
 
     <p class="text-[13px] leading-relaxed text-pretty text-muted">{{ $viewModel->importNote() }}</p>
   </div>
-</x-vault-layout>
+</x-account-layout>

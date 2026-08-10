@@ -13,11 +13,12 @@
   </x-slot:sidebar>
 
   <x-slot:breadcrumb>
-    <nav class="text-sm text-muted" aria-label="{{ __('Breadcrumb') }}">
-      {{ __('Settings') }}
-      <span class="px-1 text-placeholder" aria-hidden="true">/</span>
-      <span class="text-ink" aria-current="page">{{ __('Security and access') }}</span>
-    </nav>
+    <x-breadcrumb
+      :items="[
+        ['label' => __('Settings')],
+        ['label' => __('Security and access')],
+      ]"
+    />
   </x-slot:breadcrumb>
 
   <x-page-header

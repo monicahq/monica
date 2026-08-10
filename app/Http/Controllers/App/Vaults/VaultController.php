@@ -12,6 +12,7 @@ use App\Enums\VaultColourEnum;
 use App\Http\Controllers\Controller;
 use App\Models\TemplateVersion;
 use App\Models\Vault;
+use App\ViewModels\Vaults\VaultDashboardViewModel;
 use App\ViewModels\Vaults\VaultFormViewModel;
 use App\ViewModels\Vaults\VaultsViewModel;
 use Illuminate\Http\RedirectResponse;
@@ -26,6 +27,16 @@ class VaultController extends Controller
         return view('app.vaults.index', [
             'viewModel' => new VaultsViewModel(
                 user: $request->user(),
+            ),
+        ]);
+    }
+
+    public function show(Request $request, Vault $vault): View
+    {
+        return view('app.vaults.show', [
+            'viewModel' => new VaultDashboardViewModel(
+                user: $request->user(),
+                vault: $vault,
             ),
         ]);
     }

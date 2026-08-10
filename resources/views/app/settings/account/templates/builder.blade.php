@@ -26,11 +26,12 @@
   </x-slot:sidebar>
 
   <x-slot:breadcrumb>
-    <nav class="text-sm text-muted" aria-label="{{ __('Breadcrumb') }}">
-      <a href="{{ route('settings.templates.index') }}" data-turbo="true" class="hover:text-ink">{{ __('Templates') }}</a>
-      <span class="px-1 text-placeholder" aria-hidden="true">/</span>
-      <span class="text-ink" aria-current="page">{{ $template->name }}</span>
-    </nav>
+    <x-breadcrumb
+      :items="[
+        ['label' => __('Templates'), 'url' => route('settings.templates.index')],
+        ['label' => $template->name],
+      ]"
+    />
   </x-slot:breadcrumb>
 
   <div id="builder" x-merge="replace" class="space-y-6">

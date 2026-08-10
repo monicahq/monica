@@ -36,7 +36,7 @@ class VaultsViewModel
     }
 
     /**
-     * @return array<int, array{name: string, description: string|null, colour: string, isDefault: bool, contactCount: string}>
+     * @return array<int, array{name: string, description: string|null, colour: string, isDefault: bool, contactCount: string, url: string}>
      */
     public function vaults(): array
     {
@@ -50,6 +50,7 @@ class VaultsViewModel
                 'colour' => $vault->colour,
                 'isDefault' => $vault->is_default,
                 'contactCount' => $this->contactCount($vault),
+                'url' => route('vaults.show', $vault),
             ])
             ->all();
     }

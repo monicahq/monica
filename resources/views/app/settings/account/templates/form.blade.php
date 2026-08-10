@@ -18,13 +18,13 @@
   </x-slot:sidebar>
 
   <x-slot:breadcrumb>
-    <nav class="text-sm text-muted" aria-label="{{ __('Breadcrumb') }}">
-      {{ __('Settings') }}
-      <span class="px-1 text-placeholder" aria-hidden="true">/</span>
-      <a href="{{ route('settings.templates.index') }}" data-turbo="true" class="hover:text-ink">{{ __('Templates') }}</a>
-      <span class="px-1 text-placeholder" aria-hidden="true">/</span>
-      <span class="text-ink" aria-current="page">{{ $viewModel->isEdit() ? $values['name'] : __('New template') }}</span>
-    </nav>
+    <x-breadcrumb
+      :items="[
+        ['label' => __('Settings')],
+        ['label' => __('Templates'), 'url' => route('settings.templates.index')],
+        ['label' => $viewModel->isEdit() ? $values['name'] : __('New template')],
+      ]"
+    />
   </x-slot:breadcrumb>
 
   <div class="space-y-1.5">

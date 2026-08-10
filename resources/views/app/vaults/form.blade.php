@@ -12,13 +12,14 @@
 @php
   $values = $viewModel->values();
 @endphp
-<x-vault-layout :title="$viewModel->title()">
+<x-account-layout :title="$viewModel->title()">
   <x-slot:breadcrumb>
-    <nav class="text-xs text-muted" aria-label="{{ __('Breadcrumb') }}">
-      <a href="{{ $viewModel->backUrl() }}" data-turbo="true" class="hover:text-brand">{{ __('Your vaults') }}</a>
-      <span class="px-1 text-placeholder" aria-hidden="true">/</span>
-      <span class="text-ink" aria-current="page">{{ $viewModel->title() }}</span>
-    </nav>
+    <x-breadcrumb
+      :items="[
+        ['label' => __('Your vaults'), 'url' => $viewModel->backUrl()],
+        ['label' => $viewModel->title()],
+      ]"
+    />
   </x-slot:breadcrumb>
 
   <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" class="max-w-140" />
@@ -158,4 +159,4 @@
       </div>
     </div>
   </div>
-</x-vault-layout>
+</x-account-layout>
