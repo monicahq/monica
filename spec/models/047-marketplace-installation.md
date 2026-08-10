@@ -42,7 +42,7 @@ deleted_at                  datetime
 - Installing copies. The local copy is fully editable and has no runtime dependency on the listing (7).
 - A new approved version raises `update_available_version_id` and produces a notification carrying the change note ([Notification](042-notification.md)). It changes nothing else.
 - The installer applies or declines. Declining is a real, remembered choice, not a postponement, and it does not stop them being told about the version after that.
-- Applying an update creates a **new version of the local copy** ([TemplateVersion](013-template-version.md) or [SectionVersion](015-section-version.md)). It never edits a published local version, and records already on the old version stay there until moved deliberately (6).
+- Applying an update creates a **new version of the local copy** ([TemplateVersion](013-template-version.md) or [SectionVersion](015-section-version.md)). A template update copies its pages and section placements into that new local version. It never edits a published local version, and records already on the old version stay there until moved deliberately (6).
 - `has_local_changes` is shown before applying an update, because an update onto an edited copy is where a surprise would come from.
 - Uninstalling removes the origin trace and leaves the copy in place. Nothing the user made is taken away.
 

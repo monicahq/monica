@@ -15,7 +15,7 @@ It is separate from the listing for the same reason a template version is separa
 id                          int                             primary key
 marketplace_listing_id      int                             listing this is a version of
 version_number              int                             incrementing number within the listing
-payload                     json                            the whole structure, self contained, with its sections, fields and value lists
+payload                     json                            the whole structure, self contained, with its pages, section placements, fields and value lists
 change_note                 text                            what changed since the previous version, shown to every installer
 status                      enum (submitted, approved, rejected, withdrawn)  where it is in moderation
 rejection_reason            text                            why it was refused
@@ -37,7 +37,7 @@ updated_at                  datetime
 ## Rules
 
 - An approved version is immutable, like every other published version in the product (6).
-- The payload is self contained. It carries the sections, the fields, the value list items they reference, and, for a template applying to an entity type, the entity type itself. Installing must never need anything from the author's account at install time, because installing is copying and the copy has to stand alone.
+- The payload is self contained. For a template it carries the pages, their stable keys and order, the placement of sections on those pages, the fields, the value list items they reference and, when it applies to an entity type, the entity type itself. A section published alone carries no page. Installing must never need anything from the author's account at install time, because installing is copying and the copy has to stand alone.
 - **There is never a forced synchronisation** (7, 3.1). A new version notifies. It never updates anything by itself. This is the single most important rule of the marketplace and it is a direct application of the principle that nothing changes under somebody's feet.
 - Withdrawing a version stops new installs and changes nothing for existing ones.
 - `checksum` lets an install verify the payload it received matches what was approved.

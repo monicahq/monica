@@ -48,7 +48,7 @@ deleted_at                  datetime
 ## Rules
 
 - Private by default. Nothing reaches the catalogue without a deliberate submission (7).
-- **A section can be published on its own**, with no template around it (7). Section 7 names this as what lowers the barrier to contributing, and it falls out of the three level split in section 5.2. Any design that requires wrapping a block in a template to share it has lost the point.
+- **A section can be published on its own**, with no template or page around it (7). Section 7 names this as what lowers the barrier to contributing. Pages belong to a template version and are never marketplace items. Any design that requires wrapping a block in either one to share it has lost the point.
 - An activity type is publishable the same way (9.3), carrying its own field structure with it.
 - One category, chosen from ours. No free tags.
 - A refusal carries a reason and the reason is shown to the author (7).

@@ -33,7 +33,7 @@ updated_at                  datetime
 - `belongsTo` [Section](014-section.md)
 - `belongsTo` self as the previous version
 - `hasMany` [Field](017-field.md)
-- `belongsToMany` [TemplateVersion](013-template-version.md) through [TemplateVersionSection](016-template-version-section.md)
+- `belongsToMany` [TemplateVersion](013-template-version.md) through [TemplateVersionSection](016-template-version-section.md), with each placement assigned to one [TemplateVersionPage](055-template-version-page.md)
 
 ## Rules
 

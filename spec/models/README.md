@@ -51,6 +51,8 @@ Every file follows the same shape.
 | 017 | [Field](017-field.md) | 5.5, 5.6 |
 | 018 | [VaultDefaultTemplate](018-vault-default-template.md) | 5.3 |
 
+Model 055, [TemplateVersionPage](055-template-version-page.md), is a later addition to this established engine. It is implemented before the changes now required in model 016. It keeps the next unused number rather than renumbering models that already exist and are referenced throughout the repository.
+
 ### The records
 
 | # | Model | Spec |
@@ -121,6 +123,12 @@ Every file follows the same shape.
 | 052 | [Module](052-module.md) | 3.9 |
 | 053 | [ModuleInstallation](053-module-installation.md) | 3.9 |
 | 054 | [SearchIndexEntry](054-search-index-entry.md) | 13 |
+
+### Later additions to established areas
+
+| # | Model | Spec |
+|---|---|---|
+| 055 | [TemplateVersionPage](055-template-version-page.md) | 5.2, 6 |
 
 ## Not modelled here
 

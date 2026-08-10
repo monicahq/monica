@@ -19,7 +19,7 @@ snapshotable_type           string (255)                    class of the record 
 snapshotable_id             int                             id of that record
 template_version_id         int                             structure the record was on at the time
 reason                      enum (template_change, merge, manual, import, restore, api)  why the snapshot was taken
-payload                     json                            full state of the record, its fields, its values and the files they pointed at
+payload                     json                            full state of the record, its pages, section placements, fields, values and the files they pointed at
 file_ids                    json                            files the snapshot references, so the orphan sweep leaves them alone
 created_by_user_id          int                             user whose action triggered it, null when the system took it
 restored_at                 datetime                        when this snapshot was used to restore, null while it never was
@@ -37,7 +37,7 @@ updated_at                  datetime
 ## Rules
 
 - A snapshot is taken automatically before a structure change, before a merge, and before an import overwrites anything. It can also be taken by hand.
-- The payload is self contained. Restoring must work even if the structure it came from was retired since, which means the payload carries the field keys and labels, not only the values.
+- The payload is self contained. Restoring must work even if the structure it came from was retired since, which means the payload carries page keys and labels, section placement, and field keys and labels, not only the values.
 - `file_ids` keeps the orphan sweep honest. Section 11 says the grace period exists precisely so that restoring an old version can recover a recently detached file. A file listed in a live snapshot is not swept, whatever its reference count.
 - Restoring is itself an action that writes a snapshot first, so a restore can be undone.
 - A snapshot is immutable.

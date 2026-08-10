@@ -5,7 +5,7 @@
 
 ## What it is
 
-The smallest unit of the personalisation engine: "Street", "City", "Shoe size", "Diet". A field belongs to a section version, has a type, and carries its own constraints.
+The smallest unit of the personalisation engine: "Street", "City", "Shoe size", "Diet". A field belongs to a section version, has a type, and carries its own constraints. It does not belong to a page directly. The section placement decides which page renders it.
 
 It is where three separate parts of the product meet. Section 3.5 makes accessibility a delivery condition and points out why it lands here: because pages are generated from structures users invented, a field type has to render accessibly by construction, once, or every template anybody builds becomes a new source of problems nobody can fix on their behalf. Section 10.2 makes any recurring date field a possible reminder source, not just a birthday. Section 13 requires every field to be searchable and filterable with no configuration at all.
 
@@ -81,6 +81,7 @@ Section 5.5 lists the families. The ones in the first version (15) are marked.
 - A repeater holds its children through `parent_field_id`. A repeater inside a repeater is refused. Section 16 already names the repeater as the most exposed field for accessibility, and nesting it would compound that for no stated need.
 - `is_sensitive` masks on screen and excludes from share links by default (5.6, 4.4). It is protection from a glance over the shoulder, not an authorisation mechanism, and nothing in the product may treat it as one. The owner can always reveal it.
 - `is_highlighted` puts the field in the header area, rendered according to its type: a pill for tags, a countdown for a recurring date (5.6).
+- A highlighted field stays in the record header even when its section belongs to a page that is not selected. Page navigation never changes which highlighted values are visible.
 - A field is created, edited and deleted only on a draft section version. On a published one it is frozen (6).
 - Removing a field from a new version does not delete its stored values. They are marked as detached and remain restorable (3.3). Any reminder rule that read from it is disabled with an explanation rather than removed (10.3).
 - `key` is stable and unique inside the section. Renaming a label never changes the key, which is what lets an import, an export or an API caller keep working after a rename.

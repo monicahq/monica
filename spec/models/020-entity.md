@@ -44,6 +44,7 @@ deleted_at                  datetime
 - An entity can take part in an activity (9.2), can be the target of a relation field from a contact or from another entity, and can carry reminders driven by its own date fields (10.2). A contract renewal date on a Company entity is a first class reminder source.
 - An archived entity triggers no reminder, exactly as an archived [Contact](019-contact.md) does not. Its rules are deactivated with `record_archived` and come back when it is unarchived. A contract renewal on a company nobody deals with any more is the reason somebody archives it.
 - Changing the applied template version writes a snapshot first, exactly as for a contact.
+- The page hierarchy comes from the precise [TemplateVersion](013-template-version.md) assigned to the entity. One template page renders without tabs, while two or more use the same accessible tab navigation as a contact (5.2).
 - Soft deleted, for the same reasons.
 
 ## Open questions

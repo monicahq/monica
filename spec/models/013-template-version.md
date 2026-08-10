@@ -33,13 +33,15 @@ updated_at                  datetime
 - `belongsTo` [Account](001-account.md)
 - `belongsTo` [Template](012-template.md)
 - `belongsTo` self as the previous version
+- `hasMany` [TemplateVersionPage](055-template-version-page.md)
 - `hasMany` [TemplateVersionSection](016-template-version-section.md)
 - referenced by [Contact](019-contact.md), [Entity](020-entity.md) and [ActivityType](035-activity-type.md)
 
 ## Rules
 
 - A published version is immutable. Not "should not be edited": the application refuses the write, and every code path that could reach it goes through a check. This is the load bearing rule of section 6 and everything else in the personalisation engine leans on it.
-- Immutability cascades. A published version pins the exact section versions it contains, and those pin their fields. Renaming a value list item elsewhere cannot change what a section published yesterday does. Where a resolved copy is needed to make that true, [SectionVersion](015-section-version.md) says so.
+- Immutability cascades. A published version pins its pages, their order, the placement of sections on them and the exact section versions they contain. Those section versions pin their fields. Renaming a value list item elsewhere cannot change what a section published yesterday does. Where a resolved copy is needed to make that true, [SectionVersion](015-section-version.md) says so.
+- Every version contains at least one [TemplateVersionPage](055-template-version-page.md). It may contain any number above one. A template version with no page cannot be published.
 - Editing a published version creates a draft copied from it, with `previous_version_id` set. Publishing that draft is a separate act, and it requires a change note.
 - A record never follows "latest". Moving a record to another version is deliberate, per record or in bulk, and it always writes a [RecordSnapshot](023-record-snapshot.md) first so it can be undone (6).
 - Retiring a version stops it being applied to anything new and leaves every record already on it exactly as it is.
@@ -56,7 +58,8 @@ updated_at                  datetime
 
 - **The freeze is enforced on the model, not in the actions.** A `updating` guard refuses any change to what the version contains once its status is published, and a `deleting` guard refuses the deletion of anything that is not a draft. The specification says the application refuses the write and that every code path goes through a check; one guard below the actions is the only way to make that true, rather than trusting twenty-eight actions and every future one to remember.
 - **What publication freezes is listed explicitly.** The version number, the change note, the publication date, the lineage and the account are frozen. The status, the retirement date and `record_count` are not: retiring a version and counting the records on it describe where the version stands rather than what it renders, and both have to keep working after publication.
-- **Publishing refuses while the assembly still carries a draft section version.** Freezing a template version that points at a section somebody is still editing would freeze nothing. The refusal is explicit rather than quietly publishing those sections on the user's behalf, which section 3.1 rules out.
+- **Publishing refuses while the assembly still carries a draft section version.** Freezing a template version that points at a section somebody is still editing would freeze nothing. It also refuses a version with no page or a section placement whose page belongs to another version. The refusal is explicit rather than quietly repairing or publishing structures on the user's behalf, which section 3.1 rules out.
+- **Drafting copies the page structure as well as the sections.** Every copied page gets a new UUID but keeps its stable key, label and position. Section placements are then copied onto the corresponding new pages. This preserves what the record renders without making the draft share mutable page rows with the published version.
 - **A change note is required from the second version on.** The first version has nothing to have changed from, so asking for a note there would only teach people to type something meaningless.
 - **Retiring the version a template offers clears `published_version_id`.** A retired version cannot go on being what a new record is handed. The template is then left offering nothing until something else is published, which is deliberate and visible.
 

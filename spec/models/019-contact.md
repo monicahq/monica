@@ -67,6 +67,7 @@ deleted_with_vault          bool                            whether the contact 
 - **An archived contact triggers no reminder.** Archiving deactivates the rules about them and cancels their future occurrences, the way deleting does, and unarchiving reactivates the rules and puts what is ahead back (10.3). Past occurrences are kept, because they are history, and the rules say why they are quiet instead of vanishing (3.3). This covers the inactivity rule too: a contact nobody is meant to hear about cannot fire for silence.
 - Changing the applied template version writes a [RecordSnapshot](023-record-snapshot.md) first, always (6).
 - Every field on the page, including ones invented yesterday, is searchable and filterable with no configuration (13).
+- The page hierarchy comes from the precise [TemplateVersion](013-template-version.md) assigned to the contact. The identity header and highlighted fields remain above it. One template page renders without tabs, while two or more use the accessible tab navigation defined in section 5.2.
 
 ## Not done yet
 

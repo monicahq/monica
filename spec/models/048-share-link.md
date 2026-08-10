@@ -55,6 +55,7 @@ updated_at                  datetime
 - **Everything sensitive is excluded by default** (4.4): fields marked sensitive, the personal narrative of the journal, the modification history and technical data. The owner opts in, never out.
 - Activities and their narratives are excluded by default and enabled explicitly (9.6). The setting can be made at the link level and then tightened activity by activity, which `excluded_activity_ids` carries.
 - A field marked sensitive stays excluded even when the activity or the section around it is shared (9.6, 5.6).
+- A shared record uses the page structure of its precise template version. A page with no included section is omitted from the shared tab list. If only one page remains after exclusions, the tab list is hidden as it is on the private record. Page labels must never reveal the existence of excluded content through an empty tab.
 - Revocation is immediate and permanent. A revoked link is never reactivated, a new one is made instead.
 - Every link is logged with its creation, its last view and its revocation (4.4), which is what [ShareLinkVisit](049-share-link-visit.md) and these columns hold between them.
 - Notifications and reminders never reach a share link viewer (10.4).
@@ -62,5 +63,5 @@ updated_at                  datetime
 
 ## Open questions
 
-- **What granularity a link should offer** (16): the whole page, chosen sections, a saved view, or a frozen snapshot. The columns here cover the whole page with section exclusions, which is the middle option and the one the rest of section 4.4 describes.
+- **What granularity a link should offer** (16): the whole record, chosen pages or sections, a saved view, or a frozen snapshot. The columns here cover the whole record with section exclusions. Page visibility is derived from the sections that remain, rather than stored as a second exclusion mechanism that could disagree.
 - **Whether a vault link always reflects current data or can publish a frozen snapshot** (16). This file assumes live data. A snapshot would need its own storage and is a different feature.

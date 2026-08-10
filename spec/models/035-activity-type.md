@@ -48,6 +48,7 @@ deleted_at                  datetime
 ## Rules
 
 - The type points at its template version, not the reverse ([Template](012-template.md)). This is the direction that avoids a cycle and matches how the page is read.
+- When the type has a template version, it uses the same page, section and field hierarchy as a contact or entity. A simple activity normally needs one page and therefore no visible tabs. A richer activity with several pages uses the same accessible navigation contract (5.2).
 - `counts_as_interaction` is the only thing feeding inactivity, and nothing else may. Section 9.3 states it as an exclusive rule, and honouring it exactly is what keeps the inactivity reminder trustworthy.
 - Changing `counts_as_interaction` recomputes `last_activity_at` on every contact touched by activities of that type, in the background. The change is not retroactive to the user's intent, but the derived value has to stay true.
 - Disabling a type never breaks the activities already using it (9.3). They keep their type, their icon and their fields.

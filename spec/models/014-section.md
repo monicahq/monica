@@ -5,9 +5,9 @@
 
 ## What it is
 
-A reusable thematic block: "Address", "Social networks", "Medical follow up". A template is an assembly of sections in the order the user chose.
+A reusable thematic block: "Address", "Social networks", "Medical follow up". A template version contains pages, and each page assembles sections in the order the user chose.
 
-Sections exist as their own object rather than as a grouping inside a template for one specific reason given in section 5.2: so a single block can be shared without dragging the whole page around it. Somebody who built a good medical follow up block can publish that block alone. Section 7 calls this out as what lowers the barrier to contributing, and it is the reason the three level split (template, section, field) is not over-engineering.
+Sections exist as their own object rather than as a grouping owned by a page for one specific reason given in section 5.2: so a single block can be shared without dragging the whole page around it. Somebody who built a good medical follow up block can publish that block alone. Section 7 calls this out as what lowers the barrier to contributing. Pages organise a template, but they do not change the independent identity or reuse of a section.
 
 Like a template, this model is the stable identity. The content lives in [SectionVersion](015-section-version.md).
 
@@ -42,8 +42,8 @@ deleted_at                  datetime
 
 ## Rules
 
-- A section is not owned by a template. It can appear in several templates and in several versions of the same template, at different positions.
-- A section carries no position of its own. Where it sits is a property of the assembly, and it lives on [TemplateVersionSection](016-template-version-section.md).
+- A section is not owned by a template or a page. It can appear in several templates and in several versions of the same template, on different pages and at different positions.
+- A section carries no page or position of its own. Where it sits is a property of the assembly, and it lives on [TemplateVersionSection](016-template-version-section.md).
 - A section can be published to the marketplace on its own, without a template around it (7).
 - Deleting a section is refused while any published template version contains one of its versions.
 - The account is seeded with the sections the default contact template needs, so the product works out of the box.

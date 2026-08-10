@@ -72,11 +72,11 @@ Accessibility is not an option added at the end of a project, it is a delivery c
 
 Concretely, that means: everything is usable with the keyboard alone, everything is announced correctly by a screen reader, no information is carried by colour alone, contrasts are respected, focus is always visible, text stays readable zoomed to 200%, and animations switch off if the system asks for it.
 
-This principle has a particular consequence here. Because records are **generated from structures created by users**, you cannot make one screen accessible by hand and move on to the next. Each field type has to produce an accessible rendering by construction, once and for all, otherwise every template a user creates becomes a new source of problems that nobody can fix on their behalf. That applies to the building interface itself: creating a template has to be doable with the keyboard and with a screen reader.
+This principle has a particular consequence here. Because records are **generated from structures created by users**, you cannot make one screen accessible by hand and move on to the next. Each field type has to produce an accessible rendering by construction, once and for all, otherwise every template a user creates becomes a new source of problems that nobody can fix on their behalf. That applies to the building interface itself: creating a template, navigating its pages and moving sections between them have to be doable with the keyboard and with a screen reader.
 
 ### 3.6. Everything goes through the API and can be exposed by MCP
 
-**Everything that can be done in the interface must be doable through the API.** Not just reading and writing contacts: creating a template, adding a section, changing a value list, publishing to the marketplace, installing a structure, accepting an update, creating a relationship, managing reminders, uploading a file and consulting the changelog.
+**Everything that can be done in the interface must be doable through the API.** Not just reading and writing contacts: creating a template, adding and ordering pages, moving sections between pages, changing a value list, publishing to the marketplace, installing a structure, accepting an update, creating a relationship, managing reminders, uploading a file and consulting the changelog.
 
 What this brings:
 
@@ -196,15 +196,31 @@ I want to keep track of my friends' animals, the companies I work with, or the b
 
 Both needs go through the same mechanism, which means there is only one thing to learn.
 
-### 5.2. The mechanism: Template, Sections, Fields
+### 5.2. The mechanism: Template, Pages, Sections, Fields
 
-Three levels, from the broadest to the finest:
+Four levels, from the broadest to the finest:
 
-- **The Template** is the complete definition of a record. It is what you apply to a contact or an entity, and it is what decides what you see on the record.
-- **The Section** is a reusable thematic block, for example "Address", "Social networks", "Medical follow up". A template is an assembly of sections, in whatever order you want.
+- **The Template** is the complete definition of a record. It is what you apply to a contact, an entity or an activity, and it decides what appears on the record.
+- **The Page** is a named and ordered part of a template. Every template version contains at least one page. A page belongs to that template version and is not reusable or publishable on its own.
+- **The Section** is a reusable thematic block, for example "Address", "Social networks", "Medical follow up". Each section in a template version is placed on exactly one page, in whatever order the user wants.
 - **The Field** is the elementary piece of information inside a section: "Street", "City", "Postcode". Each field has a type (text, date, list of choices, file, and so on) and its own constraints.
 
-This split into three is not gratuitous: it allows sharing an isolated block ("here is my Medical follow up section") without imposing the whole record around it.
+In this section, **page** means a page inside a template. **Record view** means the complete contact, entity or activity screen that contains the header and every template page.
+
+The page exists to make a long record understandable. The section stays separate because sharing an isolated block ("here is my Medical follow up section") must remain possible without imposing the template or page around it.
+
+Pages are part of the frozen template version. Renaming, reordering, adding or removing a page is a structure change and therefore happens only in a draft. Moving a section to another page is also a structure change. Pages carry presentation and navigation only. Values still belong to fields, and search, filtering, reminders and exports work across every page without requiring the user to select one.
+
+The record interface follows these rules:
+
+- The identity header, primary actions and highlighted fields sit above the page navigation and remain visible whichever page is selected. Highlighted fields may come from any page.
+- A template with one page renders its sections directly and does not show a redundant tab list. A template with two or more pages renders one tab per page, in template order.
+- The first page is selected when the record opens, unless the URL identifies another page. The selected page is represented in the URL by its stable key, so a page can be linked to, refreshed and traversed with the browser history.
+- Tabs use the accessible tab pattern. The tab list, selected tab and tab panels have programmatic relationships. Arrow keys move between tabs, focus stays visible, and changing tabs is announced without moving focus into the panel unexpectedly.
+- On narrow screens, the tab list scrolls horizontally and keeps the selected tab visible. Tabs do not wrap into several rows, and the record does not collapse all pages into one long mobile page.
+- When saving reveals an error on another page, the interface selects that page, focuses the first invalid field and announces the error summary. Required fields apply across the whole record, not only to the selected page.
+
+The template builder always shows the page structure, including when there is only one page. It lets the user add, rename and reorder pages, move sections between them and reorder sections inside a page. The last page cannot be removed. A page containing sections must be emptied by moving or removing those sections before it can be removed. Every destructive control names the page and explains the consequence before acting.
 
 ### 5.3. Custom entities
 
@@ -249,7 +265,7 @@ Conversely, information you would think fundamental is in fact made of customisa
 
 Personalising to this extent creates an obvious risk: if everybody can modify structures, records become unstable. The product's answer comes down to two rules.
 
-**First rule: a published structure is frozen.** Once a version of a template or a section is published, it never moves again. Any modification creates a new version alongside it, with its own change note. That applies in cascade, including to value lists: renaming an option elsewhere in the product cannot change the behaviour of a section published yesterday.
+**First rule: a published structure is frozen.** Once a version of a template or a section is published, it never moves again. Any modification creates a new version alongside it, with its own change note. Pages, page order and the placement of sections on pages are part of that frozen template version. The rule applies in cascade, including to value lists: renaming an option elsewhere in the product cannot change the behaviour of a section published yesterday.
 
 As long as a structure is a draft, it stays freely editable. Freezing happens at publication, so as not to create a version at every micro-adjustment during design.
 
@@ -557,7 +573,7 @@ This is the part that decides whether the feature is usable or not.
 **In v1**
 
 - The complete core: mono-user account, personal vaults, the Me contact, contacts, groups and read only private share links.
-- The complete personalisation engine: templates, sections, fields, versions, shared value lists.
+- The complete personalisation engine: templates, pages, sections, fields, versions, shared value lists.
 - Custom entities.
 - **The journal and activities** (see 9), with configurable natures, their own fields, the day view, the timeline on a contact's record and quick capture. This is half the product, not a side feature: without it, inactivity reminders and statistics have nothing to measure.
 - The essential field types: text, long text, number, yes or no, web address, email, phone, dropdown, multiple choice, date, recurring date, relation, file, image, repeater, address, layout elements, as well as marking fields as sensitive.
@@ -586,7 +602,7 @@ This is the part that decides whether the feature is usable or not.
 
 ## 16. What remains to be decided
 
-- The interface for creating fields and sections. This is the most delicate point in the product: it is where personalisation becomes either a superpower or an unusable machine. It is also the hardest screen to make accessible by keyboard and screen reader.
+- The detailed layout of the builder for creating pages, sections and fields. Its page operations and accessibility contract are settled in section 5.2, but the complete composition of this screen still needs design work. This is the most delicate point in the product: it is where personalisation becomes either a superpower or an unusable machine.
 - The rendering of the repeater, which is the most interactive field in the catalogue, and therefore the most exposed on the accessibility front.
 - Can a template shared on the marketplace carry several translations of its labels, or does it stay frozen in its author's language (see 3.7)?
 - Do the mobile applications work offline, and if so how far (consultation only, or capture with deferred sync)?
@@ -595,7 +611,7 @@ This is the part that decides whether the feature is usable or not.
 - What becomes of a shared value list when a section using it is installed into another account? Do we copy it, or map it to the installer's equivalent list?
 - How should sensitive fields be handled in the changelog (see 12)?
 - Does a webhook carry the modified values or only the nature of the change (see 14.5)?
-- What level of granularity should a private link offer: the whole record, chosen sections, a saved view, or a frozen snapshot?
+- What level of granularity should a private link offer: the whole record, chosen pages or sections, a saved view, or a frozen snapshot?
 - Does a private link to a vault always reflect the current data, or can it publish an immutable snapshot?
 - How far can a module extend the interface, the data model and the processing without compromising updates, security and accessibility?
 - How do we sign, distribute, update, deactivate and diagnose modules?
