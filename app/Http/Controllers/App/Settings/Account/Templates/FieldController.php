@@ -92,8 +92,11 @@ class FieldController extends Controller
                 ->with('error_description', __('Make the list on the default values screen first, then come back.'));
         }
 
-        return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'field' => $field->id])
-            ->with('status', __('The field is added.'));
+        return redirect()->route('settings.templateBuilder.field', [
+            'template' => $template,
+            'page' => $templateVersionSection->templateVersionPage->key,
+            'field' => $field->id,
+        ])->with('status', __('The field is added.'));
     }
 
     public function update(Request $request, Template $template, TemplateVersionSection $templateVersionSection, Field $field): RedirectResponse
@@ -127,8 +130,11 @@ class FieldController extends Controller
             return $this->refuse($template);
         }
 
-        return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'field' => $target->getKey()])
-            ->with('status', __('The field is saved.'));
+        return redirect()->route('settings.templateBuilder.field', [
+            'template' => $template,
+            'page' => $templateVersionSection->templateVersionPage->key,
+            'field' => $target->getKey(),
+        ])->with('status', __('The field is saved.'));
     }
 
     public function destroy(Request $request, Template $template, TemplateVersionSection $templateVersionSection, Field $field): RedirectResponse
@@ -143,7 +149,10 @@ class FieldController extends Controller
             return $this->refuse($template);
         }
 
-        return redirect()->route('settings.templateBuilder.index', $template)
+        return redirect()->route('settings.templateBuilder.index', [
+            'template' => $template,
+            'page' => $templateVersionSection->templateVersionPage->key,
+        ])
             ->with('status', __('The field is removed.'))
             ->with('status_description', __('Nothing had been written in it.'));
     }

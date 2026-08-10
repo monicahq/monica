@@ -14,6 +14,7 @@
   @var array $section
   @var \App\Models\Template $template
   @var bool $isEditable
+  @var array<int, array{id: int, uuid: string, label: string}> $otherPages
 --}}
 <div data-row-id="{{ $section['id'] }}" class="relative">
   <div
@@ -52,6 +53,33 @@
               @click="renaming = true; $nextTick(() => $refs.title.focus())"
               class="cursor-pointer rounded-md px-2 py-1.5 text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-ink"
             >{{ __('Rename') }}</button>
+
+            {{--
+              Offered only once there is somewhere to move it to. The select
+              submits on its own, since picking a page is the whole decision and
+              a button beside it would only ask for the same thing twice.
+            --}}
+            @if ($otherPages !== [])
+              <x-form
+                method="put"
+                :action="route('settings.templateSectionPage.update', [$template, $section['id']])"
+                x-target="builder"
+                class="flex items-center"
+              >
+                <select
+                  name="page"
+                  aria-label="{{ __('Move this section to another page') }}"
+                  @change="$el.form.requestSubmit()"
+                  class="cursor-pointer appearance-none rounded-md border-none bg-transparent px-2 py-1.5 text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-ink"
+                >
+                  <option value="" selected>{{ __('Move to') }}</option>
+
+                  @foreach ($otherPages as $page)
+                    <option value="{{ $page['uuid'] }}">{{ $page['label'] }}</option>
+                  @endforeach
+                </select>
+              </x-form>
+            @endif
 
             <x-modal.warning
               :title="__('Take “:name” off this template?', ['name' => $section['name']])"
@@ -111,7 +139,7 @@
     <div class="space-y-0.5 p-2">
       @foreach ($section['fields'] as $field)
         <a
-          href="{{ route('settings.templateBuilder.index', ['template' => $template, 'field' => $field['id']]) }}"
+          href="{{ $field['url'] }}"
           x-target="builder"
           @class([
             'grid w-full grid-cols-[minmax(90px,1fr)_minmax(0,auto)] items-center gap-2.5 rounded-md border px-2.5 py-2.5 text-left transition-colors duration-150 hover:bg-hover',

@@ -37,6 +37,9 @@ class TemplateSectionPositionController extends Controller
                 ->with('error', __('This version has been published and cannot be changed.'));
         }
 
-        return redirect()->route('settings.templateBuilder.index', $template);
+        return redirect()->route('settings.templateBuilder.index', [
+            'template' => $template,
+            'page' => $templateVersionSection->templateVersionPage->key,
+        ]);
     }
 }

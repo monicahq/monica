@@ -8,6 +8,7 @@ use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\Template;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -34,6 +35,60 @@ class TemplateSectionControllerTest extends TestCase
 
         $this->assertDatabaseHas('sections', ['account_id' => $user->account_id, 'name' => 'Health']);
         $this->assertDatabaseHas('template_version_sections', ['template_version_id' => $version->id]);
+    }
+
+    #[Test]
+    public function it_puts_the_section_on_the_page_the_builder_had_open(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $events = TemplateVersionPage::factory()->create(['template_version_id' => $version->id]);
+
+        $response = $this->actingAs($user)->post(route('settings.templateSections.create', $template), [
+            'name' => 'Beet facts',
+            'page' => $events->uuid,
+        ]);
+
+        $response->assertRedirect(route('settings.templateBuilder.index', ['template' => $template, 'page' => $events->key]));
+        $this->assertDatabaseHas('template_version_sections', ['template_version_page_id' => $events->id]);
+    }
+
+    #[Test]
+    public function it_puts_the_section_on_the_first_page_when_none_is_named(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        TemplateVersionPage::factory()->create(['template_version_id' => $version->id]);
+
+        $this->actingAs($user)->post(route('settings.templateSections.create', $template), ['name' => 'Beet facts']);
+
+        $this->assertDatabaseHas('template_version_sections', [
+            'template_version_page_id' => $version->pages()->firstOrFail()->id,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_page_that_is_not_on_this_template(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $elsewhere = TemplateVersion::factory()->create(['account_id' => $user->account_id])->pages()->sole();
+
+        $this->actingAs($user)->post(route('settings.templateSections.create', $template), [
+            'name' => 'Beet facts',
+            'page' => $elsewhere->uuid,
+        ])->assertSessionHasErrors('page');
+
+        $this->assertDatabaseCount('template_version_sections', 0);
     }
 
     /**

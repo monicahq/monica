@@ -75,6 +75,12 @@
       </x-notice>
     @endunless
 
+    @include('app.settings.account.templates._pages', [
+      'viewModel' => $viewModel,
+      'template' => $template,
+      'isEditable' => $viewModel->isEditable(),
+    ])
+
     <div class="grid items-start gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
       <div class="space-y-4" x-data="sortableRows" data-sortable>
         @forelse ($viewModel->sections() as $section)
@@ -82,17 +88,14 @@
             'section' => $section,
             'template' => $template,
             'isEditable' => $viewModel->isEditable(),
+            'otherPages' => $viewModel->otherPages(),
           ])
         @empty
-          <x-box padding="p-0">
-            <x-empty-state :title="__('No sections yet')">
-              <x-slot:icon>
-                <x-entity-icon name="info" :size="20" />
-              </x-slot:icon>
+          <div class="max-w-140 space-y-1.5 rounded-xl border border-dashed border-hairline-strong bg-sunken p-5">
+            <p class="text-sm font-semibold text-ink">{{ __('This page has nothing on it yet') }}</p>
 
-              {{ __('A section is a block of fields that belong together: an address, a set of health notes. Add one to start.') }}
-            </x-empty-state>
-          </x-box>
+            <p class="text-sm leading-relaxed text-muted">{{ __('A page holds sections, and a section holds fields. Add the first section to decide what this page is for.') }}</p>
+          </div>
         @endforelse
 
         @if ($viewModel->isEditable())
@@ -107,7 +110,7 @@
                 <line x1="8" y1="3.5" x2="8" y2="12.5"></line>
                 <line x1="3.5" y1="8" x2="12.5" y2="8"></line>
               </svg>
-              {{ __('Add a section') }}
+              {{ $viewModel->selectedPage() === null ? __('Add a section') : __('Add a section to :page', ['page' => $viewModel->selectedPage()->label]) }}
             </button>
 
             <x-form
@@ -118,6 +121,8 @@
               x-target="builder"
               class="flex flex-wrap items-end gap-3 rounded-xl border border-dashed border-muted p-4"
             >
+              <input type="hidden" name="page" value="{{ $viewModel->selectedPage()?->uuid }}" />
+
               <x-input
                 id="section-name"
                 name="name"

@@ -25,7 +25,7 @@
     <x-breadcrumb
       :items="[
         ['label' => __('Templates'), 'url' => route('settings.templates.index')],
-        ['label' => $template->name, 'url' => route('settings.templateBuilder.index', $template)],
+        ['label' => $template->name, 'url' => route('settings.templateBuilder.index', ['template' => $template, 'page' => $row->templateVersionPage->key])],
         ['label' => __('Add a field')],
       ]"
     />
@@ -33,7 +33,7 @@
 
   <div class="space-y-1.5">
     <a
-      href="{{ route('settings.templateBuilder.index', $template) }}"
+      href="{{ route('settings.templateBuilder.index', ['template' => $template, 'page' => $row->templateVersionPage->key]) }}"
       data-turbo="true"
       class="-ml-1.5 inline-flex items-center gap-1.5 rounded-md px-1.5 py-1 text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-ink"
     >
@@ -160,7 +160,7 @@
       <p class="text-sm text-muted">{{ __('Everything else about the field is set once it exists.') }}</p>
 
       <div class="ml-auto flex items-center gap-3">
-        <x-button.secondary :href="route('settings.templateBuilder.index', $template)" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
+        <x-button.secondary :href="route('settings.templateBuilder.index', ['template' => $template, 'page' => $row->templateVersionPage->key])" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
         <x-button>{{ __('Add the field') }}</x-button>
       </div>

@@ -14,6 +14,7 @@ use App\Models\Template;
 use App\Models\TemplateVersionSection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 /**
  * The sections on one template: putting one there, retitling it, taking it off.
@@ -28,17 +29,28 @@ use Illuminate\Http\Request;
  */
 class TemplateSectionController extends Controller
 {
+    /**
+     * The section lands on the page the builder had open. Nobody chooses it
+     * separately: the tab somebody is looking at is the tab they mean.
+     */
     public function create(Request $request, Template $template): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-        ]);
-
         $version = $template->versions()->first();
 
         if ($version === null || ! $version->status->isEditable()) {
             return $this->refuse($template);
         }
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'page' => [
+                'nullable',
+                'string',
+                Rule::exists('template_version_pages', 'uuid')->where('template_version_id', $version->id),
+            ],
+        ]);
+
+        $page = $version->pages->firstWhere('uuid', $validated['page'] ?? null);
 
         $section = new CreateSection(
             user: $request->user(),
@@ -49,9 +61,10 @@ class TemplateSectionController extends Controller
             user: $request->user(),
             templateVersion: $version,
             sectionVersion: $section->versions()->first(),
+            templateVersionPage: $page,
         )->execute();
 
-        return redirect()->route('settings.templateBuilder.index', $template)
+        return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'page' => $page?->key])
             ->with('status', __('The section is added.'));
     }
 
@@ -74,13 +87,17 @@ class TemplateSectionController extends Controller
             return $this->refuse($template);
         }
 
-        return redirect()->route('settings.templateBuilder.index', $template)
-            ->with('status', __('The heading is saved.'));
+        return redirect()->route('settings.templateBuilder.index', [
+            'template' => $template,
+            'page' => $templateVersionSection->templateVersionPage->key,
+        ])->with('status', __('The heading is saved.'));
     }
 
     public function destroy(Request $request, Template $template, TemplateVersionSection $templateVersionSection): RedirectResponse
     {
         abort_unless($templateVersionSection->isReachableThrough($request->user(), $template), 404);
+
+        $page = $templateVersionSection->templateVersionPage->key;
 
         try {
             new RemoveSectionFromTemplateVersion(
@@ -91,7 +108,7 @@ class TemplateSectionController extends Controller
             return $this->refuse($template);
         }
 
-        return redirect()->route('settings.templateBuilder.index', $template)
+        return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'page' => $page])
             ->with('status', __('The section is off this template.'))
             ->with('status_description', __('The section itself is untouched, and every other template carrying it is unchanged.'));
     }

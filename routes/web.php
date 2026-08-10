@@ -27,7 +27,10 @@ use App\Http\Controllers\App\Settings\Account\Templates\TemplateActivationContro
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateBuilderController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateCopyController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplatePageController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplatePagePositionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPageController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPositionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicationController;
@@ -92,15 +95,22 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     Route::post('settings/account/templates/{template}/copy', [TemplateCopyController::class, 'create'])->name('settings.templateCopy.create');
     Route::put('settings/account/templates/{template}/active', [TemplateActivationController::class, 'update'])->name('settings.templateActivation.update');
 
-    Route::get('settings/account/templates/{template}/builder', [TemplateBuilderController::class, 'index'])->name('settings.templateBuilder.index');
+    Route::get('settings/account/templates/{template}/builder/{page?}', [TemplateBuilderController::class, 'index'])->name('settings.templateBuilder.index');
+    Route::get('settings/account/templates/{template}/builder/{page}/fields/{field}', [TemplateBuilderController::class, 'index'])->whereNumber('field')->name('settings.templateBuilder.field');
     Route::post('settings/account/templates/{template}/versions', [TemplateVersionController::class, 'create'])->name('settings.templateVersions.create');
     Route::delete('settings/account/templates/{template}/versions/{templateVersion}', [TemplateVersionController::class, 'destroy'])->whereNumber('templateVersion')->name('settings.templateVersions.destroy');
     Route::put('settings/account/templates/{template}/versions/{templateVersion}/published', [TemplateVersionPublicationController::class, 'update'])->whereNumber('templateVersion')->name('settings.templateVersionPublication.update');
+
+    Route::post('settings/account/templates/{template}/pages', [TemplatePageController::class, 'create'])->name('settings.templatePages.create');
+    Route::put('settings/account/templates/{template}/pages/{templateVersionPage}', [TemplatePageController::class, 'update'])->name('settings.templatePages.update');
+    Route::delete('settings/account/templates/{template}/pages/{templateVersionPage}', [TemplatePageController::class, 'destroy'])->name('settings.templatePages.destroy');
+    Route::put('settings/account/templates/{template}/pages/{templateVersionPage}/position', [TemplatePagePositionController::class, 'update'])->name('settings.templatePagePosition.update');
 
     Route::post('settings/account/templates/{template}/sections', [TemplateSectionController::class, 'create'])->name('settings.templateSections.create');
     Route::put('settings/account/templates/{template}/sections/{templateVersionSection}', [TemplateSectionController::class, 'update'])->whereNumber('templateVersionSection')->name('settings.templateSections.update');
     Route::delete('settings/account/templates/{template}/sections/{templateVersionSection}', [TemplateSectionController::class, 'destroy'])->whereNumber('templateVersionSection')->name('settings.templateSections.destroy');
     Route::put('settings/account/templates/{template}/sections/{templateVersionSection}/position', [TemplateSectionPositionController::class, 'update'])->whereNumber('templateVersionSection')->name('settings.templateSectionPosition.update');
+    Route::put('settings/account/templates/{template}/sections/{templateVersionSection}/page', [TemplateSectionPageController::class, 'update'])->whereNumber('templateVersionSection')->name('settings.templateSectionPage.update');
 
     Route::get('settings/account/templates/{template}/sections/{templateVersionSection}/fields/new', [FieldController::class, 'new'])->whereNumber('templateVersionSection')->name('settings.fields.new');
     Route::post('settings/account/templates/{template}/sections/{templateVersionSection}/fields', [FieldController::class, 'create'])->whereNumber('templateVersionSection')->name('settings.fields.create');

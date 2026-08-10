@@ -8,6 +8,7 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Template;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 
@@ -24,6 +25,11 @@ use App\Models\User;
  * template at the same time. The screen says so on the section itself, because
  * the first edit will quietly give that section a new version and it is better
  * to have read that beforehand.
+ *
+ * The version is read one page at a time. A page is a tab on the record, and
+ * the builder shows the sections of one of them: which one travels in the
+ * address beside the field that is open, so the screen somebody is looking at
+ * can be linked to.
  */
 class TemplateBuilderViewModel
 {
@@ -31,6 +37,7 @@ class TemplateBuilderViewModel
         private readonly User $user,
         private readonly Template $template,
         private readonly ?int $selectedFieldId = null,
+        private readonly ?string $selectedPageKey = null,
     ) {}
 
     public function template(): Template
@@ -121,11 +128,12 @@ class TemplateBuilderViewModel
     }
 
     /**
-     * The sections on this version, in order, each with the fields inside it.
+     * The tabs at the top: one per page of the version, in the order they are
+     * read in, each counting the fields somebody would find on it.
      *
      * @return array<int, array<string, mixed>>
      */
-    public function sections(): array
+    public function pages(): array
     {
         $version = $this->version();
 
@@ -133,7 +141,97 @@ class TemplateBuilderViewModel
             return [];
         }
 
+        $selected = $this->selectedPage();
+
+        return $version->pages
+            ->map(fn (TemplateVersionPage $page): array => [
+                'id' => $page->id,
+                'uuid' => $page->uuid,
+                'label' => $page->label,
+                'fieldCount' => $this->fieldsOn($page),
+                'isSelected' => $page->is($selected),
+                'url' => route('settings.templateBuilder.index', ['template' => $this->template, 'page' => $page->key]),
+            ])
+            ->all();
+    }
+
+    /**
+     * The page the screen is showing. An address naming a page that is not on
+     * this version, or naming none at all, opens the first one rather than
+     * refusing: a tab that has gone is not an error worth a page of its own.
+     */
+    public function selectedPage(): ?TemplateVersionPage
+    {
+        return once(function (): ?TemplateVersionPage {
+            $pages = $this->version()?->pages;
+
+            if ($pages === null || $pages->isEmpty()) {
+                return null;
+            }
+
+            return $pages->firstWhere('key', $this->selectedPageKey) ?? $pages->first();
+        });
+    }
+
+    /**
+     * Whether the open page can go. Both refusals belong to the action, and
+     * asking them here is what lets the screen explain instead of offering
+     * something that comes back refused.
+     */
+    public function canRemovePage(): bool
+    {
+        $page = $this->selectedPage();
+
+        if ($page === null || ($this->version()?->pages->count() ?? 0) <= 1) {
+            return false;
+        }
+
+        return $this->version()?->assembly->where('template_version_page_id', $page->id)->isEmpty() === true;
+    }
+
+    /**
+     * The pages a section on the open one could be moved to.
+     *
+     * @return array<int, array{id: int, uuid: string, label: string}>
+     */
+    public function otherPages(): array
+    {
+        $version = $this->version();
+        $page = $this->selectedPage();
+
+        if ($version === null || $page === null) {
+            return [];
+        }
+
+        return $version->pages
+            ->reject(fn (TemplateVersionPage $other): bool => $other->is($page))
+            ->map(fn (TemplateVersionPage $other): array => [
+                'id' => $other->id,
+                'uuid' => $other->uuid,
+                'label' => $other->label,
+            ])
+            ->values()
+            ->all();
+    }
+
+    /**
+     * The sections on the open page, in order, each with the fields inside it.
+     * The other pages of the version are not read: what the screen shows is one
+     * tab at a time.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function sections(): array
+    {
+        $version = $this->version();
+        $page = $this->selectedPage();
+
+        if ($version === null || $page === null) {
+            return [];
+        }
+
         return $version->assembly
+            ->where('template_version_page_id', $page->id)
             ->map(fn (TemplateVersionSection $row): array => [
                 'id' => $row->id,
                 'name' => $row->title_override ?? $row->sectionVersion->section->name,
@@ -148,9 +246,15 @@ class TemplateBuilderViewModel
                         'typeLabel' => FieldCatalogueViewModel::labelFor($field->type),
                         'isSensitive' => $field->is_sensitive,
                         'isSelected' => $field->id === $this->selectedFieldId,
+                        'url' => route('settings.templateBuilder.field', [
+                            'template' => $this->template,
+                            'page' => $page->key,
+                            'field' => $field->id,
+                        ]),
                     ])
                     ->all(),
             ])
+            ->values()
             ->all();
     }
 
@@ -181,8 +285,40 @@ class TemplateBuilderViewModel
             'isRequired' => $field->is_required,
             'isSensitive' => $field->is_sensitive,
             'isHighlighted' => $field->is_highlighted,
-            'sectionName' => $row->title_override ?? $field->sectionVersion->section->name,
+            'sectionName' => $this->pathTo($row),
         ];
+    }
+
+    /**
+     * Where the open field sits, said as somebody would say it. The page is
+     * named only when it is not the one on the screen, since repeating the tab
+     * they are looking at tells them nothing.
+     */
+    private function pathTo(?TemplateVersionSection $row): string
+    {
+        if ($row === null) {
+            return '';
+        }
+
+        $name = $row->title_override ?? $row->sectionVersion->section->name;
+        $page = $this->version()?->pages->firstWhere('id', $row->template_version_page_id);
+
+        if ($page === null || $page->is($this->selectedPage())) {
+            return $name;
+        }
+
+        return __(':page › :section', ['page' => $page->label, 'section' => $name]);
+    }
+
+    /**
+     * How many fields somebody would find on a page, which is what its tab
+     * counts.
+     */
+    private function fieldsOn(TemplateVersionPage $page): int
+    {
+        return (int) ($this->version()?->assembly
+            ->where('template_version_page_id', $page->id)
+            ->sum(fn (TemplateVersionSection $row): int => $row->sectionVersion->fields->count()) ?? 0);
     }
 
     /**
