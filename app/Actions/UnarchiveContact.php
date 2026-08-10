@@ -11,7 +11,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Put an archived contact back in the main lists.
+ * Put an archived contact back in the main lists, and with them the reminders
+ * archiving silenced, once reminders exist.
  */
 class UnarchiveContact
 {

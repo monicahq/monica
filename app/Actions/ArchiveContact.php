@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
  * Take a contact out of the main lists without deleting them. It is what a
  * colleague from two jobs ago is for: nothing about them is lost, and they stop
  * getting in the way of the people currently in a life.
+ *
+ * An archived contact is also silent: no reminder about them fires while they
+ * are archived. Reminders do not exist yet, so nothing here cancels anything.
  */
 class ArchiveContact
 {

@@ -41,7 +41,7 @@ ends_on                     date                            last date it may fir
 time_of_day                 time                            local time it fires at
 timezone                    string (64)                     time zone frozen at creation, which later changes to the user preference never move
 is_active                   boolean                         whether it still produces occurrences
-inactive_reason             enum (user, source_deleted, field_removed, record_deleted)  why it stopped, so the page can explain instead of hiding it
+inactive_reason             enum (user, source_deleted, field_removed, record_deleted, record_archived)  why it stopped, so the page can explain instead of hiding it
 deactivated_at              datetime                        when it stopped
 last_evaluated_at           datetime                        when occurrences were last computed from it
 created_by_user_id          int                             user who created it, null when the system did
@@ -63,7 +63,8 @@ deleted_at                  datetime
 - **The time is local, not absolute** (10.3). "Every year at 9am" means 9am local, across daylight saving changes. The zone is frozen at creation, and changing the personal time zone later never shifts a rule already set. This is why `timezone` is on the rule and not read from the user.
 - **Inactivity reads only activities whose type counts as an interaction** (9.3, 10.2). Its quality depends entirely on the journal being kept, which section 10.2 states plainly and which the interface should say too.
 - **A change to the source breaks nothing** (10.3). A corrected date recomputes future occurrences and keeps the history. A deleted contact cancels future occurrences and restores them if it comes back. A field removed from a structure disables the rule and the product **explains why it is inactive** rather than making it disappear. That is what `inactive_reason` is for, and it is a direct application of section 3.3.
-- **Disabling the rule is the only action that cancels every future occurrence**, and it is reversible (10.3). Postponing and skipping act on one occurrence and are handled by [ReminderOccurrence](041-reminder-occurrence.md).
+- **An archived record is a silent record.** Archiving a [Contact](019-contact.md) or an [Entity](020-entity.md) deactivates every rule about it with `record_archived`, and unarchiving reactivates them and recomputes what is ahead. Archiving exists so somebody stops hearing about a record without losing what is written on it, and a rule that kept firing would defeat the only thing archiving does. The rule stays visible and says why it is quiet, as it does for every other reason (3.3). An inactivity rule is included: an archived record cannot fire for silence.
+- **Disabling the rule is the only action a user takes that cancels every future occurrence**, and it is reversible (10.3). Deleting or archiving the record it is about cancels them too, and those are reversible in the same way. Postponing and skipping act on one occurrence and are handled by [ReminderOccurrence](041-reminder-occurrence.md).
 - A reminder belongs to one account and is never sent to anybody viewing a share link (10.4).
 - A rule is not a task (10.5). A task is an action to do, with a status and a completion date. The two are not merged, and when tasks arrive they will reuse this scheduling machinery rather than grow a second one, so nothing here may assume a rule is always about a record.
 

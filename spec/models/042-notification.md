@@ -48,6 +48,7 @@ updated_at                  datetime
 - Quiet hours are applied here (10.4). A notification due at 3am is held and delivered at 8am. `scheduled_for` keeps when it was due, `held_until` says when it may go, and the two are never conflated.
 - Digest mode folds notifications into one (10.4). The folded ones keep their rows and point at the digest, so the history stays complete.
 - A notification never goes to somebody viewing a share link (10.4, 4.4). Share link viewers are not users of the account and receive nothing.
+- A held notification is checked again before it goes out, and it does not go out if the record it is about was archived or deleted while it waited. A reminder due at 3am on a contact archived at 7am must not arrive at 8am. The row stays, with `failure_reason` saying why nothing was sent, since a notification that was silently dropped is indistinguishable from one that was never scheduled.
 - `locale` is stored so a language bug is visible after the fact, as on [EmailSent](005-email-sent.md).
 - Nothing is deleted silently. A failed delivery keeps its reason.
 

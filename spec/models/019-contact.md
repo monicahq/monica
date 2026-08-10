@@ -62,6 +62,7 @@ deleted_at                  datetime
 - A partial contact is a real row in the graph, not free text (8.2). It is hidden from the main lists while `is_partial` is true, and it stops being partial as soon as it is enriched or merged. There is never a parallel string describing a human who does not exist as a contact.
 - `last_activity_at` counts only activities whose nature is marked as a real interaction (9.3). It is what the inactivity reminder reads (10.2), and it is maintained on write because computing it on read would scan the activity table for every row in a list.
 - A contact is soft deleted. Deleting it cancels future reminder occurrences and restores them if the contact comes back (10.3). Its relationships, activities and files are not destroyed.
+- **An archived contact triggers no reminder.** Archiving deactivates the rules about them and cancels their future occurrences, the way deleting does, and unarchiving reactivates the rules and puts what is ahead back (10.3). Past occurrences are kept, because they are history, and the rules say why they are quiet instead of vanishing (3.3). This covers the inactivity rule too: a contact nobody is meant to hear about cannot fire for silence.
 - Changing the applied template version writes a [RecordSnapshot](023-record-snapshot.md) first, always (6).
 - Every field on the page, including ones invented yesterday, is searchable and filterable with no configuration (13).
 
@@ -71,7 +72,7 @@ deleted_at                  datetime
 - **The contact cannot be moved to another template version.** That move writes a [RecordSnapshot](023-record-snapshot.md) first, always, and there is no snapshot model. Until there is, a contact stays on the version it was created on, which is the safe half of the rule to leave unfinished.
 - **`avatar_file_id` is a column with no foreign key.** [File](008-file.md) has no table yet. The column is there so the avatar arrives without a migration that rewrites the contact table, and the constraint arrives with the files table.
 - **`last_activity_at`, `activity_count` and `last_consulted_at` stay null and zero.** They are maintained on write by the models that produce them, and neither [Activity](036-activity.md) nor a screen to consult a contact on exists.
-- **Deleting a contact cancels nothing.** [Reminder](040-reminder.md) is ahead, so the cancelling of future occurrences and their restoration wait for it.
+- **Deleting a contact cancels nothing, and neither does archiving one.** [Reminder](040-reminder.md) is ahead, so the cancelling of future occurrences and their restoration wait for it. `ArchiveContact` and `UnarchiveContact` move the flag and nothing else until then.
 - **A partial contact is created by passing a flag.** Nothing produces one on its own, since a mention comes from [Relationship](026-relationship.md). What exists is the state and the fact that the main lists ignore it.
 - **Merging is not here.** [ContactMerge](034-contact-merge.md) is its own model, and with it the rule that a partial contact stops being partial when it is merged.
 - **No screen and no API.** Model and actions only.
@@ -85,7 +86,8 @@ deleted_at                  datetime
 - **A new contact starts on the vault's contact default**, and the caller may name another published version instead. The default is a version and never a template ([VaultDefaultTemplate](018-vault-default-template.md)), so nothing here picks the latest one.
 - **A contact is put on a published version only.** A draft is something somebody is still editing, and a contact rendering from it would change under them; a retired version is no longer offered for anything new.
 - **Archiving, favouriting and deleting are each their own action**, as they are for every other model here, rather than one action taking a flag.
+- **Archiving silences reminders.** The specification does not settle it, and both readings hold together: archiving is about the lists, or archiving is about attention. Attention wins, because being told about somebody is the loudest thing the product does, and a colleague from two jobs ago whose birthday still arrives every year is exactly what somebody archives to stop. Archiving therefore reuses the machinery deletion uses, with its own reason ([Reminder](040-reminder.md), [ReminderOccurrence](041-reminder-occurrence.md)), so a rule that went quiet can say it is the archiving and not somebody having disabled it.
 
 ## Open questions
 
-- Whether an archived contact still triggers reminders. Probably not, and the specification does not say.
+None. This model is settled.

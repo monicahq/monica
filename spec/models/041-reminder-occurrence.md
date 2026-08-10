@@ -12,7 +12,7 @@ Section 10.3 turns that into three distinct actions, and the distinction is a pr
 - **Postpone** moves this deadline only and leaves the following ones alone.
 - **Skip** makes this deadline go away without disabling the rule. Skipping this year's birthday does not remove next year's.
 - **Complete** means the thing was done.
-- **Disabling the rule** is the only action that cancels every future deadline, and it lives on [Reminder](040-reminder.md).
+- **Disabling the rule** is the only action on the rule itself that cancels every future deadline, and it lives on [Reminder](040-reminder.md).
 
 ## Fields
 
@@ -30,7 +30,7 @@ postponed_count             int                             how many times it wa
 notified_at                 datetime                        when the first notification for it went out
 completed_at                datetime                        when it was marked done
 skipped_at                  datetime                        when it was skipped
-cancelled_reason            enum (rule_disabled, record_deleted, source_changed)  why it was cancelled, so nothing vanishes unexplained
+cancelled_reason            enum (rule_disabled, record_deleted, record_archived, source_changed)  why it was cancelled, so nothing vanishes unexplained
 created_at                  datetime
 updated_at                  datetime
 ```
@@ -49,6 +49,7 @@ updated_at                  datetime
 - Skipping affects this one and nothing else.
 - A cancelled occurrence keeps its reason. Nothing disappears without an explanation (3.3).
 - Deleting a record cancels its future occurrences and restores them when the record comes back (10.3). Past occurrences are kept, because they are history.
+- Archiving a record does the same, with `record_archived`, and unarchiving puts the future deadlines back. An archived [Contact](019-contact.md) or [Entity](020-entity.md) is due nothing, since archiving is how somebody says they no longer want to hear about a record.
 - Quiet hours are applied at delivery, not here (10.4). An occurrence due at 3am stays due at 3am and its notification is held until 8am. Moving the occurrence itself would corrupt the history of when things were actually due.
 - Each state change emits a webhook (14.2).
 
