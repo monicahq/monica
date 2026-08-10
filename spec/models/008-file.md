@@ -1,6 +1,6 @@
 # 008. File
 
-**Status:** to create
+**Status:** exists (`app/Models/File.php`), built as far as the models that point at it allow
 **Spec:** 11, 4.4, 9.2
 
 ## What it is
@@ -50,6 +50,21 @@ deleted_at                  datetime
 - An upload that would push `storage_used_in_bytes` past the account limit is refused before the bytes are written, not after.
 - Nothing is deleted silently (3.3). A file removed by the orphan sweep is logged.
 - Images are processed asynchronously into their variants. The original is kept.
+
+## Not done yet
+
+- **Nothing points at a file.** [FieldValue](022-field-value.md) and [Activity](036-activity.md) are both ahead, so `reference_count` is moved by `AttachFile` and `DetachFile` and nothing calls either yet. Every file uploaded today is an orphan from the moment it lands, which is exactly what the count says.
+- **No screens and no API.** `CreateFile` takes an upload, checks the room and writes the row; nothing uploads anything through it. The user photo still writes its own two versions outside this model, and moves onto it when the record renderer needs a file at all.
+- **`variants` stays null.** Which sizes an image is derived into is a question for whatever renders one, and writing a set of sizes before anything reads them would be guessing. The column and the asynchronous processing arrive together.
+- **The checksum is written and never read.** Deduplication is an open question below, and until it is answered the hash is only what would make answering it possible.
+
+## Decisions taken while building it
+
+- **The sweep is the only thing that deletes.** `DetachFile` never removes anything: it stamps the moment the last thing let go, and `PurgeOrphanedFiles` comes for it once the grace period has run out. That gap is the point of the model, and it is configuration (`monica.orphaned_file_grace_period_in_days`) so an instance can keep files longer than it keeps snapshots.
+- **The bytes go and the row stays.** Deleting soft deletes, so what was uploaded, by whom and when survives the file itself. Section 3.3 asks that nothing disappear silently, and a row nobody can see is still better than no record at all.
+- **The room is checked before a byte is written.** An upload that would take the account past its ceiling is refused outright rather than written and then found to be one file too many.
+- **The disk is read from the row rather than from the configuration.** An instance that changes disk has to go on resolving everything it wrote before, which is what the column is for.
+- **The path never contains anything the uploader chose.** The name they had on their machine is kept on the row so a download hands it back, and what is written is the uuid, under the account and then the vault.
 
 ## Open questions
 

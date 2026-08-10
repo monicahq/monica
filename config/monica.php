@@ -144,4 +144,17 @@ return [
 
     'free_storage_limit_in_bytes' => env('MONICA_FREE_STORAGE_LIMIT_IN_BYTES', 104857600),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Orphaned files
+    |--------------------------------------------------------------------------
+    |
+    | How many days a file nothing points at is kept before the sweep takes it.
+    | It has to be longer than the window in which a record can be restored to
+    | an earlier version, or a restore recovers a pointer to nothing.
+    |
+    */
+
+    'orphaned_file_grace_period_in_days' => env('MONICA_ORPHANED_FILE_GRACE_PERIOD_IN_DAYS', 30),
+
 ];
