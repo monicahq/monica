@@ -24,7 +24,20 @@ Open .env and configure your DB_DATABASE, DB_USERNAME, DB_PASSWORD, etc.
 php artisan monica:dummy
 ```
 
-### 2. Testing the Import API in Postman
+### 2. Run the Application
+
+To start the project locally, run the following commands in your terminal:
+
+```bash
+# Start the Laravel backend development server
+php artisan serve
+
+# (Optional) In a separate terminal, start the Vite frontend development server
+npm run dev
+```
+The application should now be accessible at `http://localhost:8000`.
+
+### 3. Testing the Import API in Postman
 
 1. Log into the web interface as the `admin` (or `banker`) dummy user created by the setup command.
 2. Go to your Account Settings in the UI and generate a new **API Key**.
