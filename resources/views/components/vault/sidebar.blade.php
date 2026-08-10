@@ -1,11 +1,16 @@
 {{--
   The column beside the screens of one vault: what the vault holds, and the way
-  out of it into another one or into the settings.
+  out of it into another one.
 
   The switcher at the top is the only way across the boundary, which is why it
   sits above the navigation rather than in it. It lists every vault of the
   account, and the one being looked at is marked rather than repeated as a link
   to where you already are.
+
+  The navigation is about the vault and nothing else. What belongs to the
+  account is reached from the row at the foot of the column, which is who you
+  are signed in as and is the way into your own settings: the whole row is the
+  link, and it lights up under the pointer like any entry above it.
 
   Most of the navigation points nowhere yet. Contacts, the journal, tasks,
   reminders and files are each their own screen and none of them exists, so
@@ -149,18 +154,17 @@
         </span>
       @endif
     @endforeach
-
-    <h2 class="px-2.5 pt-4.5 pb-1.25 text-xs tracking-widest text-muted-soft uppercase">{{ __('Your account') }}</h2>
-
-    <a href="{{ route('settings.profile.index') }}" data-turbo="true" class="{{ $item }} border-transparent text-body hover:border-hairline-strong hover:bg-canvas hover:text-ink">
-      <x-entity-icon name="preferences" />
-      {{ __('Settings') }}
-    </a>
   </nav>
 
-  <div class="flex items-center gap-2 border-t border-hairline-soft px-3 py-2.5">
-    <x-avatar :user="$user" :size="26" />
+  <div class="border-t border-hairline-soft p-2">
+    <a
+      href="{{ route('settings.profile.index') }}"
+      data-turbo="true"
+      class="{{ $item }} border-transparent text-body hover:border-hairline-strong hover:bg-canvas hover:text-ink"
+    >
+      <x-avatar :user="$user" :size="26" />
 
-    <span class="truncate text-xs font-semibold text-ink">{{ $user->name }}</span>
+      <span class="truncate text-xs font-semibold">{{ $user->name }}</span>
+    </a>
   </div>
 </aside>

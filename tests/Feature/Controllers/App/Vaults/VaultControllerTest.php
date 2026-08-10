@@ -82,6 +82,29 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_nothing_about_the_account_beside_the_screens_of_a_vault(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('vaults.show', $vault))
+            ->assertStatus(200)
+            ->assertDontSee('Your account');
+    }
+
+    #[Test]
+    public function it_leads_to_the_account_settings_from_the_row_saying_who_is_signed_in(): void
+    {
+        $user = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('vaults.show', $vault))
+            ->assertStatus(200)
+            ->assertSee('Michael Scott')
+            ->assertSee(route('settings.profile.index'));
+    }
+
+    #[Test]
     public function it_does_not_find_a_vault_of_another_account(): void
     {
         $user = User::factory()->create();
