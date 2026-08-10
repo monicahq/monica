@@ -61,6 +61,18 @@ class ProfileControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_points_back_to_the_vaults(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('settings.profile.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee(route('vaults.index'), escape: false);
+        $response->assertSee('Back to your vaults', escape: false);
+    }
+
+    #[Test]
     public function it_redirects_a_visitor_who_is_not_signed_in(): void
     {
         $response = $this->get(route('settings.profile.index'));

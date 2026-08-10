@@ -1,6 +1,14 @@
 {{--
-  The column beside the settings screens: what you can change about your own
-  account, and who you are signed in as.
+  The column beside the settings screens: the way back out of them, what you can
+  change about your own account, and who you are signed in as.
+
+  Settings are somewhere you go and then leave, so the way out sits above the
+  navigation rather than in it, the same way the vault switcher does in the
+  other sidebar.
+
+  An entry under the pointer takes on the raised card the current one wears,
+  minus its weight: the weight is what says where you are, and putting it on
+  hover would shift the words sideways under the pointer.
 
   Below lg the column has nowhere to go, so it becomes a drawer that slides in
   over the screen, opened by the button in the bar. It is still the same aside
@@ -22,7 +30,7 @@
 ])
 
 @php
-  $item = 'flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm max-lg:py-2.5';
+  $item = 'flex items-center gap-2.5 rounded-md border px-2.5 py-1.5 text-sm transition-colors max-lg:py-2.5';
 @endphp
 
 <aside
@@ -50,14 +58,26 @@
     </button>
   </div>
 
-  <nav class="min-h-0 flex-1 space-y-px overflow-y-auto px-2 pt-2 pb-3">
+  <a
+    href="{{ route('vaults.index') }}"
+    data-turbo="true"
+    class="mx-2 mb-1.5 flex items-center gap-2.5 rounded-md border border-hairline-strong bg-canvas px-2.5 py-2 text-sm text-body transition-colors hover:bg-hover hover:text-ink"
+  >
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" class="shrink-0" aria-hidden="true">
+      <line x1="13" y1="8" x2="3.4" y2="8"></line>
+      <path d="M7 4.4 3.4 8 7 11.6"></path>
+    </svg>
+    {{ __('Back to your vaults') }}
+  </a>
+
+  <nav class="min-h-0 flex-1 space-y-px overflow-y-auto px-2 pt-1.5 pb-3">
     <h2 class="px-2.5 pt-1.5 pb-1.25 text-xs text-muted-soft uppercase">{{ __('Your account') }}</h2>
 
     <a
       href="{{ route('settings.profile.index') }}"
       data-turbo="true"
       @if ($current === 'profile') aria-current="page" @endif
-      class="{{ $item }} {{ $current === 'profile' ? 'bg-hover font-semibold text-ink' : 'text-body hover:bg-hover' }}"
+      class="{{ $item }} {{ $current === 'profile' ? 'border-hairline-strong bg-canvas font-semibold text-ink' : 'border-transparent text-body hover:border-hairline-strong hover:bg-canvas hover:text-ink' }}"
     >
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" class="shrink-0" aria-hidden="true">
         <circle cx="8" cy="6" r="2.6"></circle>
@@ -70,7 +90,7 @@
       href="{{ route('settings.logs.index') }}"
       data-turbo="true"
       @if ($current === 'logs') aria-current="page" @endif
-      class="{{ $item }} {{ $current === 'logs' ? 'bg-hover font-semibold text-ink' : 'text-body hover:bg-hover' }}"
+      class="{{ $item }} {{ $current === 'logs' ? 'border-hairline-strong bg-canvas font-semibold text-ink' : 'border-transparent text-body hover:border-hairline-strong hover:bg-canvas hover:text-ink' }}"
     >
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" class="shrink-0" aria-hidden="true">
         <path d="M4 2.4h5.2L12.4 5.6V13.6H4z"></path>
@@ -84,7 +104,7 @@
       href="{{ route('settings.security.index') }}"
       data-turbo="true"
       @if ($current === 'security') aria-current="page" @endif
-      class="{{ $item }} {{ $current === 'security' ? 'bg-hover font-semibold text-ink' : 'text-body hover:bg-hover' }}"
+      class="{{ $item }} {{ $current === 'security' ? 'border-hairline-strong bg-canvas font-semibold text-ink' : 'border-transparent text-body hover:border-hairline-strong hover:bg-canvas hover:text-ink' }}"
     >
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" class="shrink-0" aria-hidden="true">
         <rect x="3.4" y="7" width="9.2" height="6.6" rx="1.5"></rect>
@@ -97,7 +117,7 @@
       href="{{ route('settings.preferences.index') }}"
       data-turbo="true"
       @if ($current === 'preferences') aria-current="page" @endif
-      class="{{ $item }} {{ $current === 'preferences' ? 'bg-hover font-semibold text-ink' : 'text-body hover:bg-hover' }}"
+      class="{{ $item }} {{ $current === 'preferences' ? 'border-hairline-strong bg-canvas font-semibold text-ink' : 'border-transparent text-body hover:border-hairline-strong hover:bg-canvas hover:text-ink' }}"
     >
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" class="shrink-0" aria-hidden="true">
         <rect x="2.4" y="3.2" width="11.2" height="9.6" rx="1.5"></rect>
@@ -110,7 +130,7 @@
       href="{{ route('settings.valueLists.index') }}"
       data-turbo="true"
       @if ($current === 'defaults') aria-current="page" @endif
-      class="{{ $item }} {{ $current === 'defaults' ? 'bg-hover font-semibold text-ink' : 'text-body hover:bg-hover' }}"
+      class="{{ $item }} {{ $current === 'defaults' ? 'border-hairline-strong bg-canvas font-semibold text-ink' : 'border-transparent text-body hover:border-hairline-strong hover:bg-canvas hover:text-ink' }}"
     >
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" class="shrink-0" aria-hidden="true">
         <line x1="4" y1="4.4" x2="13" y2="4.4"></line>
@@ -124,7 +144,7 @@
       href="{{ route('settings.entityTypes.index') }}"
       data-turbo="true"
       @if ($current === 'entities') aria-current="page" @endif
-      class="{{ $item }} {{ $current === 'entities' ? 'bg-hover font-semibold text-ink' : 'text-body hover:bg-hover' }}"
+      class="{{ $item }} {{ $current === 'entities' ? 'border-hairline-strong bg-canvas font-semibold text-ink' : 'border-transparent text-body hover:border-hairline-strong hover:bg-canvas hover:text-ink' }}"
     >
       <x-entity-icon name="device" />
       {{ __('Entity types') }}
@@ -134,7 +154,7 @@
       href="{{ route('settings.templates.index') }}"
       data-turbo="true"
       @if ($current === 'templates') aria-current="page" @endif
-      class="{{ $item }} {{ $current === 'templates' ? 'bg-hover font-semibold text-ink' : 'text-body hover:bg-hover' }}"
+      class="{{ $item }} {{ $current === 'templates' ? 'border-hairline-strong bg-canvas font-semibold text-ink' : 'border-transparent text-body hover:border-hairline-strong hover:bg-canvas hover:text-ink' }}"
     >
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" class="shrink-0" aria-hidden="true">
         <rect x="2.6" y="2.6" width="10.8" height="10.8" rx="1.6"></rect>

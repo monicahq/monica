@@ -30,7 +30,7 @@
 ])
 
 @php
-  $item = 'flex items-center gap-2.5 rounded-md border px-2.5 py-1.5 text-sm max-lg:py-2.5';
+  $item = 'flex items-center gap-2.5 rounded-md border px-2.5 py-1.5 text-sm transition-colors max-lg:py-2.5';
 
   $sections = [
     ['key' => 'dashboard', 'label' => __('Dashboard'), 'icon' => 'activity', 'url' => route('vaults.show', $vault), 'badge' => null],
@@ -129,7 +129,7 @@
           href="{{ $section['url'] }}"
           data-turbo="true"
           @if ($current === $section['key']) aria-current="page" @endif
-          class="{{ $item }} {{ $current === $section['key'] ? 'border-hairline-strong bg-canvas font-semibold text-ink' : 'border-transparent text-body hover:bg-hover' }}"
+          class="{{ $item }} {{ $current === $section['key'] ? 'border-hairline-strong bg-canvas font-semibold text-ink' : 'border-transparent text-body hover:border-hairline-strong hover:bg-canvas hover:text-ink' }}"
         >
           <x-entity-icon :name="$section['icon']" />
           {{ $section['label'] }}
@@ -152,7 +152,7 @@
 
     <h2 class="px-2.5 pt-4.5 pb-1.25 text-xs tracking-widest text-muted-soft uppercase">{{ __('Your account') }}</h2>
 
-    <a href="{{ route('settings.profile.index') }}" data-turbo="true" class="{{ $item }} border-transparent text-body hover:bg-hover">
+    <a href="{{ route('settings.profile.index') }}" data-turbo="true" class="{{ $item }} border-transparent text-body hover:border-hairline-strong hover:bg-canvas hover:text-ink">
       <x-entity-icon name="preferences" />
       {{ __('Settings') }}
     </a>
