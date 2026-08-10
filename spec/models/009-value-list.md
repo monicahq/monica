@@ -37,14 +37,14 @@ deleted_at                  datetime
 - A supplied list carries both `name` and `name_translation_key`, and falls back to the translated key when `name` is null. This is the project convention for translatable defaults and it applies here so the seeded lists read correctly in every locale (3.7).
 - A list is never deleted while a field points at it. It is disabled, and the field explains why (3.3).
 - Renaming a list, or renaming an item inside it, must never change the behaviour of a published section (6). This is the reason a published section stores the resolved item and not just a pointer. See [SectionVersion](015-section-version.md).
-- Country, language and currency lists are seeded from `database/data`, where the project already keeps that kind of reference data.
+- A supplied list cannot be deleted. It is what the product itself reads from, and an account that does not want it empties it instead: an empty list offers nothing, which is the same outcome without leaving the product pointing at nothing. Everything else about a supplied list is the user's, including its name, its order and every value in it.
+- The country, language and currency lists are seeded with ten choices each rather than every country, language and currency there is. Nobody keeps contacts in two hundred countries, and a short list somebody adds to is quicker to use than a long one they have to search. This is what lets them be held as enum cases like every other supplied list, so `monica:localize` finds their names the way it finds any other translated string.
+- The supplied lists are seeded, and read on the settings screen, in the order `ValueListEnum` declares them: who somebody is, then where they are and what they speak, then what a detail beside their name is for. `position` is what the screen sorts on, and it is the user's to change.
 
 ## Not done yet
 
-- Three of the six lists section 5.4 names. Genders, phone labels and contact categories are seeded; countries, languages and currencies are not. They are reference data of a different size, six hundred rows an account and six hundred labels a locale, and they wait on `database/data` and on the field types that need them.
-- Nothing stops a list being deleted while a field points at it, because there is no [Field](017-field.md) to point. `DestroyValueList` deletes softly and takes the items with it. The rule arrives with the field.
+- Nothing stops a list being deleted while a field points at it, because there is no [Field](017-field.md) to point. `DestroyValueList` refuses a supplied list, and deletes a user made one softly with its items. The rule about fields arrives with the field.
 - Nothing reads a list yet. The fields that pick from one are model 017, and until they exist a list is a set of choices nothing offers.
-- The supplied names and labels are held as cases of an enum, one per list, so `monica:localize` finds them the way it finds any other translated string. A list seeded from a data file could not be found that way, which is one more thing countries and currencies need before they arrive.
 
 ## Open questions
 

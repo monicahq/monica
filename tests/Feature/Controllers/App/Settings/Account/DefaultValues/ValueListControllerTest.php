@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\DefaultValues;
 
+use App\Enums\ValueListEnum;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -34,6 +35,20 @@ class ValueListControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Job titles')
             ->assertSee('Assistant to the regional manager');
+    }
+
+    #[Test]
+    public function it_offers_to_add_a_list_beside_the_title_rather_than_under_the_lists(): void
+    {
+        $user = User::factory()->create();
+        ValueList::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Job titles',
+        ]);
+
+        $this->actingAs($user)->get(route('settings.valueLists.index'))
+            ->assertStatus(200)
+            ->assertSeeInOrder(['Default values', 'Add a list', 'Job titles']);
     }
 
     #[Test]
@@ -153,6 +168,34 @@ class ValueListControllerTest extends TestCase
 
         $this->assertSoftDeleted($list);
         $this->assertSoftDeleted($item);
+    }
+
+    #[Test]
+    public function it_does_not_offer_to_delete_a_list_the_product_supplied(): void
+    {
+        $user = User::factory()->create();
+        ValueList::factory()->supplied(ValueListEnum::Genders)->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('settings.valueLists.index'))
+            ->assertStatus(200)
+            ->assertSee('Genders')
+            ->assertDontSee('Delete “Genders”?', escape: false);
+    }
+
+    #[Test]
+    public function it_refuses_to_delete_a_list_the_product_supplied(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->supplied(ValueListEnum::Genders)->create(['account_id' => $user->account_id]);
+
+        $response = $this->actingAs($user)->delete(route('settings.valueLists.destroy', $list->id));
+
+        $response->assertRedirect(route('settings.valueLists.index'));
+        $response->assertSessionHas('error', 'This list stays.');
+
+        $this->assertNotSoftDeleted($list);
     }
 
     #[Test]

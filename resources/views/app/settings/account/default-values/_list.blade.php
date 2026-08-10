@@ -2,6 +2,10 @@
   One value list, and everything that can be done to it: renamed, thrown away,
   added to, and its values renamed, reordered and retired.
 
+  A list the product supplied cannot be thrown away, since the product itself
+  reads from it. Emptying it is how somebody says they do not want it, and the
+  values inside it are theirs to remove like any other.
+
   The whole panel is the target of every form inside it, so any of those swaps
   this block and leaves the other lists on the screen where they were. The swap
   replaces rather than morphs, because the flags that open a field in place are
@@ -40,20 +44,22 @@
       <div x-show="! renaming" class="flex items-center gap-0.5">
         <button type="button" @click="renaming = true; $nextTick(() => $refs.name.focus())" class="{{ $quietButton }}">{{ __('Rename') }}</button>
 
-        <x-modal.warning
-          :title="__('Delete “:name”?', ['name' => $list['name']])"
-          :confirm="__('Delete the list')"
-          :action="route('settings.valueLists.destroy', $list['id'])"
-          x-target="value-lists"
-        >
-          <x-slot:trigger>
-            <button type="button" @click="open = true" class="{{ $dangerButton }}">{{ __('Delete') }}</button>
-          </x-slot:trigger>
+        @if ($list['canBeDeleted'])
+          <x-modal.warning
+            :title="__('Delete “:name”?', ['name' => $list['name']])"
+            :confirm="__('Delete the list')"
+            :action="route('settings.valueLists.destroy', $list['id'])"
+            x-target="value-lists"
+          >
+            <x-slot:trigger>
+              <button type="button" @click="open = true" class="{{ $dangerButton }}">{{ __('Delete') }}</button>
+            </x-slot:trigger>
 
-          <p>{{ __('The list goes, and every value inside it goes with it.') }}</p>
+            <p>{{ __('The list goes, and every value inside it goes with it.') }}</p>
 
-          <p>{{ __('This cannot be undone.') }}</p>
-        </x-modal.warning>
+            <p>{{ __('This cannot be undone.') }}</p>
+          </x-modal.warning>
+        @endif
       </div>
     </x-slot:actions>
 

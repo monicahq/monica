@@ -65,6 +65,36 @@ class CreateDefaultValueListsTest extends TestCase
     }
 
     #[Test]
+    public function it_starts_the_long_lists_with_ten_choices_rather_than_all_there_are(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        new CreateDefaultValueLists(user: $user)->execute();
+
+        foreach ([ValueListEnum::Countries, ValueListEnum::Languages, ValueListEnum::Currencies] as $case) {
+            $list = ValueList::query()->firstWhere('key', $case->value);
+
+            $this->assertCount(10, $list->items);
+        }
+    }
+
+    #[Test]
+    public function it_writes_the_code_of_a_currency_beside_its_name(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        new CreateDefaultValueLists(user: $user)->execute();
+
+        $list = ValueList::query()->firstWhere('key', ValueListEnum::Currencies->value);
+
+        $this->assertSame('US dollar (USD)', $list->items()->orderBy('position')->first()->label);
+    }
+
+    #[Test]
     public function it_gives_every_supplied_choice_a_key_the_product_can_rely_on(): void
     {
         Queue::fake();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Settings\Account\DefaultValues;
 
+use App\Enums\ValueListEnum;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -36,6 +37,25 @@ class DefaultValuesViewModelTest extends TestCase
         $this->assertCount(2, $lists);
         $this->assertSame('Job titles', $lists[0]['name']);
         $this->assertSame('Phone labels', $lists[1]['name']);
+    }
+
+    #[Test]
+    public function it_says_a_list_can_be_deleted_only_when_the_product_did_not_supply_it(): void
+    {
+        $user = User::factory()->create();
+        ValueList::factory()->supplied(ValueListEnum::Genders)->create([
+            'account_id' => $user->account_id,
+            'position' => 1,
+        ]);
+        ValueList::factory()->create([
+            'account_id' => $user->account_id,
+            'position' => 2,
+        ]);
+
+        $lists = new DefaultValuesViewModel(user: $user)->lists();
+
+        $this->assertFalse($lists[0]['canBeDeleted']);
+        $this->assertTrue($lists[1]['canBeDeleted']);
     }
 
     #[Test]

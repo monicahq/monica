@@ -101,7 +101,17 @@ class CreateAccountTest extends TestCase
         $lists = $user->account->valueLists()->orderBy('position')->get();
 
         $this->assertEquals(
-            ['genders', 'phone_labels', 'contact_categories'],
+            [
+                'genders',
+                'contact_categories',
+                'countries',
+                'languages',
+                'currencies',
+                'phone_labels',
+                'email_labels',
+                'address_labels',
+                'website_labels',
+            ],
             $lists->pluck('key')->all(),
         );
         $this->assertEquals('Phone labels', $lists->firstWhere('key', 'phone_labels')->name);

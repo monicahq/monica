@@ -7,6 +7,7 @@ namespace App\Http\Controllers\App\Settings\Account\DefaultValues;
 use App\Actions\CreateValueList;
 use App\Actions\DestroyValueList;
 use App\Actions\UpdateValueList;
+use App\Exceptions\CannotDeleteASuppliedList;
 use App\Http\Controllers\Controller;
 use App\Models\ValueList;
 use App\ViewModels\Settings\Account\DefaultValues\DefaultValuesViewModel;
@@ -66,12 +67,23 @@ class ValueListController extends Controller
             ->with('status_description', __('It now reads the same in every language.'));
     }
 
+    /**
+     * The screen only offers a deletion for a list somebody made, so a refusal
+     * here means the request came from somewhere else. Saying so is better
+     * than a stack trace, and the reloaded screen shows what it should have.
+     */
     public function destroy(Request $request, ValueList $valueList): RedirectResponse
     {
-        new DestroyValueList(
-            user: $request->user(),
-            valueList: $valueList,
-        )->execute();
+        try {
+            new DestroyValueList(
+                user: $request->user(),
+                valueList: $valueList,
+            )->execute();
+        } catch (CannotDeleteASuppliedList) {
+            return redirect()->route('settings.valueLists.index')
+                ->with('error', __('This list stays.'))
+                ->with('error_description', __('It is one the product itself reads from. Empty it instead, and it offers nothing.'));
+        }
 
         return redirect()->route('settings.valueLists.index')
             ->with('status', __('The list is deleted.'))

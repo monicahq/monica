@@ -15,7 +15,8 @@ use App\Models\ValueListItem;
  *
  * A choice nothing points at can be deleted outright. One that records already
  * use cannot, and is stopped from being offered instead, which is why the two
- * counts below travel with every row.
+ * counts below travel with every row. A list the product supplied cannot be
+ * deleted at all, which is what `canBeDeleted` says on the list itself.
  */
 class DefaultValuesViewModel
 {
@@ -26,7 +27,7 @@ class DefaultValuesViewModel
     /**
      * The lists of the account, each with the choices it offers.
      *
-     * @return array<int, array{id: int, name: string, description: ?string, allowsUserValues: bool, countLabel: string, values: array<int, array{id: int, label: string, isActive: bool, canBeDeleted: bool, usageLabel: string}>}>
+     * @return array<int, array{id: int, name: string, description: ?string, allowsUserValues: bool, canBeDeleted: bool, countLabel: string, values: array<int, array{id: int, label: string, isActive: bool, canBeDeleted: bool, usageLabel: string}>}>
      */
     public function lists(): array
     {
@@ -40,6 +41,7 @@ class DefaultValuesViewModel
                 'name' => $list->name,
                 'description' => $list->description,
                 'allowsUserValues' => $list->allows_user_values,
+                'canBeDeleted' => ! $list->is_system,
                 'countLabel' => $this->countLabel($list->items->count()),
                 'values' => $list->items
                     ->map(fn (ValueListItem $item): array => [

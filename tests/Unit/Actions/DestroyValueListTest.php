@@ -6,6 +6,8 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\DestroyValueList;
 use App\Enums\UserActionEnum;
+use App\Enums\ValueListEnum;
+use App\Exceptions\CannotDeleteASuppliedList;
 use App\Jobs\LogUserAction;
 use App\Models\User;
 use App\Models\ValueList;
@@ -61,6 +63,19 @@ class DestroyValueListTest extends TestCase
         $list = ValueList::factory()->create();
 
         $this->expectException(ModelNotFoundException::class);
+
+        new DestroyValueList(user: $user, valueList: $list)->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_list_the_product_supplied(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->supplied(ValueListEnum::Genders)->create(['account_id' => $user->account_id]);
+
+        $this->expectException(CannotDeleteASuppliedList::class);
 
         new DestroyValueList(user: $user, valueList: $list)->execute();
     }
