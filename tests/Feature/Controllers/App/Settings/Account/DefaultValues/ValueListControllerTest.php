@@ -52,6 +52,22 @@ class ValueListControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_asks_for_the_name_of_a_new_list_in_a_card(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->get(route('settings.valueLists.index'))
+            ->assertStatus(200)
+            ->assertSee('role="dialog"', escape: false)
+            ->assertSeeInOrder([
+                'Add a list',
+                'Something the fields of your contacts will pick from',
+                'Name of the list',
+                'Add the list',
+            ]);
+    }
+
+    #[Test]
     public function it_warns_in_a_card_before_a_list_is_deleted(): void
     {
         $user = User::factory()->create();
