@@ -31,8 +31,8 @@ use Illuminate\Support\Facades\DB;
  * Give a fresh account the template it starts with, so the first contact
  * somebody writes down has somewhere to go.
  *
- * This is a job rather than part of creating the account, because it writes
- * eleven rows nobody is looking at yet. Whoever just signed up is waiting on a
+ * This is a job rather than part of creating the account, because it writes a
+ * couple of dozen rows nobody is looking at yet. Whoever just signed up is waiting on a
  * page, and the first thing they see is not a contact form. The account, the
  * user, the vault and the value lists are written before the request comes
  * back; this arrives a moment later.
@@ -65,8 +65,6 @@ class CreateDefaultTemplate implements ShouldQueue
 
     private TemplateVersion $version;
 
-    private TemplateVersionPage $page;
-
     /**
      * The id of each of the account's value lists, by key.
      *
@@ -84,7 +82,7 @@ class CreateDefaultTemplate implements ShouldQueue
 
         DB::transaction(function (): void {
             $this->createTemplate();
-            $this->createSections();
+            $this->createPages();
             $this->publish();
             $this->seedTheVaultDefaults();
         });
@@ -130,36 +128,51 @@ class CreateDefaultTemplate implements ShouldQueue
             'previous_version_id' => null,
             'record_count' => 0,
         ]);
-
-        $this->page = TemplateVersionPage::query()->create([
-            'account_id' => $this->user->account_id,
-            'template_version_id' => $this->version->id,
-            'key' => TemplateVersionPage::SUPPLIED_KEY,
-            'label' => null,
-            'label_translation_key' => DefaultTemplateEnum::PAGE_LABEL,
-            'position' => 1,
-        ]);
     }
 
-    private function createSections(): void
+    /**
+     * Lay the template out: a page per tab, and on each of them the sections it
+     * is read in the order of.
+     *
+     * The positions of the sections start again on every page, since that is
+     * what a position on a page means. Nothing here is protected: every page,
+     * every section and every field is the user's to rename, reorder or throw
+     * away from the first minute.
+     */
+    private function createPages(): void
     {
-        $position = 1;
+        $pagePosition = 1;
 
-        foreach (DefaultTemplateEnum::BasicContact->sections() as $case) {
-            $sectionVersion = $this->createSection($case);
-
-            TemplateVersionSection::query()->create([
+        foreach (DefaultTemplateEnum::BasicContact->pages() as $pageCase) {
+            $page = TemplateVersionPage::query()->create([
                 'account_id' => $this->user->account_id,
                 'template_version_id' => $this->version->id,
-                'template_version_page_id' => $this->page->id,
-                'section_version_id' => $sectionVersion->id,
-                'position' => $position,
-                'title_override' => null,
-                'is_collapsed_by_default' => false,
+                'key' => $pageCase->value,
+                'label' => null,
+                'label_translation_key' => $pageCase->label(),
+                'position' => $pagePosition,
             ]);
 
-            $sectionVersion->increment('usage_count');
-            $position++;
+            $sectionPosition = 1;
+
+            foreach ($pageCase->sections() as $case) {
+                $sectionVersion = $this->createSection($case);
+
+                TemplateVersionSection::query()->create([
+                    'account_id' => $this->user->account_id,
+                    'template_version_id' => $this->version->id,
+                    'template_version_page_id' => $page->id,
+                    'section_version_id' => $sectionVersion->id,
+                    'position' => $sectionPosition,
+                    'title_override' => null,
+                    'is_collapsed_by_default' => false,
+                ]);
+
+                $sectionVersion->increment('usage_count');
+                $sectionPosition++;
+            }
+
+            $pagePosition++;
         }
     }
 

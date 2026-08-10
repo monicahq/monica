@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\DefaultTemplateEnum;
+use App\Enums\DefaultPageEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Template;
 use App\Models\TemplateVersion;
@@ -59,7 +59,7 @@ class TemplateVersionFactory extends Factory
                 'template_version_id' => $version->id,
                 'key' => TemplateVersionPage::SUPPLIED_KEY,
                 'label' => null,
-                'label_translation_key' => DefaultTemplateEnum::PAGE_LABEL,
+                'label_translation_key' => DefaultPageEnum::General->label(),
                 'position' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),

@@ -45,7 +45,7 @@ updated_at                  datetime
 - There is no product limit above one page. The builder and record navigation must continue to work when the tab list is wider than the viewport.
 - A page stores presentation and navigation only. Fields and their values continue to belong to section versions. Search, filtering, reminders, exports and highlighted fields work across all pages.
 - A page is not a marketplace item. When a template is published or installed, its page structure travels inside the template payload. Publishing a section alone carries no page with it.
-- The supplied contact template starts with the same translated "General" page. The record view hides the tab list while only that page exists, but the template builder shows it so another page can be added.
+- A template created by hand starts with one translated "General" page. The supplied contact template starts with three, General, Ways to connect and Information, since it is also what shows somebody what pages are for. The record view hides the tab list while only one page exists, but the template builder shows it so another page can be added.
 
 ## Interface contract
 

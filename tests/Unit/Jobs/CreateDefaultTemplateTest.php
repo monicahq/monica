@@ -82,12 +82,7 @@ class CreateDefaultTemplateTest extends TestCase
 
         $assembly = Template::query()->sole()->publishedVersion->assembly;
 
-        $this->assertEquals(
-            ['Personal details', 'Contact details', 'Notes'],
-            $assembly->map(fn ($row): string => $row->sectionVersion->section->name)->all(),
-        );
-        $this->assertEquals([1, 2, 3], $assembly->pluck('position')->all());
-        $this->assertCount(1, $assembly->pluck('template_version_page_id')->unique());
+        $this->assertCount(6, $assembly);
 
         foreach ($assembly as $row) {
             $this->assertSame(VersionStatusEnum::Published, $row->sectionVersion->status);
@@ -98,8 +93,13 @@ class CreateDefaultTemplateTest extends TestCase
         }
     }
 
+    /**
+     * A tab is seeded only when there is something to put on it. Everything
+     * else a contact page eventually holds is its own model with its own
+     * screens, and a tab opening on nothing would be worse than no tab.
+     */
     #[Test]
-    public function it_puts_the_whole_template_on_the_page_the_product_supplies(): void
+    public function it_reads_the_template_in_the_pages_the_product_supplies(): void
     {
         Queue::fake();
 
@@ -107,14 +107,39 @@ class CreateDefaultTemplateTest extends TestCase
 
         new CreateDefaultTemplate(user: $user)->handle();
 
-        $version = Template::query()->sole()->publishedVersion;
-        $page = $version->pages()->sole();
+        $pages = Template::query()->sole()->publishedVersion->pages;
 
-        $this->assertEquals('general', $page->key);
-        $this->assertNull($page->getRawOriginal('label'));
-        $this->assertEquals('General', $page->label);
-        $this->assertEquals(1, $page->position);
-        $this->assertEquals(3, $page->assembly()->count());
+        $this->assertEquals(['general', 'ways-to-connect', 'information'], $pages->pluck('key')->all());
+        $this->assertEquals(['General', 'Ways to connect', 'Information'], $pages->map(fn ($page): string => $page->label)->all());
+        $this->assertEquals([1, 2, 3], $pages->pluck('position')->all());
+
+        foreach ($pages as $page) {
+            $this->assertNull($page->getRawOriginal('label'));
+        }
+    }
+
+    #[Test]
+    public function it_puts_each_section_on_the_page_it_belongs_to(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        $pages = Template::query()->sole()->publishedVersion->pages;
+
+        $sectionsOf = fn (int $index): array => $pages[$index]->assembly
+            ->map(fn ($row): string => $row->sectionVersion->section->name)
+            ->all();
+
+        $this->assertEquals(['Personal details'], $sectionsOf(0));
+        $this->assertEquals(['Contact information', 'Addresses'], $sectionsOf(1));
+        $this->assertEquals(['Documents', 'Photos', 'Notes'], $sectionsOf(2));
+
+        foreach ($pages as $page) {
+            $this->assertEquals(range(1, $page->assembly->count()), $page->assembly->pluck('position')->all());
+        }
     }
 
     #[Test]
@@ -147,7 +172,7 @@ class CreateDefaultTemplateTest extends TestCase
 
         $fields = Field::query()->where('account_id', $user->account_id)->get();
 
-        $this->assertCount(7, $fields);
+        $this->assertCount(10, $fields);
         $this->assertEmpty($fields->filter(fn (Field $field): bool => $field->is_required));
         $this->assertEmpty($fields->filter(fn (Field $field): bool => $field->is_sensitive));
         $this->assertEmpty($fields->filter(fn (Field $field): bool => $field->is_repeatable));
@@ -234,7 +259,11 @@ class CreateDefaultTemplateTest extends TestCase
         $this->assertEquals('Contact de base', Template::query()->sole()->name);
         $this->assertEquals(
             'Coordonnées',
-            Section::query()->firstWhere('slug', DefaultSectionEnum::ContactDetails->value)->name,
+            Section::query()->firstWhere('slug', DefaultSectionEnum::ContactInformation->value)->name,
+        );
+        $this->assertEquals(
+            'Façons de se connecter',
+            Template::query()->sole()->publishedVersion->pages[1]->label,
         );
         $this->assertEquals(
             'Anniversaire',

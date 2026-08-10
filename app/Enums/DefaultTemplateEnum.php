@@ -19,14 +19,6 @@ use App\Contracts\Translatable;
  */
 enum DefaultTemplateEnum: string implements Translatable
 {
-    /**
-     * What the first page of a template version is called, whoever created the
-     * template. It sits here rather than beside the model because this is where
-     * the words the product supplies live, and where `monica:localize` looks
-     * for them. Renaming the page replaces it with the user's own word.
-     */
-    public const string PAGE_LABEL = 'General';
-
     case BasicContact = 'basic-contact';
 
     /**
@@ -50,24 +42,26 @@ enum DefaultTemplateEnum: string implements Translatable
     }
 
     /**
-     * What the template is assembled from, in the order it is read in.
+     * The tabs the template is read in, in order. What goes on each of them is
+     * the page's own business.
      *
-     * @return list<DefaultSectionEnum>
+     * @return list<DefaultPageEnum>
      */
-    public function sections(): array
+    public function pages(): array
     {
         return match ($this) {
-            self::BasicContact => DefaultSectionEnum::cases(),
+            self::BasicContact => DefaultPageEnum::cases(),
         };
     }
 
     /**
-     * The name this template is seeded with. Its sections carry their own.
+     * The name this template is seeded with. Its pages, sections and fields
+     * carry their own.
      *
      * @return list<string>
      */
     public function translationKeys(): array
     {
-        return [$this->label(), self::PAGE_LABEL];
+        return [$this->label()];
     }
 }

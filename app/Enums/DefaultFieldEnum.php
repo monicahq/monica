@@ -25,6 +25,9 @@ enum DefaultFieldEnum: string implements Translatable
     case Email = 'email';
     case Phone = 'phone';
     case Website = 'website';
+    case Address = 'address';
+    case Document = 'document';
+    case Photo = 'photo';
     case Notes = 'notes';
 
     /**
@@ -40,6 +43,9 @@ enum DefaultFieldEnum: string implements Translatable
             self::Email => 'Email',
             self::Phone => 'Phone',
             self::Website => 'Website',
+            self::Address => 'Address',
+            self::Document => 'Document',
+            self::Photo => 'Photo',
             self::Notes => 'Notes',
         };
     }
@@ -57,6 +63,9 @@ enum DefaultFieldEnum: string implements Translatable
             self::Email => FieldTypeEnum::Email,
             self::Phone => FieldTypeEnum::Phone,
             self::Website => FieldTypeEnum::Url,
+            self::Address => FieldTypeEnum::Address,
+            self::Document => FieldTypeEnum::File,
+            self::Photo => FieldTypeEnum::Image,
             self::Notes => FieldTypeEnum::Textarea,
         };
     }
@@ -96,6 +105,11 @@ enum DefaultFieldEnum: string implements Translatable
 
     /**
      * The label this field is seeded with.
+     *
+     * Nothing seeds a line of help under it. A field carries its help as words
+     * rather than as a translation key, and a sentence written here in English
+     * would stay English for somebody reading in French, which is the one thing
+     * the seeding is careful never to do.
      *
      * @return list<string>
      */

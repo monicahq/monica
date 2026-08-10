@@ -184,15 +184,21 @@ class TemplateVersion extends Model
     }
 
     /**
-     * Get the assembly: which section versions this version carries, in order.
-     * The order is the one inside each page, so a version read as a whole is
-     * read page by page.
+     * Get the assembly: which section versions this version carries.
+     *
+     * A position is a place on a page and starts again on each of them, so the
+     * rows are grouped by page before being ordered. Reading a version in the
+     * order somebody sees it means walking {@see pages()} and asking each page
+     * for its own sections; this relation is for everything that has to touch
+     * every row, whichever tab it sits on.
      *
      * @return HasMany<TemplateVersionSection, $this>
      */
     public function assembly(): HasMany
     {
-        return $this->hasMany(TemplateVersionSection::class)->orderBy('position');
+        return $this->hasMany(TemplateVersionSection::class)
+            ->orderBy('template_version_page_id')
+            ->orderBy('position');
     }
 
     /**

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\DefaultTemplateEnum;
+use App\Enums\DefaultPageEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
@@ -119,7 +119,7 @@ class CreateTemplate
                 'template_version_id' => $version->id,
                 'key' => TemplateVersionPage::SUPPLIED_KEY,
                 'label' => null,
-                'label_translation_key' => DefaultTemplateEnum::PAGE_LABEL,
+                'label_translation_key' => DefaultPageEnum::General->label(),
                 'position' => 1,
             ]);
         });
