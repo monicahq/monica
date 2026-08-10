@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\DefaultTemplateEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Template;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<TemplateVersion>
@@ -35,6 +39,32 @@ class TemplateVersionFactory extends Factory
             'previous_version_id' => null,
             'record_count' => 0,
         ];
+    }
+
+    /**
+     * Every template version has at least one page, so a version built here
+     * comes with the one the product supplies.
+     *
+     * The row is written with the query builder rather than through the model,
+     * since a version built as already published refuses a page the way the
+     * real thing does, and the page of such a version was put there before it
+     * was frozen.
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function (TemplateVersion $version): void {
+            DB::table('template_version_pages')->insert([
+                'uuid' => (string) Str::uuid(),
+                'account_id' => $version->account_id,
+                'template_version_id' => $version->id,
+                'key' => TemplateVersionPage::SUPPLIED_KEY,
+                'label' => null,
+                'label_translation_key' => DefaultTemplateEnum::PAGE_LABEL,
+                'position' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        });
     }
 
     /**

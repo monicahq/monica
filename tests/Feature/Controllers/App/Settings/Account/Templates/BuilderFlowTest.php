@@ -8,6 +8,7 @@ use App\Enums\FieldTypeEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Template;
+use App\Models\TemplateVersion;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -101,13 +102,7 @@ class BuilderFlowTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = $template->versions()->create([
-            'account_id' => $user->account_id,
-            'version_number' => 1,
-            'status' => VersionStatusEnum::Published,
-            'published_at' => now(),
-            'record_count' => 0,
-        ]);
+        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
         $template->update(['published_version_id' => $version->id]);
 
         $this->actingAs($user)
@@ -144,17 +139,10 @@ class BuilderFlowTest extends TestCase
 
         // Somebody else's template starts carrying the very same section version.
         $other = Template::factory()->create(['account_id' => $user->account_id]);
-        $otherVersion = $other->versions()->create([
-            'account_id' => $user->account_id,
-            'version_number' => 1,
-            'status' => VersionStatusEnum::Draft,
-            'record_count' => 0,
-        ]);
-        TemplateVersionSection::query()->create([
-            'account_id' => $user->account_id,
+        $otherVersion = TemplateVersion::factory()->create(['template_id' => $other->id]);
+        TemplateVersionSection::factory()->create([
             'template_version_id' => $otherVersion->id,
             'section_version_id' => $sectionVersion->id,
-            'position' => 1,
         ]);
         $sectionVersion->increment('usage_count');
 

@@ -6,12 +6,14 @@ namespace App\Actions;
 
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
+use App\Exceptions\CannotPublishAnEmptyPage;
 use App\Exceptions\CannotPublishWhileASectionIsStillADraft;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\SectionVersion;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +30,10 @@ use InvalidArgumentException;
  * still points at a section somebody is editing would freeze nothing, so the
  * refusal is explicit rather than quietly publishing those sections on
  * somebody's behalf.
+ *
+ * The same goes for its pages: a version with none renders nothing, and one
+ * with several cannot leave a tab that opens on nothing. Both are refused
+ * rather than quietly repaired.
  *
  * A change note is required from the second version on, because the note is
  * what somebody deciding whether to move their records reads. The first version
@@ -77,6 +83,35 @@ class PublishTemplateVersion
 
         if ($drafts > 0) {
             throw new CannotPublishWhileASectionIsStillADraft("This template version carries {$drafts} sections nobody has published yet.");
+        }
+
+        $this->validateThePages();
+    }
+
+    /**
+     * A version with no page renders nothing, and a tab that opens on nothing
+     * is a dead end for whoever clicks it. One page on its own may be empty: a
+     * record whose only content is the name imposed on it is still worth
+     * writing down.
+     */
+    private function validateThePages(): void
+    {
+        $pages = $this->templateVersion->pages;
+
+        if ($pages->isEmpty()) {
+            throw new CannotPublishAnEmptyPage('This template version has no page to render.');
+        }
+
+        if ($pages->count() === 1) {
+            return;
+        }
+
+        $filled = $this->templateVersion->assembly->pluck('template_version_page_id');
+
+        $empty = $pages->reject(fn (TemplateVersionPage $page): bool => $filled->contains($page->id));
+
+        if ($empty->isNotEmpty()) {
+            throw new CannotPublishAnEmptyPage("The page {$empty->first()->label} has nothing on it.");
         }
     }
 

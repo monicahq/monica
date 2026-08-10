@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $account_id
  * @property int $template_version_id
+ * @property int $template_version_page_id
  * @property int $section_version_id
  * @property int $position
  * @property string|null $title_override
@@ -38,6 +39,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon|null $updated_at
  * @property-read Account $account
  * @property-read TemplateVersion $templateVersion
+ * @property-read TemplateVersionPage $templateVersionPage
  * @property-read SectionVersion $sectionVersion
  */
 class TemplateVersionSection extends Model
@@ -55,6 +57,7 @@ class TemplateVersionSection extends Model
     protected $fillable = [
         'account_id',
         'template_version_id',
+        'template_version_page_id',
         'section_version_id',
         'position',
         'title_override',
@@ -125,6 +128,16 @@ class TemplateVersionSection extends Model
     public function templateVersion(): BelongsTo
     {
         return $this->belongsTo(TemplateVersion::class);
+    }
+
+    /**
+     * Get the page of that version the section appears on.
+     *
+     * @return BelongsTo<TemplateVersionPage, $this>
+     */
+    public function templateVersionPage(): BelongsTo
+    {
+        return $this->belongsTo(TemplateVersionPage::class);
     }
 
     /**

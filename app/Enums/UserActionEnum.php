@@ -68,8 +68,13 @@ enum UserActionEnum: string implements Translatable
     case SectionVersionPublished = 'section_version_published';
     case SectionVersionRetired = 'section_version_retired';
     case SectionVersionDeletion = 'section_version_deleted';
+    case TemplatePageCreation = 'template_page_created';
+    case TemplatePageUpdate = 'template_page_updated';
+    case TemplatePagePositionUpdate = 'template_page_position_updated';
+    case TemplatePageDeletion = 'template_page_deleted';
     case SectionAddedToTemplate = 'section_added_to_template';
     case SectionRemovedFromTemplate = 'section_removed_from_template';
+    case SectionMovedToPage = 'section_moved_to_page';
     case TemplateSectionUpdate = 'template_section_updated';
     case TemplateSectionPositionUpdate = 'template_section_position_updated';
     case FieldCreation = 'field_created';
@@ -153,8 +158,13 @@ enum UserActionEnum: string implements Translatable
             self::SectionVersionPublished => 'Published version :version of the section :name',
             self::SectionVersionRetired => 'Retired version :version of the section :name',
             self::SectionVersionDeletion => 'Threw away version :version of the section :name',
+            self::TemplatePageCreation => 'Added the page :label to the template :name',
+            self::TemplatePageUpdate => 'Renamed a page of the template :name to :label',
+            self::TemplatePagePositionUpdate => 'Moved the page :label of the template :name',
+            self::TemplatePageDeletion => 'Removed the page :label from the template :name',
             self::SectionAddedToTemplate => 'Put the section :section on the template :name',
             self::SectionRemovedFromTemplate => 'Took the section :section off the template :name',
+            self::SectionMovedToPage => 'Moved the section :section to the page :label',
             self::TemplateSectionUpdate => 'Changed how the section :section reads on the template :name',
             self::TemplateSectionPositionUpdate => 'Moved the section :section on the template :name',
             self::FieldCreation => 'Added the field :label to the section :name',

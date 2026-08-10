@@ -17,6 +17,7 @@ use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\Template;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
@@ -63,6 +64,8 @@ class CreateDefaultTemplate implements ShouldQueue
     private Template $template;
 
     private TemplateVersion $version;
+
+    private TemplateVersionPage $page;
 
     /**
      * The id of each of the account's value lists, by key.
@@ -127,6 +130,15 @@ class CreateDefaultTemplate implements ShouldQueue
             'previous_version_id' => null,
             'record_count' => 0,
         ]);
+
+        $this->page = TemplateVersionPage::query()->create([
+            'account_id' => $this->user->account_id,
+            'template_version_id' => $this->version->id,
+            'key' => TemplateVersionPage::SUPPLIED_KEY,
+            'label' => null,
+            'label_translation_key' => DefaultTemplateEnum::PAGE_LABEL,
+            'position' => 1,
+        ]);
     }
 
     private function createSections(): void
@@ -139,6 +151,7 @@ class CreateDefaultTemplate implements ShouldQueue
             TemplateVersionSection::query()->create([
                 'account_id' => $this->user->account_id,
                 'template_version_id' => $this->version->id,
+                'template_version_page_id' => $this->page->id,
                 'section_version_id' => $sectionVersion->id,
                 'position' => $position,
                 'title_override' => null,

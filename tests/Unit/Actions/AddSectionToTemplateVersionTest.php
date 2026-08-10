@@ -14,6 +14,7 @@ use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\Template;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -54,6 +55,94 @@ class AddSectionToTemplateVersionTest extends TestCase
             'title_override' => 'Where they live',
             'is_collapsed_by_default' => true,
         ]);
+    }
+
+    /**
+     * Somebody who does not say which page means the first one, which is the
+     * whole template until a second page exists.
+     */
+    #[Test]
+    public function it_puts_a_section_on_the_first_page_when_nobody_says_which(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $templateVersion = TemplateVersion::factory()->create(['account_id' => $user->account_id]);
+        $sectionVersion = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
+
+        $row = new AddSectionToTemplateVersion(
+            user: $user,
+            templateVersion: $templateVersion,
+            sectionVersion: $sectionVersion,
+        )->execute();
+
+        $this->assertEquals($templateVersion->pages()->firstOrFail()->id, $row->template_version_page_id);
+    }
+
+    #[Test]
+    public function it_puts_a_section_on_the_page_it_is_given(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $templateVersion = TemplateVersion::factory()->create(['account_id' => $user->account_id]);
+        $health = TemplateVersionPage::factory()->create(['template_version_id' => $templateVersion->id]);
+        $sectionVersion = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
+
+        $row = new AddSectionToTemplateVersion(
+            user: $user,
+            templateVersion: $templateVersion,
+            sectionVersion: $sectionVersion,
+            templateVersionPage: $health,
+        )->execute();
+
+        $this->assertEquals($health->id, $row->template_version_page_id);
+        $this->assertEquals(1, $row->position);
+    }
+
+    #[Test]
+    public function it_counts_the_position_within_the_page_rather_than_the_version(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $templateVersion = TemplateVersion::factory()->create(['account_id' => $user->account_id]);
+        $health = TemplateVersionPage::factory()->create(['template_version_id' => $templateVersion->id]);
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $templateVersion->id,
+            'template_version_page_id' => $templateVersion->pages()->firstOrFail()->id,
+            'position' => 4,
+        ]);
+        $sectionVersion = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
+
+        $row = new AddSectionToTemplateVersion(
+            user: $user,
+            templateVersion: $templateVersion,
+            sectionVersion: $sectionVersion,
+            templateVersionPage: $health,
+        )->execute();
+
+        $this->assertEquals(1, $row->position);
+    }
+
+    #[Test]
+    public function it_refuses_a_page_on_another_template_version(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $templateVersion = TemplateVersion::factory()->create(['account_id' => $user->account_id]);
+        $elsewhere = TemplateVersion::factory()->create(['account_id' => $user->account_id]);
+        $sectionVersion = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new AddSectionToTemplateVersion(
+            user: $user,
+            templateVersion: $templateVersion,
+            sectionVersion: $sectionVersion,
+            templateVersionPage: $elsewhere->pages()->firstOrFail(),
+        )->execute();
     }
 
     #[Test]

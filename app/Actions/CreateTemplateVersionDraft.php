@@ -9,6 +9,7 @@ use App\Enums\VersionStatusEnum;
 use App\Jobs\LogUserAction;
 use App\Models\SectionVersion;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -22,10 +23,13 @@ use Illuminate\Support\Facades\DB;
  * beside it on something nobody is using yet. Publishing the draft is a
  * separate act afterwards.
  *
- * The assembly is copied row for row, pointing at the same section versions
- * rather than at copies of them. A section version is frozen and shareable, so
- * two versions carrying the same section carry the same rows, and the count of
- * template versions containing it goes up.
+ * The pages are copied first, keeping their key, their label and their place,
+ * since a page belongs to one version and the published one must not share a
+ * row the draft can move. The assembly is then copied row for row onto the
+ * matching new page, pointing at the same section versions rather than at
+ * copies of them. A section version is frozen and shareable, so two versions
+ * carrying the same section carry the same rows, and the count of template
+ * versions containing it goes up.
  */
 class CreateTemplateVersionDraft
 {
@@ -71,10 +75,13 @@ class CreateTemplateVersionDraft
                 'record_count' => 0,
             ]);
 
-            $this->templateVersion->assembly->each(function (TemplateVersionSection $row): void {
+            $pages = $this->copyThePages();
+
+            $this->templateVersion->assembly->each(function (TemplateVersionSection $row) use ($pages): void {
                 TemplateVersionSection::query()->create([
                     'account_id' => $row->account_id,
                     'template_version_id' => $this->draft->id,
+                    'template_version_page_id' => $pages[$row->template_version_page_id],
                     'section_version_id' => $row->section_version_id,
                     'position' => $row->position,
                     'title_override' => $row->title_override,
@@ -84,6 +91,36 @@ class CreateTemplateVersionDraft
                 SectionVersion::query()->whereKey($row->section_version_id)->increment('usage_count');
             });
         });
+    }
+
+    /**
+     * Copy the pages, and say which new one each old one became so the sections
+     * can be put back where they were.
+     *
+     * A page keeps its key, its label and its place. The key is what a record
+     * URL carries, and a draft that renumbered its tabs would break every link
+     * to the version it came from the moment it was published.
+     *
+     * @return array<int, int>
+     */
+    private function copyThePages(): array
+    {
+        $pages = [];
+
+        $this->templateVersion->pages->each(function (TemplateVersionPage $page) use (&$pages): void {
+            $copy = TemplateVersionPage::query()->create([
+                'account_id' => $page->account_id,
+                'template_version_id' => $this->draft->id,
+                'key' => $page->key,
+                'label' => $page->getRawOriginal('label'),
+                'label_translation_key' => $page->label_translation_key,
+                'position' => $page->position,
+            ]);
+
+            $pages[$page->id] = $copy->id;
+        });
+
+        return $pages;
     }
 
     private function log(): void

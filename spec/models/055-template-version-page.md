@@ -1,6 +1,6 @@
 # 055. TemplateVersionPage
 
-**Status:** to create
+**Status:** exists (`app/Models/TemplateVersionPage.php`)
 **Spec:** 5.2, 6, 3.1, 3.5
 
 ## What it is
@@ -55,13 +55,20 @@ updated_at                  datetime
 - On a narrow screen the tab list scrolls horizontally, never wraps, and keeps the selected tab visible.
 - When validation fails on a hidden page, the interface selects that page before focusing and announcing the first invalid field.
 
-## Implementation order
+## Not done yet
 
-1. Create this table and give every existing template version one "General" page. This migration preserves the rendered order of every existing section and does not change what any published record shows.
-2. Add `template_version_page_id` to [TemplateVersionSection](016-template-version-section.md) as nullable, assign every existing placement to its version's new page, then make the foreign key required. The migration refuses completion if any placement and page belong to different template versions.
-3. Update template creation, drafting, duplication, default seeding, publication and marketplace installation so they create or copy pages and their section placements atomically.
-4. Expose page creation, rename, reorder and removal, plus moving a section between pages, through the web interface, API and MCP. These operations all use the same actions and enforce draft immutability in one place.
-5. Update record rendering, editing, snapshots, private shares and marketplace payloads to read the page hierarchy and the navigation rules above.
+- **Nothing renders a page.** The record renderer and the tab navigation described above are still ahead, as is the record itself. The template builder still shows one flat list of sections, which is what a template with its single supplied page holds.
+- **No screens, no API, no MCP.** Page creation, renaming, reordering and removal, and moving a section between pages, exist as actions and nothing calls them yet.
+- **Nothing carries a page in or out of the marketplace.** Neither the payload nor the installation exists.
+- **The key is settled but nothing reads it.** It is written, kept across drafts and unique within a version, and no URL carries one until records have screens.
+
+## Decisions taken while building it
+
+- **The table was created before `template_version_sections` rather than beside it.** The placement takes its page as a required foreign key from the first migration, since the product is not released and no data has to be moved onto the new layer.
+- **The label is compared as somebody reads it, not as it is stored.** A supplied page holds a translation key rather than words, so the rule that two tabs of one version never read the same is enforced on the resolved label.
+- **The freeze lives on the model, as it does for [TemplateVersionSection](016-template-version-section.md).** One guard refuses adding, renaming, moving and removing as soon as the template version is not a draft, rather than four actions each remembering.
+- **`position` carries no unique index.** Reordering renumbers a whole page in one pass, and a database that refuses the intermediate states makes that impossible without a second pass that buys nothing. The action is what normalises them, exactly as it does for section placements.
+- **Moving a section between pages is its own action.** `MoveSectionToTemplateVersionPage` answers which page a section is on, and `UpdateTemplateVersionSectionPosition` answers where it sits inside one. The two questions are separate, and folding them together would make one action do two jobs.
 
 ## Open questions
 

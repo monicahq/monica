@@ -11,6 +11,7 @@ use App\Jobs\LogUserAction;
 use App\Models\SectionVersion;
 use App\Models\Template;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -128,6 +129,39 @@ class DuplicateTemplateTest extends TestCase
         $this->assertEquals($sectionVersion->id, $row->section_version_id);
         $this->assertEquals('Where they live', $row->title_override);
         $this->assertEquals($before + 1, $sectionVersion->fresh()->usage_count);
+    }
+
+    /**
+     * A page describes one template version and cannot be shared with another,
+     * so the copy gets rows of its own carrying the same words.
+     */
+    #[Test]
+    public function it_gives_the_copy_pages_of_its_own(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $health = TemplateVersionPage::factory()->create([
+            'template_version_id' => $version->id,
+            'key' => 'health',
+            'label' => 'Health',
+            'position' => 2,
+        ]);
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'template_version_page_id' => $health->id,
+        ]);
+
+        $copy = new DuplicateTemplate(user: $user, template: $template)->execute();
+        $copied = $copy->versions()->sole();
+        $pages = $copied->pages;
+
+        $this->assertCount(2, $pages);
+        $this->assertEquals(['general', 'health'], $pages->pluck('key')->all());
+        $this->assertNotEquals($health->id, $pages->last()->id);
+        $this->assertEquals($pages->last()->id, $copied->assembly()->sole()->template_version_page_id);
     }
 
     #[Test]

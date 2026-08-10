@@ -7,12 +7,14 @@ namespace Tests\Unit\Actions;
 use App\Actions\PublishTemplateVersion;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
+use App\Exceptions\CannotPublishAnEmptyPage;
 use App\Exceptions\CannotPublishWhileASectionIsStillADraft;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Jobs\LogUserAction;
 use App\Models\SectionVersion;
 use App\Models\Template;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -143,6 +145,62 @@ class PublishTemplateVersionTest extends TestCase
         new PublishTemplateVersion(user: $user, templateVersion: $version)->execute();
 
         $this->assertEquals(VersionStatusEnum::Published, $version->fresh()->status);
+    }
+
+    /**
+     * A tab that opens on nothing is a dead end for whoever clicks it.
+     */
+    #[Test]
+    public function it_refuses_while_one_of_several_pages_has_nothing_on_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $sectionVersion = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+        TemplateVersionPage::factory()->create(['template_version_id' => $version->id]);
+
+        $this->expectException(CannotPublishAnEmptyPage::class);
+
+        new PublishTemplateVersion(user: $user, templateVersion: $version)->execute();
+    }
+
+    /**
+     * A record whose only content is the name imposed on it is still a record
+     * worth writing down.
+     */
+    #[Test]
+    public function it_publishes_a_version_whose_single_page_is_empty(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+
+        new PublishTemplateVersion(user: $user, templateVersion: $version)->execute();
+
+        $this->assertEquals(VersionStatusEnum::Published, $version->fresh()->status);
+    }
+
+    #[Test]
+    public function it_refuses_a_version_with_no_page_at_all(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version->pages()->each(fn (TemplateVersionPage $page): ?bool => $page->delete());
+
+        $this->expectException(CannotPublishAnEmptyPage::class);
+
+        new PublishTemplateVersion(user: $user, templateVersion: $version->refresh())->execute();
     }
 
     #[Test]

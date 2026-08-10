@@ -75,6 +75,31 @@ class CreateTemplateTest extends TestCase
         ]);
     }
 
+    /**
+     * A version with no page has nowhere to put a section.
+     */
+    #[Test]
+    public function it_starts_the_draft_with_the_page_the_product_supplies(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        $template = new CreateTemplate(user: $user, name: 'Contact')->execute();
+        $version = $template->versions()->sole();
+
+        $this->assertDatabaseHas('template_version_pages', [
+            'account_id' => $user->account_id,
+            'template_version_id' => $version->id,
+            'key' => 'general',
+            'label' => null,
+            'label_translation_key' => 'General',
+            'position' => 1,
+        ]);
+
+        $this->assertEquals('General', $version->pages()->sole()->label);
+    }
+
     #[Test]
     public function it_names_the_kind_of_record_it_describes(): void
     {

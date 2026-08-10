@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\DefaultTemplateEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
@@ -13,6 +14,7 @@ use App\Jobs\LogUserAction;
 use App\Models\EntityType;
 use App\Models\Template;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -22,9 +24,11 @@ use InvalidArgumentException;
  * Describe what a record holds: what a contact page shows, what an Animal is
  * worth writing down about.
  *
- * A template starts with a first draft version, because a template with no
- * version at all is a name nothing can be done with. That version is empty and
- * editable, and stays that way until somebody publishes it. Only then does the
+ * A template starts with a first draft version and one page on it, because a
+ * template with no version at all is a name nothing can be done with, and a
+ * version with no page has nowhere to put a section. The page carries the
+ * supplied label until somebody renames it. Both are empty and editable, and
+ * stay that way until somebody publishes the version. Only then does the
  * template have something to offer a record.
  *
  * A template that describes an entity has to name the type it describes: an
@@ -98,7 +102,7 @@ class CreateTemplate
                 'position' => ($positions->max() ?? 0) + 1,
             ]);
 
-            TemplateVersion::query()->create([
+            $version = TemplateVersion::query()->create([
                 'account_id' => $this->user->account_id,
                 'template_id' => $this->template->id,
                 'version_number' => 1,
@@ -108,6 +112,15 @@ class CreateTemplate
                 'retired_at' => null,
                 'previous_version_id' => null,
                 'record_count' => 0,
+            ]);
+
+            TemplateVersionPage::query()->create([
+                'account_id' => $this->user->account_id,
+                'template_version_id' => $version->id,
+                'key' => TemplateVersionPage::SUPPLIED_KEY,
+                'label' => null,
+                'label_translation_key' => DefaultTemplateEnum::PAGE_LABEL,
+                'position' => 1,
             ]);
         });
     }

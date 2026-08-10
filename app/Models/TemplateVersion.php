@@ -173,7 +173,20 @@ class TemplateVersion extends Model
     }
 
     /**
+     * Get the pages this version is read in, in the order the tabs appear.
+     * Every version has at least one.
+     *
+     * @return HasMany<TemplateVersionPage, $this>
+     */
+    public function pages(): HasMany
+    {
+        return $this->hasMany(TemplateVersionPage::class)->orderBy('position');
+    }
+
+    /**
      * Get the assembly: which section versions this version carries, in order.
+     * The order is the one inside each page, so a version read as a whole is
+     * read page by page.
      *
      * @return HasMany<TemplateVersionSection, $this>
      */

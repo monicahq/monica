@@ -1,6 +1,6 @@
 # 016. TemplateVersionSection
 
-**Status:** exists (`app/Models/TemplateVersionSection.php`), changes needed to place every section on a page
+**Status:** exists (`app/Models/TemplateVersionSection.php`)
 **Spec:** 5.2, 6
 
 ## What it is
@@ -43,7 +43,7 @@ updated_at                  datetime
 
 ## Not done yet
 
-- **Nothing renders a paged assembly.** The page, order, title override and folded state need to be read together by the record renderer and template builder.
+- **Nothing renders a paged assembly.** Every placement now names the page it appears on, and the page, order, title override and folded state still need to be read together by the record renderer and the template builder. The builder shows one flat list, which is what a template holding its single supplied page contains.
 
 ## Decisions taken while building it
 
@@ -51,7 +51,7 @@ updated_at                  datetime
 - **Immutability lives on the model rather than in the four actions that touch a row.** Creating, moving, retitling and removing all go through one guard that refuses as soon as the template version it belongs to is not a draft. All four are the same change from the point of view of a published template version: what it renders would move.
 - **Adding refuses a retired section version.** Retiring is what stops a section version being offered to anything new, and an assembly is the only thing that could offer it. A draft section version is accepted, since that is how somebody assembles a template before publishing anything; the refusal comes later, when the template version is published.
 - **`usage_count` on [SectionVersion](015-section-version.md) moves when a row is added or removed,** not when a template version is published. The column is described as how many template versions contain the section version, and a draft contains it just as truly as a published one. This is also what makes the count usable as the guard against deleting a section version out from under a template.
-- **This established model has a forward dependency on model 055.** [TemplateVersionPage](055-template-version-page.md) was introduced after the original model sequence had already been implemented. It keeps the next unused number so existing model numbers and links remain stable. The page model must be created before this table receives its new foreign key.
+- **This established model has a forward dependency on model 055.** [TemplateVersionPage](055-template-version-page.md) was introduced after the original model sequence had already been implemented. It keeps the next unused number so existing model numbers and links remain stable. Its table is created before this one, which takes the page as a required foreign key from its own first migration.
 
 ## Open questions
 

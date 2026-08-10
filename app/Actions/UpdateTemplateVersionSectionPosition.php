@@ -12,11 +12,12 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Move a section up or down a template version.
+ * Move a section up or down the page it sits on.
  *
  * The section is taken out and put back at the position asked for, and every
- * section on that version is then numbered from one again. A position past the
- * end puts it last.
+ * section on that page is then numbered from one again. A position past the
+ * end puts it last. Moving it to another page is
+ * {@see MoveSectionToTemplateVersionPage}.
  *
  * Only on a draft: the order of a published version is part of what was
  * published.
@@ -48,7 +49,7 @@ class UpdateTemplateVersionSectionPosition
     private function update(): void
     {
         $rows = TemplateVersionSection::query()
-            ->where('template_version_id', $this->row->template_version_id)
+            ->where('template_version_page_id', $this->row->template_version_page_id)
             ->orderBy('position')
             ->get()
             ->reject(fn (TemplateVersionSection $row): bool => $row->is($this->row))

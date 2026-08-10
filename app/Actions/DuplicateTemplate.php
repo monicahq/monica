@@ -12,6 +12,7 @@ use App\Jobs\LogUserAction;
 use App\Models\SectionVersion;
 use App\Models\Template;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -29,9 +30,11 @@ use Illuminate\Support\Facades\DB;
  * published on somebody's behalf: the copy has to be looked at and published
  * deliberately, which is also the moment to notice what needs changing.
  *
- * The sections themselves are not copied. A section version is frozen and can sit
- * in any number of template versions, so the copy carries the same rows the original does,
- * and changing one of them means drafting a new version of that section.
+ * The pages are copied, since a page describes one template version and cannot
+ * be shared with another. The sections themselves are not. A section version is
+ * frozen and can sit in any number of template versions, so the copy carries
+ * the same rows the original does, on pages of its own, and changing one of
+ * them means drafting a new version of that section.
  */
 class DuplicateTemplate
 {
@@ -113,10 +116,13 @@ class DuplicateTemplate
                 'record_count' => 0,
             ]);
 
-            $this->source->assembly->each(function (TemplateVersionSection $row) use ($version): void {
+            $pages = $this->copyThePages($version);
+
+            $this->source->assembly->each(function (TemplateVersionSection $row) use ($version, $pages): void {
                 TemplateVersionSection::query()->create([
                     'account_id' => $version->account_id,
                     'template_version_id' => $version->id,
+                    'template_version_page_id' => $pages[$row->template_version_page_id],
                     'section_version_id' => $row->section_version_id,
                     'position' => $row->position,
                     'title_override' => $row->title_override,
@@ -126,6 +132,33 @@ class DuplicateTemplate
                 SectionVersion::query()->whereKey($row->section_version_id)->increment('usage_count');
             });
         });
+    }
+
+    /**
+     * Copy the pages of the source onto the copy, and say which new one each
+     * old one became so the sections can be put back where they were. A page
+     * belongs to one version, so these are new rows carrying the same words.
+     *
+     * @return array<int, int>
+     */
+    private function copyThePages(TemplateVersion $version): array
+    {
+        $pages = [];
+
+        $this->source->pages->each(function (TemplateVersionPage $page) use ($version, &$pages): void {
+            $copy = TemplateVersionPage::query()->create([
+                'account_id' => $version->account_id,
+                'template_version_id' => $version->id,
+                'key' => $page->key,
+                'label' => $page->getRawOriginal('label'),
+                'label_translation_key' => $page->label_translation_key,
+                'position' => $page->position,
+            ]);
+
+            $pages[$page->id] = $copy->id;
+        });
+
+        return $pages;
     }
 
     private function slug(string $name): string

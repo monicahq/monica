@@ -59,7 +59,7 @@ deleted_at                  datetime
 - **Nothing moves `record_count` on any version.** As with `entity_count` on [EntityType](011-entity-type.md), the column is written once as zero. `DestroyTemplate` refuses against the sum of it across the versions, which is the only thing there is to ask until records exist.
 - **No API.** The screens exist: the list that groups templates into what somebody built and what the product supplied, the form that names one, and the builder. Nothing is exposed over the API yet.
 - **No record preview.** The builder cannot show what a record made with the template would look like, because the renderer and [Contact](019-contact.md) are both still ahead.
-- **Pages do not exist yet.** The current builder places sections directly on a template version. [TemplateVersionPage](055-template-version-page.md) defines the migration, actions and renderer changes needed to insert the new layer without changing existing published records visually.
+- **Nothing shows a page.** [TemplateVersionPage](055-template-version-page.md) exists, every template version carries one and every section is placed on one, and the actions that add, rename, reorder and remove pages are written. No screen reads any of it: the builder still shows one flat list of sections, which is what a template holding its single supplied page contains.
 
 ## Decisions taken while building it
 

@@ -87,6 +87,7 @@ class CreateDefaultTemplateTest extends TestCase
             $assembly->map(fn ($row): string => $row->sectionVersion->section->name)->all(),
         );
         $this->assertEquals([1, 2, 3], $assembly->pluck('position')->all());
+        $this->assertCount(1, $assembly->pluck('template_version_page_id')->unique());
 
         foreach ($assembly as $row) {
             $this->assertSame(VersionStatusEnum::Published, $row->sectionVersion->status);
@@ -95,6 +96,25 @@ class CreateDefaultTemplateTest extends TestCase
             $this->assertTrue($row->sectionVersion->section->is_system);
             $this->assertNull($row->sectionVersion->section->getRawOriginal('name'));
         }
+    }
+
+    #[Test]
+    public function it_puts_the_whole_template_on_the_page_the_product_supplies(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        $version = Template::query()->sole()->publishedVersion;
+        $page = $version->pages()->sole();
+
+        $this->assertEquals('general', $page->key);
+        $this->assertNull($page->getRawOriginal('label'));
+        $this->assertEquals('General', $page->label);
+        $this->assertEquals(1, $page->position);
+        $this->assertEquals(3, $page->assembly()->count());
     }
 
     #[Test]

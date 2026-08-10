@@ -11,6 +11,7 @@ use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\SectionVersion;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -18,7 +19,9 @@ use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 /**
- * Put a section on a template version, at the end of it.
+ * Put a section on a page of a template version, at the end of that page.
+ * Somebody who does not say which page means the first one, which is the whole
+ * template until a second page exists.
  *
  * What is placed is an exact version of the section, never the section itself.
  * That one foreign key is what makes freezing a template version mean anything:
@@ -36,12 +39,15 @@ class AddSectionToTemplateVersion
 {
     private TemplateVersionSection $row;
 
+    private TemplateVersionPage $page;
+
     public function __construct(
         private readonly User $user,
         private readonly TemplateVersion $templateVersion,
         private readonly SectionVersion $sectionVersion,
         private ?string $titleOverride = null,
         private readonly bool $isCollapsedByDefault = false,
+        private readonly ?TemplateVersionPage $templateVersionPage = null,
     ) {}
 
     public function execute(): TemplateVersionSection
@@ -81,18 +87,39 @@ class AddSectionToTemplateVersion
         if ($alreadyThere) {
             throw new SectionIsAlreadyInTheTemplateVersion('This section is already on this template version.');
         }
+
+        $this->page = $this->page();
+    }
+
+    /**
+     * Settle which page the section lands on. Somebody who does not say lands
+     * on the first one, which is the whole template for as long as nobody has
+     * made a second page.
+     */
+    private function page(): TemplateVersionPage
+    {
+        if ($this->templateVersionPage === null) {
+            return $this->templateVersion->pages()->firstOrFail();
+        }
+
+        if ($this->templateVersionPage->template_version_id !== $this->templateVersion->id) {
+            throw new ModelNotFoundException('This page is on another template version.');
+        }
+
+        return $this->templateVersionPage;
     }
 
     private function add(): void
     {
         $positions = TemplateVersionSection::query()
-            ->where('template_version_id', $this->templateVersion->id)
+            ->where('template_version_page_id', $this->page->id)
             ->pluck('position');
 
         DB::transaction(function () use ($positions): void {
             $this->row = TemplateVersionSection::query()->create([
                 'account_id' => $this->templateVersion->account_id,
                 'template_version_id' => $this->templateVersion->id,
+                'template_version_page_id' => $this->page->id,
                 'section_version_id' => $this->sectionVersion->id,
                 'position' => ($positions->max() ?? 0) + 1,
                 'title_override' => $this->titleOverride,

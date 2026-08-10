@@ -11,6 +11,7 @@ use App\Jobs\LogUserAction;
 use App\Models\SectionVersion;
 use App\Models\Template;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -86,6 +87,42 @@ class CreateTemplateVersionDraftTest extends TestCase
         $this->assertEquals(1, $row->position);
         $this->assertEquals('Where they live', $row->title_override);
         $this->assertTrue($row->is_collapsed_by_default);
+    }
+
+    /**
+     * A page belongs to one version, so the draft gets rows of its own carrying
+     * the same words, and the sections land on the page they were on.
+     */
+    #[Test]
+    public function it_copies_the_pages_and_puts_each_section_back_on_its_own(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $general = $version->pages()->firstOrFail();
+        $health = TemplateVersionPage::factory()->create([
+            'template_version_id' => $version->id,
+            'key' => 'health',
+            'label' => 'Health',
+            'position' => 2,
+        ]);
+        $sectionVersion = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'template_version_page_id' => $health->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+
+        $draft = new CreateTemplateVersionDraft(user: $user, templateVersion: $version)->execute();
+        $pages = $draft->pages;
+
+        $this->assertCount(2, $pages);
+        $this->assertEquals(['general', 'health'], $pages->pluck('key')->all());
+        $this->assertEquals(['General', 'Health'], $pages->map(fn (TemplateVersionPage $page): string => $page->label)->all());
+        $this->assertNotEquals($general->id, $pages->first()->id);
+        $this->assertEquals($pages->last()->id, $draft->assembly()->sole()->template_version_page_id);
     }
 
     #[Test]

@@ -53,6 +53,7 @@ updated_at                  datetime
 - **Retiring a version is enforced against `record_count` only.** The rule that a version is never deleted while records point at it lives on the model and reads that column, which is the only thing there is to ask. Once records exist that count has to become true, or the check has to start counting rows.
 - **No API.** The builder starts a draft, publishes a version and throws a draft away. None of it is exposed over the API yet.
 - **Retiring a version has no screen.** The action exists and nothing calls it: a version is retired when a template stops being offered, and that decision is taken on the template rather than the version.
+- **Pages exist and nothing shows them.** Every version carries at least one [TemplateVersionPage](055-template-version-page.md), drafting copies them, and publishing refuses a version with none or with an empty page beside others. No screen reads a page, so every template still holds the single one it was created with.
 
 ## Decisions taken while building it
 
