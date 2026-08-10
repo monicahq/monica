@@ -83,16 +83,16 @@ class VaultSettingsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_offer_the_deletion_of_the_last_vault(): void
+    public function it_knows_when_the_vault_is_the_only_one_the_account_has(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->assertFalse(new VaultSettingsViewModel(user: $user, vault: $vault)->canBeDeleted());
+        $this->assertTrue(new VaultSettingsViewModel(user: $user, vault: $vault)->isTheLastVault());
 
         Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->assertTrue(new VaultSettingsViewModel(user: $user, vault: $vault)->canBeDeleted());
+        $this->assertFalse(new VaultSettingsViewModel(user: $user, vault: $vault)->isTheLastVault());
     }
 
     #[Test]

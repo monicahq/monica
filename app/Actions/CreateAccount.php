@@ -21,8 +21,11 @@ use Illuminate\Support\Facades\DB;
  * optional and none of it is asked for. Everything it writes is ordinary data
  * the user renames, reorders or throws away.
  *
- * An account always has at least one vault, so the first one is made here. It
- * is named in the language the account was created in, unlike the value lists,
+ * Nobody should have to open a vault before writing anybody down, so the first
+ * one is made here. It is the default one, being the only one, and an account
+ * that later deletes every vault it has simply starts over from the screen it
+ * started on. It is named in the language the account was created in, unlike
+ * the value lists,
  * which are stored as translation keys and follow the interface language.
  *
  * The template a contact is written down with is asked for rather than written

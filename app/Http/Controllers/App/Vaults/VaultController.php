@@ -10,7 +10,6 @@ use App\Actions\SetDefaultVault;
 use App\Actions\SetVaultDefaultTemplate;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\VaultColourEnum;
-use App\Exceptions\CannotDeleteTheLastVault;
 use App\Http\Controllers\Controller;
 use App\Models\TemplateVersion;
 use App\Models\Vault;
@@ -84,21 +83,26 @@ class VaultController extends Controller
     }
 
     /**
-     * The settings screen only offers the deletion once the account has a
-     * second vault, so a refusal here means the other one went between the page
-     * being drawn and the button being pressed.
+     * Somebody who deleted their last vault has an account holding nothing,
+     * which is the state every account starts in, so they are taken back to
+     * the screen that explains what to do first rather than to a list with
+     * nothing on it.
      */
     public function destroy(Request $request, Vault $vault): RedirectResponse
     {
-        try {
-            new DestroyVault(
-                user: $request->user(),
-                vault: $vault,
-            )->execute();
-        } catch (CannotDeleteTheLastVault) {
-            return redirect()->route('vaults.settings.index', $vault)
-                ->with('error', __('This vault stays.'))
-                ->with('error_description', __('It is the only one your account has left, and a contact has to land somewhere.'));
+        new DestroyVault(
+            user: $request->user(),
+            vault: $vault,
+        )->execute();
+
+        $anyLeft = Vault::query()
+            ->where('account_id', $request->user()->account_id)
+            ->exists();
+
+        if (! $anyLeft) {
+            return redirect()->route('gettingStarted.index')
+                ->with('status', __('The vault is deleted.'))
+                ->with('status_description', __('Your account holds nothing now. The next vault you make is where things land.'));
         }
 
         return redirect()->route('vaults.index')

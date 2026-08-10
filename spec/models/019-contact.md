@@ -42,6 +42,7 @@ last_consulted_at           datetime                        when the user last o
 created_at                  datetime
 updated_at                  datetime
 deleted_at                  datetime
+deleted_with_vault          bool                            whether the contact was taken out by the deletion of its vault, so restoring the vault knows who to bring back
 ```
 
 ## Relationships
@@ -62,6 +63,7 @@ deleted_at                  datetime
 - A partial contact is a real row in the graph, not free text (8.2). It is hidden from the main lists while `is_partial` is true, and it stops being partial as soon as it is enriched or merged. There is never a parallel string describing a human who does not exist as a contact.
 - `last_activity_at` counts only activities whose nature is marked as a real interaction (9.3). It is what the inactivity reminder reads (10.2), and it is maintained on write because computing it on read would scan the activity table for every row in a list.
 - A contact is soft deleted. Deleting it cancels future reminder occurrences and restores them if the contact comes back (10.3). Its relationships, activities and files are not destroyed.
+- Deleting a [Vault](007-vault.md) takes its contacts with it, marked as having gone with it. Restoring the vault brings back exactly those, and leaves somebody deleted on their own beforehand deleted.
 - **An archived contact triggers no reminder.** Archiving deactivates the rules about them and cancels their future occurrences, the way deleting does, and unarchiving reactivates the rules and puts what is ahead back (10.3). Past occurrences are kept, because they are history, and the rules say why they are quiet instead of vanishing (3.3). This covers the inactivity rule too: a contact nobody is meant to hear about cannot fire for silence.
 - Changing the applied template version writes a [RecordSnapshot](023-record-snapshot.md) first, always (6).
 - Every field on the page, including ones invented yesterday, is searchable and filterable with no configuration (13).

@@ -151,14 +151,15 @@ class VaultSettingsViewModel
     }
 
     /**
-     * Whether the vault can go. An account always has at least one vault, so
-     * the last one stays whatever anybody presses.
+     * Whether this is the only vault the account has. It goes like any other,
+     * and the card that asks says what taking it leaves behind: an account
+     * holding nothing, back at the screen it started on.
      */
-    public function canBeDeleted(): bool
+    public function isTheLastVault(): bool
     {
         return Vault::query()
             ->where('account_id', $this->user->account_id)
-            ->count() > 1;
+            ->count() === 1;
     }
 
     public function contactCount(): int

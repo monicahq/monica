@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteTheLastVault;
 use App\Jobs\LogUserAction;
+use App\Models\Contact;
+use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -18,12 +19,19 @@ use Illuminate\Support\Facades\DB;
  * screen that calls this has to say what the vault holds before it does.
  *
  * The deletion is soft, and the vault can be brought back with
- * {@see RestoreVault} while it is still there to bring back.
+ * {@see RestoreVault} while it is still there to bring back. What the vault
+ * held goes with it and comes back with it: the contacts are marked as having
+ * left with the vault, which is how a restore later tells them from somebody
+ * deleted on their own beforehand.
  *
- * An account always has at least one vault, so the last one refuses to go. A
- * vault that was the default gives the title up before leaving, both because
+ * The last vault of an account goes too. An account with no vault is a state
+ * the product already knows, since it is the one every account starts in, and
+ * whoever asked is taken back to it. The next vault they create is the default
+ * one, because there is nothing else to be it.
+ *
+ * A vault that was the default gives the title up before leaving, both because
  * exactly one vault holds it and because a vault brought back later must not
- * come back holding it too.
+ * come back holding it while another one does.
  */
 class DestroyVault
 {
@@ -46,14 +54,6 @@ class DestroyVault
         if ($this->vault->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('This vault is in another account.');
         }
-
-        $remaining = Vault::query()
-            ->where('account_id', $this->user->account_id)
-            ->count();
-
-        if ($remaining <= 1) {
-            throw new CannotDeleteTheLastVault('An account always has at least one vault.');
-        }
     }
 
     private function destroy(): void
@@ -66,18 +66,65 @@ class DestroyVault
             $this->vault->save();
             $this->vault->delete();
 
+            $this->takeTheContactsWithIt();
+
             if ($wasDefault) {
                 $this->promoteTheFirstVaultLeft();
             }
         });
     }
 
+    /**
+     * Send the contacts out at the same moment as the vault, and give back the
+     * counts they were holding on the versions they render from, exactly as
+     * deleting one of them by hand does.
+     *
+     * They are marked as having left with the vault, so that a restore later
+     * brings back these and not somebody who was deleted on their own an hour
+     * earlier. The moment alone would not say it: two deletions a second apart
+     * are written to the same second.
+     *
+     * Somebody already deleted is outside the soft delete scope and is not
+     * touched, and comes back only on their own terms.
+     */
+    private function takeTheContactsWithIt(): void
+    {
+        $counts = Contact::query()
+            ->where('vault_id', $this->vault->id)
+            ->groupBy('template_version_id')
+            ->selectRaw('template_version_id, count(*) as total')
+            ->pluck('total', 'template_version_id');
+
+        foreach ($counts as $versionId => $total) {
+            TemplateVersion::query()
+                ->whereKey($versionId)
+                ->where('record_count', '>=', $total)
+                ->decrement('record_count', $total);
+        }
+
+        Contact::query()
+            ->where('vault_id', $this->vault->id)
+            ->update([
+                'deleted_at' => $this->vault->deleted_at,
+                'deleted_with_vault' => true,
+            ]);
+    }
+
+    /**
+     * Hand the title to the first vault left, when there is one left to hand it
+     * to. An account with no vault has no default, and needs none: nothing can
+     * be created without a vault to create it in.
+     */
     private function promoteTheFirstVaultLeft(): void
     {
         $vault = Vault::query()
             ->where('account_id', $this->user->account_id)
             ->orderBy('position')
-            ->firstOrFail();
+            ->first();
+
+        if ($vault === null) {
+            return;
+        }
 
         $vault->is_default = true;
         $vault->save();

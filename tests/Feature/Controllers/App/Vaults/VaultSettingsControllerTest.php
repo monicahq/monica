@@ -56,26 +56,29 @@ class VaultSettingsControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_the_last_vault_stays_rather_than_offering_to_delete_it(): void
+    public function it_says_what_deleting_the_last_vault_leaves_behind(): void
     {
         $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user)->get(route('vaults.settings.index', $vault))
             ->assertStatus(200)
-            ->assertSee('This is the only vault your account has, so it stays.', false);
+            ->assertSee('Delete the vault')
+            ->assertSee('your account is left holding nothing', false);
     }
 
     #[Test]
-    public function it_offers_the_deletion_once_the_account_holds_another_vault(): void
+    public function it_says_another_vault_takes_the_default_over_when_one_is_left(): void
     {
         $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
         Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Schrute Farms']);
 
         $this->actingAs($user)->get(route('vaults.settings.index', $vault))
             ->assertStatus(200)
-            ->assertSee('Delete the vault');
+            ->assertSee('Delete the vault')
+            ->assertSee('another one takes over as the place things land', false)
+            ->assertDontSee('your account is left holding nothing', false);
     }
 
     #[Test]

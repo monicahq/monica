@@ -8,6 +8,8 @@ use App\Actions\DestroyVault;
 use App\Actions\RestoreVault;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\Contact;
+use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -56,6 +58,40 @@ class RestoreVaultTest extends TestCase
 
         $this->assertFalse($vault->refresh()->is_default);
         $this->assertTrue($next->refresh()->is_default);
+    }
+
+    #[Test]
+    public function it_brings_back_the_contacts_that_left_with_the_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->published()->used(1)->create();
+        $dwight = Contact::factory()->create(['vault_id' => $vault->id, 'template_version_id' => $version->id]);
+        $creed = Contact::factory()->create(['vault_id' => $vault->id]);
+        $creed->delete();
+
+        new DestroyVault(user: $user, vault: $vault)->execute();
+        new RestoreVault(user: $user, vault: $vault)->execute();
+
+        $this->assertNotSoftDeleted('contacts', ['id' => $dwight->id]);
+        $this->assertSoftDeleted('contacts', ['id' => $creed->id]);
+        $this->assertEquals(1, $version->refresh()->record_count);
+    }
+
+    #[Test]
+    public function it_takes_the_default_back_when_it_was_the_last_vault_of_the_account(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
+
+        new DestroyVault(user: $user, vault: $vault)->execute();
+        new RestoreVault(user: $user, vault: $vault)->execute();
+
+        $this->assertTrue($vault->refresh()->is_default);
     }
 
     #[Test]

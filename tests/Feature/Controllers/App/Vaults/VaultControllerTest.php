@@ -299,18 +299,18 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_keeps_the_last_vault_of_the_account(): void
+    public function it_sends_somebody_who_deleted_their_last_vault_back_to_the_start(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
 
         $response = $this->actingAs($user)->delete(route('vaults.destroy', $vault));
 
-        $response->assertRedirect(route('vaults.settings.index', $vault));
-        $response->assertSessionHas('error');
-        $this->assertNotSoftDeleted('vaults', ['id' => $vault->id]);
+        $response->assertRedirect(route('gettingStarted.index'));
+        $response->assertSessionHas('status');
+        $this->assertSoftDeleted('vaults', ['id' => $vault->id]);
     }
 
     #[Test]

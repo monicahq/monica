@@ -90,36 +90,39 @@
       </div>
 
       <div>
-        @if ($viewModel->canBeDeleted())
-          <x-modal.warning
-            :title="__('Delete “:name”?', ['name' => $vault->name])"
-            :confirm="__('Delete the vault')"
-            :cancel="__('Keep it')"
-            :action="$viewModel->destroyAction()"
-          >
-            <x-slot:trigger>
-              <x-button.secondary type="button" @click="open = true" class="max-sm:w-full">
-                {{ __('Delete this vault') }}
-              </x-button.secondary>
-            </x-slot:trigger>
+        <x-modal.warning
+          :title="__('Delete “:name”?', ['name' => $vault->name])"
+          :confirm="__('Delete the vault')"
+          :cancel="__('Keep it')"
+          :action="$viewModel->destroyAction()"
+        >
+          <x-slot:trigger>
+            <x-button.secondary type="button" @click="open = true" class="max-sm:w-full">
+              {{ __('Delete this vault') }}
+            </x-button.secondary>
+          </x-slot:trigger>
 
-            <p>
-              {{ $viewModel->contactCount() === 1
-                ? __('The one contact in it goes too, and everything written about them.')
-                : __('The :count contacts in it go too, and everything written about them.', ['count' => $viewModel->contactCount()]) }}
-            </p>
+          <p>
+            {{ $viewModel->contactCount() === 1
+              ? __('The one contact in it goes too, and everything written about them.')
+              : __('The :count contacts in it go too, and everything written about them.', ['count' => $viewModel->contactCount()]) }}
+          </p>
 
-            @if ($vault->is_default)
-              <p>{{ __('This is your default vault, so another one takes over as the place things land.') }}</p>
-            @endif
+          {{--
+            The last vault of an account is always the default one, so the two
+            sentences never both apply: either something else takes the title
+            on, or there is nothing left to take it.
+          --}}
+          @if ($viewModel->isTheLastVault())
+            <p>{{ __('This is the only vault you have, so your account is left holding nothing and you go back to the start.') }}</p>
 
-            <p>{{ __('This cannot be undone.') }}</p>
-          </x-modal.warning>
-        @else
-          <x-notice>
-            {{ __('This is the only vault your account has, so it stays. Make another one first, and this one can go.') }}
-          </x-notice>
-        @endif
+            <p>{{ __('The next vault you make becomes the one things land in.') }}</p>
+          @elseif ($vault->is_default)
+            <p>{{ __('This is your default vault, so another one takes over as the place things land.') }}</p>
+          @endif
+
+          <p>{{ __('This cannot be undone.') }}</p>
+        </x-modal.warning>
       </div>
     </div>
   </x-box>

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
+use App\Actions\CreateVault;
 use App\Actions\DestroyVault;
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteTheLastVault;
 use App\Jobs\LogUserAction;
+use App\Models\Contact;
+use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -35,7 +37,7 @@ class DestroyVaultTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_delete_the_last_vault_of_an_account(): void
+    public function it_deletes_the_last_vault_of_an_account_and_leaves_it_holding_nothing(): void
     {
         Queue::fake();
 
@@ -43,9 +45,60 @@ class DestroyVaultTest extends TestCase
         $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
         Vault::factory()->create();
 
-        $this->expectException(CannotDeleteTheLastVault::class);
+        new DestroyVault(user: $user, vault: $vault)->execute();
+
+        $this->assertSoftDeleted('vaults', ['id' => $vault->id]);
+        $this->assertFalse($vault->refresh()->is_default);
+        $this->assertEquals(0, Vault::query()->where('account_id', $user->account_id)->count());
+    }
+
+    #[Test]
+    public function it_makes_the_next_vault_of_an_emptied_account_the_default_one(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
 
         new DestroyVault(user: $user, vault: $vault)->execute();
+
+        $next = new CreateVault(user: $user, name: 'Schrute Farms')->execute();
+
+        $this->assertTrue($next->is_default);
+    }
+
+    #[Test]
+    public function it_takes_the_contacts_of_the_vault_with_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->published()->used(2)->create();
+        $dwight = Contact::factory()->create(['vault_id' => $vault->id, 'template_version_id' => $version->id]);
+        $angela = Contact::factory()->create(['vault_id' => $vault->id, 'template_version_id' => $version->id]);
+
+        new DestroyVault(user: $user, vault: $vault)->execute();
+
+        $this->assertSoftDeleted('contacts', ['id' => $dwight->id]);
+        $this->assertSoftDeleted('contacts', ['id' => $angela->id]);
+        $this->assertEquals($vault->refresh()->deleted_at, $dwight->refresh()->deleted_at);
+        $this->assertEquals(0, $version->refresh()->record_count);
+    }
+
+    #[Test]
+    public function it_leaves_the_contacts_of_another_vault_alone(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $elsewhere = Vault::factory()->default()->create(['account_id' => $user->account_id]);
+        $creed = Contact::factory()->create(['vault_id' => $elsewhere->id]);
+
+        new DestroyVault(user: $user, vault: $vault)->execute();
+
+        $this->assertNotSoftDeleted('contacts', ['id' => $creed->id]);
     }
 
     #[Test]

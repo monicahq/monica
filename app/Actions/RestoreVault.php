@@ -6,17 +6,25 @@ namespace App\Actions;
 
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\Contact;
+use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Bring a deleted vault back, with everything it held still inside it.
  *
  * Deleting a vault is the most destructive thing somebody can do short of
  * deleting the account, which is why it is reversible. It comes back where it
- * was in the list, and not as the default one: another vault took that on when
- * this one left, and exactly one holds it.
+ * was in the list, and with the contacts that left with it: those are the ones
+ * the deletion marked as having gone with it, and somebody deleted on their own
+ * beforehand stays deleted.
+ *
+ * It comes back as the default only when the account has nobody else to be it,
+ * which is what happens when it was the last vault. Otherwise another vault
+ * took the title on when this one left, and exactly one holds it.
  */
 class RestoreVault
 {
@@ -43,7 +51,51 @@ class RestoreVault
 
     private function restore(): void
     {
-        $this->vault->restore();
+        DB::transaction(function (): void {
+            $this->vault->restore();
+
+            $this->bringBackTheContactsThatWentWithIt();
+            $this->takeTheTitleBackIfNobodyHasIt();
+        });
+    }
+
+    private function bringBackTheContactsThatWentWithIt(): void
+    {
+        $counts = Contact::query()
+            ->onlyTrashed()
+            ->where('vault_id', $this->vault->id)
+            ->where('deleted_with_vault', true)
+            ->groupBy('template_version_id')
+            ->selectRaw('template_version_id, count(*) as total')
+            ->pluck('total', 'template_version_id');
+
+        foreach ($counts as $versionId => $total) {
+            TemplateVersion::query()->whereKey($versionId)->increment('record_count', $total);
+        }
+
+        Contact::query()
+            ->onlyTrashed()
+            ->where('vault_id', $this->vault->id)
+            ->where('deleted_with_vault', true)
+            ->update([
+                'deleted_at' => null,
+                'deleted_with_vault' => false,
+            ]);
+    }
+
+    private function takeTheTitleBackIfNobodyHasIt(): void
+    {
+        $taken = Vault::query()
+            ->where('account_id', $this->user->account_id)
+            ->where('is_default', true)
+            ->exists();
+
+        if ($taken) {
+            return;
+        }
+
+        $this->vault->is_default = true;
+        $this->vault->save();
     }
 
     private function log(): void

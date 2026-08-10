@@ -59,6 +59,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
+ * @property bool $deleted_with_vault
  * @property-read Account $account
  * @property-read Vault $vault
  * @property-read TemplateVersion $templateVersion
@@ -150,6 +151,7 @@ class Contact extends Model
             'last_activity_at' => 'datetime',
             'activity_count' => 'integer',
             'last_consulted_at' => 'datetime',
+            'deleted_with_vault' => 'boolean',
         ];
     }
 
