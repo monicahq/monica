@@ -93,6 +93,17 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_signs_the_screen_with_the_mark_of_the_application(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('vaults.show', $vault))
+            ->assertStatus(200)
+            ->assertSee(asset('images/logo.svg'));
+    }
+
+    #[Test]
     public function it_leads_to_the_account_settings_from_the_row_saying_who_is_signed_in(): void
     {
         $user = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
