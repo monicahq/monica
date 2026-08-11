@@ -69,6 +69,17 @@ class ContactsViewModel
         self::SORT_ADDED => 'created_at',
     ];
 
+    /**
+     * The sorts whose column a contact is allowed to have nothing in. They are
+     * the ones that need saying where the unknowns go.
+     *
+     * @var list<string>
+     */
+    private const array SORTS_THAT_CAN_BE_UNKNOWN = [
+        self::SORT_NICKNAME,
+        self::SORT_LAST_SPOKE,
+    ];
+
     /** @var Paginator<int, Contact>|null */
     private ?Paginator $contacts = null;
 
@@ -336,13 +347,27 @@ class ContactsViewModel
      * in whatever order the database felt like, and a row can appear on two
      * pages or on none.
      *
+     * A column that can be unknown is sorted on twice, the unknowns pushed to
+     * the end before the column itself is read. Where they land is otherwise the
+     * database's opinion rather than ours: Postgres ranks null above everything
+     * and MySQL and SQLite rank it below, so the same list reads differently on
+     * two installations. Pushing them to the end says it once, and it is the
+     * more useful end: sorting by nickname to be shown a screen of dashes is not
+     * what anybody clicked the column for.
+     *
      * @return Paginator<int, Contact>
      */
     private function contacts(): Paginator
     {
+        $column = self::SORT_COLUMNS[$this->sort()];
+
         return $this->contacts ??= $this->matching()
             ->with('templateVersion.template')
-            ->orderBy(self::SORT_COLUMNS[$this->sort()], $this->direction())
+            ->when(
+                in_array($this->sort(), self::SORTS_THAT_CAN_BE_UNKNOWN, true),
+                fn (Builder $query): Builder => $query->orderByRaw("{$column} is null"),
+            )
+            ->orderBy($column, $this->direction())
             ->orderBy('id')
             ->simplePaginate(self::PER_PAGE)
             ->withQueryString();

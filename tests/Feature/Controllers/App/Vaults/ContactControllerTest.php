@@ -143,6 +143,28 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_pushes_the_people_it_knows_nothing_about_to_the_end_either_way(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Michael', 'Scott', ['nickname' => 'Prison Mike']);
+        $this->contact($vault, 'Dwight', 'Schrute');
+
+        foreach (['asc', 'desc'] as $direction) {
+            $html = (string) $this->actingAs($user)
+                ->get(route('contacts.index', ['vault' => $vault, 'sort' => 'nickname', 'direction' => $direction]))
+                ->getContent();
+
+            $this->assertLessThan(
+                mb_strpos($html, 'Dwight Schrute'),
+                mb_strpos($html, 'Michael Scott'),
+                "The contact with no nickname should come last, sorted {$direction}.",
+            );
+        }
+    }
+
+    #[Test]
     public function it_falls_back_to_the_name_when_the_url_asks_for_nonsense(): void
     {
         $user = User::factory()->create();
