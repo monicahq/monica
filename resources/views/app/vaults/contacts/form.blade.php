@@ -24,11 +24,13 @@
 @endphp
 <x-shell :title="$viewModel->title()">
   <x-slot:bar>
-    <a href="{{ $viewModel->contactsUrl() }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-
-      {{ __('Back to the contacts') }}
-    </a>
+    <x-vault.bar
+      :vault="$vault"
+      :items="[
+        ['label' => __('People'), 'icon' => 'people', 'url' => $viewModel->contactsUrl()],
+        ['label' => $viewModel->title()],
+      ]"
+    />
   </x-slot:bar>
 
   <x-slot:dock>

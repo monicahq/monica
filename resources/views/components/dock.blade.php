@@ -115,6 +115,7 @@
   @keydown.escape.window="open = false"
   @keydown.window.meta.k.prevent="open = ! open"
   @keydown.window.ctrl.k.prevent="open = ! open"
+  @launcher-open.window="open = true"
 >
   <div
     x-cloak

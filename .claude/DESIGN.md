@@ -166,7 +166,9 @@ No background images, no gradients, no patterns, no grain, no glassmorphism. The
 
 `shell` takes a `wide` flag, which swaps the 720px reading column for the 1120px content column. It is for a screen with two columns of its own, such as the template builder and the field-type picker, and not for making a form roomier: a form at 1120px is a form whose labels are a long way from their fields.
 
-As of August 2026 every screen under `/settings` is on `shell`. Nothing outside it has moved: the vault screens, the contact screens, getting started and the auth screens are all still on the v2 shells. They have the new palette and the new type, because those are global, but the old structure around them.
+As of August 2026 every screen under `/settings` is on `shell`, along with the vault list, the contact list and the form that writes somebody down. The vault dashboard, the vault settings, getting started and the auth screens are still on the v2 shells. They have the new palette and the new type, because those are global, but the old structure around them.
+
+A screen inside a vault puts `components/vault/bar.blade.php` in the shell's `bar` slot: the vault, then where in it you are, then the way into the launcher. Every such screen says those three things in the same corner, so which vault a screen belongs to is never something to be worked out from the title. The chip leads to the vault's own screen rather than opening a menu, because the dock already carries the chip that switches vaults.
 
 Sticky regions use a translucent paper background, a blur, and a one-pixel bottom border.
 
@@ -267,7 +269,7 @@ The mark in `public/images/logo.svg` is never redrawn and never recoloured, exce
 
 ## 9. Product patterns
 
-**Contact list.** Rows, not a grid of cards. Name, photo or initials, relationship summary, last interaction, next reminder.
+**Contact list.** Rows, not a grid of cards. Name, photo or initials, relationship summary, last interaction, next reminder. In name order the rows are grouped under the letter they begin with, which is what makes a long list something to be scanned; in any other order there are no letters, since a letter over a list ordered by a date is a heading that lies. The chips that narrow it are links, so the list can be reached again by the back button, and the order is two selects and a button rather than a select that reloads the screen the moment it is touched. A run cut in half by the pagination comes back on the next page without its letter, so it reads as the rest of itself.
 
 **Vault list.** The one screen in the product built from cards rather than rows, and the one with no dock. A vault is not one of a long list to be scanned down a column: there are three or four, they are picked by recognition, and each carries a sentence about what it is for that a row would truncate. The dock is absent because its four destinations point into a single vault and this is where you choose which, so a screen with no dock takes its 120px of bottom padding back and reaches the settings from `barEnd` instead of from the launcher. The card's mark is the colour somebody chose for the vault, not a tint derived from its name: the choice is theirs and the screen does not overrule it.
 

@@ -1,256 +1,157 @@
 {{--
   Everybody in one vault, on one list.
 
-  The screen is as tall as the window and the rows are what scrolls, so the
-  header of the table stays where it is and somebody thirty rows down still knows
-  which column they are reading.
+  The list is rows in a panel rather than a table. There are three things worth
+  putting beside a name and a table of three columns is a list with lines drawn
+  on it. In name order the rows are grouped under the letter they begin with,
+  which is what makes a long list something to be scanned.
 
-  Searching, narrowing and sorting all go through the URL and redraw the region
-  below the bar over ajax. That means a narrowed list can be linked to and comes
-  back the same after a reload, which a table that only ever changed in the
-  browser could not offer.
+  Searching, narrowing and ordering all go through the URL and redraw the region
+  below the header over ajax, so a narrowed list comes back the same after a
+  reload and the back button undoes what the last chip did.
 
-  Which columns are drawn is the one thing that does not go through the URL. It
-  is a preference about looking rather than a question about the data, the same
-  rows are sent either way, so it lives in the browser and hides a column by not
-  drawing it.
+  Neither form submits on its own. A select that reloads the list the moment it
+  is touched changes the screen under somebody's feet, which is the one thing
+  this product never does, so both of them have a button.
+
+  A name is not a link. The page of one contact is a later screen, and a link
+  that leads nowhere is worse than a word that does not move.
 
   @var \App\ViewModels\Vaults\ContactsViewModel $viewModel
 --}}
 @php
-  $chip = 'rounded-full border px-3 py-1 text-[13px] transition-colors duration-150';
-  $columnCount = count($viewModel->columns());
+  $vault = $viewModel->vault();
 @endphp
-
-<x-app-layout wide :title="$viewModel->title()">
-  <x-slot:sidebar>
-    <x-vault.sidebar
-      :vault="$viewModel->vault()"
-      :vaults="$viewModel->vaults()"
-      :user="$viewModel->user()"
-      current="contacts"
+<x-shell :title="$viewModel->title()" wide>
+  <x-slot:bar>
+    <x-vault.bar
+      :vault="$vault"
+      :items="[['label' => __('People'), 'icon' => 'people', 'count' => $viewModel->headcount()]]"
     />
-  </x-slot:sidebar>
+  </x-slot:bar>
 
-  <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => $viewModel->vault()->name, 'url' => $viewModel->vaultUrl()],
-        ['label' => __('Contacts')],
-      ]"
-    />
-  </x-slot:breadcrumb>
+  <x-slot:dock>
+    <x-dock :user="$viewModel->user()" :vault="$vault" current="people" />
+  </x-slot:dock>
 
-  <x-slot:actions>
-    <x-button :href="$viewModel->newContactUrl()" size="small" data-turbo="true">{{ __('Add contact') }}</x-button>
-  </x-slot:actions>
+  <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
+    <div class="flex min-w-0 flex-col gap-2">
+      <h1 class="erica-page-title">{{ $viewModel->title() }}</h1>
 
-  <div
-    id="contacts"
-    x-merge="replace"
-    x-data="hiddenColumns('contacts.hidden-columns')"
-    class="flex min-h-0 flex-1 flex-col gap-3.5"
-  >
-    <div class="flex flex-wrap items-end gap-3 px-4 sm:px-7">
-      <div class="min-w-0 space-y-0.5">
-        <h1 class="text-2xl font-semibold tracking-tight text-ink">{{ __('Contacts') }}</h1>
-
-        <p class="text-[13px] text-muted">{{ $viewModel->resultLine() }}</p>
-      </div>
-
-      <div class="flex flex-wrap items-center gap-2.5 sm:ml-auto">
-        <form method="get" action="{{ $viewModel->searchUrl() }}" x-target="contacts" class="flex items-center gap-2">
-          <input type="hidden" name="sort" value="{{ $viewModel->sort() }}" />
-          <input type="hidden" name="direction" value="{{ $viewModel->direction() }}" />
-
-          <x-input
-            type="search"
-            id="query"
-            size="small"
-            :value="$viewModel->query()"
-            :placeholder="__('Search names and nicknames')"
-            :aria-label="__('Search the contacts')"
-            class="w-56"
-          />
-
-          <x-button.secondary size="small">{{ __('Search') }}</x-button.secondary>
-        </form>
-
-        <div x-data="{ open: false }" @keydown.escape.window="open = false" class="relative">
-          <button
-            type="button"
-            @click="open = ! open"
-            @click.outside="open = false"
-            :aria-expanded="open ? 'true' : 'false'"
-            :class="open ? 'bg-hover' : 'bg-card'"
-            class="flex cursor-pointer items-center gap-2 rounded-md border border-hairline-strong px-3 py-1.5 text-[13px] font-medium text-ink transition-colors duration-150 hover:bg-hover"
-          >
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
-              <line x1="2.4" y1="4.4" x2="13.6" y2="4.4"></line>
-              <line x1="2.4" y1="8" x2="13.6" y2="8"></line>
-              <line x1="2.4" y1="11.6" x2="13.6" y2="11.6"></line>
-            </svg>
-
-            {{ __('Columns') }}
-
-            <span class="font-mono text-xs text-muted-soft"><span x-text="{{ $columnCount }} - hidden.length"></span>/{{ $columnCount }}</span>
-          </button>
-
-          <div
-            x-cloak
-            x-show="open"
-            x-transition.opacity.duration.120ms
-            class="absolute top-full right-0 z-20 mt-1.5 w-68 rounded-lg border border-hairline-strong bg-canvas p-1.5 shadow-lg"
-          >
-            <div class="flex items-center gap-2.5 px-2 pt-1 pb-1.5">
-              <span class="text-xs tracking-widest text-muted-soft uppercase">{{ __('Columns') }}</span>
-
-              <button type="button" @click="reset()" class="ml-auto cursor-pointer text-[13px] text-brand hover:underline">{{ __('Reset') }}</button>
-            </div>
-
-            @foreach ($viewModel->columns() as $column)
-              @if ($column['isLocked'])
-                <span class="flex items-center gap-2.5 rounded-md px-2 py-1.5 text-sm text-muted">
-                  <span class="flex size-4 shrink-0 items-center justify-center rounded-sm border border-primary bg-primary text-on-primary" aria-hidden="true">
-                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M2.5 6.3 4.8 8.6 9.5 3.8"></path>
-                    </svg>
-                  </span>
-
-                  {{ $column['label'] }}
-
-                  <span class="ml-auto text-xs text-muted-soft">{{ __('always') }}</span>
-                </span>
-              @else
-                <button
-                  type="button"
-                  role="checkbox"
-                  @click="toggle('{{ $column['key'] }}')"
-                  :aria-checked="shown('{{ $column['key'] }}') ? 'true' : 'false'"
-                  class="flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2 py-1.5 text-left text-sm text-ink transition-colors hover:bg-hover"
-                >
-                  <span
-                    :class="shown('{{ $column['key'] }}') ? 'border-primary bg-primary text-on-primary' : 'border-hairline-strong bg-input text-transparent'"
-                    class="flex size-4 shrink-0 items-center justify-center rounded-sm border"
-                    aria-hidden="true"
-                  >
-                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M2.5 6.3 4.8 8.6 9.5 3.8"></path>
-                    </svg>
-                  </span>
-
-                  {{ $column['label'] }}
-                </button>
-              @endif
-            @endforeach
-          </div>
-        </div>
-      </div>
+      <p class="erica-lede max-w-[64ch]">{{ $viewModel->description() }}</p>
     </div>
 
-    <div class="flex flex-wrap items-center gap-2 px-4 sm:px-7">
-      @foreach ($viewModel->filters() as $filter)
-        <a
-          href="{{ $filter['url'] }}"
-          x-target="contacts"
-          @if ($filter['isCurrent']) aria-current="true" @endif
-          class="{{ $chip }} {{ $filter['isCurrent'] ? 'border-primary bg-sunken font-semibold text-ink' : 'border-hairline-strong bg-canvas text-body hover:bg-hover' }}"
-        >{{ $filter['label'] }}</a>
-      @endforeach
+    <x-button :href="$viewModel->newContactUrl()" data-turbo="true" size="small">
+      <x-slot:icon>
+        <x-icon name="plus" :size="16" :stroke-width="1.6" />
+      </x-slot:icon>
 
-      <span class="ml-auto text-[13px] text-muted-soft">{{ $viewModel->sortLine() }}</span>
+      {{ __('Add someone') }}
+    </x-button>
+  </header>
+
+  <div id="contacts" x-merge="replace" class="flex flex-col gap-3.5">
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2.5">
+      <div class="flex flex-wrap items-center gap-2">
+        @foreach ($viewModel->filters() as $filter)
+          <x-chip
+            :href="$filter['url']"
+            :selected="$filter['isCurrent']"
+            :icon="$filter['icon']"
+            :count="$filter['count']"
+            x-target="contacts"
+          >{{ $filter['label'] }}</x-chip>
+        @endforeach
+      </div>
+
+      <form method="get" action="{{ $viewModel->searchUrl() }}" x-target="contacts" class="flex flex-wrap items-center gap-2 sm:ml-auto">
+        <input type="hidden" name="query" value="{{ $viewModel->query() }}" />
+
+        <label for="sort" class="erica-caption">{{ __('Sorted by') }}</label>
+
+        <select id="sort" name="sort" class="erica-control erica-control--sm erica-control--select w-38">
+          @foreach ($viewModel->sorts() as $sort)
+            <option value="{{ $sort['value'] }}" @selected($sort['isCurrent'])>{{ $sort['label'] }}</option>
+          @endforeach
+        </select>
+
+        <select id="direction" name="direction" aria-label="{{ __('Which way round the order runs') }}" class="erica-control erica-control--sm erica-control--select w-36">
+          @foreach ($viewModel->directions() as $direction)
+            <option value="{{ $direction['value'] }}" @selected($direction['isCurrent'])>{{ $direction['label'] }}</option>
+          @endforeach
+        </select>
+
+        <x-button.secondary size="small">{{ __('Order the list') }}</x-button.secondary>
+      </form>
     </div>
 
-    <div class="min-h-0 flex-1 overflow-auto border-t border-hairline bg-canvas">
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2.5">
+      <form method="get" action="{{ $viewModel->searchUrl() }}" x-target="contacts" class="flex items-center gap-2">
+        <input type="hidden" name="sort" value="{{ $viewModel->sort() }}" />
+        <input type="hidden" name="direction" value="{{ $viewModel->direction() }}" />
+
+        <x-input
+          type="search"
+          id="query"
+          size="small"
+          :value="$viewModel->query()"
+          :placeholder="__('Search names and nicknames')"
+          :aria-label="__('Search the people in this vault')"
+          class="w-60"
+        />
+
+        <x-button.secondary size="small">{{ __('Search') }}</x-button.secondary>
+      </form>
+
+      <p class="erica-small sm:ml-auto">{{ $viewModel->resultLine() }}</p>
+    </div>
+
+    <x-panel :flush="true">
       @if ($viewModel->vaultIsEmpty())
-        <x-empty-state
-          :title="__('Nobody here yet')"
-          :href="$viewModel->newContactUrl()"
-          :link-label="__('Write somebody down')"
-        >
+        <x-empty-state :title="__('Nobody here yet')" hue="var(--indigo)" tint="var(--indigo-tint)">
           <x-slot:icon>
-            <x-entity-icon name="profile" :size="20" />
+            <x-icon name="people" :size="30" :stroke-width="1.4" />
           </x-slot:icon>
 
           {{ $viewModel->emptyLine() }}
+
+          <x-slot:action>
+            <x-button :href="$viewModel->newContactUrl()" data-turbo="true">
+              <x-slot:icon>
+                <x-icon name="plus" :size="18" :stroke-width="1.6" />
+              </x-slot:icon>
+
+              {{ __('Write somebody down') }}
+            </x-button>
+          </x-slot:action>
         </x-empty-state>
       @elseif ($viewModel->noResults())
-        <div class="grid justify-items-center gap-1 px-6 py-15 text-center">
-          <p class="text-sm font-semibold text-ink">{{ __('Nothing matches') }}</p>
+        <div class="erica-empty">
+          <p class="erica-empty__title">{{ __('Nothing matches') }}</p>
 
-          <p class="text-sm text-muted">{{ __('Try a shorter search, or another filter above.') }}</p>
+          <p class="erica-empty__text">{{ __('Try a shorter search, or another chip above.') }}</p>
         </div>
       @else
-        <table class="w-full border-separate border-spacing-0">
-          <thead>
-            <tr>
-              @foreach ($viewModel->columns() as $column)
-                <th
-                  scope="col"
-                  @unless ($column['isLocked']) x-show="shown('{{ $column['key'] }}')" @endunless
-                  @class([
-                    'sticky top-0 z-2 border-b border-hairline bg-canvas p-0 font-normal whitespace-nowrap',
-                    'w-full' => $loop->first,
-                    'text-right' => $column['alignRight'],
-                    'text-left' => ! $column['alignRight'],
-                  ])
-                >
-                  @if ($column['isSortable'])
-                    <a
-                      href="{{ $column['url'] }}"
-                      x-target="contacts"
-                      title="{{ $column['title'] }}"
-                      @class([
-                        'flex items-center gap-1.5 px-3.5 py-2.5 text-[13px] transition-colors duration-150',
-                        'justify-end' => $column['alignRight'],
-                        'font-semibold text-ink' => $column['isSorted'],
-                        'text-muted hover:text-ink' => ! $column['isSorted'],
-                      ])
-                    >
-                      {{ $column['label'] }}
-
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        @class([
-                          'shrink-0',
-                          'text-transparent' => ! $column['isSorted'],
-                          'rotate-180' => $column['isAscending'],
-                        ])
-                        aria-hidden="true"
-                      >
-                        <path d="M4 6.5 8 10.5 12 6.5"></path>
-                      </svg>
-                    </a>
-                  @else
-                    <span class="block px-3.5 py-2.5 text-[13px] text-muted" title="{{ $column['title'] }}">{{ $column['label'] }}</span>
-                  @endif
-                </th>
-              @endforeach
-            </tr>
-          </thead>
-
-          <tbody id="contact-rows" x-merge="append">
-            @foreach ($viewModel->rows() as $row)
-              @include('app.vaults.contacts._row', ['row' => $row])
-            @endforeach
-          </tbody>
-        </table>
-
-        <div id="pagination" class="flex items-center justify-center px-6 pt-5 pb-11">
-          @if ($viewModel->hasMorePages())
-            <x-link x-target="contact-rows pagination" :href="$viewModel->nextPageUrl()" class="text-[13px]">{{ __('Load more') }}</x-link>
-          @else
-            <span class="text-[13px] text-muted-soft">{{ $viewModel->endLine() }}</span>
-          @endif
+        <div id="contact-rows" x-merge="append">
+          @include('app.vaults.contacts._groups')
         </div>
+
+        <x-slot:footer id="pagination" class="flex flex-wrap items-center gap-3">
+          @if ($viewModel->hasMorePages())
+            <x-link x-target="contact-rows pagination" :href="$viewModel->nextPageUrl()">{{ __('Load more') }}</x-link>
+          @else
+            <span class="erica-caption">{{ $viewModel->endLine() }}</span>
+          @endif
+
+          <x-button.secondary :href="$viewModel->newContactUrl()" data-turbo="true" size="small" class="ml-auto">
+            <x-slot:icon>
+              <x-icon name="plus" :size="16" :stroke-width="1.6" />
+            </x-slot:icon>
+
+            {{ __('Add someone') }}
+          </x-button.secondary>
+        </x-slot:footer>
       @endif
-    </div>
+    </x-panel>
   </div>
-</x-app-layout>
+</x-shell>

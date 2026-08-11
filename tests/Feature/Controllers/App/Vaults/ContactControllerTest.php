@@ -143,6 +143,39 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_draws_the_letters_only_over_a_list_that_is_in_name_order(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.index', $vault))
+            ->assertSee('<h2 class="erica-group">S</h2>', escape: false);
+
+        $this->actingAs($user)
+            ->get(route('contacts.index', ['vault' => $vault, 'sort' => 'added', 'direction' => 'desc']))
+            ->assertSee('Michael Scott')
+            ->assertDontSee('erica-group', escape: false);
+    }
+
+    #[Test]
+    public function it_says_how_many_people_each_chip_would_leave(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Michael', 'Scott', ['is_favourite' => true]);
+        $this->contact($vault, 'Dwight', 'Schrute');
+
+        $this->actingAs($user)->get(route('contacts.index', $vault))
+            ->assertSee('Everyone')
+            ->assertSee('Favourites')
+            ->assertSee('Archived')
+            ->assertSee('<span class="erica-chip__count">2</span>', escape: false);
+    }
+
+    #[Test]
     public function it_pushes_the_people_it_knows_nothing_about_to_the_end_either_way(): void
     {
         $user = User::factory()->create();
@@ -176,7 +209,8 @@ class ContactControllerTest extends TestCase
             ->get(route('contacts.index', ['vault' => $vault, 'sort' => 'shoe-size', 'direction' => 'sideways']))
             ->assertStatus(200)
             ->assertSee('Michael Scott')
-            ->assertSee('Sorted by name, ascending');
+            ->assertSee('<option value="name" selected>Name</option>', escape: false)
+            ->assertSee('<option value="asc" selected>A to Z</option>', escape: false);
     }
 
     #[Test]
@@ -298,10 +332,27 @@ class ContactControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('contacts.new', $vault))
             ->assertStatus(200)
-            ->assertSee('Back to the contacts')
+            ->assertSee('People')
             ->assertSee('Cancel')
             ->assertSee(route('contacts.index', $vault))
             ->assertSee(route('vaults.show', $vault));
+    }
+
+    #[Test]
+    public function it_says_which_vault_and_where_in_it_at_the_top_of_every_screen(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Michael', 'Scott');
+
+        foreach ([route('contacts.index', $vault), route('contacts.new', $vault)] as $url) {
+            $this->actingAs($user)->get($url)
+                ->assertStatus(200)
+                ->assertSee($vault->name)
+                ->assertSee(route('vaults.show', $vault))
+                ->assertSee('erica-vaultbar__search', escape: false);
+        }
     }
 
     #[Test]

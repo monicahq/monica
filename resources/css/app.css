@@ -640,6 +640,28 @@
     }
 
     /*
+     * The letter a run of rows begins with, inside a flush panel. It is what makes a
+     * long alphabetical list something to be scanned rather than read: somebody
+     * looking for a surname aims at the letter and stops there.
+     *
+     * It sits on the inset shade rather than on the canvas the rows use, so it reads
+     * as a divider between two runs and not as a row with one word in it.
+     */
+    .erica-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0;
+        padding: 9px 18px;
+        background: var(--surface-inset);
+        border-bottom: 1px solid var(--border-soft);
+        font: var(--text-caption);
+        letter-spacing: var(--tracking-caption);
+        text-transform: uppercase;
+        color: var(--muted);
+    }
+
+    /*
      * A short word about the state or the kind of something. Never a pill, and never
      * the colour on its own: the word inside it is the signal, and the tint only
      * repeats what the word already says.
@@ -1361,6 +1383,60 @@
         .erica-dock__brand span {
             display: none;
         }
+    }
+
+    /*
+     * The way into the menu, from the top of a screen inside a vault. It is drawn as
+     * a field because that is what it is a way into: the launcher opens with the
+     * search taking focus, and ⌘K does the same thing from anywhere.
+     *
+     * It is the one control in the system that reads as a well without being one, so
+     * it takes the same inset shade a field does rather than the raised edge of a
+     * button.
+     *
+     * It is gone below 900px, where the bar has room for the vault and where it is
+     * rather than for a third thing. Nothing is only reachable through it.
+     */
+    .erica-vaultbar__search {
+        display: none;
+        align-items: center;
+        gap: 9px;
+        height: 36px;
+        min-width: 260px;
+        padding: 0 12px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--canvas);
+        color: var(--muted);
+        font: var(--text-small);
+        text-align: left;
+        cursor: pointer;
+        box-shadow: var(--shadow-press-inset);
+        transition: background var(--duration-fast) var(--ease-out);
+    }
+
+    @media (min-width: 900px) {
+        .erica-vaultbar__search {
+            display: flex;
+        }
+    }
+
+    .erica-vaultbar__search:hover {
+        background: var(--sand);
+    }
+
+    .erica-vaultbar__search:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 2px;
+    }
+
+    .erica-vaultbar__kbd {
+        margin-left: auto;
+        padding: 1px 5px;
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-xs);
+        font: var(--text-mono);
+        font-size: 11px;
     }
 
     /*
