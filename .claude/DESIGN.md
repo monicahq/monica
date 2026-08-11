@@ -245,7 +245,7 @@ A menu is pinned to its trigger with `x-anchor`, which takes it out of the flow.
 
 **Toast.** One line, optional undo, auto-dismiss only when safe, persistent when action is required, announced. No stacks.
 
-**Empty state.** A 64px glyph on its tint, tilted four degrees, a title, one sentence, one action. No illustrations. A small empty section only needs a single muted sentence. Not every empty box is an onboarding opportunity.
+**Empty state.** `.erica-empty`: a 64px glyph on its tint, tilted four degrees, a title, one sentence, and an `action` slot holding the one thing to do about it. The action only belongs on a list somebody can add to; on one they cannot, such as their own logs, it would be a dead end. No illustrations. A small empty section only needs a single muted sentence. Not every empty box is an onboarding opportunity.
 
 **Avatar.** Somebody's own photograph, or their initials on one of seven warm tints picked from the letters of their name, so the same person is always the same colour. Never a generated face, never stock photography.
 
@@ -268,6 +268,8 @@ The mark in `public/images/logo.svg` is never redrawn and never recoloured, exce
 ## 9. Product patterns
 
 **Contact list.** Rows, not a grid of cards. Name, photo or initials, relationship summary, last interaction, next reminder.
+
+**Vault list.** The one screen in the product built from cards rather than rows, and the one with no dock. A vault is not one of a long list to be scanned down a column: there are three or four, they are picked by recognition, and each carries a sentence about what it is for that a row would truncate. The dock is absent because its four destinations point into a single vault and this is where you choose which, so a screen with no dock takes its 120px of bottom padding back and reaches the settings from `barEnd` instead of from the launcher. The card's mark is the colour somebody chose for the vault, not a tint derived from its name: the choice is theirs and the screen does not overrule it.
 
 **Contact profile.** A stable spine regardless of template: identity header, primary actions, highlighted fields, sections from the assigned template, relationships, timeline, reminders, files, metadata on request. Sections are headings and space, panels only where a section is genuinely independent.
 

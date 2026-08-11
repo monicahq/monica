@@ -22,11 +22,20 @@
 
   The dock is a slot rather than something this layout builds, because which vault
   it points at and which destination is current are the screen's business, not the
-  shell's.
+  shell's. A screen may leave it out: the vault list does, because the dock points
+  into one vault and that screen is where you choose between them.
+
+  A screen with no dock takes its bottom padding back. The 120px is only there to
+  keep the last row clear of something that is floating over it.
+
+  `bar` is the left of the top bar and `barEnd` is the right of it, before the theme
+  toggle. A screen reaches its own settings from the launcher behind the dock, so
+  `barEnd` is for the one screen that has no dock to reach them from.
 
   @var string|null $title
   @var bool $wide
   @var \Illuminate\View\ComponentSlot|null $bar
+  @var \Illuminate\View\ComponentSlot|null $barEnd
   @var \Illuminate\View\ComponentSlot|null $dock
 --}}
 <!DOCTYPE html>
@@ -44,6 +53,10 @@
       @endisset
 
       <div class="ml-auto flex items-center gap-2.5">
+        @isset($barEnd)
+          {{ $barEnd }}
+        @endisset
+
         <x-theme-toggle />
 
         {{-- The id lets a form that changes somebody's name refresh this in place. --}}
@@ -53,9 +66,11 @@
 
     <main
       @class([
-        'mx-auto flex w-full flex-col gap-8 px-4 pt-11 pb-30 sm:px-6',
+        'mx-auto flex w-full flex-col gap-8 px-4 pt-11 sm:px-6',
         'max-w-180' => ! $wide,
         'max-w-280' => $wide,
+        'pb-30' => isset($dock),
+        'pb-14' => ! isset($dock),
       ])
     >
       {{ $slot }}

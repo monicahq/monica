@@ -11,6 +11,7 @@ use App\Actions\SetVaultDefaultTemplate;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\VaultColourEnum;
 use App\Http\Controllers\Controller;
+use App\Jobs\RecordVaultVisit;
 use App\Models\TemplateVersion;
 use App\Models\Vault;
 use App\ViewModels\Vaults\VaultDashboardViewModel;
@@ -34,6 +35,8 @@ class VaultController extends Controller
 
     public function show(Request $request, Vault $vault): View
     {
+        RecordVaultVisit::dispatch(vault: $vault)->onQueue('low');
+
         return view('app.vaults.show', [
             'viewModel' => new VaultDashboardViewModel(
                 user: $request->user(),

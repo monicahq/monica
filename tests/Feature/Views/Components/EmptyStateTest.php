@@ -22,6 +22,13 @@ class EmptyStateTest extends TestCase
     }
 
     #[Test]
+    public function it_may_carry_the_one_thing_to_do_about_the_list_being_empty(): void
+    {
+        $this->blade('<x-empty-state>Nothing yet.<x-slot:action><button type="button">Make one</button></x-slot:action></x-empty-state>')
+            ->assertSee('Make one', escape: false);
+    }
+
+    #[Test]
     public function it_draws_no_plate_when_it_is_given_no_glyph(): void
     {
         $this->blade('<x-empty-state>Nothing yet.</x-empty-state>')

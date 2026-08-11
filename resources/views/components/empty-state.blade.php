@@ -14,9 +14,12 @@
   alone they are neutral, which is right for a list of records rather than of
   objects.
 
+  The `action` slot is the one thing to do about the list being empty, and only
+  belongs on a list somebody can actually add to. On one they cannot, such as their
+  own logs, a call to action would be a dead end.
+
   The link at the foot is optional and points at the documentation. There is no
-  documentation portal yet, so nothing passes it today. Nothing else belongs
-  there: on a list somebody cannot add to, a call to action would be a dead end.
+  documentation portal yet, so nothing passes it today.
 
   Usage:
     <x-empty-state :title="__('No activity yet')" hue="var(--forest)" tint="var(--forest-tint)">
@@ -29,6 +32,7 @@
   @var string $tint
   @var string|null $href
   @var string|null $linkLabel
+  @var \Illuminate\View\ComponentSlot|null $action
 --}}
 @props([
   'title' => null,
@@ -50,6 +54,10 @@
   @endisset
 
   <p class="erica-empty__text">{{ $slot }}</p>
+
+  @isset($action)
+    <div class="mt-1">{{ $action }}</div>
+  @endisset
 
   @if ($href && $linkLabel)
     <x-link :href="$href">{{ $linkLabel }}</x-link>

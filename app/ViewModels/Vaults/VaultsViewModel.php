@@ -8,11 +8,18 @@ use App\Models\User;
 use App\Models\Vault;
 
 /**
- * The list of compartments the account is divided into.
+ * The screen somebody lands on after signing in: the compartments their account
+ * is divided into, and the way into each.
  *
- * This is a placeholder: the screen shows what a vault is called, what it is
- * for and how much it holds, in the order the user put them in, and nothing
- * else. What the list eventually becomes is its own design.
+ * The one they were last in comes first, because the reason to be on this screen
+ * is almost always to go back where you were. What they chose as the order of
+ * their vaults only decides the ones they have never opened.
+ *
+ * The card says the three things that tell one vault from another: what it is
+ * called, what it is for, and how many people are in it. Everything else the
+ * design asks for on a card, a count of organisations and the next date coming
+ * up, needs a model that does not exist, and an invented sentence about a real
+ * person is worse than a shorter card.
  */
 class VaultsViewModel
 {
@@ -27,7 +34,16 @@ class VaultsViewModel
 
     public function description(): string
     {
-        return __('Each one is a sealed compartment. Nothing in a vault reaches another.');
+        return __('A vault keeps one part of your life separate from the others. People, notes and reminders never cross between them.');
+    }
+
+    /**
+     * The line beside the heading of the list. It says what the order is, which
+     * is the one thing about this list somebody cannot work out by reading it.
+     */
+    public function orderNote(): string
+    {
+        return __('The one you were last in is first.');
     }
 
     public function createUrl(): string
@@ -35,21 +51,44 @@ class VaultsViewModel
         return route('vaults.new');
     }
 
+    public function accountUrl(): string
+    {
+        return route('settings.index');
+    }
+
     /**
-     * @return array<int, array{name: string, description: string|null, colour: string, isDefault: bool, contactCount: string, url: string}>
+     * Every vault of the account, the most recently opened first.
+     *
+     * A vault nobody has opened yet falls in behind the ones that were, and it is
+     * said here rather than left to the database: Postgres ranks null above
+     * everything on a descending order and MySQL and SQLite rank it below, so the
+     * same account would land on a different card first on two installations.
+     *
+     * A vault carries a colour somebody chose for it, so the mark on its card is
+     * that colour rather than one derived from the name: the choice is theirs and
+     * throwing it away here would be the screen overruling them.
+     *
+     * @return array<int, array{name: string, initial: string, description: string|null, colour: string, tint: string, contactCount: string, isDefault: bool, isLastOpened: bool, url: string}>
      */
     public function vaults(): array
     {
-        return Vault::query()
+        $vaults = Vault::query()
             ->where('account_id', $this->user->account_id)
+            ->orderByRaw('last_visited_at is null')
+            ->orderByDesc('last_visited_at')
             ->orderBy('position')
-            ->get()
-            ->map(fn (Vault $vault): array => [
+            ->get();
+
+        return $vaults
+            ->map(fn (Vault $vault, int $index): array => [
                 'name' => $vault->name,
+                'initial' => mb_strtoupper(mb_substr($vault->name, 0, 1)),
                 'description' => $vault->description,
                 'colour' => $vault->colour,
-                'isDefault' => $vault->is_default,
+                'tint' => "color-mix(in srgb, {$vault->colour} 12%, transparent)",
                 'contactCount' => $this->contactCount($vault),
+                'isDefault' => $vault->is_default,
+                'isLastOpened' => $index === 0 && $vault->last_visited_at !== null,
                 'url' => route('vaults.show', $vault),
             ])
             ->all();
@@ -57,11 +96,15 @@ class VaultsViewModel
 
     private function contactCount(Vault $vault): string
     {
-        if ($vault->contact_count === 1) {
-            return __('1 contact');
+        if ($vault->contact_count === 0) {
+            return __('Nobody in it yet');
         }
 
-        return __(':count contacts', ['count' => $vault->contact_count]);
+        if ($vault->contact_count === 1) {
+            return __('1 person');
+        }
+
+        return __(':count people', ['count' => $vault->contact_count]);
     }
 
     public function user(): User

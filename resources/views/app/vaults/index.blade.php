@@ -1,51 +1,144 @@
 {{--
-  The list of compartments the account is divided into.
+  The screen somebody lands on after signing in: the compartments their account is
+  divided into, and the way into each.
 
-  It is a placeholder, standing in until the list has a design of its own: a
-  name, what the vault is for, and how much it holds. A row leads into the
-  vault, which is the one thing it can already do.
+  It is the one screen with no dock. The dock's four destinations point into a
+  single vault, and this is where you choose which, so a dock here would be
+  pointing somewhere before the choice had been made. That also means it is the
+  one screen that needs its own way to the settings, which is the link in the bar.
+
+  The cards are cards rather than rows, which is the only place in the product they
+  are. A vault is not one of a long list to be scanned down a column: there are
+  three or four of them, they are picked by recognition, and each carries a
+  sentence about what it is for that a row would have to truncate.
 
   @var \App\ViewModels\Vaults\VaultsViewModel $viewModel
 --}}
-<x-account-layout :title="$viewModel->title()">
-  <div class="flex flex-wrap items-end justify-between gap-4">
-    <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
+<x-shell :title="$viewModel->title()" wide>
+  <x-slot:bar>
+    <span class="flex items-center gap-2.5">
+      <x-logo :size="24" />
 
-    <x-button :href="$viewModel->createUrl()" data-turbo="true">{{ __('Create a vault') }}</x-button>
-  </div>
+      <span class="text-[15px] font-semibold tracking-tight text-ink">{{ config('app.name') }}</span>
+    </span>
+  </x-slot:bar>
 
-  <x-box padding="p-0">
-    @forelse ($viewModel->vaults() as $vault)
-      <a href="{{ $vault['url'] }}" data-turbo="true" class="flex items-start gap-3 px-4 py-3.5 transition-colors duration-150 not-first:border-t not-first:border-hairline-soft hover:bg-hover">
-        <span style="background: {{ $vault['colour'] }}" class="mt-1 size-3 shrink-0 rounded-sm" aria-hidden="true"></span>
+  <x-slot:barEnd>
+    <a href="{{ route('settings.index') }}" data-turbo="true" class="erica-btn erica-btn--ghost erica-btn--sm">
+      {{ __('Settings') }}
+    </a>
+  </x-slot:barEnd>
 
-        <div class="min-w-0 flex-1 space-y-0.5">
-          <p class="flex flex-wrap items-center gap-2 text-sm font-semibold text-ink">
-            {{ $vault['name'] }}
+  <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
+    <div class="flex min-w-0 flex-col gap-2">
+      <h1 class="erica-page-title">{{ $viewModel->title() }}</h1>
 
-            @if ($vault['isDefault'])
-              <span class="rounded-sm bg-sunken px-1.5 py-0.5 text-xs font-medium text-muted">{{ __('Default') }}</span>
-            @endif
-          </p>
+      <p class="erica-lede max-w-[64ch]">{{ $viewModel->description() }}</p>
+    </div>
 
-          @if ($vault['description'])
-            <p class="text-[13px] leading-relaxed text-pretty text-muted">{{ $vault['description'] }}</p>
-          @endif
-        </div>
-
-        <span class="mt-px shrink-0 text-xs text-muted-soft">{{ $vault['contactCount'] }}</span>
-      </a>
-    @empty
-      <x-empty-state :title="__('No vault yet')">
+    <div class="flex flex-wrap items-center gap-2.5 max-sm:w-full">
+      <x-button.secondary :href="$viewModel->accountUrl()" data-turbo="true" size="small">
         <x-slot:icon>
-          <svg width="19" height="19" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true">
-            <rect x="2.4" y="3.4" width="11.2" height="9.2" rx="1.6"></rect>
-            <circle cx="8" cy="8" r="2.1"></circle>
-          </svg>
+          <x-icon name="settings" :size="16" :stroke-width="1.6" />
         </x-slot:icon>
 
-        {{ __('A vault is a sealed compartment for one part of your life. Everything you keep here lives in one.') }}
+        {{ __('Your account') }}
+      </x-button.secondary>
+
+      <x-button :href="$viewModel->createUrl()" data-turbo="true" size="small">
+        <x-slot:icon>
+          <x-icon name="plus" :size="16" :stroke-width="1.6" />
+        </x-slot:icon>
+
+        {{ __('New vault') }}
+      </x-button>
+    </div>
+  </header>
+
+  {{--
+    An account with no vault is normally sent to the getting started screen, so this
+    is reached by typing the address. It still has to read sensibly: there is no
+    order to explain and nothing to start "another" of.
+  --}}
+  @if ($viewModel->vaults() === [])
+    <x-panel>
+      <x-empty-state :title="__('No vault yet')" hue="var(--terracotta)" tint="var(--terracotta-tint)">
+        <x-slot:icon>
+          <x-icon name="vault" :size="30" :stroke-width="1.4" />
+        </x-slot:icon>
+
+        {{ __('A vault is a sealed compartment for one part of your life. Everything you keep here lives in one, and the first one you make is where things land.') }}
+
+        <x-slot:action>
+          <x-button :href="$viewModel->createUrl()" data-turbo="true">
+            <x-slot:icon>
+              <x-icon name="plus" :size="18" :stroke-width="1.6" />
+            </x-slot:icon>
+
+            {{ __('Make the first one') }}
+          </x-button>
+        </x-slot:action>
       </x-empty-state>
-    @endforelse
-  </x-box>
-</x-account-layout>
+    </x-panel>
+  @else
+    <section class="flex flex-col gap-3.5">
+      <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1 px-0.5">
+        <h2 class="erica-section-title shrink-0">{{ __('Vaults you keep') }}</h2>
+
+        <p class="erica-small">{{ $viewModel->orderNote() }}</p>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        @foreach ($viewModel->vaults() as $vault)
+          <a
+            href="{{ $vault['url'] }}"
+            data-turbo="true"
+            class="erica-panel flex flex-col gap-3.5 p-5 transition-colors duration-[110ms] hover:bg-hover"
+          >
+            <span class="flex items-center gap-3">
+              <span
+                class="flex size-10 shrink-0 items-center justify-center rounded-md text-base font-bold"
+                style="color: {{ $vault['colour'] }}; background: {{ $vault['tint'] }}"
+                aria-hidden="true"
+              >{{ $vault['initial'] }}</span>
+
+              <span class="min-w-0 flex-1">
+                <span class="erica-panel__title block truncate">{{ $vault['name'] }}</span>
+
+                <span class="erica-caption block">{{ $vault['contactCount'] }}</span>
+              </span>
+
+              @if ($vault['isLastOpened'])
+                <x-badge tone="accent">{{ __('Last opened') }}</x-badge>
+              @elseif ($vault['isDefault'])
+                <x-badge>{{ __('Default') }}</x-badge>
+              @endif
+            </span>
+
+            {{-- The sentence keeps its room whether it is there or not, so a card
+                 without one does not stand shorter than the cards beside it. --}}
+            <span class="erica-small block min-h-10">{{ $vault['description'] }}</span>
+          </a>
+        @endforeach
+
+        <a
+          href="{{ $viewModel->createUrl() }}"
+          data-turbo="true"
+          class="flex flex-col justify-center gap-2 rounded-lg border border-dashed border-hairline-strong p-5 transition-colors duration-[110ms] hover:bg-hover"
+        >
+          <span
+            class="flex size-9 items-center justify-center rounded-md"
+            style="background: var(--terracotta-tint); color: var(--terracotta)"
+            aria-hidden="true"
+          >
+            <x-icon name="plus" :size="19" :stroke-width="1.6" />
+          </span>
+
+          <span class="erica-row__title block">{{ __('Start another vault') }}</span>
+
+          <span class="erica-small block">{{ __('Work, a club, the family on the other side. Nothing in it is visible from here.') }}</span>
+        </a>
+      </div>
+    </section>
+  @endif
+</x-shell>

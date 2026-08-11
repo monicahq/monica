@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Enums\TemplateAppliesToEnum;
+use App\Jobs\RecordVaultVisit;
 use App\Models\Template;
 use App\Models\TemplateVersion;
 use App\Models\User;
@@ -45,6 +46,58 @@ class VaultControllerTest extends TestCase
         $this->actingAs($user)->get(route('vaults.index'))
             ->assertStatus(200)
             ->assertSee('No vault yet');
+    }
+
+    #[Test]
+    public function it_marks_the_vault_you_were_last_in_and_puts_it_first(): void
+    {
+        $user = User::factory()->create();
+
+        Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Travail',
+            'position' => 1,
+            'last_visited_at' => now()->subWeek(),
+        ]);
+
+        Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Famille',
+            'position' => 2,
+            'last_visited_at' => now()->subHour(),
+        ]);
+
+        $response = $this->actingAs($user)->get(route('vaults.index'));
+
+        $response->assertStatus(200);
+        $response->assertSeeInOrder(['Famille', 'Travail']);
+        $response->assertSee('Last opened', escape: false);
+    }
+
+    #[Test]
+    public function it_offers_a_way_to_the_account_since_it_has_no_dock_to_reach_it_from(): void
+    {
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $response = $this->actingAs($user)->get(route('vaults.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee(route('settings.index'), escape: false);
+        $response->assertDontSee('erica-dock', escape: false);
+    }
+
+    #[Test]
+    public function it_writes_down_that_the_vault_was_opened(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('vaults.show', $vault))->assertStatus(200);
+
+        Queue::assertPushedOn('low', RecordVaultVisit::class);
     }
 
     #[Test]
