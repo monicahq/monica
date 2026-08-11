@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Enums\TemplateAppliesToEnum;
+use App\Models\Contact;
+use App\Models\Template;
+use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
 use App\ViewModels\Vaults\VaultDashboardViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -33,44 +38,184 @@ class VaultDashboardViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_counts_the_contacts_of_the_vault_and_invents_the_rest(): void
+    public function it_says_whose_vault_it_is_and_how_many_people_are_in_it(): void
+    {
+        $user = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 148]);
+
+        $viewModel = new VaultDashboardViewModel(user: $user, vault: $vault);
+
+        $this->assertEquals('Michael Scott · 148 people', $viewModel->overline());
+        $this->assertEquals('148 people', $viewModel->peopleCaption());
+    }
+
+    #[Test]
+    public function it_counts_one_person_and_none_the_way_somebody_would_say_it(): void
+    {
+        $user = User::factory()->create();
+        $empty = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 0]);
+        $alone = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 1]);
+
+        $this->assertEquals('Nobody in it yet', new VaultDashboardViewModel(user: $user, vault: $empty)->peopleCaption());
+        $this->assertEquals('1 person', new VaultDashboardViewModel(user: $user, vault: $alone)->peopleCaption());
+    }
+
+    #[Test]
+    public function it_shows_the_last_people_written_down(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'first_name' => 'Michael',
+            'last_name' => 'Scott',
+            'created_at' => now()->subYear(),
+        ]);
+
+        Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'first_name' => 'Pam',
+            'last_name' => 'Beesly',
+            'nickname' => 'Pammy',
+            'created_at' => now()->subDay(),
+        ]);
+
+        $people = new VaultDashboardViewModel(user: $user, vault: $vault)->people();
+
+        $this->assertEquals(['Pam Beesly', 'Michael Scott'], array_column($people, 'name'));
+        $this->assertEquals('Pammy', $people[0]['nickname']);
+        $this->assertEquals('', $people[1]['nickname']);
+    }
+
+    #[Test]
+    public function it_shows_only_a_handful_of_people_and_points_at_the_rest(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 12]);
+        Contact::factory()->count(8)->create(['vault_id' => $vault->id]);
+
+        $viewModel = new VaultDashboardViewModel(user: $user, vault: $vault);
+
+        $this->assertCount(5, $viewModel->people());
+        $this->assertEquals('All 12 people', $viewModel->allPeopleLabel());
+    }
+
+    #[Test]
+    public function it_says_the_list_is_whole_when_everybody_in_the_vault_is_on_it(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 3]);
+
+        $this->assertEquals('The whole list', new VaultDashboardViewModel(user: $user, vault: $vault)->allPeopleLabel());
+    }
+
+    #[Test]
+    public function it_leaves_out_the_people_the_lists_do_not_show(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
+        Contact::factory()->archived()->create(['vault_id' => $vault->id, 'first_name' => 'Roy', 'last_name' => 'Anderson']);
+        Contact::factory()->partial()->create(['vault_id' => $vault->id, 'first_name' => 'Todd']);
+
+        $people = new VaultDashboardViewModel(user: $user, vault: $vault)->people();
+
+        $this->assertEquals(['Jim Halpert'], array_column($people, 'name'));
+    }
+
+    #[Test]
+    public function it_leaves_out_the_people_of_another_vault(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $other = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Dwight', 'last_name' => 'Schrute']);
+        Contact::factory()->create(['vault_id' => $other->id, 'first_name' => 'Mose', 'last_name' => 'Schrute']);
+
+        $people = new VaultDashboardViewModel(user: $user, vault: $vault)->people();
+
+        $this->assertEquals(['Dwight Schrute'], array_column($people, 'name'));
+    }
+
+    #[Test]
+    public function it_names_the_template_a_new_contact_starts_from(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 148]);
 
-        $stats = new VaultDashboardViewModel(user: $user, vault: $vault)->stats();
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Colleague']);
+        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
 
-        $this->assertEquals('148', $stats[0]['value']);
-        $this->assertEquals((string) VaultDashboardViewModel::PRETEND_OPEN_TASKS, $stats[1]['value']);
-        $this->assertEquals((string) VaultDashboardViewModel::PRETEND_JOURNAL_ENTRIES, $stats[2]['value']);
+        VaultDefaultTemplate::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'template_version_id' => $version->id,
+            'applies_to' => TemplateAppliesToEnum::Contact,
+        ]);
+
+        $rows = new VaultDashboardViewModel(user: $user, vault: $vault)->settingsRows();
+
+        $this->assertEquals('What a new contact starts from', $rows[0]['title']);
+        $this->assertEquals('Colleague', $rows[0]['line']);
+        $this->assertEquals('Delete this vault', $rows[1]['title']);
+        $this->assertEquals('Takes 148 people and everything written about them.', $rows[1]['line']);
     }
 
     #[Test]
-    public function it_offers_the_vaults_of_the_account_in_the_order_they_were_put_in(): void
+    public function it_says_what_deleting_an_empty_vault_would_take(): void
     {
         $user = User::factory()->create();
-        $family = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Famille', 'position' => 1]);
-        $work = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Pro', 'position' => 2]);
-        Vault::factory()->create(['name' => 'Somebody else']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 0]);
+        $alone = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 1]);
 
-        $vaults = new VaultDashboardViewModel(user: $user, vault: $work)->vaults();
+        $this->assertEquals(
+            'Takes the vault and everything in it.',
+            new VaultDashboardViewModel(user: $user, vault: $vault)->settingsRows()[1]['line'],
+        );
 
-        $this->assertEquals(['Famille', 'Pro'], array_column($vaults, 'name'));
-        $this->assertEquals([false, true], array_column($vaults, 'current'));
-        $this->assertEquals(route('vaults.show', $family), $vaults[0]['url']);
+        $this->assertEquals(
+            'Takes the one person in it and everything written about them.',
+            new VaultDashboardViewModel(user: $user, vault: $alone)->settingsRows()[1]['line'],
+        );
     }
 
     #[Test]
-    public function it_stands_up_the_rows_the_models_behind_them_do_not_exist_for_yet(): void
+    public function it_says_a_vault_without_a_default_leaves_the_template_to_whoever_writes(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $rows = new VaultDashboardViewModel(user: $user, vault: $vault)->settingsRows();
+
+        $this->assertEquals('Nothing is set, so whoever writes somebody down picks a template themselves.', $rows[0]['line']);
+    }
+
+    #[Test]
+    public function it_draws_the_parts_of_a_vault_that_have_no_model_yet(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $sections = new VaultDashboardViewModel(user: $user, vault: $vault)->unbuiltSections();
+
+        $this->assertEquals(['Journal', 'Tasks', 'Reminders', 'Files'], array_column($sections, 'title'));
+        $this->assertEquals(['journal', 'tasks', 'reminder', 'file'], array_column($sections, 'icon'));
+    }
+
+    #[Test]
+    public function it_says_where_every_box_leads(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
         $viewModel = new VaultDashboardViewModel(user: $user, vault: $vault);
 
-        $this->assertCount(4, $viewModel->reminders());
-        $this->assertCount(VaultDashboardViewModel::PRETEND_OPEN_TASKS, $viewModel->tasks());
-        $this->assertCount(3, $viewModel->entries());
-        $this->assertCount(6, $viewModel->recentlyOpened());
+        $this->assertEquals(route('vaults.index'), $viewModel->vaultsUrl());
+        $this->assertEquals(route('contacts.new', $vault), $viewModel->newContactUrl());
+        $this->assertEquals(route('contacts.index', $vault), $viewModel->allContactsUrl());
+        $this->assertEquals(route('vaults.settings.index', $vault), $viewModel->settingsUrl());
     }
 }

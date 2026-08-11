@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Enums\TemplateAppliesToEnum;
 use App\Jobs\RecordVaultVisit;
+use App\Models\Contact;
 use App\Models\Template;
 use App\Models\TemplateVersion;
 use App\Models\User;
@@ -115,13 +116,64 @@ class VaultControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Dunder Mifflin')
             ->assertSee('Everybody at the Scranton branch')
-            ->assertSee('148')
-            ->assertSee('Coming up')
-            ->assertSee('Recently opened');
+            ->assertSee('148 people')
+            ->assertSee('Contacts')
+            ->assertSee('Vault settings');
     }
 
     #[Test]
-    public function it_offers_every_vault_of_the_account_in_the_switcher(): void
+    public function it_shows_the_last_people_written_down_and_leads_to_all_of_them(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 1]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
+
+        $this->actingAs($user)->get(route('vaults.show', $vault))
+            ->assertStatus(200)
+            ->assertSee('Pam Beesly')
+            ->assertSee(route('contacts.index', $vault));
+    }
+
+    #[Test]
+    public function it_asks_for_the_first_person_rather_than_leading_to_an_empty_list(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('vaults.show', $vault))
+            ->assertStatus(200)
+            ->assertSee('Nobody here yet')
+            ->assertSee('Add the first person');
+    }
+
+    #[Test]
+    public function it_draws_the_parts_of_a_vault_that_have_no_model_yet_without_offering_them(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('vaults.show', $vault))
+            ->assertStatus(200)
+            ->assertSee('No days written down')
+            ->assertSee('Nothing you owe anyone')
+            ->assertSee('No dates to keep')
+            ->assertSee('No files yet');
+    }
+
+    #[Test]
+    public function it_leads_to_the_settings_of_the_vault(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('vaults.show', $vault))
+            ->assertStatus(200)
+            ->assertSee('All vault settings')
+            ->assertSee(route('vaults.settings.index', $vault));
+    }
+
+    #[Test]
+    public function it_offers_every_vault_of_the_account_in_the_launcher(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
@@ -135,6 +187,17 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_marks_the_dashboard_as_where_you_are_in_the_dock(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('vaults.show', $vault))
+            ->assertStatus(200)
+            ->assertSee('aria-current="page"', escape: false);
+    }
+
+    #[Test]
     public function it_leads_from_the_bar_to_the_screen_that_writes_somebody_down(): void
     {
         $user = User::factory()->create();
@@ -142,31 +205,20 @@ class VaultControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('vaults.show', $vault))
             ->assertStatus(200)
-            ->assertSee('Add contact')
+            ->assertSee('Add someone')
             ->assertSee(route('contacts.new', $vault));
     }
 
     #[Test]
-    public function it_leads_to_the_whole_list_of_contacts(): void
+    public function it_leads_back_to_the_list_of_vaults(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user)->get(route('vaults.show', $vault))
             ->assertStatus(200)
-            ->assertSee('All contacts')
-            ->assertSee(route('contacts.index', $vault));
-    }
-
-    #[Test]
-    public function it_offers_nothing_about_the_account_beside_the_screens_of_a_vault(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('vaults.show', $vault))
-            ->assertStatus(200)
-            ->assertDontSee('Your account');
+            ->assertSee('Your vaults')
+            ->assertSee(route('vaults.index'));
     }
 
     #[Test]
@@ -181,15 +233,14 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_leads_to_the_account_settings_from_the_row_saying_who_is_signed_in(): void
+    public function it_reaches_the_account_settings_from_the_launcher_behind_the_dock(): void
     {
-        $user = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
+        $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user)->get(route('vaults.show', $vault))
             ->assertStatus(200)
-            ->assertSee('Michael Scott')
-            ->assertSee(route('settings.profile.index'));
+            ->assertSee(route('settings.index'));
     }
 
     #[Test]
