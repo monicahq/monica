@@ -12,10 +12,10 @@
   are signed in as and is the way into your own settings: the whole row is the
   link, and it lights up under the pointer like any entry above it.
 
-  Most of the navigation points nowhere yet. Contacts, the journal, tasks,
-  reminders and files are each their own screen and none of them exists, so
-  those entries are drawn and not offered: a link that leads nowhere is worse
-  than a word that does not move.
+  Some of the navigation points nowhere yet. The journal, tasks, reminders and
+  files are each their own screen and none of them exists, so those entries are
+  drawn and not offered: a link that leads nowhere is worse than a word that does
+  not move.
 
   Below lg the column becomes a drawer over the screen, opened from the bar,
   which is the layout's doing rather than this component's.
@@ -39,7 +39,7 @@
 
   $sections = [
     ['key' => 'dashboard', 'label' => __('Dashboard'), 'icon' => 'activity', 'url' => route('vaults.show', $vault), 'badge' => null],
-    ['key' => 'contacts', 'label' => __('Contacts'), 'icon' => 'profile', 'url' => null, 'badge' => $vault->contact_count > 0 ? (string) $vault->contact_count : null],
+    ['key' => 'contacts', 'label' => __('Contacts'), 'icon' => 'profile', 'url' => route('contacts.index', $vault), 'badge' => $vault->contact_count > 0 ? (string) $vault->contact_count : null],
     ['key' => 'journal', 'label' => __('Journal'), 'icon' => 'logs', 'url' => null, 'badge' => null],
     ['key' => 'tasks', 'label' => __('Tasks'), 'icon' => 'check', 'url' => null, 'badge' => $taskCount === null ? null : (string) $taskCount],
     ['key' => 'reminders', 'label' => __('Reminders'), 'icon' => 'mail', 'url' => null, 'badge' => null],

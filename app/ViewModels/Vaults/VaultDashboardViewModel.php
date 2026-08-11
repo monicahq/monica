@@ -67,6 +67,15 @@ class VaultDashboardViewModel
     }
 
     /**
+     * Where the line beside the people you looked at last leads, which is the
+     * whole list of them.
+     */
+    public function allContactsUrl(): string
+    {
+        return route('contacts.index', $this->vault);
+    }
+
+    /**
      * The vaults the switcher offers, the one being looked at marked rather
      * than offered as a link to where you already are.
      *

@@ -23,8 +23,12 @@
   @var string|null $autocomplete
   @var bool $required
   @var bool $autofocus
+  A field in a bar rather than in a form is drawn small, which is the only size
+  besides the default one and lines up with a small button beside it.
+
   @var bool $disabled
   @var bool $allowPasswordManager
+  @var string $size
 --}}
 @props([
   'type' => 'text',
@@ -42,6 +46,7 @@
   'autofocus' => false,
   'disabled' => false,
   'allowPasswordManager' => false,
+  'size' => 'default',
 ])
 
 @php
@@ -52,10 +57,17 @@
   $describedBy = trim(($helpId ?? '').' '.($errorId ?? ''));
 
   /* Safari on iOS zooms the page in whenever a field it is given is under 16px,
-     so the field is 16px on a phone and back to 14px from sm up. */
+     so the field is 16px on a phone and back down from sm up. That holds for the
+     small size too: a bar that zooms the page when it is tapped is worse than a
+     bar whose field is a few pixels taller than the button beside it. */
+  $sizes = [
+    'default' => 'px-3 py-2.5 text-base sm:text-sm',
+    'small' => 'px-3 py-1.5 text-base sm:text-[13px]',
+  ];
+
   $classes = [
     'block w-full appearance-none',
-    'px-3 py-2.5 text-base sm:text-sm',
+    $sizes[$size],
     'rounded-md border border-hairline-strong bg-input text-ink placeholder-placeholder',
     'transition-colors duration-150',
     'hover:border-focus hover:bg-hover',

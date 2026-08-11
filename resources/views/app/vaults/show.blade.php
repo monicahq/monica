@@ -171,7 +171,7 @@
         <p class="text-sm text-muted">{{ __('The people you looked at last, in case you were in the middle of something.') }}</p>
       </div>
 
-      <span class="shrink-0 text-[13px] text-muted-soft">{{ __('All contacts') }}</span>
+      <x-link :href="$viewModel->allContactsUrl()" turbo class="shrink-0 text-[13px] text-muted">{{ __('All contacts') }}</x-link>
     </div>
 
     <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

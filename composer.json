@@ -22,6 +22,7 @@
         "stevebauman/purify": "^6.3"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^4.4",
         "brianium/paratest": "^7.20",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^3.9.2",

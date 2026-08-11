@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\TemplateVersion;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactFormViewModel;
+use App\ViewModels\Vaults\ContactsViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -18,6 +19,30 @@ use Illuminate\View\View;
 
 class ContactController extends Controller
 {
+    /**
+     * Everybody in one vault, on one list. Everything the screen offers goes
+     * through the URL, so a narrowed list can be linked to and comes back the
+     * same way after a reload.
+     *
+     * Which people are shown is a segment of the address rather than a query
+     * string: the favourites and the archived are three places somebody goes,
+     * not three settings they carry. What they typed and what they sorted on
+     * stay in the query string, since those are parameters of a place.
+     */
+    public function index(Request $request, Vault $vault, ?string $filter = null): View
+    {
+        return view('app.vaults.contacts.index', [
+            'viewModel' => new ContactsViewModel(
+                user: $request->user(),
+                vault: $vault,
+                query: (string) $request->string('query'),
+                filter: $filter ?? ContactsViewModel::FILTER_ALL,
+                sort: (string) $request->string('sort', ContactsViewModel::SORT_NAME),
+                direction: (string) $request->string('direction', ContactsViewModel::DIRECTION_ASC),
+            ),
+        ]);
+    }
+
     public function new(Request $request, Vault $vault): View
     {
         return view('app.vaults.contacts.form', [
@@ -33,8 +58,14 @@ class ContactController extends Controller
      *
      * Somebody working through a list of people has said so by ticking the box,
      * and is handed the empty form again rather than a screen they have to
-     * leave. Everybody else goes back to the vault, since the contact's own page
-     * is a later screen and there is nowhere else to send them yet.
+     * leave. Everybody else lands on the list of contacts, where the person they
+     * have just written down is: their own page is a later screen, and the list
+     * is the nearest thing to seeing that it worked.
+     *
+     * A partial contact is the exception the message has to cover. They are
+     * written down and then kept off that list until somebody fills them in, so
+     * without a word about it the screen says "written down" and then shows a
+     * list they are not on.
      */
     public function create(Request $request, Vault $vault): RedirectResponse
     {
@@ -58,11 +89,13 @@ class ContactController extends Controller
 
         $destination = $request->boolean('keep_going')
             ? redirect()->route('contacts.new', $vault)
-            : redirect()->route('vaults.show', $vault);
+            : redirect()->route('contacts.index', $vault);
 
         return $destination
             ->with('status', __(':name is written down.', ['name' => $contact->name]))
-            ->with('status_description', __('The rest of the page is yours to fill in whenever you know it.'));
+            ->with('status_description', $contact->is_partial
+                ? __('A partial contact stays off the list of contacts until they are more than a first name.')
+                : __('The rest of the page is yours to fill in whenever you know it.'));
     }
 
     /**

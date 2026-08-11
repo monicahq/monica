@@ -97,6 +97,14 @@ class ContactFormViewModel
     }
 
     /**
+     * The list this form adds to, which is the step above it in the trail.
+     */
+    public function contactsUrl(): string
+    {
+        return route('contacts.index', $this->vault);
+    }
+
+    /**
      * What the fields start out holding.
      *
      * @return array{prefix: string, firstName: string, middleName: string, lastName: string, suffix: string, nickname: string, maidenName: string, nameOrder: string, templateVersionId: string, isFavourite: bool, isPartial: bool, keepGoing: bool}

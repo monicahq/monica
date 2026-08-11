@@ -16,7 +16,15 @@
   rule and the background it draws run the whole width, or it reads as a strip
   that stopped short.
 
+  A screen built around something too wide for the reading column asks for
+  `wide`. It loses the column and the padding either side of it and pads its own
+  header instead, so a table can run to both edges of the window. The screen also
+  becomes exactly as tall as the window, which is what lets it hand the scrolling
+  to a region of its own: a table whose header stays put while its rows move needs
+  the rows, and not the page, to be the thing that scrolls.
+
   @var string|null $title
+  @var bool $wide
   @var \Illuminate\View\ComponentSlot $sidebar
   @var \Illuminate\View\ComponentSlot|null $breadcrumb
   @var \Illuminate\View\ComponentSlot|null $actions
@@ -53,7 +61,7 @@
         two bars grows and the footer is at the foot of a short screen instead of
         stranded halfway up it. Screens without one are left exactly as they were.
       --}}
-      <main @class(['min-w-0', 'flex flex-col' => isset($footer)])>
+      <main @class(['min-w-0', 'flex flex-col' => isset($footer), 'flex h-dvh flex-col' => $wide])>
         <header class="sticky top-0 z-5 flex h-13 items-center gap-3.5 border-b border-hairline bg-page/90 px-4 backdrop-blur-md sm:px-7">
           <button
             type="button"
@@ -90,9 +98,11 @@
 
         <div
           @class([
-            'mx-auto w-full max-w-240 space-y-8.5 px-4 pt-6 sm:px-7 sm:pt-7.5',
+            'w-full pt-6 sm:pt-7.5',
+            'mx-auto max-w-240 space-y-8.5 px-4 sm:px-7' => ! $wide,
+            'flex min-h-0 flex-1 flex-col gap-4' => $wide,
             'flex-1 pb-8' => isset($footer),
-            'pb-14 sm:pb-17.5' => ! isset($footer),
+            'pb-14 sm:pb-17.5' => ! isset($footer) && ! $wide,
           ])
         >
           {{ $slot }}

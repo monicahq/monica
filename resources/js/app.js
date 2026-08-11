@@ -115,6 +115,51 @@ Alpine.data('sortableRows', () => ({
 }));
 
 /*
+ * Which columns of a table somebody chose to hide, kept in local storage so the
+ * list looks the way they left it. It is a preference about looking rather than
+ * about the account, so it stays in the browser and never reaches the server:
+ * the same rows are always sent, and hiding one is a matter of not drawing it.
+ *
+ * The key is passed in by the screen, so two tables do not share one choice.
+ */
+Alpine.data('hiddenColumns', (key) => ({
+    hidden: [],
+
+    init() {
+        try {
+            this.hidden = JSON.parse(localStorage.getItem(key) ?? '[]');
+        } catch (e) {
+            // Local storage is unavailable in private mode on some browsers.
+        }
+    },
+
+    shown(column) {
+        return ! this.hidden.includes(column);
+    },
+
+    toggle(column) {
+        this.hidden = this.shown(column)
+            ? [...this.hidden, column]
+            : this.hidden.filter((hidden) => hidden !== column);
+
+        this.remember();
+    },
+
+    reset() {
+        this.hidden = [];
+        this.remember();
+    },
+
+    remember() {
+        try {
+            localStorage.setItem(key, JSON.stringify(this.hidden));
+        } catch (e) {
+            // Local storage is unavailable in private mode on some browsers.
+        }
+    },
+}));
+
+/*
  * The theme the visitor picked, kept in local storage so it survives a reload.
  * The `.dark` class on <html> is what every token in app.css reads, and the
  * inline script in partials/meta sets it before the first paint so there is no

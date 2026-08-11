@@ -31,7 +31,7 @@
     <x-breadcrumb
       :items="[
         ['label' => $vault->name, 'url' => $viewModel->backUrl()],
-        ['label' => __('Contacts')],
+        ['label' => __('Contacts'), 'url' => $viewModel->contactsUrl()],
         ['label' => $viewModel->title()],
       ]"
     />

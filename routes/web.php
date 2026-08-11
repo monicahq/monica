@@ -38,6 +38,7 @@ use App\Http\Controllers\App\Vaults\ContactController;
 use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
 use App\Http\Controllers\App\Vaults\VaultSettingsController;
+use App\ViewModels\Vaults\ContactsViewModel;
 use Illuminate\Support\Facades\Route;
 
 // The front door, which sends whoever is signed in wherever their account is up to.
@@ -55,6 +56,13 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
 
     Route::get('vaults/{vault}/contacts/new', [ContactController::class, 'new'])->name('contacts.new');
     Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
+
+    // Which people the list shows is part of the address rather than a query
+    // string, so the chips read as the three places they are. The constraint is
+    // what keeps this off `contacts/new`.
+    Route::get('vaults/{vault}/contacts/{filter?}', [ContactController::class, 'index'])
+        ->whereIn('filter', [ContactsViewModel::FILTER_FAVOURITES, ContactsViewModel::FILTER_ARCHIVED])
+        ->name('contacts.index');
 
     Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
     Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');

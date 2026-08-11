@@ -94,6 +94,18 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_leads_to_the_whole_list_of_contacts(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('vaults.show', $vault))
+            ->assertStatus(200)
+            ->assertSee('All contacts')
+            ->assertSee(route('contacts.index', $vault));
+    }
+
+    #[Test]
     public function it_offers_nothing_about_the_account_beside_the_screens_of_a_vault(): void
     {
         $user = User::factory()->create();
