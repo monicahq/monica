@@ -117,16 +117,15 @@ class ContactFormViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_marks_the_vault_being_written_into_in_the_switcher(): void
+    public function it_says_where_the_form_leads_out_of(): void
     {
         $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user);
-        Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Schrute Farms']);
 
-        $vaults = new ContactFormViewModel(user: $user, vault: $vault)->vaults();
+        $viewModel = new ContactFormViewModel(user: $user, vault: $vault);
 
-        $this->assertCount(2, $vaults);
-        $this->assertEquals([true, false], array_column($vaults, 'current'));
+        $this->assertEquals(route('contacts.index', $vault), $viewModel->contactsUrl());
+        $this->assertEquals(route('contacts.create', $vault), $viewModel->action());
     }
 
     private function vaultReadyForContacts(User $user, string $name = 'Basic contact'): Vault

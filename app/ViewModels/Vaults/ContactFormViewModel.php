@@ -57,27 +57,6 @@ class ContactFormViewModel
         return __('New contact');
     }
 
-    /**
-     * The vaults the switcher offers, the one being written into marked rather
-     * than offered as a link to where you already are.
-     *
-     * @return array<int, array{name: string, colour: string, url: string, current: bool}>
-     */
-    public function vaults(): array
-    {
-        return Vault::query()
-            ->where('account_id', $this->user->account_id)
-            ->orderBy('position')
-            ->get()
-            ->map(fn (Vault $vault): array => [
-                'name' => $vault->name,
-                'colour' => $vault->colour,
-                'url' => route('vaults.show', $vault),
-                'current' => $vault->is($this->vault),
-            ])
-            ->all();
-    }
-
     public function description(): string
     {
         return __('A name is enough to start. Everything else belongs to the template, and you fill it in on the contact itself once it exists.');
@@ -89,15 +68,9 @@ class ContactFormViewModel
     }
 
     /**
-     * Where the screen leads out of, which is the vault it was opened from.
-     */
-    public function backUrl(): string
-    {
-        return route('vaults.show', $this->vault);
-    }
-
-    /**
-     * The list this form adds to, which is the step above it in the trail.
+     * The list this form adds to, which is the step above it in the trail and
+     * the one place both the bar and Cancel lead. Two ways out of a form that
+     * land on different screens is a small trap.
      */
     public function contactsUrl(): string
     {

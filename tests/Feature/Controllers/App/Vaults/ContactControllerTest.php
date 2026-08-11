@@ -298,8 +298,50 @@ class ContactControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('contacts.new', $vault))
             ->assertStatus(200)
+            ->assertSee('Back to the contacts')
+            ->assertSee('Cancel')
             ->assertSee(route('contacts.index', $vault))
             ->assertSee(route('vaults.show', $vault));
+    }
+
+    #[Test]
+    public function it_marks_the_people_of_the_vault_as_where_you_are_in_the_dock(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)->get(route('contacts.new', $vault))
+            ->assertStatus(200)
+            ->assertSee('aria-current="page"', escape: false)
+            ->assertSee('erica-dock', escape: false);
+    }
+
+    #[Test]
+    public function it_keeps_the_box_that_opens_the_form_again_with_the_buttons(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)->get(route('contacts.new', $vault))
+            ->assertStatus(200)
+            ->assertSee('Create another one after this')
+            ->assertSee('form="contact-form"', escape: false);
+    }
+
+    #[Test]
+    public function it_refuses_the_button_only_when_the_vault_has_nothing_to_start_a_contact_from(): void
+    {
+        $user = User::factory()->create();
+        $blocked = Vault::factory()->create(['account_id' => $user->account_id]);
+        $ready = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)->get(route('contacts.new', $blocked))
+            ->assertStatus(200)
+            ->assertSee('disabled="disabled"', escape: false);
+
+        $this->actingAs($user)->get(route('contacts.new', $ready))
+            ->assertStatus(200)
+            ->assertDontSee('disabled="disabled"', escape: false);
     }
 
     #[Test]
