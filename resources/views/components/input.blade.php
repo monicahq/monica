@@ -55,9 +55,28 @@
   $helpId = $help ? $id.'-help' : null;
   $errorId = $error ? $id.'-error' : null;
   $describedBy = trim(($helpId ?? '').' '.($errorId ?? ''));
+
+  /*
+   * A control reads as a well rather than a box: the shade is inset, which is the
+   * one place in the system where elevation points inwards. Focus takes an ink
+   * border and a terracotta halo, so it is unmistakable which field is being typed
+   * in even at a glance across a long form.
+   *
+   * Safari on iOS zooms the page in whenever a field it is given is under 16px, so
+   * every control is 16px on a phone and back down to its own size from sm up.
+   *
+   * <x-textarea> and <x-select> carry the same string. Three tags cannot share one
+   * definition without a wrapper that hides which tag is being drawn.
+   */
+  $control = 'w-full rounded-md border border-hairline-strong bg-input px-3 font-sans text-ink '
+    .'shadow-press-inset transition-[border-color,box-shadow] duration-(--duration-fast) ease-out '
+    .'placeholder:text-placeholder hover:border-muted '
+    .'focus:border-ink focus:shadow-press-focus focus:outline-none '
+    .'disabled:cursor-default disabled:bg-sand disabled:text-muted disabled:shadow-none '
+    .'aria-[invalid=true]:border-error';
 @endphp
 
-<div class="erica-field">
+<div class="flex flex-col gap-1.5">
   @if ($label)
     <x-label :for="$id" :value="$label" :optional="$optional" :required="$requiredMark" />
   @endif
@@ -75,11 +94,11 @@
     {{ $autofocus ? 'autofocus' : '' }}
     {{ $required ? 'required' : '' }}
     {{ $disabled ? 'disabled' : '' }}
-    {{ $attributes->class(['erica-control', 'erica-control--sm' => $size === 'small']) }}
+    {{ $attributes->class([$control, $size === 'small' ? 'h-9 text-[16px] sm:text-sm' : 'h-11 text-[16px] sm:text-base']) }}
   />
 
   @if ($help)
-    <p id="{{ $helpId }}" class="erica-field__help">{{ $help }}</p>
+    <p id="{{ $helpId }}" class="text-xs text-muted">{{ $help }}</p>
   @endif
 
   <x-error :id="$errorId" :messages="$error" />

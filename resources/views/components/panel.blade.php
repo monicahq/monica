@@ -15,11 +15,14 @@
   that, rather than at the panel: appending to the panel would append a second body
   rather than more rows.
 
+  `iconClass` is the colour of whatever kind of thing the panel holds, written as
+  the pair of utilities that carries it: the tint it sits on and the hue it is
+  drawn in. Left alone it is neutral.
+
   @var string|null $title
   @var string|null $subtitle
   @var string|null $icon
-  @var string $iconColor
-  @var string $iconBackground
+  @var string $iconClass
   @var bool $flush
   @var string $variant
   @var \Illuminate\View\ComponentSlot|null $action
@@ -29,36 +32,45 @@
   'title' => null,
   'subtitle' => null,
   'icon' => null,
-  'iconColor' => 'var(--muted)',
-  'iconBackground' => 'var(--sand)',
+  'iconClass' => 'bg-sand text-muted',
   'flush' => false,
   'variant' => 'default',
 ])
 
-<section {{ $attributes->class(['erica-panel', 'erica-panel--'.$variant => $variant !== 'default']) }}>
+@php
+  /*
+   * The surface is chosen rather than layered: `shadow-none` written after
+   * `shadow-raised` does not win, because which of two utilities setting the same
+   * property applies is decided by the order Tailwind emits them and not by the
+   * order they are written here.
+   */
+  $surface = $variant === 'inset' ? 'bg-sand' : 'bg-canvas shadow-raised';
+@endphp
+
+<section {{ $attributes->class(['overflow-hidden rounded-lg border border-hairline', $surface]) }}>
   @if ($title)
-    <header class="erica-panel__head">
+    <header class="flex min-h-13 items-center gap-2.5 border-b border-hairline px-4.5 py-3">
       @if ($icon)
-        <span class="erica-panel__mark" style="background: {{ $iconBackground }}; color: {{ $iconColor }}">
+        <span class="flex size-7 shrink-0 items-center justify-center rounded-sm {{ $iconClass }}">
           <x-icon :name="$icon" :size="17" :stroke-width="1.5" />
         </span>
       @endif
 
       <div class="min-w-0">
-        <h2 class="erica-panel__title">{{ $title }}</h2>
+        <h2 class="text-card-title text-ink">{{ $title }}</h2>
 
         @if ($subtitle)
-          <p class="erica-panel__sub">{{ $subtitle }}</p>
+          <p class="mt-0.5 text-xs text-muted">{{ $subtitle }}</p>
         @endif
       </div>
 
       @isset($action)
-        <div class="erica-panel__action">{{ $action }}</div>
+        <div class="ml-auto flex items-center gap-2">{{ $action }}</div>
       @endisset
     </header>
   @endif
 
-  <div @class(['erica-panel__body', 'erica-panel__body--flush' => $flush])>
+  <div @class(['p-5' => ! $flush])>
     {{ $slot }}
   </div>
 
@@ -68,6 +80,6 @@
     the link that asked for it.
   --}}
   @isset($footer)
-    <footer {{ $footer->attributes->class(['erica-panel__foot']) }}>{{ $footer }}</footer>
+    <footer {{ $footer->attributes->class(['border-t border-hairline bg-sand px-4.5 py-3 text-sm']) }}>{{ $footer }}</footer>
   @endisset
 </section>

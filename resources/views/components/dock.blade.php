@@ -61,10 +61,10 @@
    * called the dashboard, so that is what it is called here too.
    */
   $destinations = $chipVault === null ? [] : [
-    ['key' => 'dashboard', 'label' => __('Dashboard'), 'icon' => 'heart', 'hue' => 'var(--terracotta)', 'tint' => 'var(--terracotta-tint)', 'url' => route('vaults.show', $chipVault)],
-    ['key' => 'people', 'label' => __('People'), 'icon' => 'people', 'hue' => 'var(--indigo)', 'tint' => 'var(--indigo-tint)', 'url' => route('contacts.index', $chipVault)],
-    ['key' => 'journal', 'label' => __('Journal'), 'icon' => 'journal', 'hue' => 'var(--plum)', 'tint' => 'var(--plum-tint)', 'url' => null],
-    ['key' => 'reminders', 'label' => __('Reminders'), 'icon' => 'reminder', 'hue' => 'var(--forest)', 'tint' => 'var(--forest-tint)', 'url' => null],
+    ['key' => 'dashboard', 'label' => __('Dashboard'), 'icon' => 'heart', 'iconClass' => 'bg-terracotta-tint text-terracotta', 'url' => route('vaults.show', $chipVault)],
+    ['key' => 'people', 'label' => __('People'), 'icon' => 'people', 'iconClass' => 'bg-indigo-tint text-indigo', 'url' => route('contacts.index', $chipVault)],
+    ['key' => 'journal', 'label' => __('Journal'), 'icon' => 'journal', 'iconClass' => 'bg-plum-tint text-plum', 'url' => null],
+    ['key' => 'reminders', 'label' => __('Reminders'), 'icon' => 'reminder', 'iconClass' => 'bg-forest-tint text-forest', 'url' => null],
   ];
 
   /* The vault the chip carries is not offered as somewhere else to go. */
@@ -73,8 +73,7 @@
     ->map(fn (\App\Models\Vault $option): array => [
       'label' => $option->name,
       'icon' => 'vault',
-      'hue' => 'var(--sky)',
-      'tint' => 'var(--sky-tint)',
+      'iconClass' => 'bg-sky-tint text-sky',
       'note' => __('Another vault'),
       'url' => route('vaults.show', $option),
     ])
@@ -87,12 +86,12 @@
     $sections[] = [
       'title' => __('This vault'),
       'tiles' => [
-        ['label' => __('People'), 'icon' => 'people', 'hue' => 'var(--indigo)', 'tint' => 'var(--indigo-tint)', 'note' => $chipVault->contact_count === 1 ? __('1 contact') : __(':count contacts', ['count' => $chipVault->contact_count]), 'url' => route('contacts.index', $chipVault)],
-        ['label' => __('Journal'), 'icon' => 'journal', 'hue' => 'var(--plum)', 'tint' => 'var(--plum-tint)', 'note' => null, 'url' => null],
-        ['label' => __('Reminders'), 'icon' => 'reminder', 'hue' => 'var(--forest)', 'tint' => 'var(--forest-tint)', 'note' => null, 'url' => null],
-        ['label' => __('Tasks'), 'icon' => 'tasks', 'hue' => 'var(--marigold-deep)', 'tint' => 'var(--marigold-tint)', 'note' => null, 'url' => null],
-        ['label' => __('Gifts'), 'icon' => 'gift', 'hue' => 'var(--rose)', 'tint' => 'var(--rose-tint)', 'note' => null, 'url' => null],
-        ['label' => __('Vault settings'), 'icon' => 'vault', 'hue' => 'var(--terracotta)', 'tint' => 'var(--terracotta-tint)', 'note' => null, 'url' => route('vaults.settings.index', $chipVault)],
+        ['label' => __('People'), 'icon' => 'people', 'iconClass' => 'bg-indigo-tint text-indigo', 'note' => $chipVault->contact_count === 1 ? __('1 contact') : __(':count contacts', ['count' => $chipVault->contact_count]), 'url' => route('contacts.index', $chipVault)],
+        ['label' => __('Journal'), 'icon' => 'journal', 'iconClass' => 'bg-plum-tint text-plum', 'note' => null, 'url' => null],
+        ['label' => __('Reminders'), 'icon' => 'reminder', 'iconClass' => 'bg-forest-tint text-forest', 'note' => null, 'url' => null],
+        ['label' => __('Tasks'), 'icon' => 'tasks', 'iconClass' => 'bg-marigold-tint text-marigold-deep', 'note' => null, 'url' => null],
+        ['label' => __('Gifts'), 'icon' => 'gift', 'iconClass' => 'bg-rose-tint text-rose', 'note' => null, 'url' => null],
+        ['label' => __('Vault settings'), 'icon' => 'vault', 'iconClass' => 'bg-terracotta-tint text-terracotta', 'note' => null, 'url' => route('vaults.settings.index', $chipVault)],
       ],
     ];
   }
@@ -101,13 +100,30 @@
     'title' => __('Everything else'),
     'tiles' => [
       ...$elsewhere,
-      ['label' => __('Your vaults'), 'icon' => 'vault', 'hue' => 'var(--muted)', 'tint' => 'var(--sand)', 'note' => null, 'url' => route('vaults.index')],
-      ['label' => __('Settings'), 'icon' => 'settings', 'hue' => 'var(--forest)', 'tint' => 'var(--forest-tint)', 'note' => null, 'url' => route('settings.index')],
-      ['label' => __('Sign out'), 'icon' => 'key', 'hue' => 'var(--muted)', 'tint' => 'var(--sand)', 'note' => null, 'url' => route('auth.login.destroy'), 'method' => 'post'],
+      ['label' => __('Your vaults'), 'icon' => 'vault', 'iconClass' => 'bg-sand text-muted', 'note' => null, 'url' => route('vaults.index')],
+      ['label' => __('Settings'), 'icon' => 'settings', 'iconClass' => 'bg-forest-tint text-forest', 'note' => null, 'url' => route('settings.index')],
+      ['label' => __('Sign out'), 'icon' => 'key', 'iconClass' => 'bg-sand text-muted', 'note' => null, 'url' => route('auth.login.destroy'), 'method' => 'post'],
     ],
   ];
 
   $brandLabel = $chipVault?->name ?? config('app.name');
+
+  /*
+   * Below 720px the dock stops floating in the middle and stretches between the
+   * edges. The vault chip keeps its mark and drops its label; the destinations
+   * share what is left.
+   */
+  $dock = 'fixed bottom-4.5 left-1/2 z-50 flex max-w-[calc(100vw-24px)] -translate-x-1/2 items-center gap-1 '
+    .'rounded-xl border border-hairline-strong bg-canvas p-2 shadow-pop '
+    .'max-[720px]:right-3 max-[720px]:bottom-3 max-[720px]:left-3 max-[720px]:translate-x-0 '
+    .'max-[720px]:justify-between max-[720px]:rounded-lg';
+
+  $item = 'relative flex h-15 min-w-[70px] flex-col items-center justify-center gap-1.25 rounded-lg px-2.5 '
+    .'font-sans text-nav no-underline transition-[background-color,color,transform] duration-(--duration-fast) ease-out '
+    .'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring '
+    .'max-[720px]:min-w-0 max-[720px]:flex-1';
+
+  $glyph = 'flex h-6.5 w-9 items-center justify-center rounded-sm transition-[background-color,color] duration-(--duration-fast) ease-out';
 @endphp
 
 <div
@@ -125,25 +141,26 @@
     x-transition:leave="transition-opacity ease-out duration-[170ms]"
     x-transition:leave-end="opacity-0"
     @click="open = false"
-    class="erica-scrim erica-launcher__scrim"
+    class="fixed inset-0 z-49 bg-scrim"
     aria-hidden="true"
   ></div>
 
   <x-launcher :sections="$sections" />
 
-  <nav aria-label="{{ __('Main') }}" class="erica-dock">
+  <nav aria-label="{{ __('Main') }}" class="{{ $dock }}">
     <button
       type="button"
       @click="open = ! open"
       :aria-expanded="open ? 'true' : 'false'"
       aria-haspopup="menu"
-      class="erica-dock__brand"
+      class="mr-0.5 flex h-15 cursor-pointer items-center justify-center gap-1.75 rounded-lg bg-action-strong px-4 font-sans text-nav text-canvas transition-[background-color,transform] duration-(--duration-fast) ease-out hover:bg-action-strong-hover active:translate-y-(--press-translate) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring max-[720px]:px-3"
     >
-      <span class="erica-dock__mark">
+      {{-- The mark is ink on light and is never recoloured, so it keeps a light plate in both themes. --}}
+      <span class="flex size-7 items-center justify-center rounded-sm bg-[#fbf8f3]">
         <x-logo :size="18" />
       </span>
 
-      <span class="max-w-32 truncate">{{ $brandLabel }}</span>
+      <span class="max-w-32 truncate max-[720px]:hidden">{{ $brandLabel }}</span>
 
       <x-icon
         name="chevron-down"
@@ -155,27 +172,36 @@
     </button>
 
     @if ($destinations !== [])
-      <span class="erica-dock__rule" aria-hidden="true"></span>
+      <span class="mx-1 h-8 w-px bg-hairline" aria-hidden="true"></span>
     @endif
 
+    {{--
+      Only the ones that go somewhere behave like something you can press, and the
+      glyph of the one you are on takes a plate in its own colour. A destination
+      that has not been built yet is drawn and not offered: a link that leads
+      nowhere is worse than a word that does not move.
+    --}}
     @foreach ($destinations as $destination)
+      @php
+        $isCurrent = $current === $destination['key'];
+      @endphp
+
       @if ($destination['url'])
         <a
           href="{{ $destination['url'] }}"
           data-turbo="true"
-          @if ($current === $destination['key']) aria-current="page" @endif
-          class="erica-dock__item"
-          style="--hue: {{ $destination['hue'] }}; --tint: {{ $destination['tint'] }}"
+          @if ($isCurrent) aria-current="page" @endif
+          class="{{ $item }} cursor-pointer hover:bg-sand hover:text-ink active:translate-y-(--press-translate) {{ $isCurrent ? 'text-ink' : 'text-muted' }}"
         >
-          <span class="erica-dock__glyph">
+          <span class="{{ $glyph }} {{ $isCurrent ? $destination['iconClass'] : '' }}">
             <x-icon :name="$destination['icon']" :size="23" :stroke-width="1.6" />
           </span>
 
           {{ $destination['label'] }}
         </a>
       @else
-        <span class="erica-dock__item erica-dock__item--unbuilt">
-          <span class="erica-dock__glyph">
+        <span class="{{ $item }} text-placeholder">
+          <span class="{{ $glyph }}">
             <x-icon :name="$destination['icon']" :size="23" :stroke-width="1.6" />
           </span>
 

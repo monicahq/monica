@@ -11,29 +11,15 @@
   @var string $size
 --}}
 @props([
-  'href',
+  'href' => null,
   'type' => 'submit',
   'size' => 'default',
 ])
 
-@php
-  $classes = ['erica-btn erica-btn--secondary', $size === 'small' ? 'erica-btn--sm' : 'erica-btn--md'];
-@endphp
+<x-button variant="secondary" :href="$href" :type="$type" :size="$size" {{ $attributes }}>
+  @isset($icon)
+    <x-slot:icon>{{ $icon }}</x-slot:icon>
+  @endisset
 
-@isset($href)
-  <a href="{{ $href }}" {{ $attributes->class($classes) }}>
-    @isset($icon)
-      <span class="shrink-0">{{ $icon }}</span>
-    @endisset
-
-    {{ $slot }}
-  </a>
-@else
-  <button type="{{ $type }}" {{ $attributes->class($classes) }}>
-    @isset($icon)
-      <span class="shrink-0">{{ $icon }}</span>
-    @endisset
-
-    {{ $slot }}
-  </button>
-@endif
+  {{ $slot }}
+</x-button>

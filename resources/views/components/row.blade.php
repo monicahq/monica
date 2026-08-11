@@ -14,11 +14,14 @@
   `meta` is a short machine-ish value at the end (a count, a state). The `end` slot
   is for anything richer: a chevron, a button, a form.
 
+  `iconClass` is the colour of whatever kind of thing the row is, written as the
+  pair of utilities that carries it: the tint it sits on and the hue it is drawn
+  in. Left alone it is neutral.
+
   @var string|null $title
   @var string|null $description
   @var string|null $icon
-  @var string $iconColor
-  @var string $iconBackground
+  @var string $iconClass
   @var string|null $meta
   @var string|null $metaSub
   @var string|null $href
@@ -29,8 +32,7 @@
   'title' => null,
   'description' => null,
   'icon' => null,
-  'iconColor' => 'var(--muted)',
-  'iconBackground' => 'var(--sand)',
+  'iconClass' => 'bg-sand text-muted',
   'meta' => null,
   'metaSub' => null,
   'href' => null,
@@ -42,25 +44,31 @@
 
 <{{ $tag }}
   @if ($href) href="{{ $href }}" data-turbo="true" @endif
-  {{ $attributes->class(['erica-row', 'erica-row--interactive' => (bool) $href]) }}
+  {{
+    $attributes->class([
+      'flex w-full items-center gap-3 border-b border-hairline px-4 py-3.5 text-left font-sans no-underline',
+      'transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0',
+      'cursor-pointer hover:bg-sand focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus-ring' => (bool) $href,
+    ])
+  }}
 >
   @isset($leading)
     {{ $leading }}
   @endisset
 
   @if (! isset($leading) && $icon)
-    <span class="erica-row__mark" style="background: {{ $iconBackground }}; color: {{ $iconColor }}">
+    <span class="flex size-8 shrink-0 items-center justify-center rounded-sm {{ $iconClass }}">
       <x-icon :name="$icon" :size="18" :stroke-width="1.5" />
     </span>
   @endif
 
-  <div class="erica-row__main">
+  <div class="min-w-0 flex-1">
     @if ($title)
-      <p class="erica-row__title">{{ $title }}</p>
+      <p class="text-base font-semibold text-ink">{{ $title }}</p>
     @endif
 
     @if ($description)
-      <p class="erica-row__desc">{{ $description }}</p>
+      <p class="mt-px text-sm text-pretty text-muted">{{ $description }}</p>
     @endif
 
     {{ $slot }}
@@ -72,15 +80,15 @@
   @endphp
 
   @if ($meta || $metaSub || $hasEnd)
-    <div class="erica-row__end">
+    <div class="ml-auto flex shrink-0 items-center gap-2.5">
       @if ($meta || $metaSub)
-        <div class="erica-row__meta">
+        <div class="text-right">
           @if ($meta)
-            <b>{{ $meta }}</b>
+            <b class="block text-sm font-semibold whitespace-nowrap text-ink">{{ $meta }}</b>
           @endif
 
           @if ($metaSub)
-            <span>{{ $metaSub }}</span>
+            <span class="block text-xs whitespace-nowrap text-muted">{{ $metaSub }}</span>
           @endif
         </div>
       @endif

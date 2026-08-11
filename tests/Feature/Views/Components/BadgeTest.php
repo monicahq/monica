@@ -13,16 +13,24 @@ class BadgeTest extends TestCase
     public function it_is_neutral_unless_it_is_given_a_tone(): void
     {
         $this->blade('<x-badge>Draft</x-badge>')
-            ->assertSee('erica-badge erica-badge--neutral', escape: false)
+            ->assertSee('bg-sand text-ink-soft', escape: false)
             ->assertSee('Draft', escape: false);
     }
 
     #[Test]
     public function each_tone_draws_itself(): void
     {
-        foreach (['success', 'warning', 'danger', 'info', 'accent', 'outline'] as $tone) {
+        $tints = [
+            'success' => 'bg-forest-tint text-forest-deep',
+            'warning' => 'bg-marigold-tint text-marigold-deep',
+            'danger' => 'bg-error-tint text-error',
+            'info' => 'bg-indigo-tint text-indigo-deep',
+            'accent' => 'bg-accent-tint text-terracotta-deep',
+        ];
+
+        foreach ($tints as $tone => $tint) {
             $this->blade('<x-badge :tone="$tone">State</x-badge>', ['tone' => $tone])
-                ->assertSee('erica-badge--'.$tone, escape: false);
+                ->assertSee($tint, escape: false);
         }
     }
 

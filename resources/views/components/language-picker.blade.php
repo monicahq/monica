@@ -40,7 +40,7 @@
     x-transition.opacity.duration.120ms
     class="absolute bottom-full mb-1.5 left-0 z-10 w-64 overflow-hidden rounded-lg border border-hairline-strong bg-canvas shadow-lg"
   >
-    <div class="px-3 pt-2.5 pb-1.5 text-xs tracking-widest text-muted-soft uppercase">
+    <div class="px-3 pt-2.5 pb-1.5 uppercase text-xs tracking-widest text-muted-soft">
       {{ __('Interface language') }}
     </div>
 

@@ -27,10 +27,10 @@
 @endphp
 <x-shell :title="$template->name" wide>
   <x-slot:bar>
-    <a href="{{ route('settings.templates.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+    <x-button.secondary :href="route('settings.templates.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to the templates') }}
-    </a>
+    </x-button.secondary>
   </x-slot:bar>
 
   <x-slot:dock>
@@ -41,14 +41,14 @@
     <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
       <div class="flex min-w-0 flex-col gap-2">
         <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          <h1 class="erica-page-title">{{ $template->name }}</h1>
+          <h1 class="font-display text-page-title text-ink">{{ $template->name }}</h1>
 
           <x-badge :tone="$viewModel->isEditable() ? 'warning' : 'success'">{{ $viewModel->statusLabel() }}</x-badge>
 
           <code class="font-mono text-[12.5px] text-muted">{{ $viewModel->versionLabel() }}</code>
         </div>
 
-        <p class="erica-small">
+        <p class="text-sm text-pretty text-muted">
           {{ $viewModel->savedLabel() }}
 
           <x-link :href="route('settings.templates.edit', $template)" turbo>{{ __('Rename it') }}</x-link>
@@ -93,9 +93,9 @@
           ])
         @empty
           <x-panel variant="inset" class="border-dashed">
-            <p class="erica-row__title">{{ __('This page has nothing on it yet') }}</p>
+            <p class="text-base font-semibold text-ink">{{ __('This page has nothing on it yet') }}</p>
 
-            <p class="erica-small mt-1.5">{{ __('A page holds sections, and a section holds fields. Add the first section to decide what this page is for.') }}</p>
+            <p class="mt-1.5 text-sm text-pretty text-muted">{{ __('A page holds sections, and a section holds fields. Add the first section to decide what this page is for.') }}</p>
           </x-panel>
         @endforelse
 
@@ -151,7 +151,7 @@
     </div>
 
     <div class="flex flex-wrap items-center gap-4 border-t border-hairline pt-4">
-      <p class="erica-small max-w-[64ch]">{{ $viewModel->publishingNote() }}</p>
+      <p class="max-w-[64ch] text-sm text-pretty text-muted">{{ $viewModel->publishingNote() }}</p>
 
       @if ($viewModel->isEditable() && $version?->previous_version_id !== null)
         <div class="ml-auto">

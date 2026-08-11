@@ -10,17 +10,17 @@
 
   @var array $template
 --}}
-<div class="erica-row erica-row--top">
-  <span class="erica-row__mark" style="background: var(--indigo-tint); color: var(--indigo)">
+<div class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0">
+  <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-indigo-tint text-indigo">
     <x-icon name="file" :size="18" :stroke-width="1.5" />
   </span>
 
-  <div class="erica-row__main">
+  <div class="min-w-0 flex-1">
     <p class="flex flex-wrap items-center gap-x-2 gap-y-1">
       <a
         href="{{ route('settings.templateBuilder.index', $template['slug']) }}"
         data-turbo="true"
-        class="erica-row__title hover:underline"
+        class="text-base font-semibold text-ink hover:underline"
       >{{ $template['name'] }}</a>
 
       @if ($template['isSystem'])
@@ -39,11 +39,11 @@
     </p>
 
     @if ($template['description'])
-      <p class="erica-row__desc">{{ $template['description'] }}</p>
+      <p class="mt-px text-sm text-pretty text-muted">{{ $template['description'] }}</p>
     @endif
 
     <p class="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-      <span class="erica-caption">
+      <span class="text-xs text-pretty text-muted">
         @if ($template['entityTypeName'])
           {{ __('Describes :name', ['name' => $template['entityTypeName']]) }}
         @else
@@ -51,20 +51,20 @@
         @endif
       </span>
 
-      <span class="erica-caption" aria-hidden="true">·</span>
+      <span class="text-xs text-pretty text-muted" aria-hidden="true">·</span>
 
-      <span class="erica-caption">{{ $template['sectionLabel'] }}</span>
+      <span class="text-xs text-pretty text-muted">{{ $template['sectionLabel'] }}</span>
 
-      <span class="erica-caption" aria-hidden="true">·</span>
+      <span class="text-xs text-pretty text-muted" aria-hidden="true">·</span>
 
-      <span class="erica-caption">{{ $template['updatedLabel'] }}</span>
+      <span class="text-xs text-pretty text-muted">{{ $template['updatedLabel'] }}</span>
     </p>
   </div>
 
-  <div class="erica-row__end">
-    <span class="erica-row__meta">
-      <b class="font-mono">{{ $template['versionLabel'] }}</b>
-      <span>{{ $template['versionSubLabel'] }}</span>
+  <div class="ml-auto flex shrink-0 items-center gap-2.5">
+    <span class="text-right">
+      <b class="block font-mono text-sm font-semibold whitespace-nowrap text-ink">{{ $template['versionLabel'] }}</b>
+      <span class="block text-xs whitespace-nowrap text-muted">{{ $template['versionSubLabel'] }}</span>
     </span>
 
     <x-form method="post" :action="route('settings.templateCopy.create', $template['slug'])">

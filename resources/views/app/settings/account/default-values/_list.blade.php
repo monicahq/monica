@@ -59,7 +59,7 @@
     </x-slot:action>
 
     @if ($list['description'])
-      <p class="erica-small border-b border-hairline px-4 py-3">{{ $list['description'] }}</p>
+      <p class="px-4 py-3 text-sm text-pretty text-muted border-b border-hairline">{{ $list['description'] }}</p>
     @endif
 
     <x-form
@@ -94,7 +94,7 @@
       @forelse ($list['values'] as $value)
         @include('app.settings.account.default-values._value', ['value' => $value, 'target' => $target])
       @empty
-        <x-empty-state :title="__('No values yet')" hue="var(--marigold-deep)" tint="var(--marigold-tint)">
+        <x-empty-state :title="__('No values yet')" icon-class="bg-marigold-tint text-marigold-deep">
           <x-slot:icon>
             <x-icon name="tasks" :size="30" :stroke-width="1.4" />
           </x-slot:icon>

@@ -20,9 +20,9 @@
   ])
 >
   <span class="grid min-w-0 gap-px">
-    <span class="erica-row__title truncate">{{ $field['label'] }}</span>
+    <span class="truncate text-base font-semibold text-ink">{{ $field['label'] }}</span>
 
-    <span class="erica-caption truncate">{{ $field['help'] ?? '—' }}</span>
+    <span class="truncate text-xs text-pretty text-muted">{{ $field['help'] ?? '—' }}</span>
   </span>
 
   <span class="flex max-w-48 flex-wrap items-center justify-end gap-1.5">

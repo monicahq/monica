@@ -20,13 +20,13 @@
 
 @php
   $tints = [
-    ['var(--terracotta-tint)', 'var(--terracotta-deep)'],
-    ['var(--marigold-tint)', 'var(--marigold-deep)'],
-    ['var(--forest-tint)', 'var(--forest-deep)'],
-    ['var(--indigo-tint)', 'var(--indigo-deep)'],
-    ['var(--plum-tint)', 'var(--plum-deep)'],
-    ['var(--rose-tint)', 'var(--rose)'],
-    ['var(--sky-tint)', 'var(--sky)'],
+    'bg-terracotta-tint text-terracotta-deep',
+    'bg-marigold-tint text-marigold-deep',
+    'bg-forest-tint text-forest-deep',
+    'bg-indigo-tint text-indigo-deep',
+    'bg-plum-tint text-plum-deep',
+    'bg-rose-tint text-rose',
+    'bg-sky-tint text-sky',
   ];
 
   $words = collect(preg_split('/\s+/', trim($name)))->filter()->values();
@@ -41,11 +41,12 @@
    */
   $sum = collect(mb_str_split($name))->reduce(fn (int $total, string $letter): int => ($total + mb_ord($letter)) % 997, 0);
 
-  [$background, $foreground] = $tints[$sum % count($tints)];
+  $tint = $tints[$sum % count($tints)];
 @endphp
 
 <span
-  {{ $attributes->class(['flex shrink-0 items-center justify-center rounded-full font-bold tracking-tight select-none']) }}
-  style="width: {{ $size }}px; height: {{ $size }}px; font-size: {{ round($size * 0.38) }}px; background: {{ $background }}; color: {{ $foreground }};"
+  {{ $attributes->class(['flex shrink-0 items-center justify-center rounded-full font-bold tracking-tight select-none', $tint]) }}
+  {{-- The size is a number rather than a step, so it is the one thing here a utility cannot carry. --}}
+  style="width: {{ $size }}px; height: {{ $size }}px; font-size: {{ round($size * 0.38) }}px"
   aria-hidden="true"
 >{{ $initials }}</span>

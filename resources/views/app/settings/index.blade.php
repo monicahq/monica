@@ -17,10 +17,10 @@
 --}}
 <x-shell :title="__('Settings')">
   <x-slot:bar>
-    <a href="{{ route('vaults.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+    <x-button.secondary :href="route('vaults.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to your vaults') }}
-    </a>
+    </x-button.secondary>
   </x-slot:bar>
 
   <x-slot:dock>
@@ -30,20 +30,20 @@
   <header class="flex flex-col items-center gap-2.5 text-center">
     <x-avatar :user="$viewModel->user()" :size="56" />
 
-    <h1 class="mt-1.5 erica-page-title">{{ __('Settings') }}</h1>
+    <h1 class="mt-1.5 font-display text-page-title text-ink">{{ __('Settings') }}</h1>
 
-    <p class="erica-lede max-w-[52ch]">{{ $viewModel->description() }}</p>
+    <p class="max-w-[52ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
 
-    <p class="erica-caption mt-0.5">{{ $viewModel->signedInAs() }}</p>
+    <p class="mt-0.5 text-xs text-pretty text-muted">{{ $viewModel->signedInAs() }}</p>
   </header>
 
   @foreach ($viewModel->sections() as $section)
     <section class="flex flex-col gap-3">
       @if ($section['title'])
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="erica-section-title shrink-0">{{ $section['title'] }}</h2>
+          <h2 class="shrink-0 font-display text-section-title text-ink">{{ $section['title'] }}</h2>
 
-          <p class="erica-small">{{ $section['description'] }}</p>
+          <p class="text-sm text-pretty text-muted">{{ $section['description'] }}</p>
         </div>
       @endif
 
@@ -53,17 +53,16 @@
             :title="$row['title']"
             :description="$row['description']"
             :icon="$row['icon']"
-            :icon-color="$row['hue']"
-            :icon-background="$row['tint']"
+            :icon-class="$row['iconClass']"
             :meta="$row['meta']"
             :href="isset($row['method']) ? null : $row['url']"
           >
             <x-slot:end>
               @if (isset($row['method']))
                 <x-form :method="$row['method']" :action="$row['url']">
-                  <button type="submit" class="erica-btn erica-btn--secondary erica-btn--sm">
+                  <x-button.secondary size="small">
                     {{ $row['title'] }}
-                  </button>
+                  </x-button.secondary>
                 </x-form>
               @elseif ($row['url'])
                 <x-icon name="chevron-right" :size="16" :stroke-width="1.6" class="text-muted" />
@@ -75,10 +74,10 @@
 
       {{-- The only thing on this screen that cannot be undone, under the rows that can. --}}
       @if ($loop->last)
-        <p class="erica-caption px-0.5">
+        <p class="px-0.5 text-xs text-pretty text-muted">
           {{ __('Deleting the account removes every vault, every person in them and every note you have written. It cannot be undone.') }}
 
-          <a href="{{ $viewModel->deleteUrl() }}" data-turbo="true" style="color: var(--danger)">
+          <a href="{{ $viewModel->deleteUrl() }}" data-turbo="true" class="text-error">
             {{ __('Delete this account') }}
           </a>
         </p>

@@ -16,10 +16,10 @@
 @endphp
 <x-shell :title="$viewModel->title()">
   <x-slot:bar>
-    <a href="{{ route('settings.templates.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+    <x-button.secondary :href="route('settings.templates.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to the templates') }}
-    </a>
+    </x-button.secondary>
   </x-slot:bar>
 
   <x-slot:dock>
@@ -27,9 +27,9 @@
   </x-slot:dock>
 
   <header class="flex flex-col gap-2">
-    <h1 class="erica-page-title">{{ $viewModel->title() }}</h1>
+    <h1 class="font-display text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
-    <p class="erica-lede max-w-[56ch]">{{ $viewModel->description() }}</p>
+    <p class="max-w-[56ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
   </header>
 
   <div
@@ -48,9 +48,9 @@
     <x-form id="template-form" :method="$viewModel->method()" :action="$viewModel->action()" class="flex flex-col gap-8">
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="erica-section-title shrink-0">{{ __('Name') }}</h2>
+          <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Name') }}</h2>
 
-          <p class="erica-small">{{ __('The name is what the picker shows when somebody makes a record. The slug is what the URL and the API use.') }}</p>
+          <p class="text-sm text-pretty text-muted">{{ __('The name is what the picker shows when somebody makes a record. The slug is what the URL and the API use.') }}</p>
         </div>
 
         <x-panel>
@@ -86,12 +86,12 @@
                 clicking and submits nothing, so what is shown instead is the value
                 itself, in mono, the way every machine value in the product is written.
               --}}
-              <div class="erica-field">
-                <p class="erica-field__label">{{ __('Slug') }}</p>
+              <div class="flex flex-col gap-1.5">
+                <p class="flex items-baseline gap-1.5 text-label text-ink">{{ __('Slug') }}</p>
 
                 <p class="rounded-md border border-hairline bg-sunken px-3 py-2 font-mono text-sm break-all text-ink select-all">{{ $values['slug'] }}</p>
 
-                <p class="erica-field__help">{{ $viewModel->slugHelp() }}</p>
+                <p class="text-xs text-muted">{{ $viewModel->slugHelp() }}</p>
               </div>
             @endif
 
@@ -111,49 +111,49 @@
       @unless ($viewModel->isEdit())
         <section class="flex flex-col gap-3">
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-            <h2 class="erica-section-title shrink-0">{{ __('What it describes') }}</h2>
+            <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('What it describes') }}</h2>
 
-            <p class="erica-small">{{ __('Settled now and not changeable later, since every record made with it would be left rendering something else.') }}</p>
+            <p class="text-sm text-pretty text-muted">{{ __('Settled now and not changeable later, since every record made with it would be left rendering something else.') }}</p>
           </div>
 
           <x-panel :flush="true">
             <fieldset>
               <legend class="sr-only">{{ __('What it describes') }}</legend>
 
-              <label class="erica-row erica-row--top erica-row--interactive">
+              <label class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0 cursor-pointer hover:bg-sand focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus-ring">
                 <input type="radio" name="applies_to" value="contact" x-model="appliesTo" class="mt-1" />
 
-                <span class="erica-row__main">
-                  <span class="erica-row__title block">{{ __('A contact') }}</span>
-                  <span class="erica-row__desc block">{{ __('The people every vault keeps.') }}</span>
+                <span class="min-w-0 flex-1">
+                  <span class="block text-base font-semibold text-ink">{{ __('A contact') }}</span>
+                  <span class="mt-px block text-sm text-pretty text-muted">{{ __('The people every vault keeps.') }}</span>
                 </span>
               </label>
 
               @if ($viewModel->hasEntityTypes())
-                <label class="erica-row erica-row--top erica-row--interactive">
+                <label class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0 cursor-pointer hover:bg-sand focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus-ring">
                   <input type="radio" name="applies_to" value="entity" x-model="appliesTo" class="mt-1" />
 
-                  <span class="erica-row__main">
-                    <span class="erica-row__title block">{{ __('A kind of record you invented') }}</span>
-                    <span class="erica-row__desc block">{{ __('Animals, companies, wine bottles, whatever you named.') }}</span>
+                  <span class="min-w-0 flex-1">
+                    <span class="block text-base font-semibold text-ink">{{ __('A kind of record you invented') }}</span>
+                    <span class="mt-px block text-sm text-pretty text-muted">{{ __('Animals, companies, wine bottles, whatever you named.') }}</span>
                   </span>
                 </label>
               @endif
             </fieldset>
 
             @if ($viewModel->hasEntityTypes())
-              <div x-cloak x-show="appliesTo === 'entity'" class="erica-field border-t border-hairline px-4 py-4">
-                <x-label for="entity_type_id" :value="__('Which kind')" />
-
-                <select id="entity_type_id" name="entity_type_id" class="erica-control erica-control--select">
+              <div x-cloak x-show="appliesTo === 'entity'" class="border-t border-hairline px-4 py-4">
+                <x-select
+                  id="entity_type_id"
+                  :label="__('Which kind')"
+                  :error="$errors->get('entity_type_id')"
+                >
                   <option value="">{{ __('Pick one') }}</option>
 
                   @foreach ($viewModel->entityTypes() as $type)
                     <option value="{{ $type['id'] }}" @selected($values['entityTypeId'] === (string) $type['id'])>{{ $type['name'] }}</option>
                   @endforeach
-                </select>
-
-                <x-error :messages="$errors->get('entity_type_id')" />
+                </x-select>
               </div>
             @else
               <div class="border-t border-hairline px-4 py-4">

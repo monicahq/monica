@@ -20,14 +20,14 @@
   'required' => false,
 ])
 
-<label {{ $attributes->class(['erica-field__label']) }}>
+<label {{ $attributes->class(['flex items-baseline gap-1.5 text-label text-ink']) }}>
   {{ $value ?? $slot }}
 
   @if ($optional)
-    <span class="erica-field__note">{{ __('optional') }}</span>
+    <span class="text-xs text-muted">{{ __('optional') }}</span>
   @endif
 
   @if ($required)
-    <span class="erica-field__note">{{ __('required') }}</span>
+    <span class="text-xs text-muted">{{ __('required') }}</span>
   @endif
 </label>

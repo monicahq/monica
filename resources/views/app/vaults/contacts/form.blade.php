@@ -38,9 +38,9 @@
   </x-slot:dock>
 
   <header class="flex flex-col gap-2">
-    <h1 class="erica-page-title">{{ $viewModel->title() }}</h1>
+    <h1 class="font-display text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
-    <p class="erica-lede max-w-[56ch]">{{ $viewModel->description() }}</p>
+    <p class="max-w-[56ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
   </header>
 
   <div
@@ -63,38 +63,31 @@
       @if ($viewModel->showsTemplates())
         <section class="flex flex-col gap-3">
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-            <h2 class="erica-section-title shrink-0">{{ __('What this contact starts from') }}</h2>
+            <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('What this contact starts from') }}</h2>
 
-            <p class="erica-small">{{ __('The template decides which fields the contact page holds. It is the vault’s own unless you pick another here, and it can be changed on the contact afterwards.') }}</p>
+            <p class="text-sm text-pretty text-muted">{{ __('The template decides which fields the contact page holds. It is the vault’s own unless you pick another here, and it can be changed on the contact afterwards.') }}</p>
           </div>
 
           <x-panel>
-            <div class="max-w-105">
-              <div class="erica-field">
-                <x-label for="template_version_id" :value="__('Template')" />
-
-                <select
-                  id="template_version_id"
-                  name="template_version_id"
-                  class="erica-control erica-control--select"
-                >
-                  @foreach ($viewModel->templates() as $template)
-                    <option value="{{ $template['id'] }}" @selected($values['templateVersionId'] === (string) $template['id'])>{{ $template['name'] }}</option>
-                  @endforeach
-                </select>
-
-                <x-error :messages="$errors->get('template_version_id')" />
-              </div>
-            </div>
+            <x-select
+              id="template_version_id"
+              :label="__('Template')"
+              :error="$errors->get('template_version_id')"
+              class="max-w-105"
+            >
+              @foreach ($viewModel->templates() as $template)
+                <option value="{{ $template['id'] }}" @selected($values['templateVersionId'] === (string) $template['id'])>{{ $template['name'] }}</option>
+              @endforeach
+            </x-select>
           </x-panel>
         </section>
       @endif
 
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="erica-section-title shrink-0">{{ __('Name') }}</h2>
+          <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Name') }}</h2>
 
-          <p class="erica-small">{{ __('Only the first name is needed. The rest is there for the people whose name does not fit in two boxes.') }}</p>
+          <p class="text-sm text-pretty text-muted">{{ __('Only the first name is needed. The rest is there for the people whose name does not fit in two boxes.') }}</p>
         </div>
 
         <x-panel>
@@ -178,38 +171,32 @@
               />
             </div>
 
-            <div class="max-w-105">
-              <div class="erica-field">
-                <x-label for="name_order" :value="__('Name order')" optional />
+            <x-select
+              id="name_order"
+              :label="__('Name order')"
+              :error="$errors->get('name_order')"
+              x-model="nameOrder"
+              optional
+              class="max-w-105"
+            >
+              @foreach ($viewModel->nameOrders() as $order)
+                <option value="{{ $order['value'] }}" @selected($values['nameOrder'] === $order['value'])>{{ $order['label'] }}</option>
+              @endforeach
 
-                <select
-                  id="name_order"
-                  name="name_order"
-                  x-model="nameOrder"
-                  class="erica-control erica-control--select"
-                >
-                  @foreach ($viewModel->nameOrders() as $order)
-                    <option value="{{ $order['value'] }}" @selected($values['nameOrder'] === $order['value'])>{{ $order['label'] }}</option>
-                  @endforeach
-                </select>
-
-                <p class="erica-field__help">
-                  <span x-show="written === ''">{{ __('How this contact is written and sorted.') }}</span>
-                  <span x-cloak x-show="written !== ''">{{ __('Written as') }} <span class="font-semibold text-ink" x-text="written"></span></span>
-                </p>
-
-                <x-error :messages="$errors->get('name_order')" />
-              </div>
-            </div>
+              <x-slot:help>
+                <span x-show="written === ''">{{ __('How this contact is written and sorted.') }}</span>
+                <span x-cloak x-show="written !== ''">{{ __('Written as') }} <span class="font-semibold text-ink" x-text="written"></span></span>
+              </x-slot:help>
+            </x-select>
           </div>
         </x-panel>
       </section>
 
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="erica-section-title shrink-0">{{ __('This contact') }}</h2>
+          <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('This contact') }}</h2>
 
-          <p class="erica-small">{{ __('Two things you can say about them now. Both are yours to change from their page later.') }}</p>
+          <p class="text-sm text-pretty text-muted">{{ __('Two things you can say about them now. Both are yours to change from their page later.') }}</p>
         </div>
 
         <x-panel>
@@ -218,7 +205,7 @@
               <div class="flex flex-col gap-1">
                 <x-checkbox :id="$flag['id']" :checked="$flag['checked']">{{ $flag['name'] }}</x-checkbox>
 
-                <p class="erica-caption pl-6.5">{{ $flag['help'] }}</p>
+                <p class="text-xs text-pretty text-muted pl-6.5">{{ $flag['help'] }}</p>
               </div>
             @endforeach
           </div>

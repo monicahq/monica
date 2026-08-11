@@ -28,10 +28,10 @@ class DropdownTest extends TestCase
             ['options' => $this->formats()],
         );
 
-        $rendered->assertSee('erica-btn erica-btn--secondary', escape: false);
+        $rendered->assertSee('bg-canvas text-ink shadow-raised', escape: false);
         $rendered->assertSee('aria-haspopup="menu"', escape: false);
         $rendered->assertSee('24-hour', escape: false);
-        $rendered->assertSee('<p class="erica-menu__label">Time format</p>', escape: false);
+        $rendered->assertSee('<p class="px-2.5 pt-2 pb-1.5 uppercase text-xs tracking-caption text-muted">Time format</p>', escape: false);
     }
 
     #[Test]
@@ -76,7 +76,7 @@ class DropdownTest extends TestCase
     public function it_writes_machine_values_in_mono_when_it_is_asked_to(): void
     {
         $this->blade('<x-dropdown name="t" label="24-hour" :options="$options" monospaced-hints />', ['options' => $this->formats()])
-            ->assertSee('erica-menu__end font-mono', escape: false);
+            ->assertSee('ml-auto text-xs text-muted font-mono', escape: false);
 
         $this->blade('<x-dropdown name="t" label="English" :options="$options" />', ['options' => $this->formats()])
             ->assertDontSee('font-mono', escape: false);

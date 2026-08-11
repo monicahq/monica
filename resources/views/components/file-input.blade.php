@@ -25,7 +25,21 @@
   $describedBy = trim(($helpId ?? '').' '.($errorId ?? ''));
 @endphp
 
-<div class="erica-field">
+@php
+  /*
+   * A file field is the browser's own control, because nothing hand-built opens a
+   * file picker as reliably. What is drawn is the native button dressed as a small
+   * secondary one, with the chosen file's name beside it as a caption. So the well
+   * is dropped here: there is no text being typed into it.
+   */
+  $control = 'cursor-pointer text-xs text-muted '
+    .'file:mr-3 file:h-8.5 file:cursor-pointer file:rounded-md file:border file:border-hairline-strong '
+    .'file:bg-canvas file:px-3.25 file:font-sans file:text-[13.5px] file:font-semibold file:text-ink '
+    .'file:shadow-raised file:transition-[background-color] file:duration-(--duration-fast) file:ease-out '
+    .'hover:file:bg-sand';
+@endphp
+
+<div class="flex flex-col gap-1.5">
   @if ($label)
     <x-label :for="$id" :value="$label" />
   @endif
@@ -38,11 +52,11 @@
     @if ($describedBy !== '') aria-describedby="{{ $describedBy }}" @endif
     @if ($error) aria-invalid="true" @endif
     {{ $required ? 'required' : '' }}
-    {{ $attributes->class(['erica-control erica-control--file']) }}
+    {{ $attributes->class([$control]) }}
   />
 
   @if ($help)
-    <p id="{{ $helpId }}" class="erica-field__help">{{ $help }}</p>
+    <p id="{{ $helpId }}" class="text-xs text-muted">{{ $help }}</p>
   @endif
 
   <x-error :id="$errorId" :messages="$error" />

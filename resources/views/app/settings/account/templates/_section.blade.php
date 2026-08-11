@@ -34,11 +34,11 @@
       :class="draggingId === {{ $section['id'] }} && 'opacity-40'"
     @endif
     x-data="{ renaming: false }"
-    class="erica-panel"
+    class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-raised"
   >
-    <header class="erica-panel__head">
+    <header class="flex min-h-13 items-center gap-2.5 border-b border-hairline px-4.5 py-3">
       <div x-show="! renaming" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2.5 gap-y-1.5">
-        <h2 class="erica-panel__title truncate">{{ $section['name'] }}</h2>
+        <h2 class="truncate text-card-title text-ink">{{ $section['name'] }}</h2>
 
         @if ($section['isMine'])
           <x-badge>{{ __('Your section') }}</x-badge>
@@ -70,7 +70,7 @@
                   name="page"
                   aria-label="{{ __('Move this section to another page') }}"
                   @change="$el.form.requestSubmit()"
-                  class="erica-btn erica-btn--ghost erica-btn--sm cursor-pointer appearance-none pr-2 pl-2"
+                  class="inline-flex h-8.5 cursor-pointer appearance-none items-center rounded-md px-2 font-sans text-[13.5px] font-semibold text-ink-soft transition-[background-color,color] duration-(--duration-fast) ease-out hover:bg-sand hover:text-ink"
                 >
                   <option value="" selected>{{ __('Move to') }}</option>
 
@@ -128,7 +128,7 @@
     </header>
 
     @if ($section['willBeCopied'] && $isEditable)
-      <p class="erica-caption border-b border-hairline bg-sunken px-4 py-2.5">
+      <p class="px-4 py-2.5 text-xs text-pretty text-muted border-b border-hairline bg-sunken">
         {{ __('This section is published or shared with another template. Changing anything in it here gives the section a new version, and leaves the other templates exactly as they are.') }}
       </p>
     @endif

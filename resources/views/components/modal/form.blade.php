@@ -61,7 +61,7 @@
   {{ $trigger }}
 
   <div x-cloak x-show="open" class="fixed inset-0 z-70 flex items-end justify-center p-4 sm:items-center">
-    <div x-show="open" x-transition.opacity.duration.170ms @click="open = false" class="erica-scrim absolute inset-0" aria-hidden="true"></div>
+    <div x-show="open" x-transition.opacity.duration.170ms @click="open = false" class="absolute inset-0 bg-scrim" aria-hidden="true"></div>
 
     <div
       x-show="open"
@@ -79,10 +79,10 @@
         <div class="flex flex-col gap-4 p-5">
           @if ($title)
             <div class="flex flex-col gap-1.5">
-              <p class="erica-panel__title">{{ $title }}</p>
+              <p class="text-card-title text-ink">{{ $title }}</p>
 
               @if ($description)
-                <p class="erica-small">{{ $description }}</p>
+                <p class="text-sm text-pretty text-muted">{{ $description }}</p>
               @endif
             </div>
           @endif

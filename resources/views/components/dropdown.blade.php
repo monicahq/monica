@@ -48,15 +48,20 @@
   parent of this, and events do not travel downwards.
 --}}
 <div x-data="{ open: false }" @ajax:before.window="open = false" {{ $attributes->class([]) }}>
-  <button
+  {{--
+    The double colon on `aria-expanded` is what stops Blade from reading the Alpine
+    expression after it as php. The trigger is a secondary button, so it is the
+    component rather than its utilities written again here.
+  --}}
+  <x-button.secondary
     type="button"
     x-ref="trigger"
     @click="open = ! open"
     @click.outside="open = false"
     @keydown.escape.window="open = false"
-    :aria-expanded="open ? 'true' : 'false'"
+    ::aria-expanded="open ? 'true' : 'false'"
     aria-haspopup="menu"
-    class="erica-btn erica-btn--secondary erica-btn--md w-full justify-start sm:w-44"
+    class="w-full justify-start sm:w-44"
   >
     <span class="truncate">{{ $label }}</span>
 
@@ -67,7 +72,7 @@
       class="ml-auto text-muted transition-transform duration-[170ms]"
       ::class="open && 'rotate-180'"
     />
-  </button>
+  </x-button.secondary>
 
   <div
     x-cloak
@@ -78,10 +83,10 @@
     x-transition:leave="transition ease-out duration-[110ms]"
     x-transition:leave-end="opacity-0"
     role="menu"
-    class="erica-menu z-40 w-64 max-w-[calc(100vw-2rem)]"
+    class="z-40 w-64 max-w-[calc(100vw-2rem)] rounded-lg border border-hairline-strong bg-canvas p-1.5 shadow-pop"
   >
     @isset($title)
-      <p class="erica-menu__label">{{ $title }}</p>
+      <p class="px-2.5 pt-2 pb-1.5 uppercase text-xs tracking-caption text-muted">{{ $title }}</p>
     @endisset
 
     @foreach ($options as $option)
@@ -91,11 +96,11 @@
         name="{{ $name }}"
         value="{{ $option['value'] }}"
         @if ($option['selected']) aria-checked="true" @endif
-        class="erica-menu__item"
+        class="flex w-full cursor-pointer items-center gap-2.5 rounded-sm px-2.5 py-2.25 text-left text-base text-ink transition-[background-color] duration-(--duration-fast) ease-out hover:bg-sand focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus-ring aria-[checked=true]:bg-sand aria-[checked=true]:font-semibold"
       >
         <span class="min-w-0 flex-1 truncate">{{ $option['label'] }}</span>
 
-        <span class="erica-menu__end {{ $monospacedHints ? 'font-mono' : '' }}">{{ $option['hint'] }}</span>
+        <span class="ml-auto text-xs text-muted {{ $monospacedHints ? 'font-mono' : '' }}">{{ $option['hint'] }}</span>
 
         <span class="flex w-4 shrink-0 items-center justify-center {{ $option['selected'] ? '' : 'opacity-0' }}">
           <x-icon name="check" :size="15" :stroke-width="2" />

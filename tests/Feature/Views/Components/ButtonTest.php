@@ -12,17 +12,17 @@ class ButtonTest extends TestCase
     #[Test]
     public function each_variant_draws_itself(): void
     {
-        $this->blade('<x-button>Save</x-button>')->assertSee('erica-btn erica-btn--primary', escape: false);
-        $this->blade('<x-button.secondary>Cancel</x-button.secondary>')->assertSee('erica-btn erica-btn--secondary', escape: false);
-        $this->blade('<x-button.ghost>Remove</x-button.ghost>')->assertSee('erica-btn erica-btn--ghost', escape: false);
-        $this->blade('<x-button.danger>Delete it for good</x-button.danger>')->assertSee('erica-btn erica-btn--danger', escape: false);
+        $this->blade('<x-button>Save</x-button>')->assertSee('bg-action-primary', escape: false);
+        $this->blade('<x-button.secondary>Cancel</x-button.secondary>')->assertSee('bg-canvas', escape: false);
+        $this->blade('<x-button.ghost>Remove</x-button.ghost>')->assertSee('hover:bg-sand hover:text-ink', escape: false);
+        $this->blade('<x-button.danger>Delete it for good</x-button.danger>')->assertSee('bg-error', escape: false);
     }
 
     #[Test]
     public function it_is_the_default_height_unless_it_is_asked_to_be_small(): void
     {
-        $this->blade('<x-button>Save</x-button>')->assertSee('erica-btn--md', escape: false);
-        $this->blade('<x-button size="small">Save</x-button>')->assertSee('erica-btn--sm', escape: false);
+        $this->blade('<x-button>Save</x-button>')->assertSee('h-10 px-4.5', escape: false);
+        $this->blade('<x-button size="small">Save</x-button>')->assertSee('h-8.5 px-3.25', escape: false);
     }
 
     #[Test]
@@ -40,6 +40,6 @@ class ButtonTest extends TestCase
     public function a_class_written_on_it_still_wins(): void
     {
         $this->blade('<x-button class="ml-auto">Save</x-button>')
-            ->assertSee('erica-btn erica-btn--primary erica-btn--md ml-auto', escape: false);
+            ->assertSee('h-10 px-4.5 text-base ml-auto', escape: false);
     }
 }

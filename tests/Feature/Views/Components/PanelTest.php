@@ -14,28 +14,28 @@ class PanelTest extends TestCase
     {
         $rendered = $this->blade('<x-panel>Anything</x-panel>');
 
-        $rendered->assertSee('erica-panel', escape: false);
+        $rendered->assertSee('rounded-lg border border-hairline bg-canvas shadow-raised', escape: false);
         $rendered->assertSee('Anything', escape: false);
-        $rendered->assertDontSee('erica-panel__head', escape: false);
+        $rendered->assertDontSee('<header', escape: false);
     }
 
     #[Test]
     public function it_names_itself_and_marks_itself_when_it_is_given_a_title(): void
     {
-        $rendered = $this->blade('<x-panel title="This vault" subtitle="Six of them" icon="vault" icon-color="var(--sky)" icon-background="var(--sky-tint)">Rows</x-panel>');
+        $rendered = $this->blade('<x-panel title="This vault" subtitle="Six of them" icon="vault" icon-class="bg-sky-tint text-sky">Rows</x-panel>');
 
-        $rendered->assertSee('<h2 class="erica-panel__title">This vault</h2>', escape: false);
+        $rendered->assertSee('<h2 class="text-card-title text-ink">This vault</h2>', escape: false);
         $rendered->assertSee('Six of them', escape: false);
-        $rendered->assertSee('background: var(--sky-tint); color: var(--sky)', escape: false);
+        $rendered->assertSee('rounded-sm bg-sky-tint text-sky', escape: false);
     }
 
     #[Test]
     public function it_takes_the_padding_off_its_body_for_a_list_of_rows(): void
     {
         $this->blade('<x-panel>Prose</x-panel>')
-            ->assertDontSee('erica-panel__body--flush', escape: false);
+            ->assertSee('<div class="p-5">', escape: false);
 
         $this->blade('<x-panel :flush="true">Rows</x-panel>')
-            ->assertSee('erica-panel__body--flush', escape: false);
+            ->assertDontSee('<div class="p-5">', escape: false);
     }
 }

@@ -85,7 +85,7 @@ class VaultControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee(route('settings.index'), escape: false);
-        $response->assertDontSee('erica-dock', escape: false);
+        $response->assertDontSee('aria-label="Main"', escape: false);
     }
 
     #[Test]

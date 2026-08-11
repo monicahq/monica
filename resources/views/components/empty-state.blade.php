@@ -10,9 +10,10 @@
   The panel keeps a minimum height, so the screen does not jump the moment the
   first row arrives.
 
-  `hue` and `tint` are the colour of whatever kind of thing the list holds. Left
-  alone they are neutral, which is right for a list of records rather than of
-  objects.
+  `iconClass` is the colour of whatever kind of thing the list holds, written as
+  the pair of utilities that carries it: the tint the glyph sits on and the hue it
+  is drawn in. Left alone it is neutral, which is right for a list of records
+  rather than of objects.
 
   The `action` slot is the one thing to do about the list being empty, and only
   belongs on a list somebody can actually add to. On one they cannot, such as their
@@ -22,38 +23,36 @@
   documentation portal yet, so nothing passes it today.
 
   Usage:
-    <x-empty-state :title="__('No activity yet')" hue="var(--forest)" tint="var(--forest-tint)">
+    <x-empty-state :title="__('No activity yet')" icon-class="bg-forest-tint text-forest">
       <x-slot:icon><x-icon name="timeline" :size="30" :stroke-width="1.4" /></x-slot:icon>
       {{ __('Why this is empty.') }}
     </x-empty-state>
 
   @var string|null $title
-  @var string $hue
-  @var string $tint
+  @var string $iconClass
   @var string|null $href
   @var string|null $linkLabel
   @var \Illuminate\View\ComponentSlot|null $action
 --}}
 @props([
   'title' => null,
-  'hue' => 'var(--muted)',
-  'tint' => 'var(--sand)',
+  'iconClass' => 'bg-sand text-muted',
   'href' => null,
   'linkLabel' => null,
 ])
 
-<div {{ $attributes->class(['erica-empty']) }}>
+<div {{ $attributes->class(['flex min-h-60 flex-col items-center justify-center gap-3.5 px-8 py-12 text-center']) }}>
   @isset($icon)
-    <span class="erica-empty__glyph" style="background: {{ $tint }}; color: {{ $hue }}" aria-hidden="true">
+    <span class="flex size-16 -rotate-4 items-center justify-center rounded-lg {{ $iconClass }}" aria-hidden="true">
       {{ $icon }}
     </span>
   @endisset
 
   @isset($title)
-    <p class="erica-empty__title">{{ $title }}</p>
+    <p class="font-display text-section-title text-ink">{{ $title }}</p>
   @endisset
 
-  <p class="erica-empty__text">{{ $slot }}</p>
+  <p class="max-w-[44ch] text-base text-pretty text-muted">{{ $slot }}</p>
 
   @isset($action)
     <div class="mt-1">{{ $action }}</div>

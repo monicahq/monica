@@ -69,7 +69,7 @@
             :aria-expanded="navOpen ? 'true' : 'false'"
             aria-controls="settings-nav"
             aria-label="{{ __('Open the menu') }}"
-            class="-ml-1.5 flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors hover:bg-hover hover:text-ink lg:hidden"
+            class="-ml-1.5 flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md lg:hidden text-muted transition-colors hover:bg-hover hover:text-ink"
           >
             <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
               <line x1="2.4" y1="4.4" x2="13.6" y2="4.4"></line>
@@ -92,7 +92,7 @@
               {{ $actions }}
             </div>
           @else
-            <span class="ml-auto hidden text-sm text-muted sm:block">{{ auth()->user()?->email }}</span>
+            <span class="ml-auto hidden sm:block text-sm text-muted">{{ auth()->user()?->email }}</span>
           @endisset
         </header>
 

@@ -69,7 +69,7 @@ class ProfileControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.profile.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('erica-dock', escape: false);
+        $response->assertSee('aria-label="Main"', escape: false);
         $response->assertSee(route('vaults.index'), escape: false);
     }
 

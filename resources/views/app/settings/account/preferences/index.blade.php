@@ -22,10 +22,10 @@
 @endphp
 <x-shell :title="__('Preferences')">
   <x-slot:bar>
-    <a href="{{ route('settings.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+    <x-button.secondary :href="route('settings.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to settings') }}
-    </a>
+    </x-button.secondary>
   </x-slot:bar>
 
   <x-slot:dock>
@@ -33,20 +33,20 @@
   </x-slot:dock>
 
   <header class="flex flex-col gap-2">
-    <h1 class="erica-page-title">{{ __('Preferences') }}</h1>
+    <h1 class="font-display text-page-title text-ink">{{ __('Preferences') }}</h1>
 
-    <p class="erica-lede max-w-[56ch]">{{ __('These are yours alone, on every device you sign in from. Nothing here changes for anybody else in your account.') }}</p>
+    <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('These are yours alone, on every device you sign in from. Nothing here changes for anybody else in your account.') }}</p>
   </header>
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="erica-section-title shrink-0">{{ __('Language and formats') }}</h2>
+      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Language and formats') }}</h2>
 
-      <p class="erica-small">{{ __('Each one saves as soon as you pick it. There is nothing to press.') }}</p>
+      <p class="text-sm text-pretty text-muted">{{ __('Each one saves as soon as you pick it. There is nothing to press.') }}</p>
     </div>
 
     <x-panel :flush="true">
-      <x-row :title="__('Language')" :description="__('The language the interface is drawn in.')" icon="info" icon-color="var(--indigo)" icon-background="var(--indigo-tint)">
+      <x-row :title="__('Language')" :description="__('The language the interface is drawn in.')" icon="info" icon-class="bg-indigo-tint text-indigo">
         <x-slot:end>
           <x-form method="put" :action="route('settings.preferences.update')" id="language-form">
             @include('app.settings.account.preferences._carried-values', ['owns' => 'locale'])
@@ -61,7 +61,7 @@
         </x-slot:end>
       </x-row>
 
-      <x-row :title="__('Time format')" :description="__('How a time of day is written.')" icon="calendar" icon-color="var(--forest)" icon-background="var(--forest-tint)">
+      <x-row :title="__('Time format')" :description="__('How a time of day is written.')" icon="calendar" icon-class="bg-forest-tint text-forest">
         <x-slot:end>
           <x-form
             method="put"
@@ -83,7 +83,7 @@
         </x-slot:end>
       </x-row>
 
-      <x-row :title="__('Date format')" :description="__('The order the parts of a date are written in.')" icon="calendar" icon-color="var(--plum)" icon-background="var(--plum-tint)">
+      <x-row :title="__('Date format')" :description="__('The order the parts of a date are written in.')" icon="calendar" icon-class="bg-plum-tint text-plum">
         <x-slot:end>
           <x-form
             method="put"
@@ -105,7 +105,7 @@
         </x-slot:end>
       </x-row>
 
-      <x-row :title="__('Number format')" :description="__('The separators between the thousands and before the decimals.')" icon="tasks" icon-color="var(--marigold-deep)" icon-background="var(--marigold-tint)">
+      <x-row :title="__('Number format')" :description="__('The separators between the thousands and before the decimals.')" icon="tasks" icon-class="bg-marigold-tint text-marigold-deep">
         <x-slot:end>
           <x-form
             method="put"

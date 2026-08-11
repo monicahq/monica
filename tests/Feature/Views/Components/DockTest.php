@@ -44,7 +44,7 @@ class DockTest extends TestCase
 
         $rendered = $this->blade('<x-dock :user="$user" :vault="$vault" />', ['user' => $user, 'vault' => $vault]);
 
-        $this->assertSame(2, substr_count($rendered->__toString(), 'erica-dock__item--unbuilt'));
+        $this->assertSame(2, substr_count($rendered->__toString(), 'max-[720px]:flex-1 text-placeholder'));
     }
 
     #[Test]
@@ -112,10 +112,10 @@ class DockTest extends TestCase
 
         $rendered = $this->blade('<x-dock :user="$user" />', ['user' => $user]);
 
-        $rendered->assertSee('erica-dock__brand', escape: false);
+        $rendered->assertSee('bg-action-strong', escape: false);
         $rendered->assertSee(config('app.name'), escape: false);
-        $rendered->assertDontSee('erica-dock__item', escape: false);
-        $rendered->assertDontSee('erica-dock__rule', escape: false);
+        $rendered->assertDontSee('aria-current="page"', escape: false);
+        $rendered->assertDontSee('h-8 w-px bg-hairline', escape: false);
     }
 
     #[Test]
@@ -129,7 +129,7 @@ class DockTest extends TestCase
         $rendered->assertSee('keydown.window.meta.k.prevent', escape: false);
         $rendered->assertSee('keydown.window.ctrl.k.prevent', escape: false);
         $rendered->assertSee('keydown.escape.window', escape: false);
-        $rendered->assertSee('erica-launcher__scrim', escape: false);
+        $rendered->assertSee('fixed inset-0 z-49 bg-scrim', escape: false);
         $rendered->assertSee('aria-haspopup="menu"', escape: false);
     }
 

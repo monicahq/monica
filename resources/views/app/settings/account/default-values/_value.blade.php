@@ -49,20 +49,20 @@
     @drop.prevent="drop($event, {{ $value['id'] }})"
     @dragend="stop()"
     :class="draggingId === {{ $value['id'] }} && 'opacity-40'"
-    class="erica-row border-b-0 py-2 pl-2 transition-colors hover:bg-hover"
+    class="flex w-full items-center gap-3 py-2 pr-4 pl-2 text-left transition-colors duration-(--duration-fast) ease-out hover:bg-hover"
   >
     <span title="{{ __('Drag to reorder') }}" class="flex shrink-0 cursor-grab p-1 text-placeholder" aria-hidden="true">
       <x-icon name="menu" :size="15" :stroke-width="1.5" />
     </span>
 
     <div x-show="! editing" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2.5 gap-y-1">
-      <p @class(['truncate', 'erica-row__title' => $value['isActive'], 'text-sm text-muted line-through' => ! $value['isActive']])>{{ $value['label'] }}</p>
+      <p @class(['truncate', 'text-base font-semibold text-ink' => $value['isActive'], 'text-sm text-muted line-through' => ! $value['isActive']])>{{ $value['label'] }}</p>
 
       @unless ($value['isActive'])
         <x-badge>{{ __('no longer offered') }}</x-badge>
       @endunless
 
-      <span class="erica-caption ml-auto">{{ $value['usageLabel'] }}</span>
+      <span class="ml-auto text-xs text-pretty text-muted">{{ $value['usageLabel'] }}</span>
 
       <div class="flex shrink-0 items-center gap-0.5">
         <x-button.ghost

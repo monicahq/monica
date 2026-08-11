@@ -36,9 +36,9 @@
 
   <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
     <div class="flex min-w-0 flex-col gap-2">
-      <h1 class="erica-page-title">{{ $viewModel->title() }}</h1>
+      <h1 class="font-display text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
-      <p class="erica-lede max-w-[64ch]">{{ $viewModel->description() }}</p>
+      <p class="max-w-[64ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
     </div>
 
     <x-button :href="$viewModel->newContactUrl()" data-turbo="true" size="small">
@@ -67,19 +67,19 @@
       <form method="get" action="{{ $viewModel->searchUrl() }}" x-target="contacts" class="flex flex-wrap items-center gap-2 sm:ml-auto">
         <input type="hidden" name="query" value="{{ $viewModel->query() }}" />
 
-        <label for="sort" class="erica-caption">{{ __('Sorted by') }}</label>
+        <label for="sort" class="text-xs text-pretty text-muted">{{ __('Sorted by') }}</label>
 
-        <select id="sort" name="sort" class="erica-control erica-control--sm erica-control--select w-38">
+        <x-select id="sort" size="small" class="w-38">
           @foreach ($viewModel->sorts() as $sort)
             <option value="{{ $sort['value'] }}" @selected($sort['isCurrent'])>{{ $sort['label'] }}</option>
           @endforeach
-        </select>
+        </x-select>
 
-        <select id="direction" name="direction" aria-label="{{ __('Which way round the order runs') }}" class="erica-control erica-control--sm erica-control--select w-36">
+        <x-select id="direction" size="small" :aria-label="__('Which way round the order runs')" class="w-36">
           @foreach ($viewModel->directions() as $direction)
             <option value="{{ $direction['value'] }}" @selected($direction['isCurrent'])>{{ $direction['label'] }}</option>
           @endforeach
-        </select>
+        </x-select>
 
         <x-button.secondary size="small">{{ __('Order the list') }}</x-button.secondary>
       </form>
@@ -103,12 +103,12 @@
         <x-button.secondary size="small">{{ __('Search') }}</x-button.secondary>
       </form>
 
-      <p class="erica-small sm:ml-auto">{{ $viewModel->resultLine() }}</p>
+      <p class="sm:ml-auto text-sm text-pretty text-muted">{{ $viewModel->resultLine() }}</p>
     </div>
 
     <x-panel :flush="true">
       @if ($viewModel->vaultIsEmpty())
-        <x-empty-state :title="__('Nobody here yet')" hue="var(--indigo)" tint="var(--indigo-tint)">
+        <x-empty-state :title="__('Nobody here yet')" icon-class="bg-indigo-tint text-indigo">
           <x-slot:icon>
             <x-icon name="people" :size="30" :stroke-width="1.4" />
           </x-slot:icon>
@@ -126,10 +126,10 @@
           </x-slot:action>
         </x-empty-state>
       @elseif ($viewModel->noResults())
-        <div class="erica-empty">
-          <p class="erica-empty__title">{{ __('Nothing matches') }}</p>
+        <div class="flex min-h-60 flex-col items-center justify-center gap-3.5 px-8 py-12 text-center">
+          <p class="font-display text-section-title text-ink">{{ __('Nothing matches') }}</p>
 
-          <p class="erica-empty__text">{{ __('Try a shorter search, or another chip above.') }}</p>
+          <p class="max-w-[44ch] text-base text-pretty text-muted">{{ __('Try a shorter search, or another chip above.') }}</p>
         </div>
       @else
         <div id="contact-rows" x-merge="append">
@@ -140,7 +140,7 @@
           @if ($viewModel->hasMorePages())
             <x-link x-target="contact-rows pagination" :href="$viewModel->nextPageUrl()">{{ __('Load more') }}</x-link>
           @else
-            <span class="erica-caption">{{ $viewModel->endLine() }}</span>
+            <span class="text-xs text-pretty text-muted">{{ $viewModel->endLine() }}</span>
           @endif
 
           <x-button.secondary :href="$viewModel->newContactUrl()" data-turbo="true" size="small" class="ml-auto">

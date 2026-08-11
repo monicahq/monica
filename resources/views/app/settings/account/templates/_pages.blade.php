@@ -28,10 +28,20 @@
   $pages = $viewModel->pages();
   $selected = $viewModel->selectedPage();
   $newPageErrors = $errors->getBag('newPage');
+
+  /*
+   * A rule runs the whole width and the tab you are on thickens its own piece of
+   * it. No enclosing pill, no card-style active state, nothing that looks like a
+   * button.
+   */
+  $tab = '-mb-px flex flex-none cursor-pointer items-center gap-2 border-b-2 border-transparent px-2.5 pt-2 pb-2.5 '
+    .'text-sm text-muted no-underline transition-[color,border-color] duration-(--duration-fast) ease-out '
+    .'hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring '
+    .'aria-[selected=true]:border-b-ink aria-[selected=true]:font-semibold aria-[selected=true]:text-ink';
 @endphp
 @if ($pages !== [])
   <div x-data="sortableRows" data-sortable>
-    <div role="tablist" class="erica-tabs">
+    <div role="tablist" class="flex flex-wrap items-end gap-1 border-b border-hairline">
       @foreach ($pages as $page)
         <a
           data-row-id="{{ $page['id'] }}"
@@ -47,12 +57,15 @@
             @dragend="stop()"
             :class="draggingId === {{ $page['id'] }} && 'opacity-40'"
           @endif
-          class="erica-tab"
+          class="{{ $tab }}"
         >
           {{ $page['label'] }}
 
           <span
-            class="erica-tab__count"
+            @class([
+              'flex h-5 min-w-5 items-center justify-center rounded-full border px-1.5 text-[11.5px] font-medium',
+              $page['isSelected'] ? 'border-hairline-strong text-body' : 'border-hairline text-muted',
+            ])
             title="{{ $page['fieldCount'] === 1 ? __('1 field on this page') : __(':count fields on this page', ['count' => $page['fieldCount']]) }}"
           >{{ $page['fieldCount'] }}</span>
         </a>
@@ -68,7 +81,7 @@
           x-target="builder"
         >
           <x-slot:trigger>
-            <button type="button" @click="open = true" class="erica-tab">
+            <button type="button" @click="open = true" class="{{ $tab }}">
               <x-icon name="plus" :size="14" :stroke-width="1.6" />
               {{ __('Add a page') }}
             </button>
@@ -92,7 +105,7 @@
     @if ($isEditable && $selected !== null)
       <div x-data="{ renaming: false, reordering: false }" class="flex flex-col gap-3 pt-2.5">
         <div class="flex flex-wrap items-center gap-x-1 gap-y-1">
-          <span class="erica-caption mr-1">{{ __('This page') }}</span>
+          <span class="mr-1 text-xs text-pretty text-muted">{{ __('This page') }}</span>
 
           <x-button.ghost size="small" type="button" @click="renaming = ! renaming; reordering = false">{{ __('Rename') }}</x-button.ghost>
 
@@ -117,7 +130,10 @@
               whichever tab is open. A page holding sections, and the last page
               of a version, both stay.
             --}}
-            <span aria-disabled="true" class="erica-btn erica-btn--ghost erica-btn--sm text-placeholder">{{ __('Remove') }}</span>
+            <span
+              aria-disabled="true"
+              class="inline-flex h-8.5 cursor-default items-center rounded-md px-3.25 font-sans text-[13.5px] font-semibold text-placeholder opacity-50"
+            >{{ __('Remove') }}</span>
           @endif
         </div>
 

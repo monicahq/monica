@@ -3,9 +3,9 @@
 
   @var array{text: string, author: string, source: string} $quote
 --}}
-<aside class="quote-panel hidden items-center justify-center border-l border-hairline p-15 lg:flex">
+<aside class="hidden items-center justify-center border-l border-hairline bg-[linear-gradient(155deg,var(--quote-bands))] p-15 lg:flex">
   <div class="w-full max-w-lg">
-    <figure class="quote-card space-y-5 rounded-2xl border border-hairline bg-canvas px-6 pt-6 pb-6">
+    <figure class="space-y-5 rounded-2xl border border-hairline bg-canvas px-6 pt-6 pb-6 shadow-quote">
       <blockquote class="text-xl leading-snug tracking-tight text-pretty text-ink">
         &ldquo;{{ $quote['text'] }}&rdquo;
       </blockquote>

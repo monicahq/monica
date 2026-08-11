@@ -16,7 +16,7 @@ class RowTest extends TestCase
 
         $rendered->assertSee('<a', escape: false);
         $rendered->assertSee('href="/settings/account/templates"', escape: false);
-        $rendered->assertSee('erica-row--interactive', escape: false);
+        $rendered->assertSee('cursor-pointer hover:bg-sand', escape: false);
     }
 
     #[Test]
@@ -26,26 +26,25 @@ class RowTest extends TestCase
 
         $rendered->assertSee('Notifications', escape: false);
         $rendered->assertDontSee('<a', escape: false);
-        $rendered->assertDontSee('erica-row--interactive', escape: false);
+        $rendered->assertDontSee('cursor-pointer hover:bg-sand', escape: false);
     }
 
     #[Test]
     public function it_draws_its_mark_in_the_colour_of_what_it_holds(): void
     {
-        $rendered = $this->blade('<x-row title="Profile" icon="profile" icon-color="var(--terracotta)" icon-background="var(--terracotta-tint)" />');
+        $rendered = $this->blade('<x-row title="Profile" icon="profile" icon-class="bg-terracotta-tint text-terracotta" />');
 
-        $rendered->assertSee('erica-row__mark', escape: false);
-        $rendered->assertSee('background: var(--terracotta-tint); color: var(--terracotta)', escape: false);
+        $rendered->assertSee('<span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-terracotta-tint text-terracotta">', escape: false);
     }
 
     #[Test]
     public function it_draws_no_box_at_the_end_when_there_is_nothing_to_put_in_it(): void
     {
         $this->blade('<x-row title="Notifications" />')
-            ->assertDontSee('erica-row__end', escape: false);
+            ->assertDontSee('ml-auto flex shrink-0 items-center', escape: false);
 
         $this->blade('<x-row title="Security and access" meta="Two-factor on" />')
-            ->assertSee('erica-row__end', escape: false)
-            ->assertSee('<b>Two-factor on</b>', escape: false);
+            ->assertSee('ml-auto flex shrink-0 items-center', escape: false)
+            ->assertSee('>Two-factor on</b>', escape: false);
     }
 }

@@ -51,7 +51,7 @@
   {{ $trigger }}
 
   <div x-cloak x-show="open" class="fixed inset-0 z-70 flex items-end justify-center p-4 sm:items-center">
-    <div x-show="open" x-transition.opacity.duration.170ms @click="open = false" class="erica-scrim absolute inset-0" aria-hidden="true"></div>
+    <div x-show="open" x-transition.opacity.duration.170ms @click="open = false" class="absolute inset-0 bg-scrim" aria-hidden="true"></div>
 
     <div
       x-show="open"
@@ -66,13 +66,13 @@
       class="relative w-full max-w-md overflow-hidden rounded-lg border border-hairline-strong bg-canvas shadow-pop"
     >
       <div class="flex gap-3.5 p-5">
-        <span class="flex size-9 shrink-0 items-center justify-center rounded-sm" style="background: var(--danger-tint); color: var(--danger)" aria-hidden="true">
+        <span class="flex size-9 shrink-0 items-center justify-center rounded-sm bg-error-tint text-error" aria-hidden="true">
           <x-icon name="info" :size="19" :stroke-width="1.6" />
         </span>
 
         <div class="flex min-w-0 flex-col gap-1.5">
           @if ($title)
-            <p class="erica-panel__title">{{ $title }}</p>
+            <p class="text-card-title text-ink">{{ $title }}</p>
           @endif
 
           <div class="flex flex-col gap-2 text-sm leading-relaxed text-body">{{ $slot }}</div>

@@ -21,13 +21,20 @@
 
   Signing out is a form rather than a link, because it changes something.
 
-  @var array<int, array{title: string, tiles: array<int, array{label: string, icon: string, hue: string, tint: string, note: string|null, url: string|null, method: string|null}>}> $sections
+  @var array<int, array{title: string, tiles: array<int, array{label: string, icon: string, iconClass: string, note: string|null, url: string|null, method: string|null}>}> $sections
 --}}
 @props([
   'sections' => [],
 ])
 
-<div x-cloak x-show="open" class="erica-launcher__layer">
+{{--
+  The panel is centred by a layer of its own rather than by a translate on itself,
+  so the transform is free for the transition that brings it in.
+
+  Each run of tiles draws a rule above itself except the first, which already has
+  one: the bottom edge of the search sitting over it.
+--}}
+<div x-cloak x-show="open" class="pointer-events-none fixed inset-x-0 bottom-[102px] z-51 flex justify-center px-3">
   <div
     x-show="open"
     x-trap.noscroll.inert="open"
@@ -38,25 +45,26 @@
     role="dialog"
     aria-modal="true"
     aria-label="{{ __('Menu') }}"
-    class="erica-launcher"
+    class="pointer-events-auto max-h-[calc(100dvh-160px)] w-[min(680px,100%)] overflow-y-auto rounded-xl border border-hairline-strong bg-canvas shadow-pop"
   >
-    <div class="erica-launcher__search">
-      <x-icon name="search" :size="19" :stroke-width="1.6" style="color: var(--muted)" />
+    <div class="flex items-center gap-2.5 border-b border-hairline bg-sand px-4.5 py-3.5">
+      <x-icon name="search" :size="19" :stroke-width="1.6" class="text-muted" />
 
       <input
         type="search"
         placeholder="{{ __('Search people, notes, anything…') }}"
         aria-label="{{ __('Search people, notes, anything…') }}"
+        class="min-w-0 flex-1 border-0 bg-transparent font-sans text-[16px] text-ink outline-none placeholder:text-placeholder"
       />
 
-      <span class="erica-launcher__kbd" aria-hidden="true">esc</span>
+      <span class="rounded-xs border border-hairline-strong bg-canvas px-1.5 py-0.5 font-mono text-code text-muted" aria-hidden="true">esc</span>
     </div>
 
     @foreach ($sections as $section)
-      <div class="erica-launcher__section">
-        <p class="erica-launcher__title">{{ $section['title'] }}</p>
+      <div @class(['px-4.5 py-3.5', 'border-t border-hairline' => ! $loop->first])>
+        <p class="mb-2.5 uppercase text-xs tracking-caption text-muted">{{ $section['title'] }}</p>
 
-        <div class="erica-launcher__grid">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(148px,1fr))] gap-1.5">
           @foreach ($section['tiles'] as $tile)
             <x-launcher.tile :tile="$tile" />
           @endforeach
@@ -64,8 +72,8 @@
       </div>
     @endforeach
 
-    <div class="erica-launcher__section">
-      <p class="m-0" style="font: var(--text-caption); color: var(--muted)">
+    <div class="border-t border-hairline px-4.5 py-3.5">
+      <p class="text-xs text-muted">
         {{ __('⌘K opens this from anywhere. Esc leaves it.') }}
       </p>
     </div>

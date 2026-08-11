@@ -37,7 +37,7 @@ class AvatarInitialsTest extends TestCase
     {
         $tints = collect(['Pam Beesly', 'Jim Halpert', 'Dwight Schrute', 'Michael Scott', 'Angela Martin', 'Kevin Malone', 'Oscar Martinez'])
             ->map(fn (string $name): string => preg_match(
-                '/background: (var\(--[a-z]+-tint\))/',
+                '/(bg-[a-z]+-tint)/',
                 $this->blade('<x-avatar-initials :name="$name" />', ['name' => $name])->__toString(),
                 $matches,
             ) === 1 ? $matches[1] : '');

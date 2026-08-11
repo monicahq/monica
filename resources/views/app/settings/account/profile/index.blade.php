@@ -10,10 +10,10 @@
 --}}
 <x-shell :title="__('Profile')">
   <x-slot:bar>
-    <a href="{{ route('settings.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+    <x-button.secondary :href="route('settings.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to settings') }}
-    </a>
+    </x-button.secondary>
   </x-slot:bar>
 
   <x-slot:dock>
@@ -21,16 +21,16 @@
   </x-slot:dock>
 
   <header class="flex flex-col gap-2">
-    <h1 class="erica-page-title">{{ __('Profile') }}</h1>
+    <h1 class="font-display text-page-title text-ink">{{ __('Profile') }}</h1>
 
-    <p class="erica-lede max-w-[56ch]">{{ __('Your name, the address you sign in with, and the photograph on your avatar.') }}</p>
+    <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Your name, the address you sign in with, and the photograph on your avatar.') }}</p>
   </header>
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="erica-section-title shrink-0">{{ __('Avatar') }}</h2>
+      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Avatar') }}</h2>
 
-      <p class="erica-small">{{ __('Shown next to your name everywhere in the application.') }}</p>
+      <p class="text-sm text-pretty text-muted">{{ __('Shown next to your name everywhere in the application.') }}</p>
     </div>
 
     {{--
@@ -52,7 +52,7 @@
         <x-avatar id="profile-avatar" :user="$viewModel->user()" :size="72" />
 
         <div class="flex min-w-0 flex-1 flex-col gap-3">
-          <p class="erica-small">{{ __('A square image reads best. JPEG, PNG or WebP, up to 5 MB. Without a photo you keep your initials on a warm tint.') }}</p>
+          <p class="text-sm text-pretty text-muted">{{ __('A square image reads best. JPEG, PNG or WebP, up to 5 MB. Without a photo you keep your initials on a warm tint.') }}</p>
 
           <x-form
             method="post"
@@ -80,7 +80,7 @@
             <x-button size="small">{{ __('Upload') }}</x-button>
           </x-form>
 
-          <p x-show="tooBig" x-cloak x-text="tooBigMessage" class="erica-field__error"></p>
+          <p x-show="tooBig" x-cloak x-text="tooBigMessage" class="text-xs text-error"></p>
 
           @if ($viewModel->hasPhoto())
             {{-- Two steps rather than one, so a photo is never removed by a slip. --}}
@@ -104,9 +104,9 @@
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="erica-section-title shrink-0">{{ __('Details') }}</h2>
+      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Details') }}</h2>
 
-      <p class="erica-small">{{ __('Your name appears everywhere the application refers to you; your address is what you sign in with.') }}</p>
+      <p class="text-sm text-pretty text-muted">{{ __('Your name appears everywhere the application refers to you; your address is what you sign in with.') }}</p>
     </div>
 
     <x-form
@@ -150,7 +150,7 @@
 
         <x-slot:footer>
           <div class="flex items-center gap-4">
-            <span id="last-saved" class="erica-caption">
+            <span id="last-saved" class="text-xs text-pretty text-muted">
               @if ($viewModel->lastSavedAt())
                 {{ __('Last saved :time', ['time' => $viewModel->lastSavedAt()]) }}
               @endif
@@ -172,12 +172,12 @@
   --}}
   <section id="delete-your-account" class="flex scroll-mt-20 flex-col gap-3">
     <div class="px-0.5">
-      <h2 class="erica-section-title">{{ __('Delete your account') }}</h2>
+      <h2 class="font-display text-section-title text-ink">{{ __('Delete your account') }}</h2>
     </div>
 
     <x-panel>
       <div class="flex flex-wrap items-center gap-6" x-data="{ confirming: @js($errors->has('confirm_email')) }">
-        <p class="erica-small max-w-[46ch] flex-1">
+        <p class="max-w-[46ch] flex-1 text-sm text-pretty text-muted">
           {{ __('Everything you have put in :app goes with it: every vault, every person in them, every note and every photograph. We keep no copy, so there is nobody to ask afterwards.', ['app' => config('app.name')]) }}
         </p>
 
@@ -198,7 +198,7 @@
           x-show="confirming"
           class="flex w-full flex-col gap-3.5"
         >
-          <p class="erica-field__error">{{ __('This deletes your account for good. Type :email below to confirm.', ['email' => $viewModel->details()['email']]) }}</p>
+          <p class="text-xs text-error">{{ __('This deletes your account for good. Type :email below to confirm.', ['email' => $viewModel->details()['email']]) }}</p>
 
           <x-input
             type="email"

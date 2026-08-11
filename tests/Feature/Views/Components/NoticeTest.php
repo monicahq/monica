@@ -13,24 +13,24 @@ class NoticeTest extends TestCase
     public function it_is_quiet_unless_it_is_given_a_tone(): void
     {
         $this->blade('<x-notice>Nothing to point a key at yet.</x-notice>')
-            ->assertSee('erica-notice erica-notice--quiet', escape: false)
+            ->assertSee('bg-sand border-hairline', escape: false)
             ->assertSee('Nothing to point a key at yet.', escape: false);
     }
 
     #[Test]
     public function each_tone_carries_a_glyph_as_well_as_a_tint(): void
     {
-        $glyphs = [
-            'info' => 'var(--indigo-deep)',
-            'success' => 'var(--forest-deep)',
-            'warning' => 'var(--marigold-deep)',
-            'danger' => 'var(--danger)',
+        $tones = [
+            'info' => ['bg-indigo-tint', 'text-indigo-deep'],
+            'success' => ['bg-forest-tint', 'text-forest-deep'],
+            'warning' => ['bg-marigold-tint', 'text-marigold-deep'],
+            'danger' => ['bg-error-tint', 'text-error'],
         ];
 
-        foreach ($glyphs as $tone => $hue) {
+        foreach ($tones as $tone => [$tint, $hue]) {
             $this->blade('<x-notice :tone="$tone">Something happened.</x-notice>', ['tone' => $tone])
-                ->assertSee('erica-notice--'.$tone, escape: false)
-                ->assertSee('color: '.$hue, escape: false)
+                ->assertSee($tint, escape: false)
+                ->assertSee($hue, escape: false)
                 ->assertSee('<svg', escape: false);
         }
     }
@@ -40,7 +40,7 @@ class NoticeTest extends TestCase
     {
         $rendered = $this->blade('<x-notice tone="warning" title="Every code is used">Ask for new ones.</x-notice>');
 
-        $rendered->assertSee('<p class="erica-notice__title">Every code is used</p>', escape: false);
+        $rendered->assertSee('<p class="text-base font-semibold text-ink">Every code is used</p>', escape: false);
         $rendered->assertSee('Ask for new ones.', escape: false);
     }
 

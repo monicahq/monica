@@ -11,10 +11,10 @@
 --}}
 <x-shell :title="__('Security and access')">
   <x-slot:bar>
-    <a href="{{ route('settings.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+    <x-button.secondary :href="route('settings.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to settings') }}
-    </a>
+    </x-button.secondary>
   </x-slot:bar>
 
   <x-slot:dock>
@@ -22,16 +22,16 @@
   </x-slot:dock>
 
   <header class="flex flex-col gap-2">
-    <h1 class="erica-page-title">{{ __('Security and access') }}</h1>
+    <h1 class="font-display text-page-title text-ink">{{ __('Security and access') }}</h1>
 
-    <p class="erica-lede max-w-[56ch]">{{ __('How you sign in to your account, and what else may act as you.') }}</p>
+    <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('How you sign in to your account, and what else may act as you.') }}</p>
   </header>
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="erica-section-title shrink-0">{{ __('Password') }}</h2>
+      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Password') }}</h2>
 
-      <p class="erica-small">{{ __('Choose one you use nowhere else. Long beats complicated.') }}</p>
+      <p class="text-sm text-pretty text-muted">{{ __('Choose one you use nowhere else. Long beats complicated.') }}</p>
     </div>
 
     @include('app.settings.account.security._change-password', ['viewModel' => $viewModel])
@@ -39,9 +39,9 @@
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="erica-section-title shrink-0">{{ __('Two factor authentication') }}</h2>
+      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Two factor authentication') }}</h2>
 
-      <p class="erica-small">{{ __('A password can be guessed, reused or stolen. A code that changes every thirty seconds, on a phone in your pocket, cannot be any of those from a distance.') }}</p>
+      <p class="text-sm text-pretty text-muted">{{ __('A password can be guessed, reused or stolen. A code that changes every thirty seconds, on a phone in your pocket, cannot be any of those from a distance.') }}</p>
     </div>
 
     <x-panel :flush="true">
@@ -55,9 +55,9 @@
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="erica-section-title shrink-0">{{ __('API keys') }}</h2>
+      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('API keys') }}</h2>
 
-      <p class="erica-small">{{ __('A key is a password for machines. It lets a script or another system act as you, with exactly the access you have.') }}</p>
+      <p class="text-sm text-pretty text-muted">{{ __('A key is a password for machines. It lets a script or another system act as you, with exactly the access you have.') }}</p>
     </div>
 
     <x-notice>{{ __('There is nothing to point a key at yet. The API that accepts them is still being built, and a key you make now works the moment it lands.') }}</x-notice>

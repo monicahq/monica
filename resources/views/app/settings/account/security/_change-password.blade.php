@@ -20,7 +20,7 @@
   >
     <x-panel>
       <div class="flex flex-col gap-4.5">
-        <p class="erica-small">{{ __('You stay signed in here, and your new password is what you type the next time.') }}</p>
+        <p class="text-sm text-pretty text-muted">{{ __('You stay signed in here, and your new password is what you type the next time.') }}</p>
 
         <x-input
           type="password"
@@ -60,7 +60,7 @@
 
       <x-slot:footer>
         <div class="flex items-center gap-4">
-          <span class="erica-caption">
+          <span class="text-xs text-pretty text-muted">
             @if ($viewModel->passwordChangedAt())
               {{ __('Last changed :time', ['time' => $viewModel->passwordChangedAt()]) }}
             @endif

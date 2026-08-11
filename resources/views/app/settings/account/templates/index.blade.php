@@ -13,10 +13,10 @@
 --}}
 <x-shell :title="__('Templates')">
   <x-slot:bar>
-    <a href="{{ route('settings.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+    <x-button.secondary :href="route('settings.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to settings') }}
-    </a>
+    </x-button.secondary>
   </x-slot:bar>
 
   <x-slot:dock>
@@ -25,9 +25,9 @@
 
   <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
     <div class="flex min-w-0 flex-col gap-2">
-      <h1 class="erica-page-title">{{ __('Templates') }}</h1>
+      <h1 class="font-display text-page-title text-ink">{{ __('Templates') }}</h1>
 
-      <p class="erica-lede max-w-[56ch]">{{ __('A template decides what a record looks like: which sections it carries, and which fields sit in them. Records keep the version they were made with until you move them.') }}</p>
+      <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('A template decides what a record looks like: which sections it carries, and which fields sit in them. Records keep the version they were made with until you move them.') }}</p>
     </div>
 
     <x-button :href="route('settings.templates.new')" data-turbo="true" class="max-sm:w-full">
@@ -61,21 +61,21 @@
         >{{ $chip['label'] }}</x-chip>
       @endforeach
 
-      <span class="erica-caption ml-auto">{{ $viewModel->summary() }}</span>
+      <span class="ml-auto text-xs text-pretty text-muted">{{ $viewModel->summary() }}</span>
     </div>
 
     <section class="flex flex-col gap-3">
       <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-        <h2 class="erica-section-title shrink-0">{{ __('Your templates') }}</h2>
+        <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Your templates') }}</h2>
 
-        <p class="erica-small">{{ __('Yours to change, version and publish.') }}</p>
+        <p class="text-sm text-pretty text-muted">{{ __('Yours to change, version and publish.') }}</p>
       </div>
 
       <x-panel :flush="true">
         @forelse ($viewModel->ownTemplates() as $template)
           @include('app.settings.account.templates._row', ['template' => $template])
         @empty
-          <x-empty-state :title="__('Nothing here yet')" hue="var(--indigo)" tint="var(--indigo-tint)">
+          <x-empty-state :title="__('Nothing here yet')" icon-class="bg-indigo-tint text-indigo">
             <x-slot:icon>
               <x-icon name="file" :size="30" :stroke-width="1.4" />
             </x-slot:icon>
@@ -89,9 +89,9 @@
     @if ($viewModel->suppliedTemplates() !== [])
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="erica-section-title shrink-0">{{ __('Supplied with Monica') }}</h2>
+          <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Supplied with Monica') }}</h2>
 
-          <p class="erica-small">{{ __('They work out of the box. Copy one to change it.') }}</p>
+          <p class="text-sm text-pretty text-muted">{{ __('They work out of the box. Copy one to change it.') }}</p>
         </div>
 
         <x-panel :flush="true">
@@ -103,5 +103,5 @@
     @endif
   </div>
 
-  <p class="erica-caption px-0.5">{{ __('Deleting a template is refused while a record still points at one of its versions. Turn it off instead and it stops being offered to anything new.') }}</p>
+  <p class="px-0.5 text-xs text-pretty text-muted">{{ __('Deleting a template is refused while a record still points at one of its versions. Turn it off instead and it stops being offered to anything new.') }}</p>
 </x-shell>

@@ -102,21 +102,16 @@
 
       @if ($viewModel->showsTemplates())
         <x-box :title="__('What a new contact starts from')" :description="__('Every contact you add here begins with this template. You can change it afterwards, for the vault or for one contact.')">
-          <div class="max-w-105 space-y-1.5">
-            <x-label for="template_version_id" :value="__('Default template')" />
-
-            <select
-              id="template_version_id"
-              name="template_version_id"
-              class="erica-control erica-control--select"
-            >
-              @foreach ($viewModel->templates() as $template)
-                <option value="{{ $template['id'] }}" @selected($values['templateVersionId'] === (string) $template['id'])>{{ $template['name'] }}</option>
-              @endforeach
-            </select>
-
-            <x-error :messages="$errors->get('template_version_id')" />
-          </div>
+          <x-select
+            id="template_version_id"
+            :label="__('Default template')"
+            :error="$errors->get('template_version_id')"
+            class="max-w-105"
+          >
+            @foreach ($viewModel->templates() as $template)
+              <option value="{{ $template['id'] }}" @selected($values['templateVersionId'] === (string) $template['id'])>{{ $template['name'] }}</option>
+            @endforeach
+          </x-select>
         </x-box>
       @endif
 

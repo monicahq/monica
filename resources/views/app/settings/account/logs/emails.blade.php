@@ -12,10 +12,10 @@
 --}}
 <x-shell :title="__('Emails sent')">
   <x-slot:bar>
-    <a href="{{ route('settings.logs.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+    <x-button.secondary :href="route('settings.logs.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to the logs') }}
-    </a>
+    </x-button.secondary>
   </x-slot:bar>
 
   <x-slot:dock>
@@ -23,9 +23,9 @@
   </x-slot:dock>
 
   <header class="flex flex-col gap-2">
-    <h1 class="erica-page-title">{{ __('Emails sent') }}</h1>
+    <h1 class="font-display text-page-title text-ink">{{ __('Emails sent') }}</h1>
 
-    <p class="erica-lede max-w-[56ch]">{{ __('Every email we sent to your account, most recent first. Open one to read the copy that left.') }}</p>
+    <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Every email we sent to your account, most recent first. Open one to read the copy that left.') }}</p>
   </header>
 
   <x-panel :flush="true">
@@ -33,7 +33,7 @@
       @forelse ($viewModel->emailsSent() as $emailSent)
         @include('app.settings.account.logs._email-sent-row', ['emailSent' => $emailSent])
       @empty
-        <x-empty-state :title="__('Nothing has left our hands yet')" hue="var(--plum)" tint="var(--plum-tint)">
+        <x-empty-state :title="__('Nothing has left our hands yet')" icon-class="bg-plum-tint text-plum">
           <x-slot:icon>
             <x-icon name="mail" :size="30" :stroke-width="1.4" />
           </x-slot:icon>

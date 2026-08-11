@@ -49,7 +49,7 @@
       type="button"
       @click="navOpen = false"
       aria-label="{{ __('Close the menu') }}"
-      class="-mr-1 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors hover:bg-hover hover:text-ink lg:hidden"
+      class="-mr-1 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md lg:hidden text-muted transition-colors hover:bg-hover hover:text-ink"
     >
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
         <line x1="4" y1="4" x2="12" y2="12"></line>
@@ -71,7 +71,7 @@
   </a>
 
   <nav class="min-h-0 flex-1 space-y-px overflow-y-auto px-2 pt-1.5 pb-3">
-    <h2 class="px-2.5 pt-1.5 pb-1.25 text-xs text-muted-soft uppercase">{{ __('Your account') }}</h2>
+    <h2 class="px-2.5 pt-1.5 pb-1.25 uppercase text-xs text-muted-soft">{{ __('Your account') }}</h2>
 
     <a
       href="{{ route('settings.profile.index') }}"
@@ -126,7 +126,7 @@
       {{ __('Preferences') }}
     </a>
 
-    <h2 class="px-2.5 pt-4.5 pb-1.25 text-xs text-muted-soft uppercase">{{ __('Personalization') }}</h2>
+    <h2 class="px-2.5 pt-4.5 pb-1.25 uppercase text-xs text-muted-soft">{{ __('Personalization') }}</h2>
 
     <a
       href="{{ route('settings.valueLists.index') }}"

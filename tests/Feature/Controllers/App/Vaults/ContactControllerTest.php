@@ -151,12 +151,12 @@ class ContactControllerTest extends TestCase
         $this->contact($vault, 'Michael', 'Scott');
 
         $this->actingAs($user)->get(route('contacts.index', $vault))
-            ->assertSee('<h2 class="erica-group">S</h2>', escape: false);
+            ->assertSee('>S</h2>', escape: false);
 
         $this->actingAs($user)
             ->get(route('contacts.index', ['vault' => $vault, 'sort' => 'added', 'direction' => 'desc']))
             ->assertSee('Michael Scott')
-            ->assertDontSee('erica-group', escape: false);
+            ->assertDontSee('</h2>', escape: false);
     }
 
     #[Test]
@@ -172,7 +172,7 @@ class ContactControllerTest extends TestCase
             ->assertSee('Everyone')
             ->assertSee('Favourites')
             ->assertSee('Archived')
-            ->assertSee('<span class="erica-chip__count">2</span>', escape: false);
+            ->assertSee('<span class="font-mono text-[12px] opacity-70">2</span>', escape: false);
     }
 
     #[Test]
@@ -351,7 +351,7 @@ class ContactControllerTest extends TestCase
                 ->assertStatus(200)
                 ->assertSee($vault->name)
                 ->assertSee(route('vaults.show', $vault))
-                ->assertSee('erica-vaultbar__search', escape: false);
+                ->assertSee('Search people, notes, anything', escape: false);
         }
     }
 
@@ -364,7 +364,7 @@ class ContactControllerTest extends TestCase
         $this->actingAs($user)->get(route('contacts.new', $vault))
             ->assertStatus(200)
             ->assertSee('aria-current="page"', escape: false)
-            ->assertSee('erica-dock', escape: false);
+            ->assertSee('aria-label="Main"', escape: false);
     }
 
     #[Test]

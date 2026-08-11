@@ -19,16 +19,15 @@
 @endphp
 <aside class="lg:sticky lg:top-19">
   @if ($field === null)
-    <x-panel :title="__('Field')" icon="file" icon-color="var(--muted)" icon-background="var(--sand)">
-      <p class="erica-small">{{ __('Pick a field on the left to edit it. What you change applies to this draft only.') }}</p>
+    <x-panel :title="__('Field')" icon="file" icon-class="bg-sand text-muted">
+      <p class="text-sm text-pretty text-muted">{{ __('Pick a field on the left to edit it. What you change applies to this draft only.') }}</p>
     </x-panel>
   @else
     <x-panel
       :title="__('Field')"
       :subtitle="__('In :section', ['section' => $field['sectionName']])"
       icon="file"
-      icon-color="var(--indigo)"
-      icon-background="var(--indigo-tint)"
+      icon-class="bg-indigo-tint text-indigo"
     >
       <div class="flex flex-col gap-5">
         <x-form
@@ -49,12 +48,12 @@
             :disabled="! $viewModel->isEditable()"
           />
 
-          <div class="erica-field">
-            <p class="erica-field__label">{{ __('Type') }}</p>
+          <div class="flex flex-col gap-1.5">
+            <p class="flex items-baseline gap-1.5 text-label text-ink">{{ __('Type') }}</p>
 
             <p class="rounded-md border border-hairline bg-sunken px-3 py-2 text-sm text-ink">{{ $field['typeLabel'] }}</p>
 
-            <p class="erica-field__help">{{ __('Settled when the field was added. To change it, remove the field and add the one you wanted.') }}</p>
+            <p class="text-xs text-muted">{{ __('Settled when the field was added. To change it, remove the field and add the one you wanted.') }}</p>
           </div>
 
           <x-input
@@ -108,9 +107,9 @@
 
         @if ($viewModel->isEditable())
           <div class="flex flex-col items-start gap-2.5 border-t border-hairline pt-4">
-            <p class="erica-caption uppercase" style="letter-spacing: var(--tracking-caption)">{{ __('In use') }}</p>
+            <p class="uppercase text-xs text-pretty tracking-caption text-muted">{{ __('In use') }}</p>
 
-            <p class="erica-small">{{ $viewModel->usageNote() }}</p>
+            <p class="text-sm text-pretty text-muted">{{ $viewModel->usageNote() }}</p>
 
             <x-modal.warning
               :title="__('Delete “:label”?', ['label' => $field['label']])"

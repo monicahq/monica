@@ -86,8 +86,8 @@ class LogControllerTest extends TestCase
         $response->assertSee('Nothing has left our hands yet', escape: false);
         $response->assertSee('along with whether they arrived', escape: false);
 
-        $response->assertSee('background: var(--forest-tint); color: var(--forest)', escape: false);
-        $response->assertSee('background: var(--plum-tint); color: var(--plum)', escape: false);
+        $response->assertSee('bg-forest-tint text-forest', escape: false);
+        $response->assertSee('bg-plum-tint text-plum', escape: false);
     }
 
     #[Test]
@@ -182,7 +182,7 @@ class LogControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('creed.bratton@dundermifflin.com', escape: false);
         $response->assertSee('Confirm your email address', escape: false);
-        $response->assertSee('erica-badge', escape: false);
+        $response->assertSee('rounded-xs', escape: false);
         $response->assertSee('Browse all emails', escape: false);
         $response->assertSee(route('settings.emailsSent.index'), escape: false);
     }

@@ -14,33 +14,33 @@
 
   @var \App\Models\Log $log
 --}}
-<div class="erica-row erica-row--top">
-  <span class="erica-row__mark" style="background: var(--forest-tint); color: var(--forest)">
+<div class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0">
+  <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-forest-tint text-forest">
     <x-icon name="timeline" :size="18" :stroke-width="1.5" />
   </span>
 
-  <div class="erica-row__main">
+  <div class="min-w-0 flex-1">
     <p class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-      <span class="erica-row__title">{{ $log->author }}</span>
+      <span class="text-base font-semibold text-ink">{{ $log->author }}</span>
 
       <code class="font-mono text-[12.5px] wrap-anywhere text-muted">{{ $log->action }}</code>
     </p>
 
-    <p class="erica-row__desc">{{ $log->description }}</p>
+    <p class="mt-px text-sm text-pretty text-muted">{{ $log->description }}</p>
 
     <p class="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
       <time
         datetime="{{ $log->created_at->toIso8601String() }}"
         title="{{ $log->created_at->toDayDateTimeString() }}"
-        class="erica-caption"
+        class="text-xs text-pretty text-muted"
       >{{ $log->created_at->diffForHumans() }}</time>
 
-      <span class="erica-caption" aria-hidden="true">·</span>
+      <span class="text-xs text-pretty text-muted" aria-hidden="true">·</span>
 
       @if ($log->ip_address)
         <span class="font-mono text-[12.5px] whitespace-nowrap text-muted">{{ $log->ip_address }}</span>
       @else
-        <span class="erica-caption">{{ __('No address, so this was the application itself') }}</span>
+        <span class="text-xs text-pretty text-muted">{{ __('No address, so this was the application itself') }}</span>
       @endif
     </p>
   </div>

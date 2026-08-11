@@ -31,20 +31,20 @@
 >
   @if (session('apiKey'))
     <div class="flex flex-col gap-2 border-b border-hairline bg-sunken px-4 py-3.5">
-      <p class="erica-row__title">{{ __('Your new API key') }}</p>
+      <p class="text-base font-semibold text-ink">{{ __('Your new API key') }}</p>
 
-      <p class="erica-small">{{ __('This is the only time we can show it to you. Copy it somewhere safe before you leave this screen.') }}</p>
+      <p class="text-sm text-pretty text-muted">{{ __('This is the only time we can show it to you. Copy it somewhere safe before you leave this screen.') }}</p>
 
       <p class="rounded-md border border-hairline bg-canvas px-3 py-2 font-mono text-sm break-all text-ink select-all">{{ session('apiKey') }}</p>
     </div>
   @endif
 
-  <div class="erica-row">
-    <div class="erica-row__main">
-      <p class="erica-row__title">{{ $viewModel->apiKeysHeader() }}</p>
+  <div class="flex w-full items-center gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0">
+    <div class="min-w-0 flex-1">
+      <p class="text-base font-semibold text-ink">{{ $viewModel->apiKeysHeader() }}</p>
     </div>
 
-    <div class="erica-row__end">
+    <div class="ml-auto flex shrink-0 items-center gap-2.5">
       <x-button.secondary
         size="small"
         type="button"
@@ -82,15 +82,14 @@
         ? __('Created :created · last used :used', ['created' => $apiKey['createdAt'], 'used' => $apiKey['lastUsedAt']])
         : __('Created :created · never used', ['created' => $apiKey['createdAt']])"
       icon="key"
-      icon-color="var(--indigo)"
-      icon-background="var(--indigo-tint)"
+      icon-class="bg-indigo-tint text-indigo"
     >
       <x-slot:end>
         <div x-data="{ confirming: false }">
           <x-button.secondary size="small" type="button" x-show="! confirming" @click="confirming = true">{{ __('Revoke') }}</x-button.secondary>
 
           <div x-cloak x-show="confirming" class="flex flex-wrap items-center justify-end gap-2.5">
-            <p class="erica-field__error">{{ __('Anything still using it stops working. Sure?') }}</p>
+            <p class="text-xs text-error">{{ __('Anything still using it stops working. Sure?') }}</p>
 
             <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep it') }}</x-button.secondary>
 
@@ -102,7 +101,7 @@
       </x-slot:end>
     </x-row>
   @empty
-    <x-empty-state :title="__('No keys yet')" hue="var(--indigo)" tint="var(--indigo-tint)">
+    <x-empty-state :title="__('No keys yet')" icon-class="bg-indigo-tint text-indigo">
       <x-slot:icon>
         <x-icon name="key" :size="30" :stroke-width="1.4" />
       </x-slot:icon>

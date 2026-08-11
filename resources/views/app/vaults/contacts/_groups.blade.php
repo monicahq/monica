@@ -13,7 +13,11 @@
 --}}
 @foreach ($viewModel->groups() as $group)
   @if ($group['letter'] !== null)
-    <h2 class="erica-group">{{ $group['letter'] }}</h2>
+    {{--
+      The letter sits on the inset shade rather than on the canvas the rows use, so
+      it reads as a divider between two runs and not as a row with one word in it.
+    --}}
+    <h2 class="flex items-center gap-2.5 border-b border-hairline bg-sand px-4.5 py-2.25 uppercase text-xs tracking-caption text-muted">{{ $group['letter'] }}</h2>
   @endif
 
   @foreach ($group['people'] as $person)
@@ -23,7 +27,7 @@
       </x-slot:leading>
 
       <p class="flex flex-wrap items-center gap-x-2 gap-y-1">
-        <span class="erica-row__title">{{ $person['name'] }}</span>
+        <span class="text-base font-semibold text-ink">{{ $person['name'] }}</span>
 
         @if ($person['isFavourite'])
           <span class="flex shrink-0 text-warning">
@@ -37,16 +41,16 @@
       </p>
 
       @if ($person['nickname'])
-        <p class="erica-row__desc">{{ __('Known as :nickname', ['nickname' => $person['nickname']]) }}</p>
+        <p class="mt-px text-sm text-pretty text-muted">{{ __('Known as :nickname', ['nickname' => $person['nickname']]) }}</p>
       @endif
 
       <x-slot:end>
-        <span class="erica-small hidden w-36 truncate text-right lg:block">{{ $person['template'] }}</span>
+        <span class="hidden w-36 truncate text-right text-sm text-pretty text-muted lg:block">{{ $person['template'] }}</span>
 
-        <div class="erica-row__meta">
-          <b>{{ $person['when'] }}</b>
+        <div class="text-right">
+          <b class="block text-sm font-semibold whitespace-nowrap text-ink">{{ $person['when'] }}</b>
 
-          <span>{{ $person['whenLabel'] }}</span>
+          <span class="block text-xs whitespace-nowrap text-muted">{{ $person['whenLabel'] }}</span>
         </div>
       </x-slot:end>
     </x-row>

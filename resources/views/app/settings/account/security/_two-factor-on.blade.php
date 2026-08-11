@@ -14,8 +14,7 @@
   :title="__('Authenticator app')"
   :description="__('Turned on :time. We ask for a code every time you sign in.', ['time' => $viewModel->twoFactorConfirmedAt()])"
   icon="lock"
-  icon-color="var(--forest)"
-  icon-background="var(--forest-tint)"
+  icon-class="bg-forest-tint text-forest"
 >
   <x-slot:end>
     <x-badge tone="success" icon="check">{{ __('On') }}</x-badge>
@@ -24,7 +23,7 @@
       <x-button.secondary size="small" type="button" x-show="! confirming" @click="confirming = true">{{ __('Turn it off') }}</x-button.secondary>
 
       <div x-cloak x-show="confirming" class="flex flex-wrap items-center justify-end gap-2.5">
-        <p class="erica-field__error">{{ __('Your password alone will get you in again. Sure?') }}</p>
+        <p class="text-xs text-error">{{ __('Your password alone will get you in again. Sure?') }}</p>
 
         <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep it on') }}</x-button.secondary>
 
@@ -40,15 +39,14 @@
   :title="__('Recovery codes')"
   :description="__('Keep these somewhere safe. Each one signs you in once, if you ever lose the phone.')"
   icon="key"
-  icon-color="var(--marigold-deep)"
-  icon-background="var(--marigold-tint)"
+  icon-class="bg-marigold-tint text-marigold-deep"
 >
   <x-slot:end>
     <div x-data="{ confirming: false }">
       <x-button.secondary size="small" type="button" x-show="! confirming" @click="confirming = true">{{ __('Get new codes') }}</x-button.secondary>
 
       <div x-cloak x-show="confirming" class="flex flex-wrap items-center justify-end gap-2.5">
-        <p class="erica-field__error">{{ __('The codes below stop working. Sure?') }}</p>
+        <p class="text-xs text-error">{{ __('The codes below stop working. Sure?') }}</p>
 
         <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep them') }}</x-button.secondary>
 
@@ -64,7 +62,7 @@
   @if ($viewModel->recoveryCodes() === [])
     <x-notice tone="warning">{{ __('You have used every code. Ask for new ones before you need them.') }}</x-notice>
   @else
-    <ul class="grid gap-1.5 rounded-md border border-hairline bg-sunken px-4 py-3.5 font-mono text-sm text-ink select-all sm:grid-cols-2">
+    <ul class="grid gap-1.5 rounded-md border border-hairline bg-sunken px-4 py-3.5 font-mono sm:grid-cols-2 text-sm text-ink select-all">
       @foreach ($viewModel->recoveryCodes() as $code)
         <li>{{ $code }}</li>
       @endforeach

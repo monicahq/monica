@@ -16,7 +16,7 @@ class EmptyStateTest extends TestCase
             '<x-empty-state :title="__(\'Nothing has happened yet\')">It is written down here as soon as it does.</x-empty-state>',
         );
 
-        $rendered->assertSee('erica-empty', escape: false);
+        $rendered->assertSee('min-h-60', escape: false);
         $rendered->assertSee('Nothing has happened yet', escape: false);
         $rendered->assertSee('It is written down here as soon as it does.', escape: false);
     }
@@ -32,6 +32,6 @@ class EmptyStateTest extends TestCase
     public function it_draws_no_plate_when_it_is_given_no_glyph(): void
     {
         $this->blade('<x-empty-state>Nothing yet.</x-empty-state>')
-            ->assertDontSee('erica-empty__glyph', escape: false);
+            ->assertDontSee('-rotate-4', escape: false);
     }
 }

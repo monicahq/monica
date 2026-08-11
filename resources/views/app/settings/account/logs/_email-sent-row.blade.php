@@ -25,16 +25,16 @@
     type="button"
     @click="open = ! open"
     :aria-expanded="open ? 'true' : 'false'"
-    class="erica-row erica-row--top erica-row--interactive border-b-0"
+    class="flex w-full items-start gap-3 px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out cursor-pointer hover:bg-sand focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus-ring"
   >
-    <span class="erica-row__mark" style="background: var(--plum-tint); color: var(--plum)">
+    <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-plum-tint text-plum">
       <x-icon name="mail" :size="18" :stroke-width="1.5" />
     </span>
 
-    <span class="erica-row__main">
-      <span class="erica-row__title block">{{ $emailSent->subject }}</span>
+    <span class="min-w-0 flex-1">
+      <span class="block text-base font-semibold text-ink">{{ $emailSent->subject }}</span>
 
-      <span class="erica-row__desc block">{{ __('To:') }} {{ $emailSent->email_address }}</span>
+      <span class="mt-px block text-sm text-pretty text-muted">{{ __('To:') }} {{ $emailSent->email_address }}</span>
 
       <span class="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1">
         <x-badge :tone="$tone">{{ $deliveryLabel }}</x-badge>
@@ -43,13 +43,13 @@
           <time
             datetime="{{ $sentAt->toIso8601String() }}"
             title="{{ $sentAt->toDayDateTimeString() }}"
-            class="erica-caption"
+            class="text-xs text-pretty text-muted"
           >{{ __('Sent :time', ['time' => $sentAt->diffForHumans()]) }}</time>
         @endif
       </span>
     </span>
 
-    <span class="erica-row__end">
+    <span class="ml-auto flex shrink-0 items-center gap-2.5">
       <x-icon
         name="chevron-down"
         :size="16"
@@ -61,7 +61,7 @@
   </button>
 
   <div x-cloak x-show="open" x-transition class="border-t border-hairline bg-sunken px-4 py-3.5">
-    <p class="erica-caption text-center italic">{{ __('We remove the links from this copy, since they have probably expired.') }}</p>
+    <p class="text-center italic text-xs text-pretty text-muted">{{ __('We remove the links from this copy, since they have probably expired.') }}</p>
 
     {{-- Purify leaves bare paragraphs behind, so the spacing between them is ours to give. --}}
     <div class="mt-3 flex flex-col gap-2 text-sm leading-relaxed text-body">{!! $emailSent->body !!}</div>

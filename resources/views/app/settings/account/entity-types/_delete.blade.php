@@ -26,7 +26,7 @@
     <p>{{ __('This cannot be undone.') }}</p>
   </x-modal.warning>
 @else
-  <p class="erica-caption max-w-[48ch]">
+  <p class="max-w-[48ch] text-xs text-pretty text-muted">
     {{ __('This type cannot be deleted while records are filed under it. Turn it off above to stop new ones being made.') }}
   </p>
 @endif

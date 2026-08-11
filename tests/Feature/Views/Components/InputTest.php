@@ -17,8 +17,8 @@ class InputTest extends TestCase
             ['error' => ['That address is already taken.']],
         );
 
-        $rendered->assertSee('erica-field', escape: false);
-        $rendered->assertSee('<label class="erica-field__label" for="email">', escape: false);
+        $rendered->assertSee('<div class="flex flex-col gap-1.5">', escape: false);
+        $rendered->assertSee('<label class="flex items-baseline gap-1.5 text-label text-ink" for="email">', escape: false);
         $rendered->assertSee('aria-describedby="email-help email-error"', escape: false);
         $rendered->assertSee('aria-invalid="true"', escape: false);
         $rendered->assertSee('id="email-help"', escape: false);
@@ -37,17 +37,17 @@ class InputTest extends TestCase
     public function it_is_drawn_small_only_when_it_is_asked_to_be(): void
     {
         $this->blade('<x-input id="q" />')
-            ->assertSee('class="erica-control"', escape: false);
+            ->assertSee('h-11 text-[16px] sm:text-base', escape: false);
 
         $this->blade('<x-input id="q" size="small" />')
-            ->assertSee('erica-control erica-control--sm', escape: false);
+            ->assertSee('h-9 text-[16px] sm:text-sm', escape: false);
     }
 
     #[Test]
     public function it_says_which_fields_are_optional(): void
     {
         $this->blade('<x-input id="nickname" label="Nickname" :optional="true" />')
-            ->assertSee('erica-field__note', escape: false)
+            ->assertSee('<span class="text-xs text-muted">optional</span>', escape: false)
             ->assertSee('optional', escape: false);
     }
 
@@ -56,8 +56,8 @@ class InputTest extends TestCase
     {
         $rendered = $this->blade('<x-textarea id="notes" label="Notes" value="Sold paper." />');
 
-        $rendered->assertSee('erica-control erica-control--textarea', escape: false);
-        $rendered->assertSee('<label class="erica-field__label" for="notes">', escape: false);
+        $rendered->assertSee('min-h-28 resize-y', escape: false);
+        $rendered->assertSee('<label class="flex items-baseline gap-1.5 text-label text-ink" for="notes">', escape: false);
         $rendered->assertSee('Sold paper.', escape: false);
     }
 
@@ -65,7 +65,7 @@ class InputTest extends TestCase
     public function a_file_field_drops_the_well_it_has_no_text_in(): void
     {
         $this->blade('<x-file-input id="photo" accept="image/png" />')
-            ->assertSee('erica-control erica-control--file', escape: false)
+            ->assertSee('file:shadow-raised', escape: false)
             ->assertSee('type="file"', escape: false)
             ->assertSee('accept="image/png"', escape: false);
     }
@@ -75,7 +75,7 @@ class InputTest extends TestCase
     {
         $rendered = $this->blade('<x-error :messages="$messages" />', ['messages' => ['First things first.', 'Then this.']]);
 
-        $rendered->assertSee('erica-field__error', escape: false);
+        $rendered->assertSee('<li class="flex items-start gap-1.5 text-xs text-error">', escape: false);
         $rendered->assertSee('First things first.', escape: false);
         $rendered->assertSee('Then this.', escape: false);
         $this->assertSame(2, substr_count($rendered->__toString(), '<svg'));

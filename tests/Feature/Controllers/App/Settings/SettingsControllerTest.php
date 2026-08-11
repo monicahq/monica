@@ -171,8 +171,8 @@ class SettingsControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('erica-dock__brand', escape: false);
-        $response->assertDontSee('erica-dock__item', escape: false);
+        $response->assertSee('bg-action-strong', escape: false);
+        $response->assertDontSee('aria-current="page"', escape: false);
         $response->assertSee(config('app.name'), escape: false);
     }
 
@@ -186,7 +186,7 @@ class SettingsControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('erica-dock__item', escape: false);
+        $response->assertSee('bg-action-strong', escape: false);
         $response->assertDontSee('aria-current="page"', escape: false);
     }
 

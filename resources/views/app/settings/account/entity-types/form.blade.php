@@ -29,10 +29,10 @@
 @endphp
 <x-shell :title="$viewModel->title()">
   <x-slot:bar>
-    <a href="{{ route('settings.entityTypes.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+    <x-button.secondary :href="route('settings.entityTypes.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to the types') }}
-    </a>
+    </x-button.secondary>
   </x-slot:bar>
 
   <x-slot:dock>
@@ -40,9 +40,9 @@
   </x-slot:dock>
 
   <header class="flex flex-col gap-2">
-    <h1 class="erica-page-title">{{ $viewModel->title() }}</h1>
+    <h1 class="font-display text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
-    <p class="erica-lede max-w-[56ch]">{{ $viewModel->description() }}</p>
+    <p class="max-w-[56ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
   </header>
 
   <div
@@ -66,9 +66,9 @@
     <x-form id="entity-type-form" :method="$viewModel->method()" :action="$viewModel->action()" class="flex flex-col gap-8">
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="erica-section-title shrink-0">{{ __('Names') }}</h2>
+          <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Names') }}</h2>
 
-          <p class="erica-small">{{ __('One name for a single record, one for the list. The singular goes in buttons and headers, the plural in list titles.') }}</p>
+          <p class="text-sm text-pretty text-muted">{{ __('One name for a single record, one for the list. The singular goes in buttons and headers, the plural in list titles.') }}</p>
         </div>
 
         <x-panel>
@@ -123,12 +123,12 @@
                 clicking and submits nothing, so what is shown instead is the value
                 itself, in mono, the way every machine value in the product is written.
               --}}
-              <div class="erica-field">
-                <p class="erica-field__label">{{ __('Slug') }}</p>
+              <div class="flex flex-col gap-1.5">
+                <p class="flex items-baseline gap-1.5 text-label text-ink">{{ __('Slug') }}</p>
 
                 <p class="rounded-md border border-hairline bg-sunken px-3 py-2 font-mono text-sm break-all text-ink select-all">{{ $values['slug'] }}</p>
 
-                <p class="erica-field__help">{{ $viewModel->slugHelp() }}</p>
+                <p class="text-xs text-muted">{{ $viewModel->slugHelp() }}</p>
               </div>
             @endif
 
@@ -147,17 +147,17 @@
 
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="erica-section-title shrink-0">{{ __('Appearance') }}</h2>
+          <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Appearance') }}</h2>
 
-          <p class="erica-small">{{ __('The icon and colour mark this type in the vault navigation and beside every record of it.') }}</p>
+          <p class="text-sm text-pretty text-muted">{{ __('The icon and colour mark this type in the vault navigation and beside every record of it.') }}</p>
         </div>
 
         <x-panel>
           <div class="flex flex-col gap-5">
             {{-- What the two pickers add up to, following the typing rather than the saving. --}}
-            <div class="erica-row rounded-md border border-hairline bg-sunken px-3 py-2.5">
+            <div class="flex w-full items-center gap-3 rounded-md border border-hairline bg-sunken px-3 py-2.5 text-left">
               <span
-                class="erica-row__mark"
+                class="flex size-8 shrink-0 items-center justify-center rounded-sm"
                 :style="`color: ${colour}; background: ${tint}`"
                 aria-hidden="true"
               >
@@ -168,15 +168,15 @@
                 @endforeach
               </span>
 
-              <div class="erica-row__main">
-                <p class="erica-row__title truncate" x-text="previewName"></p>
+              <div class="min-w-0 flex-1">
+                <p class="truncate text-base font-semibold text-ink" x-text="previewName"></p>
 
                 <p class="truncate font-mono text-[12.5px] text-muted" x-text="previewSlug"></p>
               </div>
             </div>
 
-            <fieldset class="erica-field">
-              <legend class="erica-field__label">{{ __('Icon') }}</legend>
+            <fieldset class="flex flex-col gap-1.5">
+              <legend class="flex items-baseline gap-1.5 text-label text-ink">{{ __('Icon') }}</legend>
 
               <input type="hidden" name="icon" value="{{ $values['icon'] }}" :value="icon" />
 
@@ -198,8 +198,8 @@
               <x-error :id="$errors->has('icon') ? 'icon-error' : null" :messages="$errors->get('icon')" />
             </fieldset>
 
-            <fieldset class="erica-field">
-              <legend class="erica-field__label">{{ __('Colour') }}</legend>
+            <fieldset class="flex flex-col gap-1.5">
+              <legend class="flex items-baseline gap-1.5 text-label text-ink">{{ __('Colour') }}</legend>
 
               <input type="hidden" name="colour" value="{{ $values['colour'] }}" :value="colour" />
 
@@ -228,9 +228,9 @@
 
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="erica-section-title shrink-0">{{ __('Availability') }}</h2>
+          <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Availability') }}</h2>
 
-          <p class="erica-small">{{ __('An active type shows up in every vault in this account. Turn it off and existing records stay where they are, but no new ones can be made.') }}</p>
+          <p class="text-sm text-pretty text-muted">{{ __('An active type shows up in every vault in this account. Turn it off and existing records stay where they are, but no new ones can be made.') }}</p>
         </div>
 
         <x-panel>
@@ -241,7 +241,7 @@
           @if ($viewModel->isEdit())
             <x-slot:footer>
               <div class="flex flex-wrap items-center gap-x-6 gap-y-1">
-                <span class="erica-caption">{{ $viewModel->recordCount() }}</span>
+                <span class="text-xs text-pretty text-muted">{{ $viewModel->recordCount() }}</span>
 
                 <span class="font-mono text-[12.5px] break-all text-muted">{{ $viewModel->uuid() }}</span>
               </div>
@@ -257,7 +257,7 @@
       @endif
 
       <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto">
-        <span x-cloak x-show="! named" class="erica-caption">{{ __('Both names are all we really need.') }}</span>
+        <span x-cloak x-show="! named" class="text-xs text-pretty text-muted">{{ __('Both names are all we really need.') }}</span>
 
         <x-button.secondary :href="route('settings.entityTypes.index')" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
