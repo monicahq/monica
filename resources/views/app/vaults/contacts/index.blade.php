@@ -14,8 +14,8 @@
   is touched changes the screen under somebody's feet, which is the one thing
   this product never does, so both of them have a button.
 
-  A name is not a link. The page of one contact is a later screen, and a link
-  that leads nowhere is worse than a word that does not move.
+  The whole row is the link to that person's page, rather than the name inside
+  it: a row somebody has to aim at three words of is a row they miss.
 
   @var \App\ViewModels\Vaults\ContactsViewModel $viewModel
 --}}

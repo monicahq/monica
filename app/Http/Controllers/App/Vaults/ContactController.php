@@ -8,10 +8,12 @@ use App\Actions\CreateContact;
 use App\Enums\NameOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Http\Controllers\Controller;
+use App\Models\Contact;
 use App\Models\TemplateVersion;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactFormViewModel;
 use App\ViewModels\Vaults\ContactsViewModel;
+use App\ViewModels\Vaults\ContactViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -43,6 +45,29 @@ class ContactController extends Controller
         ]);
     }
 
+    /**
+     * One person, and everything written down about them.
+     *
+     * Which page of the record is open travels in the address, so a tab can be
+     * linked to and the back button walks between them. It is the page's key
+     * rather than the page itself: a key belongs to one version of one
+     * template, so two versions can both have a page called "Health" and
+     * binding the row would need the version to say which.
+     */
+    public function show(Request $request, Vault $vault, Contact $contact, ?string $page = null): View
+    {
+        abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
+
+        return view('app.vaults.contacts.show', [
+            'viewModel' => new ContactViewModel(
+                user: $request->user(),
+                vault: $vault,
+                contact: $contact,
+                selectedPageKey: $page,
+            ),
+        ]);
+    }
+
     public function new(Request $request, Vault $vault): View
     {
         return view('app.vaults.contacts.form', [
@@ -59,8 +84,9 @@ class ContactController extends Controller
      * Somebody working through a list of people has said so by ticking the box,
      * and is handed the empty form again rather than a screen they have to
      * leave. Everybody else lands on the list of contacts, where the person they
-     * have just written down is: their own page is a later screen, and the list
-     * is the nearest thing to seeing that it worked.
+     * have just written down now is. Their own page exists and is deliberately
+     * not where this goes: it holds only what a form has just been filled in
+     * with, so it would read as the same screen again with fewer places to type.
      *
      * A partial contact is the exception the message has to cover. They are
      * written down and then kept off that list until somebody fills them in, so

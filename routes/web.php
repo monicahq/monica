@@ -65,6 +65,19 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
         ->whereIn('filter', [ContactsViewModel::FILTER_FAVOURITES, ContactsViewModel::FILTER_ARCHIVED])
         ->name('contacts.index');
 
+    // Which page of the record is open travels in the address the same way, and
+    // it is the page's key rather than the page itself: a key belongs to one
+    // version of a template, so it cannot be bound to a row on its own.
+    //
+    // This sits after the list and takes only a uuid, and both halves of that
+    // matter. Without the constraint every word the list does not answer to
+    // would arrive here as somebody to look up, and postgres refuses to compare
+    // a uuid column against a word at all: a mistyped chip would be a 500
+    // rather than the 404 it is.
+    Route::get('vaults/{vault}/contacts/{contact}/{page?}', [ContactController::class, 'show'])
+        ->whereUuid('contact')
+        ->name('contacts.show');
+
     Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
     Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');
 });

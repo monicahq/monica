@@ -177,6 +177,37 @@ class Contact extends Model
     }
 
     /**
+     * Find the contact a URL points at, within the account of whoever is
+     * asking. Somebody else's contact is not merely forbidden, it is not
+     * found: the vault is a compartment, and saying "you may not" would
+     * already say that the person exists.
+     *
+     * @param  string  $value
+     * @param  string|null  $field
+     */
+    public function resolveRouteBinding($value, $field = null): ?self
+    {
+        return $this->query()
+            ->where($field ?? $this->getRouteKeyName(), $value)
+            ->where('account_id', auth()->user()?->account_id)
+            ->first();
+    }
+
+    /**
+     * Whether the contact can be reached down the address that names it.
+     *
+     * A contact is addressed under the vault it lives in, and neither half can
+     * be trusted on its own: the account has to match, and the person has to be
+     * in the vault the URL actually names. Without the second half, the address
+     * of one vault would open somebody kept in another.
+     */
+    public function isReachableThrough(User $user, Vault $vault): bool
+    {
+        return $this->account_id === $user->account_id
+            && $this->vault_id === $vault->id;
+    }
+
+    /**
      * Get the account the contact belongs to.
      *
      * @return BelongsTo<Account, $this>

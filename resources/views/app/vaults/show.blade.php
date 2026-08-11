@@ -56,7 +56,7 @@
   <div class="grid auto-rows-fr gap-x-5 gap-y-7 md:grid-cols-2 lg:grid-cols-3">
     <section class="flex min-w-0 flex-col gap-2.5">
       <div class="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 px-0.5">
-        <h2 class="shrink-0 font-display text-section-title text-ink text-terracotta">{{ __('Contacts') }}</h2>
+        <h2 class="shrink-0 font-display text-section-title text-terracotta">{{ __('Contacts') }}</h2>
 
         <p class="text-xs text-pretty text-muted">{{ $viewModel->peopleCaption() }}</p>
       </div>
@@ -79,16 +79,17 @@
         </div>
       @else
         {{--
-          The box is the link, all of it. A person has no page of their own yet,
-          so a row inside it would be a second link to the same list.
+          Each row is the link to that person, and the line at the foot is the
+          link to all of them. The box used to be one anchor covering both,
+          which it could be while a person had no page of their own.
         --}}
-        <a
-          href="{{ $viewModel->allContactsUrl() }}"
-          data-turbo="true"
-          class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-raised flex flex-1 flex-col transition-colors duration-[110ms] hover:bg-hover"
-        >
+        <div class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-raised flex flex-1 flex-col">
           @foreach ($people as $person)
-            <span class="flex items-center gap-3 border-b border-hairline-soft px-4 py-2.5">
+            <a
+              href="{{ $person['url'] }}"
+              data-turbo="true"
+              class="flex items-center gap-3 border-b border-hairline-soft px-4 py-2.5 transition-colors duration-[110ms] hover:bg-hover"
+            >
               <x-avatar-initials :name="$person['name']" :size="34" />
 
               <span class="min-w-0 flex-1">
@@ -98,11 +99,17 @@
                   <span class="block truncate text-xs text-pretty text-muted">{{ $person['nickname'] }}</span>
                 @endif
               </span>
-            </span>
+
+              <x-icon name="chevron-right" :size="16" :stroke-width="1.6" class="shrink-0 text-muted" />
+            </a>
           @endforeach
 
-          <span class="mt-auto block px-4 py-3 text-sm text-pretty text-muted">{{ $viewModel->allPeopleLabel() }}</span>
-        </a>
+          <a
+            href="{{ $viewModel->allContactsUrl() }}"
+            data-turbo="true"
+            class="mt-auto block px-4 py-3 text-sm text-pretty text-muted transition-colors duration-[110ms] hover:bg-hover hover:text-ink"
+          >{{ $viewModel->allPeopleLabel() }}</a>
+        </div>
       @endif
     </section>
 

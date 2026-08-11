@@ -93,7 +93,7 @@ class VaultDashboardViewModel
      * The people the box shows: the last ones written down, since the reason to
      * open a vault is usually the thing you were last doing in it.
      *
-     * @return array<int, array{name: string, nickname: string}>
+     * @return array<int, array{name: string, nickname: string, url: string}>
      */
     public function people(): array
     {
@@ -106,6 +106,7 @@ class VaultDashboardViewModel
             ->map(fn (Contact $contact): array => [
                 'name' => $contact->name,
                 'nickname' => (string) $contact->nickname,
+                'url' => route('contacts.show', ['vault' => $this->vault, 'contact' => $contact]),
             ])
             ->all();
     }

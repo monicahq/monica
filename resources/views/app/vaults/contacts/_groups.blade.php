@@ -21,7 +21,7 @@
   @endif
 
   @foreach ($group['people'] as $person)
-    <x-row>
+    <x-row :href="$person['url']">
       <x-slot:leading>
         <x-avatar-initials :name="$person['name']" :size="40" />
       </x-slot:leading>
@@ -52,6 +52,8 @@
 
           <span class="block text-xs whitespace-nowrap text-muted">{{ $person['whenLabel'] }}</span>
         </div>
+
+        <x-icon name="chevron-right" :size="16" :stroke-width="1.6" class="text-muted" />
       </x-slot:end>
     </x-row>
   @endforeach

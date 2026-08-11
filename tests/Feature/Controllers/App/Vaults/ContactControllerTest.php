@@ -6,14 +6,23 @@ namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Enums\NameOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
+use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
+use App\Models\Field;
+use App\Models\Section;
+use App\Models\SectionVersion;
 use App\Models\Template;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
+use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -213,6 +222,12 @@ class ContactControllerTest extends TestCase
             ->assertSee('<option value="asc" selected>A to Z</option>', escape: false);
     }
 
+    /**
+     * The page of one person sits under the same path, so a word the list does
+     * not answer to has to stop before it is taken for somebody's uuid. Postgres
+     * refuses to compare a uuid column against a word at all, so without the
+     * constraint on the route this is a 500 rather than a 404.
+     */
     #[Test]
     public function it_does_not_answer_to_a_chip_it_never_offered(): void
     {
@@ -220,6 +235,25 @@ class ContactControllerTest extends TestCase
         $vault = $this->vaultReadyForContacts($user);
 
         $this->actingAs($user)->get(url("/vaults/{$vault->uuid}/contacts/beets"))->assertNotFound();
+        $this->actingAs($user)->get(url("/vaults/{$vault->uuid}/contacts/beets/health"))->assertNotFound();
+    }
+
+    #[Test]
+    public function only_a_uuid_reaches_the_page_of_one_person(): void
+    {
+        $vault = Vault::factory()->create();
+
+        $this->assertNull($this->routeNameFor("/vaults/{$vault->uuid}/contacts/beets"));
+        $this->assertSame('contacts.show', $this->routeNameFor("/vaults/{$vault->uuid}/contacts/".Str::uuid7()));
+    }
+
+    #[Test]
+    public function it_does_not_find_a_uuid_nobody_owns(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)->get(url("/vaults/{$vault->uuid}/contacts/".Str::uuid7()))->assertNotFound();
     }
 
     #[Test]
@@ -615,6 +649,139 @@ class ContactControllerTest extends TestCase
         $this->actingAs($user)->get(route('contacts.new', $elsewhere))->assertNotFound();
         $this->actingAs($user)->post(route('contacts.create', $elsewhere), ['first_name' => 'Michael'])
             ->assertNotFound();
+    }
+
+    #[Test]
+    public function it_opens_the_page_of_one_person(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user, 'Someone in the family');
+        $michael = $this->contact($vault, 'Michael', 'Scott', ['nickname' => 'Prison Mike']);
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->assertSee('Michael Scott')
+            ->assertSee('Prison Mike')
+            ->assertSee('Someone in the family')
+            ->assertSee('Overview')
+            ->assertSee('History');
+    }
+
+    #[Test]
+    public function it_links_every_row_of_the_list_to_the_page_of_that_person(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.index', $vault))
+            ->assertStatus(200)
+            ->assertSee(route('contacts.show', ['vault' => $vault, 'contact' => $michael]));
+    }
+
+    #[Test]
+    public function it_shows_the_sections_of_the_page_the_address_names(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $version = $this->versionWithAPage($user, 'Health', 'Ongoing', 'Knee');
+        $michael->update(['template_version_id' => $version->id]);
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'health']))
+            ->assertStatus(200)
+            ->assertSee('Ongoing')
+            ->assertSee('Knee')
+            ->assertSee('Not recorded')
+            ->assertDontSee('History');
+    }
+
+    #[Test]
+    public function a_page_the_version_does_not_have_opens_the_overview(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'schrute-farms']))
+            ->assertStatus(200)
+            ->assertSee('History');
+    }
+
+    #[Test]
+    public function it_does_not_find_somebody_kept_in_another_vault(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $elsewhere = $this->vaultReadyForContacts($user, 'Someone at work');
+        $michael = $this->contact($elsewhere, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertNotFound();
+    }
+
+    #[Test]
+    public function it_does_not_find_somebody_in_another_account(): void
+    {
+        $user = User::factory()->create();
+        $stranger = User::factory()->create();
+        $theirs = $this->vaultReadyForContacts($stranger);
+        $michael = $this->contact($theirs, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $theirs, 'contact' => $michael]))
+            ->assertNotFound();
+    }
+
+    /**
+     * A published version carrying one page, one section on it and one field
+     * inside that. It is assembled while the version is still a draft, because
+     * a published one is frozen and refuses every one of these rows.
+     */
+    private function versionWithAPage(User $user, string $pageLabel, string $sectionName, string $fieldLabel): TemplateVersion
+    {
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+
+        $page = TemplateVersionPage::factory()->create([
+            'template_version_id' => $version->id,
+            'account_id' => $version->account_id,
+            'key' => Str::slug($pageLabel),
+            'label' => $pageLabel,
+        ]);
+
+        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => $sectionName]);
+        $sectionVersion = SectionVersion::factory()->create(['section_id' => $section->id]);
+
+        Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => $fieldLabel]);
+
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'template_version_page_id' => $page->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+
+        $version->update(['status' => VersionStatusEnum::Published]);
+
+        return $version->refresh();
+    }
+
+    /**
+     * Which route a path lands on, or null when none of them takes it. It is
+     * asked here rather than through a request, because the answer has to be
+     * the same on a database that would have tolerated the lookup.
+     */
+    private function routeNameFor(string $path): ?string
+    {
+        $request = Request::create($path, 'GET');
+
+        foreach (Route::getRoutes() as $route) {
+            if ($route->matches($request)) {
+                return $route->getName();
+            }
+        }
+
+        return null;
     }
 
     /**
