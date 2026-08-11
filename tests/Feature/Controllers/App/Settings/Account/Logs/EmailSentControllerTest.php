@@ -36,7 +36,7 @@ class EmailSentControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('pam.beesly@dundermifflin.com', escape: false);
         $response->assertSee('A sign-in from a new place', escape: false);
-        $response->assertSee('Pam Beesly', escape: false);
+        $response->assertSee(route('settings.logs.index'), escape: false);
     }
 
     #[Test]
@@ -47,8 +47,8 @@ class EmailSentControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('No emails yet', escape: false);
-        $response->assertSee('Nothing has left our hands yet.', escape: false);
+        $response->assertSee('Nothing has left our hands yet', escape: false);
+        $response->assertSee('along with whether they arrived', escape: false);
     }
 
     #[Test]

@@ -1,52 +1,54 @@
 {{--
   Every email we sent to the person signed in, a page at a time.
 
+  It shares its rows with the logs screen, which is why it moves onto the new shell
+  at the same time: one partial cannot be two designs at once.
+
   The list grows in place: the link at the bottom asks for the next page,
   alpine-ajax appends the rows that come back, and swaps the link for the one
   that came with them, or drops it on the last page.
 
   @var \App\ViewModels\Settings\Account\Logs\EmailsSentViewModel $viewModel
 --}}
-<x-app-layout :title="__('Emails sent')">
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="logs" />
-  </x-slot:sidebar>
+<x-shell :title="__('Emails sent')">
+  <x-slot:bar>
+    <a href="{{ route('settings.logs.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
+      {{ __('Back to the logs') }}
+    </a>
+  </x-slot:bar>
 
-  <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => __('Settings')],
-        ['label' => __('Logs'), 'url' => route('settings.logs.index')],
-        ['label' => __('Emails sent')],
-      ]"
-    />
-  </x-slot:breadcrumb>
+  <x-slot:dock>
+    <x-dock :user="$viewModel->user()" />
+  </x-slot:dock>
 
-  <x-page-header
-    :title="__('Emails sent')"
-    :description="__('Every email we sent to your account, most recent first.')"
-  />
+  <header class="flex flex-col gap-2">
+    <h1 class="erica-page-title">{{ __('Emails sent') }}</h1>
 
-  <x-box id="emails-sent-container" x-merge="append" padding="p-0">
-    @forelse ($viewModel->emailsSent() as $emailSent)
-      @include('app.settings.account.logs._email-sent-row', ['emailSent' => $emailSent])
-    @empty
-      <x-empty-state :title="__('No emails yet')">
-        <x-slot:icon>
-          <svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="1.5" y="3.5" width="13" height="9" rx="1.5"></rect>
-            <path d="m2 4.5 6 4.5 6-4.5"></path>
-          </svg>
-        </x-slot:icon>
+    <p class="erica-lede max-w-[56ch]">{{ __('Every email we sent to your account, most recent first. Open one to read the copy that left.') }}</p>
+  </header>
 
-        {{ __('Nothing has left our hands yet. The emails we send you, such as sign-in links and password changes, show up here once they do.') }}
-      </x-empty-state>
-    @endforelse
+  <x-panel :flush="true">
+    <div id="emails-sent-container" x-merge="append">
+      @forelse ($viewModel->emailsSent() as $emailSent)
+        @include('app.settings.account.logs._email-sent-row', ['emailSent' => $emailSent])
+      @empty
+        <x-empty-state :title="__('Nothing has left our hands yet')" hue="var(--plum)" tint="var(--plum-tint)">
+          <x-slot:icon>
+            <x-icon name="mail" :size="30" :stroke-width="1.4" />
+          </x-slot:icon>
+
+          {{ __('The emails we send you, such as sign-in links and password changes, show up here once they do, along with whether they arrived.') }}
+        </x-empty-state>
+      @endforelse
+    </div>
 
     @if ($viewModel->emailsSent()->hasMorePages())
       <x-slot:footer id="pagination">
-        <x-link x-target="emails-sent-container pagination" :href="$viewModel->emailsSent()->nextPageUrl()">{{ __('Load more') }}</x-link>
+        <div class="text-center">
+          <x-link x-target="emails-sent-container pagination" :href="$viewModel->emailsSent()->nextPageUrl()">{{ __('Load more') }}</x-link>
+        </div>
       </x-slot:footer>
     @endif
-  </x-box>
-</x-app-layout>
+  </x-panel>
+</x-shell>

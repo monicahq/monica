@@ -48,7 +48,7 @@
     aria-haspopup="dialog"
     aria-label="{{ __('Help') }}"
     :class="open ? 'border-brand text-brand' : 'border-hairline-strong text-muted-soft'"
-    class="flex size-4 cursor-pointer items-center justify-center rounded-full border bg-canvas text-xs leading-none font-bold transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
+    class="flex size-4 cursor-pointer items-center justify-center rounded-full border bg-canvas text-xs leading-none font-bold transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none"
   >?</button>
 
   <div

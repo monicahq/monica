@@ -26,10 +26,10 @@ class SecurityControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Security and access', escape: false);
-        $response->assertSee('Change password', escape: false);
+        $response->assertSee('Password', escape: false);
         $response->assertSee('Current password', escape: false);
-        $response->assertSee('Dwight Schrute', escape: false);
         $response->assertSee('Last changed 2 days ago', escape: false);
+        $response->assertSee('Back to settings', escape: false);
     }
 
     #[Test]
@@ -42,7 +42,7 @@ class SecurityControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('API keys', escape: false);
         $response->assertSee('Active · no API keys', escape: false);
-        $response->assertSee('No API keys yet', escape: false);
+        $response->assertSee('No keys yet', escape: false);
     }
 
     #[Test]

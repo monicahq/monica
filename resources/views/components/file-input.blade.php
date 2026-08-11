@@ -23,17 +23,9 @@
   $helpId = $help ? $id.'-help' : null;
   $errorId = $error ? $id.'-error' : null;
   $describedBy = trim(($helpId ?? '').' '.($errorId ?? ''));
-
-  /* 16px on a phone, the way x-input is, so tapping it does not zoom the page in. */
-  $classes = [
-    'block w-full cursor-pointer text-base text-muted sm:text-sm',
-    'file:mr-3 file:cursor-pointer file:rounded-md file:border file:border-hairline-strong',
-    'file:bg-canvas file:px-3 file:py-2 file:text-base file:font-semibold file:text-ink sm:file:text-sm',
-    'hover:file:bg-hover',
-  ];
 @endphp
 
-<div class="space-y-1.5">
+<div class="erica-field">
   @if ($label)
     <x-label :for="$id" :value="$label" />
   @endif
@@ -46,11 +38,11 @@
     @if ($describedBy !== '') aria-describedby="{{ $describedBy }}" @endif
     @if ($error) aria-invalid="true" @endif
     {{ $required ? 'required' : '' }}
-    {{ $attributes->class($classes) }}
+    {{ $attributes->class(['erica-control erica-control--file']) }}
   />
 
   @if ($help)
-    <p id="{{ $helpId }}" class="text-xs text-muted">{{ $help }}</p>
+    <p id="{{ $helpId }}" class="erica-field__help">{{ $help }}</p>
   @endif
 
   <x-error :id="$errorId" :messages="$error" />

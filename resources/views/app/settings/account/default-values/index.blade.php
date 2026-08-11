@@ -17,31 +17,29 @@
 @php
   $newListErrors = $errors->getBag('newList');
 @endphp
-<x-app-layout :title="__('Default values')">
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="defaults" />
-  </x-slot:sidebar>
+<x-shell :title="__('Default values')">
+  <x-slot:bar>
+    <a href="{{ route('settings.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
+      {{ __('Back to settings') }}
+    </a>
+  </x-slot:bar>
 
-  <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => __('Settings')],
-        ['label' => __('Default values')],
-      ]"
-    />
-  </x-slot:breadcrumb>
+  <x-slot:dock>
+    <x-dock :user="$viewModel->user()" />
+  </x-slot:dock>
 
   <div
     id="value-lists"
     x-merge="replace"
-    class="space-y-8.5 transition-opacity [&[aria-busy]]:opacity-60"
+    class="flex flex-col gap-8 transition-opacity [&[aria-busy]]:opacity-60"
   >
-    <div class="grid items-start gap-x-7 gap-y-4 sm:grid-cols-[minmax(0,1fr)_auto]">
-      <x-page-header
-        :title="__('Default values')"
-        :description="__('The lists you pick from when you fill in a contact. Rename them to the words you actually use, and put them in the order you want to see them.')"
-        class="max-w-140"
-      />
+    <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
+      <div class="flex min-w-0 flex-col gap-2">
+        <h1 class="erica-page-title">{{ __('Default values') }}</h1>
+
+        <p class="erica-lede max-w-[56ch]">{{ __('The lists you pick from when you fill in a contact. Rename them to the words you actually use, and put them in the order you want to see them.') }}</p>
+      </div>
 
       <x-modal.form
         :title="__('Add a list')"
@@ -52,7 +50,7 @@
         x-target="value-lists"
       >
         <x-slot:trigger>
-          <x-button type="button" @click="open = true" class="max-sm:w-full sm:justify-self-end">
+          <x-button type="button" @click="open = true" class="max-sm:w-full">
             {{ __('Add a list') }}
           </x-button>
         </x-slot:trigger>
@@ -65,12 +63,12 @@
           required
         />
       </x-modal.form>
-    </div>
+    </header>
 
     @foreach ($viewModel->lists() as $list)
       @include('app.settings.account.default-values._list', ['list' => $list])
     @endforeach
 
-    <p class="text-xs leading-relaxed text-muted-soft">{{ __('A value nothing uses is deleted outright. One that records already point at is stopped from being offered instead, so everything that already has it keeps it.') }}</p>
+    <p class="erica-caption px-0.5">{{ __('A value nothing uses is deleted outright. One that records already point at is stopped from being offered instead, so everything that already has it keeps it.') }}</p>
   </div>
-</x-app-layout>
+</x-shell>

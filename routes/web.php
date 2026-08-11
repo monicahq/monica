@@ -34,6 +34,7 @@ use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPageContr
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPositionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicationController;
+use App\Http\Controllers\App\Settings\SettingsController;
 use App\Http\Controllers\App\Vaults\ContactController;
 use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
@@ -70,6 +71,8 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
 
 // The screens where somebody looks after their own account.
 Route::middleware(['auth', 'set.locale'])->group(function (): void {
+    Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+
     Route::get('settings/account/profile', [ProfileController::class, 'index'])->name('settings.profile.index');
     Route::put('settings/account/profile', [ProfileController::class, 'update'])->name('settings.profile.update');
     Route::delete('settings/account', [AccountController::class, 'destroy'])->name('settings.account.destroy');

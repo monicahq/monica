@@ -28,11 +28,10 @@
   $pages = $viewModel->pages();
   $selected = $viewModel->selectedPage();
   $newPageErrors = $errors->getBag('newPage');
-  $action = 'cursor-pointer text-[13px] text-muted transition-colors duration-150 hover:text-ink';
 @endphp
 @if ($pages !== [])
   <div x-data="sortableRows" data-sortable>
-    <div role="tablist" class="flex flex-wrap items-end gap-x-1 border-b border-hairline">
+    <div role="tablist" class="erica-tabs">
       @foreach ($pages as $page)
         <a
           data-row-id="{{ $page['id'] }}"
@@ -48,21 +47,13 @@
             @dragend="stop()"
             :class="draggingId === {{ $page['id'] }} && 'opacity-40'"
           @endif
-          @class([
-            '-mb-px flex flex-none items-center gap-2 border-b-2 px-2.5 pt-2 pb-2.5 text-sm transition-colors duration-150',
-            'border-primary font-semibold text-ink' => $page['isSelected'],
-            'border-transparent text-muted hover:text-ink' => ! $page['isSelected'],
-          ])
+          class="erica-tab"
         >
           {{ $page['label'] }}
 
           <span
+            class="erica-tab__count"
             title="{{ $page['fieldCount'] === 1 ? __('1 field on this page') : __(':count fields on this page', ['count' => $page['fieldCount']]) }}"
-            @class([
-              'flex h-5 min-w-5 items-center justify-center rounded-full border px-1.5 text-xs font-normal',
-              'border-hairline-strong text-body' => $page['isSelected'],
-              'border-hairline text-muted-soft' => ! $page['isSelected'],
-            ])
           >{{ $page['fieldCount'] }}</span>
         </a>
       @endforeach
@@ -77,15 +68,8 @@
           x-target="builder"
         >
           <x-slot:trigger>
-            <button
-              type="button"
-              @click="open = true"
-              class="-mb-px flex flex-none cursor-pointer items-center gap-1.5 border-b-2 border-transparent px-2.5 pt-2 pb-2.5 text-sm text-muted transition-colors duration-150 hover:text-ink"
-            >
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
-                <line x1="8" y1="3.5" x2="8" y2="12.5"></line>
-                <line x1="3.5" y1="8" x2="12.5" y2="8"></line>
-              </svg>
+            <button type="button" @click="open = true" class="erica-tab">
+              <x-icon name="plus" :size="14" :stroke-width="1.6" />
               {{ __('Add a page') }}
             </button>
           </x-slot:trigger>
@@ -106,17 +90,13 @@
     </div>
 
     @if ($isEditable && $selected !== null)
-      <div x-data="{ renaming: false, reordering: false }" class="space-y-3 pt-2.5">
-        <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span class="text-[13px] text-muted-soft">{{ __('This page') }}</span>
+      <div x-data="{ renaming: false, reordering: false }" class="flex flex-col gap-3 pt-2.5">
+        <div class="flex flex-wrap items-center gap-x-1 gap-y-1">
+          <span class="erica-caption mr-1">{{ __('This page') }}</span>
 
-          <button type="button" @click="renaming = ! renaming; reordering = false" class="{{ $action }}">{{ __('Rename') }}</button>
+          <x-button.ghost size="small" type="button" @click="renaming = ! renaming; reordering = false">{{ __('Rename') }}</x-button.ghost>
 
-          <span class="text-hairline-strong" aria-hidden="true">·</span>
-
-          <button type="button" @click="reordering = ! reordering; renaming = false" class="{{ $action }}">{{ __('Reorder') }}</button>
-
-          <span class="text-hairline-strong" aria-hidden="true">·</span>
+          <x-button.ghost size="small" type="button" @click="reordering = ! reordering; renaming = false">{{ __('Reorder') }}</x-button.ghost>
 
           @if ($viewModel->canRemovePage())
             <x-modal.warning
@@ -126,7 +106,7 @@
               x-target="builder"
             >
               <x-slot:trigger>
-                <button type="button" @click="open = true" class="cursor-pointer text-[13px] text-muted transition-colors duration-150 hover:text-error">{{ __('Remove') }}</button>
+                <x-button.ghost size="small" type="button" @click="open = true" class="hover:text-error">{{ __('Remove') }}</x-button.ghost>
               </x-slot:trigger>
 
               <p>{{ __('It holds nothing, so nothing goes with it. The tabs left keep their order.') }}</p>
@@ -137,7 +117,7 @@
               whichever tab is open. A page holding sections, and the last page
               of a version, both stay.
             --}}
-            <span aria-disabled="true" class="text-[13px] text-placeholder">{{ __('Remove') }}</span>
+            <span aria-disabled="true" class="erica-btn erica-btn--ghost erica-btn--sm text-placeholder">{{ __('Remove') }}</span>
           @endif
         </div>
 
@@ -153,6 +133,7 @@
             :id="'page-'.$selected->id.'-label'"
             name="label"
             x-ref="rename"
+            size="small"
             :value="$selected->label"
             :aria-label="__('Name of the page')"
             class="max-w-56"
@@ -160,17 +141,17 @@
             required
           />
 
-          <x-button>{{ __('Save') }}</x-button>
+          <x-button size="small">{{ __('Save') }}</x-button>
 
-          <button type="button" @click="renaming = false" class="cursor-pointer rounded-md px-2 py-1.5 text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-ink">{{ __('Cancel') }}</button>
+          <x-button.ghost size="small" type="button" @click="renaming = false">{{ __('Cancel') }}</x-button.ghost>
         </x-form>
 
-        <div x-cloak x-show="reordering" class="flex flex-wrap items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-sunken px-3 py-2.5">
+        <div x-cloak x-show="reordering" class="flex flex-wrap items-center gap-2 rounded-md border border-dashed border-hairline-strong bg-sunken px-3 py-2.5">
           @foreach ($pages as $index => $page)
-            <span class="flex items-center gap-1 rounded-md border border-hairline bg-canvas py-1 pr-1 pl-2.5 text-[13px] text-body">
+            <span class="flex items-center gap-1 rounded-sm border border-hairline bg-canvas py-1 pr-1 pl-2.5 text-[13px] text-body">
               {{ $page['label'] }}
 
-              @foreach ([['position' => $index, 'label' => __('Move :name left', ['name' => $page['label']]), 'path' => 'M9.6 3.6 5.2 8l4.4 4.4', 'shown' => $index > 0], ['position' => $index + 2, 'label' => __('Move :name right', ['name' => $page['label']]), 'path' => 'M6.4 3.6 10.8 8l-4.4 4.4', 'shown' => $index < count($pages) - 1]] as $move)
+              @foreach ([['position' => $index, 'label' => __('Move :name left', ['name' => $page['label']]), 'flip' => true, 'shown' => $index > 0], ['position' => $index + 2, 'label' => __('Move :name right', ['name' => $page['label']]), 'flip' => false, 'shown' => $index < count($pages) - 1]] as $move)
                 @if ($move['shown'])
                   <x-form
                     method="put"
@@ -180,10 +161,8 @@
                   >
                     <input type="hidden" name="position" value="{{ $move['position'] }}" />
 
-                    <button type="submit" aria-label="{{ $move['label'] }}" class="flex size-6 cursor-pointer items-center justify-center rounded-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-ink">
-                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="{{ $move['path'] }}"></path>
-                      </svg>
+                    <button type="submit" aria-label="{{ $move['label'] }}" class="flex size-6 cursor-pointer items-center justify-center rounded-xs text-muted transition-colors duration-[110ms] hover:bg-hover hover:text-ink">
+                      <x-icon name="chevron-right" :size="14" :stroke-width="1.7" :class="$move['flip'] ? 'rotate-180' : ''" />
                     </button>
                   </x-form>
                 @endif
@@ -191,7 +170,7 @@
             </span>
           @endforeach
 
-          <button type="button" @click="reordering = false" class="cursor-pointer rounded-md px-2 py-1 text-[13px] text-muted transition-colors duration-150 hover:bg-hover hover:text-ink">{{ __('Done') }}</button>
+          <x-button.ghost size="small" type="button" @click="reordering = false">{{ __('Done') }}</x-button.ghost>
         </div>
       </div>
     @endif

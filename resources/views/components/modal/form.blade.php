@@ -19,6 +19,11 @@
   The wrapper is `display: contents`, so it takes no room and the trigger lays
   out exactly where it would have without it.
 
+  `x-trap` is what makes the card a dialog rather than a card that happens to be on
+  top: the tab key stays inside it, the first field takes focus on open, the trigger
+  gets focus back on close, and `.inert` puts the rest of the page beyond the reach
+  of both the pointer and a screen reader.
+
   Usage:
     <x-modal.form
       :title="__('Add a list')"
@@ -56,26 +61,28 @@
   {{ $trigger }}
 
   <div x-cloak x-show="open" class="fixed inset-0 z-70 flex items-end justify-center p-4 sm:items-center">
-    <div x-show="open" x-transition.opacity.duration.150ms @click="open = false" class="absolute inset-0 bg-black/40" aria-hidden="true"></div>
+    <div x-show="open" x-transition.opacity.duration.170ms @click="open = false" class="erica-scrim absolute inset-0" aria-hidden="true"></div>
 
     <div
-      x-ref="panel"
       x-show="open"
-      x-transition
-      x-effect="open && $nextTick(() => $refs.panel.querySelector('input:not([type=hidden]), textarea, select')?.focus())"
+      x-trap.noscroll.inert="open"
+      x-transition:enter="transition ease-out duration-[220ms]"
+      x-transition:enter-start="translate-y-2 opacity-0"
+      x-transition:leave="transition ease-out duration-[170ms]"
+      x-transition:leave-end="opacity-0"
       role="dialog"
       aria-modal="true"
       @if ($title) aria-label="{{ $title }}" @endif
-      class="relative w-full max-w-md overflow-hidden rounded-xl border border-hairline bg-canvas shadow-xl"
+      class="relative w-full max-w-md overflow-hidden rounded-lg border border-hairline-strong bg-canvas shadow-pop"
     >
       <x-form :method="$method" :action="$action" {{ $attributes }}>
-        <div class="space-y-4 p-5">
+        <div class="flex flex-col gap-4 p-5">
           @if ($title)
-            <div class="space-y-1.5">
-              <p class="text-base leading-tight font-semibold tracking-tight text-ink">{{ $title }}</p>
+            <div class="flex flex-col gap-1.5">
+              <p class="erica-panel__title">{{ $title }}</p>
 
               @if ($description)
-                <p class="text-sm leading-relaxed text-muted">{{ $description }}</p>
+                <p class="erica-small">{{ $description }}</p>
               @endif
             </div>
           @endif
@@ -83,10 +90,10 @@
           {{ $slot }}
         </div>
 
-        <div class="flex flex-col-reverse gap-3 border-t border-hairline-soft bg-sunken px-5 py-3.5 sm:flex-row sm:justify-end">
-          <x-button.secondary type="button" @click="open = false">{{ $cancel ?? __('Cancel') }}</x-button.secondary>
+        <div class="flex flex-col-reverse gap-3 border-t border-hairline bg-sunken px-5 py-3.5 sm:flex-row sm:justify-end">
+          <x-button.secondary size="small" type="button" @click="open = false">{{ $cancel ?? __('Cancel') }}</x-button.secondary>
 
-          <x-button>{{ $confirm ?? __('Save') }}</x-button>
+          <x-button size="small">{{ $confirm ?? __('Save') }}</x-button>
         </div>
       </x-form>
     </div>

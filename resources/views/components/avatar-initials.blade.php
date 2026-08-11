@@ -1,6 +1,15 @@
 {{--
   The initials of somebody, in a circle, for when there is no picture to show.
 
+  The circle is not grey. Each name lands on one of seven warm tints, picked from
+  the letters of the name itself, so the same person is always the same colour
+  wherever they appear and two people beside each other are usually not. Picking
+  from the name rather than storing a choice means nothing has to be decided when
+  somebody is written down, and nothing has to be migrated if the tints change.
+
+  A generated face is never drawn here. Either it is the photograph somebody chose
+  or it is their letters.
+
   @var string $name
   @var int $size
 --}}
@@ -10,15 +19,33 @@
 ])
 
 @php
-  $initials = collect(preg_split('/\s+/', trim($name)))
-    ->filter()
-    ->take(2)
-    ->map(fn (string $part): string => mb_strtoupper(mb_substr($part, 0, 1)))
-    ->implode('');
+  $tints = [
+    ['var(--terracotta-tint)', 'var(--terracotta-deep)'],
+    ['var(--marigold-tint)', 'var(--marigold-deep)'],
+    ['var(--forest-tint)', 'var(--forest-deep)'],
+    ['var(--indigo-tint)', 'var(--indigo-deep)'],
+    ['var(--plum-tint)', 'var(--plum-deep)'],
+    ['var(--rose-tint)', 'var(--rose)'],
+    ['var(--sky-tint)', 'var(--sky)'],
+  ];
+
+  $words = collect(preg_split('/\s+/', trim($name)))->filter()->values();
+
+  $initials = $words->isEmpty()
+    ? '?'
+    : mb_strtoupper(mb_substr($words->first(), 0, 1).($words->count() > 1 ? mb_substr($words->last(), 0, 1) : ''));
+
+  /*
+   * The letters added up, wrapped at a prime so a long name does not drift towards
+   * the same total as every other long name.
+   */
+  $sum = collect(mb_str_split($name))->reduce(fn (int $total, string $letter): int => ($total + mb_ord($letter)) % 997, 0);
+
+  [$background, $foreground] = $tints[$sum % count($tints)];
 @endphp
 
 <span
-  {{ $attributes->class(['flex shrink-0 items-center justify-center rounded-full border border-hairline-soft bg-card font-semibold text-body']) }}
-  style="width: {{ $size }}px; height: {{ $size }}px; font-size: {{ round($size * 0.35) }}px;"
+  {{ $attributes->class(['flex shrink-0 items-center justify-center rounded-full font-bold tracking-tight select-none']) }}
+  style="width: {{ $size }}px; height: {{ $size }}px; font-size: {{ round($size * 0.38) }}px; background: {{ $background }}; color: {{ $foreground }};"
   aria-hidden="true"
 >{{ $initials }}</span>

@@ -95,7 +95,7 @@ class AccountControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Delete your account', escape: false);
-        $response->assertSee('none of it can be brought back', escape: false);
+        $response->assertSee('We keep no copy, so there is nobody to ask afterwards.', escape: false);
         $response->assertSee(route('settings.account.destroy'), escape: false);
     }
 

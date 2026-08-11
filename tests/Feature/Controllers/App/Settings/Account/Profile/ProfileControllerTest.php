@@ -50,43 +50,51 @@ class ProfileControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_points_to_the_logs_screen(): void
+    public function it_points_back_to_the_settings(): void
     {
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('settings.profile.index'));
 
         $response->assertStatus(200);
-        $response->assertSee(route('settings.logs.index'), escape: false);
+        $response->assertSee(route('settings.index'), escape: false);
+        $response->assertSee('Back to settings', escape: false);
     }
 
     #[Test]
-    public function it_points_back_to_the_vaults(): void
+    public function it_carries_the_dock(): void
     {
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('settings.profile.index'));
 
         $response->assertStatus(200);
+        $response->assertSee('erica-dock', escape: false);
         $response->assertSee(route('vaults.index'), escape: false);
-        $response->assertSee('Back to your vaults', escape: false);
     }
 
     #[Test]
-    public function it_groups_the_last_entries_under_the_personalization_heading(): void
+    public function it_offers_the_photo_and_the_details_as_two_separate_forms(): void
     {
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('settings.profile.index'));
 
         $response->assertStatus(200);
-        $response->assertSeeInOrder([
-            'Your account',
-            'Personalization',
-            route('settings.valueLists.index'),
-            route('settings.entityTypes.index'),
-            route('settings.templates.index'),
-        ], escape: false);
+        $response->assertSee(route('settings.photo.update'), escape: false);
+        $response->assertSee(route('settings.profile.update'), escape: false);
+        $response->assertSee('id="photo-form"', escape: false);
+        $response->assertSee('id="details-form"', escape: false);
+    }
+
+    #[Test]
+    public function it_only_offers_removing_a_photo_when_there_is_one(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('settings.profile.index'))
+            ->assertDontSee('id="photo-delete-form"', escape: false);
     }
 
     #[Test]

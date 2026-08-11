@@ -9,10 +9,17 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    /*
+     * Two families carry the interface. Bricolage Grotesque is display type and is
+     * only ever a page title or a person's name; Hanken Grotesk is everything else.
+     * IBM Plex Mono is for machine values (ids, keys, slugs, shortcuts) and never
+     * for a name or a date.
+     */
+    --font-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-display: 'Bricolage Grotesque', 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
-    /* Semantic surfaces & text — they resolve to the runtime variables below, which flip for dark. */
+    /* Semantic surfaces and text. They resolve to the runtime variables below, which flip for dark. */
     --color-page: var(--page);
     --color-canvas: var(--canvas);
     --color-card: var(--card);
@@ -23,6 +30,7 @@
     --color-hairline-soft: var(--hairline-soft);
     --color-hover: var(--hover);
     --color-focus: var(--focus);
+    --color-focus-ring: var(--focus-ring);
     --color-ink: var(--ink);
     --color-body: var(--body);
     --color-muted: var(--muted);
@@ -33,19 +41,51 @@
     --color-disabled: var(--disabled);
     --color-on-disabled: var(--on-disabled);
     --color-brand: var(--brand);
+    --color-link: var(--text-link);
+    --color-link-hover: var(--text-link-hover);
 
-    /* Fixed semantic colors, they read the same in both themes. */
-    --color-success: #4f8a49;
-    --color-warning: #9a6a24;
-    --color-error: #9a3f2b;
+    /* Semantic colours. They read differently in dark, so they are runtime variables too. */
+    --color-success: var(--success);
+    --color-warning: var(--warning);
+    --color-error: var(--danger);
+
+    /*
+     * The seven object hues, each with the tint it sits on. A colour always says
+     * what kind of thing something is; it never decorates.
+     */
+    --color-terracotta: var(--terracotta);
+    --color-marigold: var(--marigold);
+    --color-forest: var(--forest);
+    --color-indigo: var(--indigo);
+    --color-plum: var(--plum);
+    --color-sky: var(--sky);
+    --color-rose: var(--rose);
 
     /* Primary button tokens follow the primary, so they invert in dark. */
     --color-accent: var(--primary);
     --color-accent-foreground: var(--on-primary);
 
-    --radius-md: 8px;
-    --radius-lg: 11px;
-    --radius-xl: 13px;
+    /*
+     * Corners stay between 5 and 20px: soft enough to feel handled, never a pill
+     * except an avatar. 5 indicators · 8 marks and badges · 10 buttons and fields ·
+     * 14 panels and cards · 20 the dock.
+     */
+    --radius-xs: 5px;
+    --radius-sm: 8px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+
+    /*
+     * Elevation is object-like rather than floating: a hard 1px bottom edge plus a
+     * low, warm, tightly spread shadow. Fields go the other way, with an inset shade,
+     * so they read as a well rather than a box.
+     */
+    --shadow-raised: 0 1px 0 var(--hairline-strong), 0 2px 4px -2px rgb(44 43 41 / 0.1);
+    --shadow-lift: 0 2px 0 rgb(44 43 41 / 0.06), 0 8px 20px -12px rgb(44 43 41 / 0.28);
+    --shadow-pop: 0 12px 34px -14px rgb(44 43 41 / 0.36), 0 2px 0 rgb(44 43 41 / 0.05);
+    --shadow-dock: 0 -1px 0 var(--hairline), 0 -10px 30px -22px rgb(44 43 41 / 0.4);
+    --shadow-press-inset: inset 0 2px 3px -1px rgb(44 43 41 / 0.25);
 
     /*
      * The toast that confirms a save. It rises into place, draws its check mark,
@@ -116,61 +156,231 @@
     }
 }
 
+/*
+ * The palette. Warm paper neutrals derived from the mark's ink, and seven earthy
+ * object hues. The whole product sits on paper rather than on white: white is kept
+ * for the panels and controls sitting *on* the paper, which is what gives the
+ * interface its layered feel.
+ *
+ * The block below is the base palette. Everything under it is a name for a job
+ * (which surface, which text weight, which action), and those are what Blade reads.
+ */
 :root {
-    --page: #f7f7f6;
-    --canvas: #ffffff;
-    --card: #fafafa;
-    --sunken: #fbfbfa;
-    --input: #ffffff;
-    --hairline: #e7e7e4;
-    --hairline-strong: #e2e2de;
-    --hairline-soft: #f1f1ee;
-    --hover: #f4f4f1;
-    --focus: #b9b9b3;
-    --ink: #1d1d20;
-    --body: #74747a;
-    --muted: #8b8b90;
-    --muted-soft: #a0a0a4;
-    --placeholder: #b4b4b8;
-    --primary: #1d1d20;
-    --on-primary: #ffffff;
-    --disabled: #e9e9e5;
-    --on-disabled: #a0a0a4;
-    --brand: #3f5fd0;
+    --paper: #fbf8f3;
+    --sand: #f4eee4;
+    --sand-deep: #ebe3d5;
+    --white: #ffffff;
+
+    --terracotta: #c0512c;
+    --terracotta-deep: #9c3f21;
+    --terracotta-tint: #fbebe3;
+    --marigold: #e0a02e;
+    --marigold-deep: #8a5f14;
+    --marigold-tint: #fcf2de;
+    --forest: #2f7350;
+    --forest-deep: #1f5639;
+    --forest-tint: #e6f2ea;
+    --indigo: #3f5fd0;
+    --indigo-deep: #2c46a6;
+    --indigo-tint: #e9edfb;
+    --plum: #7a4b86;
+    --plum-deep: #5e356a;
+    --plum-tint: #f3ebf5;
+    --sky: #2e7a96;
+    --sky-tint: #e4f1f6;
+    --rose: #bc4a64;
+    --rose-tint: #fbe9ed;
+
+    --page: var(--paper);
+    --canvas: var(--white);
+    --card: var(--white);
+    --sunken: var(--sand);
+    --input: var(--white);
+    --surface-inset: var(--sand);
+    --surface-hover: var(--sand);
+    --surface-selected: var(--sand-deep);
+
+    --hairline: #e7dfd2;
+    --hairline-strong: #d6cbb8;
+    --hairline-soft: #f0eae0;
+    --border-soft: var(--hairline);
+    --border: var(--hairline-strong);
+    --hover: var(--sand);
+
+    --ink: #2c2b29;
+    --ink-soft: #4a463f;
+    --body: #5c5850;
+    --muted: #7d766a;
+    --muted-soft: #948c7e;
+    --placeholder: #a69e90;
+    --text-placeholder: var(--placeholder);
+
+    /*
+     * Two different jobs used to share one name. `--focus` is the border a field
+     * takes under the pointer and while it is being typed in, so it has to stay a
+     * warm neutral; `--focus-ring` is the ring every focusable element draws when
+     * the keyboard reaches it, and that one is indigo so it is unmistakable.
+     */
+    --focus: #c3b69f;
+    --focus-ring: var(--indigo);
+
+    --primary: var(--terracotta);
+    --on-primary: var(--white);
+    --action-primary: var(--terracotta);
+    --action-primary-hover: var(--terracotta-deep);
+    --action-primary-text: var(--white);
+    --action-strong: var(--ink);
+    --action-strong-hover: #151412;
+    --disabled: var(--sand-deep);
+    --on-disabled: var(--placeholder);
+    --brand: var(--indigo);
+
+    --accent: var(--terracotta);
+    --accent-tint: var(--terracotta-tint);
+    --success: var(--forest);
+    --warning: var(--marigold-deep);
+    --danger: #9a3f2b;
+    --danger-tint: #fbe9e4;
+    --text-link: var(--terracotta-deep);
+    --text-link-hover: var(--terracotta);
+
+    /*
+     * The type scale, written as `font` shorthands so a rule can set family, weight,
+     * size and leading in one go. Hierarchy comes from weight and space before it
+     * comes from a border.
+     */
+    --text-display-1: 600 52px/1.02 var(--font-display);
+    --text-display-2: 600 40px/1.06 var(--font-display);
+    --text-page-title: 600 32px/1.1 var(--font-display);
+    --text-section-title: 600 21px/1.25 var(--font-display);
+    --text-card-title: 600 17px/1.35 var(--font-sans);
+    --text-body: 400 15px/1.55 var(--font-sans);
+    --text-body-strong: 600 15px/1.5 var(--font-sans);
+    --text-small: 400 14px/1.5 var(--font-sans);
+    --text-caption: 500 12.5px/1.4 var(--font-sans);
+    --text-label: 600 13px/1.4 var(--font-sans);
+    --text-nav: 600 13.5px/1 var(--font-sans);
+    --text-mono: 400 12.5px/1.5 var(--font-mono);
+
+    --tracking-display: -0.022em;
+    --tracking-title: -0.015em;
+    --tracking-caption: 0.04em;
+
+    /* Tailwind draws `rounded-full` without a variable, so the one the components
+       below read has to be declared here. */
+    --radius-full: 999px;
+
+    --row-padding-y: 14px;
+    --row-padding-x: 16px;
+    --panel-padding: 20px;
+    --section-gap: 32px;
+    --reading-width: 720px;
+    --content-width: 1120px;
+    --dock-height: 72px;
+
+    /*
+     * Motion is short and physical. 110ms feedback, 170ms menus, 220ms panels, one
+     * easing. A press moves a control down exactly one pixel, which is where the
+     * whole physicality of the interface comes from. Nothing bounces, scales or
+     * overshoots.
+     */
+    --duration-fast: 110ms;
+    --duration-standard: 170ms;
+    --duration-slow: 220ms;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --press-translate: 1px;
 
     /* The bands of the gradient behind the quote, from top left to bottom right. */
     --quote-bands: #dfe4f6, #e6e2f2, #efe4ee, #f4e8e6, #f6eee2, #f2f0e2;
-    --quote-shadow: rgba(29, 29, 32, 0.22);
+    --quote-shadow: rgba(44, 43, 41, 0.22);
 
     color-scheme: light;
 }
 
+/*
+ * The same warm palette turned down, rather than a cool grey console. The object
+ * hues are lifted so they still read as themselves against a dark surface, and the
+ * shadows become black instead of warm brown, because a warm shadow on a dark
+ * ground is invisible.
+ */
 .dark {
-    --page: #111113;
-    --canvas: #1a1a1d;
-    --card: #202024;
-    --sunken: #161619;
-    --input: #1a1a1d;
-    --hairline: #2b2b31;
-    --hairline-strong: #33333a;
-    --hairline-soft: #26262b;
-    --hover: #26262c;
-    --focus: #55555f;
-    --ink: #f0f0ee;
-    --body: #9d9da4;
-    --muted: #8a8a91;
-    --muted-soft: #71717a;
-    --placeholder: #5c5c65;
-    --primary: #f0f0ee;
-    --on-primary: #111113;
-    --disabled: #26262c;
-    --on-disabled: #6a6a73;
-    --brand: #93a7f0;
+    --paper: #16130f;
+    --sand: #2a251e;
+    --sand-deep: #332d24;
+
+    --terracotta: #e0784f;
+    --terracotta-deep: #efa07a;
+    --terracotta-tint: #3b241a;
+    --marigold: #e9b75c;
+    --marigold-deep: #e9b75c;
+    --marigold-tint: #372a14;
+    --forest: #5cae81;
+    --forest-deep: #7fc4a0;
+    --forest-tint: #182f20;
+    --indigo: #8fa5ee;
+    --indigo-deep: #a8b9f3;
+    --indigo-tint: #1e2440;
+    --plum: #bc8fc7;
+    --plum-deep: #d0abd8;
+    --plum-tint: #2d2133;
+    --sky: #6fb6ce;
+    --sky-tint: #152a32;
+    --rose: #e0798f;
+    --rose-tint: #361f27;
+
+    --canvas: #211d18;
+    --card: #211d18;
+    --sunken: #1c1814;
+    --input: #211d18;
+
+    --hairline: #302a22;
+    --hairline-strong: #423b31;
+    --hairline-soft: #292319;
+
+    --ink: #f4efe6;
+    --ink-soft: #ded7ca;
+    --body: #b6afa2;
+    --muted: #8e8577;
+    --muted-soft: #7d7466;
+    --placeholder: #6f675b;
+
+    --focus: #5c5343;
+
+    --primary: var(--terracotta);
+    --on-primary: #16130f;
+    --action-primary: #c0512c;
+    --action-primary-hover: #d06238;
+    --action-primary-text: var(--white);
+    --action-strong: #f4efe6;
+    --action-strong-hover: #ffffff;
+    --disabled: #2a251e;
+    --on-disabled: #6f675b;
+
+    --danger: #e58b6e;
+    --danger-tint: #3a211a;
+    --text-link: #efa07a;
+    --text-link-hover: #f6bb9c;
+
+    --shadow-raised: 0 1px 0 rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+    --shadow-lift: 0 2px 0 rgb(0 0 0 / 0.35), 0 8px 20px -12px rgb(0 0 0 / 0.7);
+    --shadow-pop: 0 12px 34px -14px rgb(0 0 0 / 0.75), 0 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-dock: 0 -1px 0 rgb(255 255 255 / 0.06), 0 -10px 30px -22px rgb(0 0 0 / 0.8);
+    --shadow-press-inset: inset 0 2px 3px -1px rgb(0 0 0 / 0.45);
 
     --quote-bands: #1b1f34, #221d33, #2c1e2e, #301f24, #2c2419, #20221a;
     --quote-shadow: rgba(0, 0, 0, 0.5);
 
     color-scheme: dark;
+}
+
+/* Somebody who asked for less motion gets no motion, rather than faster motion. */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --duration-fast: 0ms;
+        --duration-standard: 0ms;
+        --duration-slow: 0ms;
+        --press-translate: 0px;
+    }
 }
 
 @layer utilities {
@@ -191,8 +401,8 @@
 }
 
 ::selection {
-    background: #e4e9fb;
-    color: #1d1d20;
+    background: var(--accent-tint);
+    color: var(--ink);
 }
 
 /* The panel that carries the quote on the guest screens, and the card on it. */
@@ -202,4 +412,1249 @@
 
 .quote-card {
     box-shadow: 0 18px 40px -22px var(--quote-shadow);
+}
+
+/*
+ * ─────────────────────────────────────────────────────────────────────────────
+ * The design system's own components.
+ *
+ * These are written as classes rather than as strings of utilities repeated in
+ * every Blade file, because that is what makes them a system: the panel, the row
+ * and the dock are one definition each, and a change to elevation or to the press
+ * distance happens in one place. Every value here comes from the tokens above.
+ *
+ * They sit in the components layer so a utility written on a tag still wins.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+@layer components {
+    /*
+     * The type scale as classes, so a heading is `class="erica-page-title"` rather
+     * than six utilities that have to be copied correctly every time. Titles are set
+     * in display type and are deliberately large: this is the one place the system
+     * lets typography be loud.
+     */
+    .erica-page-title {
+        font: var(--text-page-title);
+        letter-spacing: var(--tracking-display);
+        color: var(--ink);
+        margin: 0;
+    }
+
+    .erica-section-title {
+        font: var(--text-section-title);
+        letter-spacing: var(--tracking-title);
+        color: var(--ink);
+        margin: 0;
+    }
+
+    .erica-lede {
+        font: var(--text-body);
+        color: var(--body);
+        text-wrap: pretty;
+        margin: 0;
+    }
+
+    .erica-small {
+        font: var(--text-small);
+        color: var(--muted);
+        text-wrap: pretty;
+        margin: 0;
+    }
+
+    .erica-caption {
+        font: var(--text-caption);
+        color: var(--muted);
+        text-wrap: pretty;
+        margin: 0;
+    }
+
+    /* A bounded unit of content. Not around every paragraph. A heading and 32px of
+       space is the first tool, a panel the second. */
+    .erica-panel {
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-lg);
+        background: var(--canvas);
+        box-shadow: var(--shadow-raised);
+        overflow: hidden;
+    }
+
+    .erica-panel--inset {
+        background: var(--surface-inset);
+        box-shadow: none;
+        border-color: var(--hairline);
+    }
+
+    .erica-panel--plain {
+        box-shadow: none;
+    }
+
+    .erica-panel__head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 52px;
+        padding: 12px 18px;
+        border-bottom: 1px solid var(--border-soft);
+    }
+
+    .erica-panel__mark {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: var(--radius-sm);
+        flex-shrink: 0;
+    }
+
+    .erica-panel__title {
+        font: var(--text-card-title);
+        color: var(--ink);
+        letter-spacing: var(--tracking-title);
+        margin: 0;
+    }
+
+    .erica-panel__sub {
+        font: var(--text-caption);
+        color: var(--muted);
+        margin: 2px 0 0;
+    }
+
+    .erica-panel__action {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .erica-panel__body {
+        padding: var(--panel-padding);
+    }
+
+    .erica-panel__body--flush {
+        padding: 0;
+    }
+
+    .erica-panel__foot {
+        padding: 12px 18px;
+        border-top: 1px solid var(--border-soft);
+        background: var(--surface-inset);
+        font: var(--text-small);
+    }
+
+    /* One line of a list. Lists are rows separated by hairlines, never a grid of
+       little cards. */
+    .erica-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: var(--row-padding-y) var(--row-padding-x);
+        border-bottom: 1px solid var(--border-soft);
+        background: transparent;
+        width: 100%;
+        text-align: left;
+        text-decoration: none;
+        font-family: var(--font-sans);
+        transition: background var(--duration-fast) var(--ease-out);
+    }
+
+    .erica-row:last-child {
+        border-bottom: 0;
+    }
+
+    .erica-row--interactive {
+        cursor: pointer;
+    }
+
+    /*
+     * A row whose content is taller than one line hangs everything from the top
+     * instead of centring it, so the mark sits beside the first line rather than
+     * halfway down the paragraph.
+     */
+    .erica-row--top {
+        align-items: flex-start;
+    }
+
+    .erica-row--interactive:hover {
+        background: var(--surface-inset);
+    }
+
+    .erica-row--interactive:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: -2px;
+    }
+
+    .erica-row__mark {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius-sm);
+        flex-shrink: 0;
+    }
+
+    .erica-row__main {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .erica-row__title {
+        font: var(--text-body-strong);
+        color: var(--ink);
+        margin: 0;
+    }
+
+    .erica-row__desc {
+        font: var(--text-small);
+        color: var(--muted);
+        margin: 1px 0 0;
+        text-wrap: pretty;
+    }
+
+    .erica-row__end {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+    }
+
+    .erica-row__meta {
+        text-align: right;
+    }
+
+    .erica-row__meta b {
+        display: block;
+        font: var(--text-small);
+        font-weight: 600;
+        color: var(--ink);
+        white-space: nowrap;
+    }
+
+    .erica-row__meta span {
+        display: block;
+        font: var(--text-caption);
+        color: var(--muted);
+        white-space: nowrap;
+    }
+
+    /*
+     * A short word about the state or the kind of something. Never a pill, and never
+     * the colour on its own: the word inside it is the signal, and the tint only
+     * repeats what the word already says.
+     */
+    .erica-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        height: 24px;
+        padding: 0 9px;
+        border-radius: var(--radius-xs);
+        font-family: var(--font-sans);
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.005em;
+        white-space: nowrap;
+    }
+
+    .erica-badge--neutral {
+        background: var(--sand);
+        color: var(--ink-soft);
+    }
+
+    .erica-badge--success {
+        background: var(--forest-tint);
+        color: var(--forest-deep);
+    }
+
+    .erica-badge--warning {
+        background: var(--marigold-tint);
+        color: var(--marigold-deep);
+    }
+
+    .erica-badge--danger {
+        background: var(--danger-tint);
+        color: var(--danger);
+    }
+
+    .erica-badge--info {
+        background: var(--indigo-tint);
+        color: var(--indigo-deep);
+    }
+
+    .erica-badge--accent {
+        background: var(--accent-tint);
+        color: var(--terracotta-deep);
+    }
+
+    .erica-badge--outline {
+        background: transparent;
+        box-shadow: inset 0 0 0 1px var(--border);
+        color: var(--ink-soft);
+    }
+
+    /*
+     * An inline message attached to the thing it is about, rather than a banner at
+     * the top of a screen that says something about somewhere else. The glyph is
+     * what carries the tone alongside the tint, so colour is never the only signal.
+     */
+    .erica-notice {
+        display: flex;
+        gap: 11px;
+        align-items: flex-start;
+        padding: 14px 16px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-soft);
+        font-family: var(--font-sans);
+    }
+
+    .erica-notice__title {
+        font: var(--text-body-strong);
+        color: var(--ink);
+        margin: 0;
+    }
+
+    .erica-notice__body {
+        font: var(--text-small);
+        color: var(--body);
+        margin: 3px 0 0;
+        text-wrap: pretty;
+    }
+
+    .erica-notice__end {
+        margin-left: auto;
+        flex-shrink: 0;
+    }
+
+    .erica-notice--info {
+        background: var(--indigo-tint);
+        border-color: color-mix(in oklab, var(--indigo) 22%, var(--indigo-tint));
+    }
+
+    .erica-notice--success {
+        background: var(--forest-tint);
+        border-color: color-mix(in oklab, var(--forest) 22%, var(--forest-tint));
+    }
+
+    .erica-notice--warning {
+        background: var(--marigold-tint);
+        border-color: color-mix(in oklab, var(--marigold) 30%, var(--marigold-tint));
+    }
+
+    .erica-notice--danger {
+        background: var(--danger-tint);
+        border-color: color-mix(in oklab, var(--danger) 22%, var(--danger-tint));
+    }
+
+    .erica-notice--quiet {
+        background: var(--surface-inset);
+    }
+
+    /*
+     * What a list shows when it holds nothing. The glyph sits a few degrees off
+     * square, which is the one piece of deliberate imperfection in the system: an
+     * empty list is the friendliest moment a screen has.
+     */
+    .erica-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        text-align: center;
+        padding: 48px 32px;
+        min-height: 240px;
+    }
+
+    .erica-empty__glyph {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 64px;
+        border-radius: var(--radius-lg);
+        transform: rotate(-4deg);
+    }
+
+    .erica-empty__title {
+        font: var(--text-section-title);
+        letter-spacing: var(--tracking-title);
+        color: var(--ink);
+        margin: 0;
+    }
+
+    .erica-empty__text {
+        font: var(--text-body);
+        color: var(--muted);
+        margin: 0;
+        max-width: 44ch;
+        text-wrap: pretty;
+    }
+
+    /*
+     * A field is a label, a control, a hint and an error, in that order and 6px
+     * apart. The label is always there. A placeholder is never a label.
+     */
+    .erica-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .erica-field__label {
+        font: var(--text-label);
+        color: var(--ink);
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+    }
+
+    .erica-field__note {
+        font: var(--text-caption);
+        font-weight: 500;
+        color: var(--muted);
+    }
+
+    .erica-field__help {
+        font: var(--text-caption);
+        color: var(--muted);
+        margin: 0;
+    }
+
+    .erica-field__error {
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
+        font: var(--text-caption);
+        color: var(--danger);
+        margin: 0;
+    }
+
+    /*
+     * A control reads as a well rather than a box: the shade is inset, which is the
+     * one place in the system where elevation points inwards. Focus takes an ink
+     * border and a terracotta halo, so it is unmistakable which field is being
+     * typed in even at a glance across a long form.
+     */
+    .erica-control {
+        width: 100%;
+        font-family: var(--font-sans);
+        font-size: 15px;
+        color: var(--ink);
+        background: var(--input);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 0 12px;
+        height: 44px;
+        box-shadow: var(--shadow-press-inset);
+        transition:
+            border-color var(--duration-fast) var(--ease-out),
+            box-shadow var(--duration-fast) var(--ease-out);
+    }
+
+    /*
+     * Safari on iOS zooms the page in whenever a field it is given is under 16px, so
+     * every control is 16px on a phone and back down to its own size from sm up.
+     */
+    @media (max-width: 639px) {
+        .erica-control {
+            font-size: 16px;
+        }
+    }
+
+    .erica-control::placeholder {
+        color: var(--text-placeholder);
+    }
+
+    .erica-control:hover {
+        border-color: var(--muted);
+    }
+
+    .erica-control:focus {
+        outline: none;
+        border-color: var(--ink);
+        box-shadow:
+            inset 0 2px 3px -1px rgb(44 43 41 / 0.18),
+            0 0 0 3px var(--accent-tint);
+    }
+
+    .erica-control:disabled {
+        background: var(--sand);
+        color: var(--muted);
+        box-shadow: none;
+        cursor: default;
+    }
+
+    .erica-control[aria-invalid='true'] {
+        border-color: var(--danger);
+    }
+
+    .erica-control--sm {
+        height: 36px;
+    }
+
+    @media (min-width: 640px) {
+        .erica-control--sm {
+            font-size: 14px;
+        }
+    }
+
+    .erica-control--textarea {
+        height: auto;
+        min-height: 112px;
+        padding: 11px 12px;
+        line-height: 1.55;
+        resize: vertical;
+    }
+
+    .erica-control--select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%237D766A' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M4.4 6.4 8 10l3.6-3.6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 34px;
+    }
+
+    /*
+     * A file field is the browser's own control, because nothing hand-built opens a
+     * file picker as reliably. What is drawn is the native button dressed as a small
+     * secondary one, with the chosen file's name beside it as a caption. So the well
+     * is dropped here: there is no text being typed into it.
+     */
+    .erica-control--file {
+        height: auto;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        font: var(--text-caption);
+        color: var(--muted);
+        cursor: pointer;
+    }
+
+    .erica-control--file::file-selector-button {
+        margin-right: 12px;
+        height: 34px;
+        padding: 0 13px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--canvas);
+        box-shadow: var(--shadow-raised);
+        font-family: var(--font-sans);
+        font-size: 13.5px;
+        font-weight: 600;
+        color: var(--ink);
+        cursor: pointer;
+        transition: background var(--duration-fast) var(--ease-out);
+    }
+
+    .erica-control--file:hover::file-selector-button {
+        background: var(--sand);
+    }
+
+    /* The primary control of the product: substantial, labelled, tactile. */
+    .erica-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 1px solid transparent;
+        border-radius: var(--radius-md);
+        font-family: var(--font-sans);
+        font-weight: 600;
+        letter-spacing: -0.005em;
+        white-space: nowrap;
+        cursor: pointer;
+        text-decoration: none;
+        transition:
+            background var(--duration-fast) var(--ease-out),
+            box-shadow var(--duration-fast) var(--ease-out),
+            transform var(--duration-fast) var(--ease-out),
+            border-color var(--duration-fast) var(--ease-out);
+    }
+
+    .erica-btn:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 2px;
+    }
+
+    .erica-btn[disabled],
+    .erica-btn[aria-disabled='true'] {
+        cursor: default;
+        opacity: 0.5;
+        box-shadow: none;
+        pointer-events: none;
+    }
+
+    .erica-btn--sm {
+        height: 34px;
+        padding: 0 13px;
+        font-size: 13.5px;
+    }
+
+    .erica-btn--md {
+        height: 40px;
+        padding: 0 18px;
+        font-size: 15px;
+    }
+
+    .erica-btn--lg {
+        height: 48px;
+        padding: 0 24px;
+        font-size: 16.5px;
+    }
+
+    .erica-btn--block {
+        width: 100%;
+    }
+
+    .erica-btn--primary {
+        background: var(--action-primary);
+        color: var(--action-primary-text);
+        box-shadow:
+            0 1px 0 var(--terracotta-deep),
+            0 2px 5px -3px rgb(44 43 41 / 0.5);
+    }
+
+    .erica-btn--primary:hover {
+        background: var(--action-primary-hover);
+    }
+
+    .erica-btn--strong {
+        background: var(--action-strong);
+        color: var(--canvas);
+        box-shadow:
+            0 1px 0 #000,
+            0 2px 5px -3px rgb(44 43 41 / 0.5);
+    }
+
+    .erica-btn--strong:hover {
+        background: var(--action-strong-hover);
+    }
+
+    .erica-btn--secondary {
+        background: var(--canvas);
+        color: var(--ink);
+        border-color: var(--border);
+        box-shadow: var(--shadow-raised);
+    }
+
+    .erica-btn--secondary:hover {
+        background: var(--sand);
+    }
+
+    .erica-btn--ghost {
+        background: transparent;
+        color: var(--ink-soft);
+    }
+
+    .erica-btn--ghost:hover {
+        background: var(--sand);
+        color: var(--ink);
+    }
+
+    .erica-btn--danger {
+        background: var(--danger);
+        color: #fff;
+        box-shadow: 0 1px 0 #7d3222;
+    }
+
+    .erica-btn--danger:hover {
+        background: #7d3222;
+    }
+
+    .erica-btn:active:not([disabled]) {
+        transform: translateY(var(--press-translate));
+        box-shadow: none;
+    }
+
+    /*
+     * A filter or a scope toggle. What is chosen is a filled ink chip rather than a
+     * tinted outline, so which one is in force is never a matter of noticing that one
+     * border is slightly darker than the others.
+     */
+    .erica-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        height: 36px;
+        padding: 0 14px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--canvas);
+        color: var(--ink-soft);
+        font-family: var(--font-sans);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        white-space: nowrap;
+        box-shadow: var(--shadow-raised);
+        transition:
+            background var(--duration-fast) var(--ease-out),
+            transform var(--duration-fast) var(--ease-out);
+    }
+
+    .erica-chip:hover {
+        background: var(--sand);
+    }
+
+    .erica-chip:active {
+        transform: translateY(var(--press-translate));
+        box-shadow: none;
+    }
+
+    .erica-chip:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 2px;
+    }
+
+    .erica-chip[aria-pressed='true'],
+    .erica-chip[aria-current='true'] {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: var(--canvas);
+        box-shadow: none;
+    }
+
+    .erica-chip__count {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        opacity: 0.7;
+    }
+
+    /* An icon-only control. It always carries an accessible name, and never holds an
+       action that has no other route to it. */
+    .erica-iconbtn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid transparent;
+        border-radius: var(--radius-md);
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        position: relative;
+        transition:
+            background var(--duration-fast) var(--ease-out),
+            color var(--duration-fast) var(--ease-out),
+            transform var(--duration-fast) var(--ease-out);
+    }
+
+    /* Widens what a thumb has to hit without widening what is drawn. */
+    .erica-iconbtn::after {
+        content: '';
+        position: absolute;
+        inset: -6px;
+    }
+
+    .erica-iconbtn:hover {
+        background: var(--sand);
+        color: var(--ink);
+    }
+
+    .erica-iconbtn:active {
+        transform: translateY(var(--press-translate));
+    }
+
+    .erica-iconbtn:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 2px;
+    }
+
+    .erica-iconbtn--bordered {
+        background: var(--canvas);
+        border-color: var(--border);
+        color: var(--ink-soft);
+        box-shadow: var(--shadow-raised);
+    }
+
+    .erica-iconbtn--sm {
+        width: 34px;
+        height: 34px;
+    }
+
+    .erica-iconbtn--md {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* The main navigation: a floating dock at the foot of the window. No sidebar. */
+    .erica-dock {
+        position: fixed;
+        left: 50%;
+        bottom: 18px;
+        transform: translateX(-50%);
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 8px;
+        background: var(--canvas);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-pop);
+        max-width: calc(100vw - 24px);
+    }
+
+    .erica-dock__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        min-width: 70px;
+        height: 60px;
+        padding: 0 10px;
+        border: 0;
+        border-radius: var(--radius-lg);
+        background: transparent;
+        color: var(--muted);
+        font: var(--text-nav);
+        text-decoration: none;
+        position: relative;
+        transition:
+            background var(--duration-fast) var(--ease-out),
+            color var(--duration-fast) var(--ease-out),
+            transform var(--duration-fast) var(--ease-out);
+    }
+
+    /* Only the ones that go somewhere behave like something you can press. */
+    a.erica-dock__item {
+        cursor: pointer;
+    }
+
+    a.erica-dock__item:hover {
+        background: var(--surface-inset);
+        color: var(--ink);
+    }
+
+    a.erica-dock__item:active {
+        transform: translateY(var(--press-translate));
+    }
+
+    .erica-dock__item:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 2px;
+    }
+
+    /* A destination that has not been built yet is drawn and not offered: a link
+       that leads nowhere is worse than a word that does not move. */
+    .erica-dock__item--unbuilt {
+        color: var(--placeholder);
+    }
+
+    .erica-dock__item[aria-current='page'] {
+        color: var(--ink);
+    }
+
+    .erica-dock__item[aria-current='page'] .erica-dock__glyph {
+        background: var(--tint);
+        color: var(--hue);
+    }
+
+    .erica-dock__glyph {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 26px;
+        border-radius: var(--radius-sm);
+        transition:
+            background var(--duration-fast) var(--ease-out),
+            color var(--duration-fast) var(--ease-out);
+    }
+
+    .erica-dock__count {
+        position: absolute;
+        top: 2px;
+        right: 10px;
+        min-width: 17px;
+        height: 17px;
+        padding: 0 4px;
+        border-radius: var(--radius-full);
+        background: var(--terracotta);
+        color: #fff;
+        font: var(--text-caption);
+        font-size: 11px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 0 2px var(--canvas);
+    }
+
+    .erica-dock__brand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        height: 60px;
+        padding: 0 16px;
+        margin-right: 2px;
+        border: 0;
+        border-radius: var(--radius-lg);
+        background: var(--ink);
+        color: var(--canvas);
+        font: var(--text-nav);
+        cursor: pointer;
+        transition:
+            background var(--duration-fast) var(--ease-out),
+            transform var(--duration-fast) var(--ease-out);
+    }
+
+    .erica-dock__brand:hover {
+        background: var(--action-strong-hover);
+    }
+
+    .erica-dock__brand:active {
+        transform: translateY(var(--press-translate));
+    }
+
+    .erica-dock__brand:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 2px;
+    }
+
+    /* The mark is ink on light and is never recoloured, so it keeps a light plate
+       in both themes. */
+    .erica-dock__mark {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: var(--radius-sm);
+        background: #fbf8f3;
+    }
+
+    .erica-dock__rule {
+        width: 1px;
+        height: 32px;
+        background: var(--border-soft);
+        margin: 0 4px;
+    }
+
+    /* Below 720px the dock stops floating in the middle and stretches between the
+       edges. The vault chip keeps its mark and drops its label; the destinations
+       share what is left. */
+    @media (max-width: 720px) {
+        .erica-dock {
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            transform: none;
+            justify-content: space-between;
+            border-radius: var(--radius-lg);
+        }
+
+        .erica-dock__item {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .erica-dock__brand {
+            padding: 0 12px;
+        }
+
+        .erica-dock__brand span {
+            display: none;
+        }
+    }
+
+    /*
+     * Tabs across one thing that has several faces. A rule runs the whole width and
+     * the one you are on thickens its own piece of it: no enclosing pill, no
+     * card-style active state, nothing that looks like a button.
+     *
+     * A tab is a link when the face it opens has an address, which it should.
+     */
+    .erica-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        gap: 4px;
+        border-bottom: 1px solid var(--border-soft);
+    }
+
+    .erica-tab {
+        margin-bottom: -1px;
+        display: flex;
+        flex: none;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px 10px;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        background: transparent;
+        color: var(--muted);
+        font: var(--text-small);
+        cursor: pointer;
+        text-decoration: none;
+        transition:
+            color var(--duration-fast) var(--ease-out),
+            border-color var(--duration-fast) var(--ease-out);
+    }
+
+    .erica-tab:hover {
+        color: var(--ink);
+    }
+
+    .erica-tab:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 2px;
+    }
+
+    .erica-tab[aria-selected='true'] {
+        border-bottom-color: var(--ink);
+        color: var(--ink);
+        font-weight: 600;
+    }
+
+    .erica-tab__count {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 6px;
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-full);
+        font: var(--text-caption);
+        font-size: 11.5px;
+        font-weight: 500;
+        color: var(--muted);
+    }
+
+    .erica-tab[aria-selected='true'] .erica-tab__count {
+        border-color: var(--border);
+        color: var(--body);
+    }
+
+    /*
+     * A short list of actions or choices. A real surface with a real border, never a
+     * shadow floating over the page with nothing under it.
+     */
+    .erica-menu {
+        min-width: 220px;
+        padding: 6px;
+        background: var(--canvas);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-pop);
+    }
+
+    .erica-menu__label {
+        font: var(--text-caption);
+        letter-spacing: var(--tracking-caption);
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 8px 10px 6px;
+        margin: 0;
+    }
+
+    .erica-menu__item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding: 9px 10px;
+        border: 0;
+        border-radius: var(--radius-sm);
+        background: transparent;
+        color: var(--ink);
+        font: var(--text-body);
+        text-align: left;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background var(--duration-fast) var(--ease-out);
+    }
+
+    .erica-menu__item:hover {
+        background: var(--surface-inset);
+    }
+
+    .erica-menu__item:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: -2px;
+    }
+
+    /* What is already chosen is heavier as well as ticked, so it is not the tick
+       alone that has to be spotted. */
+    .erica-menu__item[aria-checked='true'] {
+        font-weight: 600;
+        background: var(--surface-inset);
+    }
+
+    .erica-menu__item--danger {
+        color: var(--danger);
+    }
+
+    .erica-menu__item--danger:hover {
+        background: var(--danger-tint);
+    }
+
+    .erica-menu__end {
+        margin-left: auto;
+        color: var(--muted);
+        font: var(--text-caption);
+    }
+
+    .erica-menu__sep {
+        height: 1px;
+        background: var(--border-soft);
+        margin: 6px 4px;
+    }
+
+    /*
+     * What dims the page behind anything modal. The only translucency in the system
+     * besides the sticky top bar, and it is deliberately light: the page behind is
+     * still legible, because a dialog is a question about it rather than a
+     * replacement for it.
+     */
+    .erica-scrim {
+        background: rgb(44 43 41 / 0.28);
+    }
+
+    /* The menu behind the vault chip: everything the dock does not carry, one
+       keystroke away. */
+    .erica-launcher__scrim {
+        position: fixed;
+        inset: 0;
+        z-index: 49;
+    }
+
+    /*
+     * The panel is centred by a layer of its own rather than by a translate on
+     * itself, so the transform is free for the transition that brings it in.
+     */
+    .erica-launcher__layer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 102px;
+        z-index: 51;
+        display: flex;
+        justify-content: center;
+        padding: 0 12px;
+        pointer-events: none;
+    }
+
+    .erica-launcher {
+        width: min(680px, 100%);
+        max-height: calc(100dvh - 160px);
+        overflow-y: auto;
+        pointer-events: auto;
+        background: var(--canvas);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-pop);
+    }
+
+    .erica-launcher__search {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--border-soft);
+        background: var(--surface-inset);
+    }
+
+    .erica-launcher__search input {
+        flex: 1;
+        min-width: 0;
+        border: 0;
+        background: transparent;
+        font-family: var(--font-sans);
+        font-size: 16px;
+        color: var(--ink);
+        outline: none;
+    }
+
+    .erica-launcher__search input::placeholder {
+        color: var(--text-placeholder);
+    }
+
+    .erica-launcher__kbd {
+        font: var(--text-mono);
+        color: var(--muted);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-xs);
+        padding: 2px 6px;
+        background: var(--canvas);
+    }
+
+    .erica-launcher__section {
+        padding: 14px 18px;
+    }
+
+    .erica-launcher__section + .erica-launcher__section {
+        border-top: 1px solid var(--border-soft);
+    }
+
+    .erica-launcher__title {
+        font: var(--text-caption);
+        letter-spacing: var(--tracking-caption);
+        text-transform: uppercase;
+        color: var(--muted);
+        margin: 0 0 10px;
+    }
+
+    .erica-launcher__grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+        gap: 6px;
+    }
+
+    .erica-launcher__tile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 10px;
+        border: 0;
+        border-radius: var(--radius-md);
+        background: transparent;
+        color: var(--ink);
+        font: var(--text-body-strong);
+        text-align: left;
+        text-decoration: none;
+        transition: background var(--duration-fast) var(--ease-out);
+    }
+
+    a.erica-launcher__tile,
+    button.erica-launcher__tile {
+        cursor: pointer;
+    }
+
+    a.erica-launcher__tile:hover,
+    button.erica-launcher__tile:hover {
+        background: var(--surface-inset);
+    }
+
+    .erica-launcher__tile:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: -2px;
+    }
+
+    .erica-launcher__tile--unbuilt {
+        color: var(--placeholder);
+    }
+
+    .erica-launcher__glyph {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: var(--radius-sm);
+        flex-shrink: 0;
+    }
+
+    .erica-launcher__note {
+        display: block;
+        font: var(--text-caption);
+        color: var(--muted);
+        font-weight: 500;
+    }
 }

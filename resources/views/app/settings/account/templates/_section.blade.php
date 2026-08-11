@@ -34,25 +34,25 @@
       :class="draggingId === {{ $section['id'] }} && 'opacity-40'"
     @endif
     x-data="{ renaming: false }"
-    class="rounded-xl border border-hairline bg-canvas"
+    class="erica-panel"
   >
-    <div class="flex flex-wrap items-center gap-2.5 border-b border-hairline px-3.5 py-3">
-      <div x-show="! renaming" class="flex min-w-0 flex-1 flex-wrap items-center gap-2.5">
-        <h2 class="truncate text-lg font-semibold text-ink">{{ $section['name'] }}</h2>
+    <header class="erica-panel__head">
+      <div x-show="! renaming" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2.5 gap-y-1.5">
+        <h2 class="erica-panel__title truncate">{{ $section['name'] }}</h2>
 
         @if ($section['isMine'])
-          <span class="rounded-sm border border-hairline bg-sunken px-2 py-0.5 text-xs text-muted">{{ __('Your section') }}</span>
+          <x-badge>{{ __('Your section') }}</x-badge>
         @endif
 
-        <span class="ml-auto font-mono text-xs text-muted-soft">{{ $section['fieldLabel'] }}</span>
+        <code class="ml-auto font-mono text-[12.5px] text-muted">{{ $section['fieldLabel'] }}</code>
 
         @if ($isEditable)
           <div class="flex shrink-0 items-center gap-0.5">
-            <button
+            <x-button.ghost
+              size="small"
               type="button"
               @click="renaming = true; $nextTick(() => $refs.title.focus())"
-              class="cursor-pointer rounded-md px-2 py-1.5 text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-ink"
-            >{{ __('Rename') }}</button>
+            >{{ __('Rename') }}</x-button.ghost>
 
             {{--
               Offered only once there is somewhere to move it to. The select
@@ -70,7 +70,7 @@
                   name="page"
                   aria-label="{{ __('Move this section to another page') }}"
                   @change="$el.form.requestSubmit()"
-                  class="cursor-pointer appearance-none rounded-md border-none bg-transparent px-2 py-1.5 text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-ink"
+                  class="erica-btn erica-btn--ghost erica-btn--sm cursor-pointer appearance-none pr-2 pl-2"
                 >
                   <option value="" selected>{{ __('Move to') }}</option>
 
@@ -88,11 +88,7 @@
               x-target="builder"
             >
               <x-slot:trigger>
-                <button
-                  type="button"
-                  @click="open = true"
-                  class="cursor-pointer rounded-md px-2 py-1.5 text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-error"
-                >{{ __('Remove') }}</button>
+                <x-button.ghost size="small" type="button" @click="open = true" class="hover:text-error">{{ __('Remove') }}</x-button.ghost>
               </x-slot:trigger>
 
               <p>{{ __('The section itself is untouched, and every other template carrying it is unchanged.') }}</p>
@@ -113,6 +109,7 @@
               :id="'section-'.$section['id'].'-title'"
               name="title_override"
               x-ref="title"
+              size="small"
               :value="$section['name']"
               :aria-label="__('Heading on this template')"
               :help="__('Only this template sees it.')"
@@ -121,22 +118,22 @@
             />
 
             <div class="flex items-center gap-2">
-              <x-button>{{ __('Save') }}</x-button>
+              <x-button size="small">{{ __('Save') }}</x-button>
 
-              <button type="button" @click="renaming = false" class="cursor-pointer rounded-md px-2 py-1.5 text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-ink">{{ __('Cancel') }}</button>
+              <x-button.ghost size="small" type="button" @click="renaming = false">{{ __('Cancel') }}</x-button.ghost>
             </div>
           </x-form>
         </div>
       @endif
-    </div>
+    </header>
 
     @if ($section['willBeCopied'] && $isEditable)
-      <p class="border-b border-hairline-soft bg-sunken px-3.5 py-2 text-xs leading-relaxed text-muted">
+      <p class="erica-caption border-b border-hairline bg-sunken px-4 py-2.5">
         {{ __('This section is published or shared with another template. Changing anything in it here gives the section a new version, and leaves the other templates exactly as they are.') }}
       </p>
     @endif
 
-    <div class="space-y-0.5 p-2">
+    <div class="flex flex-col gap-0.5 p-2">
       @foreach ($section['fields'] as $field)
         @include('app.settings.account.templates._field', ['field' => $field])
       @endforeach
@@ -145,13 +142,10 @@
         <a
           href="{{ route('settings.fields.new', [$template, $section['id']]) }}"
           data-turbo="true"
-          class="flex w-full items-center gap-2.5 rounded-md border border-transparent px-2.5 py-2.5 text-sm text-body transition-colors duration-150 hover:bg-hover hover:text-ink"
+          class="flex w-full items-center gap-2.5 rounded-md px-2.5 py-2.5 text-sm text-body transition-colors duration-[110ms] hover:bg-hover hover:text-ink"
         >
           <span class="flex w-4 justify-center text-muted" aria-hidden="true">
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
-              <line x1="8" y1="3.5" x2="8" y2="12.5"></line>
-              <line x1="3.5" y1="8" x2="12.5" y2="8"></line>
-            </svg>
+            <x-icon name="plus" :size="15" :stroke-width="1.6" />
           </span>
           {{ __('Add a field') }}
         </a>

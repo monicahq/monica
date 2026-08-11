@@ -11,6 +11,11 @@
   Attributes land on the form rather than on the wrapper, so a caller can aim
   ajax at a region with `x-target` the way it does with any other form.
 
+  `x-trap` is what makes the card a dialog rather than a card that happens to be on
+  top: the tab key stays inside it, the button that keeps the thing takes focus on
+  open, the trigger gets focus back on close, and `.inert` puts the rest of the page
+  beyond the reach of both the pointer and a screen reader.
+
   The wrapper is `display: contents`, so it takes no room and the trigger lays
   out exactly where it would have without it.
 
@@ -46,39 +51,38 @@
   {{ $trigger }}
 
   <div x-cloak x-show="open" class="fixed inset-0 z-70 flex items-end justify-center p-4 sm:items-center">
-    <div x-show="open" x-transition.opacity.duration.150ms @click="open = false" class="absolute inset-0 bg-black/40" aria-hidden="true"></div>
+    <div x-show="open" x-transition.opacity.duration.170ms @click="open = false" class="erica-scrim absolute inset-0" aria-hidden="true"></div>
 
     <div
       x-show="open"
-      x-transition
-      x-effect="open && $nextTick(() => $refs.cancel.focus())"
+      x-trap.noscroll.inert="open"
+      x-transition:enter="transition ease-out duration-[220ms]"
+      x-transition:enter-start="translate-y-2 opacity-0"
+      x-transition:leave="transition ease-out duration-[170ms]"
+      x-transition:leave-end="opacity-0"
       role="dialog"
       aria-modal="true"
       @if ($title) aria-label="{{ $title }}" @endif
-      class="relative w-full max-w-md overflow-hidden rounded-xl border border-hairline bg-canvas shadow-xl"
+      class="relative w-full max-w-md overflow-hidden rounded-lg border border-hairline-strong bg-canvas shadow-pop"
     >
       <div class="flex gap-3.5 p-5">
-        <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-error/10 text-error" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <path d="M8 2.4 14.2 13.2H1.8z"></path>
-            <line x1="8" y1="6.4" x2="8" y2="9.2"></line>
-            <circle cx="8" cy="11.3" r="0.5" fill="currentColor" stroke="none"></circle>
-          </svg>
+        <span class="flex size-9 shrink-0 items-center justify-center rounded-sm" style="background: var(--danger-tint); color: var(--danger)" aria-hidden="true">
+          <x-icon name="info" :size="19" :stroke-width="1.6" />
         </span>
 
-        <div class="min-w-0 space-y-1.5">
+        <div class="flex min-w-0 flex-col gap-1.5">
           @if ($title)
-            <p class="text-base leading-tight font-semibold tracking-tight text-ink">{{ $title }}</p>
+            <p class="erica-panel__title">{{ $title }}</p>
           @endif
 
-          <div class="space-y-2 text-sm leading-relaxed text-muted">{{ $slot }}</div>
+          <div class="flex flex-col gap-2 text-sm leading-relaxed text-body">{{ $slot }}</div>
         </div>
       </div>
 
-      <x-form :method="$method" :action="$action" {{ $attributes }} class="flex flex-col-reverse gap-3 border-t border-hairline-soft bg-sunken px-5 py-3.5 sm:flex-row sm:justify-end">
-        <x-button.secondary type="button" x-ref="cancel" @click="open = false">{{ $cancel ?? __('Keep it') }}</x-button.secondary>
+      <x-form :method="$method" :action="$action" {{ $attributes }} class="flex flex-col-reverse gap-3 border-t border-hairline bg-sunken px-5 py-3.5 sm:flex-row sm:justify-end">
+        <x-button.secondary size="small" type="button" @click="open = false">{{ $cancel ?? __('Keep it') }}</x-button.secondary>
 
-        <x-button class="bg-error hover:bg-error/88">{{ $confirm ?? __('Delete') }}</x-button>
+        <x-button.danger size="small">{{ $confirm ?? __('Delete') }}</x-button.danger>
       </x-form>
     </div>
   </div>

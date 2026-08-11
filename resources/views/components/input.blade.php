@@ -55,29 +55,9 @@
   $helpId = $help ? $id.'-help' : null;
   $errorId = $error ? $id.'-error' : null;
   $describedBy = trim(($helpId ?? '').' '.($errorId ?? ''));
-
-  /* Safari on iOS zooms the page in whenever a field it is given is under 16px,
-     so the field is 16px on a phone and back down from sm up. That holds for the
-     small size too: a bar that zooms the page when it is tapped is worse than a
-     bar whose field is a few pixels taller than the button beside it. */
-  $sizes = [
-    'default' => 'px-3 py-2.5 text-base sm:text-sm',
-    'small' => 'px-3 py-1.5 text-base sm:text-[13px]',
-  ];
-
-  $classes = [
-    'block w-full appearance-none',
-    $sizes[$size],
-    'rounded-md border border-hairline-strong bg-input text-ink placeholder-placeholder',
-    'transition-colors duration-150',
-    'hover:border-focus hover:bg-hover',
-    'focus:border-focus focus:bg-canvas focus:outline-none',
-    'disabled:cursor-default disabled:opacity-60',
-    'aria-invalid:border-error',
-  ];
 @endphp
 
-<div class="space-y-1.5">
+<div class="erica-field">
   @if ($label)
     <x-label :for="$id" :value="$label" :optional="$optional" :required="$requiredMark" />
   @endif
@@ -95,11 +75,11 @@
     {{ $autofocus ? 'autofocus' : '' }}
     {{ $required ? 'required' : '' }}
     {{ $disabled ? 'disabled' : '' }}
-    {{ $attributes->class($classes) }}
+    {{ $attributes->class(['erica-control', 'erica-control--sm' => $size === 'small']) }}
   />
 
   @if ($help)
-    <p id="{{ $helpId }}" class="text-xs text-muted">{{ $help }}</p>
+    <p id="{{ $helpId }}" class="erica-field__help">{{ $help }}</p>
   @endif
 
   <x-error :id="$errorId" :messages="$error" />

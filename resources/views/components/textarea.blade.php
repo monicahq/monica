@@ -31,20 +31,9 @@
   $helpId = $help ? $id.'-help' : null;
   $errorId = $error ? $id.'-error' : null;
   $describedBy = trim(($helpId ?? '').' '.($errorId ?? ''));
-
-  $classes = [
-    'block w-full appearance-none resize-y',
-    'px-3 py-2.5 text-base sm:text-sm',
-    'rounded-md border border-hairline-strong bg-input text-ink placeholder-placeholder',
-    'transition-colors duration-150',
-    'hover:border-focus hover:bg-hover',
-    'focus:border-focus focus:bg-canvas focus:outline-none',
-    'disabled:cursor-default disabled:opacity-60',
-    'aria-invalid:border-error',
-  ];
 @endphp
 
-<div class="space-y-1.5">
+<div class="erica-field">
   @if ($label)
     <x-label :for="$id" :value="$label" :optional="$optional" />
   @endif
@@ -57,11 +46,11 @@
     @if ($describedBy !== '') aria-describedby="{{ $describedBy }}" @endif
     @if ($error) aria-invalid="true" @endif
     {{ $required ? 'required' : '' }}
-    {{ $attributes->class($classes) }}
+    {{ $attributes->class(['erica-control erica-control--textarea']) }}
   >{{ $value }}</textarea>
 
   @if ($help)
-    <p id="{{ $helpId }}" class="text-xs text-muted">{{ $help }}</p>
+    <p id="{{ $helpId }}" class="erica-field__help">{{ $help }}</p>
   @endif
 
   <x-error :id="$errorId" :messages="$error" />

@@ -1,6 +1,9 @@
 {{--
   The form that names a template, and the same form that renames one.
 
+  It moves onto the new shell with the list, because "Create a template" leads
+  straight here.
+
   What the template applies to is asked for once, while it is being created. A
   template describes a kind of record, and pointing an existing one somewhere
   else would leave every record already on it rendering something never meant
@@ -10,37 +13,24 @@
 --}}
 @php
   $values = $viewModel->values();
-  $panel = 'grid gap-x-9 gap-y-5 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]';
 @endphp
-<x-app-layout :title="$viewModel->title()">
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="templates" />
-  </x-slot:sidebar>
-
-  <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => __('Settings')],
-        ['label' => __('Templates'), 'url' => route('settings.templates.index')],
-        ['label' => $viewModel->isEdit() ? $values['name'] : __('New template')],
-      ]"
-    />
-  </x-slot:breadcrumb>
-
-  <div class="space-y-1.5">
-    <a
-      href="{{ route('settings.templates.index') }}"
-      data-turbo="true"
-      class="-ml-1.5 inline-flex items-center gap-1.5 rounded-md px-1.5 py-1 text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-ink"
-    >
-      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M9.6 3.6 5.2 8l4.4 4.4"></path>
-      </svg>
-      {{ __('Templates') }}
+<x-shell :title="$viewModel->title()">
+  <x-slot:bar>
+    <a href="{{ route('settings.templates.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
+      {{ __('Back to the templates') }}
     </a>
+  </x-slot:bar>
 
-    <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
-  </div>
+  <x-slot:dock>
+    <x-dock :user="$viewModel->user()" />
+  </x-slot:dock>
+
+  <header class="flex flex-col gap-2">
+    <h1 class="erica-page-title">{{ $viewModel->title() }}</h1>
+
+    <p class="erica-lede max-w-[56ch]">{{ $viewModel->description() }}</p>
+  </header>
 
   <div
     x-data="{
@@ -53,18 +43,18 @@
     @if ($viewModel->slugIsEditable())
       x-effect="if (! slugTouched) slug = window.slugify(name)"
     @endif
-    class="space-y-8.5"
+    class="flex flex-col gap-8"
   >
-    <x-form id="template-form" :method="$viewModel->method()" :action="$viewModel->action()" class="space-y-8.5">
-      <x-box :title="__('Name')">
-        <div class="{{ $panel }}">
-          <div class="space-y-2.5 text-sm leading-relaxed text-body">
-            <p>{{ __('The name is what the picker shows when somebody makes a record.') }}</p>
+    <x-form id="template-form" :method="$viewModel->method()" :action="$viewModel->action()" class="flex flex-col gap-8">
+      <section class="flex flex-col gap-3">
+        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+          <h2 class="erica-section-title shrink-0">{{ __('Name') }}</h2>
 
-            <p>{{ __('The slug is what the URL and the API use. It has to be unique in your account.') }}</p>
-          </div>
+          <p class="erica-small">{{ __('The name is what the picker shows when somebody makes a record. The slug is what the URL and the API use.') }}</p>
+        </div>
 
-          <div class="space-y-3.5">
+        <x-panel>
+          <div class="flex flex-col gap-4.5">
             <x-input
               id="name"
               x-model="name"
@@ -91,20 +81,17 @@
                 class="font-mono"
               />
             @else
-              <div class="space-y-1.5">
-                <x-label for="slug" :value="__('Slug')" />
+              {{--
+                Once the slug is settled it stops being a field. A disabled box invites
+                clicking and submits nothing, so what is shown instead is the value
+                itself, in mono, the way every machine value in the product is written.
+              --}}
+              <div class="erica-field">
+                <p class="erica-field__label">{{ __('Slug') }}</p>
 
-                <input
-                  id="slug"
-                  type="text"
-                  value="{{ $values['slug'] }}"
-                  readonly
-                  disabled
-                  aria-describedby="slug-help"
-                  class="block w-full appearance-none rounded-md border border-hairline-strong bg-input px-3 py-2.5 font-mono text-base text-ink opacity-60 sm:text-sm"
-                />
+                <p class="rounded-md border border-hairline bg-sunken px-3 py-2 font-mono text-sm break-all text-ink select-all">{{ $values['slug'] }}</p>
 
-                <p id="slug-help" class="text-xs text-muted">{{ $viewModel->slugHelp() }}</p>
+                <p class="erica-field__help">{{ $viewModel->slugHelp() }}</p>
               </div>
             @endif
 
@@ -118,69 +105,67 @@
               :error="$errors->get('description')"
             />
           </div>
-        </div>
-      </x-box>
+        </x-panel>
+      </section>
 
       @unless ($viewModel->isEdit())
-        <x-box :title="__('What it describes')">
-          <div class="{{ $panel }}">
-            <div class="space-y-2.5 text-sm leading-relaxed text-body">
-              <p>{{ __('A template describes one kind of record. This is settled now and cannot be changed later, since every record made with it would be left rendering something else.') }}</p>
+        <section class="flex flex-col gap-3">
+          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+            <h2 class="erica-section-title shrink-0">{{ __('What it describes') }}</h2>
 
-              @unless ($viewModel->hasEntityTypes())
-                <p class="text-muted">{{ __('You have not invented any kinds of record yet, so a template can only describe a contact for now.') }}</p>
-              @endunless
-            </div>
+            <p class="erica-small">{{ __('Settled now and not changeable later, since every record made with it would be left rendering something else.') }}</p>
+          </div>
 
-            <div class="space-y-3.5">
-              <fieldset class="space-y-2">
-                <legend class="sr-only">{{ __('What it describes') }}</legend>
+          <x-panel :flush="true">
+            <fieldset>
+              <legend class="sr-only">{{ __('What it describes') }}</legend>
 
-                <label class="flex cursor-pointer items-start gap-2.5 rounded-lg border border-hairline-soft bg-sunken px-3 py-2.5">
-                  <input type="radio" name="applies_to" value="contact" x-model="appliesTo" class="mt-0.5" />
+              <label class="erica-row erica-row--top erica-row--interactive">
+                <input type="radio" name="applies_to" value="contact" x-model="appliesTo" class="mt-1" />
 
-                  <span class="space-y-0.5">
-                    <span class="block text-sm font-semibold text-ink">{{ __('A contact') }}</span>
-                    <span class="block text-sm text-body">{{ __('The people every vault keeps.') }}</span>
-                  </span>
-                </label>
-
-                @if ($viewModel->hasEntityTypes())
-                  <label class="flex cursor-pointer items-start gap-2.5 rounded-lg border border-hairline-soft bg-sunken px-3 py-2.5">
-                    <input type="radio" name="applies_to" value="entity" x-model="appliesTo" class="mt-0.5" />
-
-                    <span class="space-y-0.5">
-                      <span class="block text-sm font-semibold text-ink">{{ __('A kind of record you invented') }}</span>
-                      <span class="block text-sm text-body">{{ __('Animals, companies, wine bottles, whatever you named.') }}</span>
-                    </span>
-                  </label>
-                @endif
-
-                <x-error :messages="$errors->get('applies_to')" />
-              </fieldset>
+                <span class="erica-row__main">
+                  <span class="erica-row__title block">{{ __('A contact') }}</span>
+                  <span class="erica-row__desc block">{{ __('The people every vault keeps.') }}</span>
+                </span>
+              </label>
 
               @if ($viewModel->hasEntityTypes())
-                <div x-cloak x-show="appliesTo === 'entity'" class="space-y-1.5">
-                  <x-label for="entity_type_id" :value="__('Which kind')" />
+                <label class="erica-row erica-row--top erica-row--interactive">
+                  <input type="radio" name="applies_to" value="entity" x-model="appliesTo" class="mt-1" />
 
-                  <select
-                    id="entity_type_id"
-                    name="entity_type_id"
-                    class="block w-full appearance-none rounded-md border border-hairline-strong bg-input px-3 py-2.5 text-base text-ink sm:text-sm"
-                  >
-                    <option value="">{{ __('Pick one') }}</option>
-
-                    @foreach ($viewModel->entityTypes() as $type)
-                      <option value="{{ $type['id'] }}" @selected($values['entityTypeId'] === (string) $type['id'])>{{ $type['name'] }}</option>
-                    @endforeach
-                  </select>
-
-                  <x-error :messages="$errors->get('entity_type_id')" />
-                </div>
+                  <span class="erica-row__main">
+                    <span class="erica-row__title block">{{ __('A kind of record you invented') }}</span>
+                    <span class="erica-row__desc block">{{ __('Animals, companies, wine bottles, whatever you named.') }}</span>
+                  </span>
+                </label>
               @endif
-            </div>
-          </div>
-        </x-box>
+            </fieldset>
+
+            @if ($viewModel->hasEntityTypes())
+              <div x-cloak x-show="appliesTo === 'entity'" class="erica-field border-t border-hairline px-4 py-4">
+                <x-label for="entity_type_id" :value="__('Which kind')" />
+
+                <select id="entity_type_id" name="entity_type_id" class="erica-control erica-control--select">
+                  <option value="">{{ __('Pick one') }}</option>
+
+                  @foreach ($viewModel->entityTypes() as $type)
+                    <option value="{{ $type['id'] }}" @selected($values['entityTypeId'] === (string) $type['id'])>{{ $type['name'] }}</option>
+                  @endforeach
+                </select>
+
+                <x-error :messages="$errors->get('entity_type_id')" />
+              </div>
+            @else
+              <div class="border-t border-hairline px-4 py-4">
+                <x-notice>{{ __('You have not invented any kinds of record yet, so a template can only describe a contact for now.') }}</x-notice>
+              </div>
+            @endif
+
+            <x-slot:footer>
+              <x-error :messages="$errors->get('applies_to')" />
+            </x-slot:footer>
+          </x-panel>
+        </section>
       @endunless
     </x-form>
 
@@ -192,11 +177,9 @@
           :action="route('settings.templates.destroy', $viewModel->template())"
         >
           <x-slot:trigger>
-            <button
-              type="button"
-              @click="open = true"
-              class="cursor-pointer rounded-md border border-hairline-strong bg-canvas px-3.5 py-2.5 text-sm font-semibold text-error transition-colors duration-150 hover:bg-hover"
-            >{{ __('Delete the template') }}</button>
+            <x-button.secondary type="button" @click="open = true" class="text-error">
+              {{ __('Delete the template') }}
+            </x-button.secondary>
           </x-slot:trigger>
 
           <p>{{ __('Every version of it goes, and the slug stays taken so an old link cannot land on something else.') }}</p>
@@ -212,4 +195,4 @@
       </div>
     </div>
   </div>
-</x-app-layout>
+</x-shell>

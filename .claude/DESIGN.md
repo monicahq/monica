@@ -1,22 +1,20 @@
-# Monica v3 — Design guidelines
+# Monica v3: design guidelines
 
 ## 1. Direction
 
-**Reference:** a dense, neutral, border-driven console. Left sidebar with a scope switcher at the top, a quiet content area built from bordered panels and separator-based rows, monospace for machine values, colour used almost nowhere.
+The product is a beautifully designed personal notebook that happens to be extremely powerful. A page about somebody's mother should not feel like opening a Salesforce record.
 
-**Take from it:** the shell, the panel-with-header, the row density, the restraint.
+It should feel warm, calm, confident, tactile, slightly quirky, and unmistakably its own.
 
-**Change from it:** contrast. The product ships WCAG 2.2 AA everywhere, so every grey in this document is darker than the console grey it's derived from. Where the reference uses a hairline no one can see, we use a hairline that everyone can see.
+It should not feel like a social network, an enterprise CRM, an admin dashboard, a wall of cards, or a marketing template.
 
-**It should feel:** precise, calm, slightly technical, personal without being decorative.
-
-**It should not feel like:** a social network, an enterprise CRM, a wall of cards, a marketing template.
+**This supersedes the v2 direction.** Until August 2026 this document described a dense, neutral, border-driven console: left sidebar, no shadows, almost no colour, headings capped at 20px. That is gone. What survived the change is the accessibility contract, the vocabulary, the voice, the row-based lists, and the rule that a person's own data outranks the chrome around it. What changed is everything visual: warm paper instead of neutral white, terracotta instead of near-monochrome, a floating dock instead of a sidebar, display typography for page titles, and low warm shadows instead of borders alone.
 
 Three rules that decide most arguments:
 
 1. **User data outranks chrome.** Names, dates, notes and relationships get more visual weight than the containers around them.
-2. **Structure comes from lines, space and type.** No shadows, no gradients, no glass, no elevation.
-3. **Nothing changes under someone's feet.** This is the product's first principle (spec 3.1) and it is a *visual* rule too: no layout that silently re-flows, no destructive action without a named consequence, no auto-applied structure update.
+2. **Colour identifies, it never decorates.** A hue says what kind of thing something is. Most of a screen stays neutral, so a screenshot reads as calm but alive.
+3. **Nothing changes under somebody's feet.** This is the product's first principle (spec 3.1) and it is a visual rule too. No layout that silently reflows, no destructive action without a named consequence, no auto-applied structure update.
 
 ---
 
@@ -24,336 +22,349 @@ Three rules that decide most arguments:
 
 AA is a delivery condition, not a phase. Two consequences specific to this product:
 
-**Fields are generated, not hand-built.** A screen is assembled from user-defined templates, so accessibility can't be retrofitted screen by screen. Each *field type* is made accessible once, in its component, and every template inherits it. A template author can produce an ugly page; they must not be able to produce an inaccessible one.
+**Fields are generated, not hand-built.** A screen is assembled from user-defined templates, so accessibility cannot be retrofitted screen by screen. Each *field type* is made accessible once, in its component, and every template inherits it. A template author can produce an ugly page. They must not be able to produce an inaccessible one.
 
-**The builder is a product surface.** Creating a template, reordering sections and editing a repeater must all work with keyboard and screen reader. It's the hardest screen in the product and it doesn't get an exemption.
+**The builder is a product surface.** Creating a template, reordering sections and editing a repeater must all work with keyboard and screen reader. It is the hardest screen in the product and it does not get an exemption.
 
 Non-negotiables on every screen:
 
 - Keyboard-complete, logical tab order, visible focus, no traps outside modals.
 - Text 4.5:1, large text 3:1, control boundaries and focus indicators 3:1.
-- Meaning never carried by colour alone — always a word or a shape too.
-- Persistent labels; placeholders are never labels.
+- Meaning never carried by colour alone. Always a word or a shape too.
+- Persistent labels. Placeholders are never labels.
 - Readable at 200% zoom and at 320px width.
 - `prefers-reduced-motion` removes motion rather than shortening it.
-- Errors programmatically tied to their field; dynamic results announced.
+- Errors programmatically tied to their field. Dynamic results announced.
 
 ---
 
 ## 3. Tokens
 
-Semantic tokens only in components. Never a raw hex, px radius or px font size in a feature view.
+Every value lives in `resources/css/app.css`. Semantic tokens only in components, never a raw hex, px radius or px font size in a feature view.
 
-### 3.1 Colour — light (canonical)
+The file has three parts. The base palette, which is the only place a hex appears. The names for jobs (`--page`, `--ink`, `--action-primary`), which are what Blade reads and which is where the theme flips. And the design system's own component classes at the foot, in `@layer components`.
 
-| Token | Value | On white | Use |
+### 3.1 Colour: the palette
+
+Warm paper neutrals derived from the mark's ink, plus seven earthy object hues. No neon, no SaaS violet gradient.
+
+| Token | Light | Dark | Use |
 |---|---|---|---|
-| `--canvas` | `#FFFFFF` | — | Page background |
-| `--surface` | `#FFFFFF` | — | Panels, menus, dialogs |
-| `--surface-subtle` | `#F7F7F7` | — | Panel headers, inset regions, hover |
-| `--surface-muted` | `#EFEFEF` | — | Selected neutral surface |
-| `--surface-inverse` | `#171717` | — | Marketing footer, tooltips |
-| `--border-subtle` | `#E4E4E4` | 1.3:1 | Row separators only (decorative) |
-| `--border` | `#D0D0D0` | 1.6:1 | Panel and section edges |
-| `--border-control` | `#8A8A8A` | 3.5:1 | **Inputs, checkboxes, switches, any control edge** |
-| `--border-strong` | `#171717` | 17.9:1 | Selected / active boundary |
-| `--text` | `#171717` | 17.9:1 | Primary text |
-| `--text-secondary` | `#525252` | 7.8:1 | Supporting text |
-| `--text-muted` | `#616161` | 6.2:1 | Metadata, placeholders |
-| `--text-disabled` | `#767676` | 4.6:1 | Disabled text (still legible) |
-| `--text-inverse` | `#FFFFFF` | — | Text on dark |
-| `--primary` | `#171717` | — | Primary button fill |
-| `--primary-hover` | `#2E2E2E` | — | |
-| `--primary-active` | `#000000` | — | |
-| `--accent` | `#1D4ED8` | 6.7:1 | Links, selection, active nav |
-| `--accent-subtle` | `#EFF4FF` | — | Selected informational surface |
-| `--focus` | `#1D4ED8` | 6.7:1 | Focus ring |
-| `--success` | `#166534` | 7.1:1 | |
-| `--success-subtle` | `#F0FDF4` | — | |
-| `--warning` | `#854D0E` | 6.9:1 | |
-| `--warning-subtle` | `#FEFAEB` | — | |
-| `--danger` | `#B91C1C` | 6.5:1 | |
-| `--danger-subtle` | `#FEF2F2` | — | |
+| `--paper` | `#FBF8F3` | `#16130F` | The page. Every surface sits on paper, not on white |
+| `--canvas` | `#FFFFFF` | `#211D18` | Panels and controls sitting *on* the paper |
+| `--sand` | `#F4EEE4` | `#2A251E` | Hover, inset regions, neutral marks |
+| `--sand-deep` | `#EBE3D5` | `#332D24` | Selected neutral surface |
+| `--hairline` | `#E7DFD2` | `#302A22` | Row separators |
+| `--hairline-strong` | `#D6CBB8` | `#423B31` | Control edges |
+| `--ink` | `#2C2B29` | `#F4EFE6` | Primary text, the inverse surface |
+| `--ink-soft` | `#4A463F` | `#DED7CA` | Ghost button text |
+| `--body` | `#5C5850` | `#B6AFA2` | Supporting text |
+| `--muted` | `#7D766A` | `#8E8577` | Metadata, row descriptions |
+| `--placeholder` | `#A69E90` | `#6F675B` | Placeholders, and what has not been built yet |
 
-Two rules people get wrong:
+The seven object hues, each with a `-tint` used as the background of icon marks, badges and empty-state glyphs, and most with a `-deep` for text on the tint:
 
-- `--border-subtle` is **decorative**. If a border is the only thing telling you where a control begins, it must be `--border-control` or darker.
-- The accent is **functional**. Links, focus, selection, active nav indicator, informational status. Primary buttons stay near-black.
+| Hue | Light | Carries |
+|---|---|---|
+| `--terracotta` | `#C0512C` | People, primary actions, the brand |
+| `--indigo` | `#3F5FD0` | Journal, information, the focus ring |
+| `--forest` | `#2F7350` | Places, activities, success |
+| `--marigold` | `#E0A02E` | Pets, warning (as `--marigold-deep`) |
+| `--plum` | `#7A4B86` | Reminders |
+| `--rose` | `#BC4A64` | Family, gifts |
+| `--sky` | `#2E7A96` | Organisations |
 
-### 3.2 Colour — dark
-
-Same hierarchy, same border logic. Verify every semantic colour independently — none of these are derived by inversion.
-
-| Token | Value |
-|---|---|
-| `--canvas` | `#0F0F0F` |
-| `--surface` | `#171717` |
-| `--surface-subtle` | `#1E1E1E` |
-| `--surface-muted` | `#282828` |
-| `--border-subtle` | `#2C2C2C` |
-| `--border` | `#3D3D3D` |
-| `--border-control` | `#767676` |
-| `--border-strong` | `#F5F5F5` |
-| `--text` | `#F5F5F5` |
-| `--text-secondary` | `#C7C7C7` |
-| `--text-muted` | `#A1A1A1` |
-| `--text-disabled` | `#8A8A8A` |
-| `--primary` | `#F5F5F5` (dark text on it) |
-| `--accent` | `#8FB3FF` |
-| `--success` | `#5CCB82` |
-| `--warning` | `#E2B44A` |
-| `--danger` | `#F08A8A` |
+In dark the same hues are lifted so they still read as themselves on a dark ground. None of it is derived by inversion. Verify every semantic colour independently.
 
 Never: glowing borders, coloured shadows, pure black everywhere, reduced text contrast, stacked surface layers.
 
+### 3.2 Colour: the names for jobs
+
+`--action-primary` is terracotta and `--action-strong` is ink. Terracotta is the everyday primary. Ink is for the one control that outranks it in a region, and for the vault chip.
+
+`--focus` and `--focus-ring` are two different jobs and must not be merged again. `--focus` is the warm border a field takes under the pointer and while it is being typed in. `--focus-ring` is indigo and is the ring every focusable element draws when the keyboard reaches it.
+
+Semantic colour (`--success`, `--warning`, `--danger`) is always paired with a word and an icon.
+
 ### 3.3 Type
 
-One sans family, one mono. Bundled — no runtime font CDN.
+Three families, all bundled through `bunny()` in `vite.config.js`. No runtime font CDN.
 
 ```
---font-sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
---font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+--font-display: 'Bricolage Grotesque'   page titles, person names, marketing
+--font-sans:    'Hanken Grotesk'        the whole interface
+--font-mono:    'IBM Plex Mono'         machine values only
 ```
 
-**Application scale**
+The scale is written as `font` shorthands, so one declaration sets family, weight, size and leading:
 
-| Token | Size / weight / line-height | Use |
+| Token | Value | Use |
 |---|---|---|
-| `page-title` | 20 / 600 / 1.3 | Page heading |
-| `section-title` | 15 / 600 / 1.4 | Panel and section headings |
-| `body` | 14 / 400 / 1.5 | Default |
-| `body-strong` | 14 / 500 / 1.5 | Values that matter |
-| `small` | 13 / 400 / 1.45 | Secondary text |
-| `caption` | 12 / 500 / 1.4 | Labels, metadata |
-| `mono` | 12.5 / 400 / 1.5 | Technical values |
-| `button` | 14 / 500 / 1 | Buttons |
+| `--text-display-1` | 600 52/1.02 display | Marketing |
+| `--text-display-2` | 600 40/1.06 display | A person's name |
+| `--text-page-title` | 600 32/1.1 display | Page heading |
+| `--text-section-title` | 600 21/1.25 display | Section heading |
+| `--text-card-title` | 600 17/1.35 sans | Panel heading |
+| `--text-body` | 400 15/1.55 sans | Default |
+| `--text-body-strong` | 600 15/1.5 sans | Row titles, values that matter |
+| `--text-small` | 400 14/1.5 sans | Secondary text |
+| `--text-caption` | 500 12.5/1.4 sans | Labels, metadata |
+| `--text-nav` | 600 13.5/1 sans | The dock |
+| `--text-mono` | 400 12.5/1.5 mono | Technical values |
 
-App headings never exceed 20px. Personal information is not marketing typography.
+Tracking: `-0.022em` on display, `-0.015em` on titles, `+0.04em` on uppercase captions.
 
-**Marketing scale:** 52 / 40 / 30 / 24 display sizes at 600, tight tracking (−0.02em), body 17–18/1.55. Same family as the app.
+The classes `.erica-page-title`, `.erica-section-title`, `.erica-lede`, `.erica-small` and `.erica-caption` apply these, so a heading is one class rather than six utilities copied correctly every time.
 
-**Mono is for:** IDs, API tokens and keys, webhook event names, keyboard shortcuts, field slugs, import references, changelog values, code. **Never** for names, notes, journal entries or ordinary dates.
+App titles are deliberately large. This is the one place the system lets typography be loud, and it is the clearest break from v2, which capped headings at 20px.
 
-**Rules:** weight before colour for hierarchy; size before weight 700; no uppercase headings (uppercase allowed for 11–12px metadata labels); reading width 65–75 characters; never below 400 for body.
+Mono is for ids, API tokens and keys, webhook event names, keyboard shortcuts, field slugs, import references and code. Never for a name, a note, a journal entry or a date.
+
+Rules: weight and space carry hierarchy before a border does. No uppercase headings (uppercase is allowed for 11 to 12.5px metadata labels). Reading measure capped at 66 characters. Never below 400 for body.
 
 ### 3.4 Space, shape, motion
 
 Base unit 4px: `1:4 2:8 3:12 4:16 5:20 6:24 8:32 10:40 12:48 16:64 20:80 24:96`.
 
-App defaults: page padding 24 (16 mobile) · section gap 32 · heading→content 12 · row padding 10/12 · panel body 16 · dialog 20 · field gap 16 · label→control 6 · inline 8. Marketing may breathe: 80–96 between sections.
+Layout constants: page padding 24 (16 on a phone), section gap 32, row padding 14/16, panel body 20, field gap 16. Content column 1120, reading and form columns 720, journal 840. The page reserves 120px at the bottom for the dock.
 
-Radius: `xs 3` indicators · `sm 4` badges · `md 6` inputs, buttons · `lg 8` panels, menus, dialogs · `full` avatars only. Nothing above 8px in the app. Buttons are never pills.
+Radius: `xs 5` indicators, `sm 8` marks and badges, `md 10` buttons and fields, `lg 14` panels and cards, `xl 20` the dock. Nothing above 20. Nothing is a pill except an avatar and a person pill.
 
-Motion: `fast 100ms` feedback · `standard 150ms` menus · `slow 200ms` dialogs and panels. Allowed: opacity, small translation, height, spinner, progress. Not allowed: spring, bounce, overshoot, parallax, zoom, hover movement.
+Elevation is object-like, not floating: a hard 1px bottom edge plus a low, warm, tightly spread shadow. `--shadow-raised` on buttons and panels, `--shadow-lift` on a lifted surface, `--shadow-pop` on the dock, the launcher and menus. Fields go the other way, with a soft inset shade (`--shadow-press-inset`), so they read as a well rather than a box. In dark the shadows become black, because a warm shadow on a dark ground is invisible.
+
+Motion: `fast 110ms` feedback, `standard 170ms` menus, `slow 220ms` dialogs and panels, all on `cubic-bezier(.22, 1, .36, 1)`. Allowed: opacity, small translation, height, the toast's draining timer bar. Not allowed: spring, bounce, overshoot, parallax, zoom, hover movement.
+
+No background images, no gradients, no patterns, no grain, no glassmorphism. The only translucency in the system is the sticky top bar (90% paper and a 10px blur) and the launcher scrim (28% ink).
 
 ---
 
 ## 4. Shell
 
 ```
-┌──────────────┬────────────────────────────────────────────┐
-│ vault switch │  breadcrumb                    search  ⌘K  │ 56
-├──────────────┼────────────────────────────────────────────┤
-│ ⌘K search    │  Page title              [Secondary][Add]  │
-│              │  ─────────────────────────────────────────  │
-│ nav group    │  ┌──────────────────────────────────────┐  │
-│  · item      │  │ Panel header             [action]    │  │
-│  · item      │  ├──────────────────────────────────────┤  │
-│              │  │ row                                  │  │
-│ nav group    │  │ row                                  │  │
-│  · item      │  └──────────────────────────────────────┘  │
-│              │                                            │
-│ account      │                                            │
-└──────────────┴────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│ ← Back to your vaults                          ☀   (RF)      │ 60
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│                        Page title                            │
+│                    one line about it                         │
+│                                                              │
+│   Section heading      what the section is for               │
+│   ┌────────────────────────────────────────────────────┐    │
+│   │ ▪  Row title                              meta  ›  │ 72 │
+│   │ ▪  Row title                              meta  ›  │    │
+│   └────────────────────────────────────────────────────┘    │
+│                                                              │
+│              ┌──────────────────────────────────┐            │
+│              │ 🐱 Famille ⌄ │ ♥  👥  📖  🔔     │ 72        │
+│              └──────────────────────────────────┘            │
+└──────────────────────────────────────────────────────────────┘
 ```
 
-Sidebar 248px (collapsed 56) · top bar 56 · page header min 52 · content padding 24 · right detail panel 360–400.
+`layouts/shell.blade.php` is the shell of a screen navigated by the dock. A sticky 60px bar at the top, one column in the middle capped at the reading width, the dock at the foot of the window. There is no column of links down the left. That is what the dock replaced.
 
-Sticky regions (sidebar, page header, table header, dialog action bar) use a solid background and a one-pixel bottom border. Never a shadow.
+`layouts/app.blade.php` and `layouts/account.blade.php` are the v2 shells and are still what the unmigrated screens use. They will be retired as those screens move to `shell`.
 
-Content widths: forms and settings 720 · reading content 720 · contact profile 1120 · tables use the available width · marketing 1200.
+`shell` takes a `wide` flag, which swaps the 720px reading column for the 1120px content column. It is for a screen with two columns of its own, such as the template builder and the field-type picker, and not for making a form roomier: a form at 1120px is a form whose labels are a long way from their fields.
+
+As of August 2026 every screen under `/settings` is on `shell`. Nothing outside it has moved: the vault screens, the contact screens, getting started and the auth screens are all still on the v2 shells. They have the new palette and the new type, because those are global, but the old structure around them.
+
+Sticky regions use a translucent paper background, a blur, and a one-pixel bottom border.
 
 ---
 
-## 5. Sidebar and the vault switcher
+## 5. Navigation: the dock and the launcher
 
-The sidebar has **two scopes**, and it is always obvious which one you're in.
+The dock is fixed at the bottom centre of the window and carries **four destinations and nothing else**. Four is the whole point: they are the places somebody goes every day, they keep their order forever, and each one is named rather than left as an icon to be learned. The dock never shows an icon alone.
 
-### 5.1 Vault scope
+Anatomy. The vault chip on the left is an ink-filled 60px button with the mark on a light plate, the vault's name, and a chevron that turns over when its menu is open. A hairline rule. Then the four destinations, each a 70px minimum column of a 36×26 glyph plate above a 13.5px label.
 
-The switcher sits at the very top, above search, and is the first thing in the tab order.
+States. **Rest** is a muted label and glyph with no plate. **Hover** is a warm sand tint and darker text in 110ms, colour only, nothing moves or grows. **Press** moves the item down exactly 1px and comes back, and that single pixel is the whole physicality of the control. **Where you are** gives the glyph a plate of its own colour and the label goes to ink, carried by `aria-current="page"` and never by colour alone. **Focus** is a 2px indigo ring at 2px offset. A **count** appears only when something is actually waiting.
 
-```
-┌────────────────────────────┐
-│ ▪ Famille              ⌃⌄ │  44px
-└────────────────────────────┘
-```
+Below 720px the dock stops floating and stretches between the edges. The chip keeps its mark and drops its label, and the four destinations share what is left.
 
-- Full-width row, 44px, 8px side margin, radius 6, `--surface-subtle` background, `--border-control` edge.
-- Contents: 20px monogram tile (radius 4, neutral fill, 2 initials), vault name at `body-strong` truncated with an accessible full name, up/down chevron 16px right-aligned.
-- It is a `<button aria-haspopup="menu" aria-expanded>`. Accessible name: *"Vault: Famille. Change vault."*
-- Never colour-coded alone. A vault may carry an accent, but the name and monogram always identify it.
+**The vault chip is not a fifth destination.** It is the way out of the four. It opens the launcher, which holds everything rarer: the other things in this vault, the other vaults, the settings, signing out. The launcher rises 220ms above the dock, a scrim dims the page behind it, and the search field takes focus on open. `⌘K` opens it from anywhere and `esc` leaves it. Leaving it never chooses anything.
 
-**The menu:** current vault first with a checkmark (a shape, not a highlight) · other vaults, each with contact count · a filter input above the list when there are more than 8 · separator · *Vault settings* · *New vault* · *All vaults*. Solid surface, `--border-strong`, radius 8, 4px padding, 32px items, no shadow. Arrow keys move, Enter selects, Escape closes, focus returns to the trigger.
+**A screen that belongs to the account rather than to a vault marks nothing as current.** You reached it from the launcher, and marking a dock item would claim otherwise. The chip still points at a vault, being the account's default one or the first it made, so the four destinations always lead somewhere.
 
-**Switching is a navigation, not a re-render.** Go to the target vault's home. Never keep the user on the same page with different data underneath — that breaks principle 3.1 and is disorienting on a screen reader. Announce the new scope in a live region.
+**A destination that has not been built yet is drawn and not offered.** It takes `--placeholder` and is a `<span>` rather than an `<a>`. A link that leads nowhere is worse than a word that does not move. The journal, reminders, tasks and gifts are all in this state today.
 
-**Vault navigation:** Journal · People · Entities · Groups · Reminders. Group labels are 12/500 `--text-muted`, sentence case, not uppercase.
-
-### 5.2 Account scope
-
-Settings, structures, marketplace, webhooks, API tokens, changelog. The switcher is replaced by an account row with the same anatomy — no chevron pretending to be a vault picker. A single **← Back to Famille** row returns to the last vault.
-
-### 5.3 Nav items
-
-32px tall, radius 6, 16px icon + 14/400 label, 8px gap. Hover `--surface-subtle`. Active: `--surface-muted`, label at 500, and a 2px accent bar on the leading edge — three signals, only one of which is colour. `aria-current="page"`. Expandable groups use `aria-expanded` and a chevron; the parent row is itself clickable.
-
-Keep the list short. Everything else lives in the command palette (⌘K / Ctrl K): navigation, contact search, create actions, recent contacts, settings, shortcut discovery. Fully keyboard operable, and never the only route to a feature.
+The word "Home" is unavailable for the first destination: it is already the label an address or a phone number carries, and it is translated as somebody's residence in every locale. That destination is called "Dashboard", which is what this codebase has always called the screen it opens.
 
 ---
 
 ## 6. Surfaces
 
-**Page** — the canvas. Never inside a card.
+**Page.** The paper. Never inside a card.
 
-**Section** — a semantic group, separated by spacing and a heading. Reach for this first.
+**Section.** A semantic group, separated by 32px and a heading, with one line beside the heading saying what the section is for. Reach for this first. A heading and 32px of space is the first tool for separating two things. A panel is the second.
 
-**Panel** — a bounded unit with a header. This is the workhorse of the console look:
+**Panel** (`<x-panel>`). A bounded unit with an optional header carrying a 28px mark in the colour of whatever kind of thing it holds. 1px hairline, radius 14, canvas body, `--shadow-raised`. Body padding 20, or zero (`:flush="true"`) when it contains rows, because rows draw their own padding and their own separators.
 
-- 1px `--border`, radius 8, `--surface` body, no shadow.
-- Header: `--surface-subtle`, min 44px, `section-title`, optional right-aligned action. Bottom border.
-- Body: 16px padding, or zero when it contains rows.
+Use a panel when the content is genuinely independent of what sits above it: a profile section, a settings group, a reminder list, an import summary. **Do not wrap every paragraph.**
 
-Use a panel when the content is an independent unit — a profile section, a settings group, a reminder list, an import summary. **Do not wrap every paragraph.** If a heading and 24px of space would do the same job, use the heading.
+**Row** (`<x-row>`). One line of a list: a 32px mark, a title at `--text-body-strong`, a sentence at `--text-small` saying what is behind it, and whatever belongs at the far end. Rows are separated by hairlines and the last one drops its rule. A row with an `href` is the link, all of it. A row without one is a plain division, still drawn but with nothing suggesting it can be pressed.
 
-**Inset region** — `--surface-subtle`, no border, for metadata, read-only summaries, provenance and technical values.
+Lists are rows, never a grid of little cards, because a row can be read down a column and a card cannot. This is the default for contact lists, relationships, reminders, activities, settings and custom fields.
 
-**Row group** — related rows separated by 1px `--border-subtle`, no box per item. Default for contact lists, relationships, reminders, activities, settings, custom fields.
+**Inset region.** `--sand`, no border, for metadata, read-only summaries, provenance and technical values.
 
 ---
 
 ## 7. Components
 
-**Buttons** — 36px tall (ghost may be 32), radius 6, 14/500, 14px horizontal padding, icon 16px, no shadow.
-Primary: `--primary` fill, inverse text. One per region.
-Secondary: surface fill, `--border-control` edge.
-Ghost: transparent, hover `--surface-subtle`.
-Destructive: starts as secondary or ghost; a filled red button appears only at the final confirmation.
-Icon button: 32–36 visible, 44 effective target, accessible name required.
+**Buttons.** `.erica-btn` plus a variant and a size. 34px small, 40px default, 48px page-level. Radius 10, weight 600, gap 8, glyph 18. Press moves down 1px and drops the shadow.
+`--primary` is terracotta fill with a darker bottom edge. One per region.
+`--strong` is ink fill, for the control that outranks the primary.
+`--secondary` is canvas fill with a `--hairline-strong` edge.
+`--ghost` is transparent, hovering to sand.
+`--danger` is a filled red button that appears only at the final confirmation. A destructive action starts as secondary or ghost.
 
-**Inputs** — 36px, radius 6, 10px padding, 14px, `--border-control`, `--surface`. Textarea min 96px. Labels 13/500 above the control, always visible. Required stated in text. Errors sit under the field, tied by `aria-describedby`, with an icon and a sentence.
+**Icon button.** `.erica-iconbtn`, 34 or 40 visible, effective target 6px larger on every side. Always carries an accessible name, and never holds the only route to something.
 
-**Select / combobox** — native select unless the user needs search, creation, multi-select or large datasets. Combobox menus: solid surface, border, radius 8, no shadow, full ARIA combobox pattern.
+**Fields.** `.erica-field` is the label, the control, the hint and the error, 6px apart and wired together by id. A value that cannot be changed is not a disabled field: a disabled box invites clicking and submits nothing, so what is shown instead is the value itself on a sunken plate, in mono when it is a machine value. Settled slugs and a field's type are both written that way. `.erica-control` is the control itself: 44px, radius 10, `--hairline-strong` edge, and an inset shade so the field reads as a well rather than a box. It is the one place in the system where elevation points inwards. Focus takes an ink border and a terracotta halo. `--sm` is 36px, `--textarea` grows and may be dragged, `--select` draws its own chevron, `--file` drops the well and dresses the browser's own button as a small secondary one. Every control is 16px below 640px, because Safari on iOS zooms the page in for anything smaller.
 
-**Checkbox / radio / switch** — native semantics, 16–18px visible, whole label row clickable, custom Monica checkmark. Checked state must have a mark, not just a fill. Switches only for settings that apply immediately; checkboxes for forms that submit.
+Labels are always visible, 13px, above the control. Required is stated in text. Errors sit under the field, tied by `aria-describedby`, and carry a glyph as well as the colour.
 
-**Badge** — 22px, 0 8px padding, **radius 4** (not a pill), 12/500, neutral fill by default. Semantic colour only when the status is semantic, and always with a word. Use for: status, activity nature, relationship certainty, field type, sensitivity, marketplace state.
+**Select and combobox.** Native select unless the user needs search, creation, multi-select or large datasets.
 
-**Tabs** — horizontal row, bottom border across the whole list, active tab in `--text` with a 2px bottom border. No enclosing pill, no card-style active state. Segmented control only for compact mode switches.
+**Checkbox, radio, switch.** Native semantics, 16 to 18px visible, whole label row clickable, a real tick rather than a fill alone. Switches only for settings that apply immediately, checkboxes for forms that submit.
 
-**Table** — header 36px, rows 44px (56 when two-line), horizontal separators only, no vertical rules, text left, numbers right, actions in the final column. Row actions are visible on focus and hover but never *only* on hover; important actions keep their label. Rows are not cards. Sortable headers are buttons with an announced state.
+**Tabs.** `.erica-tabs` and `.erica-tab`: a rule runs the whole width of the list and the tab you are on thickens its own piece of it. No enclosing pill, no card-style active state, nothing that looks like a button. A tab is a link when the face it opens has an address, which it should, and it carries `aria-selected`. A count beside the label sits in `.erica-tab__count`.
 
-**Menu** — solid surface, `--border-strong`, radius 8, 4px padding, 32px items, no shadow, destructive actions after a separator.
+**Chip.** `.erica-chip`, a filter or scope toggle, 36px, radius 10. What is in force is a filled ink chip rather than a tinted outline, so which one it is never comes down to noticing that one border is slightly darker than the others. It carries `aria-current` as a link and `aria-pressed` as a button, so the fill is not the only signal. A filter that has a URL is a link, so it can be shared and reached by the back button.
 
-**Dialog** — width fits content, border, radius 8, dark translucent backdrop, no shadow. Title, optional description, actions at the bottom, focus trapped and restored, Escape closes unless unsafe. Not for multi-section editing — use a page.
+**Badge.** `.erica-badge`, 24px, radius 5, never a pill, 12.5px, neutral fill by default. Tones: neutral, success, warning, danger, info, accent, outline. The word inside it is the signal and the tint only repeats what the word already says, so a badge with no word in it is a bug. A coloured dot with the word hidden behind `sr-only` is not a badge: it is colour alone for everybody who can see it.
 
-**Side panel** — preserves context while inspecting a contact, reminder, relationship or activity. Left border, no shadow, sticky header, full-screen sheet on mobile.
+**Menu.** `.erica-menu`: canvas surface, `--hairline-strong`, radius 14, `--shadow-pop`, 6px padding, destructive actions after a separator. What is already chosen is heavier and sits on a tint as well as carrying a tick, so it is not the tick alone that has to be spotted. Escape closes, focus returns to the trigger.
 
-**Tooltip** — dark surface, light text, 12px, radius 4, no shadow. Explains icon-only controls. Never holds essential instructions or interactive content.
+A menu is pinned to its trigger with `x-anchor`, which takes it out of the flow. It has to be: a panel clips what overflows it, or a row's hover tint would square off the corner it sits in, so a menu positioned inside one would be cut off at its edge. A menu that only picks a value builds its choices out of real submit buttons, so the choice still saves with javascript switched off.
 
-**Toast** — one line, optional undo, auto-dismiss only when safe, persistent when action is required, announced. No stacks.
+**Dialog.** Width fits content, border, radius 14, `--shadow-pop`, and `.erica-scrim` behind it. Title, optional description, actions at the bottom. Focus is trapped by `x-trap.noscroll.inert` and returned to the trigger, because a dialog that claims `aria-modal` while the tab key can walk out behind it is lying. Escape closes unless unsafe. Not for multi-section editing, which is a page.
 
-**Empty state** — one line icon, a title, one sentence, one action. No illustrations. For a small empty section, a single muted sentence is enough. Not every empty box is an onboarding opportunity.
+**Notice.** `.erica-notice`, radius 10, attached to the thing it is about rather than a banner at the top of a screen saying something about somewhere else. Tones: quiet (the default, an aside that is neither good news nor bad), info, success, warning, danger. The glyph carries the tone alongside the tint, so it still reads as a warning for somebody who cannot see the colour.
 
----
+**Toast.** One line, optional undo, auto-dismiss only when safe, persistent when action is required, announced. No stacks.
 
-## 8. Product patterns
+**Empty state.** A 64px glyph on its tint, tilted four degrees, a title, one sentence, one action. No illustrations. A small empty section only needs a single muted sentence. Not every empty box is an onboarding opportunity.
 
-**Contact list** — rows, not a grid of cards. Name, photo or initials, relationship summary, last interaction, next reminder. Real photos allowed; otherwise initials on a neutral fill. Never generate synthetic faces.
-
-**Contact profile** — a stable spine regardless of template: identity header · primary actions · highlighted fields · sections from the assigned template · relationships · timeline · reminders · files · metadata on request. Sections are headings and dividers, panels only where a section is genuinely independent.
-
-**Generated fields** — every field type has one accessible rendering used identically in view, edit, import, search and the API docs. Layout elements (separator, subheading, help text) are real headings and real descriptions, not styled divs. Custom fields look exactly like built-in fields; never demote them into a "custom data" box.
-
-**Sensitive fields** — masked by default, revealed by an explicit control with an accessible name (*"Show national ID"*), the mask indicated in text as well as visually. Never revealed by hover. Excluded from private links by default, and the exclusion is stated where the link is created.
-
-**Relationships** — direction is written, never implied by an arrow: *"Alex is Jordan's parent" / "Jordan is Alex's child."* Show type, qualifiers as badges, period, and certainty (certain / probable / uncertain) as a word. Deduced and suggested relationships are visually distinguishable from confirmed ones and say where they came from. Editing a relationship states the reciprocal that will be created.
-
-**Timeline** — a chronological list. Thin vertical line, date grouping, compact rows, small nature icons, expandable detail, an explicit distinction between event date and recorded date. Activities and relationship events share one stream. No decorative timeline graphics.
-
-**Journal** — a day is a page: activities, the day's own narrative, a mood. An empty day stays empty; no nudging, no streaks, no gamification. Quick capture is a first-class path, not a reduced form — reachable from the palette, a contact, and the day.
-
-**Reminders** — subject, related contact, due date, recurrence, delivery status, state. Overdue uses a word and an icon, not red alone. *Snooze*, *skip*, *complete* and *turn off the rule* are four distinct labelled actions and the interface says which occurrences each one affects.
-
-**Destructive actions** — name the object and the consequence. Not "Are you sure?" but *"Delete this relationship? This removes the link between Alex and Jordan. Both contacts stay."* When something is disabled rather than deleted (a rule whose source field disappeared), say so where the user will look for it, with the reason and a way back.
-
-**Marketplace and versioning** — a template shows its version, its language, its origin and its install count. An available update is an offer: change note, diff, accept or stay. Never a silent apply, never a nag.
+**Avatar.** Somebody's own photograph, or their initials on one of seven warm tints picked from the letters of their name, so the same person is always the same colour. Never a generated face, never stock photography.
 
 ---
 
-## 9. States
+## 8. Iconography
+
+The product draws its own icons, in `resources/views/components/icon.blade.php`. **No Lucide, no Heroicons, no icon font, no unicode symbols, no emoji, no raster icons.** A glyph that does not exist in that file has to be drawn in that file.
+
+16×16 viewBox, stroke 1.4, `fill: none`, `currentColor`, round caps and joins, about 2px of optical padding, simple geometry. Rendered at 16 inline, 18 in rows and buttons, 20 in panel headers, 23 in the dock, 30 in empty states. Filled variants only for the favourite star and status marks.
+
+Decorative glyphs are `aria-hidden`. A glyph that is the only content of a control is given a `label`, which makes it an image with a title. An unknown name falls back to the default rather than drawing nothing, since an empty square beside a row reads as a bug.
+
+`components/entity-icon.blade.php` is a separate, smaller set, because the names it answers to are stored in the database as an entity type's chosen icon. Renaming those is a migration, not a design change.
+
+The mark in `public/images/logo.svg` is never redrawn and never recoloured, except inverted on ink. There is no wordmark file. The product name is set in display type beside the mark.
+
+---
+
+## 9. Product patterns
+
+**Contact list.** Rows, not a grid of cards. Name, photo or initials, relationship summary, last interaction, next reminder.
+
+**Contact profile.** A stable spine regardless of template: identity header, primary actions, highlighted fields, sections from the assigned template, relationships, timeline, reminders, files, metadata on request. Sections are headings and space, panels only where a section is genuinely independent.
+
+**Generated fields.** Every field type has one accessible rendering used identically in view, edit, import, search and the API docs. Layout elements (separator, subheading, help text) are real headings and real descriptions, not styled divs. Custom fields look exactly like built-in fields. Never demote them into a "custom data" box.
+
+**Sensitive fields.** Masked by default, revealed by an explicit control with an accessible name ("Show national ID"), the mask indicated in text as well as visually. Never revealed by hover. Excluded from private links by default, and the exclusion is stated where the link is created.
+
+**Relationships.** Direction is written as a sentence, never implied by an arrow: "Lucie is Théo's mother." Show type, qualifiers as badges, period, and certainty (certain, probable, uncertain) as a word. Deduced and suggested relationships are visually distinguishable from confirmed ones and say where they came from. Editing a relationship states the reciprocal that will be created.
+
+**Timeline.** A chronological list. Thin vertical line, date grouping, compact rows, small nature glyphs, expandable detail, an explicit distinction between event date and recorded date. Activities and relationship events share one stream. No decorative timeline graphics.
+
+**Journal.** A day is a page: activities, the day's own narrative, a mood. An empty day stays empty. No nudging, no streaks, no gamification.
+
+**Reminders.** Subject, related contact, due date, recurrence, delivery status, state. Overdue uses a word and a glyph, not red alone. Snooze, skip, complete and turn off the rule are four distinct labelled actions, and the interface says which occurrences each one affects.
+
+**Destructive actions.** Name the object and the consequence. Not "Are you sure?" but "Delete this relationship? This removes the link between Alex and Jordan. Both contacts stay." When something is disabled rather than deleted, say so where the user will look for it, with the reason and a way back.
+
+---
+
+## 10. Voice
+
+Direct, calm, human, specific and non-judgemental. Plain English sentences, in sentence case, about the person's own life.
+
+Address the reader as *you*. Never refer to the application in the first person. Actions are verbs the user performs: *Add a relationship. Save changes. Complete reminder.* Never *Create relationship entity*, *Submit*, or *You're all set!*
+
+**Explain, do not announce.** A section's supporting line says what the thing is for, not that it exists. "Dates in the next thirty days, from birthdays and anything you asked to be reminded of." Not "Your upcoming dates."
+
+**Empty states name what will land there**, not that the list is empty. "Nobody here yet", then a sentence about what this list eventually holds. Never "No data".
+
+Sentence case everywhere, buttons and section headings included. Uppercase only for 11 to 12.5px metadata labels. British-leaning spelling in the product's own strings (favourite, colour). Numbers as digits. Dates written the way a person says them (14 March 1989, in three weeks, six days ago).
+
+Hard subjects (death, separation, estrangement, illness, conflict) are ordinary content in a personal CRM and get neutral, respectful wording. No euphemism, no jollity, no condolence copy.
+
+Microcopy may have a light touch where it is honest ("so December is not a panic"), but clarity always wins over charm.
+
+**Emoji: never.** Not in the interface, not as icons, not in empty states. Personality comes from the icon set, the colour and the writing.
+
+---
+
+## 11. States
 
 Every interactive component defines: default, hover, focus-visible, active, selected, disabled, loading, error.
 
-**Hover** — subtle background, border or text change. No movement, no scale, no shadow. Never the only way to find an important action.
+**Hover** is a warm sand tint, or one step darker on a filled button. Colour only. No movement, no scale, no shadow change. Never the only way to find an important action.
 
-**Focus** — `outline: 2px solid var(--focus); outline-offset: 2px;` on every focusable element, `:focus-visible` where appropriate, never removed without an equally visible replacement.
+**Press** moves the control down `--press-translate` and drops its shadow.
 
-**Loading** — disable the trigger, inline spinner, preserve the button width, keep the label. Skeletons only where they match the final layout; no shimmer under reduced motion. No indefinite spinner without a sentence.
+**Focus** is `outline: 2px solid var(--focus-ring); outline-offset: 2px` on every focusable element, never removed without an equally visible replacement.
 
-**Disabled** — stays legible (`--text-disabled` at 4.6:1) and explains itself. Never used to hide a permission or a validation rule.
+**Selected** in navigation and chips is a solid fill with a colour change, never colour alone.
 
-**Announced** — contact created, changes saved, reminder completed, import finished, validation failed, undo done, vault switched. Not hover or decoration.
+**Loading** disables the trigger, shows an inline spinner, preserves the button width and keeps the label. No indefinite spinner without a sentence.
 
----
+**Disabled** stays legible and explains itself. Never used to hide a permission or a validation rule.
 
-## 10. Responsive
-
-Breakpoints: mobile <640 · tablet 640–1023 · desktop 1024–1439 · wide ≥1440. Driven by content, not device names.
-
-On mobile: sidebar becomes a drawer, with the vault switcher at its top and the current vault named in the header bar. Padding 16. Page actions stay near the title. Multi-column profiles stack. Tables become row lists when horizontal comparison isn't essential. Detail panels become full-screen sheets.
-
-Adapt, don't shrink: reduce columns, stack regions, move non-essential metadata behind detail views, allow horizontal scroll for genuinely tabular data, preserve touch targets. Never scale type down to make a desktop layout fit, and never hide data to save space.
+**Announced**: contact created, changes saved, reminder completed, import finished, validation failed, undo done, vault switched.
 
 ---
 
-## 11. Icons
+## 12. Responsive
 
-Original Monica SVGs only, in the Monica repository. No third-party icon libraries, icon fonts, unicode symbols, emoji or raster icons.
+Breakpoints: mobile <640, tablet 640 to 1023, desktop 1024 to 1439, wide ≥1440. Driven by content, not device names.
 
-24×24 viewBox, rendered at 16/18/20/24, stroke 1.5, fill none, `stroke="currentColor"`, round caps and joins, ~2px optical padding, simple geometry. Filled variants only for selected nav, status marks and very small shapes. Decorative icons `aria-hidden="true"`; icon-only controls carry an accessible name. Don't animate, don't rotate a generic icon to mean something else.
+On mobile the dock stretches edge to edge and drops the vault label, page padding is 16, page actions stay near the title, multi-column profiles stack, tables become row lists when horizontal comparison is not essential, detail panels become full-screen sheets.
 
-Activity natures carry a user-chosen icon and colour — from our set, never uploaded, and always beside a label.
-
----
-
-## 12. Marketing
-
-Same tokens, same type, same icons, more whitespace. Not a second brand.
-
-Hero: one headline, one paragraph, one primary action, one optional secondary, one real Monica screen. Feature sections alternate explanation and real interface. Screenshots come from the running product with demonstration data — no device frames, no fake browser chrome, no stock photography, no abstract SaaS illustration, no generated screenshots, no composited controls. Crop deliberately rather than shrinking a desktop screen until its text is unreadable.
-
-Open-source signals belong in plain sight: source, licence, self-hosting, contributing, changelog, privacy. The inverse surface is used once, in the footer.
-
-Voice: direct, calm, human, specific, non-judgemental. *Add a relationship. Save changes. Complete reminder.* Not *Create relationship entity. Submit. You're all set! Level up your relationships.* Death, separation, estrangement, illness and conflict get neutral, respectful wording — this is a product about people someone cares about.
+Adapt, do not shrink. Reduce columns, stack regions, move non-essential metadata behind detail views, allow horizontal scroll for genuinely tabular data, preserve touch targets. Never scale type down to make a desktop layout fit, and never hide data to save space.
 
 ---
 
-## 13. Review checklist
+## 13. Marketing
 
-- Could a border here be replaced by spacing? Is anything wrapped in a panel that didn't need one?
+Same tokens, same type, same icons, more whitespace. Not a second brand. Display sizes go up to 52.
+
+Hero: one headline, one paragraph, one primary action, one optional secondary, one real screen of the product. Feature sections alternate explanation and real interface. Screenshots come from the running product with demonstration data. No device frames, no fake browser chrome, no stock photography, no abstract SaaS illustration, no generated screenshots, no composited controls.
+
+Open-source signals belong in plain sight: source, licence, self-hosting, contributing, changelog, privacy. The ink surface is used once, in the footer.
+
+---
+
+## 14. Review checklist
+
+- Is anything wrapped in a panel that a heading and 32px of space would have done?
 - Is the primary action obvious, and is there exactly one per region?
-- Are all values from tokens? Any radius above 8? Any raw hex?
-- Do control boundaries reach 3:1? Does every status read without colour?
-- Complete by keyboard, focus always visible, focus restored after overlays?
+- Are all values from tokens? Any radius above 20? Any raw hex in a feature view?
+- Does every hue identify a kind of thing rather than decorate?
+- Does every status read without colour? Do control boundaries reach 3:1?
+- Complete by keyboard, focus always visible with the indigo ring, focus restored after overlays?
 - Are hover-only actions reachable another way?
+- Does a destination that does not exist yet look like a word rather than a link?
 - Does every field type render accessibly in view, edit, import and search?
 - Are destructive consequences named, and is nothing applied silently?
+- Does it hold up in dark, where the shadows are black and the hues are lifted?
 - Does it still work with 5,000 contacts, a 40-field template, a 60-character name and German labels?
-- Is this real Monica UI, and does the user's own data dominate the screen?
+- Is this real product UI, and does the user's own data dominate the screen?
 
 ---
 
-## 14. Do not
+## 15. Do not
 
-Shadows · gradients · glassmorphism · a card per section · radii above 8px · pill-shaped buttons · stock photos · device mockups · fabricated screenshots · third-party icons · emoji as icons · hover-only actions · colour-only meaning · placeholder-as-label · oversized numbers filling space · decorative dashboards · social-media-style profiles · animation without a reason · density bought with accessibility.
+Gradients · glassmorphism · background images · grain · a card per section · radii above 20px · pill-shaped anything except an avatar · coloured shadows · glowing borders · stock photos · generated faces · device mockups · fabricated screenshots · third-party icons · icon fonts · emoji · hover-only actions · colour-only meaning · placeholder-as-label · an icon in the dock without a label · a link that leads nowhere · oversized numbers filling space · decorative dashboards · social-media-style profiles · animation without a reason · density bought with accessibility.

@@ -16,11 +16,9 @@
     :action="route('settings.entityTypes.destroy', $viewModel->entityType())"
   >
     <x-slot:trigger>
-      <button
-        type="button"
-        @click="open = true"
-        class="-ml-2.5 cursor-pointer rounded-md px-2.5 py-2 text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-error"
-      >{{ __('Delete this type') }}</button>
+      <x-button.secondary type="button" @click="open = true" class="text-error">
+        {{ __('Delete this type') }}
+      </x-button.secondary>
     </x-slot:trigger>
 
     <p>{{ __('Nothing is filed under it, so it goes for good and stops appearing in every vault.') }}</p>
@@ -28,7 +26,7 @@
     <p>{{ __('This cannot be undone.') }}</p>
   </x-modal.warning>
 @else
-  <p class="text-xs leading-relaxed text-muted-soft">
+  <p class="erica-caption max-w-[48ch]">
     {{ __('This type cannot be deleted while records are filed under it. Turn it off above to stop new ones being made.') }}
   </p>
 @endif

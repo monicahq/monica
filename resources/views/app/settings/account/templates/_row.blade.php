@@ -1,71 +1,80 @@
 {{--
   One template on the list.
 
-  The version and what state it is in sit together on the right, because they
-  are one fact: "v4, draft" and "v4, published" mean very different things about
-  whether anybody is relying on it.
+  The version and what state it is in sit together at the end, because they are one
+  fact: "v4, draft" and "v4, published" mean very different things about whether
+  anybody is relying on it.
+
+  The name is the link, and the button beside it says the same thing in words, since
+  a row whose only way in is its title is a row somebody has to guess at.
 
   @var array $template
 --}}
-<div class="flex flex-wrap items-center gap-x-4 gap-y-3 border-b border-hairline-soft px-4 py-3.5 transition-colors duration-150 first:rounded-t-xl last:rounded-b-xl last:border-b-0 hover:bg-hover">
-  <div class="min-w-0 flex-1 space-y-1">
-    <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+<div class="erica-row erica-row--top">
+  <span class="erica-row__mark" style="background: var(--indigo-tint); color: var(--indigo)">
+    <x-icon name="file" :size="18" :stroke-width="1.5" />
+  </span>
+
+  <div class="erica-row__main">
+    <p class="flex flex-wrap items-center gap-x-2 gap-y-1">
       <a
         href="{{ route('settings.templateBuilder.index', $template['slug']) }}"
         data-turbo="true"
-        class="text-sm font-semibold text-ink hover:underline"
+        class="erica-row__title hover:underline"
       >{{ $template['name'] }}</a>
 
       @if ($template['isSystem'])
-        <span class="rounded-sm border border-hairline bg-sunken px-2 py-px text-xs text-muted">{{ __('Supplied with Monica') }}</span>
+        <x-badge>{{ __('Supplied with Monica') }}</x-badge>
       @endif
 
       @if ($template['hasDraft'])
-        <span class="rounded-sm border border-hairline bg-sunken px-2 py-px text-xs text-warning">{{ __('Draft') }}</span>
+        <x-badge tone="warning">{{ __('Draft') }}</x-badge>
       @endif
 
       @unless ($template['isActive'])
-        <span class="rounded-sm border border-dashed border-hairline-strong px-1.5 py-px text-xs text-warning">{{ __('Not offered') }}</span>
+        <x-badge tone="outline">{{ __('Not offered') }}</x-badge>
       @endunless
 
-      <span class="font-mono text-xs text-muted-soft">{{ $template['slug'] }}</span>
-    </div>
+      <code class="font-mono text-[12.5px] text-muted">{{ $template['slug'] }}</code>
+    </p>
 
     @if ($template['description'])
-      <p class="text-sm leading-relaxed text-body">{{ $template['description'] }}</p>
+      <p class="erica-row__desc">{{ $template['description'] }}</p>
     @endif
 
-    <div class="flex flex-wrap items-center gap-x-3.5 gap-y-1 text-xs text-muted">
-      @if ($template['entityTypeName'])
-        <span>{{ __('Describes :name', ['name' => $template['entityTypeName']]) }}</span>
-      @else
-        <span>{{ __('Describes a contact') }}</span>
-      @endif
+    <p class="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+      <span class="erica-caption">
+        @if ($template['entityTypeName'])
+          {{ __('Describes :name', ['name' => $template['entityTypeName']]) }}
+        @else
+          {{ __('Describes a contact') }}
+        @endif
+      </span>
 
-      <span>{{ $template['sectionLabel'] }}</span>
+      <span class="erica-caption" aria-hidden="true">·</span>
 
-      <span class="text-muted-soft">{{ $template['updatedLabel'] }}</span>
-    </div>
+      <span class="erica-caption">{{ $template['sectionLabel'] }}</span>
+
+      <span class="erica-caption" aria-hidden="true">·</span>
+
+      <span class="erica-caption">{{ $template['updatedLabel'] }}</span>
+    </p>
   </div>
 
-  <div class="flex shrink-0 flex-wrap items-center gap-2.5">
-    <span class="grid justify-items-end gap-px">
-      <span class="font-mono text-xs text-body">{{ $template['versionLabel'] }}</span>
-
-      <span class="text-xs text-muted-soft">{{ $template['versionSubLabel'] }}</span>
+  <div class="erica-row__end">
+    <span class="erica-row__meta">
+      <b class="font-mono">{{ $template['versionLabel'] }}</b>
+      <span>{{ $template['versionSubLabel'] }}</span>
     </span>
 
     <x-form method="post" :action="route('settings.templateCopy.create', $template['slug'])">
-      <button
-        type="submit"
-        class="cursor-pointer rounded-md border border-hairline-strong bg-canvas px-2.5 py-1.5 text-sm text-body transition-colors duration-150 hover:bg-hover hover:text-ink"
-      >{{ __('Copy') }}</button>
+      <x-button.secondary size="small">{{ __('Copy') }}</x-button.secondary>
     </x-form>
 
-    <a
-      href="{{ route('settings.templateBuilder.index', $template['slug']) }}"
+    <x-button.secondary
+      size="small"
+      :href="route('settings.templateBuilder.index', $template['slug'])"
       data-turbo="true"
-      class="rounded-md border border-hairline-strong bg-canvas px-2.5 py-1.5 text-sm font-semibold text-ink transition-colors duration-150 hover:bg-hover"
-    >{{ $template['openLabel'] }}</a>
+    >{{ $template['openLabel'] }}</x-button.secondary>
   </div>
 </div>

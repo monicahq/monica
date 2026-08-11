@@ -7,101 +7,101 @@
   whether to open it or copy it first.
 
   The filter is a plain GET form so the narrowed list has a URL, and the region
-  it redraws is the one both the chips and the box aim at.
+  it redraws is the one both the chips and the panels aim at.
 
   @var \App\ViewModels\Settings\Account\Templates\TemplatesViewModel $viewModel
 --}}
-<x-app-layout :title="__('Templates')">
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="templates" />
-  </x-slot:sidebar>
+<x-shell :title="__('Templates')">
+  <x-slot:bar>
+    <a href="{{ route('settings.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
+      {{ __('Back to settings') }}
+    </a>
+  </x-slot:bar>
 
-  <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => __('Settings')],
-        ['label' => __('Templates')],
-      ]"
-    />
-  </x-slot:breadcrumb>
+  <x-slot:dock>
+    <x-dock :user="$viewModel->user()" />
+  </x-slot:dock>
 
-  <div class="grid items-start gap-x-7 gap-y-4 sm:grid-cols-[minmax(0,1fr)_auto]">
-    <x-page-header
-      :title="__('Templates')"
-      :description="__('A template decides what a record looks like: which sections it carries, and which fields sit in them. Records keep the version they were made with until you move them.')"
-      class="max-w-140"
-    />
+  <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
+    <div class="flex min-w-0 flex-col gap-2">
+      <h1 class="erica-page-title">{{ __('Templates') }}</h1>
 
-    <x-button :href="route('settings.templates.new')" data-turbo="true" class="max-sm:w-full sm:justify-self-end">
+      <p class="erica-lede max-w-[56ch]">{{ __('A template decides what a record looks like: which sections it carries, and which fields sit in them. Records keep the version they were made with until you move them.') }}</p>
+    </div>
+
+    <x-button :href="route('settings.templates.new')" data-turbo="true" class="max-sm:w-full">
       {{ __('Create a template') }}
     </x-button>
-  </div>
+  </header>
 
-  <div id="templates" x-merge="replace" class="space-y-6">
-    <div class="flex flex-wrap items-center gap-2">
-      <form method="get" action="{{ route('settings.templates.index') }}" x-target="templates" class="flex items-center gap-2">
+  <div id="templates" x-merge="replace" class="flex flex-col gap-8">
+    <div class="flex flex-wrap items-center gap-2.5">
+      <form method="get" action="{{ route('settings.templates.index') }}" x-target="templates" class="flex items-center gap-2.5">
         <input type="hidden" name="filter" value="{{ $viewModel->filter() }}" />
 
         <x-input
           id="query"
           name="query"
+          size="small"
           :value="$viewModel->query()"
           :placeholder="__('Filter by name or slug')"
           :aria-label="__('Filter the templates')"
           class="w-56"
         />
 
-        <x-button.secondary>{{ __('Filter') }}</x-button.secondary>
+        <x-button.secondary size="small">{{ __('Filter') }}</x-button.secondary>
       </form>
 
       @foreach ($viewModel->filters() as $chip)
-        <a
-          href="{{ route('settings.templates.index', ['filter' => $chip['key'], 'query' => $viewModel->query()]) }}"
+        <x-chip
+          :href="route('settings.templates.index', ['filter' => $chip['key'], 'query' => $viewModel->query()])"
+          :selected="$chip['isCurrent']"
           x-target="templates"
-          @if ($chip['isCurrent']) aria-current="true" @endif
-          class="rounded-md border px-2.5 py-1.5 text-sm transition-colors duration-150 {{ $chip['isCurrent'] ? 'border-primary bg-sunken text-ink' : 'border-hairline-strong bg-canvas text-muted hover:bg-hover' }}"
-        >{{ $chip['label'] }}</a>
+        >{{ $chip['label'] }}</x-chip>
       @endforeach
 
-      <span class="ml-auto text-xs text-muted-soft">{{ $viewModel->summary() }}</span>
+      <span class="erica-caption ml-auto">{{ $viewModel->summary() }}</span>
     </div>
 
-    <x-box :title="__('Your templates')" padding="p-0">
-      <x-slot:help>
-        <x-help :title="__('Templates')">
-          {{ __('A template holds no fields of its own. It holds versions, and a version is an ordered set of sections. That is what lets a record keep rendering the way it always did while you change the template around it.') }}
-        </x-help>
-      </x-slot:help>
+    <section class="flex flex-col gap-3">
+      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+        <h2 class="erica-section-title shrink-0">{{ __('Your templates') }}</h2>
 
-      <x-slot:description>
-        <p>{{ __('Yours to change, version and publish.') }}</p>
-      </x-slot:description>
+        <p class="erica-small">{{ __('Yours to change, version and publish.') }}</p>
+      </div>
 
-      @forelse ($viewModel->ownTemplates() as $template)
-        @include('app.settings.account.templates._row', ['template' => $template])
-      @empty
-        <x-empty-state :title="__('Nothing here yet')">
-          <x-slot:icon>
-            <x-entity-icon name="info" :size="20" />
-          </x-slot:icon>
+      <x-panel :flush="true">
+        @forelse ($viewModel->ownTemplates() as $template)
+          @include('app.settings.account.templates._row', ['template' => $template])
+        @empty
+          <x-empty-state :title="__('Nothing here yet')" hue="var(--indigo)" tint="var(--indigo-tint)">
+            <x-slot:icon>
+              <x-icon name="file" :size="30" :stroke-width="1.4" />
+            </x-slot:icon>
 
-          {{ __('Create one, or copy a supplied template and change what you need.') }}
-        </x-empty-state>
-      @endforelse
-    </x-box>
+            {{ __('Create one, or copy a supplied template and change what you need.') }}
+          </x-empty-state>
+        @endforelse
+      </x-panel>
+    </section>
 
     @if ($viewModel->suppliedTemplates() !== [])
-      <x-box :title="__('Supplied with Monica')" padding="p-0">
-        <x-slot:description>
-          <p>{{ __('They work out of the box. Copy one to change it.') }}</p>
-        </x-slot:description>
+      <section class="flex flex-col gap-3">
+        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+          <h2 class="erica-section-title shrink-0">{{ __('Supplied with Monica') }}</h2>
 
-        @foreach ($viewModel->suppliedTemplates() as $template)
-          @include('app.settings.account.templates._row', ['template' => $template])
-        @endforeach
-      </x-box>
+          <p class="erica-small">{{ __('They work out of the box. Copy one to change it.') }}</p>
+        </div>
+
+        <x-panel :flush="true">
+          @foreach ($viewModel->suppliedTemplates() as $template)
+            @include('app.settings.account.templates._row', ['template' => $template])
+          @endforeach
+        </x-panel>
+      </section>
     @endif
   </div>
 
-  <p class="text-xs leading-relaxed text-muted-soft">{{ __('Deleting a template is refused while a record still points at one of its versions. Turn it off instead and it stops being offered to anything new.') }}</p>
-</x-app-layout>
+  <p class="erica-caption px-0.5">{{ __('Deleting a template is refused while a record still points at one of its versions. Turn it off instead and it stops being offered to anything new.') }}</p>
+</x-shell>

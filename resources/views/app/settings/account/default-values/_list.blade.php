@@ -22,9 +22,6 @@
   $listErrors = $errors->getBag('list'.$list['id']);
   $newValueErrors = $errors->getBag('newValue'.$list['id']);
   $target = 'value-list-'.$list['id'];
-  $quiet = 'cursor-pointer rounded-md px-2 py-1.5 text-sm text-muted transition-colors duration-150 hover:bg-hover';
-  $quietButton = $quiet.' hover:text-ink';
-  $dangerButton = $quiet.' hover:text-error';
 @endphp
 
 <div
@@ -33,16 +30,14 @@
   x-data="{ renaming: {{ $listErrors->has('name') ? 'true' : 'false' }}, adding: {{ $newValueErrors->has('label') ? 'true' : 'false' }} }"
   class="transition-opacity [&[aria-busy]]:opacity-60"
 >
-  <x-box padding="p-0">
-    <x-slot:title>
-      {{ $list['name'] }}
-
-      <span class="ml-1.5 text-xs font-normal text-muted-soft">{{ $list['countLabel'] }}</span>
-    </x-slot:title>
-
-    <x-slot:actions>
+  <x-panel :title="$list['name']" :subtitle="$list['countLabel']" :flush="true">
+    <x-slot:action>
       <div x-show="! renaming" class="flex items-center gap-0.5">
-        <button type="button" @click="renaming = true; $nextTick(() => $refs.name.focus())" class="{{ $quietButton }}">{{ __('Rename') }}</button>
+        <x-button.ghost
+          size="small"
+          type="button"
+          @click="renaming = true; $nextTick(() => $refs.name.focus())"
+        >{{ __('Rename') }}</x-button.ghost>
 
         @if ($list['canBeDeleted'])
           <x-modal.warning
@@ -52,7 +47,7 @@
             x-target="value-lists"
           >
             <x-slot:trigger>
-              <button type="button" @click="open = true" class="{{ $dangerButton }}">{{ __('Delete') }}</button>
+              <x-button.ghost size="small" type="button" @click="open = true" class="hover:text-error">{{ __('Delete') }}</x-button.ghost>
             </x-slot:trigger>
 
             <p>{{ __('The list goes, and every value inside it goes with it.') }}</p>
@@ -61,52 +56,47 @@
           </x-modal.warning>
         @endif
       </div>
-    </x-slot:actions>
+    </x-slot:action>
 
-    <x-slot:description>
-      @if ($list['description'])
-        <p>{{ $list['description'] }}</p>
-      @endif
+    @if ($list['description'])
+      <p class="erica-small border-b border-hairline px-4 py-3">{{ $list['description'] }}</p>
+    @endif
 
-      <x-form
-        x-cloak
-        x-show="renaming"
-        method="put"
-        :action="route('settings.valueLists.update', $list['id'])"
-        :x-target="$target"
-        class="flex flex-wrap items-start gap-3"
-      >
-        <x-input
-          :id="'list-'.$list['id'].'-name'"
-          name="name"
-          x-ref="name"
-          :value="$list['name']"
-          :aria-label="__('Name of the list')"
-          :error="$listErrors->get('name')"
-          class="max-w-80"
-          maxlength="255"
-          required
-        />
+    <x-form
+      x-cloak
+      x-show="renaming"
+      method="put"
+      :action="route('settings.valueLists.update', $list['id'])"
+      :x-target="$target"
+      class="flex flex-wrap items-start gap-3 border-b border-hairline px-4 py-3.5"
+    >
+      <x-input
+        :id="'list-'.$list['id'].'-name'"
+        name="name"
+        x-ref="name"
+        size="small"
+        :value="$list['name']"
+        :aria-label="__('Name of the list')"
+        :error="$listErrors->get('name')"
+        class="max-w-80"
+        maxlength="255"
+        required
+      />
 
-        <div class="flex items-center gap-2">
-          <x-button>{{ __('Save') }}</x-button>
+      <div class="flex items-center gap-2">
+        <x-button size="small">{{ __('Save') }}</x-button>
 
-          <button type="button" @click="renaming = false" class="{{ $quietButton }}">{{ __('Cancel') }}</button>
-        </div>
-      </x-form>
-    </x-slot:description>
+        <x-button.ghost size="small" type="button" @click="renaming = false">{{ __('Cancel') }}</x-button.ghost>
+      </div>
+    </x-form>
 
     <div x-data="sortableRows" data-sortable>
       @forelse ($list['values'] as $value)
         @include('app.settings.account.default-values._value', ['value' => $value, 'target' => $target])
       @empty
-        <x-empty-state :title="__('No values yet')">
+        <x-empty-state :title="__('No values yet')" hue="var(--marigold-deep)" tint="var(--marigold-tint)">
           <x-slot:icon>
-            <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
-              <line x1="4" y1="4.4" x2="13" y2="4.4"></line>
-              <line x1="4" y1="8" x2="13" y2="8"></line>
-              <line x1="4" y1="11.6" x2="13" y2="11.6"></line>
-            </svg>
+            <x-icon name="tasks" :size="30" :stroke-width="1.4" />
           </x-slot:icon>
 
           {{ __('Add the words you actually use. They are offered in the order you put them in.') }}
@@ -115,14 +105,19 @@
     </div>
 
     @if ($list['allowsUserValues'])
-      <div class="border-t border-hairline-soft px-3 py-2">
-        <button type="button" x-show="! adding" @click="adding = true; $nextTick(() => $refs.label.focus())" class="{{ $quietButton }} flex items-center gap-2">
-          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
-            <line x1="8" y1="3.2" x2="8" y2="12.8"></line>
-            <line x1="3.2" y1="8" x2="12.8" y2="8"></line>
-          </svg>
+      <div class="border-t border-hairline px-3 py-2.5">
+        <x-button.ghost
+          size="small"
+          type="button"
+          x-show="! adding"
+          @click="adding = true; $nextTick(() => $refs.label.focus())"
+        >
+          <x-slot:icon>
+            <x-icon name="plus" :size="15" :stroke-width="1.6" />
+          </x-slot:icon>
+
           {{ __('Add a value') }}
-        </button>
+        </x-button.ghost>
 
         <x-form
           x-cloak
@@ -130,12 +125,13 @@
           method="post"
           :action="route('settings.valueListItems.create', $list['id'])"
           :x-target="$target"
-          class="flex flex-wrap items-start gap-3"
+          class="flex flex-wrap items-start gap-3 px-1 py-1"
         >
           <x-input
             :id="'list-'.$list['id'].'-label'"
             name="label"
             x-ref="label"
+            size="small"
             :aria-label="__('Name of the value')"
             :placeholder="__('Name of the value')"
             :error="$newValueErrors->get('label')"
@@ -145,12 +141,12 @@
           />
 
           <div class="flex items-center gap-2">
-            <x-button>{{ __('Add') }}</x-button>
+            <x-button size="small">{{ __('Add') }}</x-button>
 
-            <button type="button" @click="adding = false" class="{{ $quietButton }}">{{ __('Cancel') }}</button>
+            <x-button.ghost size="small" type="button" @click="adding = false">{{ __('Cancel') }}</x-button.ghost>
           </div>
         </x-form>
       </div>
     @endif
-  </x-box>
+  </x-panel>
 </div>

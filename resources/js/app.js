@@ -3,6 +3,8 @@ import 'instant.page';
 import * as Turbo from '@hotwired/turbo';
 import Alpine from 'alpinejs';
 import morph from '@alpinejs/morph';
+import focus from '@alpinejs/focus';
+import anchor from '@alpinejs/anchor';
 import ajax from '@imacrayon/alpine-ajax';
 
 window.Turbo = Turbo;
@@ -18,6 +20,24 @@ window.Alpine = Alpine;
 
 Alpine.plugin(morph);
 Alpine.plugin(ajax);
+
+/*
+ * `x-trap` keeps the tab key inside whatever is open over the page, hands focus to
+ * the first thing in it, gives it back to whatever opened it on the way out, and
+ * with `.inert` marks the rest of the document as neither reachable nor read. A
+ * dialog with a scrim over it has to do all four, or the pointer is held back while
+ * the keyboard walks out behind it.
+ */
+Alpine.plugin(focus);
+
+/*
+ * `x-anchor` pins a panel to the control that opened it and takes it out of the
+ * flow to do so. A panel is nearly always inside something that clips what
+ * overflows it: a card with rounded corners has to, or a row's hover tint would
+ * square off the corner it sits in. A menu that opened inside that would be cut
+ * off at the card's edge, so it is positioned against the window instead.
+ */
+Alpine.plugin(anchor);
 
 /*
  * Morph patches the DOM that is already there instead of replacing it, so the Alpine state

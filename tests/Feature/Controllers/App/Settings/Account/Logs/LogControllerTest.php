@@ -54,7 +54,6 @@ class LogControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('198.51.100.24', escape: false);
-        $response->assertSee('Where: 198.51.100.24', escape: false);
     }
 
     #[Test]
@@ -71,7 +70,7 @@ class LogControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.logs.index'));
 
         $response->assertStatus(200);
-        $response->assertDontSee('Where:', escape: false);
+        $response->assertSee('No address, so this was the application itself', escape: false);
     }
 
     #[Test]
@@ -82,10 +81,13 @@ class LogControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.logs.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('No activity yet', escape: false);
-        $response->assertSee('Nothing has happened on your account yet.', escape: false);
-        $response->assertSee('No emails yet', escape: false);
-        $response->assertSee('Nothing has left our hands yet.', escape: false);
+        $response->assertSee('Nothing has happened yet', escape: false);
+        $response->assertSee('it is written down here', escape: false);
+        $response->assertSee('Nothing has left our hands yet', escape: false);
+        $response->assertSee('along with whether they arrived', escape: false);
+
+        $response->assertSee('background: var(--forest-tint); color: var(--forest)', escape: false);
+        $response->assertSee('background: var(--plum-tint); color: var(--plum)', escape: false);
     }
 
     #[Test]
@@ -180,6 +182,7 @@ class LogControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('creed.bratton@dundermifflin.com', escape: false);
         $response->assertSee('Confirm your email address', escape: false);
+        $response->assertSee('erica-badge', escape: false);
         $response->assertSee('Browse all emails', escape: false);
         $response->assertSee(route('settings.emailsSent.index'), escape: false);
     }

@@ -3,6 +3,11 @@
   about in a card in front of the screen rather than in the row, since a row is
   too small a place to say what is about to be lost.
 
+  A value nothing uses is deleted outright; one that records already point at is
+  retired instead, which is what "Stop offering" does. A retired value keeps its
+  place in the list and says so in a badge as well as in the struck-out label, so
+  it is never the styling alone that carries it.
+
   The row is draggable as a whole rather than by the handle alone, so the whole
   height of it is a target. The attribute is written out rather than bound, so
   the row is draggable from the first paint; the drag is instead refused while
@@ -18,15 +23,12 @@
 --}}
 @php
   $valueErrors = $errors->getBag('value'.$value['id']);
-  $quiet = 'cursor-pointer rounded-md px-2 py-1.5 text-sm text-muted transition-colors duration-150 hover:bg-hover';
-  $quietButton = $quiet.' hover:text-ink';
-  $dangerButton = $quiet.' hover:text-error';
 @endphp
 
 <div
   data-row-id="{{ $value['id'] }}"
   x-data="{ editing: {{ $valueErrors->has('label') ? 'true' : 'false' }} }"
-  class="relative border-b border-hairline-soft transition-colors duration-150 first:rounded-t-xl last:rounded-b-xl last:border-b-0 hover:bg-hover"
+  class="relative border-b border-hairline last:border-b-0"
 >
   {{--
     The line showing where the dragged row would land. It is taken out of the
@@ -47,27 +49,27 @@
     @drop.prevent="drop($event, {{ $value['id'] }})"
     @dragend="stop()"
     :class="draggingId === {{ $value['id'] }} && 'opacity-40'"
-    class="flex min-h-11 items-center gap-2.5 py-2 pr-3 pl-2"
+    class="erica-row border-b-0 py-2 pl-2 transition-colors hover:bg-hover"
   >
     <span title="{{ __('Drag to reorder') }}" class="flex shrink-0 cursor-grab p-1 text-placeholder" aria-hidden="true">
-      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
-        <line x1="4" y1="5" x2="12" y2="5"></line>
-        <line x1="4" y1="8" x2="12" y2="8"></line>
-        <line x1="4" y1="11" x2="12" y2="11"></line>
-      </svg>
+      <x-icon name="menu" :size="15" :stroke-width="1.5" />
     </span>
 
     <div x-show="! editing" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2.5 gap-y-1">
-      <p @class(['truncate text-sm font-semibold', 'text-ink' => $value['isActive'], 'text-muted-soft line-through' => ! $value['isActive']])>{{ $value['label'] }}</p>
+      <p @class(['truncate', 'erica-row__title' => $value['isActive'], 'text-sm text-muted line-through' => ! $value['isActive']])>{{ $value['label'] }}</p>
 
       @unless ($value['isActive'])
-        <span class="rounded-full bg-sunken px-2 py-0.5 text-xs text-muted">{{ __('no longer offered') }}</span>
+        <x-badge>{{ __('no longer offered') }}</x-badge>
       @endunless
 
-      <span class="ml-auto text-xs text-muted-soft">{{ $value['usageLabel'] }}</span>
+      <span class="erica-caption ml-auto">{{ $value['usageLabel'] }}</span>
 
       <div class="flex shrink-0 items-center gap-0.5">
-        <button type="button" @click="editing = true; $nextTick(() => $refs.label.focus())" class="{{ $quietButton }}">{{ __('Edit') }}</button>
+        <x-button.ghost
+          size="small"
+          type="button"
+          @click="editing = true; $nextTick(() => $refs.label.focus())"
+        >{{ __('Edit') }}</x-button.ghost>
 
         @if ($value['isActive'] && $value['canBeDeleted'])
           <x-modal.warning
@@ -77,7 +79,7 @@
             :x-target="$target"
           >
             <x-slot:trigger>
-              <button type="button" @click="open = true" class="{{ $dangerButton }}">{{ __('Delete') }}</button>
+              <x-button.ghost size="small" type="button" @click="open = true" class="hover:text-error">{{ __('Delete') }}</x-button.ghost>
             </x-slot:trigger>
 
             <p>{{ __('Nothing uses it yet, so it goes for good and stops being offered anywhere.') }}</p>
@@ -88,13 +90,13 @@
           <x-form method="put" :action="route('settings.valueListItemActivation.update', $value['id'])" :x-target="$target">
             <input type="hidden" name="active" value="0" />
 
-            <button type="submit" class="{{ $quietButton }}">{{ __('Stop offering') }}</button>
+            <x-button.ghost size="small">{{ __('Stop offering') }}</x-button.ghost>
           </x-form>
         @else
           <x-form method="put" :action="route('settings.valueListItemActivation.update', $value['id'])" :x-target="$target">
             <input type="hidden" name="active" value="1" />
 
-            <button type="submit" class="{{ $quietButton }}">{{ __('Offer again') }}</button>
+            <x-button.ghost size="small">{{ __('Offer again') }}</x-button.ghost>
           </x-form>
         @endif
       </div>
@@ -106,6 +108,7 @@
           :id="'value-'.$value['id'].'-label'"
           name="label"
           x-ref="label"
+          size="small"
           :value="$value['label']"
           :aria-label="__('Name of the value')"
           :error="$valueErrors->get('label')"
@@ -115,9 +118,9 @@
         />
 
         <div class="flex items-center gap-2">
-          <x-button>{{ __('Save') }}</x-button>
+          <x-button size="small">{{ __('Save') }}</x-button>
 
-          <button type="button" @click="editing = false" class="{{ $quietButton }}">{{ __('Cancel') }}</button>
+          <x-button.ghost size="small" type="button" @click="editing = false">{{ __('Cancel') }}</x-button.ghost>
         </div>
       </x-form>
     </div>

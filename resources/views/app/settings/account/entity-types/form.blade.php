@@ -3,6 +3,9 @@
   Naming a type and renaming it ask for the same things, so there is one screen
   and the view model decides what it says.
 
+  It moves onto the new shell with the list, because "Create a type" and every
+  row's Edit lead straight here.
+
   Everything the preview shows is held in the browser, since it has to follow
   the typing rather than the saving. The slug shown while creating is a guess
   at what the server will settle on; the field is read only either way, because
@@ -17,37 +20,30 @@
 --}}
 @php
   $values = $viewModel->values();
-  $panel = 'grid gap-x-9 gap-y-5 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]';
+
+  /* The swatch both pickers are built out of: a square that fills with ink when it
+     is the one in force, which is how every toggle in the system says so. */
+  $swatch = 'flex size-9 cursor-pointer items-center justify-center rounded-sm border transition-colors duration-150';
+  $swatchOn = "'border-ink bg-ink text-canvas'";
+  $swatchOff = "'border-hairline-strong bg-canvas text-muted hover:bg-hover'";
 @endphp
-<x-app-layout :title="$viewModel->title()">
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="entities" />
-  </x-slot:sidebar>
-
-  <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => __('Settings')],
-        ['label' => __('Entity types'), 'url' => route('settings.entityTypes.index')],
-        ['label' => $viewModel->isEdit() ? $values['nameSingular'] : __('New type')],
-      ]"
-    />
-  </x-slot:breadcrumb>
-
-  <div class="space-y-1.5">
-    <a
-      href="{{ route('settings.entityTypes.index') }}"
-      data-turbo="true"
-      class="-ml-1.5 inline-flex items-center gap-1.5 rounded-md px-1.5 py-1 text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-ink"
-    >
-      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M9.6 3.6 5.2 8l4.4 4.4"></path>
-      </svg>
-      {{ __('Entity types') }}
+<x-shell :title="$viewModel->title()">
+  <x-slot:bar>
+    <a href="{{ route('settings.entityTypes.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
+      {{ __('Back to the types') }}
     </a>
+  </x-slot:bar>
 
-    <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
-  </div>
+  <x-slot:dock>
+    <x-dock :user="$viewModel->user()" />
+  </x-slot:dock>
+
+  <header class="flex flex-col gap-2">
+    <h1 class="erica-page-title">{{ $viewModel->title() }}</h1>
+
+    <p class="erica-lede max-w-[56ch]">{{ $viewModel->description() }}</p>
+  </header>
 
   <div
     x-data="{
@@ -65,19 +61,19 @@
     @if ($viewModel->slugIsEditable())
       x-effect="if (! slugTouched) slug = window.slugify(nameSingular)"
     @endif
-    class="space-y-8.5"
+    class="flex flex-col gap-8"
   >
-    <x-form id="entity-type-form" :method="$viewModel->method()" :action="$viewModel->action()" class="space-y-8.5">
-      <x-box :title="__('Names')">
-        <div class="{{ $panel }}">
-          <div class="space-y-2.5 text-sm leading-relaxed text-body">
-            <p>{{ __('One name for a single record, one for the list. We use the singular in buttons and headers, the plural in list titles.') }}</p>
+    <x-form id="entity-type-form" :method="$viewModel->method()" :action="$viewModel->action()" class="flex flex-col gap-8">
+      <section class="flex flex-col gap-3">
+        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+          <h2 class="erica-section-title shrink-0">{{ __('Names') }}</h2>
 
-            <p>{{ __('The slug is what the URL and the API use. It has to be unique in your account.') }}</p>
-          </div>
+          <p class="erica-small">{{ __('One name for a single record, one for the list. The singular goes in buttons and headers, the plural in list titles.') }}</p>
+        </div>
 
-          <div class="space-y-3.5">
-            <div class="grid gap-3 sm:grid-cols-2">
+        <x-panel>
+          <div class="flex flex-col gap-4.5">
+            <div class="grid gap-4 sm:grid-cols-2">
               <x-input
                 id="name_singular"
                 x-model="nameSingular"
@@ -103,11 +99,10 @@
 
             @if ($viewModel->slugIsEditable())
               {{--
-                Blanking the field puts it back under the name's control, which
-                is why the flag is read from what was typed rather than merely
-                set. Tidying happens on the way out rather than on every key,
-                since stripping the dash somebody just typed makes the field
-                impossible to use.
+                Blanking the field puts it back under the name's control, which is why
+                the flag is read from what was typed rather than merely set. Tidying
+                happens on the way out rather than on every key, since stripping the
+                dash somebody just typed makes the field impossible to use.
               --}}
               <x-input
                 id="slug"
@@ -123,20 +118,17 @@
                 class="font-mono"
               />
             @else
-              <div class="space-y-1.5">
-                <x-label for="slug" :value="__('Slug')" />
+              {{--
+                Once the slug is settled it stops being a field. A disabled box invites
+                clicking and submits nothing, so what is shown instead is the value
+                itself, in mono, the way every machine value in the product is written.
+              --}}
+              <div class="erica-field">
+                <p class="erica-field__label">{{ __('Slug') }}</p>
 
-                <input
-                  id="slug"
-                  type="text"
-                  value="{{ $values['slug'] }}"
-                  readonly
-                  disabled
-                  aria-describedby="slug-help"
-                  class="block w-full appearance-none rounded-md border border-hairline-strong bg-input px-3 py-2.5 font-mono text-base text-ink opacity-60 sm:text-sm"
-                />
+                <p class="rounded-md border border-hairline bg-sunken px-3 py-2 font-mono text-sm break-all text-ink select-all">{{ $values['slug'] }}</p>
 
-                <p id="slug-help" class="text-xs text-muted">{{ $viewModel->slugHelp() }}</p>
+                <p class="erica-field__help">{{ $viewModel->slugHelp() }}</p>
               </div>
             @endif
 
@@ -150,38 +142,41 @@
               :error="$errors->get('description')"
             />
           </div>
+        </x-panel>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+          <h2 class="erica-section-title shrink-0">{{ __('Appearance') }}</h2>
+
+          <p class="erica-small">{{ __('The icon and colour mark this type in the vault navigation and beside every record of it.') }}</p>
         </div>
-      </x-box>
 
-      <x-box :title="__('Appearance')">
-        <div class="{{ $panel }}">
-          <div class="space-y-3.5">
-            <p class="text-sm leading-relaxed text-body">{{ __('The icon and colour mark this type in the vault navigation and beside every record of it.') }}</p>
-
-            <div class="flex items-center gap-2.5 rounded-lg border border-hairline-soft bg-sunken px-3 py-2.5">
+        <x-panel>
+          <div class="flex flex-col gap-5">
+            {{-- What the two pickers add up to, following the typing rather than the saving. --}}
+            <div class="erica-row rounded-md border border-hairline bg-sunken px-3 py-2.5">
               <span
+                class="erica-row__mark"
                 :style="`color: ${colour}; background: ${tint}`"
-                class="flex size-7 shrink-0 items-center justify-center rounded-md"
                 aria-hidden="true"
               >
                 @foreach (\App\Models\EntityType::ICONS as $glyph)
                   <span x-cloak x-show="icon === @js($glyph)" class="flex">
-                    <x-entity-icon :name="$glyph" />
+                    <x-entity-icon :name="$glyph" :size="18" />
                   </span>
                 @endforeach
               </span>
 
-              <div class="min-w-0">
-                <p class="truncate text-sm font-semibold text-ink" x-text="previewName"></p>
+              <div class="erica-row__main">
+                <p class="erica-row__title truncate" x-text="previewName"></p>
 
-                <p class="truncate font-mono text-xs text-muted-soft" x-text="previewSlug"></p>
+                <p class="truncate font-mono text-[12.5px] text-muted" x-text="previewSlug"></p>
               </div>
             </div>
-          </div>
 
-          <div class="space-y-4">
-            <fieldset class="space-y-1.5">
-              <legend class="text-sm font-semibold text-ink">{{ __('Icon') }}</legend>
+            <fieldset class="erica-field">
+              <legend class="erica-field__label">{{ __('Icon') }}</legend>
 
               <input type="hidden" name="icon" value="{{ $values['icon'] }}" :value="icon" />
 
@@ -192,8 +187,8 @@
                     aria-label="{{ $option['name'] }}"
                     :aria-pressed="icon === @js($option['name']) ? 'true' : 'false'"
                     @click="icon = @js($option['name'])"
-                    :class="icon === @js($option['name']) ? 'border-primary bg-sunken text-ink' : 'border-hairline-strong bg-canvas text-muted hover:bg-hover'"
-                    class="flex size-9 cursor-pointer items-center justify-center rounded-md border transition-colors duration-150"
+                    :class="icon === @js($option['name']) ? {{ $swatchOn }} : {{ $swatchOff }}"
+                    class="{{ $swatch }}"
                   >
                     <x-entity-icon :name="$option['name']" :size="16" />
                   </button>
@@ -203,8 +198,8 @@
               <x-error :id="$errors->has('icon') ? 'icon-error' : null" :messages="$errors->get('icon')" />
             </fieldset>
 
-            <fieldset class="space-y-1.5">
-              <legend class="text-sm font-semibold text-ink">{{ __('Colour') }}</legend>
+            <fieldset class="erica-field">
+              <legend class="erica-field__label">{{ __('Colour') }}</legend>
 
               <input type="hidden" name="colour" value="{{ $values['colour'] }}" :value="colour" />
 
@@ -215,41 +210,45 @@
                     aria-label="{{ $option['value'] }}"
                     :aria-pressed="colour === @js($option['value']) ? 'true' : 'false'"
                     @click="colour = @js($option['value'])"
-                    :class="colour === @js($option['value']) ? 'border-primary' : 'border-hairline-strong'"
-                    class="flex size-9 cursor-pointer items-center justify-center rounded-md border bg-canvas transition-colors duration-150"
+                    :class="colour === @js($option['value']) ? 'border-ink' : 'border-hairline-strong'"
+                    class="{{ $swatch }} bg-canvas"
                   >
-                    <span style="background: {{ $option['value'] }}" class="size-[18px] rounded-sm"></span>
+                    <span style="background: {{ $option['value'] }}" class="size-[18px] rounded-xs"></span>
                   </button>
                 @endforeach
               </div>
 
-              <p class="font-mono text-xs text-muted" x-text="colour"></p>
+              <p class="font-mono text-[12.5px] text-muted" x-text="colour"></p>
 
               <x-error :id="$errors->has('colour') ? 'colour-error' : null" :messages="$errors->get('colour')" />
             </fieldset>
           </div>
+        </x-panel>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+          <h2 class="erica-section-title shrink-0">{{ __('Availability') }}</h2>
+
+          <p class="erica-small">{{ __('An active type shows up in every vault in this account. Turn it off and existing records stay where they are, but no new ones can be made.') }}</p>
         </div>
-      </x-box>
 
-      <x-box :title="__('Availability')">
-        <div class="{{ $panel }}">
-          <p class="text-sm leading-relaxed text-body">{{ __('An active type shows up in every vault in this account. Turn it off and existing records stay where they are, but no new ones can be made.') }}</p>
+        <x-panel>
+          <x-checkbox id="is_active" :checked="$values['isActive']">
+            {{ __('New records of this type can be created') }}
+          </x-checkbox>
 
-          <div class="space-y-4">
-            <x-checkbox id="is_active" :checked="$values['isActive']">
-              {{ __('New records of this type can be created') }}
-            </x-checkbox>
+          @if ($viewModel->isEdit())
+            <x-slot:footer>
+              <div class="flex flex-wrap items-center gap-x-6 gap-y-1">
+                <span class="erica-caption">{{ $viewModel->recordCount() }}</span>
 
-            @if ($viewModel->isEdit())
-              <div class="flex flex-wrap items-center gap-x-6 gap-y-1 border-t border-hairline-soft pt-3.5 text-xs text-muted-soft">
-                <span>{{ $viewModel->recordCount() }}</span>
-
-                <span class="font-mono break-all">{{ $viewModel->uuid() }}</span>
+                <span class="font-mono text-[12.5px] break-all text-muted">{{ $viewModel->uuid() }}</span>
               </div>
-            @endif
-          </div>
-        </div>
-      </x-box>
+            </x-slot:footer>
+          @endif
+        </x-panel>
+      </section>
     </x-form>
 
     <div class="flex flex-wrap items-center gap-3.5">
@@ -258,7 +257,7 @@
       @endif
 
       <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto">
-        <span x-cloak x-show="! named" class="text-xs text-muted-soft">{{ __('Both names are all we really need.') }}</span>
+        <span x-cloak x-show="! named" class="erica-caption">{{ __('Both names are all we really need.') }}</span>
 
         <x-button.secondary :href="route('settings.entityTypes.index')" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
@@ -266,4 +265,4 @@
       </div>
     </div>
   </div>
-</x-app-layout>
+</x-shell>

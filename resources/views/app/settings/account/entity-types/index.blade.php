@@ -8,65 +8,55 @@
 
   @var \App\ViewModels\Settings\Account\EntityTypes\EntityTypesViewModel $viewModel
 --}}
-<x-app-layout :title="__('Entity types')">
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="entities" />
-  </x-slot:sidebar>
+<x-shell :title="__('Entity types')">
+  <x-slot:bar>
+    <a href="{{ route('settings.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
+      {{ __('Back to settings') }}
+    </a>
+  </x-slot:bar>
 
-  <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => __('Settings')],
-        ['label' => __('Entity types')],
-      ]"
-    />
-  </x-slot:breadcrumb>
+  <x-slot:dock>
+    <x-dock :user="$viewModel->user()" />
+  </x-slot:dock>
 
-  <div class="grid items-start gap-x-7 gap-y-4 sm:grid-cols-[minmax(0,1fr)_auto]">
-    <x-page-header
-      :title="__('Entity types')"
-      :description="__('Beyond people, a vault can hold animals, companies, cars, anything you want to keep track of. You decide what those things are called and where they appear.')"
-      class="max-w-140"
-    />
+  <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
+    <div class="flex min-w-0 flex-col gap-2">
+      <h1 class="erica-page-title">{{ __('Entity types') }}</h1>
 
-    <x-button :href="route('settings.entityTypes.new')" data-turbo="true" class="max-sm:w-full sm:justify-self-end">
+      <p class="erica-lede max-w-[56ch]">{{ __('Beyond people, a vault can hold animals, companies, cars, anything you want to keep track of. You decide what those things are called and where they appear.') }}</p>
+    </div>
+
+    <x-button :href="route('settings.entityTypes.new')" data-turbo="true" class="max-sm:w-full">
       {{ __('Create a type') }}
     </x-button>
-  </div>
+  </header>
 
-  <div class="space-y-2">
-    <x-box padding="p-0">
-      <x-slot:title>
-        {{ __('Your types') }}
+  <section class="flex flex-col gap-3">
+    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+      <h2 class="erica-section-title shrink-0">{{ __('Your types') }}</h2>
 
-        <span class="ml-1.5 text-xs font-normal text-muted-soft">{{ $viewModel->summary() }}</span>
-      </x-slot:title>
+      <p class="erica-small">{{ __('Drag a row to change the order they appear in the vault navigation.') }}</p>
 
-      <x-slot:help>
-        <x-help :title="__('Entity types')">
-          {{ __('A type is only the noun. What one of them holds is described by a template, and the same type can be described differently in two vaults: the family vault and a breeding vault both keep animals, at completely different levels of detail.') }}
-        </x-help>
-      </x-slot:help>
+      <span class="erica-caption ml-auto">{{ $viewModel->summary() }}</span>
+    </div>
 
-      <x-slot:description>
-        <p>{{ __('Drag a row to change the order they appear in the vault navigation.') }}</p>
-      </x-slot:description>
-
+    <x-panel :flush="true">
       <div id="entity-types" x-merge="replace" x-data="sortableRows" data-sortable class="transition-opacity [&[aria-busy]]:opacity-60">
         @forelse ($viewModel->types() as $type)
           @include('app.settings.account.entity-types._row', ['type' => $type])
         @empty
-          <x-empty-state :title="__('No types yet')">
+          <x-empty-state :title="__('No types yet')" hue="var(--sky)" tint="var(--sky-tint)">
             <x-slot:icon>
-              <x-entity-icon name="device" :size="20" />
+              <x-icon name="organization" :size="30" :stroke-width="1.4" />
             </x-slot:icon>
 
             {{ __('Make one for the thing you keep losing track of. It appears in every vault in this account.') }}
           </x-empty-state>
         @endforelse
       </div>
-    </x-box>
+    </x-panel>
 
-    <p class="text-xs leading-relaxed text-muted-soft">{{ __('Turning a type off keeps its records and stops new ones being made.') }}</p>
-  </div>
-</x-app-layout>
+    <p class="erica-caption px-0.5">{{ __('Turning a type off keeps its records and stops new ones being made.') }}</p>
+  </section>
+</x-shell>

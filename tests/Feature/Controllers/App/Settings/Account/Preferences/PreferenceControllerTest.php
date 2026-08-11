@@ -40,7 +40,8 @@ class PreferenceControllerTest extends TestCase
         $response->assertSee('Space and comma', escape: false);
         $response->assertSee('Follow the language', escape: false);
         $response->assertSee('Français', escape: false);
-        $response->assertSee('Michael Scott', escape: false);
+        $response->assertSee(route('settings.index'), escape: false);
+        $response->assertSee('Back to settings', escape: false);
     }
 
     #[Test]

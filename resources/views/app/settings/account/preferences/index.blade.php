@@ -3,141 +3,138 @@
   of the interface, the clock times are written on, the order dates read in, and
   the separators numbers are written with.
 
-  Each row is its own form, and carries the other rows' current values along so
-  that saving one never quietly resets the others, which the partial below does
-  for all of them. Which also means a row that saves has to refresh the rows
-  carrying the value it just changed, and by now that is every other row. The
-  formats save over ajax; the language reloads the page, since every word on it
-  is drawn in it, the examples included.
+  Four rows, and each one is its own form: there is no Save on this screen because
+  picking a value is the save. That is the one place the system allows a control to
+  act on being touched, and it is allowed here because every one of these is
+  reversible by picking again.
+
+  Each row carries the other rows' current values along so that saving one never
+  quietly resets the others, which the partial below does for all of them. Which
+  also means a row that saves has to refresh the rows carrying the value it just
+  changed, and by now that is every other row. The formats save over ajax; the
+  language reloads the page, since every word on it is drawn in it, the examples
+  included.
 
   @var \App\ViewModels\Settings\Account\Preferences\PreferencesViewModel $viewModel
 --}}
 @php
   $rows = 'language-form time-format-form date-format-form number-format-form preview';
 @endphp
-<x-app-layout :title="__('Preferences')">
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="preferences" />
-  </x-slot:sidebar>
+<x-shell :title="__('Preferences')">
+  <x-slot:bar>
+    <a href="{{ route('settings.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
+      {{ __('Back to settings') }}
+    </a>
+  </x-slot:bar>
 
-  <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => __('Settings')],
-        ['label' => __('Preferences')],
-      ]"
-    />
-  </x-slot:breadcrumb>
+  <x-slot:dock>
+    <x-dock :user="$viewModel->user()" />
+  </x-slot:dock>
 
-  <x-page-header
-    :title="__('Preferences')"
-    :description="__('These settings apply to your account only, on every device you sign in from.')"
-  />
+  <header class="flex flex-col gap-2">
+    <h1 class="erica-page-title">{{ __('Preferences') }}</h1>
 
-  <div class="space-y-2">
-    <x-box :title="__('General')" padding="p-0">
-      <x-slot:help>
-        <x-help :title="__('General')" align="right">
-          {{ __('These are yours alone. Changing them here changes nothing for anybody else in your account.') }}
-        </x-help>
-      </x-slot:help>
+    <p class="erica-lede max-w-[56ch]">{{ __('These are yours alone, on every device you sign in from. Nothing here changes for anybody else in your account.') }}</p>
+  </header>
 
-      <x-box.row class="grid gap-x-6 gap-y-3 px-4.5 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-        <div class="min-w-0">
-          <p class="text-sm font-medium text-ink">{{ __('Language') }}</p>
-          <p class="mt-0.5 text-sm text-muted">{{ __('The language used across the :app interface.', ['app' => config('app.name')]) }}</p>
-        </div>
+  <section class="flex flex-col gap-3">
+    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+      <h2 class="erica-section-title shrink-0">{{ __('Language and formats') }}</h2>
 
-        <x-form method="put" :action="route('settings.preferences.update')" id="language-form">
-          @include('app.settings.account.preferences._carried-values', ['owns' => 'locale'])
+      <p class="erica-small">{{ __('Each one saves as soon as you pick it. There is nothing to press.') }}</p>
+    </div>
 
-          <x-dropdown
-            name="locale"
-            :label="$viewModel->localeLabel()"
-            :options="$viewModel->locales()"
-            :title="__('Interface language')"
-          />
-        </x-form>
-      </x-box.row>
+    <x-panel :flush="true">
+      <x-row :title="__('Language')" :description="__('The language the interface is drawn in.')" icon="info" icon-color="var(--indigo)" icon-background="var(--indigo-tint)">
+        <x-slot:end>
+          <x-form method="put" :action="route('settings.preferences.update')" id="language-form">
+            @include('app.settings.account.preferences._carried-values', ['owns' => 'locale'])
 
-      <x-box.row class="grid gap-x-6 gap-y-3 px-4.5 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-        <div class="min-w-0">
-          <p class="text-sm font-medium text-ink">{{ __('Time format') }}</p>
-          <p class="mt-0.5 text-sm text-muted">{{ __('How times are written across the application.') }}</p>
-        </div>
+            <x-dropdown
+              name="locale"
+              :label="$viewModel->localeLabel()"
+              :options="$viewModel->locales()"
+              :title="__('Interface language')"
+            />
+          </x-form>
+        </x-slot:end>
+      </x-row>
 
-        <x-form
-          method="put"
-          :action="route('settings.preferences.update')"
-          id="time-format-form"
-          x-target="{{ $rows }}"
-          class="transition-opacity [&[aria-busy]]:opacity-60"
-        >
-          @include('app.settings.account.preferences._carried-values', ['owns' => 'time_format'])
+      <x-row :title="__('Time format')" :description="__('How a time of day is written.')" icon="calendar" icon-color="var(--forest)" icon-background="var(--forest-tint)">
+        <x-slot:end>
+          <x-form
+            method="put"
+            :action="route('settings.preferences.update')"
+            id="time-format-form"
+            x-target="{{ $rows }}"
+            class="transition-opacity [&[aria-busy]]:opacity-60"
+          >
+            @include('app.settings.account.preferences._carried-values', ['owns' => 'time_format'])
 
-          <x-dropdown
-            name="time_format"
-            :label="$viewModel->timeFormatLabel()"
-            :options="$viewModel->timeFormats()"
-            :title="__('Time format')"
-            monospaced-hints
-          />
-        </x-form>
-      </x-box.row>
+            <x-dropdown
+              name="time_format"
+              :label="$viewModel->timeFormatLabel()"
+              :options="$viewModel->timeFormats()"
+              :title="__('Time format')"
+              monospaced-hints
+            />
+          </x-form>
+        </x-slot:end>
+      </x-row>
 
-      <x-box.row class="grid gap-x-6 gap-y-3 px-4.5 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-        <div class="min-w-0">
-          <p class="text-sm font-medium text-ink">{{ __('Date format') }}</p>
-          <p class="mt-0.5 text-sm text-muted">{{ __('The order the parts of a date are written in.') }}</p>
-        </div>
+      <x-row :title="__('Date format')" :description="__('The order the parts of a date are written in.')" icon="calendar" icon-color="var(--plum)" icon-background="var(--plum-tint)">
+        <x-slot:end>
+          <x-form
+            method="put"
+            :action="route('settings.preferences.update')"
+            id="date-format-form"
+            x-target="{{ $rows }}"
+            class="transition-opacity [&[aria-busy]]:opacity-60"
+          >
+            @include('app.settings.account.preferences._carried-values', ['owns' => 'date_format'])
 
-        <x-form
-          method="put"
-          :action="route('settings.preferences.update')"
-          id="date-format-form"
-          x-target="{{ $rows }}"
-          class="transition-opacity [&[aria-busy]]:opacity-60"
-        >
-          @include('app.settings.account.preferences._carried-values', ['owns' => 'date_format'])
+            <x-dropdown
+              name="date_format"
+              :label="$viewModel->dateFormatLabel()"
+              :options="$viewModel->dateFormats()"
+              :title="__('Date format')"
+              monospaced-hints
+            />
+          </x-form>
+        </x-slot:end>
+      </x-row>
 
-          <x-dropdown
-            name="date_format"
-            :label="$viewModel->dateFormatLabel()"
-            :options="$viewModel->dateFormats()"
-            :title="__('Date format')"
-            monospaced-hints
-          />
-        </x-form>
-      </x-box.row>
+      <x-row :title="__('Number format')" :description="__('The separators between the thousands and before the decimals.')" icon="tasks" icon-color="var(--marigold-deep)" icon-background="var(--marigold-tint)">
+        <x-slot:end>
+          <x-form
+            method="put"
+            :action="route('settings.preferences.update')"
+            id="number-format-form"
+            x-target="{{ $rows }}"
+            class="transition-opacity [&[aria-busy]]:opacity-60"
+          >
+            @include('app.settings.account.preferences._carried-values', ['owns' => 'number_format'])
 
-      <x-box.row class="grid gap-x-6 gap-y-3 px-4.5 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-        <div class="min-w-0">
-          <p class="text-sm font-medium text-ink">{{ __('Number format') }}</p>
-          <p class="mt-0.5 text-sm text-muted">{{ __('The separators between the thousands and before the decimals.') }}</p>
-        </div>
+            <x-dropdown
+              name="number_format"
+              :label="$viewModel->numberFormatLabel()"
+              :options="$viewModel->numberFormats()"
+              :title="__('Number format')"
+              monospaced-hints
+            />
+          </x-form>
+        </x-slot:end>
+      </x-row>
 
-        <x-form
-          method="put"
-          :action="route('settings.preferences.update')"
-          id="number-format-form"
-          x-target="{{ $rows }}"
-          class="transition-opacity [&[aria-busy]]:opacity-60"
-        >
-          @include('app.settings.account.preferences._carried-values', ['owns' => 'number_format'])
-
-          <x-dropdown
-            name="number_format"
-            :label="$viewModel->numberFormatLabel()"
-            :options="$viewModel->numberFormats()"
-            :title="__('Number format')"
-            monospaced-hints
-          />
-        </x-form>
-      </x-box.row>
-    </x-box>
-
-    <p id="preview" class="text-sm text-muted-soft">
-      {{ __('It is :time on :date where you are, in :language.', ['time' => $viewModel->timePreview(), 'date' => $viewModel->datePreview(), 'language' => $viewModel->localeLabel()]) }}
-    </p>
-  </div>
-</x-app-layout>
+      {{--
+        What the four choices add up to, in one sentence. It is the point of the
+        screen: nobody picks a date format for its name, they pick it for what a
+        date then looks like.
+      --}}
+      <x-slot:footer id="preview">
+        {{ __('It is :time on :date where you are, in :language.', ['time' => $viewModel->timePreview(), 'date' => $viewModel->datePreview(), 'language' => $viewModel->localeLabel()]) }}
+      </x-slot:footer>
+    </x-panel>
+  </section>
+</x-shell>

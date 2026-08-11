@@ -3,58 +3,67 @@
   sent, so somebody can tell what an email actually said rather than only that
   it left. Shown by both the logs screen and the page that holds every email.
 
-  The dot on the left is the delivery: still on its way, delivered, or bounced.
-  Colour alone would say nothing to a screen reader, so the same three words are
-  written out beside it.
+  The delivery is a badge rather than a coloured dot. A dot with the word hidden
+  behind `sr-only` is colour alone for anybody who can see it, which is the one
+  thing the system does not allow: the three states are three words, and the tint
+  behind each only repeats what the word already says.
 
   @var \App\Models\EmailSent $emailSent
 --}}
 @php
-  [$delivery, $deliveryLabel] = match (true) {
-    $emailSent->bounced_at !== null => ['bg-error', __('Bounced')],
-    $emailSent->delivered_at !== null => ['bg-success', __('Delivered')],
-    default => ['bg-warning', __('On its way')],
+  [$tone, $deliveryLabel] = match (true) {
+    $emailSent->bounced_at !== null => ['danger', __('Bounced')],
+    $emailSent->delivered_at !== null => ['success', __('Delivered')],
+    default => ['warning', __('On its way')],
   };
 
   $sentAt = $emailSent->sent_at;
-  $sentAtLabel = $sentAt ? __('Sent :time', ['time' => $sentAt->diffForHumans()]) : null;
 @endphp
 
-<x-box.row x-data="{ open: false }" padding="p-0">
+<div x-data="{ open: false }" class="border-b border-hairline last:border-b-0">
   <button
     type="button"
     @click="open = ! open"
     :aria-expanded="open ? 'true' : 'false'"
-    class="flex w-full cursor-pointer items-start gap-x-3 px-4 py-3.5 text-left focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
+    class="erica-row erica-row--top erica-row--interactive border-b-0"
   >
-    <span class="mt-1.5 size-2 shrink-0 rounded-full {{ $delivery }}" aria-hidden="true"></span>
-    <span class="sr-only">{{ $deliveryLabel }}</span>
-
-    <span class="min-w-0 flex-1 text-sm leading-relaxed">
-      <span class="block wrap-anywhere text-muted">{{ __('To:') }} {{ $emailSent->email_address }}</span>
-      <span class="block text-ink">{{ __('Subject:') }} <span class="font-semibold">{{ $emailSent->subject }}</span></span>
-
-      @if ($sentAt)
-        <time datetime="{{ $sentAt->toIso8601String() }}" title="{{ $sentAt->toDayDateTimeString() }}" class="mt-1 block text-xs text-muted sm:hidden">{{ $sentAtLabel }}</time>
-      @endif
+    <span class="erica-row__mark" style="background: var(--plum-tint); color: var(--plum)">
+      <x-icon name="mail" :size="18" :stroke-width="1.5" />
     </span>
 
-    <span class="flex shrink-0 items-center gap-2 text-xs text-muted">
-      @if ($sentAt)
-        <time datetime="{{ $sentAt->toIso8601String() }}" title="{{ $sentAt->toDayDateTimeString() }}" class="whitespace-nowrap max-sm:hidden">{{ $sentAtLabel }}</time>
-      @endif
+    <span class="erica-row__main">
+      <span class="erica-row__title block">{{ $emailSent->subject }}</span>
 
-      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" class="mt-0.5 transition-transform duration-200" :class="open && 'rotate-180'" aria-hidden="true">
-        <path d="M4 6.4 8 10.4l4-4"></path>
-      </svg>
+      <span class="erica-row__desc block">{{ __('To:') }} {{ $emailSent->email_address }}</span>
+
+      <span class="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1">
+        <x-badge :tone="$tone">{{ $deliveryLabel }}</x-badge>
+
+        @if ($sentAt)
+          <time
+            datetime="{{ $sentAt->toIso8601String() }}"
+            title="{{ $sentAt->toDayDateTimeString() }}"
+            class="erica-caption"
+          >{{ __('Sent :time', ['time' => $sentAt->diffForHumans()]) }}</time>
+        @endif
+      </span>
+    </span>
+
+    <span class="erica-row__end">
+      <x-icon
+        name="chevron-down"
+        :size="16"
+        :stroke-width="1.6"
+        class="text-muted transition-transform duration-[170ms]"
+        ::class="open && 'rotate-180'"
+      />
     </span>
   </button>
 
-  {{-- rounded-b-[inherit]: the last row open would otherwise square off the panel. --}}
-  <div x-cloak x-show="open" x-transition class="rounded-b-[inherit] border-t border-hairline-soft bg-card px-4 py-3.5">
-    <p class="text-center text-xs text-muted italic">{{ __('We remove the links from this copy, since they have probably expired.') }}</p>
+  <div x-cloak x-show="open" x-transition class="border-t border-hairline bg-sunken px-4 py-3.5">
+    <p class="erica-caption text-center italic">{{ __('We remove the links from this copy, since they have probably expired.') }}</p>
 
     {{-- Purify leaves bare paragraphs behind, so the spacing between them is ours to give. --}}
-    <div class="mt-3 space-y-2 text-sm leading-relaxed text-body">{!! $emailSent->body !!}</div>
+    <div class="mt-3 flex flex-col gap-2 text-sm leading-relaxed text-body">{!! $emailSent->body !!}</div>
   </div>
-</x-box.row>
+</div>

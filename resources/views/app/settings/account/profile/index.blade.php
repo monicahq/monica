@@ -2,80 +2,85 @@
   Where somebody edits their own profile: the name they go by, the address they
   sign in with, and the photo shown beside them.
 
+  Each section says what it is for beside its heading rather than repeating that in a
+  column of prose next to the fields. The fields get the whole width of the panel,
+  which is what a form wants.
+
   @var \App\ViewModels\Settings\Account\Profile\ProfileViewModel $viewModel
 --}}
-<x-app-layout :title="__('Profile')">
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="profile" />
-  </x-slot:sidebar>
+<x-shell :title="__('Profile')">
+  <x-slot:bar>
+    <a href="{{ route('settings.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
+      {{ __('Back to settings') }}
+    </a>
+  </x-slot:bar>
 
-  <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => __('Settings')],
-        ['label' => __('Profile')],
-      ]"
-    />
-  </x-slot:breadcrumb>
+  <x-slot:dock>
+    <x-dock :user="$viewModel->user()" />
+  </x-slot:dock>
 
-  <x-page-header
-    :title="__('Profile')"
-    :description="__('Manage your personal details and how you are shown.')"
-  />
+  <header class="flex flex-col gap-2">
+    <h1 class="erica-page-title">{{ __('Profile') }}</h1>
 
-  <x-box :title="__('Avatar')">
-    <x-slot:help>
-      <x-help :title="__('Avatar')">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      </x-help>
-    </x-slot:help>
+    <p class="erica-lede max-w-[56ch]">{{ __('Your name, the address you sign in with, and the photograph on your avatar.') }}</p>
+  </header>
 
-    <div class="grid items-center gap-7 md:grid-cols-[minmax(0,1fr)_auto]">
-      <div class="space-y-2.5 text-sm leading-relaxed text-body">
-        <p>{{ __('Your avatar appears next to your name across :app.', ['app' => config('app.name')]) }}</p>
-        <p>{{ __('Use a square image for the best result. JPEG, PNG and WebP up to 5 MB.') }}</p>
-        <p>{{ __('Without an avatar, we show your initials instead.') }}</p>
-      </div>
+  <section class="flex flex-col gap-3">
+    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+      <h2 class="erica-section-title shrink-0">{{ __('Avatar') }}</h2>
 
-      <div class="flex flex-wrap items-center gap-4">
-        <x-avatar id="profile-avatar" :user="$viewModel->user()" :size="74" />
+      <p class="erica-small">{{ __('Shown next to your name everywhere in the application.') }}</p>
+    </div>
 
-        {{--
-          These two forms reload the page rather than updating it in place, the
-          way the forms below do. A picture is not a field: it is read, turned
-          upright, cropped and written twice before there is anything to show,
-          and the screen is better off asking the server for the whole thing
-          once that is done.
+    {{--
+      These two forms reload the page rather than updating it in place, the way the
+      form below does. A picture is not a field: it is read, turned upright, cropped
+      and written twice before there is anything to show, and the screen is better
+      off asking the server for the whole thing once that is done.
 
-          The message lives in the x-data of this div rather than in the change
-          handler, because Blade does not compile a directive written inside an
-          attribute of a component tag: @js() would reach the browser as itself
-          and Alpine would refuse the whole expression.
-        --}}
-        <div
-          class="space-y-3 max-sm:w-full"
-          x-data="{ tooBig: false, tooBigMessage: @js(__('The image must be under 5 MB.')) }"
-        >
+      The message lives in the x-data of this div rather than in the change handler,
+      because Blade does not compile a directive written inside an attribute of a
+      component tag: @js() would reach the browser as itself and Alpine would refuse
+      the whole expression.
+    --}}
+    <x-panel>
+      <div
+        class="flex flex-wrap items-center gap-5"
+        x-data="{ tooBig: false, tooBigMessage: @js(__('The image must be under 5 MB.')) }"
+      >
+        <x-avatar id="profile-avatar" :user="$viewModel->user()" :size="72" />
+
+        <div class="flex min-w-0 flex-1 flex-col gap-3">
+          <p class="erica-small">{{ __('A square image reads best. JPEG, PNG or WebP, up to 5 MB. Without a photo you keep your initials on a warm tint.') }}</p>
+
           <x-form
             method="post"
             :action="route('settings.photo.update')"
             :upload="true"
             id="photo-form"
-            class="space-y-3"
+            class="flex flex-wrap items-center gap-2.5"
             x-on:submit="if (tooBig) $event.preventDefault()"
           >
+            {{--
+              The field carries its name rather than a visible label: what is drawn
+              beside it is the browser's own button, which is already worded and
+              already translated, and a label above it would be read twice.
+            --}}
             <x-file-input
               id="photo"
               accept="image/jpeg,image/png,image/webp"
               :error="$errors->get('photo')"
               required
+              class="w-auto"
+              aria-label="{{ __('Choose a photo') }}"
               x-on:change="tooBig = window.oversizedFiles($event.target.files, 5120).length > 0"
             />
 
-            <p x-show="tooBig" x-cloak x-text="tooBigMessage" class="text-xs text-error"></p>
-
-            <x-button>{{ __('Upload') }}</x-button>
+            <x-button size="small">{{ __('Upload') }}</x-button>
           </x-form>
+
+          <p x-show="tooBig" x-cloak x-text="tooBigMessage" class="erica-field__error"></p>
 
           @if ($viewModel->hasPhoto())
             {{-- Two steps rather than one, so a photo is never removed by a slip. --}}
@@ -85,95 +90,104 @@
               id="photo-delete-form"
               x-data="{ confirming: false }"
             >
-              <button
-                type="submit"
+              <x-button.ghost
+                size="small"
                 x-on:click="if (! confirming) { $event.preventDefault(); confirming = true }"
-                class="cursor-pointer text-sm text-muted hover:text-ink"
                 x-text="confirming ? @js(__('Remove it for good?')) : @js(__('Remove the photo'))"
-              ></button>
+              />
             </x-form>
           @endif
         </div>
       </div>
+    </x-panel>
+  </section>
+
+  <section class="flex flex-col gap-3">
+    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+      <h2 class="erica-section-title shrink-0">{{ __('Details') }}</h2>
+
+      <p class="erica-small">{{ __('Your name appears everywhere the application refers to you; your address is what you sign in with.') }}</p>
     </div>
-  </x-box>
 
-  <x-box :title="__('Details')">
-    <x-slot:help>
-      <x-help :title="__('Details')">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
-      </x-help>
-    </x-slot:help>
+    <x-form
+      method="put"
+      :action="route('settings.profile.update')"
+      id="details-form"
+      x-target="details-form profile-avatar shell-avatar"
+      class="transition-opacity [&[aria-busy]]:opacity-60"
+    >
+      <x-panel>
+        <div class="flex flex-col gap-4.5">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <x-input
+              id="first_name"
+              :label="__('First name')"
+              :value="$viewModel->details()['first_name']"
+              :error="$errors->get('first_name')"
+              required
+            />
 
-    <div class="grid gap-9 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-      <div class="space-y-2.5 text-sm leading-relaxed text-body">
-        <p>{{ __('These details are shown on your profile.') }}</p>
-        <p>{{ __('Your name appears everywhere the application refers to you, and your address is what you sign in with.') }}</p>
-      </div>
-
-      <x-form
-        method="put"
-        :action="route('settings.profile.update')"
-        id="details-form"
-        x-target="details-form profile-avatar sidebar-identity"
-        class="space-y-3.5 transition-opacity [&[aria-busy]]:opacity-60"
-      >
-        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <x-input
-            id="first_name"
-            :label="__('First name')"
-            :value="$viewModel->details()['first_name']"
-            :error="$errors->get('first_name')"
-            required
-          />
+            <x-input
+              id="last_name"
+              :label="__('Last name')"
+              :value="$viewModel->details()['last_name']"
+              :error="$errors->get('last_name')"
+              required
+            />
+          </div>
 
           <x-input
-            id="last_name"
-            :label="__('Last name')"
-            :value="$viewModel->details()['last_name']"
-            :error="$errors->get('last_name')"
+            type="email"
+            id="email"
+            :label="__('Email address')"
+            :value="$viewModel->details()['email']"
+            autocomplete="username"
+            :help="__('This is what you sign in with. Change it and we will ask you to confirm the new one.')"
+            :error="$errors->get('email')"
             required
           />
         </div>
 
-        <x-input
-          type="email"
-          id="email"
-          :label="__('Email address')"
-          :value="$viewModel->details()['email']"
-          autocomplete="username"
-          :help="__('This is what you sign in with. Change it and we will ask you to confirm the new one.')"
-          :error="$errors->get('email')"
-          required
-        />
+        <x-slot:footer>
+          <div class="flex items-center gap-4">
+            <span id="last-saved" class="erica-caption">
+              @if ($viewModel->lastSavedAt())
+                {{ __('Last saved :time', ['time' => $viewModel->lastSavedAt()]) }}
+              @endif
+            </span>
 
-        <div class="flex items-center gap-3 pt-1">
-          <span id="last-saved" @class(['text-xs text-muted-soft', 'hidden' => ! $viewModel->lastSavedAt()])>
-            @if ($viewModel->lastSavedAt())
-              {{ __('Last saved :time', ['time' => $viewModel->lastSavedAt()]) }}
-            @endif
-          </span>
-
-          <x-button class="ml-auto">{{ __('Save') }}</x-button>
-        </div>
-      </x-form>
-    </div>
-  </x-box>
+            <x-button size="small" class="ml-auto">{{ __('Save changes') }}</x-button>
+          </div>
+        </x-slot:footer>
+      </x-panel>
+    </x-form>
+  </section>
 
   {{--
-    The one thing on these screens that cannot be undone. It asks twice: the
-    button opens the form rather than sending it, and the form only goes through
-    once the address has been typed out, which is hard to do by accident.
-  --}}
-  <x-box :title="__('Delete your account')">
-    <div class="grid gap-9 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]" x-data="{ confirming: @js($errors->has('confirm_email')) }">
-      <div class="space-y-2.5 text-sm leading-relaxed text-body">
-        <p>{{ __('Everything you have put in :app goes with it, and none of it can be brought back.', ['app' => config('app.name')]) }}</p>
-        <p>{{ __('We keep no copy, so there is nobody to ask afterwards.') }}</p>
-      </div>
+    The one thing on this screen that cannot be undone. It asks twice: the button
+    opens the form rather than sending it, and the form only goes through once the
+    address has been typed out, which is hard to do by accident.
 
-      <div>
-        <x-button.secondary type="button" x-show="! confirming" @click="confirming = true" class="max-sm:w-full">
+    The id is what the warning at the foot of the settings home links to.
+  --}}
+  <section id="delete-your-account" class="flex scroll-mt-20 flex-col gap-3">
+    <div class="px-0.5">
+      <h2 class="erica-section-title">{{ __('Delete your account') }}</h2>
+    </div>
+
+    <x-panel>
+      <div class="flex flex-wrap items-center gap-6" x-data="{ confirming: @js($errors->has('confirm_email')) }">
+        <p class="erica-small max-w-[46ch] flex-1">
+          {{ __('Everything you have put in :app goes with it: every vault, every person in them, every note and every photograph. We keep no copy, so there is nobody to ask afterwards.', ['app' => config('app.name')]) }}
+        </p>
+
+        <x-button.secondary
+          type="button"
+          size="small"
+          x-show="! confirming"
+          @click="confirming = true"
+          class="ml-auto max-sm:w-full"
+        >
           {{ __('Delete your account') }}
         </x-button.secondary>
 
@@ -182,9 +196,9 @@
           :action="route('settings.account.destroy')"
           x-cloak
           x-show="confirming"
-          class="space-y-3.5"
+          class="flex w-full flex-col gap-3.5"
         >
-          <p class="text-sm text-error">{{ __('This deletes your account for good. Type :email below to confirm.', ['email' => $viewModel->details()['email']]) }}</p>
+          <p class="erica-field__error">{{ __('This deletes your account for good. Type :email below to confirm.', ['email' => $viewModel->details()['email']]) }}</p>
 
           <x-input
             type="email"
@@ -196,12 +210,12 @@
           />
 
           <div class="flex flex-wrap items-center gap-3 max-sm:flex-col max-sm:items-stretch">
-            <x-button.secondary type="button" @click="confirming = false">{{ __('Keep my account') }}</x-button.secondary>
+            <x-button.secondary type="button" size="small" @click="confirming = false">{{ __('Keep my account') }}</x-button.secondary>
 
-            <x-button class="bg-error hover:bg-error/88 max-sm:w-full">{{ __('Delete it for good') }}</x-button>
+            <x-button.danger size="small" class="max-sm:w-full">{{ __('Delete it for good') }}</x-button.danger>
           </div>
         </x-form>
       </div>
-    </div>
-  </x-box>
-</x-app-layout>
+    </x-panel>
+  </section>
+</x-shell>

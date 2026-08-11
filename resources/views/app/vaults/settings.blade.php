@@ -45,7 +45,7 @@
           <select
             id="template_version_id"
             name="template_version_id"
-            class="block w-full appearance-none rounded-md border border-hairline-strong bg-input px-3 py-2.5 text-base text-ink sm:text-sm"
+            class="erica-control erica-control--select"
           >
             @foreach ($viewModel->templates() as $template)
               <option value="{{ $template['id'] }}" @selected($viewModel->currentTemplateVersionId() === (string) $template['id'])>{{ $template['name'] }}</option>

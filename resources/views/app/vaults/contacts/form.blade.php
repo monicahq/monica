@@ -63,7 +63,7 @@
             <select
               id="template_version_id"
               name="template_version_id"
-              class="block w-full appearance-none rounded-md border border-hairline-strong bg-input px-3 py-2.5 text-base text-ink sm:text-sm"
+              class="erica-control erica-control--select"
             >
               @foreach ($viewModel->templates() as $template)
                 <option value="{{ $template['id'] }}" @selected($values['templateVersionId'] === (string) $template['id'])>{{ $template['name'] }}</option>
@@ -163,7 +163,7 @@
               id="name_order"
               name="name_order"
               x-model="nameOrder"
-              class="block w-full appearance-none rounded-md border border-hairline-strong bg-input px-3 py-2.5 text-base text-ink sm:text-sm"
+              class="erica-control erica-control--select"
             >
               @foreach ($viewModel->nameOrders() as $order)
                 <option value="{{ $order['value'] }}" @selected($values['nameOrder'] === $order['value'])>{{ $order['label'] }}</option>
@@ -222,7 +222,7 @@
 
       <span
         aria-hidden="true"
-        class="flex size-4 shrink-0 items-center justify-center rounded-sm border-2 border-hairline-strong bg-canvas text-transparent transition-colors peer-checked:border-primary peer-checked:bg-primary peer-checked:text-on-primary peer-focus-visible:ring-2 peer-focus-visible:ring-focus"
+        class="flex size-4 shrink-0 items-center justify-center rounded-sm border-2 border-hairline-strong bg-canvas text-transparent transition-colors peer-checked:border-primary peer-checked:bg-primary peer-checked:text-on-primary peer-focus-visible:ring-2 peer-focus-visible:ring-focus-ring"
       >
         <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
           <path d="M2.5 6.3 4.8 8.6 9.5 3.8"></path>

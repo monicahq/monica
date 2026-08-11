@@ -74,7 +74,7 @@
                 aria-label="{{ $option['label'] }}"
                 :aria-pressed="colour === @js($option['value']) ? 'true' : 'false'"
                 @click="colour = @js($option['value'])"
-                :class="colour === @js($option['value']) ? 'ring-2 ring-focus ring-offset-2 ring-offset-canvas' : ''"
+                :class="colour === @js($option['value']) ? 'ring-2 ring-focus-ring ring-offset-2 ring-offset-canvas' : ''"
                 style="background: {{ $option['value'] }}"
                 class="size-7.5 cursor-pointer rounded-md border border-hairline-strong transition-shadow duration-150"
               ></button>
@@ -108,7 +108,7 @@
             <select
               id="template_version_id"
               name="template_version_id"
-              class="block w-full appearance-none rounded-md border border-hairline-strong bg-input px-3 py-2.5 text-base text-ink sm:text-sm"
+              class="erica-control erica-control--select"
             >
               @foreach ($viewModel->templates() as $template)
                 <option value="{{ $template['id'] }}" @selected($values['templateVersionId'] === (string) $template['id'])>{{ $template['name'] }}</option>

@@ -1,11 +1,15 @@
 {{--
   The panel that edits whatever field is open.
 
+  It sticks to the top of the window on a wide screen, so picking a field far down
+  a long section does not leave the panel about it off the screen.
+
   The type is shown and not offered. It is the one decision about a field that
   cannot be taken back: it decides what a stored value means, and changing it
   under values already written would quietly turn them into something else. The
   way to change a type is to remove the field and add the one that was wanted,
-  which is what the line under it says.
+  which is what the line under it says. It is a value rather than a disabled box,
+  for the same reason a settled slug is.
 
   @var \App\ViewModels\Settings\Account\Templates\TemplateBuilderViewModel $viewModel
   @var \App\Models\Template $template
@@ -13,30 +17,26 @@
 @php
   $field = $viewModel->selectedField();
 @endphp
-<aside class="lg:sticky lg:top-18">
+<aside class="lg:sticky lg:top-19">
   @if ($field === null)
-    <x-box :title="__('Field')">
-      <div class="space-y-2">
-        <span class="flex text-placeholder" aria-hidden="true">
-          <x-entity-icon name="info" :size="20" />
-        </span>
-
-        <p class="text-sm leading-relaxed text-muted">{{ __('Pick a field on the left to edit it. What you change applies to this draft only.') }}</p>
-      </div>
-    </x-box>
+    <x-panel :title="__('Field')" icon="file" icon-color="var(--muted)" icon-background="var(--sand)">
+      <p class="erica-small">{{ __('Pick a field on the left to edit it. What you change applies to this draft only.') }}</p>
+    </x-panel>
   @else
-    <x-box :title="__('Field')">
-      <x-slot:description>
-        <p>{{ __('In :section', ['section' => $field['sectionName']]) }}</p>
-      </x-slot:description>
-
-      <div class="space-y-5">
+    <x-panel
+      :title="__('Field')"
+      :subtitle="__('In :section', ['section' => $field['sectionName']])"
+      icon="file"
+      icon-color="var(--indigo)"
+      icon-background="var(--indigo-tint)"
+    >
+      <div class="flex flex-col gap-5">
         <x-form
           id="field-form"
           method="put"
           :action="route('settings.fields.update', [$template, $field['rowId'], $field['id']])"
           x-target="builder"
-          class="space-y-4"
+          class="flex flex-col gap-4"
         >
           <x-input
             id="label"
@@ -49,20 +49,12 @@
             :disabled="! $viewModel->isEditable()"
           />
 
-          <div class="space-y-1.5">
-            <x-label for="type" :value="__('Type')" />
+          <div class="erica-field">
+            <p class="erica-field__label">{{ __('Type') }}</p>
 
-            <input
-              id="type"
-              type="text"
-              value="{{ $field['typeLabel'] }}"
-              readonly
-              disabled
-              aria-describedby="type-help"
-              class="block w-full appearance-none rounded-md border border-hairline-strong bg-input px-3 py-2.5 text-base text-ink opacity-60 sm:text-sm"
-            />
+            <p class="rounded-md border border-hairline bg-sunken px-3 py-2 text-sm text-ink">{{ $field['typeLabel'] }}</p>
 
-            <p id="type-help" class="text-xs text-muted">{{ __('Settled when the field was added. To change it, remove the field and add the one you wanted.') }}</p>
+            <p class="erica-field__help">{{ __('Settled when the field was added. To change it, remove the field and add the one you wanted.') }}</p>
           </div>
 
           <x-input
@@ -89,7 +81,7 @@
             :disabled="! $viewModel->isEditable()"
           />
 
-          <div class="space-y-2.5 border-t border-hairline-soft pt-4">
+          <div class="flex flex-col gap-2.5 border-t border-hairline pt-4">
             <x-checkbox id="is_required" :checked="$field['isRequired']">
               <span class="font-semibold text-ink">{{ __('Required') }}</span>
 
@@ -110,15 +102,15 @@
           </div>
 
           @if ($viewModel->isEditable())
-            <x-button>{{ __('Save the field') }}</x-button>
+            <x-button size="small" class="self-start">{{ __('Save the field') }}</x-button>
           @endif
         </x-form>
 
         @if ($viewModel->isEditable())
-          <div class="space-y-2.5 border-t border-hairline pt-4">
-            <p class="text-xs uppercase text-muted-soft">{{ __('In use') }}</p>
+          <div class="flex flex-col items-start gap-2.5 border-t border-hairline pt-4">
+            <p class="erica-caption uppercase" style="letter-spacing: var(--tracking-caption)">{{ __('In use') }}</p>
 
-            <p class="text-sm leading-relaxed text-body">{{ $viewModel->usageNote() }}</p>
+            <p class="erica-small">{{ $viewModel->usageNote() }}</p>
 
             <x-modal.warning
               :title="__('Delete “:label”?', ['label' => $field['label']])"
@@ -127,11 +119,9 @@
               x-target="builder"
             >
               <x-slot:trigger>
-                <button
-                  type="button"
-                  @click="open = true"
-                  class="cursor-pointer rounded-md border border-hairline-strong bg-canvas px-3.5 py-2.5 text-sm font-semibold text-error transition-colors duration-150 hover:bg-hover"
-                >{{ __('Delete the field') }}</button>
+                <x-button.secondary size="small" type="button" @click="open = true" class="text-error">
+                  {{ __('Delete the field') }}
+                </x-button.secondary>
               </x-slot:trigger>
 
               <p>{{ __('It goes off this draft. Anything already published keeps it.') }}</p>
@@ -139,6 +129,6 @@
           </div>
         @endif
       </div>
-    </x-box>
+    </x-panel>
   @endif
 </aside>

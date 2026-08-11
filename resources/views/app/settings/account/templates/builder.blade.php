@@ -2,6 +2,11 @@
   Where a template is actually built: the sections it carries, the fields inside
   them, and one field open for editing.
 
+  This is the one settings screen that asks for `wide`. It has two columns of its
+  own, and the reading width the rest of them use would stack the inspector under
+  the sections and put the field being edited a screen away from the list it was
+  picked from.
+
   Everything saves as it is done. There is no save button and no unsaved state,
   which is how the rest of the settings screens work and the only way a screen
   this long stays trustworthy.
@@ -20,58 +25,54 @@
   $template = $viewModel->template();
   $version = $viewModel->version();
 @endphp
-<x-app-layout :title="$template->name">
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="templates" />
-  </x-slot:sidebar>
+<x-shell :title="$template->name" wide>
+  <x-slot:bar>
+    <a href="{{ route('settings.templates.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
+      {{ __('Back to the templates') }}
+    </a>
+  </x-slot:bar>
 
-  <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => __('Templates'), 'url' => route('settings.templates.index')],
-        ['label' => $template->name],
-      ]"
-    />
-  </x-slot:breadcrumb>
+  <x-slot:dock>
+    <x-dock :user="$viewModel->user()" />
+  </x-slot:dock>
 
-  <div id="builder" x-merge="replace" class="space-y-6">
-    <div class="grid items-start gap-x-7 gap-y-4 sm:grid-cols-[minmax(0,1fr)_auto]">
-      <div class="min-w-0 space-y-1.5">
-        <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-          <h1 class="text-2xl font-semibold tracking-tight text-ink">{{ $template->name }}</h1>
+  <div id="builder" x-merge="replace" class="flex flex-col gap-6">
+    <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
+      <div class="flex min-w-0 flex-col gap-2">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <h1 class="erica-page-title">{{ $template->name }}</h1>
 
-          <span class="rounded-sm border border-hairline bg-sunken px-2 py-0.5 text-xs font-semibold text-body">{{ $viewModel->statusLabel() }}</span>
+          <x-badge :tone="$viewModel->isEditable() ? 'warning' : 'success'">{{ $viewModel->statusLabel() }}</x-badge>
 
-          <span class="font-mono text-xs text-muted-soft">{{ $viewModel->versionLabel() }}</span>
+          <code class="font-mono text-[12.5px] text-muted">{{ $viewModel->versionLabel() }}</code>
         </div>
 
-        <p class="text-sm text-muted">
+        <p class="erica-small">
           {{ $viewModel->savedLabel() }}
 
-          <a href="{{ route('settings.templates.edit', $template) }}" data-turbo="true" class="text-brand hover:underline">{{ __('Rename it') }}</a>
+          <x-link :href="route('settings.templates.edit', $template)" turbo>{{ __('Rename it') }}</x-link>
         </p>
       </div>
 
-      <div class="flex flex-wrap items-center gap-2.5 sm:justify-self-end">
-        @if ($viewModel->isEditable())
-          <x-form method="put" :action="route('settings.templateVersionPublication.update', [$template, $version])" x-target="builder">
-            @if ($version?->previous_version_id !== null)
-              <input type="hidden" name="change_note" value="{{ __('Changed in the builder.') }}" />
-            @endif
+      @if ($viewModel->isEditable())
+        <x-form method="put" :action="route('settings.templateVersionPublication.update', [$template, $version])" x-target="builder">
+          @if ($version?->previous_version_id !== null)
+            <input type="hidden" name="change_note" value="{{ __('Changed in the builder.') }}" />
+          @endif
 
-            <x-button>{{ __('Publish this version') }}</x-button>
-          </x-form>
-        @else
-          <x-form method="post" :action="route('settings.templateVersions.create', $template)" x-target="builder">
-            <x-button>{{ __('Start a draft') }}</x-button>
-          </x-form>
-        @endif
-      </div>
-    </div>
+          <x-button class="max-sm:w-full">{{ __('Publish this version') }}</x-button>
+        </x-form>
+      @else
+        <x-form method="post" :action="route('settings.templateVersions.create', $template)" x-target="builder">
+          <x-button class="max-sm:w-full">{{ __('Start a draft') }}</x-button>
+        </x-form>
+      @endif
+    </header>
 
     @unless ($viewModel->isEditable())
-      <x-notice>
-        {{ __('This version has been published, so it is frozen and cannot be changed. Start a draft to make one beside it. Every record on this version goes on rendering exactly what it does now.') }}
+      <x-notice tone="info" :title="__('This version is published, so it is frozen')">
+        {{ __('Start a draft to make one beside it. Every record on this version goes on rendering exactly what it does now.') }}
       </x-notice>
     @endunless
 
@@ -82,7 +83,7 @@
     ])
 
     <div class="grid items-start gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
-      <div class="space-y-4" x-data="sortableRows" data-sortable>
+      <div class="flex flex-col gap-4" x-data="sortableRows" data-sortable>
         @forelse ($viewModel->sections() as $section)
           @include('app.settings.account.templates._section', [
             'section' => $section,
@@ -91,11 +92,11 @@
             'otherPages' => $viewModel->otherPages(),
           ])
         @empty
-          <div class="max-w-140 space-y-1.5 rounded-xl border border-dashed border-hairline-strong bg-sunken p-5">
-            <p class="text-sm font-semibold text-ink">{{ __('This page has nothing on it yet') }}</p>
+          <x-panel variant="inset" class="border-dashed">
+            <p class="erica-row__title">{{ __('This page has nothing on it yet') }}</p>
 
-            <p class="text-sm leading-relaxed text-muted">{{ __('A page holds sections, and a section holds fields. Add the first section to decide what this page is for.') }}</p>
-          </div>
+            <p class="erica-small mt-1.5">{{ __('A page holds sections, and a section holds fields. Add the first section to decide what this page is for.') }}</p>
+          </x-panel>
         @endforelse
 
         @if ($viewModel->isEditable())
@@ -104,12 +105,9 @@
               x-show="! adding"
               type="button"
               @click="adding = true; $nextTick(() => $refs.name.focus())"
-              class="flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-xl border border-dashed border-muted px-5 py-5 text-sm font-semibold text-ink transition-colors duration-150 hover:bg-hover"
+              class="flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-lg border border-dashed border-hairline-strong px-5 py-5 text-sm font-semibold text-ink transition-colors duration-[110ms] hover:bg-hover"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
-                <line x1="8" y1="3.5" x2="8" y2="12.5"></line>
-                <line x1="3.5" y1="8" x2="12.5" y2="8"></line>
-              </svg>
+              <x-icon name="plus" :size="16" :stroke-width="1.6" />
               {{ $viewModel->selectedPage() === null ? __('Add a section') : __('Add a section to :page', ['page' => $viewModel->selectedPage()->label]) }}
             </button>
 
@@ -119,7 +117,7 @@
               method="post"
               :action="route('settings.templateSections.create', $template)"
               x-target="builder"
-              class="flex flex-wrap items-end gap-3 rounded-xl border border-dashed border-muted p-4"
+              class="flex flex-wrap items-end gap-3 rounded-lg border border-dashed border-hairline-strong p-4"
             >
               <input type="hidden" name="page" value="{{ $viewModel->selectedPage()?->uuid }}" />
 
@@ -127,6 +125,7 @@
                 id="section-name"
                 name="name"
                 x-ref="name"
+                size="small"
                 :label="__('Name of the section')"
                 :placeholder="__('Health')"
                 :error="$errors->get('name')"
@@ -136,9 +135,9 @@
               />
 
               <div class="flex items-center gap-2">
-                <x-button>{{ __('Add it') }}</x-button>
+                <x-button size="small">{{ __('Add it') }}</x-button>
 
-                <button type="button" @click="adding = false" class="cursor-pointer rounded-md px-2 py-1.5 text-sm text-muted transition-colors duration-150 hover:bg-hover hover:text-ink">{{ __('Cancel') }}</button>
+                <x-button.ghost size="small" type="button" @click="adding = false">{{ __('Cancel') }}</x-button.ghost>
               </div>
             </x-form>
           </div>
@@ -152,7 +151,7 @@
     </div>
 
     <div class="flex flex-wrap items-center gap-4 border-t border-hairline pt-4">
-      <p class="text-sm text-muted">{{ $viewModel->publishingNote() }}</p>
+      <p class="erica-small max-w-[64ch]">{{ $viewModel->publishingNote() }}</p>
 
       @if ($viewModel->isEditable() && $version?->previous_version_id !== null)
         <div class="ml-auto">
@@ -162,11 +161,9 @@
             :action="route('settings.templateVersions.destroy', [$template, $version])"
           >
             <x-slot:trigger>
-              <button
-                type="button"
-                @click="open = true"
-                class="cursor-pointer rounded-md border border-hairline-strong bg-canvas px-3 py-2 text-sm text-body transition-colors duration-150 hover:bg-hover hover:text-error"
-              >{{ __('Discard the draft') }}</button>
+              <x-button.secondary size="small" type="button" @click="open = true" class="hover:text-error">
+                {{ __('Discard the draft') }}
+              </x-button.secondary>
             </x-slot:trigger>
 
             <p>{{ __('Everything changed since the last published version goes with it.') }}</p>
@@ -177,4 +174,4 @@
       @endif
     </div>
   </div>
-</x-app-layout>
+</x-shell>

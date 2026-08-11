@@ -30,28 +30,32 @@
   class="transition-opacity [&[aria-busy]]:opacity-60"
 >
   @if (session('apiKey'))
-    <div class="space-y-2 rounded-t-xl border-b border-hairline-soft bg-sunken px-4 py-3.5">
-      <p class="text-sm font-semibold text-ink">{{ __('Your new API key') }}</p>
+    <div class="flex flex-col gap-2 border-b border-hairline bg-sunken px-4 py-3.5">
+      <p class="erica-row__title">{{ __('Your new API key') }}</p>
 
-      <p class="text-sm text-muted">{{ __('This is the only time we can show it to you. Copy it somewhere safe before you leave this screen.') }}</p>
+      <p class="erica-small">{{ __('This is the only time we can show it to you. Copy it somewhere safe before you leave this screen.') }}</p>
 
       <p class="rounded-md border border-hairline bg-canvas px-3 py-2 font-mono text-sm break-all text-ink select-all">{{ session('apiKey') }}</p>
     </div>
   @endif
 
-  <x-box.row class="grid gap-x-6 gap-y-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-    <p class="text-sm font-semibold text-ink">{{ $viewModel->apiKeysHeader() }}</p>
+  <div class="erica-row">
+    <div class="erica-row__main">
+      <p class="erica-row__title">{{ $viewModel->apiKeysHeader() }}</p>
+    </div>
 
-    <x-button.secondary
-      type="button"
-      x-show="! creating"
-      @click="creating = true; $nextTick(() => $refs.name.focus())"
-      class="max-sm:w-full"
-    >{{ __('Create key') }}</x-button.secondary>
-  </x-box.row>
+    <div class="erica-row__end">
+      <x-button.secondary
+        size="small"
+        type="button"
+        x-show="! creating"
+        @click="creating = true; $nextTick(() => $refs.name.focus())"
+      >{{ __('Create key') }}</x-button.secondary>
+    </div>
+  </div>
 
-  <div x-cloak x-show="creating" class="border-b border-hairline-soft px-4 py-3.5">
-    <x-form method="post" :action="route('settings.apiKeys.create')" x-target="api-keys" class="space-y-3.5">
+  <div x-cloak x-show="creating" class="border-b border-hairline px-4 py-4">
+    <x-form method="post" :action="route('settings.apiKeys.create')" x-target="api-keys" class="flex flex-col gap-3.5">
       <x-input
         id="name"
         x-ref="name"
@@ -64,62 +68,46 @@
       />
 
       <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-        <x-button.secondary type="button" @click="creating = false">{{ __('Cancel') }}</x-button.secondary>
+        <x-button.secondary size="small" type="button" @click="creating = false">{{ __('Cancel') }}</x-button.secondary>
 
-        <x-button>{{ __('Create key') }}</x-button>
+        <x-button size="small">{{ __('Create key') }}</x-button>
       </div>
     </x-form>
   </div>
 
   @forelse ($viewModel->apiKeys() as $apiKey)
-    <x-box.row class="grid gap-x-6 gap-y-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-      <div class="flex items-center gap-x-3">
-        <span class="flex size-8 shrink-0 items-center justify-center rounded-md bg-sunken text-placeholder" aria-hidden="true">
-          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
-            <circle cx="10.4" cy="5.6" r="3"></circle>
-            <path d="M8.3 7.7 3 13"></path>
-            <path d="M4.6 11.4 6 12.8"></path>
-          </svg>
-        </span>
+    <x-row
+      :title="$apiKey['name']"
+      :description="$apiKey['lastUsedAt']
+        ? __('Created :created · last used :used', ['created' => $apiKey['createdAt'], 'used' => $apiKey['lastUsedAt']])
+        : __('Created :created · never used', ['created' => $apiKey['createdAt']])"
+      icon="key"
+      icon-color="var(--indigo)"
+      icon-background="var(--indigo-tint)"
+    >
+      <x-slot:end>
+        <div x-data="{ confirming: false }">
+          <x-button.secondary size="small" type="button" x-show="! confirming" @click="confirming = true">{{ __('Revoke') }}</x-button.secondary>
 
-        <div class="min-w-0 space-y-0.5">
-          <p class="truncate text-sm font-semibold text-ink">{{ $apiKey['name'] }}</p>
+          <div x-cloak x-show="confirming" class="flex flex-wrap items-center justify-end gap-2.5">
+            <p class="erica-field__error">{{ __('Anything still using it stops working. Sure?') }}</p>
 
-          <p class="text-sm text-muted">
-            @if ($apiKey['lastUsedAt'])
-              {{ __('Created :created · last used :used', ['created' => $apiKey['createdAt'], 'used' => $apiKey['lastUsedAt']]) }}
-            @else
-              {{ __('Created :created · never used', ['created' => $apiKey['createdAt']]) }}
-            @endif
-          </p>
+            <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep it') }}</x-button.secondary>
+
+            <x-form method="delete" :action="route('settings.apiKeys.destroy', $apiKey['id'])" x-target="api-keys">
+              <x-button.danger size="small">{{ __('Revoke') }}</x-button.danger>
+            </x-form>
+          </div>
         </div>
-      </div>
-
-      <div x-data="{ confirming: false }">
-        <x-button.secondary type="button" x-show="! confirming" @click="confirming = true" class="max-sm:w-full">{{ __('Revoke') }}</x-button.secondary>
-
-        <div x-cloak x-show="confirming" class="flex flex-wrap items-center gap-3 max-sm:flex-col max-sm:items-stretch">
-          <p class="text-sm text-error max-sm:text-center">{{ __('Anything still using it stops working. Sure?') }}</p>
-
-          <x-button.secondary type="button" @click="confirming = false">{{ __('Keep it') }}</x-button.secondary>
-
-          <x-form method="delete" :action="route('settings.apiKeys.destroy', $apiKey['id'])" x-target="api-keys">
-            <x-button class="bg-error hover:bg-error/88 max-sm:w-full">{{ __('Revoke') }}</x-button>
-          </x-form>
-        </div>
-      </div>
-    </x-box.row>
+      </x-slot:end>
+    </x-row>
   @empty
-    <x-empty-state :title="__('No API keys yet')">
+    <x-empty-state :title="__('No keys yet')" hue="var(--indigo)" tint="var(--indigo-tint)">
       <x-slot:icon>
-        <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
-          <circle cx="10.4" cy="5.6" r="3"></circle>
-          <path d="M8.3 7.7 3 13"></path>
-          <path d="M4.6 11.4 6 12.8"></path>
-        </svg>
+        <x-icon name="key" :size="30" :stroke-width="1.4" />
       </x-slot:icon>
 
-      {{ __('Make one when you have something to point it at. The key is shown once, when you make it.') }}
+      {{ __('Make one when you have something to point it at. The key is shown once, when you make it, and only a hash of it is kept afterwards.') }}
     </x-empty-state>
   @endforelse
 </div>

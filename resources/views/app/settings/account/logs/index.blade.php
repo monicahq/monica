@@ -2,125 +2,92 @@
   Everything that has been written down about an account: what its owner has
   done, and what we have sent them.
 
+  Two lists, so two sections. Neither is something somebody can add to, which is
+  why neither has an action: this is a screen for reading, and the only thing to do
+  on it is ask for more of it.
+
   The next page of logs is appended in place, and the link that asked for it is
   replaced by the one that came back, or removed on the last page.
 
   @var \App\ViewModels\Settings\Account\Logs\LogsViewModel $viewModel
 --}}
-<x-app-layout :title="__('Logs')">
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="logs" />
-  </x-slot:sidebar>
+<x-shell :title="__('Logs')">
+  <x-slot:bar>
+    <a href="{{ route('settings.index') }}" data-turbo="true" class="erica-btn erica-btn--secondary erica-btn--sm">
+      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
+      {{ __('Back to settings') }}
+    </a>
+  </x-slot:bar>
 
-  <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => __('Settings')],
-        ['label' => __('Logs')],
-      ]"
-    />
-  </x-slot:breadcrumb>
+  <x-slot:dock>
+    <x-dock :user="$viewModel->user()" />
+  </x-slot:dock>
 
-  <x-page-header
-    :title="__('Logs')"
-    :description="__('What we recorded about your account, and what we sent you.')"
-  />
+  <header class="flex flex-col gap-2">
+    <h1 class="erica-page-title">{{ __('Logs') }}</h1>
 
-  <x-box :title="__('Logs')" id="logs-container" x-merge="append" padding="p-0">
-    <x-slot:help>
-      <x-help :title="__('Logs')">
-        {{ __('Every action you take that touches your account is written down here, so you can tell what happened and when.') }}
-      </x-help>
-    </x-slot:help>
+    <p class="erica-lede max-w-[56ch]">{{ __('What has been done in this account, and every email it has sent.') }}</p>
+  </header>
 
-    <x-slot:description>
-      <p>{{ __('Sensitive actions performed with your account are recorded here.') }}</p>
-    </x-slot:description>
+  <section class="flex flex-col gap-3">
+    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+      <h2 class="erica-section-title shrink-0">{{ __('Activity') }}</h2>
 
-    @forelse ($viewModel->logs() as $log)
-      <x-box.row class="flex items-start gap-x-3">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" class="mt-1 shrink-0 text-placeholder" aria-hidden="true">
-          <path d="M1.5 8h3L6 5l2 6 2-4 1.4 1h3.1"></path>
-        </svg>
+      <p class="erica-small">{{ __('Every action that touched this account, newest first, with where it came from.') }}</p>
+    </div>
 
-        <div class="min-w-0 flex-1">
-          <p class="flex flex-wrap items-baseline gap-x-2 text-sm">
-            <span class="font-semibold text-ink">{{ $log->author }}</span>
+    <x-panel :flush="true">
+      <div id="logs-container" x-merge="append">
+        @forelse ($viewModel->logs() as $log)
+          @include('app.settings.account.logs._log-row', ['log' => $log])
+        @empty
+          <x-empty-state :title="__('Nothing has happened yet')" hue="var(--forest)" tint="var(--forest-tint)">
+            <x-slot:icon>
+              <x-icon name="timeline" :size="30" :stroke-width="1.4" />
+            </x-slot:icon>
 
-            <span class="text-hairline-strong max-sm:hidden" aria-hidden="true">|</span>
+            {{ __('As soon as you change something on your account, it is written down here, with the moment it happened and the address it came from.') }}
+          </x-empty-state>
+        @endforelse
+      </div>
 
-            <span class="font-mono text-xs wrap-anywhere text-muted max-sm:w-full">{{ $log->action }}</span>
+      @if ($viewModel->logs()->hasMorePages())
+        <x-slot:footer id="pagination">
+          <div class="text-center">
+            <x-link x-target="logs-container pagination" :href="$viewModel->logs()->nextPageUrl()">{{ __('Load more') }}</x-link>
+          </div>
+        </x-slot:footer>
+      @endif
+    </x-panel>
+  </section>
 
-            {{-- The address is what makes this screen worth reading: the entry
-                 that came from somewhere you have never been is the one to find.
-                 There is none when the application acted on its own. --}}
-            @if ($log->ip_address)
-              <span class="text-hairline-strong max-sm:hidden" aria-hidden="true">|</span>
+  <section class="flex flex-col gap-3">
+    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+      <h2 class="erica-section-title shrink-0">{{ __('Emails sent') }}</h2>
 
-              <span class="font-mono text-xs whitespace-nowrap text-muted-soft" title="{{ __('Where: :ip', ['ip' => $log->ip_address]) }}">{{ $log->ip_address }}</span>
-            @endif
-          </p>
+      <p class="erica-small">{{ __('If one you expected never arrived, look here first: an entry still on its way means the mail service has not confirmed it yet, and no entry at all means it was never sent.') }}</p>
+    </div>
 
-          <p class="mt-0.5 text-sm text-body">{{ $log->description }}</p>
+    <x-panel :flush="true">
+      @forelse ($viewModel->emailsSent() as $emailSent)
+        @include('app.settings.account.logs._email-sent-row', ['emailSent' => $emailSent])
+      @empty
+        <x-empty-state :title="__('Nothing has left our hands yet')" hue="var(--plum)" tint="var(--plum-tint)">
+          <x-slot:icon>
+            <x-icon name="mail" :size="30" :stroke-width="1.4" />
+          </x-slot:icon>
 
-          <time datetime="{{ $log->created_at->toIso8601String() }}" title="{{ $log->created_at->toDayDateTimeString() }}" class="mt-1 block font-mono text-xs text-muted-soft sm:hidden">
-            {{ $log->created_at->diffForHumans() }}
-          </time>
-        </div>
+          {{ __('The emails we send you, such as sign-in links and password changes, show up here once they do, along with whether they arrived.') }}
+        </x-empty-state>
+      @endforelse
 
-        <time datetime="{{ $log->created_at->toIso8601String() }}" title="{{ $log->created_at->toDayDateTimeString() }}" class="mt-0.5 shrink-0 font-mono text-xs whitespace-nowrap text-muted-soft max-sm:hidden">
-          {{ $log->created_at->diffForHumans() }}
-        </time>
-      </x-box.row>
-    @empty
-      <x-empty-state :title="__('No activity yet')">
-        <x-slot:icon>
-          <svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1.5 8h3L6 5l2 6 2-4 1.4 1h3.1"></path>
-          </svg>
-        </x-slot:icon>
-
-        {{ __('Nothing has happened on your account yet. As soon as you change something, it shows up here.') }}
-      </x-empty-state>
-    @endforelse
-
-    @if ($viewModel->logs()->hasMorePages())
-      <x-slot:footer id="pagination">
-        <x-link x-target="logs-container pagination" :href="$viewModel->logs()->nextPageUrl()">{{ __('Load more') }}</x-link>
-      </x-slot:footer>
-    @endif
-  </x-box>
-
-  <x-box :title="__('Emails sent')" padding="p-0">
-    <x-slot:help>
-      <x-help :title="__('Emails sent')">
-        {{ __('Every email we sent you, most recent first. If one you expected never arrived, look here first: an entry that is still on its way means the mail service has not confirmed it yet, and no entry at all means the email was never sent.') }}
-      </x-help>
-    </x-slot:help>
-
-    <x-slot:description>
-      <p>{{ __('The emails we sent to your account.') }}</p>
-    </x-slot:description>
-
-    @forelse ($viewModel->emailsSent() as $emailSent)
-      @include('app.settings.account.logs._email-sent-row', ['emailSent' => $emailSent])
-    @empty
-      <x-empty-state :title="__('No emails yet')">
-        <x-slot:icon>
-          <svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="1.5" y="3.5" width="13" height="9" rx="1.5"></rect>
-            <path d="m2 4.5 6 4.5 6-4.5"></path>
-          </svg>
-        </x-slot:icon>
-
-        {{ __('Nothing has left our hands yet. The emails we send you, such as sign-in links and password changes, show up here once they do.') }}
-      </x-empty-state>
-    @endforelse
-
-    @if ($viewModel->hasMoreEmailsSent())
-      <x-slot:footer>
-        <x-link :href="route('settings.emailsSent.index')" turbo>{{ __('Browse all emails') }}</x-link>
-      </x-slot:footer>
-    @endif
-  </x-box>
-</x-app-layout>
+      @if ($viewModel->hasMoreEmailsSent())
+        <x-slot:footer>
+          <div class="text-center">
+            <x-link :href="route('settings.emailsSent.index')" turbo>{{ __('Browse all emails') }}</x-link>
+          </div>
+        </x-slot:footer>
+      @endif
+    </x-panel>
+  </section>
+</x-shell>
