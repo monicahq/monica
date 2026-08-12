@@ -17,10 +17,10 @@
 --}}
 <x-shell :title="__('Settings')">
   <x-slot:bar>
-    <x-button.secondary :href="route('vaults.index')" data-turbo="true" size="small">
+    <x-button.bar :href="route('vaults.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to your vaults') }}
-    </x-button.secondary>
+    </x-button.bar>
   </x-slot:bar>
 
   <x-slot:dock>

@@ -22,11 +22,18 @@
 @endphp
 <x-shell :title="$viewModel->title()" wide>
   <x-slot:bar>
-    <x-button.secondary :href="$viewModel->vaultsUrl()" data-turbo="true" size="small">
+    <x-button.bar :href="$viewModel->vaultsUrl()" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
 
       {{ __('Your vaults') }}
-    </x-button.secondary>
+    </x-button.bar>
+
+    {{--
+      This is the one screen in a vault whose bar carries the way out of the vault
+      rather than the vault itself: the chip the other screens draw would lead here,
+      and this is here. The search beside it is the same one they carry.
+    --}}
+    <x-vault.search />
   </x-slot:bar>
 
   <x-slot:dock>
@@ -37,7 +44,7 @@
     <div class="flex min-w-0 flex-col gap-1.5">
       <p class="text-sm text-pretty text-muted">{{ $viewModel->overline() }}</p>
 
-      <h1 class="font-display text-page-title text-ink">{{ $vault->name }}</h1>
+      <h1 class="font-display text-display-2 text-balance text-ink">{{ $vault->name }}</h1>
 
       @if ($viewModel->description())
         <p class="max-w-[60ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
@@ -53,7 +60,7 @@
     </x-button>
   </header>
 
-  <div class="grid auto-rows-fr gap-x-5 gap-y-7 md:grid-cols-2 lg:grid-cols-3">
+  <div class="grid auto-rows-fr gap-x-5.5 gap-y-7 md:grid-cols-2 lg:grid-cols-3">
     <section class="flex min-w-0 flex-col gap-2.5">
       <div class="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 px-0.5">
         <h2 class="shrink-0 font-display text-section-title text-terracotta">{{ __('Contacts') }}</h2>
@@ -135,8 +142,9 @@
 
     <section class="flex min-w-0 flex-col gap-2.5">
       {{-- The only heading with no hue: the settings are not a kind of thing the
-           vault holds, they are the vault itself. --}}
-      <h2 class="px-0.5 font-display text-section-title text-ink">{{ __('Vault settings') }}</h2>
+           vault holds, they are the vault itself. It is a shade softer than the
+           others rather than a colour, which is what says so without competing. --}}
+      <h2 class="px-0.5 font-display text-section-title text-ink-soft">{{ __('Vault settings') }}</h2>
 
       <a
         href="{{ $viewModel->settingsUrl() }}"

@@ -24,6 +24,16 @@ class TopBarTest extends TestCase
     }
 
     #[Test]
+    public function what_sits_in_the_bar_is_not_the_colour_of_the_bar(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->blade('<x-shell><x-slot:bar><x-button.bar href="/vaults">Your vaults</x-button.bar></x-slot:bar>Anything</x-shell>')
+            ->assertSee('bg-sand text-ink shadow-raised', escape: false);
+    }
+
+    #[Test]
     public function the_sidebar_shell_draws_its_bar_on_canvas(): void
     {
         $user = User::factory()->create();

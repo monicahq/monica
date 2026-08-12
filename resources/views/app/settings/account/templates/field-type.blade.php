@@ -24,10 +24,10 @@
 @endphp
 <x-shell :title="__('Add a field')" wide>
   <x-slot:bar>
-    <x-button.secondary :href="$backToBuilder" data-turbo="true" size="small">
+    <x-button.bar :href="$backToBuilder" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to the template') }}
-    </x-button.secondary>
+    </x-button.bar>
   </x-slot:bar>
 
   <x-slot:dock>

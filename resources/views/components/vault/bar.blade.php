@@ -11,10 +11,8 @@
   same mark doing two different things is one too many. The steps after it are the
   breadcrumb, the last of which is where you are and is never a link.
 
-  The search does not search yet. It opens the launcher, which is where searching
-  will live and where the same field already sits, so this is a second door onto one
-  room rather than a control of its own that leads nowhere. The shortcut it shows is
-  real.
+  The search is <x-vault.search>, which the vault dashboard puts in its own bar
+  beside the way out of the vault.
 
   @var \App\Models\Vault $vault
   @var array<int, array{label: string, icon?: string|null, url?: string|null, count?: int|string|null}> $items
@@ -25,7 +23,7 @@
 ])
 
 <div class="flex min-w-0 items-center gap-3">
-  <x-button.secondary :href="route('vaults.show', $vault)" data-turbo="true" size="small">
+  <x-button.bar :href="route('vaults.show', $vault)" data-turbo="true" size="small">
     <span
       class="flex size-5.5 shrink-0 items-center justify-center rounded-xs text-[11px] font-bold"
       style="color: {{ $vault->colour }}; background: color-mix(in srgb, {{ $vault->colour }} 12%, transparent)"
@@ -33,7 +31,7 @@
     >{{ mb_strtoupper(mb_substr($vault->name, 0, 1)) }}</span>
 
     <span class="max-w-32 truncate">{{ $vault->name }}</span>
-  </x-button.secondary>
+  </x-button.bar>
 
   @if ($items !== [])
     <nav aria-label="{{ __('Breadcrumb') }}" class="flex min-w-0 items-center gap-2 text-sm text-muted max-sm:hidden">
@@ -59,21 +57,5 @@
     </nav>
   @endif
 
-  {{--
-    It is drawn as a field because that is what it is a way into, so it takes the
-    same inset shade a field does rather than the raised edge of a button. It is
-    gone below 900px, where the bar has room for the vault and where it is rather
-    than for a third thing. Nothing is only reachable through it.
-  --}}
-  <button
-    type="button"
-    @click="$dispatch('launcher-open')"
-    class="hidden h-9 min-w-65 cursor-pointer items-center gap-2.25 rounded-md border border-hairline-strong bg-canvas px-3 text-left text-sm text-muted shadow-press-inset transition-[background-color] duration-(--duration-fast) ease-out hover:bg-sand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring min-[900px]:flex"
-  >
-    <x-icon name="search" :size="17" :stroke-width="1.6" />
-
-    {{ __('Search people, notes, anything…') }}
-
-    <span class="ml-auto rounded-xs border border-hairline px-1.25 py-px font-mono text-[11px]" aria-hidden="true">⌘K</span>
-  </button>
+  <x-vault.search />
 </div>

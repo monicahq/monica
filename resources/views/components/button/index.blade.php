@@ -8,10 +8,10 @@
   A button in a bar rather than at the foot of a form is drawn small, which is the
   only size besides the default one.
 
-  This file also carries the other three variants, because the anchor-or-button
-  markup and every utility except the fill are the same for all four. Callers reach
-  them through <x-button.secondary>, <x-button.ghost> and <x-button.danger> rather
-  than by naming a variant here.
+  This file also carries the other four variants, because the anchor-or-button
+  markup and every utility except the fill are the same for all five. Callers reach
+  them through <x-button.secondary>, <x-button.bar>, <x-button.ghost> and
+  <x-button.danger> rather than by naming a variant here.
 
   @var string|null $href
   @var string $type
@@ -36,6 +36,7 @@
 
   $fill = match ($variant) {
     'secondary' => 'border-hairline-strong bg-canvas text-ink shadow-raised hover:bg-sand',
+    'bar' => 'border-hairline-strong bg-sand text-ink shadow-raised hover:border-ink hover:bg-sand-deep',
     'ghost' => 'text-ink-soft hover:bg-sand hover:text-ink',
     'danger' => 'bg-error text-white shadow-btn-danger hover:bg-error-hover',
     default => 'bg-action-primary text-action-primary-text shadow-btn-primary hover:bg-action-primary-hover',

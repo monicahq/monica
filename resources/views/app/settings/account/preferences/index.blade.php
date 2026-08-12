@@ -22,10 +22,10 @@
 @endphp
 <x-shell :title="__('Preferences')">
   <x-slot:bar>
-    <x-button.secondary :href="route('settings.index')" data-turbo="true" size="small">
+    <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to settings') }}
-    </x-button.secondary>
+    </x-button.bar>
   </x-slot:bar>
 
   <x-slot:dock>
