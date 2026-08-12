@@ -57,6 +57,7 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     Route::get('vaults/new', [VaultController::class, 'new'])->name('vaults.new');
     Route::post('vaults', [VaultController::class, 'create'])->name('vaults.create');
     Route::get('vaults/{vault}', [VaultController::class, 'show'])->name('vaults.show');
+    Route::put('vaults/{vault}', [VaultController::class, 'update'])->name('vaults.update');
     Route::delete('vaults/{vault}', [VaultController::class, 'destroy'])->name('vaults.destroy');
 
     // What was uploaded onto a record, handed back through the app rather than

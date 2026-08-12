@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Enums\TemplateAppliesToEnum;
+use App\Enums\VaultColourEnum;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
@@ -12,8 +13,8 @@ use App\Models\VaultDefaultTemplate;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * The settings of one vault: what a contact written down here starts from, and
- * the way to be rid of the vault altogether.
+ * The settings of one vault: what it is called, what a contact written down
+ * here starts from, and the way to be rid of the vault altogether.
  *
  * Only the contact default is offered. A vault holds a default per kind of
  * record, but the other kinds are reached from the entity type and none of
@@ -50,40 +51,43 @@ class VaultSettingsViewModel
 
     public function description(): string
     {
-        return __('What a new contact in :name starts from, and how to be rid of the vault.', [
+        return __('What :name is called, what a new contact in it starts from, and how to be rid of it.', [
             'name' => $this->vault->name,
         ]);
     }
 
     /**
-     * The vaults the switcher offers, the one being looked at marked rather
-     * than offered as a link to where you already are.
+     * What the naming form starts on, which is what was typed if it came back
+     * rejected and what the vault holds otherwise.
      *
-     * @return array<int, array{name: string, colour: string, url: string, current: bool}>
+     * @return array{name: string, description: string, colour: string}
      */
-    public function vaults(): array
+    public function values(): array
     {
-        return Vault::query()
-            ->where('account_id', $this->user->account_id)
-            ->orderBy('position')
-            ->get()
-            ->map(fn (Vault $vault): array => [
-                'name' => $vault->name,
-                'colour' => $vault->colour,
-                'url' => route('vaults.show', $vault),
-                'current' => $vault->is($this->vault),
-            ])
-            ->all();
+        return [
+            'name' => (string) old('name', $this->vault->name),
+            'description' => (string) old('description', $this->vault->description ?? ''),
+            'colour' => (string) old('colour', $this->vault->colour),
+        ];
     }
 
-    public function vaultsUrl(): string
+    /**
+     * The colours on offer, each with the name somebody using a screen reader
+     * hears instead of a hex code.
+     *
+     * @return array<int, array{value: string, label: string}>
+     */
+    public function colours(): array
     {
-        return route('vaults.index');
+        return array_map(
+            fn (VaultColourEnum $colour): array => ['value' => $colour->value, 'label' => __($colour->label())],
+            VaultColourEnum::cases(),
+        );
     }
 
-    public function vaultUrl(): string
+    public function updateAction(): string
     {
-        return route('vaults.show', $this->vault);
+        return route('vaults.update', $this->vault);
     }
 
     public function templatesUrl(): string

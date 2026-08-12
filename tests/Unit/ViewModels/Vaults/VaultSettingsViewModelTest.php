@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\TemplateAppliesToEnum;
+use App\Enums\VaultColourEnum;
 use App\Models\Template;
 use App\Models\TemplateVersion;
 use App\Models\User;
@@ -18,6 +19,46 @@ use Tests\TestCase;
 class VaultSettingsViewModelTest extends TestCase
 {
     use RefreshDatabase;
+
+    #[Test]
+    public function it_starts_the_naming_form_on_what_the_vault_holds(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+            'description' => 'The Scranton branch',
+            'colour' => '#4f8a49',
+        ]);
+
+        $values = new VaultSettingsViewModel(user: $user, vault: $vault)->values();
+
+        $this->assertEquals(
+            ['name' => 'Dunder Mifflin', 'description' => 'The Scranton branch', 'colour' => '#4f8a49'],
+            $values,
+        );
+    }
+
+    #[Test]
+    public function it_has_an_empty_description_when_the_vault_has_none(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'description' => null]);
+
+        $this->assertEquals('', new VaultSettingsViewModel(user: $user, vault: $vault)->values()['description']);
+    }
+
+    #[Test]
+    public function it_offers_every_colour_a_vault_may_be_told_apart_by(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $colours = new VaultSettingsViewModel(user: $user, vault: $vault)->colours();
+
+        $this->assertCount(count(VaultColourEnum::cases()), $colours);
+        $this->assertEquals(['value' => '#3f5fd0', 'label' => 'Blue'], $colours[0]);
+    }
 
     #[Test]
     public function it_names_what_the_vault_starts_its_contacts_on(): void
@@ -93,21 +134,6 @@ class VaultSettingsViewModelTest extends TestCase
         Vault::factory()->create(['account_id' => $user->account_id]);
 
         $this->assertFalse(new VaultSettingsViewModel(user: $user, vault: $vault)->isTheLastVault());
-    }
-
-    #[Test]
-    public function it_offers_every_vault_of_the_account_in_the_switcher(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
-        Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Schrute Farms', 'position' => 2]);
-        Vault::factory()->create(['name' => 'Vance Refrigeration']);
-
-        $vaults = new VaultSettingsViewModel(user: $user, vault: $vault)->vaults();
-
-        $this->assertCount(2, $vaults);
-        $this->assertTrue($vaults[0]['current']);
-        $this->assertEquals('Schrute Farms', $vaults[1]['name']);
     }
 
     private function publishedContactTemplate(User $user, string $name, int $position = 1): Template

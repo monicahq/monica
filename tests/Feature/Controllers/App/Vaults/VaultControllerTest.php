@@ -468,6 +468,83 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_renames_a_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+            'description' => 'The Scranton branch',
+            'colour' => '#4f8a49',
+        ]);
+
+        $response = $this->actingAs($user)->put(route('vaults.update', $vault), [
+            'name' => 'Schrute Farms',
+            'description' => 'Beets, bears, bed and breakfast',
+            'colour' => '#9a3f2b',
+        ]);
+
+        $response->assertRedirect(route('vaults.settings.index', $vault));
+        $response->assertSessionHas('status');
+
+        $vault->refresh();
+
+        $this->assertEquals('Schrute Farms', $vault->name);
+        $this->assertEquals('Beets, bears, bed and breakfast', $vault->description);
+        $this->assertEquals('#9a3f2b', $vault->colour);
+    }
+
+    #[Test]
+    public function it_refuses_to_leave_a_vault_without_a_name(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+
+        $this->actingAs($user)->put(route('vaults.update', $vault), [
+            'name' => '',
+            'colour' => '#4f8a49',
+        ])->assertSessionHasErrors('name');
+
+        $this->assertEquals('Dunder Mifflin', $vault->refresh()->name);
+    }
+
+    #[Test]
+    public function it_refuses_to_recolour_a_vault_with_a_colour_that_is_not_on_offer(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'colour' => '#4f8a49']);
+
+        $this->actingAs($user)->put(route('vaults.update', $vault), [
+            'name' => 'Dunder Mifflin',
+            'colour' => 'rebeccapurple',
+        ])->assertSessionHasErrors('colour');
+
+        $this->assertEquals('#4f8a49', $vault->refresh()->colour);
+    }
+
+    #[Test]
+    public function it_does_not_rename_a_vault_of_another_account(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $elsewhere = Vault::factory()->create(['name' => 'Vance Refrigeration']);
+
+        $this->actingAs($user)->put(route('vaults.update', $elsewhere), [
+            'name' => 'Schrute Farms',
+            'colour' => '#4f8a49',
+        ])->assertNotFound();
+
+        $this->assertEquals('Vance Refrigeration', $elsewhere->refresh()->name);
+    }
+
+    #[Test]
     public function it_deletes_a_vault(): void
     {
         Queue::fake();

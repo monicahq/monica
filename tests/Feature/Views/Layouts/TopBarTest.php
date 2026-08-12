@@ -34,16 +34,6 @@ class TopBarTest extends TestCase
     }
 
     #[Test]
-    public function the_sidebar_shell_draws_its_bar_on_canvas(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)
-            ->blade('<x-app-layout><x-slot:sidebar>Links</x-slot:sidebar>Anything</x-app-layout>')
-            ->assertSee('border-b border-hairline-strong bg-canvas px-4 shadow-bar', escape: false);
-    }
-
-    #[Test]
     public function the_account_shell_draws_its_bar_on_canvas(): void
     {
         $user = User::factory()->create();

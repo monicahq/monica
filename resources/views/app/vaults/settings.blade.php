@@ -1,6 +1,6 @@
 {{--
-  The settings of one vault. Two things for now: what a contact written down
-  here starts from, and the way to be rid of the vault.
+  The settings of one vault. Three things for now: what it is called, what a
+  contact written down here starts from, and the way to be rid of the vault.
 
   The template section only asks a question when there is one to ask. An account
   with a single contact template has nothing to choose between, so the screen
@@ -10,35 +10,130 @@
 --}}
 @php
   $vault = $viewModel->vault();
+  $values = $viewModel->values();
 @endphp
-<x-app-layout :title="$viewModel->title()">
-  <x-slot:sidebar>
-    <x-vault.sidebar
-      :vault="$vault"
-      :vaults="$viewModel->vaults()"
-      :user="$viewModel->user()"
-      current="vault-settings"
-    />
-  </x-slot:sidebar>
+<x-shell :title="$viewModel->title()">
+  <x-slot:bar>
+    <x-vault.bar :vault="$vault" :items="[['label' => __('Settings'), 'icon' => 'vault']]" />
+  </x-slot:bar>
 
-  <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => __('Your vaults'), 'url' => $viewModel->vaultsUrl()],
-        ['label' => $vault->name, 'url' => $viewModel->vaultUrl()],
-        ['label' => __('Settings')],
-      ]"
-    />
-  </x-slot:breadcrumb>
+  {{--
+    Nothing in the dock is current. The settings of a vault are not one of the
+    four destinations: you get here from the menu behind the chip, and marking
+    one of the four would claim otherwise.
+  --}}
+  <x-slot:dock>
+    <x-dock :user="$viewModel->user()" :vault="$vault" />
+  </x-slot:dock>
 
-  <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" class="max-w-140" />
+  <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
-  <x-box
+  {{--
+    The wording of the vault. The preview beside the swatches follows what is
+    being typed rather than what has been saved, so it is held in the browser;
+    the colour travels in a hidden field the swatches write to, since a row of
+    buttons is not a field.
+  --}}
+  <div
+    x-data="{
+      name: @js($values['name']),
+      colour: @js($values['colour']),
+      get initial() { return (this.name.trim()[0] || @js(__('V'))).toUpperCase() },
+      get previewName() { return this.name.trim() || @js(__('Untitled vault')) },
+      get named() { return this.name.trim() !== '' },
+    }"
+  >
+    <x-form method="put" :action="$viewModel->updateAction()">
+      <x-panel
+        :title="__('What this vault is called')"
+        :subtitle="__('The name is what you see in the dock and on the list. The description is for the version of you who comes back in a year.')"
+        icon="vault"
+        icon-class="bg-terracotta-tint text-terracotta"
+      >
+        <div class="flex flex-col gap-4.5">
+          <x-input
+            id="name"
+            x-model="name"
+            :value="$values['name']"
+            :label="__('Name')"
+            :placeholder="__('Famille')"
+            :error="$errors->get('name')"
+            maxlength="255"
+            required
+          />
+
+          <x-textarea
+            id="description"
+            :label="__('Description')"
+            optional
+            :value="$values['description']"
+            :placeholder="__('Everyone I am related to, and the people who come with them.')"
+            :help="__('One or two sentences.')"
+            :error="$errors->get('description')"
+          />
+
+          {{--
+            The swatches are buttons rather than radios, so what says what they
+            are is a group with a name of its own: a label pointing at the hidden
+            field the buttons write to would point at nothing anybody can see.
+          --}}
+          <div class="flex flex-col gap-2">
+            <span class="text-label text-ink">{{ __('Colour') }}</span>
+
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-4">
+              <input type="hidden" name="colour" value="{{ $values['colour'] }}" :value="colour" />
+
+              <div class="flex flex-wrap gap-2.5" role="group" aria-label="{{ __('Colour') }}">
+                @foreach ($viewModel->colours() as $option)
+                  <button
+                    type="button"
+                    aria-label="{{ $option['label'] }}"
+                    :aria-pressed="colour === @js($option['value']) ? 'true' : 'false'"
+                    @click="colour = @js($option['value'])"
+                    :class="colour === @js($option['value']) ? 'ring-2 ring-focus-ring ring-offset-2 ring-offset-canvas' : ''"
+                    style="background: {{ $option['value'] }}"
+                    class="size-7.5 cursor-pointer rounded-md border border-hairline-strong transition-shadow duration-150"
+                  ></button>
+                @endforeach
+              </div>
+
+              <div class="flex items-center gap-3 border-hairline-soft sm:ml-auto sm:border-l sm:pl-5">
+                <span
+                  :style="`background: ${colour}`"
+                  class="flex size-8.5 items-center justify-center rounded-md text-sm font-semibold text-white"
+                  aria-hidden="true"
+                  x-text="initial"
+                ></span>
+
+                <div class="min-w-0">
+                  <p class="truncate text-sm font-semibold text-ink" x-text="previewName"></p>
+
+                  <p class="truncate font-mono text-xs text-muted-soft" x-text="colour"></p>
+                </div>
+              </div>
+            </div>
+
+            <x-error :messages="$errors->get('colour')" />
+          </div>
+        </div>
+
+        <x-slot:footer>
+          <div class="flex justify-end">
+            <x-button size="small" ::disabled="! named">{{ __('Save changes') }}</x-button>
+          </div>
+        </x-slot:footer>
+      </x-panel>
+    </x-form>
+  </div>
+
+  <x-panel
     :title="__('What a new contact starts from')"
-    :description="__('Every contact added to this vault begins with this template. The ones already here keep the version they were written on.')"
+    :subtitle="__('Every contact added to this vault begins with this template. The ones already here keep the version they were written on.')"
+    icon="people"
+    icon-class="bg-indigo-tint text-indigo"
   >
     @if ($viewModel->hasTemplateChoice())
-      <x-form method="put" :action="$viewModel->defaultTemplateAction()" class="space-y-3.5">
+      <x-form method="put" :action="$viewModel->defaultTemplateAction()" class="flex flex-col gap-4">
         <x-select
           id="template_version_id"
           :label="__('Default template')"
@@ -50,75 +145,73 @@
           @endforeach
         </x-select>
 
-        <x-button>{{ __('Save') }}</x-button>
+        <x-button class="self-start">{{ __('Save') }}</x-button>
       </x-form>
     @else
-      <div class="space-y-3.5">
+      <div class="flex flex-col gap-3">
         @if ($viewModel->currentTemplateName())
-          <p class="text-sm leading-relaxed text-body">
+          <p class="max-w-[60ch] text-sm text-pretty text-body">
             {{ __('Contacts here start from :name, which is the only contact template your account has.', ['name' => $viewModel->currentTemplateName()]) }}
           </p>
         @else
-          <p class="text-sm leading-relaxed text-body">
+          <p class="max-w-[60ch] text-sm text-pretty text-body">
             {{ __('Nothing is set, so whoever writes a contact down here picks a template themselves.') }}
           </p>
         @endif
 
-        <p class="text-sm leading-relaxed text-muted">
+        <p class="max-w-[60ch] text-sm text-pretty text-muted">
           {{ __('Make another one and this becomes a choice.') }}
           <x-link :href="$viewModel->templatesUrl()" turbo>{{ __('Your templates') }}</x-link>
         </p>
       </div>
     @endif
-  </x-box>
+  </x-panel>
 
   {{--
     The destructive half. It asks twice: the button raises the card, and the
     card says what the vault holds before it goes.
   --}}
-  <x-box :title="__('Delete this vault')">
-    <div class="grid gap-9 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-      <div class="space-y-2.5 text-sm leading-relaxed text-body">
+  <x-panel :title="__('Delete this vault')" icon="vault" icon-class="bg-error-tint text-error">
+    <div class="flex flex-wrap items-center gap-3.5">
+      <div class="flex max-w-[60ch] flex-col gap-2 text-sm text-pretty text-muted">
         <p>{{ __('Everything filed in this vault goes with it: the contacts, and everything written about them.') }}</p>
 
         <p>{{ __('Nothing in the application brings a vault back, so this is the end of it.') }}</p>
       </div>
 
-      <div>
-        <x-modal.warning
-          :title="__('Delete “:name”?', ['name' => $vault->name])"
-          :confirm="__('Delete the vault')"
-          :cancel="__('Keep it')"
-          :action="$viewModel->destroyAction()"
-        >
-          <x-slot:trigger>
-            <x-button.secondary type="button" @click="open = true" class="max-sm:w-full">
-              {{ __('Delete this vault') }}
-            </x-button.secondary>
-          </x-slot:trigger>
+      <x-modal.warning
+        :title="__('Delete “:name”?', ['name' => $vault->name])"
+        :confirm="__('Delete the vault')"
+        :cancel="__('Keep it')"
+        :action="$viewModel->destroyAction()"
+      >
+        <x-slot:trigger>
+          <x-button.secondary type="button" @click="open = true" class="text-error sm:ml-auto">
+            {{ __('Delete this vault') }}
+          </x-button.secondary>
+        </x-slot:trigger>
 
-          <p>
-            {{ $viewModel->contactCount() === 1
-              ? __('The one contact in it goes too, and everything written about them.')
-              : __('The :count contacts in it go too, and everything written about them.', ['count' => $viewModel->contactCount()]) }}
-          </p>
+        <p>
+          {{ $viewModel->contactCount() === 1
+            ? __('The one contact in it goes too, and everything written about them.')
+            : __('The :count contacts in it go too, and everything written about them.', ['count' => $viewModel->contactCount()]) }}
+        </p>
 
-          {{--
-            The last vault of an account is always the default one, so the two
-            sentences never both apply: either something else takes the title
-            on, or there is nothing left to take it.
-          --}}
-          @if ($viewModel->isTheLastVault())
-            <p>{{ __('This is the only vault you have, so your account is left holding nothing and you go back to the start.') }}</p>
+        {{--
+          The last vault of an account is always the default one, so the two
+          sentences never both apply: either something else takes the title
+          on, or there is nothing left to take it.
+        --}}
+        @if ($viewModel->isTheLastVault())
+          <p>{{ __('This is the only vault you have, so your account is left holding nothing and you go back to the start.') }}</p>
 
-            <p>{{ __('The next vault you make becomes the one things land in.') }}</p>
-          @elseif ($vault->is_default)
-            <p>{{ __('This is your default vault, so another one takes over as the place things land.') }}</p>
-          @endif
+          <p>{{ __('The next vault you make becomes the one things land in.') }}</p>
+        @elseif ($vault->is_default)
+          <p>{{ __('This is your default vault, so another one takes over as the place things land.') }}</p>
+        @endif
 
-          <p>{{ __('This cannot be undone.') }}</p>
-        </x-modal.warning>
-      </div>
+        <p>{{ __('This cannot be undone.') }}</p>
+      </x-modal.warning>
     </div>
-  </x-box>
-</x-app-layout>
+  </x-panel>
+</x-shell>

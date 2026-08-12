@@ -8,6 +8,7 @@ use App\Actions\CreateVault;
 use App\Actions\DestroyVault;
 use App\Actions\SetDefaultVault;
 use App\Actions\SetVaultDefaultTemplate;
+use App\Actions\UpdateVault;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\VaultColourEnum;
 use App\Http\Controllers\Controller;
@@ -83,6 +84,31 @@ class VaultController extends Controller
         return redirect()->route('vaults.index')
             ->with('status', __('The vault is created.'))
             ->with('status_description', __('Everything you put in it stays in it.'));
+    }
+
+    /**
+     * The wording of the vault, and nothing else about it. What it holds, where
+     * it sits in the list and whether it is the default one are each settled
+     * somewhere else.
+     */
+    public function update(Request $request, Vault $vault): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:65535'],
+            'colour' => ['required', 'string', Rule::in(VaultColourEnum::values())],
+        ]);
+
+        new UpdateVault(
+            user: $request->user(),
+            vault: $vault,
+            name: $validated['name'],
+            description: $validated['description'] ?? null,
+            colour: $validated['colour'],
+        )->execute();
+
+        return redirect()->route('vaults.settings.index', $vault)
+            ->with('status', __('The vault is saved.'));
     }
 
     /**

@@ -30,8 +30,26 @@ class VaultSettingsControllerTest extends TestCase
         $this->actingAs($user)->get(route('vaults.settings.index', $vault))
             ->assertStatus(200)
             ->assertSee('Vault settings')
+            ->assertSee('What this vault is called')
             ->assertSee('What a new contact starts from')
             ->assertSee('Delete this vault');
+    }
+
+    #[Test]
+    public function it_navigates_the_screen_with_the_dock_and_not_a_sidebar(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('vaults.settings.index', $vault))
+            ->assertStatus(200)
+            ->assertSee('aria-label="Main"', false)
+            ->assertSee(route('contacts.index', $vault), false);
+
+        $this->assertStringNotContainsString('id="settings-nav"', $response->getContent());
     }
 
     #[Test]
