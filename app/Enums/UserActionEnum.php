@@ -110,6 +110,10 @@ enum UserActionEnum: string implements Translatable
     case RecordSnapshotTaken = 'record_snapshot_taken';
     case RecordSnapshotRestored = 'record_snapshot_restored';
     case RecordMovedToTemplateVersion = 'record_moved_to_template_version';
+    case MarketplaceListingCreation = 'marketplace_listing_created';
+    case MarketplaceListingUpdate = 'marketplace_listing_updated';
+    case MarketplaceListingSubmission = 'marketplace_listing_submitted';
+    case MarketplaceListingWithdrawal = 'marketplace_listing_withdrawn';
 
     /**
      * What the action reads as in the logs, written about whoever performed it.
@@ -221,6 +225,10 @@ enum UserActionEnum: string implements Translatable
             self::RecordSnapshotTaken => 'Saved the state of :name',
             self::RecordSnapshotRestored => 'Put :name back to a saved state',
             self::RecordMovedToTemplateVersion => 'Moved :name onto version :version of its template',
+            self::MarketplaceListingCreation => 'Prepared :name for the marketplace',
+            self::MarketplaceListingUpdate => 'Updated what the marketplace says about :name',
+            self::MarketplaceListingSubmission => 'Sent version :version of :name in for review',
+            self::MarketplaceListingWithdrawal => 'Took :name out of the marketplace',
         };
     }
 

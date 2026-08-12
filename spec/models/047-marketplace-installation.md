@@ -1,6 +1,6 @@
 # 047. MarketplaceInstallation
 
-**Status:** to create
+**Status:** exists (`app/Models/MarketplaceInstallation.php`), table and model only; nothing installs yet
 **Spec:** 7, 3.1, 5.4
 
 ## What it is
@@ -45,6 +45,10 @@ deleted_at                  datetime
 - Applying an update creates a **new version of the local copy** ([TemplateVersion](013-template-version.md) or [SectionVersion](015-section-version.md)). A template update copies its pages and section placements into that new local version. It never edits a published local version, and records already on the old version stay there until moved deliberately (6).
 - `has_local_changes` is shown before applying an update, because an update onto an edited copy is where a surprise would come from.
 - Uninstalling removes the origin trace and leaves the copy in place. Nothing the user made is taken away.
+
+## What is built
+
+The table, the model and its factory, and nothing else. There is no install action, no update notification and no way to apply or decline one. Installing needs [Notification](042-notification.md), which does not exist, and it needs the value list question below answered, which it is not. The columns are all here, so the day that work happens it adds actions and touches no schema.
 
 ## Open questions
 

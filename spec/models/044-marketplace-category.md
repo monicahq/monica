@@ -1,6 +1,6 @@
 # 044. MarketplaceCategory
 
-**Status:** to create
+**Status:** exists (`app/Models/MarketplaceCategory.php`)
 **Spec:** 7
 
 ## What it is
@@ -43,4 +43,4 @@ updated_at                  datetime
 
 ## Open questions
 
-- The actual list of categories. Section 7 gives three examples and no list. It should be short at launch and grown from what people actually publish.
+- ~~The actual list of categories.~~ Answered. Eight top level categories ship, and no nesting: Health, Family, Work, Finance, Animals, Home, Hobbies, Travel. They live in `App\Enums\MarketplaceCategoryEnum` and are seeded by `Database\Seeders\MarketplaceCategorySeeder`, which is written to be run again on every deployment. The list grows from what people actually publish, and `parent_id` is there for the day one of them needs splitting.

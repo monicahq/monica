@@ -1,6 +1,6 @@
 # 046. MarketplaceListingVersion
 
-**Status:** to create
+**Status:** exists (`app/Models/MarketplaceListingVersion.php`), built as far as the author path goes; nothing consumes the payload yet
 **Spec:** 7, 6, 3.1
 
 ## What it is

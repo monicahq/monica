@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(MarketplaceCategorySeeder::class);
+
         new CreateAccount(
             firstName: 'Michael',
             lastName: 'Scott',

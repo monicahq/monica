@@ -1,6 +1,6 @@
 # 045. MarketplaceListing
 
-**Status:** to create
+**Status:** exists (`app/Models/MarketplaceListing.php`), built as far as the author path goes; the installer path is not written yet
 **Spec:** 7, 3.7, 9.3
 
 ## What it is
@@ -55,6 +55,12 @@ deleted_at                  datetime
 - `locale` is displayed in the catalogue and filterable (3.7). A listing is written in one language, and an installer in another gets the labels as written, which is fine because what they install is a copy they can rename freely.
 - `install_count` is public, as a quality signal (7).
 - Withdrawing a listing removes it from the catalogue and changes nothing for anybody who already installed it. What they hold is their own copy.
+
+## What is built
+
+The author path and the moderation path: `CreateMarketplaceListing`, `UpdateMarketplaceListing`, `SubmitMarketplaceListing`, `ApproveMarketplaceListingVersion`, `RejectMarketplaceListingVersion` and `WithdrawMarketplaceListing`.
+
+Two things the specification asks for are not built yet and are named here so nobody assumes otherwise. `listable` accepts a template or a section and not an activity type, since [ActivityType](035-activity-type.md) does not exist. And moderation has no user behind it: `moderated_by` is written as a name, because there is no instance administrator anywhere in the product yet, so the two moderation actions take one rather than a `User` and check no account.
 
 ## Open questions
 
