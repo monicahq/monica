@@ -106,7 +106,7 @@ class CreateValueListTest extends TestCase
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListCreation
                 && $job->account->id === $user->account_id
-                && $job->loggable->is($list)
+                && $job->isAbout($list)
                 && $job->parameters === ['name' => 'Dundie awards'],
         );
     }

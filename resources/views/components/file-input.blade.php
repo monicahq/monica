@@ -3,7 +3,12 @@
   sibling of x-input rather than a branch inside it, because a file field has no
   value to carry and takes an accept list instead.
 
+  The id is also the name of the input, so one prop drives both. A screen that
+  names it after something it holds rather than after itself, as a repeating
+  block does, gives `name` separately, exactly as <x-input> does.
+
   @var string|null $id
+  @var string|null $name
   @var string|null $label
   @var string|null $accept
   @var string|null $help
@@ -12,6 +17,7 @@
 --}}
 @props([
   'id' => null,
+  'name' => null,
   'label' => null,
   'accept' => null,
   'help' => null,
@@ -46,7 +52,7 @@
 
   <input
     id="{{ $id }}"
-    name="{{ $id }}"
+    name="{{ $name ?? $id }}"
     type="file"
     @if ($accept) accept="{{ $accept }}" @endif
     @if ($describedBy !== '') aria-describedby="{{ $describedBy }}" @endif

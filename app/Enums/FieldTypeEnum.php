@@ -90,17 +90,33 @@ enum FieldTypeEnum: string
      * and read perfectly well; what it has no screen for is being typed in.
      *
      * Each of the remaining ones needs machinery of its own rather than another
-     * input: a relation needs a search across the vault, a repeater needs the
-     * whole business of adding and reordering repetitions, an address is
-     * several inputs that travel together, and the file types need an upload.
+     * input: a relation needs a search across the vault, an address is several
+     * inputs that travel together, and an avatar is the one file type nothing
+     * asks for, since a contact carries its own.
      */
     public function hasAnInput(): bool
     {
         return in_array($this, [
             self::Text, self::Textarea, self::Number, self::Boolean, self::Url,
             self::Email, self::Phone, self::Select, self::Multiselect, self::Radio,
-            self::Date, self::RecurringDate,
+            self::Date, self::RecurringDate, self::File, self::Image, self::Repeater,
         ], true);
+    }
+
+    /**
+     * Whether what the field holds is a file rather than something typed.
+     *
+     * It is asked separately from the column it writes to because a file behaves
+     * unlike every other value on the way in: it arrives as an upload rather
+     * than as text, it is validated against what the field says it accepts, and
+     * an empty box means the file is unchanged rather than gone. A browser
+     * cannot put a file back into an input it once left, so the rule the rest of
+     * the product follows would delete somebody's document as soon as they fixed
+     * a typo in its description.
+     */
+    public function holdsAFile(): bool
+    {
+        return in_array($this, [self::File, self::Image, self::Avatar], true);
     }
 
     /**

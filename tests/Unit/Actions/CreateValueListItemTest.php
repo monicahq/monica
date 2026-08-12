@@ -141,7 +141,7 @@ class CreateValueListItemTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListItemCreation
-                && $job->loggable->is($item)
+                && $job->isAbout($item)
                 && $job->parameters === ['label' => 'Beet farmer', 'name' => 'Contact categories'],
         );
     }

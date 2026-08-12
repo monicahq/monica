@@ -183,6 +183,24 @@ class Field extends Model
     }
 
     /**
+     * Which kinds of file the field takes, as the mime types themselves.
+     *
+     * The list is written on the field rather than decided by the product,
+     * because what counts as a document is a question about the template: one
+     * account's "Contract" takes a PDF and nothing else, another's "Scan" takes
+     * a photograph of one. An empty list is a field that has not said, and it
+     * takes whatever the account has room for.
+     *
+     * @return list<string>
+     */
+    public function acceptedMimeTypes(): array
+    {
+        $accepted = $this->options['accepted_mime_types'] ?? [];
+
+        return is_array($accepted) ? array_values(array_filter($accepted, 'is_string')) : [];
+    }
+
+    /**
      * Get the repeater this field sits inside, which is null when it sits
      * directly in the section.
      *

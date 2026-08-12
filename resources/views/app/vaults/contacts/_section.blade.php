@@ -55,6 +55,7 @@
     <x-form
       method="put"
       :action="$section['saveUrl']"
+      :upload="$section['holdsAFile']"
       :x-target="$section['regionId'].' contact-facts'"
       class="flex flex-col gap-5 bg-page p-4.5"
     >
@@ -72,6 +73,7 @@
           :field="$field['field']"
           :value="$field['rawValue']"
           :formatted="$field['value']"
+          :rows="$field['rows']"
           :error="$errors->get('fields.'.$field['id'])"
         />
       @empty
@@ -103,6 +105,7 @@
               :field="$field['field']"
               :value="$field['rawValue']"
               :formatted="$field['value']"
+              :rows="$field['rows']"
             />
           </dd>
         </div>

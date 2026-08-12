@@ -157,4 +157,21 @@ return [
 
     'orphaned_file_grace_period_in_days' => env('MONICA_ORPHANED_FILE_GRACE_PERIOD_IN_DAYS', 30),
 
+    /*
+    |--------------------------------------------------------------------------
+    | The largest single file
+    |--------------------------------------------------------------------------
+    |
+    | How many kilobytes one upload may weigh. The account's own storage ceiling
+    | is the real limit and is enforced where the file is written; this is here
+    | so a form can refuse an enormous file with a sentence under the control,
+    | rather than letting PHP truncate it and reporting nothing at all.
+    |
+    | It has to stay under `upload_max_filesize` and `post_max_size` in the php
+    | configuration, since neither of those can be argued with from here.
+    |
+    */
+
+    'max_file_size_in_kilobytes' => env('MONICA_MAX_FILE_SIZE_IN_KILOBYTES', 10240),
+
 ];

@@ -74,11 +74,31 @@ class FieldTypeEnumTest extends TestCase
     public function it_says_which_types_still_need_machinery_of_their_own(): void
     {
         $this->assertFalse(FieldTypeEnum::Relation->hasAnInput());
-        $this->assertFalse(FieldTypeEnum::Repeater->hasAnInput());
         $this->assertFalse(FieldTypeEnum::Address->hasAnInput());
-        $this->assertFalse(FieldTypeEnum::File->hasAnInput());
-        $this->assertFalse(FieldTypeEnum::Image->hasAnInput());
         $this->assertFalse(FieldTypeEnum::Avatar->hasAnInput());
+    }
+
+    #[Test]
+    public function it_offers_a_control_for_a_repetition_and_for_an_upload(): void
+    {
+        $this->assertTrue(FieldTypeEnum::Repeater->hasAnInput());
+        $this->assertTrue(FieldTypeEnum::File->hasAnInput());
+        $this->assertTrue(FieldTypeEnum::Image->hasAnInput());
+    }
+
+    /**
+     * An avatar is the one file type nothing asks for: a contact carries its own
+     * and is not asked for it twice.
+     */
+    #[Test]
+    public function it_says_which_types_hold_a_file(): void
+    {
+        $this->assertTrue(FieldTypeEnum::File->holdsAFile());
+        $this->assertTrue(FieldTypeEnum::Image->holdsAFile());
+        $this->assertTrue(FieldTypeEnum::Avatar->holdsAFile());
+
+        $this->assertFalse(FieldTypeEnum::Text->holdsAFile());
+        $this->assertFalse(FieldTypeEnum::Repeater->holdsAFile());
     }
 
     #[Test]

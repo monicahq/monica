@@ -73,7 +73,7 @@ class ArchiveEntityTest extends TestCase
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::EntityArchived
                 && $job->vault->id === $vault->id
-                && $job->loggable->is($entity)
+                && $job->isAbout($entity)
                 && $job->parameters === ['name' => 'Prince Family Paper'],
         );
     }

@@ -7,6 +7,9 @@ namespace App\Http\Controllers\App\Vaults;
 use App\Actions\SetFieldValues;
 use App\Exceptions\FieldIsRequired;
 use App\Exceptions\FieldValueIsNotUnique;
+use App\Exceptions\NotEnoughRepetitions;
+use App\Exceptions\NotEnoughStorageLeft;
+use App\Exceptions\TooManyRepetitions;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveFieldValuesRequest;
 use App\Models\Contact;
@@ -61,12 +64,14 @@ class ContactSectionController extends Controller
     /**
      * Write the block: everything it asks about, at once.
      *
-     * Two of the refusals reach here rather than the validator, because neither
-     * is a question about the input. Whether another record in the vault already
-     * holds a value the field says only one may hold is a question about the
-     * vault, and it is asked where the vault is in hand. Both send the block back
-     * open, since a refusal somebody cannot see the controls of is a refusal they
-     * cannot act on.
+     * The refusals that reach here rather than the validator are the ones that
+     * are not questions about the input. Whether another record in the vault
+     * already holds a value the field says only one may hold is a question about
+     * the vault; how many repetitions are left is a question about what the
+     * record already holds; and whether the account has room for the file is a
+     * question about the account. All of them send the block back open, since a
+     * refusal somebody cannot see the controls of is a refusal they cannot act
+     * on.
      */
     public function update(SaveFieldValuesRequest $request, Vault $vault, Contact $contact, TemplateVersionSection $templateVersionSection): RedirectResponse
     {
@@ -81,7 +86,7 @@ class ContactSectionController extends Controller
                 yearIsUnknown: $request->validated('year_is_unknown', []),
                 monthIsUnknown: $request->validated('month_is_unknown', []),
             )->execute();
-        } catch (FieldIsRequired|FieldValueIsNotUnique $e) {
+        } catch (FieldIsRequired|FieldValueIsNotUnique|NotEnoughRepetitions|NotEnoughStorageLeft|TooManyRepetitions $e) {
             return redirect()
                 ->route('contacts.sections.edit', ['vault' => $vault, 'contact' => $contact, 'templateVersionSection' => $templateVersionSection])
                 ->withInput()

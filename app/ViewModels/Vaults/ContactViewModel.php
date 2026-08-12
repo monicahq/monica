@@ -8,11 +8,13 @@ use App\Helpers\FieldValueFormatter;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\FieldValueRow;
 use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 
 /**
@@ -101,7 +103,7 @@ class ContactViewModel
             ->fieldValues()
             ->attached()
             ->whereNull('field_value_row_id')
-            ->with(['field', 'valueListItem'])
+            ->with(['field', 'valueListItem', 'file.vault'])
             ->get()
             ->keyBy('field_id'));
     }
@@ -319,6 +321,10 @@ class ContactViewModel
             'fields' => $fields,
             'isEditing' => $this->editingSection !== null && $this->editingSection->is($row),
             'isEditable' => collect($fields)->contains(fn (array $field): bool => $field['isEditable']),
+            /* Whether the form that edits this block has to be able to carry an
+               upload, which is a property of the block rather than of one
+               control: the encoding is set once, on the form. */
+            'holdsAFile' => collect($fields)->contains(fn (array $field): bool => $this->asksForAFile($field['field'])),
             'editUrl' => route('contacts.sections.edit', [
                 'vault' => $this->vault,
                 'contact' => $this->contact,
@@ -331,6 +337,19 @@ class ContactViewModel
             ]),
             'saveLine' => __('Saving writes :section only.', ['section' => mb_strtolower($this->nameOf($row))]),
         ];
+    }
+
+    /**
+     * Whether a field takes a file, itself or on each of its repetitions.
+     */
+    private function asksForAFile(Field $field): bool
+    {
+        if ($field->type->holdsAFile()) {
+            return true;
+        }
+
+        return $field->type->isRepeater()
+            && $field->children->contains(fn (Field $child): bool => $child->type->holdsAFile());
     }
 
     /**
@@ -499,7 +518,7 @@ class ContactViewModel
      * is there to break a long form up and carries nothing, so a page showing
      * what is known about somebody has nothing to say about it.
      *
-     * @return array<int, array{id: int, label: string, help: string|null, typeLabel: string, value: string|null, field: Field, rawValue: FieldValue|null, isEditable: bool}>
+     * @return array<int, array<string, mixed>>
      */
     private function fieldsIn(TemplateVersionSection $row): array
     {
@@ -513,9 +532,77 @@ class ContactViewModel
                 'field' => $field,
                 'rawValue' => $this->values()->get($field->id),
                 'isEditable' => $field->type->hasAnInput(),
+                'rows' => $this->repetitionsOf($field),
             ])
             ->values()
             ->all();
+    }
+
+    /**
+     * Every repetition on the record, grouped by the repeater it answers, read
+     * once for the whole screen for the same reason the plain values are: a page
+     * holding three repeaters of four questions each would otherwise ask the
+     * database about every box on it.
+     *
+     * @return Collection<int|string, EloquentCollection<int, FieldValueRow>>
+     */
+    private function repetitions(): Collection
+    {
+        return once(fn (): Collection => $this->contact
+            ->fieldValueRows()
+            ->with(['values' => fn ($query) => $query->attached()->with(['field', 'valueListItem', 'file.vault'])])
+            ->orderBy('position')
+            ->get()
+            ->groupBy('field_id')
+            ->toBase());
+    }
+
+    /**
+     * What one repeater holds, in the order somebody put it in: a list of
+     * repetitions, each carrying the answers to the questions the repeater asks.
+     *
+     * A field that is not a repeater holds no repetitions rather than an empty
+     * list of them, and both read as the same empty array here, because what the
+     * panel needs to know is only whether there is anything to draw.
+     *
+     * @return array<int, array{id: int, fields: array<int, array<string, mixed>>}>
+     */
+    private function repetitionsOf(Field $field): array
+    {
+        if (! $field->type->isRepeater()) {
+            return [];
+        }
+
+        $children = $field->children->filter(fn (Field $child): bool => $child->type->storesValue());
+
+        return $this->repetitions()
+            ->get($field->id, collect())
+            ->map(fn (FieldValueRow $row): array => [
+                'id' => $row->id,
+                'fields' => $children
+                    ->map(fn (Field $child): array => $this->answerOn($row, $child))
+                    ->values()
+                    ->all(),
+            ])
+            ->values()
+            ->all();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function answerOn(FieldValueRow $row, Field $child): array
+    {
+        $value = $row->values->firstWhere('field_id', $child->id);
+
+        return [
+            'id' => $child->id,
+            'label' => $child->label,
+            'help' => $child->help_text,
+            'field' => $child,
+            'rawValue' => $value,
+            'value' => $value === null ? null : $this->formatter()->format($value),
+        ];
     }
 
     /**

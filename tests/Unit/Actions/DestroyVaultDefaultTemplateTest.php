@@ -84,7 +84,7 @@ class DestroyVaultDefaultTemplateTest extends TestCase
                 && $job->account->id === $user->account_id
                 && $job->user->id === $user->id
                 && $job->vault->id === $default->vault_id
-                && $job->loggable->is($default)
+                && $job->isAbout($default)
                 && $job->parameters === ['name' => 'Animal'],
         );
     }

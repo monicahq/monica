@@ -201,7 +201,7 @@ class SetVaultDefaultTemplateTest extends TestCase
                 && $job->account->id === $user->account_id
                 && $job->user->id === $user->id
                 && $job->vault->id === $vault->id
-                && $job->loggable->is($default)
+                && $job->isAbout($default)
                 && $job->parameters === ['name' => 'Basic contact'],
         );
     }

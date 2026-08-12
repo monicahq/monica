@@ -355,7 +355,7 @@ class CreateDefaultTemplateTest extends TestCase
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::DefaultTemplateSeeded
                 && $job->account->id === $user->account_id
                 && $job->user->id === $user->id
-                && $job->loggable->is(Template::query()->sole()),
+                && $job->isAbout(Template::query()->sole()),
         );
         Queue::assertPushed(LogUserAction::class, 1);
     }

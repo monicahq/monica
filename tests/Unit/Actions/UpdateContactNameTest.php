@@ -174,7 +174,7 @@ class UpdateContactNameTest extends TestCase
                 && $job->account->id === $user->account_id
                 && $job->user->id === $user->id
                 && $job->vault->id === $vault->id
-                && $job->loggable->is($contact)
+                && $job->isAbout($contact)
                 && $job->parameters === ['name' => 'Michael Scarn']
                 && $job->changes === ['last_name' => ['before' => 'Scott', 'after' => 'Scarn']],
         );

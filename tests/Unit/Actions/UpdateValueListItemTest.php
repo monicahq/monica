@@ -124,7 +124,7 @@ class UpdateValueListItemTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListItemUpdate
-                && $job->loggable->is($item)
+                && $job->isAbout($item)
                 && $job->parameters === ['label' => 'Cell', 'name' => 'Phone labels']
                 && $job->changes === [
                     'label' => ['before' => 'Mobile', 'after' => 'Cell'],

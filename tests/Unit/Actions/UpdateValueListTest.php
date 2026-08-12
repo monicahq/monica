@@ -106,7 +106,7 @@ class UpdateValueListTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListUpdate
-                && $job->loggable->is($list)
+                && $job->isAbout($list)
                 && $job->parameters === ['name' => 'Dundie award categories']
                 && $job->changes === [
                     'name' => ['before' => 'Dundie awards', 'after' => 'Dundie award categories'],

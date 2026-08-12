@@ -180,7 +180,7 @@ class CreateVaultTest extends TestCase
                 && $job->account->id === $user->account_id
                 && $job->user->id === $user->id
                 && $job->vault->id === $vault->id
-                && $job->loggable->is($vault)
+                && $job->isAbout($vault)
                 && $job->parameters === ['name' => 'Dunder Mifflin'],
         );
     }

@@ -21,11 +21,13 @@
   @var \App\Models\Field $field
   @var \App\Models\FieldValue|null $value
   @var string|null $formatted
+  @var array<int, array{id: int, fields: array<int, array<string, mixed>>}> $rows
 --}}
 @props([
   'field',
   'value' => null,
   'formatted' => null,
+  'rows' => [],
 ])
 
 @php
@@ -33,12 +35,56 @@
 
   $type = $field->type;
 
+  /* A file is read through the app rather than from a public address, so the
+     link is built here from the vault the file was kept in. */
+  $held = $value?->file;
+  $fileUrl = $held === null || $held->vault === null
+      ? null
+      : route('files.show', ['vault' => $held->vault, 'file' => $held]);
+
   $chosen = $type === FieldTypeEnum::Multiselect && $field->valueList
       ? $field->valueList->items()->whereIn('id', $value?->value_list_item_ids ?? [])->orderBy('position')->get()
       : collect();
 @endphp
 
 @switch(true)
+  @case($type->isRepeater() && $rows !== [])
+    {{-- Each repetition reads as what it holds, one under the other. A count
+         would be shorter and would answer a question nobody has: somebody
+         looking at a record wants the documents, not how many there are. --}}
+    <div class="flex flex-col gap-2.5">
+      @foreach ($rows as $row)
+        <div class="flex flex-col gap-1.5 rounded-md border border-hairline bg-sand px-3.5 py-2.5">
+          @foreach ($row['fields'] as $answer)
+            <div class="flex flex-col gap-0.5">
+              <span class="text-xs text-muted">{{ $answer['label'] }}</span>
+
+              <x-field-value
+                :field="$answer['field']"
+                :value="$answer['rawValue']"
+                :formatted="$answer['value']"
+              />
+            </div>
+          @endforeach
+        </div>
+      @endforeach
+    </div>
+    @break
+
+  @case($type === FieldTypeEnum::Image && $fileUrl !== null)
+    <a href="{{ $fileUrl }}" target="_blank" rel="noopener" class="inline-block w-fit">
+      <img
+        src="{{ $fileUrl }}"
+        alt="{{ $held->original_name }}"
+        class="h-24 w-auto rounded-md border border-hairline object-cover"
+      />
+    </a>
+    @break
+
+  @case($type->holdsAFile() && $fileUrl !== null)
+    <x-link :href="$fileUrl" target="_blank" rel="noopener">{{ $held->original_name }}</x-link>
+    @break
+
   @case($type === FieldTypeEnum::Multiselect && $chosen->isNotEmpty())
     <div class="flex flex-wrap gap-1.5">
       @foreach ($chosen as $item)

@@ -87,6 +87,58 @@ class LogUserActionTest extends TestCase
         $this->assertEquals(['last_name' => ['before' => 'Levinson', 'after' => 'Levinson-Gould']], $log->changes);
     }
 
+    /**
+     * Half of what is worth writing down is a deletion, and by the time the
+     * queue reaches the job the row it names is gone. A job that went looking
+     * for it on the way out of the queue would lose the record of every deletion
+     * the product performs.
+     */
+    #[Test]
+    public function it_still_writes_the_entry_when_what_it_is_about_has_gone(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $job = new LogUserAction(
+            account: $user->account,
+            user: $user,
+            action: UserActionEnum::VaultDeletion,
+            loggable: $vault,
+        );
+
+        $type = $vault->getMorphClass();
+        $id = $vault->id;
+
+        $vault->forceDelete();
+
+        /* Round trip it the way a queue does, which is what used to go looking
+           for the row and fail. */
+        unserialize(serialize($job))->handle();
+
+        $log = Log::query()->latest()->first();
+
+        $this->assertSame($type, $log->loggable_type);
+        $this->assertEquals($id, $log->loggable_id);
+        $this->assertNull($log->loggable);
+    }
+
+    #[Test]
+    public function it_says_whether_it_is_about_a_given_row(): void
+    {
+        $user = User::factory()->create();
+        $somebody_else = User::factory()->create();
+
+        $job = new LogUserAction(
+            account: $user->account,
+            user: $user,
+            action: UserActionEnum::UserProfileUpdate,
+            loggable: $user,
+        );
+
+        $this->assertTrue($job->isAbout($user));
+        $this->assertFalse($job->isAbout($somebody_else));
+    }
+
     #[Test]
     public function it_logs_the_vault_the_action_touched(): void
     {

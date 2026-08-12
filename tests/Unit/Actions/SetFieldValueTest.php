@@ -734,7 +734,7 @@ class SetFieldValueTest extends TestCase
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FieldValueSet
                 && $job->vault->id === $contact->vault_id
-                && $job->loggable->is($value)
+                && $job->isAbout($value)
                 && $job->parameters === ['label' => 'City', 'name' => 'Pam Beesly'],
         );
     }

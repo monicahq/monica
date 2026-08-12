@@ -11,6 +11,8 @@ use App\Exceptions\FieldIsRequired;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\FieldValueRow;
+use App\Models\File;
 use App\Models\SectionVersion;
 use App\Models\TemplateVersion;
 use App\Models\TemplateVersionSection;
@@ -20,7 +22,9 @@ use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -312,6 +316,226 @@ class SetFieldValuesTest extends TestCase
         $this->assertDatabaseHas('field_values', ['field_id' => $city->id, 'value_string' => 'Scranton']);
     }
 
+    #[Test]
+    public function it_adds_the_repetitions_somebody_filled_in(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $documents = $this->fieldOn($contact, ['key' => 'documents', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $description = $this->childOf($documents, ['key' => 'description']);
+
+        $written = new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($documents),
+            values: [$documents->id => [
+                ['values' => [$description->id => 'The lease']],
+                ['values' => [$description->id => 'The insurance']],
+            ]],
+        )->execute();
+
+        $this->assertSame(2, $written);
+        $this->assertSame(2, FieldValueRow::query()->count());
+        $this->assertDatabaseHas('field_values', ['field_id' => $description->id, 'value_string' => 'The lease']);
+        $this->assertDatabaseHas('field_values', ['field_id' => $description->id, 'value_string' => 'The insurance']);
+    }
+
+    /**
+     * Somebody who adds a repetition, thinks better of it and saves has added
+     * nothing. Writing the empty row anyway would leave one behind every time
+     * the block was opened.
+     */
+    #[Test]
+    public function it_adds_no_repetition_for_one_nobody_filled_in(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $documents = $this->fieldOn($contact, ['key' => 'documents', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $description = $this->childOf($documents, ['key' => 'description']);
+
+        $written = new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($documents),
+            values: [$documents->id => [['values' => [$description->id => '']]]],
+        )->execute();
+
+        $this->assertSame(0, $written);
+        $this->assertSame(0, FieldValueRow::query()->count());
+    }
+
+    #[Test]
+    public function it_rewrites_a_repetition_the_record_already_holds(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $documents = $this->fieldOn($contact, ['key' => 'documents', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $description = $this->childOf($documents, ['key' => 'description']);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($documents),
+            values: [$documents->id => [['values' => [$description->id => 'The lease']]]],
+        )->execute();
+
+        $row = FieldValueRow::query()->sole();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($documents),
+            values: [$documents->id => [['id' => $row->id, 'values' => [$description->id => 'The lease, signed']]]],
+        )->execute();
+
+        $this->assertSame(1, FieldValueRow::query()->count());
+        $this->assertDatabaseHas('field_values', ['field_id' => $description->id, 'value_string' => 'The lease, signed']);
+    }
+
+    /**
+     * What arrives for a repeater is the whole of it, so a repetition the record
+     * holds and the save was not told about is one somebody took away.
+     */
+    #[Test]
+    public function it_takes_away_a_repetition_that_did_not_come_back(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $documents = $this->fieldOn($contact, ['key' => 'documents', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $description = $this->childOf($documents, ['key' => 'description']);
+        $section = $this->sectionOf($documents);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$documents->id => [
+                ['values' => [$description->id => 'The lease']],
+                ['values' => [$description->id => 'The insurance']],
+            ]],
+        )->execute();
+
+        $kept = FieldValueRow::query()->orderBy('position')->first();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$documents->id => [['id' => $kept->id, 'values' => [$description->id => 'The lease']]]],
+        )->execute();
+
+        $this->assertSame(1, FieldValueRow::query()->count());
+        $this->assertDatabaseMissing('field_values', ['value_string' => 'The insurance']);
+    }
+
+    #[Test]
+    public function it_writes_the_file_a_repetition_carries(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $documents = $this->fieldOn($contact, ['key' => 'documents', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $file = $this->childOf($documents, ['key' => 'file', 'type' => FieldTypeEnum::File]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($documents),
+            values: [$documents->id => [
+                ['values' => [$file->id => UploadedFile::fake()->create('lease.pdf', 4, 'application/pdf')]],
+            ]],
+        )->execute();
+
+        $stored = File::query()->sole();
+
+        $this->assertSame('lease.pdf', $stored->original_name);
+        $this->assertSame(1, $stored->reference_count);
+        $this->assertDatabaseHas('field_values', ['field_id' => $file->id, 'value_file_id' => $stored->id]);
+    }
+
+    /**
+     * No browser hands a file back to a page, so a file box comes back empty
+     * every time the block is drawn. Clearing on that would take somebody's
+     * document away the moment they corrected the description beside it.
+     */
+    #[Test]
+    public function it_leaves_a_file_alone_when_nothing_was_uploaded_over_it(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $documents = $this->fieldOn($contact, ['key' => 'documents', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $file = $this->childOf($documents, ['key' => 'file', 'type' => FieldTypeEnum::File]);
+        $description = $this->childOf($documents, ['key' => 'description']);
+        $section = $this->sectionOf($documents);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$documents->id => [
+                ['values' => [
+                    $file->id => UploadedFile::fake()->create('lease.pdf', 4, 'application/pdf'),
+                    $description->id => 'The lease',
+                ]],
+            ]],
+        )->execute();
+
+        $row = FieldValueRow::query()->sole();
+        $stored = File::query()->sole();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$documents->id => [
+                ['id' => $row->id, 'values' => [$description->id => 'The lease, signed']],
+            ]],
+        )->execute();
+
+        $this->assertDatabaseHas('field_values', ['field_id' => $file->id, 'value_file_id' => $stored->id]);
+        $this->assertDatabaseHas('field_values', ['field_id' => $description->id, 'value_string' => 'The lease, signed']);
+        $this->assertSame(1, $stored->refresh()->reference_count);
+    }
+
+    #[Test]
+    public function it_refuses_a_repeater_left_empty_when_the_template_asks_for_one(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $documents = $this->fieldOn($contact, [
+            'key' => 'documents',
+            'type' => FieldTypeEnum::Repeater,
+            'is_repeatable' => true,
+            'is_required' => true,
+            'label' => 'Documents',
+        ]);
+        $description = $this->childOf($documents, ['key' => 'description']);
+
+        $this->expectException(FieldIsRequired::class);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($documents),
+            values: [$documents->id => [['values' => [$description->id => '']]]],
+        )->execute();
+    }
+
     private function contactOf(User $user): Contact
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -325,6 +549,33 @@ class SetFieldValuesTest extends TestCase
             'first_name' => 'Pam',
             'last_name' => 'Beesly',
         ]);
+    }
+
+    /**
+     * Put a field inside a repeater, which is where a repetition's questions
+     * live. The section version has to be drafted again to take it, the way the
+     * builder does it.
+     *
+     * @param  array<string, mixed>  $attributes
+     */
+    private function childOf(Field $repeater, array $attributes = []): Field
+    {
+        $sectionVersion = $repeater->sectionVersion()->first();
+        $sectionVersion->status = VersionStatusEnum::Draft;
+        $sectionVersion->save();
+
+        $child = Field::factory()->create(array_merge([
+            'account_id' => $repeater->account_id,
+            'section_version_id' => $repeater->section_version_id,
+            'parent_field_id' => $repeater->id,
+        ], $attributes));
+
+        $sectionVersion->status = VersionStatusEnum::Published;
+        $sectionVersion->save();
+
+        $repeater->unsetRelation('children');
+
+        return $child;
     }
 
     /**

@@ -52,13 +52,26 @@ class SaveFieldValuesRequest extends FormRequest
      * The label the template gives a field, so an error reads "City is
      * required" rather than naming the number the input is keyed by.
      *
+     * A field inside a repeater is named the same way, since the number in the
+     * middle of its key is the repetition rather than anything a reader knows
+     * about: "the file has to be a pdf" is the whole of what went wrong, and the
+     * control it is said under is the one that says which repetition.
+     *
      * @return array<string, string>
      */
     public function attributes(): array
     {
-        return $this->fieldsInTheSection()
-            ->mapWithKeys(fn (Field $field): array => ["fields.{$field->id}" => mb_strtolower($field->label)])
-            ->all();
+        $names = [];
+
+        foreach ($this->fieldsInTheSection() as $field) {
+            $names["fields.{$field->id}"] = mb_strtolower($field->label);
+
+            foreach ($field->children as $child) {
+                $names["fields.{$field->id}.*.values.{$child->id}"] = mb_strtolower($child->label);
+            }
+        }
+
+        return $names;
     }
 
     /**

@@ -10,6 +10,8 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\FieldValueRow;
+use App\Models\File;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\Template;
@@ -20,7 +22,9 @@ use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -309,6 +313,236 @@ class ContactSectionControllerTest extends TestCase
                 ['fields' => []],
             )
             ->assertNotFound();
+    }
+
+    #[Test]
+    public function it_offers_a_way_to_add_a_repetition_and_to_take_one_away(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $version = $this->versionWithSections($user, 'Information', ['Documents' => 'Document']);
+        $michael->update(['template_version_id' => $version->id]);
+
+        $documents = Field::query()->where('label', 'Document')->firstOrFail();
+        $documents->sectionVersion->update(['status' => VersionStatusEnum::Draft]);
+        $documents->update(['type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $description = $this->childOf($documents, 'Description');
+
+        $this->actingAs($user)
+            ->get(route('contacts.sections.edit', [
+                'vault' => $vault,
+                'contact' => $michael,
+                'templateVersionSection' => $this->sectionNamed($version, 'Documents'),
+            ]))
+            ->assertStatus(200)
+            ->assertSee('Add another')
+            ->assertSee('fields['.$documents->id.'][0][values]['.$description->id.']', false);
+    }
+
+    #[Test]
+    public function it_writes_the_upload_a_repetition_carries(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$documents, $file, $description] = $this->documentsOn($user, $michael);
+        $section = TemplateVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]),
+                ['fields' => [$documents->id => [
+                    ['values' => [
+                        $file->id => UploadedFile::fake()->create('lease.pdf', 8, 'application/pdf'),
+                        $description->id => 'The lease',
+                    ]],
+                ]]],
+            )
+            ->assertSessionHasNoErrors()
+            ->assertSessionHas('status');
+
+        $stored = File::query()->sole();
+
+        $this->assertSame('lease.pdf', $stored->original_name);
+        $this->assertSame($vault->id, $stored->vault_id);
+        $this->assertDatabaseHas('field_values', ['field_id' => $file->id, 'value_file_id' => $stored->id]);
+        $this->assertDatabaseHas('field_values', ['field_id' => $description->id, 'value_string' => 'The lease']);
+    }
+
+    /**
+     * The queue is deliberately real here. Removing a repetition writes a
+     * journal entry about a row that no longer exists, and faking the queue is
+     * exactly what hid that from every test in the suite.
+     */
+    #[Test]
+    public function it_takes_away_a_repetition_somebody_removed(): void
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$documents, $file, $description] = $this->documentsOn($user, $michael);
+        $section = TemplateVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
+        $url = route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]);
+
+        $this->actingAs($user)->put($url, ['fields' => [$documents->id => [
+            ['values' => [
+                $file->id => UploadedFile::fake()->create('lease.pdf', 8, 'application/pdf'),
+                $description->id => 'The lease',
+            ]],
+        ]]])->assertSessionHasNoErrors();
+
+        $stored = File::query()->sole();
+
+        /* A removed repetition arrives as an absence: its controls were
+           disabled, so nothing about it is sent. */
+        $this->actingAs($user)->put($url, [])
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'information']));
+
+        $this->assertSame(0, FieldValueRow::query()->count());
+        $this->assertDatabaseMissing('field_values', ['field_id' => $description->id]);
+
+        /* The file is let go of rather than deleted, so restoring an older
+           version of the record still finds it on the disk. */
+        $this->assertSame(0, $stored->refresh()->reference_count);
+        $this->assertNotNull($stored->orphaned_at);
+    }
+
+    #[Test]
+    public function it_refuses_a_file_of_a_kind_the_field_does_not_take(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$documents, $file] = $this->documentsOn($user, $michael);
+        $section = TemplateVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]),
+                ['fields' => [$documents->id => [
+                    ['values' => [$file->id => UploadedFile::fake()->create('holiday.gif', 4, 'image/gif')]],
+                ]]],
+            )
+            ->assertRedirect(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]))
+            ->assertSessionHasErrors('fields.'.$documents->id.'.0.values.'.$file->id);
+
+        $this->assertSame(0, File::query()->count());
+    }
+
+    /**
+     * The repetition is what the read half draws, and what it draws is the
+     * document itself rather than a count of them.
+     */
+    #[Test]
+    public function it_reads_a_repetition_back_as_what_it_holds(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$documents, $file, $description] = $this->documentsOn($user, $michael);
+        $section = TemplateVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
+
+        $this->actingAs($user)->put(
+            route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]),
+            ['fields' => [$documents->id => [
+                ['values' => [
+                    $file->id => UploadedFile::fake()->create('lease.pdf', 8, 'application/pdf'),
+                    $description->id => 'The lease',
+                ]],
+            ]]],
+        );
+
+        $stored = File::query()->sole();
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'information']))
+            ->assertStatus(200)
+            ->assertSee('lease.pdf')
+            ->assertSee('The lease')
+            ->assertSee(route('files.show', ['vault' => $vault, 'file' => $stored]), false);
+    }
+
+    /**
+     * A document with a file in it means the form has to be able to carry one.
+     * Without the encoding the upload arrives as the name of the file and
+     * nothing else, and nothing says why.
+     */
+    #[Test]
+    public function a_block_that_takes_a_file_says_so_on_its_form(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$documents] = $this->documentsOn($user, $michael);
+        $section = TemplateVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
+
+        $this->actingAs($user)
+            ->get(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]))
+            ->assertStatus(200)
+            ->assertSee('enctype="multipart/form-data"', false);
+    }
+
+    /**
+     * A repeater carrying a file and a line of text, which is the shape the
+     * shipped template gives Documents and Photos.
+     *
+     * @return array{0: Field, 1: Field, 2: Field}
+     */
+    private function documentsOn(User $user, Contact $contact): array
+    {
+        $version = $this->versionWithSections($user, 'Information', ['Documents' => 'Document']);
+        $contact->update(['template_version_id' => $version->id]);
+
+        $documents = Field::query()->where('label', 'Document')->firstOrFail();
+        $documents->sectionVersion->update(['status' => VersionStatusEnum::Draft]);
+        $documents->update(['type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+
+        $file = $this->childOf($documents, 'File', [
+            'type' => FieldTypeEnum::File,
+            'options' => ['accepted_mime_types' => ['application/pdf']],
+        ]);
+
+        return [$documents, $file, $this->childOf($documents, 'Description')];
+    }
+
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
+    private function childOf(Field $repeater, string $label, array $attributes = []): Field
+    {
+        $sectionVersion = $repeater->sectionVersion()->first();
+        $sectionVersion->update(['status' => VersionStatusEnum::Draft]);
+
+        $child = Field::factory()->create([
+            'account_id' => $repeater->account_id,
+            'section_version_id' => $repeater->section_version_id,
+            'parent_field_id' => $repeater->id,
+            'label' => $label,
+            ...$attributes,
+        ]);
+
+        $sectionVersion->update(['status' => VersionStatusEnum::Published]);
+
+        return $child;
     }
 
     /**

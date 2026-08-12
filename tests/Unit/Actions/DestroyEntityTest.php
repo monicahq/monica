@@ -100,7 +100,7 @@ class DestroyEntityTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::EntityDeletion
-                && $job->loggable->is($entity)
+                && $job->isAbout($entity)
                 && $job->parameters === ['name' => 'Dunder Mifflin'],
         );
     }

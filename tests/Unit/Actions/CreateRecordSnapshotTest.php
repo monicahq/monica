@@ -248,7 +248,7 @@ class CreateRecordSnapshotTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::RecordSnapshotTaken
-                && $job->loggable->is($snapshot)
+                && $job->isAbout($snapshot)
                 && $job->parameters === ['name' => 'Pam Beesly', 'reason' => 'manual'],
         );
     }

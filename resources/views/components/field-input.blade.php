@@ -23,23 +23,37 @@
   the shape of the mark says how many may be picked: round for one of a list,
   square for as many as apply. See <x-option-row>.
 
+  A control names itself after the field it answers, and that is all it needs
+  until the field is asked more than once. Inside a repetition the name has to
+  say which repetition as well, so `id`, `name` and `yearName` can be given from
+  outside; nothing but <x-field-repetitions> does.
+
   @var \App\Models\Field $field
   @var \App\Models\FieldValue|null $value
   @var string|null $formatted
   @var string|array<int, string>|null $error
+  @var array<int, array{id: int, fields: array<int, array<string, mixed>>}> $rows
+  @var string|null $id
+  @var string|null $name
+  @var string|null $yearName
 --}}
 @props([
   'field',
   'value' => null,
   'formatted' => null,
   'error' => null,
+  'rows' => [],
+  'id' => null,
+  'name' => null,
+  'yearName' => null,
 ])
 
 @php
   use App\Enums\FieldTypeEnum;
 
-  $name = "fields[{$field->id}]";
-  $id = "field-{$field->id}";
+  $name ??= "fields[{$field->id}]";
+  $id ??= "field-{$field->id}";
+  $yearName ??= "year_is_unknown[{$field->id}]";
   $type = $field->type;
 
   /* A field that has left the structure keeps its value and stops being
@@ -71,6 +85,33 @@
 @endphp
 
 @switch(true)
+  @case($type->isRepeater())
+    <x-field-repetitions :field="$field" :rows="$rows" :error="$error" />
+    @break
+
+  @case($type->holdsAFile())
+    {{-- An upload, and the promise that leaving the box alone leaves the file
+         alone. It has to be said out loud: every other control on the page comes
+         back holding what it holds, and this is the one that cannot, so without
+         a sentence an empty box reads as an empty field. --}}
+    <div class="flex flex-col gap-1.5">
+      <x-file-input
+        :id="$id"
+        :name="$name"
+        :label="$field->label"
+        :accept="$field->acceptedMimeTypes() === [] ? null : implode(',', $field->acceptedMimeTypes())"
+        :help="$field->help_text"
+        :error="$error"
+      />
+
+      @if ($value?->file !== null)
+        <p class="text-xs text-pretty text-muted">
+          {{ __('Holding :name. Choosing another replaces it.', ['name' => $value->file->original_name]) }}
+        </p>
+      @endif
+    </div>
+    @break
+
   @case($type === FieldTypeEnum::Textarea)
     <x-textarea
       :id="$id"
@@ -220,7 +261,7 @@
 
       <x-option-row
         :id="$id.'-year-unknown'"
-        :name="'year_is_unknown['.$field->id.']'"
+        :name="$yearName"
         value="1"
         :checked="(bool) $value?->year_is_unknown"
         :hint="__('The day and the month are enough for a reminder.')"

@@ -38,6 +38,7 @@ use App\Http\Controllers\App\Settings\SettingsController;
 use App\Http\Controllers\App\Vaults\ContactController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
 use App\Http\Controllers\App\Vaults\ContactSectionController;
+use App\Http\Controllers\App\Vaults\FileController;
 use App\Http\Controllers\App\Vaults\SetAsideValueController;
 use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
@@ -57,6 +58,13 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     Route::post('vaults', [VaultController::class, 'create'])->name('vaults.create');
     Route::get('vaults/{vault}', [VaultController::class, 'show'])->name('vaults.show');
     Route::delete('vaults/{vault}', [VaultController::class, 'destroy'])->name('vaults.destroy');
+
+    // What was uploaded onto a record, handed back through the app rather than
+    // from a public URL: a document about somebody is as private as the record
+    // it sits on.
+    Route::get('vaults/{vault}/files/{file}', [FileController::class, 'show'])
+        ->whereUuid('file')
+        ->name('files.show');
 
     Route::get('vaults/{vault}/contacts/new', [ContactController::class, 'new'])->name('contacts.new');
     Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');

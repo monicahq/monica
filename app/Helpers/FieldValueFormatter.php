@@ -45,6 +45,8 @@ class FieldValueFormatter
             FieldTypeEnum::RecurringDate => $this->recurringDate($value),
             FieldTypeEnum::Select, FieldTypeEnum::Radio => $value->valueListItem?->label,
             FieldTypeEnum::Multiselect => $this->choices($value),
+            FieldTypeEnum::File, FieldTypeEnum::Image,
+            FieldTypeEnum::Avatar => $this->blankToNull($value->file?->original_name),
             default => null,
         };
     }

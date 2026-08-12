@@ -125,7 +125,7 @@ class UpdateVaultTest extends TestCase
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultUpdate
                 && $job->account->id === $user->account_id
                 && $job->vault->id === $vault->id
-                && $job->loggable->is($vault)
+                && $job->isAbout($vault)
                 && $job->parameters === ['name' => 'Schrute Farms']
                 && $job->changes === [
                     'name' => ['before' => 'Dunder Mifflin', 'after' => 'Schrute Farms'],

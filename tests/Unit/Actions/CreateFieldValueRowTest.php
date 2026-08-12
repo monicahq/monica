@@ -164,7 +164,7 @@ class CreateFieldValueRowTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FieldValueRowCreation
-                && $job->loggable->is($row)
+                && $job->isAbout($row)
                 && $job->parameters === ['label' => 'Phone numbers', 'name' => 'Pam Beesly'],
         );
     }

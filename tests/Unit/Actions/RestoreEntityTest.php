@@ -97,7 +97,7 @@ class RestoreEntityTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::EntityRestoration
-                && $job->loggable->is($entity)
+                && $job->isAbout($entity)
                 && $job->parameters === ['name' => 'Dunder Mifflin'],
         );
     }

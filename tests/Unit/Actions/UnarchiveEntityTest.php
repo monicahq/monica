@@ -72,7 +72,7 @@ class UnarchiveEntityTest extends TestCase
             queue: 'low',
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::EntityUnarchived
-                && $job->loggable->is($entity)
+                && $job->isAbout($entity)
                 && $job->parameters === ['name' => 'Prince Family Paper'],
         );
     }

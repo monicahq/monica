@@ -7,8 +7,10 @@ namespace Tests\Feature\Views\Components;
 use App\Enums\FieldTypeEnum;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\File;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
+use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\TestView;
 use PHPUnit\Framework\Attributes\Test;
@@ -82,6 +84,58 @@ class FieldValueTest extends TestCase
             ->assertSee('bg-sand', escape: false);
     }
 
+    #[Test]
+    public function a_document_reads_as_a_link_to_itself(): void
+    {
+        $file = $this->file('lease.pdf', 'application/pdf');
+
+        $value = new FieldValue;
+        $value->setRelation('file', $file);
+
+        $this->render(new Field(['type' => FieldTypeEnum::File, 'label' => 'Document']), $value, 'lease.pdf')
+            ->assertSee('lease.pdf')
+            ->assertSee(route('files.show', ['vault' => $file->vault, 'file' => $file]), escape: false);
+    }
+
+    /**
+     * A photograph reads as the photograph. A file name is what a document has
+     * to be read as, and what an image never should be.
+     */
+    #[Test]
+    public function a_photograph_reads_as_the_photograph(): void
+    {
+        $file = $this->file('amy.jpg', 'image/jpeg');
+
+        $value = new FieldValue;
+        $value->setRelation('file', $file);
+
+        $this->render(new Field(['type' => FieldTypeEnum::Image, 'label' => 'Photo']), $value, 'amy.jpg')
+            ->assertSee('<img', escape: false)
+            ->assertSee(route('files.show', ['vault' => $file->vault, 'file' => $file]), escape: false);
+    }
+
+    #[Test]
+    public function a_repeating_field_reads_as_each_of_its_repetitions(): void
+    {
+        $description = new Field(['type' => FieldTypeEnum::Text, 'label' => 'Description']);
+
+        $rows = [
+            ['id' => 1, 'fields' => [
+                ['id' => 9, 'label' => 'Description', 'field' => $description, 'rawValue' => null, 'value' => 'The lease'],
+            ]],
+            ['id' => 2, 'fields' => [
+                ['id' => 9, 'label' => 'Description', 'field' => $description, 'rawValue' => null, 'value' => 'The insurance'],
+            ]],
+        ];
+
+        $this->blade(
+            '<x-field-value :field="$field" :rows="$rows" />',
+            ['field' => new Field(['type' => FieldTypeEnum::Repeater, 'label' => 'Document']), 'rows' => $rows],
+        )
+            ->assertSee('The lease')
+            ->assertSee('The insurance');
+    }
+
     /**
      * A gap the product left is not a gap the reader left, and "not recorded"
      * would tell them it was.
@@ -91,6 +145,18 @@ class FieldValueTest extends TestCase
     {
         $this->render(new Field(['type' => FieldTypeEnum::Relation, 'label' => 'Introduced by']), null, null)
             ->assertSee('This kind of field cannot be filled in here yet.');
+    }
+
+    private function file(string $name, string $mime): File
+    {
+        $vault = Vault::factory()->create();
+
+        return File::factory()->create([
+            'account_id' => $vault->account_id,
+            'vault_id' => $vault->id,
+            'original_name' => $name,
+            'mime_type' => $mime,
+        ]);
     }
 
     private function render(Field $field, ?FieldValue $value, ?string $formatted): TestView
