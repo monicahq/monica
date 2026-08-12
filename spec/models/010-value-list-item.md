@@ -44,7 +44,7 @@ deleted_at                  datetime
 ## Not done yet
 
 - `usage_count` is now kept in step by [FieldValue](022-field-value.md): `SetFieldValue` hands the count from the item somebody was on to the one they moved to, `DestroyFieldValue` gives it back, and restoring a snapshot moves both ways at once. `DestroyValueListItem` refuses an item the count says is used, and the count is finally true rather than merely written.
-- Disabling hides an item from every picker, once there is a picker. `is_active` is set and read by nothing else yet.
+- Disabling hides an item from every picker there is, and there is one: a choice field on a record offers the active items and `FieldValueRules` accepts only those, so the form and its validation cannot disagree. A record already holding a disabled item goes on reading it, which is the half of the rule (3.3) that matters most and the one that is hardest to notice is working.
 - Merging one item into another. Untouched, and still an open question rather than a task.
 
 ## Open questions

@@ -41,8 +41,8 @@ updated_at                  datetime
 
 ## Not done yet
 
-- **Only the contact default is read by anything.** `CreateContact` starts a contact on it when the caller names no version. The entity default is stored and managed and nothing reads it, since [Entity](020-entity.md) does not exist.
-- **No screen and no API.** Setting the default is an action, and the screen that offers the choice arrives with the vault settings.
+- **Both defaults are read and only the contact one is ever written.** `CreateContact` and `CreateEntity` each start a record on the default of their kind when the caller names no version. Nothing writes the entity default: the seeding of an account sets the contact one on every vault, `SetVaultDefaultTemplate` is reached only from the vault screens and those offer contacts alone, so `CreateEntity` refuses unless the caller names the version itself. That is the right refusal and it is currently the only path.
+- **No API.** The choice is offered twice: on the form that opens a vault, and on the settings of one, where every published version of every contact template the account has is listed under the template it belongs to. It is a version rather than a template on both, since that is what the column holds. Nothing is exposed over the API yet.
 - **A vault whose default template version is retired keeps pointing at it.** Retiring a version stops it being offered for anything new, and nothing walks the defaults to find the ones that just went stale.
 
 ## Decisions taken while building it

@@ -45,7 +45,7 @@ updated_at                  datetime
 
 ## Not done yet
 
-- **Nothing reads `resolved_value_lists` back.** It is written at publication and it is correct, but the reader that resolves a stored value through the live [ValueListItem](010-value-list-item.md) and falls back to the snapshot when the item has gone is [FieldValue](022-field-value.md), which does not exist. Until then the snapshot is written and never consulted.
+- **Nothing reads `resolved_value_lists` back.** It is written at publication and it is correct, and [FieldValue](022-field-value.md) now exists and reads its choice straight off the live [ValueListItem](010-value-list-item.md). What is missing is the fallback: a value whose item has been deleted outright reads as nothing rather than as what the snapshot says it was. That is the whole point of the column and it is the half not yet built.
 - **Nothing travels to another account.** The other half of what the snapshot is for is installation, which is [MarketplaceInstallation](047-marketplace-installation.md).
 - **Drafting a section version is never asked for.** It happens underneath the builder: editing a field on a section that is published, or that another template carries, gives the section a new version and repoints only the template being edited. `MakeSectionVersionEditable` is that step, and the builder says on the section beforehand that it will happen.
 - **No API.**

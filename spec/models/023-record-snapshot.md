@@ -45,11 +45,11 @@ updated_at                  datetime
 
 ## Not done yet
 
-- **Two of the six reasons are taken by nothing.** `merge` waits for [ContactMerge](034-contact-merge.md) and `import` for an import that does not exist. `template_change`, `restore` and `manual` are all live, and `api` is available to whatever calls the actions from an API that has not been written.
+- **One of the six reasons is written by anything.** `template_change` is, every time a record moves. `restore` is written by `RestoreRecordSnapshot`, which no screen calls, and `manual` is the default nothing passes; `merge` waits for [ContactMerge](034-contact-merge.md), `import` for an import that does not exist, and `api` for an API that has not been written.
 - **Nothing prunes a snapshot.** Retention is an open question below, so `expires_at` is stored, honoured by nobody, and the model refuses deletion the way a [Log](004-log.md) entry does. Growth is unbounded until the question is answered, which is acceptable while nothing writes snapshots automatically except a structure change.
 - **The orphan sweep asks the whole table.** `RecordSnapshot::fileIdsInUse()` reads every row's `file_ids` before the sweep takes anything. That is honest and it does not scale; it is the same decision as keeping the ids in a json column rather than in a pivot, and both should be revisited with retention rather than separately.
 - **Restoring puts a record back and nothing else.** A contact's relationships, groups and activities are not in the payload. That is the narrower promise and the one section 6 actually makes; relationships carry their own history.
-- **No screen and no API.** Model and actions only, so nobody is offered a list of moments to go back to.
+- **A snapshot is read as history and never as a way back.** The version history of a contact reads the snapshots to say which structures the record has been through and when each was applied, which is what makes them visible at all. What it offers is a move to another published version, not a restore: `RestoreRecordSnapshot` is written, tested and called by nothing, so what was written down at a given moment cannot be put back from any screen. No API either.
 
 ## Decisions taken while building it
 

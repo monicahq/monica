@@ -43,8 +43,8 @@ deleted_at                  datetime
 
 ## Not done yet
 
-- Nothing stops a list being deleted while a field points at it, because there is no [Field](017-field.md) to point. `DestroyValueList` refuses a supplied list, and deletes a user made one softly with its items. The rule about fields arrives with the field.
-- Nothing reads a list yet. The fields that pick from one are model 017, and until they exist a list is a set of choices nothing offers.
+- Nothing stops a list being deleted while a field points at it. `DestroyValueList` refuses a supplied list and deletes a user made one softly with its items, and it asks nothing about [Field](017-field.md), which now exists and does point. Deleting a list out from under a select field is the one thing here that is still possible and should not be.
+- A list is read by the fields that pick from one and by nothing else. A choice on a record comes from a list, and the section version that publishes such a field snapshots the list beside it ([SectionVersion](015-section-version.md)). What no screen shows is the other direction: which fields read a given list, which is what somebody about to empty one needs to be told.
 
 ## Open questions
 

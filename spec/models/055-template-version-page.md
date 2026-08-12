@@ -57,10 +57,10 @@ updated_at                  datetime
 
 ## Not done yet
 
-- **Nothing renders a page.** The record renderer and the tab navigation described above are still ahead, as is the record itself. The template builder still shows one flat list of sections, which is what a template with its single supplied page holds.
-- **No screens, no API, no MCP.** Page creation, renaming, reordering and removal, and moving a section between pages, exist as actions and nothing calls them yet.
+- **The tabs are drawn and half of the accessible pattern of section 5.2 is there.** Both the record and the builder read a version one page at a time, and both do it by putting the page key in the address, so a tab is a link to a page rather than a control that swaps a panel. The strip carries `role="tablist"`, each link carries `role="tab"` and says whether it is the selected one. What is missing is the other half: there is no `tabpanel` for a tab to control and no arrow key handling, because there is no panel on the page to move to.
+- **A record with one page still shows the strip.** Section 5.2 says a single page renders without tabs. The record always draws its strip, because the overview and the version history sit on it and neither belongs to the template.
 - **Nothing carries a page in or out of the marketplace.** Neither the payload nor the installation exists.
-- **The key is settled but nothing reads it.** It is written, kept across drafts and unique within a version, and no URL carries one until records have screens.
+- **No API and no MCP.** Page creation, renaming, reordering and removal, and moving a section between pages, are reached from the template builder and nowhere else.
 
 ## Decisions taken while building it
 

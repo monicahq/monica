@@ -49,11 +49,10 @@ updated_at                  datetime
 
 ## Not done yet
 
-- **Contacts point at a version, and nothing moves between versions yet.** [Contact](019-contact.md) keeps `record_count` in step as contacts are written down, deleted and brought back; [Entity](020-entity.md) and [ActivityType](035-activity-type.md) are still ahead. The deliberate move of a record from one version to another, along with the [RecordSnapshot](023-record-snapshot.md) it has to write first, waits on the snapshot model.
-- **Retiring a version is enforced against `record_count` only.** The rule that a version is never deleted while records point at it lives on the model and reads that column, which is the only thing there is to ask. Once records exist that count has to become true, or the check has to start counting rows.
+- **Records move between versions one at a time, and only a contact does.** `MoveRecordToTemplateVersion` writes the [RecordSnapshot](023-record-snapshot.md) first, moves the record and hands `record_count` from one version to the other. A contact reaches it two ways: the banner offering the version the template publishes now, and the line of the version history that goes back to an earlier published one. [Entity](020-entity.md) has no screen to reach it from, and [ActivityType](035-activity-type.md) is still ahead.
+- **Nothing moves a whole version's worth of records at once.** Publishing moves nobody, deliberately, and there is no way to say "and bring everybody with it" for an account that wants exactly that.
 - **No API.** The builder starts a draft, publishes a version and throws a draft away. None of it is exposed over the API yet.
-- **Retiring a version has no screen.** The action exists and nothing calls it: a version is retired when a template stops being offered, and that decision is taken on the template rather than the version.
-- **Pages exist and nothing shows them.** Every version carries at least one [TemplateVersionPage](055-template-version-page.md), drafting copies them, and publishing refuses a version with none or with an empty page beside others. No screen reads a page, so every template still holds the single one it was created with.
+- **Retiring a version has no screen.** The action exists and nothing calls it: a version is retired when a template stops being offered, and that decision is taken on the template rather than the version. The version history already says a retired version cannot be gone back to, so the sentence exists before the thing that would produce one.
 
 ## Decisions taken while building it
 
@@ -63,6 +62,7 @@ updated_at                  datetime
 - **Drafting copies the page structure as well as the sections.** Every copied page gets a new UUID but keeps its stable key, label and position. Section placements are then copied onto the corresponding new pages. This preserves what the record renders without making the draft share mutable page rows with the published version.
 - **A change note is required from the second version on.** The first version has nothing to have changed from, so asking for a note there would only teach people to type something meaningless.
 - **Retiring the version a template offers clears `published_version_id`.** A retired version cannot go on being what a new record is handed. The template is then left offering nothing until something else is published, which is deliberate and visible.
+- **`record_count` is true rather than merely written.** Every path that gives a record to a version or takes one away moves it: writing a record down, deleting one, bringing one back, moving one to another version, and deleting or restoring a whole vault. That is what lets the guard on deletion ask a column instead of counting rows across two record tables on every attempt.
 
 ## Open questions
 

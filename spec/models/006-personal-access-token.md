@@ -7,7 +7,7 @@
 
 The key an external caller authenticates with. Section 3.6 makes this load bearing: everything doable in the interface must be doable through the API, the mobile applications will consume that API, and the official MCP server authenticates the same way and never bypasses it.
 
-The table exists today with `abilities` commented as unused until there is an API to scope. There now is one.
+The table exists today with `abilities` commented as unused until there is an API to scope. There is still no API, and none of the four changes listed below has been made: this file describes what the model becomes when there is one.
 
 ## Fields
 

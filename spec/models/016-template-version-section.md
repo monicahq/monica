@@ -43,7 +43,7 @@ updated_at                  datetime
 
 ## Not done yet
 
-- **Nothing renders a paged assembly.** Every placement now names the page it appears on, and the page, order, title override and folded state still need to be read together by the record renderer and the template builder. The builder shows one flat list, which is what a template holding its single supplied page contains.
+- **`is_collapsed_by_default` is read by nothing.** The record renderer draws each section of the open page as a panel that is always open, and the builder does the same. The page, the order and the title override are all read.
 
 ## Decisions taken while building it
 
