@@ -105,22 +105,54 @@ class VaultSettingsViewModelTest extends TestCase
         $templates = new VaultSettingsViewModel(user: $user, vault: $vault)->templates();
 
         $this->assertCount(2, $templates);
-        $this->assertEquals(['id' => (int) $standard->published_version_id, 'name' => 'Standard contact'], $templates[0]);
+        $this->assertEquals('Standard contact', $templates[0]['name']);
+        $this->assertEquals(
+            [['id' => (int) $standard->published_version_id, 'label' => 'Version 1 (latest)']],
+            $templates[0]['versions'],
+        );
         $this->assertEquals('Work contact', $templates[1]['name']);
     }
 
+    /**
+     * A vault is entitled to start its contacts on a shape the account has since
+     * moved on from, so every published version is on offer and the newest is
+     * only the first of them.
+     */
     #[Test]
-    public function it_only_calls_it_a_choice_once_the_account_has_two_templates(): void
+    public function it_offers_every_published_version_of_a_template_newest_first(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $this->publishedContactTemplate($user, 'Standard contact');
+        $template = $this->publishedContactTemplate($user, 'Standard contact');
+        $first = $template->published_version_id;
 
-        $this->assertFalse(new VaultSettingsViewModel(user: $user, vault: $vault)->hasTemplateChoice());
+        $newest = TemplateVersion::factory()->published()->create([
+            'template_id' => $template->id,
+            'version_number' => 2,
+        ]);
+        $template->update(['published_version_id' => $newest->id]);
 
-        $this->publishedContactTemplate($user, 'Work contact');
+        TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 3]);
 
-        $this->assertTrue(new VaultSettingsViewModel(user: $user, vault: $vault)->hasTemplateChoice());
+        $versions = new VaultSettingsViewModel(user: $user, vault: $vault)->templates()[0]['versions'];
+
+        $this->assertEquals([
+            ['id' => $newest->id, 'label' => 'Version 2 (latest)'],
+            ['id' => (int) $first, 'label' => 'Version 1'],
+        ], $versions);
+    }
+
+    #[Test]
+    public function it_offers_the_choice_even_when_there_is_only_one_version(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $template = $this->publishedContactTemplate($user, 'Standard contact');
+
+        $templates = new VaultSettingsViewModel(user: $user, vault: $vault)->templates();
+
+        $this->assertCount(1, $templates);
+        $this->assertEquals((int) $template->published_version_id, $templates[0]['versions'][0]['id']);
     }
 
     #[Test]

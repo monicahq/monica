@@ -163,6 +163,28 @@
     @endif
   </div>
 
+  {{--
+    A newer version of the template is waiting. It sits above the tabs' content
+    rather than on one of them, because which version the record renders from is
+    a fact about the whole record, and it is the one line of machinery on this
+    screen that earns its place: nothing else would say a template has changed.
+
+    It offers the one thing there is to do. There is nothing to dismiss, because
+    the banner goes the moment it is applied, and nothing to preview, because
+    what changed between two versions is not something the product can yet say.
+  --}}
+  @if ($update = $viewModel->templateUpdate())
+    <x-notice tone="info" icon="file" :title="$update['title']">
+      {{ $update['body'] }}
+
+      <x-slot:action>
+        <x-form method="put" :action="$update['applyUrl']">
+          <x-button size="small">{{ $update['label'] }}</x-button>
+        </x-form>
+      </x-slot:action>
+    </x-notice>
+  @endif
+
   @if ($viewModel->onOverview())
     <div class="grid items-start gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
       <div class="flex flex-col gap-5">

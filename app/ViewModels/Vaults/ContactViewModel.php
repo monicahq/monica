@@ -205,6 +205,51 @@ class ContactViewModel
     }
 
     /**
+     * The newer version of the template waiting for this record, when there is
+     * one, as the banner that offers it needs it.
+     *
+     * A record renders from one version and stays on it: publishing a new
+     * version of a template moves nobody. That is what makes editing a template
+     * safe, and it is also why the record has to say so, or somebody who has
+     * changed a template sees no sign of it on the people it describes.
+     *
+     * Nothing is offered when the published version is the one the record is
+     * already on, and nothing is offered when it is older than the record's: a
+     * record deliberately put back on an earlier version is not asked about it
+     * every time somebody opens it.
+     *
+     * @return array{title: string, body: string, label: string, applyUrl: string}|null
+     */
+    public function templateUpdate(): ?array
+    {
+        return once(function (): ?array {
+            $current = $this->contact->templateVersion;
+            $published = $current->template->publishedVersion;
+
+            if ($published === null || $published->version_number <= $current->version_number) {
+                return null;
+            }
+
+            $note = $published->change_note;
+
+            return [
+                'title' => __('Version :number of the :template template is ready', [
+                    'number' => $published->version_number,
+                    'template' => $current->template->name,
+                ]),
+                'body' => trim(($note === null ? '' : "{$note} ").__('Nothing changes here until you apply it. Applying changes which sections and fields :name shows, and everything already written down stays written down.', [
+                    'name' => $this->contact->first_name ?? $this->contact->name,
+                ])),
+                'label' => __('Apply version :number', ['number' => $published->version_number]),
+                'applyUrl' => route('contacts.templateVersion.update', [
+                    'vault' => $this->vault,
+                    'contact' => $this->contact,
+                ]),
+            ];
+        });
+    }
+
+    /**
      * The tabs: the overview, then one per page of the version, each counting
      * the fields somebody would find on it.
      *

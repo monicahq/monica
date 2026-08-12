@@ -38,6 +38,7 @@ use App\Http\Controllers\App\Settings\SettingsController;
 use App\Http\Controllers\App\Vaults\ContactController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
 use App\Http\Controllers\App\Vaults\ContactSectionController;
+use App\Http\Controllers\App\Vaults\ContactTemplateVersionController;
 use App\Http\Controllers\App\Vaults\FileController;
 use App\Http\Controllers\App\Vaults\SetAsideValueController;
 use App\Http\Controllers\App\Vaults\VaultController;
@@ -109,6 +110,14 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])
         ->whereUuid('contact')
         ->name('contacts.destroy');
+
+    // Onto the version of the template that is published now. Publishing moves
+    // nobody, so this is the only way a record changes structure, and it is one
+    // record at a time. Nothing travels in the request: where the record can go
+    // is read from the template it already renders from.
+    Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactTemplateVersionController::class, 'update'])
+        ->whereUuid('contact')
+        ->name('contacts.templateVersion.update');
 
     // A block of the record, open. The record reads until somebody asks for one
     // of these, and which one they asked for is the address rather than a flag

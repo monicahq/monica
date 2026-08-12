@@ -309,6 +309,78 @@ class ContactViewModelTest extends TestCase
         $this->assertSame('Prison Mike', $facts[0]['value']);
     }
 
+    #[Test]
+    public function it_offers_the_newer_version_of_the_template(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]], 'Friend');
+        $contact = $this->contact($user, $version);
+        $this->publish($version, 2, 'Ways to connect is its own section now.');
+
+        $update = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->templateUpdate();
+
+        $this->assertSame('Version 2 of the Friend template is ready', $update['title']);
+        $this->assertStringStartsWith('Ways to connect is its own section now.', $update['body']);
+        $this->assertStringContainsString('Michael', $update['body']);
+        $this->assertSame('Apply version 2', $update['label']);
+        $this->assertSame(
+            route('contacts.templateVersion.update', ['vault' => $contact->vault, 'contact' => $contact]),
+            $update['applyUrl'],
+        );
+    }
+
+    #[Test]
+    public function nothing_is_offered_when_the_contact_is_on_the_published_version(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
+        $contact = $this->contact($user, $version);
+        $version->template->update(['published_version_id' => $version->id]);
+
+        $this->assertNull(new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->templateUpdate());
+    }
+
+    /**
+     * A record deliberately put on an earlier version is not asked about it
+     * every time somebody opens it, and neither is one on a template nobody has
+     * published anything for.
+     */
+    #[Test]
+    public function nothing_is_offered_when_the_published_version_is_not_newer(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $current = TemplateVersion::factory()->published()->create([
+            'template_id' => $template->id,
+            'version_number' => 2,
+        ]);
+        $contact = $this->contact($user, $current);
+
+        $this->assertNull(new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->templateUpdate());
+
+        $older = TemplateVersion::factory()->published()->create([
+            'template_id' => $template->id,
+            'version_number' => 1,
+        ]);
+        $template->update(['published_version_id' => $older->id]);
+
+        $this->assertNull(new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact->refresh())->templateUpdate());
+    }
+
+    private function publish(TemplateVersion $version, int $number, ?string $note = null): TemplateVersion
+    {
+        $published = TemplateVersion::factory()->published()->create([
+            'template_id' => $version->template_id,
+            'version_number' => $number,
+            'change_note' => $note,
+            'previous_version_id' => $version->id,
+        ]);
+
+        $version->template->update(['published_version_id' => $published->id]);
+
+        return $published;
+    }
+
     private function fieldCalled(TemplateVersion $version, string $label): Field
     {
         return Field::query()->where('label', $label)->firstOrFail();

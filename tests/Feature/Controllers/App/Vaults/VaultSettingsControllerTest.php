@@ -53,7 +53,7 @@ class VaultSettingsControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_which_template_only_once_there_is_a_choice(): void
+    public function it_asks_which_template_and_which_version_of_it(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -62,15 +62,15 @@ class VaultSettingsControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('vaults.settings.index', $vault))
             ->assertStatus(200)
-            ->assertDontSee('Default template')
-            ->assertSee('Standard contact');
+            ->assertSee('Default template')
+            ->assertSee('<optgroup label="Standard contact">', false)
+            ->assertSee('Version 1 (latest)');
 
         $this->publishedContactTemplate($user, 'Work contact');
 
         $this->actingAs($user)->get(route('vaults.settings.index', $vault))
             ->assertStatus(200)
-            ->assertSee('Default template')
-            ->assertSee('Work contact');
+            ->assertSee('<optgroup label="Work contact">', false);
     }
 
     #[Test]

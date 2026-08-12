@@ -6,7 +6,9 @@ namespace App\ViewModels\Vaults;
 
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\VaultColourEnum;
+use App\Enums\VersionStatusEnum;
 use App\Models\Template;
+use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -106,31 +108,38 @@ class VaultSettingsViewModel
     }
 
     /**
-     * The templates a contact written down in this vault could start from. The
-     * option is the published version rather than the template, because that is
-     * what the vault stores: a contact follows the version it was given and
-     * never "the latest one".
+     * What a contact written down in this vault could start from: every
+     * published version of every contact template the account has, under the
+     * template it belongs to.
      *
-     * @return array<int, array{id: int, name: string}>
+     * The option is a version rather than a template because that is what the
+     * vault stores: a contact follows the version it was given and never "the
+     * latest one". Every published version is offered rather than only the
+     * newest, because which shape a vault starts its contacts on is the vault's
+     * decision, and a vault is entitled to stay on an older one.
+     *
+     * The choice is offered even when the account has one template of one
+     * version. A select holding a single option says what the vault does, and
+     * that is worth more than the line of prose it replaces.
+     *
+     * @return array<int, array{name: string, versions: array<int, array{id: int, label: string}>}>
      */
     public function templates(): array
     {
         return $this->contactTemplates()
             ->map(fn (Template $template): array => [
-                'id' => (int) $template->published_version_id,
                 'name' => $template->name,
+                'versions' => $template->versions
+                    ->map(fn (TemplateVersion $version): array => [
+                        'id' => $version->id,
+                        'label' => $version->is($template->publishedVersion)
+                            ? __('Version :number (latest)', ['number' => $version->version_number])
+                            : __('Version :number', ['number' => $version->version_number]),
+                    ])
+                    ->all(),
             ])
+            ->values()
             ->all();
-    }
-
-    /**
-     * Whether there is anything to choose between. One template is not a
-     * choice, and a select holding a single option only invites somebody to
-     * wonder what else there was.
-     */
-    public function hasTemplateChoice(): bool
-    {
-        return count($this->templates()) > 1;
     }
 
     /**
@@ -180,6 +189,10 @@ class VaultSettingsViewModel
     }
 
     /**
+     * The account's contact templates, each carrying the versions somebody may
+     * start a contact on, newest first. A template nobody has published
+     * anything for offers nothing and is left out rather than shown empty.
+     *
      * @return Collection<int, Template>
      */
     private function contactTemplates(): Collection
@@ -188,8 +201,14 @@ class VaultSettingsViewModel
             ->where('account_id', $this->user->account_id)
             ->where('applies_to', TemplateAppliesToEnum::Contact)
             ->where('is_active', true)
-            ->whereNotNull('published_version_id')
+            ->with([
+                'publishedVersion',
+                'versions' => fn ($query) => $query
+                    ->where('status', VersionStatusEnum::Published)
+                    ->orderByDesc('version_number'),
+            ])
             ->orderBy('position')
-            ->get();
+            ->get()
+            ->filter(fn (Template $template): bool => $template->versions->isNotEmpty());
     }
 }

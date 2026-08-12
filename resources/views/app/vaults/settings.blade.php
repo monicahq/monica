@@ -132,16 +132,29 @@
     icon="people"
     icon-class="bg-indigo-tint text-indigo"
   >
-    @if ($viewModel->hasTemplateChoice())
+    {{--
+      Every version of every template, offered even when the account has one of
+      each: a select showing the one thing on offer says what the vault does,
+      which a sentence about there being no choice does not.
+
+      The versions sit under the template they belong to, because "Version 2" on
+      its own is only half an answer.
+    --}}
+    @if ($viewModel->templates() !== [])
       <x-form method="put" :action="$viewModel->defaultTemplateAction()" class="flex flex-col gap-4">
         <x-select
           id="template_version_id"
           :label="__('Default template')"
+          :help="__('An older version is on offer too, so this vault can start its contacts on the shape you want rather than the newest one.')"
           :error="$errors->get('template_version_id')"
           class="max-w-105"
         >
           @foreach ($viewModel->templates() as $template)
-            <option value="{{ $template['id'] }}" @selected($viewModel->currentTemplateVersionId() === (string) $template['id'])>{{ $template['name'] }}</option>
+            <optgroup label="{{ $template['name'] }}">
+              @foreach ($template['versions'] as $version)
+                <option value="{{ $version['id'] }}" @selected($viewModel->currentTemplateVersionId() === (string) $version['id'])>{{ $version['label'] }}</option>
+              @endforeach
+            </optgroup>
           @endforeach
         </x-select>
 
@@ -151,7 +164,7 @@
       <div class="flex flex-col gap-3">
         @if ($viewModel->currentTemplateName())
           <p class="max-w-[60ch] text-sm text-pretty text-body">
-            {{ __('Contacts here start from :name, which is the only contact template your account has.', ['name' => $viewModel->currentTemplateName()]) }}
+            {{ __('Contacts here start from :name.', ['name' => $viewModel->currentTemplateName()]) }}
           </p>
         @else
           <p class="max-w-[60ch] text-sm text-pretty text-body">
@@ -160,7 +173,7 @@
         @endif
 
         <p class="max-w-[60ch] text-sm text-pretty text-muted">
-          {{ __('Make another one and this becomes a choice.') }}
+          {{ __('Your account has no published contact template to choose from.') }}
           <x-link :href="$viewModel->templatesUrl()" turbo>{{ __('Your templates') }}</x-link>
         </p>
       </div>
