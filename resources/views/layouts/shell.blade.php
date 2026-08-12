@@ -28,9 +28,9 @@
   A screen with no dock takes its bottom padding back. The 120px is only there to
   keep the last row clear of something that is floating over it.
 
-  `bar` is the left of the top bar and `barEnd` is the right of it, before the theme
-  toggle. A screen reaches its own settings from the launcher behind the dock, so
-  `barEnd` is for the one screen that has no dock to reach them from.
+  `bar` is the left of the top bar and `barEnd` is the right of it, before the docs
+  and marketplace links. A screen reaches its own settings from the launcher behind
+  the dock, so `barEnd` is for the one screen that has no dock to reach them from.
 
   @var string|null $title
   @var bool $wide
@@ -56,6 +56,8 @@
         @isset($barEnd)
           {{ $barEnd }}
         @endisset
+
+        <x-bar-links />
 
         <x-theme-toggle />
 

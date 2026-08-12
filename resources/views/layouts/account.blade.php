@@ -6,7 +6,8 @@
   fits in one line under the bar. Once you are in a vault the sidebar shell
   takes over, with the vault's own navigation down the left.
 
-  The bar carries the mark, the way to the settings and who is signed in. The
+  The bar carries the mark, the way out to the docs and the marketplace, the way to
+  the settings and who is signed in. The
   strip under it carries the breadcrumb, and a screen that has nowhere to come
   back from may leave it out.
 
@@ -28,6 +29,8 @@
       <span class="truncate text-sm font-semibold tracking-tight text-ink">{{ config('app.name') }}</span>
 
       <div class="ml-auto flex items-center gap-2.5">
+        <x-bar-links />
+
         <x-theme-toggle />
 
         <a

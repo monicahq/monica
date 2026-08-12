@@ -42,4 +42,20 @@ class TopBarTest extends TestCase
             ->blade('<x-account-layout>Anything</x-account-layout>')
             ->assertSee('border-b border-hairline-strong bg-canvas px-4 shadow-bar', escape: false);
     }
+
+    #[Test]
+    public function every_bar_reaches_the_docs_and_the_marketplace(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->blade('<x-shell>Anything</x-shell>')
+            ->assertSee('Docs')
+            ->assertSee('Marketplace');
+
+        $this->actingAs($user)
+            ->blade('<x-account-layout>Anything</x-account-layout>')
+            ->assertSee('Docs')
+            ->assertSee('Marketplace');
+    }
 }
