@@ -23,7 +23,7 @@
   @foreach ($group['people'] as $person)
     <x-row :href="$person['url']">
       <x-slot:leading>
-        <x-avatar-initials :name="$person['name']" :size="40" />
+        <x-contact-avatar :name="$person['name']" :url="$person['avatarUrl']" :size="40" />
       </x-slot:leading>
 
       <p class="flex flex-wrap items-center gap-x-2 gap-y-1">

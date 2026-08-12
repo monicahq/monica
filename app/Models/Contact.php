@@ -77,6 +77,14 @@ class Contact extends Model
     use SoftDeletes;
 
     /**
+     * The side of the square an uploaded avatar is cropped to. The biggest
+     * place it is drawn is the header of the record at 104, so this stays sharp
+     * on a dense screen while a list of forty people costs a couple of
+     * megabytes rather than a couple of hundred.
+     */
+    public const int AVATAR_PIXELS = 512;
+
+    /**
      * The backgrounds a generated initials avatar is drawn on. They are picked
      * from when a contact is created and kept afterwards, so somebody who has
      * learnt to spot a face in a list does not have it change colour.
@@ -249,6 +257,14 @@ class Contact extends Model
     public function avatar(): BelongsTo
     {
         return $this->belongsTo(File::class, 'avatar_file_id');
+    }
+
+    /**
+     * Whether there is a picture to draw instead of the initials.
+     */
+    public function hasAvatar(): bool
+    {
+        return $this->avatar_file_id !== null;
     }
 
     /**

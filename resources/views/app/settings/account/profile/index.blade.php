@@ -39,10 +39,10 @@
       and written twice before there is anything to show, and the screen is better
       off asking the server for the whole thing once that is done.
 
-      The message lives in the x-data of this div rather than in the change handler,
-      because Blade does not compile a directive written inside an attribute of a
-      component tag: @js() would reach the browser as itself and Alpine would refuse
-      the whole expression.
+      The wording lives in the x-data of this div rather than in the handlers that
+      use it, because Blade does not compile a directive written inside an attribute
+      of a component tag: @js() would reach the browser as itself and Alpine would
+      refuse the whole expression.
     --}}
     <x-panel>
       <div
@@ -83,19 +83,27 @@
           <p x-show="tooBig" x-cloak x-text="tooBigMessage" class="text-xs text-error"></p>
 
           @if ($viewModel->hasPhoto())
-            {{-- Two steps rather than one, so a photo is never removed by a slip. --}}
-            <x-form
-              method="delete"
-              :action="route('settings.photo.destroy')"
-              id="photo-delete-form"
-              x-data="{ confirming: false }"
+            {{--
+              Two steps rather than one, so a photo is never removed by a slip. The
+              two wordings sit on this div rather than on the button, since the
+              button is a component tag and a directive written in one of those is
+              not compiled.
+            --}}
+            <div
+              x-data="{
+                confirming: false,
+                removeLabel: @js(__('Remove the photo')),
+                confirmLabel: @js(__('Remove it for good?')),
+              }"
             >
-              <x-button.ghost
-                size="small"
-                x-on:click="if (! confirming) { $event.preventDefault(); confirming = true }"
-                x-text="confirming ? @js(__('Remove it for good?')) : @js(__('Remove the photo'))"
-              />
-            </x-form>
+              <x-form method="delete" :action="route('settings.photo.destroy')" id="photo-delete-form">
+                <x-button.ghost
+                  size="small"
+                  x-on:click="if (! confirming) { $event.preventDefault(); confirming = true }"
+                  x-text="confirming ? confirmLabel : removeLabel"
+                >{{ __('Remove the photo') }}</x-button.ghost>
+              </x-form>
+            </div>
           @endif
         </div>
       </div>

@@ -59,7 +59,7 @@
 
   <header class="flex flex-wrap items-start gap-5.5">
     <div class="relative shrink-0">
-      <x-avatar-initials :name="$viewModel->title()" :size="104" />
+      <x-contact-avatar :name="$viewModel->title()" :url="$viewModel->avatarUrl()" :size="104" />
 
       @if ($viewModel->isFavourite())
         <span

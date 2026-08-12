@@ -9,6 +9,7 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\File;
 use App\Models\RecordSnapshot;
 use App\Models\Section;
 use App\Models\SectionVersion;
@@ -164,6 +165,31 @@ class ContactViewModelTest extends TestCase
         $sections = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health'))->sections();
 
         $this->assertFalse($sections[0]['isEditable']);
+    }
+
+    #[Test]
+    public function it_says_where_the_picture_of_the_contact_is_read_from(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
+        $contact = $this->contact($user, $version);
+
+        $this->assertNull(
+            new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->avatarUrl(),
+        );
+
+        $file = File::factory()->image()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $contact->vault_id,
+        ]);
+
+        $contact->avatar_file_id = $file->id;
+        $contact->save();
+
+        $this->assertSame(
+            route('files.show', ['vault' => $contact->vault, 'file' => $file]),
+            new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact->refresh())->avatarUrl(),
+        );
     }
 
     #[Test]

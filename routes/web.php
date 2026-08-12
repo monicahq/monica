@@ -35,6 +35,7 @@ use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPositionC
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicationController;
 use App\Http\Controllers\App\Settings\SettingsController;
+use App\Http\Controllers\App\Vaults\ContactAvatarController;
 use App\Http\Controllers\App\Vaults\ContactController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
 use App\Http\Controllers\App\Vaults\ContactSectionController;
@@ -96,9 +97,9 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
         ->whereUuid('contact')
         ->name('contacts.setAside.index');
 
-    // The two things about a contact the template has no say over, on one screen:
-    // what they are called, and whether they are on the record at all. The record
-    // offers one way in rather than a button for each.
+    // What the template has no say over about a contact, on one screen: what they
+    // are called, the picture they are drawn as, and whether they are on the record
+    // at all. The record offers one way in rather than a button for each.
     Route::get('vaults/{vault}/contacts/{contact}/edit', [ContactController::class, 'edit'])
         ->whereUuid('contact')
         ->name('contacts.edit');
@@ -106,6 +107,16 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     Route::put('vaults/{vault}/contacts/{contact}/name', [ContactNameController::class, 'update'])
         ->whereUuid('contact')
         ->name('contacts.name.update');
+
+    // The picture, written from that same screen, since it is the other thing the
+    // product asks about somebody whatever template they are on.
+    Route::post('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'update'])
+        ->whereUuid('contact')
+        ->name('contacts.avatar.update');
+
+    Route::delete('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'destroy'])
+        ->whereUuid('contact')
+        ->name('contacts.avatar.destroy');
 
     Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])
         ->whereUuid('contact')

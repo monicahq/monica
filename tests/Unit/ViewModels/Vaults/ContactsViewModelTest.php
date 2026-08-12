@@ -6,6 +6,7 @@ namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\TemplateAppliesToEnum;
 use App\Models\Contact;
+use App\Models\File;
 use App\Models\Template;
 use App\Models\TemplateVersion;
 use App\Models\User;
@@ -42,6 +43,27 @@ class ContactsViewModelTest extends TestCase
         $this->assertEquals('Aug 4, 2026', $person['when']);
         $this->assertEquals('last spoke', $person['whenLabel']);
         $this->assertEquals('Basic contact', $person['template']);
+        $this->assertNull($person['avatarUrl']);
+    }
+
+    #[Test]
+    public function it_says_where_the_picture_of_a_row_is_read_from(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $file = File::factory()->image()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+        ]);
+
+        $this->contact($vault, 'Pam', 'Beesly', ['avatar_file_id' => $file->id]);
+
+        $person = new ContactsViewModel(user: $user, vault: $vault)->groups()[0]['people'][0];
+
+        $this->assertEquals(
+            route('files.show', ['vault' => $vault, 'file' => $file]),
+            $person['avatarUrl'],
+        );
     }
 
     #[Test]

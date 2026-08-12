@@ -6,6 +6,7 @@ namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\TemplateAppliesToEnum;
 use App\Models\Contact;
+use App\Models\File;
 use App\Models\Template;
 use App\Models\TemplateVersion;
 use App\Models\User;
@@ -86,6 +87,29 @@ class VaultDashboardViewModelTest extends TestCase
         $this->assertEquals(['Pam Beesly', 'Michael Scott'], array_column($people, 'name'));
         $this->assertEquals('Pammy', $people[0]['nickname']);
         $this->assertEquals('', $people[1]['nickname']);
+    }
+
+    #[Test]
+    public function it_says_where_the_picture_of_somebody_is_read_from(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $file = File::factory()->image()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+        ]);
+
+        Contact::factory()->create(['vault_id' => $vault->id, 'avatar_file_id' => $file->id]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'created_at' => now()->subYear()]);
+
+        $people = new VaultDashboardViewModel(user: $user, vault: $vault)->people();
+
+        $this->assertEquals(
+            route('files.show', ['vault' => $vault, 'file' => $file]),
+            $people[0]['avatarUrl'],
+        );
+
+        $this->assertNull($people[1]['avatarUrl']);
     }
 
     #[Test]

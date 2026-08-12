@@ -72,8 +72,8 @@ class ContactController extends Controller
     }
 
     /**
-     * The two things about a contact the template has no say over: what they are
-     * called, and whether they are on the record at all.
+     * What the template has no say over about a contact: what they are called,
+     * the picture they are drawn as, and whether they are on the record at all.
      *
      * They share a screen because they are the same errand. The record offers one
      * way in rather than a button for each, since a page of a person is about the

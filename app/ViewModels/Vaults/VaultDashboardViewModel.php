@@ -93,19 +93,23 @@ class VaultDashboardViewModel
      * The people the box shows: the last ones written down, since the reason to
      * open a vault is usually the thing you were last doing in it.
      *
-     * @return array<int, array{name: string, nickname: string, url: string}>
+     * @return array<int, array{name: string, nickname: string, avatarUrl: string|null, url: string}>
      */
     public function people(): array
     {
         return $this->vault
             ->contacts()
             ->listed()
+            ->with('avatar')
             ->orderByDesc('created_at')
             ->limit(self::PEOPLE_SHOWN)
             ->get()
             ->map(fn (Contact $contact): array => [
                 'name' => $contact->name,
                 'nickname' => (string) $contact->nickname,
+                'avatarUrl' => $contact->avatar === null
+                    ? null
+                    : route('files.show', ['vault' => $this->vault, 'file' => $contact->avatar]),
                 'url' => route('contacts.show', ['vault' => $this->vault, 'contact' => $contact]),
             ])
             ->all();

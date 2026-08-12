@@ -10,6 +10,7 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\File;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\Template;
@@ -685,6 +686,57 @@ class ContactControllerTest extends TestCase
             ->assertSee('Scott', false)
             ->assertSee('Delete contact')
             ->assertSee(route('contacts.destroy', ['vault' => $vault, 'contact' => $michael]), false);
+    }
+
+    #[Test]
+    public function the_record_draws_the_picture_of_the_contact(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $file = File::factory()->image()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+        ]);
+        $pam = $this->contact($vault, 'Pam', 'Beesly', ['avatar_file_id' => $file->id]);
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $pam]))
+            ->assertStatus(200)
+            ->assertSee(route('files.show', ['vault' => $vault, 'file' => $file]), false);
+    }
+
+    #[Test]
+    public function the_edit_screen_offers_a_picture_and_nothing_to_remove_until_there_is_one(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.edit', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->assertSee('Picture')
+            ->assertSee(route('contacts.avatar.update', ['vault' => $vault, 'contact' => $michael]), false)
+            ->assertDontSee('Remove the picture');
+    }
+
+    #[Test]
+    public function the_edit_screen_draws_the_picture_and_the_way_to_be_rid_of_it(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $file = File::factory()->image()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+        ]);
+        $michael = $this->contact($vault, 'Michael', 'Scott', ['avatar_file_id' => $file->id]);
+
+        $this->actingAs($user)->get(route('contacts.edit', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->assertSee(route('files.show', ['vault' => $vault, 'file' => $file]), false)
+            ->assertSee('Remove the picture')
+            ->assertSee('Remove the picture of Michael Scott?')
+            ->assertSee('They are drawn as their initials again.')
+            ->assertDontSee('@js(', false)
+            ->assertSee(route('contacts.avatar.destroy', ['vault' => $vault, 'contact' => $michael]), false);
     }
 
     /**

@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Profile;
 
+use App\Actions\UpdateUserPhoto;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -95,6 +98,32 @@ class ProfileControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('settings.profile.index'))
             ->assertDontSee('id="photo-delete-form"', escape: false);
+    }
+
+    /**
+     * The button says what it does before Alpine has run, since a directive
+     * written inside an attribute of a component tag is not compiled and would
+     * leave it blank.
+     */
+    #[Test]
+    public function the_button_that_removes_the_photo_is_worded(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+
+        new UpdateUserPhoto(
+            user: $user,
+            file: UploadedFile::fake()->image('michael.jpg', 400, 400),
+        )->execute();
+
+        $this->actingAs($user->fresh())
+            ->get(route('settings.profile.index'))
+            ->assertSee('id="photo-delete-form"', escape: false)
+            ->assertSee('x-text="confirming ? confirmLabel : removeLabel"', escape: false)
+            ->assertSee("removeLabel: 'Remove the photo'", escape: false)
+            ->assertDontSee('@js(', escape: false);
     }
 
     #[Test]

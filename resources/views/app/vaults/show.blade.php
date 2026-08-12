@@ -97,7 +97,7 @@
               data-turbo="true"
               class="flex items-center gap-3 border-b border-hairline-soft px-4 py-2.5 transition-colors duration-[110ms] hover:bg-hover"
             >
-              <x-avatar-initials :name="$person['name']" :size="34" />
+              <x-contact-avatar :name="$person['name']" :url="$person['avatarUrl']" :size="34" />
 
               <span class="min-w-0 flex-1">
                 <span class="block truncate text-base font-semibold text-ink">{{ $person['name'] }}</span>

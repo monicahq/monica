@@ -176,9 +176,23 @@ class ContactViewModel
     }
 
     /**
-     * Where the two things the template has no say over are handled: the name,
-     * and whether the person is on the record at all. Both are edited somewhere
-     * the template has no say over either, and both behind one way in: the page
+     * Where the picture of the contact is read from, and null for somebody drawn
+     * as their initials. It is the file itself rather than a public address,
+     * because a picture of somebody is as private as the record it sits on.
+     */
+    public function avatarUrl(): ?string
+    {
+        if ($this->contact->avatar === null) {
+            return null;
+        }
+
+        return route('files.show', ['vault' => $this->vault, 'file' => $this->contact->avatar]);
+    }
+
+    /**
+     * Where what the template has no say over is handled: the name, the picture,
+     * and whether the person is on the record at all. All are edited somewhere
+     * the template has no say over either, and all behind one way in: the page
      * is about a person rather than about the things that can be done to a row.
      */
     public function editUrl(): string

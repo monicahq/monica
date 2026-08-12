@@ -155,7 +155,7 @@ class ContactsViewModel
      * word "never" repeated down the screen. The caption says which of the two
      * it is.
      *
-     * @return array<int, array{letter: string|null, people: array<int, array{name: string, isFavourite: bool, isArchived: bool, nickname: string|null, template: string, when: string, whenLabel: string, url: string}>}>
+     * @return array<int, array{letter: string|null, people: array<int, array{name: string, isFavourite: bool, isArchived: bool, nickname: string|null, avatarUrl: string|null, template: string, when: string, whenLabel: string, url: string}>}>
      */
     public function groups(): array
     {
@@ -175,6 +175,9 @@ class ContactsViewModel
                 'isFavourite' => $contact->is_favourite,
                 'isArchived' => $contact->is_archived,
                 'nickname' => $contact->nickname,
+                'avatarUrl' => $contact->avatar === null
+                    ? null
+                    : route('files.show', ['vault' => $this->vault, 'file' => $contact->avatar]),
                 'template' => $contact->templateVersion->template->name,
                 'when' => ($contact->last_activity_at ?? $contact->created_at)->isoFormat('ll'),
                 'whenLabel' => $contact->last_activity_at === null ? __('added') : __('last spoke'),
@@ -385,7 +388,7 @@ class ContactsViewModel
     private function contacts(): Paginator
     {
         return $this->contacts ??= $this->ordered()
-            ->with('templateVersion.template')
+            ->with(['templateVersion.template', 'avatar'])
             ->simplePaginate(self::PER_PAGE)
             ->withQueryString();
     }

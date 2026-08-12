@@ -10,15 +10,17 @@ use App\Models\User;
 use App\Models\Vault;
 
 /**
- * The screen for the two things about a contact the template has no say over:
- * what they are called, and whether they are on the record at all.
+ * The screen for what the template has no say over about a contact: what they
+ * are called, the picture they are drawn as, and whether they are on the record
+ * at all.
  *
- * Both are here because neither is a field. Every other question on a record
+ * All three are here because none is a field. Every other question on a record
  * comes from a structure somebody chose; the name is there whatever they choose,
- * since the product sorts, searches and builds initials out of it, and deletion
- * is not a question about the person at all.
+ * since the product sorts, searches and builds initials out of it, the picture
+ * is drawn wherever the person appears, and deletion is not a question about the
+ * person at all.
  *
- * They sit on one screen rather than two because they are the same errand:
+ * They sit on one screen rather than three because they are the same errand:
  * somebody who came to correct a record and somebody who came to be rid of it
  * both came here from the same button, and a product that hides deletion behind
  * a third place is a product people cannot leave.
@@ -56,7 +58,7 @@ class ContactEditViewModel
 
     public function description(): string
     {
-        return __('The two things about :name the template has no say over.', [
+        return __('What the template has no say over about :name.', [
             'name' => $this->contact->first_name ?? $this->contact->name,
         ]);
     }
@@ -71,6 +73,41 @@ class ContactEditViewModel
     public function action(): string
     {
         return route('contacts.name.update', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
+    public function avatarDescription(): string
+    {
+        return __('A square image reads best. JPEG, PNG or WebP, up to 5 MB. Without one, :name keeps their initials on a warm tint.', [
+            'name' => $this->contact->first_name ?? $this->contact->name,
+        ]);
+    }
+
+    public function hasAvatar(): bool
+    {
+        return $this->contact->hasAvatar();
+    }
+
+    /**
+     * Where the picture of the contact is read from, which is the file itself
+     * rather than a public address: it is as private as the record it sits on.
+     */
+    public function avatarUrl(): ?string
+    {
+        if ($this->contact->avatar === null) {
+            return null;
+        }
+
+        return route('files.show', ['vault' => $this->vault, 'file' => $this->contact->avatar]);
+    }
+
+    public function updateAvatarUrl(): string
+    {
+        return route('contacts.avatar.update', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
+    public function destroyAvatarUrl(): string
+    {
+        return route('contacts.avatar.destroy', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
     public function destroyUrl(): string
