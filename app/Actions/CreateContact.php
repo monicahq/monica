@@ -165,6 +165,8 @@ class CreateContact
 
             $this->vault->increment('contact_count');
             $this->version->increment('record_count');
+
+            new WriteDefaultValues(user: $this->user, record: $this->contact)->execute();
         });
     }
 

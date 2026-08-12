@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers\App\Vaults;
 
 use App\Actions\CreateContact;
+use App\Actions\SetFieldValues;
 use App\Enums\NameOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
+use App\Exceptions\FieldIsRequired;
+use App\Exceptions\FieldValueIsNotUnique;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SaveFieldValuesRequest;
 use App\Models\Contact;
 use App\Models\TemplateVersion;
 use App\Models\Vault;
@@ -66,6 +70,49 @@ class ContactController extends Controller
                 selectedPageKey: $page,
             ),
         ]);
+    }
+
+    /**
+     * Save one page of the record: everything the template asks on it, at once.
+     *
+     * A page is what somebody fills in, and it is also the only thing that can
+     * refuse a required field, so the whole of it is written or none of it is.
+     *
+     * Two of the refusals reach here rather than the validator, because neither
+     * is a question about the input. Whether another record in the vault
+     * already holds a value the field says only one may hold is a question
+     * about the vault, and it is asked where the vault is in hand. They land on
+     * the form as a sentence rather than under a control, since the control
+     * they belong to is not always the one somebody just typed in.
+     */
+    public function update(SaveFieldValuesRequest $request, Vault $vault, Contact $contact, ?string $page = null): RedirectResponse
+    {
+        abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
+
+        $templatePage = $request->page();
+
+        abort_if($templatePage === null, 404);
+
+        try {
+            new SetFieldValues(
+                user: $request->user(),
+                record: $contact,
+                page: $templatePage,
+                values: $request->validated('fields', []),
+                yearIsUnknown: $request->validated('year_is_unknown', []),
+                monthIsUnknown: $request->validated('month_is_unknown', []),
+            )->execute();
+        } catch (FieldIsRequired|FieldValueIsNotUnique $e) {
+            return redirect()
+                ->route('contacts.show', ['vault' => $vault, 'contact' => $contact, 'page' => $page])
+                ->withInput()
+                ->withErrors(['fields' => $e->getMessage()]);
+        }
+
+        return redirect()
+            ->route('contacts.show', ['vault' => $vault, 'contact' => $contact, 'page' => $page])
+            ->with('status', __('Saved.'))
+            ->with('status_description', __(':page is up to date.', ['page' => $templatePage->label]));
     }
 
     public function new(Request $request, Vault $vault): View

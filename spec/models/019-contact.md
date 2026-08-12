@@ -71,13 +71,13 @@ deleted_with_vault          bool                            whether the contact 
 
 ## Not done yet
 
-- **Search and filtering are still ahead.** [FieldValue](022-field-value.md) and [FieldValueRow](021-field-value-row.md) exist, so a contact now holds what somebody typed and the `hasMany` side reads it. What is missing is the promise that every field is searchable with no configuration (13), which starts at [SearchIndexEntry](054-search-index-entry.md).
+- **Search and filtering are still ahead.** A contact holds what somebody typed, a template page is the form that writes it, and the page reads it back. What is missing is the promise that every field is searchable with no configuration (13), which starts at [SearchIndexEntry](054-search-index-entry.md).
 - **Nothing sets the avatar.** The column points at [File](008-file.md), the constraint is there and the relationship reads it, but no action and no screen picks a file for a contact. Choosing one has to move `reference_count` through `AttachFile` and `DetachFile`, and until something offers that choice every contact is drawn as its initials.
 - **`last_activity_at`, `activity_count` and `last_consulted_at` stay null and zero.** They are maintained on write by the models that produce them, and neither [Activity](036-activity.md) nor a screen to consult a contact on exists.
 - **Deleting a contact cancels nothing, and neither does archiving one.** [Reminder](040-reminder.md) is ahead, so the cancelling of future occurrences and their restoration wait for it. `ArchiveContact` and `UnarchiveContact` move the flag and nothing else until then.
 - **A partial contact is created by passing a flag.** Nothing produces one on its own, since a mention comes from [Relationship](026-relationship.md). What exists is the state and the fact that the main lists ignore it.
 - **Merging is not here.** [ContactMerge](034-contact-merge.md) is its own model, and with it the rule that a partial contact stops being partial when it is merged.
-- **No screen and no API.** Model and actions only.
+- **No API.** The screens exist: the list, the form that writes somebody down, the record with a page per template page, the form that changes the name, and the screen listing what a structure has stopped asking for.
 
 ## Decisions taken while building it
 

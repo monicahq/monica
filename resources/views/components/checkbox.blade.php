@@ -3,7 +3,12 @@
   the drawn box, which the peer variants fill in when it is checked, so there is
   no javascript involved and the keyboard still works.
 
+  The id is also the name of the box, so one prop drives both. A screen that
+  repeats the same box down a list, or names it after something it holds rather
+  than after itself, gives `name` separately, exactly as <x-input> does.
+
   @var string $id
+  @var string|null $name
   @var string $value
   @var bool $checked
   @var bool $required
@@ -11,6 +16,7 @@
 --}}
 @props([
   'id',
+  'name' => null,
   'value' => '1',
   'checked' => false,
   'required' => false,
@@ -22,7 +28,7 @@
     <input
       type="checkbox"
       id="{{ $id }}"
-      name="{{ $id }}"
+      name="{{ $name ?? $id }}"
       value="{{ $value }}"
       @checked($checked)
       @if ($error) aria-invalid="true" aria-describedby="{{ $id }}-error" @endif

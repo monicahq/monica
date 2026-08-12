@@ -81,6 +81,29 @@ enum FieldTypeEnum: string
     }
 
     /**
+     * Whether a form can offer a control for this type yet.
+     *
+     * It is not a property of the type so much as a property of how far the
+     * interface has got, and it is here because three separate things have to
+     * agree about it: the page that draws the inputs, the rules that validate
+     * them and the action that writes them. A type answering false is stored
+     * and read perfectly well; what it has no screen for is being typed in.
+     *
+     * Each of the remaining ones needs machinery of its own rather than another
+     * input: a relation needs a search across the vault, a repeater needs the
+     * whole business of adding and reordering repetitions, an address is
+     * several inputs that travel together, and the file types need an upload.
+     */
+    public function hasAnInput(): bool
+    {
+        return in_array($this, [
+            self::Text, self::Textarea, self::Number, self::Boolean, self::Url,
+            self::Email, self::Phone, self::Select, self::Multiselect, self::Radio,
+            self::Date, self::RecurringDate,
+        ], true);
+    }
+
+    /**
      * Whether the field draws its choices from a value list, which is what
      * spares somebody retyping the same handful of options into every field
      * that offers them.

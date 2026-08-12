@@ -97,6 +97,11 @@
     </div>
 
     <div class="ml-auto flex flex-wrap items-center gap-2.5">
+      <x-button.secondary :href="$viewModel->nameUrl()" data-turbo="true" size="small">
+        <x-icon name="profile" :size="15" :stroke-width="1.6" />
+        {{ __('Change the name') }}
+      </x-button.secondary>
+
       <span aria-disabled="true" class="{{ $inert }}">
         <x-icon name="reminder" :size="15" :stroke-width="1.6" />
         {{ __('Remind me') }}
@@ -148,6 +153,18 @@
         data-turbo="true"
         class="transition-colors duration-(--duration-fast) ease-out hover:text-ink"
       >{{ __('Change pages') }}</a>
+
+      {{--
+        Only offered when there is something to see. A link to a screen that
+        says "nothing here" is a question the page raises for no reason.
+      --}}
+      @if ($viewModel->hasValuesSetAside())
+        <a
+          href="{{ $viewModel->setAsideUrl() }}"
+          data-turbo="true"
+          class="transition-colors duration-(--duration-fast) ease-out hover:text-ink"
+        >{{ __('Set aside') }}</a>
+      @endif
     </span>
   </div>
 

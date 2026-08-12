@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Helpers\FieldValueFormatter;
 use App\Models\Contact;
 use App\Models\Field;
+use App\Models\FieldValue;
 use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
@@ -23,9 +25,11 @@ use Illuminate\Support\Collection;
  * other. The pages after it are the template's, and each is the sections on it
  * with the fields inside them.
  *
- * Half of this screen has no model behind it yet. Nothing stores a value
- * against a field, so every field reads as not recorded rather than showing
- * something invented that cannot then be edited. The history, the facts, the
+ * What the template asks is real: the pages, the sections, the fields and now
+ * the answers, which are read through {@see FieldValueFormatter} so the page
+ * and the form that edits it agree about what a value says.
+ *
+ * The rest of the screen has no model behind it yet. The history, the
  * relationships, the reminders and the tasks are each their own model and none
  * of them has been written; they are drawn here with placeholder content so the
  * screen can be judged as a whole, and every method that builds one says so.
@@ -47,6 +51,20 @@ class ContactViewModel
      * section carries no colour of its own, and four panels of identical grey
      * are four panels somebody has to read the heading of to tell apart.
      */
+    /**
+     * How many highlighted fields the header shows before the rest fall through
+     * to the panel down the side. Three fits beside the photograph on the
+     * narrowest screen the header is drawn for, and a fourth wraps.
+     */
+    private const int HEADER_FACTS = 3;
+
+    /**
+     * The colours the header facts are marked in, taken in turn.
+     *
+     * @var list<string>
+     */
+    private const array FACT_HUES = ['text-rose', 'text-forest', 'text-sky'];
+
     private const array SECTION_HUES = [
         'bg-indigo-tint text-indigo',
         'bg-forest-tint text-forest',
@@ -63,6 +81,44 @@ class ContactViewModel
         private readonly Contact $contact,
         private readonly ?string $selectedPageKey = null,
     ) {}
+
+    /**
+     * Everything written on the record, keyed by the field it answers, read
+     * once for the whole screen. The header, the panels and each page all ask
+     * about values, and asking the database again for every field of every
+     * section is how a page of forty fields becomes forty queries.
+     *
+     * The values set aside are left out. A field that has left the structure
+     * has a screen of its own that explains why; on this one it would be an
+     * answer to a question the page no longer asks.
+     *
+     * @return Collection<int, FieldValue>
+     */
+    private function values(): Collection
+    {
+        return once(fn (): Collection => $this->contact
+            ->fieldValues()
+            ->attached()
+            ->whereNull('field_value_row_id')
+            ->with(['field', 'valueListItem'])
+            ->get()
+            ->keyBy('field_id'));
+    }
+
+    /**
+     * What one field reads as, or null when nothing has been written in it.
+     */
+    private function valueOf(Field $field): ?string
+    {
+        $value = $this->values()->get($field->id);
+
+        return $value === null ? null : $this->formatter()->format($value);
+    }
+
+    private function formatter(): FieldValueFormatter
+    {
+        return once(fn (): FieldValueFormatter => new FieldValueFormatter($this->user));
+    }
 
     public function user(): User
     {
@@ -102,6 +158,31 @@ class ContactViewModel
     public function peopleUrl(): string
     {
         return route('contacts.index', $this->vault);
+    }
+
+    /**
+     * Where the name is changed. It is the one thing on the record the template
+     * has no say over, so it is edited somewhere the template has no say over
+     * either.
+     */
+    public function nameUrl(): string
+    {
+        return route('contacts.name.edit', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
+    public function setAsideUrl(): string
+    {
+        return route('contacts.setAside.index', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
+    /**
+     * Whether anything is being kept for a question the structure has stopped
+     * asking. The link to that screen is offered only when it is, since a link
+     * to a page that says "nothing here" raises a question for no reason.
+     */
+    public function hasValuesSetAside(): bool
+    {
+        return once(fn (): bool => $this->contact->fieldValues()->where('is_detached', true)->exists());
     }
 
     /**
@@ -219,6 +300,41 @@ class ContactViewModel
     }
 
     /**
+     * Where the open page is saved. It is the address of the page itself, since
+     * showing what a page holds and writing what a page holds are the same
+     * place asked two different ways.
+     */
+    public function saveUrl(): string
+    {
+        return route('contacts.update', [
+            'vault' => $this->vault,
+            'contact' => $this->contact,
+            'page' => $this->selectedPage()?->key,
+        ]);
+    }
+
+    /**
+     * The address of the open page, which the cancel button goes back to and
+     * which therefore reloads whatever was last saved.
+     */
+    public function pageUrl(): string
+    {
+        return $this->urlTo($this->selectedPage()?->key);
+    }
+
+    /**
+     * What the save bar says it is about to do. It names the page, since the
+     * tabs mean somebody may have several open in mind and only one of them is
+     * being written.
+     */
+    public function saveLine(): string
+    {
+        return __('Saving writes the whole of :page.', [
+            'page' => $this->selectedPage()->label ?? __('this page'),
+        ]);
+    }
+
+    /**
      * What the open page says when the template puts nothing on it. A page with
      * no section is a page somebody made and has not filled yet, which is a
      * sentence rather than an empty rectangle.
@@ -242,52 +358,76 @@ class ContactViewModel
     }
 
     /**
-     * The three facts beside the photograph. Placeholder until dates, addresses
-     * and activities exist. Only the last of them is real today.
+     * The facts beside the photograph: the fields the template marks as
+     * highlighted, and how long it has been since the last real interaction.
+     *
+     * The highlighted ones are read across every page of the version rather
+     * than only the open one. A field put in the header is meant to stay there,
+     * and walking between tabs must not change which of them are visible.
      *
      * @return array<int, array{icon: string, label: string, value: string, iconClass: string}>
      */
     public function headerFacts(): array
     {
-        return [
-            [
-                'icon' => 'calendar',
-                'label' => __('Birthday'),
-                'value' => __('Not recorded'),
-                'iconClass' => 'text-rose',
-            ],
-            [
-                'icon' => 'place',
-                'label' => __('Lives in'),
-                'value' => __('Not recorded'),
-                'iconClass' => 'text-forest',
-            ],
-            [
-                'icon' => 'timeline',
-                'label' => __('Last in touch'),
-                'value' => $this->contact->last_activity_at?->diffForHumans() ?? __('never'),
-                'iconClass' => 'text-muted',
-            ],
+        $facts = $this->highlightedFields()
+            ->take(self::HEADER_FACTS)
+            ->values()
+            ->map(fn (Field $field, int $index): array => [
+                'icon' => 'file',
+                'label' => $field->label,
+                'value' => $this->valueOf($field) ?? __('Not recorded'),
+                'iconClass' => self::FACT_HUES[$index % count(self::FACT_HUES)],
+            ])
+            ->all();
+
+        $facts[] = [
+            'icon' => 'timeline',
+            'label' => __('Last in touch'),
+            'value' => $this->contact->last_activity_at?->diffForHumans() ?? __('never'),
+            'iconClass' => 'text-muted',
         ];
+
+        return $facts;
     }
 
     /**
-     * The facts panel down the right. Placeholder until a value is stored
-     * against a field: these are the questions the product will always ask
-     * about somebody, and none of them can be answered yet.
+     * The fields the template puts in the header, in the order the pages and
+     * the sections put them.
+     *
+     * @return Collection<int, Field>
+     */
+    private function highlightedFields(): Collection
+    {
+        return once(fn (): Collection => $this->contact->templateVersion->assembly
+            ->flatMap(fn (TemplateVersionSection $row): Collection => $this->storedFields($row->sectionVersion->fields))
+            ->filter(fn (Field $field): bool => $field->is_highlighted)
+            ->values());
+    }
+
+    /**
+     * The facts panel down the right: the nickname, which the product imposes
+     * and therefore always knows about, and every highlighted field the header
+     * had no room for.
+     *
+     * It used to list six questions the product would always ask. It asks none
+     * of them: what is asked about somebody is what their template asks, so the
+     * panel reads the template rather than a list written here.
      *
      * @return array<int, array{icon: string, label: string, value: string|null}>
      */
     public function facts(): array
     {
-        return [
-            ['icon' => 'calendar', 'label' => __('Born'), 'value' => null],
-            ['icon' => 'place', 'label' => __('Address'), 'value' => null],
-            ['icon' => 'device', 'label' => __('Telephone'), 'value' => null],
-            ['icon' => 'mail', 'label' => __('Email'), 'value' => null],
-            ['icon' => 'info', 'label' => __('How you met'), 'value' => null],
-            ['icon' => 'file', 'label' => __('Nickname'), 'value' => $this->contact->nickname],
-        ];
+        $facts = [['icon' => 'file', 'label' => __('Nickname'), 'value' => $this->contact->nickname]];
+
+        foreach ($this->highlightedFields()->skip(self::HEADER_FACTS) as $field) {
+            $facts[] = [
+                'icon' => 'info',
+                'label' => $field->label,
+                'value' => $this->valueOf($field),
+            ];
+        }
+
+        return $facts;
     }
 
     /**
@@ -340,16 +480,20 @@ class ContactViewModel
      * is there to break a long form up and carries nothing, so a page showing
      * what is known about somebody has nothing to say about it.
      *
-     * @return array<int, array{label: string, help: string|null, typeLabel: string, value: string|null}>
+     * @return array<int, array{id: int, label: string, help: string|null, typeLabel: string, value: string|null, field: Field, rawValue: FieldValue|null, isEditable: bool}>
      */
     private function fieldsIn(TemplateVersionSection $row): array
     {
         return $this->storedFields($row->sectionVersion->fields)
             ->map(fn (Field $field): array => [
+                'id' => $field->id,
                 'label' => $field->label,
                 'help' => $field->help_text,
                 'typeLabel' => FieldCatalogueViewModel::labelFor($field->type),
-                'value' => null,
+                'value' => $this->valueOf($field),
+                'field' => $field,
+                'rawValue' => $this->values()->get($field->id),
+                'isEditable' => $field->type->hasAnInput(),
             ])
             ->values()
             ->all();

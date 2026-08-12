@@ -1,19 +1,16 @@
 {{--
-  One page of the record: the sections the template puts on it, and the fields
-  inside each.
+  One page of the record: the sections the template puts on it, and a control
+  for each field inside them.
 
-  A field is a label and its answer, and nothing here has an answer yet: a value
-  stored against a field is its own table and it has not been written. So what
-  the page can honestly show is which questions it asks about somebody, each
-  answered "not recorded" in the placeholder colour. That is the same treatment
-  a field with nothing in it will keep once values arrive, so nothing about the
-  page changes shape on the day they do.
+  The page is the form rather than a read-only list with an edit screen behind
+  it. A page is the unit somebody fills in, and it is also the only thing that
+  can refuse a required field: a value saved on its own never sees the question
+  nobody has reached yet.
 
-  The type at the end of each row is what the field is, in mono, because it is a
-  machine value rather than something about the person.
+  A field whose type has no control yet says so in place rather than being left
+  out, so nobody wonders where the question went.
 
-  It is its own file because it is the half of the screen the tabs swap, and the
-  page that grows an ajax swap between tabs will aim at this.
+  It is its own file because it is the half of the screen the tabs swap.
 
   @var \App\ViewModels\Vaults\ContactViewModel $viewModel
 --}}
@@ -37,23 +34,48 @@
     </x-empty-state>
   </x-panel>
 @else
-  <div class="grid items-start gap-5 lg:grid-cols-2">
-    @foreach ($sections as $section)
-      <x-panel :title="$section['name']" :icon="$section['icon']" :icon-class="$section['iconClass']" :flush="true">
-        @forelse ($section['fields'] as $field)
-          <div class="flex items-baseline gap-4 border-b border-hairline px-4.5 py-2.75 last:border-b-0">
-            <span class="w-37.5 flex-none text-xs tracking-caption text-muted uppercase">{{ $field['label'] }}</span>
+  <x-form
+    method="put"
+    :action="$viewModel->saveUrl()"
+    class="flex flex-col gap-5"
+  >
+    <div class="grid items-start gap-5 lg:grid-cols-2">
+      @foreach ($sections as $section)
+        <x-panel :title="$section['name']" :icon="$section['icon']" :icon-class="$section['iconClass']">
+          @forelse ($section['fields'] as $field)
+            <div @class(['pb-4 last:pb-0'])>
+              <x-field-input
+                :field="$field['field']"
+                :value="$field['rawValue']"
+                :formatted="$field['value']"
+                :error="$errors->get('fields.'.$field['id'])"
+              />
+            </div>
+          @empty
+            <p class="text-sm text-pretty text-muted">{{ __('This section asks nothing yet.') }}</p>
+          @endforelse
+        </x-panel>
+      @endforeach
+    </div>
 
-            <span @class(['text-base text-pretty', $field['value'] ? 'text-ink' : 'text-placeholder'])>
-              {{ $field['value'] ?? __('Not recorded') }}
-            </span>
+    {{--
+      The bar that saves the page. It sticks to the bottom of the window so a
+      long page does not have to be scrolled to the end before it can be saved,
+      and it says which page it is saving, since the tabs mean somebody may be
+      looking at one of several.
+    --}}
+    <div class="sticky bottom-4 flex flex-wrap items-center gap-3 rounded-lg border border-hairline bg-canvas/95 px-4 py-3 shadow-sm backdrop-blur">
+      <p class="text-sm text-pretty text-muted">{{ $viewModel->saveLine() }}</p>
 
-            <span class="ml-auto font-mono text-[11px] text-placeholder">{{ $field['typeLabel'] }}</span>
-          </div>
-        @empty
-          <p class="px-4.5 py-2.75 text-sm text-pretty text-muted">{{ __('This section asks nothing yet.') }}</p>
-        @endforelse
-      </x-panel>
-    @endforeach
-  </div>
+      <div class="ml-auto flex items-center gap-2">
+        <x-button.secondary :href="$viewModel->pageUrl()" size="small">
+          {{ __('Cancel') }}
+        </x-button.secondary>
+
+        <x-button type="submit" size="small">
+          {{ __('Save this page') }}
+        </x-button>
+      </div>
+    </div>
+  </x-form>
 @endif

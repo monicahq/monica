@@ -63,6 +63,37 @@ class FieldTypeEnumTest extends TestCase
     }
 
     #[Test]
+    public function it_says_which_types_a_form_can_offer_a_control_for(): void
+    {
+        $this->assertTrue(FieldTypeEnum::Text->hasAnInput());
+        $this->assertTrue(FieldTypeEnum::RecurringDate->hasAnInput());
+        $this->assertTrue(FieldTypeEnum::Multiselect->hasAnInput());
+    }
+
+    #[Test]
+    public function it_says_which_types_still_need_machinery_of_their_own(): void
+    {
+        $this->assertFalse(FieldTypeEnum::Relation->hasAnInput());
+        $this->assertFalse(FieldTypeEnum::Repeater->hasAnInput());
+        $this->assertFalse(FieldTypeEnum::Address->hasAnInput());
+        $this->assertFalse(FieldTypeEnum::File->hasAnInput());
+        $this->assertFalse(FieldTypeEnum::Image->hasAnInput());
+        $this->assertFalse(FieldTypeEnum::Avatar->hasAnInput());
+    }
+
+    #[Test]
+    public function it_never_offers_a_control_for_a_type_that_stores_nothing(): void
+    {
+        foreach (FieldTypeEnum::cases() as $type) {
+            if ($type->storesValue()) {
+                continue;
+            }
+
+            $this->assertFalse($type->hasAnInput());
+        }
+    }
+
+    #[Test]
     public function it_says_which_types_read_from_a_value_list(): void
     {
         $this->assertTrue(FieldTypeEnum::Select->usesValueList());

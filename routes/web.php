@@ -36,6 +36,8 @@ use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionControlle
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicationController;
 use App\Http\Controllers\App\Settings\SettingsController;
 use App\Http\Controllers\App\Vaults\ContactController;
+use App\Http\Controllers\App\Vaults\ContactNameController;
+use App\Http\Controllers\App\Vaults\SetAsideValueController;
 use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
 use App\Http\Controllers\App\Vaults\VaultSettingsController;
@@ -74,9 +76,33 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     // would arrive here as somebody to look up, and postgres refuses to compare
     // a uuid column against a word at all: a mistyped chip would be a 500
     // rather than the 404 it is.
+    // Both of these sit above the page route and would be shadowed by a
+    // template page whose key slugified to the same word. It is the collision
+    // the overview tab already carries and answers the same way: a page called
+    // "Set aside" on a record that has values set aside is the least surprising
+    // clash available, and naming one of them is already unlikely.
+    Route::get('vaults/{vault}/contacts/{contact}/set-aside', [SetAsideValueController::class, 'index'])
+        ->whereUuid('contact')
+        ->name('contacts.setAside.index');
+
+    Route::get('vaults/{vault}/contacts/{contact}/name', [ContactNameController::class, 'edit'])
+        ->whereUuid('contact')
+        ->name('contacts.name.edit');
+
+    Route::put('vaults/{vault}/contacts/{contact}/name', [ContactNameController::class, 'update'])
+        ->whereUuid('contact')
+        ->name('contacts.name.update');
+
     Route::get('vaults/{vault}/contacts/{contact}/{page?}', [ContactController::class, 'show'])
         ->whereUuid('contact')
         ->name('contacts.show');
+
+    // Saving a page is the same address asked a different way, which is what
+    // keeps it clear of the list above: nothing new has to be constrained off
+    // `contacts/new`, because the verb already tells the two apart.
+    Route::put('vaults/{vault}/contacts/{contact}/{page?}', [ContactController::class, 'update'])
+        ->whereUuid('contact')
+        ->name('contacts.update');
 
     Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
     Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');

@@ -134,6 +134,8 @@ class CreateEntity
 
             $this->entityType->increment('entity_count');
             $this->version->increment('record_count');
+
+            new WriteDefaultValues(user: $this->user, record: $this->entity)->execute();
         });
     }
 

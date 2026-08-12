@@ -67,9 +67,8 @@ updated_at                  datetime
 - **Writing a value queues no reindex.** [SearchIndexEntry](054-search-index-entry.md) is ahead, so the promise that saving stays instantaneous while the index catches up behind it has nothing to catch up. The typed columns and their indexes are there, which is the half of section 13 that had to be decided now.
 - **`value_datetime` is written by nothing.** No type in the first version carries a time as well as a date. The column is there because the file lists it, and the first type that needs one will be what fills it.
 - **Nothing removes a field from a structure on its own.** `DetachFieldValues` and `ReattachFieldValues` do the work and are called by hand or by `MoveRecordToTemplateVersion`; a section version that drops a field and is then republished does not walk its values yet, because deciding what a field of the same key on a new section version is to a value of the old one is the builder's question, not this model's.
-- **`is_sensitive` masks nothing and `default_value` is handed to nobody.** Both are rendering, and there is no screen.
-- **`is_required` is enforced nowhere.** Required is a statement about a whole record being submitted, and there is no action that submits one; writing one value at a time cannot honestly refuse an empty field somebody has not reached yet.
-- **No screen and no API.** Model and actions only.
+- **Six types have no control yet.** `relation`, `repeater`, `address`, `file`, `image` and `avatar` are stored and read perfectly well and cannot be typed in: each needs machinery rather than another input, being respectively a search across the vault, the whole business of adding and reordering repetitions, several inputs that travel together, and an upload. `FieldTypeEnum::hasAnInput()` is what says so, and the page draws such a field as what it holds with a line saying it cannot be edited there.
+- **No API.** The screens exist: a template page is a form, and what a field holds is read back through `FieldValueFormatter`.
 
 ## Decisions taken while building it
 
@@ -82,6 +81,11 @@ updated_at                  datetime
 - **A relation may not cross a vault.** The specification does not say it in as many words, and the alternative is a value that reads what is on the other side of a compartment.
 - **The counts on files and on value list items are moved by the action that writes,** through the existing `AttachFile` and `DetachFile` and by hand for the items. Both are counted on write for the same reason: counting on read means aggregating the largest table in the product.
 - **Clearing a value deletes the row; a field leaving the structure does not.** They look alike and are not the same event. Somebody who empties a field has nothing to be explained or restored later; a field taken out of a structure leaves values that are set aside, listed and restorable.
+- **A page is what gets saved, not a value.** `SetFieldValues` takes a whole template page and writes it in one transaction. It is the unit somebody fills in, and it is the only thing that can refuse a required field: writing one value at a time never sees the question nobody has reached yet, which is why `is_required` went unenforced until there was a page to enforce it against.
+- **A field left empty is cleared rather than skipped.** Somebody who deletes what they typed and saves has said something, and a save that quietly kept the old answer would be losing their edit rather than keeping their data. A field that was already empty is left alone, so a save that changed nothing writes nothing and says nothing in the journal.
+- **`SetFieldValues` writes nothing itself and logs nothing itself.** Each value goes through `SetFieldValue` and each clearing through `DestroyFieldValue`, which is where the journal entries come from. A line saying a page was saved, above a list repeating what each field now holds, would be the same story told twice.
+- **The placeholder year never reaches a screen, including the date control.** A date input has to be given a year, and handing back the stored placeholder would put 1900 in front of somebody as though they had typed it. The control is filled with the current year instead: the day and the month are what was entered and what comes back, and the save writes the placeholder again while the box stays ticked.
+- **Reading a value is its own class.** `FieldValueFormatter` turns a stored value into what a page shows, because the page and the form that edits it have to agree about what a value says, and because none of it belongs to the value: a choice is read as its item's label, a date in the order the reader reads dates, a number with the separators they use.
 
 ## Open questions
 

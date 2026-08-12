@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Vaults;
 
+use App\Enums\FieldTypeEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
+use App\Models\FieldValue;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\Template;
@@ -693,8 +695,184 @@ class ContactControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Ongoing')
             ->assertSee('Knee')
-            ->assertSee('Not recorded')
+            ->assertSee('Save this page')
             ->assertDontSee('History');
+    }
+
+    #[Test]
+    public function it_offers_a_control_for_every_field_the_page_asks_about(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $version = $this->versionWithAPage($user, 'Health', 'Ongoing', 'Knee');
+        $michael->update(['template_version_id' => $version->id]);
+        $field = Field::query()->where('label', 'Knee')->firstOrFail();
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'health']))
+            ->assertStatus(200)
+            ->assertSee('name="fields['.$field->id.']"', false);
+    }
+
+    #[Test]
+    public function it_shows_what_was_written_in_a_field(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $version = $this->versionWithAPage($user, 'Health', 'Ongoing', 'Knee');
+        $michael->update(['template_version_id' => $version->id]);
+        $field = Field::query()->where('label', 'Knee')->firstOrFail();
+
+        FieldValue::factory()->create([
+            'account_id' => $michael->account_id,
+            'vault_id' => $michael->vault_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $michael->id,
+            'field_id' => $field->id,
+            'field_key' => $field->key,
+            'value_string' => 'Twisted it skiing',
+        ]);
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'health']))
+            ->assertStatus(200)
+            ->assertSee('Twisted it skiing', false);
+    }
+
+    #[Test]
+    public function it_saves_the_page(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $version = $this->versionWithAPage($user, 'Health', 'Ongoing', 'Knee');
+        $michael->update(['template_version_id' => $version->id]);
+        $field = Field::query()->where('label', 'Knee')->firstOrFail();
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.update', ['vault' => $vault, 'contact' => $michael, 'page' => 'health']),
+                ['fields' => [$field->id => 'Twisted it skiing']],
+            )
+            ->assertRedirect(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'health']))
+            ->assertSessionHas('status');
+
+        $this->assertDatabaseHas('field_values', [
+            'valuable_id' => $michael->id,
+            'field_id' => $field->id,
+            'value_string' => 'Twisted it skiing',
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_to_save_a_required_field_left_empty(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $version = $this->versionWithAPage($user, 'Health', 'Ongoing', 'Knee');
+        $michael->update(['template_version_id' => $version->id]);
+        $field = Field::query()->where('label', 'Knee')->firstOrFail();
+        $field->sectionVersion->update(['status' => VersionStatusEnum::Draft]);
+        $field->update(['is_required' => true]);
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.update', ['vault' => $vault, 'contact' => $michael, 'page' => 'health']),
+                ['fields' => [$field->id => '']],
+            )
+            ->assertSessionHasErrors('fields.'.$field->id);
+
+        $this->assertSame(0, FieldValue::query()->count());
+    }
+
+    /**
+     * The placeholder year is what makes a birthday with no year storable, and
+     * it must never reach a screen: not as text on the page, and not sitting in
+     * the date control either, where it would read as a fact somebody entered.
+     */
+    #[Test]
+    public function it_never_puts_the_placeholder_year_on_the_screen(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $version = $this->versionWithAPage($user, 'Health', 'Dates', 'Birthday');
+        $michael->update(['template_version_id' => $version->id]);
+        $field = Field::query()->where('label', 'Birthday')->firstOrFail();
+        $field->sectionVersion->update(['status' => VersionStatusEnum::Draft]);
+        $field->update(['type' => FieldTypeEnum::RecurringDate]);
+
+        $this->actingAs($user)->put(
+            route('contacts.update', ['vault' => $vault, 'contact' => $michael, 'page' => 'health']),
+            [
+                'fields' => [$field->id => '1964-03-15'],
+                'year_is_unknown' => [$field->id => '1'],
+            ],
+        );
+
+        $stored = FieldValue::query()->where('field_id', $field->id)->firstOrFail();
+
+        $this->assertTrue($stored->year_is_unknown);
+        $this->assertSame(FieldValue::PLACEHOLDER_YEAR, (int) $stored->value_date->format('Y'));
+
+        $html = (string) $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'health']))
+            ->getContent();
+
+        $this->assertStringNotContainsString((string) FieldValue::PLACEHOLDER_YEAR, $html);
+    }
+
+    #[Test]
+    public function it_refuses_to_save_a_page_of_somebody_in_another_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $elsewhere = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $version = $this->versionWithAPage($user, 'Health', 'Ongoing', 'Knee');
+        $michael->update(['template_version_id' => $version->id]);
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.update', ['vault' => $elsewhere, 'contact' => $michael, 'page' => 'health']),
+                ['fields' => []],
+            )
+            ->assertNotFound();
+    }
+
+    #[Test]
+    public function it_refuses_to_save_a_page_the_structure_does_not_have(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $version = $this->versionWithAPage($user, 'Health', 'Ongoing', 'Knee');
+        $michael->update(['template_version_id' => $version->id]);
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.update', ['vault' => $vault, 'contact' => $michael, 'page' => 'schrute-farms']),
+                ['fields' => []],
+            )
+            ->assertNotFound();
     }
 
     #[Test]

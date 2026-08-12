@@ -7,6 +7,7 @@ namespace Tests\Unit\ViewModels\Vaults;
 use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
+use App\Models\FieldValue;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\Template;
@@ -100,18 +101,6 @@ class ContactViewModelTest extends TestCase
     }
 
     #[Test]
-    public function nothing_is_stored_against_a_field_yet(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
-        $contact = $this->contact($user, $version);
-
-        $sections = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health'))->sections();
-
-        $this->assertNull($sections[0]['fields'][0]['value']);
-    }
-
-    #[Test]
     public function it_says_which_template_and_which_version_of_it_the_page_renders_from(): void
     {
         $user = User::factory()->create();
@@ -140,7 +129,7 @@ class ContactViewModelTest extends TestCase
     }
 
     #[Test]
-    public function the_last_fact_beside_the_photograph_is_the_only_one_that_is_real(): void
+    public function the_last_thing_beside_the_photograph_is_how_long_it_has_been(): void
     {
         $user = User::factory()->create();
         $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
@@ -148,8 +137,7 @@ class ContactViewModelTest extends TestCase
 
         $facts = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact))->headerFacts();
 
-        $this->assertSame('Not recorded', $facts[0]['value']);
-        $this->assertStringContainsString('days ago', $facts[2]['value']);
+        $this->assertStringContainsString('days ago', end($facts)['value']);
     }
 
     #[Test]
@@ -161,7 +149,116 @@ class ContactViewModelTest extends TestCase
 
         $facts = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact))->headerFacts();
 
-        $this->assertSame('never', $facts[2]['value']);
+        $this->assertSame('never', end($facts)['value']);
+    }
+
+    #[Test]
+    public function it_reads_back_what_was_written_in_a_field(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
+        $contact = $this->contact($user, $version);
+        $this->write($contact, $this->fieldCalled($version, 'Knee'), 'Twisted it skiing');
+
+        $viewModel = new ContactViewModel(
+            user: $user,
+            vault: $contact->vault,
+            contact: $contact,
+            selectedPageKey: 'health',
+        );
+
+        $this->assertSame('Twisted it skiing', $viewModel->sections()[0]['fields'][0]['value']);
+    }
+
+    #[Test]
+    public function a_field_nobody_has_answered_reads_as_nothing(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
+        $contact = $this->contact($user, $version);
+
+        $viewModel = new ContactViewModel(
+            user: $user,
+            vault: $contact->vault,
+            contact: $contact,
+            selectedPageKey: 'health',
+        );
+
+        $this->assertNull($viewModel->sections()[0]['fields'][0]['value']);
+    }
+
+    #[Test]
+    public function a_value_set_aside_is_not_on_the_page_at_all(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
+        $contact = $this->contact($user, $version);
+        $value = $this->write($contact, $this->fieldCalled($version, 'Knee'), 'Twisted it skiing');
+        $value->update(['is_detached' => true, 'detached_at' => now()]);
+
+        $viewModel = new ContactViewModel(
+            user: $user,
+            vault: $contact->vault,
+            contact: $contact,
+            selectedPageKey: 'health',
+        );
+
+        $this->assertNull($viewModel->sections()[0]['fields'][0]['value']);
+    }
+
+    #[Test]
+    public function a_highlighted_field_reaches_the_header_from_a_page_that_is_not_open(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, [
+            'Health' => ['Ongoing' => ['Knee']],
+            'Work' => ['Job' => ['Employer']],
+        ]);
+        $employer = $this->fieldCalled($version, 'Employer');
+        $employer->update(['is_highlighted' => true]);
+        $contact = $this->contact($user, $version->refresh());
+        $this->write($contact, $employer, 'Dunder Mifflin');
+
+        $facts = new ContactViewModel(
+            user: $user,
+            vault: $contact->vault,
+            contact: $contact,
+            selectedPageKey: 'health',
+        )->headerFacts();
+
+        $this->assertSame('Employer', $facts[0]['label']);
+        $this->assertSame('Dunder Mifflin', $facts[0]['value']);
+    }
+
+    #[Test]
+    public function the_facts_panel_asks_what_the_template_asks_and_nothing_else(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
+        $contact = $this->contact($user, $version, ['nickname' => 'Prison Mike']);
+
+        $facts = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->facts();
+
+        $this->assertCount(1, $facts);
+        $this->assertSame('Prison Mike', $facts[0]['value']);
+    }
+
+    private function fieldCalled(TemplateVersion $version, string $label): Field
+    {
+        return Field::query()->where('label', $label)->firstOrFail();
+    }
+
+    private function write(Contact $contact, Field $field, string $value): FieldValue
+    {
+        return FieldValue::factory()->create([
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'field_key' => $field->key,
+            'value_string' => $value,
+        ]);
     }
 
     /**
