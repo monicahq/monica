@@ -363,6 +363,10 @@ class VaultControllerTest extends TestCase
         $this->assertTrue($existing->fresh()->is_default);
     }
 
+    /**
+     * The chosen version arrives as a string, which is what a select sends and
+     * what the `integer` rule lets through without converting.
+     */
     #[Test]
     public function it_starts_the_contacts_of_the_vault_on_the_template_that_was_picked(): void
     {
@@ -374,8 +378,8 @@ class VaultControllerTest extends TestCase
         $this->actingAs($user)->post(route('vaults.create'), [
             'name' => 'Dunder Mifflin',
             'colour' => '#4f8a49',
-            'template_version_id' => $chosen->published_version_id,
-        ]);
+            'template_version_id' => (string) $chosen->published_version_id,
+        ])->assertRedirect(route('vaults.index'));
 
         $this->assertDatabaseHas('vault_default_templates', [
             'account_id' => $user->account_id,

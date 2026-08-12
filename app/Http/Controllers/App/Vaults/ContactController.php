@@ -153,7 +153,7 @@ class ContactController extends Controller
         $contact = new CreateContact(
             user: $request->user(),
             vault: $vault,
-            templateVersion: $this->versionAskedFor($validated['template_version_id'] ?? null),
+            templateVersion: $this->versionAskedFor($request),
             prefix: $validated['prefix'] ?? null,
             firstName: $validated['first_name'],
             middleName: $validated['middle_name'] ?? null,
@@ -217,14 +217,19 @@ class ContactController extends Controller
      * The version the contact lands on, which is nothing at all when the screen
      * offered no choice: the action reads the vault's default in that case, and
      * naming it here would only repeat the same lookup.
+     *
+     * It is read off the request rather than out of the validated array, because
+     * `integer` is a rule about what arrived rather than a cast: a form sends
+     * "2" and the validator hands back the same string. Validation has already
+     * run, so what is read here is what passed it.
      */
-    private function versionAskedFor(?int $versionId): ?TemplateVersion
+    private function versionAskedFor(Request $request): ?TemplateVersion
     {
-        if ($versionId === null) {
+        if (! $request->filled('template_version_id')) {
             return null;
         }
 
-        return TemplateVersion::query()->find($versionId);
+        return TemplateVersion::query()->find($request->integer('template_version_id'));
     }
 
     private function nameOrderAskedFor(?string $order): ?NameOrderEnum

@@ -75,7 +75,7 @@ class VaultController extends Controller
             colour: $validated['colour'],
         )->execute();
 
-        $this->settleWhatContactsStartFrom($request, $vault, $validated['template_version_id'] ?? null);
+        $this->settleWhatContactsStartFrom($request, $vault);
 
         if ($request->boolean('is_default')) {
             new SetDefaultVault(user: $request->user(), vault: $vault)->execute();
@@ -164,16 +164,16 @@ class VaultController extends Controller
         ];
     }
 
-    private function settleWhatContactsStartFrom(Request $request, Vault $vault, ?int $versionId): void
+    private function settleWhatContactsStartFrom(Request $request, Vault $vault): void
     {
-        if ($versionId === null) {
+        if (! $request->filled('template_version_id')) {
             return;
         }
 
         new SetVaultDefaultTemplate(
             user: $request->user(),
             vault: $vault,
-            templateVersion: TemplateVersion::query()->findOrFail($versionId),
+            templateVersion: TemplateVersion::query()->findOrFail($request->integer('template_version_id')),
         )->execute();
     }
 }

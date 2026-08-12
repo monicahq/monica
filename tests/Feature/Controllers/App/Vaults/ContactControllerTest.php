@@ -540,6 +540,10 @@ class ContactControllerTest extends TestCase
         $this->assertDatabaseHas('contacts', ['vault_id' => $vault->id, 'first_name' => 'Dwight']);
     }
 
+    /**
+     * The chosen version arrives as a string, which is what a select sends and
+     * what the `integer` rule lets through without converting.
+     */
     #[Test]
     public function it_starts_the_contact_on_the_template_that_was_asked_for(): void
     {
@@ -551,8 +555,8 @@ class ContactControllerTest extends TestCase
 
         $this->actingAs($user)->post(route('contacts.create', $vault), [
             'first_name' => 'Jan',
-            'template_version_id' => $work->published_version_id,
-        ]);
+            'template_version_id' => (string) $work->published_version_id,
+        ])->assertRedirect(route('contacts.index', $vault));
 
         $this->assertEquals($work->published_version_id, Contact::query()->sole()->template_version_id);
     }
