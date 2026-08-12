@@ -101,21 +101,17 @@
       </ul>
     </div>
 
+    {{--
+      One way in rather than a button for each thing that can be done to the row.
+      The page is about a person, and a header of three controls was a header
+      about the record: two of them were drawn and not offered, and the third was
+      the name.
+    --}}
     <div class="ml-auto flex flex-wrap items-center gap-2.5">
-      <x-button.secondary :href="$viewModel->nameUrl()" data-turbo="true" size="small">
+      <x-button.secondary :href="$viewModel->editUrl()" data-turbo="true" size="small">
         <x-icon name="profile" :size="15" :stroke-width="1.6" />
-        {{ __('Change the name') }}
+        {{ __('Edit contact') }}
       </x-button.secondary>
-
-      <span aria-disabled="true" class="{{ $inert }}">
-        <x-icon name="reminder" :size="15" :stroke-width="1.6" />
-        {{ __('Remind me') }}
-      </span>
-
-      <span aria-disabled="true" class="{{ $inert }}">
-        <x-icon name="note" :size="15" :stroke-width="1.6" />
-        {{ __('Write something') }}
-      </span>
     </div>
   </header>
 
@@ -149,28 +145,22 @@
       @endforeach
     </div>
 
-    <span class="ml-auto flex items-center gap-2 pb-2 text-xs text-muted">
-      <x-icon name="file" :size="15" :stroke-width="1.6" />
-      {{ __('Template') }} <b class="font-semibold text-body">{{ $viewModel->templateName() }}</b>
-      <span class="font-mono text-[11px] text-placeholder">{{ $viewModel->templateVersionLabel() }}</span>
-      <a
-        href="{{ $viewModel->templateUrl() }}"
-        data-turbo="true"
-        class="transition-colors duration-(--duration-fast) ease-out hover:text-ink"
-      >{{ __('Change pages') }}</a>
+    {{--
+      Only offered when there is something to see. A link to a screen that says
+      "nothing here" is a question the page raises for no reason.
 
-      {{--
-        Only offered when there is something to see. A link to a screen that
-        says "nothing here" is a question the page raises for no reason.
-      --}}
-      @if ($viewModel->hasValuesSetAside())
-        <a
-          href="{{ $viewModel->setAsideUrl() }}"
-          data-turbo="true"
-          class="transition-colors duration-(--duration-fast) ease-out hover:text-ink"
-        >{{ __('Set aside') }}</a>
-      @endif
-    </span>
+      Which template the record renders from used to be named here too. It is not
+      any more: it is the structure of the page rather than anything about the
+      person, and a line of machinery above every record earns its place only on
+      the screen where the machinery is changed.
+    --}}
+    @if ($viewModel->hasValuesSetAside())
+      <a
+        href="{{ $viewModel->setAsideUrl() }}"
+        data-turbo="true"
+        class="ml-auto flex items-center gap-2 pb-2 text-xs text-muted transition-colors duration-(--duration-fast) ease-out hover:text-ink"
+      >{{ __('Set aside') }}</a>
+    @endif
   </div>
 
   @if ($viewModel->onOverview())

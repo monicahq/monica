@@ -19,20 +19,6 @@ class ContactNameControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_shows_the_name_as_it_stands(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-
-        $this->actingAs($user)
-            ->get(route('contacts.name.edit', ['vault' => $contact->vault, 'contact' => $contact]))
-            ->assertStatus(200)
-            ->assertSee('Change the name')
-            ->assertSee('Michael', false)
-            ->assertSee('Scott', false);
-    }
-
-    #[Test]
     public function it_changes_what_somebody_is_called(): void
     {
         Queue::fake();
@@ -99,7 +85,9 @@ class ContactNameControllerTest extends TestCase
         $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user)
-            ->get(route('contacts.name.edit', ['vault' => $elsewhere, 'contact' => $contact]))
+            ->put(route('contacts.name.update', ['vault' => $elsewhere, 'contact' => $contact]), [
+                'first_name' => 'Michael',
+            ])
             ->assertNotFound();
     }
 

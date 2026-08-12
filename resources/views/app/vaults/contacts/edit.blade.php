@@ -1,11 +1,13 @@
 {{--
-  The form that changes what somebody is called.
+  The two things about a contact the template has no say over: what they are
+  called, and whether they are on the record at all.
 
-  It is a screen of its own rather than a row among the fields, because the name
-  is not one of them: every other question on a record comes from a structure
-  somebody chose, and this one is there whatever they choose.
+  Neither is a field, which is why neither is edited among them. The name is
+  there whatever template somebody chose, and deletion is not a question about
+  the person at all. They share a screen because they are the same errand: the
+  record offers one way in, and this is what is behind it.
 
-  @var \App\ViewModels\Vaults\ContactNameViewModel $viewModel
+  @var \App\ViewModels\Vaults\ContactEditViewModel $viewModel
 --}}
 @php
   $vault = $viewModel->vault();
@@ -30,7 +32,12 @@
   <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
   <x-form id="name-form" method="put" :action="$viewModel->action()" class="flex flex-col gap-5">
-    <x-panel :title="__('Name')" icon="people" icon-class="bg-indigo-tint text-indigo">
+    <x-panel
+      :title="__('Change the name')"
+      :subtitle="$viewModel->nameDescription()"
+      icon="people"
+      icon-class="bg-indigo-tint text-indigo"
+    >
       <div class="grid gap-4 sm:grid-cols-2">
         <x-input
           id="prefix"
@@ -118,4 +125,36 @@
       <x-button type="submit">{{ __('Save the name') }}</x-button>
     </div>
   </x-form>
+
+  {{--
+    The way out. It is a panel of its own at the foot of the screen rather than a
+    button beside the one that saves, so that nothing about leaving looks like
+    part of filling in.
+
+    The card in front of it is what actually deletes. Nothing in the product goes
+    on the first click.
+  --}}
+  <x-panel :title="__('Delete contact')" icon="people" icon-class="bg-error-tint text-error">
+    <div class="flex flex-wrap items-center gap-3.5">
+      <p class="max-w-[60ch] text-sm text-pretty text-muted">{{ $viewModel->deleteDescription() }}</p>
+
+      @if ($viewModel->mayBeDeleted())
+        <x-modal.warning
+          :title="__('Delete :name?', ['name' => $contact->name])"
+          :confirm="__('Delete the contact')"
+          :action="$viewModel->destroyUrl()"
+        >
+          <x-slot:trigger>
+            <x-button.secondary type="button" @click="open = true" class="text-error sm:ml-auto">
+              {{ __('Delete the contact') }}
+            </x-button.secondary>
+          </x-slot:trigger>
+
+          <p>{{ __('Everything written on the record goes with them.') }}</p>
+
+          <p>{{ __('Nothing they took part in is destroyed, and they can be brought back.') }}</p>
+        </x-modal.warning>
+      @endif
+    </div>
+  </x-panel>
 </x-shell>

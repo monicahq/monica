@@ -164,13 +164,14 @@ class ContactViewModel
     }
 
     /**
-     * Where the name is changed. It is the one thing on the record the template
-     * has no say over, so it is edited somewhere the template has no say over
-     * either.
+     * Where the two things the template has no say over are handled: the name,
+     * and whether the person is on the record at all. Both are edited somewhere
+     * the template has no say over either, and both behind one way in: the page
+     * is about a person rather than about the things that can be done to a row.
      */
-    public function nameUrl(): string
+    public function editUrl(): string
     {
-        return route('contacts.name.edit', ['vault' => $this->vault, 'contact' => $this->contact]);
+        return route('contacts.edit', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
     public function setAsideUrl(): string
@@ -189,25 +190,14 @@ class ContactViewModel
     }
 
     /**
-     * The template the page renders from, and which version of it. Both are
-     * real, and both matter: two people on the same template can be on
-     * different versions of it, and that is what explains why one of them has a
-     * page the other has not.
-     */
-    public function templateName(): string
-    {
-        return $this->contact->templateVersion->template->name;
-    }
-
-    public function templateVersionLabel(): string
-    {
-        return 'v'.$this->contact->templateVersion->version_number;
-    }
-
-    /**
      * Where the pages of this record are decided. It is the builder, which is
      * an account screen rather than a vault one: a template is shared by every
      * vault, so changing it here changes it for everybody on it.
+     *
+     * It is offered from the one place on the record that has to explain itself,
+     * which is a page the template puts nothing on. The record no longer names
+     * its template anywhere else: which structure somebody renders from is not a
+     * fact about them.
      */
     public function templateUrl(): string
     {

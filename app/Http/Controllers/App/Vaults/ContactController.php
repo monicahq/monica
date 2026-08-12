@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Http\Controllers\App\Vaults;
 
 use App\Actions\CreateContact;
+use App\Actions\DestroyContact;
 use App\Enums\NameOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
+use App\Exceptions\CannotDeleteTheMeContact;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\TemplateVersion;
 use App\Models\Vault;
+use App\ViewModels\Vaults\ContactEditViewModel;
 use App\ViewModels\Vaults\ContactFormViewModel;
 use App\ViewModels\Vaults\ContactsViewModel;
 use App\ViewModels\Vaults\ContactViewModel;
@@ -66,6 +69,56 @@ class ContactController extends Controller
                 selectedPageKey: $page,
             ),
         ]);
+    }
+
+    /**
+     * The two things about a contact the template has no say over: what they are
+     * called, and whether they are on the record at all.
+     *
+     * They share a screen because they are the same errand. The record offers one
+     * way in rather than a button for each, since a page of a person is about the
+     * person and not about the three things that can be done to the row.
+     */
+    public function edit(Request $request, Vault $vault, Contact $contact): View
+    {
+        abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
+
+        return view('app.vaults.contacts.edit', [
+            'viewModel' => new ContactEditViewModel(
+                user: $request->user(),
+                vault: $vault,
+                contact: $contact,
+            ),
+        ]);
+    }
+
+    /**
+     * Take somebody off the list, which is a soft deletion: nothing they took
+     * part in is destroyed, and they can be brought back.
+     *
+     * The refusal is not a question about the input, so it is not the validator's.
+     * The contact representing whoever is looking cannot go, and the screen does
+     * not offer the button for it; this is what answers somebody who asked
+     * anyway.
+     */
+    public function destroy(Request $request, Vault $vault, Contact $contact): RedirectResponse
+    {
+        abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
+
+        $name = $contact->name;
+
+        try {
+            new DestroyContact(user: $request->user(), contact: $contact)->execute();
+        } catch (CannotDeleteTheMeContact $e) {
+            return redirect()
+                ->route('contacts.edit', ['vault' => $vault, 'contact' => $contact])
+                ->withErrors(['contact' => $e->getMessage()]);
+        }
+
+        return redirect()
+            ->route('contacts.index', $vault)
+            ->with('status', __(':name is deleted.', ['name' => $name]))
+            ->with('status_description', __('Nothing they took part in went with them.'));
     }
 
     public function new(Request $request, Vault $vault): View

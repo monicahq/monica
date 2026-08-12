@@ -165,7 +165,7 @@ class ContactViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_says_which_template_and_which_version_of_it_the_page_renders_from(): void
+    public function it_says_where_the_pages_of_the_record_are_decided(): void
     {
         $user = User::factory()->create();
         $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]], 'Someone in the family');
@@ -173,8 +173,10 @@ class ContactViewModelTest extends TestCase
 
         $viewModel = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact);
 
-        $this->assertSame('Someone in the family', $viewModel->templateName());
-        $this->assertSame('v'.$version->version_number, $viewModel->templateVersionLabel());
+        $this->assertSame(
+            route('settings.templateBuilder.index', $version->template),
+            $viewModel->templateUrl(),
+        );
     }
 
     #[Test]

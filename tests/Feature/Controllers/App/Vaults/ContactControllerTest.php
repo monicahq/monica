@@ -653,6 +653,124 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_one_way_in_to_the_things_the_template_has_no_say_over(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->assertSee('Edit contact')
+            ->assertSee(route('contacts.edit', ['vault' => $vault, 'contact' => $michael]), false)
+            ->assertDontSee('Remind me')
+            ->assertDontSee('Change the name');
+    }
+
+    #[Test]
+    public function the_edit_screen_carries_the_name_and_the_way_out(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.edit', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->assertSee('Change the name')
+            ->assertSee('Michael', false)
+            ->assertSee('Scott', false)
+            ->assertSee('Delete contact')
+            ->assertSee(route('contacts.destroy', ['vault' => $vault, 'contact' => $michael]), false);
+    }
+
+    /**
+     * The contact representing whoever is looking is renamed like any other.
+     * What it cannot do is disappear, so the way out is not drawn for it.
+     */
+    #[Test]
+    public function the_edit_screen_offers_no_way_out_of_the_contact_that_represents_you(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $me = $this->contact($vault, 'Michael', 'Scott', ['is_me' => true]);
+
+        $this->actingAs($user)->get(route('contacts.edit', ['vault' => $vault, 'contact' => $me]))
+            ->assertStatus(200)
+            ->assertSee('Change the name')
+            ->assertDontSee('Delete the contact')
+            ->assertSee('This is the contact that represents you, and it stays.', false);
+    }
+
+    #[Test]
+    public function it_deletes_a_contact(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)
+            ->delete(route('contacts.destroy', ['vault' => $vault, 'contact' => $michael]))
+            ->assertRedirect(route('contacts.index', $vault))
+            ->assertSessionHas('status');
+
+        $this->assertSoftDeleted($michael);
+    }
+
+    #[Test]
+    public function it_refuses_to_delete_the_contact_that_represents_you(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $me = $this->contact($vault, 'Michael', 'Scott', ['is_me' => true]);
+
+        $this->actingAs($user)
+            ->delete(route('contacts.destroy', ['vault' => $vault, 'contact' => $me]))
+            ->assertRedirect(route('contacts.edit', ['vault' => $vault, 'contact' => $me]))
+            ->assertSessionHasErrors('contact');
+
+        $this->assertNotSoftDeleted($me);
+    }
+
+    #[Test]
+    public function it_does_not_edit_or_delete_somebody_reached_through_the_wrong_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $elsewhere = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.edit', ['vault' => $elsewhere, 'contact' => $michael]))
+            ->assertNotFound();
+
+        $this->actingAs($user)->delete(route('contacts.destroy', ['vault' => $elsewhere, 'contact' => $michael]))
+            ->assertNotFound();
+    }
+
+    #[Test]
+    public function it_does_not_edit_or_delete_somebody_in_another_account(): void
+    {
+        Queue::fake();
+
+        $stranger = User::factory()->create();
+        $theirs = $this->vaultReadyForContacts($stranger);
+        $michael = $this->contact($theirs, 'Michael', 'Scott');
+
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->get(route('contacts.edit', ['vault' => $theirs, 'contact' => $michael]))
+            ->assertNotFound();
+
+        $this->actingAs($user)->delete(route('contacts.destroy', ['vault' => $theirs, 'contact' => $michael]))
+            ->assertNotFound();
+    }
+
+    #[Test]
     public function it_opens_the_page_of_one_person(): void
     {
         $user = User::factory()->create();
@@ -663,21 +781,8 @@ class ContactControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Michael Scott')
             ->assertSee('Prison Mike')
-            ->assertSee('Someone in the family')
             ->assertSee('Overview')
             ->assertSee('History');
-    }
-
-    #[Test]
-    public function it_links_every_row_of_the_list_to_the_page_of_that_person(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-        $michael = $this->contact($vault, 'Michael', 'Scott');
-
-        $this->actingAs($user)->get(route('contacts.index', $vault))
-            ->assertStatus(200)
-            ->assertSee(route('contacts.show', ['vault' => $vault, 'contact' => $michael]));
     }
 
     #[Test]

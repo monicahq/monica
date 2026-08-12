@@ -94,13 +94,20 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
         ->whereUuid('contact')
         ->name('contacts.setAside.index');
 
-    Route::get('vaults/{vault}/contacts/{contact}/name', [ContactNameController::class, 'edit'])
+    // The two things about a contact the template has no say over, on one screen:
+    // what they are called, and whether they are on the record at all. The record
+    // offers one way in rather than a button for each.
+    Route::get('vaults/{vault}/contacts/{contact}/edit', [ContactController::class, 'edit'])
         ->whereUuid('contact')
-        ->name('contacts.name.edit');
+        ->name('contacts.edit');
 
     Route::put('vaults/{vault}/contacts/{contact}/name', [ContactNameController::class, 'update'])
         ->whereUuid('contact')
         ->name('contacts.name.update');
+
+    Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])
+        ->whereUuid('contact')
+        ->name('contacts.destroy');
 
     // A block of the record, open. The record reads until somebody asks for one
     // of these, and which one they asked for is the address rather than a flag
