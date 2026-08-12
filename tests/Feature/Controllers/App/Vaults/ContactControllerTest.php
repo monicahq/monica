@@ -894,6 +894,83 @@ class ContactControllerTest extends TestCase
             ->assertNotFound();
     }
 
+    #[Test]
+    public function the_record_offers_its_version_history_as_a_tab(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->assertSee('Version history')
+            ->assertSee(route('contacts.show', [
+                'vault' => $vault,
+                'contact' => $michael,
+                'page' => 'version-history',
+            ]), false);
+    }
+
+    #[Test]
+    public function the_version_history_names_every_version_the_record_has_been_on(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user, 'Friend');
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $first = $michael->templateVersion;
+        $second = TemplateVersion::factory()->published()->create([
+            'template_id' => $first->template_id,
+            'version_number' => 2,
+            'change_note' => 'Ways to connect is its own section now.',
+        ]);
+        $first->template->update(['published_version_id' => $second->id]);
+
+        $this->actingAs($user)
+            ->put(route('contacts.templateVersion.update', ['vault' => $vault, 'contact' => $michael]));
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'version-history']))
+            ->assertStatus(200)
+            ->assertSee('Friend, version 2')
+            ->assertSee('Friend, version 1')
+            ->assertSee('On this version')
+            ->assertSee('First template')
+            ->assertSee('applied by you')
+            ->assertSee('chosen when they were written down')
+            ->assertSee('Ways to connect is its own section now.')
+            ->assertSee('Go back to this')
+            ->assertSee('A version only decides what this page shows.');
+    }
+
+    /**
+     * The banner and the panel beside the timeline say the same thing, so only
+     * one of them says it.
+     */
+    #[Test]
+    public function the_version_history_keeps_the_banner_off_its_own_tab(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user, 'Friend');
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $second = TemplateVersion::factory()->published()->create([
+            'template_id' => $michael->templateVersion->template_id,
+            'version_number' => 2,
+        ]);
+        $michael->templateVersion->template->update(['published_version_id' => $second->id]);
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'version-history']))
+            ->assertStatus(200)
+            ->assertDontSee('Version 2 of the Friend template is ready')
+            ->assertSee('Version 2 exists and this contact is not on it.')
+            ->assertSee('Apply version 2');
+    }
+
     /**
      * A published version carrying one page, one section on it and one field
      * inside that. It is assembled while the version is still a draft, because

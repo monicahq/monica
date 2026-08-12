@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Vaults;
 
+use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Template;
 use App\Models\TemplateVersion;
@@ -59,6 +60,90 @@ class ContactTemplateVersionControllerTest extends TestCase
             ->get(route('contacts.show', ['vault' => $michael->vault, 'contact' => $michael]))
             ->assertStatus(200)
             ->assertDontSee('Apply version 2');
+    }
+
+    /**
+     * The way back from the version history, which is the same act as applying
+     * and therefore the same route: it names the version instead of leaving the
+     * choice to the template.
+     */
+    #[Test]
+    public function it_puts_the_contact_back_on_a_version_it_names(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = $this->template($user);
+        $first = $template->versions()->firstOrFail();
+        $michael = $this->contact($user, $first);
+        $second = $this->publish($template, 2);
+        $michael->update(['template_version_id' => $second->id]);
+
+        $this->actingAs($user)
+            ->put(route('contacts.templateVersion.update', ['vault' => $michael->vault, 'contact' => $michael]), [
+                'template_version_id' => $first->id,
+            ])
+            ->assertRedirect(route('contacts.show', ['vault' => $michael->vault, 'contact' => $michael]))
+            ->assertSessionHas('status', 'Michael Scott is on version 1 now.');
+
+        $this->assertSame($first->id, $michael->refresh()->template_version_id);
+    }
+
+    #[Test]
+    public function it_refuses_a_version_nobody_has_published(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = $this->template($user);
+        $michael = $this->contact($user, $template->versions()->firstOrFail());
+
+        $draft = TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 2]);
+
+        $this->actingAs($user)
+            ->put(route('contacts.templateVersion.update', ['vault' => $michael->vault, 'contact' => $michael]), [
+                'template_version_id' => $draft->id,
+            ])
+            ->assertNotFound();
+    }
+
+    #[Test]
+    public function it_refuses_a_version_that_has_been_retired(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = $this->template($user);
+        $first = $template->versions()->firstOrFail();
+        $michael = $this->contact($user, $first);
+        $second = $this->publish($template, 2);
+        $michael->update(['template_version_id' => $second->id]);
+        $first->update(['status' => VersionStatusEnum::Retired]);
+
+        $this->actingAs($user)
+            ->put(route('contacts.templateVersion.update', ['vault' => $michael->vault, 'contact' => $michael]), [
+                'template_version_id' => $first->id,
+            ])
+            ->assertNotFound();
+
+        $this->assertSame($second->id, $michael->refresh()->template_version_id);
+    }
+
+    #[Test]
+    public function it_refuses_a_version_of_another_template(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $michael = $this->contact($user, $this->template($user)->versions()->firstOrFail());
+
+        $elsewhere = $this->template($user);
+
+        $this->actingAs($user)
+            ->put(route('contacts.templateVersion.update', ['vault' => $michael->vault, 'contact' => $michael]), [
+                'template_version_id' => $elsewhere->published_version_id,
+            ])
+            ->assertNotFound();
     }
 
     #[Test]

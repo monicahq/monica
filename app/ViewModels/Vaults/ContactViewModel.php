@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Enums\VersionStatusEnum;
 use App\Helpers\FieldValueFormatter;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
+use App\Models\RecordSnapshot;
+use App\Models\TemplateVersion;
 use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 
@@ -47,6 +52,13 @@ class ContactViewModel
      * same record, which is the least surprising collision available.
      */
     public const string PAGE_OVERVIEW = 'overview';
+
+    /**
+     * The key of the other tab that belongs to no template page: every version
+     * this record has rendered from, and when each was applied. It carries the
+     * same collision as the overview and answers it the same way.
+     */
+    public const string PAGE_VERSION_HISTORY = 'version-history';
 
     /**
      * The hues a section's mark is drawn in, taken in turn down the page. A
@@ -218,7 +230,7 @@ class ContactViewModel
      * record deliberately put back on an earlier version is not asked about it
      * every time somebody opens it.
      *
-     * @return array{title: string, body: string, label: string, applyUrl: string}|null
+     * @return array{number: int, title: string, body: string, label: string, applyUrl: string}|null
      */
     public function templateUpdate(): ?array
     {
@@ -233,6 +245,7 @@ class ContactViewModel
             $note = $published->change_note;
 
             return [
+                'number' => $published->version_number,
                 'title' => __('Version :number of the :template template is ready', [
                     'number' => $published->version_number,
                     'template' => $current->template->name,
@@ -265,7 +278,8 @@ class ContactViewModel
             'icon' => 'people',
             'count' => null,
             'url' => $this->urlTo(null),
-            'isSelected' => $selected === null,
+            'isSelected' => $this->onOverview(),
+            'isPinned' => false,
         ]];
 
         foreach ($this->contact->templateVersion->pages as $page) {
@@ -281,21 +295,40 @@ class ContactViewModel
                 'count' => $fields === 0 ? null : $fields,
                 'url' => $this->urlTo($page->key),
                 'isSelected' => $page->is($selected),
+                'isPinned' => false,
             ];
         }
+
+        /* Pinned to the far end of the strip, away from the pages. It is not
+           one of them: the pages are what the template asks about the person,
+           and this is about the template itself. */
+        $tabs[] = [
+            'key' => self::PAGE_VERSION_HISTORY,
+            'label' => __('Version history'),
+            'icon' => 'timeline',
+            'count' => null,
+            'url' => $this->urlTo(self::PAGE_VERSION_HISTORY),
+            'isSelected' => $this->onVersionHistory(),
+            'isPinned' => true,
+        ];
 
         return $tabs;
     }
 
     /**
-     * The page the screen is showing, or null for the overview. An address
-     * naming a page this version does not have opens the overview rather than
-     * refusing: a tab that has gone is not an error worth a page of its own.
+     * The page the screen is showing, or null for the two tabs that belong to no
+     * template page. An address naming a page this version does not have opens
+     * the overview rather than refusing: a tab that has gone is not an error
+     * worth a page of its own.
      */
     public function selectedPage(): ?TemplateVersionPage
     {
         return once(function (): ?TemplateVersionPage {
             if ($this->selectedPageKey === null || $this->selectedPageKey === self::PAGE_OVERVIEW) {
+                return null;
+            }
+
+            if ($this->selectedPageKey === self::PAGE_VERSION_HISTORY) {
                 return null;
             }
 
@@ -305,7 +338,242 @@ class ContactViewModel
 
     public function onOverview(): bool
     {
-        return $this->selectedPage() === null;
+        return $this->selectedPage() === null && ! $this->onVersionHistory();
+    }
+
+    public function onVersionHistory(): bool
+    {
+        return $this->selectedPageKey === self::PAGE_VERSION_HISTORY;
+    }
+
+    /**
+     * Every version this record has rendered from, newest first.
+     *
+     * A snapshot is taken before a record is moved, and it records the version
+     * the record was leaving. So the chain is read from consecutive snapshots
+     * rather than from any one of them: the version that follows a snapshot is
+     * the next snapshot's, or the one the record is on now for the last of them.
+     *
+     * A snapshot where those two are the same moved nothing. It was taken by
+     * hand, or by an import, or by a restore that put the record back where it
+     * already was, and it is not a line in a history of structures.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function versionHistory(): array
+    {
+        $chain = $this->versionChain();
+        $last = count($chain) - 1;
+
+        $entries = [];
+
+        foreach ($chain as $index => $leg) {
+            $version = $leg['version'];
+            $until = $chain[$index + 1]['from'] ?? null;
+            $isCurrent = $index === $last;
+
+            $entries[] = [
+                'date' => $leg['from']->isoFormat('LL'),
+                'ago' => $leg['from']->diffForHumans(),
+                'title' => __(':template, version :number', [
+                    'template' => $version->template->name,
+                    'number' => $version->version_number,
+                ]),
+                'badge' => match (true) {
+                    $isCurrent => __('On this version'),
+                    $index === 0 => __('First template'),
+                    default => null,
+                },
+                'isCurrent' => $isCurrent,
+                'who' => $this->whoApplied($leg, $index === 0),
+                /* What the person who published the version said had changed in
+                   it. It is the only account of the change anybody wrote, and it
+                   is written once rather than per record. */
+                'body' => $version->change_note,
+                'span' => $this->spanOf($leg['from'], $until, $isCurrent),
+                'goBack' => $this->wayBackTo($version, $isCurrent),
+                'note' => $isCurrent || $version->status === VersionStatusEnum::Published
+                    ? null
+                    : __('This version has been retired, so nothing can be put back on it.'),
+            ];
+        }
+
+        return array_reverse($entries);
+    }
+
+    /**
+     * The versions the record has been on, oldest first, each with when it began
+     * and who put the record on it. The first began when the record was written
+     * down, and nobody applied it: it was the structure the record was given.
+     *
+     * @return array<int, array{version: TemplateVersion, from: Carbon, by: User|null}>
+     */
+    private function versionChain(): array
+    {
+        return once(function (): array {
+            $stamps = RecordSnapshot::query()
+                ->where('snapshotable_type', $this->contact->getMorphClass())
+                ->where('snapshotable_id', $this->contact->id)
+                ->with(['templateVersion.template', 'createdBy'])
+                ->orderBy('created_at')
+                ->orderBy('id')
+                ->get()
+                ->values()
+                ->all();
+
+            /* The version each snapshot recorded, and then the one the record is
+               on now, which is the leg no snapshot has closed. There is always
+               one more version here than there are snapshots, so the version
+               after a snapshot can be read without asking whether it exists. */
+            $versions = array_map(fn (RecordSnapshot $stamp): TemplateVersion => $stamp->templateVersion, $stamps);
+            $versions[] = $this->contact->templateVersion;
+
+            $chain = [['version' => $versions[0], 'from' => $this->contact->created_at, 'by' => null]];
+
+            foreach ($stamps as $index => $stamp) {
+                if ($versions[$index + 1]->is($versions[$index])) {
+                    continue;
+                }
+
+                $chain[] = [
+                    'version' => $versions[$index + 1],
+                    'from' => $stamp->created_at,
+                    'by' => $stamp->createdBy,
+                ];
+            }
+
+            return $chain;
+        });
+    }
+
+    /**
+     * @param  array{version: TemplateVersion, from: Carbon, by: User|null}  $leg
+     */
+    private function whoApplied(array $leg, bool $isFirst): string
+    {
+        if ($isFirst) {
+            return __('chosen when they were written down');
+        }
+
+        if ($leg['by'] === null) {
+            return __('applied by the system');
+        }
+
+        return $leg['by']->is($this->user)
+            ? __('applied by you')
+            : __('applied by :name', ['name' => $leg['by']->name]);
+    }
+
+    private function spanOf(Carbon $from, ?Carbon $until, bool $isCurrent): string
+    {
+        $duration = $from->diffForHumans(other: $until ?? now(), syntax: CarbonInterface::DIFF_ABSOLUTE);
+
+        return $isCurrent
+            ? __('In use for :duration, and counting.', ['duration' => $duration])
+            : __('In use for :duration.', ['duration' => $duration]);
+    }
+
+    /**
+     * How to put the record back on a version it was on before, when that is
+     * possible at all. A retired version is refused as a destination, so it is
+     * not offered as one: a button that comes back with an error is worse than a
+     * sentence saying why there is no button.
+     *
+     * @return array{url: string, versionId: int, label: string}|null
+     */
+    private function wayBackTo(TemplateVersion $version, bool $isCurrent): ?array
+    {
+        if ($isCurrent || $version->status !== VersionStatusEnum::Published) {
+            return null;
+        }
+
+        return [
+            'url' => route('contacts.templateVersion.update', [
+                'vault' => $this->vault,
+                'contact' => $this->contact,
+            ]),
+            'versionId' => $version->id,
+            'label' => __('Go back to this'),
+        ];
+    }
+
+    /**
+     * The three numbers above the timeline. How many templates the record has
+     * been described by is the one worth saying first: a record that has moved
+     * between templates has been a different kind of thing to somebody, and that
+     * is a bigger fact than the count of versions.
+     *
+     * @return array<int, array{label: string, value: string}>
+     */
+    public function versionStats(): array
+    {
+        $chain = $this->versionChain();
+
+        $templates = collect($chain)
+            ->map(fn (array $leg): int => $leg['version']->template_id)
+            ->unique()
+            ->count();
+
+        return [
+            ['label' => __('Templates used'), 'value' => (string) $templates],
+            ['label' => __('Versions applied'), 'value' => (string) count($chain)],
+            ['label' => __('On this one since'), 'value' => end($chain)['from']->isoFormat('LL')],
+        ];
+    }
+
+    /**
+     * What the record renders from at this moment, and how much of it there is.
+     *
+     * @return array{template: string, number: int, since: string, shows: string}
+     */
+    public function currentVersion(): array
+    {
+        $version = $this->contact->templateVersion;
+        $chain = $this->versionChain();
+
+        $sections = $version->assembly->count();
+        $fields = $version->assembly
+            ->sum(fn (TemplateVersionSection $row): int => $this->storedFields($row->sectionVersion->fields)->count());
+
+        return [
+            'template' => $version->template->name,
+            'number' => $version->version_number,
+            'since' => end($chain)['from']->isoFormat('LL'),
+            'shows' => implode(', ', [
+                $sections === 1 ? __('1 section') : __(':count sections', ['count' => $sections]),
+                $fields === 1 ? __('1 field') : __(':count fields', ['count' => $fields]),
+            ]),
+        ];
+    }
+
+    /**
+     * What the moves cost, in a sentence. A version decides what the page shows
+     * and nothing else, so a field a later version stopped showing kept its
+     * answers, and this is where somebody wondering where they went is told.
+     */
+    public function setAsideLine(): string
+    {
+        $count = $this->setAsideCount();
+
+        $invariant = __('A version only decides what this page shows.');
+
+        if ($count === 0) {
+            return "{$invariant} ".__('Nothing is being kept out of sight: every answer written here is on a page it can be seen on.');
+        }
+
+        return "{$invariant} ".($count === 1
+            ? __('One value written under another version is kept out of sight, and comes back with the version that shows it.')
+            : __(':count values written under other versions are kept out of sight, and come back with the version that shows them.', ['count' => $count]));
+    }
+
+    /**
+     * How many answers are being kept for questions no version this record is on
+     * asks. The count belongs beside the history because it is what the history
+     * costs: every move that hid a field left its answers here.
+     */
+    public function setAsideCount(): int
+    {
+        return once(fn (): int => $this->contact->fieldValues()->where('is_detached', true)->count());
     }
 
     /**

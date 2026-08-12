@@ -120,47 +120,39 @@
     thickens its own piece of it in terracotta, which is the one place on this
     screen the accent is used.
   --}}
-  <div class="flex flex-wrap items-center gap-3.5 border-b border-hairline">
-    <div role="tablist" class="-mb-px flex flex-wrap items-end gap-1">
-      @foreach ($viewModel->pages() as $page)
-        <a
-          href="{{ $page['url'] }}"
-          data-turbo="true"
-          role="tab"
-          aria-selected="{{ $page['isSelected'] ? 'true' : 'false' }}"
-          @class([
-            'flex h-10 flex-none items-center gap-2 border-b-2 px-3.5 text-base font-semibold no-underline',
-            'transition-[color,border-color] duration-(--duration-fast) ease-out hover:text-ink',
-            'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring',
-            $page['isSelected'] ? 'border-b-primary text-ink' : 'border-transparent text-muted',
-          ])
-        >
-          <x-icon :name="$page['icon']" :size="16" :stroke-width="1.6" />
-          {{ $page['label'] }}
+  {{--
+    Version history is pinned to the far end of the rule rather than sitting
+    among the pages, because it is not one of them: the pages are what the
+    template asks about the person, and that tab is about the template.
 
-          @if ($page['count'] !== null)
-            <span class="text-xs font-normal text-placeholder">{{ $page['count'] }}</span>
-          @endif
-        </a>
-      @endforeach
-    </div>
-
-    {{--
-      Only offered when there is something to see. A link to a screen that says
-      "nothing here" is a question the page raises for no reason.
-
-      Which template the record renders from used to be named here too. It is not
-      any more: it is the structure of the page rather than anything about the
-      person, and a line of machinery above every record earns its place only on
-      the screen where the machinery is changed.
-    --}}
-    @if ($viewModel->hasValuesSetAside())
+    Which values are set aside used to be a link here. It has moved onto the
+    version history, where the note explaining why anything is set aside already
+    is: what is being kept out of sight is the cost of the moves that history
+    lists.
+  --}}
+  <div role="tablist" class="flex flex-wrap items-end gap-1 border-b border-hairline">
+    @foreach ($viewModel->pages() as $page)
       <a
-        href="{{ $viewModel->setAsideUrl() }}"
+        href="{{ $page['url'] }}"
         data-turbo="true"
-        class="ml-auto flex items-center gap-2 pb-2 text-xs text-muted transition-colors duration-(--duration-fast) ease-out hover:text-ink"
-      >{{ __('Set aside') }}</a>
-    @endif
+        role="tab"
+        aria-selected="{{ $page['isSelected'] ? 'true' : 'false' }}"
+        @class([
+          'flex h-10 flex-none items-center gap-2 -mb-px border-b-2 px-3.5 text-base font-semibold no-underline',
+          'transition-[color,border-color] duration-(--duration-fast) ease-out hover:text-ink',
+          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring',
+          $page['isSelected'] ? 'border-b-primary text-ink' : 'border-transparent text-muted',
+          'ml-auto' => $page['isPinned'],
+        ])
+      >
+        <x-icon :name="$page['icon']" :size="16" :stroke-width="1.6" />
+        {{ $page['label'] }}
+
+        @if ($page['count'] !== null)
+          <span class="text-xs font-normal text-placeholder">{{ $page['count'] }}</span>
+        @endif
+      </a>
+    @endforeach
   </div>
 
   {{--
@@ -172,8 +164,11 @@
     It offers the one thing there is to do. There is nothing to dismiss, because
     the banner goes the moment it is applied, and nothing to preview, because
     what changed between two versions is not something the product can yet say.
+
+    The version history says the same thing in its own words, in a panel beside
+    the timeline, so the banner stays off that tab.
   --}}
-  @if ($update = $viewModel->templateUpdate())
+  @if (! $viewModel->onVersionHistory() && $update = $viewModel->templateUpdate())
     <x-notice tone="info" icon="file" :title="$update['title']">
       {{ $update['body'] }}
 
@@ -185,7 +180,9 @@
     </x-notice>
   @endif
 
-  @if ($viewModel->onOverview())
+  @if ($viewModel->onVersionHistory())
+    @include('app.vaults.contacts._version-history')
+  @elseif ($viewModel->onOverview())
     <div class="grid items-start gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
       <div class="flex flex-col gap-5">
         <x-panel :title="__('Write something down')" icon="note" icon-class="bg-indigo-tint text-indigo">
