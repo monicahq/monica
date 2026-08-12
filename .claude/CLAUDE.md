@@ -39,8 +39,21 @@
 - You MUST create a new branch when doing a new task, unless stated otherwise, based off of main branch. Make sure main is always up-to-date.
 - Branche names MUST be of the format YYYY-MM-DD-{name}.
 - You MUST follow conventional commits for commit messages.
-- You MUST provide a simple sentence when submitting a PR. Do NOT write `feat: allow deleting the last vault of an account` - instead, write `feat: delete last vault in account`.
 - NEVER mention Claude Code in PR descriptions, PR comments, or issue comments.
+
+## Guidelines for writing a commit message
+
+- You MUST provide a simple sentence when submitting a PR. Do NOT write `feat: allow deleting the last vault of an account` - instead, write `feat: delete last vault in account`.
+
+DO NOT
+```
+feat: draw the top bar controls so they read against the bar
+```
+
+DO
+```
+feat: better header buttons
+```
 
 ## Writing something
 

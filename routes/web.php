@@ -37,6 +37,7 @@ use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicati
 use App\Http\Controllers\App\Settings\SettingsController;
 use App\Http\Controllers\App\Vaults\ContactController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
+use App\Http\Controllers\App\Vaults\ContactSectionController;
 use App\Http\Controllers\App\Vaults\SetAsideValueController;
 use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
@@ -93,16 +94,26 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
         ->whereUuid('contact')
         ->name('contacts.name.update');
 
+    // A block of the record, open. The record reads until somebody asks for one
+    // of these, and which one they asked for is the address rather than a flag
+    // held on the client, so cancelling means asking for the record again and
+    // therefore genuinely throwing away what was typed.
+    //
+    // The page is not in the address: the section already knows which page it
+    // sits on, and naming it twice is a way for the two halves to disagree.
+    Route::get('vaults/{vault}/contacts/{contact}/sections/{templateVersionSection}/edit', [ContactSectionController::class, 'edit'])
+        ->whereUuid('contact')
+        ->whereNumber('templateVersionSection')
+        ->name('contacts.sections.edit');
+
+    Route::put('vaults/{vault}/contacts/{contact}/sections/{templateVersionSection}', [ContactSectionController::class, 'update'])
+        ->whereUuid('contact')
+        ->whereNumber('templateVersionSection')
+        ->name('contacts.sections.update');
+
     Route::get('vaults/{vault}/contacts/{contact}/{page?}', [ContactController::class, 'show'])
         ->whereUuid('contact')
         ->name('contacts.show');
-
-    // Saving a page is the same address asked a different way, which is what
-    // keeps it clear of the list above: nothing new has to be constrained off
-    // `contacts/new`, because the verb already tells the two apart.
-    Route::put('vaults/{vault}/contacts/{contact}/{page?}', [ContactController::class, 'update'])
-        ->whereUuid('contact')
-        ->name('contacts.update');
 
     Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
     Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');

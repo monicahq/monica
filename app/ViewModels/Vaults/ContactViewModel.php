@@ -80,6 +80,7 @@ class ContactViewModel
         private readonly Vault $vault,
         private readonly Contact $contact,
         private readonly ?string $selectedPageKey = null,
+        private readonly ?TemplateVersionSection $editingSection = null,
     ) {}
 
     /**
@@ -273,11 +274,7 @@ class ContactViewModel
     /**
      * The sections on the open page, in order, each with the fields inside it.
      *
-     * Every value is empty. A field's value is its own table and it has not
-     * been written, so what the page can honestly say is which questions it
-     * asks about somebody, and that none of them has been answered yet.
-     *
-     * @return array<int, array{name: string, iconClass: string, icon: string, fields: array<int, array{label: string, help: string|null, typeLabel: string, value: string|null}>}>
+     * @return array<int, array<string, mixed>>
      */
     public function sections(): array
     {
@@ -290,48 +287,70 @@ class ContactViewModel
         return $this->contact->templateVersion->assembly
             ->where('template_version_page_id', $page->id)
             ->values()
-            ->map(fn (TemplateVersionSection $row, int $index): array => [
-                'name' => $row->title_override ?? $row->sectionVersion->section->name,
-                'icon' => $row->sectionVersion->section->icon ?? 'note',
-                'iconClass' => self::SECTION_HUES[$index % count(self::SECTION_HUES)],
-                'fields' => $this->fieldsIn($row),
-            ])
+            ->map(fn (TemplateVersionSection $row, int $index): array => $this->blockFor($row, $index))
             ->all();
     }
 
     /**
-     * Where the open page is saved. It is the address of the page itself, since
-     * showing what a page holds and writing what a page holds are the same
-     * place asked two different ways.
+     * One section, as the panel that draws it needs it: what it is called, the
+     * fields inside it, and the three addresses that make it a block somebody
+     * can open, write and walk away from.
+     *
+     * `isEditable` is what decides whether it is offered an edit button at all.
+     * A section made entirely of types this product cannot yet fill in has
+     * nothing to open, and a button that leads to a form of read-only sentences
+     * is worse than no button.
+     *
+     * @return array<string, mixed>
      */
-    public function saveUrl(): string
+    private function blockFor(TemplateVersionSection $row, int $index): array
     {
-        return route('contacts.update', [
-            'vault' => $this->vault,
-            'contact' => $this->contact,
-            'page' => $this->selectedPage()?->key,
-        ]);
+        $fields = $this->fieldsIn($row);
+
+        return [
+            'id' => $row->id,
+            /* The panel is its own region: opening, cancelling and saving each
+               replace this one id and leave every other block alone, including
+               one somebody has already opened further down the page. */
+            'regionId' => "section-{$row->id}",
+            'name' => $this->nameOf($row),
+            'icon' => $row->sectionVersion->section->icon ?? 'note',
+            'iconClass' => self::SECTION_HUES[$index % count(self::SECTION_HUES)],
+            'fields' => $fields,
+            'isEditing' => $this->editingSection !== null && $this->editingSection->is($row),
+            'isEditable' => collect($fields)->contains(fn (array $field): bool => $field['isEditable']),
+            'editUrl' => route('contacts.sections.edit', [
+                'vault' => $this->vault,
+                'contact' => $this->contact,
+                'templateVersionSection' => $row,
+            ]),
+            'saveUrl' => route('contacts.sections.update', [
+                'vault' => $this->vault,
+                'contact' => $this->contact,
+                'templateVersionSection' => $row,
+            ]),
+            'saveLine' => __('Saving writes :section only.', ['section' => mb_strtolower($this->nameOf($row))]),
+        ];
     }
 
     /**
-     * The address of the open page, which the cancel button goes back to and
+     * What a section is called here, which is the title this template gives it
+     * when it gives it one. The override is display only: a section is shared,
+     * so renaming it from inside one template would reach into every other
+     * template carrying it.
+     */
+    private function nameOf(TemplateVersionSection $row): string
+    {
+        return $row->title_override ?? $row->sectionVersion->section->name;
+    }
+
+    /**
+     * The address of the open page, which cancelling an edit goes back to and
      * which therefore reloads whatever was last saved.
      */
     public function pageUrl(): string
     {
         return $this->urlTo($this->selectedPage()?->key);
-    }
-
-    /**
-     * What the save bar says it is about to do. It names the page, since the
-     * tabs mean somebody may have several open in mind and only one of them is
-     * being written.
-     */
-    public function saveLine(): string
-    {
-        return __('Saving writes the whole of :page.', [
-            'page' => $this->selectedPage()->label ?? __('this page'),
-        ]);
     }
 
     /**

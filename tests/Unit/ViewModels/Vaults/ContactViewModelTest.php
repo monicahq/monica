@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Enums\FieldTypeEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
@@ -98,6 +99,69 @@ class ContactViewModelTest extends TestCase
         $sections = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health'))->sections();
 
         $this->assertNotSame($sections[0]['iconClass'], $sections[1]['iconClass']);
+    }
+
+    #[Test]
+    public function a_block_says_where_it_is_opened_and_where_it_is_written(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
+        $contact = $this->contact($user, $version);
+        $row = $version->assembly->first();
+
+        $sections = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health'))->sections();
+
+        $this->assertSame("section-{$row->id}", $sections[0]['regionId']);
+        $this->assertFalse($sections[0]['isEditing']);
+        $this->assertTrue($sections[0]['isEditable']);
+        $this->assertSame(
+            route('contacts.sections.edit', ['vault' => $contact->vault, 'contact' => $contact, 'templateVersionSection' => $row]),
+            $sections[0]['editUrl'],
+        );
+        $this->assertSame(
+            route('contacts.sections.update', ['vault' => $contact->vault, 'contact' => $contact, 'templateVersionSection' => $row]),
+            $sections[0]['saveUrl'],
+        );
+    }
+
+    #[Test]
+    public function only_the_block_that_was_asked_for_is_the_one_being_edited(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee'], 'Practitioners' => ['Doctor']]]);
+        $contact = $this->contact($user, $version);
+
+        $sections = (new ContactViewModel(
+            user: $user,
+            vault: $contact->vault,
+            contact: $contact,
+            selectedPageKey: 'health',
+            editingSection: $version->assembly->first(),
+        ))->sections();
+
+        $this->assertTrue($sections[0]['isEditing']);
+        $this->assertFalse($sections[1]['isEditing']);
+    }
+
+    /**
+     * A block made entirely of types nothing can fill in yet has nothing to
+     * open, and a button leading to a form of read-only sentences is worse than
+     * no button.
+     */
+    #[Test]
+    public function a_block_with_nothing_fillable_in_it_is_not_offered_an_edit(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Doctor']]]);
+        $contact = $this->contact($user, $version);
+
+        $field = Field::query()->where('label', 'Doctor')->firstOrFail();
+        $field->sectionVersion->update(['status' => VersionStatusEnum::Draft]);
+        $field->update(['type' => FieldTypeEnum::Relation]);
+
+        $sections = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health'))->sections();
+
+        $this->assertFalse($sections[0]['isEditable']);
     }
 
     #[Test]

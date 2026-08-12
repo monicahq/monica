@@ -13,7 +13,6 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\SectionVersion;
 use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
@@ -31,19 +30,19 @@ class SetFieldValuesTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_saves_a_whole_page_at_once(): void
+    public function it_saves_a_whole_section_at_once(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
         $contact = $this->contactOf($user);
         $city = $this->fieldOn($contact, ['key' => 'city']);
-        $notes = $this->fieldOn($contact, ['key' => 'notes', 'type' => FieldTypeEnum::Textarea]);
+        $notes = $this->fieldOn($contact, ['key' => 'notes', 'type' => FieldTypeEnum::Textarea], beside: $city->sectionVersion);
 
         $written = new SetFieldValues(
             user: $user,
             record: $contact,
-            page: $this->pageOf($contact),
+            section: $this->sectionOf($city),
             values: [$city->id => 'Scranton', $notes->id => 'Sells paper.'],
         )->execute();
 
@@ -64,14 +63,14 @@ class SetFieldValuesTest extends TestCase
         new SetFieldValues(
             user: $user,
             record: $contact,
-            page: $this->pageOf($contact),
+            section: $this->sectionOf($city),
             values: [$city->id => 'Scranton'],
         )->execute();
 
         new SetFieldValues(
             user: $user,
             record: $contact,
-            page: $this->pageOf($contact),
+            section: $this->sectionOf($city),
             values: [$city->id => ''],
         )->execute();
 
@@ -90,7 +89,7 @@ class SetFieldValuesTest extends TestCase
         $written = new SetFieldValues(
             user: $user,
             record: $contact,
-            page: $this->pageOf($contact),
+            section: $this->sectionOf($city),
             values: [$city->id => null],
         )->execute();
 
@@ -109,7 +108,7 @@ class SetFieldValuesTest extends TestCase
         new SetFieldValues(
             user: $user,
             record: $contact,
-            page: $this->pageOf($contact),
+            section: $this->sectionOf($field),
             values: [$field->id => false],
         )->execute();
 
@@ -130,7 +129,7 @@ class SetFieldValuesTest extends TestCase
         new SetFieldValues(
             user: $user,
             record: $contact,
-            page: $this->pageOf($contact),
+            section: $this->sectionOf($field),
             values: [$field->id => (string) $item->id],
         )->execute();
 
@@ -152,7 +151,7 @@ class SetFieldValuesTest extends TestCase
         new SetFieldValues(
             user: $user,
             record: $contact,
-            page: $this->pageOf($contact),
+            section: $this->sectionOf($field),
             values: [$field->id => [(string) $first->id, (string) $second->id]],
         )->execute();
 
@@ -173,7 +172,7 @@ class SetFieldValuesTest extends TestCase
         new SetFieldValues(
             user: $user,
             record: $contact,
-            page: $this->pageOf($contact),
+            section: $this->sectionOf($field),
             values: [$field->id => '1964-03-15'],
             yearIsUnknown: [$field->id => true],
         )->execute();
@@ -198,7 +197,7 @@ class SetFieldValuesTest extends TestCase
         new SetFieldValues(
             user: $user,
             record: $contact,
-            page: $this->pageOf($contact),
+            section: $this->sectionOf($field),
             values: [$field->id => ''],
         )->execute();
     }
@@ -211,13 +210,13 @@ class SetFieldValuesTest extends TestCase
         $user = User::factory()->create();
         $contact = $this->contactOf($user);
         $city = $this->fieldOn($contact, ['key' => 'city']);
-        $required = $this->fieldOn($contact, ['key' => 'diet', 'is_required' => true]);
+        $required = $this->fieldOn($contact, ['key' => 'diet', 'is_required' => true], beside: $city->sectionVersion);
 
         try {
             new SetFieldValues(
                 user: $user,
                 record: $contact,
-                page: $this->pageOf($contact),
+                section: $this->sectionOf($city),
                 values: [$city->id => 'Scranton', $required->id => ''],
             )->execute();
         } catch (FieldIsRequired) {
@@ -239,7 +238,7 @@ class SetFieldValuesTest extends TestCase
         $written = new SetFieldValues(
             user: $user,
             record: $contact,
-            page: $this->pageOf($contact),
+            section: $this->sectionOf($relation),
             values: [$relation->id => 'anything'],
         )->execute();
 
@@ -260,28 +259,57 @@ class SetFieldValuesTest extends TestCase
         new SetFieldValues(
             user: User::factory()->create(),
             record: $contact,
-            page: $this->pageOf($contact),
+            section: $this->sectionOf($this->fieldOn($contact)),
             values: [],
         )->execute();
     }
 
     #[Test]
-    public function it_refuses_a_page_of_another_structure(): void
+    public function it_refuses_a_section_of_another_structure(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
         $contact = $this->contactOf($user);
-        $elsewhere = TemplateVersion::factory()->published()->create(['account_id' => $user->account_id]);
+        $elsewhere = TemplateVersion::factory()->create(['account_id' => $user->account_id]);
 
         $this->expectException(InvalidArgumentException::class);
 
         new SetFieldValues(
             user: $user,
             record: $contact,
-            page: $elsewhere->pages->first(),
+            section: TemplateVersionSection::factory()->create([
+                'account_id' => $user->account_id,
+                'template_version_id' => $elsewhere->id,
+            ]),
             values: [],
         )->execute();
+    }
+
+    /**
+     * The section is the unit, so a question in another block is not this save's
+     * business. Refusing here would be refusing somebody's edit because of a
+     * field they were never shown.
+     */
+    #[Test]
+    public function it_lets_a_section_be_saved_while_another_holds_a_required_field(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $city = $this->fieldOn($contact, ['key' => 'city']);
+        $this->fieldOn($contact, ['key' => 'diet', 'is_required' => true]);
+
+        $written = new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($city),
+            values: [$city->id => 'Scranton'],
+        )->execute();
+
+        $this->assertSame(1, $written);
+        $this->assertDatabaseHas('field_values', ['field_id' => $city->id, 'value_string' => 'Scranton']);
     }
 
     private function contactOf(User $user): Contact
@@ -299,35 +327,56 @@ class SetFieldValuesTest extends TestCase
         ]);
     }
 
-    private function pageOf(Contact $contact): TemplateVersionPage
+    /**
+     * The assembly row a field ends up drawn in, which is the block a save is
+     * asked for.
+     */
+    private function sectionOf(Field $field): TemplateVersionSection
     {
-        return $contact->templateVersion->pages->first();
+        return TemplateVersionSection::query()
+            ->where('section_version_id', $field->section_version_id)
+            ->firstOrFail();
     }
 
     /**
-     * Put a field on the page the contact renders from, the way the builder
+     * Put a field on the structure the contact renders from, the way the builder
      * does it: on a draft, which is then published.
+     *
+     * Each field lands in a section of its own unless `beside` names one it
+     * should share, since what a save may write is now decided by the section
+     * and a test about two fields at once has to put them in the same one.
      *
      * @param  array<string, mixed>  $attributes
      */
-    private function fieldOn(Contact $contact, array $attributes = []): Field
+    private function fieldOn(Contact $contact, array $attributes = [], ?SectionVersion $beside = null): Field
     {
         $version = $contact->templateVersion;
         $version->status = VersionStatusEnum::Draft;
         $version->save();
 
-        $sectionVersion = SectionVersion::factory()->create(['account_id' => $version->account_id]);
+        /* Read again before touching it: a section version handed back from a
+           field created earlier still remembers the draft it was then, and
+           setting it back to draft would be dirtying nothing. */
+        $sectionVersion = $beside === null
+            ? SectionVersion::factory()->create(['account_id' => $version->account_id])
+            : $beside->refresh();
+
+        $sectionVersion->status = VersionStatusEnum::Draft;
+        $sectionVersion->save();
+
         $field = Field::factory()->create(array_merge([
             'account_id' => $version->account_id,
             'section_version_id' => $sectionVersion->id,
         ], $attributes));
 
-        TemplateVersionSection::factory()->create([
-            'account_id' => $version->account_id,
-            'template_version_id' => $version->id,
-            'template_version_page_id' => $version->pages->first()->id,
-            'section_version_id' => $sectionVersion->id,
-        ]);
+        if ($beside === null) {
+            TemplateVersionSection::factory()->create([
+                'account_id' => $version->account_id,
+                'template_version_id' => $version->id,
+                'template_version_page_id' => $version->pages->first()->id,
+                'section_version_id' => $sectionVersion->id,
+            ]);
+        }
 
         $sectionVersion->status = VersionStatusEnum::Published;
         $sectionVersion->save();

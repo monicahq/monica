@@ -15,6 +15,14 @@
   holds and that this page cannot edit it, which is the truth and is more use
   than a box that would not save.
 
+  This is the editing half of a pair. What the same field reads as when nobody is
+  editing it is <x-field-value>, and the two are kept beside each other because a
+  type that renders one way and reads another is a type that will drift.
+
+  A choice is asked as the list itself rather than as a menu that hides it, and
+  the shape of the mark says how many may be picked: round for one of a list,
+  square for as many as apply. See <x-option-row>.
+
   @var \App\Models\Field $field
   @var \App\Models\FieldValue|null $value
   @var string|null $formatted
@@ -86,13 +94,66 @@
 
       <input type="hidden" name="{{ $name }}" value="0" />
 
-      <x-checkbox :id="$id" :name="$name" value="1" :checked="(bool) $value?->value_boolean" :error="$error">
+      <x-option-row :id="$id" :name="$name" value="1" :checked="(bool) $value?->value_boolean">
         {{ $field->help_text ?? __('Yes') }}
-      </x-checkbox>
+      </x-option-row>
+
+      <x-error :id="$error ? $id.'-error' : null" :messages="$error" />
     </div>
     @break
 
-  @case($type === FieldTypeEnum::Select || $type === FieldTypeEnum::Radio)
+  @case($type === FieldTypeEnum::Radio)
+    {{-- One of a list, asked as the list. Every option is on the screen, the row
+         is the target, and the round mark says only one of them may be picked.
+
+         The way to answer nothing is an option of its own, because a group of
+         radios cannot be un-picked once it has been touched. Leaving it out
+         would mean somebody who ticked the wrong one has no way back to having
+         said nothing at all. --}}
+    <fieldset class="flex flex-col gap-2">
+      <legend class="text-label text-ink">
+        {{ $field->label }}
+
+        @if (! $field->is_required)
+          <span class="text-xs font-normal text-muted">{{ __('optional') }}</span>
+        @endif
+      </legend>
+
+      @if ($field->help_text)
+        <p class="text-xs text-muted">{{ $field->help_text }}</p>
+      @endif
+
+      <div class="grid gap-2 pt-0.5 sm:grid-cols-2">
+        @foreach ($items as $item)
+          <x-option-row
+            type="radio"
+            :id="$id.'-'.$item->id"
+            :name="$name"
+            :value="$item->id"
+            :checked="$chosen === $item->id"
+          >
+            {{ $item->label }}
+          </x-option-row>
+        @endforeach
+
+        @if (! $field->is_required)
+          <x-option-row
+            type="radio"
+            :id="$id.'-none'"
+            :name="$name"
+            value=""
+            :checked="$chosen === null"
+          >
+            {{ __('Not recorded') }}
+          </x-option-row>
+        @endif
+      </div>
+
+      <x-error :id="$error ? $id.'-error' : null" :messages="$error" />
+    </fieldset>
+    @break
+
+  @case($type === FieldTypeEnum::Select)
     <x-select
       :id="$id"
       :name="$name"
@@ -111,25 +172,28 @@
     @break
 
   @case($type === FieldTypeEnum::Multiselect)
-    {{-- Several boxes rather than a list somebody has to hold a key down for,
-         which is the accessible reading of the same question. --}}
-    <fieldset class="flex flex-col gap-1.5">
+    {{-- Every option at once rather than a list somebody has to hold a key down
+         for, which is the accessible reading of the same question. They are laid
+         out as chips because a many-of-a-list is usually short words, and the
+         square mark says as many as apply may be picked. --}}
+    <fieldset class="flex flex-col gap-2">
       <legend class="text-label text-ink">{{ $field->label }}</legend>
 
       @if ($field->help_text)
         <p class="text-xs text-muted">{{ $field->help_text }}</p>
       @endif
 
-      <div class="flex flex-col gap-2 pt-0.5">
+      <div class="flex flex-wrap gap-2 pt-0.5">
         @foreach ($items as $item)
-          <x-checkbox
+          <x-option-row
+            chip
             :id="$id.'-'.$item->id"
             :name="$name.'[]'"
             :value="$item->id"
             :checked="in_array($item->id, $chosenMany, false)"
           >
             {{ $item->label }}
-          </x-checkbox>
+          </x-option-row>
         @endforeach
       </div>
 
@@ -154,14 +218,15 @@
         :optional="! $field->is_required"
       />
 
-      <x-checkbox
+      <x-option-row
         :id="$id.'-year-unknown'"
         :name="'year_is_unknown['.$field->id.']'"
         value="1"
         :checked="(bool) $value?->year_is_unknown"
+        :hint="__('The day and the month are enough for a reminder.')"
       >
         {{ __('I do not know the year') }}
-      </x-checkbox>
+      </x-option-row>
     </div>
     @break
 

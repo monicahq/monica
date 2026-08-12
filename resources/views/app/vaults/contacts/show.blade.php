@@ -86,7 +86,12 @@
         @endif
       </p>
 
-      <ul class="mt-4 flex list-none flex-wrap gap-x-5.5 gap-y-2">
+      {{--
+        A region of its own, because the facts beside the photograph are fields
+        from the template and saving the block one of them sits in has to change
+        it here too. Its id is what the block's form aims at alongside itself.
+      --}}
+      <ul id="contact-facts" x-merge="replace" class="mt-4 flex list-none flex-wrap gap-x-5.5 gap-y-2">
         @foreach ($viewModel->headerFacts() as $fact)
           <li class="flex items-center gap-1.75 text-sm text-body">
             <x-icon :name="$fact['icon']" :size="16" :stroke-width="1.5" class="{{ $fact['iconClass'] }}" />

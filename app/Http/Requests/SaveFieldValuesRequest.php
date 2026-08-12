@@ -7,19 +7,18 @@ namespace App\Http\Requests;
 use App\Helpers\FieldValueRules;
 use App\Models\Contact;
 use App\Models\Field;
-use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
 use RuntimeException;
 
 /**
- * What one page of a record may be saved with.
+ * What one section of a record may be saved with.
  *
  * The rules cannot be written down here, because the questions are whatever
  * somebody invented in the template builder. They are read off the fields the
- * page carries, by {@see FieldValueRules}, so the interface and the API enforce
- * the same thing by running the same code.
+ * section carries, by {@see FieldValueRules}, so the interface and the API
+ * enforce the same thing by running the same code.
  *
  * The rules stop at what a form can sensibly say under an input. Whether a
  * value is already held by another record in the vault is a question about the
@@ -30,7 +29,7 @@ class SaveFieldValuesRequest extends FormRequest
     /**
      * The gate is the route binding: a contact is resolved within the account
      * of whoever is asking, and the controller checks it is in the vault the
-     * address names.
+     * address names and that the section is one its structure carries.
      */
     public function authorize(): bool
     {
@@ -46,7 +45,7 @@ class SaveFieldValuesRequest extends FormRequest
             'fields' => ['array'],
             'year_is_unknown' => ['array'],
             'month_is_unknown' => ['array'],
-        ], FieldValueRules::for($this->fieldsOnThePage()));
+        ], FieldValueRules::for($this->fieldsInTheSection()));
     }
 
     /**
@@ -57,51 +56,53 @@ class SaveFieldValuesRequest extends FormRequest
      */
     public function attributes(): array
     {
-        return $this->fieldsOnThePage()
+        return $this->fieldsInTheSection()
             ->mapWithKeys(fn (Field $field): array => ["fields.{$field->id}" => mb_strtolower($field->label)])
             ->all();
     }
 
     /**
-     * The fields the page asks directly, which are the ones this save may carry
-     * answers for.
+     * Where a refused save goes back to, which is the block open rather than the
+     * page it sits on.
+     *
+     * Laravel would send it back where it came from, and where it came from is
+     * the record read-only: the errors would land on markup that draws no
+     * controls to put them under, and somebody would be told nothing at all.
+     */
+    protected function getRedirectUrl(): string
+    {
+        return route('contacts.sections.edit', [
+            'vault' => $this->route('vault'),
+            'contact' => $this->route('contact'),
+            'templateVersionSection' => $this->section(),
+        ]);
+    }
+
+    /**
+     * The fields the section asks directly, which are the ones this save may
+     * carry answers for.
      *
      * @return Collection<int, Field>
      */
-    public function fieldsOnThePage(): Collection
+    public function fieldsInTheSection(): Collection
     {
-        $page = $this->page();
-
-        if ($page === null) {
-            return collect();
-        }
-
-        return $this->contact()->templateVersion->assembly
-            ->where('template_version_page_id', $page->id)
-            ->flatMap(fn (TemplateVersionSection $row): Collection => $row->sectionVersion->fields)
+        return $this->section()
+            ->sectionVersion
+            ->fields
             ->whereNull('parent_field_id')
             ->values();
     }
 
     /**
-     * The page being saved, which is null when the address names none or names
-     * one this record's structure does not have.
+     * The section being saved. It is bound by the route, and the controller has
+     * already refused one belonging to another structure than the record's.
      */
-    public function page(): ?TemplateVersionPage
+    public function section(): TemplateVersionSection
     {
-        $key = $this->route('page');
+        $section = $this->route('templateVersionSection');
 
-        if (! is_string($key) || $key === '') {
-            return null;
-        }
-
-        return $this->contact()->templateVersion->pages->firstWhere('key', $key);
-    }
-
-    private function contact(): Contact
-    {
-        $contact = $this->route('contact');
-
-        return $contact instanceof Contact ? $contact : throw new RuntimeException('This request has no contact.');
+        return $section instanceof TemplateVersionSection
+            ? $section
+            : throw new RuntimeException('This request has no section.');
     }
 }

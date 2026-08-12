@@ -1,14 +1,12 @@
 {{--
-  One page of the record: the sections the template puts on it, and a control
-  for each field inside them.
+  One page of the record: the sections the template puts on it, each drawn as a
+  block that reads what it holds until somebody asks to edit it.
 
-  The page is the form rather than a read-only list with an edit screen behind
-  it. A page is the unit somebody fills in, and it is also the only thing that
-  can refuse a required field: a value saved on its own never sees the question
-  nobody has reached yet.
-
-  A field whose type has no control yet says so in place rather than being left
-  out, so nobody wonders where the question went.
+  The page used to be one form with one save at the foot of it. It is not any
+  more, and the reason is that looking somebody up is what this screen is for
+  most of the time: a page that is always a form is a page that always looks like
+  work. What replaced it is in `_section`, and the unit of writing moved with it
+  from the page to the block.
 
   It is its own file because it is the half of the screen the tabs swap.
 
@@ -34,48 +32,13 @@
     </x-empty-state>
   </x-panel>
 @else
-  <x-form
-    method="put"
-    :action="$viewModel->saveUrl()"
-    class="flex flex-col gap-5"
-  >
-    <div class="grid items-start gap-5 lg:grid-cols-2">
-      @foreach ($sections as $section)
-        <x-panel :title="$section['name']" :icon="$section['icon']" :icon-class="$section['iconClass']">
-          @forelse ($section['fields'] as $field)
-            <div @class(['pb-4 last:pb-0'])>
-              <x-field-input
-                :field="$field['field']"
-                :value="$field['rawValue']"
-                :formatted="$field['value']"
-                :error="$errors->get('fields.'.$field['id'])"
-              />
-            </div>
-          @empty
-            <p class="text-sm text-pretty text-muted">{{ __('This section asks nothing yet.') }}</p>
-          @endforelse
-        </x-panel>
-      @endforeach
-    </div>
+  <p class="max-w-[66ch] px-0.5 text-sm text-pretty text-muted">
+    {{ __('Every block reads until you say otherwise. Editing one leaves the rest of the page alone, and saving writes only that block.') }}
+  </p>
 
-    {{--
-      The bar that saves the page. It sticks to the bottom of the window so a
-      long page does not have to be scrolled to the end before it can be saved,
-      and it says which page it is saving, since the tabs mean somebody may be
-      looking at one of several.
-    --}}
-    <div class="sticky bottom-4 flex flex-wrap items-center gap-3 rounded-lg border border-hairline bg-canvas/95 px-4 py-3 shadow-sm backdrop-blur">
-      <p class="text-sm text-pretty text-muted">{{ $viewModel->saveLine() }}</p>
-
-      <div class="ml-auto flex items-center gap-2">
-        <x-button.secondary :href="$viewModel->pageUrl()" size="small">
-          {{ __('Cancel') }}
-        </x-button.secondary>
-
-        <x-button type="submit" size="small">
-          {{ __('Save this page') }}
-        </x-button>
-      </div>
-    </div>
-  </x-form>
+  <div class="grid items-start gap-5 lg:grid-cols-2">
+    @foreach ($sections as $section)
+      @include('app.vaults.contacts._section', ['section' => $section])
+    @endforeach
+  </div>
 @endif

@@ -10,7 +10,7 @@ use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\Field;
 use App\Models\FieldValue;
-use App\Models\TemplateVersionPage;
+use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -19,12 +19,19 @@ use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 /**
- * Save one page of a record: everything the template asks on it, in one go.
+ * Save one section of a record: everything the template asks inside it, in one
+ * go.
  *
- * It exists because a page is the unit somebody actually fills in. Writing a
- * value at a time cannot refuse a required field, since it never sees a field
- * nobody has reached; a page can, and this is the only place in the product
- * that can honestly say a record is incomplete.
+ * It exists because a section is the unit somebody actually fills in. The screen
+ * reads until somebody opens one block of it, and what they then have in front
+ * of them is that block's questions and nothing else, so that is what a save may
+ * write and what it may refuse.
+ *
+ * The refusal is therefore narrower than it looks. A required field in another
+ * section is not this save's business: it was never on the screen, nobody
+ * declined to answer it, and holding this block hostage to it would be refusing
+ * an edit because of a question somebody has not been asked. Nothing here can
+ * say a record is complete, and nothing here pretends to.
  *
  * A field left empty is not skipped, it is cleared. Somebody who deletes what
  * they typed and saves has said something, and a save that quietly kept the old
@@ -33,8 +40,8 @@ use InvalidArgumentException;
  * It writes nothing itself. Each value goes through {@see SetFieldValue} and
  * each clearing through {@see DestroyFieldValue}, which is also where the
  * logging happens: this delegates the whole of its journal to the writes it
- * performs, rather than adding a line that says a page was saved and repeating
- * underneath it what each field now holds.
+ * performs, rather than adding a line that says a section was saved and
+ * repeating underneath it what each field now holds.
  */
 class SetFieldValues
 {
@@ -48,7 +55,7 @@ class SetFieldValues
     public function __construct(
         private readonly User $user,
         private readonly Contact|Entity $record,
-        private readonly TemplateVersionPage $page,
+        private readonly TemplateVersionSection $section,
         private readonly array $values,
         private readonly array $yearIsUnknown = [],
         private readonly array $monthIsUnknown = [],
@@ -61,7 +68,7 @@ class SetFieldValues
     {
         $this->validate();
 
-        $fields = $this->fieldsOnThePage();
+        $fields = $this->fieldsInTheSection();
 
         $this->refuseAnEmptyRequiredField($fields);
 
@@ -80,24 +87,22 @@ class SetFieldValues
             throw new ModelNotFoundException('This record is in another account.');
         }
 
-        if ($this->page->template_version_id !== $this->record->template_version_id) {
-            throw new InvalidArgumentException('This page belongs to another structure than the one the record renders from.');
+        if ($this->section->template_version_id !== $this->record->template_version_id) {
+            throw new InvalidArgumentException('This section belongs to another structure than the one the record renders from.');
         }
     }
 
     /**
-     * The fields the page asks about, which are the ones sitting directly in
-     * its sections. A field inside a repeater is filled in on its repetition
-     * rather than here, and a type with no control on the page is not something
-     * this save can have been given.
+     * The fields the section asks about, which are the ones sitting directly in
+     * it. A field inside a repeater is filled in on its repetition rather than
+     * here, and a type with no control on the page is not something this save
+     * can have been given.
      *
      * @return Collection<int, Field>
      */
-    private function fieldsOnThePage(): Collection
+    private function fieldsInTheSection(): Collection
     {
-        return $this->record->templateVersion->assembly
-            ->where('template_version_page_id', $this->page->id)
-            ->flatMap(fn ($row): Collection => $row->sectionVersion->fields)
+        return $this->section->sectionVersion->fields
             ->whereNull('parent_field_id')
             ->filter(fn (Field $field): bool => $field->type->hasAnInput())
             ->values();
