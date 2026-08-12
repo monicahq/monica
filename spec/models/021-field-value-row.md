@@ -1,6 +1,6 @@
 # 021. FieldValueRow
 
-**Status:** to create
+**Status:** exists (`app/Models/FieldValueRow.php`), settled
 **Spec:** 5.5
 
 ## What it is
@@ -38,6 +38,18 @@ updated_at                  datetime
 - Deleting a row deletes the values in it, and detaches any file they held so the orphan sweep in [File](008-file.md) can pick it up after the grace period.
 - Reordering rows changes `position` only. It never rewrites values, and it never changes which row a value belongs to.
 - Rows are counted against `repeat_min` and `repeat_max` on the field at save time.
+
+## Not done yet
+
+- **An activity holds no repetitions,** because [Activity](036-activity.md) does not exist. The morph is written to take one the day it does; what exists today is a repetition on a contact or an entity.
+- **No screen and no API.** Model and actions only, so nothing drags a repetition up the page yet. `UpdateFieldValueRowPosition` is what a drag will call.
+
+## Decisions taken while building it
+
+- **The row carries no uuid.** The conventions in this folder give one to what a user can open, link to or address as a resource, and a repetition is none of those: it is reached through the record holding it.
+- **Deleting a repetition is an action rather than a model hook.** Taking the values out means letting go of the files they held, and letting go is `DetachFile`, which needs the user. A hook has no user, so `DestroyFieldValueRow` is where it lives and the model does not pretend to cover a path around it.
+- **The repetition limits are counted at the moment one is added or removed,** not on the whole record at save time. `repeat_max` refuses one repetition too many and `repeat_min` refuses taking the last one away, which is the point at which somebody can be told something useful.
+- **Positions are renumbered from one after a removal,** so they stay a sequence rather than a set with a hole in it. Nothing reads a position as an identity, and a page that renders them in order should not have to think about gaps.
 
 ## Open questions
 

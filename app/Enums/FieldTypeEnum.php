@@ -54,6 +54,33 @@ enum FieldTypeEnum: string
     }
 
     /**
+     * Which column of the value table this type writes to. Exactly one of them
+     * is populated for any stored value, and which one is a property of the
+     * type rather than a choice made per row.
+     *
+     * Three separate things read as null here. The layout types store nothing
+     * at all. A repeater holds repetitions rather than a value of its own, so
+     * its children are what write. And a relation is decided by what the field
+     * points at rather than by its type, so the action that writes it reads
+     * `relation_target` instead.
+     */
+    public function valueColumn(): ?string
+    {
+        return match ($this) {
+            self::Text, self::Url, self::Email, self::Phone => 'value_string',
+            self::Textarea => 'value_text',
+            self::Number => 'value_number',
+            self::Boolean => 'value_boolean',
+            self::Date, self::RecurringDate => 'value_date',
+            self::Select, self::Radio => 'value_list_item_id',
+            self::Multiselect => 'value_list_item_ids',
+            self::File, self::Image, self::Avatar => 'value_file_id',
+            self::Address => 'value_json',
+            self::Relation, self::Repeater, self::Divider, self::Heading, self::Help => null,
+        };
+    }
+
+    /**
      * Whether the field draws its choices from a value list, which is what
      * spares somebody retyping the same handful of options into every field
      * that offers them.

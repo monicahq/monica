@@ -48,11 +48,8 @@ deleted_at                  datetime
 
 ## Not done yet
 
-- Three of the four relationships. [Entity](020-entity.md), [Template](012-template.md) and [VaultDefaultTemplate](018-vault-default-template.md) do not exist, so only `belongsTo` Account is declared. A type is currently a noun nothing points at.
-- `entity_count` is written once, as zero, and never moved. Nothing creates an entity to count. It is kept on the row rather than aggregated on read for the same reason `contact_count` is on the vault, and the action that keeps it in step arrives with model 020.
-- The rule that deleting is only offered when the type holds no records is enforced against `entity_count`, which is the only thing there is to ask. `DestroyEntityType` throws `CannotDeleteAnEntityTypeInUse` above zero. Once entities exist that count has to become true, or the check has to start counting rows.
-- Nothing stops a record being created for an inactive type, because there is no record to create. `is_active` is stored and honoured by the actions that set it; what reads it is the entity builder, which is model 020.
 - No API. The settings screens exist: the list that orders the types, and the form that declares one and changes it.
+- `hasMany` [Entity](020-entity.md) is now declared and `entity_count` is kept in step by the actions that write a record down, delete one and bring one back, so the guard in `DestroyEntityType` is true rather than merely written, and `CreateEntity` refuses an inactive type. What is still missing is the marketplace side of the type, which belongs to [MarketplaceInstallation](047-marketplace-installation.md).
 
 ## Decisions taken while building it
 

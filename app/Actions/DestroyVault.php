@@ -7,9 +7,12 @@ namespace App\Actions;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\Entity;
+use App\Models\EntityType;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
@@ -20,9 +23,9 @@ use Illuminate\Support\Facades\DB;
  *
  * The deletion is soft, and the vault can be brought back with
  * {@see RestoreVault} while it is still there to bring back. What the vault
- * held goes with it and comes back with it: the contacts are marked as having
- * left with the vault, which is how a restore later tells them from somebody
- * deleted on their own beforehand.
+ * held goes with it and comes back with it: the contacts and the records of the
+ * invented kinds are marked as having left with the vault, which is how a
+ * restore later tells them from something deleted on its own beforehand.
  *
  * The last vault of an account goes too. An account with no vault is a state
  * the product already knows, since it is the one every account starts in, and
@@ -67,6 +70,7 @@ class DestroyVault
             $this->vault->delete();
 
             $this->takeTheContactsWithIt();
+            $this->takeTheEntitiesWithIt();
 
             if ($wasDefault) {
                 $this->promoteTheFirstVaultLeft();
@@ -108,6 +112,47 @@ class DestroyVault
                 'deleted_at' => $this->vault->deleted_at,
                 'deleted_with_vault' => true,
             ]);
+    }
+
+    /**
+     * Send the records of the invented kinds out with the vault too, and give
+     * back the counts they were holding, both on the versions they render from
+     * and on the types they are records of.
+     *
+     * They are marked the same way the contacts are, for the same reason: a
+     * restore later brings back these and not something deleted on its own an
+     * hour earlier.
+     */
+    private function takeTheEntitiesWithIt(): void
+    {
+        $this->giveTheCountsBack('template_version_id', TemplateVersion::class, 'record_count');
+        $this->giveTheCountsBack('entity_type_id', EntityType::class, 'entity_count');
+
+        Entity::query()
+            ->where('vault_id', $this->vault->id)
+            ->update([
+                'deleted_at' => $this->vault->deleted_at,
+                'deleted_with_vault' => true,
+            ]);
+    }
+
+    /**
+     * @param  class-string<Model>  $model
+     */
+    private function giveTheCountsBack(string $column, string $model, string $counter): void
+    {
+        $counts = Entity::query()
+            ->where('vault_id', $this->vault->id)
+            ->groupBy($column)
+            ->selectRaw("{$column}, count(*) as total")
+            ->pluck('total', $column);
+
+        foreach ($counts as $id => $total) {
+            $model::query()
+                ->whereKey($id)
+                ->where($counter, '>=', $total)
+                ->decrement($counter, $total);
+        }
     }
 
     /**

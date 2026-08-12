@@ -147,6 +147,17 @@ class Vault extends Model
     }
 
     /**
+     * Get the records of the invented kinds the vault holds: the animals, the
+     * companies, the bottles. They are compartmented exactly as contacts are.
+     *
+     * @return HasMany<Entity, $this>
+     */
+    public function entities(): HasMany
+    {
+        return $this->hasMany(Entity::class);
+    }
+
+    /**
      * Get the structures a new record starts on here, one per kind of record.
      * They differ from vault to vault, since a work contact and a family
      * contact do not start from the same page.

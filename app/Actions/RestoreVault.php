@@ -7,9 +7,12 @@ namespace App\Actions;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\Entity;
+use App\Models\EntityType;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
@@ -18,9 +21,9 @@ use Illuminate\Support\Facades\DB;
  *
  * Deleting a vault is the most destructive thing somebody can do short of
  * deleting the account, which is why it is reversible. It comes back where it
- * was in the list, and with the contacts that left with it: those are the ones
- * the deletion marked as having gone with it, and somebody deleted on their own
- * beforehand stays deleted.
+ * was in the list, and with the contacts and the records that left with it:
+ * those are the ones the deletion marked as having gone with it, and anything
+ * deleted on its own beforehand stays deleted.
  *
  * It comes back as the default only when the account has nobody else to be it,
  * which is what happens when it was the last vault. Otherwise another vault
@@ -55,6 +58,7 @@ class RestoreVault
             $this->vault->restore();
 
             $this->bringBackTheContactsThatWentWithIt();
+            $this->bringBackTheEntitiesThatWentWithIt();
             $this->takeTheTitleBackIfNobodyHasIt();
         });
     }
@@ -81,6 +85,39 @@ class RestoreVault
                 'deleted_at' => null,
                 'deleted_with_vault' => false,
             ]);
+    }
+
+    private function bringBackTheEntitiesThatWentWithIt(): void
+    {
+        $this->giveTheCountsBack('template_version_id', TemplateVersion::class, 'record_count');
+        $this->giveTheCountsBack('entity_type_id', EntityType::class, 'entity_count');
+
+        Entity::query()
+            ->onlyTrashed()
+            ->where('vault_id', $this->vault->id)
+            ->where('deleted_with_vault', true)
+            ->update([
+                'deleted_at' => null,
+                'deleted_with_vault' => false,
+            ]);
+    }
+
+    /**
+     * @param  class-string<Model>  $model
+     */
+    private function giveTheCountsBack(string $column, string $model, string $counter): void
+    {
+        $counts = Entity::query()
+            ->onlyTrashed()
+            ->where('vault_id', $this->vault->id)
+            ->where('deleted_with_vault', true)
+            ->groupBy($column)
+            ->selectRaw("{$column}, count(*) as total")
+            ->pluck('total', $column);
+
+        foreach ($counts as $id => $total) {
+            $model::query()->whereKey($id)->increment($counter, $total);
+        }
     }
 
     private function takeTheTitleBackIfNobodyHasIt(): void

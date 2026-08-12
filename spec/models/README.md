@@ -29,6 +29,8 @@ Every file follows the same shape.
 | 005 | [EmailSent](005-email-sent.md) | exists, minor changes |
 | 006 | [PersonalAccessToken](006-personal-access-token.md) | exists, changes needed |
 
+Models 007 to 023 exist as well. Each file says how far it is built and what it is waiting on.
+
 ### The compartments and the files
 
 | # | Model | Spec |

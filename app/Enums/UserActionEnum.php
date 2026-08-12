@@ -92,6 +92,22 @@ enum UserActionEnum: string implements Translatable
     case ContactUnfavourited = 'contact_unfavourited';
     case ContactDeletion = 'contact_deleted';
     case ContactRestoration = 'contact_restored';
+    case EntityCreation = 'entity_created';
+    case EntityNameUpdate = 'entity_name_updated';
+    case EntityArchived = 'entity_archived';
+    case EntityUnarchived = 'entity_unarchived';
+    case EntityDeletion = 'entity_deleted';
+    case EntityRestoration = 'entity_restored';
+    case FieldValueRowCreation = 'field_value_row_created';
+    case FieldValueRowPositionUpdate = 'field_value_row_position_updated';
+    case FieldValueRowDeletion = 'field_value_row_deleted';
+    case FieldValueSet = 'field_value_set';
+    case FieldValueCleared = 'field_value_cleared';
+    case FieldValuesDetached = 'field_values_detached';
+    case FieldValuesReattached = 'field_values_reattached';
+    case RecordSnapshotTaken = 'record_snapshot_taken';
+    case RecordSnapshotRestored = 'record_snapshot_restored';
+    case RecordMovedToTemplateVersion = 'record_moved_to_template_version';
 
     /**
      * What the action reads as in the logs, written about whoever performed it.
@@ -185,6 +201,22 @@ enum UserActionEnum: string implements Translatable
             self::ContactUnfavourited => 'Unpinned the contact :name',
             self::ContactDeletion => 'Deleted the contact :name',
             self::ContactRestoration => 'Brought the contact :name back',
+            self::EntityCreation => 'Wrote down the record :name',
+            self::EntityNameUpdate => 'Renamed a record to :name',
+            self::EntityArchived => 'Archived the record :name',
+            self::EntityUnarchived => 'Brought the record :name back into the lists',
+            self::EntityDeletion => 'Deleted the record :name',
+            self::EntityRestoration => 'Brought the record :name back',
+            self::FieldValueRowCreation => 'Added a repetition of :label on :name',
+            self::FieldValueRowPositionUpdate => 'Moved a repetition of :label on :name',
+            self::FieldValueRowDeletion => 'Removed a repetition of :label on :name',
+            self::FieldValueSet => 'Filled in :label on :name',
+            self::FieldValueCleared => 'Cleared :label on :name',
+            self::FieldValuesDetached => 'Set aside :count values written in :label',
+            self::FieldValuesReattached => 'Brought back :count values written in :label',
+            self::RecordSnapshotTaken => 'Saved the state of :name',
+            self::RecordSnapshotRestored => 'Put :name back to a saved state',
+            self::RecordMovedToTemplateVersion => 'Moved :name onto version :version of its template',
         };
     }
 

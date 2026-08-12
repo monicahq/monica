@@ -71,8 +71,7 @@ deleted_with_vault          bool                            whether the contact 
 
 ## Not done yet
 
-- **Nothing is written on the page.** [FieldValue](022-field-value.md) and [FieldValueRow](021-field-value-row.md) are ahead, so a contact points at a structure and holds nothing in it. The `hasMany` side arrives with them, and so does the promise that every field is searchable with no configuration (13).
-- **The contact cannot be moved to another template version.** That move writes a [RecordSnapshot](023-record-snapshot.md) first, always, and there is no snapshot model. Until there is, a contact stays on the version it was created on, which is the safe half of the rule to leave unfinished.
+- **Search and filtering are still ahead.** [FieldValue](022-field-value.md) and [FieldValueRow](021-field-value-row.md) exist, so a contact now holds what somebody typed and the `hasMany` side reads it. What is missing is the promise that every field is searchable with no configuration (13), which starts at [SearchIndexEntry](054-search-index-entry.md).
 - **Nothing sets the avatar.** The column points at [File](008-file.md), the constraint is there and the relationship reads it, but no action and no screen picks a file for a contact. Choosing one has to move `reference_count` through `AttachFile` and `DetachFile`, and until something offers that choice every contact is drawn as its initials.
 - **`last_activity_at`, `activity_count` and `last_consulted_at` stay null and zero.** They are maintained on write by the models that produce them, and neither [Activity](036-activity.md) nor a screen to consult a contact on exists.
 - **Deleting a contact cancels nothing, and neither does archiving one.** [Reminder](040-reminder.md) is ahead, so the cancelling of future occurrences and their restoration wait for it. `ArchiveContact` and `UnarchiveContact` move the flag and nothing else until then.

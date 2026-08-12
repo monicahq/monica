@@ -1,6 +1,6 @@
 # 022. FieldValue
 
-**Status:** to create
+**Status:** exists (`app/Models/FieldValue.php`), built as far as the models it depends on allow
 **Spec:** 5.5, 3.3, 13, 10.2
 
 ## What it is
@@ -62,7 +62,28 @@ updated_at                  datetime
 - Layout fields (`divider`, `heading`, `help`) never produce a row.
 - Writing a value queues a reindex for the record ([SearchIndexEntry](054-search-index-entry.md)). Saving stays instantaneous and the index catches up behind it (13).
 
+## Not done yet
+
+- **Writing a value queues no reindex.** [SearchIndexEntry](054-search-index-entry.md) is ahead, so the promise that saving stays instantaneous while the index catches up behind it has nothing to catch up. The typed columns and their indexes are there, which is the half of section 13 that had to be decided now.
+- **`value_datetime` is written by nothing.** No type in the first version carries a time as well as a date. The column is there because the file lists it, and the first type that needs one will be what fills it.
+- **Nothing removes a field from a structure on its own.** `DetachFieldValues` and `ReattachFieldValues` do the work and are called by hand or by `MoveRecordToTemplateVersion`; a section version that drops a field and is then republished does not walk its values yet, because deciding what a field of the same key on a new section version is to a value of the old one is the builder's question, not this model's.
+- **`is_sensitive` masks nothing and `default_value` is handed to nobody.** Both are rendering, and there is no screen.
+- **`is_required` is enforced nowhere.** Required is a statement about a whole record being submitted, and there is no action that submits one; writing one value at a time cannot honestly refuse an empty field somebody has not reached yet.
+- **No screen and no API.** Model and actions only.
+
+## Decisions taken while building it
+
+- **The column is asked of the type, once.** `FieldTypeEnum::valueColumn()` answers it, the way the enum already answers whether a type stores anything or reads from a list. It reads null for three different reasons, each written on the method: layout types store nothing, a repeater holds repetitions rather than a value, and a relation is decided by what the field points at rather than by its type.
+- **`SetFieldValue` is the only place a value is written,** and it takes typed parameters rather than one `mixed`: a chosen item, several chosen items, a file, a contact, an entity. A single loose value would mean every caller deciding what shape to hand over, and the action guessing.
+- **Writing replaces rather than adds,** on the triple of record, field and repetition, and every column the value is not written into is cleared in the same write. Leaving what was there before beside the new value is how a row ends up saying two things.
+- **The unknown year is imposed rather than trusted.** A recurring date whose year nobody knows is stored under `FieldValue::PLACEHOLDER_YEAR`, rewritten by the action, so nothing downstream can read a year out of the column and believe it. The two missing parts are independent: a birthday with no year and a date somebody remembers only the year of are both normal.
+- **A part missing on a type that cannot have one is dropped, not stored,** following the decision already taken on [Field](017-field.md) that a setting a type cannot honour is a setting that lies.
+- **`is_unique` is checked against the vault,** since a vault is a compartment and two of them know nothing about each other. A field holding several values at once is skipped: uniqueness across sets is a different question and not one the specification asks.
+- **A relation may not cross a vault.** The specification does not say it in as many words, and the alternative is a value that reads what is on the other side of a compartment.
+- **The counts on files and on value list items are moved by the action that writes,** through the existing `AttachFile` and `DetachFile` and by hand for the items. Both are counted on write for the same reason: counting on read means aggregating the largest table in the product.
+- **Clearing a value deletes the row; a field leaving the structure does not.** They look alike and are not the same event. Somebody who empties a field has nothing to be explained or restored later; a field taken out of a structure leaves values that are set aside, listed and restorable.
+
 ## Open questions
 
-- Whether `value_string` should be indexed wholesale or only where a field is marked filterable. Indexing everything is the promise section 13 makes and it costs write throughput. Measuring is the only honest way to settle it.
+- Whether `value_string` should be indexed wholesale or only where a field is marked filterable. Indexing everything is the promise section 13 makes and it costs write throughput. Measuring is the only honest way to settle it. The databases have already forced half an answer: MySQL caps an index at 3072 bytes, so the filter reads the first 255 characters of the value there, and PostgreSQL will refuse a row whose indexed value runs past about 2700 bytes, which a 1024 character column can do in a multibyte language. Whatever settles the question has to settle the length of the column with it.
 - Whether a value should keep its own edit history, or whether [Log](004-log.md) is enough. The log already carries before and after values, which suggests it is enough.

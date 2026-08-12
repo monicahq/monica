@@ -204,6 +204,16 @@ class Field extends Model
     }
 
     /**
+     * Get everything ever entered for this field, on every record.
+     *
+     * @return HasMany<FieldValue, $this>
+     */
+    public function values(): HasMany
+    {
+        return $this->hasMany(FieldValue::class);
+    }
+
+    /**
      * Get the kind of record a relation field points at, which is null when it
      * points at contacts.
      *

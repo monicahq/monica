@@ -9,6 +9,8 @@ use App\Actions\RestoreVault;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\Entity;
+use App\Models\EntityType;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
@@ -77,6 +79,32 @@ class RestoreVaultTest extends TestCase
 
         $this->assertNotSoftDeleted('contacts', ['id' => $dwight->id]);
         $this->assertSoftDeleted('contacts', ['id' => $creed->id]);
+        $this->assertEquals(1, $version->refresh()->record_count);
+    }
+
+    #[Test]
+    public function it_brings_back_the_records_that_left_with_the_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
+        $type = EntityType::factory()->create(['account_id' => $user->account_id, 'entity_count' => 1]);
+        $version = TemplateVersion::factory()->published()->used(1)->create();
+        $dunder = Entity::factory()->create([
+            'vault_id' => $vault->id,
+            'entity_type_id' => $type->id,
+            'template_version_id' => $version->id,
+        ]);
+        $sabre = Entity::factory()->create(['vault_id' => $vault->id]);
+        $sabre->delete();
+
+        new DestroyVault(user: $user, vault: $vault)->execute();
+        new RestoreVault(user: $user, vault: $vault)->execute();
+
+        $this->assertNotSoftDeleted('entities', ['id' => $dunder->id, 'deleted_with_vault' => false]);
+        $this->assertSoftDeleted('entities', ['id' => $sabre->id]);
+        $this->assertEquals(1, $type->refresh()->entity_count);
         $this->assertEquals(1, $version->refresh()->record_count);
     }
 

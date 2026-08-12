@@ -7,7 +7,9 @@ namespace Tests\Unit\Jobs;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Jobs\PurgeOrphanedFiles;
+use App\Models\Contact;
 use App\Models\File;
+use App\Models\RecordSnapshot;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -71,6 +73,34 @@ class PurgeOrphanedFilesTest extends TestCase
         $file = File::factory()->used(1)->create([
             'account_id' => $user->account_id,
             'orphaned_at' => now()->subYear(),
+        ]);
+
+        new PurgeOrphanedFiles()->handle();
+
+        $this->assertNotSoftDeleted('files', ['id' => $file->id]);
+    }
+
+    /**
+     * A snapshot naming a file is somebody who may still ask for the state that
+     * held it, which is exactly what the grace period was for.
+     */
+    #[Test]
+    public function it_leaves_a_file_a_snapshot_still_names(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+        config(['monica.orphaned_file_grace_period_in_days' => 30]);
+
+        $user = User::factory()->create();
+        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
+        $file = File::factory()->create([
+            'account_id' => $user->account_id,
+            'orphaned_at' => now()->subYear(),
+        ]);
+        RecordSnapshot::factory()->holding([$file->id])->create([
+            'snapshotable_id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
         ]);
 
         new PurgeOrphanedFiles()->handle();

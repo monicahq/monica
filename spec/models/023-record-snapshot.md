@@ -1,6 +1,6 @@
 # 023. RecordSnapshot
 
-**Status:** to create
+**Status:** exists (`app/Models/RecordSnapshot.php`), built as far as the models it depends on allow
 **Spec:** 12, 6, 11
 
 ## What it is
@@ -42,6 +42,23 @@ updated_at                  datetime
 - Restoring is itself an action that writes a snapshot first, so a restore can be undone.
 - A snapshot is immutable.
 - Restoring is refused when the structure it points at no longer exists and cannot be reconstructed. It says so rather than restoring something partial.
+
+## Not done yet
+
+- **Two of the six reasons are taken by nothing.** `merge` waits for [ContactMerge](034-contact-merge.md) and `import` for an import that does not exist. `template_change`, `restore` and `manual` are all live, and `api` is available to whatever calls the actions from an API that has not been written.
+- **Nothing prunes a snapshot.** Retention is an open question below, so `expires_at` is stored, honoured by nobody, and the model refuses deletion the way a [Log](004-log.md) entry does. Growth is unbounded until the question is answered, which is acceptable while nothing writes snapshots automatically except a structure change.
+- **The orphan sweep asks the whole table.** `RecordSnapshot::fileIdsInUse()` reads every row's `file_ids` before the sweep takes anything. That is honest and it does not scale; it is the same decision as keeping the ids in a json column rather than in a pivot, and both should be revisited with retention rather than separately.
+- **Restoring puts a record back and nothing else.** A contact's relationships, groups and activities are not in the payload. That is the narrower promise and the one section 6 actually makes; relationships carry their own history.
+- **No screen and no API.** Model and actions only, so nobody is offered a list of moments to go back to.
+
+## Decisions taken while building it
+
+- **The payload carries identifiers as well as labels.** The file asks for keys and labels so that a payload is readable without the structure it came from, and restoring also has to write values back into real fields. A published version is frozen and its fields cannot be deleted, so the identifiers are stable and are what puts the values back; the keys and labels are what makes the payload mean something on its own.
+- **Restoring refuses rather than restores something partial**, checking that the version and every field the payload names are still there. Half a record put back is worse than a record left alone, because nobody can tell which half.
+- **Restoring writes a snapshot first**, which is the file's own rule, and it means the machinery that undoes a restore is the machinery that performs one.
+- **Immutable means the captured state, not the row.** `restored_at` moves, because it says something about the snapshot rather than about the state in it. Everything else is refused, and so is deletion, for the reason a log entry refuses both.
+- **Moving a record to another version is its own action,** `MoveRecordToTemplateVersion`, and it takes the snapshot unconditionally rather than working out whether the change looks harmless. The whole point of the guarantee is that nobody has to decide in advance whether they will regret it. This is the rule [Contact](019-contact.md) and [Entity](020-entity.md) both list and neither could keep until now.
+- **A value survives a move when the new structure still carries the field it points at.** Otherwise it is set aside, and a value set aside by an earlier move comes back when its field is carried again. Matching a value to a field of the same key on a differently versioned section is a separate question, and it belongs to the builder rather than here.
 
 ## Open questions
 

@@ -43,7 +43,7 @@ deleted_at                  datetime
 
 ## Not done yet
 
-- `usage_count` is a column that stays at zero. [FieldValue](022-field-value.md) is what keeps it in step, and it does not exist. The guard is written all the same: `DestroyValueListItem` refuses an item the count says is used, so the rule is true the day something starts counting.
+- `usage_count` is now kept in step by [FieldValue](022-field-value.md): `SetFieldValue` hands the count from the item somebody was on to the one they moved to, `DestroyFieldValue` gives it back, and restoring a snapshot moves both ways at once. `DestroyValueListItem` refuses an item the count says is used, and the count is finally true rather than merely written.
 - Disabling hides an item from every picker, once there is a picker. `is_active` is set and read by nothing else yet.
 - Merging one item into another. Untouched, and still an open question rather than a task.
 

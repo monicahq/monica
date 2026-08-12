@@ -1,6 +1,6 @@
 # 020. Entity
 
-**Status:** to create
+**Status:** exists (`app/Models/Entity.php`), built as far as the models it depends on allow
 **Spec:** 5.1, 5.3, 8.1, 9.2
 
 ## What it is
@@ -27,6 +27,7 @@ last_consulted_at           datetime                        when the user last o
 created_at                  datetime
 updated_at                  datetime
 deleted_at                  datetime
+deleted_with_vault          bool                            whether the record was taken out by the deletion of its vault, so restoring the vault knows what to bring back
 ```
 
 ## Relationships
@@ -46,6 +47,23 @@ deleted_at                  datetime
 - Changing the applied template version writes a snapshot first, exactly as for a contact.
 - The page hierarchy comes from the precise [TemplateVersion](013-template-version.md) assigned to the entity. One template page renders without tabs, while two or more use the same accessible tab navigation as a contact (5.2).
 - Soft deleted, for the same reasons.
+
+## Not done yet
+
+- **Nothing sets the avatar.** The column points at [File](008-file.md) and the relationship reads it, but no action and no screen picks a file for a record, exactly as for a [Contact](019-contact.md). Every record is drawn as its initials until something offers that choice.
+- **`last_consulted_at` stays null.** It is written by the screen that consults a record, and there is none.
+- **No reminder is silenced by archiving.** [Reminder](040-reminder.md) is ahead, so `ArchiveEntity` and `UnarchiveEntity` move the flag and nothing else. The rule that a contract renewal on an archived company stays quiet is written down and waiting for the model that can keep it.
+- **Nothing writes a record down from an activity or a relation field.** [Activity](036-activity.md) is ahead, and the relation field points at an entity that already exists.
+- **No screen and no API.** Model and actions only.
+
+## Decisions taken while building it
+
+- **The name is enforced where the sort name is built,** as it is on a contact. One `saving` hook writes `sort_name` and refuses a record left with nothing, so no path that writes a name can forget either half. It is lowercased for the same reason: the order must not depend on the collation of the database underneath.
+- **`deleted_with_vault` is carried here too**, although this file did not list it. Deleting a vault takes its contacts with it and marks them; leaving the records of the invented kinds behind would orphan every animal and every company in the vault. `DestroyVault` and `RestoreVault` now carry both, and give back the counts on the versions and on the types.
+- **A record is created only for an active type,** which is the check [EntityType](011-entity-type.md) said would arrive with this model. Deactivating a type stops new records and leaves the existing ones readable, and that is the whole difference between deactivating it and deleting it.
+- **A new record starts on the vault's default for its own type,** and the caller may name another published version instead. A vault with no default for the type refuses rather than guesses: a type is visible in every vault, and whether it is used in one is decided there.
+- **`entity_count` on the type is now kept in step** by the actions that write a record down, delete one and bring one back, which makes the guard in `DestroyEntityType` true rather than merely written.
+- **An entity has no `is_favourite`.** The specification gives pinning to contacts and this file does not list it. Adding it because contacts have it would be inventing a feature out of symmetry.
 
 ## Open questions
 

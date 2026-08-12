@@ -53,7 +53,7 @@ deleted_at                  datetime
 
 ## Not done yet
 
-- **Nothing points at a file.** [FieldValue](022-field-value.md) and [Activity](036-activity.md) are both ahead, so `reference_count` is moved by `AttachFile` and `DetachFile` and nothing calls either yet. [Contact](019-contact.md) carries an `avatar_file_id` with its constraint, and nothing writes to it either. Every file uploaded today is an orphan from the moment it lands, which is exactly what the count says.
+- **Only a value points at a file.** [FieldValue](022-field-value.md) now moves `reference_count` through `AttachFile` and `DetachFile`, and a file a live [RecordSnapshot](023-record-snapshot.md) names is left alone by the sweep whatever its count says. [Activity](036-activity.md) is still ahead, and [Contact](019-contact.md) carries an `avatar_file_id` with its constraint that nothing writes to.
 - **No screens and no API.** `CreateFile` takes an upload, checks the room and writes the row; nothing uploads anything through it. The user photo still writes its own two versions outside this model, and moves onto it when the record renderer needs a file at all.
 - **`variants` stays null.** Which sizes an image is derived into is a question for whatever renders one, and writing a set of sizes before anything reads them would be guessing. The column and the asynchronous processing arrive together.
 - **The checksum is written and never read.** Deduplication is an open question below, and until it is answered the hash is only what would make answering it possible.

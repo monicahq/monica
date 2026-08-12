@@ -9,6 +9,8 @@ use App\Actions\DestroyVault;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\Entity;
+use App\Models\EntityType;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
@@ -99,6 +101,50 @@ class DestroyVaultTest extends TestCase
         new DestroyVault(user: $user, vault: $vault)->execute();
 
         $this->assertNotSoftDeleted('contacts', ['id' => $creed->id]);
+    }
+
+    #[Test]
+    public function it_takes_the_records_of_the_invented_kinds_with_it_too(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
+        $type = EntityType::factory()->create(['account_id' => $user->account_id, 'entity_count' => 2]);
+        $version = TemplateVersion::factory()->published()->used(2)->create();
+        $dunder = Entity::factory()->create([
+            'vault_id' => $vault->id,
+            'entity_type_id' => $type->id,
+            'template_version_id' => $version->id,
+        ]);
+        $sabre = Entity::factory()->create([
+            'vault_id' => $vault->id,
+            'entity_type_id' => $type->id,
+            'template_version_id' => $version->id,
+        ]);
+
+        new DestroyVault(user: $user, vault: $vault)->execute();
+
+        $this->assertSoftDeleted('entities', ['id' => $dunder->id, 'deleted_with_vault' => true]);
+        $this->assertSoftDeleted('entities', ['id' => $sabre->id, 'deleted_with_vault' => true]);
+        $this->assertEquals($vault->refresh()->deleted_at, $dunder->refresh()->deleted_at);
+        $this->assertEquals(0, $type->refresh()->entity_count);
+        $this->assertEquals(0, $version->refresh()->record_count);
+    }
+
+    #[Test]
+    public function it_leaves_the_records_of_another_vault_alone(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $elsewhere = Vault::factory()->default()->create(['account_id' => $user->account_id]);
+        $dunder = Entity::factory()->create(['vault_id' => $elsewhere->id]);
+
+        new DestroyVault(user: $user, vault: $vault)->execute();
+
+        $this->assertNotSoftDeleted('entities', ['id' => $dunder->id]);
     }
 
     #[Test]

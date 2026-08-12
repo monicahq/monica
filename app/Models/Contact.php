@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -248,6 +249,36 @@ class Contact extends Model
     public function avatar(): BelongsTo
     {
         return $this->belongsTo(File::class, 'avatar_file_id');
+    }
+
+    /**
+     * Get everything written on the page of the contact.
+     *
+     * @return MorphMany<FieldValue, $this>
+     */
+    public function fieldValues(): MorphMany
+    {
+        return $this->morphMany(FieldValue::class, 'valuable');
+    }
+
+    /**
+     * Get the repetitions of every repeater on the page of the contact.
+     *
+     * @return MorphMany<FieldValueRow, $this>
+     */
+    public function fieldValueRows(): MorphMany
+    {
+        return $this->morphMany(FieldValueRow::class, 'valuable');
+    }
+
+    /**
+     * Get the states of the contact kept so they can be restored, newest first.
+     *
+     * @return MorphMany<RecordSnapshot, $this>
+     */
+    public function snapshots(): MorphMany
+    {
+        return $this->morphMany(RecordSnapshot::class, 'snapshotable')->latest();
     }
 
     /**
