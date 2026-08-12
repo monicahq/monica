@@ -22,7 +22,7 @@
   </head>
 
   <body class="bg-page font-sans text-body antialiased">
-    <header class="sticky top-0 z-5 flex h-13 items-center gap-2.5 border-b border-hairline bg-page/90 px-4 backdrop-blur-md sm:px-7">
+    <header class="sticky top-0 z-5 flex h-13 items-center gap-2.5 border-b border-hairline-strong bg-canvas px-4 shadow-bar sm:px-7">
       <x-logo :size="26" />
 
       <span class="truncate text-sm font-semibold tracking-tight text-ink">{{ config('app.name') }}</span>

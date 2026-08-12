@@ -162,16 +162,26 @@ Alpine.store('theme', {
 });
 
 /*
- * Turbo fires turbo:load on the first paint as well as after every navigation it drives.
- * The first one starts Alpine, which walks the whole page; the ones after it only have to
- * walk the body Turbo has just swapped in.
+ * Turbo fires turbo:load on the first paint as well as after every navigation it
+ * drives. The first one starts Alpine; every one of them walks the body, which is
+ * either the whole page or the one Turbo has just swapped in.
+ *
+ * The first one has to walk it too, and that is easy to miss. Starting Alpine only
+ * visits the x-data roots, so <body> is left unmarked, and Alpine ignores the removal
+ * of a node it never marked: the body Turbo takes away is dropped without any of the
+ * teardown its components registered ever running. Walking it here marks it, which is
+ * what lets that teardown happen. Alpine skips whatever it has already seen, so this
+ * costs a walk and initialises nothing twice.
+ *
+ * What went wrong without it was the launcher. It holds the page still while it is
+ * open by setting an overflow on <html>, and gives it back when it closes. Following
+ * a link out of it never closed it, it was thrown away instead, and the overflow
+ * stayed behind on the one element Turbo never replaces.
  */
 document.addEventListener('turbo:load', () => {
     if (! document.documentElement.dataset.alpine) {
         document.documentElement.dataset.alpine = 'started';
         Alpine.start();
-
-        return;
     }
 
     Alpine.initTree(document.body);

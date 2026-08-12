@@ -62,7 +62,7 @@
         stranded halfway up it. Screens without one are left exactly as they were.
       --}}
       <main @class(['min-w-0', 'flex flex-col' => isset($footer), 'flex h-dvh flex-col' => $wide])>
-        <header class="sticky top-0 z-5 flex h-13 items-center gap-3.5 border-b border-hairline bg-page/90 px-4 backdrop-blur-md sm:px-7">
+        <header class="sticky top-0 z-5 flex h-13 items-center gap-3.5 border-b border-hairline-strong bg-canvas px-4 shadow-bar sm:px-7">
           <button
             type="button"
             @click="navOpen = true"

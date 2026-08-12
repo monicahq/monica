@@ -180,6 +180,7 @@
     --shadow-raised: 0 1px 0 var(--hairline-strong), 0 2px 4px -2px rgb(44 43 41 / 0.1);
     --shadow-lift: 0 2px 0 rgb(44 43 41 / 0.06), 0 8px 20px -12px rgb(44 43 41 / 0.28);
     --shadow-pop: 0 12px 34px -14px rgb(44 43 41 / 0.36), 0 2px 0 rgb(44 43 41 / 0.05);
+    --shadow-bar: 0 2px 6px var(--bar-shadow);
     --shadow-dock: 0 -1px 0 var(--hairline), 0 -10px 30px -22px rgb(44 43 41 / 0.4);
     --shadow-press-inset: inset 0 2px 3px -1px rgb(44 43 41 / 0.25);
     --shadow-press-focus: inset 0 2px 3px -1px rgb(44 43 41 / 0.18), 0 0 0 3px var(--accent-tint);
@@ -364,9 +365,17 @@
     --duration-slow: 220ms;
     --press-translate: 1px;
 
+    /*
+     * The two shadow colours that cannot live in the token beside them. Tailwind
+     * resolves a `--shadow-*` token once, at build time, so a colour written into
+     * one would never flip for dark; written as a variable it survives into the
+     * utility and the block below can turn it black.
+     */
+    --bar-shadow: rgb(44 43 41 / 0.06);
+    --quote-shadow: rgba(44, 43, 41, 0.22);
+
     /* The bands of the gradient behind the quote, from top left to bottom right. */
     --quote-bands: #dfe4f6, #e6e2f2, #efe4ee, #f4e8e6, #f6eee2, #f2f0e2;
-    --quote-shadow: rgba(44, 43, 41, 0.22);
 
     color-scheme: light;
 }
@@ -442,8 +451,10 @@
     --shadow-press-inset: inset 0 2px 3px -1px rgb(0 0 0 / 0.45);
     --shadow-press-focus: inset 0 2px 3px -1px rgb(0 0 0 / 0.45), 0 0 0 3px var(--accent-tint);
 
-    --quote-bands: #1b1f34, #221d33, #2c1e2e, #301f24, #2c2419, #20221a;
+    --bar-shadow: rgb(0 0 0 / 0.4);
     --quote-shadow: rgba(0, 0, 0, 0.5);
+
+    --quote-bands: #1b1f34, #221d33, #2c1e2e, #301f24, #2c2419, #20221a;
 
     color-scheme: dark;
 }
