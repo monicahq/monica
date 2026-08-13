@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\App\GettingStartedController;
 use App\Http\Controllers\App\HomeController;
+use App\Http\Controllers\App\Marketplace\MarketplaceController;
 use App\Http\Controllers\App\Settings\Account\AccountController;
 use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListController;
 use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListItemActivationController;
@@ -50,6 +51,15 @@ use Illuminate\Support\Facades\Route;
 
 // The front door, which sends whoever is signed in wherever their account is up to.
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+
+// The catalogue. It sits outside the auth group on purpose: it is the one part
+// of the product that is public, and a link to something published in it has to
+// open for somebody who has never signed up. Everything that narrows it travels
+// in the query string, since five facets that combine freely cannot all be part
+// of the path.
+Route::get('marketplace', [MarketplaceController::class, 'index'])
+    ->middleware('set.locale')
+    ->name('marketplace.index');
 
 // The screens where somebody looks after their vaults.
 Route::middleware(['auth', 'set.locale'])->group(function (): void {
