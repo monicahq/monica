@@ -61,6 +61,29 @@ return [
             'number_format' => 'dot_comma',
             'flag' => 'linear-gradient(to bottom, #ae1c28 0 33%, #fff 33% 66%, #21468b 66%)',
         ],
+        'pt_BR' => [
+            'label' => 'Português',
+            'region' => 'Brasil',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'dot_comma',
+            /* Four green corners over yellow leave the lozenge, and the disc sits on top of it. */
+            'flag' => 'radial-gradient(circle at 50% 50%, #002776 0 28%, transparent 28%), linear-gradient(to bottom right, #009c3b 0 25%, transparent 25%), linear-gradient(to bottom left, #009c3b 0 25%, transparent 25%), linear-gradient(to top right, #009c3b 0 25%, transparent 25%), linear-gradient(to top left, #009c3b 0 25%, transparent 25%), #fedf00',
+        ],
+        'it_IT' => [
+            'label' => 'Italiano',
+            'region' => 'Italia',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'dot_comma',
+            'flag' => 'linear-gradient(to right, #008c45 0 33%, #fff 33% 66%, #cd212a 66%)',
+        ],
+        'tr_TR' => [
+            'label' => 'Türkçe',
+            'region' => 'Türkiye',
+            'date_format' => 'd.m.Y',
+            'number_format' => 'dot_comma',
+            /* The crescent is a red disc laid over a white one, and the star is a dot: at 20 by 14 pixels a five-pointed star drawn in gradients reads as a smudge. */
+            'flag' => 'radial-gradient(circle at 62% 50%, #fff 0 9%, transparent 9%), radial-gradient(circle at 46% 50%, #e30a17 0 31%, transparent 31%), radial-gradient(circle at 40% 50%, #fff 0 32%, transparent 32%), #e30a17',
+        ],
     ],
 
     /*
