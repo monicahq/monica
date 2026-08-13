@@ -37,16 +37,10 @@ class LogsViewModel
     ) {}
 
     /**
-     * Everything written down about the account, newest first.
-     *
-     * The journal belongs to the account rather than to the person, and under
-     * one person per account those are the same set but for one case: an entry
-     * the application wrote on its own has nobody behind it, and scoping to the
-     * user would hide exactly the entries somebody has not seen happen.
-     *
-     * The author of each entry is read off the user, so both are loaded up
-     * front. The screen asks for the page more than once, and one page is one
-     * query.
+     * The journal belongs to the account rather than to the person. Under one
+     * person per account those are the same set but for one case: an entry
+     * the application wrote on its own has nobody behind it, and scoping to
+     * the user would hide exactly the entries nobody saw happen.
      *
      * @return CursorPaginator<int, Log>
      */
@@ -81,9 +75,6 @@ class LogsViewModel
         return $this->user->emailsSent()->count() > self::EMAILS_SHOWN;
     }
 
-    /**
-     * Who is signed in, so the sidebar can show their name and their photo.
-     */
     public function user(): User
     {
         return $this->user;

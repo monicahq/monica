@@ -10,14 +10,10 @@ use App\Models\Template;
 use App\Models\User;
 
 /**
- * The form that names a template, and the same form that renames one. Naming
- * and renaming ask for the same things, so there is one screen and this decides
- * what it says.
- *
- * What a template applies to is asked for only while it is being created. A
- * template describes a kind of record, and pointing an existing one at a
- * different kind would leave every record already on it rendering something
- * never meant for it.
+ * The form that names a template, and the same form that renames one. What a
+ * template applies to is asked for only while it is being created: pointing
+ * an existing one at a different kind of record would leave everything
+ * already on it rendering something never meant for it.
  */
 class TemplateFormViewModel
 {
@@ -78,10 +74,10 @@ class TemplateFormViewModel
     }
 
     /**
-     * The kinds of record a template may describe. Only an active type is
-     * offered, since describing something nobody can file anything under is a
-     * dead end, but a type already named by this template stays in the list so
-     * that editing it does not silently change what it applies to.
+     * Only an active type is offered, since describing something nobody can
+     * file anything under is a dead end. A type already named by this
+     * template stays in the list, so editing it does not silently change what
+     * it applies to.
      *
      * @return array<int, array{id: int, name: string}>
      */

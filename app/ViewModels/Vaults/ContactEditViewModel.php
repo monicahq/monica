@@ -10,23 +10,14 @@ use App\Models\User;
 use App\Models\Vault;
 
 /**
- * The screen for what the template has no say over about a contact: what they
- * are called, the picture they are drawn as, and whether they are on the record
- * at all.
- *
- * All three are here because none is a field. Every other question on a record
- * comes from a structure somebody chose; the name is there whatever they choose,
- * since the product sorts, searches and builds initials out of it, the picture
- * is drawn wherever the person appears, and deletion is not a question about the
- * person at all.
- *
- * They sit on one screen rather than three because they are the same errand:
- * somebody who came to correct a record and somebody who came to be rid of it
- * both came here from the same button, and a product that hides deletion behind
- * a third place is a product people cannot leave.
+ * What the template has no say over about a contact: what they are called,
+ * the picture they are drawn as, and whether they are on the record at all.
+ * None of the three is a field, and they sit on one screen because they are
+ * the same errand: somebody correcting a record and somebody wanting rid of
+ * it arrive from the same button.
  *
  * What was typed wins over what is stored, so a form that came back rejected
- * shows the words somebody wrote rather than quietly reverting them.
+ * shows the words somebody wrote.
  */
 class ContactEditViewModel
 {

@@ -10,13 +10,10 @@ use App\Models\User;
 use App\Models\Vault;
 
 /**
- * The screen somebody lands on before they have made anything: a letter from
- * whoever writes the product, and the short list of what people usually do
- * first.
- *
- * Nothing on that list is required and nothing is ticked by hand. Each step
- * reads the account and says what it finds, so the list cannot claim something
- * was done that was not, and cannot ask for something twice.
+ * The screen somebody lands on before they have made anything: a letter, and
+ * the short list of what people usually do first. Each step reads the account
+ * and says what it finds, so the list cannot claim something was done that
+ * was not, and cannot ask for something twice.
  */
 class GettingStartedViewModel
 {
@@ -94,11 +91,8 @@ class GettingStartedViewModel
     }
 
     /**
-     * The short version of what people usually do first, each step saying
-     * whether the account has already been through it.
-     *
      * Adding somebody has no screen to send anyone to yet, so that step names
-     * what comes next and points nowhere, rather than promising a page that
+     * what comes next and points nowhere rather than promising a page that
      * does not exist.
      *
      * @return array<int, array{title: string, description: string, action: string|null, url: string|null, done: bool}>

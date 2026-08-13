@@ -15,21 +15,14 @@ use Illuminate\Http\Request;
 
 /**
  * Put one contact on another version of the template it renders from.
+ * Publishing moves nobody, so this is the only thing that does: the button on
+ * the banner, and the one on each line of the version history that goes back.
  *
- * Publishing a new version of a template moves nobody onto it. Which version a
- * record renders from changes only when somebody says so, record by record,
- * which is what this is: the button on the banner when a newer version is
- * waiting, and the one on each line of the version history that goes back.
- *
- * Both directions are the same act, so they are the same route. Naming no
- * version means the one the template publishes now, which is what the banner
- * offers and the only thing it ever offered. Naming one is how the history goes
- * back to a version the template has moved on from.
- *
- * What can be named is deliberately narrow: a published version of the template
- * this contact already renders from. That is what keeps the address from being a
- * way to put a record on somebody else's structure, or onto a draft nobody has
- * finished, or onto a retired version the action would refuse anyway.
+ * Both directions are the same act and so the same route. Naming no version
+ * means the one the template publishes now. What can be named is deliberately
+ * narrow, a published version of the template this contact already renders
+ * from, which keeps the address from being a way onto somebody else's
+ * structure or onto a draft nobody has finished.
  */
 class ContactTemplateVersionController extends Controller
 {
@@ -59,10 +52,9 @@ class ContactTemplateVersionController extends Controller
     }
 
     /**
-     * The version somebody asked for, when it is one this contact may be put on.
      * The lookup is scoped rather than validated after the fact: a version of
-     * another template, or one nobody has published, is not a bad field on a form
-     * but an address for something that is not on offer.
+     * another template is not a bad field on a form but an address for
+     * something that is not on offer.
      */
     private function versionAskedFor(Contact $contact, int $versionId): ?TemplateVersion
     {

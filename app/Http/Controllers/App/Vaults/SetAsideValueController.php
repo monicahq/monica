@@ -13,10 +13,8 @@ use Illuminate\View\View;
 
 /**
  * What a record still holds for questions its structure has stopped asking.
- *
- * It is its own screen because it is about what is not on the record, and its
- * own controller because it is not one of the things somebody does to a
- * contact.
+ * Its own screen because it is about what is not on the record, and its own
+ * controller because it is not one of the things somebody does to a contact.
  */
 class SetAsideValueController extends Controller
 {

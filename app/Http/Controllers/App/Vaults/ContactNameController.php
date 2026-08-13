@@ -14,19 +14,12 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 /**
- * The one thing about a contact the product imposes rather than the template.
+ * The one thing about a contact the product imposes rather than the template,
+ * since sorting, searching, headers and initials are all built from it.
  *
- * It is written away from the fields because it is not one of them: every other
- * question on a record comes from a structure somebody chose, and this one is
- * there whatever they choose. Sorting, searching, headers and initials are all
- * built from it.
- *
- * The form itself is drawn by {@see ContactController::edit()}, beside the only
- * other thing on a record the template has no say over. This is only the write,
- * which is its own controller because it is its own thing being written.
- *
- * The contact representing the user is renamed like any other. What it cannot
- * do is disappear.
+ * The form is drawn by {@see ContactController::edit()} and this is only the
+ * write. The contact representing the user is renamed like any other. What it
+ * cannot do is disappear.
  */
 class ContactNameController extends Controller
 {

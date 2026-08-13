@@ -12,14 +12,12 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
- * Whether a value is still active, which is the `is_active` column and nothing
- * more. This is what a value in use gets instead of a deletion, since
- * `DestroyValueListItem` refuses one that records already point at: the value
- * stops being offered, keeps its place in the list, and every record that has
- * it keeps it.
+ * Whether a value is still offered. This is what a value in use gets instead
+ * of a deletion, which `DestroyValueListItem` refuses: it keeps its place in
+ * the list, and every record that has it keeps it.
  *
- * The flag is a resource of its own rather than two routes reading `enable`
- * and `disable`, so the screen stays on the CRUD words the project keeps to.
+ * The flag is a resource of its own rather than `enable` and `disable`
+ * routes, so the screen stays on the CRUD words the project keeps to.
  */
 class ValueListItemActivationController extends Controller
 {

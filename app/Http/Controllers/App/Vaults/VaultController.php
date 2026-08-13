@@ -56,13 +56,10 @@ class VaultController extends Controller
     }
 
     /**
-     * Open the vault, then settle the two things the form asks about it rather
-     * than about its wording: which template its contacts start from, and
-     * whether it is where records land when nobody says.
-     *
-     * Both are their own action, because both are decisions about the account
-     * as a whole. Creating the vault already gives it the supplied template, so
-     * the first of them only runs when somebody picked another.
+     * The two things the form asks about the vault rather than about its
+     * wording are each their own action, since both are decisions about the
+     * account. Creating the vault already gives it the supplied template, so
+     * the first only runs when somebody picked another.
      */
     public function create(Request $request): RedirectResponse
     {
@@ -112,10 +109,9 @@ class VaultController extends Controller
     }
 
     /**
-     * Somebody who deleted their last vault has an account holding nothing,
-     * which is the state every account starts in, so they are taken back to
-     * the screen that explains what to do first rather than to a list with
-     * nothing on it.
+     * An account with no vault left is in the state every account starts in,
+     * so it goes back to the screen that explains what to do first rather
+     * than to a list with nothing on it.
      */
     public function destroy(Request $request, Vault $vault): RedirectResponse
     {

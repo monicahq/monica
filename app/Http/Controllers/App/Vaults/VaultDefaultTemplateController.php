@@ -19,14 +19,10 @@ use Illuminate\Validation\Rule;
 class VaultDefaultTemplateController extends Controller
 {
     /**
-     * The screen offers any published version of any of the account's contact
-     * templates, which is exactly what the vault stores, so the rule asks the
-     * versions table for it rather than trusting the select.
-     *
-     * Which template the version belongs to is part of the question. A version
-     * of a template describing something other than a contact would write a
-     * default this screen does not show and nobody asked for, so the rule keeps
-     * the choice inside the account's active contact templates.
+     * The rule asks the versions table rather than trusting the select, and
+     * checks which template the version belongs to: a version describing
+     * something other than a contact would write a default this screen never
+     * showed.
      */
     public function update(Request $request, Vault $vault): RedirectResponse
     {

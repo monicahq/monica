@@ -14,23 +14,15 @@ use App\Models\VaultDefaultTemplate;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * The form that writes somebody down.
+ * The form that writes somebody down. It asks for a name and nothing else:
+ * everything the contact page eventually holds belongs to the template, and
+ * is filled in once the contact exists.
  *
- * It asks for a name and nothing else. Everything the contact page eventually
- * holds belongs to the template, and is filled in on the contact once it
- * exists, so a form that asked for all of it here would be asking twice.
- *
- * What was typed wins over what the form starts on, so a form that came back
- * rejected shows the words somebody wrote rather than quietly reverting them.
- *
- * As on the vault form, an account with one contact template has nothing to
- * choose between, and the select is left out rather than shown holding a single
- * option. What the template is called is the vault's business and is said
- * there; a form that repeated it would be answering a question nobody standing
- * here is asking.
- *
- * The screen says nothing else about itself. It speaks only when it cannot do
- * its job, which is when the vault has nothing for a contact to start from.
+ * What was typed wins over what the form starts on. An account with one
+ * contact template has nothing to choose between, so the select is left out
+ * rather than shown holding a single option. The screen speaks only when it
+ * cannot do its job, which is when the vault has nothing for a contact to
+ * start from.
  */
 class ContactFormViewModel
 {
@@ -101,12 +93,10 @@ class ContactFormViewModel
     }
 
     /**
-     * The templates this contact could start from: the account's contact
-     * templates that are still offered and have something published to point at.
-     *
-     * The option is the published version rather than the template, because that
-     * is what the contact stores. A contact follows the version it was given and
-     * never "the latest one".
+     * The account's contact templates that are still offered and have
+     * something published to point at. The option is the published version
+     * rather than the template, because that is what the contact stores: it
+     * follows the version it was given and never the latest one.
      *
      * @return array<int, array{id: int, name: string}>
      */
@@ -131,10 +121,10 @@ class ContactFormViewModel
     }
 
     /**
-     * The orders a name can be written and sorted in. The empty one comes first
-     * and is what a contact is created on unless somebody says otherwise: a name
-     * follows the reader's own preference until the contact needs its own, which
-     * is what the nullable column means.
+     * The empty one comes first and is what a contact is created on unless
+     * somebody says otherwise: a name follows the reader's own preference
+     * until the contact needs its own, which is what the nullable column
+     * means.
      *
      * @return array<int, array{value: string, label: string}>
      */
@@ -150,11 +140,10 @@ class ContactFormViewModel
     }
 
     /**
-     * The two things somebody can say about the contact while writing it down.
-     *
-     * Being the contact that represents you is not offered here. A vault holds
-     * one, it is refused a second, and turning an ordinary new contact into it
-     * by ticking a box is not what somebody opening this screen came to do.
+     * Being the contact that represents you is not offered here. A vault
+     * holds one, a second is refused, and turning an ordinary new contact
+     * into it by ticking a box is not what somebody opening this screen came
+     * to do.
      *
      * @return array<int, array{id: string, name: string, help: string, checked: bool}>
      */
@@ -203,12 +192,10 @@ class ContactFormViewModel
     }
 
     /**
-     * The version the contact would land on as the form stands: whichever the
-     * select is showing, or the vault's default when there is no select.
-     *
-     * The account is checked even though the id came from a select the screen
-     * itself drew, since what comes back from a rejected form is whatever was
-     * posted, and a version of somebody else's is not one to start from.
+     * Whichever the select is showing, or the vault's default when there is
+     * no select. The account is checked even though the id came from a select
+     * the screen itself drew, since what comes back from a rejected form is
+     * whatever was posted.
      */
     private function startingVersion(): ?TemplateVersion
     {

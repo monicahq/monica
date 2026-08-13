@@ -26,16 +26,11 @@ use InvalidArgumentException;
 /**
  * The fields inside one section of one template.
  *
- * Every write here goes through the section being made editable first. The
- * section on the page may be published, or may be sitting on somebody else's
- * template at the same time, in which case it gets a new version and this
- * template starts pointing at the copy. That happens underneath the user, who
- * asked to rename a label rather than to think about versions, and the section
- * says so on the screen beforehand.
- *
- * Because the section may have been copied, the field the URL names is not
- * necessarily the one to write to. The key is what survives the copy, so the
- * field is found again by key in whichever version is now editable.
+ * Every write goes through the section being made editable first. A section
+ * that is published, or shared with another template, gets a new version and
+ * this template starts pointing at the copy. The field the URL names then
+ * belongs to the version left behind, so it is found again by key, which is
+ * what survives the copy.
  */
 class FieldController extends Controller
 {
@@ -158,10 +153,9 @@ class FieldController extends Controller
     }
 
     /**
-     * The field to write to, in whichever version of the section can be
-     * written to. When the section had to be copied, the field the URL names
-     * belongs to the version left behind, and its twin in the copy answers to
-     * the same key.
+     * When the section had to be copied, the field the URL names belongs to
+     * the version left behind, and its twin in the copy answers to the same
+     * key.
      */
     private function editable(Request $request, TemplateVersionSection $row, Field $field): Field
     {

@@ -76,10 +76,9 @@ class EntityTypeController extends Controller
     }
 
     /**
-     * Whether new records may be made is its own pair of actions, since
-     * turning a type off is a decision about the account rather than a
-     * correction to its wording. The form asks for both at once, so the
-     * checkbox is routed separately from the rest of the fields.
+     * Turning a type off is a decision about the account rather than a
+     * correction to its wording, so the checkbox is routed to its own action
+     * even though the form asks for both at once.
      */
     public function update(Request $request, EntityType $entityType): RedirectResponse
     {
@@ -126,13 +125,11 @@ class EntityTypeController extends Controller
     }
 
     /**
-     * The slug is only asked for while a type is being declared. Once one
-     * exists the field is read only, because the slug is what URLs and the API
-     * were given and a link that already went out has to keep working.
-     *
-     * A slug is unique within the account and nowhere wider, and it stays taken
-     * once its type is deleted, so a stale link cannot land on something else.
-     * That is why the rule ignores the soft delete the model applies.
+     * The slug is only asked for while a type is being declared. Afterwards
+     * it is what URLs and the API were given, and a link that already went
+     * out has to keep working. It stays taken once its type is deleted, so a
+     * stale link cannot land on something else, which is why the rule ignores
+     * the soft delete.
      *
      * @return array<int, mixed>
      */

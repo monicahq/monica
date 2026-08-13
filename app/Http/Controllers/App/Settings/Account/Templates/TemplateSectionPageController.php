@@ -15,11 +15,9 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 /**
- * Which page a section sits on.
- *
- * A section put on the wrong tab is moved rather than taken off and built
- * again, since taking it off and adding it back would give it a new placement
- * and lose the heading this template gave it.
+ * Which page a section sits on. A section on the wrong tab is moved rather
+ * than taken off and built again, which would give it a new placement and
+ * lose the heading this template gave it.
  */
 class TemplateSectionPageController extends Controller
 {

@@ -26,9 +26,6 @@ class SettingsViewModel
         private readonly User $user,
     ) {}
 
-    /**
-     * Who is signed in, so the bar and the header can show their photo.
-     */
     public function user(): User
     {
         return $this->user;
@@ -53,9 +50,7 @@ class SettingsViewModel
     }
 
     /**
-     * The three groups of rows, in the order they are read. The last has no heading:
-     * what it holds is leaving rather than changing, and a heading over two rows
-     * would give them more weight than they want.
+     * The three groups of rows, in the order they are read.
      *
      * A row that carries a `method` is something that changes state rather than
      * somewhere to go, so its url is where a form is sent and never an href.
@@ -68,109 +63,134 @@ class SettingsViewModel
             [
                 'title' => __('You'),
                 'description' => __('How you sign in, how you are shown, and how the application behaves for you alone.'),
-                'rows' => [
-                    [
-                        'title' => __('Profile'),
-                        'description' => __('Your name, the address people see, and the photograph on your avatar.'),
-                        'icon' => 'profile',
-                        'iconClass' => 'bg-terracotta-tint text-terracotta',
-                        'meta' => null,
-                        'url' => route('settings.profile.index'),
-                    ],
-                    [
-                        'title' => __('Security and access'),
-                        'description' => __('Your password, your devices and your API keys.'),
-                        'icon' => 'lock',
-                        'iconClass' => 'bg-indigo-tint text-indigo',
-                        'meta' => $this->twoFactorLabel(),
-                        'url' => route('settings.security.index'),
-                    ],
-                    [
-                        'title' => __('Preferences'),
-                        'description' => __('Language, dates, numbers and the clock.'),
-                        'icon' => 'settings',
-                        'iconClass' => 'bg-forest-tint text-forest',
-                        'meta' => $this->preferencesLabel(),
-                        'url' => route('settings.preferences.index'),
-                    ],
-                    [
-                        'title' => __('Notifications'),
-                        'description' => __('Which reminders reach you by email, and how long before the date they arrive.'),
-                        'icon' => 'mail',
-                        'iconClass' => 'bg-plum-tint text-plum',
-                        'meta' => null,
-                        'url' => null,
-                    ],
-                ],
+                'rows' => $this->youRows(),
             ],
             [
                 'title' => __('This account'),
                 'description' => __('What every vault in the account is made of, and the record of what has happened in it.'),
-                'rows' => [
-                    [
-                        'title' => __('Templates'),
-                        'description' => __('Which sections a person page carries.'),
-                        'icon' => 'file',
-                        'iconClass' => 'bg-indigo-tint text-indigo',
-                        'meta' => $this->templateCount(),
-                        'url' => route('settings.templates.index'),
-                    ],
-                    [
-                        'title' => __('Entity types'),
-                        'description' => __('What you can write down beside people.'),
-                        'icon' => 'organization',
-                        'iconClass' => 'bg-sky-tint text-sky',
-                        'meta' => $this->entityTypeCount(),
-                        'url' => route('settings.entityTypes.index'),
-                    ],
-                    [
-                        'title' => __('Default values'),
-                        'description' => __('The lists the application offers you: relationship kinds, genders, call reasons, activity types.'),
-                        'icon' => 'tasks',
-                        'iconClass' => 'bg-marigold-tint text-marigold-deep',
-                        'meta' => null,
-                        'url' => route('settings.valueLists.index'),
-                    ],
-                    [
-                        'title' => __('Logs'),
-                        'description' => __('What has been done in this account, and every email it has sent.'),
-                        'icon' => 'timeline',
-                        'iconClass' => 'bg-forest-tint text-forest',
-                        'meta' => null,
-                        'url' => route('settings.logs.index'),
-                    ],
-                ],
+                'rows' => $this->accountRows(),
             ],
+            /* No heading: what it holds is leaving rather than changing, and one
+               over two rows would give them more weight than they want. */
             [
                 'title' => null,
                 'description' => null,
-                'rows' => [
-                    [
-                        'title' => __('Export everything'),
-                        'description' => __('A single file with every vault, person, note and photograph. It is yours to take.'),
-                        'icon' => 'vault',
-                        'iconClass' => 'bg-sand text-muted',
-                        'meta' => null,
-                        'url' => null,
-                    ],
-                    [
-                        'title' => __('Sign out'),
-                        'description' => __('You will have to sign in again on this browser.'),
-                        'icon' => 'key',
-                        'iconClass' => 'bg-sand text-muted',
-                        'meta' => null,
-                        'url' => route('auth.login.destroy'),
-                        'method' => 'post',
-                    ],
-                ],
+                'rows' => $this->leavingRows(),
             ],
         ];
     }
 
     /**
-     * Deleting the account is not a row. It is a sentence that says what goes with
-     * it, and the words that do it are the last three of that sentence, so nobody
-     * reaches them without having read the rest.
+     * @return array<int, array{title: string, description: string, icon: string, iconClass: string, meta: string|null, url: string|null}>
+     */
+    private function youRows(): array
+    {
+        return [
+            [
+                'title' => __('Profile'),
+                'description' => __('Your name, the address people see, and the photograph on your avatar.'),
+                'icon' => 'profile',
+                'iconClass' => 'bg-terracotta-tint text-terracotta',
+                'meta' => null,
+                'url' => route('settings.profile.index'),
+            ],
+            [
+                'title' => __('Security and access'),
+                'description' => __('Your password, your devices and your API keys.'),
+                'icon' => 'lock',
+                'iconClass' => 'bg-indigo-tint text-indigo',
+                'meta' => $this->twoFactorLabel(),
+                'url' => route('settings.security.index'),
+            ],
+            [
+                'title' => __('Preferences'),
+                'description' => __('Language, dates, numbers and the clock.'),
+                'icon' => 'settings',
+                'iconClass' => 'bg-forest-tint text-forest',
+                'meta' => $this->preferencesLabel(),
+                'url' => route('settings.preferences.index'),
+            ],
+            [
+                'title' => __('Notifications'),
+                'description' => __('Which reminders reach you by email, and how long before the date they arrive.'),
+                'icon' => 'mail',
+                'iconClass' => 'bg-plum-tint text-plum',
+                'meta' => null,
+                'url' => null,
+            ],
+        ];
+    }
+
+    /**
+     * @return array<int, array{title: string, description: string, icon: string, iconClass: string, meta: string|null, url: string|null}>
+     */
+    private function accountRows(): array
+    {
+        return [
+            [
+                'title' => __('Templates'),
+                'description' => __('Which sections a person page carries.'),
+                'icon' => 'file',
+                'iconClass' => 'bg-indigo-tint text-indigo',
+                'meta' => $this->templateCount(),
+                'url' => route('settings.templates.index'),
+            ],
+            [
+                'title' => __('Entity types'),
+                'description' => __('What you can write down beside people.'),
+                'icon' => 'organization',
+                'iconClass' => 'bg-sky-tint text-sky',
+                'meta' => $this->entityTypeCount(),
+                'url' => route('settings.entityTypes.index'),
+            ],
+            [
+                'title' => __('Default values'),
+                'description' => __('The lists the application offers you: relationship kinds, genders, call reasons, activity types.'),
+                'icon' => 'tasks',
+                'iconClass' => 'bg-marigold-tint text-marigold-deep',
+                'meta' => null,
+                'url' => route('settings.valueLists.index'),
+            ],
+            [
+                'title' => __('Logs'),
+                'description' => __('What has been done in this account, and every email it has sent.'),
+                'icon' => 'timeline',
+                'iconClass' => 'bg-forest-tint text-forest',
+                'meta' => null,
+                'url' => route('settings.logs.index'),
+            ],
+        ];
+    }
+
+    /**
+     * @return array<int, array{title: string, description: string, icon: string, iconClass: string, meta: string|null, url: string|null, method?: string}>
+     */
+    private function leavingRows(): array
+    {
+        return [
+            [
+                'title' => __('Export everything'),
+                'description' => __('A single file with every vault, person, note and photograph. It is yours to take.'),
+                'icon' => 'vault',
+                'iconClass' => 'bg-sand text-muted',
+                'meta' => null,
+                'url' => null,
+            ],
+            [
+                'title' => __('Sign out'),
+                'description' => __('You will have to sign in again on this browser.'),
+                'icon' => 'key',
+                'iconClass' => 'bg-sand text-muted',
+                'meta' => null,
+                'url' => route('auth.login.destroy'),
+                'method' => 'post',
+            ],
+        ];
+    }
+
+    /**
+     * Deleting the account is not a row but the last three words of a sentence
+     * saying what goes with it, so nobody reaches them without reading the rest.
      */
     public function deleteUrl(): string
     {
@@ -185,8 +205,8 @@ class SettingsViewModel
     }
 
     /**
-     * The language the interface is in and the clock it writes times on, which are
-     * the two of the four preferences somebody notices without opening the screen.
+     * The two of the four preferences somebody notices without opening the
+     * screen.
      */
     private function preferencesLabel(): string
     {

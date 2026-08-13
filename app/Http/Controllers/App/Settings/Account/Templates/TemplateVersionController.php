@@ -14,11 +14,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
- * Starting a draft of a template, and throwing one away.
- *
- * A published version cannot be edited, so changing a template that has been
- * published means starting a draft beside it. That is the whole of section 6
- * from the user's side, and it is one button.
+ * Starting a draft of a template, and throwing one away. A published version
+ * cannot be edited, so changing a published template means starting a draft
+ * beside it.
  */
 class TemplateVersionController extends Controller
 {

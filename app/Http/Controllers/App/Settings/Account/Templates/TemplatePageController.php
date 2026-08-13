@@ -18,12 +18,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
- * The pages of one template: adding a tab, renaming one, taking one off.
- *
- * A page belongs to one version, and only a draft may be changed, so every one
- * of these acts on the version the builder has open. The refusals are the
- * action's and are caught here rather than left to become a stack trace: the
- * screen already hides what it can, and what it cannot hide it explains.
+ * The pages of one template: adding a tab, renaming one, taking one off. A
+ * page belongs to one version and only a draft may be changed, so each of
+ * these acts on the version the builder has open. The action's refusals are
+ * caught here rather than left to become a stack trace.
  */
 class TemplatePageController extends Controller
 {

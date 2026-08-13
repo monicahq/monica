@@ -11,20 +11,14 @@ use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 
 /**
- * What one vault shows when you open it: one box for every part of it, so the
- * screen is a map of the vault rather than a summary of it.
+ * One box for every part of a vault, so the screen is a map of it rather than
+ * a summary.
  *
- * Two of the six parts exist. The people are real, and so are the settings. The
- * journal, the tasks, the reminders and the files are each their own model and
- * none of them has been written, so those four boxes say what will land in them
- * and are not offered as somewhere to go. This screen used to fill them with
- * invented rows instead, which read as somebody else's life the moment you
- * looked at it, and made the four parts that do not work look exactly like the
- * two that do.
- *
- * A person's row carries their nickname and nothing else. The design asks it to
- * say how you know them and when their birthday is; relationships and dates are
- * both later models, and a row of em-dashes is worse than a shorter row.
+ * Two of the six parts exist. The journal, the tasks, the reminders and the
+ * files are each their own model and none has been written, so those four
+ * boxes say what will land in them and are not offered as somewhere to go.
+ * Filling them with invented rows read as somebody else's life, and made the
+ * four that do not work look exactly like the two that do.
  */
 class VaultDashboardViewModel
 {
@@ -134,10 +128,8 @@ class VaultDashboardViewModel
     }
 
     /**
-     * The two things the settings of a vault settle today. The design asks for
-     * two more, who else can see the vault and what it is called, and neither
-     * has anything behind it: a vault is not shared with anybody yet, and its
-     * wording is only set when it is made.
+     * The design asks for two more, who else can see the vault and what it is
+     * called, and neither has anything behind it yet.
      *
      * @return array<int, array{title: string, line: string}>
      */
@@ -156,10 +148,9 @@ class VaultDashboardViewModel
     }
 
     /**
-     * The parts of a vault that have no model yet. Each one is drawn as what it
-     * will eventually hold, in the colour that part of the product answers to,
-     * and none of them is a link: a word that does not move is better than a
-     * link that leads nowhere.
+     * Each is drawn as what it will eventually hold, in the colour that part
+     * of the product answers to, and none of them is a link: a word that does
+     * not move is better than a link that leads nowhere.
      *
      * @return array<int, array{title: string, caption: string, titleClass: string, iconClass: string, icon: string, emptyTitle: string, emptyText: string}>
      */

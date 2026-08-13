@@ -11,19 +11,15 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 /**
- * The screen where a template is actually built: the pages it is read in, the
- * sections on the open one, the fields inside them, and one field open for
- * editing.
+ * The screen where a template is built: its pages, the sections on the open
+ * one, the fields inside them, and one field open in the inspector.
  *
- * Which page and which field are open are part of the address rather than a
- * query string on it, so that every state of this screen is a place somebody
- * can link to, come back to and press the back button through.
- *
- * The page reads by its key rather than by its uuid, which is what the key is
- * for: it is settled once, survives being copied into the next draft, and makes
- * `.../builder/life-events` a URL somebody can recognise. A page nobody named,
- * or one named that is not on this version, opens the first one rather than
- * refusing.
+ * Which page and which field are open are part of the address, so every state
+ * of this screen can be linked to and walked back through. The page reads by
+ * its key rather than its uuid: the key is settled once, survives being
+ * copied into the next draft, and makes `.../builder/life-events`
+ * recognisable. A page that is not on this version opens the first one rather
+ * than refusing.
  */
 class TemplateBuilderController extends Controller
 {

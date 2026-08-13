@@ -8,18 +8,14 @@ use App\Models\User;
 use App\Models\Vault;
 
 /**
- * The screen somebody lands on after signing in: the compartments their account
- * is divided into, and the way into each.
- *
- * The one they were last in comes first, because the reason to be on this screen
- * is almost always to go back where you were. What they chose as the order of
- * their vaults only decides the ones they have never opened.
+ * The compartments the account is divided into, and the way into each. The
+ * one somebody was last in comes first, because the reason to be on this
+ * screen is almost always to go back where you were.
  *
  * The card says the three things that tell one vault from another: what it is
  * called, what it is for, and how many people are in it. Everything else the
- * design asks for on a card, a count of organisations and the next date coming
- * up, needs a model that does not exist, and an invented sentence about a real
- * person is worse than a shorter card.
+ * design asks for needs a model that does not exist, and an invented sentence
+ * about a real person is worse than a shorter card.
  */
 class VaultsViewModel
 {
@@ -57,16 +53,13 @@ class VaultsViewModel
     }
 
     /**
-     * Every vault of the account, the most recently opened first.
+     * Every vault of the account, the most recently opened first. A vault
+     * nobody has opened yet falls in behind the ones that were, said here
+     * rather than left to the database: Postgres ranks null above everything
+     * on a descending order and MySQL and SQLite rank it below.
      *
-     * A vault nobody has opened yet falls in behind the ones that were, and it is
-     * said here rather than left to the database: Postgres ranks null above
-     * everything on a descending order and MySQL and SQLite rank it below, so the
-     * same account would land on a different card first on two installations.
-     *
-     * A vault carries a colour somebody chose for it, so the mark on its card is
-     * that colour rather than one derived from the name: the choice is theirs and
-     * throwing it away here would be the screen overruling them.
+     * The mark on a card takes the colour somebody chose for the vault rather
+     * than one derived from its name.
      *
      * @return array<int, array{name: string, initial: string, description: string|null, colour: string, tint: string, contactCount: string, isDefault: bool, isLastOpened: bool, url: string}>
      */

@@ -14,23 +14,17 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * What the builder shows: one version of a template, the sections it carries,
- * the fields inside them, and whatever field is open in the inspector.
+ * One version of a template, the sections it carries, the fields inside them,
+ * and whatever field is open in the inspector.
  *
- * The version it opens is the draft, because that is the only thing anybody can
- * change. A template with nothing but published versions opens read only, with
- * the way forward being to start a draft: this is section 6 made visible rather
- * than a limitation, since a published version is what records are relying on.
+ * It opens the draft, since that is the only thing anybody can change; a
+ * template with nothing but published versions opens read only. A section
+ * carried here may be published or sitting on somebody else's template, and
+ * the screen says so on the section itself, because the first edit will
+ * quietly give it a new version.
  *
- * A section carried here may be published, or may be sitting on somebody else's
- * template at the same time. The screen says so on the section itself, because
- * the first edit will quietly give that section a new version and it is better
- * to have read that beforehand.
- *
- * The version is read one page at a time. A page is a tab on the record, and
- * the builder shows the sections of one of them: which one travels in the
- * address beside the field that is open, so the screen somebody is looking at
- * can be linked to.
+ * The version is read one page at a time, and which page travels in the
+ * address beside the field that is open.
  */
 class TemplateBuilderViewModel
 {
@@ -330,10 +324,6 @@ class TemplateBuilderViewModel
         return __(':page › :section', ['page' => $page->label, 'section' => $name]);
     }
 
-    /**
-     * How many fields somebody would find on a page, which is what its tab
-     * counts.
-     */
     private function fieldsOn(TemplateVersionPage $page): int
     {
         return (int) ($this->version()?->assembly

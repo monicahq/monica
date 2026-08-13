@@ -27,10 +27,9 @@ class ValueListController extends Controller
     }
 
     /**
-     * Every list on the screen carries a rename field of its own, and they are
-     * all called `name`. Each form is therefore validated into a bag of its
-     * own, so a rejection reopens the field it came from rather than every
-     * field on the page at once.
+     * Every rename field on the screen is called `name`, so each form is
+     * validated into a bag of its own and a rejection reopens the field it
+     * came from rather than every field on the page.
      */
     public function create(Request $request): RedirectResponse
     {

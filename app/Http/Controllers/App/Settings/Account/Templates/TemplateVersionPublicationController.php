@@ -16,13 +16,12 @@ use Illuminate\Http\Request;
 use InvalidArgumentException;
 
 /**
- * Freezing a draft, which is the act everything else in the personalisation
- * engine leans on: from here the version never changes again.
+ * Freezing a draft: from here the version never changes again.
  *
- * The sections it carries are published first, in the same request. The user
- * assembled them here and has no separate screen for a section, so asking them
- * to publish each one by hand would be asking about a distinction they have no
- * way to act on. What they are accepting is spelled out on the button.
+ * The sections it carries are published first, in the same request. They were
+ * assembled here and have no screen of their own, so asking for each by hand
+ * would be asking about a distinction nobody can act on. What is being
+ * accepted is spelled out on the button.
  */
 class TemplateVersionPublicationController extends Controller
 {
@@ -58,10 +57,9 @@ class TemplateVersionPublicationController extends Controller
     }
 
     /**
-     * A template version cannot be frozen while it points at a section somebody
-     * is still editing, so each draft section goes first. A section already
-     * published is left alone: it is frozen, shared, and nothing here has any
-     * business making a version of it.
+     * A version cannot be frozen while it points at a section somebody is
+     * still editing. A section already published is left alone: it is frozen
+     * and shared, and nothing here has any business making a version of it.
      */
     private function publishTheSectionsItCarries(Request $request, TemplateVersion $templateVersion): void
     {

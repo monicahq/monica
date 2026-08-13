@@ -15,16 +15,13 @@ use App\Models\VaultDefaultTemplate;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * The settings of one vault: what it is called, what a contact written down
- * here starts from, and the way to be rid of the vault altogether.
+ * What a vault is called, what a contact written down here starts from, and
+ * the way to be rid of it altogether.
  *
- * Only the contact default is offered. A vault holds a default per kind of
- * record, but the other kinds are reached from the entity type and none of
- * those screens exists, so the one default every vault is guaranteed to have is
- * the one shown.
- *
- * An account always keeps a vault, so the last one is shown as something that
- * stays rather than as a button that would be refused.
+ * Only the contact default is offered: a vault holds one per kind of record,
+ * but the other kinds are reached from the entity type and none of those
+ * screens exists. An account always keeps a vault, so the last one is shown
+ * as something that stays rather than as a button that would be refused.
  */
 class VaultSettingsViewModel
 {
@@ -108,19 +105,13 @@ class VaultSettingsViewModel
     }
 
     /**
-     * What a contact written down in this vault could start from: every
-     * published version of every contact template the account has, under the
-     * template it belongs to.
+     * Every published version of every contact template the account has,
+     * under the template it belongs to. The option is a version rather than a
+     * template because that is what the vault stores.
      *
-     * The option is a version rather than a template because that is what the
-     * vault stores: a contact follows the version it was given and never "the
-     * latest one". Every published version is offered rather than only the
-     * newest, because which shape a vault starts its contacts on is the vault's
-     * decision, and a vault is entitled to stay on an older one.
-     *
-     * The choice is offered even when the account has one template of one
-     * version. A select holding a single option says what the vault does, and
-     * that is worth more than the line of prose it replaces.
+     * Every published version is offered rather than only the newest: which
+     * shape a vault starts its contacts on is the vault's decision, and a
+     * vault is entitled to stay on an older one.
      *
      * @return array<int, array{name: string, versions: array<int, array{id: int, label: string}>}>
      */

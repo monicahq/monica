@@ -11,21 +11,14 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
- * Hand back one file somebody put on a record.
+ * Hand back one file somebody put on a record. Files live on the private disk
+ * and are read through here rather than from a public URL, because a document
+ * about somebody is as private as the record it sits on.
  *
- * Files live on the private disk and are read through here rather than from a
- * public URL, because a document about somebody is as private as the record it
- * sits on: a link that worked without signing in would be a way out of the
- * vault, and the vault is the whole point.
- *
- * The address names the vault as well as the file, and both are checked. The
- * vault is resolved within the account of whoever is asking, and the file has to
- * be one kept in that vault, so neither half of the address can be leaned on
- * alone.
- *
- * It answers with the bytes under the name somebody uploaded, which is not the
- * name on the disk: what is stored is a uuid, so that nothing about a file can be
- * guessed from a path and nothing somebody typed ends up in a filesystem.
+ * The address names the vault as well as the file and both are checked, so
+ * neither half can be leaned on alone. It answers with the bytes under the
+ * name somebody uploaded, which is not the name on the disk: what is stored
+ * is a uuid, so nothing about a file can be guessed from a path.
  */
 class FileController extends Controller
 {

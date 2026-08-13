@@ -7,21 +7,15 @@ namespace App\ViewModels\Settings\Account\Templates;
 use App\Enums\FieldTypeEnum;
 
 /**
- * The catalogue somebody picks a field type from, and the words that describe
- * each one.
- *
- * The type is the one decision about a field that cannot be taken back later,
- * so the screen that asks for it says what each type is for and gives an
- * example rather than listing bare names. That is a screen's worth of copy, and
- * it lives here rather than on the enum: the enum says what a type does, and
- * this says what it is for.
+ * The catalogue somebody picks a field type from. The type is the one
+ * decision about a field that cannot be taken back later, so the screen says
+ * what each one is for and gives an example rather than listing bare names.
+ * That copy lives here rather than on the enum: the enum says what a type
+ * does, and this says what it is for.
  *
  * The families the first version does not ship are listed too, marked as not
- * available. Somebody deciding how to record a price is better served by
- * reading that money is coming than by inventing a workaround nobody will
- * revisit. Whether a type can actually be picked is asked of the enum, so the
- * two cannot drift: anything absent from `FieldTypeEnum` is offered as a
- * preview and nothing more.
+ * available. Whether a type can actually be picked is asked of
+ * `FieldTypeEnum`, so the two cannot drift.
  */
 class FieldCatalogueViewModel
 {

@@ -8,12 +8,9 @@ use App\Models\EntityType;
 use App\Models\User;
 
 /**
- * The form that declares a kind of record, or changes one that exists. It is
- * one screen serving both, because naming a type and renaming it ask for the
- * same things.
- *
- * What was typed wins over what is stored, so a form that came back rejected
- * shows the words somebody wrote rather than quietly reverting them.
+ * The form that declares a kind of record, or changes one that exists: naming
+ * and renaming ask for the same things. What was typed wins over what is
+ * stored, so a form that came back rejected shows the words somebody wrote.
  */
 class EntityTypeFormViewModel
 {
@@ -116,10 +113,9 @@ class EntityTypeFormViewModel
     }
 
     /**
-     * Whether the checkbox is ticked. A checkbox nobody ticked sends nothing
-     * at all, so `old('is_active')` reads the same whether it was cleared or
-     * never asked for. Whether there is any old input to speak of is what
-     * tells the two apart.
+     * A checkbox nobody ticked sends nothing at all, so `old('is_active')`
+     * reads the same whether it was cleared or never asked for. Whether there
+     * is any old input at all is what tells the two apart.
      */
     private function isActive(bool $stored): bool
     {
@@ -224,9 +220,6 @@ class EntityTypeFormViewModel
         return $this->entityType;
     }
 
-    /**
-     * Who is signed in, so the sidebar can show their name and their photo.
-     */
     public function user(): User
     {
         return $this->user;

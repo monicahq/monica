@@ -11,16 +11,13 @@ use App\Models\User;
 use App\Models\Vault;
 
 /**
- * What a record still holds for questions its structure has stopped asking.
- *
  * Removing a field from a structure does not delete what people wrote in it.
- * The values are set aside: taken off the page, kept, and explained here. That
- * is the whole of the promise, and without this screen only two thirds of it
- * were true, since a value nobody can see is not meaningfully kept.
+ * The values are set aside: taken off the page, kept, and explained here,
+ * since a value nobody can see is not meaningfully kept.
  *
- * Nothing on this screen writes. Putting a field back is what brings its values
- * back, and that is done on the template rather than on one person: the field
- * belongs to the structure and so does the decision.
+ * Nothing on this screen writes. Putting a field back is what brings its
+ * values back, and that is done on the template rather than on one person:
+ * the field belongs to the structure and so does the decision.
  */
 class SetAsideValuesViewModel
 {
@@ -73,12 +70,9 @@ class SetAsideValuesViewModel
     }
 
     /**
-     * Every value the structure stopped asking for, newest first, each with the
-     * field it was written in and the day it was taken off the page.
-     *
-     * The label is the one the field carries now. The key is shown beside it,
-     * because a field renamed since is best recognised by the name that never
-     * changes.
+     * Every value the structure stopped asking for, newest first. The label
+     * is the one the field carries now, with the key beside it: a field
+     * renamed since is best recognised by the name that never changes.
      *
      * @return array<int, array{label: string, key: string, value: string|null, when: string}>
      */

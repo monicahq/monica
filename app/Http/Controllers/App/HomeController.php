@@ -11,12 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 /**
- * The front door. Where it leads says what state the account is in: an account
- * that holds nothing is taken to the screen that explains what to do first, and
- * one that holds a vault is taken to its vaults.
- *
- * Somebody who is not signed in gets the public page, which is still the
- * scaffolding one until the marketing site is written.
+ * The front door. An account holding nothing goes to the screen that explains
+ * what to do first, one holding a vault goes to its vaults, and somebody who
+ * is not signed in gets the public page.
  */
 class HomeController extends Controller
 {

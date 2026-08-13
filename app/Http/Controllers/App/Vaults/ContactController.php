@@ -24,16 +24,6 @@ use Illuminate\View\View;
 
 class ContactController extends Controller
 {
-    /**
-     * Everybody in one vault, on one list. Everything the screen offers goes
-     * through the URL, so a narrowed list can be linked to and comes back the
-     * same way after a reload.
-     *
-     * Which people are shown is a segment of the address rather than a query
-     * string: the favourites and the archived are three places somebody goes,
-     * not three settings they carry. What they typed and what they sorted on
-     * stay in the query string, since those are parameters of a place.
-     */
     public function index(Request $request, Vault $vault, ?string $filter = null): View
     {
         return view('app.vaults.contacts.index', [
@@ -48,15 +38,6 @@ class ContactController extends Controller
         ]);
     }
 
-    /**
-     * One person, and everything written down about them.
-     *
-     * Which page of the record is open travels in the address, so a tab can be
-     * linked to and the back button walks between them. It is the page's key
-     * rather than the page itself: a key belongs to one version of one
-     * template, so two versions can both have a page called "Health" and
-     * binding the row would need the version to say which.
-     */
     public function show(Request $request, Vault $vault, Contact $contact, ?string $page = null): View
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
@@ -71,14 +52,6 @@ class ContactController extends Controller
         ]);
     }
 
-    /**
-     * What the template has no say over about a contact: what they are called,
-     * the picture they are drawn as, and whether they are on the record at all.
-     *
-     * They share a screen because they are the same errand. The record offers one
-     * way in rather than a button for each, since a page of a person is about the
-     * person and not about the three things that can be done to the row.
-     */
     public function edit(Request $request, Vault $vault, Contact $contact): View
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
@@ -93,13 +66,9 @@ class ContactController extends Controller
     }
 
     /**
-     * Take somebody off the list, which is a soft deletion: nothing they took
-     * part in is destroyed, and they can be brought back.
-     *
-     * The refusal is not a question about the input, so it is not the validator's.
-     * The contact representing whoever is looking cannot go, and the screen does
-     * not offer the button for it; this is what answers somebody who asked
-     * anyway.
+     * The contact representing whoever is looking cannot go. The screen does not
+     * offer the button, and the refusal is not a question about the input, so it
+     * is caught here rather than in the validator.
      */
     public function destroy(Request $request, Vault $vault, Contact $contact): RedirectResponse
     {
@@ -132,23 +101,18 @@ class ContactController extends Controller
     }
 
     /**
-     * Write the contact down, then decide where whoever wrote it goes next.
+     * Somebody working through a list of people ticks the box and is handed the
+     * empty form again. Everybody else lands on the list of contacts, and never
+     * on the new record: it holds only what the form was just filled in with, so
+     * it would read as the same screen with fewer places to type.
      *
-     * Somebody working through a list of people has said so by ticking the box,
-     * and is handed the empty form again rather than a screen they have to
-     * leave. Everybody else lands on the list of contacts, where the person they
-     * have just written down now is. Their own page exists and is deliberately
-     * not where this goes: it holds only what a form has just been filled in
-     * with, so it would read as the same screen again with fewer places to type.
-     *
-     * A partial contact is the exception the message has to cover. They are
-     * written down and then kept off that list until somebody fills them in, so
-     * without a word about it the screen says "written down" and then shows a
-     * list they are not on.
+     * A partial contact is kept off that list until somebody fills them in, so
+     * the message has to say so or the screen shows a list they are not on.
      */
     public function create(Request $request, Vault $vault): RedirectResponse
     {
         $validated = $request->validate($this->rules($request));
+        $nameOrder = $validated['name_order'] ?? null;
 
         $contact = new CreateContact(
             user: $request->user(),
@@ -161,7 +125,7 @@ class ContactController extends Controller
             suffix: $validated['suffix'] ?? null,
             maidenName: $validated['maiden_name'] ?? null,
             nickname: $validated['nickname'] ?? null,
-            nameOrder: $this->nameOrderAskedFor($validated['name_order'] ?? null),
+            nameOrder: $nameOrder === null ? null : NameOrderEnum::from($nameOrder),
             isPartial: $request->boolean('is_partial'),
             isFavourite: $request->boolean('is_favourite'),
         )->execute();
@@ -178,13 +142,12 @@ class ContactController extends Controller
     }
 
     /**
-     * The template is offered as the published version of one of the account's
-     * contact templates, which is exactly what a contact stores, so the rule
-     * asks the templates table for it rather than trusting the select.
+     * The template rule asks the templates table rather than trusting the
+     * select, since what a contact stores is the published version of one of
+     * the account's own contact templates.
      *
-     * Only the first name is required. Somebody met once is worth writing down
-     * with nothing else, and a form that refuses that is a form people work
-     * around.
+     * Only the first name is required: somebody met once is worth writing down
+     * with nothing else, and a form that refuses that is one people work around.
      *
      * @return array<string, array<int, mixed>>
      */
@@ -214,14 +177,12 @@ class ContactController extends Controller
     }
 
     /**
-     * The version the contact lands on, which is nothing at all when the screen
-     * offered no choice: the action reads the vault's default in that case, and
-     * naming it here would only repeat the same lookup.
+     * Nothing at all when the screen offered no choice: the action reads the
+     * vault's default in that case.
      *
-     * It is read off the request rather than out of the validated array, because
-     * `integer` is a rule about what arrived rather than a cast: a form sends
-     * "2" and the validator hands back the same string. Validation has already
-     * run, so what is read here is what passed it.
+     * It is read off the request rather than out of the validated array because
+     * `integer` is a rule about what arrived rather than a cast, and validation
+     * has already run.
      */
     private function versionAskedFor(Request $request): ?TemplateVersion
     {
@@ -230,14 +191,5 @@ class ContactController extends Controller
         }
 
         return TemplateVersion::query()->find($request->integer('template_version_id'));
-    }
-
-    private function nameOrderAskedFor(?string $order): ?NameOrderEnum
-    {
-        if ($order === null || $order === '') {
-            return null;
-        }
-
-        return NameOrderEnum::from($order);
     }
 }

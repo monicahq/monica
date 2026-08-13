@@ -17,15 +17,13 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 /**
- * The sections on one template: putting one there, retitling it, taking it off.
+ * The sections on one template: putting one there, retitling it, taking it
+ * off.
  *
- * Adding makes a section of its own rather than something owned by this
- * template, since a section is a reusable thing the account keeps and may put
- * on several templates later.
- *
- * Retitling changes the heading this template shows and nothing else. The
- * section keeps its own name for everybody else carrying it, which is what
- * stops a rename here from reaching into somebody else's template.
+ * Adding makes a section of its own rather than something this template owns,
+ * since a section is reusable and may end up on several. Retitling changes
+ * the heading this template shows and nothing else, which is what stops a
+ * rename here from reaching into somebody else's template.
  */
 class TemplateSectionController extends Controller
 {

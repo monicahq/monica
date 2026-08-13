@@ -9,14 +9,13 @@ use App\Models\ValueList;
 use App\Models\ValueListItem;
 
 /**
- * What the default values screen shows: every list the account draws its
- * choices from, and inside each of them the choices themselves, in the order
- * they are offered in.
+ * Every list the account draws its choices from, and inside each of them the
+ * choices themselves, in the order they are offered.
  *
- * A choice nothing points at can be deleted outright. One that records already
- * use cannot, and is stopped from being offered instead, which is why the two
- * counts below travel with every row. A list the product supplied cannot be
- * deleted at all, which is what `canBeDeleted` says on the list itself.
+ * A choice nothing points at can be deleted outright; one that records
+ * already use is stopped from being offered instead, which is why the two
+ * counts travel with every row. A list the product supplied cannot be deleted
+ * at all.
  */
 class DefaultValuesViewModel
 {
@@ -56,9 +55,6 @@ class DefaultValuesViewModel
             ->all();
     }
 
-    /**
-     * Who is signed in, so the sidebar can show their name and their photo.
-     */
     public function user(): User
     {
         return $this->user;

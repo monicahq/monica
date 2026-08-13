@@ -12,16 +12,13 @@ use App\Models\Vault;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * The form that opens a new compartment in the account.
+ * The form that opens a new compartment in the account. What was typed wins
+ * over what the form starts on, so a form that came back rejected shows the
+ * words somebody wrote.
  *
- * What was typed wins over what the form starts on, so a form that came back
- * rejected shows the words somebody wrote rather than quietly reverting them.
- *
- * Two things about the account decide what the screen offers. An account with
- * one contact template has nothing to choose between, so the template section
- * is left out rather than shown holding a single option; and the first vault of
- * an account is the default whatever anybody ticks, since a record has to land
- * somewhere.
+ * An account with one contact template has nothing to choose between, so the
+ * template section is left out rather than shown holding a single option, and
+ * the first vault of an account is the default whatever anybody ticks.
  */
 class VaultFormViewModel
 {
@@ -47,9 +44,6 @@ class VaultFormViewModel
         return route('vaults.create');
     }
 
-    /**
-     * Where the screen leads out of, which is the list it was opened from.
-     */
     public function backUrl(): string
     {
         return route('vaults.index');
@@ -86,13 +80,9 @@ class VaultFormViewModel
     }
 
     /**
-     * The templates a contact written down in this vault could start from: the
-     * account's contact templates that are still offered and have something
-     * published to point at.
-     *
-     * The option is the published version rather than the template, because
-     * that is what the vault stores. A contact follows the version it was given
-     * and never "the latest one".
+     * The account's contact templates that are still offered and have
+     * something published to point at. The option is the published version
+     * rather than the template, because that is what the vault stores.
      *
      * @return array<int, array{id: int, name: string}>
      */
@@ -209,9 +199,6 @@ class VaultFormViewModel
             ->get();
     }
 
-    /**
-     * Who is signed in, so the bar can show them.
-     */
     public function user(): User
     {
         return $this->user;

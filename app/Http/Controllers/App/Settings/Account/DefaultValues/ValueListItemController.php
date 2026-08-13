@@ -17,10 +17,9 @@ use Illuminate\Http\Request;
 class ValueListItemController extends Controller
 {
     /**
-     * Every value on the screen carries a rename field of its own, and they are
-     * all called `label`. Each form is therefore validated into a bag of its
-     * own, so a rejection reopens the field it came from rather than every
-     * field on the page at once.
+     * Every rename field on the screen is called `label`, so each form is
+     * validated into a bag of its own and a rejection reopens the field it
+     * came from rather than every field on the page.
      */
     public function create(Request $request, ValueList $valueList): RedirectResponse
     {
@@ -61,9 +60,8 @@ class ValueListItemController extends Controller
 
     /**
      * The screen only offers a deletion for a value nothing points at, so a
-     * refusal here means something started using it between the page being
-     * drawn and the button being pressed. Saying so is better than a stack
-     * trace, and the reloaded screen shows the button it should have shown.
+     * refusal here means something started using it since the page was drawn.
+     * Saying so beats a stack trace.
      */
     public function destroy(Request $request, ValueListItem $valueListItem): RedirectResponse
     {

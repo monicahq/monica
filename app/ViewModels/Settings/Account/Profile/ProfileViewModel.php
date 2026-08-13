@@ -30,10 +30,6 @@ class ProfileViewModel
         ];
     }
 
-    /**
-     * Who is signed in, so the screen and the sidebar can show their name and
-     * their photo.
-     */
     public function user(): User
     {
         return $this->user;

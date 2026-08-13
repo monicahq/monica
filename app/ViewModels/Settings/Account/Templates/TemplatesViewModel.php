@@ -12,18 +12,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 /**
- * What the templates screen shows: everything the account has to describe a
- * record with, split into what somebody here built and what the product
- * supplied.
+ * Everything the account has to describe a record with, split into what
+ * somebody here built and what the product supplied. A supplied template
+ * cannot be edited in place, so which side of the line it falls on is what
+ * tells somebody whether to open it or copy it first.
  *
- * The split is the point of the screen. A supplied template cannot be edited in
- * place, so knowing which side of the line a template falls on is what tells
- * somebody whether to open it or copy it first.
- *
- * The screen says nothing about how many records use a template or which vaults
- * it is applied to. Both are real questions and neither has an answer yet:
- * records and vault defaults are later models, and a column reading "no records"
- * on every row for months would be read as a fault rather than as an absence.
+ * The screen says nothing about how many records use a template. Records and
+ * vault defaults are later models, and a column reading `no records` on every
+ * row for months would be read as a fault rather than as an absence.
  */
 class TemplatesViewModel
 {

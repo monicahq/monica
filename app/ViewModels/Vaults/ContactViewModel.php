@@ -26,45 +26,28 @@ use Illuminate\Support\Collection;
  * The page of one person: everything written down about them, on the pages the
  * template they render from says they have.
  *
- * The tabs are the version's pages with an overview in front of them. The
- * overview belongs to no template and is the same on everybody: what you have
- * written about them down one column, and what you know about them down the
- * other. The pages after it are the template's, and each is the sections on it
- * with the fields inside them.
+ * The tabs are the version's pages, with an overview in front of them and the
+ * version history pinned after them. Answers are read through
+ * {@see FieldValueFormatter}, so the page and the form that edits it agree
+ * about what a value says.
  *
- * What the template asks is real: the pages, the sections, the fields and now
- * the answers, which are read through {@see FieldValueFormatter} so the page
- * and the form that edits it agree about what a value says.
- *
- * The rest of the screen has no model behind it yet. The history, the
- * relationships, the reminders and the tasks are each their own model and none
- * of them has been written; they are drawn here with placeholder content so the
- * screen can be judged as a whole, and every method that builds one says so.
- * The controls that would write any of it are drawn and not offered, the way
- * the dock draws a destination that does not exist.
+ * The history, the relationships, the reminders and the tasks are each their
+ * own model and none has been written. They are drawn with placeholder content
+ * so the screen can be judged as a whole, and every method that builds one says
+ * so.
  */
 class ContactViewModel
 {
     /**
-     * The key of the tab that belongs to no template page. It cannot collide
-     * with a page's key, which is slugified from a label somebody typed, unless
-     * they name a page "Overview" — and then the two say the same word about the
-     * same record, which is the least surprising collision available.
+     * The two tabs that belong to no template page. Either can collide with a
+     * page key slugified from the same word, and then the two say the same
+     * thing about the same record, which is the least surprising collision
+     * available.
      */
     public const string PAGE_OVERVIEW = 'overview';
 
-    /**
-     * The key of the other tab that belongs to no template page: every version
-     * this record has rendered from, and when each was applied. It carries the
-     * same collision as the overview and answers it the same way.
-     */
     public const string PAGE_VERSION_HISTORY = 'version-history';
 
-    /**
-     * The hues a section's mark is drawn in, taken in turn down the page. A
-     * section carries no colour of its own, and four panels of identical grey
-     * are four panels somebody has to read the heading of to tell apart.
-     */
     /**
      * How many highlighted fields the header shows before the rest fall through
      * to the panel down the side. Three fits beside the photograph on the
@@ -72,13 +55,15 @@ class ContactViewModel
      */
     private const int HEADER_FACTS = 3;
 
+    /** @var list<string> */
+    private const array FACT_HUES = ['text-rose', 'text-forest', 'text-sky'];
+
     /**
-     * The colours the header facts are marked in, taken in turn.
+     * A section carries no colour of its own, and four panels of identical grey
+     * are four panels somebody has to read the heading of to tell apart.
      *
      * @var list<string>
      */
-    private const array FACT_HUES = ['text-rose', 'text-forest', 'text-sky'];
-
     private const array SECTION_HUES = [
         'bg-indigo-tint text-indigo',
         'bg-forest-tint text-forest',
@@ -98,14 +83,12 @@ class ContactViewModel
     ) {}
 
     /**
-     * Everything written on the record, keyed by the field it answers, read
-     * once for the whole screen. The header, the panels and each page all ask
-     * about values, and asking the database again for every field of every
-     * section is how a page of forty fields becomes forty queries.
+     * Read once for the whole screen. The header, the panels and each page all
+     * ask about values, and asking again per field is how a page of forty
+     * fields becomes forty queries.
      *
-     * The values set aside are left out. A field that has left the structure
-     * has a screen of its own that explains why; on this one it would be an
-     * answer to a question the page no longer asks.
+     * The values set aside are left out: they answer a question the page no
+     * longer asks, and have a screen of their own.
      *
      * @return Collection<int, FieldValue>
      */
@@ -120,9 +103,6 @@ class ContactViewModel
             ->keyBy('field_id'));
     }
 
-    /**
-     * What one field reads as, or null when nothing has been written in it.
-     */
     private function valueOf(Field $field): ?string
     {
         $value = $this->values()->get($field->id);
@@ -176,9 +156,8 @@ class ContactViewModel
     }
 
     /**
-     * Where the picture of the contact is read from, and null for somebody drawn
-     * as their initials. It is the file itself rather than a public address,
-     * because a picture of somebody is as private as the record it sits on.
+     * The file itself rather than a public address: a picture of somebody is as
+     * private as the record it sits on.
      */
     public function avatarUrl(): ?string
     {
@@ -189,12 +168,6 @@ class ContactViewModel
         return route('files.show', ['vault' => $this->vault, 'file' => $this->contact->avatar]);
     }
 
-    /**
-     * Where what the template has no say over is handled: the name, the picture,
-     * and whether the person is on the record at all. All are edited somewhere
-     * the template has no say over either, and all behind one way in: the page
-     * is about a person rather than about the things that can be done to a row.
-     */
     public function editUrl(): string
     {
         return route('contacts.edit', ['vault' => $this->vault, 'contact' => $this->contact]);
@@ -206,9 +179,8 @@ class ContactViewModel
     }
 
     /**
-     * Whether anything is being kept for a question the structure has stopped
-     * asking. The link to that screen is offered only when it is, since a link
-     * to a page that says "nothing here" raises a question for no reason.
+     * The link to that screen is offered only when there is something on it: a
+     * link to a page saying "nothing here" raises a question for no reason.
      */
     public function hasValuesSetAside(): bool
     {
@@ -216,14 +188,9 @@ class ContactViewModel
     }
 
     /**
-     * Where the pages of this record are decided. It is the builder, which is
-     * an account screen rather than a vault one: a template is shared by every
-     * vault, so changing it here changes it for everybody on it.
-     *
-     * It is offered from the one place on the record that has to explain itself,
-     * which is a page the template puts nothing on. The record no longer names
-     * its template anywhere else: which structure somebody renders from is not a
-     * fact about them.
+     * The builder, which is an account screen rather than a vault one: a
+     * template is shared by every vault, so changing it here changes it for
+     * everybody on it.
      */
     public function templateUrl(): string
     {
@@ -231,18 +198,12 @@ class ContactViewModel
     }
 
     /**
-     * The newer version of the template waiting for this record, when there is
-     * one, as the banner that offers it needs it.
-     *
-     * A record renders from one version and stays on it: publishing a new
-     * version of a template moves nobody. That is what makes editing a template
-     * safe, and it is also why the record has to say so, or somebody who has
-     * changed a template sees no sign of it on the people it describes.
+     * The newer version of the template waiting for this record, for the banner
+     * that offers it.
      *
      * Nothing is offered when the published version is the one the record is
-     * already on, and nothing is offered when it is older than the record's: a
-     * record deliberately put back on an earlier version is not asked about it
-     * every time somebody opens it.
+     * already on, nor when it is older: a record deliberately put back on an
+     * earlier version is not asked about it every time somebody opens it.
      *
      * @return array{number: int, title: string, body: string, label: string, applyUrl: string}|null
      */
@@ -297,9 +258,8 @@ class ContactViewModel
         ]];
 
         foreach ($this->contact->templateVersion->pages as $page) {
-            /* A page the template asks nothing on carries no number. Nothing is
-               waiting there, and a zero is noise on the way to the tabs that
-               have something under them. */
+            /* A zero is noise on the way to the tabs that have something under
+               them, so a page asking nothing carries no number. */
             $fields = $this->fieldsOn($page);
 
             $tabs[] = [
@@ -313,9 +273,8 @@ class ContactViewModel
             ];
         }
 
-        /* Pinned to the far end of the strip, away from the pages. It is not
-           one of them: the pages are what the template asks about the person,
-           and this is about the template itself. */
+        /* Pinned to the far end, away from the pages: they are what the template
+           asks about the person, and this is about the template itself. */
         $tabs[] = [
             'key' => self::PAGE_VERSION_HISTORY,
             'label' => __('Version history'),
@@ -338,11 +297,7 @@ class ContactViewModel
     public function selectedPage(): ?TemplateVersionPage
     {
         return once(function (): ?TemplateVersionPage {
-            if ($this->selectedPageKey === null || $this->selectedPageKey === self::PAGE_OVERVIEW) {
-                return null;
-            }
-
-            if ($this->selectedPageKey === self::PAGE_VERSION_HISTORY) {
+            if (in_array($this->selectedPageKey, [null, self::PAGE_OVERVIEW, self::PAGE_VERSION_HISTORY], true)) {
                 return null;
             }
 
@@ -362,15 +317,6 @@ class ContactViewModel
 
     /**
      * Every version this record has rendered from, newest first.
-     *
-     * A snapshot is taken before a record is moved, and it records the version
-     * the record was leaving. So the chain is read from consecutive snapshots
-     * rather than from any one of them: the version that follows a snapshot is
-     * the next snapshot's, or the one the record is on now for the last of them.
-     *
-     * A snapshot where those two are the same moved nothing. It was taken by
-     * hand, or by an import, or by a restore that put the record back where it
-     * already was, and it is not a line in a history of structures.
      *
      * @return array<int, array<string, mixed>>
      */
@@ -400,9 +346,6 @@ class ContactViewModel
                 },
                 'isCurrent' => $isCurrent,
                 'who' => $this->whoApplied($leg, $index === 0),
-                /* What the person who published the version said had changed in
-                   it. It is the only account of the change anybody wrote, and it
-                   is written once rather than per record. */
                 'body' => $version->change_note,
                 'span' => $this->spanOf($leg['from'], $until, $isCurrent),
                 'goBack' => $this->wayBackTo($version, $isCurrent),
@@ -416,9 +359,10 @@ class ContactViewModel
     }
 
     /**
-     * The versions the record has been on, oldest first, each with when it began
-     * and who put the record on it. The first began when the record was written
-     * down, and nobody applied it: it was the structure the record was given.
+     * The versions the record has been on, oldest first. A snapshot records the
+     * version the record was leaving, so the version that follows a snapshot is
+     * the next snapshot's, or the record's own for the last of them. A snapshot
+     * where those two are the same moved nothing and is skipped.
      *
      * @return array<int, array{version: TemplateVersion, from: Carbon, by: User|null}>
      */
@@ -435,10 +379,8 @@ class ContactViewModel
                 ->values()
                 ->all();
 
-            /* The version each snapshot recorded, and then the one the record is
-               on now, which is the leg no snapshot has closed. There is always
-               one more version here than there are snapshots, so the version
-               after a snapshot can be read without asking whether it exists. */
+            /* One more version than there are snapshots, so the version after a
+               snapshot can be read without asking whether it exists. */
             $versions = array_map(fn (RecordSnapshot $stamp): TemplateVersion => $stamp->templateVersion, $stamps);
             $versions[] = $this->contact->templateVersion;
 
@@ -488,10 +430,9 @@ class ContactViewModel
     }
 
     /**
-     * How to put the record back on a version it was on before, when that is
-     * possible at all. A retired version is refused as a destination, so it is
-     * not offered as one: a button that comes back with an error is worse than a
-     * sentence saying why there is no button.
+     * A retired version is refused as a destination, so it is not offered as
+     * one: a button that comes back with an error is worse than a sentence
+     * saying why there is no button.
      *
      * @return array{url: string, versionId: int, label: string}|null
      */
@@ -512,10 +453,7 @@ class ContactViewModel
     }
 
     /**
-     * The three numbers above the timeline. How many templates the record has
-     * been described by is the one worth saying first: a record that has moved
-     * between templates has been a different kind of thing to somebody, and that
-     * is a bigger fact than the count of versions.
+     * The three numbers above the timeline.
      *
      * @return array<int, array{label: string, value: string}>
      */
@@ -536,8 +474,6 @@ class ContactViewModel
     }
 
     /**
-     * What the record renders from at this moment, and how much of it there is.
-     *
      * @return array{template: string, number: int, since: string, shows: string}
      */
     public function currentVersion(): array
@@ -561,9 +497,9 @@ class ContactViewModel
     }
 
     /**
-     * What the moves cost, in a sentence. A version decides what the page shows
-     * and nothing else, so a field a later version stopped showing kept its
-     * answers, and this is where somebody wondering where they went is told.
+     * A version decides what the page shows and nothing else, so a field a
+     * later version stopped showing kept its answers. This is where somebody
+     * wondering where they went is told.
      */
     public function setAsideLine(): string
     {
@@ -580,19 +516,12 @@ class ContactViewModel
             : __(':count values written under other versions are kept out of sight, and come back with the version that shows them.', ['count' => $count]));
     }
 
-    /**
-     * How many answers are being kept for questions no version this record is on
-     * asks. The count belongs beside the history because it is what the history
-     * costs: every move that hid a field left its answers here.
-     */
     public function setAsideCount(): int
     {
         return once(fn (): int => $this->contact->fieldValues()->where('is_detached', true)->count());
     }
 
     /**
-     * The sections on the open page, in order, each with the fields inside it.
-     *
      * @return array<int, array<string, mixed>>
      */
     public function sections(): array
@@ -611,14 +540,10 @@ class ContactViewModel
     }
 
     /**
-     * One section, as the panel that draws it needs it: what it is called, the
-     * fields inside it, and the three addresses that make it a block somebody
-     * can open, write and walk away from.
-     *
-     * `isEditable` is what decides whether it is offered an edit button at all.
-     * A section made entirely of types this product cannot yet fill in has
-     * nothing to open, and a button that leads to a form of read-only sentences
-     * is worse than no button.
+     * `isEditable` decides whether the section is offered an edit button at
+     * all. One made entirely of types this product cannot yet fill in has
+     * nothing to open, and a button leading to read-only sentences is worse
+     * than no button.
      *
      * @return array<string, mixed>
      */
@@ -628,9 +553,8 @@ class ContactViewModel
 
         return [
             'id' => $row->id,
-            /* The panel is its own region: opening, cancelling and saving each
-               replace this one id and leave every other block alone, including
-               one somebody has already opened further down the page. */
+            /* Opening, cancelling and saving each replace this one id and leave
+               every other block alone. */
             'regionId' => "section-{$row->id}",
             'name' => $this->nameOf($row),
             'icon' => $row->sectionVersion->section->icon ?? 'note',
@@ -638,9 +562,8 @@ class ContactViewModel
             'fields' => $fields,
             'isEditing' => $this->editingSection !== null && $this->editingSection->is($row),
             'isEditable' => collect($fields)->contains(fn (array $field): bool => $field['isEditable']),
-            /* Whether the form that edits this block has to be able to carry an
-               upload, which is a property of the block rather than of one
-               control: the encoding is set once, on the form. */
+            /* The encoding is set once, on the form, so this is a property of
+               the block rather than of one control. */
             'holdsAFile' => collect($fields)->contains(fn (array $field): bool => $this->asksForAFile($field['field'])),
             'editUrl' => route('contacts.sections.edit', [
                 'vault' => $this->vault,
@@ -656,9 +579,6 @@ class ContactViewModel
         ];
     }
 
-    /**
-     * Whether a field takes a file, itself or on each of its repetitions.
-     */
     private function asksForAFile(Field $field): bool
     {
         if ($field->type->holdsAFile()) {
@@ -670,10 +590,8 @@ class ContactViewModel
     }
 
     /**
-     * What a section is called here, which is the title this template gives it
-     * when it gives it one. The override is display only: a section is shared,
-     * so renaming it from inside one template would reach into every other
-     * template carrying it.
+     * The override is display only: a section is shared, so renaming it from
+     * inside one template would reach into every other template carrying it.
      */
     private function nameOf(TemplateVersionSection $row): string
     {
@@ -681,8 +599,8 @@ class ContactViewModel
     }
 
     /**
-     * The address of the open page, which cancelling an edit goes back to and
-     * which therefore reloads whatever was last saved.
+     * Cancelling an edit goes back here, and therefore reloads whatever was
+     * last saved.
      */
     public function pageUrl(): string
     {
@@ -690,9 +608,8 @@ class ContactViewModel
     }
 
     /**
-     * What the open page says when the template puts nothing on it. A page with
-     * no section is a page somebody made and has not filled yet, which is a
-     * sentence rather than an empty rectangle.
+     * A page with no section is one somebody made and has not filled yet, which
+     * deserves a sentence rather than an empty rectangle.
      */
     public function emptyPageLine(): string
     {
@@ -713,12 +630,9 @@ class ContactViewModel
     }
 
     /**
-     * The facts beside the photograph: the fields the template marks as
-     * highlighted, and how long it has been since the last real interaction.
-     *
-     * The highlighted ones are read across every page of the version rather
-     * than only the open one. A field put in the header is meant to stay there,
-     * and walking between tabs must not change which of them are visible.
+     * The facts beside the photograph. The highlighted fields are read across
+     * every page of the version rather than only the open one: a field put in
+     * the header is meant to stay there whatever tab somebody walks to.
      *
      * @return array<int, array{icon: string, label: string, value: string, iconClass: string}>
      */
@@ -746,9 +660,6 @@ class ContactViewModel
     }
 
     /**
-     * The fields the template puts in the header, in the order the pages and
-     * the sections put them.
-     *
      * @return Collection<int, Field>
      */
     private function highlightedFields(): Collection
@@ -760,13 +671,9 @@ class ContactViewModel
     }
 
     /**
-     * The facts panel down the right: the nickname, which the product imposes
-     * and therefore always knows about, and every highlighted field the header
-     * had no room for.
-     *
-     * It used to list six questions the product would always ask. It asks none
-     * of them: what is asked about somebody is what their template asks, so the
-     * panel reads the template rather than a list written here.
+     * The facts panel down the right: the nickname, which the product imposes,
+     * and every highlighted field the header had no room for. What is asked
+     * about somebody is what their template asks, so nothing is listed here.
      *
      * @return array<int, array{icon: string, label: string, value: string|null}>
      */
@@ -786,9 +693,8 @@ class ContactViewModel
     }
 
     /**
-     * What the history holds. Placeholder until activities exist: the one thing
-     * the row does know is when the person was written down, so that is the
-     * single entry, and it is true.
+     * Placeholder until activities exist. The one thing the row knows is when
+     * the person was written down, so that is the single entry.
      *
      * @return array<int, array{icon: string, iconClass: string, when: string, title: string, body: string}>
      */
@@ -811,10 +717,8 @@ class ContactViewModel
     }
 
     /**
-     * The sentence in each of the panels that has no model behind it. They are
-     * drawn rather than left out, because the shape of the page is the point of
-     * it, and each says what will land there rather than merely that it is
-     * empty.
+     * The sentence in each panel that has no model behind it. Each says what
+     * will land there rather than merely that it is empty.
      *
      * @return array<string, string>
      */
@@ -831,10 +735,6 @@ class ContactViewModel
     }
 
     /**
-     * One section's fields, the ones that hold a value. A divider or a heading
-     * is there to break a long form up and carries nothing, so a page showing
-     * what is known about somebody has nothing to say about it.
-     *
      * @return array<int, array<string, mixed>>
      */
     private function fieldsIn(TemplateVersionSection $row): array
@@ -856,10 +756,7 @@ class ContactViewModel
     }
 
     /**
-     * Every repetition on the record, grouped by the repeater it answers, read
-     * once for the whole screen for the same reason the plain values are: a page
-     * holding three repeaters of four questions each would otherwise ask the
-     * database about every box on it.
+     * Read once for the whole screen, for the same reason the plain values are.
      *
      * @return Collection<int|string, EloquentCollection<int, FieldValueRow>>
      */
@@ -875,12 +772,9 @@ class ContactViewModel
     }
 
     /**
-     * What one repeater holds, in the order somebody put it in: a list of
-     * repetitions, each carrying the answers to the questions the repeater asks.
-     *
-     * A field that is not a repeater holds no repetitions rather than an empty
-     * list of them, and both read as the same empty array here, because what the
-     * panel needs to know is only whether there is anything to draw.
+     * What one repeater holds, in the order somebody put it in. A field that is
+     * not a repeater reads as the same empty array: what the panel needs to
+     * know is only whether there is anything to draw.
      *
      * @return array<int, array{id: int, fields: array<int, array<string, mixed>>}>
      */
@@ -922,11 +816,6 @@ class ContactViewModel
         ];
     }
 
-    /**
-     * How many fields somebody would find on a page. It counts what the page
-     * would ask, so the layout types are left out here for the same reason they
-     * are left out of the page itself.
-     */
     private function fieldsOn(TemplateVersionPage $page): int
     {
         return $this->contact->templateVersion->assembly
@@ -935,6 +824,9 @@ class ContactViewModel
     }
 
     /**
+     * The fields that hold a value. A divider or a heading breaks a long form
+     * up and carries nothing, so the record has nothing to say about it.
+     *
      * @param  Collection<int, Field>  $fields
      * @return Collection<int, Field>
      */

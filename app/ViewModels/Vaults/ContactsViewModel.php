@@ -14,21 +14,10 @@ use Illuminate\Pagination\Paginator;
  * What the people screen shows: everybody in one vault, on one list, narrowed by
  * what was typed and by which chip is in force, in the order asked for.
  *
- * The list is rows rather than a table. What a contact carries that is worth
- * putting beside their name is their nickname, the template their page renders
- * from and the last time somebody wrote something down about them, and that is
- * three things: a table of three columns is a list with lines drawn on it. How
- * you know somebody, their birthday and their address are each their own model
- * and none of them exists yet.
- *
- * Last spoke is here although nothing writes `last_activity_at` yet, because
- * activities are a later model. It is what somebody orders this list by, and it
- * comes to life on its own the day activities land.
- *
  * In name order the rows are grouped under the letter they begin with, which is
  * what makes a long list something to be scanned rather than read. In any other
- * order there are no letters: a run of names under "F" that is ordered by when
- * they were added is a heading that lies.
+ * order there are no letters: a run of names under "F" ordered by when they were
+ * added is a heading that lies.
  *
  * Everything the URL carries is checked against the constants below before it
  * reaches the query, so a hand-edited address narrows the list to nothing at
@@ -54,16 +43,11 @@ class ContactsViewModel
 
     public const string DIRECTION_DESC = 'desc';
 
-    /**
-     * How many people a page holds. The next page is appended in place rather
-     * than sent to as a second screen, so the list reads as one scroll however
-     * many pages it took.
-     */
     private const int PER_PAGE = 50;
 
     /**
-     * The column each sort writes into the order by, kept apart from the key
-     * the URL carries so the address does not name the schema.
+     * Kept apart from the key the URL carries, so the address does not name the
+     * schema.
      */
     private const array SORT_COLUMNS = [
         self::SORT_NAME => 'sort_name',
@@ -73,8 +57,8 @@ class ContactsViewModel
     ];
 
     /**
-     * The sorts whose column a contact is allowed to have nothing in. They are
-     * the ones that need saying where the unknowns go.
+     * The sorts whose column a contact may have nothing in, and which therefore
+     * need saying where the unknowns go.
      *
      * @var list<string>
      */
@@ -86,12 +70,7 @@ class ContactsViewModel
     /** @var Paginator<int, Contact>|null */
     private ?Paginator $contacts = null;
 
-    /**
-     * How many people each chip would show, asked for once each: the chips
-     * carry their counts and the sentences count against the same numbers.
-     *
-     * @var array<string, int>
-     */
+    /** @var array<string, int> */
     private array $counts = [];
 
     public function __construct(
@@ -118,11 +97,6 @@ class ContactsViewModel
         return __('People');
     }
 
-    /**
-     * The line under the title. It says what the screen is for and what happens
-     * to what you do to it, since somebody who narrows a list and then reloads
-     * the page has to know which of the two they are looking at.
-     */
     public function description(): string
     {
         return __('Everybody you keep in :vault. Narrowing the list and ordering it both stay in the address, so it comes back the way you left it.', [
@@ -131,9 +105,8 @@ class ContactsViewModel
     }
 
     /**
-     * The number beside "People" in the bar: how many the plain list holds, not
-     * how many the chip in force leaves. It says how big the vault is and must
-     * not move every time somebody types in the search box.
+     * How many the plain list holds, not how many the chip in force leaves: it
+     * says how big the vault is, so it must not move as somebody types.
      */
     public function headcount(): int
     {
@@ -141,65 +114,65 @@ class ContactsViewModel
     }
 
     /**
-     * The rows of the list, in runs under the letter they begin with.
-     *
-     * A run whose letter is null is drawn without a heading. That happens on the
-     * second page of a list that broke mid-letter, where a heading would read as
-     * a second run of the same letter rather than the rest of the first, and on
-     * every page of a list ordered by something a letter says nothing about.
-     *
-     * The date at the end of a row is the last time somebody wrote something
-     * down about that person, and when nobody ever has, the day they were
-     * written down themselves. Nothing fills `last_activity_at` until activities
-     * land, so the first version of that row would otherwise be a column of the
-     * word "never" repeated down the screen. The caption says which of the two
-     * it is.
+     * The rows of the list, in runs under the letter they begin with. A run
+     * whose letter is null is drawn without a heading: either the list is
+     * ordered by something a letter says nothing about, or the page broke
+     * mid-letter and this run is the rest of the previous page's.
      *
      * @return array<int, array{letter: string|null, people: array<int, array{name: string, isFavourite: bool, isArchived: bool, nickname: string|null, avatarUrl: string|null, template: string, when: string, whenLabel: string, url: string}>}>
      */
     public function groups(): array
     {
+        $carriedOver = $this->isGrouped() ? $this->letterBefore() : null;
         $groups = [];
-        $letter = $this->isGrouped() ? $this->letterBefore() : null;
+        $openLetter = null;
 
         foreach ($this->contacts()->items() as $contact) {
-            $current = $this->isGrouped() ? $this->letterOf($contact) : null;
+            $letter = $this->isGrouped() ? $this->letterOf($contact) : null;
 
-            if ($groups === [] || $current !== $letter) {
-                $groups[] = ['letter' => $current === $letter ? null : $current, 'people' => []];
-                $letter = $current;
+            if ($groups === [] || $letter !== $openLetter) {
+                $continuesThePreviousPage = $groups === [] && $letter === $carriedOver;
+
+                $groups[] = ['letter' => $continuesThePreviousPage ? null : $letter, 'people' => []];
+                $openLetter = $letter;
             }
 
-            $groups[array_key_last($groups)]['people'][] = [
-                'name' => $contact->name,
-                'isFavourite' => $contact->is_favourite,
-                'isArchived' => $contact->is_archived,
-                'nickname' => $contact->nickname,
-                'avatarUrl' => $contact->avatar === null
-                    ? null
-                    : route('files.show', ['vault' => $this->vault, 'file' => $contact->avatar]),
-                'template' => $contact->templateVersion->template->name,
-                'when' => ($contact->last_activity_at ?? $contact->created_at)->isoFormat('ll'),
-                'whenLabel' => $contact->last_activity_at === null ? __('added') : __('last spoke'),
-                'url' => route('contacts.show', ['vault' => $this->vault, 'contact' => $contact]),
-            ];
+            $groups[array_key_last($groups)]['people'][] = $this->rowFor($contact);
         }
 
         return $groups;
     }
 
     /**
-     * The chips that narrow the list, each carrying how many people it would
-     * leave. The counts ignore what is in the search box: a chip says how many
-     * people of that kind the vault holds, and a number that moved with every
-     * letter typed would be counting something else.
+     * The date at the end of a row is the last time somebody wrote something
+     * down about that person, and the day they were written down themselves
+     * when nobody ever has. Nothing fills `last_activity_at` until activities
+     * land, so the caption says which of the two it is.
      *
-     * A chip with nobody behind it carries no number. Nothing is waiting there,
-     * and a row of zeroes is noise on the way to the one chip that has people
-     * under it.
-     *
-     * Favourites and archived are both columns of the contact; the labels the
-     * design also offered are their own model and are not here yet.
+     * @return array{name: string, isFavourite: bool, isArchived: bool, nickname: string|null, avatarUrl: string|null, template: string, when: string, whenLabel: string, url: string}
+     */
+    private function rowFor(Contact $contact): array
+    {
+        return [
+            'name' => $contact->name,
+            'isFavourite' => $contact->is_favourite,
+            'isArchived' => $contact->is_archived,
+            'nickname' => $contact->nickname,
+            'avatarUrl' => $contact->avatar === null
+                ? null
+                : route('files.show', ['vault' => $this->vault, 'file' => $contact->avatar]),
+            'template' => $contact->templateVersion->template->name,
+            'when' => ($contact->last_activity_at ?? $contact->created_at)->isoFormat('ll'),
+            'whenLabel' => $contact->last_activity_at === null ? __('added') : __('last spoke'),
+            'url' => route('contacts.show', ['vault' => $this->vault, 'contact' => $contact]),
+        ];
+    }
+
+    /**
+     * The chips that narrow the list. The counts ignore the search box: a chip
+     * says how many people of that kind the vault holds, and a number moving
+     * with every letter typed would be counting something else. A chip with
+     * nobody behind it carries no number rather than a zero.
      *
      * @return array<int, array{key: string, label: string, icon: string, count: int|null, url: string, isCurrent: bool}>
      */
@@ -222,8 +195,6 @@ class ContactsViewModel
     }
 
     /**
-     * What the list can be ordered by.
-     *
      * @return array<int, array{value: string, label: string, isCurrent: bool}>
      */
     public function sorts(): array
@@ -236,10 +207,8 @@ class ContactsViewModel
     }
 
     /**
-     * Which way round that order runs, said in the words of the column it
-     * applies to: a list of names goes from A to Z and a list of dates goes from
-     * the newest, and "ascending" is a word about a database rather than about
-     * either of them.
+     * Said in the words of the column it applies to: "ascending" is a word about
+     * a database rather than about a list of names or a list of dates.
      *
      * @return array<int, array{value: string, label: string, isCurrent: bool}>
      */
@@ -257,9 +226,8 @@ class ContactsViewModel
     }
 
     /**
-     * The line beside the search box, which says whether anything is being
-     * hidden. Somebody who arrives at a narrowed list from a link should not
-     * have to count the rows to work that out.
+     * Whether anything is being hidden. Somebody arriving at a narrowed list
+     * from a link should not have to count the rows to work that out.
      */
     public function resultLine(): string
     {
@@ -273,8 +241,8 @@ class ContactsViewModel
     }
 
     /**
-     * The line at the foot, which says the scrolling is over rather than
-     * leaving somebody wondering whether more is loading.
+     * Says the scrolling is over, rather than leaving somebody wondering
+     * whether more is loading.
      */
     public function endLine(): string
     {
@@ -284,9 +252,8 @@ class ContactsViewModel
     }
 
     /**
-     * Whether the vault holds nobody to show at all, which is a different screen
-     * from a search that matched nobody: one asks somebody to write their first
-     * person down, the other asks them to type less.
+     * A different screen from a search that matched nobody: one asks somebody
+     * to write their first person down, the other asks them to type less.
      */
     public function vaultIsEmpty(): bool
     {
@@ -299,12 +266,9 @@ class ContactsViewModel
     }
 
     /**
-     * What the empty screen says, which is not the same sentence twice.
-     *
-     * A vault whose only people are partial ones is not an empty vault, and
-     * saying it holds nobody while the badge beside it counts them is the kind
-     * of contradiction somebody reads as a fault in the product. It says where
-     * they went instead.
+     * A vault whose only people are partial ones is not an empty vault: saying
+     * it holds nobody while the badge beside it counts them reads as a fault in
+     * the product, so this says where they went instead.
      */
     public function emptyLine(): string
     {
@@ -318,8 +282,7 @@ class ContactsViewModel
     }
 
     /**
-     * How many people the vault holds that no chip on this screen can find: the
-     * partial ones, who are waiting to be filled in.
+     * The partial ones, who no chip on this screen can find.
      */
     private function waitingCount(): int
     {
@@ -376,13 +339,6 @@ class ContactsViewModel
     }
 
     /**
-     * The people this page shows.
-     *
-     * A partial contact is somebody mentioned in a relationship and reduced to a
-     * first name, and is out of every one of these lists until they are filled
-     * in. Archived contacts are out of all of them but their own chip, which is
-     * the only place they can be found again.
-     *
      * @return Paginator<int, Contact>
      */
     private function contacts(): Paginator
@@ -394,20 +350,14 @@ class ContactsViewModel
     }
 
     /**
-     * The people the chip and the search box leave, in the order asked for.
-     *
-     * The order always ends on the primary key. Two people added in the same
-     * second, or two people who have never been spoken to, would otherwise land
-     * in whatever order the database felt like, and a row can appear on two
-     * pages or on none.
+     * The order always ends on the primary key, or two people added in the same
+     * second land in whatever order the database felt like and a row appears on
+     * two pages or on none.
      *
      * A column that can be unknown is sorted on twice, the unknowns pushed to
-     * the end before the column itself is read. Where they land is otherwise the
-     * database's opinion rather than ours: Postgres ranks null above everything
-     * and MySQL and SQLite rank it below, so the same list reads differently on
-     * two installations. Pushing them to the end says it once, and it is the
-     * more useful end: sorting by nickname to be shown a screen of dashes is not
-     * what anybody asked the list for.
+     * the end first. Postgres ranks null above everything and MySQL and SQLite
+     * rank it below, so saying it here is what keeps the list reading the same
+     * on every installation.
      *
      * @return Builder<Contact>
      */
@@ -425,9 +375,9 @@ class ContactsViewModel
     }
 
     /**
-     * The people the chip and the search box between them leave, in no
-     * particular order: this is what the page is drawn from and what the
-     * sentences count, so it is asked for twice and built once.
+     * The people the chip and the search box between them leave. A partial
+     * contact is out of every one of these lists until they are filled in, and
+     * archived contacts are out of all but their own chip.
      *
      * @return Builder<Contact>
      */
@@ -445,19 +395,11 @@ class ContactsViewModel
     }
 
     /**
-     * What to match a name against, lowercased, and matched case insensitively
-     * on top of that. The two are not the same guard and neither covers the
-     * other.
-     *
-     * Lowercasing is what meets `sort_name`, which is written lowercased so the
-     * order never depends on the collation underneath. It also folds accented
-     * letters, which SQLite's `like` does not: only ASCII is case insensitive
-     * there.
-     *
-     * Asking for the match case insensitively is what reaches a nickname, which
-     * is stored as somebody typed it. Whether `like` minds the difference is a
-     * question about the database: Postgres does and needs `ilike`, MySQL and
-     * SQLite do not. Saying what is meant leaves that answer to the driver.
+     * Lowercased here and matched case insensitively on top of that. Neither
+     * guard covers the other: lowercasing is what meets `sort_name`, which is
+     * stored lowercased and which SQLite's `like` would not fold the accents
+     * of, and the case insensitive match is what reaches a nickname, stored as
+     * somebody typed it.
      */
     private function searchTerm(): string
     {
@@ -465,12 +407,8 @@ class ContactsViewModel
     }
 
     /**
-     * The orders the list can be put in: what each one is called and which
-     * column it reads. The select and the sentence beside it both read this, so
-     * an order is described once.
-     *
-     * The template is not among them. Its name lives two tables away, and a join
-     * to order a list by something nobody orders a list by is not worth it.
+     * The template is not among them: its name lives two tables away, and a
+     * join to order a list by something nobody orders a list by is not worth it.
      *
      * @return array<int, array{key: string, label: string}>
      */
@@ -485,9 +423,8 @@ class ContactsViewModel
     }
 
     /**
-     * Whether the rows are drawn in runs under a letter, which only the name
-     * order earns: a letter over a list ordered by anything else is a heading
-     * that has nothing to do with what is under it.
+     * Only the name order earns letters: one over a list ordered by anything
+     * else is a heading with nothing to do with what is under it.
      */
     private function isGrouped(): bool
     {
@@ -500,13 +437,10 @@ class ContactsViewModel
     }
 
     /**
-     * The letter the page before this one ended on, so a run that was cut in
-     * half by the pagination is drawn as the rest of itself rather than as a
-     * second run under the same heading.
-     *
-     * It costs one row of one query, and only from the second page on. The
-     * alternative was carrying the letter in the address, which would put a
-     * detail of how the list is drawn into something somebody can bookmark.
+     * The letter the page before this one ended on, so a run cut in half by the
+     * pagination is drawn as the rest of itself. It costs one row of one query
+     * from the second page on; the alternative was putting a detail of how the
+     * list is drawn into something somebody can bookmark.
      */
     private function letterBefore(): ?string
     {
@@ -522,9 +456,8 @@ class ContactsViewModel
     }
 
     /**
-     * How many people one chip would show. The archived chip is the only one
-     * that looks at the archived people, which is what keeps them out of the
-     * other two counts.
+     * The archived chip is the only one that looks at the archived people,
+     * which is what keeps them out of the other two counts.
      */
     private function countOf(string $filter): int
     {
@@ -537,30 +470,22 @@ class ContactsViewModel
     }
 
     /**
-     * How many people the list holds altogether, rather than how many of them
-     * this page rendered: the sentence at the foot is about the list, and a page
-     * of it is an implementation detail of the scrolling.
+     * How many the list holds altogether, rather than how many this page
+     * rendered: a page is an implementation detail of the scrolling.
      */
     private function matchingCount(): int
     {
         return once(fn (): int => $this->matching()->count());
     }
 
-    /**
-     * Whether the list is showing less than the vault holds, in which case the
-     * line beside the search box says so.
-     */
     private function isNarrowed(): bool
     {
         return $this->searchTerm() !== '' || $this->filter() !== self::FILTER_ALL;
     }
 
     /**
-     * This screen again, with one thing about it changed and everything else
-     * left where it was: narrowing a list must not quietly undo the sort.
-     *
-     * The filter is a segment of the address and the rest is a query string, so
-     * everybody is the path with nothing after it rather than a word saying so.
+     * This screen again, with one thing changed and everything else left where
+     * it was: narrowing a list must not quietly undo the sort.
      */
     private function url(?string $filter = null): string
     {
@@ -574,9 +499,8 @@ class ContactsViewModel
     }
 
     /**
-     * Where the two forms on this screen post to, which is the path of the chip
-     * in force and nothing else: a browser throws away the query string of a GET
-     * action and puts its own fields there instead.
+     * The path of the chip in force and nothing else: a browser throws away the
+     * query string of a GET action and puts its own fields there instead.
      */
     public function searchUrl(): string
     {

@@ -174,21 +174,16 @@ class PreferencesViewModel
         return ($this->numberFormat() ?? $this->languageNumberFormat())->example();
     }
 
-    /**
-     * Who is signed in, so the sidebar can show their name and their photo.
-     */
     public function user(): User
     {
         return $this->user;
     }
 
     /**
-     * The language the screen was drawn in, which is what the middleware
-     * settled on rather than only what the account asks for: somebody who
-     * switched language from a guest screen sees that choice reflected here.
-     *
-     * Each row saves on its own, so the row that does not own this value still
-     * has to send it along, which is why it is readable from the screen.
+     * What the middleware settled on rather than only what the account asks
+     * for, so somebody who switched language from a guest screen sees that
+     * choice here. Each row saves on its own, so the row that does not own
+     * this value still has to send it along.
      */
     public function locale(): string
     {
