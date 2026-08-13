@@ -156,7 +156,7 @@ const useWebauthn = () => {
             </JetButton>
           </div>
 
-          <WebauthnLogin v-if="useSecurityKey" :public-key="publicKeyRef" :remember="true" :autofill="true" />
+          <WebauthnLogin v-if="useSecurityKey" :public-key="publicKeyRef" :remember="true" :autofill="!webauthn" />
         </div>
 
         <div v-if="isSignupEnabled" class="px-6 py-6 text-l dark:text-gray-50">
