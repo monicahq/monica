@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
+use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
@@ -91,6 +92,31 @@ class TemplateBuilderControllerTest extends TestCase
             ->assertSee('Employer')
             ->assertSee('Jobs')
             ->assertDontSee('Paper stock');
+    }
+
+    #[Test]
+    public function it_offers_sharing_the_template_and_its_sections_once_they_are_published(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $sectionVersion = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+
+        $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
+            ->assertDontSee(__('Share this template'))
+            ->assertDontSee(__('Share this section'));
+
+        $sectionVersion->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+        $version->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+        $template->update(['published_version_id' => $version->id]);
+
+        $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
+            ->assertSee(__('Share this template'))
+            ->assertSee(__('Share this section'));
     }
 
     #[Test]

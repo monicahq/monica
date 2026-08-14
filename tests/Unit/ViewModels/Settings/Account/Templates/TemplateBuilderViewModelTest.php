@@ -53,6 +53,33 @@ class TemplateBuilderViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_sharing_only_on_the_version_the_template_stands_behind(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $published = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $template->update(['published_version_id' => $published->id]);
+
+        $this->assertTrue(new TemplateBuilderViewModel(user: $user, template: $template->fresh())->isShareable());
+
+        TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 2]);
+
+        $this->assertFalse(new TemplateBuilderViewModel(user: $user, template: $template->fresh())->isShareable());
+    }
+
+    #[Test]
+    public function it_does_not_offer_sharing_a_template_nobody_has_published(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        TemplateVersion::factory()->create(['template_id' => $template->id]);
+
+        $viewModel = new TemplateBuilderViewModel(user: $user, template: $template->fresh());
+
+        $this->assertFalse($viewModel->isShareable());
+    }
+
+    #[Test]
     public function it_says_what_a_draft_was_based_on(): void
     {
         $user = User::factory()->create();

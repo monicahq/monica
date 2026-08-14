@@ -14,6 +14,7 @@
   @var array $section
   @var \App\Models\Template $template
   @var bool $isEditable
+  @var bool $isShareable
   @var array<int, array{id: int, uuid: string, label: string}> $otherPages
 --}}
 <div data-row-id="{{ $section['id'] }}" class="relative">
@@ -45,6 +46,28 @@
         @endif
 
         <code class="ml-auto font-mono text-[12.5px] text-muted">{{ $section['fieldLabel'] }}</code>
+
+        {{--
+          A section leaves on its own, which is the reason a section is its own
+          object rather than a grouping inside a template. The button is here on
+          the section rather than only on the template, since somebody who wants
+          to hand over one block should not have to hand over the rest of what
+          they built around it.
+        --}}
+        @if ($isShareable)
+          <x-button.ghost
+            :href="route('settings.sectionShare.index', [$template, $section['id']])"
+            data-turbo="true"
+            size="small"
+            class="shrink-0"
+          >
+            <x-slot:icon>
+              <x-icon name="relationship" :size="15" :stroke-width="1.6" />
+            </x-slot:icon>
+
+            {{ __('Share this section') }}
+          </x-button.ghost>
+        @endif
 
         @if ($isEditable)
           <div class="flex shrink-0 items-center gap-0.5">

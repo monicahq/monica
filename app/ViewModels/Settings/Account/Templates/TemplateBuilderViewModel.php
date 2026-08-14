@@ -67,6 +67,23 @@ class TemplateBuilderViewModel
         return $this->version()?->status->isEditable() === true;
     }
 
+    /**
+     * Whether what is on the screen can leave the account.
+     *
+     * Only the version the template actually offers can. A draft has nothing
+     * frozen to write down, and an older published version is not what the
+     * template stands behind, so neither is worth handing anybody a file of.
+     *
+     * The same answer governs the sections on the screen: publishing a template
+     * version refuses to carry a draft section, so every section version pinned
+     * by the published one is itself frozen.
+     */
+    public function isShareable(): bool
+    {
+        return $this->template->published_version_id !== null
+            && $this->version()?->id === $this->template->published_version_id;
+    }
+
     public function versionLabel(): string
     {
         $version = $this->version();

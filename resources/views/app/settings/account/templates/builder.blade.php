@@ -55,19 +55,38 @@
         </p>
       </div>
 
-      @if ($viewModel->isEditable())
-        <x-form method="put" :action="route('settings.templateVersionPublication.update', [$template, $version])" x-target="builder">
-          @if ($version?->previous_version_id !== null)
-            <input type="hidden" name="change_note" value="{{ __('Changed in the builder.') }}" />
-          @endif
+      {{--
+        Sharing sits beside publishing rather than in a menu, because it is the
+        one thing somebody does with a template once it is finished, and a
+        template nobody can get out of the account it was built in is a template
+        that dies with the account. It is offered only on the version the
+        template actually stands behind.
+      --}}
+      <div class="flex flex-wrap items-center gap-2.5 max-sm:w-full">
+        @if ($viewModel->isShareable())
+          <x-button.secondary :href="route('settings.templateShare.index', $template)" data-turbo="true" class="max-sm:w-full">
+            <x-slot:icon>
+              <x-icon name="relationship" :size="16" :stroke-width="1.6" />
+            </x-slot:icon>
 
-          <x-button class="max-sm:w-full">{{ __('Publish this version') }}</x-button>
-        </x-form>
-      @else
-        <x-form method="post" :action="route('settings.templateVersions.create', $template)" x-target="builder">
-          <x-button class="max-sm:w-full">{{ __('Start a draft') }}</x-button>
-        </x-form>
-      @endif
+            {{ __('Share this template') }}
+          </x-button.secondary>
+        @endif
+
+        @if ($viewModel->isEditable())
+          <x-form method="put" :action="route('settings.templateVersionPublication.update', [$template, $version])" x-target="builder" class="max-sm:w-full">
+            @if ($version?->previous_version_id !== null)
+              <input type="hidden" name="change_note" value="{{ __('Changed in the builder.') }}" />
+            @endif
+
+            <x-button class="max-sm:w-full">{{ __('Publish this version') }}</x-button>
+          </x-form>
+        @else
+          <x-form method="post" :action="route('settings.templateVersions.create', $template)" x-target="builder" class="max-sm:w-full">
+            <x-button class="max-sm:w-full">{{ __('Start a draft') }}</x-button>
+          </x-form>
+        @endif
+      </div>
     </header>
 
     @unless ($viewModel->isEditable())
@@ -89,6 +108,7 @@
             'section' => $section,
             'template' => $template,
             'isEditable' => $viewModel->isEditable(),
+            'isShareable' => $viewModel->isShareable(),
             'otherPages' => $viewModel->otherPages(),
           ])
         @empty

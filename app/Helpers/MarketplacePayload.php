@@ -64,6 +64,25 @@ class MarketplacePayload
     }
 
     /**
+     * Write down one precise state of a section, rather than whatever that
+     * section has published since.
+     *
+     * A template version pins the section version it carries, and that pinned
+     * one is what the builder shows and what a record renders. It can be older
+     * than the section's own published version, so anything writing down what
+     * is on the screen has to name the version rather than the section.
+     *
+     * @return array<string, mixed>
+     */
+    public static function ofSectionVersion(SectionVersion $sectionVersion): array
+    {
+        $payload = new self;
+        $section = $payload->section($sectionVersion);
+
+        return ['type' => 'section', 'section' => $section, 'value_lists' => $payload->valueLists];
+    }
+
+    /**
      * Hash a payload, so an install can prove it got what was approved.
      *
      * @param  array<string, mixed>  $payload

@@ -24,15 +24,19 @@ use App\Http\Controllers\App\Settings\Account\Security\SecurityController;
 use App\Http\Controllers\App\Settings\Account\Security\TwoFactorController;
 use App\Http\Controllers\App\Settings\Account\Templates\FieldController;
 use App\Http\Controllers\App\Settings\Account\Templates\FieldPositionController;
+use App\Http\Controllers\App\Settings\Account\Templates\SectionExportController;
+use App\Http\Controllers\App\Settings\Account\Templates\SectionShareController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateActivationController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateBuilderController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateCopyController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplateExportController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplatePageController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplatePagePositionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPageController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPositionController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplateShareController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicationController;
 use App\Http\Controllers\App\Settings\SettingsController;
@@ -205,6 +209,23 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     Route::delete('settings/account/templates/{template}', [TemplateController::class, 'destroy'])->name('settings.templates.destroy');
     Route::post('settings/account/templates/{template}/copy', [TemplateCopyController::class, 'create'])->name('settings.templateCopy.create');
     Route::put('settings/account/templates/{template}/active', [TemplateActivationController::class, 'update'])->name('settings.templateActivation.update');
+
+    // The two ways a structure leaves an account, and the file that is one of
+    // them. Both sit under the template rather than beside it: a section is
+    // shared out of the template that carries it, since that is what pins the
+    // version being written down and what the breadcrumb needs to read.
+    //
+    // `export/file` is the bytes, and `export` is the screen that shows them
+    // first. Somebody is asked to read what is about to leave their account, so
+    // the reading has an address of its own rather than being a step the
+    // download happens to pass through.
+    Route::get('settings/account/templates/{template}/share', [TemplateShareController::class, 'index'])->name('settings.templateShare.index');
+    Route::get('settings/account/templates/{template}/export', [TemplateExportController::class, 'index'])->name('settings.templateExport.index');
+    Route::get('settings/account/templates/{template}/export/file', [TemplateExportController::class, 'show'])->name('settings.templateExport.show');
+
+    Route::get('settings/account/templates/{template}/sections/{templateVersionSection}/share', [SectionShareController::class, 'index'])->whereNumber('templateVersionSection')->name('settings.sectionShare.index');
+    Route::get('settings/account/templates/{template}/sections/{templateVersionSection}/export', [SectionExportController::class, 'index'])->whereNumber('templateVersionSection')->name('settings.sectionExport.index');
+    Route::get('settings/account/templates/{template}/sections/{templateVersionSection}/export/file', [SectionExportController::class, 'show'])->whereNumber('templateVersionSection')->name('settings.sectionExport.show');
 
     Route::get('settings/account/templates/{template}/builder/{page?}', [TemplateBuilderController::class, 'index'])->name('settings.templateBuilder.index');
     Route::get('settings/account/templates/{template}/builder/{page}/fields/{field}', [TemplateBuilderController::class, 'index'])->whereNumber('field')->name('settings.templateBuilder.field');
