@@ -4,6 +4,18 @@ One file per model. The number in the file name is the order the model must be i
 
 The first six models already exist in `app/Models`. They come first because everything else hangs off them, and because most of them need changes before the rest can be built on top.
 
+## The status in the file name
+
+Every file name ends with where the model layer stands.
+
+| Suffix | What it means |
+|---|---|
+| `-done` | The table matches the Fields list, the model, factory and tests exist, and every rule nothing blocks is enforced. |
+| `-in-progress` | The model exists and something is missing: a column the Fields list asks for, or a rule that could be enforced today and is not. |
+| `-not-yet` | No table and no model. |
+
+The status covers the model layer only. Screens, the API and work waiting on a model further down the list do not count against a file, which is why a file can read `-done` and still carry a long **Not done yet** section.
+
 ## How to read a file
 
 Every file follows the same shape.
@@ -22,12 +34,12 @@ Every file follows the same shape.
 
 | # | Model | Status |
 |---|---|---|
-| 001 | [Account](001-account.md) | exists, built as far as the models it depends on allow |
-| 002 | [User](002-user.md) | exists, built as far as the models it depends on allow |
-| 003 | [MagicLink](003-magic-link.md) | exists, no change |
-| 004 | [Log](004-log.md) | exists, built as far as the models it depends on allow |
-| 005 | [EmailSent](005-email-sent.md) | exists, minor changes |
-| 006 | [PersonalAccessToken](006-personal-access-token.md) | exists, changes needed |
+| 001 | [Account](001-account-in-progress.md) | exists, built as far as the models it depends on allow |
+| 002 | [User](002-user-done.md) | exists, built as far as the models it depends on allow |
+| 003 | [MagicLink](003-magic-link-in-progress.md) | exists, no change |
+| 004 | [Log](004-log-in-progress.md) | exists, built as far as the models it depends on allow |
+| 005 | [EmailSent](005-email-sent-in-progress.md) | exists, minor changes |
+| 006 | [PersonalAccessToken](006-personal-access-token-in-progress.md) | exists, changes needed |
 
 Models 007 to 023 exist as well. Each file says how far it is built and what it is waiting on.
 
@@ -35,102 +47,102 @@ Models 007 to 023 exist as well. Each file says how far it is built and what it 
 
 | # | Model | Spec |
 |---|---|---|
-| 007 | [Vault](007-vault.md) | 4.2 |
-| 008 | [File](008-file.md) | 11 |
+| 007 | [Vault](007-vault-in-progress.md) | 4.2 |
+| 008 | [File](008-file-in-progress.md) | 11 |
 
 ### The personalisation engine
 
 | # | Model | Spec |
 |---|---|---|
-| 009 | [ValueList](009-value-list.md) | 5.4 |
-| 010 | [ValueListItem](010-value-list-item.md) | 5.4 |
-| 011 | [EntityType](011-entity-type.md) | 5.3 |
-| 012 | [Template](012-template.md) | 5.2, 6 |
-| 013 | [TemplateVersion](013-template-version.md) | 6 |
-| 014 | [Section](014-section.md) | 5.2 |
-| 015 | [SectionVersion](015-section-version.md) | 6 |
-| 016 | [TemplateVersionSection](016-template-version-section.md) | 5.2 |
-| 017 | [Field](017-field.md) | 5.5, 5.6 |
-| 018 | [VaultDefaultTemplate](018-vault-default-template.md) | 5.3 |
+| 009 | [ValueList](009-value-list-in-progress.md) | 5.4 |
+| 010 | [ValueListItem](010-value-list-item-done.md) | 5.4 |
+| 011 | [EntityType](011-entity-type-done.md) | 5.3 |
+| 012 | [Template](012-template-in-progress.md) | 5.2, 6 |
+| 013 | [TemplateVersion](013-template-version-done.md) | 6 |
+| 014 | [Section](014-section-in-progress.md) | 5.2 |
+| 015 | [SectionVersion](015-section-version-in-progress.md) | 6 |
+| 016 | [TemplateVersionSection](016-template-version-section-done.md) | 5.2 |
+| 017 | [Field](017-field-done.md) | 5.5, 5.6 |
+| 018 | [VaultDefaultTemplate](018-vault-default-template-done.md) | 5.3 |
 
-Model 055, [TemplateVersionPage](055-template-version-page.md), is a later addition to this established engine, and its table is created before the one of model 016 so that every section placement names its page from the first migration. It keeps the next unused number rather than renumbering models that already exist and are referenced throughout the repository.
+Model 055, [TemplateVersionPage](055-template-version-page-done.md), is a later addition to this established engine, and its table is created before the one of model 016 so that every section placement names its page from the first migration. It keeps the next unused number rather than renumbering models that already exist and are referenced throughout the repository.
 
 ### The records
 
 | # | Model | Spec |
 |---|---|---|
-| 019 | [Contact](019-contact.md) | 4.3, 5.7, 8.2 |
-| 020 | [Entity](020-entity.md) | 5.3 |
-| 021 | [FieldValueRow](021-field-value-row.md) | 5.5 |
-| 022 | [FieldValue](022-field-value.md) | 5.5 |
-| 023 | [RecordSnapshot](023-record-snapshot.md) | 6, 12 |
+| 019 | [Contact](019-contact-done.md) | 4.3, 5.7, 8.2 |
+| 020 | [Entity](020-entity-done.md) | 5.3 |
+| 021 | [FieldValueRow](021-field-value-row-done.md) | 5.5 |
+| 022 | [FieldValue](022-field-value-done.md) | 5.5 |
+| 023 | [RecordSnapshot](023-record-snapshot-done.md) | 6, 12 |
 
 ### Relations between people
 
 | # | Model | Spec |
 |---|---|---|
-| 024 | [RelationshipType](024-relationship-type.md) | 8.2 |
-| 025 | [RelationshipLabel](025-relationship-label.md) | 8.2 |
-| 026 | [Relationship](026-relationship.md) | 8.2 |
-| 027 | [RelationshipPeriod](027-relationship-period.md) | 8.2 |
-| 028 | [RelationshipQualifier](028-relationship-qualifier.md) | 8.2 |
-| 029 | [RelationshipQualifierAssignment](029-relationship-qualifier-assignment.md) | 8.2 |
-| 030 | [RelationshipSuggestion](030-relationship-suggestion.md) | 8.3 |
+| 024 | [RelationshipType](024-relationship-type-not-yet.md) | 8.2 |
+| 025 | [RelationshipLabel](025-relationship-label-not-yet.md) | 8.2 |
+| 026 | [Relationship](026-relationship-not-yet.md) | 8.2 |
+| 027 | [RelationshipPeriod](027-relationship-period-not-yet.md) | 8.2 |
+| 028 | [RelationshipQualifier](028-relationship-qualifier-not-yet.md) | 8.2 |
+| 029 | [RelationshipQualifierAssignment](029-relationship-qualifier-assignment-not-yet.md) | 8.2 |
+| 030 | [RelationshipSuggestion](030-relationship-suggestion-not-yet.md) | 8.3 |
 
 ### Groups and duplicates
 
 | # | Model | Spec |
 |---|---|---|
-| 031 | [GroupType](031-group-type.md) | 8.2 |
-| 032 | [Group](032-group.md) | 8.2 |
-| 033 | [GroupMember](033-group-member.md) | 8.2 |
-| 034 | [ContactMerge](034-contact-merge.md) | 8.3, 15 |
+| 031 | [GroupType](031-group-type-not-yet.md) | 8.2 |
+| 032 | [Group](032-group-not-yet.md) | 8.2 |
+| 033 | [GroupMember](033-group-member-not-yet.md) | 8.2 |
+| 034 | [ContactMerge](034-contact-merge-not-yet.md) | 8.3, 15 |
 
 ### The journal
 
 | # | Model | Spec |
 |---|---|---|
-| 035 | [ActivityType](035-activity-type.md) | 9.3 |
-| 036 | [Activity](036-activity.md) | 9.2 |
-| 037 | [ActivityParticipant](037-activity-participant.md) | 9.2 |
-| 038 | [Mood](038-mood.md) | 9.4 |
-| 039 | [JournalDay](039-journal-day.md) | 9.4 |
+| 035 | [ActivityType](035-activity-type-not-yet.md) | 9.3 |
+| 036 | [Activity](036-activity-not-yet.md) | 9.2 |
+| 037 | [ActivityParticipant](037-activity-participant-not-yet.md) | 9.2 |
+| 038 | [Mood](038-mood-not-yet.md) | 9.4 |
+| 039 | [JournalDay](039-journal-day-not-yet.md) | 9.4 |
 
 ### Reminders and notifications
 
 | # | Model | Spec |
 |---|---|---|
-| 040 | [Reminder](040-reminder.md) | 10.1, 10.2 |
-| 041 | [ReminderOccurrence](041-reminder-occurrence.md) | 10.1, 10.3 |
-| 042 | [Notification](042-notification.md) | 10.4 |
-| 043 | [NotificationPreference](043-notification-preference.md) | 10.4 |
+| 040 | [Reminder](040-reminder-not-yet.md) | 10.1, 10.2 |
+| 041 | [ReminderOccurrence](041-reminder-occurrence-not-yet.md) | 10.1, 10.3 |
+| 042 | [Notification](042-notification-not-yet.md) | 10.4 |
+| 043 | [NotificationPreference](043-notification-preference-not-yet.md) | 10.4 |
 
 ### The marketplace
 
 | # | Model | Spec |
 |---|---|---|
-| 044 | [MarketplaceCategory](044-marketplace-category.md) | 7 |
-| 045 | [MarketplaceListing](045-marketplace-listing.md) | 7 |
-| 046 | [MarketplaceListingVersion](046-marketplace-listing-version.md) | 7 |
-| 047 | [MarketplaceInstallation](047-marketplace-installation.md) | 7 |
+| 044 | [MarketplaceCategory](044-marketplace-category-done.md) | 7 |
+| 045 | [MarketplaceListing](045-marketplace-listing-done.md) | 7 |
+| 046 | [MarketplaceListingVersion](046-marketplace-listing-version-done.md) | 7 |
+| 047 | [MarketplaceInstallation](047-marketplace-installation-done.md) | 7 |
 
 ### Sharing, webhooks, modules, search
 
 | # | Model | Spec |
 |---|---|---|
-| 048 | [ShareLink](048-share-link.md) | 4.4, 9.6 |
-| 049 | [ShareLinkVisit](049-share-link-visit.md) | 4.4 |
-| 050 | [WebhookSubscription](050-webhook-subscription.md) | 14.3 |
-| 051 | [WebhookDelivery](051-webhook-delivery.md) | 14.4 |
-| 052 | [Module](052-module.md) | 3.9 |
-| 053 | [ModuleInstallation](053-module-installation.md) | 3.9 |
-| 054 | [SearchIndexEntry](054-search-index-entry.md) | 13 |
+| 048 | [ShareLink](048-share-link-not-yet.md) | 4.4, 9.6 |
+| 049 | [ShareLinkVisit](049-share-link-visit-not-yet.md) | 4.4 |
+| 050 | [WebhookSubscription](050-webhook-subscription-not-yet.md) | 14.3 |
+| 051 | [WebhookDelivery](051-webhook-delivery-not-yet.md) | 14.4 |
+| 052 | [Module](052-module-not-yet.md) | 3.9 |
+| 053 | [ModuleInstallation](053-module-installation-not-yet.md) | 3.9 |
+| 054 | [SearchIndexEntry](054-search-index-entry-not-yet.md) | 13 |
 
 ### Later additions to established areas
 
 | # | Model | Spec |
 |---|---|---|
-| 055 | [TemplateVersionPage](055-template-version-page.md) | 5.2, 6 |
+| 055 | [TemplateVersionPage](055-template-version-page-done.md) | 5.2, 6 |
 
 ## Not modelled here
 
