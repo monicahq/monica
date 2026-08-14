@@ -54,7 +54,7 @@
     <x-panel :title="__('Export the section as a file')" icon="file" icon-class="bg-sky-tint text-sky">
       <div class="flex flex-col gap-4">
         <p class="text-base text-pretty text-body">
-          {{ __('The same format as a template file, one section deep. Importing it adds this section to the end of a template you choose, and never touches the sections already there.') }}
+          {{ __('The same format as a template file, one section deep. Importing it adds this section to the end of a page you choose, and never touches the sections already there.') }}
         </p>
 
         <div class="flex items-center gap-2.5 rounded-md border border-hairline bg-sand px-3.5 py-3">

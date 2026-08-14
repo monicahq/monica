@@ -30,9 +30,20 @@
       <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('A template decides what a record looks like: which sections it carries, and which fields sit in them. Records keep the version they were made with until you move them.') }}</p>
     </div>
 
-    <x-button :href="route('settings.templates.new')" data-turbo="true" class="max-sm:w-full">
-      {{ __('Create a template') }}
-    </x-button>
+    {{--
+      Importing sits beside creating rather than in a menu, because a template
+      arriving as a file is one of the two ways somebody gets a template at all,
+      and the other one is right here.
+    --}}
+    <div class="flex flex-wrap items-center gap-2.5 max-sm:w-full">
+      <x-button.secondary :href="route('settings.templateImport.new')" data-turbo="true" class="max-sm:w-full">
+        {{ __('Import a file') }}
+      </x-button.secondary>
+
+      <x-button :href="route('settings.templates.new')" data-turbo="true" class="max-sm:w-full">
+        {{ __('Create a template') }}
+      </x-button>
+    </div>
   </header>
 
   <div id="templates" x-merge="replace" class="flex flex-col gap-8">

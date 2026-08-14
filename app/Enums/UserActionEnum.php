@@ -112,6 +112,8 @@ enum UserActionEnum: string implements Translatable
     case RecordMovedToTemplateVersion = 'record_moved_to_template_version';
     case TemplateExported = 'template_exported';
     case SectionExported = 'section_exported';
+    case TemplateImported = 'template_imported';
+    case SectionImported = 'section_imported';
     case MarketplaceListingCreation = 'marketplace_listing_created';
     case MarketplaceListingUpdate = 'marketplace_listing_updated';
     case MarketplaceListingSubmission = 'marketplace_listing_submitted';
@@ -199,6 +201,8 @@ enum UserActionEnum: string implements Translatable
             self::TemplateSectionPositionUpdate => 'Moved the section :section on the template :name',
             self::TemplateExported => 'Exported the template :name as a file',
             self::SectionExported => 'Exported the section :section of the template :name as a file',
+            self::TemplateImported => 'Imported the template :name from a file',
+            self::SectionImported => 'Imported the section :section into the template :name from a file',
             self::FieldCreation => 'Added the field :label to the section :name',
             self::FieldUpdate => 'Updated the field :label in the section :name',
             self::FieldPositionUpdate => 'Moved the field :label in the section :name',

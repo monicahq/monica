@@ -75,7 +75,7 @@
           <p class="text-base font-semibold text-ink">{{ __('Where it lands') }}</p>
 
           <p class="text-sm text-pretty text-ink-soft">
-            {{ __('Importing a section file asks which template it should join. It is added at the end, as a draft, and you move it where you want it.') }}
+            {{ __('A section file is imported from the page it should join, on the draft of whatever template you want it on. It lands at the end of that page, and you move it from there.') }}
           </p>
         </div>
       </x-panel>

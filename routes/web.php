@@ -25,12 +25,16 @@ use App\Http\Controllers\App\Settings\Account\Security\TwoFactorController;
 use App\Http\Controllers\App\Settings\Account\Templates\FieldController;
 use App\Http\Controllers\App\Settings\Account\Templates\FieldPositionController;
 use App\Http\Controllers\App\Settings\Account\Templates\SectionExportController;
+use App\Http\Controllers\App\Settings\Account\Templates\SectionImportCheckController;
+use App\Http\Controllers\App\Settings\Account\Templates\SectionImportController;
 use App\Http\Controllers\App\Settings\Account\Templates\SectionShareController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateActivationController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateBuilderController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateCopyController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateExportController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplateImportCheckController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplateImportController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplatePageController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplatePagePositionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionController;
@@ -219,6 +223,24 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     // first. Somebody is asked to read what is about to leave their account, so
     // the reading has an address of its own rather than being a step the
     // download happens to pass through.
+    // Structure coming back in, through the two doors it can arrive by: a whole
+    // template beside the list it joins, and one section on the page of the
+    // draft it lands on. A section needs a page and a template that already
+    // exist, so the address says which, rather than a screen having to ask.
+    //
+    // `import/check` is reading a file without importing it, and it writes
+    // nothing at all. It has an address of its own for the same reason `export`
+    // does: somebody is entitled to see what a file will become before it
+    // becomes it. What it concluded is never carried into the import, which
+    // reads the pasted text again for itself.
+    Route::get('settings/account/templates/import', [TemplateImportController::class, 'new'])->name('settings.templateImport.new');
+    Route::post('settings/account/templates/import/check', [TemplateImportCheckController::class, 'create'])->middleware('throttle:20,1')->name('settings.templateImportCheck.create');
+    Route::post('settings/account/templates/import', [TemplateImportController::class, 'create'])->middleware('throttle:20,1')->name('settings.templateImport.create');
+
+    Route::get('settings/account/templates/{template}/pages/{templateVersionPage}/sections/import', [SectionImportController::class, 'new'])->name('settings.sectionImport.new');
+    Route::post('settings/account/templates/{template}/pages/{templateVersionPage}/sections/import/check', [SectionImportCheckController::class, 'create'])->middleware('throttle:20,1')->name('settings.sectionImportCheck.create');
+    Route::post('settings/account/templates/{template}/pages/{templateVersionPage}/sections/import', [SectionImportController::class, 'create'])->middleware('throttle:20,1')->name('settings.sectionImport.create');
+
     Route::get('settings/account/templates/{template}/share', [TemplateShareController::class, 'index'])->name('settings.templateShare.index');
     Route::get('settings/account/templates/{template}/export', [TemplateExportController::class, 'index'])->name('settings.templateExport.index');
     Route::get('settings/account/templates/{template}/export/file', [TemplateExportController::class, 'show'])->name('settings.templateExport.show');

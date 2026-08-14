@@ -73,6 +73,26 @@
           </x-button.secondary>
         @endif
 
+        {{--
+          A section arrives on the page that is open, which is why the button is
+          here rather than on a screen that would have to ask which page. Only a
+          draft takes one: a published version is frozen, and a section landing
+          in one would change what records already render.
+        --}}
+        @if ($viewModel->isEditable() && $viewModel->selectedPage() !== null)
+          <x-button.secondary
+            :href="route('settings.sectionImport.new', [$template, $viewModel->selectedPage()])"
+            data-turbo="true"
+            class="max-sm:w-full"
+          >
+            <x-slot:icon>
+              <x-icon name="file" :size="16" :stroke-width="1.6" />
+            </x-slot:icon>
+
+            {{ __('Import a section') }}
+          </x-button.secondary>
+        @endif
+
         @if ($viewModel->isEditable())
           <x-form method="put" :action="route('settings.templateVersionPublication.update', [$template, $version])" x-target="builder" class="max-sm:w-full">
             @if ($version?->previous_version_id !== null)
