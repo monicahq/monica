@@ -47,11 +47,6 @@ class VaultsViewModel
         return route('vaults.new');
     }
 
-    public function accountUrl(): string
-    {
-        return route('settings.index');
-    }
-
     /**
      * Every vault of the account, the most recently opened first. A vault
      * nobody has opened yet falls in behind the ones that were, said here

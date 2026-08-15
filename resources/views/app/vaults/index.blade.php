@@ -37,14 +37,6 @@
     </div>
 
     <div class="flex flex-wrap items-center gap-2.5 max-sm:w-full">
-      <x-button.secondary :href="$viewModel->accountUrl()" data-turbo="true" size="small">
-        <x-slot:icon>
-          <x-icon name="settings" :size="16" :stroke-width="1.6" />
-        </x-slot:icon>
-
-        {{ __('Your account') }}
-      </x-button.secondary>
-
       <x-button :href="$viewModel->createUrl()" data-turbo="true" size="small">
         <x-slot:icon>
           <x-icon name="plus" :size="16" :stroke-width="1.6" />
