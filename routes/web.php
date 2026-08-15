@@ -44,10 +44,13 @@ use App\Http\Controllers\App\Settings\Account\Templates\TemplateShareController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicationController;
 use App\Http\Controllers\App\Settings\SettingsController;
+use App\Http\Controllers\App\SharedContactController;
+use App\Http\Controllers\App\SharedContactPasswordController;
 use App\Http\Controllers\App\Vaults\ContactAvatarController;
 use App\Http\Controllers\App\Vaults\ContactController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
 use App\Http\Controllers\App\Vaults\ContactSectionController;
+use App\Http\Controllers\App\Vaults\ContactShareLinkController;
 use App\Http\Controllers\App\Vaults\ContactTemplateVersionController;
 use App\Http\Controllers\App\Vaults\FileController;
 use App\Http\Controllers\App\Vaults\SetAsideValueController;
@@ -68,6 +71,28 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('marketplace', [MarketplaceController::class, 'index'])
     ->middleware('set.locale')
     ->name('marketplace.index');
+
+// A private link somebody was sent. Outside the auth group because that is the
+// whole point of it: whoever opens it has no account here, is never asked to make
+// one, and never becomes a user of the account they are reading into.
+//
+// The address carries the token itself rather than a uuid, and no route model
+// binding can help: only a hash of the token is stored, so the lookup is the
+// action's. The pattern is what `Str::random(64)` produces, which keeps a
+// mistyped address a 404 rather than a query.
+//
+// Both are throttled. A link is a secret in an address, and the password form
+// especially is the one place in the product where guessing is worth somebody's
+// time.
+Route::get('s/{token}/{page?}', [SharedContactController::class, 'show'])
+    ->middleware(['set.locale', 'throttle:60,1'])
+    ->where('token', '[A-Za-z0-9]{64}')
+    ->name('share.show');
+
+Route::post('s/{token}', [SharedContactPasswordController::class, 'create'])
+    ->middleware(['set.locale', 'throttle:20,1'])
+    ->where('token', '[A-Za-z0-9]{64}')
+    ->name('share.password.create');
 
 // The screens where somebody looks after their vaults.
 Route::middleware(['auth', 'set.locale'])->group(function (): void {
@@ -164,6 +189,45 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
         ->whereUuid('contact')
         ->whereNumber('templateVersionSection')
         ->name('contacts.sections.update');
+
+    // Who may read this record, which is a different question from what it says
+    // and therefore a screen of its own. It sits above the page route with the
+    // others, and a link is addressed by its uuid: the token that opens it would
+    // otherwise be in the address of the screen managing it.
+    Route::get('vaults/{vault}/contacts/{contact}/share-links', [ContactShareLinkController::class, 'index'])
+        ->whereUuid('contact')
+        ->name('contacts.shareLinks.index');
+
+    Route::get('vaults/{vault}/contacts/{contact}/share-links/new', [ContactShareLinkController::class, 'new'])
+        ->whereUuid('contact')
+        ->name('contacts.shareLinks.new');
+
+    Route::post('vaults/{vault}/contacts/{contact}/share-links', [ContactShareLinkController::class, 'create'])
+        ->whereUuid('contact')
+        ->name('contacts.shareLinks.create');
+
+    Route::get('vaults/{vault}/contacts/{contact}/share-links/{shareLink}', [ContactShareLinkController::class, 'show'])
+        ->whereUuid('contact')
+        ->whereUuid('shareLink')
+        ->name('contacts.shareLinks.show');
+
+    Route::get('vaults/{vault}/contacts/{contact}/share-links/{shareLink}/edit', [ContactShareLinkController::class, 'edit'])
+        ->whereUuid('contact')
+        ->whereUuid('shareLink')
+        ->name('contacts.shareLinks.edit');
+
+    Route::put('vaults/{vault}/contacts/{contact}/share-links/{shareLink}', [ContactShareLinkController::class, 'update'])
+        ->whereUuid('contact')
+        ->whereUuid('shareLink')
+        ->name('contacts.shareLinks.update');
+
+    // Revoking. It is a delete in HTTP terms and keeps its row in the database,
+    // because a link that is gone is still part of the history of who saw this
+    // page.
+    Route::delete('vaults/{vault}/contacts/{contact}/share-links/{shareLink}', [ContactShareLinkController::class, 'destroy'])
+        ->whereUuid('contact')
+        ->whereUuid('shareLink')
+        ->name('contacts.shareLinks.destroy');
 
     Route::get('vaults/{vault}/contacts/{contact}/{page?}', [ContactController::class, 'show'])
         ->whereUuid('contact')

@@ -56,6 +56,7 @@
     'star' => '<path d="M8 2.4 9.8 6l4 .6-2.9 2.8.7 4L8 11.5 4.4 13.4l.7-4L2.2 6.6l4-.6z"></path>',
     'mail' => '<rect x="2.2" y="3.8" width="11.6" height="8.4" rx="1.5"></rect><path d="m2.6 4.8 5.4 3.8 5.4-3.8"></path>',
     'key' => '<circle cx="10.4" cy="5.6" r="3"></circle><path d="M8.3 7.7 3 13"></path><path d="M4.6 11.4 6 12.8"></path>',
+    'link' => '<path d="M6.6 9.4a2.4 2.4 0 0 1 0-3.4l2-2a2.4 2.4 0 0 1 3.4 3.4l-.9.9"></path><path d="M9.4 6.6a2.4 2.4 0 0 1 0 3.4l-2 2a2.4 2.4 0 0 1-3.4-3.4l.9-.9"></path>',
     'lock' => '<rect x="3.4" y="7" width="9.2" height="6.6" rx="1.5"></rect><path d="M5.6 7V5.2a2.4 2.4 0 0 1 4.8 0V7"></path>',
     'device' => '<rect x="5" y="2.2" width="6" height="11.6" rx="1.5"></rect><line x1="7.2" y1="11.6" x2="8.8" y2="11.6"></line>',
     'info' => '<circle cx="8" cy="8" r="5.6"></circle><line x1="8" y1="7.2" x2="8" y2="11"></line><circle cx="8" cy="5" r="0.5" fill="currentColor" stroke="none"></circle>',

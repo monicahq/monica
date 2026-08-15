@@ -40,9 +40,9 @@ updated_at                  datetime
 
 ## Not done yet
 
-- **Nothing prunes a row.** Retention is the open question below, so rows accumulate. That is acceptable while no screen opens a link and the only writer is `OpenShareLink` called from a test.
-- **Repeated failures throttle nothing and tell nobody.** The failed attempts are written down, which is the part that had to exist first. Acting on a run of them waits for the rate limiting the product applies elsewhere, and telling the owner waits for [Notification](042-notification-not-yet.md).
-- **Nothing resolves an address to a country.** The column is filled from what the caller passes, and no lookup exists behind it.
+- **Nothing prunes a row.** Retention is the open question below, so rows accumulate.
+- **Repeated failures tell nobody.** The failed attempts are written down and the two public routes are throttled, which is the part that had to exist first. Telling the owner about a run of them waits for [Notification](042-notification-not-yet.md).
+- **Nothing resolves an address to a country.** The column is filled from what the caller passes, `SharedContactController` passes nothing, and no lookup exists behind it. The screen reads the address instead, and switches to the country the day something fills that column.
 
 ## Decisions taken while building it
 
@@ -50,6 +50,7 @@ updated_at                  datetime
 - **A wrong password is written down before it is refused**, since that row is the whole reason a failed attempt is recorded at all.
 - **The counters live on the link and the detail lives here**, which is what lets the aggregate survive the pruning of these rows.
 - **The visit carries the account of the link**, so pruning and reading both stay inside one account without joining.
+- **A row is written on every view rather than once per visitor.** Walking between two tabs of a shared page writes two, because there is no visitor to count instead: the only honest thing the screen can say is how many times the address was opened.
 
 ## Open questions
 

@@ -178,6 +178,36 @@ class ContactViewModel
         return route('contacts.setAside.index', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
+    public function shareLinksUrl(): string
+    {
+        return route('contacts.shareLinks.index', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
+    /**
+     * What the share button says. A record nobody is reading from outside says
+     * only what the button does; one that is says how many links are open onto
+     * it, because that is the fact worth knowing before anything else about
+     * sharing.
+     */
+    public function shareLine(): string
+    {
+        $live = once(fn (): int => $this->contact
+            ->shareLinks()
+            ->whereNull('revoked_at')
+            ->where(fn ($query) => $query->whereNull('expires_at')->orWhere('expires_at', '>', now()))
+            ->count());
+
+        if ($live === 0) {
+            return __('Share');
+        }
+
+        if ($live === 1) {
+            return __('Shared by one link');
+        }
+
+        return __('Shared by :count links', ['count' => $live]);
+    }
+
     /**
      * The link to that screen is offered only when there is something on it: a
      * link to a page saying "nothing here" raises a question for no reason.

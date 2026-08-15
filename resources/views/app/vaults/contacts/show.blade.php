@@ -106,8 +106,20 @@
       The page is about a person, and a header of three controls was a header
       about the record: two of them were drawn and not offered, and the third was
       the name.
+
+      Sharing is the second, and it is not a third way to edit the record. It
+      answers who may read this, which is a different question from what it says,
+      and it is the only one of the two that reaches outside the account. The
+      count is on the button when there is one, because a page that is already
+      being read by somebody should say so where the record is, not two clicks
+      away.
     --}}
     <div class="ml-auto flex flex-wrap items-center gap-2.5">
+      <x-button.secondary :href="$viewModel->shareLinksUrl()" data-turbo="true" size="small">
+        <x-icon name="link" :size="15" :stroke-width="1.6" />
+        {{ $viewModel->shareLine() }}
+      </x-button.secondary>
+
       <x-button.secondary :href="$viewModel->editUrl()" data-turbo="true" size="small">
         <x-icon name="profile" :size="15" :stroke-width="1.6" />
         {{ __('Edit contact') }}

@@ -63,11 +63,13 @@ updated_at                  datetime
 
 ## Not done yet
 
-- **Nothing renders a shared page.** The link can be made, edited, revoked and opened, and `OpenShareLink` hands back the link and what it points at. No screen and no API read it, so no exclusion is applied anywhere yet.
-- **The page structure rules wait for that screen.** A shared record using the structure of its precise template version, a page with no included section being omitted, and the tab list disappearing when one page is left are all decisions taken while rendering, and nothing renders.
-- **Four inclusions store an intent nothing reads.** Activities, activity narratives, day narratives, relationships and group memberships have no models yet ([Activity](036-activity-not-yet.md), [JournalDay](039-journal-day-not-yet.md), [Relationship](026-relationship-not-yet.md), [Group](032-group-not-yet.md)), and neither does `excluded_activity_ids`. The columns are written and read back honestly, and nothing acts on them.
-- **Fields marked sensitive are not marked yet.** `includes_sensitive_fields` is stored, and the flag it would consult does not exist on [Field](017-field-done.md).
+- **A vault link renders nothing.** `s/{token}` opens a contact page and says plainly that a whole vault has no page yet. The columns and the actions treat both alike; only the screen is missing.
+- **Five inclusions store an intent nothing reads.** Files, activities, activity narratives, day narratives, relationships and group memberships have no models yet ([Activity](036-activity-not-yet.md), [JournalDay](039-journal-day-not-yet.md), [Relationship](026-relationship-not-yet.md), [Group](032-group-not-yet.md)), and neither does `excluded_activity_ids`. The columns are written and read back honestly, nothing acts on them, and the form does not offer a control for any of them.
 - **Nothing keeps notifications away from a viewer** (10.4), since [Notification](042-notification-not-yet.md) does not exist and there is nothing to keep away.
+
+## What renders it
+
+`s/{token}/{page?}` sits outside the auth group and is the only place a link is opened, which is what makes it the only place a visit is written. `App\ViewModels\Shared\SharedContactViewModel` is where the exclusions stop being a stored intention: a section the link excludes is never read, a page whose every section is excluded is not a tab, one page left means no tab list, and a field marked sensitive is dropped unless the link says otherwise. The screens that make and manage a link are `ContactShareLinkController` under `vaults/{vault}/contacts/{contact}/share-links`, addressed by uuid so the token is never in the address of the screen managing it.
 
 ## Decisions taken while building it
 
@@ -78,6 +80,10 @@ updated_at                  datetime
 - **Revocation is refused twice.** `UpdateShareLink` and `RevokeShareLink` both turn a revoked link away, and neither offers a way back.
 - **Deleting the shared record revokes the link**, in `DestroyContact` and in `DestroyVault`, which closes every link carrying that vault id in one statement. Both deletions are soft, so a link left alone would go on working. Restoring does not bring the links back: whoever brings a record back decides again who may read it.
 - **An unknown, an expired and a revoked token answer the same not found**, so trying tokens teaches nothing.
+- **A field holding a file is dropped from a shared page whatever `includes_files` says.** Handing the file over would need a public route onto it carrying the link's authority, and the screen has none. Repeated blocks go with them, since what they hold lives on rows of its own.
+- **A password that opened a link is kept in the visitor's session**, keyed by the hash of the token so the session holds no working address. Without it, walking between two tabs would ask again; the alternatives were re-posting the form on every refresh, or a second way into the record that skips the password and would one day be reached by something that should not have skipped it.
+- **The form only asks about what the product can honour.** Sensitive fields and section exclusions are the two questions on it. The five inclusions with no model behind them are named instead, in the list of what stays here, so nothing on screen promises something the page does not do.
+- **Live, expired and revoked are read rather than stored.** They are three readings of two nullable dates, and only a screen needs the reading, so there is no status column and no enum.
 
 ## Open questions
 

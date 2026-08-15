@@ -1,0 +1,264 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\ViewModels\Vaults;
+
+use App\Enums\ShareLinkExpiryEnum;
+use App\Models\Contact;
+use App\Models\ShareLink;
+use App\Models\TemplateVersionPage;
+use App\Models\TemplateVersionSection;
+use App\Models\User;
+use App\Models\Vault;
+
+/**
+ * The screen that makes a link onto somebody's page, and the same screen again
+ * when what an existing link shows is being changed.
+ *
+ * The form is written the way the promise is: nothing is shared until it is
+ * ticked. Sections start included because holding back the whole page would
+ * leave nothing to share, and every other question on the screen starts closed.
+ *
+ * What the form asks about is only what the product can honour. Five of the
+ * seven inclusions the link stores point at things that do not exist yet, so
+ * they are not drawn as controls a recipient would never feel: the screen says
+ * instead that they stay here, which is true and stays true.
+ *
+ * The sections are submitted as the ones going out rather than the ones held
+ * back, because a box nobody ticks sends nothing at all and the column stores
+ * the exclusions. The controller turns one into the other.
+ */
+class ShareLinkFormViewModel
+{
+    public function __construct(
+        private readonly User $user,
+        private readonly Vault $vault,
+        private readonly Contact $contact,
+        private readonly ?ShareLink $shareLink = null,
+    ) {}
+
+    public function user(): User
+    {
+        return $this->user;
+    }
+
+    public function vault(): Vault
+    {
+        return $this->vault;
+    }
+
+    public function contact(): Contact
+    {
+        return $this->contact;
+    }
+
+    public function shareLink(): ?ShareLink
+    {
+        return $this->shareLink;
+    }
+
+    public function isEditing(): bool
+    {
+        return $this->shareLink !== null;
+    }
+
+    public function title(): string
+    {
+        if ($this->shareLink !== null) {
+            return __('Change what :label shows', ['label' => $this->shareLink->label]);
+        }
+
+        return __('Share :name', ['name' => $this->contact->name]);
+    }
+
+    public function breadcrumbLabel(): string
+    {
+        return $this->shareLink !== null ? $this->shareLink->label : __('Share');
+    }
+
+    public function intro(): string
+    {
+        return __('A private link to this one page, the way you would share a document. Whoever opens it needs no account, joins nothing, and can change nothing. Everything sensitive starts out held back, and you decide what to let through.');
+    }
+
+    /**
+     * What a link can never do, whatever this form says. It is on the screen
+     * because the fear somebody has about sharing a page is rarely about the
+     * boxes they are ticking.
+     */
+    public function neverLine(): string
+    {
+        return __('Write anything, reach anything outside this page, or turn into an account. A field you marked sensitive stays hidden even inside a section you shared. Anything attached as a file stays here. Notifications never reach whoever holds the link. If you delete :name, the link stops working rather than pointing at nothing.', [
+            'name' => $this->contact->first_name ?? $this->contact->name,
+        ]);
+    }
+
+    public function templateLine(): string
+    {
+        $version = $this->contact->templateVersion;
+
+        return __(':template, version :number', [
+            'template' => $version->template->name,
+            'number' => $version->version_number,
+        ]);
+    }
+
+    public function avatarUrl(): ?string
+    {
+        if ($this->contact->avatar === null) {
+            return null;
+        }
+
+        return route('files.show', ['vault' => $this->vault, 'file' => $this->contact->avatar]);
+    }
+
+    public function contactUrl(): string
+    {
+        return route('contacts.show', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
+    public function peopleUrl(): string
+    {
+        return route('contacts.index', $this->vault);
+    }
+
+    public function linksUrl(): string
+    {
+        return route('contacts.shareLinks.index', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
+    public function action(): string
+    {
+        if ($this->shareLink !== null) {
+            return route('contacts.shareLinks.update', [
+                'vault' => $this->vault,
+                'contact' => $this->contact,
+                'shareLink' => $this->shareLink,
+            ]);
+        }
+
+        return route('contacts.shareLinks.create', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
+    public function method(): string
+    {
+        return $this->shareLink === null ? 'post' : 'put';
+    }
+
+    public function submitLabel(): string
+    {
+        return $this->shareLink === null ? __('Create the link') : __('Save what it shows');
+    }
+
+    public function submitLine(): string
+    {
+        if ($this->shareLink !== null) {
+            return __('Whoever holds the link sees the change on their next click.');
+        }
+
+        return __('The link is made when you press this. You can change what it shows afterwards, or revoke it.');
+    }
+
+    public function label(): ?string
+    {
+        return $this->shareLink?->label;
+    }
+
+    public function recipientHint(): ?string
+    {
+        return $this->shareLink?->recipient_hint;
+    }
+
+    public function includesSensitiveFields(): bool
+    {
+        return $this->shareLink !== null && $this->shareLink->includes_sensitive_fields;
+    }
+
+    public function isProtectedByAPassword(): bool
+    {
+        return $this->shareLink?->isProtectedByAPassword() ?? false;
+    }
+
+    /**
+     * The four spans the screen offers, plus the one an existing link needs:
+     * a stored date cannot be read back as one of the four without guessing, so
+     * the honest fifth option is to leave it where it is.
+     *
+     * @return array<int, array{value: string, label: string, help: string, isSelected: bool}>
+     */
+    public function expiryOptions(): array
+    {
+        $keeps = $this->shareLink !== null && $this->shareLink->expires_at !== null;
+        $options = [];
+
+        if ($keeps) {
+            $options[] = [
+                'value' => 'keep',
+                'label' => __('Leave it at :date', ['date' => $this->shareLink->expires_at->isoFormat('LL')]),
+                'help' => __('After that the address stops working on its own.'),
+                'isSelected' => true,
+            ];
+        }
+
+        foreach (ShareLinkExpiryEnum::cases() as $case) {
+            $options[] = [
+                'value' => $case->value,
+                'label' => __($case->label()),
+                'help' => __($case->help()),
+                'isSelected' => ! $keeps && $case === ShareLinkExpiryEnum::ThirtyDays,
+            ];
+        }
+
+        return $options;
+    }
+
+    /**
+     * The pages of the record and the sections on each of them, with the ones
+     * this link lets through already ticked. A new link lets everything through.
+     *
+     * A page carrying no section is left off. There is nothing to decide about it,
+     * and it is already invisible on the record itself.
+     *
+     * @return array<int, array{key: string, label: string, sections: array<int, array{id: int, name: string, isIncluded: bool}>}>
+     */
+    public function pages(): array
+    {
+        $excluded = $this->shareLink === null ? [] : $this->shareLink->excluded_section_ids;
+
+        return $this->contact->templateVersion->pages
+            ->map(fn (TemplateVersionPage $page): array => [
+                'key' => $page->key,
+                'label' => $page->label,
+                'sections' => $this->contact->templateVersion->assembly
+                    ->where('template_version_page_id', $page->id)
+                    ->map(fn (TemplateVersionSection $row): array => [
+                        'id' => $row->id,
+                        'name' => $row->title_override ?? $row->sectionVersion->section->name,
+                        'isIncluded' => ! in_array($row->id, $excluded, true),
+                    ])
+                    ->values()
+                    ->all(),
+            ])
+            ->filter(fn (array $page): bool => $page['sections'] !== [])
+            ->values()
+            ->all();
+    }
+
+    public function sectionCount(): int
+    {
+        return $this->contact->templateVersion->assembly->count();
+    }
+
+    /**
+     * Why holding back every section of a page is a decision rather than a
+     * mistake: the page goes, rather than arriving as an empty tab that tells
+     * the recipient there is something they are not being shown.
+     */
+    public function sectionsLine(): string
+    {
+        return __('Their page is laid out by :template. Hold a section back and it is gone. A page whose sections are all held back does not appear as an empty tab.', [
+            'template' => $this->templateLine(),
+        ]);
+    }
+}
