@@ -1,6 +1,6 @@
 # 049. ShareLinkVisit
 
-**Status:** to create
+**Status:** exists (`app/Models/ShareLinkVisit.php`), built as far as the models it depends on allow
 **Spec:** 4.4
 
 ## What it is
@@ -28,7 +28,7 @@ updated_at                  datetime
 ## Relationships
 
 - `belongsTo` [Account](001-account-in-progress.md)
-- `belongsTo` [ShareLink](048-share-link-not-yet.md)
+- `belongsTo` [ShareLink](048-share-link-done.md)
 
 ## Rules
 
@@ -37,6 +37,19 @@ updated_at                  datetime
 - The visitor is never identified. There is no account behind them and none is created (4.4). What is stored is coarse and enough to answer "was this opened, roughly when, roughly from where".
 - Rows are pruned after a retention period, and the aggregate counters on the link survive the pruning.
 - Revoking a link keeps its visits. That history is the point.
+
+## Not done yet
+
+- **Nothing prunes a row.** Retention is the open question below, so rows accumulate. That is acceptable while no screen opens a link and the only writer is `OpenShareLink` called from a test.
+- **Repeated failures throttle nothing and tell nobody.** The failed attempts are written down, which is the part that had to exist first. Acting on a run of them waits for the rate limiting the product applies elsewhere, and telling the owner waits for [Notification](042-notification-not-yet.md).
+- **Nothing resolves an address to a country.** The column is filled from what the caller passes, and no lookup exists behind it.
+
+## Decisions taken while building it
+
+- **A link asking for a password and given none writes nothing.** It is the normal first step rather than a failure, and a row for it would drown the rows that matter.
+- **A wrong password is written down before it is refused**, since that row is the whole reason a failed attempt is recorded at all.
+- **The counters live on the link and the detail lives here**, which is what lets the aggregate survive the pruning of these rows.
+- **The visit carries the account of the link**, so pruning and reading both stay inside one account without joining.
 
 ## Open questions
 

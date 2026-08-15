@@ -1,6 +1,6 @@
 # 048. ShareLink
 
-**Status:** to create
+**Status:** exists (`app/Models/ShareLink.php`), built as far as the models it depends on allow
 **Spec:** 4.4, 9.6, 5.6, 3.3
 
 ## What it is
@@ -46,7 +46,7 @@ updated_at                  datetime
 
 - `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md), [User](002-user-done.md)
 - `morphTo` shareable, a [Contact](019-contact-done.md) or a [Vault](007-vault-in-progress.md)
-- `hasMany` [ShareLinkVisit](049-share-link-visit-not-yet.md)
+- `hasMany` [ShareLinkVisit](049-share-link-visit-done.md)
 
 ## Rules
 
@@ -57,9 +57,27 @@ updated_at                  datetime
 - A field marked sensitive stays excluded even when the activity or the section around it is shared (9.6, 5.6).
 - A shared record uses the page structure of its precise template version. A page with no included section is omitted from the shared tab list. If only one page remains after exclusions, the tab list is hidden as it is on the private record. Page labels must never reveal the existence of excluded content through an empty tab.
 - Revocation is immediate and permanent. A revoked link is never reactivated, a new one is made instead.
-- Every link is logged with its creation, its last view and its revocation (4.4), which is what [ShareLinkVisit](049-share-link-visit-not-yet.md) and these columns hold between them.
+- Every link is logged with its creation, its last view and its revocation (4.4), which is what [ShareLinkVisit](049-share-link-visit-done.md) and these columns hold between them.
 - Notifications and reminders never reach a share link viewer (10.4).
 - Deleting the shared record revokes the link rather than leaving it pointing at nothing (3.3).
+
+## Not done yet
+
+- **Nothing renders a shared page.** The link can be made, edited, revoked and opened, and `OpenShareLink` hands back the link and what it points at. No screen and no API read it, so no exclusion is applied anywhere yet.
+- **The page structure rules wait for that screen.** A shared record using the structure of its precise template version, a page with no included section being omitted, and the tab list disappearing when one page is left are all decisions taken while rendering, and nothing renders.
+- **Four inclusions store an intent nothing reads.** Activities, activity narratives, day narratives, relationships and group memberships have no models yet ([Activity](036-activity-not-yet.md), [JournalDay](039-journal-day-not-yet.md), [Relationship](026-relationship-not-yet.md), [Group](032-group-not-yet.md)), and neither does `excluded_activity_ids`. The columns are written and read back honestly, and nothing acts on them.
+- **Fields marked sensitive are not marked yet.** `includes_sensitive_fields` is stored, and the flag it would consult does not exist on [Field](017-field-done.md).
+- **Nothing keeps notifications away from a viewer** (10.4), since [Notification](042-notification-not-yet.md) does not exist and there is nothing to keep away.
+
+## Decisions taken while building it
+
+- **Only the hash of the token is written down**, as for a [MagicLink](003-magic-link-in-progress.md). The token itself exists once, on `ShareLink::$plainToken`, for the length of the request that mints it. A link whoever made it fails to copy is lost rather than recoverable.
+- **The uuid and the token are separate things.** The uuid addresses the link on the side of the owner, and the token opens it. Making one the other would put the secret in the address of the screen managing it.
+- **Every inclusion is false in the column and false in the action.** The owner opts in, and a link made in a hurry shows the least rather than the most.
+- **An update writes the inclusions as a whole rather than merging them**, so a box left unticked closes what it names. The password is the exception: saying nothing about it keeps it, so editing the label of a protected link does not quietly unprotect it.
+- **Revocation is refused twice.** `UpdateShareLink` and `RevokeShareLink` both turn a revoked link away, and neither offers a way back.
+- **Deleting the shared record revokes the link**, in `DestroyContact` and in `DestroyVault`, which closes every link carrying that vault id in one statement. Both deletions are soft, so a link left alone would go on working. Restoring does not bring the links back: whoever brings a record back decides again who may read it.
+- **An unknown, an expired and a revoked token answer the same not found**, so trying tokens teaches nothing.
 
 ## Open questions
 

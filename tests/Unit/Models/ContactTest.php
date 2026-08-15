@@ -9,6 +9,7 @@ use App\Exceptions\ContactNeedsAName;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\File;
+use App\Models\ShareLink;
 use App\Models\TemplateVersion;
 use App\Models\Vault;
 use Carbon\Carbon;
@@ -75,6 +76,21 @@ class ContactTest extends TestCase
 
         $this->assertNull($contact->avatar_file_id);
         $this->assertNull($contact->avatar);
+    }
+
+    #[Test]
+    public function it_holds_the_private_links_opened_onto_its_page(): void
+    {
+        $contact = Contact::factory()->create();
+        $shareLink = ShareLink::factory()->create([
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+            'shareable_type' => Contact::class,
+            'shareable_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($contact->shareLinks()->exists());
+        $this->assertTrue($shareLink->is($contact->shareLinks->first()));
     }
 
     #[Test]

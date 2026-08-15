@@ -130,8 +130,8 @@ Model 055, [TemplateVersionPage](055-template-version-page-done.md), is a later 
 
 | # | Model | Spec |
 |---|---|---|
-| 048 | [ShareLink](048-share-link-not-yet.md) | 4.4, 9.6 |
-| 049 | [ShareLinkVisit](049-share-link-visit-not-yet.md) | 4.4 |
+| 048 | [ShareLink](048-share-link-done.md) | 4.4, 9.6 |
+| 049 | [ShareLinkVisit](049-share-link-visit-done.md) | 4.4 |
 | 050 | [WebhookSubscription](050-webhook-subscription-not-yet.md) | 14.3 |
 | 051 | [WebhookDelivery](051-webhook-delivery-not-yet.md) | 14.4 |
 | 052 | [Module](052-module-not-yet.md) | 3.9 |

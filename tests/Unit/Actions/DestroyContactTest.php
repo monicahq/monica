@@ -9,6 +9,7 @@ use App\Enums\UserActionEnum;
 use App\Exceptions\CannotDeleteTheMeContact;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\ShareLink;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
@@ -99,6 +100,35 @@ class DestroyContactTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DestroyContact(user: $user, contact: $contact)->execute();
+    }
+
+    /**
+     * The deletion is soft, so a link left alone would go on opening the page
+     * of somebody who was deleted.
+     */
+    #[Test]
+    public function it_revokes_the_links_opened_onto_the_contact(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+        ]);
+        $shareLink = ShareLink::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'shareable_type' => Contact::class,
+            'shareable_id' => $contact->id,
+        ]);
+        $elsewhere = ShareLink::factory()->create();
+
+        new DestroyContact(user: $user, contact: $contact)->execute();
+
+        $this->assertNotNull($shareLink->refresh()->revoked_at);
+        $this->assertNull($elsewhere->refresh()->revoked_at);
     }
 
     #[Test]

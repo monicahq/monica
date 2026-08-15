@@ -140,6 +140,16 @@ class Account extends Model
     }
 
     /**
+     * Get the private links opened out of the account, revoked ones included.
+     *
+     * @return HasMany<ShareLink, $this>
+     */
+    public function shareLinks(): HasMany
+    {
+        return $this->hasMany(ShareLink::class);
+    }
+
+    /**
      * Get whether the account is metered. A self hosted instance never is, and
      * neither is an account with no ceiling on the cloud one.
      */

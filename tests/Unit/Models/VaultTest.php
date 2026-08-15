@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Models;
 
 use App\Models\Account;
+use App\Models\ShareLink;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Carbon\Carbon;
@@ -75,6 +76,21 @@ class VaultTest extends TestCase
 
         $this->assertTrue($vault->defaultTemplates()->exists());
         $this->assertTrue($default->is($vault->defaultTemplates->first()));
+    }
+
+    /**
+     * The links onto one of its contacts are not these: they hang off the
+     * contact and carry the vault only to say where that contact lives.
+     */
+    #[Test]
+    public function it_holds_the_private_links_opened_onto_itself(): void
+    {
+        $vault = Vault::factory()->create();
+        $ontoTheVault = ShareLink::factory()->forVault($vault)->create();
+        ShareLink::factory()->create(['vault_id' => $vault->id]);
+
+        $this->assertCount(1, $vault->shareLinks);
+        $this->assertTrue($ontoTheVault->is($vault->shareLinks->first()));
     }
 
     #[Test]

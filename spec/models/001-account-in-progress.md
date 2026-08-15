@@ -31,7 +31,7 @@ Section 3.4 removes the subscription the table used to carry: the hosted version
 - `hasOne` [User](002-user-done.md)
 - `hasMany` [Vault](007-vault-in-progress.md)
 - `hasMany` [ValueList](009-value-list-in-progress.md), [EntityType](011-entity-type-done.md), [Template](012-template-in-progress.md), [Section](014-section-in-progress.md), [ActivityType](035-activity-type-not-yet.md), [Mood](038-mood-not-yet.md), [GroupType](031-group-type-not-yet.md), [RelationshipType](024-relationship-type-not-yet.md), [RelationshipQualifier](028-relationship-qualifier-not-yet.md)
-- `hasMany` [File](008-file-in-progress.md), [Log](004-log-in-progress.md), [EmailSent](005-email-sent-in-progress.md), [ShareLink](048-share-link-not-yet.md), [WebhookSubscription](050-webhook-subscription-not-yet.md), [ModuleInstallation](053-module-installation-not-yet.md)
+- `hasMany` [File](008-file-in-progress.md), [Log](004-log-in-progress.md), [EmailSent](005-email-sent-in-progress.md), [ShareLink](048-share-link-done.md), [WebhookSubscription](050-webhook-subscription-not-yet.md), [ModuleInstallation](053-module-installation-not-yet.md)
 - `hasOne` [NotificationPreference](043-notification-preference-not-yet.md)
 
 ## Rules

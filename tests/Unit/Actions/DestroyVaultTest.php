@@ -11,6 +11,7 @@ use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
+use App\Models\ShareLink;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
@@ -193,6 +194,38 @@ class DestroyVaultTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DestroyVault(user: $user, vault: $vault)->execute();
+    }
+
+    /**
+     * The links onto the vault and the links onto its contacts all go, since
+     * the deletion is soft and either would go on opening what the vault was
+     * supposed to have taken with it.
+     */
+    #[Test]
+    public function it_revokes_every_link_into_the_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+        ]);
+        $ontoTheVault = ShareLink::factory()->forVault($vault)->create();
+        $ontoTheContact = ShareLink::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'shareable_type' => Contact::class,
+            'shareable_id' => $contact->id,
+        ]);
+        $elsewhere = ShareLink::factory()->create();
+
+        new DestroyVault(user: $user, vault: $vault)->execute();
+
+        $this->assertNotNull($ontoTheVault->refresh()->revoked_at);
+        $this->assertNotNull($ontoTheContact->refresh()->revoked_at);
+        $this->assertNull($elsewhere->refresh()->revoked_at);
     }
 
     #[Test]

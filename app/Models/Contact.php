@@ -298,6 +298,18 @@ class Contact extends Model
     }
 
     /**
+     * Get the private links opened onto the page of the contact, newest first.
+     * A revoked one stays here, since what a link was given to and when it was
+     * opened outlives the link itself.
+     *
+     * @return MorphMany<ShareLink, $this>
+     */
+    public function shareLinks(): MorphMany
+    {
+        return $this->morphMany(ShareLink::class, 'shareable')->latest();
+    }
+
+    /**
      * Scope the query to the contacts the main lists show: the ones that are
      * neither archived nor still waiting to be filled in.
      *

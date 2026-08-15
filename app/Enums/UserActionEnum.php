@@ -118,6 +118,9 @@ enum UserActionEnum: string implements Translatable
     case MarketplaceListingUpdate = 'marketplace_listing_updated';
     case MarketplaceListingSubmission = 'marketplace_listing_submitted';
     case MarketplaceListingWithdrawal = 'marketplace_listing_withdrawn';
+    case ShareLinkCreation = 'share_link_created';
+    case ShareLinkUpdate = 'share_link_updated';
+    case ShareLinkRevocation = 'share_link_revoked';
 
     /**
      * What the action reads as in the logs, written about whoever performed it.
@@ -237,6 +240,9 @@ enum UserActionEnum: string implements Translatable
             self::MarketplaceListingUpdate => 'Updated what the marketplace says about :name',
             self::MarketplaceListingSubmission => 'Sent version :version of :name in for review',
             self::MarketplaceListingWithdrawal => 'Took :name out of the marketplace',
+            self::ShareLinkCreation => 'Made the link :label onto :name',
+            self::ShareLinkUpdate => 'Changed what the link :label shows',
+            self::ShareLinkRevocation => 'Revoked the link :label',
         };
     }
 

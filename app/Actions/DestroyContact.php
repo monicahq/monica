@@ -8,6 +8,7 @@ use App\Enums\UserActionEnum;
 use App\Exceptions\CannotDeleteTheMeContact;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\ShareLink;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
@@ -60,6 +61,8 @@ class DestroyContact
         DB::transaction(function (): void {
             $this->contact->delete();
 
+            $this->revokeTheLinksOntoThem();
+
             Vault::query()
                 ->whereKey($this->contact->vault_id)
                 ->where('contact_count', '>', 0)
@@ -70,6 +73,21 @@ class DestroyContact
                 ->where('record_count', '>', 0)
                 ->decrement('record_count');
         });
+    }
+
+    /**
+     * Close the private links opened onto the page. A link left pointing at
+     * somebody deleted is worse than a dead one: the deletion is soft, so it
+     * would keep working. Revocation is permanent, so bringing the contact back
+     * does not bring the links back with them.
+     */
+    private function revokeTheLinksOntoThem(): void
+    {
+        ShareLink::query()
+            ->where('shareable_type', $this->contact->getMorphClass())
+            ->where('shareable_id', $this->contact->id)
+            ->whereNull('revoked_at')
+            ->update(['revoked_at' => now()]);
     }
 
     private function log(): void

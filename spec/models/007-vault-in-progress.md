@@ -34,7 +34,7 @@ deleted_at                  datetime
 - `belongsTo` [Account](001-account-in-progress.md)
 - `hasMany` [Contact](019-contact-done.md), [Entity](020-entity-done.md), [Activity](036-activity-not-yet.md), [Group](032-group-not-yet.md), [JournalDay](039-journal-day-not-yet.md), [File](008-file-in-progress.md)
 - `hasMany` [VaultDefaultTemplate](018-vault-default-template-done.md)
-- `hasMany` [ShareLink](048-share-link-not-yet.md)
+- `hasMany` [ShareLink](048-share-link-done.md)
 
 ## Rules
 

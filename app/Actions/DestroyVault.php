@@ -9,6 +9,7 @@ use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
+use App\Models\ShareLink;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
@@ -71,6 +72,7 @@ class DestroyVault
 
             $this->takeTheContactsWithIt();
             $this->takeTheEntitiesWithIt();
+            $this->revokeTheLinksOntoIt();
 
             if ($wasDefault) {
                 $this->promoteTheFirstVaultLeft();
@@ -153,6 +155,23 @@ class DestroyVault
                 ->where($counter, '>=', $total)
                 ->decrement($counter, $total);
         }
+    }
+
+    /**
+     * Close every private link into the compartment: the ones onto the vault
+     * itself and the ones onto the contacts it holds, which all carry its id.
+     * The deletion is soft, so a link left alone would go on opening what the
+     * vault was supposed to have taken with it.
+     *
+     * Revocation is permanent, and restoring the vault later does not undo it.
+     * Whoever brings a vault back decides again who may read it.
+     */
+    private function revokeTheLinksOntoIt(): void
+    {
+        ShareLink::query()
+            ->where('vault_id', $this->vault->id)
+            ->whereNull('revoked_at')
+            ->update(['revoked_at' => now()]);
     }
 
     /**

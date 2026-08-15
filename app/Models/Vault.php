@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -167,5 +168,17 @@ class Vault extends Model
     public function defaultTemplates(): HasMany
     {
         return $this->hasMany(VaultDefaultTemplate::class);
+    }
+
+    /**
+     * Get the private links opened onto the vault itself, newest first. The
+     * links pointing at one of its contacts are not these: they hang off the
+     * contact, and carry the vault only to say where that contact lives.
+     *
+     * @return MorphMany<ShareLink, $this>
+     */
+    public function shareLinks(): MorphMany
+    {
+        return $this->morphMany(ShareLink::class, 'shareable')->latest();
     }
 }

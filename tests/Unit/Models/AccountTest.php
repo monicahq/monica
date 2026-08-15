@@ -7,6 +7,7 @@ namespace Tests\Unit\Models;
 use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\Log;
+use App\Models\ShareLink;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\Vault;
@@ -70,6 +71,19 @@ class AccountTest extends TestCase
 
         $this->assertTrue($account->emailsSent()->exists());
         $this->assertEquals('Somebody signed in from a new place', $account->emailsSent->first()->subject);
+    }
+
+    #[Test]
+    public function it_has_many_share_links(): void
+    {
+        $account = Account::factory()->create();
+        ShareLink::factory()->create([
+            'account_id' => $account->id,
+            'label' => 'For the family',
+        ]);
+
+        $this->assertTrue($account->shareLinks()->exists());
+        $this->assertEquals('For the family', $account->shareLinks->first()->label);
     }
 
     #[Test]

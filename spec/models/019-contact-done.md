@@ -53,7 +53,7 @@ deleted_with_vault          bool                            whether the contact 
 - `hasMany` [Relationship](026-relationship-not-yet.md), from both sides
 - `belongsToMany` [Group](032-group-not-yet.md) through [GroupMember](033-group-member-not-yet.md)
 - `belongsToMany` [Activity](036-activity-not-yet.md) through [ActivityParticipant](037-activity-participant-not-yet.md)
-- `hasMany` [RecordSnapshot](023-record-snapshot-done.md), [Reminder](040-reminder-not-yet.md), [ShareLink](048-share-link-not-yet.md)
+- `hasMany` [RecordSnapshot](023-record-snapshot-done.md), [Reminder](040-reminder-not-yet.md), [ShareLink](048-share-link-done.md)
 
 ## Rules
 
