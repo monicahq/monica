@@ -121,23 +121,29 @@ class PostController extends Controller
             'written_at' => Carbon::parse($request->input('date'))->format('Y-m-d'),
         ]);
 
-        $post->contacts()->detach();
+        $existingContactIds = $post->contacts()->pluck('contacts.id')->all();
+        $newContactIds = collect($request->input('contacts', []))->pluck('id')->all();
 
-        if ($request->input('contacts')) {
-            if (count($request->input('contacts')) > 0) {
-                foreach ($request->input('contacts') as $contact) {
-                    $data = [
-                        'account_id' => Auth::user()->account_id,
-                        'author_id' => Auth::user()->id,
-                        'vault_id' => $vaultId,
-                        'journal_id' => $journalId,
-                        'post_id' => $postId,
-                        'contact_id' => $contact['id'],
-                    ];
+        $contactIdsToDetach = array_diff($existingContactIds, $newContactIds);
+        if (count($contactIdsToDetach) > 0) {
+            $post->contacts()->detach($contactIdsToDetach);
+        }
 
-                    (new AddContactToPost)->execute($data);
-                }
+        foreach ($newContactIds as $contactId) {
+            if (in_array($contactId, $existingContactIds)) {
+                continue;
             }
+
+            $data = [
+                'account_id' => Auth::user()->account_id,
+                'author_id' => Auth::user()->id,
+                'vault_id' => $vaultId,
+                'journal_id' => $journalId,
+                'post_id' => $postId,
+                'contact_id' => $contactId,
+            ];
+
+            (new AddContactToPost)->execute($data);
         }
 
         return response()->json([
