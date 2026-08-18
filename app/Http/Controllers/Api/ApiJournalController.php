@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\Journal\Entry;
+use App\Models\Journal\JournalEntry;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Journal\Entry as JournalResource;
@@ -70,6 +71,9 @@ class ApiJournalController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
+        $entry->date = $request->input('date', now());
+        JournalEntry::add($entry);
+
         return new JournalResource($entry);
     }
 
@@ -99,6 +103,17 @@ class ApiJournalController extends ApiController
             $entry->update($request->only(['title', 'post']));
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
+        }
+
+        $journalEntry = $entry->journalEntry;
+        if ($journalEntry) {
+            if ($request->has('date')) {
+                $entry->date = $request->input('date');
+                $journalEntry->edit($entry);
+            }
+        } else {
+            $entry->date = $request->input('date', now());
+            JournalEntry::add($entry);
         }
 
         return new JournalResource($entry);
@@ -141,6 +156,7 @@ class ApiJournalController extends ApiController
             return $this->respondNotFound();
         }
 
+        $entry->deleteJournalEntry();
         $entry->delete();
 
         return $this->respondObjectDeleted($entry->id);

@@ -118,6 +118,28 @@ class ApiJournalTest extends ApiTestCase
     }
 
     /** @test */
+    public function it_creates_a_journal_entry_that_shows_up_in_the_journal_entries_table()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('POST', '/api/journal', [
+            'title' => 'my title',
+            'post' => 'content post',
+        ]);
+
+        $response->assertStatus(201);
+        $entryId = $response->json('data.id');
+
+        // A journal_entries polymorphic row must exist for the created entry,
+        // otherwise it won't show up in the web UI journal listing.
+        $this->assertDatabaseHas('journal_entries', [
+            'account_id' => $user->account_id,
+            'journalable_id' => $entryId,
+            'journalable_type' => \App\Models\Journal\Entry::class,
+        ]);
+    }
+
+    /** @test */
     public function it_cant_create_a_journal_entry_with_missing_parameters()
     {
         $user = $this->signin();
@@ -200,6 +222,33 @@ class ApiJournalTest extends ApiTestCase
         $this->assertDatabaseMissing('entries', [
             'account_id' => $user->account_id,
             'id' => $entry->id,
+        ]);
+    }
+
+    /** @test */
+    public function it_deletes_the_journal_entries_row_when_deleting_a_journal_entry()
+    {
+        $user = $this->signin();
+
+        $createResponse = $this->json('POST', '/api/journal', [
+            'title' => 'my title',
+            'post' => 'content post',
+        ]);
+        $entryId = $createResponse->json('data.id');
+
+        $this->assertDatabaseHas('journal_entries', [
+            'account_id' => $user->account_id,
+            'journalable_id' => $entryId,
+            'journalable_type' => \App\Models\Journal\Entry::class,
+        ]);
+
+        $response = $this->json('DELETE', '/api/journal/'.$entryId);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('journal_entries', [
+            'account_id' => $user->account_id,
+            'journalable_id' => $entryId,
+            'journalable_type' => \App\Models\Journal\Entry::class,
         ]);
     }
 
