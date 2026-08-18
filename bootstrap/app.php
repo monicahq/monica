@@ -18,6 +18,14 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->throttleApi();
+        // Without this, requests behind a reverse proxy (Docker/Apache/nginx) are seen
+        // as plain HTTP, so Monica generates http:// redirect and asset URLs even when
+        // served over HTTPS, breaking the post-login redirect (see #7696).
+        $middleware->trustProxies(at: match (true) {
+            is_null(env('APP_TRUSTED_PROXIES')) => [],
+            env('APP_TRUSTED_PROXIES') === '*' => '*',
+            default => array_map('trim', explode(',', (string) env('APP_TRUSTED_PROXIES'))),
+        });
         $middleware->validateCsrfTokens(except: [
             '/dav',
             '/dav/*',
