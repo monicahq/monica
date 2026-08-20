@@ -1,0 +1,9 @@
+{
+  "ai": "claude",
+  "ai_skills": true,
+  "feature_numbering": "sequential",
+  "here": false,
+  "integration": "claude",
+  "script": "sh",
+  "speckit_version": "0.16.5"
+}
