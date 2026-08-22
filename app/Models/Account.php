@@ -79,6 +79,33 @@ class Account extends Model
     }
 
     /**
+     * Get the person on the account whether or not they were deleted.
+     *
+     * The plain relation hides a soft deleted user, which is right everywhere a
+     * user is acting and wrong where an account is being looked at: an account
+     * whose owner was deleted is exactly the kind somebody writes in about.
+     *
+     * @return HasOne<User, $this>
+     */
+    public function userIncludingDeleted(): HasOne
+    {
+        return $this->hasOne(User::class)->withTrashed();
+    }
+
+    /**
+     * The name of the person on the account, deleted or not, and a stand in when
+     * there is nobody at all. It is what the record of administrator actions
+     * reads, which is why it never comes back empty: an entry saying something
+     * was done to nobody is an entry nobody can act on.
+     */
+    public function ownerName(): string
+    {
+        $owner = User::query()->withTrashed()->where('account_id', $this->id)->first();
+
+        return $owner->name ?? __('an account with nobody on it');
+    }
+
+    /**
      * Get the vaults the account is divided into.
      *
      * @return HasMany<Vault, $this>

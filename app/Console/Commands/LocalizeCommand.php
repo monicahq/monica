@@ -436,6 +436,12 @@ class LocalizeCommand extends Command
      * The two ways a phrase that shows a number goes wrong: asked for with a
      * call that cannot vary its wording, or picked by comparing the count to
      * one, which is a rule that holds in English and nowhere near everywhere.
+     *
+     * The first of those has three shapes, and each is reported as itself. A
+     * phrase naming the count, a phrase carrying a condition, and a phrase
+     * carrying several wordings all go wrong by being asked for the wrong way,
+     * and a report that named only one of them would send somebody to fix the
+     * phrase when the call is what is wrong.
      */
     private function recordMisuses(SplFileInfo $file, string $code): void
     {
@@ -465,6 +471,21 @@ class LocalizeCommand extends Command
                     if ($this->carriesACondition($phrase)) {
                         $this->misuses[] = sprintf(
                             '%s asks for "%s" with %s(), which leaves the condition in the sentence for the reader to see. Use trans_choice().',
+                            $where,
+                            $phrase,
+                            $function,
+                        );
+
+                        continue;
+                    }
+
+                    // Several wordings offered to a call that picks none of them.
+                    // Without the count placeholder or a condition, the two rules
+                    // above both miss it, and what a reader gets is every wording
+                    // at once with the pipes still between them.
+                    if ($this->wordingsIn($phrase) > 1) {
+                        $this->misuses[] = sprintf(
+                            '%s asks for "%s" with %s(), which picks none of its wordings and prints them all, pipes included. Use trans_choice().',
                             $where,
                             $phrase,
                             $function,

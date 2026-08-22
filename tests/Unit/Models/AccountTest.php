@@ -128,4 +128,39 @@ class AccountTest extends TestCase
         $this->assertNull($selfHosted->storage_limit_in_bytes);
         $this->assertFalse($withoutCeiling->isMetered());
     }
+
+    #[Test]
+    public function it_reads_back_the_name_of_the_person_on_it(): void
+    {
+        $michael = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
+
+        $this->assertEquals('Michael Scott', $michael->account->ownerName());
+    }
+
+    #[Test]
+    public function it_still_reads_back_a_name_for_somebody_who_was_deleted(): void
+    {
+        $michael = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
+        $account = $michael->account;
+        $michael->delete();
+
+        $this->assertEquals('Michael Scott', $account->ownerName());
+    }
+
+    #[Test]
+    public function it_says_so_when_there_is_nobody_on_it(): void
+    {
+        $this->assertEquals('an account with nobody on it', Account::factory()->create()->ownerName());
+    }
+
+    #[Test]
+    public function it_hands_back_a_deleted_person_when_asked_for_one(): void
+    {
+        $michael = User::factory()->create();
+        $account = $michael->account;
+        $michael->delete();
+
+        $this->assertNull($account->user);
+        $this->assertTrue($michael->is($account->userIncludingDeleted));
+    }
 }

@@ -234,6 +234,43 @@ class LocalizeCommandTest extends TestCase
     }
 
     #[Test]
+    public function it_fails_when_several_wordings_are_asked_for_with_a_call_that_picks_none(): void
+    {
+        $this->writeScratch('return __(\'Just one thing|Several things\');');
+
+        $status = Artisan::call('monica:localize', ['--check' => true]);
+        $output = Artisan::output();
+
+        $this->assertSame(Command::FAILURE, $status);
+        $this->assertStringContainsString('app/Scratch.php', $output);
+        $this->assertStringContainsString('picks none of its wordings and prints them all', $output);
+    }
+
+    #[Test]
+    public function it_names_the_call_rather_than_the_placeholder_when_the_call_is_the_mistake(): void
+    {
+        $this->writeScratch('return __(\'Just one thing|Several things\');');
+
+        Artisan::call('monica:localize', ['--check' => true]);
+        $output = Artisan::output();
+
+        $this->assertStringContainsString(
+            'picks none of its wordings',
+            mb_strcut($output, 0, mb_strpos($output, 'Write the placeholder') ?: mb_strlen($output)),
+        );
+    }
+
+    #[Test]
+    public function it_leaves_a_sentence_carrying_one_wording_alone(): void
+    {
+        $this->writeScratch('return __(\'Just one thing\');');
+
+        Artisan::call('monica:localize', ['--check' => true]);
+
+        $this->assertStringNotContainsString('picks none of its wordings', Artisan::output());
+    }
+
+    #[Test]
     public function it_leaves_a_sentence_that_merely_opens_with_a_bracket_alone(): void
     {
         $this->writeScratch('return __(\'[Draft] something\');');

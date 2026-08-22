@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -53,6 +54,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
  * @property-read string $name
+ * @property-read Administrator|null $administrator
  */
 class User extends Authenticatable
 {
@@ -181,6 +183,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the administrator capacity the user holds, if they hold it.
+     *
+     * @return HasOne<Administrator, $this>
+     */
+    public function administrator(): HasOne
+    {
+        return $this->hasOne(Administrator::class);
+    }
+
+    /**
      * Get the name the user is called by, in the order they asked their name to
      * read in. The interface language cannot decide that order: somebody
      * reading Monica in English may still want their family name first.
@@ -202,6 +214,16 @@ class User extends Authenticatable
     public function usesSingleSignOn(): bool
     {
         return $this->sso_provider !== null;
+    }
+
+    /**
+     * Get whether the user runs the instance. Somebody who cannot sign in
+     * cannot administer either: a capacity granted to a user who was then
+     * deactivated is not a way back in.
+     */
+    public function isAdministrator(): bool
+    {
+        return $this->is_active && $this->administrator()->exists();
     }
 
     /**

@@ -121,7 +121,7 @@
 
 ## Migrations
 
-- Write only the `up()` method; never write a `down()` method.
+- Write only the `up()` method; you SHALL never write a `down()` method.
 
 ## Validation
 
@@ -195,6 +195,11 @@ return trans_choice('{1}One person in this vault.|All :count people in this vaul
 
 A wording carrying a condition MUST go through `trans_choice()`. Nothing else takes the condition off,
 so `__('{1}Just one thing')` prints `{1}Just one thing` to the reader.
+
+A phrase carrying more than one wording MUST go through `trans_choice()`, whether or not it names the
+count and whether or not it carries a condition. Nothing else picks between wordings, so
+`__('Just one thing|Several things')` prints every wording at once with the pipes still in place. The
+check reports the call rather than the phrase, since the call is the mistake.
 
 A pinned wording MUST NOT be written in a Blade file. A guard put there belongs to the screen, and the
 phrase has to be safe wherever it is shown, so build it in whatever gives the screen its words and

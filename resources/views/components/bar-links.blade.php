@@ -17,14 +17,28 @@
   own journal button. The gift is a box somebody made and handed over, which is close
   enough to a marketplace.
 
+  A third link appears for whoever runs the instance, and only for them. It is the
+  one way into the admin space from the ordinary application: an administrator who
+  had to remember an address would be an administrator who never opens the thing.
+  Everybody else sees two links and no hint that a third exists, which is the
+  whole of what the specification asks for when it says the area stays invisible to
+  regular users.
+
+  The glyph is the padlock, which already means "you cannot go in here" on the
+  marketplace and on a share link that has gone. Here it means the opposite for the
+  one person looking at it, and the same thing to everybody else.
+
   Below 900px the labels drop and the glyphs stay. The name is on the anchor rather
   than in the label, so it does not depend on the width of the window.
 --}}
 <div class="flex items-center gap-1">
-  @foreach ([
+  @foreach (array_filter([
     ['label' => __('Docs'), 'icon' => 'journal', 'href' => '#'],
     ['label' => __('Marketplace'), 'icon' => 'gift', 'href' => route('marketplace.index')],
-  ] as $link)
+    auth()->user()?->isAdministrator()
+      ? ['label' => __('Admin space'), 'icon' => 'lock', 'href' => route('admin.overview.index')]
+      : null,
+  ]) as $link)
     <a
       href="{{ $link['href'] }}"
       aria-label="{{ $link['label'] }}"

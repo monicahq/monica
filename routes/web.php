@@ -2,6 +2,16 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\App\Admin\AccountController as AdminAccountController;
+use App\Http\Controllers\App\Admin\AccountLifetimeAccessController;
+use App\Http\Controllers\App\Admin\AccountStorageLimitController;
+use App\Http\Controllers\App\Admin\AdministratorController;
+use App\Http\Controllers\App\Admin\AdministratorLogController;
+use App\Http\Controllers\App\Admin\ModerationApprovalController;
+use App\Http\Controllers\App\Admin\ModerationController;
+use App\Http\Controllers\App\Admin\ModerationRejectionController;
+use App\Http\Controllers\App\Admin\OverviewController;
+use App\Http\Controllers\App\Admin\UserActivationController;
 use App\Http\Controllers\App\GettingStartedController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\Marketplace\MarketplaceController;
@@ -95,7 +105,7 @@ Route::post('s/{token}', [SharedContactPasswordController::class, 'create'])
     ->name('share.password.create');
 
 // The screens where somebody looks after their vaults.
-Route::middleware(['auth', 'set.locale'])->group(function (): void {
+Route::middleware(['auth', 'active', 'set.locale'])->group(function (): void {
     Route::get('getting-started', [GettingStartedController::class, 'index'])->name('gettingStarted.index');
 
     Route::get('vaults', [VaultController::class, 'index'])->name('vaults.index');
@@ -238,7 +248,7 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
 });
 
 // The screens where somebody looks after their own account.
-Route::middleware(['auth', 'set.locale'])->group(function (): void {
+Route::middleware(['auth', 'active', 'set.locale'])->group(function (): void {
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
 
     Route::get('settings/account/profile', [ProfileController::class, 'index'])->name('settings.profile.index');
@@ -351,4 +361,56 @@ Route::middleware(['auth', 'set.locale'])->group(function (): void {
     Route::post('settings/account/profile/photo', [PhotoController::class, 'update'])->name('settings.photo.update');
     Route::delete('settings/account/profile/photo', [PhotoController::class, 'destroy'])->name('settings.photo.destroy');
     Route::get('settings/account/profile/photo/{user}/{size}', [PhotoController::class, 'show'])->whereNumber(['user', 'size'])->name('settings.photo.show');
+});
+
+// The admin space, for whoever runs the instance rather than whoever uses it.
+//
+// There is no `auth` in this group on purpose. `auth` redirects somebody who is
+// not signed in to the sign in screen, and that redirect tells them the address
+// is real. The middleware answers a flat 404 to a guest, to a signed in user
+// without the capacity, and to a holder who is no longer active, so every one of
+// them is told exactly what they would be told about an address that does not
+// exist.
+//
+// The search term and the two filters travel in the query string. An email
+// address does not go in a path segment, and a lookup a colleague cannot be sent
+// a link to is a lookup nobody shares.
+Route::middleware(['administrator', 'set.locale'])->prefix('admin')->group(function (): void {
+    // The front door. It says how the instance is doing before an administrator
+    // does anything, which is why it is the root of the area rather than a screen
+    // reached from it.
+    Route::get('/', [OverviewController::class, 'index'])->name('admin.overview.index');
+
+    Route::get('logs', [AdministratorLogController::class, 'index'])->name('admin.logs.index');
+
+    // A decision is a POST onto a noun rather than a PATCH on the version,
+    // because approving and refusing are two different things to a moderator and
+    // reading them off one payload is how the wrong one gets sent.
+    Route::get('moderation', [ModerationController::class, 'index'])->name('admin.moderation.index');
+    Route::get('moderation/{version}', [ModerationController::class, 'show'])->whereNumber('version')->name('admin.moderation.show');
+    Route::post('moderation/{version}/approval', [ModerationApprovalController::class, 'create'])->whereNumber('version')->name('admin.moderation.approval.create');
+    Route::post('moderation/{version}/rejection', [ModerationRejectionController::class, 'create'])->whereNumber('version')->name('admin.moderation.rejection.create');
+
+    // The lookup takes an account and never a vault, a contact or a file. There
+    // is no route in this group that could be handed one, which is the cheapest
+    // way to keep the promise that nothing written inside a vault is reachable
+    // from here.
+    Route::get('accounts', [AdminAccountController::class, 'index'])->name('admin.accounts.index');
+    Route::get('accounts/{account}', [AdminAccountController::class, 'show'])->whereNumber('account')->name('admin.accounts.show');
+
+    // The few things support genuinely needs to do to an account. Every one of
+    // them is reached from behind a warning, and every one of them is written
+    // down against the administrator who did it.
+    Route::put('accounts/{account}/storage-limit', [AccountStorageLimitController::class, 'update'])->whereNumber('account')->name('admin.accounts.storageLimit.update');
+    Route::post('accounts/{account}/lifetime-access', [AccountLifetimeAccessController::class, 'create'])->whereNumber('account')->name('admin.accounts.lifetimeAccess.create');
+    Route::delete('accounts/{account}/lifetime-access', [AccountLifetimeAccessController::class, 'destroy'])->whereNumber('account')->name('admin.accounts.lifetimeAccess.destroy');
+    Route::post('accounts/{account}/activation', [UserActivationController::class, 'create'])->whereNumber('account')->name('admin.accounts.activation.create');
+    Route::delete('accounts/{account}/activation', [UserActivationController::class, 'destroy'])->whereNumber('account')->name('admin.accounts.activation.destroy');
+
+    // Who runs the instance. The grant takes an address rather than a chosen row,
+    // because the person being made an administrator is somebody the operator
+    // already knows by email and not somebody they go looking for in a list.
+    Route::get('administrators', [AdministratorController::class, 'index'])->name('admin.administrators.index');
+    Route::post('administrators', [AdministratorController::class, 'create'])->name('admin.administrators.create');
+    Route::delete('administrators/{user}', [AdministratorController::class, 'destroy'])->whereNumber('user')->name('admin.administrators.destroy');
 });

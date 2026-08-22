@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\AdministratorActionEnum;
+use App\Enums\EmailType;
 use App\Enums\MarketplaceListingStatusEnum;
 use App\Enums\MarketplaceVersionStatusEnum;
 use App\Exceptions\ListingIsNotAwaitingModeration;
 use App\Helpers\TextSanitizer;
+use App\Jobs\LogAdministratorAction;
+use App\Jobs\SendEmail;
+use App\Mail\MarketplaceListingRejected;
 use App\Models\MarketplaceListingVersion;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
@@ -29,23 +35,44 @@ class RejectMarketplaceListingVersion
 {
     public function __construct(
         private readonly MarketplaceListingVersion $version,
-        private string $moderator,
+        private readonly User $administrator,
         private string $reason,
     ) {}
 
     public function execute(): MarketplaceListingVersion
     {
         $this->sanitize();
-        $this->validate();
-        $this->reject();
+
+        DB::transaction(function (): void {
+            $this->lock();
+            $this->validate();
+            $this->reject();
+        });
+
+        $this->tellTheAuthor();
+        $this->log();
 
         return $this->version;
     }
 
     private function sanitize(): void
     {
-        $this->moderator = TextSanitizer::plainText($this->moderator);
         $this->reason = TextSanitizer::plainText($this->reason);
+    }
+
+    /**
+     * Hold the row for the rest of the transaction, then read back what it
+     * actually says, so two administrators deciding at the same moment produce
+     * exactly one decision.
+     */
+    private function lock(): void
+    {
+        MarketplaceListingVersion::query()
+            ->whereKey($this->version->getKey())
+            ->lockForUpdate()
+            ->first();
+
+        $this->version->refresh();
     }
 
     private function validate(): void
@@ -61,20 +88,57 @@ class RejectMarketplaceListingVersion
 
     private function reject(): void
     {
-        DB::transaction(function (): void {
-            $this->version->status = MarketplaceVersionStatusEnum::Rejected;
-            $this->version->rejection_reason = $this->reason;
-            $this->version->save();
+        $this->version->status = MarketplaceVersionStatusEnum::Rejected;
+        $this->version->rejection_reason = $this->reason;
+        $this->version->save();
 
-            $listing = $this->version->listing;
+        $listing = $this->version->listing;
 
-            $listing->status = $listing->published_version_id === null
-                ? MarketplaceListingStatusEnum::Rejected
-                : MarketplaceListingStatusEnum::Published;
-            $listing->rejection_reason = $this->reason;
-            $listing->moderated_at = now();
-            $listing->moderated_by = $this->moderator;
-            $listing->save();
-        });
+        $listing->status = $listing->published_version_id === null
+            ? MarketplaceListingStatusEnum::Rejected
+            : MarketplaceListingStatusEnum::Published;
+        $listing->rejection_reason = $this->reason;
+        $listing->moderated_at = now();
+        $listing->moderated_by = $this->administrator->name;
+        $listing->save();
+    }
+
+    /**
+     * An account whose person was deleted has nobody to tell. The reason stays
+     * on the version either way, which is where the author would read it.
+     */
+    private function tellTheAuthor(): void
+    {
+        $listing = $this->version->listing;
+        $author = $listing->account->user;
+
+        if ($author === null) {
+            return;
+        }
+
+        SendEmail::dispatch(
+            mailable: new MarketplaceListingRejected(
+                listingName: $listing->name,
+                versionNumber: $this->version->version_number,
+                reason: $this->reason,
+            ),
+            account: $listing->account,
+            emailType: EmailType::MarketplaceListingRejected,
+            user: $author,
+        )->onQueue('high');
+    }
+
+    private function log(): void
+    {
+        LogAdministratorAction::dispatch(
+            administrator: $this->administrator,
+            action: AdministratorActionEnum::MarketplaceVersionRejected,
+            account: $this->version->listing->account,
+            parameters: [
+                'version' => $this->version->version_number,
+                'name' => $this->version->listing->name,
+            ],
+            subject: $this->version,
+        )->onQueue('low');
     }
 }
