@@ -1,0 +1,103 @@
+schema_version: "1.0"
+
+extension:
+  id: companion
+  name: "SpecKit Companion"
+  version: "0.20.2"
+  description: "Live spec-driven progress for SpecKit Companion — lifecycle capture, status, and resume."
+  author: alfredoperez
+  repository: https://github.com/alfredoperez/speckit-companion
+  homepage: https://github.com/alfredoperez/speckit-companion/tree/main/speckit-extension
+  license: MIT
+
+requires:
+  # Floor is the workflow-engine surface the Companion workflow rides:
+  # `specify workflow run`/`resume` plus the `command`/`gate`/`switch` step
+  # registry, all present from the 0.9.5 engine. A bare floor is correct as
+  # long as spec-kit's released line has moved past 0.9.5 — `.dev0` is only
+  # needed when the floor equals the exact line spec-kit's git HEAD is
+  # currently building (see spec-kit's own pyproject.toml version).
+  speckit_version: ">=0.9.5"
+  tools:
+    - name: python3
+      required: false
+
+provides:
+  commands:
+    - name: speckit.companion.after-specify
+      file: commands/speckit.companion.after-specify.md
+      description: "Capture the current spec-kit step into .spec-context.json for the Companion GUI"
+    - name: speckit.companion.after-plan
+      file: commands/speckit.companion.after-plan.md
+      description: "Capture plan completion (currentStep=plan, status=planned) into .spec-context.json"
+    - name: speckit.companion.after-tasks
+      file: commands/speckit.companion.after-tasks.md
+      description: "Capture tasks completion (currentStep=tasks, status=ready-to-implement) into .spec-context.json"
+    - name: speckit.companion.after-implement
+      file: commands/speckit.companion.after-implement.md
+      description: "Capture per-task implement progress (currentStep=implement) into .spec-context.json"
+    - name: speckit.companion.status
+      file: commands/speckit.companion.status.md
+      description: "Report the active spec's current step, status, decisions, and next action from .spec-context.json"
+    - name: speckit.companion.resume
+      file: commands/speckit.companion.resume.md
+      description: "Resume the pipeline from the recorded step with decisions in scope, dispatching the next command"
+    - name: speckit.companion.specify
+      file: commands/speckit.companion.specify.md
+      description: "Companion specify — spec.md with no user-story section"
+    - name: speckit.companion.plan
+      file: commands/speckit.companion.plan.md
+      description: "Companion plan — files/dependencies, conditional side files"
+    - name: speckit.companion.tasks
+      file: commands/speckit.companion.tasks.md
+      description: "Companion tasks — files/dependencies axis"
+    - name: speckit.companion.implement
+      file: commands/speckit.companion.implement.md
+      description: "Companion implement — dependency-ordered execution"
+    - name: speckit.companion.classify
+      file: commands/speckit.companion.classify.md
+      description: "Classify change size (small | normal | oversized) for the Companion workflow routing step"
+    - name: speckit.companion.mark-complete
+      file: commands/speckit.companion.mark-complete.md
+      description: "Terminal Companion step — write status: completed to .spec-context.json"
+    - name: speckit.companion.auto
+      file: commands/speckit.companion.auto.md
+      description: "Run the whole Companion pipeline hands-off (specify → plan → tasks → implement → mark-complete), no approval pauses"
+    - name: speckit.companion.living-adopt
+      file: commands/speckit.companion.living-adopt.md
+      description: "Brownfield adoption wizard — draft living specs for the code areas you name, surface-first, and register the capabilities (opt-in)"
+    - name: speckit.companion.living-move
+      file: commands/speckit.companion.living-move.md
+      description: "Move a living spec between central and colocated storage — file, tier siblings, and registry together (opt-in, reversible)"
+    - name: speckit.companion.living-drift
+      file: commands/speckit.companion.living-drift.md
+      description: "Report living-spec drift — per capability, source files changed since the spec was last committed, classified tracked vs unspeced (opt-in, never halts)"
+    - name: speckit.companion.living-coverage
+      file: commands/speckit.companion.living-coverage.md
+      description: "Report living-spec requirement→test coverage — per requirement, whether its coverage tier maps a test (opt-in, read-only, never halts)"
+    - name: speckit.companion.living-sync
+      file: commands/speckit.companion.living-sync.md
+      description: "Sync living specs from your current changes — group working-tree changes (uncommitted included) by capability and update every affected spec in one pass (opt-in, never halts)"
+
+hooks:
+  after_specify:
+    command: speckit.companion.after-specify
+    optional: false
+    description: "Record specify completion (currentStep=specify, status=specified) into .spec-context.json"
+  after_plan:
+    command: speckit.companion.after-plan
+    optional: false
+    description: "Record plan completion (currentStep=plan, status=planned) into .spec-context.json"
+  after_tasks:
+    command: speckit.companion.after-tasks
+    optional: false
+    description: "Record tasks completion (currentStep=tasks, status=ready-to-implement) into .spec-context.json"
+  after_implement:
+    command: speckit.companion.after-implement
+    optional: false
+    description: "Per-task journaling on implement (currentStep=implement; status=implemented when all tasks checked)"
+
+tags:
+  - "spec-driven-development"
+  - "tracking"
+  - "companion"

@@ -1,0 +1,44 @@
+installed:
+- companion
+settings:
+  auto_execute_hooks: true
+hooks:
+  after_specify:
+  - extension: companion
+    command: speckit.companion.after-specify
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.companion.after-specify?
+    description: Record specify completion (currentStep=specify, status=specified)
+      into .spec-context.json
+    condition: null
+  after_plan:
+  - extension: companion
+    command: speckit.companion.after-plan
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.companion.after-plan?
+    description: Record plan completion (currentStep=plan, status=planned) into .spec-context.json
+    condition: null
+  after_tasks:
+  - extension: companion
+    command: speckit.companion.after-tasks
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.companion.after-tasks?
+    description: Record tasks completion (currentStep=tasks, status=ready-to-implement)
+      into .spec-context.json
+    condition: null
+  after_implement:
+  - extension: companion
+    command: speckit.companion.after-implement
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.companion.after-implement?
+    description: Per-task journaling on implement (currentStep=implement; status=implemented
+      when all tasks checked)
+    condition: null

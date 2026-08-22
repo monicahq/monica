@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "extensions": {
+    "companion": {
+      "version": "0.20.2",
+      "source": "local",
+      "manifest_hash": "sha256:69148e10fc34ece757ee9ca8742282c4146fb8880f6c1e7143869e0ccfa314cb",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "claude": [
+          "speckit.companion.after-specify",
+          "speckit.companion.after-plan",
+          "speckit.companion.after-tasks",
+          "speckit.companion.after-implement",
+          "speckit.companion.status",
+          "speckit.companion.resume",
+          "speckit.companion.specify",
+          "speckit.companion.plan",
+          "speckit.companion.tasks",
+          "speckit.companion.implement",
+          "speckit.companion.classify",
+          "speckit.companion.mark-complete",
+          "speckit.companion.auto",
+          "speckit.companion.living-adopt",
+          "speckit.companion.living-move",
+          "speckit.companion.living-drift",
+          "speckit.companion.living-coverage",
+          "speckit.companion.living-sync"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-08-22T16:10:04.424119+00:00"
+    }
+  }
+}

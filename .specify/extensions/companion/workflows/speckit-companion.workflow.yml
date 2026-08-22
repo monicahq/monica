@@ -1,0 +1,147 @@
+schema_version: "1.0"
+workflow:
+  id: "speckit-companion"
+  name: "SpecKit Companion"
+  version: "1.0.0"
+  author: "alfredoperez"
+  description: "Companion SDD pipeline: specify → (route by size) → plan → tasks → implement → mark-complete, with review gates."
+
+requires:
+  # Floor is the engine surface this workflow rides: `specify workflow run`/`resume`
+  # plus the `command`/`gate`/`switch` step registry, present from 0.9.5. Bare floor —
+  # spec-kit stable is past this (0.11.x), so git/`uv` dev builds (`0.11.x.devN`)
+  # already satisfy `>=0.9.5` under PEP 440; a `.dev0` suffix would only matter if
+  # this floor were the line HEAD currently builds.
+  speckit_version: ">=0.9.5"
+  integrations:
+    # Advisory, non-exhaustive compatibility hint (the documented `any: [...]` shape).
+    # The workflow runs against any integration that provides the Companion commands.
+    any:
+      - "claude"
+      - "copilot"
+      - "gemini"
+      - "opencode"
+
+inputs:
+  spec:
+    type: string
+    required: true
+    prompt: "Describe what you want to build"
+  integration:
+    type: string
+    default: "auto"
+    prompt: "Integration to use (e.g. claude, copilot, gemini; 'auto' uses the project's initialized integration)"
+  scope:
+    type: string
+    default: "full"
+    enum: ["full", "backend-only", "frontend-only"]
+
+steps:
+  - id: specify
+    command: speckit.companion.specify
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: classify
+    command: speckit.companion.classify
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  # Routing step — right-sizes the pipeline on the classify signal. It reads the
+  # size from `classify` and never re-derives the 5-files / 10-tasks bar: that
+  # threshold is authored once in presets/_parts/sizing.md (the same block the
+  # classify and specify commands embed). The case structure below is the single
+  # source of the routing rule (also stated in presets/_parts/routing.md). The
+  # safe default (`default:`) is the FULL pipeline, so an unmatched or unresolved
+  # size value never skips a phase (FR-004). `normal` falls through to default.
+  - id: route
+    type: switch
+    expression: "{{ steps.classify.output.size }}"
+    cases:
+      small:
+        # Folded path — less ceremony for a small change: plan and tasks still
+        # run (implement reads tasks.md, so it can't be skipped), but WITHOUT the
+        # review-gate pauses. That is the "fold toward implement" — fewer stops,
+        # not fewer artifacts.
+        - id: small-plan
+          command: speckit.companion.plan
+          integration: "{{ inputs.integration }}"
+          input:
+            args: "{{ inputs.spec }}"
+        - id: small-tasks
+          command: speckit.companion.tasks
+          integration: "{{ inputs.integration }}"
+          input:
+            args: "{{ inputs.spec }}"
+        - id: small-implement
+          command: speckit.companion.implement
+          integration: "{{ inputs.integration }}"
+          input:
+            args: "{{ inputs.spec }}"
+      oversized:
+        # Visible warning, then the SAME full pipeline — never a silent skip.
+        - id: oversized-warn
+          type: shell
+          run: "echo '[companion] ⚠️ Oversized change detected — running the FULL pipeline (no phase skipped).'"
+        - id: oversized-review-spec
+          type: gate
+          message: "Oversized change. Review the generated spec before planning."
+          options: [approve, reject]
+          on_reject: abort
+        - id: oversized-plan
+          command: speckit.companion.plan
+          integration: "{{ inputs.integration }}"
+          input:
+            args: "{{ inputs.spec }}"
+        - id: oversized-review-plan
+          type: gate
+          message: "Review the plan before generating tasks."
+          options: [approve, reject]
+          on_reject: abort
+        - id: oversized-tasks
+          command: speckit.companion.tasks
+          integration: "{{ inputs.integration }}"
+          input:
+            args: "{{ inputs.spec }}"
+        - id: oversized-implement
+          command: speckit.companion.implement
+          integration: "{{ inputs.integration }}"
+          input:
+            args: "{{ inputs.spec }}"
+    # normal (and any unresolved value) → full pipeline with review gates.
+    default:
+      - id: review-spec
+        type: gate
+        message: "Review the generated spec before planning."
+        options: [approve, reject]
+        on_reject: abort
+      - id: plan
+        command: speckit.companion.plan
+        integration: "{{ inputs.integration }}"
+        input:
+          args: "{{ inputs.spec }}"
+      - id: review-plan
+        type: gate
+        message: "Review the plan before generating tasks."
+        options: [approve, reject]
+        on_reject: abort
+      - id: tasks
+        command: speckit.companion.tasks
+        integration: "{{ inputs.integration }}"
+        input:
+          args: "{{ inputs.spec }}"
+      - id: implement
+        command: speckit.companion.implement
+        integration: "{{ inputs.integration }}"
+        input:
+          args: "{{ inputs.spec }}"
+
+  # Terminal Companion step — writes status: completed (the command does it, not
+  # the AI). The stock speckit workflow has no equivalent and force-closes without it.
+  - id: mark-complete
+    command: speckit.companion.mark-complete
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
