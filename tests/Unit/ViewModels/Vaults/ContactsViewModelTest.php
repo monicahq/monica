@@ -285,6 +285,30 @@ class ContactsViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_says_nothing_about_who_is_in_a_vault_that_holds_nobody(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $empty = new ContactsViewModel(user: $user, vault: $vault);
+
+        $this->assertSame('', $empty->resultLine());
+    }
+
+    #[Test]
+    public function it_says_nothing_about_the_end_of_a_list_that_never_started(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Michael', 'Scott');
+
+        $matchingNobody = new ContactsViewModel(user: $user, vault: $vault, query: 'beesly');
+
+        $this->assertSame('', $matchingNobody->endLine());
+    }
+
+    #[Test]
     public function it_offers_the_order_in_the_words_of_what_is_being_ordered(): void
     {
         $user = User::factory()->create();

@@ -18,7 +18,7 @@
           </div>
 
           <p class="text-sm text-body">
-            {{ __('If that address has an account, a link is on its way. It works once, and only for the next :count minutes.', ['count' => $viewModel->minutes()]) }}
+            {{ trans_choice('If that address has an account, a link is on its way. It works once, and only for the next :count minute.|If that address has an account, a link is on its way. It works once, and only for the next :count minutes.', $viewModel->minutes()) }}
           </p>
         </div>
 

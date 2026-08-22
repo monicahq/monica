@@ -86,7 +86,7 @@
     $sections[] = [
       'title' => __('This vault'),
       'tiles' => [
-        ['label' => __('People'), 'icon' => 'people', 'iconClass' => 'bg-indigo-tint text-indigo', 'note' => $chipVault->contact_count === 1 ? __('1 contact') : __(':count contacts', ['count' => $chipVault->contact_count]), 'url' => route('contacts.index', $chipVault)],
+        ['label' => __('People'), 'icon' => 'people', 'iconClass' => 'bg-indigo-tint text-indigo', 'note' => trans_choice(':count contact|:count contacts', $chipVault->contact_count), 'url' => route('contacts.index', $chipVault)],
         ['label' => __('Journal'), 'icon' => 'journal', 'iconClass' => 'bg-plum-tint text-plum', 'note' => null, 'url' => null],
         ['label' => __('Reminders'), 'icon' => 'reminder', 'iconClass' => 'bg-forest-tint text-forest', 'note' => null, 'url' => null],
         ['label' => __('Tasks'), 'icon' => 'tasks', 'iconClass' => 'bg-marigold-tint text-marigold-deep', 'note' => null, 'url' => null],

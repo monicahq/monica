@@ -225,17 +225,13 @@ class SettingsViewModel
     {
         $count = Template::query()->where('account_id', $this->user->account_id)->count();
 
-        return $count === 1
-            ? __('1 template')
-            : __(':count templates', ['count' => $count]);
+        return trans_choice(':count template|:count templates', $count);
     }
 
     private function entityTypeCount(): string
     {
         $count = EntityType::query()->where('account_id', $this->user->account_id)->count();
 
-        return $count === 1
-            ? __('1 type')
-            : __(':count types', ['count' => $count]);
+        return trans_choice(':count type|:count types', $count);
     }
 }

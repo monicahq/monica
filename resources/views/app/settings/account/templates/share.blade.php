@@ -32,7 +32,7 @@
     <h1 class="font-display text-page-title text-ink">{{ __('Share :name', ['name' => $template->name]) }}</h1>
 
     <p class="text-base text-pretty text-body">
-      {{ __('Two ways out, for two different reasons. A file is for you, and for the people you hand it to. A listing is for everybody else. Either way only the structure leaves this vault, and the :count using this template stay here.', ['count' => $viewModel->recordCountLabel()]) }}
+      {{ __('Two ways out, for two different reasons. A file is for you, and for the people you hand it to. A listing is for everybody else. Either way only the structure leaves this vault, and the :records using this template stay here.', ['records' => $viewModel->recordCountLabel()]) }}
     </p>
   </header>
 

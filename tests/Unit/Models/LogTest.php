@@ -270,6 +270,39 @@ class LogTest extends TestCase
     }
 
     #[Test]
+    public function it_describes_an_action_that_counts_something_in_the_singular(): void
+    {
+        $log = Log::factory()->create([
+            'action' => UserActionEnum::OrphanedFilesSwept->value,
+            'parameters' => ['count' => 1],
+        ]);
+
+        $this->assertEquals('Removed 1 file nothing pointed at any more', $log->description);
+    }
+
+    #[Test]
+    public function it_describes_an_action_that_counts_something_in_the_plural(): void
+    {
+        $log = Log::factory()->create([
+            'action' => UserActionEnum::OrphanedFilesSwept->value,
+            'parameters' => ['count' => 4],
+        ]);
+
+        $this->assertEquals('Removed 4 files nothing pointed at any more', $log->description);
+    }
+
+    #[Test]
+    public function it_describes_a_counted_action_that_also_carries_another_parameter(): void
+    {
+        $log = Log::factory()->create([
+            'action' => UserActionEnum::FieldValuesDetached->value,
+            'parameters' => ['count' => 1, 'label' => 'Nickname'],
+        ]);
+
+        $this->assertEquals('Set aside 1 value written in Nickname', $log->description);
+    }
+
+    #[Test]
     public function it_falls_back_to_the_raw_name_of_an_action_it_does_not_know(): void
     {
         $log = Log::factory()->create([

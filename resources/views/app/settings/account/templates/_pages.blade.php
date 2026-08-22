@@ -66,7 +66,7 @@
               'flex h-5 min-w-5 items-center justify-center rounded-full border px-1.5 text-[11.5px] font-medium',
               $page['isSelected'] ? 'border-hairline-strong text-body' : 'border-hairline text-muted',
             ])
-            title="{{ $page['fieldCount'] === 1 ? __('1 field on this page') : __(':count fields on this page', ['count' => $page['fieldCount']]) }}"
+            title="{{ trans_choice(':count field on this page|:count fields on this page', $page['fieldCount']) }}"
           >{{ $page['fieldCount'] }}</span>
         </a>
       @endforeach

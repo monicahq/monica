@@ -173,11 +173,7 @@ class ShareLinkViewModel
             return __('Not opened yet');
         }
 
-        if ($count === 1) {
-            return __('Opened once');
-        }
-
-        return __('Opened :count times', ['count' => $count]);
+        return trans_choice('{1}Opened once|Opened :count times', $count);
     }
 
     public function visitsEmptyLine(): string

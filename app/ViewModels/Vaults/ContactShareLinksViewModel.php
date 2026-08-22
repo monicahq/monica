@@ -158,11 +158,7 @@ class ContactShareLinksViewModel
             return __('Not opened');
         }
 
-        if ($link->view_count === 1) {
-            return __('Opened once');
-        }
-
-        return __('Opened :count times', ['count' => $link->view_count]);
+        return trans_choice('{1}Opened once|Opened :count times', $link->view_count);
     }
 
     /**
@@ -175,9 +171,10 @@ class ContactShareLinksViewModel
             return __('The address stops working straight away, and it was never opened. The row stays on this list, marked revoked. A revoked link is never brought back, so somebody who needs access again needs a new one.');
         }
 
-        return __('The address stops working straight away. It was opened :count times, last :when. The row stays on this list with those visits, marked revoked. A revoked link is never brought back, so somebody who needs access again needs a new one.', [
-            'count' => $link->view_count,
-            'when' => $link->last_viewed_at?->diffForHumans() ?? __('at some point'),
-        ]);
+        return trans_choice(
+            'The address stops working straight away. It was opened :count time, last :when. The row stays on this list with those visits, marked revoked. A revoked link is never brought back, so somebody who needs access again needs a new one.|The address stops working straight away. It was opened :count times, last :when. The row stays on this list with those visits, marked revoked. A revoked link is never brought back, so somebody who needs access again needs a new one.',
+            $link->view_count,
+            ['when' => $link->last_viewed_at?->diffForHumans() ?? __('at some point')],
+        );
     }
 }

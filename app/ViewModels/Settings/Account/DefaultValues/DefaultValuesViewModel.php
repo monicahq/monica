@@ -69,11 +69,7 @@ class DefaultValuesViewModel
             return __('no values');
         }
 
-        if ($count === 1) {
-            return __('1 value');
-        }
-
-        return __(':count values', ['count' => $count]);
+        return trans_choice(':count value|:count values', $count);
     }
 
     /**
@@ -86,10 +82,6 @@ class DefaultValuesViewModel
             return __('not used yet');
         }
 
-        if ($item->usage_count === 1) {
-            return __('used once');
-        }
-
-        return __('used :count times', ['count' => $item->usage_count]);
+        return trans_choice('{1}used once|used :count times', $item->usage_count);
     }
 }

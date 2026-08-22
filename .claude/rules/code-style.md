@@ -142,6 +142,93 @@
 
 - Use the `__()` function instead of `@lang` in Blade.
 
+### Phrases that show a number
+
+Three rules, and `php artisan monica:localize --check` fails on a breach of any of them.
+
+- A phrase containing `:count` MUST be asked for with `trans_choice()`, never `__()`, `trans()` or
+  `@lang`. Those cannot vary a wording by number. `trans_choice()` supplies `count` itself, so only
+  the other placeholders are passed.
+
+  ```php
+  trans_choice(':count person|:count people', $count)
+  trans_choice(':count value written in :label|:count values written in :label', $count, ['label' => $label])
+  ```
+
+- Every segment MUST interpolate `:count`. Never write the digit. French groups zero with the
+  singular, so the singular segment is what a French reader sees at a count of zero, and
+  `1 personne|:count personnes` renders "1 personne" there. `:count personne` renders "0 personne".
+  English is unaffected, since `:count person` at one renders "1 person" either way.
+
+- A phrase whose wording does not change with its number MUST say so with an explicit `[0,*]`, and
+  still go through `trans_choice()`, which strips the prefix. `__()` prints it to the reader. Silence
+  is not a declaration: a phrase that says nothing is treated as depending on its number.
+
+  ```php
+  trans_choice('[0,*]Show :count more', $count)
+  ```
+
+  Declare it only after checking. "It reads fine at one in English" is not the test: `1 lines` and
+  `1 published something this week` both read wrongly, and a phrase that never inflects in English
+  can still inflect elsewhere.
+
+A segment MAY be pinned to exactly one number with `{1}`, and then it needs no `:count`, because the
+number is already known. Use it where the copy deliberately spells the number as a word rather than a
+digit, which reads better in several places and is what the tests for those screens ask for.
+
+```php
+trans_choice('{1}Opened once|Opened :count times', $count)
+```
+
+A pinned wording names one thing, so it cannot stand in for none. `{1}` matches one and nothing else,
+so at zero the phrase falls back to the plural rules and lands on the pinned wording, which a French
+reader then sees for zero. A phrase with a pinned wording MUST therefore keep zero away from it, in the
+method that builds the phrase and not in the screen that shows it. The check enforces this.
+
+```php
+if ($this->headcount() === 0) {
+    return '';
+}
+
+return trans_choice('{1}One person in this vault.|All :count people in this vault.', $this->headcount());
+```
+
+A wording carrying a condition MUST go through `trans_choice()`. Nothing else takes the condition off,
+so `__('{1}Just one thing')` prints `{1}Just one thing` to the reader.
+
+A pinned wording MUST NOT be written in a Blade file. A guard put there belongs to the screen, and the
+phrase has to be safe wherever it is shown, so build it in whatever gives the screen its words and
+guard it there. The check refuses a pinned wording in a view outright.
+
+The exemption from `:count` applies only to a wording pinned to a single number. A wording covering
+more than one still needs the placeholder: `[0,*]1 gadget` reads "1 gadget" at every number.
+
+A wording MUST NOT be chosen by comparing a count to one. That is English grammar imposed on every
+language, and no translator can reach it.
+
+```php
+// Wrong
+return $count === 1 ? __('1 person') : __(':count people', ['count' => $count]);
+
+// Right
+return trans_choice(':count person|:count people', $count);
+```
+
+Comparing against **zero** is fine and often right. Copy for an empty state is its own sentence, not
+a plural form, and it stays.
+
+```php
+if ($vault->contact_count === 0) {
+    return __('Nobody in it yet');
+}
+
+return trans_choice(':count person|:count people', $vault->contact_count);
+```
+
+How many segments a locale needs is a property of its language, worked out from the framework rather
+than written down: two for eight of the nine shipped locales, and one for Turkish, which selects the
+same wording at every number. Supply what the locale asks for and no more.
+
 ## Naming Classes
 
 - Controllers: plural resource name + `Controller` suffix; non-resourceful/invokable controllers use the action name + `Controller`.

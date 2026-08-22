@@ -113,7 +113,7 @@ class TemplatesViewModel
         $total = $this->all()->count();
 
         if ($showing === $total) {
-            return $total === 1 ? __('1 template') : __(':count templates', ['count' => $total]);
+            return trans_choice(':count template|:count templates', $total);
         }
 
         return __(':showing of :total templates', ['showing' => $showing, 'total' => $total]);
@@ -158,7 +158,7 @@ class TemplatesViewModel
             return __('no sections yet');
         }
 
-        return $count === 1 ? __('1 section') : __(':count sections', ['count' => $count]);
+        return trans_choice(':count section|:count sections', $count);
     }
 
     /**

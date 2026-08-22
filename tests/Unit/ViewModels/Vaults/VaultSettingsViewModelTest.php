@@ -21,6 +21,33 @@ class VaultSettingsViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
+    public function it_says_what_a_deletion_takes_with_it(): void
+    {
+        $user = User::factory()->create();
+        $one = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 1]);
+        $several = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 4]);
+
+        $this->assertSame(
+            'The one contact in it goes too, and everything written about them.',
+            new VaultSettingsViewModel(user: $user, vault: $one)->deletionConsequence(),
+        );
+
+        $this->assertSame(
+            'The 4 contacts in it go too, and everything written about them.',
+            new VaultSettingsViewModel(user: $user, vault: $several)->deletionConsequence(),
+        );
+    }
+
+    #[Test]
+    public function it_says_nothing_about_losing_contacts_when_the_vault_holds_none(): void
+    {
+        $user = User::factory()->create();
+        $empty = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 0]);
+
+        $this->assertSame('', new VaultSettingsViewModel(user: $user, vault: $empty)->deletionConsequence());
+    }
+
+    #[Test]
     public function it_starts_the_naming_form_on_what_the_vault_holds(): void
     {
         $user = User::factory()->create();

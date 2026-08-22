@@ -65,8 +65,8 @@ class MarketplaceStatistics
         $sections = $this->published()->where('listable_type', Section::class)->count();
 
         return __(':templates, :sections', [
-            'templates' => $templates === 1 ? __('1 template') : __(':count templates', ['count' => $templates]),
-            'sections' => $sections === 1 ? __('1 section') : __(':count sections', ['count' => $sections]),
+            'templates' => trans_choice(':count template|:count templates', $templates),
+            'sections' => trans_choice(':count section|:count sections', $sections),
         ]);
     }
 
@@ -86,7 +86,7 @@ class MarketplaceStatistics
             ->where('installed_at', '>=', CarbonImmutable::now()->subDays(self::RECENT_DAYS))
             ->count();
 
-        return __(':count in the last thirty days', ['count' => $count]);
+        return trans_choice('[0,*]:count in the last thirty days', $count);
     }
 
     /**
@@ -104,7 +104,7 @@ class MarketplaceStatistics
             ->distinct()
             ->count('account_id');
 
-        return __(':count published something this week', ['count' => $count]);
+        return trans_choice(':count published something this week|:count published something this week', $count);
     }
 
     /**
@@ -190,8 +190,7 @@ class MarketplaceStatistics
             ->where('installed_at', '>=', CarbonImmutable::now()->startOfMonth())
             ->count();
 
-        return __(':count in :month', [
-            'count' => $count,
+        return trans_choice('[0,*]:count in :month', $count, [
             'month' => CarbonImmutable::now()->isoFormat('MMMM'),
         ]);
     }

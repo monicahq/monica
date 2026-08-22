@@ -191,9 +191,9 @@ class ImportFileViewModel
             ['label' => __('Kind of file'), 'value' => __('A whole template')],
             ['label' => __('Name it will take'), 'value' => $this->checked['template']['name']],
             ['label' => __('Structure'), 'value' => __(':pages, :sections, :fields', [
-                'pages' => $this->countLabel(count($this->checked['template']['pages']), __('1 page'), ':count pages'),
-                'sections' => $this->countLabel($sections, __('1 section'), ':count sections'),
-                'fields' => $this->countLabel($fields, __('1 field'), ':count fields'),
+                'pages' => trans_choice(':count page|:count pages', count($this->checked['template']['pages'])),
+                'sections' => trans_choice(':count section|:count sections', $sections),
+                'fields' => trans_choice(':count field|:count fields', $fields),
             ])],
         ];
     }
@@ -208,7 +208,7 @@ class ImportFileViewModel
         return [
             ['label' => __('Kind of file'), 'value' => __('One section')],
             ['label' => __('Name it will take'), 'value' => $this->checked['section']['name']],
-            ['label' => __('Structure'), 'value' => $this->countLabel(count($this->checked['section']['fields']), __('1 field'), ':count fields')],
+            ['label' => __('Structure'), 'value' => trans_choice(':count field|:count fields', count($this->checked['section']['fields']))],
             ['label' => __('Came from'), 'value' => $from === null || $from['name'] === null
                 ? __('Not written down')
                 : __(':name, v:version', ['name' => $from['name'], 'version' => $from['version'] ?? 1])],
@@ -237,11 +237,11 @@ class ImportFileViewModel
             ->count();
 
         if ($reused === 0) {
-            return $this->countLabel($total, __('1 new list'), ':count new lists');
+            return trans_choice(':count new list|:count new lists', $total);
         }
 
         return __(':new, :reused already here', [
-            'new' => $this->countLabel($total - $reused, __('1 new list'), ':count new lists'),
+            'new' => trans_choice(':count new list|:count new lists', $total - $reused),
             'reused' => $reused,
         ]);
     }
@@ -271,7 +271,7 @@ class ImportFileViewModel
             return __('All of them already here');
         }
 
-        return $this->countLabel($missing, __('1 will be added'), ':count will be added');
+        return trans_choice(':count will be added|:count will be added', $missing);
     }
 
     /**
@@ -298,11 +298,6 @@ class ImportFileViewModel
         }
 
         return array_values(array_unique($slugs));
-    }
-
-    private function countLabel(int $count, string $one, string $many): string
-    {
-        return $count === 1 ? $one : __($many, ['count' => $count]);
     }
 
     /**

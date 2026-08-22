@@ -19,6 +19,38 @@ class VaultSettingsControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
+    public function it_says_nothing_about_losing_contacts_when_the_vault_holds_none(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+            'contact_count' => 0,
+        ]);
+
+        $this->actingAs($user)->get(route('vaults.settings.index', $vault))
+            ->assertStatus(200)
+            ->assertSee('Delete this vault')
+            ->assertDontSee('in it goes too')
+            ->assertDontSee('in it go too');
+    }
+
+    #[Test]
+    public function it_counts_the_contacts_a_deletion_would_take(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+            'contact_count' => 1,
+        ]);
+
+        $this->actingAs($user)->get(route('vaults.settings.index', $vault))
+            ->assertStatus(200)
+            ->assertSee('The one contact in it goes too, and everything written about them.');
+    }
+
+    #[Test]
     public function it_shows_the_settings_of_a_vault(): void
     {
         $user = User::factory()->create();

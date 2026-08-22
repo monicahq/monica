@@ -11,7 +11,7 @@
 {{ __('Sign in to :app', ['app' => config('app.name')]) }}
 </x-mail::button>
 
-{{ __('The link works once, and only for the next :count minutes.', ['count' => $minutes]) }}
+{{ trans_choice('The link works once, and only for the next :count minute.|The link works once, and only for the next :count minutes.', $minutes) }}
 
 <x-mail::panel>
 {{ __('If you did not ask for this link, you can ignore this email. Somebody typed your address by mistake, or is trying to find out whether you have an account.') }}

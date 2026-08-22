@@ -201,11 +201,7 @@ class ContactViewModel
             return __('Share');
         }
 
-        if ($live === 1) {
-            return __('Shared by one link');
-        }
-
-        return __('Shared by :count links', ['count' => $live]);
+        return trans_choice('{1}Shared by one link|Shared by :count links', $live);
     }
 
     /**
@@ -520,8 +516,8 @@ class ContactViewModel
             'number' => $version->version_number,
             'since' => end($chain)['from']->isoFormat('LL'),
             'shows' => implode(', ', [
-                $sections === 1 ? __('1 section') : __(':count sections', ['count' => $sections]),
-                $fields === 1 ? __('1 field') : __(':count fields', ['count' => $fields]),
+                trans_choice(':count section|:count sections', $sections),
+                trans_choice(':count field|:count fields', $fields),
             ]),
         ];
     }
@@ -541,9 +537,7 @@ class ContactViewModel
             return "{$invariant} ".__('Nothing is being kept out of sight: every answer written here is on a page it can be seen on.');
         }
 
-        return "{$invariant} ".($count === 1
-            ? __('One value written under another version is kept out of sight, and comes back with the version that shows it.')
-            : __(':count values written under other versions are kept out of sight, and come back with the version that shows them.', ['count' => $count]));
+        return "{$invariant} ".trans_choice('{1}One value written under another version is kept out of sight, and comes back with the version that shows it.|:count values written under other versions are kept out of sight, and come back with the version that shows them.', $count);
     }
 
     public function setAsideCount(): int

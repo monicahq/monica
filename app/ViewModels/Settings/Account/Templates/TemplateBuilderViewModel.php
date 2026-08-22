@@ -395,6 +395,6 @@ class TemplateBuilderViewModel
             return __('no fields');
         }
 
-        return $count === 1 ? __('1 field') : __(':count fields', ['count' => $count]);
+        return trans_choice(':count field|:count fields', $count);
     }
 }

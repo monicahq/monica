@@ -94,9 +94,7 @@ class MarketplaceViewModel
                 'description' => $category->description,
                 'icon' => $category->icon,
                 'iconClass' => MarketplaceCategoryEnum::tryFrom($category->key)?->iconClass() ?? 'bg-sand text-muted',
-                'countLabel' => $category->listing_count === 1
-                    ? __('1 listing')
-                    : __(':count listings', ['count' => $category->listing_count]),
+                'countLabel' => trans_choice(':count listing|:count listings', $category->listing_count),
                 'href' => $this->urlWith(['category' => $category->key === $this->category() ? null : $category->key]),
                 'isCurrent' => $category->key === $this->category(),
             ])
@@ -185,7 +183,7 @@ class MarketplaceViewModel
     {
         $count = $this->matching()->count();
 
-        return $count === 1 ? __('1 listing') : __(':count listings', ['count' => $count]);
+        return trans_choice(':count listing|:count listings', $count);
     }
 
     /**
@@ -214,7 +212,7 @@ class MarketplaceViewModel
 
     public function showMoreLabel(): string
     {
-        return __('Show :count more', ['count' => self::PER_PAGE]);
+        return trans_choice('[0,*]Show :count more', self::PER_PAGE);
     }
 
     public function query(): string
@@ -278,9 +276,7 @@ class MarketplaceViewModel
             'facts' => self::facts($listing),
             'authorLabel' => __('By :author', ['author' => $listing->author_name]),
             'language' => config("monica.locales.{$listing->locale}.label") ?? $listing->locale,
-            'installLabel' => $listing->install_count === 1
-                ? __('1 installation')
-                : __(':count installations', ['count' => $listing->install_count]),
+            'installLabel' => trans_choice(':count installation|:count installations', $listing->install_count),
             'isInstalled' => $installation !== null,
             'hasUpdate' => $installation?->update_available_version_id !== null,
         ];
@@ -305,19 +301,19 @@ class MarketplaceViewModel
             $fields = array_sum(array_map(fn (array $row): int => count($row['section']['fields'] ?? []), $sections));
 
             return implode(' · ', [
-                count($pages) === 1 ? __('1 page') : __(':count pages', ['count' => count($pages)]),
-                count($sections) === 1 ? __('1 section') : __(':count sections', ['count' => count($sections)]),
-                $fields === 1 ? __('1 field') : __(':count fields', ['count' => $fields]),
+                trans_choice(':count page|:count pages', count($pages)),
+                trans_choice(':count section|:count sections', count($sections)),
+                trans_choice(':count field|:count fields', $fields),
             ]);
         }
 
         $fields = count($payload['section']['fields'] ?? []);
         $lists = count($payload['value_lists'] ?? []);
 
-        $parts = [$fields === 1 ? __('1 field') : __(':count fields', ['count' => $fields])];
+        $parts = [trans_choice(':count field|:count fields', $fields)];
 
         if ($lists > 0) {
-            $parts[] = $lists === 1 ? __('1 value list') : __(':count value lists', ['count' => $lists]);
+            $parts[] = trans_choice(':count value list|:count value lists', $lists);
         }
 
         return implode(' · ', $parts);

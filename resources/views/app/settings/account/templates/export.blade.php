@@ -82,7 +82,7 @@
           <p class="text-base font-semibold text-ink">{{ __('Not in the file') }}</p>
 
           <p class="text-sm text-pretty text-ink-soft">
-            {{ __('The :count on this template, and everything written in their fields. The file describes the form, never the answers.', ['count' => $viewModel->recordCountLabel()]) }}
+            {{ __('The :records on this template, and everything written in their fields. The file describes the form, never the answers.', ['records' => $viewModel->recordCountLabel()]) }}
           </p>
         </div>
       </x-panel>

@@ -78,22 +78,19 @@ class ShareSectionViewModel
 
     public function lineLabel(): string
     {
-        return __(':count lines · :size', [
-            'count' => substr_count($this->json(), "\n") + 1,
-            'size' => $this->sizeLabel(),
-        ]);
+        return trans_choice(
+            ':count line · :size|:count lines · :size',
+            substr_count($this->json(), "\n") + 1,
+            ['size' => $this->sizeLabel()],
+        );
     }
 
     public function structureLabel(): string
     {
         return __(':sections, :fields, :lists', [
             'sections' => __('1 section'),
-            'fields' => $this->fieldCount() === 1
-                ? __('1 field')
-                : __(':count fields', ['count' => $this->fieldCount()]),
-            'lists' => $this->valueListCount() === 1
-                ? __('1 list of choices')
-                : __(':count lists of choices', ['count' => $this->valueListCount()]),
+            'fields' => trans_choice(':count field|:count fields', $this->fieldCount()),
+            'lists' => trans_choice(':count list of choices|:count lists of choices', $this->valueListCount()),
         ]);
     }
 

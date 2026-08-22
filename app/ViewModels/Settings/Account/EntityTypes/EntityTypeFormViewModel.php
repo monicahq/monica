@@ -194,11 +194,7 @@ class EntityTypeFormViewModel
             return null;
         }
 
-        if ($this->entityType->entity_count === 1) {
-            return __('1 record uses this type');
-        }
-
-        return __(':count records use this type', ['count' => $this->entityType->entity_count]);
+        return trans_choice(':count record uses this type|:count records use this type', $this->entityType->entity_count);
     }
 
     public function uuid(): ?string

@@ -171,6 +171,23 @@ class VaultSettingsViewModel
         return $this->vault->contact_count;
     }
 
+    /**
+     * What deleting the vault takes with it, said only when there is somebody to
+     * lose. The wording at exactly one names one contact, so it cannot stand in
+     * for none, and the panel already says what a vault takes with it.
+     */
+    public function deletionConsequence(): string
+    {
+        if ($this->contactCount() === 0) {
+            return '';
+        }
+
+        return trans_choice(
+            '{1}The one contact in it goes too, and everything written about them.|The :count contacts in it go too, and everything written about them.',
+            $this->contactCount(),
+        );
+    }
+
     private function contactDefault(): ?VaultDefaultTemplate
     {
         return VaultDefaultTemplate::query()

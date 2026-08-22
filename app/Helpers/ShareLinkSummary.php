@@ -55,12 +55,8 @@ class ShareLinkSummary
 
         $withheld = self::sectionsTotal($contact) - self::sectionsShown($link, $contact);
 
-        if ($withheld === 1) {
-            $held[] = __('One section');
-        }
-
-        if ($withheld > 1) {
-            $held[] = __(':count sections', ['count' => $withheld]);
+        if ($withheld > 0) {
+            $held[] = trans_choice('{1}One section|:count sections', $withheld);
         }
 
         if (! $link->includes_sensitive_fields) {

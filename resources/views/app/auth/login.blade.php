@@ -43,7 +43,7 @@
             />
 
             <x-checkbox id="remember" class="w-fit" :checked="(bool) old('remember')">
-              {{ __('Remember me for :count days', ['count' => config('monica.remember_duration_days')]) }}
+              {{ trans_choice('Remember me for :count day|Remember me for :count days', config('monica.remember_duration_days')) }}
             </x-checkbox>
 
             <x-turnstile data-size="flexible" />

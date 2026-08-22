@@ -124,7 +124,7 @@ class VaultDashboardViewModel
             return __('The whole list');
         }
 
-        return __('All :count people', ['count' => $this->vault->contact_count]);
+        return trans_choice(':count person|All :count people', $this->vault->contact_count);
     }
 
     /**
@@ -207,11 +207,7 @@ class VaultDashboardViewModel
             return __('Nobody in it yet');
         }
 
-        if ($this->vault->contact_count === 1) {
-            return __('1 person');
-        }
-
-        return __(':count people', ['count' => $this->vault->contact_count]);
+        return trans_choice(':count person|:count people', $this->vault->contact_count);
     }
 
     /**
@@ -225,11 +221,7 @@ class VaultDashboardViewModel
             return __('Takes the vault and everything in it.');
         }
 
-        if ($this->vault->contact_count === 1) {
-            return __('Takes the one person in it and everything written about them.');
-        }
-
-        return __('Takes :count people and everything written about them.', ['count' => $this->vault->contact_count]);
+        return trans_choice('{1}Takes the one person in it and everything written about them.|Takes :count people and everything written about them.', $this->vault->contact_count);
     }
 
     /**

@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Contracts\Translatable;
 use Illuminate\Console\Command;
+use Illuminate\Translation\MessageSelector;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RegexIterator;
@@ -47,7 +48,33 @@ class LocalizeCommand extends Command
      */
     private const array FUNCTIONS = ['__', 'trans', 'trans_choice', '@lang'];
 
+    /**
+     * What a phrase says to declare that its wording does not change with the
+     * number it shows. Laravel reads it as a range covering every number, and
+     * strips it before the reader sees it.
+     */
+    private const string COVERS_EVERY_NUMBER = '[0,*]';
+
+    private const string SINGLE_QUOTED = '\'((?:\\\\.|[^\'\\\\])*)\'';
+
+    private const string DOUBLE_QUOTED = '"((?:\\\\.|[^"\\\\])*)"';
+
     private int $filesRead = 0;
+
+    /**
+     * The places where a number is shown without the wordings that go with it,
+     * found while the files are read for strings.
+     *
+     * @var list<string>
+     */
+    private array $misuses = [];
+
+    /**
+     * How many wordings each language needs, worked out once per locale.
+     *
+     * @var array<string, int>
+     */
+    private array $wordingsPerLocale = [];
 
     public function handle(): int
     {
@@ -61,12 +88,23 @@ class LocalizeCommand extends Command
         ));
 
         $outOfDate = $this->report($keys);
+        $misused = $this->reportMisuses();
         $rows = [];
+        $incomplete = [];
+        $uncounted = [];
 
         foreach ($this->locales() as $locale) {
             $result = $this->synchronize($locale, $keys);
 
             $outOfDate = $outOfDate || $result['changed'] || $result['missing'] > 0;
+
+            if ($result['incomplete'] !== []) {
+                $incomplete[$locale] = $result['incomplete'];
+            }
+
+            if ($result['uncounted'] !== []) {
+                $uncounted[$locale] = $result['uncounted'];
+            }
 
             $rows[] = [
                 $locale,
@@ -76,6 +114,15 @@ class LocalizeCommand extends Command
         }
 
         $this->table(['Locale', 'Translated', 'Missing'], $rows);
+
+        $this->reportIncomplete($incomplete);
+        $this->reportUncounted($uncounted);
+
+        if ($misused) {
+            $this->error('A phrase that shows a number is asking for one wording. See the list above.');
+
+            return self::FAILURE;
+        }
 
         if (! $this->option('check')) {
             $this->info('Locale files synchronized.');
@@ -134,11 +181,70 @@ class LocalizeCommand extends Command
     }
 
     /**
+     * Say which phrases that show a number are missing a wording, or carry one
+     * too many. Turkish needs one and everywhere else needs two, so a phrase
+     * that looks complete in one locale can be wrong in another.
+     *
+     * @param  array<string, list<string>>  $incomplete
+     */
+    private function reportIncomplete(array $incomplete): void
+    {
+        if ($incomplete === []) {
+            return;
+        }
+
+        foreach ($incomplete as $locale => $keys) {
+            $this->newLine();
+            $this->line(sprintf(
+                '%s needs %d wording(s) for each phrase that shows a number, and these do not have that many (%d):',
+                $locale,
+                $this->wordingsNeeded($locale),
+                count($keys),
+            ));
+
+            foreach ($keys as $key) {
+                $this->line('  "'.$key.'"');
+            }
+        }
+
+        $this->newLine();
+    }
+
+    /**
+     * Say which wordings show a number without saying where it goes. This is the
+     * one that English can never reveal: "1 personne|:count personnes" reads
+     * correctly at one and at two, and renders "1 personne" at zero.
+     *
+     * @param  array<string, list<string>>  $uncounted
+     */
+    private function reportUncounted(array $uncounted): void
+    {
+        if ($uncounted === []) {
+            return;
+        }
+
+        foreach ($uncounted as $locale => $keys) {
+            $this->newLine();
+            $this->line(sprintf(
+                '%s has %d phrase(s) whose wording shows a number without :count in it. Write the placeholder, never the digit:',
+                $locale,
+                count($keys),
+            ));
+
+            foreach ($keys as $key) {
+                $this->line('  "'.$key.'"');
+            }
+        }
+
+        $this->newLine();
+    }
+
+    /**
      * Write one locale file, keeping the translations it already holds and
      * dropping what the code no longer asks for.
      *
      * @param  list<string>  $keys
-     * @return array{translated: int, missing: int, changed: bool}
+     * @return array{translated: int, missing: int, changed: bool, incomplete: list<string>, uncounted: list<string>}
      */
     private function synchronize(string $locale, array $keys): array
     {
@@ -147,12 +253,24 @@ class LocalizeCommand extends Command
 
         $translations = [];
         $missing = 0;
+        $incomplete = [];
+        $uncounted = [];
 
         foreach ($keys as $key) {
             $translation = $existing[$key] ?? '';
 
             if ($isSource) {
                 $translations[$key] = $key;
+
+                if ($this->isCountedPhrase($key) && $this->wordingsIn($key) !== $this->wordingsExpected($key, $locale)) {
+                    $missing++;
+                    $incomplete[] = $key;
+                }
+
+                if ($this->isCountedPhrase($key) && $this->wordingsMissingTheCount($key) !== []) {
+                    $missing++;
+                    $uncounted[] = $key;
+                }
 
                 continue;
             }
@@ -164,6 +282,21 @@ class LocalizeCommand extends Command
             }
 
             $translations[$key] = $translation;
+
+            // A phrase translated with the wrong number of wordings is not
+            // translated: the extra ones are text no number will reach, and a
+            // missing one leaves a number reading in the wrong language. The
+            // value is kept all the same, so nobody's work is thrown away
+            // between running this and correcting it.
+            if ($this->isCountedPhrase($key) && $this->wordingsIn($translation) !== $this->wordingsExpected($key, $locale)) {
+                $missing++;
+                $incomplete[] = $key;
+            }
+
+            if ($this->isCountedPhrase($key) && $this->wordingsMissingTheCount($translation) !== []) {
+                $missing++;
+                $uncounted[] = $key;
+            }
         }
 
         ksort($translations, SORT_STRING);
@@ -184,6 +317,8 @@ class LocalizeCommand extends Command
             'translated' => count($translations),
             'missing' => $missing,
             'changed' => $changed,
+            'incomplete' => $incomplete,
+            'uncounted' => $uncounted,
         ];
     }
 
@@ -200,9 +335,13 @@ class LocalizeCommand extends Command
         foreach ($this->files() as $file) {
             $this->filesRead++;
 
-            foreach ($this->keysIn($this->codeOf($file)) as $key) {
+            $code = $this->codeOf($file);
+
+            foreach ($this->keysIn($code) as $key) {
                 $keys[$key] = true;
             }
+
+            $this->recordMisuses($file, $code);
         }
 
         foreach ($this->translatableEnums() as $enum) {
@@ -291,6 +430,285 @@ class LocalizeCommand extends Command
         }
 
         return $keys;
+    }
+
+    /**
+     * The two ways a phrase that shows a number goes wrong: asked for with a
+     * call that cannot vary its wording, or picked by comparing the count to
+     * one, which is a rule that holds in English and nowhere near everywhere.
+     */
+    private function recordMisuses(SplFileInfo $file, string $code): void
+    {
+        $where = str_replace(base_path().'/', '', $file->getPathname());
+
+        foreach (['__', 'trans', '@lang'] as $function) {
+            foreach ([self::SINGLE_QUOTED, self::DOUBLE_QUOTED] as $quoted) {
+                preg_match_all('/'.preg_quote($function, '/').'\(\s*'.$quoted.'/', $code, $matches);
+
+                foreach ($matches[1] as $match) {
+                    $phrase = stripcslashes($match);
+
+                    if (str_contains($phrase, ':count')) {
+                        $this->misuses[] = sprintf(
+                            '%s asks for "%s" with %s(), which cannot vary a wording by number. Use trans_choice().',
+                            $where,
+                            $phrase,
+                            $function,
+                        );
+
+                        continue;
+                    }
+
+                    // A wording said to apply to certain numbers, asked for by a
+                    // call that does not read conditions. Only trans_choice takes
+                    // the condition off, so here it reaches the reader as text.
+                    if ($this->carriesACondition($phrase)) {
+                        $this->misuses[] = sprintf(
+                            '%s asks for "%s" with %s(), which leaves the condition in the sentence for the reader to see. Use trans_choice().',
+                            $where,
+                            $phrase,
+                            $function,
+                        );
+                    }
+                }
+            }
+        }
+
+        $this->recordUnguardedPins($where, $code);
+
+        // An equality against one, not an inequality, and not any comparison at
+        // all unless what follows chooses between phrases one of which shows a
+        // number. Without that second condition every `preg_match(...) !== 1`
+        // and every choice between two unrelated sentences reads as a misuse.
+        preg_match_all('/(?<![!<>=])(?:===|==)(?!=)\s*1\b/', $code, $matches, PREG_OFFSET_CAPTURE);
+
+        foreach ($matches[0] as [$match, $offset]) {
+            $window = mb_strcut($code, $offset, 240);
+
+            if (! str_contains($window, ':count')) {
+                continue;
+            }
+
+            if (preg_match('/(?:__|trans|trans_choice|@lang)\(/', $window) !== 1) {
+                continue;
+            }
+
+            $this->misuses[] = sprintf(
+                '%s picks a wording by comparing a count to 1, near "%s". The language decides that, not the code.',
+                $where,
+                trim(preg_replace('/\s+/', ' ', mb_strcut($window, 0, 70)) ?? ''),
+            );
+        }
+    }
+
+    /**
+     * A wording pinned to a single number cannot serve zero: "Opened once" and
+     * "One section" name one thing, and zero is not one thing. Laravel's {1}
+     * matches one and nothing else, so at zero the phrase falls through to the
+     * plural rules and lands on the first wording, which is the pinned one. A
+     * French reader sees the singular there, since French groups zero with one.
+     *
+     * So a phrase with a pinned wording is only safe where zero cannot reach it,
+     * and this looks for the guard that keeps it away. Read as text, from the
+     * call back to the start of its function, which is why it can be spelled
+     * around and why the report says so.
+     *
+     * A view has no function to read back to, and a guard written there belongs
+     * to the screen rather than to the phrase, which is the thing that has to be
+     * safe wherever it is shown. A pinned wording in a view is therefore refused
+     * outright: it belongs in whatever builds the screen's words.
+     */
+    private function recordUnguardedPins(string $where, string $code): void
+    {
+        foreach ([self::SINGLE_QUOTED, self::DOUBLE_QUOTED] as $quoted) {
+            preg_match_all(
+                '/trans_choice\(\s*'.$quoted.'/',
+                $code,
+                $matches,
+                PREG_OFFSET_CAPTURE,
+            );
+
+            foreach ($matches[1] as [$phrase, $offset]) {
+                if (! $this->isPinnedToOneNumber(stripcslashes($phrase))) {
+                    continue;
+                }
+
+                if (str_ends_with($where, '.blade.php')) {
+                    $this->misuses[] = sprintf(
+                        '%s pins a wording to one number in "%s". A view cannot keep zero away from it, so build the phrase where the screen gets its words and guard it there.',
+                        $where,
+                        mb_strcut(stripcslashes($phrase), 0, 60),
+                    );
+
+                    continue;
+                }
+
+                if ($this->guardsZeroBefore($code, $offset)) {
+                    continue;
+                }
+
+                $this->misuses[] = sprintf(
+                    '%s pins a wording to one number in "%s" without keeping zero away from it. Zero reads that wording in any language that groups it with the singular.',
+                    $where,
+                    mb_strcut(stripcslashes($phrase), 0, 60),
+                );
+            }
+        }
+    }
+
+    /**
+     * Whether anything between the start of the enclosing function and this
+     * point deals with zero, whether by comparing to it, by asking for more
+     * than none, or by finding an empty list.
+     */
+    private function guardsZeroBefore(string $code, int $offset): bool
+    {
+        $start = mb_strrpos(mb_strcut($code, 0, $offset), 'function ');
+
+        $body = $start === false
+            ? mb_strcut($code, max(0, $offset - 600), min(600, $offset))
+            : mb_strcut($code, $start, $offset - $start);
+
+        return preg_match('/(?:===|==|!==|!=)\s*0\b|>\s*0\b|(?:===|!==)\s*\[\]|empty\(/', $body) === 1;
+    }
+
+    /**
+     * Say where a number is shown without the wordings that go with it. The
+     * second check reads text rather than parsing it, so a report is proof that
+     * something is wrong and an empty report is not proof that nothing is.
+     */
+    private function reportMisuses(): bool
+    {
+        if ($this->misuses === []) {
+            return false;
+        }
+
+        $this->newLine();
+        $this->line(sprintf('A phrase that shows a number needs a wording per plural category (%d found):', count($this->misuses)));
+
+        foreach ($this->misuses as $misuse) {
+            $this->line('  '.$misuse);
+        }
+
+        $this->newLine();
+        $this->line('The second of these is found by reading the code as text, so it can be spelled around. An empty report is not a guarantee.');
+        $this->newLine();
+
+        return true;
+    }
+
+    /**
+     * A phrase that shows a number carries one wording per plural category of
+     * the language, separated by a pipe, and is asked for with trans_choice.
+     * One that shows a number its wording does not depend on says so instead.
+     */
+    private function isCountedPhrase(string $key): bool
+    {
+        return str_contains($key, '|') || $this->coversEveryNumber($key);
+    }
+
+    private function coversEveryNumber(string $key): bool
+    {
+        return str_starts_with($key, self::COVERS_EVERY_NUMBER);
+    }
+
+    /**
+     * How many wordings this phrase needs in this locale. A phrase that covers
+     * every number needs the one it has, whatever the language would otherwise
+     * ask for.
+     */
+    private function wordingsExpected(string $key, string $locale): int
+    {
+        if ($this->coversEveryNumber($key)) {
+            return 1;
+        }
+
+        return $this->wordingsNeeded($locale);
+    }
+
+    /**
+     * How many wordings a language needs, asked of the same function that will
+     * pick one at render time. A table kept here could disagree with what a
+     * reader sees; this cannot.
+     */
+    private function wordingsNeeded(string $locale): int
+    {
+        if (isset($this->wordingsPerLocale[$locale])) {
+            return $this->wordingsPerLocale[$locale];
+        }
+
+        $selector = new MessageSelector;
+        $highest = 0;
+
+        foreach (range(0, 200) as $number) {
+            $highest = max($highest, $selector->getPluralIndex($locale, $number));
+        }
+
+        return $this->wordingsPerLocale[$locale] = $highest + 1;
+    }
+
+    private function wordingsIn(string $phrase): int
+    {
+        return count(explode('|', $phrase));
+    }
+
+    /**
+     * The wordings that show a number without saying where it goes. Writing the
+     * digit instead of the placeholder is what makes a French reader see
+     * "1 personne" at a count of zero, since French groups zero with the
+     * singular and reads the singular wording there.
+     *
+     * A wording pinned to a single number is exempt, because there the number is
+     * already known and spelling it as a word is a copy choice. A wording that
+     * covers more than one number is not: "[0,*]1 gadget" reads "1 gadget" at
+     * every number, which is the same defect wearing a condition.
+     *
+     * @return list<string>
+     */
+    private function wordingsMissingTheCount(string $phrase): array
+    {
+        $missing = [];
+
+        foreach (explode('|', $phrase) as $wording) {
+            if ($this->isPinnedToOneNumber($wording)) {
+                continue;
+            }
+
+            if (str_contains($wording, ':count')) {
+                continue;
+            }
+
+            $missing[] = $wording;
+        }
+
+        return $missing;
+    }
+
+    /**
+     * Whether a wording opens with a condition saying which numbers it applies
+     * to. The shape is the framework's own, so a sentence that merely starts with
+     * a bracket, such as "[Draft] something", is not mistaken for one.
+     */
+    private function carriesACondition(string $wording): bool
+    {
+        return preg_match('/^[{\[][-?\d|*,.]*[}\]]/', $wording) === 1;
+    }
+
+    /**
+     * Whether a wording applies to exactly one number, written either as {1} or
+     * as a range whose ends meet.
+     */
+    private function isPinnedToOneNumber(string $wording): bool
+    {
+        if (preg_match('/^\{\s*(-?\d+)\s*\}/', $wording) === 1) {
+            return true;
+        }
+
+        if (preg_match('/^\[\s*(-?\d+)\s*,\s*(-?\d+)\s*\]/', $wording, $ends) !== 1) {
+            return false;
+        }
+
+        return $ends[1] === $ends[2];
     }
 
     /**

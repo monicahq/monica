@@ -72,10 +72,11 @@ class ShareTemplateViewModel
 
     public function lineLabel(): string
     {
-        return __(':count lines · :size', [
-            'count' => substr_count($this->json(), "\n") + 1,
-            'size' => $this->sizeLabel(),
-        ]);
+        return trans_choice(
+            ':count line · :size|:count lines · :size',
+            substr_count($this->json(), "\n") + 1,
+            ['size' => $this->sizeLabel()],
+        );
     }
 
     /**
@@ -85,15 +86,9 @@ class ShareTemplateViewModel
     public function structureLabel(): string
     {
         return __(':sections, :fields, :lists', [
-            'sections' => $this->sectionCount() === 1
-                ? __('1 section')
-                : __(':count sections', ['count' => $this->sectionCount()]),
-            'fields' => $this->fieldCount() === 1
-                ? __('1 field')
-                : __(':count fields', ['count' => $this->fieldCount()]),
-            'lists' => $this->valueListCount() === 1
-                ? __('1 list of choices')
-                : __(':count lists of choices', ['count' => $this->valueListCount()]),
+            'sections' => trans_choice(':count section|:count sections', $this->sectionCount()),
+            'fields' => trans_choice(':count field|:count fields', $this->fieldCount()),
+            'lists' => trans_choice(':count list of choices|:count lists of choices', $this->valueListCount()),
         ]);
     }
 
@@ -132,9 +127,7 @@ class ShareTemplateViewModel
     {
         $count = $this->template->publishedVersion->record_count;
 
-        return $count === 1
-            ? __('1 record')
-            : __(':count records', ['count' => $count]);
+        return trans_choice(':count record|:count records', $count);
     }
 
     public function sectionCount(): int

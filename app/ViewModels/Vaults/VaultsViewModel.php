@@ -88,11 +88,7 @@ class VaultsViewModel
             return __('Nobody in it yet');
         }
 
-        if ($vault->contact_count === 1) {
-            return __('1 person');
-        }
-
-        return __(':count people', ['count' => $vault->contact_count]);
+        return trans_choice(':count person|:count people', $vault->contact_count);
     }
 
     public function user(): User

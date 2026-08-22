@@ -232,12 +232,20 @@ class ContactsViewModel
     public function resultLine(): string
     {
         if ($this->isNarrowed()) {
-            return __(':count of :total shown.', ['count' => $this->matchingCount(), 'total' => $this->headcount()]);
+            return trans_choice(
+                ':count of :total shown.|:count of :total shown.',
+                $this->matchingCount(),
+                ['total' => $this->headcount()],
+            );
         }
 
-        return $this->headcount() === 1
-            ? __('One person in this vault.')
-            : __('All :count people in this vault, on one scrolling list.', ['count' => $this->headcount()]);
+        // The wording pinned to one names one person, so it cannot stand in for
+        // none. An empty vault says so in the panel below instead.
+        if ($this->headcount() === 0) {
+            return '';
+        }
+
+        return trans_choice('{1}One person in this vault.|All :count people in this vault, on one scrolling list.', $this->headcount());
     }
 
     /**
@@ -246,9 +254,14 @@ class ContactsViewModel
      */
     public function endLine(): string
     {
-        return $this->matchingCount() === 1
-            ? __('End of the list. One person, no pages.')
-            : __('End of the list. :count people, no pages.', ['count' => $this->matchingCount()]);
+        // There is no end of a list that never started, and the wording pinned
+        // to one cannot serve zero in any language. The screen shows its own
+        // sentence when nothing matched, so this one says nothing there.
+        if ($this->matchingCount() === 0) {
+            return '';
+        }
+
+        return trans_choice('{1}End of the list. One person, no pages.|End of the list. :count people, no pages.', $this->matchingCount());
     }
 
     /**
@@ -276,9 +289,7 @@ class ContactsViewModel
             return __('This vault holds nobody so far. Everybody you write down here shows up on this list, and this is where you come looking for them.');
         }
 
-        return $this->waitingCount() === 1
-            ? __('One person here was written down as a partial contact and stays off this list until they are more than a first name.')
-            : __(':count people here were written down as partial contacts and stay off this list until they are more than a first name.', ['count' => $this->waitingCount()]);
+        return trans_choice('{1}One person here was written down as a partial contact and stays off this list until they are more than a first name.|:count people here were written down as partial contacts and stay off this list until they are more than a first name.', $this->waitingCount());
     }
 
     /**

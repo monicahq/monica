@@ -56,10 +56,8 @@ class EntityTypesViewModel
         $records = (int) $this->query()->sum('entity_count');
 
         return __(':types · :records', [
-            'types' => $types === 1 ? __('1 type') : __(':count types', ['count' => $types]),
-            'records' => $records === 1
-                ? __('1 record across all vaults')
-                : __(':count records across all vaults', ['count' => $records]),
+            'types' => trans_choice(':count type|:count types', $types),
+            'records' => trans_choice(':count record across all vaults|:count records across all vaults', $records),
         ]);
     }
 
@@ -86,11 +84,7 @@ class EntityTypesViewModel
             return __('no records');
         }
 
-        if ($count === 1) {
-            return __('1 record');
-        }
-
-        return __(':count records', ['count' => $count]);
+        return trans_choice(':count record|:count records', $count);
     }
 
     /**

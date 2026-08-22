@@ -402,9 +402,10 @@ class StructureFileReader
         $this->fieldCount += count($rows);
 
         if ($this->fieldCount > self::MAX_FIELDS) {
-            $this->refuse(__('This file describes more than :count fields, which is more structure than one file is meant to carry.', [
-                'count' => self::MAX_FIELDS,
-            ]));
+            $this->refuse(trans_choice(
+                'This file describes more than :count field, which is more structure than one file is meant to carry.|This file describes more than :count fields, which is more structure than one file is meant to carry.',
+                self::MAX_FIELDS,
+            ));
         }
 
         $fields = [];
@@ -568,7 +569,10 @@ class StructureFileReader
         }
 
         if (count($node) > self::MAX_VALUE_LISTS) {
-            $this->refuse(__('This file carries more than :count lists of choices.', ['count' => self::MAX_VALUE_LISTS]));
+            $this->refuse(trans_choice(
+                'This file carries more than :count list of choices.|This file carries more than :count lists of choices.',
+                self::MAX_VALUE_LISTS,
+            ));
         }
 
         foreach ($node as $name => $row) {
@@ -800,7 +804,11 @@ class StructureFileReader
         }
 
         if (count($node) > $ceiling) {
-            $this->refuse(__('The file holds more than :count things at :path.', ['count' => $ceiling, 'path' => $path]));
+            $this->refuse(trans_choice(
+                'The file holds more than :count thing at :path.|The file holds more than :count things at :path.',
+                $ceiling,
+                ['path' => $path],
+            ));
         }
 
         return $node;
@@ -846,10 +854,11 @@ class StructureFileReader
         }
 
         if (mb_strlen($value) > $max) {
-            $this->refuse(__('The file holds more than :count characters at :path, which is more than can be stored.', [
-                'count' => $max,
-                'path' => "{$path}.{$key}",
-            ]));
+            $this->refuse(trans_choice(
+                'The file holds more than :count character at :path, which is more than can be stored.|The file holds more than :count characters at :path, which is more than can be stored.',
+                $max,
+                ['path' => "{$path}.{$key}"],
+            ));
         }
 
         return $value;

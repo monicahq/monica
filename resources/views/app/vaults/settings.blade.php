@@ -204,11 +204,9 @@
           </x-button.secondary>
         </x-slot:trigger>
 
-        <p>
-          {{ $viewModel->contactCount() === 1
-            ? __('The one contact in it goes too, and everything written about them.')
-            : __('The :count contacts in it go too, and everything written about them.', ['count' => $viewModel->contactCount()]) }}
-        </p>
+        @if ($viewModel->deletionConsequence() !== '')
+          <p>{{ $viewModel->deletionConsequence() }}</p>
+        @endif
 
         {{--
           The last vault of an account is always the default one, so the two

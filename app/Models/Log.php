@@ -199,10 +199,18 @@ class Log extends Model
     protected function description(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => __(
-                UserActionEnum::tryFrom($this->action)?->description() ?? $this->action,
-                $this->parameters ?? [],
-            ),
+            get: function (): string {
+                $sentence = UserActionEnum::tryFrom($this->action)?->description() ?? $this->action;
+                $parameters = $this->parameters ?? [];
+
+                // A sentence that shows a number carries a wording per plural
+                // category, and only trans_choice picks between them.
+                if (! str_contains($sentence, '|')) {
+                    return __($sentence, $parameters);
+                }
+
+                return trans_choice($sentence, (int) ($parameters['count'] ?? 0), $parameters);
+            },
         );
     }
 }
