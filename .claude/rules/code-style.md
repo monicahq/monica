@@ -5,6 +5,18 @@
 - Laravel provides the most value when you write things the way Laravel intended you to write.
 - Follow documented Laravel approaches; justify any deviations.
 
+## Where the rest lives
+
+This file is the PHP and framework style. The structure of the application is in the skills:
+[actions](../skills/actions/SKILL.md), [controllers](../skills/controllers/SKILL.md),
+[models](../skills/models/SKILL.md), [view models](../skills/view-models/SKILL.md),
+[views](../skills/views/SKILL.md), [routes](../skills/routes/SKILL.md),
+[migrations](../skills/migrations/SKILL.md), [middlewares](../skills/middlewares/SKILL.md).
+Tests have their own rules in [testing.md](testing.md).
+
+When a rule here disagrees with the `laravel-best-practices` skill or with the Laravel Boost
+guidelines, this file wins. The precedence order is in `CLAUDE.md`.
+
 ## General PHP
 
 - You MUST declare one class, interface, trait or enum per file. This has no exception, and applies to tests exactly as it applies to the rest of the application.
@@ -29,6 +41,9 @@
 ## Docblocks
 
 - Omit docblocks for fully type-hinted methods unless a description adds context.
+- Keep the docblock on every relationship, accessor and factory trait: the generic type
+  (`@return BelongsTo<Vault, $this>`, `@return Attribute<string, never>`, `@use HasFactory<ContactFactory>`)
+  cannot be written in the signature, and static analysis reads it.
 - Descriptions must use complete sentences with periods.
 - Import class names in docblocks rather than using fully qualified names.
 - Use single-line format when possible.
@@ -97,7 +112,7 @@
 ## Routing
 
 - Public-facing URLs use kebab-case.
-- Prefer string notation over class array notation.
+- Reference the controller with the class array notation, `[HomeController::class, 'index']`. Every route in `routes/web.php` does.
 - Route names use camelCase.
 - Place the HTTP verb first, followed by other options.
 - Route parameters use camelCase.
@@ -111,7 +126,7 @@
 
 ## Controllers
 
-- Resource controllers use plural resource names.
+- Resource controllers use the singular resource name: `ContactController`, `VaultController`, `TemplateController`.
 - Stick to default keywords (`index`, `new`, `create`, `show`, `edit`, `update`, `destroy`).
 - Extract separate controllers for additional actions.
 
@@ -122,6 +137,9 @@
 ## Migrations
 
 - Write only the `up()` method; you SHALL never write a `down()` method.
+- Never use `constrained()`. Declare the column, then declare the foreign key at the bottom of the
+  migration. The [migrations skill](../skills/migrations/SKILL.md) has the rest, including the file
+  naming that orders them and the rule about editing an existing migration.
 
 ## Validation
 
@@ -236,11 +254,12 @@ same wording at every number. Supply what the locale asks for and no more.
 
 ## Naming Classes
 
-- Controllers: plural resource name + `Controller` suffix; non-resourceful/invokable controllers use the action name + `Controller`.
+- Controllers: singular resource name + `Controller` suffix; non-resourceful/invokable controllers use the action name + `Controller`.
 - Resources/Transformers: plural form + `Resource` or `Transformer` suffix.
 - Jobs: describe the action performed.
 - Events: use tense to indicate timing (before vs. after).
 - Listeners: action name + `Listener` suffix.
 - Commands: add a `Command` suffix to avoid collisions.
 - Mailables: add a `Mail` suffix.
-- Enums: no special prefix; the name should clearly indicate it's an enum.
+- Enums: singular, with the `Enum` suffix: `GenderEnum`, `UserActionEnum`, `FieldTypeEnum`. Every
+  enum in `app/Enums` is named that way except the older `EmailType`.

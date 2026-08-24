@@ -7,8 +7,9 @@ description: Conventions for defining view models. Use when the user wants to cr
 
 - View models are classes responsible for preparing data for the view. They MUST NOT contain any business logic, but they MAY contain presentation logic.
 - You MUST create a view model for every view that needs data to be displayed, except when the data is really minimal.
-- View models MUST be stored in the `app/ViewModels` folder, and MUST be grouped by major domains of the application, like `Account`, `Operate`, `Grow`, like controllers and views. They MUST match the controller folder structure.
+- View models MUST be stored in the `app/ViewModels` folder, and MUST be grouped by major domains of the application (`Admin`, `Auth`, `GettingStarted`, `Marketplace`, `Settings`, `Shared`, `Vaults`), like controllers and views. They MUST match the controller folder structure.
 - View models MUST be named after the view they are used for, with the suffix `ViewModel`. For example, the view model for the `account/profile.blade.php` view is `Account/ProfileViewModel`.
+- Note that examples in this file are written for a different application, and the names of the models and relationships are not correct for this project. Read them with the real domain in mind: `Account`, `Vault`, `Contact`, and `$request->user()` for the user. The structure they show is right, the names are not. Rewrite them against a real screen, for instance `ContactsViewModel` and `MarketplaceViewModel` with its `MarketplaceStatistics` block.
 
 ## Structure for simple pages
 

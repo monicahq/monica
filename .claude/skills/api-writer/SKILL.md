@@ -57,7 +57,9 @@ You MUST create `tests/Feature/Controllers/Api/{Resource}ControllerTest.php`, an
 - You MUST fake the queue with `Queue::fake()` in tests that hit an Action (Actions dispatch `LogUserAction`).
 - You MUST set up data with explicit `['key' => $value]` arrays on factories, and you MUST NOT use `for()`.
 - You MUST assert HTTP status and JSON only, reusing `$this->jsonStructure` with `assertJsonStructure()`/`assertJsonPath()`/`assertJsonCount()`.
-- You MUST use `assignUserToAccount(user, account, role)` from the `TestCase` to build a viewer for the permission cases.
+- You MUST use `assignUserToAccount(user: $user, account: $account)` from the `TestCase` to put a
+  user in an account a test has already built. It takes no role: an account carries none, and holds
+  exactly one user. The permission cases are therefore cross-account cases.
 
 You MUST cover these cases (cross-account and missing-permission both surface as 404):
 1. `it_lists_the_{resources}_of_the_account…` — 200 + count + ordering

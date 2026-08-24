@@ -5,7 +5,7 @@
 - Every model, controller, action, helper, job, mail, service and view model should have a corresponding test.
 - Tests should cover the main functionality and important edge cases, not every single line of code.
 - Use the popular tv show The Office (US version) when you need data to prove a point.
-- We use PHPunit for testing.
+- We use PHPUnit for testing. There is no Pest test and no browser test in the suite.
 
 ## Conventions (all tests)
 
@@ -16,6 +16,8 @@
 - Use named arguments when instantiating classes and calling actions.
 - Add `use RefreshDatabase;` only when the test touches the database.
 - Build models with `factory()->create()` for persisted records and `factory()->make()` for in-memory ones.
+- Build a user for an account that already exists with `assignUserToAccount(user: $user, account: $account)`
+  from `TestCase`. An account holds exactly one user, so the account has to be one nobody is in yet.
 
 ## Model tests
 
@@ -25,8 +27,14 @@
 ## Action tests
 
 - Fake the queue with `Queue::fake()` and assert dispatched jobs with `Queue::assertPushedOn()`.
-- Assert persisted state with `assertDatabaseHas()` and the returned type with `assertInstanceOf()`.
-- Test authorization failures: expect `ModelNotFoundException` when the user is not in the vault or lacks the role.
+- Assert persisted state with `assertDatabaseHas()`, which names the columns, and the returned type
+  with `assertInstanceOf()`. Use `assertModelExists()`, `assertModelMissing()` and
+  `assertSoftDeleted()` when only the existence of the row is in question.
+- Test authorization failures: expect `ModelNotFoundException` when the record belongs to another
+  account. An account carries no role and a vault no membership: a vault belongs to an account, and
+  reaching a record means matching `account_id`, then matching the vault the URL names. The one
+  capacity in the application is instance wide, the administrator, and it guards the admin space
+  rather than anything inside an account.
 - Cover important business logic edge cases (e.g. auto-incrementing position).
 
 ## Job tests
@@ -44,14 +52,26 @@
 
 ## Controller tests (Feature)
 
-- Place controller tests under `Tests\Feature\Controllers`, mirroring the `App`, `Api` and `Marketing` controller structure.
+- Place controller tests under `Tests\Feature\Controllers`, mirroring the `App` controller structure and future `Api` and `Marketing` controllers.
 - Authenticate web requests with `actingAs($user)` and make calls with `get()`, `post()`, `put()` and `delete()`.
 - Authenticate API requests with `Sanctum::actingAs($user)` and make calls with `$this->json(METHOD, url, payload)`.
 - Assert web responses with `assertStatus()`, `assertRedirect()` and `assertSessionHas('status', ...)`.
 - Assert API responses with `assertOk()`, `assertCreated()`, `assertNoContent()`, `assertNotFound()` and `assertUnprocessable()`.
 - Define a shared `$jsonStructure` property and assert it with `assertJsonStructure()`; assert values with `assertJsonPath()` and `assertJsonCount()`.
 - Assert validation failures with `assertUnprocessable()` and `assertJsonValidationErrors()`.
-- Test vault scoping: requests for another vault's resource return not found (or an empty list).
-- Test role restrictions: a non-owner performing an owner-only action gets `assertNotFound()`.
+- Test the compartments: a record reached through another account, or through the wrong vault of the
+  same account, returns not found, and a list of another account's records comes back empty.
+  `resolveRouteBinding()` refuses the account, the controller refuses the vault with
+  `abort_unless(..., 404)`.
 - Assert persisted changes via `refresh()` and deletions via `assertModelMissing()`.
 - Fake the queue with `Queue::fake()` when the controller dispatches jobs.
+- Make a user an administrator with `Administrator::factory()->create(['user_id' => $user->id])`, and
+  test the admin space the way `AdminAccessTest` does: a visitor, a regular user and a deactivated
+  administrator all get not found, over every URL of the area through a `#[DataProvider]`.
+
+## View tests (Feature)
+
+- Blade components are tested, one file per component, under `tests/Feature/Views/Components`, and
+  the shell under `tests/Feature/Views/Layouts`.
+- Render with `$this->blade('<x-badge tone="danger">Bounced</x-badge>')` and assert the classes that
+  carry the meaning and the copy, with `assertSee(..., escape: false)`.

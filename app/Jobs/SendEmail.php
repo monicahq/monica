@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Actions\CreateEmailSent;
+use App\Contracts\HasEnvelope;
 use App\Enums\EmailType;
-use App\Interfaces\HasEnvelope;
 use App\Models\Account;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;

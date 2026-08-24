@@ -1,6 +1,6 @@
 ---
 name: views
-description: Conventions for defining views. Use when the user wants to create or modify views, including Blade templates and view composers.
+description: Conventions for defining views. Use when the user wants to create or modify views, including Blade templates.
 ---
 
 # Views
@@ -8,10 +8,16 @@ description: Conventions for defining views. Use when the user wants to create o
 ## General
 
 - View names MUST be kebab-case, and views MUST be stored in the `resources/views` folder.
-- Views MUST be grouped by major domains of the application, like `account`, `operate`, `grow`, and they MUST match the controller folder structure.
+- Views MUST be grouped by major domains of the application (`admin`, `auth`, `getting-started`, `marketplace`, `settings`, `vaults`), and they MUST match the controller folder structure.
 - View partials MUST be prefixed with an underscore, and MUST be stored in the same folder as the view that uses them.
 - You MUST NOT put domain logic in a view.
-- You MUST NOT compute data in a view. You MUST compute data in a viewmodel, that is passed to the controller, and pass it to the view.
+- You MUST NOT compute data in a view. The controller builds a view model and hands it to the view,
+  and the view only reads it.
+- A `@php` block is for presentation and nothing else: naming a set of classes, aliasing a view model
+  call into a local variable, building a route, mapping a state to a tone and a label. It MUST NOT
+  query the database, call an Action, or decide anything the product cares about. 30 views and 23
+  components hold one, and every one of them turns a value that was already computed into what the
+  screen shows. The same rule applies inside a component.
 - You SHOULD create and maintain PHPDoc blocks at the top of every view file.
 - You MUST create and maintain PHPDoc blocks for components.
 - When passing variables to a partial using `@include`, you MUST explicitly pass all required variables. Relying on the parent scope is not enough, even though Blade makes those variables reachable, because a partial that names what it needs can be read on its own.
@@ -27,6 +33,7 @@ description: Conventions for defining views. Use when the user wants to create o
   A partial that needs no variable of its own, such as one built only out of copy and routes, is included without a second argument.
 
 - You MUST make sure each view is responsive.
+
 
 ## Example
 ```
@@ -56,5 +63,8 @@ description: Conventions for defining views. Use when the user wants to create o
 
 ## Blade components
 
-- You MUST write a component class for every component, in a subfolder when needed (for instance, all the buttons are in `resources/views/components`).
+- Components are anonymous. You MUST write the blade file in `resources/views/components`, declare
+  what it takes with `@props([...])`, and document it in a `{{-- --}}` block at the top with one
+  `@var` per prop, as 46 of the 51 components do. A component class belongs in `app/View/Components`
+  only for a layout (`Shell`, `AccountLayout`, `AdminLayout`, `GuestLayout`, `MarketplaceLayout`).
 - As soon as you notice that a piece of view is repeated in multiple places, you MUST create a component for it.

@@ -21,18 +21,24 @@ description: Adds a new model to the Laravel application. Use when the user want
 - You MUST create the model in `app/Models/`, extending the Eloquent `Model` class.
 - You MUST add a class-level PHPDoc block listing every column as an `@property`, including `id`, `created_at` and `updated_at`.
 - You MUST use `HasFactory` with a `/** @use HasFactory<XFactory> */` docblock above the trait.
-- You MUST declare every constant at the top of the class, right after the traits and before `protected $table`. Never in the middle of the class.
-- You MUST set the table explicitly with `protected $table`.
-- You MUST declare mass-assignable fields in `protected $fillable` typed as `list<string>`.
+- You MUST declare every constant at the top of the class, right after the traits and before the casts. Never in the middle of the class.
+- You MUST NOT set `protected $table`. No model does; the convention gives the right name.
+- You MUST NOT declare `protected $fillable`. No model does, because nothing is mass assigned:
+  attributes are set one by one, as the Usage section below shows.
 - You MUST define casts in a `protected function casts(): array` method, not a property.
 - You MUST cast sensitive string fields to `encrypted`, booleans to `boolean`, integers to `integer`, and dates to `datetime`.
-- Most models belong to a company, so you MUST add the `company()` `BelongsTo` relationship in those cases.
+- Every model that belongs to the tenant MUST have the `account()` `BelongsTo` relationship, and a
+  model that lives inside a vault MUST have `vault()` too.
 - You MUST type-hint every relationship and document it with a generic docblock (e.g. `@return BelongsTo<Vault, $this>`).
 - You MUST expose computed values through accessors using `Attribute::make()` with an `@return Attribute<string, never>` docblock.
 - For translatable names, you MUST store both `name` and `name_translation_key`, and fall back to the translated key via `__()` when the value is null.
 - You MUST add a short docblock to every relationship, accessor and method.
 - You MUST group all the relationships together, before any other method of the model.
 - You MUST not add any business logic to the model; use Actions for that.
+- A model reached through a URL MUST name its key with `getRouteKeyName()` returning `uuid`, and
+  MUST override `resolveRouteBinding()` to scope the lookup to `auth()->user()?->account_id`, so a
+  record of another account is not found rather than forbidden. Eleven models do the first, six the
+  second.
 
 ## Factory
 

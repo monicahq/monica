@@ -8,7 +8,7 @@ description: Conventions for writing thin HTTP controllers that validate input a
 ## Folder convention
 
 - Controllers MUST be split into logical categories: `App` for the logged in app, `Api` for the JSON API.
-- Within these folders, controllers MUST be grouped by major domains of the application, like `Account`, `Operate`, `Grow`, and so on.
+- Within these folders, controllers MUST be grouped by major domains of the application, like `Vaults`, `Settings`, `Marketplace`, `Admin`, and so on.
 
 ## Rules
 
@@ -19,18 +19,29 @@ description: Conventions for writing thin HTTP controllers that validate input a
 ## Things to do
 
 - You MUST only use these methods: `index`, `new`, `create`, `show`, `edit`, `update`, `destroy`
-- You MUST use as fewer parameters as possible:
-  - For `index`, use `$request` only.
-  - For `new` and `create`, use `$request` only.
-  - For `show`, `edit`, `update`, and `destroy`, use `$request` and request route attributes set in the middlewares to keep, if possible, only the `$request` parameter.
-- You MUST not add private methods to a controller, even if code is repeated multiple times.
+- You MUST keep the signature to `$request` followed by the models the URL names, resolved by
+  implicit route model binding, in the order the URL names them, then the optional plain parameters:
+  `index(Request $request, Vault $vault, ?string $filter = null)`,
+  `show(Request $request, Vault $vault, Contact $contact)`.
 - You MUST not put domain logic in the controller - use Action when you need to execute a domain logic.
-- You MUST use Form Requests for create and update operations, or whenever validation or authorization is non-trivial. You SHOULD prefer inline validation for simple endpoints.
-- You MUST use `$request->attributes->get('vault')` to get values from middlewares
+- You MUST NOT put domain logic in a private method of a controller. A private method that
+  assembles a validation rule set, reads a value out of the request or builds a redirect is fine, and
+  twelve controllers have one; anything that decides or writes something belongs to an Action.
+- You MUST validate inline, with `$request->validate([...])` in the method. That is what every
+  controller but one does. A Form Request is for the case where the same rule set is shared by
+  several endpoints or is long enough to bury the method; the application has exactly one,
+  `SaveFieldValuesRequest`. When the rules are long and used once, put them in a private
+  `rules()` method of the controller, as `ContactShareLinkController` does.
+- You MUST let implicit route model binding hand you the model, and you MUST then check it is
+  reachable by the user: `abort_unless($contact->isReachableThrough($request->user(), $vault), 404)`.
+  No middleware resolves models in this application, and `$request->attributes` is never used.
 - You MUST use `$request->user()` — never `Auth::user()`
-- You SHOULD read route parameters with `$request->route()->parameter('gender')`
+- You SHOULD take a plain route parameter as a typed argument (`?string $page = null`).
+  `$request->route()->parameter('gender')` is the last resort, used in four places.
 - You MUST validate the request data, and you MUST NOT sanitize it. In the validation, you MUST NOT check if an object exists by checking if the id exists in the database - this is done in Actions. You MUST make sure the validation rules match the fields of the model, as defined in the migration (ie length of a given string).
-- You MUST instantiate the Action and call `->execute()`, passing `user: $request->user()` and the validated data with named arguments.
+- You MUST pass everything to the Action through its constructor, with named arguments, then call
+  `->execute()` with none: `(new CreateContact(user: $request->user(), vault: $vault, firstName: $validated['first_name']))->execute()`.
+  All 135 actions read that way.
 - You MUST prepare the data for the view in a ViewModel, and pass it to the view.
 - You MUST type-hint the return of every method (`View`, `RedirectResponse`, `JsonResponse`, `AnonymousResourceCollection`, `Response`).
 - You MUST use `return redirect()->route('home.index')` instead of `return to_route('home.index')`.
@@ -40,8 +51,18 @@ description: Conventions for writing thin HTTP controllers that validate input a
 - You MUST return views, not JSON.
 - You MUST always pass validated data to the action.
 - You MUST NOT compact data to a view. Instead, you MUST pass an array with keys that represent what the data is, like `['journals' => $journals]` instead of `compact('journals')`.
-- You MUST wrap scoped `findOrFail()` lookups in a try/catch on `ModelNotFoundException` and `abort(404)`.
-- You MUST redirect with `to_route(...)->with('status', __('Changes saved'))` after a mutation.
+- You MUST refuse anything the user cannot reach with `abort_unless(..., 404)`. A scoped
+  `findOrFail()` is rare here (two places); when you write one, wrap it in a try/catch on
+  `ModelNotFoundException` and `abort(404)`.
+- You MUST redirect with `redirect()->route(...)->with('status', __('Changes saved'))` after a
+  mutation.
+- A failed `$request->validate()` redirects back with the errors and the input on its own, and you
+  write nothing. When an Action refuses the work instead, catch its exception and return
+  `back()->withErrors(['field' => $e->getMessage()])`, adding `->withInput()` when the form has to be
+  repopulated; eleven controllers do the first, three the second. Use
+  `->with('error', __('...'))` for a message that belongs to no field (14 controllers).
+- The view MUST then show `$errors` and repopulate every input with `old('field_name')`.
+
 
 ### If it's an API controller
 

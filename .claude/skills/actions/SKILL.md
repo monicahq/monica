@@ -21,7 +21,11 @@ description: Actions are what the user does within an application. Use when work
 - You MUST pass inputs through the constructor using promoted `readonly` properties (`User`, then the `Vault`/model, then the data).
 - `execute()` MUST only orchestrate small private steps in order: `sanitize()`, `validate()`, the work (`create()`/`update()`/`destroy()`), then `log()`.
 - You MUST sanitize strings with `TextSanitizer`.
-- You MUST throw `ModelNotFoundException` from `validate()` when the user is not in the vault or lacks the role.
+- You MUST throw `ModelNotFoundException` from `validate()` when a record the action was handed
+  belongs to another account. An account carries no role, so nothing else is a permission check in an
+  Action; the administrator capacity is guarded by the `administrator` middleware, not here. A broken
+  domain rule (a draft version, a template that describes something else) is an
+  `InvalidArgumentException` or a dedicated exception, not a `ModelNotFoundException`.
 - You MUST dispatch `LogUserAction` on the `low` queue, along with any other loggers.
 
 ## Action naming conventions
