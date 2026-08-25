@@ -70,7 +70,7 @@
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
             "@php -r \"symlink('.claude/CLAUDE.md', './CLAUDE.md');\" || true",
-            "@php artisan boost:update --ansi --no-interaction --no-discover",
+            "@php artisan boost:update --ansi --no-interaction --no-discover || true",
             "@php -r \"unlink('./CLAUDE.md');\" || true"
         ],
         "post-root-package-install": [
