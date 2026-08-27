@@ -30,7 +30,12 @@ abstract class GuestViewModel
     public function locales(): array
     {
         return collect(config('monica.locales'))
-            ->map(fn (array $locale, string $code): array => [...$locale, 'code' => $code])
+            ->map(fn (array $locale, string $code): array => [
+                'code' => $code,
+                'label' => $locale['label'],
+                'region' => $locale['region'],
+                'flag' => $locale['flag'],
+            ])
             ->values()
             ->all();
     }

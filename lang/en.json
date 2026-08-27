@@ -1322,7 +1322,7 @@
     "Their address": "Their address",
     "Their page is laid out by :template. Hold a section back and it is gone. A page whose sections are all held back does not appear as an empty tab.": "Their page is laid out by :template. Hold a section back and it is gone. A page whose sections are all held back does not appear as an empty tab.",
     "There are no accounts yet": "There are no accounts yet",
-    "There is no Monica header in this file, so there is no saying what it holds. A file exported from Monica starts with \"monica\": { \"format\": … }.": "There is no Monica header in this file, so there is no saying what it holds. A file exported from Monica starts with \"monica\": { \"format\": … }.",
+    "There is no Monica header in this file, so there is no saying what it holds. A file exported from Monica starts with `\"monica\": { \"format\": … }`.": "There is no Monica header in this file, so there is no saying what it holds. A file exported from Monica starts with `\"monica\": { \"format\": … }`.",
     "There is no account behind the address, so it is the address itself that grants the reading. Send it the way you would send a private document.": "There is no account behind the address, so it is the address itself that grants the reading. Send it the way you would send a private document.",
     "There is no version to start from.": "There is no version to start from.",
     "There is nothing here to read. Paste the file, outer braces included.": "There is nothing here to read. Paste the file, outer braces included.",

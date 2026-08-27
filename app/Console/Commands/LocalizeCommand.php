@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Contracts\Translatable;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use Illuminate\Translation\MessageSelector;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -55,6 +56,38 @@ class LocalizeCommand extends Command
      */
     private const string COVERS_EVERY_NUMBER = '[0,*]';
 
+    /**
+     * How each broken rule is described. The wordings name the language rather
+     * than assume it, since the rules themselves are declared by the locale.
+     *
+     * @var array<string, string>
+     */
+    private const array TYPOGRAPHY_REPORTS = [
+        'apostrophe' => '%s has %d value(s) written with an apostrophe it does not use:',
+        'space_before' => '%s has %d value(s) missing the space it writes before a punctuation mark:',
+        'quotes' => '%s has %d value(s) quoted the way it does not quote:',
+        'forbidden_words' => '%s has %d value(s) addressing the reader the way it does not address them:',
+    ];
+
+    /**
+     * Every character a language might write an apostrophe with. A locale names
+     * the one it uses and the rest become wrong for it, so no locale has to list
+     * what it forbids and none can forbid what it requires.
+     *
+     * @var list<string>
+     */
+    private const array APOSTROPHES = ["\u{0027}", "\u{2019}", "\u{2018}", "\u{00B4}", "\u{0060}"];
+
+    /**
+     * Every character a language might open or close a quotation with. Single
+     * quotes are deliberately absent: U+2019 closes a quotation in some
+     * languages and is the apostrophe in others, and a character cannot be
+     * required by one rule and forbidden by another.
+     *
+     * @var list<string>
+     */
+    private const array DOUBLE_QUOTES = ["\u{0022}", "\u{201C}", "\u{201D}", "\u{201E}", "\u{00AB}", "\u{00BB}"];
+
     private const string SINGLE_QUOTED = '\'((?:\\\\.|[^\'\\\\])*)\'';
 
     private const string DOUBLE_QUOTED = '"((?:\\\\.|[^"\\\\])*)"';
@@ -92,6 +125,7 @@ class LocalizeCommand extends Command
         $rows = [];
         $incomplete = [];
         $uncounted = [];
+        $typography = [];
 
         foreach ($this->locales() as $locale) {
             $result = $this->synchronize($locale, $keys);
@@ -106,6 +140,10 @@ class LocalizeCommand extends Command
                 $uncounted[$locale] = $result['uncounted'];
             }
 
+            if ($result['typography'] !== []) {
+                $typography[$locale] = $result['typography'];
+            }
+
             $rows[] = [
                 $locale,
                 $result['translated'],
@@ -117,6 +155,7 @@ class LocalizeCommand extends Command
 
         $this->reportIncomplete($incomplete);
         $this->reportUncounted($uncounted);
+        $this->reportTypography($typography);
 
         if ($misused) {
             $this->error('A phrase that shows a number is asking for one wording. See the list above.');
@@ -240,11 +279,216 @@ class LocalizeCommand extends Command
     }
 
     /**
+     * Say which values are written the way their language does not write things.
+     * Each rule is named separately, so a value breaking two of them is listed
+     * under both and the reader is told what to change rather than that
+     * something is wrong.
+     *
+     * @param  array<string, array<string, list<string>>>  $typography
+     */
+    private function reportTypography(array $typography): void
+    {
+        if ($typography === []) {
+            return;
+        }
+
+        foreach ($typography as $locale => $rules) {
+            foreach ($rules as $rule => $keys) {
+                $this->newLine();
+                $this->line(sprintf(self::TYPOGRAPHY_REPORTS[$rule], $locale, count($keys)));
+
+                foreach ($keys as $key) {
+                    $this->line('  '.$key);
+                }
+            }
+        }
+    }
+
+    /**
+     * The rules of its own language that one translation breaks.
+     *
+     * The rules are read from the locale rather than known here, so this says
+     * nothing about French and a language that declares nothing is not checked.
+     * That is what keeps the eight locales whose conventions nobody has written
+     * down from failing over conventions nobody has written down.
+     *
+     * @return list<string>
+     */
+    private function typographyRulesBrokenBy(string $translation, string $locale): array
+    {
+        $rules = config("monica.locales.{$locale}.typography", []);
+
+        if ($rules === []) {
+            return [];
+        }
+
+        $broken = [];
+
+        foreach (explode('|', $translation) as $wording) {
+            $prose = $this->proseOf($wording);
+
+            if (isset($rules['apostrophe']) && Str::contains($prose, $this->otherThan(self::APOSTROPHES, [$rules['apostrophe']]))) {
+                $broken[] = 'apostrophe';
+            }
+
+            if (isset($rules['space_before']) && $this->missesASpaceBeforeAMark($prose, $rules['space_before'])) {
+                $broken[] = 'space_before';
+            }
+
+            if (isset($rules['quotes']) && Str::contains($prose, $this->otherThan(self::DOUBLE_QUOTES, $rules['quotes']))) {
+                $broken[] = 'quotes';
+            }
+
+            if (isset($rules['quotes']) && $this->quotesTheWrongWay($prose, $rules['quotes'])) {
+                $broken[] = 'quotes';
+            }
+
+            if (isset($rules['forbidden_words']) && $this->usesAForbiddenWord($prose, $rules['forbidden_words'])) {
+                $broken[] = 'forbidden_words';
+            }
+        }
+
+        return array_values(array_unique($broken));
+    }
+
+    /**
+     * Whether a mark this language puts a space before is written without one,
+     * or with a different one.
+     *
+     * The space it asks for cannot be broken across a line, which is the whole
+     * point: an ordinary space lets the mark be pushed onto the next line on its
+     * own, and a reader sees a question mark opening a line.
+     *
+     * @param  array<string, string>  $spaces
+     */
+    private function missesASpaceBeforeAMark(string $prose, array $spaces): bool
+    {
+        foreach ($spaces as $mark => $space) {
+            foreach ($this->positionsOf($prose, $mark) as $position) {
+                if ($position === 0) {
+                    continue;
+                }
+
+                if (mb_substr($prose, $position - 1, 1) !== $space) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Whether the value spaces its quotation marks the way this language does
+     * not space them.
+     *
+     * Only French writes a space inside its guillemets. A language that declares
+     * no inner space has nothing to check here, and its quotation is judged by
+     * which characters it uses rather than by what sits next to them.
+     *
+     * @param  array{open: string, close: string, inner_space?: string}  $quotes
+     */
+    private function quotesTheWrongWay(string $prose, array $quotes): bool
+    {
+        if (! isset($quotes['inner_space'])) {
+            return false;
+        }
+
+        foreach ($this->positionsOf($prose, $quotes['open']) as $position) {
+            if (mb_substr($prose, $position + 1, 1) !== $quotes['inner_space']) {
+                return true;
+            }
+        }
+
+        foreach ($this->positionsOf($prose, $quotes['close']) as $position) {
+            if ($position === 0) {
+                continue;
+            }
+
+            if (mb_substr($prose, $position - 1, 1) !== $quotes['inner_space']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * The characters of a family that this language does not use.
+     *
+     * @param  list<string>  $family
+     * @param  array<array-key, string>  $used
+     * @return list<string>
+     */
+    private function otherThan(array $family, array $used): array
+    {
+        return array_values(array_diff($family, $used));
+    }
+
+    /**
+     * Whether the value uses a word this language has decided against.
+     *
+     * The words are matched whole, so a word that merely holds those letters is
+     * left alone: "statut" is not a reader being addressed as "tu". Which words
+     * a language lists is its own business, and French lists only the pronouns
+     * that can mean nothing else, because a false positive here has no way out.
+     *
+     * @param  list<string>  $words
+     */
+    private function usesAForbiddenWord(string $prose, array $words): bool
+    {
+        $pattern = '/\b('.implode('|', array_map('preg_quote', $words)).')\b/iu';
+
+        return preg_match($pattern, $prose) === 1;
+    }
+
+    /**
+     * Every place one string sits inside another, counted in characters rather
+     * than in bytes, since the characters these rules are about are multi-byte
+     * and a byte offset would point into the middle of one.
+     *
+     * @return list<int>
+     */
+    private function positionsOf(string $haystack, string $needle): array
+    {
+        $positions = [];
+        $offset = 0;
+
+        while (($position = mb_strpos($haystack, $needle, $offset)) !== false) {
+            $positions[] = $position;
+            $offset = $position + 1;
+        }
+
+        return $positions;
+    }
+
+    /**
+     * One wording with everything that is not prose taken out of it, which today
+     * means its placeholders.
+     *
+     * A placeholder carries a colon that belongs to the framework rather than to
+     * the sentence, and French puts a space before a colon. Left in, ":name"
+     * would be read as punctuation missing its space, which is the mistake that
+     * made the first count of this file eight times too high.
+     *
+     * A span between backticks is code, and code is written the same way in every
+     * language. A JSON sample quotes its keys with the straight double quote and
+     * separates them from their values with an unspaced colon, and no language
+     * gets to punctuate that differently without breaking it.
+     */
+    private function proseOf(string $wording): string
+    {
+        $withoutCode = preg_replace('/`[^`]*`/', 'x', $wording) ?? $wording;
+
+        return preg_replace('/:[A-Za-z_]\w*/', 'x', $withoutCode) ?? $withoutCode;
+    }
+
+    /**
      * Write one locale file, keeping the translations it already holds and
      * dropping what the code no longer asks for.
      *
      * @param  list<string>  $keys
-     * @return array{translated: int, missing: int, changed: bool, incomplete: list<string>, uncounted: list<string>}
+     * @return array{translated: int, missing: int, changed: bool, incomplete: list<string>, uncounted: list<string>, typography: array<string, list<string>>}
      */
     private function synchronize(string $locale, array $keys): array
     {
@@ -255,6 +499,7 @@ class LocalizeCommand extends Command
         $missing = 0;
         $incomplete = [];
         $uncounted = [];
+        $typography = [];
 
         foreach ($keys as $key) {
             $translation = $existing[$key] ?? '';
@@ -297,6 +542,11 @@ class LocalizeCommand extends Command
                 $missing++;
                 $uncounted[] = $key;
             }
+
+            foreach ($this->typographyRulesBrokenBy($translation, $locale) as $rule) {
+                $missing++;
+                $typography[$rule][] = $key;
+            }
         }
 
         ksort($translations, SORT_STRING);
@@ -319,6 +569,7 @@ class LocalizeCommand extends Command
             'changed' => $changed,
             'incomplete' => $incomplete,
             'uncounted' => $uncounted,
+            'typography' => $typography,
         ];
     }
 

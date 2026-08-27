@@ -24,3 +24,12 @@ You MUST follow these steps, in order:
 4. You MUST run `php artisan monica:localize` again and confirm the new locale reports nothing missing.
 5. You MUST NOT touch the language pickers or the validation rules. They all read `config('monica.locales')`, so a registered locale shows up on its own.
 6. You MUST run `php artisan test` afterwards, since a test that counts the locales may need updating.
+7. You MUST run `php artisan monica:localize --check` to confirm the new locale is in sync with the code.
+
+You MAY also declare how the new language punctuates, as a `typography` key in the same
+`config/monica.php` entry, and write its section in
+[`.claude/rules/translations.md`](../../rules/translations.md). It is optional: a locale that declares
+nothing is not checked, which is where eight of the nine stand. French is written there in full and is
+the example to copy. Declare it only if you read the language, since the check then refuses every
+value that breaks it, including the ones already translated.
+

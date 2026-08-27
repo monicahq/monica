@@ -16,6 +16,10 @@ class LocalizeCommandTest extends TestCase
 
     private const string COVERS_EVERY_NUMBER = '[0,*]Show :count more';
 
+    private const string PREFERENCES = 'Preferences';
+
+    private const string DELETE_NAME = 'Delete :name?';
+
     private string $langPath;
 
     protected function setUp(): void
@@ -362,6 +366,251 @@ class LocalizeCommandTest extends TestCase
 
         $this->assertSame(Command::SUCCESS, $status);
         $this->assertStringNotContainsString('index.blade.php', Artisan::output());
+    }
+
+    #[Test]
+    public function it_reports_a_value_written_with_an_ordinary_space_before_a_question_mark(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => 'Tout supprimer ?']);
+
+        $this->artisan('monica:localize')
+            ->expectsOutputToContain('fr_FR has 1 value(s) missing the space it writes before a punctuation mark')
+            ->assertSuccessful();
+    }
+
+    #[Test]
+    public function it_leaves_a_value_written_with_a_narrow_non_breaking_space_before_a_question_mark_alone(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => "Tout supprimer\u{202F}?"]);
+
+        $this->assertStringNotContainsString('missing the space', $this->outputOfLocalize());
+    }
+
+    #[Test]
+    public function it_reports_a_value_written_with_no_space_at_all_before_a_question_mark(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => 'Tout supprimer?']);
+
+        $this->artisan('monica:localize')
+            ->expectsOutputToContain('fr_FR has 1 value(s) missing the space it writes before a punctuation mark')
+            ->assertSuccessful();
+    }
+
+    #[Test]
+    public function it_leaves_a_value_written_with_a_full_non_breaking_space_before_a_colon_alone(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => "Sections\u{00A0}: deux"]);
+
+        $this->assertStringNotContainsString('missing the space', $this->outputOfLocalize());
+    }
+
+    #[Test]
+    public function it_reports_a_narrow_space_before_a_colon_because_a_colon_takes_the_full_one(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => "Sections\u{202F}: deux"]);
+
+        $this->artisan('monica:localize')
+            ->expectsOutputToContain('fr_FR has 1 value(s) missing the space it writes before a punctuation mark')
+            ->assertSuccessful();
+    }
+
+    #[Test]
+    public function it_does_not_mistake_the_colon_of_a_placeholder_for_punctuation_wanting_a_space(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::DELETE_NAME => "Supprimer :name\u{202F}?"]);
+
+        $this->assertStringNotContainsString('missing the space', $this->outputOfLocalize());
+    }
+
+    #[Test]
+    public function it_reports_a_guillemet_written_with_an_ordinary_space_inside_it(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::DELETE_NAME => "Supprimer « :name »\u{202F}?"]);
+
+        $this->artisan('monica:localize')
+            ->expectsOutputToContain('fr_FR has 1 value(s) quoted the way it does not quote')
+            ->assertSuccessful();
+    }
+
+    #[Test]
+    public function it_leaves_a_guillemet_written_with_a_narrow_non_breaking_space_inside_it_alone(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::DELETE_NAME => "Supprimer «\u{202F}:name\u{202F}»\u{202F}?"]);
+
+        $this->assertStringNotContainsString('quoted the way', $this->outputOfLocalize());
+    }
+
+    #[Test]
+    public function it_leaves_a_locale_that_declares_no_typography_alone(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        config(['monica.locales.de_DE.typography' => []]);
+        $this->writeTranslations('de_DE', [self::PREFERENCES => "Alles loschen ? L'image"]);
+
+        $this->assertDoesNotMatchRegularExpression('/^de_DE has \d+ value/m', $this->outputOfLocalize());
+    }
+
+    #[Test]
+    public function it_leaves_the_english_source_alone_because_english_declares_no_typography(): void
+    {
+        $this->assertDoesNotMatchRegularExpression('/^en has \d+ value/m', $this->outputOfLocalize());
+    }
+
+    #[Test]
+    public function it_reads_each_wording_of_a_counted_phrase_as_prose_of_its_own(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::COUNTED => ':count personne|:count personnes ?']);
+
+        $this->artisan('monica:localize')
+            ->expectsOutputToContain('fr_FR has 1 value(s) missing the space it writes before a punctuation mark')
+            ->assertSuccessful();
+    }
+
+    #[Test]
+    public function it_reports_a_value_written_with_a_straight_apostrophe(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => "L'image"]);
+
+        $this->artisan('monica:localize')
+            ->expectsOutputToContain('fr_FR has 1 value(s) written with an apostrophe it does not use')
+            ->assertSuccessful();
+    }
+
+    #[Test]
+    public function it_leaves_a_value_written_with_a_typographic_apostrophe_alone(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => "L\u{2019}image"]);
+
+        $this->assertStringNotContainsString('apostrophe it does not use', $this->outputOfLocalize());
+    }
+
+    #[Test]
+    public function it_reports_a_value_quoted_with_straight_double_quotes(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => 'Une "promeneuse"']);
+
+        $this->artisan('monica:localize')
+            ->expectsOutputToContain('fr_FR has 1 value(s) quoted the way it does not quote')
+            ->assertSuccessful();
+    }
+
+    #[Test]
+    public function it_reports_a_value_quoted_with_curly_double_quotes(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => "Une \u{201C}promeneuse\u{201D}"]);
+
+        $this->artisan('monica:localize')
+            ->expectsOutputToContain('fr_FR has 1 value(s) quoted the way it does not quote')
+            ->assertSuccessful();
+    }
+
+    #[Test]
+    public function it_leaves_a_value_quoted_with_guillemets_alone(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => "Une «\u{202F}promeneuse\u{202F}»"]);
+
+        $this->assertStringNotContainsString('quoted the way', $this->outputOfLocalize());
+    }
+
+    #[Test]
+    public function it_reports_a_value_addressing_the_reader_as_tu(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => 'Tu peux tout voir']);
+
+        $this->artisan('monica:localize')
+            ->expectsOutputToContain('fr_FR has 1 value(s) addressing the reader the way it does not address them')
+            ->assertSuccessful();
+    }
+
+    #[Test]
+    public function it_leaves_a_value_using_ton_alone_because_ton_is_also_the_word_for_a_shade(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => 'Un ton plus clair']);
+
+        $this->assertStringNotContainsString('addressing the reader', $this->outputOfLocalize());
+    }
+
+    #[Test]
+    public function it_does_not_mistake_a_word_merely_holding_those_letters_for_an_address(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => "Le statut d\u{2019}une personne v\u{00EA}tue"]);
+
+        $this->assertStringNotContainsString('addressing the reader', $this->outputOfLocalize());
+    }
+
+    #[Test]
+    public function it_leaves_a_span_between_backticks_alone_because_code_is_written_the_same_everywhere(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => 'Commence par `"monica": { "format": 1 }`']);
+
+        $this->assertStringNotContainsString('fr_FR has', $this->outputOfLocalize());
+    }
+
+    #[Test]
+    public function it_still_judges_the_prose_around_a_span_of_code(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('fr_FR', [self::PREFERENCES => 'Commence par `"monica": 1` vraiment ?']);
+
+        $this->artisan('monica:localize')
+            ->expectsOutputToContain('fr_FR has 1 value(s) missing the space it writes before a punctuation mark')
+            ->assertSuccessful();
+    }
+
+    #[Test]
+    public function it_reports_a_locale_using_the_quotation_marks_of_another_language(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('de_DE', [self::PREFERENCES => 'Ein «Kluft»']);
+
+        $this->artisan('monica:localize')
+            ->expectsOutputToContain('de_DE has 1 value(s) quoted the way it does not quote')
+            ->assertSuccessful();
+    }
+
+    #[Test]
+    public function it_leaves_a_locale_using_its_own_quotation_marks_alone(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('de_DE', [self::PREFERENCES => 'Ein „Kluft“']);
+
+        $this->assertDoesNotMatchRegularExpression('/^de_DE has \d+ value/m', $this->outputOfLocalize());
+    }
+
+    #[Test]
+    public function it_reports_an_apostrophe_a_locale_does_not_use_without_that_locale_listing_it(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeTranslations('it_IT', [self::PREFERENCES => "L'anno"]);
+
+        $this->artisan('monica:localize')
+            ->expectsOutputToContain('it_IT has 1 value(s) written with an apostrophe it does not use')
+            ->assertSuccessful();
+    }
+
+    private function outputOfLocalize(): string
+    {
+        Artisan::call('monica:localize');
+
+        return Artisan::output();
     }
 
     private function writeScratchView(string $body): void

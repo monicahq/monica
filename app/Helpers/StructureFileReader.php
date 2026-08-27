@@ -217,7 +217,7 @@ class StructureFileReader
         $node = $this->file['monica'] ?? null;
 
         if (! is_array($node) || $node === []) {
-            $this->refuse(__('There is no Monica header in this file, so there is no saying what it holds. A file exported from Monica starts with "monica": { "format": … }.'));
+            $this->refuse(__('There is no Monica header in this file, so there is no saying what it holds. A file exported from Monica starts with `"monica": { "format": … }`.'));
         }
 
         $header = $this->object($node, 'monica', ['format', 'format_version'], ['format', 'format_version']);

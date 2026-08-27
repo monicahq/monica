@@ -29,5 +29,6 @@ The strings themselves are the keys, in one JSON file per locale under `lang/`. 
 - You MUST preserve placeholders exactly: `:name`, `:count`, `:app`, `:time`.
 - You MUST preserve any HTML or Markdown, identically across locales.
 - You MUST match the tense, tone and terminology already used in that locale's file. The English is plain and calm, and the translations are too.
+- You MUST follow that language's own conventions in [`.claude/rules/translations.md`](../../rules/translations.md), which says how it punctuates and how it addresses its reader. French is written there in full. `monica:localize --check` refuses a value that breaks one of them, so this is not advice.
 - You MUST NOT leave a value empty. An empty string is a real translation as far as Laravel is concerned, and renders as nothing at all. Leave the key out instead, which the command does for you.
 - Logs read as something somebody did, and each language has its own way of saying it: simple past in English ("Created the account"), passé composé in French ("A créé le compte"), Perfekt in German ("Hat das Konto erstellt").

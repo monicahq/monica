@@ -1322,7 +1322,7 @@
     "Their address": "Su dirección",
     "Their page is laid out by :template. Hold a section back and it is gone. A page whose sections are all held back does not appear as an empty tab.": "Su página la organiza :template. Retén una sección y desaparece. Una página cuyas secciones están todas retenidas no aparece como una pestaña vacía.",
     "There are no accounts yet": "Todavía no hay cuentas",
-    "There is no Monica header in this file, so there is no saying what it holds. A file exported from Monica starts with \"monica\": { \"format\": … }.": "No hay cabecera de Monica en este archivo, así que no hay manera de decir qué contiene. Un archivo exportado desde Monica empieza por \"monica\": { \"format\": … }.",
+    "There is no Monica header in this file, so there is no saying what it holds. A file exported from Monica starts with `\"monica\": { \"format\": … }`.": "No hay cabecera de Monica en este archivo, así que no hay manera de decir qué contiene. Un archivo exportado desde Monica empieza por `\"monica\": { \"format\": … }`.",
     "There is no account behind the address, so it is the address itself that grants the reading. Send it the way you would send a private document.": "No hay ninguna cuenta detrás de la dirección, así que es la dirección misma la que da acceso a la lectura. Envíala como enviarías un documento privado.",
     "There is no version to start from.": "No hay ninguna versión de la que partir.",
     "There is nothing here to read. Paste the file, outer braces included.": "Aquí no hay nada que leer. Pegue el archivo, llaves exteriores incluidas.",

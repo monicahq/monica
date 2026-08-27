@@ -27,12 +27,10 @@ class RegisterViewModelTest extends TestCase
 
         $this->assertCount(count(config('monica.locales')), $locales);
         $this->assertEquals([
+            'code' => 'en',
             'label' => 'English',
             'region' => 'United Kingdom',
-            'date_format' => 'd/m/Y',
-            'number_format' => 'comma_dot',
             'flag' => config('monica.locales.en.flag'),
-            'code' => 'en',
         ], $locales[0]);
     }
 
