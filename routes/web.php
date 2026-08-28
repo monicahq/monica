@@ -12,6 +12,8 @@ use App\Http\Controllers\App\Admin\ModerationController;
 use App\Http\Controllers\App\Admin\ModerationRejectionController;
 use App\Http\Controllers\App\Admin\OverviewController;
 use App\Http\Controllers\App\Admin\UserActivationController;
+use App\Http\Controllers\App\Docs\ApiDocsController;
+use App\Http\Controllers\App\Docs\ApiDocsMarkdownController;
 use App\Http\Controllers\App\GettingStartedController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\Marketplace\MarketplaceController;
@@ -73,6 +75,27 @@ use Illuminate\Support\Facades\Route;
 // Shows nothing of its own: signed in goes wherever the account is up to, everybody
 // else to the sign in screen.
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+
+// The api reference, open to anybody, signed in or not.
+Route::get('docs/api', [ApiDocsController::class, 'index'])
+    ->middleware(['set.locale'])
+    ->name('docs.api.index');
+
+// The same reference as plain text, whole and one endpoint at a time.
+Route::get('docs/api.md', [ApiDocsMarkdownController::class, 'index'])
+    ->middleware(['set.locale'])
+    ->name('docs.api.markdown.index');
+
+Route::get('docs/api/{section}.md', [ApiDocsMarkdownController::class, 'show'])
+    ->where('section', '[a-z0-9\-]+')
+    ->middleware(['set.locale'])
+    ->name('docs.api.markdown.show');
+
+// One endpoint to a page, so a link to one of them opens that one.
+Route::get('docs/api/{section}', [ApiDocsController::class, 'show'])
+    ->where('section', '[a-z0-9\-]+')
+    ->middleware(['set.locale'])
+    ->name('docs.api.show');
 
 // Public on purpose: a link to something published here has to open for somebody
 // who never signed up. The facets combine freely, so they travel in the query string.

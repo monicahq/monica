@@ -251,4 +251,149 @@ class AttemptLoginTest extends TestCase
 
         $this->assertNull($user->refresh()->remember_token);
     }
+
+    #[Test]
+    public function it_checks_the_credentials_without_starting_a_session(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        $result = new AttemptLogin(
+            email: 'michael.scott@dundermifflin.com',
+            password: 'password',
+            ip: '10.0.0.1',
+            stateless: true,
+        )->execute();
+
+        $this->assertInstanceOf(User::class, $result);
+        $this->assertEquals($user->id, $result->id);
+        $this->assertGuest();
+        $this->assertNotNull($user->refresh()->last_login_at);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: CheckLastLogin::class,
+            callback: fn (CheckLastLogin $job): bool => $job->user->id === $user->id && $job->ip === '10.0.0.1',
+        );
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserLogin,
+        );
+    }
+
+    #[Test]
+    public function it_refuses_a_wrong_password_without_a_session_and_warns_the_owner(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        $this->expectException(ValidationException::class);
+
+        try {
+            new AttemptLogin(
+                email: 'michael.scott@dundermifflin.com',
+                password: 'wrong-password',
+                stateless: true,
+            )->execute();
+        } finally {
+            $this->assertGuest();
+            Queue::assertPushed(
+                SendEmail::class,
+                fn (SendEmail $job): bool => $job->user->id === $user->id && $job->emailType === EmailType::LoginFailed,
+            );
+        }
+    }
+
+    #[Test]
+    public function it_refuses_a_suspended_user_without_a_session(): void
+    {
+        Queue::fake();
+
+        User::factory()->inactive()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        $this->expectException(ValidationException::class);
+
+        try {
+            new AttemptLogin(
+                email: 'michael.scott@dundermifflin.com',
+                password: 'password',
+                stateless: true,
+            )->execute();
+        } finally {
+            $this->assertGuest();
+        }
+    }
+
+    #[Test]
+    public function it_refuses_single_sign_on_without_a_session(): void
+    {
+        Queue::fake();
+
+        User::factory()->singleSignOn()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        $this->expectException(ValidationException::class);
+
+        try {
+            new AttemptLogin(
+                email: 'michael.scott@dundermifflin.com',
+                password: 'password',
+                stateless: true,
+            )->execute();
+        } finally {
+            $this->assertGuest();
+        }
+    }
+
+    #[Test]
+    public function it_says_nothing_about_an_unknown_address_without_a_session(): void
+    {
+        Queue::fake();
+
+        $this->expectException(ValidationException::class);
+
+        try {
+            new AttemptLogin(
+                email: 'nobody@dundermifflin.com',
+                password: 'password',
+                stateless: true,
+            )->execute();
+        } finally {
+            $this->assertGuest();
+            Queue::assertNotPushed(SendEmail::class);
+        }
+    }
+
+    #[Test]
+    public function it_stops_trying_after_five_failures_without_a_session(): void
+    {
+        Queue::fake();
+
+        User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        foreach (range(1, 5) as $ignored) {
+            try {
+                new AttemptLogin(
+                    email: 'michael.scott@dundermifflin.com',
+                    password: 'wrong-password',
+                    ip: '10.0.0.1',
+                    stateless: true,
+                )->execute();
+            } catch (ValidationException) {
+                continue;
+            }
+        }
+
+        $this->expectException(ValidationException::class);
+
+        new AttemptLogin(
+            email: 'michael.scott@dundermifflin.com',
+            password: 'password',
+            ip: '10.0.0.1',
+            stateless: true,
+        )->execute();
+    }
 }

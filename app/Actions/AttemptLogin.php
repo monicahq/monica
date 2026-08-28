@@ -24,6 +24,12 @@ use Illuminate\Validation\ValidationException;
  * Every refusal reports the same message. Telling an attacker the difference
  * between a wrong password, a suspended account and an address that does not
  * exist hands them a way to find out who has an account here.
+ *
+ * The API signs nobody in, it hands out a token, so it asks for the same rules
+ * without the session: `stateless` checks the credentials and stops there. The
+ * rate limit, the warning email, the identical refusal, the stamp and the
+ * journal entry are the same either way, which is the point of asking here
+ * rather than writing a second way to sign in.
  */
 class AttemptLogin
 {
@@ -36,6 +42,7 @@ class AttemptLogin
         private readonly string $password,
         private readonly bool $remember = false,
         private readonly ?string $ip = null,
+        private readonly bool $stateless = false,
     ) {}
 
     public function execute(): User
@@ -77,6 +84,27 @@ class AttemptLogin
 
     private function attempt(): void
     {
+        $candidate = User::query()->where('email', $this->email)->first();
+
+        if ($candidate === null || ! $candidate->is_active || $candidate->usesSingleSignOn()) {
+            $this->fail($candidate);
+        }
+
+        // A token is not a session. The API wants the credentials checked and
+        // nothing else begun, so it validates them and keeps the user it has
+        // already looked up, rather than signing anybody in.
+        if ($this->stateless) {
+            if (! Auth::guard('web')->validate(['email' => $this->email, 'password' => $this->password])) {
+                $this->fail($candidate);
+            }
+
+            RateLimiter::clear($this->throttleKey());
+
+            $this->user = $candidate;
+
+            return;
+        }
+
         $guard = Auth::guard('web');
 
         // The screen promises a number of days, so the guard is told to honour
@@ -84,12 +112,6 @@ class AttemptLogin
         // session guard knows how to be told, which is the only one we use.
         if ($guard instanceof SessionGuard) {
             $guard->setRememberDuration((int) config('monica.remember_duration_days') * 24 * 60);
-        }
-
-        $candidate = User::query()->where('email', $this->email)->first();
-
-        if ($candidate === null || ! $candidate->is_active || $candidate->usesSingleSignOn()) {
-            $this->fail($candidate);
         }
 
         if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {

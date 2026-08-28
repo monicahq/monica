@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\NameOrderEnum;
+use App\Enums\TimeFormatEnum;
 use App\Models\Account;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -39,6 +40,9 @@ class UserFactory extends Factory
             'password_changed_at' => now(),
             'is_active' => true,
             'locale' => 'en',
+            'timezone' => 'UTC',
+            'time_format' => TimeFormatEnum::TwentyFourHour,
+            'name_order' => NameOrderEnum::GivenFirst,
             'remember_token' => Str::random(10),
         ];
     }

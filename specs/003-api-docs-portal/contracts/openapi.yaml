@@ -1,0 +1,324 @@
+openapi: 3.1.0
+
+info:
+  title: Monica API
+  version: "1.0.0"
+  description: >
+    The six endpoints of the first Monica API release. Every authenticated call is scoped to the
+    account the token belongs to. There is no test mode: requests are processed against the real
+    account.
+
+servers:
+  - url: https://app.monicahq.com/api/v1
+    description: Hosted
+  - url: "{origin}/api/v1"
+    description: Self hosted
+    variables:
+      origin:
+        default: https://monica.example.com
+
+tags:
+  - name: Health
+  - name: Authentication
+  - name: Your profile
+
+paths:
+
+  /status:
+    get:
+      tags: [Health]
+      operationId: status
+      summary: Check status
+      description: >
+        Tells you whether the instance is up and which version it runs. No token needed, so you can
+        point a monitor at it.
+      security: []
+      responses:
+        "200":
+          description: The instance is up.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status, version, instance]
+                properties:
+                  status: { type: string, const: ok }
+                  version: { type: string, examples: ["3.0.4"] }
+                  instance: { type: string, examples: ["app.monicahq.com"] }
+        "503":
+          description: A service the instance depends on is unreachable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, const: error }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+
+  /register:
+    post:
+      tags: [Authentication]
+      operationId: register
+      summary: Register
+      description: >
+        Creates an account, the user in it, its first vault and the value lists and template it starts
+        with, exactly as the sign-up screen does, and returns a token.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [first_name, last_name, email, password, password_confirmation, terms]
+              properties:
+                first_name: { type: string, maxLength: 255, examples: ["Michael"] }
+                last_name: { type: string, maxLength: 255, examples: ["Scott"] }
+                email:
+                  type: string
+                  format: email
+                  maxLength: 255
+                  description: Must be lowercase, unused, and not from a disposable provider.
+                  examples: ["michael.scott@dundermifflin.com"]
+                password:
+                  type: string
+                  minLength: 8
+                  description: Must be at least 8 characters.
+                password_confirmation:
+                  type: string
+                  description: Must match password.
+                terms:
+                  type: boolean
+                  description: >
+                    Agreement with the terms of use and the privacy policy. An account cannot be opened
+                    without it, exactly as on the sign-up screen.
+                timezone:
+                  type: string
+                  description: An IANA time zone. Defaults to UTC.
+                  examples: ["America/New_York"]
+                device_name:
+                  type: string
+                  maxLength: 255
+                  description: What the token is for, in a few words. Shown in security settings.
+                  examples: ["Dundie awards bot"]
+      responses:
+        "201":
+          description: The account was created.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Token" }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+
+  /login:
+    post:
+      tags: [Authentication]
+      operationId: login
+      summary: Log in
+      description: >
+        Exchange an email and password for a token. The token is named after device_name so you can
+        tell your integrations apart later, and revoke one without touching the rest.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email, maxLength: 255 }
+                password: { type: string, maxLength: 255 }
+                code:
+                  type: string
+                  description: >
+                    A TOTP or recovery code. Required when two-factor authentication is switched on
+                    for the user, refused as invalid otherwise.
+                device_name: { type: string, maxLength: 255 }
+      responses:
+        "200":
+          description: Authenticated.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Token" }
+        "401":
+          description: >
+            The credentials do not match, or the account is deactivated, or it signs in through an
+            external provider, or a required second factor is missing or wrong. The message is
+            deliberately the same for the first three, so the endpoint cannot be used to find out who
+            has an account.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+
+  /logout:
+    delete:
+      tags: [Authentication]
+      operationId: logout
+      summary: Log out
+      description: >
+        Revokes the token you are calling with. Anything still using it stops working, immediately.
+        Your other tokens are untouched.
+      responses:
+        "204":
+          description: The token was revoked.
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+
+  /me:
+    get:
+      tags: [Your profile]
+      operationId: getProfile
+      summary: Get your profile
+      description: Retrieve the user the token belongs to.
+      responses:
+        "200":
+          description: The user.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UserEnvelope" }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+    put:
+      tags: [Your profile]
+      operationId: updateProfile
+      summary: Update your profile
+      description: >
+        Update the name and email address of the user the token belongs to. Changing the address
+        clears its confirmation, because nobody has proved yet that the new one reaches you.
+        Preferences such as locale and time format are not updated here.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [first_name, last_name, email]
+              properties:
+                first_name: { type: string, maxLength: 255, examples: ["Michael"] }
+                last_name: { type: string, maxLength: 255, examples: ["Scott"] }
+                email: { type: string, format: email, maxLength: 255, examples: ["michael.scott@dundermifflin.com"] }
+      responses:
+        "200":
+          description: The updated user.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UserEnvelope" }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+
+components:
+
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      description: >
+        A personal access token, sent as `Authorization: Bearer <token>`. Tokens do not expire and are
+        revoked rather than refreshed. A token acts as you, with exactly the access you have.
+
+  schemas:
+
+    Token:
+      type: object
+      required: [token, expires_at]
+      properties:
+        token:
+          type: string
+          description: >
+            The plain text token. This is the only time it exists in this form: only a hash is stored,
+            so a token you fail to copy has to be made again.
+          examples: ["1|f9aB2cD3eF4gH5iJ6kL7mN8oP9qR0sT1uV2w"]
+        expires_at:
+          type: [string, "null"]
+          format: date-time
+          description: Always null today. Tokens do not expire.
+
+    UserEnvelope:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: object
+          required: [type, id, attributes, links]
+          properties:
+            type: { type: string, const: user }
+            id: { type: string, examples: ["1"] }
+            attributes:
+              type: object
+              properties:
+                first_name: { type: string, examples: ["Michael"] }
+                last_name: { type: string, examples: ["Scott"] }
+                email: { type: string, examples: ["michael.scott@dundermifflin.com"] }
+                email_verified: { type: boolean }
+                locale: { type: [string, "null"], examples: ["en"] }
+                timezone: { type: string, examples: ["Europe/Paris"] }
+                time_format: { type: string, examples: ["24"] }
+                date_format: { type: [string, "null"], examples: ["d/m/Y"] }
+                name_order: { type: string }
+                number_format: { type: [string, "null"] }
+                created_at:
+                  type: integer
+                  description: Unix timestamp.
+                  examples: [1756252800]
+                updated_at: { type: [integer, "null"], description: Unix timestamp. }
+            links:
+              type: object
+              properties:
+                self: { type: string, format: uri }
+
+    Error:
+      type: object
+      required: [message]
+      properties:
+        message: { type: string }
+
+    ValidationError:
+      type: object
+      required: [message, errors]
+      properties:
+        message:
+          type: string
+          examples: ["The first name field is required."]
+        errors:
+          type: object
+          description: Keyed by field name, each holding every problem with that field.
+          additionalProperties:
+            type: array
+            items: { type: string }
+
+  responses:
+
+    Unauthenticated:
+      description: No token, or a token that has been revoked.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+    ValidationFailed:
+      description: The request body is not acceptable. Every field at fault is named at once.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ValidationError" }
+
+    TooManyRequests:
+      description: >
+        Over the rate limit. Sixty requests per minute for the status endpoint and for authenticated
+        endpoints, six per minute for register and login.
+      headers:
+        Retry-After:
+          schema: { type: integer }
+          description: Seconds to wait before trying again.
+        X-RateLimit-Limit:
+          schema: { type: integer }
+        X-RateLimit-Remaining:
+          schema: { type: integer }
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+security:
+  - bearer: []

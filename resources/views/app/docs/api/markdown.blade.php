@@ -1,0 +1,73 @@
+{{--
+  The reference as plain text, for a reader that is not a browser.
+
+  It is a Blade template rather than string building in PHP because that is what
+  keeps the view model a view model: it reads the definition files and hands
+  them over, and the shaping happens here, where every other rendering in this
+  application happens.
+
+  Everything is printed raw. This is a markdown document, not a web page, and
+  the copy in it is ours rather than anything somebody typed into the product.
+
+  @var list<\App\ViewModels\Docs\ApiDocsSection> $sections
+--}}
+@php
+  $blocks = [];
+
+  foreach ($sections as $section) {
+    $block = ['# '.$section->title, '`'.$section->method.' /api/v1'.$section->path.'`'];
+
+    if (! $section->auth) {
+      $block[] = 'No token required.';
+    }
+
+    $block[] = $section->description;
+
+    foreach ($section->body as $paragraph) {
+      $block[] = $paragraph;
+    }
+
+    if ($section->hasParams()) {
+      $block[] = '## '.$section->paramsTitle;
+
+      $rows = [];
+
+      foreach ($section->params as $param) {
+        $default = $param['default'] ? ', defaults to '.$param['default'] : '';
+        $rows[] = '- `'.$param['name'].'` ('.$param['type'].', '.($param['required'] ? 'required' : 'optional').$default.'): '.$param['description'];
+      }
+
+      $block[] = implode(PHP_EOL, $rows);
+    }
+
+    if ($section->returns) {
+      $block[] = '## Returns';
+      $block[] = $section->returns;
+    }
+
+    $block[] = '## Rate limit';
+    $block[] = $section->rateLimit.' Every answer carries the budget left in `X-RateLimit-Remaining`.';
+
+    $block[] = '## Request';
+
+    foreach (['curl' => 'sh', 'javascript' => 'javascript', 'php' => 'php'] as $language => $fence) {
+      $block[] = '```'.$fence.PHP_EOL.$section->samples()[$language]['code'].PHP_EOL.'```';
+    }
+
+    $block[] = '## Response';
+
+    if ($section->responseLines() === []) {
+      $block[] = '`'.$section->responseStatus.'`, with no body.';
+    } else {
+      $body = collect($section->responseLines())
+        ->map(fn (array $line): string => collect($line['parts'])->pluck('text')->implode(''))
+        ->implode(PHP_EOL);
+
+      $block[] = '`'.$section->responseStatus.'`';
+      $block[] = '```json'.PHP_EOL.$body.PHP_EOL.'```';
+    }
+
+    $blocks[] = implode(PHP_EOL.PHP_EOL, $block);
+  }
+@endphp
+{!! implode(PHP_EOL.PHP_EOL.'---'.PHP_EOL.PHP_EOL, $blocks) !!}

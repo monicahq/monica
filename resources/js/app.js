@@ -70,6 +70,49 @@ window.slugify = (value) =>
         .slice(0, 64);
 
 /*
+ * Put text on the clipboard, and say whether it managed.
+ *
+ * `navigator.clipboard` only exists in a secure context, so a self hosted
+ * instance reached over plain http does not have it at all. Optional chaining
+ * past it would leave a button saying it had copied something when nothing had
+ * been copied, so there is a fallback that works anywhere, and the answer is
+ * reported rather than assumed.
+ */
+window.copyText = async (text) => {
+    if (window.isSecureContext && navigator.clipboard) {
+        try {
+            await navigator.clipboard.writeText(text);
+
+            return true;
+        } catch {
+            // The browser refused, so fall through to the textarea below.
+        }
+    }
+
+    const area = document.createElement('textarea');
+    area.value = text;
+    area.setAttribute('readonly', '');
+    area.style.position = 'fixed';
+    area.style.top = '0';
+    area.style.opacity = '0';
+
+    document.body.appendChild(area);
+    area.select();
+
+    let copied = false;
+
+    try {
+        copied = document.execCommand('copy');
+    } catch {
+        copied = false;
+    }
+
+    document.body.removeChild(area);
+
+    return copied;
+};
+
+/*
  * Dragging the rows of one list into another order. Any screen whose rows are
  * numbered by a position can use it. The component sits on the
  * container of the rows and only keeps track of what is being dragged and what

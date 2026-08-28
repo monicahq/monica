@@ -259,4 +259,25 @@ return [
 
     'max_file_size_in_kilobytes' => env('MONICA_MAX_FILE_SIZE_IN_KILOBYTES', 10240),
 
+    /*
+    |--------------------------------------------------------------------------
+    | What this instance is, and which release it runs
+    |--------------------------------------------------------------------------
+    |
+    | The status endpoint of the API reports both, so that somebody pointing a
+    | monitor at an instance can tell which one answered and what it was running
+    | when it did. The version is the release rather than a commit: a self hosted
+    | instance is a copy somebody chose to install, and the number they read here
+    | is the number they compare against the changelog.
+    |
+    | The name is the host, and it defaults to the application URL rather than to
+    | a fixed string, so an instance nobody configured still says something true
+    | about itself.
+    |
+    */
+
+    'version' => env('MONICA_VERSION', '3.0.0'),
+
+    'instance' => env('MONICA_INSTANCE', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+
 ];
