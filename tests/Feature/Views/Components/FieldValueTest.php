@@ -49,7 +49,7 @@ class FieldValueTest extends TestCase
 
         $this->render($field, $yes, 'Yes')
             ->assertSee('Yes')
-            ->assertSee('text-forest', escape: false);
+            ->assertSee('text-success', escape: false);
 
         $this->render($field, $no, 'No')
             ->assertSee('No')

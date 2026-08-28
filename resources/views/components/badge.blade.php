@@ -16,20 +16,25 @@
 ])
 
 @php
+  /*
+   * A badge is a hairline, a barely tinted ground and a word. The word is what
+   * carries the state; the tint only agrees with it, which is why every tone below
+   * still reads correctly with the colour taken away.
+   */
   $tint = match ($tone) {
-    'success' => 'bg-forest-tint text-forest-deep',
-    'warning' => 'bg-marigold-tint text-marigold-deep',
-    'danger' => 'bg-error-tint text-error',
-    'info' => 'bg-indigo-tint text-indigo-deep',
-    'accent' => 'bg-accent-tint text-terracotta-deep',
-    default => 'bg-sand text-ink-soft',
+    'success' => 'border-success/30 bg-success/10 text-success',
+    'warning' => 'border-warning/30 bg-warning/10 text-warning',
+    'danger' => 'border-error/30 bg-error/10 text-error',
+    'info' => 'border-brand/30 bg-brand/10 text-brand',
+    'accent' => 'border-brand/30 bg-accent-tint text-brand',
+    default => 'border-hairline bg-sand text-ink-soft',
   };
 @endphp
 
 <span
   {{
     $attributes->class([
-      'inline-flex h-6 items-center gap-1.25 rounded-xs px-2.25 font-sans text-[12.5px] font-semibold tracking-[0.005em] whitespace-nowrap',
+      'inline-flex h-6 items-center gap-1.25 rounded-xs border px-2.25 font-sans text-[12.5px] font-semibold tracking-[0.005em] whitespace-nowrap',
       $tint,
     ])
   }}

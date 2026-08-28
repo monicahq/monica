@@ -72,10 +72,11 @@ class SettingsControllerTest extends TestCase
         $response->assertSee('Export everything', escape: false);
 
         /*
-          The bar carries two links to screens that do not exist yet, so this looks
-          at the content rather than the whole page.
+          The bar carries two links to screens that do not exist yet, and it sits
+          inside <main>, so this looks at what comes after it rather than at the
+          whole page.
         */
-        $content = str($response->getContent())->after('<main')->before('</main>')->toString();
+        $content = str($response->getContent())->after('</header>')->before('</main>')->toString();
 
         $this->assertStringNotContainsString('href="#"', $content);
     }
@@ -118,73 +119,55 @@ class SettingsControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_points_the_dock_at_the_default_vault(): void
+    public function it_navigates_the_settings_rather_than_any_vault(): void
     {
         $user = User::factory()->create();
 
-        $first = Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Threat Level Midnight',
-            'position' => 1,
-        ]);
-
-        $default = Vault::factory()->create([
+        Vault::factory()->create([
             'account_id' => $user->account_id,
             'name' => 'Dunder Mifflin',
-            'position' => 2,
+            'position' => 1,
             'is_default' => true,
         ]);
 
         $response = $this->actingAs($user)->get(route('settings.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Dunder Mifflin', escape: false);
-        $response->assertSee(route('vaults.show', $default), escape: false);
-        $response->assertSee(route('contacts.index', $default), escape: false);
-
-        // The other vault is only in the menu, as somewhere to switch to.
-        $response->assertSee(route('vaults.show', $first), escape: false);
-        $response->assertSee('Another vault', escape: false);
+        $response->assertSee(route('settings.profile.index'), escape: false);
+        $response->assertSee(route('settings.templates.index'), escape: false);
+        $response->assertDontSee('Dunder Mifflin', escape: false);
     }
 
     #[Test]
-    public function it_falls_back_to_the_first_vault_when_none_is_the_default(): void
+    public function it_leads_back_out_to_the_vaults_whatever_the_default_is(): void
     {
         $user = User::factory()->create();
 
-        $first = Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Dunder Mifflin',
-            'position' => 1,
-        ]);
-
-        Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Threat Level Midnight',
-            'position' => 2,
-        ]);
+        Vault::factory()->create(['account_id' => $user->account_id, 'position' => 1]);
+        Vault::factory()->create(['account_id' => $user->account_id, 'position' => 2, 'is_default' => true]);
 
         $response = $this->actingAs($user)->get(route('settings.index'));
 
         $response->assertStatus(200);
-        $response->assertSee(route('vaults.show', $first), escape: false);
+        $response->assertSee(route('vaults.index'), escape: false);
+        $response->assertSee('Leave the settings', escape: false);
     }
 
     #[Test]
-    public function it_shows_the_dock_without_destinations_when_the_account_has_no_vault(): void
+    public function it_navigates_an_account_that_has_made_no_vault_at_all(): void
     {
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('settings.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('bg-action-strong', escape: false);
-        $response->assertDontSee('aria-current="page"', escape: false);
+        $response->assertSee(route('settings.index'), escape: false);
+        $response->assertSee('Sign out', escape: false);
         $response->assertSee(config('app.name'), escape: false);
     }
 
     #[Test]
-    public function it_leaves_no_dock_destination_current(): void
+    public function it_marks_no_destination_as_current_on_the_settings_home(): void
     {
         $user = User::factory()->create();
 
@@ -193,7 +176,6 @@ class SettingsControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('bg-action-strong', escape: false);
         $response->assertDontSee('aria-current="page"', escape: false);
     }
 

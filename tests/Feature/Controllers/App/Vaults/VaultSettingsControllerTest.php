@@ -36,6 +36,19 @@ class VaultSettingsControllerTest extends TestCase
     }
 
     #[Test]
+    public function the_half_of_the_screen_that_ends_the_vault_is_drawn_as_such(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+
+        $response = $this->actingAs($user)->get(route('vaults.settings.index', $vault))->assertStatus(200);
+
+        $response->assertSee('border-error-edge bg-error-tint', escape: false);
+        $response->assertSee('<h2 class="text-card-title text-error">Delete this vault</h2>', escape: false);
+        $response->assertSee('bg-error text-white', escape: false);
+    }
+
+    #[Test]
     public function it_counts_the_contacts_a_deletion_would_take(): void
     {
         $user = User::factory()->create();
@@ -68,7 +81,7 @@ class VaultSettingsControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_navigates_the_screen_with_the_dock_and_not_a_sidebar(): void
+    public function it_navigates_the_screen_with_the_vault_column(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create([
@@ -78,10 +91,11 @@ class VaultSettingsControllerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('vaults.settings.index', $vault))
             ->assertStatus(200)
-            ->assertSee('aria-label="Main"', false)
+            ->assertSee('aria-label="This vault"', false)
             ->assertSee(route('contacts.index', $vault), false);
 
-        $this->assertStringNotContainsString('id="settings-nav"', $response->getContent());
+        $this->assertStringContainsString('id="main-nav"', $response->getContent());
+        $this->assertStringContainsString('Dunder Mifflin', $response->getContent());
     }
 
     #[Test]

@@ -204,19 +204,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | The letter an empty account is greeted by
-    |--------------------------------------------------------------------------
-    |
-    | Where "Write to Regis" leads on the screen somebody lands on before they
-    | have made anything. An instance that would rather its users did not write
-    | to the author of the product empties this, and the link disappears with it.
-    |
-    */
-
-    'founder_email' => env('MONICA_FOUNDER_EMAIL', 'regis@monicahq.com'),
-
-    /*
-    |--------------------------------------------------------------------------
     | Self hosted
     |--------------------------------------------------------------------------
     |

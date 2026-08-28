@@ -14,7 +14,7 @@ class ButtonTest extends TestCase
     {
         $this->blade('<x-button>Save</x-button>')->assertSee('bg-action-primary', escape: false);
         $this->blade('<x-button.secondary>Cancel</x-button.secondary>')->assertSee('bg-canvas', escape: false);
-        $this->blade('<x-button.bar>Your vaults</x-button.bar>')->assertSee('bg-sand text-ink shadow-raised', escape: false);
+        $this->blade('<x-button.bar>Your vaults</x-button.bar>')->assertSee('bg-sand text-ink hover:border-ink', escape: false);
         $this->blade('<x-button.ghost>Remove</x-button.ghost>')->assertSee('hover:bg-sand hover:text-ink', escape: false);
         $this->blade('<x-button.danger>Delete it for good</x-button.danger>')->assertSee('bg-error', escape: false);
     }

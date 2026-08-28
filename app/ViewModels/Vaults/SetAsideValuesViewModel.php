@@ -27,6 +27,11 @@ class SetAsideValuesViewModel
         private readonly Contact $contact,
     ) {}
 
+    public function user(): User
+    {
+        return $this->user;
+    }
+
     public function contact(): Contact
     {
         return $this->contact;

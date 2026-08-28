@@ -84,15 +84,15 @@
             x-target="listings"
             @if ($category['isCurrent']) aria-current="true" @endif
             @class([
-              'flex items-start gap-3 rounded-lg border p-3.5 no-underline shadow-raised',
+              'flex items-start gap-3 rounded-lg border p-3.5 no-underline ',
               'transition-[background-color,border-color,transform] duration-(--duration-fast) ease-out',
-              'hover:bg-sand active:translate-y-(--press-translate) active:shadow-none',
+              'hover:bg-sand active:translate-y-(--press-translate) ',
               'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring',
               'border-ink bg-sand' => $category['isCurrent'],
               'border-hairline bg-canvas' => ! $category['isCurrent'],
             ])
           >
-            <span class="flex size-8 shrink-0 items-center justify-center rounded-sm {{ $category['iconClass'] }}">
+            <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-sand text-muted">
               <x-icon :name="$category['icon']" :size="18" :stroke-width="1.5" />
             </span>
 
@@ -155,7 +155,6 @@
         <x-panel :flush="true">
           <x-empty-state
             :title="$viewModel->isCatalogueEmpty() ? __('The catalogue is empty') : __('Nothing matches')"
-            icon-class="bg-terracotta-tint text-terracotta"
           >
             <x-slot:icon><x-icon name="gift" :size="30" :stroke-width="1.4" /></x-slot:icon>
 

@@ -28,7 +28,7 @@ class DropdownTest extends TestCase
             ['options' => $this->formats()],
         );
 
-        $rendered->assertSee('bg-canvas text-ink shadow-raised', escape: false);
+        $rendered->assertSee('bg-canvas text-ink hover:bg-sand', escape: false);
         $rendered->assertSee('aria-haspopup="menu"', escape: false);
         $rendered->assertSee('24-hour', escape: false);
         $rendered->assertSee('<p class="px-2.5 pt-2 pb-1.5 uppercase text-xs tracking-caption text-muted">Time format</p>', escape: false);

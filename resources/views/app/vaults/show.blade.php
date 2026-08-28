@@ -21,24 +21,18 @@
   $people = $viewModel->people();
 @endphp
 <x-shell :title="$viewModel->title()" wide>
-  <x-slot:bar>
-    <x-button.bar :href="$viewModel->vaultsUrl()" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
+  {{--
+    The dashboard is where the vault's own trail starts, so its last step is the
+    vault and there is nothing after it. The way out to the other vaults is in the
+    switcher at the top of the column, which is where crossing that boundary lives.
+  --}}
+  <x-slot:breadcrumb>
+    <x-breadcrumb :items="[['label' => $vault->name]]" />
+  </x-slot:breadcrumb>
 
-      {{ __('Your vaults') }}
-    </x-button.bar>
-
-    {{--
-      This is the one screen in a vault whose bar carries the way out of the vault
-      rather than the vault itself: the chip the other screens draw would lead here,
-      and this is here. The search beside it is the same one they carry.
-    --}}
-    <x-vault.search />
-  </x-slot:bar>
-
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" :vault="$vault" current="dashboard" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="dashboard" />
+  </x-slot:sidebar>
 
   <header class="flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
     <div class="flex min-w-0 flex-col gap-1.5">
@@ -69,8 +63,8 @@
       </div>
 
       @if ($people === [])
-        <div class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-raised flex flex-1 flex-col justify-center">
-          <x-empty-state :title="__('Nobody here yet')" icon-class="bg-terracotta-tint text-terracotta">
+        <div class="overflow-hidden rounded-lg border border-hairline bg-canvas flex flex-1 flex-col justify-center">
+          <x-empty-state :title="__('Nobody here yet')">
             <x-slot:icon>
               <x-icon name="people" :size="30" :stroke-width="1.4" />
             </x-slot:icon>
@@ -90,7 +84,7 @@
           link to all of them. The box used to be one anchor covering both,
           which it could be while a person had no page of their own.
         --}}
-        <div class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-raised flex flex-1 flex-col">
+        <div class="overflow-hidden rounded-lg border border-hairline bg-canvas flex flex-1 flex-col">
           @foreach ($people as $person)
             <a
               href="{{ $person['url'] }}"
@@ -123,13 +117,13 @@
     @foreach ($viewModel->unbuiltSections() as $section)
       <section class="flex min-w-0 flex-col gap-2.5">
         <div class="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 px-0.5">
-          <h2 class="font-display text-section-title shrink-0 {{ $section['titleClass'] }}">{{ $section['title'] }}</h2>
+          <h2 class="text-section-title shrink-0 text-ink">{{ $section['title'] }}</h2>
 
           <p class="text-xs text-pretty text-muted">{{ $section['caption'] }}</p>
         </div>
 
-        <div class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-raised flex flex-1 flex-col justify-center">
-          <x-empty-state :title="$section['emptyTitle']" :icon-class="$section['iconClass']">
+        <div class="overflow-hidden rounded-lg border border-hairline bg-canvas flex flex-1 flex-col justify-center">
+          <x-empty-state :title="$section['emptyTitle']">
             <x-slot:icon>
               <x-icon :name="$section['icon']" :size="30" :stroke-width="1.4" />
             </x-slot:icon>
@@ -149,7 +143,7 @@
       <a
         href="{{ $viewModel->settingsUrl() }}"
         data-turbo="true"
-        class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-raised flex flex-1 flex-col transition-colors duration-[110ms] hover:bg-hover"
+        class="overflow-hidden rounded-lg border border-hairline bg-canvas flex flex-1 flex-col transition-colors duration-[110ms] hover:bg-hover"
       >
         @foreach ($viewModel->settingsRows() as $row)
           <span class="block border-b border-hairline-soft px-4 py-3">

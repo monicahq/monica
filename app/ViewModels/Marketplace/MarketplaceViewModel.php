@@ -80,7 +80,7 @@ class MarketplaceViewModel
      * one is a link back to this screen scoped to it, so a category is a place
      * that can be linked to rather than a control that has to be clicked.
      *
-     * @return array<int, array{key: string, name: string, description: string, icon: string, iconClass: string, countLabel: string, href: string, isCurrent: bool}>
+     * @return array<int, array{key: string, name: string, description: string, icon: string, countLabel: string, href: string, isCurrent: bool}>
      */
     public function categories(): array
     {
@@ -93,7 +93,6 @@ class MarketplaceViewModel
                 'name' => $category->name,
                 'description' => $category->description,
                 'icon' => $category->icon,
-                'iconClass' => MarketplaceCategoryEnum::tryFrom($category->key)?->iconClass() ?? 'bg-sand text-muted',
                 'countLabel' => trans_choice(':count listing|:count listings', $category->listing_count),
                 'href' => $this->urlWith(['category' => $category->key === $this->category() ? null : $category->key]),
                 'isCurrent' => $category->key === $this->category(),
@@ -270,8 +269,7 @@ class MarketplaceViewModel
             'summary' => $listing->summary,
             'typeLabel' => $isTemplate ? __('Template') : __('Section'),
             'typeIcon' => $isTemplate ? 'file' : 'note',
-            'typeIconClass' => $isTemplate ? 'bg-indigo-tint text-indigo-deep' : 'bg-forest-tint text-forest-deep',
-            'typeTextClass' => $isTemplate ? 'text-indigo-deep' : 'text-forest-deep',
+            'type' => $isTemplate ? 'template' : 'section',
             'categoryName' => $listing->category->name,
             'facts' => self::facts($listing),
             'authorLabel' => __('By :author', ['author' => $listing->author_name]),

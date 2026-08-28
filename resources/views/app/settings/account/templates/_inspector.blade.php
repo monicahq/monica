@@ -19,7 +19,7 @@
 @endphp
 <aside class="lg:sticky lg:top-19">
   @if ($field === null)
-    <x-panel :title="__('Field')" icon="file" icon-class="bg-sand text-muted">
+    <x-panel :title="__('Field')" icon="file">
       <p class="text-sm text-pretty text-muted">{{ __('Pick a field on the left to edit it. What you change applies to this draft only.') }}</p>
     </x-panel>
   @else
@@ -27,7 +27,6 @@
       :title="__('Field')"
       :subtitle="__('In :section', ['section' => $field['sectionName']])"
       icon="file"
-      icon-class="bg-indigo-tint text-indigo"
     >
       <div class="flex flex-col gap-5">
         <x-form

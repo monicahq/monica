@@ -14,14 +14,9 @@
   `meta` is a short machine-ish value at the end (a count, a state). The `end` slot
   is for anything richer: a chevron, a button, a form.
 
-  `iconClass` is the colour of whatever kind of thing the row is, written as the
-  pair of utilities that carries it: the tint it sits on and the hue it is drawn
-  in. Left alone it is neutral.
-
   @var string|null $title
   @var string|null $description
   @var string|null $icon
-  @var string $iconClass
   @var string|null $meta
   @var string|null $metaSub
   @var string|null $href
@@ -32,7 +27,6 @@
   'title' => null,
   'description' => null,
   'icon' => null,
-  'iconClass' => 'bg-sand text-muted',
   'meta' => null,
   'metaSub' => null,
   'href' => null,
@@ -57,7 +51,7 @@
   @endisset
 
   @if (! isset($leading) && $icon)
-    <span class="flex size-8 shrink-0 items-center justify-center rounded-sm {{ $iconClass }}">
+    <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-sand text-muted">
       <x-icon :name="$icon" :size="18" :stroke-width="1.5" />
     </span>
   @endif

@@ -46,47 +46,73 @@ The file has three parts. The base palette, which is the only place a hex appear
 
 ### 3.1 Colour: the palette
 
-Warm paper neutrals derived from the mark's ink, plus seven earthy object hues. No neon, no SaaS violet gradient.
+Warm neutrals with the barest warmth taken out of them, and one blue. A colour never
+decorates: it says a thing succeeded, needs attention or failed, it marks a link or a focus
+ring, or it is content the person chose themselves, which is what a vault colour is. There is
+no set of object hues; a mark takes ink, or the colour of the record it belongs to.
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `--paper` | `#FBF8F3` | `#16130F` | The page. Every surface sits on paper, not on white |
-| `--canvas` | `#FFFFFF` | `#211D18` | Panels and controls sitting *on* the paper |
-| `--sand` | `#F4EEE4` | `#2A251E` | Hover, inset regions, neutral marks |
-| `--sand-deep` | `#EBE3D5` | `#332D24` | Selected neutral surface |
-| `--hairline` | `#E7DFD2` | `#302A22` | Row separators |
-| `--hairline-strong` | `#D6CBB8` | `#423B31` | Control edges |
-| `--ink` | `#2C2B29` | `#F4EFE6` | Primary text, the inverse surface |
-| `--ink-soft` | `#4A463F` | `#DED7CA` | Ghost button text |
-| `--body` | `#5C5850` | `#B6AFA2` | Supporting text |
-| `--muted` | `#7D766A` | `#8E8577` | Metadata, row descriptions |
-| `--placeholder` | `#A69E90` | `#6F675B` | Placeholders, and what has not been built yet |
+| `--page` | `#eceae5` | `#111113` | The page. A warm stone, so a white panel on it reads as raised without a shadow |
+| `--canvas` | `#ffffff` | `#1a1a1d` | Panels and controls sitting on the page |
+| `--card` | `#fafafa` | `#202024` | A surface inside a panel |
+| `--sunken` | `#fbfaf8` | `#161619` | The band a panel header sits on |
+| `--sand` | `#f4f2ed` | `#26262c` | The band a panel footer sits on, and neutral marks |
+| `--sand-deep` | `#e9e9e5` | `#2f2f36` | A selected neutral surface |
+| `--hover` | `#f1efea` | `#26262c` | What a row or a button takes under the pointer |
+| `--hairline` | `#d9d7d0` | `#2b2b31` | Around a panel |
+| `--hairline-strong` | `#c9c7c0` | `#33333a` | Control edges |
+| `--hairline-soft` | `#e6e4dd` | `#26262b` | Between rows, and around a panel's bands |
+| `--ink` | `#1d1d20` | `#f0f0ee` | Primary text, and the inverse surface |
+| `--ink-soft` | `#3a3a3f` | `#d4d4d2` | Ghost button text |
+| `--body` | `#5f5f66` | `#b0b0b7` | Supporting text |
+| `--muted` | `#66666d` | `#9d9da4` | Metadata, row descriptions |
+| `--muted-soft` | `#8b8b90` | `#82828a` | 3.16:1. Large text and marks only, never a sentence |
+| `--placeholder` | `#707077` | `#95959c` | Placeholders, and what has not been built yet |
+| `--brand` | `#3f5fd0` | `#93a7f0` | Links and the focus ring, and nothing else |
+| `--success` | `#3f7239` | `#5faa6e` | Always beside a word |
+| `--warning` | `#7f571d` | `#d9a441` | Always beside a word |
+| `--danger` | `#8a3826` | `#dd7f66` | Always beside a word. `--danger-tint` and `--danger-edge` band and edge the panel that ends something |
 
-The seven object hues, each with a `-tint` used as the background of icon marks, badges and empty-state glyphs, and most with a `-deep` for text on the tint:
+`ink`, `body`, `muted` and `placeholder` each measure 4.5:1 or better against the page, the
+canvas and the card, in the theme they belong to, so any of the four may set running text. That
+is measured rather than eyeballed, and a change to any of them has to be measured again.
 
-| Hue | Light | Carries |
-|---|---|---|
-| `--terracotta` | `#C0512C` | People, primary actions, the brand |
-| `--indigo` | `#3F5FD0` | Journal, information, the focus ring |
-| `--forest` | `#2F7350` | Places, activities, success |
-| `--marigold` | `#E0A02E` | Pets, warning (as `--marigold-deep`) |
-| `--plum` | `#7A4B86` | Reminders |
-| `--rose` | `#BC4A64` | Family, gifts |
-| `--sky` | `#2E7A96` | Organisations |
+### 3.2 Colour: the chrome
 
-In dark the same hues are lifted so they still read as themselves on a dark ground. None of it is derived by inversion. Verify every semantic colour independently.
+The navigation column is dark in both themes rather than a surface that flips with the rest.
+The page is where the person's own work is; the column beside it is furniture, and the contrast
+between the two is what says which is which. So the column has a ramp of its own, and the light
+theme's column has to hold its own text against a near black ground.
 
-Never: glowing borders, coloured shadows, pure black everywhere, reduced text contrast, stacked surface layers.
+| Token | Light | Dark | Use |
+|---|---|---|---|
+| `--shell` | `#17171b` | `#08080a` | The column |
+| `--shell-raised` | `#212127` | `#1a1a1d` | The vault chip, and the menus that open off the column |
+| `--shell-hover` | `#26262e` | `#212127` | What a row in it takes under the pointer |
+| `--shell-border` | `#34343c` | `#33333a` | The chip's edge and a menu's edge |
+| `--shell-hairline` | `#2b2b33` | `#26262b` | The column's own edge, and the rule above its foot |
+| `--shell-ink` | `#f4f3f0` | `#f0f0ee` | The product name, a vault name, the person's name |
+| `--shell-body` | `#b6b6bd` | `#9d9da4` | A destination not currently open |
+| `--shell-muted` | `#75757e` | `#71717a` | Group headings, counts, chevrons |
+| `--shell-active` | `#f4f3f0` | `#2e2e36` | The pill behind the destination you are on |
+| `--shell-active-ink` | `#17171b` | `#f0f0ee` | Its label |
+| `--topbar` | `#ffffff` | `#1a1a1d` | The bar, opaque |
+| `--topbar-hairline` | `#d5d3cc` | `#3a3a42` | Its bottom edge |
 
-### 3.2 Colour: the names for jobs
+### 3.3 Colour: the names for jobs
 
-`--action-primary` is terracotta and `--action-strong` is ink. Terracotta is the everyday primary. Ink is for the one control that outranks it in a region, and for the vault chip.
+`--action-primary` is ink, so the filled button inverts with the theme rather than keeping a
+colour of its own. There is no second primary: one blue, and it is a link and a focus ring.
 
-`--focus` and `--focus-ring` are two different jobs and must not be merged again. `--focus` is the warm border a field takes under the pointer and while it is being typed in. `--focus-ring` is indigo and is the ring every focusable element draws when the keyboard reaches it.
+`--focus` and `--focus-ring` are two different jobs and must not be merged again. `--focus` is
+near black, and it is the border a field takes while it is being typed in, so which field that
+is can be seen at a glance down a long form. `--focus-ring` is the blue, and it is the ring
+every focusable element draws when the keyboard reaches it.
 
 Semantic colour (`--success`, `--warning`, `--danger`) is always paired with a word and an icon.
 
-### 3.3 Type
+### 3.4 Type
 
 Three families, all bundled through `bunny()` in `vite.config.js`. No runtime font CDN.
 
@@ -122,7 +148,7 @@ Mono is for ids, API tokens and keys, webhook event names, keyboard shortcuts, f
 
 Rules: weight and space carry hierarchy before a border does. No uppercase headings (uppercase is allowed for 11 to 12.5px metadata labels). Reading measure capped at 66 characters. Never below 400 for body.
 
-### 3.4 Space, shape, motion
+### 3.5 Space, shape, motion
 
 Base unit 4px: `1:4 2:8 3:12 4:16 5:20 6:24 8:32 10:40 12:48 16:64 20:80 24:96`.
 
@@ -130,51 +156,68 @@ Layout constants: page padding 24 (16 on a phone), section gap 32, row padding 1
 
 Radius: `xs 5` indicators, `sm 8` marks and badges, `md 10` buttons and fields, `lg 14` panels and cards, `xl 20` the dock. Nothing above 20. Nothing is a pill except an avatar and a person pill.
 
-Elevation is object-like, not floating: a hard 1px bottom edge plus a low, warm, tightly spread shadow. `--shadow-raised` on buttons and panels, `--shadow-lift` on a lifted surface, `--shadow-pop` on the dock, the launcher and menus. Fields go the other way, with a soft inset shade (`--shadow-press-inset`), so they read as a well rather than a box. In dark the shadows become black, because a warm shadow on a dark ground is invisible.
+There is no elevation layer. A hairline and space are what separate things, so a row, a button and a field draw a border and nothing beneath them. Four shadows exist and each earns it. `--shadow-panel` and `--shadow-bar` are a single pixel: not elevation so much as the line itself given a little weight, now that the page behind them is a darker stone. `--shadow-pop` is for what genuinely floats over the page rather than sitting in it, which is a menu and a dialog. `--shadow-quote` is for the card on the credentials screens, which lies on a gradient rather than in a stack. In dark they all become black, because a warm shadow on a dark ground is invisible.
 
 Motion: `fast 110ms` feedback, `standard 170ms` menus, `slow 220ms` dialogs and panels, all on `cubic-bezier(.22, 1, .36, 1)`. Allowed: opacity, small translation, height, the toast's draining timer bar. Not allowed: spring, bounce, overshoot, parallax, zoom, hover movement.
 
-No background images, no gradients, no patterns, no grain, no glassmorphism. The only translucency in the system is the sticky top bar (90% paper and a 10px blur) and the launcher scrim (28% ink).
+No background images, no gradients, no patterns, no grain, no glassmorphism. The top bar is opaque rather than the page seen through a blur, so what scrolls under it disappears rather than smearing. The only translucency left is the scrim behind a dialog and behind the drawer.
 
 ---
 
 ## 4. Shell
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│ ← Back to your vaults                          ☀   (RF)      │ 60
-├──────────────────────────────────────────────────────────────┤
-│                                                              │
-│                        Page title                            │
-│                    one line about it                         │
-│                                                              │
-│   Section heading      what the section is for               │
-│   ┌────────────────────────────────────────────────────┐    │
-│   │ ▪  Row title                              meta  ›  │ 72 │
-│   │ ▪  Row title                              meta  ›  │    │
-│   └────────────────────────────────────────────────────┘    │
-│                                                              │
-│              ┌──────────────────────────────────┐            │
-│              │ 🐱 Famille ⌄ │ ♥  👥  📖  🔔     │ 72        │
-│              └──────────────────────────────────┘            │
-└──────────────────────────────────────────────────────────────┘
-```
+`layouts/shell.blade.php` is the shell of every screen somebody sees once they are signed in: a
+navigation column on the left that stays put, and the screen itself on the right under a bar
+that says where you are. Below 1024px the column slides in over the page as a drawer, from the
+button in the bar.
 
-`layouts/shell.blade.php` is the shell of a screen navigated by the dock. A sticky 60px bar at the top, one column in the middle capped at the reading width, the dock at the foot of the window. There is no column of links down the left. That is what the dock replaced.
+`layouts/account.blade.php` is the shell of the screens that stand outside any one vault, being
+the list of them, the form that opens one, and the screen somebody lands on before they have
+made anything. Those have nothing to navigate, so they have no column, and their bar carries
+the way into the settings that the column's foot carries everywhere else.
 
-`layouts/app.blade.php` and `layouts/account.blade.php` are the v2 shells and are still what the unmigrated screens use. They will be retired as those screens move to `shell`.
+`shell` takes a `wide` flag, which drops the reading column and the padding either side of it,
+so a table can run to both edges of the window. It is for a screen built around something too
+wide to read down the middle, such as the template builder and the field-type picker, and not
+for making a form roomier: a form at full width is a form whose labels are a long way from
+their fields.
 
-`shell` takes a `wide` flag, which swaps the 720px reading column for the 1120px content column. It is for a screen with two columns of its own, such as the template builder and the field-type picker, and not for making a form roomier: a form at 1120px is a form whose labels are a long way from their fields.
+The column is dark chrome in both themes and the bar is opaque. The contrast between the two
+is the whole idea: a person's own work is on the light page, and what surrounds it is
+furniture. Nothing in the chrome competes with what is inside it.
 
-As of August 2026 every screen under `/settings` is on `shell`, along with the vault list, the contact list and the form that writes somebody down. The vault dashboard, the vault settings, getting started and the auth screens are still on the v2 shells. They have the new palette and the new type, because those are global, but the old structure around them.
+---
 
-A screen inside a vault puts `components/vault/bar.blade.php` in the shell's `bar` slot: the vault, then where in it you are, then the way into the launcher. Every such screen says those three things in the same corner, so which vault a screen belongs to is never something to be worked out from the title. The chip leads to the vault's own screen rather than opening a menu, because the dock already carries the chip that switches vaults.
+**Anatomy of the column.** The mark and the product name at the head, with the light and dark
+switch beside them. Then the vault chip: a raised button carrying a plate in the vault's own
+colour, its name, how many people are in it, and a chevron that turns over when its menu is
+open. Then the destinations of that vault, under an uppercase group heading. At the foot, above
+a rule, whoever is signed in: their avatar and their name, and a click on that opens the way
+into their account and the way out of the product.
 
-Sticky regions use a translucent paper background, a blur, and a one-pixel bottom border.
+**States.** **Rest** is `--shell-body` with no fill. **Hover** is `--shell-hover` behind it and
+`--shell-ink` on it, in 110ms, colour only, nothing moves or grows. **Where you are** is a light
+pill, `--shell-active` filled with a `--shell-active-ink` label at 600, carried by
+`aria-current="page"` and never by fill alone. **Focus** is a 2px blue ring at 2px offset. A
+**count** appears only when something is actually waiting.
+
+**A screen that belongs to the account rather than to a vault marks nothing as current** in the
+vault's own group. The settings have a column of their own, whose first row is the way back
+out of them.
+
+**A destination that has not been built yet is drawn and not offered.** It takes
+`--shell-muted`, carries `aria-disabled="true"` and is a `<span>` rather than an `<a>`. A link
+that leads nowhere is worse than a word that does not move. The journal, the reminders and the
+files are all in this state today.
 
 ---
 
 ## 5. Navigation: the dock and the launcher
+
+> **Not built, and superseded.** The dock and the launcher below were the v3 proposal. What
+> shipped is the navigation column described in section 4. This section is kept because the
+> launcher's job, one place holding everything rarer than the four destinations, is still
+> unsolved, and not because any of it is on the screen today.
 
 The dock is fixed at the bottom centre of the window and carries **four destinations and nothing else**. Four is the whole point: they are the places somebody goes every day, they keep their order forever, and each one is named rather than left as an icon to be learned. The dock never shows an icon alone.
 
@@ -200,7 +243,17 @@ The word "Home" is unavailable for the first destination: it is already the labe
 
 **Section.** A semantic group, separated by 32px and a heading, with one line beside the heading saying what the section is for. Reach for this first. A heading and 32px of space is the first tool for separating two things. A panel is the second.
 
-**Panel** (`<x-panel>`). A bounded unit with an optional header carrying a 28px mark in the colour of whatever kind of thing it holds. 1px hairline, radius 14, canvas body, `--shadow-raised`. Body padding 20, or zero (`:flush="true"`) when it contains rows, because rows draw their own padding and their own separators.
+**Panel** (`<x-panel>`). A bounded unit with an optional header carrying a 28px ink mark. 1px
+hairline, radius 13, canvas body, `--shadow-panel`. The header sits on `--sunken` and the footer
+on `--sand`, each behind a `--hairline-soft` rule, so a panel reads as a named thing with a body
+between two ends rather than as a box with a rule across it. The footer is where a save button
+goes. Body padding 20, or zero (`:flush="true"`) when it contains rows, because rows draw their
+own padding and their own separators.
+
+`tone="danger"` is the panel that ends something: `--danger-edge` around it, `--danger-tint`
+behind its header, a `--danger` mark and a `--danger` title, and the filled red button inside
+it. One per screen at most, and what it opens is still the confirmation that names the
+consequence.
 
 Use a panel when the content is genuinely independent of what sits above it: a profile section, a settings group, a reminder list, an import summary. **Do not wrap every paragraph.**
 

@@ -98,7 +98,7 @@
   @case($type === FieldTypeEnum::Boolean && $value?->value_boolean !== null)
     <span class="flex items-center gap-1.75 text-base text-ink">
       @if ($value->value_boolean)
-        <x-icon name="check" :size="16" :stroke-width="1.9" class="text-forest" />
+        <x-icon name="check" :size="16" :stroke-width="1.9" class="text-success" />
         {{ __('Yes') }}
       @else
         <x-icon name="close" :size="16" :stroke-width="1.9" class="text-muted" />

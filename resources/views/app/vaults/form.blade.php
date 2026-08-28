@@ -13,15 +13,6 @@
   $values = $viewModel->values();
 @endphp
 <x-account-layout :title="$viewModel->title()">
-  <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => __('Your vaults'), 'url' => $viewModel->backUrl()],
-        ['label' => $viewModel->title()],
-      ]"
-    />
-  </x-slot:breadcrumb>
-
   <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" class="max-w-140" />
 
   <div

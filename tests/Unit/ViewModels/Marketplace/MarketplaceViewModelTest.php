@@ -30,7 +30,6 @@ class MarketplaceViewModelTest extends TestCase
 
         $this->assertCount(2, $categories);
         $this->assertSame('health', $categories[0]['key']);
-        $this->assertSame('bg-rose-tint text-rose', $categories[0]['iconClass']);
         $this->assertSame('0 listings', $categories[0]['countLabel']);
     }
 

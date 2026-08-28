@@ -15,18 +15,31 @@ class BarLinksTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_offers_the_docs_and_the_marketplace(): void
+    public function it_offers_the_docs_the_marketplace_and_the_account_settings(): void
     {
         $this->blade('<x-bar-links />')
             ->assertSee('Docs')
-            ->assertSee('Marketplace');
+            ->assertSee('Marketplace')
+            ->assertSee('Account settings');
     }
 
     #[Test]
-    public function it_leads_to_the_catalogue_and_nowhere_yet_for_the_docs(): void
+    public function it_leaves_the_account_settings_to_the_navigation_column_that_carries_them(): void
+    {
+        $rendered = $this->blade('<x-bar-links :settings="false" />');
+
+        $rendered->assertDontSee('Account settings');
+        $rendered->assertDontSee('href="'.route('settings.index').'"', escape: false);
+        $rendered->assertSee('Marketplace');
+        $rendered->assertSee('Docs');
+    }
+
+    #[Test]
+    public function it_leads_to_the_catalogue_the_settings_and_nowhere_yet_for_the_docs(): void
     {
         $this->blade('<x-bar-links />')
             ->assertSee('href="'.route('marketplace.index').'"', escape: false)
+            ->assertSee('href="'.route('settings.index').'"', escape: false)
             ->assertSee('href="#"', escape: false);
     }
 
@@ -45,7 +58,8 @@ class BarLinksTest extends TestCase
         $this->blade('<x-bar-links />')
             ->assertSee('hidden min-[900px]:inline', escape: false)
             ->assertSee('aria-label="Docs"', escape: false)
-            ->assertSee('aria-label="Marketplace"', escape: false);
+            ->assertSee('aria-label="Marketplace"', escape: false)
+            ->assertSee('aria-label="Account settings"', escape: false);
     }
 
     #[Test]

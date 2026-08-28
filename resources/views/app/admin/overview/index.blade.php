@@ -48,7 +48,7 @@
       ['label' => __('Signed in'), 'value' => $viewModel->signedInRecently(), 'period' => trans_choice('last :count day|last :count days', \App\ViewModels\Admin\OverviewViewModel::SIGNED_IN_DAYS)],
       ['label' => __('New accounts'), 'value' => $viewModel->accountsCreatedRecently(), 'period' => trans_choice('last :count day|last :count days', \App\ViewModels\Admin\OverviewViewModel::NEW_ACCOUNT_DAYS)],
     ] as $figure)
-      <div class="rounded-lg border border-hairline bg-card px-4 py-3.5 shadow-raised">
+      <div class="rounded-lg border border-hairline bg-card px-4 py-3.5 ">
         <p class="text-xs font-semibold tracking-wide text-muted uppercase">{{ $figure['label'] }}</p>
 
         <p class="font-display text-section-title text-ink">{{ $figure['value'] }}</p>

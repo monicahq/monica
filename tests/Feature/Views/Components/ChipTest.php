@@ -15,7 +15,7 @@ class ChipTest extends TestCase
         $rendered = $this->blade('<x-chip href="/settings/account/templates?filter=all">All</x-chip>');
 
         $rendered->assertSee('<a', escape: false);
-        $rendered->assertSee('shadow-raised', escape: false);
+        $rendered->assertSee('border-hairline-strong bg-canvas', escape: false);
         $rendered->assertSee('All', escape: false);
         $rendered->assertDontSee('aria-pressed', escape: false);
     }

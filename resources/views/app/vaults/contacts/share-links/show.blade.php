@@ -20,17 +20,16 @@
   $visits = $viewModel->visits();
 @endphp
 <x-shell :title="$viewModel->title()" wide>
-  <x-slot:bar>
-    <x-vault.bar
-      :vault="$viewModel->vault()"
-      :items="[
-        ['label' => __('People'), 'icon' => 'people', 'url' => $viewModel->peopleUrl()],
+  <x-slot:breadcrumb>
+    <x-breadcrumb :items="[['label' => $viewModel->vault()->name, 'url' => route('vaults.show', $viewModel->vault())], ['label' => __('People'), 'url' => $viewModel->peopleUrl()],
         ['label' => $viewModel->contact()->name, 'url' => $viewModel->contactUrl()],
         ['label' => __('Links'), 'url' => $viewModel->linksUrl()],
-        ['label' => $viewModel->title()],
-      ]"
-    />
-  </x-slot:bar>
+        ['label' => $viewModel->title()],]" />
+  </x-slot:breadcrumb>
+
+  <x-slot:sidebar>
+    <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" current="contacts" />
+  </x-slot:sidebar>
 
   <div class="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
     <div class="flex min-w-0 flex-col gap-6">
@@ -41,10 +40,10 @@
       </header>
 
       @if ($url)
-        <div class="flex flex-col gap-3.5 rounded-lg border border-hairline bg-canvas p-5 shadow-raised" x-data="{ copied: false }">
+        <div class="flex flex-col gap-3.5 rounded-lg border border-hairline bg-canvas p-5 " x-data="{ copied: false }">
           <p
             x-ref="url"
-            class="rounded-md border border-hairline bg-sunken px-3.5 py-3 font-mono text-[12.5px] break-all text-ink shadow-press-inset select-all"
+            class="rounded-md border border-hairline bg-sunken px-3.5 py-3 font-mono text-[12.5px] break-all text-ink select-all"
           >{{ $url }}</p>
 
           <div class="flex flex-wrap items-center gap-2.5">

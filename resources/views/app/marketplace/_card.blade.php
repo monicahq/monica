@@ -13,13 +13,13 @@
 
   @var array<string, mixed> $listing
 --}}
-<article class="flex flex-col gap-2.25 rounded-lg border border-hairline bg-canvas p-4 shadow-raised">
+<article class="flex flex-col gap-2.25 rounded-lg border border-hairline bg-canvas p-4 ">
   <div class="flex min-w-0 items-center gap-2">
-    <span class="flex size-6.5 shrink-0 items-center justify-center rounded-sm {{ $listing['typeIconClass'] }}">
+    <span class="flex size-6.5 shrink-0 items-center justify-center rounded-sm bg-sand text-muted">
       <x-icon :name="$listing['typeIcon']" :size="16" :stroke-width="1.5" />
     </span>
 
-    <span class="text-xs tracking-caption uppercase {{ $listing['typeTextClass'] }}">{{ $listing['typeLabel'] }}</span>
+    <span class="text-xs tracking-caption uppercase text-muted">{{ $listing['typeLabel'] }}</span>
 
     <span class="truncate text-xs text-muted">· {{ $listing['categoryName'] }}</span>
 

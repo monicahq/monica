@@ -18,11 +18,14 @@ use App\Models\Vault;
 class GettingStartedViewModel
 {
     /**
-     * The photograph beside the letter, dropped into `public/images`. The
-     * signature reads perfectly well without it, so a missing file costs the
+     * The photographs beside the letter, dropped into `public/images`. The
+     * signature reads perfectly well without them, so a missing file costs the
      * screen nothing but a circle.
      */
-    public const string PORTRAIT = 'images/regis-freyd.jpg';
+    public const array PORTRAITS = [
+        'Regis' => 'images/regis.jpg',
+        'Alexis' => 'images/alexis.jpg',
+    ];
 
     public function __construct(
         private readonly User $user,
@@ -38,7 +41,7 @@ class GettingStartedViewModel
 
     public function introduction(): string
     {
-        return __('Nothing is here yet. Before you start, a word from the person who builds this.');
+        return __('Nothing is here yet. Before you start, a word from the two people who build this.');
     }
 
     /**
@@ -49,40 +52,34 @@ class GettingStartedViewModel
     public function letter(): array
     {
         return [
-            __('Hi. I am Regis, and I have been writing Monica on and off since 2017, mostly in the evenings. It started because I kept forgetting the things I actually wanted to remember about people: who was going through a hard time, whose kid had just been born, which friend I had not called in a year.'),
+            __('Hi. We are Regis and Alexis, and between us we write Monica, which has been going on and off since 2017, mostly in the evenings. It started because we kept forgetting the things we actually wanted to remember about people: who was going through a hard time, whose kid had just been born, which friend we had not called in a year.'),
             __('Monica is where you put all of that. It is not a social network and there is nothing to broadcast. It is your own record, kept for you, and you can take it out or delete it whenever you like.'),
-            __('Everything starts with a vault, which is simply a sealed compartment for one part of your life. Make one, put a person in it, and see how it feels. If something is missing or annoys you, write to me. I read every message.'),
+            __('Everything starts with a vault, which is simply a sealed compartment for one part of your life. Make one, put a person in it, and see how it feels. If something is missing or annoys you, write to us. We read every message.'),
         ];
     }
 
     public function founderName(): string
     {
-        return 'Regis Freyd';
+        return __(':first and :second', ['first' => 'Regis', 'second' => 'Alexis']);
     }
 
     public function founderRole(): string
     {
-        return __('Founder, :app', ['app' => config('app.name')]);
-    }
-
-    public function portraitUrl(): string
-    {
-        return asset(self::PORTRAIT);
+        return __('The two of us build :app', ['app' => config('app.name')]);
     }
 
     /**
-     * Where writing back leads. An instance that emptied the address in the
-     * configuration shows no link at all rather than a dead one.
+     * One circle each, in the order they are named in the signature.
+     *
+     * @return array<int, array{name: string, url: string}>
      */
-    public function writeUrl(): ?string
+    public function portraits(): array
     {
-        $address = config('monica.founder_email');
-
-        if ($address === null || $address === '') {
-            return null;
-        }
-
-        return 'mailto:'.$address;
+        return array_map(
+            fn (string $name, string $path): array => ['name' => $name, 'url' => asset($path)],
+            array_keys(self::PORTRAITS),
+            self::PORTRAITS,
+        );
     }
 
     public function createVaultUrl(): string

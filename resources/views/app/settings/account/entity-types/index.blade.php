@@ -9,16 +9,16 @@
   @var \App\ViewModels\Settings\Account\EntityTypes\EntityTypesViewModel $viewModel
 --}}
 <x-shell :title="__('Entity types')">
-  <x-slot:bar>
+  <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to settings') }}
     </x-button.bar>
-  </x-slot:bar>
+  </x-slot:breadcrumb>
 
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-settings.sidebar :user="$viewModel->user()" current="entity-types" />
+  </x-slot:sidebar>
 
   <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
     <div class="flex min-w-0 flex-col gap-2">
@@ -46,7 +46,7 @@
         @forelse ($viewModel->types() as $type)
           @include('app.settings.account.entity-types._row', ['type' => $type])
         @empty
-          <x-empty-state :title="__('No types yet')" icon-class="bg-sky-tint text-sky">
+          <x-empty-state :title="__('No types yet')">
             <x-slot:icon>
               <x-icon name="organization" :size="30" :stroke-width="1.4" />
             </x-slot:icon>

@@ -13,17 +13,17 @@
   $template = $viewModel->template();
 @endphp
 <x-shell :title="__('Share :name', ['name' => $viewModel->name()])" wide>
-  <x-slot:bar>
+  <x-slot:breadcrumb>
     <x-breadcrumb :items="[
       ['label' => $template->name, 'url' => $viewModel->builderUrl()],
       ['label' => $viewModel->name()],
       ['label' => __('Share')],
     ]" />
-  </x-slot:bar>
+  </x-slot:breadcrumb>
 
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-settings.sidebar :user="$viewModel->user()" current="templates" />
+  </x-slot:sidebar>
 
   <div class="flex flex-wrap items-start justify-between gap-x-8 gap-y-6">
     <header class="flex max-w-[62ch] min-w-0 flex-col gap-2">
@@ -51,7 +51,7 @@
   </div>
 
   <div class="grid items-start gap-6 lg:grid-cols-2">
-    <x-panel :title="__('Export the section as a file')" icon="file" icon-class="bg-sky-tint text-sky">
+    <x-panel :title="__('Export the section as a file')" icon="file">
       <div class="flex flex-col gap-4">
         <p class="text-base text-pretty text-body">
           {{ __('The same format as a template file, one section deep. Importing it adds this section to the end of a page you choose, and never touches the sections already there.') }}
@@ -73,7 +73,7 @@
       </div>
     </x-panel>
 
-    <x-panel :title="__('Publish the section')" icon="gift" icon-class="bg-accent-tint text-terracotta-deep">
+    <x-panel :title="__('Publish the section')" icon="gift">
       <div class="flex flex-col gap-4">
         <p class="text-base text-pretty text-body">
           {{ __('Sections are their own kind of listing in the marketplace, next to templates. They are the ones people install most, because they fit into whatever somebody already built.') }}

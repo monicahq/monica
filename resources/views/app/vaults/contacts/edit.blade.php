@@ -15,20 +15,15 @@
   $contact = $viewModel->contact();
 @endphp
 <x-shell :title="$viewModel->title()">
-  <x-slot:bar>
-    <x-vault.bar
-      :vault="$vault"
-      :items="[
-        ['label' => __('People'), 'icon' => 'people', 'url' => route('contacts.index', $vault)],
+  <x-slot:breadcrumb>
+    <x-breadcrumb :items="[['label' => $vault->name, 'url' => route('vaults.show', $vault)], ['label' => __('People'), 'url' => route('contacts.index', $vault)],
         ['label' => $contact->name, 'url' => $viewModel->contactUrl()],
-        ['label' => $viewModel->title()],
-      ]"
-    />
-  </x-slot:bar>
+        ['label' => $viewModel->title()],]" />
+  </x-slot:breadcrumb>
 
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" :vault="$vault" current="people" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="contacts" />
+  </x-slot:sidebar>
 
   <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
@@ -50,7 +45,6 @@
     :title="__('Picture')"
     :subtitle="$viewModel->avatarDescription()"
     icon="profile"
-    icon-class="bg-plum-tint text-plum"
   >
     <div
       class="flex flex-wrap items-center gap-5"
@@ -116,7 +110,6 @@
       :title="__('Change the name')"
       :subtitle="$viewModel->nameDescription()"
       icon="people"
-      icon-class="bg-indigo-tint text-indigo"
     >
       <div class="grid gap-4 sm:grid-cols-2">
         <x-input
@@ -214,7 +207,7 @@
     The card in front of it is what actually deletes. Nothing in the product goes
     on the first click.
   --}}
-  <x-panel :title="__('Delete contact')" icon="people" icon-class="bg-error-tint text-error">
+  <x-panel :title="__('Delete contact')" icon="people">
     <div class="flex flex-wrap items-center gap-3.5">
       <p class="max-w-[60ch] text-sm text-pretty text-muted">{{ $viewModel->deleteDescription() }}</p>
 

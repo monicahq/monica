@@ -28,17 +28,16 @@
   $sectionCount = $viewModel->sectionCount();
 @endphp
 <x-shell :title="$viewModel->title()" wide>
-  <x-slot:bar>
-    <x-vault.bar
-      :vault="$viewModel->vault()"
-      :items="[
-        ['label' => __('People'), 'icon' => 'people', 'url' => $viewModel->peopleUrl()],
+  <x-slot:breadcrumb>
+    <x-breadcrumb :items="[['label' => $viewModel->vault()->name, 'url' => route('vaults.show', $viewModel->vault())], ['label' => __('People'), 'url' => $viewModel->peopleUrl()],
         ['label' => $viewModel->contact()->name, 'url' => $viewModel->contactUrl()],
         ['label' => __('Links'), 'url' => $viewModel->linksUrl()],
-        ['label' => $viewModel->breadcrumbLabel()],
-      ]"
-    />
-  </x-slot:bar>
+        ['label' => $viewModel->breadcrumbLabel()],]" />
+  </x-slot:breadcrumb>
+
+  <x-slot:sidebar>
+    <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" current="contacts" />
+  </x-slot:sidebar>
 
   <div class="flex flex-wrap items-start gap-6">
     <div class="min-w-60 flex-1">
@@ -52,7 +51,7 @@
       <p class="mt-2 max-w-[66ch] text-base text-pretty text-muted">{{ $viewModel->intro() }}</p>
     </div>
 
-    <div class="flex shrink-0 items-center gap-3.5 rounded-lg border border-hairline bg-canvas px-4 py-3.5 shadow-raised">
+    <div class="flex shrink-0 items-center gap-3.5 rounded-lg border border-hairline bg-canvas px-4 py-3.5 ">
       <x-contact-avatar :name="$viewModel->contact()->name" :url="$viewModel->avatarUrl()" :size="44" />
 
       <span class="flex min-w-0 flex-col gap-0.5">

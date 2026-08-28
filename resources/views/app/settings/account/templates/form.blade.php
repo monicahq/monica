@@ -15,16 +15,16 @@
   $values = $viewModel->values();
 @endphp
 <x-shell :title="$viewModel->title()">
-  <x-slot:bar>
+  <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.templates.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to the templates') }}
     </x-button.bar>
-  </x-slot:bar>
+  </x-slot:breadcrumb>
 
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-settings.sidebar :user="$viewModel->user()" current="templates" />
+  </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
     <h1 class="font-display text-page-title text-ink">{{ $viewModel->title() }}</h1>

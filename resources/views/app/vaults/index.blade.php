@@ -14,21 +14,7 @@
 
   @var \App\ViewModels\Vaults\VaultsViewModel $viewModel
 --}}
-<x-shell :title="$viewModel->title()" wide>
-  <x-slot:bar>
-    <span class="flex items-center gap-2.5">
-      <x-logo :size="24" />
-
-      <span class="text-[15px] font-semibold tracking-tight text-ink">{{ config('app.name') }}</span>
-    </span>
-  </x-slot:bar>
-
-  <x-slot:barEnd>
-    <x-button.ghost :href="route('settings.index')" data-turbo="true" size="small">
-      {{ __('Settings') }}
-    </x-button.ghost>
-  </x-slot:barEnd>
-
+<x-account-layout :title="$viewModel->title()">
   <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
     <div class="flex min-w-0 flex-col gap-2">
       <h1 class="font-display text-page-title text-ink">{{ $viewModel->title() }}</h1>
@@ -54,7 +40,7 @@
   --}}
   @if ($viewModel->vaults() === [])
     <x-panel>
-      <x-empty-state :title="__('No vault yet')" icon-class="bg-terracotta-tint text-terracotta">
+      <x-empty-state :title="__('No vault yet')">
         <x-slot:icon>
           <x-icon name="vault" :size="30" :stroke-width="1.4" />
         </x-slot:icon>
@@ -85,7 +71,7 @@
           <a
             href="{{ $vault['url'] }}"
             data-turbo="true"
-            class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-raised flex flex-col gap-3.5 p-5 transition-colors duration-[110ms] hover:bg-hover"
+            class="overflow-hidden rounded-lg border border-hairline bg-canvas flex flex-col gap-3.5 p-5 transition-colors duration-[110ms] hover:bg-hover"
           >
             <span class="flex items-center gap-3">
               <span
@@ -132,4 +118,4 @@
       </div>
     </section>
   @endif
-</x-shell>
+</x-account-layout>

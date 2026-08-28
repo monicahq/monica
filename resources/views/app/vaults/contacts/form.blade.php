@@ -23,19 +23,14 @@
   $values = $viewModel->values();
 @endphp
 <x-shell :title="$viewModel->title()">
-  <x-slot:bar>
-    <x-vault.bar
-      :vault="$vault"
-      :items="[
-        ['label' => __('People'), 'icon' => 'people', 'url' => $viewModel->contactsUrl()],
-        ['label' => $viewModel->title()],
-      ]"
-    />
-  </x-slot:bar>
+  <x-slot:breadcrumb>
+    <x-breadcrumb :items="[['label' => $vault->name, 'url' => route('vaults.show', $vault)], ['label' => __('People'), 'url' => $viewModel->contactsUrl()],
+        ['label' => $viewModel->title()],]" />
+  </x-slot:breadcrumb>
 
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" :vault="$vault" current="people" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="contacts" />
+  </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
     <h1 class="font-display text-page-title text-ink">{{ $viewModel->title() }}</h1>

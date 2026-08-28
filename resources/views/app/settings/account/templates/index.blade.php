@@ -12,16 +12,16 @@
   @var \App\ViewModels\Settings\Account\Templates\TemplatesViewModel $viewModel
 --}}
 <x-shell :title="__('Templates')">
-  <x-slot:bar>
+  <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to settings') }}
     </x-button.bar>
-  </x-slot:bar>
+  </x-slot:breadcrumb>
 
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-settings.sidebar :user="$viewModel->user()" current="templates" />
+  </x-slot:sidebar>
 
   <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
     <div class="flex min-w-0 flex-col gap-2">
@@ -86,7 +86,7 @@
         @forelse ($viewModel->ownTemplates() as $template)
           @include('app.settings.account.templates._row', ['template' => $template])
         @empty
-          <x-empty-state :title="__('Nothing here yet')" icon-class="bg-indigo-tint text-indigo">
+          <x-empty-state :title="__('Nothing here yet')">
             <x-slot:icon>
               <x-icon name="file" :size="30" :stroke-width="1.4" />
             </x-slot:icon>

@@ -16,17 +16,17 @@
   $template = $viewModel->template();
 @endphp
 <x-shell :title="__('Share :name', ['name' => $template->name])" wide>
-  <x-slot:bar>
+  <x-slot:breadcrumb>
     <x-breadcrumb :items="[
       ['label' => __('Templates'), 'url' => route('settings.templates.index')],
       ['label' => $template->name, 'url' => $viewModel->builderUrl()],
       ['label' => __('Share')],
     ]" />
-  </x-slot:bar>
+  </x-slot:breadcrumb>
 
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-settings.sidebar :user="$viewModel->user()" current="templates" />
+  </x-slot:sidebar>
 
   <header class="flex max-w-[66ch] flex-col gap-2">
     <h1 class="font-display text-page-title text-ink">{{ __('Share :name', ['name' => $template->name]) }}</h1>
@@ -37,7 +37,7 @@
   </header>
 
   <div class="grid items-start gap-6 lg:grid-cols-2">
-    <x-panel :title="__('Export a file')" :subtitle="__('A JSON file on your computer. Nothing is sent anywhere.')" icon="file" icon-class="bg-sky-tint text-sky">
+    <x-panel :title="__('Export a file')" :subtitle="__('A JSON file on your computer. Nothing is sent anywhere.')" icon="file">
       <div class="flex flex-col gap-4">
         <p class="text-base text-pretty text-body">
           {{ __('The whole template written out as text: every section, every field, every list of choices, in the order you arranged them. Import it into another vault or another instance and you get this template back, empty.') }}
@@ -75,7 +75,7 @@
       </div>
     </x-panel>
 
-    <x-panel :title="__('Publish to the marketplace')" :subtitle="__('A listing anybody can install.')" icon="gift" icon-class="bg-accent-tint text-terracotta-deep">
+    <x-panel :title="__('Publish to the marketplace')" :subtitle="__('A listing anybody can install.')" icon="gift">
       <div class="flex flex-col gap-4">
         <p class="text-base text-pretty text-body">
           {{ __('The marketplace is where people share the shapes they worked out for themselves: a dog profile, a template for a therapist’s clients, one for a band’s contacts. Somebody has usually already thought about the thing you are about to build.') }}

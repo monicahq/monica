@@ -28,21 +28,23 @@
   ];
 
   /*
-   * The border is the tint mixed back towards its own hue, so the edge is a shade
-   * of the fill rather than the grey hairline the rest of the system uses.
+   * The ground is the tone at a tenth, and the edge is the same tone rather than
+   * the grey hairline the rest of the system uses, so a notice reads as one object
+   * whichever tone it carries. The glyph beside the text is what actually says
+   * which tone it is, and it says it without the colour.
    */
   $tints = [
-    'info' => 'bg-indigo-tint border-[color-mix(in_oklab,var(--indigo)_22%,var(--indigo-tint))]',
-    'success' => 'bg-forest-tint border-[color-mix(in_oklab,var(--forest)_22%,var(--forest-tint))]',
-    'warning' => 'bg-marigold-tint border-[color-mix(in_oklab,var(--marigold)_30%,var(--marigold-tint))]',
-    'danger' => 'bg-error-tint border-[color-mix(in_oklab,var(--danger)_22%,var(--danger-tint))]',
+    'info' => 'bg-brand/8 border-brand/25',
+    'success' => 'bg-success/8 border-success/25',
+    'warning' => 'bg-warning/8 border-warning/25',
+    'danger' => 'bg-error/8 border-error/25',
     'quiet' => 'bg-sand border-hairline',
   ];
 
   $hues = [
-    'info' => 'text-indigo-deep',
-    'success' => 'text-forest-deep',
-    'warning' => 'text-marigold-deep',
+    'info' => 'text-brand',
+    'success' => 'text-success',
+    'warning' => 'text-warning',
     'danger' => 'text-error',
     'quiet' => 'text-muted',
   ];

@@ -6,12 +6,17 @@
   screen picks the sharp one out of the srcset. Both of those sizes are written
   to disk on upload, so nothing here can ask for a size that does not exist.
 
+  `tone="shell"` reaches the initials underneath, for the dark navigation column. A
+  photo is a photo whichever ground it lands on, so it ignores the tone.
+
   @var \App\Models\User $user
   @var int $size
+  @var string $tone
 --}}
 @props([
   'user',
   'size' => 34,
+  'tone' => 'default',
 ])
 
 @if ($user->hasPhoto())
@@ -30,5 +35,5 @@
     style="width: {{ $size }}px; height: {{ $size }}px;"
   />
 @else
-  <x-avatar-initials :name="$user->name" :size="$size" {{ $attributes }} />
+  <x-avatar-initials :name="$user->name" :size="$size" :tone="$tone" {{ $attributes }} />
 @endif

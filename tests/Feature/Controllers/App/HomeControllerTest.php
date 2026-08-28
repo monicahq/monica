@@ -15,9 +15,9 @@ class HomeControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_shows_the_public_page_to_somebody_who_is_not_signed_in(): void
+    public function it_sends_somebody_who_is_not_signed_in_to_the_sign_in_screen(): void
     {
-        $this->get(route('home.index'))->assertStatus(200);
+        $this->get(route('home.index'))->assertRedirect(route('auth.login.new'));
     }
 
     #[Test]

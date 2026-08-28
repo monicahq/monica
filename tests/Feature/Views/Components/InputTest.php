@@ -65,7 +65,7 @@ class InputTest extends TestCase
     public function a_file_field_drops_the_well_it_has_no_text_in(): void
     {
         $this->blade('<x-file-input id="photo" accept="image/png" />')
-            ->assertSee('file:shadow-raised', escape: false)
+            ->assertSee('file:border-hairline-strong file:bg-canvas', escape: false)
             ->assertSee('type="file"', escape: false)
             ->assertSee('accept="image/png"', escape: false);
     }

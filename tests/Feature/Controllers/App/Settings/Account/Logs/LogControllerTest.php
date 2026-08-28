@@ -85,9 +85,6 @@ class LogControllerTest extends TestCase
         $response->assertSee('it is written down here', escape: false);
         $response->assertSee('Nothing has left our hands yet', escape: false);
         $response->assertSee('along with whether they arrived', escape: false);
-
-        $response->assertSee('bg-forest-tint text-forest', escape: false);
-        $response->assertSee('bg-plum-tint text-plum', escape: false);
     }
 
     #[Test]

@@ -55,25 +55,6 @@ class ContactViewModel
      */
     private const int HEADER_FACTS = 3;
 
-    /** @var list<string> */
-    private const array FACT_HUES = ['text-rose', 'text-forest', 'text-sky'];
-
-    /**
-     * A section carries no colour of its own, and four panels of identical grey
-     * are four panels somebody has to read the heading of to tell apart.
-     *
-     * @var list<string>
-     */
-    private const array SECTION_HUES = [
-        'bg-indigo-tint text-indigo',
-        'bg-forest-tint text-forest',
-        'bg-plum-tint text-plum',
-        'bg-marigold-tint text-marigold-deep',
-        'bg-sky-tint text-sky',
-        'bg-rose-tint text-rose',
-        'bg-terracotta-tint text-terracotta',
-    ];
-
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
@@ -559,7 +540,7 @@ class ContactViewModel
         return $this->contact->templateVersion->assembly
             ->where('template_version_page_id', $page->id)
             ->values()
-            ->map(fn (TemplateVersionSection $row, int $index): array => $this->blockFor($row, $index))
+            ->map(fn (TemplateVersionSection $row): array => $this->blockFor($row))
             ->all();
     }
 
@@ -571,7 +552,7 @@ class ContactViewModel
      *
      * @return array<string, mixed>
      */
-    private function blockFor(TemplateVersionSection $row, int $index): array
+    private function blockFor(TemplateVersionSection $row): array
     {
         $fields = $this->fieldsIn($row);
 
@@ -582,7 +563,6 @@ class ContactViewModel
             'regionId' => "section-{$row->id}",
             'name' => $this->nameOf($row),
             'icon' => $row->sectionVersion->section->icon ?? 'note',
-            'iconClass' => self::SECTION_HUES[$index % count(self::SECTION_HUES)],
             'fields' => $fields,
             'isEditing' => $this->editingSection !== null && $this->editingSection->is($row),
             'isEditable' => collect($fields)->contains(fn (array $field): bool => $field['isEditable']),
@@ -658,18 +638,17 @@ class ContactViewModel
      * every page of the version rather than only the open one: a field put in
      * the header is meant to stay there whatever tab somebody walks to.
      *
-     * @return array<int, array{icon: string, label: string, value: string, iconClass: string}>
+     * @return array<int, array{icon: string, label: string, value: string}>
      */
     public function headerFacts(): array
     {
         $facts = $this->highlightedFields()
             ->take(self::HEADER_FACTS)
             ->values()
-            ->map(fn (Field $field, int $index): array => [
+            ->map(fn (Field $field): array => [
                 'icon' => 'file',
                 'label' => $field->label,
                 'value' => $this->valueOf($field) ?? __('Not recorded'),
-                'iconClass' => self::FACT_HUES[$index % count(self::FACT_HUES)],
             ])
             ->all();
 
@@ -677,7 +656,6 @@ class ContactViewModel
             'icon' => 'timeline',
             'label' => __('Last in touch'),
             'value' => $this->contact->last_activity_at?->diffForHumans() ?? __('never'),
-            'iconClass' => 'text-muted',
         ];
 
         return $facts;
@@ -720,13 +698,12 @@ class ContactViewModel
      * Placeholder until activities exist. The one thing the row knows is when
      * the person was written down, so that is the single entry.
      *
-     * @return array<int, array{icon: string, iconClass: string, when: string, title: string, body: string}>
+     * @return array<int, array{icon: string, when: string, title: string, body: string}>
      */
     public function history(): array
     {
         return [[
             'icon' => 'people',
-            'iconClass' => 'bg-indigo-tint text-indigo',
             'when' => $this->contact->created_at->isoFormat('LL'),
             'title' => __('You wrote :name down', ['name' => $this->contact->name]),
             'body' => __('Everything you write about them from now on lands here, newest first.'),

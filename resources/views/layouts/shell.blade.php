@@ -1,42 +1,43 @@
 {{--
-  The shell of a screen navigated by the dock.
+  The shell of every screen somebody sees once they are signed in: a navigation
+  column on the left that stays put, and the screen itself on the right under a
+  bar that says where you are. On a narrow screen the column slides in over the
+  page instead, from the button in the bar.
 
-  It is deliberately thin. There is a bar at the top that says where you are and
-  who is signed in, a single column of content in the middle, and the dock at the
-  foot of the window. There is no column of links down the left: that is what the
-  dock replaced.
+  `navOpen` is declared here, on the common parent of the column and the
+  backdrop, and that parent is inside <body>: alpine is re-initialised from the
+  body after a turbo navigation, so state declared above it would never be
+  walked again.
 
-  The column is capped at the reading width, because what most of these screens hold
-  is sentences and rows of them, and a line of text that runs the width of a monitor
-  is a line nobody finishes.
+  A screen whose actions have to stay reachable through a long form puts them
+  in the `footer` slot. It is a bar of its own at the foot of the window rather
+  than a row at the end of the page, and it spans the screen the way the bar at
+  the top does: what sits inside it lines up with the content column, but the
+  rule and the background it draws run the whole width, or it reads as a strip
+  that stopped short.
 
-  A screen built around something wider asks for `wide` and gets the content width
-  instead. That is for a screen with two columns of its own, such as the template
-  builder, and not for making a form roomier: a form at 1120px is a form whose
-  labels are a long way from their fields.
+  A screen built around something too wide for the reading column asks for
+  `wide`. It loses the 960px cap and spreads to whatever the window gives it,
+  while keeping the same gutter every other screen has, because content that
+  touches the edge of the window reads as content that has been cut off rather
+  than as content that is wide. The screen also becomes exactly as tall as the
+  window, which is what lets it hand the scrolling to a region of its own: a table
+  whose header stays put while its rows move needs the rows, and not the page, to
+  be the thing that scrolls. That region is what runs to the full width, inside
+  the gutter.
 
-  The bottom padding is what keeps the last row clear of the dock. The dock is
-  fixed, so it takes no space in the flow and would otherwise sit on top of the
-  content; 120px is its 72 plus the 18 it floats above the edge plus room to
-  breathe.
-
-  The dock is a slot rather than something this layout builds, because which vault
-  it points at and which destination is current are the screen's business, not the
-  shell's. A screen may leave it out: the vault list does, because the dock points
-  into one vault and that screen is where you choose between them.
-
-  A screen with no dock takes its bottom padding back. The 120px is only there to
-  keep the last row clear of something that is floating over it.
-
-  `bar` is the left of the top bar and `barEnd` is the right of it, before the docs
-  and marketplace links. A screen reaches its own settings from the launcher behind
-  the dock, so `barEnd` is for the one screen that has no dock to reach them from.
+  The column is a slot rather than something this layout builds, because which
+  vault it points at and which destination is current are the screen's business,
+  not the shell's. A screen that leaves it out gets the whole window instead of a
+  264px strip of nothing, but every signed in screen has somewhere to navigate, so
+  leaving it out is a decision rather than an oversight.
 
   @var string|null $title
   @var bool $wide
-  @var \Illuminate\View\ComponentSlot|null $bar
-  @var \Illuminate\View\ComponentSlot|null $barEnd
-  @var \Illuminate\View\ComponentSlot|null $dock
+  @var \Illuminate\View\ComponentSlot $sidebar
+  @var \Illuminate\View\ComponentSlot|null $breadcrumb
+  @var \Illuminate\View\ComponentSlot|null $actions
+  @var \Illuminate\View\ComponentSlot|null $footer
 --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -47,40 +48,83 @@
   </head>
 
   <body class="bg-page font-sans text-body antialiased">
-    <header class="sticky top-0 z-5 flex h-15 items-center gap-3.5 border-b border-hairline-strong bg-canvas px-4 shadow-bar sm:px-6">
-      @isset($bar)
-        {{ $bar }}
+    <div
+      x-data="{ navOpen: false }"
+      @keydown.escape.window="navOpen = false"
+      x-effect="document.body.classList.toggle('overflow-hidden', navOpen)"
+      @class(['grid min-h-screen grid-cols-1', 'lg:grid-cols-[264px_minmax(0,1fr)]' => isset($sidebar)])
+    >
+      @isset($sidebar)
+        {{ $sidebar }}
+
+        <div
+          x-cloak
+          x-show="navOpen"
+          x-transition.opacity.duration.150ms
+          @click="navOpen = false"
+          class="fixed inset-0 z-30 bg-scrim lg:hidden"
+          aria-hidden="true"
+        ></div>
       @endisset
 
-      <div class="ml-auto flex items-center gap-2.5">
-        @isset($barEnd)
-          {{ $barEnd }}
+      {{--
+        A screen carrying a footer becomes a column, so the content between the
+        two bars grows and the footer is at the foot of a short screen instead of
+        stranded halfway up it. Screens without one are left exactly as they were.
+      --}}
+      <main @class(['min-w-0', 'flex flex-col' => isset($footer), 'flex h-dvh flex-col' => $wide])>
+        <header class="sticky top-0 z-5 flex h-13 items-center gap-3.5 border-b border-topbar-hairline bg-topbar px-4 shadow-bar sm:px-7">
+          <button
+            type="button"
+            @click="navOpen = true"
+            :aria-expanded="navOpen ? 'true' : 'false'"
+            aria-controls="main-nav"
+            aria-label="{{ __('Open the menu') }}"
+            class="-ml-1.5 flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring lg:hidden"
+          >
+            <x-icon name="menu" :size="17" :stroke-width="1.4" />
+          </button>
+
+          @isset($breadcrumb)
+            {{ $breadcrumb }}
+          @endisset
+
+          {{--
+            A screen with something to do from the bar puts it here. A screen with
+            nothing leaves the space empty: who is signed in is at the foot of the
+            navigation column, and the bar repeating it said the same thing twice.
+          --}}
+          <div class="ml-auto flex min-w-0 items-center gap-2.5">
+            @isset($actions)
+              {{ $actions }}
+            @endisset
+
+            <x-bar-links :settings="false" />
+          </div>
+        </header>
+
+        <div
+          @class([
+            'w-full px-4 pt-6 sm:px-7 sm:pt-7.5',
+            'mx-auto max-w-240 space-y-8.5' => ! $wide,
+            'flex min-h-0 flex-1 flex-col gap-4' => $wide,
+            'flex-1 pb-8' => isset($footer),
+            'pb-6 sm:pb-7.5' => ! isset($footer) && $wide,
+            'pb-14 sm:pb-17.5' => ! isset($footer) && ! $wide,
+          ])
+        >
+          {{ $slot }}
+        </div>
+
+        @isset($footer)
+          <footer class="sticky bottom-0 z-5 border-t border-hairline bg-canvas">
+            <div class="mx-auto flex max-w-240 flex-wrap items-center gap-4 px-4 py-3 sm:px-7">
+              {{ $footer }}
+            </div>
+          </footer>
         @endisset
-
-        <x-bar-links />
-
-        <x-theme-toggle />
-
-        {{-- The id lets a form that changes somebody's name refresh this in place. --}}
-        <x-avatar id="shell-avatar" :user="auth()->user()" :size="32" />
-      </div>
-    </header>
-
-    <main
-      @class([
-        'mx-auto flex w-full flex-col gap-8 px-4 pt-11 sm:px-6',
-        'max-w-180' => ! $wide,
-        'max-w-280' => $wide,
-        'pb-30' => isset($dock),
-        'pb-14' => ! isset($dock),
-      ])
-    >
-      {{ $slot }}
-    </main>
-
-    @isset($dock)
-      {{ $dock }}
-    @endisset
+      </main>
+    </div>
 
     <x-toaster />
   </body>

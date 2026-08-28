@@ -10,7 +10,23 @@
   For the same reason the name it carries covers both states rather than naming the
   one it would switch to: a label that has to be corrected after paint is a label a
   screen reader may have already read out.
+
+  `tone="shell"` is for the one in the head of the navigation column. That column is
+  dark chrome whichever theme is on, so the switch in it cannot take its colours from
+  the theme the way the rest of the interface does.
+
+  @var string $tone
 --}}
+@props([
+  'tone' => 'default',
+])
+
+@php
+  $colours = $tone === 'shell'
+    ? 'text-shell-muted hover:bg-shell-hover hover:text-shell-ink'
+    : 'text-muted hover:bg-sand hover:text-ink';
+@endphp
+
 <button
   x-data
   type="button"
@@ -23,10 +39,11 @@
   --}}
   {{
     $attributes->class([
-      'relative inline-flex size-8.5 cursor-pointer items-center justify-center rounded-md text-muted',
+      'relative inline-flex size-8.5 cursor-pointer items-center justify-center rounded-md',
+      $colours,
       "after:absolute after:-inset-1.5 after:content-['']",
       'transition-[background-color,color,transform] duration-(--duration-fast) ease-out',
-      'hover:bg-sand hover:text-ink active:translate-y-(--press-translate)',
+      'active:translate-y-(--press-translate)',
       'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring',
     ])
   }}

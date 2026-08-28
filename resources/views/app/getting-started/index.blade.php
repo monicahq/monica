@@ -24,13 +24,23 @@
       </div>
 
       <div class="flex flex-wrap items-center gap-3.5 border-t border-hairline-soft pt-5">
-        <x-image
-          :src="$viewModel->portraitUrl()"
-          :alt="$viewModel->founderName()"
-          :width="56"
-          :height="56"
-          class="size-14 shrink-0 rounded-full bg-sunken object-cover"
-        />
+        {{--
+          Two of them, overlapping by a third of a circle, so the pair reads as
+          one signature rather than as two people who happen to be next to each
+          other. Each carries a ring in the panel's own colour, which is what
+          keeps the one behind from bleeding into the one in front.
+        --}}
+        <div class="flex shrink-0 -space-x-4">
+          @foreach ($viewModel->portraits() as $portrait)
+            <x-image
+              :src="$portrait['url']"
+              :alt="$portrait['name']"
+              :width="56"
+              :height="56"
+              class="size-14 rounded-full bg-sunken object-cover ring-2 ring-canvas"
+            />
+          @endforeach
+        </div>
 
         <div class="space-y-0.5">
           <p class="text-[15px] font-semibold text-ink">{{ $viewModel->founderName() }}</p>
@@ -38,15 +48,7 @@
           <p class="text-[13px] text-muted">{{ $viewModel->founderRole() }}</p>
         </div>
 
-        <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto">
-          @if ($viewModel->writeUrl())
-            <a href="{{ $viewModel->writeUrl() }}" class="text-sm text-muted hover:text-brand hover:underline">
-              {{ __('Write to :name', ['name' => 'Regis']) }}
-            </a>
-          @endif
-
-          <x-button :href="$viewModel->createVaultUrl()" data-turbo="true">{{ __('Create your first vault') }}</x-button>
-        </div>
+        <x-button :href="$viewModel->createVaultUrl()" data-turbo="true" class="max-sm:w-full sm:ml-auto">{{ __('Create your first vault') }}</x-button>
       </div>
     </div>
   </div>

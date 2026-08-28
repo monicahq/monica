@@ -70,7 +70,7 @@
     aria-hidden="true"
     @class([
       'flex size-5 shrink-0 items-center justify-center border-[1.5px] border-hairline-strong bg-canvas text-transparent',
-      'shadow-press-inset transition-colors duration-(--duration-fast) ease-out',
+      'transition-colors duration-(--duration-fast) ease-out',
       'peer-checked:border-ink peer-checked:bg-ink peer-checked:text-page peer-checked:shadow-none',
       $type === 'radio' ? 'rounded-full' : 'rounded-sm',
       'mt-px' => $hint !== null,

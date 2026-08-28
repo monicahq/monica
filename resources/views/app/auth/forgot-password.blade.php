@@ -6,7 +6,7 @@
 <x-guest-layout :title="__('Forgot your password?')">
   <div class="grid min-h-screen grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)]">
     <main class="flex min-w-0 flex-col justify-center px-6 py-10 sm:px-15">
-      <div class="mx-auto w-full max-w-md space-y-6">
+      <div class="mx-auto my-auto w-full max-w-md space-y-6">
         <div class="space-y-2">
           <div class="flex items-center gap-3">
             <x-logo :size="30" />
@@ -46,7 +46,7 @@
         </x-box>
       </div>
 
-      <p class="mt-auto pt-10 text-center text-xs text-muted-soft">
+      <p class="pt-10 text-center text-xs text-muted-soft">
         &copy; {{ config('app.name') }} {{ now()->format('Y') }} &middot; {{ __('Open source HR') }}
       </p>
     </main>

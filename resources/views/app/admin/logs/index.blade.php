@@ -60,7 +60,7 @@
           </p>
         </div>
       @empty
-        <x-empty-state :title="__('Nothing has been done yet')" icon-class="bg-forest-tint text-forest">
+        <x-empty-state :title="__('Nothing has been done yet')">
           <x-slot:icon>
             <x-icon name="timeline" :size="30" :stroke-width="1.4" />
           </x-slot:icon>

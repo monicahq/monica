@@ -64,7 +64,7 @@
           <p class="shrink-0 text-sm text-muted">{{ __('joined :date', ['date' => $account->created_at->isoFormat('LL')]) }}</p>
         </div>
       @empty
-        <x-empty-state :title="$viewModel->isSearching() ? __('Nothing matches that') : __('There are no accounts yet')" icon-class="bg-marigold-tint text-marigold-deep">
+        <x-empty-state :title="$viewModel->isSearching() ? __('Nothing matches that') : __('There are no accounts yet')">
           <x-slot:icon>
             <x-icon name="search" :size="30" :stroke-width="1.4" />
           </x-slot:icon>

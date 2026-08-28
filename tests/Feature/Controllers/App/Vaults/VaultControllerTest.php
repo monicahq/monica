@@ -217,20 +217,8 @@ class VaultControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('vaults.show', $vault))
             ->assertStatus(200)
-            ->assertSee('Your vaults')
+            ->assertSee('All your vaults')
             ->assertSee(route('vaults.index'));
-    }
-
-    #[Test]
-    public function it_carries_the_search_in_its_bar_the_way_the_rest_of_the_vault_does(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('vaults.show', $vault))
-            ->assertStatus(200)
-            ->assertSee('Search people, notes, anything…')
-            ->assertSee("\$dispatch('launcher-open')", escape: false);
     }
 
     #[Test]
@@ -284,6 +272,17 @@ class VaultControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Create a vault')
             ->assertSee('Make this the default vault');
+    }
+
+    #[Test]
+    public function the_form_that_opens_a_vault_carries_no_breadcrumb(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->get(route('vaults.new'))
+            ->assertStatus(200)
+            ->assertDontSee('aria-label="Breadcrumb"', escape: false)
+            ->assertSee('Cancel');
     }
 
     #[Test]

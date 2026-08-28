@@ -13,18 +13,18 @@
   $values = $viewModel->values();
 @endphp
 <x-shell :title="$viewModel->title()">
-  <x-slot:bar>
-    <x-vault.bar :vault="$vault" :items="[['label' => __('Settings'), 'icon' => 'vault']]" />
-  </x-slot:bar>
+  <x-slot:breadcrumb>
+    <x-breadcrumb :items="[['label' => $vault->name, 'url' => route('vaults.show', $vault)], ['label' => __('Settings')]]" />
+  </x-slot:breadcrumb>
 
   {{--
     Nothing in the dock is current. The settings of a vault are not one of the
     four destinations: you get here from the menu behind the chip, and marking
     one of the four would claim otherwise.
   --}}
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" :vault="$vault" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="vault-settings" />
+  </x-slot:sidebar>
 
   <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
@@ -48,7 +48,6 @@
         :title="__('What this vault is called')"
         :subtitle="__('The name is what you see in the dock and on the list. The description is for the version of you who comes back in a year.')"
         icon="vault"
-        icon-class="bg-terracotta-tint text-terracotta"
       >
         <div class="flex flex-col gap-4.5">
           <x-input
@@ -90,9 +89,9 @@
                     aria-label="{{ $option['label'] }}"
                     :aria-pressed="colour === @js($option['value']) ? 'true' : 'false'"
                     @click="colour = @js($option['value'])"
-                    :class="colour === @js($option['value']) ? 'ring-2 ring-focus-ring ring-offset-2 ring-offset-canvas' : ''"
+                    :class="colour === @js($option['value']) ? 'border-ink shadow-[inset_0_0_0_2px_var(--canvas)]' : 'border-transparent shadow-[0_1px_2px_rgb(29_29_32_/_0.12)]'"
                     style="background: {{ $option['value'] }}"
-                    class="size-7.5 cursor-pointer rounded-md border border-hairline-strong transition-shadow duration-150"
+                    class="size-8.5 cursor-pointer rounded-[10px] border-2 transition-transform duration-(--duration-fast) ease-out hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
                   ></button>
                 @endforeach
               </div>
@@ -130,7 +129,6 @@
     :title="__('What a new contact starts from')"
     :subtitle="__('Every contact added to this vault begins with this template. The ones already here keep the version they were written on.')"
     icon="people"
-    icon-class="bg-indigo-tint text-indigo"
   >
     {{--
       Every version of every template, offered even when the account has one of
@@ -184,7 +182,7 @@
     The destructive half. It asks twice: the button raises the card, and the
     card says what the vault holds before it goes.
   --}}
-  <x-panel :title="__('Delete this vault')" icon="vault" icon-class="bg-error-tint text-error">
+  <x-panel :title="__('Delete this vault')" icon="vault" tone="danger">
     <div class="flex flex-wrap items-center gap-3.5">
       <div class="flex max-w-[60ch] flex-col gap-2 text-sm text-pretty text-muted">
         <p>{{ __('Everything filed in this vault goes with it: the contacts, and everything written about them.') }}</p>
@@ -199,9 +197,9 @@
         :action="$viewModel->destroyAction()"
       >
         <x-slot:trigger>
-          <x-button.secondary type="button" @click="open = true" class="text-error sm:ml-auto">
+          <x-button.danger type="button" size="small" @click="open = true" class="sm:ml-auto">
             {{ __('Delete this vault') }}
-          </x-button.secondary>
+          </x-button.danger>
         </x-slot:trigger>
 
         @if ($viewModel->deletionConsequence() !== '')

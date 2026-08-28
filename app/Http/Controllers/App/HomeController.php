@@ -8,21 +8,20 @@ use App\Http\Controllers\Controller;
 use App\Models\Vault;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 /**
- * The front door. An account holding nothing goes to the screen that explains
- * what to do first, one holding a vault goes to its vaults, and somebody who
- * is not signed in gets the public page.
+ * The front door. It shows nothing of its own: somebody who is not signed in is
+ * sent to the sign in screen, an account holding nothing to the screen that
+ * explains what to do first, and an account holding a vault to its vaults.
  */
 class HomeController extends Controller
 {
-    public function index(Request $request): View|RedirectResponse
+    public function index(Request $request): RedirectResponse
     {
         $user = $request->user();
 
         if ($user === null) {
-            return view('welcome');
+            return redirect()->route('auth.login.new');
         }
 
         $hasAVault = Vault::query()->where('account_id', $user->account_id)->exists();

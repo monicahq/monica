@@ -9,16 +9,16 @@
   @var \App\ViewModels\Settings\Account\Profile\ProfileViewModel $viewModel
 --}}
 <x-shell :title="__('Profile')">
-  <x-slot:bar>
+  <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to settings') }}
     </x-button.bar>
-  </x-slot:bar>
+  </x-slot:breadcrumb>
 
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-settings.sidebar :user="$viewModel->user()" current="profile" />
+  </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
     <h1 class="font-display text-page-title text-ink">{{ __('Profile') }}</h1>

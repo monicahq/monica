@@ -30,16 +30,16 @@
     .'border-transparent font-sans font-semibold tracking-[-0.005em] whitespace-nowrap no-underline '
     .'transition-[background-color,box-shadow,transform,border-color] duration-(--duration-fast) ease-out '
     .'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring '
-    .'active:translate-y-(--press-translate) active:shadow-none '
+    .'active:translate-y-(--press-translate) '
     .'disabled:pointer-events-none disabled:cursor-default disabled:opacity-50 disabled:shadow-none '
     .'aria-disabled:pointer-events-none aria-disabled:cursor-default aria-disabled:opacity-50 aria-disabled:shadow-none';
 
   $fill = match ($variant) {
-    'secondary' => 'border-hairline-strong bg-canvas text-ink shadow-raised hover:bg-sand',
-    'bar' => 'border-hairline-strong bg-sand text-ink shadow-raised hover:border-ink hover:bg-sand-deep',
+    'secondary' => 'border-hairline-strong bg-canvas text-ink hover:bg-sand',
+    'bar' => 'border-hairline-strong bg-sand text-ink hover:border-ink hover:bg-sand-deep',
     'ghost' => 'text-ink-soft hover:bg-sand hover:text-ink',
-    'danger' => 'bg-error text-white shadow-btn-danger hover:bg-error-hover',
-    default => 'bg-action-primary text-action-primary-text shadow-btn-primary hover:bg-action-primary-hover',
+    'danger' => 'bg-error text-white hover:bg-error-hover',
+    default => 'bg-action-primary text-action-primary-text hover:bg-action-primary-hover',
   };
 
   $classes = [$base, $fill, $size === 'small' ? 'h-8.5 px-3.25 text-[13.5px]' : 'h-10 px-4.5 text-base'];

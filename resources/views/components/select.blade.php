@@ -43,10 +43,10 @@
 
   /* The same well <x-input> draws, with room on the right for the arrow. */
   $control = 'w-full appearance-none rounded-md border border-hairline-strong bg-input pl-3 pr-8.5 font-sans text-ink '
-    .'shadow-press-inset transition-[border-color,box-shadow] duration-(--duration-fast) ease-out '
+    .'transition-[border-color,box-shadow] duration-(--duration-fast) ease-out '
     .'hover:border-muted '
-    .'focus:border-ink focus:shadow-press-focus focus:outline-none '
-    .'disabled:cursor-default disabled:bg-sand disabled:text-muted disabled:shadow-none '
+    .'focus:border-ink focus:ring-3 focus:ring-accent-tint focus:outline-none '
+    .'disabled:cursor-default disabled:bg-sand disabled:text-muted '
     .'aria-[invalid=true]:border-error';
 @endphp
 

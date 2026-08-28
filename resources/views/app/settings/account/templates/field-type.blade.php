@@ -23,16 +23,16 @@
   $backToBuilder = route('settings.templateBuilder.index', ['template' => $template, 'page' => $row->templateVersionPage->key]);
 @endphp
 <x-shell :title="__('Add a field')" wide>
-  <x-slot:bar>
+  <x-slot:breadcrumb>
     <x-button.bar :href="$backToBuilder" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to the template') }}
     </x-button.bar>
-  </x-slot:bar>
+  </x-slot:breadcrumb>
 
-  <x-slot:dock>
-    <x-dock :user="$user" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-settings.sidebar :user="$user" current="templates" />
+  </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
     <h1 class="font-display text-page-title text-ink">{{ __('What goes in :section?', ['section' => $sectionName]) }}</h1>
@@ -91,7 +91,7 @@
           <div class="grid gap-2.5 sm:grid-cols-2">
             @foreach ($family['types'] as $type)
               @if ($type['isAvailable'])
-                <label class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-raised grid cursor-pointer content-start gap-1.5 p-3.5 transition-colors duration-[110ms] hover:bg-hover has-checked:border-ink has-checked:bg-sunken">
+                <label class="overflow-hidden rounded-lg border border-hairline bg-canvas grid cursor-pointer content-start gap-1.5 p-3.5 transition-colors duration-[110ms] hover:bg-hover has-checked:border-ink has-checked:bg-sunken">
                   <span class="flex items-center gap-2">
                     <input type="radio" name="type" value="{{ $type['key'] }}" x-model="type" @checked(old('type') === $type['key']) required />
 

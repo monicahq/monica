@@ -16,22 +16,21 @@
   $values = $viewModel->values();
 @endphp
 <x-shell :title="$viewModel->title()">
-  <x-slot:bar>
-    <x-vault.bar
-      :vault="$viewModel->vault()"
-      :items="[
-        ['label' => __('People'), 'icon' => 'people', 'url' => route('contacts.index', $viewModel->vault())],
+  <x-slot:breadcrumb>
+    <x-breadcrumb :items="[['label' => $viewModel->vault()->name, 'url' => route('vaults.show', $viewModel->vault())], ['label' => __('People'), 'url' => route('contacts.index', $viewModel->vault())],
         ['label' => $viewModel->contact()->name, 'url' => $viewModel->contactUrl()],
-        ['label' => $viewModel->title()],
-      ]"
-    />
-  </x-slot:bar>
+        ['label' => $viewModel->title()],]" />
+  </x-slot:breadcrumb>
+
+  <x-slot:sidebar>
+    <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" current="contacts" />
+  </x-slot:sidebar>
 
   <x-page-header :title="$viewModel->title()" :description="$viewModel->intro()" />
 
   @if ($values === [])
     <x-panel>
-      <x-empty-state :title="__('Nothing set aside')" icon-class="bg-sand text-muted">
+      <x-empty-state :title="__('Nothing set aside')">
         <x-slot:icon>
           <x-icon name="file" :size="30" :stroke-width="1.4" />
         </x-slot:icon>
@@ -46,7 +45,7 @@
       </x-empty-state>
     </x-panel>
   @else
-    <x-panel :title="__('Answers nobody is asked for any more')" icon="file" icon-class="bg-sand text-muted" :flush="true">
+    <x-panel :title="__('Answers nobody is asked for any more')" icon="file" :flush="true">
       <dl class="grid gap-0">
         @foreach ($values as $value)
           <div class="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-baseline gap-4 border-b border-hairline px-4.5 py-3 last:border-b-0 max-[560px]:grid-cols-1 max-[560px]:gap-0.5">

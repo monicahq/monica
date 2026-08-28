@@ -30,11 +30,11 @@ class RowTest extends TestCase
     }
 
     #[Test]
-    public function it_draws_its_mark_in_the_colour_of_what_it_holds(): void
+    public function it_draws_a_mark_when_it_is_given_one(): void
     {
-        $rendered = $this->blade('<x-row title="Profile" icon="profile" icon-class="bg-terracotta-tint text-terracotta" />');
+        $rendered = $this->blade('<x-row title="Profile" icon="profile" />');
 
-        $rendered->assertSee('<span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-terracotta-tint text-terracotta">', escape: false);
+        $rendered->assertSee('<span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-sand text-muted">', escape: false);
     }
 
     #[Test]

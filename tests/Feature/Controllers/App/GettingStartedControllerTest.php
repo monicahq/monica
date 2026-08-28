@@ -22,10 +22,24 @@ class GettingStartedControllerTest extends TestCase
         $this->actingAs($user)->get(route('gettingStarted.index'))
             ->assertStatus(200)
             ->assertSee('Hello Michael')
-            ->assertSee('Regis Freyd')
             ->assertSee('Create your first vault')
             ->assertSee('Getting set up')
             ->assertSee('0 of 5 done');
+    }
+
+    #[Test]
+    public function the_letter_is_signed_by_both_of_the_people_who_write_it(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('gettingStarted.index'))->assertStatus(200);
+
+        $response->assertSee('We are Regis and Alexis');
+        $response->assertSee('Regis and Alexis');
+        $response->assertSee('The two of us build Monica');
+        $response->assertSee('alt="Regis"', escape: false);
+        $response->assertSee('alt="Alexis"', escape: false);
+        $response->assertDontSee('Write to');
     }
 
     #[Test]

@@ -6,10 +6,12 @@
   fits in one line under the bar. Once you are in a vault the sidebar shell
   takes over, with the vault's own navigation down the left.
 
-  The bar carries the mark, the way out to the docs and the marketplace, the way to
-  the settings and who is signed in. The
-  strip under it carries the breadcrumb, and a screen that has nowhere to come
-  back from may leave it out.
+  The bar carries the mark, the way out to the docs and the marketplace, the way
+  to the settings, and the light and dark switch. It does not say who is signed
+  in: an avatar with nothing behind it is decoration, and the one place that
+  answer belongs is the foot of the navigation column, where a click on it does
+  something. The strip under the bar carries the breadcrumb, and a screen that
+  has nowhere to come back from may leave it out.
 
   @var string|null $title
   @var \Illuminate\View\ComponentSlot|null $breadcrumb
@@ -23,7 +25,7 @@
   </head>
 
   <body class="bg-page font-sans text-body antialiased">
-    <header class="sticky top-0 z-5 flex h-13 items-center gap-2.5 border-b border-hairline-strong bg-canvas px-4 shadow-bar sm:px-7">
+    <header class="sticky top-0 z-5 flex h-13 items-center gap-2.5 border-b border-topbar-hairline bg-topbar px-4 shadow-bar sm:px-7">
       <x-logo :size="26" />
 
       <span class="truncate text-sm font-semibold tracking-tight text-ink">{{ config('app.name') }}</span>
@@ -32,17 +34,6 @@
         <x-bar-links />
 
         <x-theme-toggle />
-
-        <a
-          href="{{ route('settings.index') }}"
-          data-turbo="true"
-          aria-label="{{ __('Settings') }}"
-          class="flex items-center rounded-md p-1.5 text-muted transition-colors hover:bg-hover hover:text-ink"
-        >
-          <x-icon name="settings" :size="16" />
-        </a>
-
-        <x-avatar :user="auth()->user()" :size="26" />
       </div>
     </header>
 

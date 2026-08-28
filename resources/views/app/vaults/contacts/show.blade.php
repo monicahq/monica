@@ -30,19 +30,14 @@
     .'font-sans text-[13.5px] font-semibold text-placeholder';
 @endphp
 <x-shell :title="$viewModel->title()" wide>
-  <x-slot:bar>
-    <x-vault.bar
-      :vault="$vault"
-      :items="[
-        ['label' => __('People'), 'icon' => 'people', 'url' => $viewModel->peopleUrl()],
-        ['label' => $viewModel->title()],
-      ]"
-    />
-  </x-slot:bar>
+  <x-slot:breadcrumb>
+    <x-breadcrumb :items="[['label' => $vault->name, 'url' => route('vaults.show', $vault)], ['label' => __('People'), 'url' => $viewModel->peopleUrl()],
+        ['label' => $viewModel->title()],]" />
+  </x-slot:breadcrumb>
 
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" :vault="$vault" current="people" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="contacts" />
+  </x-slot:sidebar>
 
   {{--
     The way back is a plain anchor rather than <x-link>, which is for a link
@@ -94,7 +89,7 @@
       <ul id="contact-facts" x-merge="replace" class="mt-4 flex list-none flex-wrap gap-x-5.5 gap-y-2">
         @foreach ($viewModel->headerFacts() as $fact)
           <li class="flex items-center gap-1.75 text-sm text-body">
-            <x-icon :name="$fact['icon']" :size="16" :stroke-width="1.5" class="{{ $fact['iconClass'] }}" />
+            <x-icon :name="$fact['icon']" :size="16" :stroke-width="1.5" class="text-muted" />
             {{ $fact['label'] }} <b class="font-semibold text-ink">{{ $fact['value'] }}</b>
           </li>
         @endforeach
@@ -197,7 +192,7 @@
   @elseif ($viewModel->onOverview())
     <div class="grid items-start gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
       <div class="flex flex-col gap-5">
-        <x-panel :title="__('Write something down')" icon="note" icon-class="bg-indigo-tint text-indigo">
+        <x-panel :title="__('Write something down')" icon="note">
           <x-textarea
             id="entry"
             :placeholder="__('A call, a visit, something they said.')"
@@ -228,7 +223,7 @@
             @foreach ($viewModel->history() as $entry)
               <li class="relative pb-6 last:pb-0">
                 <span
-                  class="absolute top-px -left-7.5 flex size-6 items-center justify-center rounded-full ring-4 ring-page {{ $entry['iconClass'] }}"
+                  class="absolute top-px -left-7.5 flex size-6 items-center justify-center rounded-full bg-sand text-muted ring-4 ring-page"
                   aria-hidden="true"
                 >
                   <x-icon :name="$entry['icon']" :size="14" :stroke-width="1.6" />
@@ -246,7 +241,7 @@
       </div>
 
       <div class="flex flex-col gap-5">
-        <x-panel :title="__('Facts')" icon="info" icon-class="bg-terracotta-tint text-terracotta">
+        <x-panel :title="__('Facts')" icon="info">
           <dl class="grid gap-0">
             @foreach ($viewModel->facts() as $fact)
               <div class="grid grid-cols-[150px_minmax(0,1fr)] items-baseline gap-4 border-b border-hairline py-2.75 last:border-b-0 max-[560px]:grid-cols-1 max-[560px]:gap-0.5">
@@ -263,15 +258,15 @@
           </dl>
         </x-panel>
 
-        <x-panel :title="__('Relationships')" icon="relationship" icon-class="bg-rose-tint text-rose">
+        <x-panel :title="__('Relationships')" icon="relationship">
           <p class="text-sm text-pretty text-muted">{{ $unbuilt['relationships'] }}</p>
         </x-panel>
 
-        <x-panel :title="__('Reminders')" icon="reminder" icon-class="bg-plum-tint text-plum">
+        <x-panel :title="__('Reminders')" icon="reminder">
           <p class="text-sm text-pretty text-muted">{{ $unbuilt['reminders'] }}</p>
         </x-panel>
 
-        <x-panel :title="__('Things you said you would do')" icon="tasks" icon-class="bg-forest-tint text-forest">
+        <x-panel :title="__('Things you said you would do')" icon="tasks">
           <p class="text-sm text-pretty text-muted">{{ $unbuilt['tasks'] }}</p>
         </x-panel>
       </div>

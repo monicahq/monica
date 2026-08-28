@@ -35,7 +35,7 @@
       :class="draggingId === {{ $section['id'] }} && 'opacity-40'"
     @endif
     x-data="{ renaming: false }"
-    class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-raised"
+    class="overflow-hidden rounded-lg border border-hairline bg-canvas "
   >
     <header class="flex min-h-13 items-center gap-2.5 border-b border-hairline px-4.5 py-3">
       <div x-show="! renaming" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2.5 gap-y-1.5">

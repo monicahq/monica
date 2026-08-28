@@ -15,7 +15,7 @@
   <main class="flex min-h-screen flex-col items-center justify-center gap-6 px-6 py-10">
     <x-logo :size="34" />
 
-    <div class="w-full max-w-md rounded-lg border border-hairline bg-canvas p-6 shadow-raised">
+    <div class="w-full max-w-md rounded-lg border border-hairline bg-canvas p-6 ">
       <div class="flex flex-col gap-3">
         <span class="flex size-9 items-center justify-center rounded-sm bg-sunken text-muted" aria-hidden="true">
           <x-icon name="lock" :size="19" :stroke-width="1.6" />

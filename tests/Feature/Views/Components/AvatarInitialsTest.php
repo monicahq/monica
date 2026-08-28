@@ -37,7 +37,7 @@ class AvatarInitialsTest extends TestCase
     {
         $tints = collect(['Pam Beesly', 'Jim Halpert', 'Dwight Schrute', 'Michael Scott', 'Angela Martin', 'Kevin Malone', 'Oscar Martinez'])
             ->map(fn (string $name): string => preg_match(
-                '/(bg-[a-z]+-tint)/',
+                '/(bg-\[#[0-9a-f]{6}\]\/12)/',
                 $this->blade('<x-avatar-initials :name="$name" />', ['name' => $name])->__toString(),
                 $matches,
             ) === 1 ? $matches[1] : '');
@@ -50,5 +50,15 @@ class AvatarInitialsTest extends TestCase
     public function it_is_hidden_from_screen_readers(): void
     {
         $this->blade('<x-avatar-initials name="Pam Beesly" />')->assertSee('aria-hidden="true"', escape: false);
+    }
+
+    #[Test]
+    public function on_the_dark_column_it_takes_the_letters_the_dark_theme_would_have_given_it(): void
+    {
+        $rendered = $this->blade('<x-avatar-initials name="Michael Scott" tone="shell" />');
+
+        $rendered->assertSee('/22', escape: false);
+        $rendered->assertDontSee('/12', escape: false);
+        $rendered->assertDontSee('dark:text-', escape: false);
     }
 }

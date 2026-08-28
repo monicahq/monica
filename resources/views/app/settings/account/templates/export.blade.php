@@ -15,17 +15,17 @@
   $template = $viewModel->template();
 @endphp
 <x-shell :title="__('Export :name', ['name' => $template->name])" wide>
-  <x-slot:bar>
+  <x-slot:breadcrumb>
     <x-breadcrumb :items="[
       ['label' => $template->name, 'url' => $viewModel->builderUrl()],
       ['label' => __('Share'), 'url' => $viewModel->shareUrl()],
       ['label' => __('Export a file')],
     ]" />
-  </x-slot:bar>
+  </x-slot:breadcrumb>
 
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-settings.sidebar :user="$viewModel->user()" current="templates" />
+  </x-slot:sidebar>
 
   <div class="grid items-start gap-7 lg:grid-cols-[minmax(0,1fr)_20rem]">
     <div class="flex min-w-0 flex-col gap-5" x-data="{ copied: false }">

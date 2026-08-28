@@ -55,7 +55,7 @@ class SettingsViewModel
      * A row that carries a `method` is something that changes state rather than
      * somewhere to go, so its url is where a form is sent and never an href.
      *
-     * @return array<int, array{title: string|null, description: string|null, rows: array<int, array{title: string, description: string, icon: string, iconClass: string, meta: string|null, url: string|null, method?: string}>}>
+     * @return array<int, array{title: string|null, description: string|null, rows: array<int, array{title: string, description: string, icon: string, meta: string|null, url: string|null, method?: string}>}>
      */
     public function sections(): array
     {
@@ -81,7 +81,7 @@ class SettingsViewModel
     }
 
     /**
-     * @return array<int, array{title: string, description: string, icon: string, iconClass: string, meta: string|null, url: string|null}>
+     * @return array<int, array{title: string, description: string, icon: string, meta: string|null, url: string|null}>
      */
     private function youRows(): array
     {
@@ -90,7 +90,6 @@ class SettingsViewModel
                 'title' => __('Profile'),
                 'description' => __('Your name, the address people see, and the photograph on your avatar.'),
                 'icon' => 'profile',
-                'iconClass' => 'bg-terracotta-tint text-terracotta',
                 'meta' => null,
                 'url' => route('settings.profile.index'),
             ],
@@ -98,7 +97,6 @@ class SettingsViewModel
                 'title' => __('Security and access'),
                 'description' => __('Your password, your devices and your API keys.'),
                 'icon' => 'lock',
-                'iconClass' => 'bg-indigo-tint text-indigo',
                 'meta' => $this->twoFactorLabel(),
                 'url' => route('settings.security.index'),
             ],
@@ -106,7 +104,6 @@ class SettingsViewModel
                 'title' => __('Preferences'),
                 'description' => __('Language, dates, numbers and the clock.'),
                 'icon' => 'settings',
-                'iconClass' => 'bg-forest-tint text-forest',
                 'meta' => $this->preferencesLabel(),
                 'url' => route('settings.preferences.index'),
             ],
@@ -114,7 +111,6 @@ class SettingsViewModel
                 'title' => __('Notifications'),
                 'description' => __('Which reminders reach you by email, and how long before the date they arrive.'),
                 'icon' => 'mail',
-                'iconClass' => 'bg-plum-tint text-plum',
                 'meta' => null,
                 'url' => null,
             ],
@@ -122,7 +118,7 @@ class SettingsViewModel
     }
 
     /**
-     * @return array<int, array{title: string, description: string, icon: string, iconClass: string, meta: string|null, url: string|null}>
+     * @return array<int, array{title: string, description: string, icon: string, meta: string|null, url: string|null}>
      */
     private function accountRows(): array
     {
@@ -131,7 +127,6 @@ class SettingsViewModel
                 'title' => __('Templates'),
                 'description' => __('Which sections a person page carries.'),
                 'icon' => 'file',
-                'iconClass' => 'bg-indigo-tint text-indigo',
                 'meta' => $this->templateCount(),
                 'url' => route('settings.templates.index'),
             ],
@@ -139,7 +134,6 @@ class SettingsViewModel
                 'title' => __('Entity types'),
                 'description' => __('What you can write down beside people.'),
                 'icon' => 'organization',
-                'iconClass' => 'bg-sky-tint text-sky',
                 'meta' => $this->entityTypeCount(),
                 'url' => route('settings.entityTypes.index'),
             ],
@@ -147,7 +141,6 @@ class SettingsViewModel
                 'title' => __('Default values'),
                 'description' => __('The lists the application offers you: relationship kinds, genders, call reasons, activity types.'),
                 'icon' => 'tasks',
-                'iconClass' => 'bg-marigold-tint text-marigold-deep',
                 'meta' => null,
                 'url' => route('settings.valueLists.index'),
             ],
@@ -155,7 +148,6 @@ class SettingsViewModel
                 'title' => __('Logs'),
                 'description' => __('What has been done in this account, and every email it has sent.'),
                 'icon' => 'timeline',
-                'iconClass' => 'bg-forest-tint text-forest',
                 'meta' => null,
                 'url' => route('settings.logs.index'),
             ],
@@ -163,7 +155,7 @@ class SettingsViewModel
     }
 
     /**
-     * @return array<int, array{title: string, description: string, icon: string, iconClass: string, meta: string|null, url: string|null, method?: string}>
+     * @return array<int, array{title: string, description: string, icon: string, meta: string|null, url: string|null, method?: string}>
      */
     private function leavingRows(): array
     {
@@ -172,7 +164,6 @@ class SettingsViewModel
                 'title' => __('Export everything'),
                 'description' => __('A single file with every vault, person, note and photograph. It is yours to take.'),
                 'icon' => 'vault',
-                'iconClass' => 'bg-sand text-muted',
                 'meta' => null,
                 'url' => null,
             ],
@@ -180,7 +171,6 @@ class SettingsViewModel
                 'title' => __('Sign out'),
                 'description' => __('You will have to sign in again on this browser.'),
                 'icon' => 'key',
-                'iconClass' => 'bg-sand text-muted',
                 'meta' => null,
                 'url' => route('auth.login.destroy'),
                 'method' => 'post',

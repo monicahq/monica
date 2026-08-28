@@ -13,16 +13,16 @@
   @var \App\ViewModels\Settings\Account\Security\TwoFactorEnrolmentViewModel $viewModel
 --}}
 <x-shell :title="__('Two factor authentication')">
-  <x-slot:bar>
+  <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.security.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to security') }}
     </x-button.bar>
-  </x-slot:bar>
+  </x-slot:breadcrumb>
 
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-settings.sidebar :user="$viewModel->user()" current="security" />
+  </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
     <h1 class="font-display text-page-title text-ink">{{ __('Turn on two factor authentication') }}</h1>

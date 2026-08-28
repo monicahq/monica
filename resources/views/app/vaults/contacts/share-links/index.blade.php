@@ -19,16 +19,15 @@
   $links = $viewModel->links();
 @endphp
 <x-shell :title="$viewModel->title()">
-  <x-slot:bar>
-    <x-vault.bar
-      :vault="$viewModel->vault()"
-      :items="[
-        ['label' => __('People'), 'icon' => 'people', 'url' => $viewModel->peopleUrl()],
+  <x-slot:breadcrumb>
+    <x-breadcrumb :items="[['label' => $viewModel->vault()->name, 'url' => route('vaults.show', $viewModel->vault())], ['label' => __('People'), 'url' => $viewModel->peopleUrl()],
         ['label' => $viewModel->contact()->name, 'url' => $viewModel->contactUrl()],
-        ['label' => __('Links')],
-      ]"
-    />
-  </x-slot:bar>
+        ['label' => __('Links')],]" />
+  </x-slot:breadcrumb>
+
+  <x-slot:sidebar>
+    <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" current="contacts" />
+  </x-slot:sidebar>
 
   <div class="flex flex-wrap items-end gap-4">
     <div class="min-w-60 flex-1">
@@ -50,7 +49,7 @@
   <div id="share-links" x-merge="replace" class="transition-opacity [&[aria-busy]]:opacity-60">
     <x-panel :flush="true">
       @forelse ($links as $link)
-        <x-row icon="link" :icon-class="$link['isLive'] ? 'bg-forest-tint text-forest' : 'bg-sand text-muted'">
+        <x-row icon="link">
           <div class="flex flex-wrap items-center gap-2.5">
             <a
               href="{{ $link['showUrl'] }}"
@@ -92,7 +91,7 @@
           </x-slot:end>
         </x-row>
       @empty
-        <x-empty-state :title="__('Nothing is shared')" icon-class="bg-forest-tint text-forest">
+        <x-empty-state :title="__('Nothing is shared')">
           <x-slot:icon>
             <x-icon name="link" :size="30" :stroke-width="1.4" />
           </x-slot:icon>

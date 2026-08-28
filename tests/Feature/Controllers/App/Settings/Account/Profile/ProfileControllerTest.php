@@ -65,14 +65,14 @@ class ProfileControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_carries_the_dock(): void
+    public function it_carries_the_settings_column(): void
     {
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('settings.profile.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('aria-label="Main"', escape: false);
+        $response->assertSee('aria-label="Settings"', escape: false);
         $response->assertSee(route('vaults.index'), escape: false);
     }
 

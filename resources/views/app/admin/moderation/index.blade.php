@@ -49,7 +49,7 @@
           </x-button.secondary>
         </div>
       @empty
-        <x-empty-state :title="__('Nothing is waiting')" icon-class="bg-forest-tint text-forest">
+        <x-empty-state :title="__('Nothing is waiting')">
           <x-slot:icon>
             <x-icon name="gift" :size="30" :stroke-width="1.4" />
           </x-slot:icon>

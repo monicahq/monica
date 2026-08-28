@@ -17,7 +17,7 @@
 @endphp
 @if ($sections === [])
   <x-panel>
-    <x-empty-state :title="__('Nothing on this page yet')" icon-class="bg-sand text-muted">
+    <x-empty-state :title="__('Nothing on this page yet')">
       <x-slot:icon>
         <x-icon name="file" :size="30" :stroke-width="1.4" />
       </x-slot:icon>

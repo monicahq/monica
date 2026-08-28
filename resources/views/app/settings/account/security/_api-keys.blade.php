@@ -82,7 +82,6 @@
         ? __('Created :created · last used :used', ['created' => $apiKey['createdAt'], 'used' => $apiKey['lastUsedAt']])
         : __('Created :created · never used', ['created' => $apiKey['createdAt']])"
       icon="key"
-      icon-class="bg-indigo-tint text-indigo"
     >
       <x-slot:end>
         <div x-data="{ confirming: false }">
@@ -101,7 +100,7 @@
       </x-slot:end>
     </x-row>
   @empty
-    <x-empty-state :title="__('No keys yet')" icon-class="bg-indigo-tint text-indigo">
+    <x-empty-state :title="__('No keys yet')">
       <x-slot:icon>
         <x-icon name="key" :size="30" :stroke-width="1.4" />
       </x-slot:icon>

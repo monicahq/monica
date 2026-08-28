@@ -21,10 +21,10 @@ class NoticeTest extends TestCase
     public function each_tone_carries_a_glyph_as_well_as_a_tint(): void
     {
         $tones = [
-            'info' => ['bg-indigo-tint', 'text-indigo-deep'],
-            'success' => ['bg-forest-tint', 'text-forest-deep'],
-            'warning' => ['bg-marigold-tint', 'text-marigold-deep'],
-            'danger' => ['bg-error-tint', 'text-error'],
+            'info' => ['bg-brand/8', 'text-brand'],
+            'success' => ['bg-success/8', 'text-success'],
+            'warning' => ['bg-warning/8', 'text-warning'],
+            'danger' => ['bg-error/8', 'text-error'],
         ];
 
         foreach ($tones as $tone => [$tint, $hue]) {

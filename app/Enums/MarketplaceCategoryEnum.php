@@ -89,31 +89,6 @@ enum MarketplaceCategoryEnum: string implements Translatable
     }
 
     /**
-     * The hue the category is drawn in on the browse screen, written as the pair
-     * of utilities that carries an object colour everywhere else: the tint the
-     * glyph sits on and the shade it is drawn in.
-     *
-     * The colour sits beside the glyph rather than in the view, because which
-     * colour a category is is a fact about the category and not about one
-     * screen. There are eight categories and seven hues, so one of them repeats;
-     * home and travel share it, since both are places rather than people, and
-     * they are far enough apart in the list not to be read as the same card.
-     */
-    public function iconClass(): string
-    {
-        return match ($this) {
-            self::Health => 'bg-rose-tint text-rose',
-            self::Family => 'bg-terracotta-tint text-terracotta',
-            self::Work => 'bg-indigo-tint text-indigo',
-            self::Finance => 'bg-forest-tint text-forest',
-            self::Animals => 'bg-marigold-tint text-marigold-deep',
-            self::Home => 'bg-sky-tint text-sky',
-            self::Hobbies => 'bg-plum-tint text-plum',
-            self::Travel => 'bg-sky-tint text-sky',
-        };
-    }
-
-    /**
      * The name and the description, which are the two strings the catalogue
      * reads in the language of whoever is browsing it.
      *

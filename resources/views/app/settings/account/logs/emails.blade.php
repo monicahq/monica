@@ -11,16 +11,16 @@
   @var \App\ViewModels\Settings\Account\Logs\EmailsSentViewModel $viewModel
 --}}
 <x-shell :title="__('Emails sent')">
-  <x-slot:bar>
+  <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.logs.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
       {{ __('Back to the logs') }}
     </x-button.bar>
-  </x-slot:bar>
+  </x-slot:breadcrumb>
 
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-settings.sidebar :user="$viewModel->user()" current="logs" />
+  </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
     <h1 class="font-display text-page-title text-ink">{{ __('Emails sent') }}</h1>
@@ -33,7 +33,7 @@
       @forelse ($viewModel->emailsSent() as $emailSent)
         @include('app.settings.account.logs._email-sent-row', ['emailSent' => $emailSent])
       @empty
-        <x-empty-state :title="__('Nothing has left our hands yet')" icon-class="bg-plum-tint text-plum">
+        <x-empty-state :title="__('Nothing has left our hands yet')">
           <x-slot:icon>
             <x-icon name="mail" :size="30" :stroke-width="1.4" />
           </x-slot:icon>

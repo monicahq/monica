@@ -23,16 +23,13 @@
   $vault = $viewModel->vault();
 @endphp
 <x-shell :title="$viewModel->title()" wide>
-  <x-slot:bar>
-    <x-vault.bar
-      :vault="$vault"
-      :items="[['label' => __('People'), 'icon' => 'people', 'count' => $viewModel->headcount()]]"
-    />
-  </x-slot:bar>
+  <x-slot:breadcrumb>
+    <x-breadcrumb :items="[['label' => $vault->name, 'url' => route('vaults.show', $vault)], ['label' => __('People')]]" />
+  </x-slot:breadcrumb>
 
-  <x-slot:dock>
-    <x-dock :user="$viewModel->user()" :vault="$vault" current="people" />
-  </x-slot:dock>
+  <x-slot:sidebar>
+    <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="contacts" />
+  </x-slot:sidebar>
 
   <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
     <div class="flex min-w-0 flex-col gap-2">
@@ -108,7 +105,7 @@
 
     <x-panel :flush="true">
       @if ($viewModel->vaultIsEmpty())
-        <x-empty-state :title="__('Nobody here yet')" icon-class="bg-indigo-tint text-indigo">
+        <x-empty-state :title="__('Nobody here yet')">
           <x-slot:icon>
             <x-icon name="people" :size="30" :stroke-width="1.4" />
           </x-slot:icon>

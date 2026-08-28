@@ -10,17 +10,21 @@ use Tests\TestCase;
 class FontsTest extends TestCase
 {
     #[Test]
-    public function every_bundled_family_carries_the_letters_names_are_written_with(): void
+    public function it_asks_for_no_font_a_visitor_has_to_download(): void
     {
         $config = (string) file_get_contents(base_path('vite.config.js'));
 
-        preg_match_all('/bunny\(\s*\'([^\']+)\'.*?\)/s', $config, $matches, PREG_SET_ORDER);
+        $this->assertStringNotContainsString('bunny(', $config);
+        $this->assertStringNotContainsString('fonts:', $config);
+    }
 
-        $this->assertNotEmpty($matches);
+    #[Test]
+    public function it_sets_the_interface_in_what_the_machine_already_has(): void
+    {
+        $theme = (string) file_get_contents(resource_path('css/app.css'));
 
-        foreach ($matches as $family) {
-            $this->assertStringContainsString('latin-ext', $family[0], "{$family[1]} drops Latin Extended-A.");
-            $this->assertStringContainsString('vietnamese', $family[0], "{$family[1]} drops Vietnamese.");
-        }
+        $this->assertStringContainsString('--font-sans: ui-sans-serif, system-ui', $theme);
+        $this->assertStringContainsString('--font-mono: ui-monospace', $theme);
+        $this->assertStringNotContainsString('@font-face', $theme);
     }
 }

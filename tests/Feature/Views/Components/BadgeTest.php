@@ -21,11 +21,11 @@ class BadgeTest extends TestCase
     public function each_tone_draws_itself(): void
     {
         $tints = [
-            'success' => 'bg-forest-tint text-forest-deep',
-            'warning' => 'bg-marigold-tint text-marigold-deep',
-            'danger' => 'bg-error-tint text-error',
-            'info' => 'bg-indigo-tint text-indigo-deep',
-            'accent' => 'bg-accent-tint text-terracotta-deep',
+            'success' => 'bg-success/10 text-success',
+            'warning' => 'bg-warning/10 text-warning',
+            'danger' => 'bg-error/10 text-error',
+            'info' => 'bg-brand/10 text-brand',
+            'accent' => 'bg-accent-tint text-brand',
         ];
 
         foreach ($tints as $tone => $tint) {

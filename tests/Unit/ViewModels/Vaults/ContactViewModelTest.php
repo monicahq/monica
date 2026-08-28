@@ -93,18 +93,6 @@ class ContactViewModelTest extends TestCase
     }
 
     #[Test]
-    public function a_section_marks_itself_in_a_hue_of_its_own(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee'], 'Practitioners' => ['Doctor']]]);
-        $contact = $this->contact($user, $version);
-
-        $sections = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health'))->sections();
-
-        $this->assertNotSame($sections[0]['iconClass'], $sections[1]['iconClass']);
-    }
-
-    #[Test]
     public function a_block_says_where_it_is_opened_and_where_it_is_written(): void
     {
         $user = User::factory()->create();

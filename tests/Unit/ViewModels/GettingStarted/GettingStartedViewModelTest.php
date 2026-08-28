@@ -90,22 +90,27 @@ class GettingStartedViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_a_way_to_write_back(): void
-    {
-        $user = User::factory()->create();
-
-        config(['monica.founder_email' => 'regis@monicahq.com']);
-        $this->assertEquals('mailto:regis@monicahq.com', new GettingStartedViewModel(user: $user)->writeUrl());
-
-        config(['monica.founder_email' => '']);
-        $this->assertNull(new GettingStartedViewModel(user: $user)->writeUrl());
-    }
-
-    #[Test]
     public function it_says_the_letter_in_three_paragraphs(): void
     {
         $user = User::factory()->create();
 
         $this->assertCount(3, new GettingStartedViewModel(user: $user)->letter());
+    }
+
+    #[Test]
+    public function it_signs_the_letter_with_both_names_and_a_circle_each(): void
+    {
+        $user = User::factory()->create();
+        $viewModel = new GettingStartedViewModel(user: $user);
+
+        $this->assertEquals('Regis and Alexis', $viewModel->founderName());
+        $this->assertEquals('The two of us build Monica', $viewModel->founderRole());
+
+        $portraits = $viewModel->portraits();
+
+        $this->assertCount(2, $portraits);
+        $this->assertEquals('Regis', $portraits[0]['name']);
+        $this->assertEquals('Alexis', $portraits[1]['name']);
+        $this->assertStringEndsWith('images/alexis.jpg', $portraits[1]['url']);
     }
 }

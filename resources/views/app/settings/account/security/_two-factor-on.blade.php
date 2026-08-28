@@ -14,7 +14,6 @@
   :title="__('Authenticator app')"
   :description="__('Turned on :time. We ask for a code every time you sign in.', ['time' => $viewModel->twoFactorConfirmedAt()])"
   icon="lock"
-  icon-class="bg-forest-tint text-forest"
 >
   <x-slot:end>
     <x-badge tone="success" icon="check">{{ __('On') }}</x-badge>
@@ -39,7 +38,6 @@
   :title="__('Recovery codes')"
   :description="__('Keep these somewhere safe. Each one signs you in once, if you ever lose the phone.')"
   icon="key"
-  icon-class="bg-marigold-tint text-marigold-deep"
 >
   <x-slot:end>
     <div x-data="{ confirming: false }">

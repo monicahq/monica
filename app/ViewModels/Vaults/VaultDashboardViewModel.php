@@ -148,11 +148,12 @@ class VaultDashboardViewModel
     }
 
     /**
-     * Each is drawn as what it will eventually hold, in the colour that part
-     * of the product answers to, and none of them is a link: a word that does
-     * not move is better than a link that leads nowhere.
+     * Each is drawn as what it will eventually hold, and none of them is a link:
+     * a word that does not move is better than a link that leads nowhere. They are
+     * told apart by their heading and their place on the dashboard rather than by a
+     * colour, because a colour that says nothing is decoration.
      *
-     * @return array<int, array{title: string, caption: string, titleClass: string, iconClass: string, icon: string, emptyTitle: string, emptyText: string}>
+     * @return array<int, array{title: string, caption: string, icon: string, emptyTitle: string, emptyText: string}>
      */
     public function unbuiltSections(): array
     {
@@ -160,8 +161,6 @@ class VaultDashboardViewModel
             [
                 'title' => __('Journal'),
                 'caption' => __('No days written'),
-                'titleClass' => 'text-indigo',
-                'iconClass' => 'bg-indigo-tint text-indigo',
                 'icon' => 'journal',
                 'emptyTitle' => __('No days written down'),
                 'emptyText' => __('A day is a page. Anybody you name in it is written into their own history at the same time.'),
@@ -169,8 +168,6 @@ class VaultDashboardViewModel
             [
                 'title' => __('Tasks'),
                 'caption' => __('Nothing open'),
-                'titleClass' => 'text-forest',
-                'iconClass' => 'bg-forest-tint text-forest',
                 'icon' => 'tasks',
                 'emptyTitle' => __('Nothing you owe anyone'),
                 'emptyText' => __('Things you said you would do for someone in this vault land here until they are done.'),
@@ -178,8 +175,6 @@ class VaultDashboardViewModel
             [
                 'title' => __('Reminders'),
                 'caption' => __('No dates set'),
-                'titleClass' => 'text-plum',
-                'iconClass' => 'bg-plum-tint text-plum',
                 'icon' => 'reminder',
                 'emptyTitle' => __('No dates to keep'),
                 'emptyText' => __('Birthdays and anything you ask to be told about, so December is not a panic.'),
@@ -187,8 +182,6 @@ class VaultDashboardViewModel
             [
                 'title' => __('Files'),
                 'caption' => __('No files'),
-                'titleClass' => 'text-sky',
-                'iconClass' => 'bg-sky-tint text-sky',
                 'icon' => 'file',
                 'emptyTitle' => __('No files yet'),
                 'emptyText' => __('Photographs, scans and documents you attach to somebody show up here as well.'),

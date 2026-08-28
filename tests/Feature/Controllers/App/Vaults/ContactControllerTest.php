@@ -164,10 +164,16 @@ class ContactControllerTest extends TestCase
         $this->actingAs($user)->get(route('contacts.index', $vault))
             ->assertSee('>S</h2>', escape: false);
 
-        $this->actingAs($user)
+        /*
+          The column beside the screen has headings of its own, so this looks at
+          what comes after the bar rather than at the whole page.
+        */
+        $content = str($this->actingAs($user)
             ->get(route('contacts.index', ['vault' => $vault, 'sort' => 'added', 'direction' => 'desc']))
             ->assertSee('Michael Scott')
-            ->assertDontSee('</h2>', escape: false);
+            ->getContent())->after('</header>')->before('</main>')->toString();
+
+        $this->assertStringNotContainsString('</h2>', $content);
     }
 
     #[Test]
@@ -386,13 +392,12 @@ class ContactControllerTest extends TestCase
             $this->actingAs($user)->get($url)
                 ->assertStatus(200)
                 ->assertSee($vault->name)
-                ->assertSee(route('vaults.show', $vault))
-                ->assertSee('Search people, notes, anything', escape: false);
+                ->assertSee(route('vaults.show', $vault));
         }
     }
 
     #[Test]
-    public function it_marks_the_people_of_the_vault_as_where_you_are_in_the_dock(): void
+    public function it_marks_the_people_of_the_vault_as_where_you_are_in_the_column(): void
     {
         $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user);
@@ -400,7 +405,7 @@ class ContactControllerTest extends TestCase
         $this->actingAs($user)->get(route('contacts.new', $vault))
             ->assertStatus(200)
             ->assertSee('aria-current="page"', escape: false)
-            ->assertSee('aria-label="Main"', escape: false);
+            ->assertSee('aria-label="This vault"', escape: false);
     }
 
     #[Test]

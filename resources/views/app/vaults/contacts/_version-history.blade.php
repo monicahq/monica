@@ -51,7 +51,7 @@
         <div class="flex flex-col items-center">
           <span
             @class([
-              'mt-3.5 flex size-8 shrink-0 items-center justify-center rounded-sm border shadow-raised',
+              'mt-3.5 flex size-8 shrink-0 items-center justify-center rounded-sm border ',
               $entry['isCurrent'] ? 'border-ink bg-ink text-white' : 'border-hairline bg-canvas text-muted',
             ])
             aria-hidden="true"
@@ -67,7 +67,7 @@
         <div
           @class([
             'mt-3.5 mb-5 flex flex-col gap-2.5 rounded-lg border px-4.5 py-4',
-            $entry['isCurrent'] ? 'border-hairline-strong border-b-2 bg-canvas shadow-raised' : 'border-hairline bg-canvas',
+            $entry['isCurrent'] ? 'border-hairline-strong border-b-2 bg-canvas ' : 'border-hairline bg-canvas',
           ])
         >
           <div class="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
@@ -110,7 +110,7 @@
   </ol>
 
   <div class="flex flex-col gap-4">
-    <x-panel :title="__('On right now')" icon="file" icon-class="bg-indigo-tint text-indigo" :flush="true">
+    <x-panel :title="__('On right now')" icon="file" :flush="true">
       <dl class="grid gap-0">
         <div class="grid grid-cols-[100px_minmax(0,1fr)] items-baseline gap-3 border-b border-hairline px-4.5 py-3">
           <dt class="text-sm text-muted">{{ __('Template') }}</dt>
