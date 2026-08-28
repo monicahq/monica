@@ -280,4 +280,26 @@ return [
 
     'instance' => env('MONICA_INSTANCE', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
 
+    /*
+    |--------------------------------------------------------------------------
+    | How many things one page of an API list holds
+    |--------------------------------------------------------------------------
+    |
+    | Every list the API answers is paginated the same way, which the reference
+    | promises under Getting started: `page` moves through the results and
+    | `per_page` sizes them. The first value here is what a caller gets when it
+    | asks for nothing, and the second is the ceiling: a request for more is
+    | brought back down to it rather than refused, because a page size somebody
+    | typed wrongly is not a reason to fail their call.
+    |
+    | It sits here rather than in the framework's own configuration because the
+    | ceiling is an operator's decision. A hosted instance and a self hosted one
+    | run the same product and differ in quotas, and this is one of them.
+    |
+    */
+
+    'api_default_items_per_page' => env('MONICA_API_DEFAULT_ITEMS_PER_PAGE', 25),
+
+    'api_maximum_items_per_page' => env('MONICA_API_MAXIMUM_ITEMS_PER_PAGE', 100),
+
 ];

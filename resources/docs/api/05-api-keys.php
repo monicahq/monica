@@ -1,0 +1,162 @@
+<?php
+
+declare(strict_types=1);
+
+use App\ViewModels\Docs\ApiDocsViewModel;
+
+$base = ApiDocsViewModel::baseUrl();
+
+$apiKey = [
+    'type' => 'api_key',
+    'id' => '3',
+    'attributes' => [
+        'name' => 'Dundie awards bot',
+        'last_used_at' => 1756339200,
+        'expires_at' => null,
+        'created_at' => 1756252800,
+        'updated_at' => 1756252800,
+    ],
+    'links' => [
+        'self' => $base.'/api-keys/3',
+    ],
+];
+
+$olderApiKey = [
+    'type' => 'api_key',
+    'id' => '1',
+    'attributes' => [
+        'name' => 'Deployment script',
+        'last_used_at' => null,
+        'expires_at' => null,
+        'created_at' => 1756166400,
+        'updated_at' => 1756166400,
+    ],
+    'links' => [
+        'self' => $base.'/api-keys/1',
+    ],
+];
+
+$pageParams = [
+    [
+        'name' => 'page',
+        'type' => 'integer',
+        'required' => false,
+        'description' => 'Which page to answer with.',
+        'default' => '1',
+    ],
+    [
+        'name' => 'per_page',
+        'type' => 'integer',
+        'required' => false,
+        'description' => 'How many keys one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.',
+        'default' => '25',
+    ],
+];
+
+$identifier = [
+    [
+        'name' => 'apiKey',
+        'type' => 'integer',
+        'required' => true,
+        'description' => 'The identifier of the key.',
+    ],
+];
+
+return [
+    'name' => 'API keys',
+    'sections' => [
+        [
+            'id' => 'api-keys-index',
+            'title' => 'List keys',
+            'label' => 'List keys',
+            'method' => 'GET',
+            'path' => '/api-keys',
+            'description' => 'List the keys you have minted, newest first, including the one you are calling with.',
+            'body' => [
+                'A key acts as one person, so what comes back is yours and nobody else\'s. The key itself is not in here, in any form: it is readable once, in the response that created it, and only a hash of it is kept.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'queryParams' => $pageParams,
+            'returns' => 'A page of key objects, and how many there are in all.',
+            'response' => [
+                'data' => [$apiKey, $olderApiKey],
+                'meta' => [
+                    'page' => 1,
+                    'per_page' => 25,
+                    'total' => 2,
+                ],
+            ],
+        ],
+        [
+            'id' => 'api-keys-show',
+            'title' => 'Get a key',
+            'label' => 'Get a key',
+            'method' => 'GET',
+            'path' => '/api-keys/{apiKey}',
+            'examplePath' => '/api-keys/3',
+            'description' => 'Retrieve one of your keys: what you called it, when you made it, and when it last let something in.',
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => $identifier,
+            'returns' => 'A key object. A key belonging to somebody else answers 404, which is also what a key that never existed answers.',
+            'response' => ['data' => $apiKey],
+        ],
+        [
+            'id' => 'api-keys-create',
+            'title' => 'Create a key',
+            'label' => 'Create a key',
+            'method' => 'POST',
+            'path' => '/api-keys',
+            'description' => 'Mint a key, which acts as you and nobody else.',
+            'body' => [
+                'The readable value comes back in the token field, beside the object describing the key. This is the only time it exists in that form. Copy it now: it is not shown again, and a key you fail to copy is replaced rather than recovered.',
+                'Calling this with a key is deliberate, and it is how a key is rotated without opening the application. Every creation is written to your account journal, so a key that mints other keys is visible afterwards.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'bodyParams' => [
+                [
+                    'name' => 'name',
+                    'type' => 'string',
+                    'required' => true,
+                    'description' => 'What the key is for, in a few words. Between 3 and 255 characters. Two keys may share a name; the identifier is what tells them apart.',
+                    'example' => 'Dundie awards bot',
+                ],
+            ],
+            'returns' => 'The new key object, and the readable key beside it.',
+            'responseStatus' => 201,
+            'response' => [
+                'data' => [
+                    'type' => 'api_key',
+                    'id' => '4',
+                    'attributes' => [
+                        'name' => 'Dundie awards bot',
+                        'last_used_at' => null,
+                        'expires_at' => null,
+                        'created_at' => 1756425600,
+                        'updated_at' => 1756425600,
+                    ],
+                    'links' => [
+                        'self' => $base.'/api-keys/4',
+                    ],
+                ],
+                'token' => '4|f9aB2cD3eF4gH5iJ6kL7mN8oP9qR0sT1uV2w',
+            ],
+        ],
+        [
+            'id' => 'api-keys-destroy',
+            'title' => 'Delete a key',
+            'label' => 'Delete a key',
+            'method' => 'DELETE',
+            'path' => '/api-keys/{apiKey}',
+            'examplePath' => '/api-keys/3',
+            'description' => 'Revoke a key, which stops working the moment this answers.',
+            'body' => [
+                'Anything still using it stops working, immediately, with nothing to wait out. Your other keys are untouched, which is the point of naming them: an integration you no longer trust can be cut off without breaking the rest.',
+                'You may revoke the key you are calling with. This call succeeds and every later call with it answers 401.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => $identifier,
+            'returns' => 'Nothing at all. A key belonging to somebody else answers 404, and keeps working.',
+            'responseStatus' => 204,
+        ],
+    ],
+];

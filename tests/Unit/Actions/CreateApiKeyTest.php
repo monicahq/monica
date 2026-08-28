@@ -11,6 +11,8 @@ use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
+use Laravel\Sanctum\NewAccessToken;
+use Laravel\Sanctum\PersonalAccessToken;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -28,7 +30,7 @@ class CreateApiKeyTest extends TestCase
 
         $key = new CreateApiKey(user: $user, name: 'Dundie awards bot')->execute();
 
-        $this->assertIsString($key);
+        $this->assertInstanceOf(NewAccessToken::class, $key);
         $this->assertSame(1, $user->tokens()->count());
         $this->assertSame('Dundie awards bot', $user->tokens()->first()->name);
 
@@ -51,7 +53,7 @@ class CreateApiKeyTest extends TestCase
         $account = Account::factory()->create();
         $user = User::factory()->create(['account_id' => $account->id]);
 
-        $key = new CreateApiKey(user: $user, name: 'Deployment script')->execute();
+        $key = new CreateApiKey(user: $user, name: 'Deployment script')->execute()->plainTextToken;
 
         $this->assertStringContainsString('|', $key);
 
@@ -59,6 +61,25 @@ class CreateApiKeyTest extends TestCase
 
         $this->assertNotSame($key, $stored);
         $this->assertSame(hash('sha256', explode('|', $key)[1]), $stored);
+    }
+
+    /**
+     * The row comes back beside the value, so whoever mints a key can describe
+     * it without asking the database for what it has just written.
+     */
+    #[Test]
+    public function it_returns_the_row_it_wrote(): void
+    {
+        Queue::fake();
+
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
+
+        $key = new CreateApiKey(user: $user, name: 'Dundie awards bot')->execute();
+
+        $this->assertInstanceOf(PersonalAccessToken::class, $key->accessToken);
+        $this->assertSame($user->tokens()->first()->id, $key->accessToken->id);
+        $this->assertSame('Dundie awards bot', $key->accessToken->name);
     }
 
     #[Test]

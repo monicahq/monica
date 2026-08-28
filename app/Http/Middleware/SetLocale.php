@@ -12,6 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
  * Put the interface in the right language. A choice made in this session wins,
  * because it is the most recent thing the visitor asked for, then the language
  * on their account, then the fallback of the application.
+ *
+ * An API request carries a token rather than a session, so there is nothing to
+ * ask on that surface and the first of the three is simply skipped. Without the
+ * check, reading from a session that was never started throws.
  */
 class SetLocale
 {
@@ -31,7 +35,7 @@ class SetLocale
 
     private function preferred(Request $request): string
     {
-        $session = $request->session()->get('locale');
+        $session = $request->hasSession() ? $request->session()->get('locale') : null;
 
         if ($session !== null) {
             return $session;

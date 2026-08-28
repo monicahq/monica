@@ -25,7 +25,7 @@ class ApiKeyController extends Controller
         $apiKey = new CreateApiKey(
             user: $request->user(),
             name: $validated['name'],
-        )->execute();
+        )->execute()->plainTextToken;
 
         return redirect()->route('settings.security.index')
             ->with('apiKey', $apiKey)
