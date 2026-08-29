@@ -17,26 +17,26 @@
 <article class="flex min-w-0 flex-wrap items-start gap-11">
   <div class="min-w-0 max-w-[640px] flex-1 basis-[420px]">
     <div class="mb-5 flex flex-wrap items-center gap-2">
-      <span class="font-mono text-[12px] text-brand">v1</span>
+      <span class="font-mono text-[12px] text-muted">v1</span>
 
       <div class="ml-auto flex flex-wrap gap-2">
         <button
           type="button"
           x-data="{ copied: false, markdown: {{ Js::from($markdown) }} }"
           @click="window.copyText(markdown).then((ok) => { copied = ok; setTimeout(() => (copied = false), 1600) })"
-          class="cursor-pointer rounded-md border border-hairline-strong bg-sunken px-3 py-1.75 font-sans text-[13px] font-medium text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
+          class="cursor-pointer rounded-md border border-hairline bg-card px-3 py-1.75 font-sans text-[13px] font-medium text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
           aria-live="polite"
           x-text="copied ? 'Copied' : 'Copy for LLM'"
         >Copy for LLM</button>
 
         <a
           href="{{ route('docs.api.markdown.show', ['section' => $section->id]) }}"
-          class="rounded-md border border-hairline-strong bg-sunken px-3 py-1.75 text-[13px] font-medium whitespace-nowrap text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
+          class="rounded-md border border-hairline bg-card px-3 py-1.75 text-[13px] font-medium whitespace-nowrap text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
         >View as Markdown</a>
       </div>
     </div>
 
-    <h1 class="mb-2.5 text-[24px] font-semibold tracking-[-0.025em] text-ink">{{ $section->title }}</h1>
+    <h1 class="mb-2.5 text-page-title text-ink">{{ $section->title }}</h1>
 
     <div class="mb-4 flex items-center gap-2 rounded-md border border-hairline bg-sunken px-3 py-2.25 font-mono text-[13px]">
       <x-api-docs.method-badge :method="$section->method" />
@@ -55,7 +55,7 @@
     <x-api-docs.params :section="$section" />
 
     @if ($section->returns)
-      <h2 class="mt-9 mb-1 text-[18px] font-semibold tracking-[-0.015em] text-ink">Returns</h2>
+      <h2 class="mt-9 mb-1 text-xl text-ink">Returns</h2>
       <p class="text-[14px] leading-[1.65] text-pretty text-body">{{ $section->returns }}</p>
     @endif
 
@@ -63,7 +63,7 @@
   </div>
 
   <div class="min-w-0 max-w-[540px] flex-1 basis-[400px]">
-    <div class="flex flex-col gap-4 lg:sticky lg:top-31">
+    <div class="flex flex-col gap-4 lg:sticky lg:top-32">
       <x-api-docs.code-panel :section="$section" />
       <x-api-docs.response-panel :section="$section" />
 

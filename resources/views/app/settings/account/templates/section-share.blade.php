@@ -27,12 +27,12 @@
 
   <div class="flex flex-wrap items-start justify-between gap-x-8 gap-y-6">
     <header class="flex max-w-[62ch] min-w-0 flex-col gap-2">
-      <span class="flex items-center gap-2 text-xs font-semibold tracking-[0.06em] text-muted uppercase">
+      <span class="flex items-center gap-2 text-[11px] font-medium tracking-caption text-muted-soft uppercase">
         <x-icon name="note" :size="15" :stroke-width="1.6" />
         {{ __('One section of :name', ['name' => $template->name]) }}
       </span>
 
-      <h1 class="font-display text-page-title text-ink">{{ __('Share :name', ['name' => $viewModel->name()]) }}</h1>
+      <h1 class="text-page-title text-ink">{{ __('Share :name', ['name' => $viewModel->name()]) }}</h1>
 
       <p class="text-base text-pretty text-body">
         {{ __('The fields of this section and their choices, on their own. A section is the useful unit when the rest of your template is nobody else’s business: somebody can drop it into a template they already have.') }}
@@ -57,7 +57,7 @@
           {{ __('The same format as a template file, one section deep. Importing it adds this section to the end of a page you choose, and never touches the sections already there.') }}
         </p>
 
-        <div class="flex items-center gap-2.5 rounded-md border border-hairline bg-sand px-3.5 py-3">
+        <div class="flex items-center gap-2.5 rounded-md border border-hairline bg-card px-3.5 py-3">
           <x-icon name="file" :size="16" :stroke-width="1.6" class="text-muted" />
 
           <code class="min-w-0 truncate font-mono text-[12.5px] text-ink">{{ $viewModel->fileName() }}</code>

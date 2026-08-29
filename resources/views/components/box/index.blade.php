@@ -51,11 +51,11 @@
     {{ $additionalInfo }}
   @endisset
 
-  <div {{ $attributes->merge(['class' => 'rounded-xl border border-hairline bg-canvas ' . $padding]) }}>
+  <div {{ $attributes->merge(['class' => 'rounded-lg border border-hairline bg-canvas shadow-panel ' . $padding]) }}>
     {{ $slot }}
 
     @isset($footer)
-      <div {{ $footer->attributes->class(['rounded-b-xl px-4 py-3 text-center text-sm']) }}>
+      <div {{ $footer->attributes->class(['rounded-b-lg px-4 py-3 text-center text-sm']) }}>
         {{ $footer }}
       </div>
     @endisset

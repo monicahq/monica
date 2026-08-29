@@ -23,7 +23,7 @@
   </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
-    <h1 class="font-display text-page-title text-ink">{{ __('Emails sent') }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('Emails sent') }}</h1>
 
     <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Every email we sent to your account, most recent first. Open one to read the copy that left.') }}</p>
   </header>

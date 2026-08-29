@@ -41,7 +41,7 @@
         <x-avatar-initials :name="$viewModel->title()" :size="68" />
 
         <div class="flex min-w-0 flex-col gap-1.5">
-          <h1 class="font-display text-page-title text-balance text-ink">{{ $viewModel->title() }}</h1>
+          <h1 class="text-page-title text-balance text-ink">{{ $viewModel->title() }}</h1>
 
           @if ($viewModel->headerFacts() !== [])
             <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-base text-muted">

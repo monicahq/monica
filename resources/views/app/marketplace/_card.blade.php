@@ -15,7 +15,7 @@
 --}}
 <article class="flex flex-col gap-2.25 rounded-lg border border-hairline bg-canvas p-4 ">
   <div class="flex min-w-0 items-center gap-2">
-    <span class="flex size-6.5 shrink-0 items-center justify-center rounded-sm bg-sand text-muted">
+    <span class="flex size-6.5 shrink-0 items-center justify-center rounded-sm bg-card text-muted">
       <x-icon :name="$listing['typeIcon']" :size="16" :stroke-width="1.5" />
     </span>
 

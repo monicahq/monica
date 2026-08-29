@@ -19,7 +19,7 @@ class MethodBadgeTest extends TestCase
     #[Test]
     public function each_verb_takes_the_colour_the_design_gives_it(): void
     {
-        $this->blade('<x-api-docs.method-badge method="GET" />')->assertSee('text-brand', escape: false);
+        $this->blade('<x-api-docs.method-badge method="GET" />')->assertSee('text-body', escape: false);
         $this->blade('<x-api-docs.method-badge method="POST" />')->assertSee('text-success', escape: false);
         $this->blade('<x-api-docs.method-badge method="PUT" />')->assertSee('text-warning', escape: false);
         $this->blade('<x-api-docs.method-badge method="PATCH" />')->assertSee('text-warning', escape: false);

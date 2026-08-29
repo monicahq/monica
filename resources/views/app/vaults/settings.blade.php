@@ -91,7 +91,7 @@
                     @click="colour = @js($option['value'])"
                     :class="colour === @js($option['value']) ? 'border-ink shadow-[inset_0_0_0_2px_var(--canvas)]' : 'border-transparent shadow-[0_1px_2px_rgb(29_29_32_/_0.12)]'"
                     style="background: {{ $option['value'] }}"
-                    class="size-8.5 cursor-pointer rounded-[10px] border-2 transition-transform duration-(--duration-fast) ease-out hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
+                    class="size-8.5 cursor-pointer rounded-[10px] border-2 transition-transform duration-(--duration-fast) ease-out hover:-translate-y-px focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
                   ></button>
                 @endforeach
               </div>

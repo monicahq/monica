@@ -40,7 +40,7 @@
         x-init="setTimeout(() => dismiss(), 4500)"
         x-show="shown"
         :class="leaving ? 'animate-toast-out' : 'animate-toast-in'"
-        class="relative flex items-start gap-3 overflow-hidden rounded-xl border border-hairline bg-canvas p-3.5 shadow-lg"
+        class="relative flex items-start gap-3 overflow-hidden rounded-lg border border-hairline bg-canvas p-3.5 shadow-pop"
       >
         <div class="relative flex size-8 shrink-0 items-center justify-center rounded-full {{ $toast['tint'] }}">
           <span class="animate-toast-ring absolute inset-0 rounded-full {{ $toast['tint'] }}" aria-hidden="true"></span>
@@ -59,7 +59,7 @@
         </div>
 
         <div class="min-w-0 flex-1">
-          <p class="text-sm font-semibold tracking-tight text-ink">{{ $toast['title'] }}</p>
+          <p class="text-base font-semibold text-ink">{{ $toast['title'] }}</p>
 
           @if ($toast['description'])
             <p class="mt-0.5 text-sm leading-snug text-body">{{ $toast['description'] }}</p>

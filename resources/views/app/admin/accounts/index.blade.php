@@ -17,7 +17,7 @@
 --}}
 <x-admin-layout :title="__('Accounts')">
   <header class="flex flex-col gap-2">
-    <h1 class="font-display text-page-title text-ink">{{ __('Accounts') }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('Accounts') }}</h1>
 
     <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('Look up an account by address or by name. You see what the account is, never what is inside its vaults.') }}</p>
   </header>

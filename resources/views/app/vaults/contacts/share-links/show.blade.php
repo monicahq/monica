@@ -34,7 +34,7 @@
   <div class="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
     <div class="flex min-w-0 flex-col gap-6">
       <header class="flex max-w-[66ch] flex-col gap-2">
-        <h1 class="font-display text-page-title text-balance text-ink">{{ $viewModel->heading() }}</h1>
+        <h1 class="text-page-title text-balance text-ink">{{ $viewModel->heading() }}</h1>
 
         <p class="text-base text-pretty text-muted">{{ $viewModel->intro() }}</p>
       </header>

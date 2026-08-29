@@ -24,12 +24,12 @@ class AdminLayoutTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_draw_its_bar_the_colour_the_ordinary_bars_are(): void
+    public function it_inverts_its_bar_rather_than_drawing_it_the_colour_the_ordinary_bars_are(): void
     {
         $this->actingAs($this->administrator())
             ->blade('<x-admin-layout>Anything</x-admin-layout>')
-            ->assertSee('border-b border-hairline-strong bg-accent-tint shadow-bar', escape: false)
-            ->assertDontSee('bg-canvas px-4 shadow-bar', escape: false);
+            ->assertSee('bg-primary text-on-primary', escape: false)
+            ->assertDontSee('bg-topbar', escape: false);
     }
 
     #[Test]

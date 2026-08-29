@@ -41,7 +41,7 @@
     <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
       <div class="flex min-w-0 flex-col gap-2">
         <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          <h1 class="font-display text-page-title text-ink">{{ $template->name }}</h1>
+          <h1 class="text-page-title text-ink">{{ $template->name }}</h1>
 
           <x-badge :tone="$viewModel->isEditable() ? 'warning' : 'success'">{{ $viewModel->statusLabel() }}</x-badge>
 

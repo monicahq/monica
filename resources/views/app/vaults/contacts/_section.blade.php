@@ -34,7 +34,7 @@
         open at once and the buttons at the foot of a long form are not always on
         the screen at the same time as the heading they belong to.
       --}}
-      <span class="text-xs tracking-caption text-terracotta-deep uppercase">{{ __('Editing') }}</span>
+      <span class="text-xs tracking-caption text-muted uppercase">{{ __('Editing') }}</span>
     @elseif ($section['isEditable'])
       <x-button.secondary
         size="small"

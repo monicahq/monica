@@ -13,7 +13,7 @@ class BadgeTest extends TestCase
     public function it_is_neutral_unless_it_is_given_a_tone(): void
     {
         $this->blade('<x-badge>Draft</x-badge>')
-            ->assertSee('bg-sand text-ink-soft', escape: false)
+            ->assertSee('bg-hover text-body', escape: false)
             ->assertSee('Draft', escape: false);
     }
 
@@ -21,11 +21,11 @@ class BadgeTest extends TestCase
     public function each_tone_draws_itself(): void
     {
         $tints = [
-            'success' => 'bg-success/10 text-success',
-            'warning' => 'bg-warning/10 text-warning',
-            'danger' => 'bg-error/10 text-error',
-            'info' => 'bg-brand/10 text-brand',
-            'accent' => 'bg-accent-tint text-brand',
+            'success' => 'bg-success-tint text-success',
+            'warning' => 'bg-warning-tint text-warning',
+            'danger' => 'bg-error-tint text-error',
+            'info' => 'bg-canvas text-body',
+            'accent' => 'bg-primary text-on-primary',
         ];
 
         foreach ($tints as $tone => $tint) {

@@ -28,21 +28,21 @@
   ];
 
   /*
-   * The ground is the tone at a tenth, and the edge is the same tone rather than
-   * the grey hairline the rest of the system uses, so a notice reads as one object
-   * whichever tone it carries. The glyph beside the text is what actually says
-   * which tone it is, and it says it without the colour.
+   * The ground and the edge are the tone's own tint and edge, so a notice reads as
+   * one object whichever tone it carries. The glyph beside the text is what actually
+   * says which tone it is, and it says it without the colour, which is what lets the
+   * two tones that have no colour left tell themselves apart by their ground.
    */
   $tints = [
-    'info' => 'bg-brand/8 border-brand/25',
-    'success' => 'bg-success/8 border-success/25',
-    'warning' => 'bg-warning/8 border-warning/25',
-    'danger' => 'bg-error/8 border-error/25',
-    'quiet' => 'bg-sand border-hairline',
+    'info' => 'bg-canvas border-hairline',
+    'success' => 'bg-success-tint border-success-edge',
+    'warning' => 'bg-warning-tint border-warning-edge',
+    'danger' => 'bg-error-tint border-error-edge',
+    'quiet' => 'bg-card border-hairline',
   ];
 
   $hues = [
-    'info' => 'text-brand',
+    'info' => 'text-body',
     'success' => 'text-success',
     'warning' => 'text-warning',
     'danger' => 'text-error',

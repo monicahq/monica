@@ -30,13 +30,13 @@
   <div class="grid items-start gap-7 lg:grid-cols-[minmax(0,1fr)_20rem]">
     <div class="flex min-w-0 flex-col gap-5" x-data="{ copied: false }">
       <header class="flex max-w-[66ch] flex-col gap-2">
-        <h1 class="font-display text-page-title text-ink">{{ __('Export :name', ['name' => $template->name]) }}</h1>
+        <h1 class="text-page-title text-ink">{{ __('Export :name', ['name' => $template->name]) }}</h1>
 
         <p class="text-base text-pretty text-body">{{ __('This is the file, in full. Read it, then keep it.') }}</p>
       </header>
 
       <x-panel flush>
-        <div class="flex items-center gap-3 border-b border-hairline bg-sand px-4 py-3">
+        <div class="flex items-center gap-3 border-b border-hairline bg-card px-4 py-3">
           <x-icon name="file" :size="16" :stroke-width="1.6" class="text-muted" />
 
           <code class="min-w-0 truncate font-mono text-[12.5px] text-ink">{{ $viewModel->fileName() }}</code>

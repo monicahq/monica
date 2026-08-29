@@ -46,7 +46,7 @@
         {{ __('Read only, always') }}
       </span>
 
-      <h1 class="mt-2 font-display text-page-title text-balance text-ink">{{ $viewModel->title() }}</h1>
+      <h1 class="mt-2 text-page-title text-balance text-ink">{{ $viewModel->title() }}</h1>
 
       <p class="mt-2 max-w-[66ch] text-base text-pretty text-muted">{{ $viewModel->intro() }}</p>
     </div>

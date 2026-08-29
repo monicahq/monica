@@ -11,9 +11,9 @@
   one it would switch to: a label that has to be corrected after paint is a label a
   screen reader may have already read out.
 
-  `tone="shell"` is for the one in the head of the navigation column. That column is
-  dark chrome whichever theme is on, so the switch in it cannot take its colours from
-  the theme the way the rest of the interface does.
+  `tone="inverted"` is for the one on the admin bar. That bar is the primary colour
+  rather than the page, so the switch on it cannot take its colours from the theme
+  the way the rest of the interface does.
 
   @var string $tone
 --}}
@@ -22,9 +22,9 @@
 ])
 
 @php
-  $colours = $tone === 'shell'
-    ? 'text-shell-muted hover:bg-shell-hover hover:text-shell-ink'
-    : 'text-muted hover:bg-sand hover:text-ink';
+  $colours = $tone === 'inverted'
+    ? 'text-on-primary/70 hover:bg-on-primary/10 hover:text-on-primary'
+    : 'text-muted hover:bg-hover hover:text-ink';
 @endphp
 
 <button
@@ -39,12 +39,12 @@
   --}}
   {{
     $attributes->class([
-      'relative inline-flex size-8.5 cursor-pointer items-center justify-center rounded-md',
+      'relative inline-flex size-8 cursor-pointer items-center justify-center rounded-md',
       $colours,
       "after:absolute after:-inset-1.5 after:content-['']",
       'transition-[background-color,color,transform] duration-(--duration-fast) ease-out',
-      'active:translate-y-(--press-translate)',
-      'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring',
+      '',
+      'focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none',
     ])
   }}
 >

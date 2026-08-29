@@ -21,14 +21,14 @@
   </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
-    <h1 class="font-display text-page-title text-ink">{{ __('Profile') }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('Profile') }}</h1>
 
     <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Your name, the address you sign in with, and the photograph on your avatar.') }}</p>
   </header>
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Avatar') }}</h2>
+      <h2 class="shrink-0 text-section-title text-ink">{{ __('Avatar') }}</h2>
 
       <p class="text-sm text-pretty text-muted">{{ __('Shown next to your name everywhere in the application.') }}</p>
     </div>
@@ -112,7 +112,7 @@
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Details') }}</h2>
+      <h2 class="shrink-0 text-section-title text-ink">{{ __('Details') }}</h2>
 
       <p class="text-sm text-pretty text-muted">{{ __('Your name appears everywhere the application refers to you; your address is what you sign in with.') }}</p>
     </div>
@@ -180,7 +180,7 @@
   --}}
   <section id="delete-your-account" class="flex scroll-mt-20 flex-col gap-3">
     <div class="px-0.5">
-      <h2 class="font-display text-section-title text-ink">{{ __('Delete your account') }}</h2>
+      <h2 class="text-section-title text-ink">{{ __('Delete your account') }}</h2>
     </div>
 
     <x-panel>

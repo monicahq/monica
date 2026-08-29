@@ -179,7 +179,7 @@ class LogControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('creed.bratton@dundermifflin.com', escape: false);
         $response->assertSee('Confirm your email address', escape: false);
-        $response->assertSee('rounded-xs', escape: false);
+        $response->assertSee('rounded-full', escape: false);
         $response->assertSee('Browse all emails', escape: false);
         $response->assertSee(route('settings.emailsSent.index'), escape: false);
     }

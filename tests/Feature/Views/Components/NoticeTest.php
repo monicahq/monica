@@ -13,7 +13,7 @@ class NoticeTest extends TestCase
     public function it_is_quiet_unless_it_is_given_a_tone(): void
     {
         $this->blade('<x-notice>Nothing to point a key at yet.</x-notice>')
-            ->assertSee('bg-sand border-hairline', escape: false)
+            ->assertSee('bg-card border-hairline', escape: false)
             ->assertSee('Nothing to point a key at yet.', escape: false);
     }
 
@@ -21,10 +21,10 @@ class NoticeTest extends TestCase
     public function each_tone_carries_a_glyph_as_well_as_a_tint(): void
     {
         $tones = [
-            'info' => ['bg-brand/8', 'text-brand'],
-            'success' => ['bg-success/8', 'text-success'],
-            'warning' => ['bg-warning/8', 'text-warning'],
-            'danger' => ['bg-error/8', 'text-error'],
+            'info' => ['bg-canvas border-hairline', 'text-body'],
+            'success' => ['bg-success-tint', 'text-success'],
+            'warning' => ['bg-warning-tint', 'text-warning'],
+            'danger' => ['bg-error-tint', 'text-error'],
         ];
 
         foreach ($tones as $tone => [$tint, $hue]) {

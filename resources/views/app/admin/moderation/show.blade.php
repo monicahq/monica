@@ -18,7 +18,7 @@
   <header class="flex flex-col gap-2">
     <x-link :href="route('admin.moderation.index')" data-turbo="true">{{ __('Back to moderation') }}</x-link>
 
-    <h1 class="font-display text-page-title text-ink">{{ $viewModel->listing()->name }}</h1>
+    <h1 class="text-page-title text-ink">{{ $viewModel->listing()->name }}</h1>
 
     <p class="text-sm text-muted">
       {{ $viewModel->listing()->author_name }}
@@ -35,18 +35,18 @@
   <x-panel :title="__('What the author says')">
     <div class="flex flex-col gap-4">
       <div>
-        <p class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('Summary') }}</p>
+        <p class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Summary') }}</p>
         <p class="text-base text-pretty text-body">{{ $viewModel->listing()->summary }}</p>
       </div>
 
       <div>
-        <p class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('Description') }}</p>
+        <p class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Description') }}</p>
         <p class="text-base text-pretty whitespace-pre-line text-body">{{ $viewModel->listing()->description }}</p>
       </div>
 
       @if ($viewModel->version()->change_note !== null)
         <div>
-          <p class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('What changed in this version') }}</p>
+          <p class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('What changed in this version') }}</p>
           <p class="text-base text-pretty whitespace-pre-line text-body">{{ $viewModel->version()->change_note }}</p>
         </div>
       @endif
@@ -54,7 +54,7 @@
   </x-panel>
 
   <x-panel :title="__('What people will install')" :subtitle="__('The structure this copies into an account, exactly as it was submitted.')">
-    <pre class="overflow-x-auto rounded-md bg-sand p-3 font-mono text-xs text-ink">{{ $viewModel->payload() }}</pre>
+    <pre class="overflow-x-auto rounded-md bg-card p-3 font-mono text-xs text-ink">{{ $viewModel->payload() }}</pre>
   </x-panel>
 
   @if ($viewModel->awaitsDecision())

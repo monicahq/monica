@@ -37,10 +37,10 @@ class InputTest extends TestCase
     public function it_is_drawn_small_only_when_it_is_asked_to_be(): void
     {
         $this->blade('<x-input id="q" />')
-            ->assertSee('h-11 text-[16px] sm:text-base', escape: false);
+            ->assertSee('h-9 text-[16px] sm:text-base', escape: false);
 
         $this->blade('<x-input id="q" size="small" />')
-            ->assertSee('h-9 text-[16px] sm:text-sm', escape: false);
+            ->assertSee('h-8 text-[16px] sm:text-sm', escape: false);
     }
 
     #[Test]
@@ -56,7 +56,7 @@ class InputTest extends TestCase
     {
         $rendered = $this->blade('<x-textarea id="notes" label="Notes" value="Sold paper." />');
 
-        $rendered->assertSee('min-h-28 resize-y', escape: false);
+        $rendered->assertSee('min-h-24 resize-y', escape: false);
         $rendered->assertSee('<label class="flex items-baseline gap-1.5 text-label text-ink" for="notes">', escape: false);
         $rendered->assertSee('Sold paper.', escape: false);
     }
@@ -65,7 +65,7 @@ class InputTest extends TestCase
     public function a_file_field_drops_the_well_it_has_no_text_in(): void
     {
         $this->blade('<x-file-input id="photo" accept="image/png" />')
-            ->assertSee('file:border-hairline-strong file:bg-canvas', escape: false)
+            ->assertSee('file:border-hairline file:bg-canvas', escape: false)
             ->assertSee('type="file"', escape: false)
             ->assertSee('accept="image/png"', escape: false);
     }

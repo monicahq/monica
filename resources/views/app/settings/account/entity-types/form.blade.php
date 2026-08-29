@@ -40,7 +40,7 @@
   </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
-    <h1 class="font-display text-page-title text-ink">{{ $viewModel->title() }}</h1>
+    <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
     <p class="max-w-[56ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
   </header>
@@ -66,7 +66,7 @@
     <x-form id="entity-type-form" :method="$viewModel->method()" :action="$viewModel->action()" class="flex flex-col gap-8">
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Names') }}</h2>
+          <h2 class="shrink-0 text-section-title text-ink">{{ __('Names') }}</h2>
 
           <p class="text-sm text-pretty text-muted">{{ __('One name for a single record, one for the list. The singular goes in buttons and headers, the plural in list titles.') }}</p>
         </div>
@@ -147,7 +147,7 @@
 
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Appearance') }}</h2>
+          <h2 class="shrink-0 text-section-title text-ink">{{ __('Appearance') }}</h2>
 
           <p class="text-sm text-pretty text-muted">{{ __('The icon and colour mark this type in the vault navigation and beside every record of it.') }}</p>
         </div>
@@ -228,7 +228,7 @@
 
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Availability') }}</h2>
+          <h2 class="shrink-0 text-section-title text-ink">{{ __('Availability') }}</h2>
 
           <p class="text-sm text-pretty text-muted">{{ __('An active type shows up in every vault in this account. Turn it off and existing records stay where they are, but no new ones can be made.') }}</p>
         </div>

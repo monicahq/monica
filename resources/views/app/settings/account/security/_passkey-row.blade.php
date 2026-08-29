@@ -17,7 +17,7 @@
     ? __('Added :added · last used :used', ['added' => $passkey['addedAt'], 'used' => $passkey['lastUsedAt']])
     : __('Added :added · never used yet', ['added' => $passkey['addedAt']])"
   icon="key"
-  icon-class="bg-emerald-tint text-emerald"
+  icon-class="bg-success-tint text-success"
 >
   <x-slot:end>
     <div x-data="{ renaming: false, confirming: false }" class="flex flex-wrap items-center justify-end gap-2.5">

@@ -6,6 +6,7 @@
     "2. Prove it worked": "2. Dimostra che ha funzionato",
     "24-hour": "24 ore",
     ":count contact|:count contacts": ":count contatto|:count contatti",
+    ":count entry on this page|:count entries on this page": ":count voce in questa pagina|:count voci in questa pagina",
     ":count field on this page|:count fields on this page": ":count campo in questa pagina|:count campi in questa pagina",
     ":count field|:count fields": ":count campo|:count campi",
     ":count installation|:count installations": ":count installazione|:count installazioni",

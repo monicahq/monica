@@ -81,7 +81,7 @@ class FieldValueTest extends TestCase
             ->assertSee('Climbing')
             ->assertSee('Cooking')
             ->assertDontSee('Cycling')
-            ->assertSee('bg-sand', escape: false);
+            ->assertSee('bg-card', escape: false);
     }
 
     #[Test]

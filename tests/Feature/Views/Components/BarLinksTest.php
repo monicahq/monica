@@ -48,8 +48,8 @@ class BarLinksTest extends TestCase
     {
         $this->blade('<x-bar-links />')
             ->assertSee('text-sm text-body', escape: false)
-            ->assertSee('hover:bg-sand hover:text-ink', escape: false)
-            ->assertSee('focus-visible:outline-focus-ring', escape: false);
+            ->assertSee('hover:bg-hover hover:text-ink', escape: false)
+            ->assertSee('focus-visible:ring-focus-ring/45', escape: false);
     }
 
     #[Test]

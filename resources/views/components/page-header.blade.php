@@ -11,7 +11,7 @@
 ])
 
 <div {{ $attributes->class(['space-y-1.5']) }}>
-  <h1 class="text-2xl font-semibold tracking-tight text-ink">{{ $title ?? $slot }}</h1>
+  <h1 class="text-page-title text-balance text-ink">{{ $title ?? $slot }}</h1>
 
   @isset($description)
     <p class="text-sm text-body">{{ $description }}</p>

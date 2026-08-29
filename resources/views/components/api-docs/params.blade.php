@@ -10,7 +10,7 @@
 @props(['section'])
 
 @if ($section->hasParams())
-  <h2 class="mt-9 mb-1 text-[18px] font-semibold tracking-[-0.015em] text-ink">{{ $section->paramsTitle }}</h2>
+  <h2 class="mt-9 mb-1 text-xl text-ink">{{ $section->paramsTitle }}</h2>
   <p class="mb-1.5 text-[13px] text-muted">Sent as JSON. Anything not listed here is ignored.</p>
 
   <div class="flex flex-col">

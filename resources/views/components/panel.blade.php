@@ -7,10 +7,11 @@
   genuinely independent of what sits above it. Wrapping every paragraph in one
   turns a page into a stack of boxes.
 
-  The header sits on a band and the footer on a slightly deeper one, so a panel
-  reads as a named thing with a body between two ends rather than as a box with a
-  rule across it. The single pixel underneath is not elevation: it is the border
-  given a little weight now that the page behind it is a darker stone.
+  The header is separated by a rule rather than by a tint, because the page behind
+  the panel is already white and a band on top of it says nothing. The footer keeps
+  its tint, since a strip a save button sits in is a different kind of thing from
+  the body above it. The single pixel underneath is not elevation: it is the border
+  given a little weight.
 
   `flush` is for a panel whose body is a list of rows: the rows draw their own
   padding and their own hairlines, so the body must not add any of its own or every
@@ -21,8 +22,9 @@
   rather than more rows.
 
   `tone="danger"` is for the panel that ends something. It takes a red edge, a red
-  band and a red mark, so the part of a screen that cannot be undone is visible
-  before it is read, and it is the only panel on a screen entitled to it.
+  band and a red mark, and it is the one place a panel is allowed a tinted header,
+  so the part of a screen that cannot be undone is visible before it is read. It is
+  the only panel on a screen entitled to it.
 
   @var string|null $title
   @var string|null $subtitle
@@ -45,17 +47,17 @@
 @php
   $danger = $tone === 'danger';
 
-  $surface = $variant === 'inset' ? 'bg-sand' : 'bg-canvas';
+  $surface = $variant === 'inset' ? 'bg-card' : 'bg-canvas';
   $edge = $danger ? 'border-error-edge' : 'border-hairline';
-  $band = $danger ? 'border-error-edge bg-error-tint' : 'border-hairline-soft bg-sunken';
-  $mark = $danger ? 'bg-error text-white' : 'bg-primary text-on-primary';
+  $band = $danger ? 'border-error-edge bg-error-tint' : 'border-hairline';
+  $mark = $danger ? 'border-transparent bg-error text-white' : 'border-hairline bg-card text-body';
 @endphp
 
-<section {{ $attributes->class(['overflow-hidden rounded-xl border shadow-panel', $edge, $surface]) }}>
+<section {{ $attributes->class(['overflow-hidden rounded-lg border shadow-panel', $edge, $surface]) }}>
   @if ($title)
-    <header class="flex min-h-13 items-start gap-3 border-b px-5 py-4 {{ $band }}">
+    <header class="flex min-h-12 items-start gap-3 border-b px-4 py-3.5 {{ $band }}">
       @if ($icon)
-        <span class="flex size-7 shrink-0 items-center justify-center rounded-md {{ $mark }}">
+        <span class="flex size-7 shrink-0 items-center justify-center rounded-md border {{ $mark }}">
           <x-icon :name="$icon" :size="15" :stroke-width="1.5" />
         </span>
       @endif
@@ -74,7 +76,7 @@
     </header>
   @endif
 
-  <div @class(['p-5' => ! $flush])>
+  <div @class(['p-4' => ! $flush])>
     {{ $slot }}
   </div>
 
@@ -84,6 +86,6 @@
     the link that asked for it.
   --}}
   @isset($footer)
-    <footer {{ $footer->attributes->class(['border-t border-hairline-soft bg-sand px-5 py-3.5 text-sm']) }}>{{ $footer }}</footer>
+    <footer {{ $footer->attributes->class(['border-t border-hairline bg-card px-4 py-3 text-sm']) }}>{{ $footer }}</footer>
   @endisset
 </section>

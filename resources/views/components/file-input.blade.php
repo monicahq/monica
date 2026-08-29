@@ -39,10 +39,10 @@
    * is dropped here: there is no text being typed into it.
    */
   $control = 'cursor-pointer text-xs text-muted '
-    .'file:mr-3 file:h-8.5 file:cursor-pointer file:rounded-md file:border file:border-hairline-strong '
-    .'file:bg-canvas file:px-3.25 file:font-sans file:text-[13.5px] file:font-semibold file:text-ink '
+    .'file:mr-3 file:h-8 file:cursor-pointer file:rounded-md file:border file:border-hairline '
+    .'file:bg-canvas file:px-3 file:font-sans file:text-sm file:font-medium file:text-ink '
     .'file:transition-[background-color] file:duration-(--duration-fast) file:ease-out '
-    .'hover:file:bg-sand';
+    .'hover:file:bg-hover';
 @endphp
 
 <div class="flex flex-col gap-1.5">

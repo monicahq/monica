@@ -38,7 +38,7 @@
   <div
     x-cloak
     x-show="hoveringId === {{ $value['id'] }} && draggingId !== {{ $value['id'] }}"
-    class="absolute inset-x-0 top-0 z-10 h-0.5 bg-brand"
+    class="absolute inset-x-0 top-0 z-10 h-0.5 bg-primary"
     aria-hidden="true"
   ></div>
 

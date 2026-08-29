@@ -57,10 +57,10 @@
   $describedBy = trim(($helpId ?? '').' '.($errorId ?? ''));
 
   /*
-   * A control reads as a well rather than a box: the shade is inset, which is the
-   * one place in the system where elevation points inwards. Focus takes an ink
-   * border and a terracotta halo, so it is unmistakable which field is being typed
-   * in even at a glance across a long form.
+   * A control is a white box inside a hairline. Focus darkens that hairline to
+   * near black and lays a soft ring of the same colour outside it, so which field
+   * is being typed in is plain at a glance down a long form, and the ring is the
+   * same shape a button draws when the keyboard reaches it.
    *
    * Safari on iOS zooms the page in whenever a field it is given is under 16px, so
    * every control is 16px on a phone and back down to its own size from sm up.
@@ -70,10 +70,10 @@
    */
   $control = 'w-full rounded-md border border-hairline-strong bg-input px-3 font-sans text-ink '
     .'transition-[border-color,box-shadow] duration-(--duration-fast) ease-out '
-    .'placeholder:text-placeholder hover:border-muted '
-    .'focus:border-ink focus:ring-3 focus:ring-accent-tint focus:outline-none '
-    .'disabled:cursor-default disabled:bg-sand disabled:text-muted '
-    .'aria-[invalid=true]:border-error';
+    .'placeholder:text-placeholder hover:border-muted-soft '
+    .'focus:border-focus focus:ring-[3px] focus:ring-focus-ring/20 focus:outline-none '
+    .'disabled:cursor-default disabled:bg-hover disabled:text-muted '
+    .'aria-[invalid=true]:border-error aria-[invalid=true]:ring-[3px] aria-[invalid=true]:ring-error/20';
 @endphp
 
 <div class="flex flex-col gap-1.5">
@@ -94,7 +94,7 @@
     {{ $autofocus ? 'autofocus' : '' }}
     {{ $required ? 'required' : '' }}
     {{ $disabled ? 'disabled' : '' }}
-    {{ $attributes->class([$control, $size === 'small' ? 'h-9 text-[16px] sm:text-sm' : 'h-11 text-[16px] sm:text-base']) }}
+    {{ $attributes->class([$control, $size === 'small' ? 'h-8 text-[16px] sm:text-sm' : 'h-9 text-[16px] sm:text-base']) }}
   />
 
   @if ($help)

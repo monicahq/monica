@@ -5,7 +5,8 @@
   says, so a badge still works for somebody who cannot see the colour, and a
   badge with no word in it is a bug rather than a decoration.
 
-  It is never a pill: 5px corners, which is the smallest radius in the system.
+  It is a pill. Nothing else in the system is fully round except an avatar, which
+  is what makes a badge legible as a badge from across a screen.
 
   @var string $tone
   @var string|null $icon
@@ -22,19 +23,21 @@
    * still reads correctly with the colour taken away.
    */
   $tint = match ($tone) {
-    'success' => 'border-success/30 bg-success/10 text-success',
-    'warning' => 'border-warning/30 bg-warning/10 text-warning',
-    'danger' => 'border-error/30 bg-error/10 text-error',
-    'info' => 'border-brand/30 bg-brand/10 text-brand',
-    'accent' => 'border-brand/30 bg-accent-tint text-brand',
-    default => 'border-hairline bg-sand text-ink-soft',
+    'success' => 'border-success-edge bg-success-tint text-success',
+    'warning' => 'border-warning-edge bg-warning-tint text-warning',
+    'danger' => 'border-error-edge bg-error-tint text-error',
+    // There is no accent colour left, so the two tones that carried the blue are
+    // told apart by how loud they are instead: an outline, and a filled one.
+    'info' => 'border-hairline bg-canvas text-body',
+    'accent' => 'border-transparent bg-primary text-on-primary',
+    default => 'border-transparent bg-hover text-body',
   };
 @endphp
 
 <span
   {{
     $attributes->class([
-      'inline-flex h-6 items-center gap-1.25 rounded-xs border px-2.25 font-sans text-[12.5px] font-semibold tracking-[0.005em] whitespace-nowrap',
+      'inline-flex h-5.5 items-center gap-1.25 rounded-full border px-2.25 font-sans text-[11.5px] font-medium whitespace-nowrap',
       $tint,
     ])
   }}

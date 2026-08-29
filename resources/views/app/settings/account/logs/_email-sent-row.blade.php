@@ -25,7 +25,7 @@
     type="button"
     @click="open = ! open"
     :aria-expanded="open ? 'true' : 'false'"
-    class="flex w-full items-start gap-3 px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out cursor-pointer hover:bg-sand focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus-ring"
+    class="flex w-full items-start gap-3 px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out cursor-pointer hover:bg-hover focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none"
   >
     <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-plum-tint text-plum">
       <x-icon name="mail" :size="18" :stroke-width="1.5" />

@@ -11,7 +11,7 @@
   @var array $template
 --}}
 <div class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0">
-  <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-indigo-tint text-indigo">
+  <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-card text-body">
     <x-icon name="file" :size="18" :stroke-width="1.5" />
   </span>
 

@@ -67,7 +67,7 @@
     </div>
 
     <div class="min-w-60 flex-1">
-      <h1 class="font-display text-display-2 text-balance text-ink">{{ $viewModel->title() }}</h1>
+      <h1 class="text-page-title text-balance text-ink">{{ $viewModel->title() }}</h1>
 
       <p class="mt-2 text-base text-body">
         {{ $viewModel->relationshipLine() }}
@@ -124,8 +124,7 @@
 
   {{--
     The pages of the record. The rule runs the whole width and the tab you are on
-    thickens its own piece of it in terracotta, which is the one place on this
-    screen the accent is used.
+    thickens its own piece of it.
   --}}
   {{--
     Version history is pinned to the far end of the rule rather than sitting
@@ -137,30 +136,19 @@
     is: what is being kept out of sight is the cost of the moves that history
     lists.
   --}}
-  <div role="tablist" class="flex flex-wrap items-end gap-1 border-b border-hairline">
+  <x-tabs>
     @foreach ($viewModel->pages() as $page)
-      <a
-        href="{{ $page['url'] }}"
+      <x-tabs.item
+        :href="$page['url']"
+        :selected="$page['isSelected']"
+        :icon="$page['icon']"
+        :count="$page['count']"
+        :count-label="$page['count'] === null ? null : trans_choice(':count entry on this page|:count entries on this page', $page['count'])"
         data-turbo="true"
-        role="tab"
-        aria-selected="{{ $page['isSelected'] ? 'true' : 'false' }}"
-        @class([
-          'flex h-10 flex-none items-center gap-2 -mb-px border-b-2 px-3.5 text-base font-semibold no-underline',
-          'transition-[color,border-color] duration-(--duration-fast) ease-out hover:text-ink',
-          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring',
-          $page['isSelected'] ? 'border-b-primary text-ink' : 'border-transparent text-muted',
-          'ml-auto' => $page['isPinned'],
-        ])
-      >
-        <x-icon :name="$page['icon']" :size="16" :stroke-width="1.6" />
-        {{ $page['label'] }}
-
-        @if ($page['count'] !== null)
-          <span class="text-xs font-normal text-placeholder">{{ $page['count'] }}</span>
-        @endif
-      </a>
+        @class(['ml-auto' => $page['isPinned']])
+      >{{ $page['label'] }}</x-tabs.item>
     @endforeach
-  </div>
+  </x-tabs>
 
   {{--
     A newer version of the template is waiting. It sits above the tabs' content
@@ -209,7 +197,7 @@
 
         <section class="flex flex-col gap-3.5">
           <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1 px-0.5">
-            <h2 class="font-display text-section-title text-ink">{{ __('History') }}</h2>
+            <h2 class="text-section-title text-ink">{{ __('History') }}</h2>
 
             <p class="text-sm text-pretty text-muted">{{ $viewModel->historyNote() }}</p>
           </div>
@@ -223,7 +211,7 @@
             @foreach ($viewModel->history() as $entry)
               <li class="relative pb-6 last:pb-0">
                 <span
-                  class="absolute top-px -left-7.5 flex size-6 items-center justify-center rounded-full bg-sand text-muted ring-4 ring-page"
+                  class="absolute top-px -left-7.5 flex size-6 items-center justify-center rounded-full bg-card text-muted ring-4 ring-page"
                   aria-hidden="true"
                 >
                   <x-icon :name="$entry['icon']" :size="14" :stroke-width="1.6" />

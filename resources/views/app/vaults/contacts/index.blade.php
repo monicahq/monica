@@ -33,7 +33,7 @@
 
   <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
     <div class="flex min-w-0 flex-col gap-2">
-      <h1 class="font-display text-page-title text-ink">{{ $viewModel->title() }}</h1>
+      <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
       <p class="max-w-[64ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
     </div>
@@ -124,7 +124,7 @@
         </x-empty-state>
       @elseif ($viewModel->noResults())
         <div class="flex min-h-60 flex-col items-center justify-center gap-3.5 px-8 py-12 text-center">
-          <p class="font-display text-section-title text-ink">{{ __('Nothing matches') }}</p>
+          <p class="text-section-title text-ink">{{ __('Nothing matches') }}</p>
 
           <p class="max-w-[44ch] text-base text-pretty text-muted">{{ __('Try a shorter search, or another chip above.') }}</p>
         </div>

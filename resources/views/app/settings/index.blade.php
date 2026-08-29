@@ -30,7 +30,7 @@
   <header class="flex flex-col items-center gap-2.5 text-center">
     <x-avatar :user="$viewModel->user()" :size="56" />
 
-    <h1 class="mt-1.5 font-display text-page-title text-ink">{{ __('Settings') }}</h1>
+    <h1 class="mt-1.5 text-page-title text-ink">{{ __('Settings') }}</h1>
 
     <p class="max-w-[52ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
 
@@ -41,7 +41,7 @@
     <section class="flex flex-col gap-3">
       @if ($section['title'])
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 font-display text-section-title text-ink">{{ $section['title'] }}</h2>
+          <h2 class="shrink-0 text-section-title text-ink">{{ $section['title'] }}</h2>
 
           <p class="text-sm text-pretty text-muted">{{ $section['description'] }}</p>
         </div>

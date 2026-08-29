@@ -4,7 +4,7 @@
   @var \App\ViewModels\Auth\RegisterViewModel $viewModel
 --}}
 @php
-  $linkClasses = 'font-medium text-ink underline underline-offset-2 hover:text-brand';
+  $linkClasses = 'font-medium text-ink underline underline-offset-2 hover:decoration-ink';
   $terms = '<a href="'.e($viewModel->termsUrl()).'" target="_blank" rel="noopener" class="'.$linkClasses.'">'.e(__('terms of use')).'</a>';
   $privacy = '<a href="'.e($viewModel->privacyUrl()).'" target="_blank" rel="noopener" class="'.$linkClasses.'">'.e(__('privacy policy')).'</a>';
 @endphp

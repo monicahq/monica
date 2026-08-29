@@ -73,7 +73,7 @@
       role="dialog"
       aria-modal="true"
       @if ($title) aria-label="{{ $title }}" @endif
-      class="relative w-full max-w-md overflow-hidden rounded-lg border border-hairline-strong bg-canvas shadow-pop"
+      class="relative w-full max-w-md overflow-hidden rounded-lg border border-hairline bg-canvas shadow-pop"
     >
       <x-form :method="$method" :action="$action" {{ $attributes }}>
         <div class="flex flex-col gap-4 p-5">

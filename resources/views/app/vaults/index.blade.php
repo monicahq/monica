@@ -17,7 +17,7 @@
 <x-account-layout :title="$viewModel->title()">
   <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
     <div class="flex min-w-0 flex-col gap-2">
-      <h1 class="font-display text-page-title text-ink">{{ $viewModel->title() }}</h1>
+      <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
       <p class="max-w-[64ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
     </div>
@@ -61,7 +61,7 @@
   @else
     <section class="flex flex-col gap-3.5">
       <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1 px-0.5">
-        <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Vaults you keep') }}</h2>
+        <h2 class="shrink-0 text-section-title text-ink">{{ __('Vaults you keep') }}</h2>
 
         <p class="text-sm text-pretty text-muted">{{ $viewModel->orderNote() }}</p>
       </div>
@@ -105,7 +105,7 @@
           class="flex flex-col justify-center gap-2 rounded-lg border border-dashed border-hairline-strong p-5 transition-colors duration-[110ms] hover:bg-hover"
         >
           <span
-            class="flex size-9 items-center justify-center rounded-md bg-terracotta-tint text-terracotta"
+            class="flex size-9 items-center justify-center rounded-md bg-card text-body"
             aria-hidden="true"
           >
             <x-icon name="plus" :size="19" :stroke-width="1.6" />

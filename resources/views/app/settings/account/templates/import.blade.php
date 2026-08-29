@@ -27,7 +27,7 @@
   <div class="grid items-start gap-7 lg:grid-cols-[minmax(0,1fr)_20rem]">
     <div class="flex min-w-0 flex-col gap-5" x-data="{ file: @js(old('file', $viewModel->raw())) }">
       <header class="flex max-w-[66ch] flex-col gap-2">
-        <h1 class="font-display text-page-title text-ink">{{ $viewModel->title() }}</h1>
+        <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
         <p class="text-base text-pretty text-body">{{ $viewModel->intro() }}</p>
       </header>
@@ -139,7 +139,7 @@
     <x-panel :title="__('How it goes')" flush>
       @foreach ($viewModel->steps() as $index => $step)
         <div class="flex gap-3.5 border-b border-hairline px-4.5 py-3.5 last:border-b-0">
-          <span class="flex size-6.5 shrink-0 items-center justify-center rounded-sm bg-sand-deep font-mono text-[13px] text-ink-soft">
+          <span class="flex size-6.5 shrink-0 items-center justify-center rounded-sm bg-hover font-mono text-[13px] text-ink-soft">
             {{ $index + 1 }}
           </span>
 

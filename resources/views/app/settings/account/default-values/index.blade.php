@@ -36,7 +36,7 @@
   >
     <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
       <div class="flex min-w-0 flex-col gap-2">
-        <h1 class="font-display text-page-title text-ink">{{ __('Default values') }}</h1>
+        <h1 class="text-page-title text-ink">{{ __('Default values') }}</h1>
 
         <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('The lists you pick from when you fill in a contact. Rename them to the words you actually use, and put them in the order you want to see them.') }}</p>
       </div>

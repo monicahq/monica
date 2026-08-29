@@ -128,7 +128,7 @@
               label="Sign in as Michael Scott"
               email="michael.scott@dundermifflin.com"
               :redirect-url="route('home.index')"
-              class="inline cursor-pointer font-semibold text-ink underline underline-offset-2 decoration-hairline-strong transition-colors duration-150 hover:text-brand hover:decoration-brand"
+              class="inline cursor-pointer font-medium text-ink underline underline-offset-2 decoration-hairline-strong transition-colors duration-150 hover:decoration-ink"
             />
           </x-box>
         @endenv

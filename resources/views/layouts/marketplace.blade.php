@@ -30,7 +30,7 @@
   </head>
 
   <body class="bg-page font-sans text-body antialiased">
-    <header class="sticky top-0 z-5 flex h-15 items-center gap-3 border-b border-hairline-strong bg-canvas px-4 shadow-bar sm:px-6">
+    <header class="sticky top-0 z-5 flex h-14 items-center gap-3 border-b border-hairline bg-canvas/85 px-4 backdrop-blur-[8px] sm:px-6">
       <a href="{{ route('home.index') }}" class="flex items-center gap-2.25 no-underline">
         <x-logo :size="26" />
 
@@ -55,7 +55,7 @@
         @else
           <a
             href="{{ route('auth.login.new') }}"
-            class="flex h-8.5 items-center rounded-md px-2.75 text-sm text-body no-underline transition-colors duration-(--duration-fast) ease-out hover:bg-sand hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
+            class="flex h-8.5 items-center rounded-md px-2.75 text-sm text-body no-underline transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
           >
             {{ __('Sign in') }}
           </a>

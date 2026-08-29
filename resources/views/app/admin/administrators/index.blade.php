@@ -17,7 +17,7 @@
 --}}
 <x-admin-layout :title="__('Administrators')">
   <header class="flex flex-col gap-2">
-    <h1 class="font-display text-page-title text-ink">{{ __('Administrators') }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('Administrators') }}</h1>
 
     <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('Everybody who can reach this area. Nobody can give themselves the capacity, and nobody can take it off themselves.') }}</p>
   </header>

@@ -229,7 +229,7 @@ class VaultControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('vaults.show', $vault))
             ->assertStatus(200)
-            ->assertSee('font-display text-display-2', escape: false);
+            ->assertSee('text-page-title text-balance text-ink', escape: false);
     }
 
     #[Test]

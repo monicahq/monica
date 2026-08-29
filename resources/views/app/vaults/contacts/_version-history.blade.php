@@ -27,7 +27,7 @@
       <div class="flex flex-col gap-0.5">
         <dt class="text-xs tracking-caption text-muted uppercase">{{ $stat['label'] }}</dt>
 
-        <dd class="font-display text-section-title text-ink">{{ $stat['value'] }}</dd>
+        <dd class="text-section-title text-ink">{{ $stat['value'] }}</dd>
       </div>
     @endforeach
   </dl>

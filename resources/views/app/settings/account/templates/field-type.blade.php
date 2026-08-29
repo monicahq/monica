@@ -35,7 +35,7 @@
   </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
-    <h1 class="font-display text-page-title text-ink">{{ __('What goes in :section?', ['section' => $sectionName]) }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('What goes in :section?', ['section' => $sectionName]) }}</h1>
 
     <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('The type decides what people can type, how it is checked and how it is searched. Pick the closest one. It is settled when the field is added, so everything else about the field can be changed afterwards but this cannot.') }}</p>
   </header>
@@ -52,7 +52,7 @@
   >
     <section class="flex flex-col gap-3">
       <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-        <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('What is it called?') }}</h2>
+        <h2 class="shrink-0 text-section-title text-ink">{{ __('What is it called?') }}</h2>
       </div>
 
       <x-panel>
@@ -74,7 +74,7 @@
 
     <section class="flex flex-col gap-6">
       <div class="flex flex-col gap-1.5 px-0.5">
-        <h2 class="font-display text-section-title text-ink">{{ __('And what kind of thing is it?') }}</h2>
+        <h2 class="text-section-title text-ink">{{ __('And what kind of thing is it?') }}</h2>
 
         <x-error :messages="$errors->get('type')" />
         <x-error :messages="$errors->get('value_list_id')" />
@@ -105,7 +105,7 @@
                   <span class="text-xs text-pretty text-muted border-t border-hairline pt-1.5">{{ $type['example'] }}</span>
                 </label>
               @else
-                <div class="overflow-hidden rounded-lg border border-hairline bg-sand grid content-start gap-1.5 p-3.5">
+                <div class="overflow-hidden rounded-lg border border-hairline bg-card grid content-start gap-1.5 p-3.5">
                   <span class="flex items-center gap-2">
                     <span class="text-base font-semibold text-ink">{{ $type['label'] }}</span>
 
@@ -127,7 +127,7 @@
 
     <section x-cloak x-show="offersChoices" class="flex flex-col gap-3">
       <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-        <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Where do the choices come from?') }}</h2>
+        <h2 class="shrink-0 text-section-title text-ink">{{ __('Where do the choices come from?') }}</h2>
 
         <p class="text-sm text-pretty text-muted">{{ __('A field that offers choices reads them from a value list, so the same options can be reused everywhere rather than retyped into every field.') }}</p>
       </div>

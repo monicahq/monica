@@ -17,7 +17,7 @@ class OptionRowTest extends TestCase
         $rendered->assertSee('for="diet-vegetarian"', escape: false);
         $rendered->assertSee('name="diet"', escape: false);
         $rendered->assertSee('value="7"', escape: false);
-        $rendered->assertSee('min-h-10.5 w-full', escape: false);
+        $rendered->assertSee('min-h-9.5 w-full', escape: false);
         $rendered->assertSee('Vegetarian', escape: false);
     }
 
@@ -45,7 +45,7 @@ class OptionRowTest extends TestCase
     {
         $this->blade('<x-option-row id="a" name="category" :checked="true">Family</x-option-row>')
             ->assertSee('checked', escape: false)
-            ->assertSee('has-[:checked]:bg-sand-deep', escape: false)
+            ->assertSee('has-[:checked]:bg-hover', escape: false)
             ->assertSee('peer-checked:bg-ink', escape: false);
     }
 
@@ -53,7 +53,7 @@ class OptionRowTest extends TestCase
     public function it_shrinks_to_a_chip_when_the_answer_is_one_short_word(): void
     {
         $this->blade('<x-option-row chip id="a" name="interests[]" value="3">Climbing</x-option-row>')
-            ->assertSee('inline-flex h-9', escape: false)
+            ->assertSee('inline-flex h-8', escape: false)
             ->assertDontSee('w-full', escape: false);
     }
 

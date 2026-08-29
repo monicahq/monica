@@ -50,10 +50,10 @@ class SelectTest extends TestCase
     public function it_is_drawn_small_only_when_it_is_asked_to_be(): void
     {
         $this->blade('<x-select id="branch"><option value="x">X</option></x-select>')
-            ->assertSee('h-11 text-[16px] sm:text-base', escape: false);
+            ->assertSee('h-9 text-[16px] sm:text-base', escape: false);
 
         $this->blade('<x-select id="branch" size="small"><option value="x">X</option></x-select>')
-            ->assertSee('h-9 text-[16px] sm:text-sm', escape: false);
+            ->assertSee('h-8 text-[16px] sm:text-sm', escape: false);
     }
 
     #[Test]

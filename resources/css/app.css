@@ -15,16 +15,26 @@
  * there. What is left below is what Tailwind cannot express on a tag: the
  * tokens, the palette and the dark counterpart it flips to.
  *
- * The direction is a neutral console. An off white page, white and barely tinted
- * surfaces on it, near black text and one blue accent. Separation is carried by a
- * hairline border and by space, so a surface that does not need to float does not
- * float, and hierarchy comes from weight and space before it comes from a rule.
+ * The direction is the one shadcn set. A white page, cool grey neutrals, a
+ * hairline around everything that is a surface, corners of 6 and 8, and no
+ * accent colour at all: a link is near black and so is a focus ring, and the
+ * only saturated colour left in the product says a thing succeeded, needs
+ * attention or failed. Hierarchy is carried by weight and space, and a control
+ * is set in medium rather than semibold, so a page reads as text and not as a
+ * row of labels shouting at each other.
+ *
+ * The names below are the ones this codebase has always used. They are not
+ * shadcn's own (`background`, `foreground`, `border`, `accent`), because
+ * renaming them would touch nine hundred call sites to change nothing anybody
+ * sees. The values are shadcn's; the vocabulary is ours.
  */
 @theme {
     /*
      * Nothing is downloaded. The interface is set in whatever the machine already
      * has, asked for in the order each platform prefers, so a page paints on the
-     * first frame and no visitor is announced to a font service.
+     * first frame and no visitor is announced to a font service. The design this
+     * system was drawn from sets everything in Geist through a font CDN; we take
+     * its sizes, its weights and its tracking, and leave the request behind.
      *
      * There is no display face: a page title is set in the same face as everything
      * else, at a larger size and a heavier weight. The monospace stack is for
@@ -41,47 +51,68 @@
      * heading is one utility rather than four that have to be copied correctly every
      * time.
      *
-     * The three sizes running text uses take Tailwind's own names, so there is one
-     * scale in the product rather than this one sitting beside Tailwind's defaults.
-     * The rest are named for the single job they do.
+     * It is denser than it was. Running text is 13.5px and the page title is 28px,
+     * which is the widest gap in the product: everything between them is within
+     * three pixels of everything else, and what separates a card title from the
+     * sentence under it is weight and colour rather than size.
      */
-    --text-page-title: 24px;
-    --text-page-title--line-height: 1.2;
+    --text-page-title: 28px;
+    --text-page-title--line-height: 1.15;
     --text-page-title--font-weight: 600;
-    --text-page-title--letter-spacing: -0.012em;
+    --text-page-title--letter-spacing: -0.03em;
 
-    --text-section-title: 18px;
-    --text-section-title--line-height: 1.3;
+    --text-section-title: 16px;
+    --text-section-title--line-height: 1.35;
     --text-section-title--font-weight: 600;
-    --text-section-title--letter-spacing: -0.008em;
+    --text-section-title--letter-spacing: -0.02em;
 
     --text-card-title: 15px;
     --text-card-title--line-height: 1.4;
     --text-card-title--font-weight: 600;
+    --text-card-title--letter-spacing: -0.01em;
 
-    --text-base: 15px;
-    --text-base--line-height: 1.55;
+    --text-base: 13.5px;
+    --text-base--line-height: 1.6;
 
-    --text-sm: 14px;
+    --text-sm: 13px;
     --text-sm--line-height: 1.5;
 
     --text-xs: 12.5px;
     --text-xs--line-height: 1.4;
-    --text-xs--font-weight: 500;
 
-    --text-label: 13px;
+    --text-label: 12px;
     --text-label--line-height: 1.4;
-    --text-label--font-weight: 600;
+    --text-label--font-weight: 500;
 
     --text-nav: 13.5px;
     --text-nav--line-height: 1;
-    --text-nav--font-weight: 600;
+    --text-nav--font-weight: 500;
 
-    --text-code: 12.5px;
-    --text-code--line-height: 1.5;
+    /*
+     * Tailwind merges its own scale into this one rather than being replaced by it,
+     * so a step this file says nothing about keeps the framework's default. Three of
+     * them are in use and all three would sit at the size they had when running text
+     * was 15px: `text-2xl` on the eleven credentials headings, `text-lg` inside
+     * <x-box>, `text-xl` once. They are pinned here to the steps above so a heading
+     * moves with the scale whichever of the two names it was written with.
+     */
+    --text-2xl: var(--text-page-title);
+    --text-2xl--line-height: 1.15;
+    --text-2xl--font-weight: 600;
+    --text-2xl--letter-spacing: -0.03em;
+
+    --text-xl: 18px;
+    --text-xl--line-height: 1.3;
+    --text-xl--font-weight: 600;
+    --text-xl--letter-spacing: -0.02em;
+
+    --text-lg: var(--text-section-title);
+    --text-lg--line-height: 1.35;
+    --text-lg--font-weight: 600;
+    --text-lg--letter-spacing: -0.02em;
 
     /* The one piece of tracking that is not part of a step: the uppercase headings. */
-    --tracking-caption: 0.04em;
+    --tracking-caption: 0.08em;
 
     /* Semantic surfaces and text. They resolve to the runtime variables below, which flip for dark. */
     --color-page: var(--page);
@@ -89,8 +120,6 @@
     --color-card: var(--card);
     --color-sunken: var(--sunken);
     --color-input: var(--input);
-    --color-sand: var(--sand);
-    --color-sand-deep: var(--sand-deep);
     --color-hairline: var(--hairline);
     --color-hairline-strong: var(--hairline-strong);
     --color-hairline-soft: var(--hairline-soft);
@@ -106,88 +135,77 @@
     --color-placeholder: var(--placeholder);
     --color-primary: var(--primary);
     --color-on-primary: var(--on-primary);
-    --color-disabled: var(--disabled);
-    --color-on-disabled: var(--on-disabled);
-    --color-brand: var(--brand);
     --color-link: var(--text-link);
     --color-link-hover: var(--text-link-hover);
 
     /*
-     * The chrome. The navigation column is dark in both themes rather than a surface
-     * that flips with the rest, so it has a ramp of its own: the page is where the
-     * person's own work is and the column beside it is furniture, and the contrast
-     * between the two is what says which is which.
-     *
-     * The bar is the counterpart. It is opaque rather than the page seen through a
-     * blur, so what scrolls under it disappears rather than smearing.
+     * The bar at the top is the page colour at 85% with a blur behind it, so what
+     * scrolls under it stays legible instead of disappearing. The navigation column
+     * has no tokens of its own any more: it is a tinted panel beside the page and it
+     * reads `card`, `hairline` and the ordinary text ramp like everything else.
      */
-    --color-shell: var(--shell);
-    --color-shell-raised: var(--shell-raised);
-    --color-shell-hover: var(--shell-hover);
-    --color-shell-border: var(--shell-border);
-    --color-shell-hairline: var(--shell-hairline);
-    --color-shell-ink: var(--shell-ink);
-    --color-shell-body: var(--shell-body);
-    --color-shell-muted: var(--shell-muted);
-    --color-shell-active: var(--shell-active);
-    --color-shell-active-ink: var(--shell-active-ink);
     --color-topbar: var(--topbar);
     --color-topbar-hairline: var(--topbar-hairline);
 
     /*
      * The filled button is ink, so it inverts with the theme rather than keeping a
-     * colour of its own. That is the whole of what an accent is for here: one blue,
-     * used for a link, a focus ring and nothing else.
+     * colour of its own. There is no accent to keep: a link, a focus ring and the
+     * filled button are all the same near black, and what tells them apart is
+     * where they are and what they are doing.
      */
     --color-action-primary: var(--action-primary);
     --color-action-primary-hover: var(--action-primary-hover);
     --color-action-primary-text: var(--action-primary-text);
-    --color-action-strong: var(--action-strong);
-    --color-action-strong-hover: var(--action-strong-hover);
 
     /*
      * Semantic colours. They are runtime variables rather than fixed values because
      * a colour that reads as text on paper does not read as text on a dark ground.
-     * Every one of the six below is measured at 4.5:1 or better against the page,
-     * the canvas and the card, in the theme it belongs to.
+     * Every one below is measured at 4.5:1 or better against the page, the canvas
+     * and the card, in the theme it belongs to.
+     *
+     * Each comes in three parts, which is what a badge is built from: the word, the
+     * ground it sits on and the hairline around it.
      */
     --color-success: var(--success);
+    --color-success-tint: var(--success-tint);
+    --color-success-edge: var(--success-edge);
     --color-warning: var(--warning);
+    --color-warning-tint: var(--warning-tint);
+    --color-warning-edge: var(--warning-edge);
     --color-error: var(--danger);
     --color-error-hover: var(--danger-hover);
     --color-error-tint: var(--danger-tint);
     --color-error-edge: var(--danger-edge);
 
     /* Primary button tokens follow the primary, so they invert in dark. */
-    --color-accent: var(--primary);
-    --color-accent-tint: var(--accent-tint);
-    --color-accent-foreground: var(--on-primary);
 
     /*
-     * Corners stay modest. 4 indicators · 6 marks and badges · 8 buttons and fields ·
-     * 11 panels and cards · 13 the few things larger than a card.
+     * Corners are two numbers. 6 is a control: a button, a field, a nav row, a menu
+     * item. 8 is a surface: a card, a panel, a menu, a dialog. 4 is left for the few
+     * marks small enough that 6 reads as a circle. A badge is not on this scale at
+     * all, because a badge is fully round.
      */
     --radius-xs: 4px;
     --radius-sm: 6px;
-    --radius-md: 8px;
-    --radius-lg: 11px;
-    --radius-xl: 13px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 8px;
 
     /*
-     * There is no elevation layer. A hairline and space are what separate things
-     * here, so a row and a button draw a border and nothing beneath them. The four
-     * below are the exceptions, and each one earns it.
+     * There is barely an elevation layer. A card takes a single pixel of shadow
+     * under its hairline, which is not lift so much as the line given a little
+     * weight now that the page behind it is white. The active navigation row takes
+     * the same pixel and a ring drawn inside it, which is how a small raised card is
+     * built without a second border.
      *
-     * A panel and the bar take a single pixel, which is not elevation so much as the
-     * line itself given a little weight now that the page behind them is a darker
-     * stone. Anything that genuinely floats over the page rather than sitting in it,
-     * which is a menu and a dialog, takes `pop`. The quote card on the credentials
-     * screens takes `quote`, because it is a card lying on a gradient rather than a
-     * surface in a stack, and a border alone does not lift it off one.
+     * Anything that genuinely floats over the page rather than sitting in it, which
+     * is a menu and a dialog, takes `pop`. The quote card on the credentials screens
+     * takes `quote`, because it is a card lying on a gradient rather than a surface
+     * in a stack, and a border alone does not lift it off one.
      */
-    --shadow-panel: 0 1px 2px rgb(29 29 32 / 0.05);
-    --shadow-bar: 0 1px 0 rgb(29 29 32 / 0.04);
-    --shadow-pop: 0 12px 28px -12px var(--pop-shadow);
+    --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.04);
+    --shadow-nav-active: inset 0 0 0 1px var(--hairline), 0 1px 2px rgb(0 0 0 / 0.04);
+    --shadow-pop: 0 10px 24px -8px var(--pop-shadow);
     --shadow-quote: 0 18px 40px -22px var(--quote-shadow);
 
     /*
@@ -266,99 +284,87 @@
 }
 
 /*
- * The palette. Neutral greys with the barest warmth taken out of them, and one
- * blue. A colour never decorates here: it says a thing succeeded, needs attention
- * or failed, it marks a link or a focus ring, or it is content the user chose
- * themselves, which is what a vault colour and an entity type colour are.
+ * The palette. Cool greys, and nothing else until something has gone right or
+ * wrong. A colour never decorates here: it says a thing succeeded, needs
+ * attention or failed, or it is content the user chose themselves, which is what
+ * a vault colour and an entity type colour are.
  *
- * The text ramp is measured rather than eyeballed. `ink`, `body`, `muted` and
- * `placeholder` each meet 4.5:1 against the page, the canvas and the card, so any
- * of the four may set running text. `muted-soft` sits at 3.16:1 and is therefore
- * for large text and for marks that are not text, never for a sentence.
+ * The text ramp is measured rather than eyeballed. `ink`, `ink-soft`, `body`,
+ * `muted` and `placeholder` each meet 4.5:1 against the page, the canvas and the
+ * card, so any of the five may set running text. `muted-soft` sits below that and
+ * is therefore for marks that are not text, never for a sentence. The design this
+ * was drawn from sets its help text in `muted-soft`; we set it in `muted`, which
+ * is the one place the accessibility contract in this file outranks the drawing.
  */
 :root {
     /*
-     * The page is a warm stone rather than a near white, so a white panel lying on it
-     * is read as a surface without needing a shadow under it to say so. The two bands
-     * a panel draws, its header and the strip its save button sits in, are the two
-     * tints below.
+     * The page is white and a panel on it is white too. What separates them is the
+     * hairline and the single pixel of shadow under it, which is the whole idea:
+     * a surface is a line around some space, not a lighter rectangle. The tinted
+     * step below the page, `card`, is what a header band, a sidebar and an icon
+     * tile are drawn in.
      */
-    --page: #eceae5;
+    --page: #ffffff;
     --canvas: #ffffff;
     --card: #fafafa;
-    --sunken: #fbfaf8;
+    --sunken: #fafafa;
     --input: #ffffff;
 
-    /* Two tints kept for the surfaces that sit under a pointer or behind a control. */
-    --sand: #f4f2ed;
-    --sand-deep: #e9e9e5;
+    --hairline: #e4e4e7;
+    --hairline-strong: #d4d4d8;
+    --hairline-soft: #f4f4f5;
+    --hover: #f4f4f5;
+    --scrim: rgb(9 9 11 / 0.5);
 
-    --hairline: #d9d7d0;
-    --hairline-strong: #c9c7c0;
-    --hairline-soft: #e6e4dd;
-    --hover: #f1efea;
-    --scrim: rgb(29 29 32 / 0.4);
-
-    --ink: #1d1d20;
-    --ink-soft: #3a3a3f;
-    --body: #5f5f66;
-    --muted: #66666d;
-    --muted-soft: #8b8b90;
-    --placeholder: #707077;
+    --ink: #09090b;
+    --ink-soft: #27272a;
+    --body: #52525b;
+    --muted: #71717a;
+    --muted-soft: #a1a1aa;
+    --placeholder: #71717a;
 
     /*
-     * Two different jobs, two names. `--focus` is the border a field takes while it
-     * is being typed in, and it is near black, so which field is being typed in is
-     * plain at a glance down a long form; `--focus-ring` is the ring every
-     * focusable element draws when the keyboard reaches it, and that one is the blue,
-     * so it is unmistakable. It is measured at 5.21:1 in light and 6.98:1 in dark
-     * against every surface it can land on, which is well past the 3:1 a non-text
-     * indicator needs.
+     * Two different jobs, two names, and in this system the same colour. `--focus`
+     * is the border a field takes while it is being typed in; `--focus-ring` is the
+     * ring every focusable element draws when the keyboard reaches it. Both are near
+     * black, which is why the ring is drawn two pixels wide and two pixels clear of
+     * the element: a near black ring touching a near black button would be invisible,
+     * and the offset is what makes it unmistakable instead.
      */
-    --focus: #17171b;
-    --focus-ring: #3f5fd0;
+    --focus: #09090b;
+    --focus-ring: #09090b;
 
-    --primary: #1d1d20;
-    --on-primary: #ffffff;
-    --action-primary: #1d1d20;
-    --action-primary-hover: #000000;
-    --action-primary-text: #ffffff;
-    --action-strong: #1d1d20;
-    --action-strong-hover: #000000;
-    --disabled: #e9e9e5;
-    --on-disabled: #8b8b90;
-    --brand: #3f5fd0;
-
-    --accent-tint: #e4e9fb;
-    --success: #3f7239;
-    --warning: #7f571d;
-    --danger: #8a3826;
-    --danger-hover: #6f2c1e;
-    --danger-tint: #fbf3f0;
-    --danger-edge: #d3b6ae;
-    --text-link: #3f5fd0;
-    --text-link-hover: #33499f;
+    --primary: #18181b;
+    --on-primary: #fafafa;
+    --action-primary: #18181b;
+    --action-primary-hover: #27272a;
+    --action-primary-text: #fafafa;
 
     /*
-     * The chrome. The navigation column keeps a dark ramp in both themes, so these
-     * are not the neutrals above under other names: the light theme's column has to
-     * hold its own text ramp against a near black ground.
+     * There is no brand colour any more. `--text-link` is kept because <x-link> asks
+     * for it by name, and it resolves to the same near black as everything else,
+     * which is how a link ends up with a grey underline rather than a blue word.
      */
-    --shell: #1f1f24;
-    --shell-raised: #292930;
-    --shell-hover: #2e2e37;
-    --shell-border: #3c3c45;
-    --shell-hairline: #33333c;
-    --shell-ink: #f4f3f0;
-    --shell-body: #b6b6bd;
-    --shell-muted: #87878f;
-    --shell-active: #f4f3f0;
-    --shell-active-ink: #1f1f24;
+    --text-link: #09090b;
+    --text-link-hover: #09090b;
+
+    --success: #15803d;
+    --success-tint: #f0fdf4;
+    --success-edge: #bbf7d0;
+    --warning: #b45309;
+    --warning-tint: #fffbeb;
+    --warning-edge: #fde68a;
+    --danger: #b91c1c;
+    --danger-hover: #991b1b;
+    --danger-tint: #fef2f2;
+    --danger-edge: #fecaca;
+
+    /* The bar. It is the page colour, drawn at 85% with a blur behind it. */
     --topbar: #ffffff;
-    --topbar-hairline: #d5d3cc;
+    --topbar-hairline: #e4e4e7;
 
     /*
-     * Motion is short and plain. 110ms feedback, 170ms menus, 220ms panels. Nothing
+     * Motion is short and plain. 150ms feedback, 170ms menus, 220ms panels. Nothing
      * bounces, scales or overshoots.
      *
      * Tailwind has no theme namespace for a duration, so these are read on a tag as
@@ -366,100 +372,81 @@
      * reduced-motion block below a single rule rather than a variant on every
      * element in the product that moves.
      */
-    --duration-fast: 110ms;
+    --duration-fast: 150ms;
     --duration-standard: 170ms;
     --duration-slow: 220ms;
-    --press-translate: 1px;
+    --press-translate: 0px;
 
     /*
      * Tailwind resolves a `--shadow-*` token once, at build time, so a colour written
      * into one would never flip for dark. Written as a variable it survives into the
      * utility and the dark block below can change it.
      */
-    --pop-shadow: rgba(29, 29, 32, 0.28);
-    --quote-shadow: rgba(29, 29, 32, 0.22);
+    --pop-shadow: rgba(9, 9, 11, 0.16);
+    --quote-shadow: rgba(9, 9, 11, 0.14);
 
     /* The bands of the gradient behind the quote, from top left to bottom right. */
-    --quote-bands: #dfe4f6, #e6e2f2, #efe4ee, #f4e8e6, #f6eee2, #f2f0e2;
+    --quote-bands: #f4f4f5, #efeff2, #eceaef, #f0edee, #f4f2f0, #fafafa;
 
     color-scheme: light;
 }
 
 /*
- * The same neutral ramp inverted. The four semantic colours are not the light ones
+ * The same neutral ramp inverted. The three semantic colours are not the light ones
  * repeated: a green that reads as text on paper is 3.9:1 on a dark ground and a red
  * is 2.4:1, so each is lifted until it measures 4.5:1 or better on the page, the
  * canvas and the card.
  */
 .dark {
-    --page: #111113;
-    --canvas: #1a1a1d;
-    --card: #202024;
-    --sunken: #161619;
-    --input: #1a1a1d;
+    --page: #09090b;
+    --canvas: #09090b;
+    --card: #18181b;
+    --sunken: #18181b;
+    --input: #09090b;
 
-    --sand: #26262c;
-    --sand-deep: #2f2f36;
+    --hairline: #27272a;
+    --hairline-strong: #3f3f46;
+    --hairline-soft: #1f1f23;
+    --hover: #27272a;
+    --scrim: rgb(0 0 0 / 0.7);
 
-    --hairline: #2b2b31;
-    --hairline-strong: #33333a;
-    --hairline-soft: #26262b;
-    --hover: #26262c;
-    --scrim: rgb(0 0 0 / 0.6);
+    --ink: #fafafa;
+    --ink-soft: #e4e4e7;
+    --body: #d4d4d8;
+    --muted: #a1a1aa;
+    --muted-soft: #71717a;
+    --placeholder: #a1a1aa;
 
-    --ink: #f0f0ee;
-    --ink-soft: #d4d4d2;
-    --body: #b0b0b7;
-    --muted: #9d9da4;
-    --muted-soft: #82828a;
-    --placeholder: #95959c;
+    --focus: #d4d4d8;
+    --focus-ring: #d4d4d8;
 
-    --focus: #55555f;
-    --focus-ring: #93a7f0;
-
-    --primary: #f0f0ee;
-    --on-primary: #111113;
-    --action-primary: #f0f0ee;
+    --primary: #fafafa;
+    --on-primary: #18181b;
+    --action-primary: #fafafa;
     --action-primary-hover: #ffffff;
-    --action-primary-text: #111113;
-    --action-strong: #f0f0ee;
-    --action-strong-hover: #ffffff;
-    --disabled: #26262c;
-    --on-disabled: #6a6a73;
-    --brand: #93a7f0;
+    --action-primary-text: #18181b;
 
-    --accent-tint: #232a45;
-    --success: #5faa6e;
-    --warning: #d9a441;
-    --danger: #dd7f66;
-    --danger-hover: #e89984;
-    --danger-tint: #33201b;
-    --danger-edge: #4a2a22;
-    --text-link: #93a7f0;
-    --text-link-hover: #b3c2f5;
+    --text-link: #fafafa;
+    --text-link-hover: #ffffff;
 
-    /*
-     * The column goes below the page rather than above it here. In light it is the
-     * dark thing on a pale screen; in dark it is the darkest thing on a dark one, and
-     * either way it reads as the edge of the window rather than as another surface.
-     */
-    --shell: #0e0e11;
-    --shell-raised: #202024;
-    --shell-hover: #27272e;
-    --shell-border: #393941;
-    --shell-hairline: #2c2c32;
-    --shell-ink: #f0f0ee;
-    --shell-body: #9d9da4;
-    --shell-muted: #7b7b83;
-    --shell-active: #34343d;
-    --shell-active-ink: #f0f0ee;
-    --topbar: #1a1a1d;
-    --topbar-hairline: #3a3a42;
+    --success: #4ade80;
+    --success-tint: #0c2318;
+    --success-edge: #14532d;
+    --warning: #fbbf24;
+    --warning-tint: #271a06;
+    --warning-edge: #78350f;
+    --danger: #f87171;
+    --danger-hover: #fca5a5;
+    --danger-tint: #2a1214;
+    --danger-edge: #7f1d1d;
+
+    --topbar: #09090b;
+    --topbar-hairline: #27272a;
 
     --pop-shadow: rgba(0, 0, 0, 0.6);
     --quote-shadow: rgba(0, 0, 0, 0.5);
 
-    --quote-bands: #1b1f34, #221d33, #2c1e2e, #301f24, #2c2419, #20221a;
+    --quote-bands: #18181b, #1b1b1f, #1f1d22, #201e1e, #1e1d1a, #18181b;
 
     color-scheme: dark;
 }
@@ -487,8 +474,8 @@
 }
 
 ::selection {
-    background: #e4e9fb;
-    color: #1d1d20;
+    background: var(--hover);
+    color: var(--ink);
 }
 
 /* Alpine hides what it has not walked yet with an attribute, which no utility reaches. */

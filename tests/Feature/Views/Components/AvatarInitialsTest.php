@@ -51,14 +51,4 @@ class AvatarInitialsTest extends TestCase
     {
         $this->blade('<x-avatar-initials name="Pam Beesly" />')->assertSee('aria-hidden="true"', escape: false);
     }
-
-    #[Test]
-    public function on_the_dark_column_it_takes_the_letters_the_dark_theme_would_have_given_it(): void
-    {
-        $rendered = $this->blade('<x-avatar-initials name="Michael Scott" tone="shell" />');
-
-        $rendered->assertSee('/22', escape: false);
-        $rendered->assertDontSee('/12', escape: false);
-        $rendered->assertDontSee('dark:text-', escape: false);
-    }
 }

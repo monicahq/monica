@@ -17,7 +17,7 @@
       The letter sits on the inset shade rather than on the canvas the rows use, so
       it reads as a divider between two runs and not as a row with one word in it.
     --}}
-    <h2 class="flex items-center gap-2.5 border-b border-hairline bg-sand px-4.5 py-2.25 uppercase text-xs tracking-caption text-muted">{{ $group['letter'] }}</h2>
+    <h2 class="flex items-center gap-2.5 border-b border-hairline bg-card px-4.5 py-2.25 uppercase text-xs tracking-caption text-muted">{{ $group['letter'] }}</h2>
   @endif
 
   @foreach ($group['people'] as $person)

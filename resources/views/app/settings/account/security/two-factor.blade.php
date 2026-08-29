@@ -25,14 +25,14 @@
   </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
-    <h1 class="font-display text-page-title text-ink">{{ __('Turn on two factor authentication') }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('Turn on two factor authentication') }}</h1>
 
     <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Two steps, and you are done. Nothing changes about your account until the code below is accepted, so you cannot lock yourself out here.') }}</p>
   </header>
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('1. Pair your authenticator app') }}</h2>
+      <h2 class="shrink-0 text-section-title text-ink">{{ __('1. Pair your authenticator app') }}</h2>
     </div>
 
     <x-panel>
@@ -59,7 +59,7 @@
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('2. Prove it worked') }}</h2>
+      <h2 class="shrink-0 text-section-title text-ink">{{ __('2. Prove it worked') }}</h2>
 
       <p class="text-sm text-pretty text-muted">{{ __('The six digits change every thirty seconds.') }}</p>
     </div>

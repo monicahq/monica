@@ -42,7 +42,7 @@
     $attributes->class([
       'flex w-full items-center gap-3 border-b border-hairline px-4 py-3.5 text-left font-sans no-underline',
       'transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0',
-      'cursor-pointer hover:bg-sand focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus-ring' => (bool) $href,
+      'cursor-pointer hover:bg-hover focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none' => (bool) $href,
     ])
   }}
 >
@@ -51,7 +51,7 @@
   @endisset
 
   @if (! isset($leading) && $icon)
-    <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-sand text-muted">
+    <span class="flex size-8 shrink-0 items-center justify-center rounded-md border border-hairline bg-card text-body">
       <x-icon :name="$icon" :size="18" :stroke-width="1.5" />
     </span>
   @endif

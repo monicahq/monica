@@ -36,13 +36,13 @@
 
 <div {{ $attributes->class(['flex min-h-60 flex-col items-center justify-center gap-3.5 px-8 py-12 text-center']) }}>
   @isset($icon)
-    <span class="flex size-16 -rotate-4 items-center justify-center rounded-lg bg-sand text-muted" aria-hidden="true">
+    <span class="flex size-16 -rotate-4 items-center justify-center rounded-lg border border-hairline bg-card text-body" aria-hidden="true">
       {{ $icon }}
     </span>
   @endisset
 
   @isset($title)
-    <p class="font-display text-section-title text-ink">{{ $title }}</p>
+    <p class="text-section-title text-ink">{{ $title }}</p>
   @endisset
 
   <p class="max-w-[44ch] text-base text-pretty text-muted">{{ $slot }}</p>

@@ -27,7 +27,7 @@
 ])
 
 @php
-  $item = 'flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm transition-colors duration-(--duration-fast) ease-out max-lg:py-2.5';
+  $item = 'flex min-h-8 items-center gap-2.5 rounded-md px-2 py-1.5 text-nav transition-[background-color,box-shadow,color] duration-(--duration-fast) ease-out max-lg:min-h-10';
 
   $groups = [
     [
@@ -53,20 +53,20 @@
 <aside
   id="main-nav"
   :class="navOpen && 'max-lg:translate-x-0!'"
-  class="fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-shell-hairline bg-shell transition-transform duration-(--duration-slow) ease-out max-lg:-translate-x-full lg:sticky lg:top-0 lg:h-screen lg:w-auto lg:translate-x-0"
+  class="fixed inset-y-0 left-0 z-40 flex w-62 flex-col border-r border-hairline bg-card transition-transform duration-(--duration-slow) ease-out max-lg:-translate-x-full lg:sticky lg:top-0 lg:h-screen lg:w-auto lg:translate-x-0"
 >
   <div class="flex items-center gap-2.5 px-4 pt-3.5 pb-2.5">
     <x-logo :size="26" />
 
-    <span class="truncate text-sm font-semibold tracking-tight text-shell-ink">{{ config('app.name') }}</span>
+    <span class="truncate text-sm font-semibold tracking-tight text-ink">{{ config('app.name') }}</span>
 
-    <x-theme-toggle tone="shell" class="ml-auto" />
+    <x-theme-toggle class="ml-auto" />
 
     <button
       type="button"
       @click="navOpen = false"
       aria-label="{{ __('Close the menu') }}"
-      class="-mr-1 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-shell-muted transition-colors duration-(--duration-fast) ease-out hover:bg-shell-hover hover:text-shell-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring lg:hidden"
+      class="-mr-1 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none lg:hidden"
     >
       <x-icon name="close" :size="15" :stroke-width="1.5" />
     </button>
@@ -76,23 +76,23 @@
     <a
       href="{{ route('vaults.index') }}"
       data-turbo="true"
-      class="flex items-center gap-2.5 rounded-md border border-shell-border bg-shell-raised px-2.5 py-2 text-[13px] text-shell-body transition-colors duration-(--duration-fast) ease-out hover:bg-shell-hover hover:text-shell-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
+      class="flex items-center gap-2.5 rounded-md border border-hairline bg-canvas px-2.5 py-2 text-[13px] text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
     >
-      <x-icon name="arrow-right" :size="14" :stroke-width="1.5" class="shrink-0 rotate-180 text-shell-muted" />
+      <x-icon name="arrow-right" :size="14" :stroke-width="1.5" class="shrink-0 rotate-180 text-muted" />
       {{ __('Leave the settings') }}
     </a>
   </div>
 
   <nav aria-label="{{ __('Settings') }}" class="min-h-0 flex-1 space-y-px overflow-y-auto px-2 pt-1.5 pb-3">
     @foreach ($groups as $group)
-      <h2 class="px-2.5 pt-1.5 pb-1.25 text-xs tracking-caption text-shell-muted uppercase">{{ $group['title'] }}</h2>
+      <h2 class="px-2 pt-1 pb-1.5 text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ $group['title'] }}</h2>
 
       @foreach ($group['entries'] as $entry)
         <a
           href="{{ $entry['url'] }}"
           data-turbo="true"
           @if ($current === $entry['key']) aria-current="page" @endif
-          class="{{ $item }} {{ $current === $entry['key'] ? 'bg-shell-active font-semibold text-shell-active-ink' : 'text-shell-body hover:bg-shell-hover hover:text-shell-ink' }} focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
+          class="{{ $item }} {{ $current === $entry['key'] ? 'bg-canvas font-medium text-ink shadow-nav-active' : 'text-body hover:bg-hover hover:text-ink' }} focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
         >
           <x-icon :name="$entry['icon']" :size="16" :stroke-width="1.5" />
           {{ $entry['label'] }}

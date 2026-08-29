@@ -14,7 +14,7 @@ class PanelTest extends TestCase
     {
         $rendered = $this->blade('<x-panel>Anything</x-panel>');
 
-        $rendered->assertSee('rounded-xl border shadow-panel', escape: false);
+        $rendered->assertSee('rounded-lg border shadow-panel', escape: false);
         $rendered->assertSee('border-hairline bg-canvas', escape: false);
         $rendered->assertSee('Anything', escape: false);
         $rendered->assertDontSee('<header', escape: false);
@@ -27,16 +27,17 @@ class PanelTest extends TestCase
 
         $rendered->assertSee('<h2 class="text-card-title text-ink">This vault</h2>', escape: false);
         $rendered->assertSee('Six of them', escape: false);
-        $rendered->assertSee('rounded-md bg-primary text-on-primary', escape: false);
+        $rendered->assertSee('rounded-md border border-hairline bg-card text-body', escape: false);
     }
 
     #[Test]
-    public function it_sets_its_header_on_a_band_and_its_footer_on_a_deeper_one(): void
+    public function it_rules_off_its_header_and_tints_the_strip_its_footer_sits_in(): void
     {
         $rendered = $this->blade('<x-panel title="This vault">Rows<x-slot:footer>Save it</x-slot:footer></x-panel>');
 
-        $rendered->assertSee('border-b px-5 py-4 border-hairline-soft bg-sunken', escape: false);
-        $rendered->assertSee('border-t border-hairline-soft bg-sand px-5 py-3.5', escape: false);
+        $rendered->assertSee('border-b px-4 py-3.5 border-hairline', escape: false);
+        $rendered->assertDontSee('border-b px-4 py-3.5 border-hairline bg-', escape: false);
+        $rendered->assertSee('border-t border-hairline bg-card px-4 py-3', escape: false);
     }
 
     #[Test]
@@ -46,7 +47,7 @@ class PanelTest extends TestCase
 
         $rendered->assertSee('border-error-edge bg-canvas', escape: false);
         $rendered->assertSee('border-error-edge bg-error-tint', escape: false);
-        $rendered->assertSee('rounded-md bg-error text-white', escape: false);
+        $rendered->assertSee('rounded-md border border-transparent bg-error text-white', escape: false);
         $rendered->assertSee('<h2 class="text-card-title text-error">Delete this vault</h2>', escape: false);
     }
 
@@ -54,9 +55,9 @@ class PanelTest extends TestCase
     public function it_takes_the_padding_off_its_body_for_a_list_of_rows(): void
     {
         $this->blade('<x-panel>Prose</x-panel>')
-            ->assertSee('<div class="p-5">', escape: false);
+            ->assertSee('<div class="p-4">', escape: false);
 
         $this->blade('<x-panel :flush="true">Rows</x-panel>')
-            ->assertDontSee('<div class="p-5">', escape: false);
+            ->assertDontSee('<div class="p-4">', escape: false);
     }
 }

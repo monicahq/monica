@@ -38,7 +38,7 @@
     <div class="flex min-w-0 flex-col gap-1.5">
       <p class="text-sm text-pretty text-muted">{{ $viewModel->overline() }}</p>
 
-      <h1 class="font-display text-display-2 text-balance text-ink">{{ $vault->name }}</h1>
+      <h1 class="text-page-title text-balance text-ink">{{ $vault->name }}</h1>
 
       @if ($viewModel->description())
         <p class="max-w-[60ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
@@ -57,7 +57,7 @@
   <div class="grid auto-rows-fr gap-x-5.5 gap-y-7 md:grid-cols-2 lg:grid-cols-3">
     <section class="flex min-w-0 flex-col gap-2.5">
       <div class="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 px-0.5">
-        <h2 class="shrink-0 font-display text-section-title text-terracotta">{{ __('Contacts') }}</h2>
+        <h2 class="shrink-0 text-section-title text-ink">{{ __('Contacts') }}</h2>
 
         <p class="text-xs text-pretty text-muted">{{ $viewModel->peopleCaption() }}</p>
       </div>
@@ -138,7 +138,7 @@
       {{-- The only heading with no hue: the settings are not a kind of thing the
            vault holds, they are the vault itself. It is a shade softer than the
            others rather than a colour, which is what says so without competing. --}}
-      <h2 class="px-0.5 font-display text-section-title text-ink-soft">{{ __('Vault settings') }}</h2>
+      <h2 class="px-0.5 text-section-title text-ink-soft">{{ __('Vault settings') }}</h2>
 
       <a
         href="{{ $viewModel->settingsUrl() }}"

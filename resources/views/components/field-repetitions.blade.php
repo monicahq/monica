@@ -84,13 +84,13 @@
           @endif
         </fieldset>
 
-        <p x-show="removed" x-cloak class="flex flex-wrap items-center gap-2 rounded-md border border-dashed border-hairline-strong bg-sand px-3.5 py-2.5 text-xs text-muted">
+        <p x-show="removed" x-cloak class="flex flex-wrap items-center gap-2 rounded-md border border-dashed border-hairline-strong bg-card px-3.5 py-2.5 text-xs text-muted">
           {{ __('This one goes when you save the section.') }}
 
           <button
             type="button"
             @click="removed = false"
-            class="cursor-pointer font-semibold text-ink underline underline-offset-2"
+            class="cursor-pointer font-medium text-ink underline underline-offset-2 decoration-hairline-strong hover:decoration-ink"
           >{{ __('Keep it') }}</button>
         </p>
       </div>

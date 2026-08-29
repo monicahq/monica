@@ -47,8 +47,8 @@
     :aria-expanded="open ? 'true' : 'false'"
     aria-haspopup="dialog"
     aria-label="{{ __('Help') }}"
-    :class="open ? 'border-brand text-brand' : 'border-hairline-strong text-muted-soft'"
-    class="flex size-4 cursor-pointer items-center justify-center rounded-full border bg-canvas text-xs leading-none font-bold transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none"
+    :class="open ? 'border-primary bg-primary text-on-primary' : 'border-hairline-strong text-muted-soft'"
+    class="flex size-4 cursor-pointer items-center justify-center rounded-full border bg-canvas text-xs leading-none font-bold transition-colors duration-(--duration-fast) focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
   >?</button>
 
   <div
@@ -62,9 +62,9 @@
     {{-- The caret pointing back at the badge. --}}
     <div class="absolute top-1 size-3 rotate-45 border-t border-l border-hairline bg-canvas max-sm:hidden {{ $align === 'right' ? 'right-4' : 'left-4' }}" aria-hidden="true"></div>
 
-    <div class="relative overflow-hidden rounded-xl border border-hairline bg-canvas shadow-xl">
+    <div class="relative overflow-hidden rounded-lg border border-hairline bg-canvas shadow-pop">
       <div class="flex items-center gap-3 px-4 pt-4 pb-3">
-        <span class="flex size-7 shrink-0 items-center justify-center rounded-lg border border-hairline-strong bg-sunken text-sm font-bold text-brand" aria-hidden="true">?</span>
+        <span class="flex size-7 shrink-0 items-center justify-center rounded-md border border-hairline bg-card text-sm font-bold text-body" aria-hidden="true">?</span>
 
         @if ($title)
           <span class="min-w-0 flex-1 text-base leading-tight font-semibold tracking-tight text-ink">{{ $title }}</span>

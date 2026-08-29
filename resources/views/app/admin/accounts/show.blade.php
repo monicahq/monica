@@ -17,7 +17,7 @@
   <header class="flex flex-col gap-2">
     <x-link :href="route('admin.accounts.index')" data-turbo="true">{{ __('Back to accounts') }}</x-link>
 
-    <h1 class="font-display text-page-title text-ink">
+    <h1 class="text-page-title text-ink">
       {{ $viewModel->user()?->name ?? __('Account :id', ['id' => $viewModel->account()->id]) }}
     </h1>
 
@@ -49,17 +49,17 @@
   <x-panel :title="__('The account')">
     <dl class="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
       <div>
-        <dt class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('Created') }}</dt>
+        <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Created') }}</dt>
         <dd class="text-base text-ink">{{ $viewModel->account()->created_at->isoFormat('LL') }}</dd>
       </div>
 
       <div>
-        <dt class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('Where it runs') }}</dt>
+        <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Where it runs') }}</dt>
         <dd class="text-base text-ink">{{ $viewModel->account()->is_self_hosted ? __('Self-hosted') : __('Hosted by us') }}</dd>
       </div>
 
       <div>
-        <dt class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('Lifetime access') }}</dt>
+        <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Lifetime access') }}</dt>
         <dd class="text-base text-ink">
           @if (! $viewModel->isBillable())
             {{ __('Not applicable') }}
@@ -74,14 +74,14 @@
       </div>
 
       <div>
-        <dt class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('Billing address') }}</dt>
+        <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Billing address') }}</dt>
         <dd class="text-base text-ink">
           {{ ! $viewModel->isBillable() ? __('Not applicable') : ($viewModel->account()->billing_email ?? __('None given')) }}
         </dd>
       </div>
 
       <div>
-        <dt class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('Storage') }}</dt>
+        <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Storage') }}</dt>
         <dd class="text-base text-ink">
           @if ($viewModel->hasStorageLimit())
             {{ __(':used of :limit', ['used' => $viewModel->storageUsed(), 'limit' => $viewModel->storageLimit()]) }}
@@ -92,7 +92,7 @@
       </div>
 
       <div>
-        <dt class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('What it holds') }}</dt>
+        <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('What it holds') }}</dt>
         <dd class="text-base text-ink">
           {{ trans_choice(':count vault|:count vaults', $viewModel->vaultCount()) }},
           {{ trans_choice(':count contact|:count contacts', $viewModel->contactCount()) }}
@@ -111,22 +111,22 @@
     <x-panel :title="__('The person')">
       <dl class="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
         <div>
-          <dt class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('Name') }}</dt>
+          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Name') }}</dt>
           <dd class="text-base text-ink">{{ $viewModel->user()->name }}</dd>
         </div>
 
         <div>
-          <dt class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('Address') }}</dt>
+          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Address') }}</dt>
           <dd class="text-base text-ink">{{ $viewModel->user()->email }}</dd>
         </div>
 
         <div>
-          <dt class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('Address confirmed') }}</dt>
+          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Address confirmed') }}</dt>
           <dd class="text-base text-ink">{{ $viewModel->user()->hasConfirmedEmail() ? __('Yes') : __('No') }}</dd>
         </div>
 
         <div>
-          <dt class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('How they sign in') }}</dt>
+          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('How they sign in') }}</dt>
           <dd class="text-base text-ink">
             {{ $viewModel->user()->usesSingleSignOn()
               ? __('Single sign-on through :provider', ['provider' => $viewModel->user()->sso_provider])
@@ -135,17 +135,17 @@
         </div>
 
         <div>
-          <dt class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('Two factor authentication') }}</dt>
+          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Two factor authentication') }}</dt>
           <dd class="text-base text-ink">{{ $viewModel->user()->usesTwoFactorAuthentication() ? __('On') : __('Off') }}</dd>
         </div>
 
         <div>
-          <dt class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('Can sign in') }}</dt>
+          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Can sign in') }}</dt>
           <dd class="text-base text-ink">{{ $viewModel->user()->is_active ? __('Yes') : __('No, deactivated') }}</dd>
         </div>
 
         <div>
-          <dt class="text-xs font-semibold tracking-wide text-muted uppercase">{{ __('Last signed in') }}</dt>
+          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Last signed in') }}</dt>
           <dd class="text-base text-ink">
             {{ $viewModel->user()->last_login_at?->isoFormat('LL') ?? __('Never') }}
           </dd>

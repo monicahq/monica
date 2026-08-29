@@ -18,21 +18,21 @@
     'POST' => 'text-success',
     'PUT', 'PATCH' => 'text-warning',
     'DELETE' => 'text-error',
-    default => 'text-brand',
+    default => 'text-body',
   };
 
   $tint = match ($method) {
     'POST' => 'bg-success/10',
     'PUT', 'PATCH' => 'bg-warning/10',
     'DELETE' => 'bg-error/10',
-    default => 'bg-brand/10',
+    default => 'bg-hover',
   };
 @endphp
 
 <span
   {{
     $attributes->class([
-      'font-mono text-[11px] font-semibold tracking-[0.02em]',
+      'font-mono text-[11px] font-medium tracking-[0.02em]',
       $colour,
       'rounded-xs px-1.75 py-0.5 '.$tint => $tinted,
     ])

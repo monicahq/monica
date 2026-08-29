@@ -16,7 +16,7 @@
       <p class="text-sm text-muted">{{ $viewModel->introduction() }}</p>
     </div>
 
-    <div class="space-y-6 rounded-xl border border-hairline bg-canvas px-9 py-8">
+    <div class="space-y-6 rounded-lg border border-hairline bg-canvas px-9 py-8">
       <div class="max-w-160 space-y-4">
         @foreach ($viewModel->letter() as $paragraph)
           <p class="text-[15px] leading-relaxed text-pretty text-body">{{ $paragraph }}</p>
@@ -64,7 +64,7 @@
       <span class="shrink-0 text-xs text-muted-soft">{{ $viewModel->progressLabel() }}</span>
     </div>
 
-    <ul class="overflow-hidden rounded-xl border border-hairline bg-canvas">
+    <ul class="overflow-hidden rounded-lg border border-hairline bg-canvas">
       @foreach ($viewModel->steps() as $step)
         <li class="flex items-start gap-3 px-4 py-3.5 transition-colors duration-150 not-first:border-t not-first:border-hairline-soft hover:bg-hover">
           <span
@@ -87,7 +87,7 @@
           </div>
 
           @if (! $step['done'] && $step['url'])
-            <a href="{{ $step['url'] }}" data-turbo="true" class="mt-px shrink-0 text-[13px] font-semibold text-brand hover:underline">{{ $step['action'] }}</a>
+            <a href="{{ $step['url'] }}" data-turbo="true" class="mt-px shrink-0 text-sm font-medium text-ink underline underline-offset-2 decoration-hairline-strong hover:decoration-ink">{{ $step['action'] }}</a>
           @endif
         </li>
       @endforeach

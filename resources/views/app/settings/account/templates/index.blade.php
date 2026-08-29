@@ -25,7 +25,7 @@
 
   <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
     <div class="flex min-w-0 flex-col gap-2">
-      <h1 class="font-display text-page-title text-ink">{{ __('Templates') }}</h1>
+      <h1 class="text-page-title text-ink">{{ __('Templates') }}</h1>
 
       <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('A template decides what a record looks like: which sections it carries, and which fields sit in them. Records keep the version they were made with until you move them.') }}</p>
     </div>
@@ -77,7 +77,7 @@
 
     <section class="flex flex-col gap-3">
       <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-        <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Your templates') }}</h2>
+        <h2 class="shrink-0 text-section-title text-ink">{{ __('Your templates') }}</h2>
 
         <p class="text-sm text-pretty text-muted">{{ __('Yours to change, version and publish.') }}</p>
       </div>
@@ -100,7 +100,7 @@
     @if ($viewModel->suppliedTemplates() !== [])
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Supplied with Monica') }}</h2>
+          <h2 class="shrink-0 text-section-title text-ink">{{ __('Supplied with Monica') }}</h2>
 
           <p class="text-sm text-pretty text-muted">{{ __('They work out of the box. Copy one to change it.') }}</p>
         </div>

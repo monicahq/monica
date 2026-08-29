@@ -33,7 +33,7 @@
   </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
-    <h1 class="font-display text-page-title text-ink">{{ $viewModel->title() }}</h1>
+    <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
     <p class="max-w-[56ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
   </header>
@@ -58,7 +58,7 @@
       @if ($viewModel->showsTemplates())
         <section class="flex flex-col gap-3">
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-            <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('What this contact starts from') }}</h2>
+            <h2 class="shrink-0 text-section-title text-ink">{{ __('What this contact starts from') }}</h2>
 
             <p class="text-sm text-pretty text-muted">{{ __('The template decides which fields the contact page holds. It is the vault’s own unless you pick another here, and it can be changed on the contact afterwards.') }}</p>
           </div>
@@ -80,7 +80,7 @@
 
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Name') }}</h2>
+          <h2 class="shrink-0 text-section-title text-ink">{{ __('Name') }}</h2>
 
           <p class="text-sm text-pretty text-muted">{{ __('Only the first name is needed. The rest is there for the people whose name does not fit in two boxes.') }}</p>
         </div>
@@ -189,7 +189,7 @@
 
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('This contact') }}</h2>
+          <h2 class="shrink-0 text-section-title text-ink">{{ __('This contact') }}</h2>
 
           <p class="text-sm text-pretty text-muted">{{ __('Two things you can say about them now. Both are yours to change from their page later.') }}</p>
         </div>

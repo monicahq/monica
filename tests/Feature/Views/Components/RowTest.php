@@ -16,7 +16,7 @@ class RowTest extends TestCase
 
         $rendered->assertSee('<a', escape: false);
         $rendered->assertSee('href="/settings/account/templates"', escape: false);
-        $rendered->assertSee('cursor-pointer hover:bg-sand', escape: false);
+        $rendered->assertSee('cursor-pointer hover:bg-hover', escape: false);
     }
 
     #[Test]
@@ -26,7 +26,7 @@ class RowTest extends TestCase
 
         $rendered->assertSee('Notifications', escape: false);
         $rendered->assertDontSee('<a', escape: false);
-        $rendered->assertDontSee('cursor-pointer hover:bg-sand', escape: false);
+        $rendered->assertDontSee('cursor-pointer hover:bg-hover', escape: false);
     }
 
     #[Test]
@@ -34,7 +34,7 @@ class RowTest extends TestCase
     {
         $rendered = $this->blade('<x-row title="Profile" icon="profile" />');
 
-        $rendered->assertSee('<span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-sand text-muted">', escape: false);
+        $rendered->assertSee('<span class="flex size-8 shrink-0 items-center justify-center rounded-md border border-hairline bg-card text-body">', escape: false);
     }
 
     #[Test]

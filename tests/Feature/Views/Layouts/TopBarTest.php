@@ -46,13 +46,14 @@ class TopBarTest extends TestCase
     }
 
     #[Test]
-    public function the_bar_is_opaque_rather_than_the_page_seen_through_a_blur(): void
+    public function the_bar_is_the_page_seen_through_a_blur_rather_than_an_opaque_strip(): void
     {
         $user = User::factory()->create();
 
         $this->actingAs($user)
             ->blade('<x-shell>Anything</x-shell>')
-            ->assertDontSee('backdrop-blur', escape: false);
+            ->assertSee('bg-topbar/85 px-4 backdrop-blur-[8px]', escape: false)
+            ->assertDontSee('shadow-bar', escape: false);
     }
 
     #[Test]
@@ -140,12 +141,12 @@ class TopBarTest extends TestCase
 
         $this->actingAs($user)
             ->blade('<x-shell wide>Anything</x-shell>')
-            ->assertSee('px-4 pt-6 sm:px-7 sm:pt-7.5', escape: false)
-            ->assertSee('pb-6 sm:pb-7.5', escape: false);
+            ->assertSee('px-4 pt-6 sm:px-6 sm:pt-7', escape: false)
+            ->assertSee('pb-6 sm:pb-7', escape: false);
 
         $this->actingAs($user)
             ->blade('<x-shell>Anything</x-shell>')
-            ->assertSee('px-4 pt-6 sm:px-7 sm:pt-7.5', escape: false);
+            ->assertSee('px-4 pt-6 sm:px-6 sm:pt-7', escape: false);
     }
 
     #[Test]

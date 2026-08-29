@@ -147,7 +147,7 @@ class SidebarTest extends TestCase
     }
 
     #[Test]
-    public function both_columns_are_dark_chrome_rather_than_a_surface_of_the_page(): void
+    public function both_columns_are_a_tinted_panel_beside_the_page_rather_than_dark_chrome(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -158,14 +158,14 @@ class SidebarTest extends TestCase
         ] as [$template, $data]) {
             $rendered = $this->actingAs($user)->blade($template, $data);
 
-            $rendered->assertSee('border-r border-shell-hairline bg-shell', escape: false);
-            $rendered->assertSee('text-shell-body hover:bg-shell-hover hover:text-shell-ink', escape: false);
-            $rendered->assertDontSee('bg-sunken', escape: false);
+            $rendered->assertSee('border-r border-hairline bg-card', escape: false);
+            $rendered->assertSee('text-body hover:bg-hover hover:text-ink', escape: false);
+            $rendered->assertDontSee('bg-shell', escape: false);
         }
     }
 
     #[Test]
-    public function the_destination_you_are_on_is_a_light_pill_rather_than_a_bordered_card(): void
+    public function the_destination_you_are_on_is_a_raised_card_rather_than_a_filled_pill(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -173,7 +173,7 @@ class SidebarTest extends TestCase
         $this->actingAs($user)->blade(
             '<x-vault.sidebar :user="$user" :vault="$vault" current="contacts" />',
             ['user' => $user, 'vault' => $vault],
-        )->assertSee('bg-shell-active font-semibold text-shell-active-ink', escape: false);
+        )->assertSee('bg-canvas font-medium text-ink shadow-nav-active', escape: false);
     }
 
     #[Test]

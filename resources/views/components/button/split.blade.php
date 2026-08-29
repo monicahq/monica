@@ -80,7 +80,7 @@
       x-transition:leave="transition ease-out duration-[110ms]"
       x-transition:leave-end="opacity-0"
       role="menu"
-      class="z-40 w-64 max-w-[calc(100vw-2rem)] rounded-lg border border-hairline-strong bg-canvas p-1.5 shadow-pop"
+      class="z-40 w-64 max-w-[calc(100vw-2rem)] rounded-lg border border-hairline bg-canvas p-1.5 shadow-pop"
     >
       {{ $menu }}
     </div>

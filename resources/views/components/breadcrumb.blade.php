@@ -31,7 +31,7 @@
     @if ($loop->last)
       <span class="text-ink" aria-current="page">{{ $item['label'] }}</span>
     @elseif (($item['url'] ?? null) !== null)
-      <a href="{{ $item['url'] }}" data-turbo="true" class="transition-colors duration-150 hover:text-brand">{{ $item['label'] }}</a>
+      <a href="{{ $item['url'] }}" data-turbo="true" class="transition-colors duration-150 hover:text-ink">{{ $item['label'] }}</a>
     @else
       {{ $item['label'] }}
     @endif

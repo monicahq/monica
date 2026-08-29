@@ -22,14 +22,14 @@
   </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
-    <h1 class="font-display text-page-title text-ink">{{ __('Security and access') }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('Security and access') }}</h1>
 
     <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('How you sign in to your account, and what else may act as you.') }}</p>
   </header>
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Password') }}</h2>
+      <h2 class="shrink-0 text-section-title text-ink">{{ __('Password') }}</h2>
 
       <p class="text-sm text-pretty text-muted">{{ __('Choose one you use nowhere else. Long beats complicated.') }}</p>
     </div>
@@ -41,7 +41,7 @@
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Passkeys') }}</h2>
+      <h2 class="shrink-0 text-section-title text-ink">{{ __('Passkeys') }}</h2>
 
       <p class="text-sm text-pretty text-muted">{{ __('A passkey lives on your device and is unlocked by your fingerprint, your face or your device PIN. Nothing is typed, so nothing can be phished.') }}</p>
     </div>
@@ -53,7 +53,7 @@
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Two factor authentication') }}</h2>
+      <h2 class="shrink-0 text-section-title text-ink">{{ __('Two factor authentication') }}</h2>
 
       <p class="text-sm text-pretty text-muted">{{ __('A password can be guessed, reused or stolen. A code that changes every thirty seconds, on a phone in your pocket, cannot be any of those from a distance.') }}</p>
     </div>
@@ -69,7 +69,7 @@
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('API keys') }}</h2>
+      <h2 class="shrink-0 text-section-title text-ink">{{ __('API keys') }}</h2>
 
       <p class="text-sm text-pretty text-muted">{{ __('A key is a password for machines. It lets a script or another system act as you, with exactly the access you have.') }}</p>
     </div>

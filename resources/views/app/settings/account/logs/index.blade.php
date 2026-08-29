@@ -24,14 +24,14 @@
   </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
-    <h1 class="font-display text-page-title text-ink">{{ __('Logs') }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('Logs') }}</h1>
 
     <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('What has been done in this account, and every email it has sent.') }}</p>
   </header>
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Activity') }}</h2>
+      <h2 class="shrink-0 text-section-title text-ink">{{ __('Activity') }}</h2>
 
       <p class="text-sm text-pretty text-muted">{{ __('Every action that touched this account, newest first, with where it came from.') }}</p>
     </div>
@@ -63,7 +63,7 @@
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Emails sent') }}</h2>
+      <h2 class="shrink-0 text-section-title text-ink">{{ __('Emails sent') }}</h2>
 
       <p class="text-sm text-pretty text-muted">{{ __('If one you expected never arrived, look here first: an entry still on its way means the mail service has not confirmed it yet, and no entry at all means it was never sent.') }}</p>
     </div>

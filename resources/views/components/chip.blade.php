@@ -36,13 +36,13 @@
   @endif
   {{
     $attributes->class([
-      'inline-flex h-9 cursor-pointer items-center gap-1.75 rounded-md border border-hairline-strong bg-canvas px-3.5',
-      'font-sans text-sm font-semibold whitespace-nowrap text-ink-soft no-underline ',
-      'transition-[background-color,transform] duration-(--duration-fast) ease-out',
-      'hover:bg-sand active:translate-y-(--press-translate) ',
-      'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring',
-      'aria-[current=true]:border-ink aria-[current=true]:bg-ink aria-[current=true]:text-canvas aria-[current=true]:shadow-none',
-      'aria-[pressed=true]:border-ink aria-[pressed=true]:bg-ink aria-[pressed=true]:text-canvas aria-[pressed=true]:shadow-none',
+      'inline-flex h-8 cursor-pointer items-center gap-1.75 rounded-full border border-hairline bg-canvas px-3.25',
+      'font-sans text-sm font-medium whitespace-nowrap text-body no-underline ',
+      'transition-[background-color,border-color,box-shadow] duration-(--duration-fast) ease-out',
+      'hover:bg-hover hover:text-ink ',
+      'focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none',
+      'aria-[current=true]:border-primary aria-[current=true]:bg-primary aria-[current=true]:text-on-primary',
+      'aria-[pressed=true]:border-primary aria-[pressed=true]:bg-primary aria-[pressed=true]:text-on-primary',
     ])
   }}
 >

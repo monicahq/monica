@@ -44,10 +44,10 @@
   /* The same well <x-input> draws, with room on the right for the arrow. */
   $control = 'w-full appearance-none rounded-md border border-hairline-strong bg-input pl-3 pr-8.5 font-sans text-ink '
     .'transition-[border-color,box-shadow] duration-(--duration-fast) ease-out '
-    .'hover:border-muted '
-    .'focus:border-ink focus:ring-3 focus:ring-accent-tint focus:outline-none '
-    .'disabled:cursor-default disabled:bg-sand disabled:text-muted '
-    .'aria-[invalid=true]:border-error';
+    .'hover:border-muted-soft '
+    .'focus:border-focus focus:ring-[3px] focus:ring-focus-ring/20 focus:outline-none '
+    .'disabled:cursor-default disabled:bg-hover disabled:text-muted '
+    .'aria-[invalid=true]:border-error aria-[invalid=true]:ring-[3px] aria-[invalid=true]:ring-error/20';
 @endphp
 
 <div class="flex flex-col gap-1.5 {{ $attributes->get('class') }}">
@@ -62,7 +62,7 @@
       @if ($describedBy !== '') aria-describedby="{{ $describedBy }}" @endif
       @if ($error) aria-invalid="true" @endif
       {{ $required ? 'required' : '' }}
-      {{ $attributes->except('class')->class([$control, $size === 'small' ? 'h-9 text-[16px] sm:text-sm' : 'h-11 text-[16px] sm:text-base']) }}
+      {{ $attributes->except('class')->class([$control, $size === 'small' ? 'h-8 text-[16px] sm:text-sm' : 'h-9 text-[16px] sm:text-base']) }}
     >{{ $slot }}</select>
 
     <x-icon

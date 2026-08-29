@@ -6,6 +6,7 @@
     "2. Prove it worked": "2. Prove it worked",
     "24-hour": "24-hour",
     ":count contact|:count contacts": ":count contact|:count contacts",
+    ":count entry on this page|:count entries on this page": ":count entry on this page|:count entries on this page",
     ":count field on this page|:count fields on this page": ":count field on this page|:count fields on this page",
     ":count field|:count fields": ":count field|:count fields",
     ":count installation|:count installations": ":count installation|:count installations",

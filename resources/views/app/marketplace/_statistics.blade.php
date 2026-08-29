@@ -21,25 +21,25 @@
 <section class="flex flex-col gap-4 lg:flex-row lg:items-stretch">
   <div class="grid flex-1 grid-cols-1 gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2">
     <div class="{{ $tile }}">
-      <span class="font-display text-page-title text-ink">{{ $statistics->listingCount() }}</span>
+      <span class="text-page-title text-ink">{{ $statistics->listingCount() }}</span>
       <span class="text-sm font-semibold text-ink">{{ __('listings published') }}</span>
       <span class="text-xs text-muted">{{ $statistics->listingBreakdown() }}</span>
     </div>
 
     <div class="{{ $tile }}">
-      <span class="font-display text-page-title text-ink">{{ $statistics->installationCount() }}</span>
+      <span class="text-page-title text-ink">{{ $statistics->installationCount() }}</span>
       <span class="text-sm font-semibold text-ink">{{ __('installations') }}</span>
       <span class="text-xs text-muted">{{ $statistics->recentInstallationLabel() }}</span>
     </div>
 
     <div class="{{ $tile }}">
-      <span class="font-display text-page-title text-ink">{{ $statistics->publisherCount() }}</span>
+      <span class="text-page-title text-ink">{{ $statistics->publisherCount() }}</span>
       <span class="text-sm font-semibold text-ink">{{ __('people publishing') }}</span>
       <span class="text-xs text-muted">{{ $statistics->recentPublisherLabel() }}</span>
     </div>
 
     <div class="{{ $tile }}">
-      <span class="font-display text-page-title text-ink">{{ $statistics->languageCount() }}</span>
+      <span class="text-page-title text-ink">{{ $statistics->languageCount() }}</span>
       <span class="text-sm font-semibold text-ink">{{ __('languages') }}</span>
       <span class="text-xs text-muted">{{ $statistics->languageSummary() }}</span>
     </div>
@@ -56,8 +56,8 @@
         <span
           @class([
             'rounded-t-sm',
-            'bg-terracotta' => $month['isCurrent'],
-            'bg-sand-deep' => ! $month['isCurrent'],
+            'bg-ink' => $month['isCurrent'],
+            'bg-hover' => ! $month['isCurrent'],
           ])
           style="height: {{ $month['height'] }}%;"
         ></span>

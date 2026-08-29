@@ -23,8 +23,8 @@
   <body class="bg-page font-sans text-body antialiased">
     <div x-data="{ lang: 'curl', query: '' }">
       <header class="sticky top-0 z-5 border-b border-hairline bg-canvas">
-        <div class="mx-auto flex h-13 max-w-[97.5rem] items-center gap-3.5 px-4 sm:px-7">
-          <a href="{{ route('home.index') }}" class="flex shrink-0 items-center gap-2.5 text-ink rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring">
+        <div class="mx-auto flex h-14 max-w-[97.5rem] items-center gap-3.5 px-4 sm:px-7">
+          <a href="{{ route('home.index') }}" class="flex shrink-0 items-center gap-2.5 text-ink rounded-md focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none">
             <x-logo :height="22" />
             <span class="text-[16px] font-semibold tracking-[-0.02em]">{{ config('app.name') }}</span>
           </a>
@@ -34,7 +34,7 @@
 
             <a
               href="{{ route('auth.login.new') }}"
-              class="rounded-md px-3 py-1.75 text-[14px] text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
+              class="rounded-md px-3 py-1.75 text-[14px] text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
             >{{ __('Sign in') }}</a>
           </div>
         </div>
@@ -45,7 +45,7 @@
       <div class="mx-auto flex max-w-[97.5rem] items-start">
         <x-api-docs.sidebar :navigation="$navigation" :current="$section->id" />
 
-        <main id="main-content" tabindex="-1" class="min-h-[calc(100vh-6.75rem)] min-w-0 flex-1 bg-canvas px-4 py-8 focus:outline-none sm:px-7 sm:pb-24">
+        <main id="main-content" tabindex="-1" class="min-h-[calc(100vh-7rem)] min-w-0 flex-1 bg-canvas px-4 py-8 focus:outline-none sm:px-7 sm:pb-24">
           <x-api-docs.endpoint :section="$section" />
         </main>
       </div>

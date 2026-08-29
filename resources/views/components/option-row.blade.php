@@ -12,10 +12,9 @@
   for one of a list, square for as many as apply. That is the whole reason `type`
   is a prop and not an implementation detail.
 
-  The mark is filled in ink rather than in the primary colour the plain
-  <x-checkbox> uses. It is a deliberate exception: a page of these is a page of
-  marks, and six terracotta ones would make the accent the loudest thing on a
-  screen that spends it on one tab underline.
+  The mark is filled in ink, the same as the plain <x-checkbox>. There is one
+  near black in this system and every mark in it is drawn in that, so a page of
+  these reads as a page of marks rather than as a page of colours.
 
   The real input is hidden behind the drawn mark, exactly as <x-checkbox> does,
   so there is no javascript involved and the keyboard still works. A row of
@@ -42,8 +41,8 @@
 
 @php
   $shell = $chip
-      ? 'inline-flex h-9 items-center gap-2 rounded-md border px-3 py-0'
-      : 'flex min-h-10.5 w-full items-center gap-2.75 rounded-md border px-3 py-2.5 text-left';
+      ? 'inline-flex h-8 items-center gap-2 rounded-md border px-3 py-0'
+      : 'flex min-h-9.5 w-full items-center gap-2.75 rounded-md border px-3 py-2.5 text-left';
 @endphp
 
 <label
@@ -52,8 +51,8 @@
     $shell,
     'cursor-pointer border-hairline bg-canvas text-base text-ink',
     'transition-[background-color,border-color] duration-(--duration-fast) ease-out',
-    'hover:border-hairline-strong has-[:checked]:border-hairline-strong has-[:checked]:bg-sand-deep',
-    'has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-focus-ring',
+    'hover:bg-hover has-[:checked]:border-hairline-strong has-[:checked]:bg-hover',
+    'has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-focus-ring/45',
     'items-start' => $hint !== null,
   ])
 >

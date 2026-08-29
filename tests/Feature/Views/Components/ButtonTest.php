@@ -14,24 +14,25 @@ class ButtonTest extends TestCase
     {
         $this->blade('<x-button>Save</x-button>')->assertSee('bg-action-primary', escape: false);
         $this->blade('<x-button.secondary>Cancel</x-button.secondary>')->assertSee('bg-canvas', escape: false);
-        $this->blade('<x-button.bar>Your vaults</x-button.bar>')->assertSee('bg-sand text-ink hover:border-ink', escape: false);
-        $this->blade('<x-button.ghost>Remove</x-button.ghost>')->assertSee('hover:bg-sand hover:text-ink', escape: false);
+        $this->blade('<x-button.bar>Your vaults</x-button.bar>')->assertSee('border-hairline bg-canvas text-ink', escape: false);
+        $this->blade('<x-button.ghost>Remove</x-button.ghost>')->assertSee('hover:bg-hover hover:text-ink', escape: false);
         $this->blade('<x-button.danger>Delete it for good</x-button.danger>')->assertSee('bg-error', escape: false);
     }
 
     #[Test]
-    public function the_bar_variant_is_not_the_white_of_the_bar_it_sits_on(): void
+    public function the_bar_variant_is_drawn_the_same_way_as_the_secondary_one(): void
     {
-        $this->blade('<x-button.bar>Your vaults</x-button.bar>')
-            ->assertSee('bg-sand', escape: false)
-            ->assertDontSee('bg-canvas', escape: false);
+        $bar = (string) $this->blade('<x-button.bar>Your vaults</x-button.bar>');
+        $secondary = (string) $this->blade('<x-button.secondary>Your vaults</x-button.secondary>');
+
+        $this->assertSame($secondary, $bar);
     }
 
     #[Test]
     public function it_is_the_default_height_unless_it_is_asked_to_be_small(): void
     {
-        $this->blade('<x-button>Save</x-button>')->assertSee('h-10 px-4.5', escape: false);
-        $this->blade('<x-button size="small">Save</x-button>')->assertSee('h-8.5 px-3.25', escape: false);
+        $this->blade('<x-button>Save</x-button>')->assertSee('h-9 px-3.75', escape: false);
+        $this->blade('<x-button size="small">Save</x-button>')->assertSee('h-8 px-3', escape: false);
     }
 
     #[Test]
@@ -49,6 +50,6 @@ class ButtonTest extends TestCase
     public function a_class_written_on_it_still_wins(): void
     {
         $this->blade('<x-button class="ml-auto">Save</x-button>')
-            ->assertSee('h-10 px-4.5 text-base ml-auto', escape: false);
+            ->assertSee('h-9 px-3.75 text-base ml-auto', escape: false);
     }
 }

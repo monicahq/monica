@@ -89,7 +89,7 @@
         'lastOneOnAPasswordlessAccount' => $viewModel->usesPasswordlessSignIn() && count($passkeys->passkeys()) === 1,
       ])
     @empty
-      <x-empty-state :title="__('No passkeys yet')" icon-class="bg-emerald-tint text-emerald">
+      <x-empty-state :title="__('No passkeys yet')" icon-class="bg-success-tint text-success">
         <x-slot:icon>
           <x-icon name="key" :size="30" :stroke-width="1.4" />
         </x-slot:icon>

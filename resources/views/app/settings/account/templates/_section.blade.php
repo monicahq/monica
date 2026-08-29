@@ -21,7 +21,7 @@
   <div
     x-cloak
     x-show="hoveringId === {{ $section['id'] }} && draggingId !== {{ $section['id'] }}"
-    class="absolute inset-x-0 -top-2 z-10 h-0.5 bg-brand"
+    class="absolute inset-x-0 -top-2 z-10 h-0.5 bg-primary"
     aria-hidden="true"
   ></div>
 
@@ -35,9 +35,9 @@
       :class="draggingId === {{ $section['id'] }} && 'opacity-40'"
     @endif
     x-data="{ renaming: false }"
-    class="overflow-hidden rounded-lg border border-hairline bg-canvas "
+    class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-panel "
   >
-    <header class="flex min-h-13 items-center gap-2.5 border-b border-hairline px-4.5 py-3">
+    <header class="flex min-h-12 items-center gap-2.5 border-b border-hairline px-4 py-3.5">
       <div x-show="! renaming" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2.5 gap-y-1.5">
         <h2 class="truncate text-card-title text-ink">{{ $section['name'] }}</h2>
 
@@ -45,7 +45,7 @@
           <x-badge>{{ __('Your section') }}</x-badge>
         @endif
 
-        <code class="ml-auto font-mono text-[12.5px] text-muted">{{ $section['fieldLabel'] }}</code>
+        <code class="ml-auto font-mono text-[12px] text-muted-soft">{{ $section['fieldLabel'] }}</code>
 
         {{--
           A section leaves on its own, which is the reason a section is its own
@@ -93,7 +93,7 @@
                   name="page"
                   aria-label="{{ __('Move this section to another page') }}"
                   @change="$el.form.requestSubmit()"
-                  class="inline-flex h-8.5 cursor-pointer appearance-none items-center rounded-md px-2 font-sans text-[13.5px] font-semibold text-ink-soft transition-[background-color,color] duration-(--duration-fast) ease-out hover:bg-sand hover:text-ink"
+                  class="inline-flex h-8.5 cursor-pointer appearance-none items-center rounded-md px-2 font-sans text-[13.5px] font-semibold text-ink-soft transition-[background-color,color] duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink"
                 >
                   <option value="" selected>{{ __('Move to') }}</option>
 

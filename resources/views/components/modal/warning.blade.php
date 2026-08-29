@@ -63,7 +63,7 @@
       role="dialog"
       aria-modal="true"
       @if ($title) aria-label="{{ $title }}" @endif
-      class="relative w-full max-w-md overflow-hidden rounded-lg border border-hairline-strong bg-canvas shadow-pop"
+      class="relative w-full max-w-md overflow-hidden rounded-lg border border-hairline bg-canvas shadow-pop"
     >
       <div class="flex gap-3.5 p-5">
         <span class="flex size-9 shrink-0 items-center justify-center rounded-sm bg-error-tint text-error" aria-hidden="true">

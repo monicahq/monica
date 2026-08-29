@@ -83,7 +83,7 @@
     x-transition:leave="transition ease-out duration-[110ms]"
     x-transition:leave-end="opacity-0"
     role="menu"
-    class="z-40 w-64 max-w-[calc(100vw-2rem)] rounded-lg border border-hairline-strong bg-canvas p-1.5 shadow-pop"
+    class="z-40 w-64 max-w-[calc(100vw-2rem)] rounded-lg border border-hairline bg-canvas p-1.5 shadow-pop"
   >
     @isset($title)
       <p class="px-2.5 pt-2 pb-1.5 uppercase text-xs tracking-caption text-muted">{{ $title }}</p>
@@ -96,7 +96,7 @@
         name="{{ $name }}"
         value="{{ $option['value'] }}"
         @if ($option['selected']) aria-checked="true" @endif
-        class="flex w-full cursor-pointer items-center gap-2.5 rounded-sm px-2.5 py-2.25 text-left text-base text-ink transition-[background-color] duration-(--duration-fast) ease-out hover:bg-sand focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus-ring aria-[checked=true]:bg-sand aria-[checked=true]:font-semibold"
+        class="flex w-full cursor-pointer items-center gap-2.5 rounded-sm px-2.5 py-2.25 text-left text-base text-ink transition-[background-color] duration-(--duration-fast) ease-out hover:bg-hover focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none aria-[checked=true]:bg-hover aria-[checked=true]:font-medium"
       >
         <span class="min-w-0 flex-1 truncate">{{ $option['label'] }}</span>
 

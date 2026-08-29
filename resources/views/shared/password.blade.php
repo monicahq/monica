@@ -20,7 +20,7 @@
     <div class="w-full max-w-md rounded-lg border border-hairline bg-canvas p-6 ">
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
-          <span class="flex size-9 items-center justify-center rounded-sm bg-accent-tint text-primary" aria-hidden="true">
+          <span class="flex size-9 items-center justify-center rounded-md border border-hairline bg-card tint text-primary" aria-hidden="true">
             <x-icon name="lock" :size="19" :stroke-width="1.6" />
           </span>
 

@@ -33,14 +33,14 @@
   </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
-    <h1 class="font-display text-page-title text-ink">{{ __('Preferences') }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('Preferences') }}</h1>
 
     <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('These are yours alone, on every device you sign in from. Nothing here changes for anybody else in your account.') }}</p>
   </header>
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Language and formats') }}</h2>
+      <h2 class="shrink-0 text-section-title text-ink">{{ __('Language and formats') }}</h2>
 
       <p class="text-sm text-pretty text-muted">{{ __('Each one saves as soon as you pick it. There is nothing to press.') }}</p>
     </div>

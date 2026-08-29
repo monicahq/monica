@@ -27,7 +27,7 @@
   </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
-    <h1 class="font-display text-page-title text-ink">{{ $viewModel->title() }}</h1>
+    <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
     <p class="max-w-[56ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
   </header>
@@ -48,7 +48,7 @@
     <x-form id="template-form" :method="$viewModel->method()" :action="$viewModel->action()" class="flex flex-col gap-8">
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Name') }}</h2>
+          <h2 class="shrink-0 text-section-title text-ink">{{ __('Name') }}</h2>
 
           <p class="text-sm text-pretty text-muted">{{ __('The name is what the picker shows when somebody makes a record. The slug is what the URL and the API use.') }}</p>
         </div>
@@ -111,7 +111,7 @@
       @unless ($viewModel->isEdit())
         <section class="flex flex-col gap-3">
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-            <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('What it describes') }}</h2>
+            <h2 class="shrink-0 text-section-title text-ink">{{ __('What it describes') }}</h2>
 
             <p class="text-sm text-pretty text-muted">{{ __('Settled now and not changeable later, since every record made with it would be left rendering something else.') }}</p>
           </div>
@@ -120,7 +120,7 @@
             <fieldset>
               <legend class="sr-only">{{ __('What it describes') }}</legend>
 
-              <label class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0 cursor-pointer hover:bg-sand focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus-ring">
+              <label class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0 cursor-pointer hover:bg-hover focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none">
                 <input type="radio" name="applies_to" value="contact" x-model="appliesTo" class="mt-1" />
 
                 <span class="min-w-0 flex-1">
@@ -130,7 +130,7 @@
               </label>
 
               @if ($viewModel->hasEntityTypes())
-                <label class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0 cursor-pointer hover:bg-sand focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus-ring">
+                <label class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0 cursor-pointer hover:bg-hover focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none">
                   <input type="radio" name="applies_to" value="entity" x-model="appliesTo" class="mt-1" />
 
                   <span class="min-w-0 flex-1">

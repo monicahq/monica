@@ -6,8 +6,8 @@
 --}}
 @props(['section'])
 
-<div class="mt-9 rounded-lg border border-hairline bg-sunken p-4">
-  <h3 class="mb-1.5 text-[14px] font-semibold text-ink">Rate limit</h3>
+<div class="mt-9 rounded-lg border border-hairline bg-card p-4">
+  <h3 class="mb-1.5 text-card-title text-ink">Rate limit</h3>
 
   <p class="text-[14px] leading-relaxed text-body">
     {{ $section->rateLimit }}

@@ -54,7 +54,7 @@
          looking at a record wants the documents, not how many there are. --}}
     <div class="flex flex-col gap-2.5">
       @foreach ($rows as $row)
-        <div class="flex flex-col gap-1.5 rounded-md border border-hairline bg-sand px-3.5 py-2.5">
+        <div class="flex flex-col gap-1.5 rounded-md border border-hairline bg-card px-3.5 py-2.5">
           @foreach ($row['fields'] as $answer)
             <div class="flex flex-col gap-0.5">
               <span class="text-xs text-muted">{{ $answer['label'] }}</span>
@@ -88,7 +88,7 @@
   @case($type === FieldTypeEnum::Multiselect && $chosen->isNotEmpty())
     <div class="flex flex-wrap gap-1.5">
       @foreach ($chosen as $item)
-        <span class="inline-flex h-6 items-center rounded-sm border border-hairline bg-sand px-2.25 text-xs text-ink-soft">
+        <span class="inline-flex h-6 items-center rounded-full border border-hairline bg-card px-2.25 text-xs text-ink-soft">
           {{ $item->label }}
         </span>
       @endforeach

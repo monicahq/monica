@@ -18,14 +18,14 @@
 --}}
 <x-marketplace-layout :title="__('Marketplace')">
   <header class="flex flex-col gap-2.5">
-    <h1 class="font-display text-page-title text-ink">{{ __('Marketplace') }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('Marketplace') }}</h1>
 
     <p class="max-w-[62ch] text-base text-pretty text-body">
       {{ __('Discover templates and sections built by the community. Everything you install becomes your own private, editable copy.') }}
     </p>
 
-    <p class="mt-1 flex w-fit items-center gap-2.5 rounded-md border border-hairline border-l-2 border-l-terracotta bg-canvas px-3.5 py-2.5 text-sm font-semibold text-ink">
-      <x-icon name="lock" :size="17" :stroke-width="1.5" class="shrink-0 text-terracotta" />
+    <p class="mt-1 flex w-fit items-center gap-2.5 rounded-md border border-hairline border-l-2 border-l-ink bg-canvas px-3.5 py-2.5 text-sm font-semibold text-ink">
+      <x-icon name="lock" :size="17" :stroke-width="1.5" class="shrink-0 text-body" />
 
       {{ __('Install a private copy. Change it however you want. Updates are always optional.') }}
     </p>
@@ -72,7 +72,7 @@
 
     <section class="flex flex-col gap-3">
       <div class="flex items-baseline gap-2.5">
-        <h2 class="font-display text-section-title text-ink">{{ __('Categories') }}</h2>
+        <h2 class="text-section-title text-ink">{{ __('Categories') }}</h2>
 
         <span class="text-xs text-muted">{{ __('Ours to maintain, and nothing is filed twice') }}</span>
       </div>
@@ -86,13 +86,13 @@
             @class([
               'flex items-start gap-3 rounded-lg border p-3.5 no-underline ',
               'transition-[background-color,border-color,transform] duration-(--duration-fast) ease-out',
-              'hover:bg-sand active:translate-y-(--press-translate) ',
-              'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring',
-              'border-ink bg-sand' => $category['isCurrent'],
+              'hover:bg-hover ',
+              'focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none',
+              'border-ink bg-card' => $category['isCurrent'],
               'border-hairline bg-canvas' => ! $category['isCurrent'],
             ])
           >
-            <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-sand text-muted">
+            <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-card text-muted">
               <x-icon :name="$category['icon']" :size="18" :stroke-width="1.5" />
             </span>
 
@@ -109,7 +109,7 @@
     <section class="flex flex-col gap-3.5">
       <div class="flex flex-wrap items-end gap-x-4 gap-y-3">
         <div>
-          <h2 class="font-display text-section-title text-ink">{{ $viewModel->resultsTitle() }}</h2>
+          <h2 class="text-section-title text-ink">{{ $viewModel->resultsTitle() }}</h2>
 
           <p class="mt-0.5 text-xs text-muted">{{ $viewModel->resultsDescription() }}</p>
         </div>
@@ -186,7 +186,7 @@
   </div>
 
   <section class="flex flex-col items-start gap-3.5 rounded-lg border border-hairline bg-canvas px-5 py-4.5 sm:flex-row sm:items-start">
-    <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-sand text-muted" aria-hidden="true">
+    <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-card text-muted" aria-hidden="true">
       <x-icon name="plus" :size="18" :stroke-width="1.6" />
     </span>
 

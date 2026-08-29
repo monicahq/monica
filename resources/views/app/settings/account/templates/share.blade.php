@@ -29,7 +29,7 @@
   </x-slot:sidebar>
 
   <header class="flex max-w-[66ch] flex-col gap-2">
-    <h1 class="font-display text-page-title text-ink">{{ __('Share :name', ['name' => $template->name]) }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('Share :name', ['name' => $template->name]) }}</h1>
 
     <p class="text-base text-pretty text-body">
       {{ __('Two ways out, for two different reasons. A file is for you, and for the people you hand it to. A listing is for everybody else. Either way only the structure leaves this vault, and the :records using this template stay here.', ['records' => $viewModel->recordCountLabel()]) }}
@@ -59,7 +59,7 @@
           @endforeach
         </ul>
 
-        <div class="flex items-center gap-2.5 rounded-md border border-hairline bg-sand px-3.5 py-3">
+        <div class="flex items-center gap-2.5 rounded-md border border-hairline bg-card px-3.5 py-3">
           <x-icon name="file" :size="16" :stroke-width="1.6" class="text-muted" />
 
           <code class="min-w-0 truncate font-mono text-[12.5px] text-ink">{{ $viewModel->fileName() }}</code>

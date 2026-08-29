@@ -29,46 +29,39 @@
   $selected = $viewModel->selectedPage();
   $newPageErrors = $errors->getBag('newPage');
 
-  /*
-   * A rule runs the whole width and the tab you are on thickens its own piece of
-   * it. No enclosing pill, no card-style active state, nothing that looks like a
-   * button.
-   */
-  $tab = '-mb-px flex flex-none cursor-pointer items-center gap-2 border-b-2 border-transparent px-2.5 pt-2 pb-2.5 '
-    .'text-sm text-muted no-underline transition-[color,border-color] duration-(--duration-fast) ease-out '
-    .'hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring '
-    .'aria-[selected=true]:border-b-ink aria-[selected=true]:font-semibold aria-[selected=true]:text-ink';
 @endphp
 @if ($pages !== [])
   <div x-data="sortableRows" data-sortable>
-    <div role="tablist" class="flex flex-wrap items-end gap-1 border-b border-hairline">
+    <x-tabs>
       @foreach ($pages as $page)
-        <a
-          data-row-id="{{ $page['id'] }}"
-          href="{{ $page['url'] }}"
-          x-target="builder"
-          role="tab"
-          aria-selected="{{ $page['isSelected'] ? 'true' : 'false' }}"
-          @if ($isEditable)
-            draggable="true"
-            @dragstart="start($event, {{ $page['id'] }})"
-            @dragover.prevent="over($event, {{ $page['id'] }})"
-            @drop.prevent="drop($event, {{ $page['id'] }})"
-            @dragend="stop()"
-            :class="draggingId === {{ $page['id'] }} && 'opacity-40'"
-          @endif
-          class="{{ $tab }}"
-        >
-          {{ $page['label'] }}
-
-          <span
-            @class([
-              'flex h-5 min-w-5 items-center justify-center rounded-full border px-1.5 text-[11.5px] font-medium',
-              $page['isSelected'] ? 'border-hairline-strong text-body' : 'border-hairline text-muted',
+        {{--
+          A component tag is parsed before the directives inside it are, so what a
+          plain tag can wrap in a condition has to be a bag here. Blade only spreads
+          a bag whose variable name starts with the word attributes, which is what
+          the name below is for.
+        --}}
+        @php
+          $attributesForDragging = $isEditable
+            ? new \Illuminate\View\ComponentAttributeBag([
+              'draggable' => 'true',
+              '@dragstart' => "start(\$event, {$page['id']})",
+              '@dragover.prevent' => "over(\$event, {$page['id']})",
+              '@drop.prevent' => "drop(\$event, {$page['id']})",
+              '@dragend' => 'stop()',
+              ':class' => "draggingId === {$page['id']} && 'opacity-40'",
             ])
-            title="{{ trans_choice(':count field on this page|:count fields on this page', $page['fieldCount']) }}"
-          >{{ $page['fieldCount'] }}</span>
-        </a>
+            : new \Illuminate\View\ComponentAttributeBag;
+        @endphp
+
+        <x-tabs.item
+          :href="$page['url']"
+          :selected="$page['isSelected']"
+          :count="$page['fieldCount']"
+          :count-label="trans_choice(':count field on this page|:count fields on this page', $page['fieldCount'])"
+          data-row-id="{{ $page['id'] }}"
+          x-target="builder"
+          {{ $attributesForDragging }}
+        >{{ $page['label'] }}</x-tabs.item>
       @endforeach
 
       @if ($isEditable)
@@ -81,10 +74,7 @@
           x-target="builder"
         >
           <x-slot:trigger>
-            <button type="button" @click="open = true" class="{{ $tab }}">
-              <x-icon name="plus" :size="14" :stroke-width="1.6" />
-              {{ __('Add a page') }}
-            </button>
+            <x-tabs.item action icon="plus" @click="open = true">{{ __('Add a page') }}</x-tabs.item>
           </x-slot:trigger>
 
           <x-input
@@ -100,7 +90,7 @@
           />
         </x-modal.form>
       @endif
-    </div>
+    </x-tabs>
 
     @if ($isEditable && $selected !== null)
       <div x-data="{ renaming: false, reordering: false }" class="flex flex-col gap-3 pt-2.5">

@@ -4,8 +4,9 @@
   It is a layout of its own rather than the account shell with a flag, because an
   administrator has to know which of the two products they are in at a glance.
   Somebody deactivating a user believing they are editing their own profile is the
-  failure this exists to prevent. So the bar is the accent colour rather than the
-  canvas, it says what the area is in words, and it carries a way out to the
+  failure this exists to prevent. There is no accent colour left to spend on it, so
+  the bar is inverted instead: it is the primary colour rather than the page, in
+  both themes. It says what the area is in words, and it carries a way out to the
   ordinary application on the right.
 
   There is no dock and no link into a vault. The dock points into one vault, and
@@ -28,27 +29,31 @@
   </head>
 
   <body class="bg-page font-sans text-body antialiased">
-    <header class="sticky top-0 z-5 border-b border-hairline-strong bg-accent-tint shadow-bar">
-      <div class="mx-auto flex h-13 max-w-280 items-center gap-3 px-4 sm:px-7">
+    <header class="sticky top-0 z-5 border-b border-hairline bg-primary text-on-primary">
+      <div class="mx-auto flex h-14 max-w-280 items-center gap-3 px-4 sm:px-6">
         <x-logo :size="24" />
 
-        <span class="truncate text-sm font-semibold tracking-tight text-ink">{{ __('Admin space') }}</span>
+        <span class="truncate text-card-title text-on-primary">{{ __('Admin space') }}</span>
 
-        <span class="hidden truncate text-xs text-muted sm:inline">{{ __('You are looking at the instance, not at your own account.') }}</span>
+        <span class="hidden truncate text-xs text-on-primary/60 sm:inline">{{ __('You are looking at the instance, not at your own account.') }}</span>
 
         <div class="ml-auto flex items-center gap-2.5">
-          <x-button.bar :href="route('home.index')" data-turbo="true" size="small">
+          <a
+            href="{{ route('home.index') }}"
+            data-turbo="true"
+            class="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-md border border-on-primary/20 px-3 text-sm font-medium whitespace-nowrap text-on-primary no-underline transition-colors duration-(--duration-fast) ease-out hover:bg-on-primary/10 focus-visible:ring-[3px] focus-visible:ring-on-primary/40 focus-visible:outline-none"
+          >
             <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
             {{ __('Leave the admin space') }}
-          </x-button.bar>
+          </a>
 
-          <x-theme-toggle />
+          <x-theme-toggle tone="inverted" />
 
           <x-avatar :user="auth()->user()" :size="26" />
         </div>
       </div>
 
-      <nav class="mx-auto flex max-w-280 items-center gap-1 overflow-x-auto px-4 pb-2 sm:px-7">
+      <nav class="mx-auto flex max-w-280 items-center gap-1 overflow-x-auto px-4 pb-2 sm:px-6">
         @foreach ([
           ['label' => __('Overview'), 'route' => 'admin.overview.index'],
           ['label' => __('Moderation'), 'route' => 'admin.moderation.index'],
@@ -60,9 +65,9 @@
             href="{{ route($item['route']) }}"
             data-turbo="true"
             @class([
-              'shrink-0 rounded-md px-2.5 py-1 text-sm transition-colors',
-              'bg-canvas font-semibold text-ink shadow-bar' => request()->routeIs($item['route']),
-              'text-body hover:bg-hover hover:text-ink' => ! request()->routeIs($item['route']),
+              'shrink-0 rounded-md px-2.5 py-1.25 text-sm transition-colors duration-(--duration-fast)',
+              'bg-canvas font-medium text-ink' => request()->routeIs($item['route']),
+              'text-on-primary/70 hover:bg-on-primary/10 hover:text-on-primary' => ! request()->routeIs($item['route']),
             ])
           >
             {{ $item['label'] }}
@@ -71,7 +76,7 @@
       </nav>
     </header>
 
-    <main class="mx-auto flex w-full max-w-280 flex-col gap-8 px-4 pt-9 pb-14 sm:px-7">
+    <main class="mx-auto flex w-full max-w-280 flex-col gap-8 px-4 pt-8 pb-14 sm:px-6">
       {{ $slot }}
     </main>
 

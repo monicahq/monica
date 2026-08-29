@@ -17,7 +17,7 @@
 @php
   $field = $viewModel->selectedField();
 @endphp
-<aside class="lg:sticky lg:top-19">
+<aside class="lg:sticky lg:top-20">
   @if ($field === null)
     <x-panel :title="__('Field')" icon="file">
       <p class="text-sm text-pretty text-muted">{{ __('Pick a field on the left to edit it. What you change applies to this draft only.') }}</p>
