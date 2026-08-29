@@ -7,6 +7,10 @@ description: Conventions for writing pull requests, including Conventional Commi
 
 - The pull request title MUST follow the Conventional Commits naming convention, e.g. `feat: add new locale fr_FR`.
 - You SHOULD avoid uppercase in the title, except for proper nouns and acronyms.
-- The pull request description MUST be empty, except the next instruction.
-- You MUST indicate whether the PR closes an issue, and reference the issue number.
+- You MUST indicate the issue the PR closes, if that's the case, and reference the issue number. Do not mention anything otherwise.
 - You MUST NOT mention Claude Code anywhere.
+- The pull request description MUST be as small as possible:
+    - use bullet points format
+    - describe the changes made in this PR, using as fewer words as possible
+    - keep it understandable by non technical people
+    - when a new concept is introduced in the codebase, add a few details to let readers understand what it's about
