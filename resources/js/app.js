@@ -7,6 +7,8 @@ import focus from '@alpinejs/focus';
 import anchor from '@alpinejs/anchor';
 import ajax from '@imacrayon/alpine-ajax';
 
+import passkey from './passkey';
+
 window.Turbo = Turbo;
 
 /*
@@ -15,6 +17,12 @@ window.Turbo = Turbo;
  * Turbo one is therefore a deliberate act, rather than something that happens to it.
  */
 Turbo.session.drive = false;
+
+/*
+ * The passkey component wraps @simplewebauthn/browser. It is registered as data
+ * rather than a plugin because it is one screen's behaviour, not a global.
+ */
+Alpine.data('passkey', passkey);
 
 window.Alpine = Alpine;
 

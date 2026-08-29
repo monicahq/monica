@@ -28,6 +28,10 @@ use Illuminate\Support\Facades\DB;
  * the value lists,
  * which are stored as translation keys and follow the interface language.
  *
+ * The password is optional. An account created with a passkey has none from the
+ * outset, which is the same state an account reaches by giving its password up
+ * later, and CreateUser already leaves password_changed_at null to match.
+ *
  * The template a contact is written down with is asked for rather than written
  * here, since nobody is looking at it while the sign-up page is still open. It
  * is asked for once the rows above are committed, so that a worker reaching for
@@ -43,7 +47,7 @@ class CreateAccount
         private readonly string $firstName,
         private readonly string $lastName,
         private readonly string $email,
-        private readonly string $password,
+        private readonly ?string $password = null,
         private readonly ?string $timezone = null,
     ) {}
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\App\Auth\MagicLinkController;
 use App\Http\Controllers\App\Auth\NewPasswordController;
 use App\Http\Controllers\App\Auth\PasswordResetLinkController;
 use App\Http\Controllers\App\Auth\RegistrationController;
+use App\Http\Controllers\App\Auth\RegistrationPasskeyController;
 use App\Http\Controllers\App\Auth\TwoFactorChallengeController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,17 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['guest', 'set.locale'])->group(function (): void {
     Route::get('register', [RegistrationController::class, 'new'])->name('auth.register.new');
     Route::post('register', [RegistrationController::class, 'create'])->name('auth.register.create');
+});
+
+// Creating an account whose only credential is a passkey. Two routes rather than
+// one because a passkey is created against an account that already exists: the
+// first makes the account, the second asks the device for the credential.
+Route::middleware(['guest', 'set.locale'])->group(function (): void {
+    Route::post('register/passkey', [RegistrationPasskeyController::class, 'create'])->name('auth.registerPasskey.create');
+});
+
+Route::middleware(['auth', 'set.locale'])->group(function (): void {
+    Route::get('register/passkey', [RegistrationPasskeyController::class, 'new'])->name('auth.registerPasskey.new');
 });
 
 // Signing in with an email address and a password.

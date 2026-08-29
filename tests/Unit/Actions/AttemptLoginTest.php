@@ -396,4 +396,59 @@ class AttemptLoginTest extends TestCase
             stateless: true,
         )->execute();
     }
+
+    #[Test]
+    public function it_refuses_an_account_that_gave_its_password_up(): void
+    {
+        Queue::fake();
+
+        User::factory()->create([
+            'email' => 'michael.scott@dundermifflin.com',
+            'password' => null,
+        ]);
+
+        try {
+            new AttemptLogin(
+                email: 'michael.scott@dundermifflin.com',
+                password: 'password',
+                ip: '10.0.0.1',
+            )->execute();
+            $this->fail('A passwordless account should not be signed in with a password.');
+        } catch (ValidationException $exception) {
+            $this->assertEquals(
+                ['email' => ['These credentials do not match our records.']],
+                $exception->errors(),
+            );
+        }
+
+        $this->assertGuest();
+    }
+
+    /**
+     * The same refusal on the path a token takes. The guard sits in the shared
+     * early return precisely so that both reach it, and an API that handed a null
+     * hash to the guard would be the worse of the two failures.
+     */
+    #[Test]
+    public function it_refuses_an_account_that_gave_its_password_up_without_a_session(): void
+    {
+        Queue::fake();
+
+        User::factory()->create([
+            'email' => 'michael.scott@dundermifflin.com',
+            'password' => null,
+        ]);
+
+        $this->expectException(ValidationException::class);
+
+        try {
+            new AttemptLogin(
+                email: 'michael.scott@dundermifflin.com',
+                password: 'password',
+                stateless: true,
+            )->execute();
+        } finally {
+            $this->assertGuest();
+        }
+    }
 }

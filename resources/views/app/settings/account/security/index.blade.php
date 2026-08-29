@@ -35,6 +35,20 @@
     </div>
 
     @include('app.settings.account.security._change-password', ['viewModel' => $viewModel])
+
+    @include('app.settings.account.security._remove-password', ['viewModel' => $viewModel])
+  </section>
+
+  <section class="flex flex-col gap-3">
+    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+      <h2 class="shrink-0 font-display text-section-title text-ink">{{ __('Passkeys') }}</h2>
+
+      <p class="text-sm text-pretty text-muted">{{ __('A passkey lives on your device and is unlocked by your fingerprint, your face or your device PIN. Nothing is typed, so nothing can be phished.') }}</p>
+    </div>
+
+    <x-panel :flush="true">
+      @include('app.settings.account.security._passkeys', ['viewModel' => $viewModel])
+    </x-panel>
   </section>
 
   <section class="flex flex-col gap-3">

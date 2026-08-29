@@ -10,6 +10,7 @@ use App\Enums\NumberFormatEnum;
 use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\User;
+use App\Models\WebauthnKey;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -195,5 +196,44 @@ class UserTest extends TestCase
     {
         $this->assertFalse(User::factory()->unverified()->create()->hasConfirmedEmail());
         $this->assertTrue(User::factory()->create()->hasConfirmedEmail());
+    }
+
+    #[Test]
+    public function it_has_passkeys(): void
+    {
+        $user = User::factory()->create();
+        WebauthnKey::factory()->count(2)->create(['user_id' => $user->id]);
+
+        $this->assertTrue($user->passkeys()->exists());
+        $this->assertCount(2, $user->passkeys);
+    }
+
+    #[Test]
+    public function it_knows_whether_it_holds_a_passkey(): void
+    {
+        $user = User::factory()->create();
+
+        $this->assertFalse($user->hasPasskeys());
+
+        WebauthnKey::factory()->create(['user_id' => $user->id]);
+
+        $this->assertTrue($user->hasPasskeys());
+    }
+
+    #[Test]
+    public function it_knows_a_passwordless_account_from_an_ordinary_one(): void
+    {
+        $this->assertFalse(User::factory()->create()->usesPasswordlessSignIn());
+        $this->assertTrue(User::factory()->create(['password' => null])->usesPasswordlessSignIn());
+    }
+
+    #[Test]
+    public function it_does_not_call_a_single_sign_on_account_passwordless(): void
+    {
+        $user = User::factory()->singleSignOn()->create();
+
+        $this->assertNull($user->password);
+        $this->assertTrue($user->usesSingleSignOn());
+        $this->assertFalse($user->usesPasswordlessSignIn());
     }
 }

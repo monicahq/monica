@@ -58,6 +58,69 @@
           </x-form>
         </x-box>
 
+        @if (! $viewModel->passkeysAreAvailable())
+          {{--
+            Why the passkey control is not here. Said in its place rather than
+            beside it: a reason somebody can act on is worth more than a button
+            that would fail.
+          --}}
+          <x-box padding="p-4" class="rounded-lg text-center text-sm text-body">
+            @if ($viewModel->passkeysUnavailableReason() === \App\Helpers\PasskeyAvailability::NOT_SECURE)
+              {{ __('Passkeys need a secure connection. Reach this instance over https and you can sign in with one.') }}
+            @else
+              {{ __('Passkeys are switched off on this instance.') }}
+            @endif
+          </x-box>
+        @endif
+
+        @if ($viewModel->passkeysAreAvailable())
+          {{--
+            Signing in with a passkey. Nothing is typed here on purpose: the
+            browser offers whatever passkey it holds for this instance, and the
+            credential that comes back is what says who is signing in.
+
+            The control is hidden when the browser cannot do passkeys, which only
+            the browser knows. When the instance cannot, the server has already
+            replaced this block with the reason.
+          --}}
+          <x-box
+            padding="p-4"
+            class="rounded-lg"
+            x-data="passkey({{ \Illuminate\Support\Js::from([
+              'optionsUrl' => route('webauthn.auth.options'),
+              'loginUrl' => route('webauthn.auth'),
+              'redirectUrl' => route('home.index'),
+              'text' => [
+                'cancelled' => __('Nothing was signed in. The prompt was dismissed.'),
+                'alreadyRegistered' => __('That passkey cannot be used here.'),
+                'failed' => __('That did not work. Try again, or sign in with your password.'),
+              ],
+            ]) }})"
+          >
+            <div x-cloak x-show="supported" class="flex flex-col gap-2.5">
+              <x-button.secondary
+                type="button"
+                class="w-full"
+                x-bind:disabled="busy"
+                @click="signIn()"
+              >{{ __('Sign in with a passkey') }}</x-button.secondary>
+
+              {{--
+                Always in the DOM, empty when there is nothing to say. A live
+                region that appears at the same moment as its text is not
+                reliably announced.
+              --}}
+              <p
+                x-text="message"
+                role="status"
+                aria-live="polite"
+                class="text-center text-sm empty:hidden"
+                x-bind:class="failed ? 'text-error' : 'text-body'"
+              ></p>
+            </div>
+          </x-box>
+        @endif
+
         {{-- The shortcut that signs the seeded account in, only ever on a machine somebody develops on --}}
         @env(config('login-link.allowed_environments'))
           <x-box padding="p-4" class="rounded-lg text-center text-sm text-body">

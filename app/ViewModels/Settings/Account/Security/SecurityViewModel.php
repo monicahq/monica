@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Settings\Account\Security;
 
+use App\Helpers\PasskeyAvailability;
 use App\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -95,6 +96,57 @@ class SecurityViewModel
         }
 
         return trans_choice('Active · :count API key|Active · :count API keys', $count);
+    }
+
+    /**
+     * The passkeys on the account, delegated to the object that knows how the
+     * list reads.
+     */
+    public function passkeys(): PasskeyListViewModel
+    {
+        return new PasskeyListViewModel(user: $this->user);
+    }
+
+    /**
+     * Whether a passkey can be used at all on this instance.
+     *
+     * The browser has the last word, since only it knows what the device can do,
+     * but the server has to answer too: the reason belongs on a screen the
+     * server rendered, and refusing to remove a password cannot rest on a
+     * disabled button.
+     */
+    public function passkeysAreAvailable(): bool
+    {
+        return PasskeyAvailability::onThisInstance();
+    }
+
+    /**
+     * Why passkeys cannot be used here, or null when they can.
+     */
+    public function passkeysUnavailableReason(): ?string
+    {
+        return PasskeyAvailability::reason();
+    }
+
+    /**
+     * Whether the account has given its password up in favour of passkeys. The
+     * password section shows a way to set one rather than a way to change one.
+     */
+    public function usesPasswordlessSignIn(): bool
+    {
+        return $this->user->usesPasswordlessSignIn();
+    }
+
+    /**
+     * Whether the password may be given up: it takes a passkey to fall back on,
+     * and an instance where a passkey can actually be used.
+     */
+    public function canRemoveThePassword(): bool
+    {
+        return ! $this->user->usesSingleSignOn()
+            && $this->user->password !== null
+            && $this->user->hasPasskeys()
+            && $this->passkeysAreAvailable();
     }
 
     public function user(): User

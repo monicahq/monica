@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\UpdateUserPassword;
+use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Jobs\SendEmail;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -63,5 +65,54 @@ class UpdateUserPasswordTest extends TestCase
             user: $user,
             password: 'bearsbeatsbattlestar',
         )->execute();
+    }
+
+    #[Test]
+    public function it_records_a_first_password_as_being_set_rather_than_changed(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['password' => null]);
+
+        new UpdateUserPassword(user: $user, password: 'thatswhatshesaid')->execute();
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserPasswordSet,
+        );
+    }
+
+    #[Test]
+    public function it_tells_the_owner_when_a_password_appears_where_there_was_none(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['password' => null]);
+
+        new UpdateUserPassword(user: $user, password: 'thatswhatshesaid')->execute();
+
+        Queue::assertPushedOn(
+            queue: 'high',
+            job: SendEmail::class,
+            callback: fn (SendEmail $job): bool => $job->emailType === EmailType::PasswordSet,
+        );
+    }
+
+    #[Test]
+    public function it_says_nothing_when_an_existing_password_is_merely_changed(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        new UpdateUserPassword(user: $user, password: 'thatswhatshesaid')->execute();
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserPasswordUpdate,
+        );
+        Queue::assertNotPushed(SendEmail::class);
     }
 }

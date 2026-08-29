@@ -3,7 +3,7 @@
   "specName": "Restore the Former Design",
   "branch": "2026-08-26-restore-former-design",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -321,6 +321,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-08-26T23:58:06.581Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-08-29T10:09:25.460Z"
     }
   ],
   "telemetryInstanceId": "bf086967-9b56-4423-87fc-cfe40340d246",

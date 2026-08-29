@@ -25,4 +25,21 @@ class UserActionEnumTest extends TestCase
         $this->assertEquals('Changed the photo of :name', UserActionEnum::UserPhotoUpdate->description());
         $this->assertEquals('Removed the photo of :name', UserActionEnum::UserPhotoDeletion->description());
     }
+
+    #[Test]
+    public function it_names_the_passkey_a_passkey_action_was_about(): void
+    {
+        $this->assertEquals('Added the passkey called :name', UserActionEnum::PasskeyAdded->description());
+        $this->assertEquals('Renamed a passkey to :name', UserActionEnum::PasskeyRenamed->description());
+        $this->assertEquals('Removed the passkey called :name', UserActionEnum::PasskeyRemoved->description());
+        $this->assertEquals('Signed in with the passkey called :name', UserActionEnum::PasskeyLogin->description());
+    }
+
+    #[Test]
+    public function it_tells_removing_a_password_from_setting_one(): void
+    {
+        $this->assertEquals('Removed their password', UserActionEnum::UserPasswordRemoved->description());
+        $this->assertEquals('Set a password', UserActionEnum::UserPasswordSet->description());
+        $this->assertEquals('Changed their password', UserActionEnum::UserPasswordUpdate->description());
+    }
 }

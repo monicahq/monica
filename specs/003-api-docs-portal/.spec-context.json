@@ -3,7 +3,7 @@
   "specName": "API foundations and the API docs portal",
   "branch": "2026-08-27-api-doc-portal",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -408,6 +408,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-08-28T01:59:59.836Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-08-29T10:09:39.207Z"
     }
   ],
   "telemetryInstanceId": "aa3d3e6d-eb3f-4f87-887a-8bfe55eefe78",

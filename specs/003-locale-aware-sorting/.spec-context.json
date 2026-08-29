@@ -3,7 +3,7 @@
   "specName": "Locale Aware Sorting",
   "branch": "main",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -320,7 +320,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-08-27T21:26:21.920Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-08-29T10:09:22.889Z"
     }
   ],
-  "currentTask": "T039"
+  "currentTask": "T039",
+  "telemetryInstanceId": "d9e7cc5a-e73d-4745-ab2d-a57b3478692e"
 }

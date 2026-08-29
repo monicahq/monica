@@ -22,6 +22,12 @@ enum UserActionEnum: string implements Translatable
     case MagicLinkCreation = 'magic_link_created';
     case ApiKeyCreation = 'api_key_created';
     case ApiKeyDeletion = 'api_key_deleted';
+    case PasskeyAdded = 'passkey_added';
+    case PasskeyRenamed = 'passkey_renamed';
+    case PasskeyRemoved = 'passkey_removed';
+    case PasskeyLogin = 'passkey_logged_in';
+    case UserPasswordRemoved = 'user_password_removed';
+    case UserPasswordSet = 'user_password_set';
     case VaultCreation = 'vault_created';
     case VaultUpdate = 'vault_updated';
     case VaultPositionUpdate = 'vault_position_updated';
@@ -144,6 +150,12 @@ enum UserActionEnum: string implements Translatable
             self::MagicLinkCreation => 'Asked for a sign-in link',
             self::ApiKeyCreation => 'Created the API key called :name',
             self::ApiKeyDeletion => 'Revoked the API key called :name',
+            self::PasskeyAdded => 'Added the passkey called :name',
+            self::PasskeyRenamed => 'Renamed a passkey to :name',
+            self::PasskeyRemoved => 'Removed the passkey called :name',
+            self::PasskeyLogin => 'Signed in with the passkey called :name',
+            self::UserPasswordRemoved => 'Removed their password',
+            self::UserPasswordSet => 'Set a password',
             self::VaultCreation => 'Created the vault :name',
             self::VaultUpdate => 'Updated the vault :name',
             self::VaultPositionUpdate => 'Moved the vault :name in the list',

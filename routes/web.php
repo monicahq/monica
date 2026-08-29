@@ -30,6 +30,7 @@ use App\Http\Controllers\App\Settings\Account\Preferences\PreferenceController;
 use App\Http\Controllers\App\Settings\Account\Profile\PhotoController;
 use App\Http\Controllers\App\Settings\Account\Profile\ProfileController;
 use App\Http\Controllers\App\Settings\Account\Security\ApiKeyController;
+use App\Http\Controllers\App\Settings\Account\Security\PasskeyController;
 use App\Http\Controllers\App\Settings\Account\Security\PasswordController;
 use App\Http\Controllers\App\Settings\Account\Security\RecoveryCodeController;
 use App\Http\Controllers\App\Settings\Account\Security\SecurityController;
@@ -315,13 +316,21 @@ Route::middleware(['auth', 'active', 'set.locale'])->group(function (): void {
     Route::put('settings/account/templates/{template}/sections/{templateVersionSection}/fields/{field}/position', [FieldPositionController::class, 'update'])->whereNumber(['templateVersionSection', 'field'])->name('settings.fieldPosition.update');
 
     Route::get('settings/account/security', [SecurityController::class, 'index'])->name('settings.security.index');
+    Route::post('settings/account/security/password', [PasswordController::class, 'create'])->name('settings.password.create');
     Route::put('settings/account/security/password', [PasswordController::class, 'update'])->name('settings.password.update');
+    Route::delete('settings/account/security/password', [PasswordController::class, 'destroy'])->name('settings.password.destroy');
 
     Route::get('settings/account/security/two-factor', [TwoFactorController::class, 'new'])->name('settings.twoFactor.new');
     Route::post('settings/account/security/two-factor', [TwoFactorController::class, 'create'])->name('settings.twoFactor.create');
     Route::delete('settings/account/security/two-factor', [TwoFactorController::class, 'destroy'])->name('settings.twoFactor.destroy');
 
     Route::post('settings/account/security/recovery-codes', [RecoveryCodeController::class, 'create'])->name('settings.recoveryCodes.create');
+
+    // Adding a passkey and signing in with one belong to the package, which
+    // fires events this application listens to. It fires nothing on a rename or
+    // a deletion, so those two are ours.
+    Route::put('settings/account/security/passkeys/{passkey}', [PasskeyController::class, 'update'])->whereNumber('passkey')->name('settings.passkeys.update');
+    Route::delete('settings/account/security/passkeys/{passkey}', [PasskeyController::class, 'destroy'])->whereNumber('passkey')->name('settings.passkeys.destroy');
 
     Route::post('settings/account/security/api-keys', [ApiKeyController::class, 'create'])->name('settings.apiKeys.create');
     Route::delete('settings/account/security/api-keys/{apiKey}', [ApiKeyController::class, 'destroy'])->whereNumber('apiKey')->name('settings.apiKeys.destroy');

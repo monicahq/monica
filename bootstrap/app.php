@@ -37,7 +37,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectUsersTo(fn (): string => route('home.index'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Errors are rendered as JSON only where something other than a browser
+        // is asking. The passkey routes are the second such place: the whole
+        // exchange is fetch calls from one Alpine component, so a refusal has to
+        // come back as a body it can read and show, not as a redirect carrying
+        // the message in a session it never looks at.
         $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('api/*'),
+            fn (Request $request) => $request->is('api/*')
+                || $request->is(config('webauthn.prefix', 'webauthn').'/*'),
         );
     })->create();

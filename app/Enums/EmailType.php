@@ -10,6 +10,11 @@ enum EmailType: string
     case NewLogin = 'new_login';
     case UserIpChanged = 'user_ip_changed';
     case MagicLinkCreated = 'magic_link_created';
+    case PasskeyAdded = 'passkey_added';
+    case PasskeyRemoved = 'passkey_removed';
+    case PasskeyCounterAnomaly = 'passkey_counter_anomaly';
+    case PasswordRemoved = 'password_removed';
+    case PasswordSet = 'password_set';
     case EmailVerification = 'email_verification';
     case MarketplaceListingApproved = 'marketplace_listing_approved';
     case MarketplaceListingRejected = 'marketplace_listing_rejected';

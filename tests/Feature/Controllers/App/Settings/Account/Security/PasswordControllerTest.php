@@ -7,9 +7,11 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Security;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\User;
+use App\Models\WebauthnKey;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -111,5 +113,118 @@ class PasswordControllerTest extends TestCase
         $response = $this->put(route('settings.password.update'), []);
 
         $response->assertRedirect(route('auth.login.new'));
+    }
+
+    #[Test]
+    public function it_removes_the_password_of_somebody_who_holds_a_passkey(): void
+    {
+        Queue::fake();
+        URL::forceScheme('https');
+
+        $user = User::factory()->create();
+        WebauthnKey::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->delete(route('settings.password.destroy'));
+
+        $response->assertRedirect(route('settings.security.index'));
+        $response->assertSessionHas('status');
+        $this->assertNull($user->refresh()->password);
+    }
+
+    #[Test]
+    public function it_refuses_to_remove_the_password_of_somebody_with_no_passkey(): void
+    {
+        Queue::fake();
+        URL::forceScheme('https');
+
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->delete(route('settings.password.destroy'));
+
+        $response->assertSessionHasErrors('password');
+        $this->assertNotNull($user->refresh()->password);
+    }
+
+    #[Test]
+    public function it_refuses_to_remove_the_password_where_a_passkey_could_not_be_used(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        WebauthnKey::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->delete(route('settings.password.destroy'));
+
+        $response->assertSessionHasErrors('password');
+        $this->assertNotNull($user->refresh()->password);
+    }
+
+    #[Test]
+    public function it_refuses_to_remove_the_password_of_a_single_sign_on_account(): void
+    {
+        Queue::fake();
+        URL::forceScheme('https');
+
+        $user = User::factory()->singleSignOn()->create();
+
+        $this->actingAs($user)->delete(route('settings.password.destroy'))
+            ->assertSessionHasErrors('password');
+    }
+
+    #[Test]
+    public function it_sets_a_password_on_an_account_that_has_none(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['password' => null]);
+
+        $response = $this->actingAs($user)->post(route('settings.password.create'), [
+            'new_password' => 'thatswhatshesaid',
+            'new_password_confirmation' => 'thatswhatshesaid',
+        ]);
+
+        $response->assertRedirect(route('settings.security.index'));
+        $this->assertNotNull($user->refresh()->password);
+        $this->assertNotNull($user->refresh()->password_changed_at);
+    }
+
+    #[Test]
+    public function it_refuses_to_set_a_password_where_one_already_exists(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->post(route('settings.password.create'), [
+            'new_password' => 'thatswhatshesaid',
+            'new_password_confirmation' => 'thatswhatshesaid',
+        ])->assertSessionHasErrors('new_password');
+    }
+
+    #[Test]
+    public function it_requires_a_confirmation_and_a_length_when_setting_a_password(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['password' => null]);
+
+        $this->actingAs($user)->post(route('settings.password.create'), [
+            'new_password' => 'thatswhatshesaid',
+            'new_password_confirmation' => 'somethingelse',
+        ])->assertSessionHasErrors('new_password');
+
+        $this->actingAs($user)->post(route('settings.password.create'), [
+            'new_password' => 'short',
+            'new_password_confirmation' => 'short',
+        ])->assertSessionHasErrors('new_password');
+
+        $this->assertNull($user->refresh()->password);
+    }
+
+    #[Test]
+    public function it_refuses_a_guest_on_both_new_routes(): void
+    {
+        $this->post(route('settings.password.create'), [])->assertRedirect(route('auth.login.new'));
+        $this->delete(route('settings.password.destroy'))->assertRedirect(route('auth.login.new'));
     }
 }

@@ -163,6 +163,18 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the passkeys the user registered. The order is the caller's business:
+     * the security screen wants the most recently used first, and nothing else
+     * reads them as a list.
+     *
+     * @return HasMany<WebauthnKey, $this>
+     */
+    public function passkeys(): HasMany
+    {
+        return $this->hasMany(WebauthnKey::class);
+    }
+
+    /**
      * Get the actions the user performed.
      *
      * @return HasMany<Log, $this>
@@ -214,6 +226,28 @@ class User extends Authenticatable
     public function usesSingleSignOn(): bool
     {
         return $this->sso_provider !== null;
+    }
+
+    /**
+     * Get whether the user has given up their password and signs in with a
+     * passkey instead.
+     *
+     * A null password used to mean one thing, that the user signs in through an
+     * identity provider. It now means either that or this, so the two are asked
+     * for by name rather than by testing the column at each call site.
+     */
+    public function usesPasswordlessSignIn(): bool
+    {
+        return $this->password === null && $this->sso_provider === null;
+    }
+
+    /**
+     * Get whether the user holds at least one passkey, which is what removing
+     * their password requires.
+     */
+    public function hasPasskeys(): bool
+    {
+        return $this->passkeys()->exists();
     }
 
     /**

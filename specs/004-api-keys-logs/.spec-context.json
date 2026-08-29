@@ -3,7 +3,7 @@
   "specName": "API keys and logs endpoints",
   "branch": "2026-08-28-api",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -232,6 +232,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-08-28T23:13:59.603Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-08-29T10:09:40.958Z"
     }
   ],
   "telemetryInstanceId": "03041341-c842-436b-b614-726d0687c62a",

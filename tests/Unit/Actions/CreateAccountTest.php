@@ -200,4 +200,37 @@ class CreateAccountTest extends TestCase
         $this->assertNull($user->account->storage_limit_in_bytes);
         $this->assertFalse($user->account->isMetered());
     }
+
+    #[Test]
+    public function it_creates_an_account_with_no_password_at_all(): void
+    {
+        Queue::fake();
+
+        $user = new CreateAccount(
+            firstName: 'Michael',
+            lastName: 'Scott',
+            email: 'michael.scott@dundermifflin.com',
+        )->execute();
+
+        $this->assertNull($user->password);
+        $this->assertNull($user->password_changed_at);
+        $this->assertTrue($user->usesPasswordlessSignIn());
+        $this->assertFalse($user->usesSingleSignOn());
+        $this->assertDatabaseHas('users', ['email' => 'michael.scott@dundermifflin.com', 'password' => null]);
+    }
+
+    #[Test]
+    public function it_seeds_the_same_account_whichever_credential_it_was_created_with(): void
+    {
+        Queue::fake();
+
+        $withPasskey = new CreateAccount(
+            firstName: 'Michael',
+            lastName: 'Scott',
+            email: 'michael.scott@dundermifflin.com',
+        )->execute();
+
+        $this->assertTrue($withPasskey->account->vaults()->exists());
+        $this->assertTrue($withPasskey->account->valueLists()->exists());
+    }
 }

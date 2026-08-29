@@ -86,7 +86,15 @@ class AttemptLogin
     {
         $candidate = User::query()->where('email', $this->email)->first();
 
-        if ($candidate === null || ! $candidate->is_active || $candidate->usesSingleSignOn()) {
+        // A null password used to mean one thing, an SSO account. It now also
+        // means somebody gave their password up in favour of passkeys, and
+        // either way there is nothing here to check: handing a null hash to the
+        // guard is not a comparison, it is an error. It sits in the shared
+        // refusal so that the stateless path below is covered too.
+        if ($candidate === null
+            || ! $candidate->is_active
+            || $candidate->usesSingleSignOn()
+            || $candidate->password === null) {
             $this->fail($candidate);
         }
 

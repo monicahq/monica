@@ -118,4 +118,31 @@ class NewPasswordControllerTest extends TestCase
 
         $response->assertSessionHasErrors('password');
     }
+
+    /**
+     * The way back for somebody who gave their password up and then lost every
+     * passkey they had. Story 5 scenario 5 asks for it, and it needed no new
+     * code: the flow sets a password rather than replacing one.
+     */
+    #[Test]
+    public function it_sets_a_password_on_an_account_that_gave_its_password_up(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create([
+            'email' => 'michael.scott@dundermifflin.com',
+            'password' => null,
+        ]);
+
+        $response = $this->post(route('auth.password.update'), [
+            'token' => Password::createToken($user),
+            'email' => 'michael.scott@dundermifflin.com',
+            'password' => 'thatswhatshesaid',
+            'password_confirmation' => 'thatswhatshesaid',
+        ]);
+
+        $response->assertRedirect(route('auth.login.new'));
+        $this->assertTrue(Hash::check('thatswhatshesaid', $user->refresh()->password));
+        $this->assertFalse($user->usesPasswordlessSignIn());
+    }
 }
