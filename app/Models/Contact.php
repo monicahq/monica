@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\NameOrderEnum;
 use App\Exceptions\ContactNeedsAName;
+use App\Helpers\LocaleCollation;
 use Carbon\Carbon;
 use Database\Factories\ContactFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -48,6 +49,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $nickname
  * @property NameOrderEnum|null $name_order
  * @property string $sort_name
+ * @property string $sort_key
+ * @property string $search_key
  * @property bool $is_me
  * @property bool $is_partial
  * @property bool $is_archived
@@ -133,15 +136,21 @@ class Contact extends Model
     ];
 
     /**
-     * Write the string the lists sort on, here rather than in the actions.
-     * Sorting thousands of contacts cannot concatenate at read time, the order
-     * has to be the same whoever is looking, and every path that writes a name
-     * meets in this one place.
+     * Write the string the lists sort on and the two keys derived from it, here
+     * rather than in the actions: sorting thousands of contacts cannot
+     * concatenate at read time, and every path that writes a name meets here.
+     *
+     * Built for the account's language, not the request's, so a queued job
+     * writes what a request would.
      */
     protected static function booted(): void
     {
         static::saving(function (Contact $contact): void {
             $contact->sort_name = $contact->buildSortName();
+
+            $locale = $contact->account->locale();
+            $contact->sort_key = LocaleCollation::sortKey($contact->sort_name, $locale);
+            $contact->search_key = LocaleCollation::foldForSearch($contact->sort_name, $locale);
         });
     }
 

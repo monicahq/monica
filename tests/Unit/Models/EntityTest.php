@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Models;
 
 use App\Exceptions\EntityNeedsAName;
+use App\Helpers\LocaleCollation;
 use App\Models\Account;
 use App\Models\Entity;
 use App\Models\EntityType;
@@ -222,5 +223,41 @@ class EntityTest extends TestCase
         $this->assertSoftDeleted('entities', ['id' => $entity->id]);
         $this->assertEquals(0, Entity::query()->count());
         $this->assertEquals(1, Entity::query()->withTrashed()->count());
+    }
+
+    #[Test]
+    public function it_derives_the_two_ordering_keys_when_it_saves(): void
+    {
+        $entity = Entity::factory()->create(['name' => 'Élodie']);
+
+        $this->assertSame(
+            LocaleCollation::sortKey($entity->sort_name, $entity->account->locale()),
+            $entity->sort_key,
+        );
+        $this->assertSame(
+            LocaleCollation::foldForSearch($entity->sort_name, $entity->account->locale()),
+            $entity->search_key,
+        );
+    }
+
+    #[Test]
+    public function it_rebuilds_the_two_ordering_keys_when_the_name_changes(): void
+    {
+        $entity = Entity::factory()->create(['name' => 'Dunder']);
+        $before = $entity->sort_key;
+
+        $entity->name = 'Mifflin';
+        $entity->save();
+
+        $this->assertNotSame($before, $entity->fresh()->sort_key);
+    }
+
+    #[Test]
+    public function it_does_not_let_the_two_ordering_keys_be_mass_assigned(): void
+    {
+        $entity = Entity::factory()->create();
+
+        $this->assertNotContains('sort_key', $entity->getFillable());
+        $this->assertNotContains('search_key', $entity->getFillable());
     }
 }

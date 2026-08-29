@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Helpers\LocaleCollation;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
@@ -48,9 +49,13 @@ class ContactsViewModel
     /**
      * Kept apart from the key the URL carries, so the address does not name the
      * schema.
+     *
+     * The name orders on `sort_key`, not `sort_name`: ordered as bytes, Élodie
+     * lands after Z for a French reader. Comparing keys byte by byte gives that
+     * language's order on a database that knows no language.
      */
     private const array SORT_COLUMNS = [
-        self::SORT_NAME => 'sort_name',
+        self::SORT_NAME => 'sort_key',
         self::SORT_NICKNAME => 'nickname',
         self::SORT_LAST_SPOKE => 'last_activity_at',
         self::SORT_ADDED => 'created_at',
@@ -400,21 +405,34 @@ class ContactsViewModel
             ->where('is_archived', $this->filter() === self::FILTER_ARCHIVED)
             ->when($this->filter() === self::FILTER_FAVOURITES, fn (Builder $query): Builder => $query->where('is_favourite', true))
             ->when($this->searchTerm() !== '', fn (Builder $query): Builder => $query->where(function (Builder $query): void {
-                $query->whereLike('sort_name', "%{$this->searchTerm()}%", caseSensitive: false)
+                $query->whereLike('search_key', "%{$this->foldedSearchTerm()}%", caseSensitive: true)
                     ->orWhereLike('nickname', "%{$this->searchTerm()}%", caseSensitive: false);
             }));
     }
 
     /**
-     * Lowercased here and matched case insensitively on top of that. Neither
-     * guard covers the other: lowercasing is what meets `sort_name`, which is
-     * stored lowercased and which SQLite's `like` would not fold the accents
-     * of, and the case insensitive match is what reaches a nickname, stored as
-     * somebody typed it.
+     * Lowercased and matched case insensitively, which is what reaches a
+     * nickname, stored as somebody typed it and never folded.
      */
     private function searchTerm(): string
     {
         return mb_strtolower(mb_trim($this->query));
+    }
+
+    /**
+     * What the reader typed, minus what their language calls a minor difference,
+     * which is what meets `search_key`. French drops the accent on an e, so
+     * elodie finds Élodie; Spanish keeps its tilde and Turkish its dotless i, so
+     * nunez does not find Ñuñez.
+     *
+     * Matched byte for byte, and `sort_name` not matched at all, because a
+     * database has its own opinion: MySQL's `utf8mb4_unicode_ci` has no Spanish
+     * tailoring and calls n and ñ the same, which would undo all of the above.
+     * Both sides are already lowercased, so comparing exactly loses nothing.
+     */
+    private function foldedSearchTerm(): string
+    {
+        return LocaleCollation::foldForSearch(mb_trim($this->query));
     }
 
     /**
@@ -442,9 +460,10 @@ class ContactsViewModel
         return $this->sort() === self::SORT_NAME;
     }
 
+    /** Asked of the language the order came from. `mb_strtoupper` cannot answer it. */
     private function letterOf(Contact $contact): string
     {
-        return mb_strtoupper(mb_substr($contact->sort_name, 0, 1)) ?: '#';
+        return LocaleCollation::headingLetter($contact->sort_name);
     }
 
     /**

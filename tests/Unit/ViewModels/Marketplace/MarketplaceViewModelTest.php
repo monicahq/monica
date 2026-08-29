@@ -208,4 +208,21 @@ class MarketplaceViewModelTest extends TestCase
         $this->assertFalse($card['isInstalled']);
         $this->assertFalse($card['hasUpdate']);
     }
+
+    #[Test]
+    public function it_orders_the_catalogue_by_the_alphabet_of_the_language_the_reader_reads_in(): void
+    {
+        $this->app->setLocale('fr_FR');
+
+        foreach (['Zoe', 'Élodie', 'Erin'] as $name) {
+            MarketplaceListing::factory()->published()->create(['name' => $name]);
+        }
+
+        $names = array_column(
+            new MarketplaceViewModel(user: null, sort: MarketplaceViewModel::SORT_NAME)->listings(),
+            'name',
+        );
+
+        $this->assertSame(['Élodie', 'Erin', 'Zoe'], $names);
+    }
 }

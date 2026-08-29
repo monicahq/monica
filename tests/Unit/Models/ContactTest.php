@@ -6,11 +6,13 @@ namespace Tests\Unit\Models;
 
 use App\Enums\NameOrderEnum;
 use App\Exceptions\ContactNeedsAName;
+use App\Helpers\LocaleCollation;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\File;
 use App\Models\ShareLink;
 use App\Models\TemplateVersion;
+use App\Models\User;
 use App\Models\Vault;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -264,5 +266,69 @@ class ContactTest extends TestCase
         $this->assertSoftDeleted('contacts', ['id' => $contact->id]);
         $this->assertEquals(0, Contact::query()->count());
         $this->assertEquals(1, Contact::query()->withTrashed()->count());
+    }
+
+    #[Test]
+    public function it_derives_the_two_ordering_keys_when_it_saves(): void
+    {
+        $contact = Contact::factory()->create([
+            'first_name' => 'Élodie',
+            'last_name' => 'Bernard',
+            'middle_name' => null,
+        ]);
+
+        $this->assertSame(
+            LocaleCollation::sortKey($contact->sort_name, $contact->account->locale()),
+            $contact->sort_key,
+        );
+        $this->assertSame(
+            LocaleCollation::foldForSearch($contact->sort_name, $contact->account->locale()),
+            $contact->search_key,
+        );
+    }
+
+    #[Test]
+    public function it_rebuilds_the_two_ordering_keys_when_the_name_changes(): void
+    {
+        $contact = Contact::factory()->create(['last_name' => 'Scott']);
+        $before = $contact->sort_key;
+
+        $contact->last_name = 'Scarn';
+        $contact->save();
+
+        $fresh = $contact->fresh();
+
+        $this->assertNotSame($before, $fresh->sort_key);
+        $this->assertStringStartsWith('scarn', $fresh->sort_name);
+        $this->assertSame(
+            LocaleCollation::sortKey($fresh->sort_name, $contact->account->locale()),
+            $fresh->sort_key,
+        );
+    }
+
+    #[Test]
+    public function it_builds_the_keys_for_the_language_of_the_account_and_not_the_request(): void
+    {
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id, 'locale' => 'tr_TR']);
+        $contact = Contact::factory()->create(['account_id' => $account->id, 'last_name' => 'Irmak']);
+
+        $this->app->setLocale('fr_FR');
+        $contact->save();
+
+        $this->assertSame($user->locale, $account->locale());
+        $this->assertSame(
+            LocaleCollation::foldForSearch($contact->sort_name, 'tr_TR'),
+            $contact->fresh()->search_key,
+        );
+    }
+
+    #[Test]
+    public function it_does_not_let_the_two_ordering_keys_be_mass_assigned(): void
+    {
+        $contact = Contact::factory()->create();
+
+        $this->assertNotContains('sort_key', $contact->getFillable());
+        $this->assertNotContains('search_key', $contact->getFillable());
     }
 }

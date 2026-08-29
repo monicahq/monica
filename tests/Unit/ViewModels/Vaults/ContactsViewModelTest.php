@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\TemplateAppliesToEnum;
+use App\Helpers\LocaleCollation;
 use App\Models\Contact;
 use App\Models\File;
 use App\Models\Template;
@@ -15,6 +16,7 @@ use App\Models\VaultDefaultTemplate;
 use App\ViewModels\Vaults\ContactsViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -400,5 +402,289 @@ class ContactsViewModelTest extends TestCase
         ]);
 
         return $vault;
+    }
+
+    #[Test]
+    public function it_orders_the_list_by_the_alphabet_of_the_language_the_reader_reads_in(): void
+    {
+        $user = $this->readerIn('fr_FR');
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Dwight', 'Schrute');
+        $this->contact($vault, 'Elodie', 'Élodie');
+        $this->contact($vault, 'Erin', 'Erin');
+
+        $this->assertSame(
+            ['Élodie', 'Erin', 'Schrute'],
+            $this->surnamesOrderedFor($user, $vault),
+        );
+    }
+
+    #[Test]
+    public function it_files_a_letter_carrying_a_ring_with_its_plain_letter(): void
+    {
+        $user = $this->readerIn('de_DE');
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Michael', 'Scott');
+        $this->contact($vault, 'Anders', 'Ångström');
+        $this->contact($vault, 'Angela', 'Martin');
+
+        $this->assertSame(
+            ['Ångström', 'Martin', 'Scott'],
+            $this->surnamesOrderedFor($user, $vault),
+        );
+    }
+
+    #[Test]
+    public function it_reads_the_other_way_round_as_the_exact_reverse(): void
+    {
+        $user = $this->readerIn('fr_FR');
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Dwight', 'Schrute');
+        $this->contact($vault, 'Elodie', 'Élodie');
+        $this->contact($vault, 'Erin', 'Erin');
+
+        $ascending = $this->surnamesOrderedFor($user, $vault);
+        $descending = $this->surnamesOrderedFor($user, $vault, ContactsViewModel::DIRECTION_DESC);
+
+        $this->assertSame(array_reverse($ascending), $descending);
+    }
+
+    #[Test]
+    public function it_shows_everybody_exactly_once_across_the_pages(): void
+    {
+        $user = $this->readerIn('fr_FR');
+        $vault = $this->vaultReadyForContacts($user);
+
+        for ($index = 1; $index <= 55; $index++) {
+            $this->contact($vault, 'Erin', $index % 5 === 0 ? "Élodie {$index}" : "Bernard {$index}");
+        }
+
+        $seen = [];
+        $page = 1;
+
+        do {
+            $this->app['request']->merge(['page' => $page]);
+            $viewModel = new ContactsViewModel(user: $user, vault: $vault);
+
+            foreach ($viewModel->groups() as $group) {
+                foreach ($group['people'] as $person) {
+                    $seen[] = $person['name'];
+                }
+            }
+
+            $page++;
+        } while ($page <= 3);
+
+        $this->assertCount(55, $seen);
+        $this->assertCount(55, array_unique($seen));
+    }
+
+    private function readerIn(string $locale): User
+    {
+        $user = User::factory()->create(['locale' => $locale]);
+        $this->app->setLocale($locale);
+
+        return $user;
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function surnamesOrderedFor(User $user, Vault $vault, string $direction = ContactsViewModel::DIRECTION_ASC): array
+    {
+        $viewModel = new ContactsViewModel(user: $user, vault: $vault, direction: $direction);
+
+        $surnames = [];
+
+        foreach ($viewModel->groups() as $group) {
+            foreach ($group['people'] as $person) {
+                $surnames[] = mb_substr($person['name'], mb_strpos($person['name'], ' ') + 1);
+            }
+        }
+
+        return $surnames;
+    }
+
+    #[Test]
+    public function it_files_an_accented_name_under_the_letter_its_language_files_it_under(): void
+    {
+        $user = $this->readerIn('fr_FR');
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Elodie', 'Élodie');
+        $this->contact($vault, 'Erin', 'Erin');
+
+        $groups = new ContactsViewModel(user: $user, vault: $vault)->groups();
+
+        $this->assertCount(1, $groups);
+        $this->assertSame('E', $groups[0]['letter']);
+        $this->assertCount(2, $groups[0]['people']);
+    }
+
+    #[Test]
+    public function it_keeps_the_turkish_dotted_and_dotless_i_under_their_own_headings(): void
+    {
+        $user = $this->readerIn('tr_TR');
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Deniz', 'ışık');
+        $this->contact($vault, 'Deniz', 'irmak');
+
+        $letters = array_column(new ContactsViewModel(user: $user, vault: $vault)->groups(), 'letter');
+
+        $this->assertContains('I', $letters);
+        $this->assertContains('İ', $letters);
+        $this->assertCount(2, $letters);
+    }
+
+    #[Test]
+    public function it_files_a_name_that_does_not_begin_with_a_letter_under_one_catch_all_heading(): void
+    {
+        $user = $this->readerIn('en');
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Ryan', '3 amigos');
+        $this->contact($vault, 'Kelly', '"quoted"');
+
+        $letters = array_column(new ContactsViewModel(user: $user, vault: $vault)->groups(), 'letter');
+
+        $this->assertSame(['#'], array_values(array_unique($letters)));
+    }
+
+    #[Test]
+    public function it_gives_no_heading_that_disagrees_with_the_people_under_it(): void
+    {
+        $user = $this->readerIn('fr_FR');
+        $vault = $this->vaultReadyForContacts($user);
+
+        foreach (['Élodie', 'Erin', 'Ångström', 'Schrute', 'Œuvre', 'ñuñez'] as $surname) {
+            $this->contact($vault, 'Reader', $surname);
+        }
+
+        $disagreements = [];
+
+        foreach (new ContactsViewModel(user: $user, vault: $vault)->groups() as $group) {
+            foreach ($group['people'] as $person) {
+                $surname = mb_substr($person['name'], mb_strpos($person['name'], ' ') + 1);
+
+                if (LocaleCollation::headingLetter(mb_strtolower($surname), 'fr_FR') !== $group['letter']) {
+                    $disagreements[] = $surname;
+                }
+            }
+        }
+
+        $this->assertSame([], $disagreements);
+    }
+
+    #[Test]
+    public function it_finds_a_french_name_typed_without_its_accent(): void
+    {
+        $user = $this->readerIn('fr_FR');
+        $vault = $this->vaultReadyForContacts($user);
+        $this->contact($vault, 'Dwight', 'Élodie');
+
+        $this->assertSame(['Élodie'], $this->surnamesMatching($user, $vault, 'elodie'));
+    }
+
+    #[Test]
+    public function it_finds_a_german_name_typed_without_its_umlaut(): void
+    {
+        $user = $this->readerIn('de_DE');
+        $vault = $this->vaultReadyForContacts($user);
+        $this->contact($vault, 'Anna', 'Müller');
+
+        $this->assertSame(['Müller'], $this->surnamesMatching($user, $vault, 'muller'));
+    }
+
+    #[Test]
+    public function it_still_finds_a_name_typed_with_its_accent(): void
+    {
+        $user = $this->readerIn('fr_FR');
+        $vault = $this->vaultReadyForContacts($user);
+        $this->contact($vault, 'Dwight', 'Élodie');
+
+        $this->assertSame(['Élodie'], $this->surnamesMatching($user, $vault, 'Élodie'));
+    }
+
+    #[Test]
+    public function it_does_not_find_a_spanish_enye_typed_as_an_n_because_spanish_calls_it_another_letter(): void
+    {
+        $user = $this->readerIn('es_ES');
+        $vault = $this->vaultReadyForContacts($user);
+        $this->contact($vault, 'Carlos', 'Ñuñez');
+
+        $this->assertSame([], $this->surnamesMatching($user, $vault, 'nunez'));
+        $this->assertSame(['Ñuñez'], $this->surnamesMatching($user, $vault, 'ñuñez'));
+    }
+
+    #[Test]
+    public function it_does_not_find_a_turkish_dotless_i_typed_as_a_dotted_one_because_turkish_calls_them_their_own(): void
+    {
+        $user = $this->readerIn('tr_TR');
+        $vault = $this->vaultReadyForContacts($user);
+        $this->contact($vault, 'Deniz', 'ışık');
+
+        $this->assertSame([], $this->surnamesMatching($user, $vault, 'isik'));
+        $this->assertSame(['ışık'], $this->surnamesMatching($user, $vault, 'ışık'));
+    }
+
+    #[Test]
+    public function it_keeps_matching_anywhere_in_the_name_and_not_only_at_its_start(): void
+    {
+        $user = $this->readerIn('fr_FR');
+        $vault = $this->vaultReadyForContacts($user);
+        $this->contact($vault, 'Dwight', 'Bérnard');
+
+        $this->assertSame(['Bérnard'], $this->surnamesMatching($user, $vault, 'rnard'));
+    }
+
+    #[Test]
+    public function it_keeps_finding_somebody_by_their_nickname(): void
+    {
+        $user = $this->readerIn('fr_FR');
+        $vault = $this->vaultReadyForContacts($user);
+        $this->contact($vault, 'Michael', 'Scott', ['nickname' => 'Prison Mike']);
+
+        $this->assertSame(['Scott'], $this->surnamesMatching($user, $vault, 'prison'));
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function surnamesMatching(User $user, Vault $vault, string $term): array
+    {
+        $viewModel = new ContactsViewModel(user: $user, vault: $vault, query: $term);
+
+        $surnames = [];
+
+        foreach ($viewModel->groups() as $group) {
+            foreach ($group['people'] as $person) {
+                $surnames[] = mb_substr($person['name'], mb_strpos($person['name'], ' ') + 1);
+            }
+        }
+
+        return $surnames;
+    }
+
+    #[Test]
+    public function it_orders_the_list_exactly_as_the_collator_would(): void
+    {
+        $user = $this->readerIn('fr_FR');
+        $vault = $this->vaultReadyForContacts($user);
+
+        $surnames = ['Schrute', 'Élodie', 'Erin', 'Ångström', 'Œuvre', 'ñuñez', 'Zoe', 'Anzù'];
+
+        foreach ($surnames as $surname) {
+            $this->contact($vault, 'Reader', $surname);
+        }
+
+        $expected = new Collection($surnames)
+            ->sortByCollator(fn (string $surname): string => mb_strtolower($surname))
+            ->all();
+
+        $this->assertSame($expected, $this->surnamesOrderedFor($user, $vault));
     }
 }

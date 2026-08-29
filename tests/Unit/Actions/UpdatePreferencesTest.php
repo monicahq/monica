@@ -9,12 +9,16 @@ use App\Enums\DateFormatEnum;
 use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
 use App\Enums\UserActionEnum;
+use App\Helpers\LocaleCollation;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
+use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
+use RuntimeException;
 use Tests\TestCase;
 
 class UpdatePreferencesTest extends TestCase
@@ -96,5 +100,68 @@ class UpdatePreferencesTest extends TestCase
                 && $job->account->id === $account->id
                 && $job->user->id === $user->id,
         );
+    }
+
+    #[Test]
+    public function it_rebuilds_the_ordering_keys_for_the_new_language(): void
+    {
+        Queue::fake();
+
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id, 'locale' => 'fr_FR']);
+        $contact = Contact::factory()->create([
+            'account_id' => $account->id,
+            'first_name' => null,
+            'middle_name' => null,
+            'last_name' => 'Ñuñez',
+        ]);
+
+        $this->assertSame('nunez', $contact->fresh()->search_key);
+
+        new UpdatePreferences(
+            user: $user,
+            locale: 'es_ES',
+            timeFormat: TimeFormatEnum::TwentyFourHour,
+        )->execute();
+
+        $fresh = $contact->fresh();
+
+        $this->assertSame('ñuñez', $fresh->search_key);
+        $this->assertSame(LocaleCollation::sortKey($fresh->sort_name, 'es_ES'), $fresh->sort_key);
+    }
+
+    #[Test]
+    public function it_leaves_the_language_and_the_keys_alone_when_the_rebuild_cannot_finish(): void
+    {
+        Queue::fake();
+
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id, 'locale' => 'fr_FR']);
+        $contact = Contact::factory()->create([
+            'account_id' => $account->id,
+            'first_name' => null,
+            'middle_name' => null,
+            'last_name' => 'Ñuñez',
+        ]);
+
+        DB::listen(function ($query) {
+            if (preg_match('/^update\s+"?contacts"?/i', $query->sql) === 1) {
+                throw new RuntimeException('the rebuild could not finish');
+            }
+        });
+
+        try {
+            new UpdatePreferences(
+                user: $user,
+                locale: 'es_ES',
+                timeFormat: TimeFormatEnum::TwentyFourHour,
+            )->execute();
+            $this->fail('The rebuild was expected to fail.');
+        } catch (RuntimeException) {
+            // the rollback is what the assertions below are about
+        }
+
+        $this->assertSame('fr_FR', $user->fresh()->locale);
+        $this->assertSame('nunez', $contact->fresh()->search_key);
     }
 }

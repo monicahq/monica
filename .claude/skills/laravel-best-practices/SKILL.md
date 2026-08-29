@@ -48,7 +48,7 @@ Cross-cutting changes often need more than one rule file.
 | Collections, lazy iteration, bulk operations | [`rules/collections.md`](rules/collections.md) |
 | Blade components, attributes, composers | [`rules/blade-views.md`](rules/blade-views.md) |
 | Environment values and application configuration | [`rules/config.md`](rules/config.md) |
-| Pest/PHPUnit patterns, factories, fakes | [`rules/testing.md`](rules/testing.md) |
+| Tests: coverage, factories, fakes, and assertions | the `testing-best-practices` skill |
 | Naming, helpers, file boundaries, PHP style | [`rules/style.md`](rules/style.md) |
 | Actions, services, dependencies, application structure | [`rules/architecture.md`](rules/architecture.md) |
 

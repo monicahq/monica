@@ -7,6 +7,22 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Requirements
+
+PHP 8.4 or later, with the `intl` extension. The extension is required rather than optional:
+lists of names are ordered and searched in the alphabet of whoever is reading them, and the
+alphabet rules come from it. Without it `composer install` refuses, which is deliberate. An
+installation that started without it would order names in a way no reader could rely on, and
+say nothing about why.
+
+The official `php:8.4` images do not enable it by default:
+
+```
+docker-php-ext-install intl
+```
+
+Check it with `php -m | grep intl`.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

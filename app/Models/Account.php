@@ -79,6 +79,20 @@ class Account extends Model
     }
 
     /**
+     * The language every list in this account is ordered and searched in. One
+     * person to an account means one language, which is what lets a key derived
+     * from it live on the row.
+     *
+     * Deliberately not the language of the request: a queued job must write the
+     * key a request would, or the row it touches is filed under another alphabet.
+     */
+    public function locale(): string
+    {
+        return $this->userIncludingDeleted()->value('locale')
+            ?? config('app.locale');
+    }
+
+    /**
      * Get the person on the account whether or not they were deleted.
      *
      * The plain relation hides a soft deleted user, which is right everywhere a

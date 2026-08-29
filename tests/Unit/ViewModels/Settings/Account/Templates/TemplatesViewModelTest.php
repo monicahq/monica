@@ -157,4 +157,24 @@ class TemplatesViewModelTest extends TestCase
 
         $this->assertEquals(TemplatesViewModel::FILTER_ALL, (new TemplatesViewModel(user: $user, filter: 'nonsense'))->filter());
     }
+
+    #[Test]
+    public function it_keeps_the_order_somebody_arranged_and_does_not_alphabetise_it(): void
+    {
+        $this->app->setLocale('fr_FR');
+
+        $user = User::factory()->create();
+
+        foreach (['Zoe', 'Élodie', 'Erin'] as $position => $name) {
+            Template::factory()->create([
+                'account_id' => $user->account_id,
+                'name' => $name,
+                'position' => $position + 1,
+            ]);
+        }
+
+        $names = array_column(new TemplatesViewModel(user: $user)->ownTemplates(), 'name');
+
+        $this->assertSame(['Zoe', 'Élodie', 'Erin'], $names);
+    }
 }

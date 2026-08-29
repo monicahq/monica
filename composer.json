@@ -10,6 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
+        "ext-intl": "*",
         "bacon/bacon-qr-code": "^3.1",
         "erag/laravel-disposable-email": "^5.2",
         "intervention/image": "^4.0",

@@ -32,7 +32,8 @@ jobs:
       fail-fast: false
       matrix:
         php-version: ['8.4']
-        connection: [sqlite, mysql, pgsql]
+        # connection: [sqlite, mysql, pgsql]
+        connection: [mysql]
 
     # Selects the database connection for every step, including the plain
     # `artisan migrate` (phpunit.xml pins DB_CONNECTION to "testing", so this

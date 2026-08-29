@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Exceptions\EntityNeedsAName;
+use App\Helpers\LocaleCollation;
 use Carbon\Carbon;
 use Database\Factories\EntityFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -40,6 +41,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $template_version_id
  * @property string $name
  * @property string $sort_name
+ * @property string $sort_key
+ * @property string $search_key
  * @property int|null $avatar_file_id
  * @property string $avatar_colour
  * @property bool $is_archived
@@ -110,6 +113,10 @@ class Entity extends Model
     {
         static::saving(function (Entity $entity): void {
             $entity->sort_name = $entity->buildSortName();
+
+            $locale = $entity->account->locale();
+            $entity->sort_key = LocaleCollation::sortKey($entity->sort_name, $locale);
+            $entity->search_key = LocaleCollation::foldForSearch($entity->sort_name, $locale);
         });
     }
 

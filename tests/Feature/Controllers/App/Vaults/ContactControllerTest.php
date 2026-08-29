@@ -1123,4 +1123,46 @@ class ContactControllerTest extends TestCase
 
         return $template;
     }
+
+    #[Test]
+    public function it_finds_a_name_typed_without_its_accent(): void
+    {
+        $user = User::factory()->create(['locale' => 'fr_FR']);
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Dwight', 'Élodie');
+        $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'query' => 'elodie']))
+            ->assertStatus(200)
+            ->assertSee('Dwight Élodie')
+            ->assertDontSee('Michael Scott');
+    }
+
+    #[Test]
+    public function it_says_so_when_a_search_matches_nobody(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'query' => 'Bob Vance of Vance Refrigeration']))
+            ->assertStatus(200)
+            ->assertSee('Nothing matches')
+            ->assertDontSee('Michael Scott');
+    }
+
+    #[Test]
+    public function it_files_a_name_under_the_letter_the_readers_language_files_it_under(): void
+    {
+        $user = User::factory()->create(['locale' => 'fr_FR']);
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Dwight', 'Élodie');
+
+        $this->actingAs($user)->get(route('contacts.index', $vault))
+            ->assertStatus(200)
+            ->assertSee('Dwight Élodie');
+    }
 }

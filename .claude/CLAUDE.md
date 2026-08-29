@@ -204,19 +204,14 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 - Laravel can be deployed using [Laravel Cloud](https://cloud.laravel.com/), which is the fastest way to deploy and scale production Laravel applications.
 
-=== herd rules ===
-
-# Laravel Herd
-
-- The application is served by Laravel Herd at `https?://[kebab-case-project-dir].test`. Use the `get-absolute-url` tool to generate valid URLs. Never run commands to serve the site. It is always available.
-- Use the `herd` CLI to manage services, PHP versions, and sites (e.g. `herd sites`, `herd services:start <service>`, `herd php:list`). Run `herd list` to discover all available commands.
-
 === tests rules ===
 
 # Test Enforcement
 
-- Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
-- Run the minimum number of tests needed to ensure code quality and speed. Use `php artisan test --compact` with a specific filename or filter.
+- Test every code change by adding or updating a test.
+- Run the affected tests and ensure they pass.
+- Test the changed behavior and its important failure modes, but do not add tests beyond them.
+- Read the `testing-best-practices` skill before writing tests.
 
 === laravel/core rules ===
 
@@ -259,19 +254,15 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 # PHPUnit
 
-- This application uses PHPUnit for testing. All tests must be written as PHPUnit classes. Use `php artisan make:test --phpunit {name}` to create a new test.
-- If you see a test using "Pest", convert it to PHPUnit.
-- Every time a test has been updated, run that singular test.
-- When the tests relating to your feature are passing, ask the user if they would like to also run the entire test suite to make sure everything is still passing.
-- Tests should cover all happy paths, failure paths, and edge cases.
-- You must not remove any tests or test files from the tests directory without approval. These are not temporary or helper files; these are core to the application.
+- This project uses PHPUnit. Create tests with `php artisan make:test --phpunit {name}`.
+- Do not include the test suite directory in `{name}`. Use `SomeFeatureTest`, not `Feature/SomeFeatureTest`.
+- Read the `testing-best-practices` skill for guidance on coverage, naming, structure, dependency isolation, and review.
 
 ## Running Tests
 
-- Run the minimal number of tests, using an appropriate filter, before finalizing.
-- To run all tests: `php artisan test --compact`.
-- To run all tests in a file: `php artisan test --compact tests/Feature/ExampleTest.php`.
-- To filter on a particular test name: `php artisan test --compact --filter=testName` (recommended after making a change to a related file).
+- Run the narrowest set of tests that covers the change. Pass a file path or `--filter=testName` to `php artisan test --compact`.
+- Rerun a test after each change to it.
+- Run `vendor/bin/phpunit` to call the test runner directly. It accepts the same file path and `--filter=testName` arguments.
 
 </laravel-boost-guidelines>
 

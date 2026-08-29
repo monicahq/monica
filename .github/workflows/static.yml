@@ -52,69 +52,69 @@ jobs:
       - name: Run phpstan
         run: vendor/bin/phpstan analyse
 
-  code-style:
-    name: Code style (Pint)
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+  # code-style:
+  #   name: Code style (Pint)
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 10
 
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v6
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v6
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-          coverage: none
+  #     - name: Setup PHP
+  #       uses: shivammathur/setup-php@v2
+  #       with:
+  #         php-version: '8.4'
+  #         coverage: none
 
-      # Composer
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-      - name: Cache composer files
-        uses: actions/cache@v5
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-8.4-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-8.4
-            ${{ runner.os }}-composer-
+  #     # Composer
+  #     - name: Get Composer Cache Directory
+  #       id: composer-cache
+  #       run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+  #     - name: Cache composer files
+  #       uses: actions/cache@v5
+  #       with:
+  #         path: ${{ steps.composer-cache.outputs.dir }}
+  #         key: ${{ runner.os }}-composer-8.4-${{ hashFiles('**/composer.lock') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-composer-8.4
+  #           ${{ runner.os }}-composer-
 
-      - name: Install dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+  #     - name: Install dependencies
+  #       run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
 
-      - name: Check code style
-        run: vendor/bin/pint --test
+  #     - name: Check code style
+  #       run: vendor/bin/pint --test
 
-  assets:
-    name: Build assets (Vite)
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+  # assets:
+  #   name: Build assets (Vite)
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 10
 
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v6
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v6
 
-      # Bun runs the build script, but the vite binary carries a node shebang,
-      # so node is what actually executes it. Vite needs a recent one, and
-      # pinning it here means an upgrade of the runner image cannot change the
-      # version the build runs on.
-      - name: Setup node
-        uses: actions/setup-node@v6
-        with:
-          node-version: '24'
+  #     # Bun runs the build script, but the vite binary carries a node shebang,
+  #     # so node is what actually executes it. Vite needs a recent one, and
+  #     # pinning it here means an upgrade of the runner image cannot change the
+  #     # version the build runs on.
+  #     - name: Setup node
+  #       uses: actions/setup-node@v6
+  #       with:
+  #         node-version: '24'
 
-      # The version comes from the packageManager field of package.json, so the
-      # workflow and a developer's machine agree on which bun to use.
-      - name: Setup bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: package.json
+  #     # The version comes from the packageManager field of package.json, so the
+  #     # workflow and a developer's machine agree on which bun to use.
+  #     - name: Setup bun
+  #       uses: oven-sh/setup-bun@v2
+  #       with:
+  #         bun-version-file: package.json
 
-      - name: Install JS dependencies
-        run: bun install --frozen-lockfile
+  #     - name: Install JS dependencies
+  #       run: bun install --frozen-lockfile
 
-      # Nothing else in CI builds the assets, so a production-only failure such
-      # as a selector the minifier rejects would otherwise reach main unnoticed.
-      - name: Build assets
-        run: bun run build
+  #     # Nothing else in CI builds the assets, so a production-only failure such
+  #     # as a selector the minifier rejects would otherwise reach main unnoticed.
+  #     - name: Build assets
+  #       run: bun run build

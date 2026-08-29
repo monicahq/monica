@@ -108,4 +108,22 @@ class AdministratorLogsViewModelTest extends TestCase
         $this->assertCount(1, $administrators);
         $this->assertEquals('Michael Scott', $administrators->first()->name);
     }
+
+    #[Test]
+    public function it_orders_the_filter_by_the_alphabet_of_the_language_the_reader_reads_in(): void
+    {
+        $this->app->setLocale('fr_FR');
+
+        foreach (['Zoe', 'Élodie', 'Erin'] as $firstName) {
+            $user = User::factory()->create(['first_name' => $firstName]);
+            AdministratorLog::factory()->create([
+                'action' => AdministratorActionEnum::UserDeactivated->value,
+                'user_id' => $user->id,
+            ]);
+        }
+
+        $names = new AdministratorLogsViewModel()->administrators()->pluck('first_name')->all();
+
+        $this->assertSame(['Élodie', 'Erin', 'Zoe'], $names);
+    }
 }

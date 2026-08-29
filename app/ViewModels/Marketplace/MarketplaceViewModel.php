@@ -343,10 +343,58 @@ class MarketplaceViewModel
      */
     private function page(): Paginator
     {
-        return once(fn (): Paginator => $this->matching()
+        return once(function (): Paginator {
+            if ($this->sort() !== self::SORT_NAME) {
+                return $this->matching()
+                    ->with(['category', 'publishedVersion'])
+                    ->simplePaginate(self::PER_PAGE)
+                    ->withQueryString();
+            }
+
+            return $this->pageOrderedByName();
+        });
+    }
+
+    /**
+     * Ordering the catalogue by name has to follow the alphabet of whoever is
+     * reading it, and no database does that the same way on all three this
+     * product runs on. So the names are ordered here, and the page taken from
+     * the result.
+     *
+     * The catalogue is a shared list read by people in nine languages, so there
+     * is nothing to precompute on the row: the order depends on the reader, not
+     * on the listing. That is why this reads the names of everything matching
+     * rather than one page of them, and why only the sort by name pays for it.
+     *
+     * @return Paginator<int, MarketplaceListing>
+     */
+    private function pageOrderedByName(): Paginator
+    {
+        $currentPage = Paginator::resolveCurrentPage();
+
+        $ids = $this->matching()
+            ->reorder()
+            ->orderBy('id')
+            ->get(['id', 'name'])
+            ->sortByCollator('name')
+            ->slice(($currentPage - 1) * self::PER_PAGE, self::PER_PAGE + 1)
+            ->pluck('id')
+            ->all();
+
+        $listings = MarketplaceListing::query()
+            ->whereIn('id', $ids)
             ->with(['category', 'publishedVersion'])
-            ->simplePaginate(self::PER_PAGE)
-            ->withQueryString());
+            ->get()
+            ->keyBy('id');
+
+        $items = array_values(array_filter(array_map(
+            fn (int $id): ?MarketplaceListing => $listings->get($id),
+            $ids,
+        )));
+
+        return new Paginator($items, self::PER_PAGE, $currentPage, [
+            'path' => Paginator::resolveCurrentPath(),
+        ])->withQueryString();
     }
 
     /**
@@ -371,6 +419,10 @@ class MarketplaceViewModel
             self::SORT_INSTALLED => $listings->orderByDesc('install_count'),
             self::SORT_PUBLISHED => $listings->orderByDesc('first_published_at'),
             self::SORT_NAME => $listings->orderBy('name'),
+            // The name order is redone in PHP by pageOrderedByName(), which
+            // reorders this away. It is left here so the query is never
+            // unordered, which pagination needs.
+
             default => $listings->orderByDesc('updated_at'),
         };
     }

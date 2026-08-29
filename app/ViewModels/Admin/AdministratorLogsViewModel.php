@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace App\ViewModels\Admin;
 
 use App\Models\AdministratorLog;
-use App\Models\Log;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 
 /**
  * What the record of administrator actions shows: everything anybody with the
@@ -54,14 +53,20 @@ class AdministratorLogsViewModel
      * holds the capacity today: somebody whose capacity was withdrawn is still
      * in the record, and hiding them from the filter would hide what they did.
      *
+     * Ordered once the rows are in hand, no database ordering by an alphabet the
+     * same way on all three this product runs on. The list is short.
+     *
+     * A plain collection, not an Eloquent one: sorting goes through a helper
+     * taking any collection, and the screen only counts and walks it.
+     *
      * @return Collection<int, User>
      */
     public function administrators(): Collection
     {
         return once(fn (): Collection => User::query()
             ->whereIn('id', AdministratorLog::query()->whereNotNull('user_id')->distinct()->pluck('user_id'))
-            ->orderBy('first_name')
-            ->get());
+            ->get()
+            ->sortByCollator('first_name'));
     }
 
     public function administratorId(): ?int

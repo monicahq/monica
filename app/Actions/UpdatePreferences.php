@@ -10,6 +10,7 @@ use App\Enums\TimeFormatEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Change what somebody chose about the way the application reads to them: the
@@ -34,10 +35,28 @@ class UpdatePreferences
 
     public function execute(): User
     {
-        $this->update();
+        DB::transaction(function (): void {
+            $this->update();
+            $this->reorder();
+        });
+
         $this->log();
 
         return $this->user;
+    }
+
+    /**
+     * The keys every list is ordered on describe the language chosen before this,
+     * so they are written again in the same transaction as the choice. A list
+     * ordered on keys half in one language and half in another can show a row
+     * twice or miss it. If this cannot finish, the language stays as it was.
+     */
+    private function reorder(): void
+    {
+        (new RebuildOrderingKeys(
+            account: $this->user->account,
+            locale: $this->locale,
+        ))->execute();
     }
 
     private function update(): void

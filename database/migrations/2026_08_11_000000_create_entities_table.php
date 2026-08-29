@@ -22,6 +22,8 @@ return new class extends Migration
             $table->unsignedBigInteger('template_version_id')->comment('exact structure version the page renders from');
             $table->string('name')->comment('what the record is called, used in lists, headers and search');
             $table->string('sort_name', 511)->comment('precomputed string the list sorts on, so sorting never depends on rendering');
+            $table->binary('sort_key', 2048)->comment('collation key the list orders and pages on, built for the language of the account, compared byte by byte so the order reads the same on every database');
+            $table->string('search_key', 511)->comment('sort_name folded for the language of the account, so a search folds what that language calls a minor difference and nothing else');
             $table->unsignedBigInteger('avatar_file_id')->nullable()->comment('image standing in for it, null when a generated one is used');
             $table->string('avatar_colour', 7)->comment('background colour of the generated avatar');
             $table->boolean('is_archived')->default(false)->comment('whether it is hidden from the main lists without being deleted');
@@ -31,6 +33,7 @@ return new class extends Migration
             $table->boolean('deleted_with_vault')->default(false)->comment('whether the entity was taken out by the deletion of its vault, so restoring the vault knows what to bring back');
 
             $table->index(['vault_id', 'sort_name']);
+            $table->index(['vault_id', 'sort_key']);
             $table->index(['vault_id', 'entity_type_id']);
 
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
