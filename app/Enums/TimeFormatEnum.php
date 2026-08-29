@@ -6,6 +6,7 @@ namespace App\Enums;
 
 use App\Contracts\Translatable;
 use Carbon\CarbonInterface;
+use Override;
 
 enum TimeFormatEnum: string implements Translatable
 {
@@ -47,6 +48,7 @@ enum TimeFormatEnum: string implements Translatable
      *
      * @return list<string>
      */
+    #[Override]
     public function translationKeys(): array
     {
         return [$this->label()];

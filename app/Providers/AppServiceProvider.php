@@ -8,32 +8,39 @@ use App\Helpers\LocaleCollation;
 use App\Http\Middleware\EnsurePasskeyLoginIsAllowed;
 use App\Http\Responses\PasskeyLoginViewResponse;
 use App\Http\Responses\PasskeyRegisterViewResponse;
+use Carbon\CarbonImmutable;
 use Cose\Algorithm\ManagerFactory as CoseAlgorithmManagerFactory;
 use Cose\Algorithm\Signature\ECDSA;
 use Cose\Algorithm\Signature\EdDSA;
 use Cose\Algorithm\Signature\RSA;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
 use LaravelWebauthn\Actions\AttemptToAuthenticate;
 use LaravelWebauthn\Actions\PrepareAuthenticatedSession;
 use LaravelWebauthn\Facades\Webauthn;
+use Override;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * How many passkey sign-in attempts one credential may make from one place
+     * How many sign-in attempts one credential may make from one place
      * before it is refused for a while. The same number the password flow uses,
      * so there is one answer to how many tries somebody gets.
      */
-    private const int MAX_PASSKEY_ATTEMPTS = 5;
+    private const int MAX_LOGIN_ATTEMPTS = 5;
 
     /**
      * Register any application services.
      */
+    #[Override]
     public function register(): void
     {
         Webauthn::loginViewResponseUsing(PasskeyLoginViewResponse::class);
@@ -94,10 +101,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Date::use(CarbonImmutable::class);
+
         $this->forceSecureUrls();
         $this->configureRateLimiting();
         $this->configurePasskeyPipeline();
         $this->configureCollation();
+        $this->configureDefaultsProduction();
     }
 
     /**
@@ -152,7 +162,9 @@ class AppServiceProvider extends ServiceProvider
      */
     private function configureRateLimiting(): void
     {
-        RateLimiter::for('login', fn (Request $request): Limit => Limit::perMinute(self::MAX_PASSKEY_ATTEMPTS)
+        RateLimiter::for('api', fn (Request $request) => Limit::perMinute(60)
+            ->by($request->user()?->id ?: $request->ip()));
+        RateLimiter::for('login', fn (Request $request): Limit => Limit::perMinute(self::MAX_LOGIN_ATTEMPTS)
             ->by($request->string('id')->lower()->toString().'|'.$request->ip()));
     }
 
@@ -174,5 +186,31 @@ class AppServiceProvider extends ServiceProvider
 
             return LocaleCollation::sortByCollator($collect, $callback, $descending);
         });
+    }
+
+    /**
+     * Configure default behaviors for production-ready applications.
+     *
+     * @codeCoverageIgnore
+     */
+    private function configureDefaultsProduction(): void
+    {
+        // Enable strict mode for Eloquent models in non-production environments
+        // TODO: fix failing code related to `preventAccessingMissingAttributes`
+        // Model::shouldBeStrict(! app()->isProduction());
+
+        DB::prohibitDestructiveCommands(
+            app()->isProduction(),
+        );
+
+        Password::defaults(fn (): ?Password => app()->isProduction()
+            ? Password::min(12)
+                ->mixedCase()
+                ->letters()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
+            : null,
+        );
     }
 }

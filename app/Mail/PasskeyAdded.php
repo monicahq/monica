@@ -8,6 +8,7 @@ use App\Contracts\HasEnvelope;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Override;
 
 /**
  * Tell somebody a passkey was added to their account. A passkey is a way in, so
@@ -19,6 +20,7 @@ class PasskeyAdded extends Mailable implements HasEnvelope
         public readonly string $name,
     ) {}
 
+    #[Override]
     public function envelope(): Envelope
     {
         return new Envelope(

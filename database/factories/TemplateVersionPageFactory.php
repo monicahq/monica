@@ -8,6 +8,7 @@ use App\Models\TemplateVersion;
 use App\Models\TemplateVersionPage;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Override;
 
 /**
  * @extends Factory<TemplateVersionPage>
@@ -26,6 +27,7 @@ class TemplateVersionPageFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         $label = Str::ucfirst(fake()->unique()->word());

@@ -9,6 +9,7 @@ use App\Models\TemplateVersion;
 use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<TemplateVersionSection>
@@ -23,6 +24,7 @@ class TemplateVersionSectionFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

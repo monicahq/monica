@@ -14,7 +14,7 @@ use App\Models\FieldValueRow;
 use App\Models\File;
 use App\Models\ValueListItem;
 use App\Models\Vault;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -172,12 +172,12 @@ class FieldValueTest extends TestCase
         $value->refresh();
 
         $this->assertTrue($value->value_boolean);
-        $this->assertInstanceOf(Carbon::class, $value->value_date);
-        $this->assertInstanceOf(Carbon::class, $value->value_datetime);
+        $this->assertInstanceOf(CarbonImmutable::class, $value->value_date);
+        $this->assertInstanceOf(CarbonImmutable::class, $value->value_datetime);
         $this->assertEquals(['street' => '1725 Slough Avenue', 'city' => 'Scranton'], $value->value_json);
         $this->assertEquals([4, 8], $value->value_list_item_ids);
         $this->assertTrue($value->is_detached);
-        $this->assertInstanceOf(Carbon::class, $value->detached_at);
+        $this->assertInstanceOf(CarbonImmutable::class, $value->detached_at);
     }
 
     #[Test]

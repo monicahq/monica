@@ -9,6 +9,7 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<FieldValue>
@@ -23,6 +24,7 @@ class FieldValueFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

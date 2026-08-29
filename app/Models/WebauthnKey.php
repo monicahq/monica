@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\WebauthnKeyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -39,9 +39,9 @@ use LaravelWebauthn\Models\WebauthnKey as BaseWebauthnKey;
  * @property string $aaguid
  * @property string $credentialPublicKey
  * @property int $counter
- * @property Carbon|null $used_at
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable|null $used_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read User $user
  */
 class WebauthnKey extends BaseWebauthnKey

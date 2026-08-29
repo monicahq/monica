@@ -7,16 +7,20 @@ namespace App\Models;
 use App\Enums\NameOrderEnum;
 use App\Exceptions\ContactNeedsAName;
 use App\Helpers\LocaleCollation;
-use Carbon\Carbon;
+use App\Models\Concerns\HasUuids;
+use App\Models\Concerns\ResolvesModelInVault;
+use Carbon\CarbonImmutable;
 use Database\Factories\ContactFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Override;
 
 /**
  * Class Contact
@@ -57,12 +61,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property bool $is_favourite
  * @property int|null $avatar_file_id
  * @property string $avatar_colour
- * @property Carbon|null $last_activity_at
+ * @property CarbonImmutable|null $last_activity_at
  * @property int $activity_count
- * @property Carbon|null $last_consulted_at
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property CarbonImmutable|null $last_consulted_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
  * @property bool $deleted_with_vault
  * @property-read Account $account
  * @property-read Vault $vault
@@ -71,12 +75,36 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read string $name
  * @property-read string $initials
  */
+#[RouteKey('uuid')]
+#[Fillable([
+    'account_id',
+    'vault_id',
+    'template_version_id',
+    'prefix',
+    'first_name',
+    'middle_name',
+    'last_name',
+    'suffix',
+    'maiden_name',
+    'nickname',
+    'name_order',
+    'is_me',
+    'is_partial',
+    'is_archived',
+    'is_favourite',
+    'avatar_file_id',
+    'avatar_colour',
+    'last_activity_at',
+    'activity_count',
+    'last_consulted_at',
+])]
 class Contact extends Model
 {
     /** @use HasFactory<ContactFactory> */
     use HasFactory;
 
     use HasUuids;
+    use ResolvesModelInVault;
     use SoftDeletes;
 
     /**
@@ -105,36 +133,6 @@ class Contact extends Model
         '#14b8a6',
     ];
 
-    protected $table = 'contacts';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'vault_id',
-        'template_version_id',
-        'prefix',
-        'first_name',
-        'middle_name',
-        'last_name',
-        'suffix',
-        'maiden_name',
-        'nickname',
-        'name_order',
-        'is_me',
-        'is_partial',
-        'is_archived',
-        'is_favourite',
-        'avatar_file_id',
-        'avatar_colour',
-        'last_activity_at',
-        'activity_count',
-        'last_consulted_at',
-    ];
-
     /**
      * Write the string the lists sort on and the two keys derived from it, here
      * rather than in the actions: sorting thousands of contacts cannot
@@ -143,6 +141,7 @@ class Contact extends Model
      * Built for the account's language, not the request's, so a queued job
      * writes what a request would.
      */
+    #[Override]
     protected static function booted(): void
     {
         static::saving(function (Contact $contact): void {
@@ -159,6 +158,7 @@ class Contact extends Model
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
@@ -172,43 +172,6 @@ class Contact extends Model
             'last_consulted_at' => 'datetime',
             'deleted_with_vault' => 'boolean',
         ];
-    }
-
-    /**
-     * Get the columns that are given a unique identifier of their own. The
-     * primary key stays an incrementing integer, and the uuid is what URLs,
-     * share links and the API are shown.
-     *
-     * @return list<string>
-     */
-    public function uniqueIds(): array
-    {
-        return ['uuid'];
-    }
-
-    /**
-     * Get the column a contact is looked up by in a URL.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'uuid';
-    }
-
-    /**
-     * Find the contact a URL points at, within the account of whoever is
-     * asking. Somebody else's contact is not merely forbidden, it is not
-     * found: the vault is a compartment, and saying "you may not" would
-     * already say that the person exists.
-     *
-     * @param  string  $value
-     * @param  string|null  $field
-     */
-    public function resolveRouteBinding($value, $field = null): ?self
-    {
-        return $this->query()
-            ->where($field ?? $this->getRouteKeyName(), $value)
-            ->where('account_id', auth()->user()?->account_id)
-            ->first();
     }
 
     /**

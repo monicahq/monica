@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\File;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Override;
 
 /**
  * @extends Factory<File>
@@ -19,6 +20,7 @@ class FileFactory extends Factory
     /**
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         $name = fake()->unique()->slug(2).'.pdf';

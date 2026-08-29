@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use App\Models\Concerns\HasUuids;
+use App\Models\Concerns\ResolvesModelInVault;
+use Carbon\CarbonImmutable;
 use Database\Factories\FileFactory;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
+use Override;
 
 /**
  * Class File
@@ -44,52 +48,47 @@ use Illuminate\Support\Facades\Storage;
  * @property int|null $height
  * @property array<array-key, mixed>|null $variants
  * @property int $reference_count
- * @property Carbon|null $orphaned_at
+ * @property CarbonImmutable|null $orphaned_at
  * @property int|null $uploaded_by_user_id
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
  * @property-read Account $account
  * @property-read Vault|null $vault
  * @property-read User|null $uploadedBy
  */
+#[RouteKey('uuid')]
+#[Fillable([
+    'account_id',
+    'vault_id',
+    'disk',
+    'path',
+    'original_name',
+    'mime_type',
+    'size_in_bytes',
+    'checksum',
+    'width',
+    'height',
+    'variants',
+    'reference_count',
+    'orphaned_at',
+    'uploaded_by_user_id',
+])]
 class File extends Model
 {
     /** @use HasFactory<FileFactory> */
     use HasFactory;
 
     use HasUuids;
+    use ResolvesModelInVault;
     use SoftDeletes;
-
-    protected $table = 'files';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'vault_id',
-        'disk',
-        'path',
-        'original_name',
-        'mime_type',
-        'size_in_bytes',
-        'checksum',
-        'width',
-        'height',
-        'variants',
-        'reference_count',
-        'orphaned_at',
-        'uploaded_by_user_id',
-    ];
 
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
@@ -100,26 +99,6 @@ class File extends Model
             'reference_count' => 'integer',
             'orphaned_at' => 'datetime',
         ];
-    }
-
-    /**
-     * Get the columns that are given a unique identifier of their own. The
-     * primary key stays an incrementing integer, and the uuid is what every
-     * path and URL is built from.
-     *
-     * @return list<string>
-     */
-    public function uniqueIds(): array
-    {
-        return ['uuid'];
-    }
-
-    /**
-     * Get the column a file is looked up by in a URL.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'uuid';
     }
 
     /**

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Models\Vault;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\DB;
@@ -30,13 +30,13 @@ class RecordVaultVisit implements ShouldQueue
 {
     use Queueable;
 
-    private Carbon $visitedAt;
+    private CarbonImmutable $visitedAt;
 
     public function __construct(
         public Vault $vault,
-        ?Carbon $visitedAt = null,
+        ?CarbonImmutable $visitedAt = null,
     ) {
-        $this->visitedAt = $visitedAt ?? Carbon::now();
+        $this->visitedAt = $visitedAt ?? CarbonImmutable::now();
     }
 
     public function handle(): void

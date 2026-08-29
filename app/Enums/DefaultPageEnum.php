@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use App\Contracts\Translatable;
+use Override;
 
 /**
  * The pages the template an account starts with is read in.
@@ -66,6 +67,7 @@ enum DefaultPageEnum: string implements Translatable
      *
      * @return list<string>
      */
+    #[Override]
     public function translationKeys(): array
     {
         return [$this->label()];

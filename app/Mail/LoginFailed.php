@@ -8,6 +8,7 @@ use App\Contracts\HasEnvelope;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Override;
 
 /**
  * Tell somebody that a sign in on their account was attempted and refused. It
@@ -16,6 +17,7 @@ use Illuminate\Mail\Mailables\Envelope;
  */
 class LoginFailed extends Mailable implements HasEnvelope
 {
+    #[Override]
     public function envelope(): Envelope
     {
         return new Envelope(

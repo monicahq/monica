@@ -11,7 +11,7 @@ use App\Models\ShareLink;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\Vault;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -98,8 +98,8 @@ class AccountTest extends TestCase
 
         $this->assertFalse($account->is_self_hosted);
         $this->assertTrue($account->has_lifetime_access);
-        $this->assertInstanceOf(Carbon::class, $account->purchased_at);
-        $this->assertInstanceOf(Carbon::class, $account->onboarding_completed_at);
+        $this->assertInstanceOf(CarbonImmutable::class, $account->purchased_at);
+        $this->assertInstanceOf(CarbonImmutable::class, $account->onboarding_completed_at);
         $this->assertSame(2048, $account->storage_used_in_bytes);
         $this->assertSame(4096, $account->storage_limit_in_bytes);
     }

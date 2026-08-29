@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\MarketplaceListingStatusEnum;
-use Carbon\Carbon;
+use App\Models\Concerns\HasUuids;
+use Carbon\CarbonImmutable;
 use Database\Factories\MarketplaceListingFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Override;
 
 /**
  * Class MarketplaceListing
@@ -45,17 +48,43 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property MarketplaceListingStatusEnum $status
  * @property int|null $published_version_id
  * @property string|null $rejection_reason
- * @property Carbon|null $moderated_at
+ * @property CarbonImmutable|null $moderated_at
  * @property string|null $moderated_by
  * @property int $install_count
- * @property Carbon|null $first_published_at
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property CarbonImmutable|null $first_published_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
  * @property-read Account $account
  * @property-read MarketplaceCategory $category
  * @property-read MarketplaceListingVersion|null $publishedVersion
  */
+/*
+ * A listing is looked up by its slug in a URL. The slug is unique across the
+ * whole catalogue rather than within an account, since the catalogue is one
+ * public place and two authors cannot both own the address a link already went
+ * out to.
+ */
+#[RouteKey('slug')]
+#[Fillable([
+    'account_id',
+    'marketplace_category_id',
+    'listable_type',
+    'listable_id',
+    'slug',
+    'name',
+    'summary',
+    'description',
+    'locale',
+    'author_name',
+    'status',
+    'published_version_id',
+    'rejection_reason',
+    'moderated_at',
+    'moderated_by',
+    'install_count',
+    'first_published_at',
+])]
 class MarketplaceListing extends Model
 {
     /** @use HasFactory<MarketplaceListingFactory> */
@@ -70,38 +99,12 @@ class MarketplaceListing extends Model
      */
     public const int SLUG_LENGTH = 128;
 
-    protected $table = 'marketplace_listings';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'marketplace_category_id',
-        'listable_type',
-        'listable_id',
-        'slug',
-        'name',
-        'summary',
-        'description',
-        'locale',
-        'author_name',
-        'status',
-        'published_version_id',
-        'rejection_reason',
-        'moderated_at',
-        'moderated_by',
-        'install_count',
-        'first_published_at',
-    ];
-
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
@@ -110,29 +113,6 @@ class MarketplaceListing extends Model
             'install_count' => 'integer',
             'first_published_at' => 'datetime',
         ];
-    }
-
-    /**
-     * Get the columns that are given a unique identifier of their own. The
-     * primary key stays an incrementing integer, and the uuid is what the API
-     * is shown.
-     *
-     * @return list<string>
-     */
-    public function uniqueIds(): array
-    {
-        return ['uuid'];
-    }
-
-    /**
-     * Get the column a listing is looked up by in a URL. The slug is unique
-     * across the whole catalogue rather than within an account, since the
-     * catalogue is one public place and two authors cannot both own the address
-     * a link already went out to.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
     }
 
     /**

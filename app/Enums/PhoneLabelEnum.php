@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use App\Contracts\SuppliedValueListItem;
+use Override;
 
 enum PhoneLabelEnum: string implements SuppliedValueListItem
 {
@@ -18,6 +19,7 @@ enum PhoneLabelEnum: string implements SuppliedValueListItem
      * What the number is for, shown beside it on a record. The word doubles as
      * the translation key.
      */
+    #[Override]
     public function label(): string
     {
         return match ($this) {
@@ -34,6 +36,7 @@ enum PhoneLabelEnum: string implements SuppliedValueListItem
      *
      * @return list<string>
      */
+    #[Override]
     public function translationKeys(): array
     {
         return [$this->label()];

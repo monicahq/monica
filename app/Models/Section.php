@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use App\Models\Concerns\HasUuids;
+use App\Models\Concerns\ResolvesModelInAccount;
+use Carbon\CarbonImmutable;
 use Database\Factories\SectionFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Override;
 
 /**
  * Class Section
@@ -42,18 +46,32 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property bool $is_active
  * @property int|null $published_version_id
  * @property string $locale
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
  * @property-read Account $account
  * @property-read SectionVersion|null $publishedVersion
  */
+#[RouteKey('slug')]
+#[Fillable([
+    'account_id',
+    'name',
+    'name_translation_key',
+    'description',
+    'slug',
+    'icon',
+    'is_system',
+    'is_active',
+    'published_version_id',
+    'locale',
+])]
 class Section extends Model
 {
     /** @use HasFactory<SectionFactory> */
     use HasFactory;
 
     use HasUuids;
+    use ResolvesModelInAccount;
     use SoftDeletes;
 
     /**
@@ -62,70 +80,18 @@ class Section extends Model
      */
     public const int SLUG_LENGTH = 64;
 
-    protected $table = 'sections';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'name',
-        'name_translation_key',
-        'description',
-        'slug',
-        'icon',
-        'is_system',
-        'is_active',
-        'published_version_id',
-        'locale',
-    ];
-
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
             'is_system' => 'boolean',
             'is_active' => 'boolean',
         ];
-    }
-
-    /**
-     * Get the columns that are given a unique identifier of their own.
-     *
-     * @return list<string>
-     */
-    public function uniqueIds(): array
-    {
-        return ['uuid'];
-    }
-
-    /**
-     * Get the column a section is looked up by in a URL.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
-
-    /**
-     * Find the section a URL points at. The slug is only unique within an
-     * account, so the account has to be part of the lookup.
-     *
-     * @param  string  $value
-     * @param  string|null  $field
-     */
-    public function resolveRouteBinding($value, $field = null): ?self
-    {
-        return $this->query()
-            ->where($field ?? $this->getRouteKeyName(), $value)
-            ->where('account_id', auth()->user()?->account_id)
-            ->first();
     }
 
     /**

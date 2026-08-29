@@ -8,6 +8,7 @@ use App\Enums\ValueListEnum;
 use App\Models\Account;
 use App\Models\ValueList;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<ValueList>
@@ -19,6 +20,7 @@ class ValueListFactory extends Factory
     /**
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

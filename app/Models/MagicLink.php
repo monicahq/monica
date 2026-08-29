@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\MagicLinkFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Override;
 
 /**
  * Class MagicLink
@@ -20,35 +22,28 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $user_id
  * @property string $token
- * @property Carbon $expires_at
- * @property Carbon|null $used_at
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable $expires_at
+ * @property CarbonImmutable|null $used_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  */
+#[Fillable([
+    'user_id',
+    'token',
+    'expires_at',
+    'used_at',
+])]
 class MagicLink extends Model
 {
     /** @use HasFactory<MagicLinkFactory> */
     use HasFactory;
-
-    protected $table = 'magic_links';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'user_id',
-        'token',
-        'expires_at',
-        'used_at',
-    ];
 
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

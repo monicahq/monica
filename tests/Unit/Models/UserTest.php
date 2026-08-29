@@ -11,7 +11,7 @@ use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\User;
 use App\Models\WebauthnKey;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -137,7 +137,7 @@ class UserTest extends TestCase
         $this->assertFalse($user->is_active);
         $this->assertNotNull($user->last_login_at);
         $this->assertNotNull($user->email_verified_at);
-        $this->assertInstanceOf(Carbon::class, $user->password_changed_at);
+        $this->assertInstanceOf(CarbonImmutable::class, $user->password_changed_at);
     }
 
     #[Test]

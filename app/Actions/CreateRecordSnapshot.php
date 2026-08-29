@@ -16,7 +16,7 @@ use App\Models\RecordSnapshot;
 use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
@@ -42,7 +42,7 @@ class CreateRecordSnapshot
         private readonly User $user,
         private readonly Contact|Entity $record,
         private readonly SnapshotReasonEnum $reason = SnapshotReasonEnum::Manual,
-        private readonly ?Carbon $expiresAt = null,
+        private readonly ?CarbonImmutable $expiresAt = null,
     ) {}
 
     public function execute(): RecordSnapshot

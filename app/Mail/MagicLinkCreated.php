@@ -8,6 +8,7 @@ use App\Contracts\HasEnvelope;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Override;
 
 /**
  * Carry the link that signs somebody in without a password. The link is built
@@ -21,6 +22,7 @@ class MagicLinkCreated extends Mailable implements HasEnvelope
         public readonly int $minutes,
     ) {}
 
+    #[Override]
     public function envelope(): Envelope
     {
         return new Envelope(

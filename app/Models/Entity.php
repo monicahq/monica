@@ -6,16 +6,20 @@ namespace App\Models;
 
 use App\Exceptions\EntityNeedsAName;
 use App\Helpers\LocaleCollation;
-use Carbon\Carbon;
+use App\Models\Concerns\HasUuids;
+use App\Models\Concerns\ResolvesModelInVault;
+use Carbon\CarbonImmutable;
 use Database\Factories\EntityFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Override;
 
 /**
  * Class Entity
@@ -46,10 +50,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int|null $avatar_file_id
  * @property string $avatar_colour
  * @property bool $is_archived
- * @property Carbon|null $last_consulted_at
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property CarbonImmutable|null $last_consulted_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
  * @property bool $deleted_with_vault
  * @property-read Account $account
  * @property-read Vault $vault
@@ -58,12 +62,25 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read File|null $avatar
  * @property-read string $initials
  */
+#[RouteKey('uuid')]
+#[Fillable([
+    'account_id',
+    'vault_id',
+    'entity_type_id',
+    'template_version_id',
+    'name',
+    'avatar_file_id',
+    'avatar_colour',
+    'is_archived',
+    'last_consulted_at',
+])]
 class Entity extends Model
 {
     /** @use HasFactory<EntityFactory> */
     use HasFactory;
 
     use HasUuids;
+    use ResolvesModelInVault;
     use SoftDeletes;
 
     /**
@@ -84,31 +101,13 @@ class Entity extends Model
         '#14b8a6',
     ];
 
-    protected $table = 'entities';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'vault_id',
-        'entity_type_id',
-        'template_version_id',
-        'name',
-        'avatar_file_id',
-        'avatar_colour',
-        'is_archived',
-        'last_consulted_at',
-    ];
-
     /**
      * Write the string the lists sort on, here rather than in the actions, for
      * the reason a contact does it here too: the order has to be the same
      * whoever is looking, and every path that writes a name meets in this one
      * place.
      */
+    #[Override]
     protected static function booted(): void
     {
         static::saving(function (Entity $entity): void {
@@ -125,6 +124,7 @@ class Entity extends Model
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
@@ -132,43 +132,6 @@ class Entity extends Model
             'last_consulted_at' => 'datetime',
             'deleted_with_vault' => 'boolean',
         ];
-    }
-
-    /**
-     * Get the columns that are given a unique identifier of their own. The
-     * primary key stays an incrementing integer, and the uuid is what URLs and
-     * the API are shown.
-     *
-     * @return list<string>
-     */
-    public function uniqueIds(): array
-    {
-        return ['uuid'];
-    }
-
-    /**
-     * Get the column an entity is looked up by in a URL.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'uuid';
-    }
-
-    /**
-     * Find the entity a URL points at, within the account of whoever is asking.
-     * A record of somebody else is not merely forbidden, it is not found: the
-     * vault is a compartment, and saying "you may not" would already say that
-     * the record exists.
-     *
-     * @param  string  $value
-     * @param  string|null  $field
-     */
-    public function resolveRouteBinding($value, $field = null): ?self
-    {
-        return $this->query()
-            ->where($field ?? $this->getRouteKeyName(), $value)
-            ->where('account_id', auth()->user()?->account_id)
-            ->first();
     }
 
     /**

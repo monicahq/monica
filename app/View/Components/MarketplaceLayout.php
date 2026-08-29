@@ -6,6 +6,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 use Illuminate\View\View;
+use Override;
 
 class MarketplaceLayout extends Component
 {
@@ -13,6 +14,7 @@ class MarketplaceLayout extends Component
         public ?string $title = null,
     ) {}
 
+    #[Override]
     public function render(): View
     {
         return view('layouts.marketplace');

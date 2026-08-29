@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\FieldValueFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Override;
 
 /**
  * Class FieldValue
@@ -39,8 +41,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string|null $value_text
  * @property string|null $value_number
  * @property bool|null $value_boolean
- * @property Carbon|null $value_date
- * @property Carbon|null $value_datetime
+ * @property CarbonImmutable|null $value_date
+ * @property CarbonImmutable|null $value_datetime
  * @property array<array-key, mixed>|null $value_json
  * @property int|null $value_list_item_id
  * @property array<array-key, mixed>|null $value_list_item_ids
@@ -50,9 +52,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property bool $year_is_unknown
  * @property bool $month_is_unknown
  * @property bool $is_detached
- * @property Carbon|null $detached_at
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable|null $detached_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
  * @property-read Vault $vault
  * @property-read Contact|Entity $valuable
@@ -63,6 +65,31 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read Contact|null $relatedContact
  * @property-read Entity|null $relatedEntity
  */
+#[Fillable([
+    'account_id',
+    'vault_id',
+    'valuable_type',
+    'valuable_id',
+    'field_id',
+    'field_key',
+    'field_value_row_id',
+    'value_string',
+    'value_text',
+    'value_number',
+    'value_boolean',
+    'value_date',
+    'value_datetime',
+    'value_json',
+    'value_list_item_id',
+    'value_list_item_ids',
+    'value_file_id',
+    'related_contact_id',
+    'related_entity_id',
+    'year_is_unknown',
+    'month_is_unknown',
+    'is_detached',
+    'detached_at',
+])]
 class FieldValue extends Model
 {
     /** @use HasFactory<FieldValueFactory> */
@@ -76,44 +103,12 @@ class FieldValue extends Model
      */
     public const int PLACEHOLDER_YEAR = 1900;
 
-    protected $table = 'field_values';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'vault_id',
-        'valuable_type',
-        'valuable_id',
-        'field_id',
-        'field_key',
-        'field_value_row_id',
-        'value_string',
-        'value_text',
-        'value_number',
-        'value_boolean',
-        'value_date',
-        'value_datetime',
-        'value_json',
-        'value_list_item_id',
-        'value_list_item_ids',
-        'value_file_id',
-        'related_contact_id',
-        'related_entity_id',
-        'year_is_unknown',
-        'month_is_unknown',
-        'is_detached',
-        'detached_at',
-    ];
-
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

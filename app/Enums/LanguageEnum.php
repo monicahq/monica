@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use App\Contracts\SuppliedValueListItem;
+use Override;
 
 /**
  * The languages somebody is most likely to note a contact speaks. Ten to start
@@ -30,6 +31,7 @@ enum LanguageEnum: string implements SuppliedValueListItem
     /**
      * The name of the language, which doubles as the translation key.
      */
+    #[Override]
     public function label(): string
     {
         return match ($this) {
@@ -51,6 +53,7 @@ enum LanguageEnum: string implements SuppliedValueListItem
      *
      * @return list<string>
      */
+    #[Override]
     public function translationKeys(): array
     {
         return [$this->label()];

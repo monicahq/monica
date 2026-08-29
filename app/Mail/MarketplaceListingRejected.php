@@ -8,6 +8,7 @@ use App\Contracts\HasEnvelope;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Override;
 
 /**
  * Tell an author their version was refused, and why.
@@ -24,6 +25,7 @@ class MarketplaceListingRejected extends Mailable implements HasEnvelope
         public readonly string $reason,
     ) {}
 
+    #[Override]
     public function envelope(): Envelope
     {
         return new Envelope(

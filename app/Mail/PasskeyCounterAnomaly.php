@@ -8,6 +8,7 @@ use App\Contracts\HasEnvelope;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Override;
 
 /**
  * Tell somebody a passkey answered in a way a single device should not be able
@@ -21,6 +22,7 @@ class PasskeyCounterAnomaly extends Mailable implements HasEnvelope
         public readonly string $name,
     ) {}
 
+    #[Override]
     public function envelope(): Envelope
     {
         return new Envelope(

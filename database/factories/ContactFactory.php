@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\TemplateVersion;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<Contact>
@@ -22,6 +23,7 @@ class ContactFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

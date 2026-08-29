@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\Section;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Override;
 
 /**
  * @extends Factory<Section>
@@ -19,6 +20,7 @@ class SectionFactory extends Factory
     /**
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

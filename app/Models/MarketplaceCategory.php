@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\MarketplaceCategoryEnum;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\MarketplaceCategoryFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Override;
 
 /**
  * Class MarketplaceCategory
@@ -40,40 +42,39 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $position
  * @property bool $is_active
  * @property int $listing_count
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read string $name
  * @property-read string $description
  * @property-read MarketplaceCategory|null $parent
  */
+/*
+ * A category is looked up by its key in a URL. The key is ours, it never
+ * changes, and it reads the same whatever language the catalogue is being
+ * browsed in.
+ */
+#[RouteKey('key')]
+#[Fillable([
+    'key',
+    'name_translation_key',
+    'description_translation_key',
+    'icon',
+    'parent_id',
+    'position',
+    'is_active',
+    'listing_count',
+])]
 class MarketplaceCategory extends Model
 {
     /** @use HasFactory<MarketplaceCategoryFactory> */
     use HasFactory;
-
-    protected $table = 'marketplace_categories';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'key',
-        'name_translation_key',
-        'description_translation_key',
-        'icon',
-        'parent_id',
-        'position',
-        'is_active',
-        'listing_count',
-    ];
 
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
@@ -81,16 +82,6 @@ class MarketplaceCategory extends Model
             'is_active' => 'boolean',
             'listing_count' => 'integer',
         ];
-    }
-
-    /**
-     * Get the column a category is looked up by in a URL. The key is ours, it
-     * never changes, and it reads the same whatever language the catalogue is
-     * being browsed in.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'key';
     }
 
     /**

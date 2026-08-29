@@ -2,12 +2,24 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "monicahq/monica",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Monica is a personal relationship manager.",
     "keywords": [
         "laravel",
-        "framework"
+        "crm",
+        "prm",
+        "social"
     ],
-    "license": "MIT",
+    "license": "AGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Regis Freyd",
+            "homepage": "https://github.com/djaiss"
+        },
+        {
+            "name": "Alexis Saettler",
+            "homepage": "https://github.com/asbiin"
+        }
+    ],
     "require": {
         "php": "^8.4",
         "ext-intl": "*",

@@ -6,6 +6,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 use Illuminate\View\View;
+use Override;
 
 /**
  * The shell of every signed in screen that has somewhere to navigate: a column
@@ -21,6 +22,7 @@ class Shell extends Component
         public bool $wide = false,
     ) {}
 
+    #[Override]
     public function render(): View
     {
         return view('layouts.shell');

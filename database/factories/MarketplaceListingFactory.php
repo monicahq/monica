@@ -11,6 +11,7 @@ use App\Models\Section;
 use App\Models\Template;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Override;
 
 /**
  * @extends Factory<MarketplaceListing>
@@ -26,6 +27,7 @@ class MarketplaceListingFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

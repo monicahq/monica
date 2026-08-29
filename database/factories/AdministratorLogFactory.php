@@ -9,6 +9,7 @@ use App\Models\AdministratorLog;
 use App\Models\Log;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<AdministratorLog>
@@ -20,6 +21,7 @@ class AdministratorLogFactory extends Factory
     /**
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

@@ -6,7 +6,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\User;
 use App\Models\WebauthnKey;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -39,7 +39,7 @@ class WebauthnKeyTest extends TestCase
     {
         $passkey = WebauthnKey::factory()->used()->create();
 
-        $this->assertInstanceOf(Carbon::class, $passkey->used_at);
+        $this->assertInstanceOf(CarbonImmutable::class, $passkey->used_at);
         $this->assertTrue($passkey->hasBeenUsed());
     }
 

@@ -84,6 +84,12 @@ guidelines, this file wins. The precedence order is in `CLAUDE.md`.
 - Refactor comments into named functions when possible.
 - Never add comments to tests; the test names should be descriptive enough.
 
+## Attributes
+
+- You MUST add the `#[Override]` attribute when overriding parent methods.
+- Use the `#[Fillable]` attribute to define mass-assignable fields.
+- Use the `#[RouteKey]` attribute to define the route key for the model.
+
 ## Test Classes
 
 - A test file MUST contain the test class and nothing else.

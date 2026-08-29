@@ -23,8 +23,6 @@ description: Adds a new model to the Laravel application. Use when the user want
 - You MUST use `HasFactory` with a `/** @use HasFactory<XFactory> */` docblock above the trait.
 - You MUST declare every constant at the top of the class, right after the traits and before the casts. Never in the middle of the class.
 - You MUST NOT set `protected $table`. No model does; the convention gives the right name.
-- You MUST NOT declare `protected $fillable`. No model does, because nothing is mass assigned:
-  attributes are set one by one, as the Usage section below shows.
 - You MUST define casts in a `protected function casts(): array` method, not a property.
 - You MUST cast sensitive string fields to `encrypted`, booleans to `boolean`, integers to `integer`, and dates to `datetime`.
 - Every model that belongs to the tenant MUST have the `account()` `BelongsTo` relationship, and a
@@ -35,10 +33,8 @@ description: Adds a new model to the Laravel application. Use when the user want
 - You MUST add a short docblock to every relationship, accessor and method.
 - You MUST group all the relationships together, before any other method of the model.
 - You MUST not add any business logic to the model; use Actions for that.
-- A model reached through a URL MUST name its key with `getRouteKeyName()` returning `uuid`, and
-  MUST override `resolveRouteBinding()` to scope the lookup to `auth()->user()?->account_id`, so a
-  record of another account is not found rather than forbidden. Eleven models do the first, six the
-  second.
+- A model reached through a URL MUST name define a `RouteKey` attribute with the `uuid` value, and  MUST use the
+  `ResolvesModelInAccount` or `ResolvesModelInVault` trait, so a record of another account is not found rather than forbidden. 
 
 ## Factory
 

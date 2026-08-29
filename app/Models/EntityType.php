@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use App\Models\Concerns\HasUuids;
+use App\Models\Concerns\ResolvesModelInAccount;
+use Carbon\CarbonImmutable;
 use Database\Factories\EntityTypeFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Override;
 
 /**
  * Class EntityType
@@ -43,17 +47,36 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $position
  * @property bool $is_active
  * @property int $entity_count
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
  * @property-read Account $account
  */
+/*
+ * A type is looked up by its slug in a URL. The slug is readable and stable,
+ * which is what a URL wants; the uuid is there for the API, which wants
+ * something nobody has to have seen before.
+ */
+#[RouteKey('slug')]
+#[Fillable([
+    'account_id',
+    'name_singular',
+    'name_plural',
+    'slug',
+    'description',
+    'icon',
+    'colour',
+    'position',
+    'is_active',
+    'entity_count',
+])]
 class EntityType extends Model
 {
     /** @use HasFactory<EntityTypeFactory> */
     use HasFactory;
 
     use HasUuids;
+    use ResolvesModelInAccount;
     use SoftDeletes;
 
     /**
@@ -83,31 +106,12 @@ class EntityType extends Model
      */
     public const int SLUG_LENGTH = 64;
 
-    protected $table = 'entity_types';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'name_singular',
-        'name_plural',
-        'slug',
-        'description',
-        'icon',
-        'colour',
-        'position',
-        'is_active',
-        'entity_count',
-    ];
-
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
@@ -115,45 +119,6 @@ class EntityType extends Model
             'is_active' => 'boolean',
             'entity_count' => 'integer',
         ];
-    }
-
-    /**
-     * Get the columns that are given a unique identifier of their own. The
-     * primary key stays an incrementing integer, and the uuid is what the API
-     * is shown.
-     *
-     * @return list<string>
-     */
-    public function uniqueIds(): array
-    {
-        return ['uuid'];
-    }
-
-    /**
-     * Get the column a type is looked up by in a URL. The slug is readable and
-     * stable, which is what a URL wants; the uuid is there for the API, which
-     * wants something nobody has to have seen before.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
-
-    /**
-     * Find the type a URL points at. The slug is only unique within an account,
-     * so the account has to be part of the lookup: two accounts that both
-     * invented "animals" would otherwise race for the same row, and whichever
-     * of them lost would be shown a 404 for a type it owns.
-     *
-     * @param  string  $value
-     * @param  string|null  $field
-     */
-    public function resolveRouteBinding($value, $field = null): ?self
-    {
-        return $this->query()
-            ->where($field ?? $this->getRouteKeyName(), $value)
-            ->where('account_id', auth()->user()?->account_id)
-            ->first();
     }
 
     /**

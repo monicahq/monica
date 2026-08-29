@@ -7,13 +7,15 @@ namespace App\Models;
 use App\Enums\LogSourceEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\LogIsAppendOnly;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\LogFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Override;
 
 /**
  * Class Log
@@ -47,14 +49,28 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property LogSourceEnum $source
  * @property string|null $source_detail
  * @property string|null $ip_address
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read User|null $user
  * @property-read Vault|null $vault
  * @property-read Model|null $loggable
  * @property-read string $author
  * @property-read string $description
  */
+#[Fillable([
+    'account_id',
+    'vault_id',
+    'user_id',
+    'user_email',
+    'action',
+    'parameters',
+    'loggable_type',
+    'loggable_id',
+    'changes',
+    'source',
+    'source_detail',
+    'ip_address',
+])]
 class Log extends Model
 {
     /** @use HasFactory<LogFactory> */
@@ -67,33 +83,12 @@ class Log extends Model
      */
     public const string SYSTEM = 'system';
 
-    protected $table = 'logs';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'vault_id',
-        'user_id',
-        'user_email',
-        'action',
-        'parameters',
-        'loggable_type',
-        'loggable_id',
-        'changes',
-        'source',
-        'source_detail',
-        'ip_address',
-    ];
-
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
@@ -108,6 +103,7 @@ class Log extends Model
      * and a record that can be rewritten is worth nothing. Only a retention
      * policy may ever remove one, and there is none yet.
      */
+    #[Override]
     protected static function booted(): void
     {
         static::updating(function (): never {

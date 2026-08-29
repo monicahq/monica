@@ -6,6 +6,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 use Illuminate\View\View;
+use Override;
 
 class AdminLayout extends Component
 {
@@ -13,6 +14,7 @@ class AdminLayout extends Component
         public ?string $title = null,
     ) {}
 
+    #[Override]
     public function render(): View
     {
         return view('layouts.admin');

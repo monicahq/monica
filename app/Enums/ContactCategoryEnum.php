@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use App\Contracts\SuppliedValueListItem;
+use Override;
 
 enum ContactCategoryEnum: string implements SuppliedValueListItem
 {
@@ -19,6 +20,7 @@ enum ContactCategoryEnum: string implements SuppliedValueListItem
      * How close somebody is, in one word. The word doubles as the translation
      * key.
      */
+    #[Override]
     public function label(): string
     {
         return match ($this) {
@@ -36,6 +38,7 @@ enum ContactCategoryEnum: string implements SuppliedValueListItem
      *
      * @return list<string>
      */
+    #[Override]
     public function translationKeys(): array
     {
         return [$this->label()];

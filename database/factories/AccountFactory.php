@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Models\Account;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<Account>
@@ -17,6 +18,7 @@ class AccountFactory extends Factory
     /**
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

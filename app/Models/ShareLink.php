@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use App\Models\Concerns\HasUuids;
+use App\Models\Concerns\ResolvesModelInVault;
+use Carbon\CarbonImmutable;
 use Database\Factories\ShareLinkFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Override;
 
 /**
  * Class ShareLink
@@ -43,8 +47,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $label
  * @property string|null $recipient_hint
  * @property string|null $password_hash
- * @property Carbon|null $expires_at
- * @property Carbon|null $revoked_at
+ * @property CarbonImmutable|null $expires_at
+ * @property CarbonImmutable|null $revoked_at
  * @property bool $includes_files
  * @property bool $includes_activities
  * @property bool $includes_activity_narrative
@@ -55,21 +59,47 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property array<array-key, mixed> $excluded_section_ids
  * @property array<array-key, mixed> $excluded_activity_ids
  * @property int $view_count
- * @property Carbon|null $last_viewed_at
+ * @property CarbonImmutable|null $last_viewed_at
  * @property int|null $created_by_user_id
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
  * @property-read Vault $vault
  * @property-read Contact|Vault $shareable
  * @property-read User|null $createdBy
  */
+#[RouteKey('uuid')]
+#[Fillable([
+    'account_id',
+    'vault_id',
+    'shareable_type',
+    'shareable_id',
+    'token',
+    'label',
+    'recipient_hint',
+    'password_hash',
+    'expires_at',
+    'revoked_at',
+    'includes_files',
+    'includes_activities',
+    'includes_activity_narrative',
+    'includes_day_narrative',
+    'includes_relationships',
+    'includes_groups',
+    'includes_sensitive_fields',
+    'excluded_section_ids',
+    'excluded_activity_ids',
+    'view_count',
+    'last_viewed_at',
+    'created_by_user_id',
+])]
 class ShareLink extends Model
 {
     /** @use HasFactory<ShareLinkFactory> */
     use HasFactory;
 
     use HasUuids;
+    use ResolvesModelInVault;
 
     /**
      * How long the token in the URL is before it is hashed. It is the only
@@ -85,43 +115,12 @@ class ShareLink extends Model
      */
     public ?string $plainToken = null;
 
-    protected $table = 'share_links';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'vault_id',
-        'shareable_type',
-        'shareable_id',
-        'token',
-        'label',
-        'recipient_hint',
-        'password_hash',
-        'expires_at',
-        'revoked_at',
-        'includes_files',
-        'includes_activities',
-        'includes_activity_narrative',
-        'includes_day_narrative',
-        'includes_relationships',
-        'includes_groups',
-        'includes_sensitive_fields',
-        'excluded_section_ids',
-        'excluded_activity_ids',
-        'view_count',
-        'last_viewed_at',
-        'created_by_user_id',
-    ];
-
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
@@ -139,27 +138,6 @@ class ShareLink extends Model
             'view_count' => 'integer',
             'last_viewed_at' => 'datetime',
         ];
-    }
-
-    /**
-     * Get the columns that are given a unique identifier of their own. The
-     * primary key stays an incrementing integer, and the uuid is what the owner
-     * sees. It is not the token: the address of the screen managing a link must
-     * not be the secret that opens it.
-     *
-     * @return list<string>
-     */
-    public function uniqueIds(): array
-    {
-        return ['uuid'];
-    }
-
-    /**
-     * Get the column a link is looked up by in a URL, on the side of the owner.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'uuid';
     }
 
     /**

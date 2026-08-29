@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\ShareLinkVisitFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Override;
 
 /**
  * Class ShareLinkVisit
@@ -34,12 +36,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $country
  * @property bool $password_was_required
  * @property bool $password_failed
- * @property Carbon $viewed_at
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable $viewed_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
  * @property-read ShareLink $shareLink
  */
+#[Fillable([
+    'account_id',
+    'share_link_id',
+    'ip_address',
+    'user_agent',
+    'country',
+    'password_was_required',
+    'password_failed',
+    'viewed_at',
+])]
 class ShareLinkVisit extends Model
 {
     /** @use HasFactory<ShareLinkVisitFactory> */
@@ -52,29 +64,12 @@ class ShareLinkVisit extends Model
      */
     public const int USER_AGENT_LENGTH = 512;
 
-    protected $table = 'share_link_visits';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'share_link_id',
-        'ip_address',
-        'user_agent',
-        'country',
-        'password_was_required',
-        'password_failed',
-        'viewed_at',
-    ];
-
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

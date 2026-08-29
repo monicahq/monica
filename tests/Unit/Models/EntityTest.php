@@ -16,7 +16,7 @@ use App\Models\File;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -145,7 +145,7 @@ class EntityTest extends TestCase
 
         $this->assertTrue($entity->is_archived);
         $this->assertFalse($entity->deleted_with_vault);
-        $this->assertInstanceOf(Carbon::class, $entity->last_consulted_at);
+        $this->assertInstanceOf(CarbonImmutable::class, $entity->last_consulted_at);
     }
 
     #[Test]

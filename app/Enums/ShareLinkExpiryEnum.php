@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use App\Contracts\Translatable;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+use Override;
 
 /**
  * How long a share link keeps working, as the four answers the screen offers.
@@ -41,7 +42,7 @@ enum ShareLinkExpiryEnum: string implements Translatable
      * The date this case means, counted from now, or null for the link that
      * never stops on its own.
      */
-    public function expiresAt(): ?Carbon
+    public function expiresAt(): ?CarbonImmutable
     {
         return match ($this) {
             self::SevenDays => now()->addDays(7),
@@ -66,6 +67,7 @@ enum ShareLinkExpiryEnum: string implements Translatable
     /**
      * @return list<string>
      */
+    #[Override]
     public function translationKeys(): array
     {
         return [$this->label(), $this->help()];

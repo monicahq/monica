@@ -8,6 +8,7 @@ use App\Contracts\HasEnvelope;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Override;
 
 /**
  * Tell somebody their account was signed in to without a password, through a
@@ -20,6 +21,7 @@ class NewLoginDetected extends Mailable implements HasEnvelope
         public readonly string $ip,
     ) {}
 
+    #[Override]
     public function envelope(): Envelope
     {
         return new Envelope(

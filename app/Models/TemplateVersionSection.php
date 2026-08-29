@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Exceptions\PublishedVersionIsFrozen;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\TemplateVersionSectionFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Override;
 
 /**
  * Class TemplateVersionSection
@@ -35,34 +37,26 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $position
  * @property string|null $title_override
  * @property bool $is_collapsed_by_default
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
  * @property-read TemplateVersion $templateVersion
  * @property-read TemplateVersionPage $templateVersionPage
  * @property-read SectionVersion $sectionVersion
  */
+#[Fillable([
+    'account_id',
+    'template_version_id',
+    'template_version_page_id',
+    'section_version_id',
+    'position',
+    'title_override',
+    'is_collapsed_by_default',
+])]
 class TemplateVersionSection extends Model
 {
     /** @use HasFactory<TemplateVersionSectionFactory> */
     use HasFactory;
-
-    protected $table = 'template_version_sections';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'template_version_id',
-        'template_version_page_id',
-        'section_version_id',
-        'position',
-        'title_override',
-        'is_collapsed_by_default',
-    ];
 
     /**
      * A row is as frozen as the version it belongs to. Once the template version has been
@@ -70,6 +64,7 @@ class TemplateVersionSection extends Model
      * it, since all three would change what an already published version
      * renders.
      */
+    #[Override]
     protected static function booted(): void
     {
         static::saving(function (TemplateVersionSection $row): void {
@@ -86,6 +81,7 @@ class TemplateVersionSection extends Model
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use App\Contracts\SuppliedValueListItem;
+use Override;
 
 enum GenderEnum: string implements SuppliedValueListItem
 {
@@ -18,6 +19,7 @@ enum GenderEnum: string implements SuppliedValueListItem
      * What the gender is called on the screen where somebody picks one. The
      * word doubles as the translation key.
      */
+    #[Override]
     public function label(): string
     {
         return match ($this) {
@@ -34,6 +36,7 @@ enum GenderEnum: string implements SuppliedValueListItem
      *
      * @return list<string>
      */
+    #[Override]
     public function translationKeys(): array
     {
         return [$this->label()];

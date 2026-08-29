@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Exceptions\PublishedVersionIsFrozen;
-use Carbon\Carbon;
+use App\Models\Concerns\HasUuids;
+use Carbon\CarbonImmutable;
 use Database\Factories\TemplateVersionPageFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Override;
 
 /**
  * Class TemplateVersionPage
@@ -39,11 +42,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $label
  * @property string|null $label_translation_key
  * @property int $position
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
  * @property-read TemplateVersion $templateVersion
  */
+#[RouteKey('uuid')]
+#[Fillable([
+    'account_id',
+    'template_version_id',
+    'key',
+    'label',
+    'label_translation_key',
+    'position',
+])]
 class TemplateVersionPage extends Model
 {
     /** @use HasFactory<TemplateVersionPageFactory> */
@@ -64,28 +76,13 @@ class TemplateVersionPage extends Model
      */
     public const string SUPPLIED_KEY = 'general';
 
-    protected $table = 'template_version_pages';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'template_version_id',
-        'key',
-        'label',
-        'label_translation_key',
-        'position',
-    ];
-
     /**
      * A page is as frozen as the version it belongs to. Once the template
      * version has been published, no page may be added to it, renamed, moved
      * or taken out of it, since all four change what an already published
      * version renders.
      */
+    #[Override]
     protected static function booted(): void
     {
         static::saving(function (TemplateVersionPage $page): void {
@@ -102,31 +99,12 @@ class TemplateVersionPage extends Model
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
             'position' => 'integer',
         ];
-    }
-
-    /**
-     * Get the columns that are given a unique identifier of their own. The
-     * primary key stays an incrementing integer, and the uuid is what the API
-     * is shown.
-     *
-     * @return list<string>
-     */
-    public function uniqueIds(): array
-    {
-        return ['uuid'];
-    }
-
-    /**
-     * Get the column a page is looked up by in a URL.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'uuid';
     }
 
     /**

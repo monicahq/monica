@@ -17,7 +17,7 @@ use App\Models\Vault;
 use App\ViewModels\Vaults\ContactShareLinksViewModel;
 use App\ViewModels\Vaults\ShareLinkFormViewModel;
 use App\ViewModels\Vaults\ShareLinkViewModel;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -215,7 +215,7 @@ class ContactShareLinkController extends Controller
      * spans a stored date came from, and it can only mean the date already on
      * the link.
      */
-    private function expiresAt(Request $request, ?ShareLink $shareLink): ?Carbon
+    private function expiresAt(Request $request, ?ShareLink $shareLink): ?CarbonImmutable
     {
         $expiry = $request->string('expiry')->toString();
 

@@ -6,13 +6,15 @@ namespace App\Models;
 
 use App\Enums\AdministratorActionEnum;
 use App\Exceptions\LogIsAppendOnly;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\AdministratorLogFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Override;
 
 /**
  * Class AdministratorLog
@@ -35,42 +37,35 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string|null $subject_type
  * @property int|null $subject_id
  * @property string|null $ip_address
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read User|null $user
  * @property-read Account|null $account
  * @property-read Model|null $subject
  * @property-read string $author
  * @property-read string $description
  */
+#[Fillable([
+    'user_id',
+    'user_email',
+    'action',
+    'parameters',
+    'account_id',
+    'subject_type',
+    'subject_id',
+    'ip_address',
+])]
 class AdministratorLog extends Model
 {
     /** @use HasFactory<AdministratorLogFactory> */
     use HasFactory;
-
-    protected $table = 'administrator_logs';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'user_id',
-        'user_email',
-        'action',
-        'parameters',
-        'account_id',
-        'subject_type',
-        'subject_id',
-        'ip_address',
-    ];
 
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
@@ -83,6 +78,7 @@ class AdministratorLog extends Model
      * rewrite it. Only a retention policy may ever remove one, and there is
      * none yet.
      */
+    #[Override]
     protected static function booted(): void
     {
         static::updating(function (): never {

@@ -16,6 +16,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use InvalidArgumentException;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -23,6 +24,7 @@ class RejectMarketplaceListingVersionTest extends TestCase
 {
     use RefreshDatabase;
 
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

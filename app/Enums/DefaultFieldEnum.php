@@ -6,6 +6,7 @@ namespace App\Enums;
 
 use App\Actions\CreateFile;
 use App\Contracts\Translatable;
+use Override;
 
 /**
  * The fields the template an account starts with asks for.
@@ -184,6 +185,7 @@ enum DefaultFieldEnum: string implements Translatable
      *
      * @return list<string>
      */
+    #[Override]
     public function translationKeys(): array
     {
         return [$this->label()];

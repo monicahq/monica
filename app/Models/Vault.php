@@ -5,15 +5,19 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\VaultColourEnum;
-use Carbon\Carbon;
+use App\Models\Concerns\HasUuids;
+use App\Models\Concerns\ResolvesModelInAccount;
+use Carbon\CarbonImmutable;
 use Database\Factories\VaultFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Override;
 
 /**
  * Class Vault
@@ -36,18 +40,30 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $position
  * @property bool $is_default
  * @property int $contact_count
- * @property Carbon|null $last_visited_at
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property CarbonImmutable|null $last_visited_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
  * @property-read Account $account
  */
+#[RouteKey('uuid')]
+#[Fillable([
+    'account_id',
+    'name',
+    'description',
+    'colour',
+    'position',
+    'is_default',
+    'contact_count',
+    'last_visited_at',
+])]
 class Vault extends Model
 {
     /** @use HasFactory<VaultFactory> */
     use HasFactory;
 
     use HasUuids;
+    use ResolvesModelInAccount;
     use SoftDeletes;
 
     /**
@@ -56,29 +72,12 @@ class Vault extends Model
      */
     public const string DEFAULT_COLOUR = VaultColourEnum::Blue->value;
 
-    protected $table = 'vaults';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'name',
-        'description',
-        'colour',
-        'position',
-        'is_default',
-        'contact_count',
-        'last_visited_at',
-    ];
-
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
@@ -87,43 +86,6 @@ class Vault extends Model
             'contact_count' => 'integer',
             'last_visited_at' => 'datetime',
         ];
-    }
-
-    /**
-     * Get the columns that are given a unique identifier of their own. The
-     * primary key stays an incrementing integer, and the uuid is what the
-     * outside world is shown.
-     *
-     * @return list<string>
-     */
-    public function uniqueIds(): array
-    {
-        return ['uuid'];
-    }
-
-    /**
-     * Get the column a vault is looked up by in a URL.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'uuid';
-    }
-
-    /**
-     * Find the vault a URL points at, within the account of whoever is asking.
-     * A vault of another account is not merely forbidden, it is not found: the
-     * compartment is the whole point, and saying "you may not" would already
-     * say that it exists.
-     *
-     * @param  string  $value
-     * @param  string|null  $field
-     */
-    public function resolveRouteBinding($value, $field = null): ?self
-    {
-        return $this->query()
-            ->where($field ?? $this->getRouteKeyName(), $value)
-            ->where('account_id', auth()->user()?->account_id)
-            ->first();
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\EntityType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Override;
 
 /**
  * @extends Factory<EntityType>
@@ -19,6 +20,7 @@ class EntityTypeFactory extends Factory
     /**
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

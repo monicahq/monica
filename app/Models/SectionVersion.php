@@ -6,13 +6,15 @@ namespace App\Models;
 
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\SectionVersionFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Override;
 
 /**
  * Class SectionVersion
@@ -38,16 +40,28 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property VersionStatusEnum $status
  * @property string|null $change_note
  * @property array<int, array<string, mixed>>|null $resolved_value_lists
- * @property Carbon|null $published_at
- * @property Carbon|null $retired_at
+ * @property CarbonImmutable|null $published_at
+ * @property CarbonImmutable|null $retired_at
  * @property int|null $previous_version_id
  * @property int $usage_count
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
  * @property-read Section $section
  * @property-read SectionVersion|null $previousVersion
  */
+#[Fillable([
+    'account_id',
+    'section_id',
+    'version_number',
+    'status',
+    'change_note',
+    'resolved_value_lists',
+    'published_at',
+    'retired_at',
+    'previous_version_id',
+    'usage_count',
+])]
 class SectionVersion extends Model
 {
     /** @use HasFactory<SectionVersionFactory> */
@@ -70,30 +84,11 @@ class SectionVersion extends Model
         'previous_version_id',
     ];
 
-    protected $table = 'section_versions';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'section_id',
-        'version_number',
-        'status',
-        'change_note',
-        'resolved_value_lists',
-        'published_at',
-        'retired_at',
-        'previous_version_id',
-        'usage_count',
-    ];
-
     /**
      * Guard the freeze here rather than in each action that could reach it, for
      * the same reason a template version does.
      */
+    #[Override]
     protected static function booted(): void
     {
         static::updating(function (SectionVersion $version): void {
@@ -122,6 +117,7 @@ class SectionVersion extends Model
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

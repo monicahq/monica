@@ -8,6 +8,7 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<SectionVersion>
@@ -22,6 +23,7 @@ class SectionVersionFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

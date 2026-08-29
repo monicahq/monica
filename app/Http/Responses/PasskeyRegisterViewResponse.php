@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use LaravelWebauthn\Http\Responses\RegisterViewResponse as BaseRegisterViewResponse;
+use Override;
 
 /**
  * The challenge a new passkey is created against, always as JSON. The reasoning
@@ -19,7 +20,7 @@ class PasskeyRegisterViewResponse extends BaseRegisterViewResponse
     /**
      * @param  Request  $request
      */
-    #[\Override]
+    #[Override]
     public function toResponse($request): JsonResponse
     {
         return Response::json(['publicKey' => $this->publicKey]);

@@ -12,6 +12,7 @@ use App\Models\TemplateVersionPage;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Override;
 
 /**
  * @extends Factory<TemplateVersion>
@@ -26,6 +27,7 @@ class TemplateVersionFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [
@@ -50,6 +52,7 @@ class TemplateVersionFactory extends Factory
      * real thing does, and the page of such a version was put there before it
      * was frozen.
      */
+    #[Override]
     public function configure(): static
     {
         return $this->afterCreating(function (TemplateVersion $version): void {

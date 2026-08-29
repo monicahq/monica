@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\MarketplaceUpdateDecisionEnum;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\MarketplaceInstallationFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Override;
 
 /**
  * Class MarketplaceInstallation
@@ -33,21 +35,35 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $marketplace_listing_version_id
  * @property string $installable_type
  * @property int $installable_id
- * @property Carbon $installed_at
+ * @property CarbonImmutable $installed_at
  * @property bool $has_local_changes
  * @property int|null $update_available_version_id
- * @property Carbon|null $update_notified_at
+ * @property CarbonImmutable|null $update_notified_at
  * @property MarketplaceUpdateDecisionEnum|null $update_decision
- * @property Carbon|null $update_decided_at
+ * @property CarbonImmutable|null $update_decided_at
  * @property array<string, mixed>|null $value_list_mapping
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
  * @property-read Account $account
  * @property-read MarketplaceListing $listing
  * @property-read MarketplaceListingVersion $version
  * @property-read MarketplaceListingVersion|null $updateAvailableVersion
  */
+#[Fillable([
+    'account_id',
+    'marketplace_listing_id',
+    'marketplace_listing_version_id',
+    'installable_type',
+    'installable_id',
+    'installed_at',
+    'has_local_changes',
+    'update_available_version_id',
+    'update_notified_at',
+    'update_decision',
+    'update_decided_at',
+    'value_list_mapping',
+])]
 class MarketplaceInstallation extends Model
 {
     /** @use HasFactory<MarketplaceInstallationFactory> */
@@ -55,33 +71,12 @@ class MarketplaceInstallation extends Model
 
     use SoftDeletes;
 
-    protected $table = 'marketplace_installations';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'marketplace_listing_id',
-        'marketplace_listing_version_id',
-        'installable_type',
-        'installable_id',
-        'installed_at',
-        'has_local_changes',
-        'update_available_version_id',
-        'update_notified_at',
-        'update_decision',
-        'update_decided_at',
-        'value_list_mapping',
-    ];
-
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

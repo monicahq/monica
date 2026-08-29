@@ -8,6 +8,7 @@ use App\Contracts\HasEnvelope;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Override;
 
 /**
  * Tell somebody their account was signed in to from somewhere we have not seen
@@ -21,6 +22,7 @@ class UserIpChanged extends Mailable implements HasEnvelope
         public readonly string $ip,
     ) {}
 
+    #[Override]
     public function envelope(): Envelope
     {
         return new Envelope(

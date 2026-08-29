@@ -17,7 +17,7 @@ use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
@@ -371,7 +371,7 @@ class ContactViewModel
      * the next snapshot's, or the record's own for the last of them. A snapshot
      * where those two are the same moved nothing and is skipped.
      *
-     * @return array<int, array{version: TemplateVersion, from: Carbon, by: User|null}>
+     * @return array<int, array{version: TemplateVersion, from: CarbonImmutable, by: User|null}>
      */
     private function versionChain(): array
     {
@@ -410,7 +410,7 @@ class ContactViewModel
     }
 
     /**
-     * @param  array{version: TemplateVersion, from: Carbon, by: User|null}  $leg
+     * @param  array{version: TemplateVersion, from: CarbonImmutable, by: User|null}  $leg
      */
     private function whoApplied(array $leg, bool $isFirst): string
     {
@@ -427,7 +427,7 @@ class ContactViewModel
             : __('applied by :name', ['name' => $leg['by']->name]);
     }
 
-    private function spanOf(Carbon $from, ?Carbon $until, bool $isCurrent): string
+    private function spanOf(CarbonImmutable $from, ?CarbonImmutable $until, bool $isCurrent): string
     {
         $duration = $from->diffForHumans(other: $until ?? now(), syntax: CarbonInterface::DIFF_ABSOLUTE);
 

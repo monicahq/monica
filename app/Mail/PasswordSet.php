@@ -8,6 +8,7 @@ use App\Contracts\HasEnvelope;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Override;
 
 /**
  * A change to the ways into an account, told to the person who owns the address.
@@ -15,6 +16,7 @@ use Illuminate\Mail\Mailables\Envelope;
  */
 class PasswordSet extends Mailable implements HasEnvelope
 {
+    #[Override]
     public function envelope(): Envelope
     {
         return new Envelope(

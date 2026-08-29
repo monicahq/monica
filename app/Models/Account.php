@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\AccountFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Override;
 
 /**
  * Class Account
@@ -21,41 +23,34 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int $id
  * @property bool $is_self_hosted
  * @property bool $has_lifetime_access
- * @property Carbon|null $purchased_at
+ * @property CarbonImmutable|null $purchased_at
  * @property string|null $billing_email
  * @property int $storage_used_in_bytes
  * @property int|null $storage_limit_in_bytes
- * @property Carbon|null $onboarding_completed_at
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable|null $onboarding_completed_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  */
+#[Fillable([
+    'is_self_hosted',
+    'has_lifetime_access',
+    'purchased_at',
+    'billing_email',
+    'storage_used_in_bytes',
+    'storage_limit_in_bytes',
+    'onboarding_completed_at',
+])]
 class Account extends Model
 {
     /** @use HasFactory<AccountFactory> */
     use HasFactory;
-
-    protected $table = 'accounts';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'is_self_hosted',
-        'has_lifetime_access',
-        'purchased_at',
-        'billing_email',
-        'storage_used_in_bytes',
-        'storage_limit_in_bytes',
-        'onboarding_completed_at',
-    ];
 
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

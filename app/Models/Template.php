@@ -5,15 +5,19 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\TemplateAppliesToEnum;
-use Carbon\Carbon;
+use App\Models\Concerns\HasUuids;
+use App\Models\Concerns\ResolvesModelInAccount;
+use Carbon\CarbonImmutable;
 use Database\Factories\TemplateFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Override;
 
 /**
  * Class Template
@@ -44,19 +48,39 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int|null $published_version_id
  * @property string $locale
  * @property int $position
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
  * @property-read Account $account
  * @property-read EntityType|null $entityType
  * @property-read TemplateVersion|null $publishedVersion
  */
+/*
+ * A template is looked up by its slug in a URL. The slug is readable and
+ * stable, which is what a URL wants; the uuid is there for the API.
+ */
+#[RouteKey('slug')]
+#[Fillable([
+    'account_id',
+    'applies_to',
+    'entity_type_id',
+    'name',
+    'name_translation_key',
+    'description',
+    'slug',
+    'is_system',
+    'is_active',
+    'published_version_id',
+    'locale',
+    'position',
+])]
 class Template extends Model
 {
     /** @use HasFactory<TemplateFactory> */
     use HasFactory;
 
     use HasUuids;
+    use ResolvesModelInAccount;
     use SoftDeletes;
 
     /**
@@ -65,33 +89,12 @@ class Template extends Model
      */
     public const int SLUG_LENGTH = 64;
 
-    protected $table = 'templates';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'applies_to',
-        'entity_type_id',
-        'name',
-        'name_translation_key',
-        'description',
-        'slug',
-        'is_system',
-        'is_active',
-        'published_version_id',
-        'locale',
-        'position',
-    ];
-
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
@@ -100,43 +103,6 @@ class Template extends Model
             'is_active' => 'boolean',
             'position' => 'integer',
         ];
-    }
-
-    /**
-     * Get the columns that are given a unique identifier of their own. The
-     * primary key stays an incrementing integer, and the uuid is what the API
-     * is shown.
-     *
-     * @return list<string>
-     */
-    public function uniqueIds(): array
-    {
-        return ['uuid'];
-    }
-
-    /**
-     * Get the column a template is looked up by in a URL. The slug is readable
-     * and stable, which is what a URL wants; the uuid is there for the API.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
-
-    /**
-     * Find the template a URL points at. The slug is only unique within an
-     * account, so the account has to be part of the lookup: two accounts that
-     * both built a "pet" template would otherwise race for the same row.
-     *
-     * @param  string  $value
-     * @param  string|null  $field
-     */
-    public function resolveRouteBinding($value, $field = null): ?self
-    {
-        return $this->query()
-            ->where($field ?? $this->getRouteKeyName(), $value)
-            ->where('account_id', auth()->user()?->account_id)
-            ->first();
     }
 
     /**

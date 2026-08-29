@@ -8,6 +8,7 @@ use App\Models\MagicLink;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Override;
 
 /**
  * @extends Factory<MagicLink>
@@ -19,6 +20,7 @@ class MagicLinkFactory extends Factory
     /**
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

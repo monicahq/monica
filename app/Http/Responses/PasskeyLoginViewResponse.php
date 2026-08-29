@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use LaravelWebauthn\Http\Responses\LoginViewResponse as BaseLoginViewResponse;
+use Override;
 
 /**
  * The challenge a passkey sign-in answers, always as JSON.
@@ -23,7 +24,7 @@ class PasskeyLoginViewResponse extends BaseLoginViewResponse
     /**
      * @param  Request  $request
      */
-    #[\Override]
+    #[Override]
     public function toResponse($request): JsonResponse
     {
         return Response::json(['publicKey' => $this->publicKey]);

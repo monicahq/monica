@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\EmailSentFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Override;
 
 /**
  * Class EmailSent
@@ -23,42 +26,36 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $email_address
  * @property string|null $subject
  * @property string|null $body
- * @property Carbon|null $sent_at
- * @property Carbon|null $delivered_at
- * @property Carbon|null $bounced_at
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable|null $sent_at
+ * @property CarbonImmutable|null $delivered_at
+ * @property CarbonImmutable|null $bounced_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  */
+#[Table('emails_sent')]
+#[Fillable([
+    'account_id',
+    'user_id',
+    'uuid',
+    'email_type',
+    'email_address',
+    'subject',
+    'body',
+    'sent_at',
+    'delivered_at',
+    'bounced_at',
+])]
 class EmailSent extends Model
 {
     /** @use HasFactory<EmailSentFactory> */
     use HasFactory;
-
-    protected $table = 'emails_sent';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'user_id',
-        'uuid',
-        'email_type',
-        'email_address',
-        'subject',
-        'body',
-        'sent_at',
-        'delivered_at',
-        'bounced_at',
-    ];
 
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

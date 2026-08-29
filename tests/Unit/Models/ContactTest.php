@@ -14,7 +14,7 @@ use App\Models\ShareLink;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -127,8 +127,8 @@ class ContactTest extends TestCase
         $this->assertFalse($contact->is_partial);
         $this->assertSame(12, $contact->activity_count);
         $this->assertEquals(NameOrderEnum::FamilyFirst, $contact->name_order);
-        $this->assertInstanceOf(Carbon::class, $contact->last_activity_at);
-        $this->assertInstanceOf(Carbon::class, $contact->last_consulted_at);
+        $this->assertInstanceOf(CarbonImmutable::class, $contact->last_activity_at);
+        $this->assertInstanceOf(CarbonImmutable::class, $contact->last_consulted_at);
     }
 
     #[Test]

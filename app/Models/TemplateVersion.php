@@ -6,13 +6,15 @@ namespace App\Models;
 
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\TemplateVersionFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Override;
 
 /**
  * Class TemplateVersion
@@ -35,16 +37,27 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $version_number
  * @property VersionStatusEnum $status
  * @property string|null $change_note
- * @property Carbon|null $published_at
- * @property Carbon|null $retired_at
+ * @property CarbonImmutable|null $published_at
+ * @property CarbonImmutable|null $retired_at
  * @property int|null $previous_version_id
  * @property int $record_count
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
  * @property-read Template $template
  * @property-read TemplateVersion|null $previousVersion
  */
+#[Fillable([
+    'account_id',
+    'template_id',
+    'version_number',
+    'status',
+    'change_note',
+    'published_at',
+    'retired_at',
+    'previous_version_id',
+    'record_count',
+])]
 class TemplateVersion extends Model
 {
     /** @use HasFactory<TemplateVersionFactory> */
@@ -66,31 +79,13 @@ class TemplateVersion extends Model
         'previous_version_id',
     ];
 
-    protected $table = 'template_versions';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'template_id',
-        'version_number',
-        'status',
-        'change_note',
-        'published_at',
-        'retired_at',
-        'previous_version_id',
-        'record_count',
-    ];
-
     /**
      * Guard the freeze here rather than in each action that could reach it. The
      * promise that a record keeps rendering the way it did is only worth
      * something if no code path at all can edit a published version, and there
      * is one place where every path meets.
      */
+    #[Override]
     protected static function booted(): void
     {
         static::updating(function (TemplateVersion $version): void {
@@ -119,6 +114,7 @@ class TemplateVersion extends Model
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

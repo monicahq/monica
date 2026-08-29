@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use App\Contracts\SuppliedValueListItem;
+use Override;
 
 enum EmailLabelEnum: string implements SuppliedValueListItem
 {
@@ -17,6 +18,7 @@ enum EmailLabelEnum: string implements SuppliedValueListItem
      * What the address is for, shown beside it on a record. The word doubles as
      * the translation key.
      */
+    #[Override]
     public function label(): string
     {
         return match ($this) {
@@ -32,6 +34,7 @@ enum EmailLabelEnum: string implements SuppliedValueListItem
      *
      * @return list<string>
      */
+    #[Override]
     public function translationKeys(): array
     {
         return [$this->label()];

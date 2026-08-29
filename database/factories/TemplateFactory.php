@@ -10,6 +10,7 @@ use App\Models\EntityType;
 use App\Models\Template;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Override;
 
 /**
  * @extends Factory<Template>
@@ -21,6 +22,7 @@ class TemplateFactory extends Factory
     /**
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

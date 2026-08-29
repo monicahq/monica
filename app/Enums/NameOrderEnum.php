@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use App\Contracts\Translatable;
+use Override;
 
 enum NameOrderEnum: string implements Translatable
 {
@@ -40,6 +41,7 @@ enum NameOrderEnum: string implements Translatable
      *
      * @return list<string>
      */
+    #[Override]
     public function translationKeys(): array
     {
         return [$this->label()];

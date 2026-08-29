@@ -11,7 +11,7 @@ use App\Models\Contact;
 use App\Models\ShareLink;
 use App\Models\User;
 use App\Models\Vault;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -49,7 +49,7 @@ class CreateShareLink
         private string $label,
         private ?string $recipientHint = null,
         private readonly ?string $password = null,
-        private readonly ?Carbon $expiresAt = null,
+        private readonly ?CarbonImmutable $expiresAt = null,
         private readonly bool $includesFiles = false,
         private readonly bool $includesActivities = false,
         private readonly bool $includesActivityNarrative = false,

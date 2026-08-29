@@ -9,6 +9,7 @@ use App\Models\EntityType;
 use App\Models\TemplateVersion;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<Entity>
@@ -23,6 +24,7 @@ class EntityFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

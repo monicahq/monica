@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use App\Contracts\SuppliedValueListItem;
+use Override;
 
 /**
  * A handful of countries to start from rather than the two hundred that exist.
@@ -30,6 +31,7 @@ enum CountryEnum: string implements SuppliedValueListItem
     /**
      * The name of the country, which doubles as the translation key.
      */
+    #[Override]
     public function label(): string
     {
         return match ($this) {
@@ -51,6 +53,7 @@ enum CountryEnum: string implements SuppliedValueListItem
      *
      * @return list<string>
      */
+    #[Override]
     public function translationKeys(): array
     {
         return [$this->label()];

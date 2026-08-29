@@ -6,12 +6,14 @@ namespace App\Models;
 
 use App\Enums\SnapshotReasonEnum;
 use App\Exceptions\SnapshotIsImmutable;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\RecordSnapshotFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Override;
 
 /**
  * Class RecordSnapshot
@@ -39,41 +41,33 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property array<array-key, mixed> $payload
  * @property array<array-key, mixed> $file_ids
  * @property int|null $created_by_user_id
- * @property Carbon|null $restored_at
- * @property Carbon|null $expires_at
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable|null $restored_at
+ * @property CarbonImmutable|null $expires_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
  * @property-read Vault $vault
  * @property-read Contact|Entity $snapshotable
  * @property-read TemplateVersion $templateVersion
  * @property-read User|null $createdBy
  */
+#[Fillable([
+    'account_id',
+    'vault_id',
+    'snapshotable_type',
+    'snapshotable_id',
+    'template_version_id',
+    'reason',
+    'payload',
+    'file_ids',
+    'created_by_user_id',
+    'restored_at',
+    'expires_at',
+])]
 class RecordSnapshot extends Model
 {
     /** @use HasFactory<RecordSnapshotFactory> */
     use HasFactory;
-
-    protected $table = 'record_snapshots';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'vault_id',
-        'snapshotable_type',
-        'snapshotable_id',
-        'template_version_id',
-        'reason',
-        'payload',
-        'file_ids',
-        'created_by_user_id',
-        'restored_at',
-        'expires_at',
-    ];
 
     /**
      * A snapshot is written and then left alone. The one thing that moves is
@@ -83,6 +77,7 @@ class RecordSnapshot extends Model
      * Deleting is refused for the reason a log entry is: only a retention rule
      * may ever remove one, and there is none yet.
      */
+    #[Override]
     protected static function booted(): void
     {
         static::updating(function (RecordSnapshot $snapshot): void {
@@ -103,6 +98,7 @@ class RecordSnapshot extends Model
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

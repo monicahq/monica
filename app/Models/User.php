@@ -8,8 +8,11 @@ use App\Enums\DateFormatEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\UserFactory;
+use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,6 +22,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Override;
 
 /**
  * Class User
@@ -33,9 +37,9 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $last_name
  * @property string|null $photo_path
  * @property string $email
- * @property Carbon|null $email_verified_at
+ * @property CarbonImmutable|null $email_verified_at
  * @property string|null $password
- * @property Carbon|null $password_changed_at
+ * @property CarbonImmutable|null $password_changed_at
  * @property string|null $sso_provider
  * @property bool $is_active
  * @property string|null $locale
@@ -44,19 +48,49 @@ use Laravel\Sanctum\HasApiTokens;
  * @property DateFormatEnum|null $date_format
  * @property NameOrderEnum $name_order
  * @property NumberFormatEnum|null $number_format
- * @property Carbon|null $last_login_at
+ * @property CarbonImmutable|null $last_login_at
  * @property string|null $last_login_ip
  * @property string|null $two_factor_secret
- * @property Carbon|null $two_factor_confirmed_at
+ * @property CarbonImmutable|null $two_factor_confirmed_at
  * @property array<int, string>|null $two_factor_recovery_codes
- * @property Carbon|null $last_saved_at
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property CarbonImmutable|null $last_saved_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
  * @property-read string $name
  * @property-read Administrator|null $administrator
  */
-class User extends Authenticatable
+#[Fillable([
+    'account_id',
+    'first_name',
+    'last_name',
+    'photo_path',
+    'email',
+    'email_verified_at',
+    'password',
+    'password_changed_at',
+    'sso_provider',
+    'is_active',
+    'locale',
+    'timezone',
+    'time_format',
+    'date_format',
+    'name_order',
+    'number_format',
+    'last_login_at',
+    'last_login_ip',
+    'two_factor_secret',
+    'two_factor_confirmed_at',
+    'two_factor_recovery_codes',
+    'last_saved_at',
+])]
+#[Hidden([
+    'password',
+    'remember_token',
+    'two_factor_secret',
+    'two_factor_recovery_codes',
+])]
+class User extends Authenticatable implements HasLocalePreference
 {
     use HasApiTokens;
 
@@ -74,55 +108,12 @@ class User extends Authenticatable
      */
     public const int PHOTO_SIZE = 96;
 
-    protected $table = 'users';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'first_name',
-        'last_name',
-        'photo_path',
-        'email',
-        'email_verified_at',
-        'password',
-        'password_changed_at',
-        'sso_provider',
-        'is_active',
-        'locale',
-        'timezone',
-        'time_format',
-        'date_format',
-        'name_order',
-        'number_format',
-        'last_login_at',
-        'last_login_ip',
-        'two_factor_secret',
-        'two_factor_confirmed_at',
-        'two_factor_recovery_codes',
-        'last_saved_at',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-        'two_factor_secret',
-        'two_factor_recovery_codes',
-    ];
-
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
@@ -301,5 +292,16 @@ class User extends Authenticatable
     public function photoVariantPath(int $pixels): string
     {
         return $this->photo_path.'_'.$pixels.'.webp';
+    }
+
+    /**
+     * Get the preferred locale of the entity.
+     *
+     * @return string
+     */
+    #[Override]
+    public function preferredLocale()
+    {
+        return $this->locale;
     }
 }

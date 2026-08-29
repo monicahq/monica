@@ -7,13 +7,15 @@ namespace App\Models;
 use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\FieldFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Override;
 
 /**
  * Class Field
@@ -58,14 +60,40 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property bool $is_reminder_source
  * @property RelationTargetEnum|null $relation_target
  * @property int|null $relation_entity_type_id
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
  * @property-read SectionVersion $sectionVersion
  * @property-read ValueList|null $valueList
  * @property-read Field|null $parent
  * @property-read EntityType|null $relationEntityType
  */
+#[Fillable([
+    'account_id',
+    'section_version_id',
+    'type',
+    'key',
+    'label',
+    'label_translation_key',
+    'help_text',
+    'placeholder',
+    'position',
+    'is_required',
+    'is_sensitive',
+    'is_highlighted',
+    'is_unique',
+    'value_list_id',
+    'default_value',
+    'options',
+    'validation',
+    'is_repeatable',
+    'repeat_min',
+    'repeat_max',
+    'parent_field_id',
+    'is_reminder_source',
+    'relation_target',
+    'relation_entity_type_id',
+])]
 class Field extends Model
 {
     /** @use HasFactory<FieldFactory> */
@@ -77,45 +105,12 @@ class Field extends Model
      */
     public const int KEY_LENGTH = 64;
 
-    protected $table = 'fields';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'section_version_id',
-        'type',
-        'key',
-        'label',
-        'label_translation_key',
-        'help_text',
-        'placeholder',
-        'position',
-        'is_required',
-        'is_sensitive',
-        'is_highlighted',
-        'is_unique',
-        'value_list_id',
-        'default_value',
-        'options',
-        'validation',
-        'is_repeatable',
-        'repeat_min',
-        'repeat_max',
-        'parent_field_id',
-        'is_reminder_source',
-        'relation_target',
-        'relation_entity_type_id',
-    ];
-
     /**
      * A field is as frozen as the section it sits in. It is created, edited and
      * deleted only on a draft, and the refusal lives here so that no path
      * around the actions can reach a published one.
      */
+    #[Override]
     protected static function booted(): void
     {
         static::saving(function (Field $field): void {
@@ -132,6 +127,7 @@ class Field extends Model
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

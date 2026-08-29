@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use App\Contracts\Translatable;
+use Override;
 
 /**
  * The categories the catalogue is filed under.
@@ -94,6 +95,7 @@ enum MarketplaceCategoryEnum: string implements Translatable
      *
      * @return list<string>
      */
+    #[Override]
     public function translationKeys(): array
     {
         return [$this->label(), $this->description()];

@@ -9,6 +9,7 @@ use App\Helpers\MarketplacePayload;
 use App\Models\MarketplaceListing;
 use App\Models\MarketplaceListingVersion;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<MarketplaceListingVersion>
@@ -25,6 +26,7 @@ class MarketplaceListingVersionFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         $payload = ['type' => 'section', 'section' => [], 'fields' => [], 'value_lists' => []];

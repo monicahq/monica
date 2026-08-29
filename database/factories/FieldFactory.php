@@ -11,6 +11,7 @@ use App\Models\SectionVersion;
 use App\Models\ValueList;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Override;
 
 /**
  * @extends Factory<Field>
@@ -25,6 +26,7 @@ class FieldFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

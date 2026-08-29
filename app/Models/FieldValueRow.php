@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\FieldValueRowFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Override;
 
 /**
  * Class FieldValueRow
@@ -28,37 +30,30 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property int $valuable_id
  * @property int $field_id
  * @property int $position
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
  * @property-read Contact|Entity $valuable
  * @property-read Field $field
  */
+#[Fillable([
+    'account_id',
+    'valuable_type',
+    'valuable_id',
+    'field_id',
+    'position',
+])]
 class FieldValueRow extends Model
 {
     /** @use HasFactory<FieldValueRowFactory> */
     use HasFactory;
-
-    protected $table = 'field_value_rows';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'valuable_type',
-        'valuable_id',
-        'field_id',
-        'position',
-    ];
 
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

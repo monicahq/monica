@@ -7,6 +7,7 @@ namespace App\Http\Resources;
 use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * One thing that happened in an account, as the API hands it out.
@@ -29,6 +30,7 @@ class LogResource extends JsonResource
     /**
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

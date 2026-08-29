@@ -10,7 +10,7 @@ use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\ShareLink;
 use App\Models\User;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Hash;
 
@@ -41,7 +41,7 @@ class UpdateShareLink
         private readonly ShareLink $shareLink,
         private string $label,
         private ?string $recipientHint = null,
-        private readonly ?Carbon $expiresAt = null,
+        private readonly ?CarbonImmutable $expiresAt = null,
         private readonly ?string $password = null,
         private readonly bool $removesPassword = false,
         private readonly bool $includesFiles = false,

@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValueRow;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<FieldValueRow>
@@ -22,6 +23,7 @@ class FieldValueRowFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

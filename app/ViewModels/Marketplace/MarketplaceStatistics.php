@@ -9,7 +9,6 @@ use App\Models\MarketplaceInstallation;
 use App\Models\MarketplaceListing;
 use App\Models\Section;
 use App\Models\Template;
-use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -162,7 +161,7 @@ class MarketplaceStatistics
         $counts = MarketplaceInstallation::query()
             ->where('installed_at', '>=', $start)
             ->pluck('installed_at')
-            ->countBy(fn (Carbon $moment): string => $moment->format('Y-m'));
+            ->countBy(fn (CarbonImmutable $moment): string => $moment->format('Y-m'));
 
         $tallest = max(1, (int) $counts->max());
 

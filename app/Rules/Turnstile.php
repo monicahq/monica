@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Translation\PotentiallyTranslatedString;
+use Override;
 
 /**
  * Check the token the Turnstile widget put in the form against Cloudflare. A
@@ -19,6 +20,7 @@ class Turnstile implements ValidationRule
     /**
      * @param  Closure(string, string|null=): PotentiallyTranslatedString  $fail
      */
+    #[Override]
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $response = Http::asForm()->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [

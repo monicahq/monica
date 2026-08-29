@@ -7,6 +7,7 @@ namespace Database\Factories;
 use App\Models\ShareLink;
 use App\Models\ShareLinkVisit;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<ShareLinkVisit>
@@ -18,6 +19,7 @@ class ShareLinkVisitFactory extends Factory
     /**
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

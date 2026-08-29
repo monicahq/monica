@@ -6,12 +6,14 @@ namespace App\Models;
 
 use App\Enums\MarketplaceVersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\MarketplaceListingVersionFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Override;
 
 /**
  * Class MarketplaceListingVersion
@@ -38,16 +40,29 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $change_note
  * @property MarketplaceVersionStatusEnum $status
  * @property string|null $rejection_reason
- * @property Carbon|null $approved_at
- * @property Carbon|null $withdrawn_at
+ * @property CarbonImmutable|null $approved_at
+ * @property CarbonImmutable|null $withdrawn_at
  * @property int|null $previous_version_id
  * @property int $install_count
  * @property string $checksum
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read MarketplaceListing $listing
  * @property-read MarketplaceListingVersion|null $previousVersion
  */
+#[Fillable([
+    'marketplace_listing_id',
+    'version_number',
+    'payload',
+    'change_note',
+    'status',
+    'rejection_reason',
+    'approved_at',
+    'withdrawn_at',
+    'previous_version_id',
+    'install_count',
+    'checksum',
+])]
 class MarketplaceListingVersion extends Model
 {
     /** @use HasFactory<MarketplaceListingVersionFactory> */
@@ -69,32 +84,12 @@ class MarketplaceListingVersion extends Model
         'checksum',
     ];
 
-    protected $table = 'marketplace_listing_versions';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'marketplace_listing_id',
-        'version_number',
-        'payload',
-        'change_note',
-        'status',
-        'rejection_reason',
-        'approved_at',
-        'withdrawn_at',
-        'previous_version_id',
-        'install_count',
-        'checksum',
-    ];
-
     /**
      * Guard the freeze here rather than in each action that could reach it. An
      * approved version is what an install checked its checksum against, so a
      * payload that could still change afterwards would make that check a lie.
      */
+    #[Override]
     protected static function booted(): void
     {
         static::updating(function (MarketplaceListingVersion $version): void {
@@ -113,6 +108,7 @@ class MarketplaceListingVersion extends Model
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Database\Factories\ValueListItemFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Override;
 
 /**
  * Class ValueListItem
@@ -36,12 +38,26 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property bool $is_system
  * @property bool $is_active
  * @property int $usage_count
- * @property Carbon $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
  * @property-read Account $account
  * @property-read ValueList $valueList
  */
+#[Fillable([
+    'account_id',
+    'value_list_id',
+    'key',
+    'label',
+    'label_translation_key',
+    'description',
+    'colour',
+    'icon',
+    'position',
+    'is_system',
+    'is_active',
+    'usage_count',
+])]
 class ValueListItem extends Model
 {
     /** @use HasFactory<ValueListItemFactory> */
@@ -49,33 +65,12 @@ class ValueListItem extends Model
 
     use SoftDeletes;
 
-    protected $table = 'value_list_items';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'account_id',
-        'value_list_id',
-        'key',
-        'label',
-        'label_translation_key',
-        'description',
-        'colour',
-        'icon',
-        'position',
-        'is_system',
-        'is_active',
-        'usage_count',
-    ];
-
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

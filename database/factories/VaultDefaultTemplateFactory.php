@@ -10,6 +10,7 @@ use App\Models\TemplateVersion;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<VaultDefaultTemplate>
@@ -24,6 +25,7 @@ class VaultDefaultTemplateFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

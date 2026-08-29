@@ -6,6 +6,7 @@ namespace App\Enums;
 
 use App\Contracts\SuppliedValueListItem;
 use App\Contracts\Translatable;
+use Override;
 
 /**
  * The value lists an account is created with, and what goes in each of them.
@@ -95,6 +96,7 @@ enum ValueListEnum: string implements Translatable
      *
      * @return list<string>
      */
+    #[Override]
     public function translationKeys(): array
     {
         return [$this->label(), $this->description()];

@@ -8,9 +8,11 @@ use App\Contracts\HasEnvelope;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Override;
 
 class NewLoginDetected extends Mailable implements HasEnvelope
 {
+    #[Override]
     public function envelope(): Envelope
     {
         return new Envelope(

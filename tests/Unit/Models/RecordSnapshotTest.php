@@ -13,7 +13,7 @@ use App\Models\RecordSnapshot;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -111,8 +111,8 @@ class RecordSnapshotTest extends TestCase
         $this->assertEquals(SnapshotReasonEnum::TemplateChange, $snapshot->reason);
         $this->assertEquals(['record' => ['first_name' => 'Michael']], $snapshot->payload);
         $this->assertEquals([4, 8], $snapshot->file_ids);
-        $this->assertInstanceOf(Carbon::class, $snapshot->restored_at);
-        $this->assertInstanceOf(Carbon::class, $snapshot->expires_at);
+        $this->assertInstanceOf(CarbonImmutable::class, $snapshot->restored_at);
+        $this->assertInstanceOf(CarbonImmutable::class, $snapshot->expires_at);
     }
 
     #[Test]

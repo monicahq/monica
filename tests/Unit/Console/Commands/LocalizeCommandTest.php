@@ -7,6 +7,7 @@ namespace Tests\Unit\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -22,6 +23,7 @@ class LocalizeCommandTest extends TestCase
 
     private string $langPath;
 
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -32,6 +34,7 @@ class LocalizeCommandTest extends TestCase
         File::cleanDirectory($this->langPath);
     }
 
+    #[Override]
     protected function tearDown(): void
     {
         File::deleteDirectory($this->langPath);

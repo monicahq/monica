@@ -8,7 +8,7 @@ use App\Models\Account;
 use App\Models\ShareLink;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -55,7 +55,7 @@ class VaultTest extends TestCase
         $this->assertSame(3, $vault->position);
         $this->assertSame(12, $vault->contact_count);
         $this->assertTrue($vault->is_default);
-        $this->assertInstanceOf(Carbon::class, $vault->last_visited_at);
+        $this->assertInstanceOf(CarbonImmutable::class, $vault->last_visited_at);
     }
 
     #[Test]

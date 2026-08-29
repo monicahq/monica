@@ -20,7 +20,7 @@ use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactViewModel;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Test;
@@ -579,7 +579,7 @@ class ContactViewModelTest extends TestCase
      * Record the move the way the product does: a snapshot of the state being
      * left, then the record on the version it moved to.
      */
-    private function moved(Contact $contact, TemplateVersion $from, TemplateVersion $to, User $by, Carbon $when): void
+    private function moved(Contact $contact, TemplateVersion $from, TemplateVersion $to, User $by, CarbonImmutable $when): void
     {
         RecordSnapshot::factory()->beforeAStructureChange($from)->create([
             'snapshotable_type' => Contact::class,

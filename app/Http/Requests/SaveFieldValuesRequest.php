@@ -10,6 +10,7 @@ use App\Models\Field;
 use App\Models\TemplateVersionSection;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
+use Override;
 use RuntimeException;
 
 /**
@@ -59,6 +60,7 @@ class SaveFieldValuesRequest extends FormRequest
      *
      * @return array<string, string>
      */
+    #[Override]
     public function attributes(): array
     {
         $names = [];
@@ -82,6 +84,7 @@ class SaveFieldValuesRequest extends FormRequest
      * the record read-only: the errors would land on markup that draws no
      * controls to put them under, and somebody would be told nothing at all.
      */
+    #[Override]
     protected function getRedirectUrl(): string
     {
         return route('contacts.sections.edit', [

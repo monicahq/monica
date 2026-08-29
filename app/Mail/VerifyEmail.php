@@ -8,6 +8,7 @@ use App\Contracts\HasEnvelope;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Override;
 
 /**
  * Ask somebody who just signed up to prove the address they gave is theirs. The
@@ -20,6 +21,7 @@ class VerifyEmail extends Mailable implements HasEnvelope
         public readonly string $url,
     ) {}
 
+    #[Override]
     public function envelope(): Envelope
     {
         return new Envelope(
