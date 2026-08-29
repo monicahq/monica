@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
+use App\Enums\EmailDeliveryStatusEnum;
 use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\User;
@@ -45,5 +46,37 @@ class EmailSentTest extends TestCase
 
         $this->assertFalse($emailSent->user()->exists());
         $this->assertNull($emailSent->user);
+    }
+
+    #[Test]
+    public function it_reads_as_sent_while_nothing_has_come_back(): void
+    {
+        $emailSent = EmailSent::factory()->create();
+
+        $this->assertSame(EmailDeliveryStatusEnum::Sent, $emailSent->delivery_status);
+    }
+
+    #[Test]
+    public function it_reads_as_delivered_once_it_arrived(): void
+    {
+        $emailSent = EmailSent::factory()->delivered()->create();
+
+        $this->assertSame(EmailDeliveryStatusEnum::Delivered, $emailSent->delivery_status);
+    }
+
+    #[Test]
+    public function it_reads_as_bounced_once_it_came_back(): void
+    {
+        $emailSent = EmailSent::factory()->bounced()->create();
+
+        $this->assertSame(EmailDeliveryStatusEnum::Bounced, $emailSent->delivery_status);
+    }
+
+    #[Test]
+    public function it_reads_as_bounced_when_the_provider_reported_both(): void
+    {
+        $emailSent = EmailSent::factory()->delivered()->bounced()->create();
+
+        $this->assertSame(EmailDeliveryStatusEnum::Bounced, $emailSent->delivery_status);
     }
 }

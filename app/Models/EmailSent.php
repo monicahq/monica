@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\EmailDeliveryStatusEnum;
 use Carbon\CarbonImmutable;
 use Database\Factories\EmailSentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -31,6 +33,7 @@ use Override;
  * @property CarbonImmutable|null $bounced_at
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
+ * @property-read EmailDeliveryStatusEnum $delivery_status
  */
 #[Table('emails_sent')]
 #[Fillable([
@@ -63,6 +66,25 @@ class EmailSent extends Model
             'delivered_at' => 'datetime',
             'bounced_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Where the email got to, read off the three timestamps.
+     *
+     * Bounced beats delivered. A provider can report the two out of order, and
+     * an email that came back is the fact worth surfacing when both are set.
+     *
+     * @return Attribute<EmailDeliveryStatusEnum, never>
+     */
+    protected function deliveryStatus(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): EmailDeliveryStatusEnum => match (true) {
+                $this->bounced_at !== null => EmailDeliveryStatusEnum::Bounced,
+                $this->delivered_at !== null => EmailDeliveryStatusEnum::Delivered,
+                default => EmailDeliveryStatusEnum::Sent,
+            },
+        );
     }
 
     /**

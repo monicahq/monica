@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\ApiKeyController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegistrationController;
+use App\Http\Controllers\Api\EmailSentController;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\StatusController;
@@ -41,5 +42,10 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         // nobody edits, so there is nothing here but reading.
         Route::get('logs', [LogController::class, 'index'])->name('logs');
         Route::get('logs/{log}', [LogController::class, 'show'])->where('log', '[1-9][0-9]*')->name('logs.show');
+
+        // Every email that left on behalf of the account, and whether it
+        // arrived. Written as mail leaves, so there is nothing here but reading.
+        Route::get('emails-sent', [EmailSentController::class, 'index'])->name('emailsSent');
+        Route::get('emails-sent/{emailSent}', [EmailSentController::class, 'show'])->where('emailSent', '[1-9][0-9]*')->name('emailsSent.show');
     });
 });

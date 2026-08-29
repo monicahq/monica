@@ -45,4 +45,24 @@ class EmailSentFactory extends Factory
             'user_id' => null,
         ]);
     }
+
+    /**
+     * Indicate that the email arrived.
+     */
+    public function delivered(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'delivered_at' => now(),
+        ]);
+    }
+
+    /**
+     * Indicate that the email came back.
+     */
+    public function bounced(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'bounced_at' => now(),
+        ]);
+    }
 }

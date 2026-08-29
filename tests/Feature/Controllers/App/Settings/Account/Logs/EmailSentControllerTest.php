@@ -106,4 +106,69 @@ class EmailSentControllerTest extends TestCase
 
         $response->assertRedirect(route('auth.login.new'));
     }
+
+    #[Test]
+    public function it_badges_an_email_that_is_still_on_its_way(): void
+    {
+        $user = User::factory()->create();
+        EmailSent::factory()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('On its way', escape: false);
+        $response->assertDontSee('Delivered', escape: false);
+        $response->assertDontSee('Bounced', escape: false);
+    }
+
+    #[Test]
+    public function it_badges_an_email_that_arrived(): void
+    {
+        $user = User::factory()->create();
+        EmailSent::factory()->delivered()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Delivered', escape: false);
+        $response->assertDontSee('On its way', escape: false);
+    }
+
+    #[Test]
+    public function it_badges_an_email_that_came_back(): void
+    {
+        $user = User::factory()->create();
+        EmailSent::factory()->bounced()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Bounced', escape: false);
+        $response->assertDontSee('On its way', escape: false);
+    }
+
+    #[Test]
+    public function it_badges_an_email_that_came_back_after_it_was_reported_delivered(): void
+    {
+        $user = User::factory()->create();
+        EmailSent::factory()->delivered()->bounced()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Bounced', escape: false);
+        $response->assertDontSee('Delivered', escape: false);
+    }
 }

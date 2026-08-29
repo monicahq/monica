@@ -10,11 +10,12 @@
 
   @var \App\Models\EmailSent $emailSent
 --}}
+@use('App\Enums\EmailDeliveryStatusEnum')
 @php
-  [$tone, $deliveryLabel] = match (true) {
-    $emailSent->bounced_at !== null => ['danger', __('Bounced')],
-    $emailSent->delivered_at !== null => ['success', __('Delivered')],
-    default => ['warning', __('On its way')],
+  [$tone, $deliveryLabel] = match ($emailSent->delivery_status) {
+    EmailDeliveryStatusEnum::Bounced => ['danger', __('Bounced')],
+    EmailDeliveryStatusEnum::Delivered => ['success', __('Delivered')],
+    EmailDeliveryStatusEnum::Sent => ['warning', __('On its way')],
   };
 
   $sentAt = $emailSent->sent_at;
