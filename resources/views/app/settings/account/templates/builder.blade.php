@@ -55,24 +55,7 @@
         </p>
       </div>
 
-      {{--
-        Sharing sits beside publishing rather than in a menu, because it is the
-        one thing somebody does with a template once it is finished, and a
-        template nobody can get out of the account it was built in is a template
-        that dies with the account. It is offered only on the version the
-        template actually stands behind.
-      --}}
       <div class="flex flex-wrap items-center gap-2.5 max-sm:w-full">
-        @if ($viewModel->isShareable())
-          <x-button.secondary :href="route('settings.templateShare.index', $template)" data-turbo="true" class="max-sm:w-full">
-            <x-slot:icon>
-              <x-icon name="relationship" :size="16" :stroke-width="1.6" />
-            </x-slot:icon>
-
-            {{ __('Share this template') }}
-          </x-button.secondary>
-        @endif
-
         {{--
           A section arrives on the page that is open, which is why the button is
           here rather than on a screen that would have to ask which page. Only a
@@ -102,8 +85,28 @@
             <x-button class="max-sm:w-full">{{ __('Publish this version') }}</x-button>
           </x-form>
         @else
+          {{--
+            Sharing hangs off the button that makes the next version rather than
+            standing beside it, because it is the one thing somebody does with a
+            template once it is finished, and a template nobody can get out of the
+            account it was built in is a template that dies with the account. It
+            is offered only on the version the template actually stands behind, so
+            a template with no published version gets the button on its own.
+          --}}
           <x-form method="post" :action="route('settings.templateVersions.create', $template)" x-target="builder" class="max-sm:w-full">
-            <x-button class="max-sm:w-full">{{ __('Start a draft') }}</x-button>
+            <x-button.split :label="__('Create a new version')" class="max-sm:w-full">
+              <x-slot:menu>
+                @if ($viewModel->isShareable())
+                  <x-button.split-item
+                    :href="route('settings.templateShare.index', $template)"
+                    icon="relationship"
+                    data-turbo="true"
+                  >
+                    {{ __('Share on marketplace') }}
+                  </x-button.split-item>
+                @endif
+              </x-slot:menu>
+            </x-button.split>
           </x-form>
         @endif
       </div>
@@ -111,7 +114,7 @@
 
     @unless ($viewModel->isEditable())
       <x-notice tone="info" :title="__('This version is published, so it is frozen')">
-        {{ __('Start a draft to make one beside it. Every record on this version goes on rendering exactly what it does now.') }}
+        {{ __('Create a new version to make one beside it. Every record on this version goes on rendering exactly what it does now.') }}
       </x-notice>
     @endunless
 

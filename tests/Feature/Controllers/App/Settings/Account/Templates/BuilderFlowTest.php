@@ -108,7 +108,7 @@ class BuilderFlowTest extends TestCase
         $this->actingAs($user)
             ->get(route('settings.templateBuilder.index', $template))
             ->assertOk()
-            ->assertSee(__('Start a draft'))
+            ->assertSee(__('Create a new version'))
             ->assertDontSee(__('Add a section'));
     }
 

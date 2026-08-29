@@ -107,7 +107,8 @@ class TemplateBuilderControllerTest extends TestCase
         ]);
 
         $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
-            ->assertDontSee(__('Share this template'))
+            ->assertDontSee(__('Share on marketplace'))
+            ->assertDontSee(__('More actions'))
             ->assertDontSee(__('Share this section'));
 
         $sectionVersion->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
@@ -115,7 +116,8 @@ class TemplateBuilderControllerTest extends TestCase
         $template->update(['published_version_id' => $version->id]);
 
         $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
-            ->assertSee(__('Share this template'))
+            ->assertSee(__('Share on marketplace'))
+            ->assertSee(__('More actions'))
             ->assertSee(__('Share this section'));
     }
 
@@ -233,7 +235,7 @@ class TemplateBuilderControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
             ->assertStatus(200)
-            ->assertSee(__('Start a draft'));
+            ->assertSee(__('Create a new version'));
     }
 
     #[Test]
