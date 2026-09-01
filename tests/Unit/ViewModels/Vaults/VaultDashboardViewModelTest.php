@@ -225,8 +225,8 @@ class VaultDashboardViewModelTest extends TestCase
 
         $sections = new VaultDashboardViewModel(user: $user, vault: $vault)->unbuiltSections();
 
-        $this->assertEquals(['Journal', 'Tasks', 'Reminders', 'Files'], array_column($sections, 'title'));
-        $this->assertEquals(['journal', 'tasks', 'reminder', 'file'], array_column($sections, 'icon'));
+        $this->assertEquals(['Tasks', 'Reminders', 'Files'], array_column($sections, 'title'));
+        $this->assertEquals(['tasks', 'reminder', 'file'], array_column($sections, 'icon'));
     }
 
     #[Test]

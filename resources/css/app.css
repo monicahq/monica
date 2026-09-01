@@ -165,6 +165,13 @@
      *
      * Each comes in three parts, which is what a badge is built from: the word, the
      * ground it sits on and the hairline around it.
+     *
+     * Warning carries a fourth, the ring, and error carries its own fourth in the
+     * hover. The edge is measured as a hairline: one pixel around a badge, where
+     * being barely there is the point. Drawn instead as a ring two pixels thick and
+     * a hundred across, the same colour disappears. The ring is the weight that
+     * reads at that size, and it exists because the favourite mark on a contact is
+     * drawn around the avatar rather than beside a word.
      */
     --color-success: var(--success);
     --color-success-tint: var(--success-tint);
@@ -172,6 +179,7 @@
     --color-warning: var(--warning);
     --color-warning-tint: var(--warning-tint);
     --color-warning-edge: var(--warning-edge);
+    --color-warning-ring: var(--warning-ring);
     --color-error: var(--danger);
     --color-error-hover: var(--danger-hover);
     --color-error-tint: var(--danger-tint);
@@ -354,6 +362,7 @@
     --warning: #b45309;
     --warning-tint: #fffbeb;
     --warning-edge: #fde68a;
+    --warning-ring: #d8b96e;
     --danger: #b91c1c;
     --danger-hover: #991b1b;
     --danger-tint: #fef2f2;
@@ -435,6 +444,7 @@
     --warning: #fbbf24;
     --warning-tint: #271a06;
     --warning-edge: #78350f;
+    --warning-ring: #78350f;
     --danger: #f87171;
     --danger-hover: #fca5a5;
     --danger-tint: #2a1214;

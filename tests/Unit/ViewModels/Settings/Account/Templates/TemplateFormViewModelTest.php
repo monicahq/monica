@@ -56,6 +56,27 @@ class TemplateFormViewModelTest extends TestCase
     }
 
     /**
+     * Renaming is only reached from the builder, so cancelling a rename goes
+     * back to the template rather than to the list.
+     */
+    #[Test]
+    public function it_sends_cancel_back_to_where_the_form_was_opened_from(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'slug' => 'pet']);
+
+        $this->assertEquals(
+            route('settings.templates.index'),
+            (new TemplateFormViewModel(user: $user))->cancelUrl(),
+        );
+
+        $this->assertEquals(
+            route('settings.templateBuilder.index', 'pet'),
+            (new TemplateFormViewModel(user: $user, template: $template))->cancelUrl(),
+        );
+    }
+
+    /**
      * The slug travels in URLs and through the API, so it is settled once and
      * shown read only afterwards.
      */

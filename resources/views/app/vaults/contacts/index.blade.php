@@ -32,11 +32,7 @@
   </x-slot:sidebar>
 
   <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
-    <div class="flex min-w-0 flex-col gap-2">
-      <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
-
-      <p class="max-w-[64ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
-    </div>
+    <h1 class="min-w-0 text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
     <x-button :href="$viewModel->newContactUrl()" data-turbo="true" size="small">
       <x-slot:icon>

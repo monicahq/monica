@@ -56,9 +56,10 @@ class SidebarTest extends TestCase
             ['user' => $user, 'vault' => $vault],
         );
 
-        $rendered->assertSee('Journal');
+        $rendered->assertSee('Tasks');
         $rendered->assertSee('Reminders');
         $rendered->assertSee('aria-disabled="true"', escape: false);
+        $rendered->assertDontSee('Journal');
     }
 
     #[Test]
@@ -107,6 +108,31 @@ class SidebarTest extends TestCase
         $rendered->assertSee(route('vaults.index'), escape: false);
         $rendered->assertSee('Leave the settings');
         $rendered->assertSee('aria-current="page"', escape: false);
+    }
+
+    /**
+     * The logs are what you did, so they sit with you rather than with what the
+     * account holds. A template describes a kind of record, so the kinds come
+     * before the templates.
+     */
+    #[Test]
+    public function the_settings_column_puts_every_destination_in_its_group_and_its_order(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->blade(
+            '<x-settings.sidebar :user="$user" current="entity-types" />',
+            ['user' => $user],
+        )->assertSeeInOrder([
+            'Profile',
+            'Security and access',
+            'Preferences',
+            'Logs',
+            'This account',
+            'Entity types',
+            'Templates',
+            'Default values',
+        ]);
     }
 
     #[Test]

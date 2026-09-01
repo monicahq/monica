@@ -21,10 +21,11 @@
   while keeping the same gutter every other screen has, because content that
   touches the edge of the window reads as content that has been cut off rather
   than as content that is wide. The screen also becomes exactly as tall as the
-  window, which is what lets it hand the scrolling to a region of its own: a table
-  whose header stays put while its rows move needs the rows, and not the page, to
-  be the thing that scrolls. That region is what runs to the full width, inside
-  the gutter.
+  window, and the content between the bars is what scrolls rather than the page:
+  a table whose header stays put while its rows move needs the rows, and not the
+  page, to be the thing that scrolls. The window never scrolls on such a screen,
+  which is what keeps the navigation column and the bar where they are. That
+  region is what runs to the full width, inside the gutter.
 
   The column is a slot rather than something this layout builds, because which
   vault it points at and which destination is current are the screen's business,
@@ -107,7 +108,7 @@
           @class([
             'w-full px-4 pt-6 sm:px-6 sm:pt-7',
             'mx-auto max-w-240 space-y-8' => ! $wide,
-            'mx-auto flex min-h-0 w-full max-w-350 flex-1 flex-col gap-4' => $wide,
+            'mx-auto flex min-h-0 w-full max-w-350 flex-1 flex-col gap-4 overflow-y-auto' => $wide,
             'flex-1 pb-8' => isset($footer),
             'pb-6 sm:pb-7' => ! isset($footer) && $wide,
             'pb-14 sm:pb-18' => ! isset($footer) && ! $wide,

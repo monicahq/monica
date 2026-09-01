@@ -102,13 +102,6 @@ class ContactsViewModel
         return __('People');
     }
 
-    public function description(): string
-    {
-        return __('Everybody you keep in :vault. Narrowing the list and ordering it both stay in the address, so it comes back the way you left it.', [
-            'vault' => $this->vault->name,
-        ]);
-    }
-
     /**
      * How many the plain list holds, not how many the chip in force leaves: it
      * says how big the vault is, so it must not move as somebody types.

@@ -12,7 +12,7 @@
   are signed in as and is the way into your own settings: the whole row is the
   link, and it lights up under the pointer like any entry above it.
 
-  Some of the navigation points nowhere yet. The journal, tasks, reminders and
+  Some of the navigation points nowhere yet. The tasks, the reminders and the
   files are each their own screen and none of them exists, so those entries are
   drawn and not offered: a link that leads nowhere is worse than a word that does
   not move.
@@ -48,7 +48,6 @@
   $sections = [
     ['key' => 'dashboard', 'label' => __('Dashboard'), 'icon' => 'heart', 'url' => route('vaults.show', $vault), 'badge' => null],
     ['key' => 'contacts', 'label' => __('People'), 'icon' => 'people', 'url' => route('contacts.index', $vault), 'badge' => $vault->contact_count > 0 ? (string) $vault->contact_count : null],
-    ['key' => 'journal', 'label' => __('Journal'), 'icon' => 'journal', 'url' => null, 'badge' => null],
     ['key' => 'tasks', 'label' => __('Tasks'), 'icon' => 'tasks', 'url' => null, 'badge' => $taskCount === null ? null : (string) $taskCount],
     ['key' => 'reminders', 'label' => __('Reminders'), 'icon' => 'reminder', 'url' => null, 'badge' => null],
     ['key' => 'files', 'label' => __('Files'), 'icon' => 'file', 'url' => null, 'badge' => null],

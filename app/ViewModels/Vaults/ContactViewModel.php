@@ -159,6 +159,24 @@ class ContactViewModel
         return route('contacts.setAside.index', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
+    public function favouriteUrl(): string
+    {
+        return route('contacts.favourite.update', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
+    /**
+     * What the star is called, which is what pressing it would do rather than
+     * what it currently is. The state is carried separately, by the pressed
+     * attribute and by the shape of the glyph, so the name is free to say the
+     * one thing a name is for.
+     */
+    public function favouriteLabel(): string
+    {
+        return $this->isFavourite()
+            ? __('Remove :name from favourites', ['name' => $this->contact->name])
+            : __('Add :name to favourites', ['name' => $this->contact->name]);
+    }
+
     public function shareLinksUrl(): string
     {
         return route('contacts.shareLinks.index', ['vault' => $this->vault, 'contact' => $this->contact]);

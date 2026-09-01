@@ -51,7 +51,7 @@
         <p class="text-sm text-pretty text-muted">
           {{ $viewModel->savedLabel() }}
 
-          <x-link :href="route('settings.templates.edit', $template)" turbo>{{ __('Rename it') }}</x-link>
+          <x-link :href="route('settings.templates.edit', $template)" turbo>{{ __('Edit') }}</x-link>
         </p>
       </div>
 

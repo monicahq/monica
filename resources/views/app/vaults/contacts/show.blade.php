@@ -53,17 +53,47 @@
   </a>
 
   <header class="flex flex-wrap items-start gap-5.5">
-    <div class="relative shrink-0">
+    {{--
+      The favourite state is said twice, deliberately. The ring around the avatar
+      carries it from across the page, where a 26px mark is too small to read, and
+      the medallion at the corner is the control you press. Two signals, one state.
+
+      The ring is drawn in both states and only changes colour, so nothing moves
+      when it is pressed. The medallion changes shape as well as tint, an outline
+      star against a filled one, because a state carried by colour alone is a state
+      some readers do not have.
+
+      The whole block is the region that redraws, and not just the button, because
+      the ring is part of the answer. It submits the state it wants rather than
+      asking for a toggle, which is what keeps a page left open overnight from
+      inverting a mark somebody changed elsewhere. With scripting off the same
+      request is an ordinary post that lands back on this page.
+    --}}
+    <div
+      id="contact-favourite"
+      x-merge="replace"
+      class="relative shrink-0 rounded-full border-2 p-[3px] transition-colors duration-(--duration-fast) ease-out {{ $viewModel->isFavourite() ? 'border-warning-ring' : 'border-transparent' }}"
+    >
       <x-contact-avatar :name="$viewModel->title()" :url="$viewModel->avatarUrl()" :size="104" />
 
-      @if ($viewModel->isFavourite())
-        <span
-          class="absolute -right-1.5 -bottom-1.5 flex size-8 items-center justify-center rounded-full bg-marigold-tint text-marigold-deep ring-3 ring-page"
-          aria-hidden="true"
+      <x-form
+        method="put"
+        :action="$viewModel->favouriteUrl()"
+        x-target="contact-favourite"
+        class="absolute -right-0.5 -bottom-0.5"
+      >
+        <input type="hidden" name="favourite" value="{{ $viewModel->isFavourite() ? 0 : 1 }}" />
+
+        <button
+          type="submit"
+          aria-pressed="{{ $viewModel->isFavourite() ? 'true' : 'false' }}"
+          aria-label="{{ $viewModel->favouriteLabel() }}"
+          title="{{ $viewModel->favouriteLabel() }}"
+          class="flex size-6.5 cursor-pointer items-center justify-center rounded-full shadow-panel transition-colors duration-(--duration-fast) ease-out focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none {{ $viewModel->isFavourite() ? 'border-2 border-canvas bg-warning text-canvas hover:bg-warning/90' : 'border border-hairline-strong bg-canvas text-muted-soft hover:bg-warning-tint hover:text-warning' }}"
         >
-          <x-icon name="star" :size="17" :stroke-width="1.6" />
-        </span>
-      @endif
+          <x-icon :name="$viewModel->isFavourite() ? 'star-filled' : 'star'" :size="14" :stroke-width="1.6" />
+        </button>
+      </x-form>
     </div>
 
     <div class="min-w-60 flex-1">

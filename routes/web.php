@@ -61,6 +61,7 @@ use App\Http\Controllers\App\SharedContactController;
 use App\Http\Controllers\App\SharedContactPasswordController;
 use App\Http\Controllers\App\Vaults\ContactAvatarController;
 use App\Http\Controllers\App\Vaults\ContactController;
+use App\Http\Controllers\App\Vaults\ContactFavouriteController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
 use App\Http\Controllers\App\Vaults\ContactSectionController;
 use App\Http\Controllers\App\Vaults\ContactShareLinkController;
@@ -165,6 +166,10 @@ Route::middleware(['auth', 'active', 'set.locale', 'verified:auth.verification.n
     Route::delete('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'destroy'])
         ->whereUuid('contact')
         ->name('contacts.avatar.destroy');
+
+    Route::put('vaults/{vault}/contacts/{contact}/favourite', [ContactFavouriteController::class, 'update'])
+        ->whereUuid('contact')
+        ->name('contacts.favourite.update');
 
     Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])
         ->whereUuid('contact')

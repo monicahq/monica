@@ -36,15 +36,15 @@
         ['key' => 'profile', 'label' => __('Profile'), 'icon' => 'profile', 'url' => route('settings.profile.index')],
         ['key' => 'security', 'label' => __('Security and access'), 'icon' => 'lock', 'url' => route('settings.security.index')],
         ['key' => 'preferences', 'label' => __('Preferences'), 'icon' => 'settings', 'url' => route('settings.preferences.index')],
+        ['key' => 'logs', 'label' => __('Logs'), 'icon' => 'timeline', 'url' => route('settings.logs.index')],
       ],
     ],
     [
       'title' => __('This account'),
       'entries' => [
-        ['key' => 'templates', 'label' => __('Templates'), 'icon' => 'file', 'url' => route('settings.templates.index')],
         ['key' => 'entity-types', 'label' => __('Entity types'), 'icon' => 'organization', 'url' => route('settings.entityTypes.index')],
+        ['key' => 'templates', 'label' => __('Templates'), 'icon' => 'file', 'url' => route('settings.templates.index')],
         ['key' => 'value-lists', 'label' => __('Default values'), 'icon' => 'tasks', 'url' => route('settings.valueLists.index')],
-        ['key' => 'logs', 'label' => __('Logs'), 'icon' => 'timeline', 'url' => route('settings.logs.index')],
       ],
     ],
   ];

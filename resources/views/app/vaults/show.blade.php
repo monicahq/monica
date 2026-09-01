@@ -1,18 +1,17 @@
 {{--
   One vault, opened: a box for every part of it.
 
-  The screen is a map rather than a summary. Six boxes, each in the colour that
+  The screen is a map rather than a summary. Five boxes, each in the colour that
   part of the product answers to, each the way into it. Two of them are real, the
-  people and the settings, and the other four are drawn as what will land in them:
-  the journal, the tasks, the reminders and the files are each their own model and
-  none of them has been written. Those four are not links. A word that does not
-  move is better than a link that leads nowhere.
+  people and the settings, and the other three are drawn as what will land in them:
+  the tasks, the reminders and the files are each their own model and none of them
+  has been written. Those three are not links. A word that does not move is better
+  than a link that leads nowhere.
 
-  Three things the design asks for are not here. The star beside the title marks a
-  favourite vault, which is not something a vault can be. "Write today" opens the
-  journal. The search field in the bar reads every field of every record, which
-  needs an index that does not exist, and the launcher behind the dock already
-  answers to the same keystroke.
+  Two things the design asks for are not here. The star beside the title marks a
+  favourite vault, which is not something a vault can be. The search field in the
+  bar reads every field of every record, which needs an index that does not exist,
+  and the launcher behind the dock already answers to the same keystroke.
 
   @var \App\ViewModels\Vaults\VaultDashboardViewModel $viewModel
 --}}

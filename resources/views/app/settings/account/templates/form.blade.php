@@ -189,7 +189,7 @@
       @endif
 
       <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto">
-        <x-button.secondary :href="route('settings.templates.index')" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
+        <x-button.secondary :href="$viewModel->cancelUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
         <x-button form="template-form" ::disabled="! named">{{ $viewModel->saveLabel() }}</x-button>
       </div>

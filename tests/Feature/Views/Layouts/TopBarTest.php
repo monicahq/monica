@@ -149,6 +149,26 @@ class TopBarTest extends TestCase
             ->assertSee('px-4 pt-6 sm:px-6 sm:pt-7', escape: false);
     }
 
+    /**
+     * A wide screen is exactly as tall as the window, so what scrolls is the
+     * content between the bars. The window itself never scrolls, which is what
+     * keeps the navigation column and its foot where they are.
+     */
+    #[Test]
+    public function a_wide_screen_scrolls_its_content_rather_than_the_window(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->blade('<x-shell wide>Anything</x-shell>')
+            ->assertSee('h-dvh', escape: false)
+            ->assertSee('overflow-y-auto', escape: false);
+
+        $this->actingAs($user)
+            ->blade('<x-shell>Anything</x-shell>')
+            ->assertDontSee('overflow-y-auto', escape: false);
+    }
+
     #[Test]
     public function every_bar_reaches_the_docs_and_the_marketplace(): void
     {

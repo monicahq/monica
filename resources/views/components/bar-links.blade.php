@@ -21,9 +21,9 @@
   hover and focus included.
 
   The glyphs are the ones already in the set. The journal reads as something written
-  down and read, which is what documentation is, and it is a long way from the dock's
-  own journal button. The gift is a box somebody made and handed over, which is close
-  enough to a marketplace. The gear is the settings, as it is everywhere else.
+  down and read, which is what documentation is. The gift is a box somebody made and
+  handed over, which is close enough to a marketplace. The gear is the settings, as it
+  is everywhere else.
 
   One more link appears for whoever runs the instance, and only for them. It is the
   one way into the admin space from the ordinary application: an administrator who

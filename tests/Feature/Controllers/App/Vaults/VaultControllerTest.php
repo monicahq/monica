@@ -154,10 +154,10 @@ class VaultControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('vaults.show', $vault))
             ->assertStatus(200)
-            ->assertSee('No days written down')
             ->assertSee('Nothing you owe anyone')
             ->assertSee('No dates to keep')
-            ->assertSee('No files yet');
+            ->assertSee('No files yet')
+            ->assertDontSee('Journal');
     }
 
     #[Test]

@@ -14,11 +14,11 @@ use App\Models\VaultDefaultTemplate;
  * One box for every part of a vault, so the screen is a map of it rather than
  * a summary.
  *
- * Two of the six parts exist. The journal, the tasks, the reminders and the
- * files are each their own model and none has been written, so those four
- * boxes say what will land in them and are not offered as somewhere to go.
- * Filling them with invented rows read as somebody else's life, and made the
- * four that do not work look exactly like the two that do.
+ * Two of the five parts exist. The tasks, the reminders and the files are each
+ * their own model and none has been written, so those three boxes say what will
+ * land in them and are not offered as somewhere to go. Filling them with
+ * invented rows read as somebody else's life, and made the three that do not
+ * work look exactly like the two that do.
  */
 class VaultDashboardViewModel
 {
@@ -158,13 +158,6 @@ class VaultDashboardViewModel
     public function unbuiltSections(): array
     {
         return [
-            [
-                'title' => __('Journal'),
-                'caption' => __('No days written'),
-                'icon' => 'journal',
-                'emptyTitle' => __('No days written down'),
-                'emptyText' => __('A day is a page. Anybody you name in it is written into their own history at the same time.'),
-            ],
             [
                 'title' => __('Tasks'),
                 'caption' => __('Nothing open'),

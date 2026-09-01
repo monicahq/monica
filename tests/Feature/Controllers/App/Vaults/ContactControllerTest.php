@@ -1082,6 +1082,42 @@ class ContactControllerTest extends TestCase
     /**
      * @param  array<string, mixed>  $attributes
      */
+    #[Test]
+    public function it_offers_the_star_to_a_contact_who_is_not_a_favourite(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->assertSee('aria-pressed="false"', escape: false)
+            ->assertSee('Add Michael Scott to favourites')
+            ->assertSee(route('contacts.favourite.update', ['vault' => $vault, 'contact' => $michael]), escape: false)
+            ->assertDontSee('Remove Michael Scott from favourites');
+    }
+
+    #[Test]
+    public function it_shows_the_star_pressed_for_a_contact_who_is_a_favourite(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott', ['is_favourite' => true]);
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->assertSee('aria-pressed="true"', escape: false)
+            ->assertSee('Remove Michael Scott from favourites')
+            ->assertSee('fill="currentColor"', escape: false)
+            ->assertDontSee('Add Michael Scott to favourites');
+    }
+
     private function contact(Vault $vault, string $firstName, string $lastName, array $attributes = []): Contact
     {
         return Contact::factory()->create([

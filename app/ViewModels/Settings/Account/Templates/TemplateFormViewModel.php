@@ -57,6 +57,17 @@ class TemplateFormViewModel
     }
 
     /**
+     * Where Cancel goes back to. Renaming is only reached from the builder, so
+     * it returns there; creating starts on the list, so it returns to the list.
+     */
+    public function cancelUrl(): string
+    {
+        return $this->isEdit()
+            ? route('settings.templateBuilder.index', $this->template)
+            : route('settings.templates.index');
+    }
+
+    /**
      * What the fields start with: what the template says today, or what an
      * attempt that failed validation was carrying.
      *

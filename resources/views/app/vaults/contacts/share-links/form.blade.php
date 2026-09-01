@@ -189,7 +189,7 @@
       </x-notice>
     </div>
 
-    <div class="flex flex-col gap-4 lg:sticky lg:top-20">
+    <div class="flex flex-col gap-4 lg:sticky lg:top-0">
       <x-panel :title="__('Going out')">
         <p class="text-sm text-pretty text-ink">
           <span x-text="shown">{{ $sectionCount }}</span>

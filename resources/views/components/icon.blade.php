@@ -3,9 +3,16 @@
 
   Every glyph is drawn on a 16px grid with a 1.4 stroke, round caps and joins, and
   about 2px of optical padding, so any two of them sit beside each other without
-  one looking heavier than the other. Nothing here is filled: the stroke is
+  one looking heavier than the other. Almost nothing here is filled: the stroke is
   `currentColor`, which is what lets a row tint its mark by setting a colour on the
   wrapper rather than by asking for a different drawing.
+
+  One glyph is filled, and it is the exception that says why the rule exists.
+  `star-filled` declares `fill="currentColor"` on its own path, so a favourite
+  reads as a different shape and not as a different tint, which is what stops the
+  state of that control being carried by colour alone. The fill is `currentColor`
+  like the stroke, so the wrapper still tints it, and the `<svg>` still says
+  `fill="none"` so no other glyph is touched.
 
   A glyph is decoration by default and is hidden from screen readers, because the
   thing beside it is already named. One that is the only content of a control is
@@ -54,6 +61,7 @@
     'plus' => '<line x1="8" y1="3.2" x2="8" y2="12.8"></line><line x1="3.2" y1="8" x2="12.8" y2="8"></line>',
     'heart' => '<path d="M8 13.2C4.6 11 2.4 9.1 2.4 6.6A2.9 2.9 0 0 1 8 5.2a2.9 2.9 0 0 1 5.6 1.4c0 2.5-2.2 4.4-5.6 6.6Z"></path>',
     'star' => '<path d="M8 2.4 9.8 6l4 .6-2.9 2.8.7 4L8 11.5 4.4 13.4l.7-4L2.2 6.6l4-.6z"></path>',
+    'star-filled' => '<path fill="currentColor" d="M8 2.4 9.8 6l4 .6-2.9 2.8.7 4L8 11.5 4.4 13.4l.7-4L2.2 6.6l4-.6z"></path>',
     'mail' => '<rect x="2.2" y="3.8" width="11.6" height="8.4" rx="1.5"></rect><path d="m2.6 4.8 5.4 3.8 5.4-3.8"></path>',
     'key' => '<circle cx="10.4" cy="5.6" r="3"></circle><path d="M8.3 7.7 3 13"></path><path d="M4.6 11.4 6 12.8"></path>',
     'link' => '<path d="M6.6 9.4a2.4 2.4 0 0 1 0-3.4l2-2a2.4 2.4 0 0 1 3.4 3.4l-.9.9"></path><path d="M9.4 6.6a2.4 2.4 0 0 1 0 3.4l-2 2a2.4 2.4 0 0 1-3.4-3.4l.9-.9"></path>',

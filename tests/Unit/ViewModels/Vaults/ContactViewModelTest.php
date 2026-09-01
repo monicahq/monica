@@ -671,6 +671,40 @@ class ContactViewModelTest extends TestCase
     /**
      * @param  array<string, mixed>  $attributes
      */
+    #[Test]
+    public function it_points_the_star_at_the_route_that_changes_the_mark(): void
+    {
+        $user = User::factory()->create();
+        $contact = $this->contact($user, $this->version($user, []));
+
+        $viewModel = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact);
+
+        $this->assertEquals(
+            route('contacts.favourite.update', ['vault' => $contact->vault, 'contact' => $contact]),
+            $viewModel->favouriteUrl(),
+        );
+    }
+
+    #[Test]
+    public function it_names_the_star_after_what_pressing_it_would_do(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, []);
+
+        $ordinary = $this->contact($user, $version);
+        $favourite = $this->contact($user, $version, ['is_favourite' => true]);
+
+        $this->assertEquals(
+            'Add Michael Scott to favourites',
+            new ContactViewModel(user: $user, vault: $ordinary->vault, contact: $ordinary)->favouriteLabel(),
+        );
+
+        $this->assertEquals(
+            'Remove Michael Scott from favourites',
+            new ContactViewModel(user: $user, vault: $favourite->vault, contact: $favourite)->favouriteLabel(),
+        );
+    }
+
     private function contact(User $user, TemplateVersion $version, array $attributes = []): Contact
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
