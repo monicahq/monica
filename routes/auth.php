@@ -13,8 +13,8 @@ use App\Http\Controllers\App\Auth\RegistrationPasskeyController;
 use App\Http\Controllers\App\Auth\TwoFactorChallengeController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['guest', 'set.locale'])->group(function (): void {
-    // Creating an account.
+// Creating an account.
+Route::middleware(['guest'])->group(function (): void {
     Route::get('register', [RegistrationController::class, 'new'])->name('auth.register.new');
     Route::post('register', [RegistrationController::class, 'create'])->name('auth.register.create');
 
@@ -59,7 +59,7 @@ Route::middleware(['guest', 'set.locale'])->group(function (): void {
 
 });
 
-Route::middleware(['auth', 'set.locale'])->group(function (): void {
+Route::middleware(['auth'])->group(function (): void {
     Route::get('register/passkey', [RegistrationPasskeyController::class, 'new'])->name('auth.registerPasskey.new');
 
     // Confirming the email address of a brand new account.

@@ -7,6 +7,7 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Preferences;
 use App\Enums\DateFormatEnum;
 use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
+use App\Helpers\LocaleResolution;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -92,6 +93,7 @@ class PreferenceControllerTest extends TestCase
         ]);
 
         $response->assertSessionHas('locale', 'de_DE');
+        $response->assertCookie(LocaleResolution::COOKIE_NAME, 'de_DE');
     }
 
     #[Test]
@@ -106,6 +108,7 @@ class PreferenceControllerTest extends TestCase
 
         $response->assertSessionHasErrors('locale');
         $this->assertEquals('en', $user->refresh()->locale);
+        $response->assertCookieMissing(LocaleResolution::COOKIE_NAME);
     }
 
     #[Test]

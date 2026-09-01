@@ -27,7 +27,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
     Route::post('register', [RegistrationController::class, 'store'])->middleware('throttle:6,1')->name('register');
     Route::post('login', [LoginController::class, 'store'])->middleware('throttle:6,1')->name('login');
 
-    Route::middleware(['auth:sanctum', 'throttle:60,1', 'set.locale'])->group(function (): void {
+    Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(function (): void {
         Route::delete('logout', [LoginController::class, 'destroy'])->name('logout');
 
         Route::get('me', [MeController::class, 'show'])->name('me');

@@ -8,6 +8,7 @@ use App\Actions\UpdatePreferences;
 use App\Enums\DateFormatEnum;
 use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
+use App\Helpers\LocaleResolution;
 use App\Http\Controllers\Controller;
 use App\ViewModels\Settings\Account\Preferences\PreferencesViewModel;
 use Illuminate\Http\RedirectResponse;
@@ -46,14 +47,12 @@ class PreferenceController extends Controller
             numberFormat: NumberFormatEnum::tryFrom($validated['number_format'] ?? ''),
         )->execute();
 
-        // The session holds whatever language was last asked for, and it wins
-        // over the one on the account. Leaving it behind would show the screen
-        // in the old language and make the change look as if it had not saved.
-        $request->session()->put('locale', $validated['locale']);
-
-        // The middleware settled the language before any of this ran, so the
-        // message below would come out in the language being left behind.
-        app()->setLocale($validated['locale']);
+        // The session holds whatever language was last asked for and wins over the
+        // one on the account, so leaving it behind would show the screen in the
+        // old language and make the change look as if it had not saved. The
+        // middleware settled the language before any of this ran, so the message
+        // below would come out in the language being left behind too.
+        LocaleResolution::remember($validated['locale']);
 
         return redirect()->route('settings.preferences.index')
             ->with('status', __('Your preferences are saved.'))

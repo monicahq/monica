@@ -4,18 +4,24 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Helpers\LocaleResolution;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Put the interface in the right language. A choice made in this session wins,
- * because it is the most recent thing the visitor asked for, then the language
- * on their account, then the fallback of the application.
+ * Put a screen in the right language.
  *
- * An API request carries a token rather than a session, so there is nothing to
- * ask on that surface and the first of the three is simply skipped. Without the
- * check, reading from a session that was never started throws.
+ * Runs after the session has started, because the first thing it reads is the
+ * session, and before route bindings are resolved, so a record is looked up with
+ * the language already settled. Registered on the whole web group rather than
+ * route by route, so no screen can be forgotten.
+ *
+ * Nothing is written down here. A language somebody actually picked is recorded
+ * by the screen they picked it on; a language merely worked out from their
+ * browser is worked out again next time, which is what keeps this product from
+ * leaving anything on the device of somebody who never asked for it.
  */
 class SetLocale
 {
@@ -24,29 +30,8 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = $this->preferred($request);
-
-        if (array_key_exists($locale, config('monica.locales'))) {
-            app()->setLocale($locale);
-        }
+        App::setLocale(LocaleResolution::forWeb($request));
 
         return $next($request);
-    }
-
-    private function preferred(Request $request): string
-    {
-        $session = $request->hasSession() ? $request->session()->get('locale') : null;
-
-        if ($session !== null) {
-            return $session;
-        }
-
-        $user = $request->user();
-
-        if ($user === null) {
-            return config('app.locale');
-        }
-
-        return $user->locale ?? config('app.locale');
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Auth;
 
+use App\Helpers\LocaleResolution;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -20,8 +21,23 @@ class LocaleControllerTest extends TestCase
 
         $response->assertRedirect(route('auth.register.new'));
         $response->assertSessionHas('locale', 'fr_FR');
+        $response->assertCookie(LocaleResolution::COOKIE_NAME, 'fr_FR');
 
         $this->get(route('auth.register.new'))->assertSee('Créez votre compte');
+    }
+
+    #[Test]
+    public function the_language_it_keeps_on_the_device_outlives_the_session_it_was_chosen_in(): void
+    {
+        $response = $this->put(route('auth.locale.update'), ['locale' => 'it_IT']);
+
+        $cookie = $response->getCookie(LocaleResolution::COOKIE_NAME);
+
+        $this->assertNotNull($cookie);
+        $this->assertGreaterThan(
+            now()->addMonths(11)->getTimestamp(),
+            $cookie->getExpiresTime(),
+        );
     }
 
     #[Test]
@@ -31,5 +47,6 @@ class LocaleControllerTest extends TestCase
 
         $response->assertSessionHasErrors('locale');
         $this->assertNull(session('locale'));
+        $response->assertCookieMissing(LocaleResolution::COOKIE_NAME);
     }
 }

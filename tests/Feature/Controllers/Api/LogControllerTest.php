@@ -217,7 +217,34 @@ class LogControllerTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $this->json('GET', "/api/v1/logs/{$log->id}")
+        // The empty header is the point rather than noise. A caller naming a
+        // language outranks the account, so the account only answers a caller
+        // who named none, and the test client names English unless told not to.
+        $this->withHeader('Accept-Language', '')
+            ->json('GET', "/api/v1/logs/{$log->id}")
+            ->assertOk()
+            ->assertJsonPath('data.attributes.description', 'A créé la clé API appelée Dundie awards bot');
+    }
+
+    #[Test]
+    public function it_writes_the_sentence_in_the_language_the_caller_asked_for(): void
+    {
+        $account = Account::factory()->create();
+        $user = User::factory()->create([
+            'account_id' => $account->id,
+            'locale' => 'en',
+        ]);
+        $log = Log::factory()->create([
+            'account_id' => $account->id,
+            'user_id' => $user->id,
+            'action' => UserActionEnum::ApiKeyCreation->value,
+            'parameters' => ['name' => 'Dundie awards bot'],
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->withHeader('Accept-Language', 'fr-FR')
+            ->json('GET', "/api/v1/logs/{$log->id}")
             ->assertOk()
             ->assertJsonPath('data.attributes.description', 'A créé la clé API appelée Dundie awards bot');
     }

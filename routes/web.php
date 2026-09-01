@@ -80,46 +80,41 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 // The api reference, open to anybody, signed in or not.
 Route::get('docs/api', [ApiDocsController::class, 'index'])
-    ->middleware(['set.locale'])
     ->name('docs.api.index');
 
 // The same reference as plain text, whole and one endpoint at a time.
 Route::get('docs/api.md', [ApiDocsMarkdownController::class, 'index'])
-    ->middleware(['set.locale'])
     ->name('docs.api.markdown.index');
 
 Route::get('docs/api/{section}.md', [ApiDocsMarkdownController::class, 'show'])
     ->where('section', '[a-z0-9\-]+')
-    ->middleware(['set.locale'])
     ->name('docs.api.markdown.show');
 
 // One endpoint to a page, so a link to one of them opens that one.
 Route::get('docs/api/{section}', [ApiDocsController::class, 'show'])
     ->where('section', '[a-z0-9\-]+')
-    ->middleware(['set.locale'])
     ->name('docs.api.show');
 
 // Public on purpose: a link to something published here has to open for somebody
 // who never signed up. The facets combine freely, so they travel in the query string.
 Route::get('marketplace', [MarketplaceController::class, 'index'])
-    ->middleware('set.locale')
     ->name('marketplace.index');
 
 // Public by design: whoever opens it has no account here and never gets one. Only a
 // hash of the token is stored, so there is no binding, and the pattern keeps a
 // mistyped address a 404. Throttled, because the link is a secret in an address.
 Route::get('s/{token}/{page?}', [SharedContactController::class, 'show'])
-    ->middleware(['set.locale', 'throttle:60,1'])
+    ->middleware(['throttle:60,1'])
     ->where('token', '[A-Za-z0-9]{64}')
     ->name('share.show');
 
 Route::post('s/{token}', [SharedContactPasswordController::class, 'create'])
-    ->middleware(['set.locale', 'throttle:20,1'])
+    ->middleware(['throttle:20,1'])
     ->where('token', '[A-Za-z0-9]{64}')
     ->name('share.password.create');
 
 // The screens where somebody looks after their vaults.
-Route::middleware(['auth', 'active', 'set.locale', 'verified:auth.verification.notice'])->group(function (): void {
+Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->group(function (): void {
     Route::get('getting-started', [GettingStartedController::class, 'index'])->name('gettingStarted.index');
 
     Route::get('vaults', [VaultController::class, 'index'])->name('vaults.index');
@@ -349,7 +344,7 @@ Route::middleware(['auth', 'active', 'set.locale', 'verified:auth.verification.n
 // middleware answers a flat 404 to a guest, to a user without the capacity and to an
 // inactive holder alike. Search and filters travel in the query string, so a lookup
 // can be sent to a colleague.
-Route::middleware(['administrator', 'set.locale'])->group(function (): void {
+Route::middleware(['administrator'])->group(function (): void {
     // The root of the area: how the instance is doing before anything is done to it.
     Route::get('admin', [OverviewController::class, 'index'])->name('admin.overview.index');
 

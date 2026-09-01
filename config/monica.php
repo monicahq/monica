@@ -121,6 +121,14 @@ return [
             'region' => 'Brasil',
             'date_format' => 'd/m/Y',
             'number_format' => 'dot_comma',
+            /*
+             * Which Portuguese answers a browser that says `pt` and names no
+             * country. Only a language shipped in two regions needs this, and
+             * Portuguese is the only one. Brazil rather than Portugal because
+             * that is where most Portuguese is read and what CLDR resolves the
+             * bare code to. Naming a country still wins: `pt-PT` reaches pt_PT.
+             */
+            'answers_bare_language' => true,
             /* Four green corners over yellow leave the lozenge, and the disc sits on top of it. */
             'flag' => 'radial-gradient(circle at 50% 50%, #002776 0 28%, transparent 28%), linear-gradient(to bottom right, #009c3b 0 25%, transparent 25%), linear-gradient(to bottom left, #009c3b 0 25%, transparent 25%), linear-gradient(to top right, #009c3b 0 25%, transparent 25%), linear-gradient(to top left, #009c3b 0 25%, transparent 25%), #fedf00',
             'typography' => [
