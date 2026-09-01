@@ -1,95 +1,47 @@
 <!--
 Sync Impact Report
-Version change: 1.2.0 → 1.3.0
-Rationale: `spec/spec.md` was read in full and the parts of it that govern every feature, rather
-than describing one, are now here. Five principles are added, one is materially expanded, and one
-section is new. Nothing is removed, renamed or renumbered, so this is a MINOR bump.
+Version change: 1.3.0 -> 1.4.0
+Rationale: one principle added, XI, capping the length of the written record. Nothing renamed,
+removed or renumbered, so MINOR.
 
-It is a large MINOR, and 2.0.0 was considered and rejected. The file until now governed only how
-code is written; it now also governs what the product may and may not do. The new principles set a
-bar that shipped code does not meet (there is no API surface at all, and no screen has been audited
-against WCAG 2.2 AA). That is a backlog rather than an invalidated principle, and the Governance
-section already says what to do when this file and the codebase disagree.
+Added: Principle XI, The Written Record Is Short.
+Modified: none. Removed: none.
 
-Integrated from `spec/spec.md`:
-- 3.1 "Nothing changes under anybody's feet", plus section 6 on versioning and the install-is-a-copy
-  rule from section 7, became Principle VI.
-- 3.2 "The core stays stable", plus 5.2 on the single personalisation mechanism and 9.2 on the
-  activity, became Principle VII.
-- 3.3 "No silent deletion", plus the grace period from section 11, the append-only changelog from
-  section 12 and the webhook deactivation from 14.4, became Principle VIII.
-- 3.5 "Accessible to everybody", including the point that field types have to be accessible by
-  construction because records are user-generated, became Principle IX.
-- 3.6 "Everything goes through the API and can be exposed by MCP", plus the outbound half from
-  section 14, became Principle X.
-- 3.7 "Multilingual from day one" expanded Principle V, which previously covered only `__()`,
-  `monica:localize` and the `lang/*.json` rule. Added: formats, currencies, plurals, name order,
-  right to left, and the fact that user-created content stays in its author's language.
-- 3.2 on mono-user, 4.1 to 4.4 on accounts, vaults, Me and private shares, 3.4 on deployment
-  parity, the imprecise dates accepted in 8.2 and 9.4, and the one-entry-two-readings rule from 2.2
-  and 9.1, became the new Product Invariants section.
-- 3.8 on responsive then native, 3.9 on modules, 10.1 and 10.3 on reminders, section 11 on storage,
-  section 12 on history, section 13 on search and 14.4 on webhook delivery went to Technology and
-  Architecture Constraints.
+The prompt behind it: feature 006 produced 1391 lines of specification prose for 190 lines of code,
+most of it one argument written four times over. The principle sets per artifact line caps and the
+one fact one place rule, with an escape hatch that has to be named in the pull request.
 
-Deliberately not integrated:
-- The feature detail of sections 4 to 14 (the field type catalogue, relationship deduction and
-  merging, the five reminder types, the marketplace author path, the webhook event list). Each
-  describes one feature. Governance now names `spec/` as the source of truth for them, so they are
-  referenced rather than copied.
-- Section 15, the scope of the first version. Scope moves, and a constitution that pins it needs an
-  amendment every time the plan changes.
-- Section 16, the fifteen open questions. Governance points at that list instead of duplicating it,
-  so there is one list and not two that can disagree.
-- The module contract, which 3.9 itself says remains to be specified. What is here is the boundary a
-  module may not cross, plus a gate: no module code before an amendment defines the contract.
+This file is 440 lines and is not itself covered by the caps, which govern `specs/`. Shortening it
+is worth doing and is its own amendment.
 
-Modified principles: none renamed, none removed, none renumbered. V expanded. VI to X added.
+Follow-up TODOs, re-verified against the working tree on 2026-09-01.
 
-Modified sections:
-- Product Invariants: new.
-- Technology and Architecture Constraints: added storage, search, history, reminders, webhook
-  delivery, modules and the native application horizon; the data scoping bullet now covers files and
-  names the instance administrator capacity; the controllers bullet now treats a JSON API as
-  required rather than hypothetical.
-- Development Workflow and Quality Gates: accessibility, responsiveness and API coverage added to
-  the definition of done.
-- Governance: the relationship between this file and `spec/`, and the rule that the spec's open
-  questions are answered in the spec and not by an implementation choice inside a pull request.
+Resolved since 1.3.0:
+- The `Api` controller namespace, `routes/api.php` and `app/Http/Resources` all now exist. The
+  former item 2 is retired; MCP and webhooks remain absent and are carried below.
 
-Follow-up TODOs, all re-verified against the working tree on 2026-08-21.
-
-New, from this amendment:
-1. `app/Actions/CreateApiKey.php` issues a Sanctum token with no abilities, while Principle X
-   requires tokens whose scopes can be limited. The settings screen therefore offers a key that
-   grants everything, and there is no API for it to reach. Either the scopes land or the screen
-   promises something the product does not do.
-2. There is no `Api` controller namespace, no `routes/api.php`, no MCP server and no webhook
-   machinery. Principle X and the webhook constraints describe a target, and every capability
-   shipped before they exist adds to that debt.
-3. No screen has been audited against WCAG 2.2 AA. Principle IX binds every screen a change
-   touches from now on; the 139 existing Blade files are unaudited.
+Still open:
+1. `app/Actions/CreateApiKey.php:34` issues a Sanctum token with no abilities, while Principle X
+   requires tokens whose scopes can be limited. The settings screen offers a key that grants
+   everything.
+2. No MCP server and no webhook machinery. Principle X and the webhook constraints describe a
+   target, and every capability shipped before they exist adds to that debt.
+3. No screen has been audited against WCAG 2.2 AA. Principle IX binds every screen a change touches
+   from now on; the existing Blade files are unaudited.
 4. Two of the spec's open questions are governed by principles here and must be answered in the
    spec before the features they concern are built: how sensitive values behave in the changelog
    (spec 12), and whether a webhook carries modified values (spec 14.5).
-
-Still open from v1.1.0 and v1.2.0:
 5. `database/migrations/2026_07_31_000001_create_magic_links_table.php` still defines `down()`,
    which Principle IV forbids for migrations this project writes.
 6. `app/Actions/ResetPassword.php` still has no test.
-7. Ten view models still have no test: the seven in `app/ViewModels/Auth` other than
-   `RegisterViewModel`, `Settings/Account/Security/TwoFactorEnrolmentViewModel`,
-   `Vaults/ContactEditViewModel` and `Vaults/SetAsideValuesViewModel`.
-8. `.claude/CLAUDE.md` still states nine things this repository contradicts, and cannot be edited
-   from this command: controllers "split into `App`, `Api` and `Marketing`" when only `App` exists;
-   middleware "including the role gates"; `app/Http/Resources` as API transformers, when the folder
-   does not exist and `app/Http/Requests` does and is unmentioned; view models that "ask the
-   database nothing" plus four named marketing view models, none of which exists; `routes/api.php`
-   and `routes/marketing.php`, neither of which exists; a `database/data` folder, when countries
-   live in `app/Enums/CountryEnum.php`; a `tests/Browser` folder and "Pest browser tests", when Pest
-   is not installed and `.claude/rules/testing.md` says PHPUnit; a frontend list omitting Turbo and
-   instant.page, both of which ship; and `app/View/Components` described as "(app, guest)" when it
-   holds `AccountLayout`, `AdminLayout`, `GuestLayout`, `MarketplaceLayout` and `Shell`.
+7. Seven view models in `app/ViewModels/Auth` have no test: only `LoginViewModel` and
+   `RegisterViewModel` are covered. `Settings/Account/Security/TwoFactorEnrolmentViewModel`,
+   `Vaults/ContactEditViewModel` and `Vaults/SetAsideValuesViewModel` are also uncovered.
+8. `.claude/CLAUDE.md` still describes a tree this repository contradicts in several places, and
+   cannot be edited from this command. Two of the nine contradictions listed at 1.3.0 have since
+   been resolved by the API work; the rest stand, including the `tests/Browser` and Pest references
+   when Pest is not installed, the marketing view models and `routes/marketing.php` that do not
+   exist, and the `database/data` folder that does not exist.
 -->
 
 # Monica Constitution
@@ -249,6 +201,32 @@ tool of their choice through MCP, the API or webhooks.
 Rationale: the API is a permanent test of the product's completeness, it is what the native
 applications will consume, and a capability that exists only inside a Blade screen is a capability
 the rest of the product cannot reach.
+
+### XI. The Written Record Is Short
+
+Every artifact under `specs/` MUST be as short as it can be and still decide what it decides. A fact
+MUST appear in exactly one of them; the others link to it rather than restate it.
+
+| Artifact | Cap |
+| --- | --- |
+| `spec.md` | 120 lines |
+| `plan.md` | 100 lines |
+| `research.md` | 80 lines |
+| `tasks.md` | one line per task, plus phase headings and the dependency list |
+| `data-model.md`, `quickstart.md`, `contracts/*` | 60 lines each, and each MUST be omitted when another artifact already carries its content |
+
+What keeps them there:
+
+- A requirement is one sentence. A rationale that fits nowhere else goes in `research.md`, once.
+- A rejected alternative is named in one line, not argued.
+- Prefer a table to a paragraph, and a paragraph to several.
+- Never restate the specification inside the plan, or the plan inside the tasks.
+- Delete rather than qualify. Text explaining why earlier text is still correct goes first.
+
+A cap MAY be exceeded, and the pull request MUST then say which one and why.
+
+Rationale: a specification nobody finishes reading governs nothing, and the duplicated passages are
+the ones that go stale first, so length costs accuracy as well as attention.
 
 ## Product Invariants
 
@@ -415,4 +393,4 @@ test and the translations for the change under review, and to say which of the t
 change had to satisfy. Complexity that steps outside these principles MUST be justified in the pull
 request or removed.
 
-**Version**: 1.3.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-08-21
+**Version**: 1.4.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-01
