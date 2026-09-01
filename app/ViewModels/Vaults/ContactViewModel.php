@@ -785,6 +785,7 @@ class ContactViewModel
             ->fieldValueRows()
             ->with(['values' => fn ($query) => $query->attached()->with(['field', 'valueListItem', 'file.vault'])])
             ->orderBy('position')
+            ->orderBy('id')
             ->get()
             ->groupBy('field_id')
             ->toBase());

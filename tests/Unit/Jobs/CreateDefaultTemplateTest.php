@@ -9,6 +9,7 @@ use App\Enums\DefaultFieldEnum;
 use App\Enums\DefaultSectionEnum;
 use App\Enums\DefaultTemplateEnum;
 use App\Enums\FieldTypeEnum;
+use App\Enums\RepetitionOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\ValueListEnum;
@@ -133,9 +134,9 @@ class CreateDefaultTemplateTest extends TestCase
             ->map(fn ($row): string => $row->sectionVersion->section->name)
             ->all();
 
-        $this->assertEquals(['Personal details'], $sectionsOf(0));
+        $this->assertEquals(['Personal details', 'Notes'], $sectionsOf(0));
         $this->assertEquals(['Contact information', 'Addresses'], $sectionsOf(1));
-        $this->assertEquals(['Documents', 'Photos', 'Notes'], $sectionsOf(2));
+        $this->assertEquals(['Documents', 'Photos'], $sectionsOf(2));
 
         foreach ($pages as $page) {
             $this->assertEquals(range(1, $page->assembly->count()), $page->assembly->pluck('position')->all());
@@ -162,7 +163,7 @@ class CreateDefaultTemplateTest extends TestCase
     }
 
     #[Test]
-    public function it_lets_the_documents_and_the_photos_be_added_to_again(): void
+    public function it_lets_the_documents_the_photos_and_the_notes_be_added_to_again(): void
     {
         Queue::fake();
 
@@ -172,23 +173,29 @@ class CreateDefaultTemplateTest extends TestCase
 
         $document = Field::query()->firstWhere('key', DefaultFieldEnum::Document->value);
         $photo = Field::query()->firstWhere('key', DefaultFieldEnum::Photo->value);
+        $notes = Field::query()->firstWhere('key', DefaultFieldEnum::Notes->value);
 
-        foreach ([$document, $photo] as $repeater) {
+        foreach ([$document, $photo, $notes] as $repeater) {
             $this->assertSame(FieldTypeEnum::Repeater, $repeater->type);
             $this->assertTrue($repeater->is_repeatable);
             $this->assertNull($repeater->repeat_min);
             $this->assertNull($repeater->repeat_max);
             $this->assertNull($repeater->parent_field_id);
-            $this->assertEquals([1, 2], $repeater->children->pluck('position')->all());
         }
+
+        $this->assertEquals([1, 2], $document->children->pluck('position')->all());
+        $this->assertEquals([1, 2], $photo->children->pluck('position')->all());
+        $this->assertEquals([1], $notes->children->pluck('position')->all());
 
         $this->assertEquals(['file', 'description'], $document->children->pluck('key')->all());
         $this->assertEquals(['image', 'caption'], $photo->children->pluck('key')->all());
+        $this->assertEquals(['note'], $notes->children->pluck('key')->all());
         $this->assertSame(FieldTypeEnum::File, $document->children[0]->type);
         $this->assertSame(FieldTypeEnum::Image, $photo->children[0]->type);
+        $this->assertSame(FieldTypeEnum::Textarea, $notes->children[0]->type);
 
         $this->assertEquals(
-            ['document', 'photo'],
+            ['notes', 'document', 'photo'],
             Field::query()->where('is_repeatable', true)->orderBy('id')->pluck('key')->all(),
         );
     }
@@ -217,6 +224,94 @@ class CreateDefaultTemplateTest extends TestCase
         );
     }
 
+    /**
+     * The whole point of notes reading newest first: somebody adding one sees it
+     * without scrolling past everything they wrote before.
+     */
+    #[Test]
+    public function it_makes_the_notes_collect_at_the_top_and_leaves_the_rest_collecting_at_the_end(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        $orderOf = fn (DefaultFieldEnum $field): ?RepetitionOrderEnum => Field::query()
+            ->where('account_id', $user->account_id)
+            ->where('key', $field->value)
+            ->sole()
+            ->repetition_order;
+
+        $this->assertSame(RepetitionOrderEnum::NewestFirst, $orderOf(DefaultFieldEnum::Notes));
+        $this->assertNull($orderOf(DefaultFieldEnum::Document));
+        $this->assertNull($orderOf(DefaultFieldEnum::Photo));
+    }
+
+    /**
+     * A direction on a field that is not a repeater would be a setting its type
+     * cannot honour.
+     */
+    #[Test]
+    public function it_gives_no_direction_to_a_field_that_is_not_a_repeater(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        $notRepeaters = Field::query()
+            ->where('account_id', $user->account_id)
+            ->where('is_repeatable', false)
+            ->whereNotNull('repetition_order')
+            ->pluck('key')
+            ->all();
+
+        $this->assertSame([], $notRepeaters);
+    }
+
+    /**
+     * The point of the change that made this a repeater: somebody keeps learning
+     * things about a person, and one box would mean editing what they wrote last
+     * time in order to write down what they learned this time.
+     */
+    #[Test]
+    public function it_lets_a_contact_hold_as_many_notes_as_somebody_writes(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        $notes = Field::query()->firstWhere('key', DefaultFieldEnum::Notes->value);
+
+        $this->assertTrue($notes->is_repeatable);
+        $this->assertNull($notes->repeat_max, 'A contact may hold any number of notes.');
+        $this->assertCount(1, $notes->children, 'One note is the note, and nothing else.');
+        $this->assertSame(FieldTypeEnum::Textarea, $notes->children[0]->type);
+    }
+
+    #[Test]
+    public function it_puts_the_notes_on_the_tab_a_contact_opens_on(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        $pages = Template::query()->sole()->publishedVersion->pages;
+
+        $sectionsOf = fn (int $index): array => $pages[$index]->assembly
+            ->map(fn ($row): string => $row->sectionVersion->section->name)
+            ->all();
+
+        $this->assertContains('Notes', $sectionsOf(0));
+        $this->assertNotContains('Notes', $sectionsOf(2));
+    }
+
     #[Test]
     public function it_requires_none_of_them_so_a_contact_may_be_written_down_in_a_hurry(): void
     {
@@ -228,7 +323,7 @@ class CreateDefaultTemplateTest extends TestCase
 
         $fields = Field::query()->where('account_id', $user->account_id)->get();
 
-        $this->assertCount(14, $fields);
+        $this->assertCount(15, $fields);
         $this->assertEmpty($fields->filter(fn (Field $field): bool => $field->is_required));
         $this->assertEmpty($fields->filter(fn (Field $field): bool => $field->is_sensitive));
     }

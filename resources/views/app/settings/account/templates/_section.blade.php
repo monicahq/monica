@@ -38,6 +38,19 @@
     class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-panel "
   >
     <header class="flex min-h-12 items-center gap-2.5 border-b border-hairline px-4 py-3.5">
+      @if ($isEditable)
+        {{--
+          The whole row is what drags, and until now nothing said so. The grip is
+          the affordance rather than the mechanism, which is why it is hidden from
+          a screen reader: dragging is not how anybody using one moves a section,
+          and announcing a handle they cannot use is worse than announcing
+          nothing. The keyboard route is the move controls the row already has.
+        --}}
+        <span class="flex shrink-0 cursor-grab text-muted-soft active:cursor-grabbing" aria-hidden="true">
+          <x-icon name="grip" :size="16" :stroke-width="1.4" />
+        </span>
+      @endif
+
       <div x-show="! renaming" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2.5 gap-y-1.5">
         <h2 class="truncate text-card-title text-ink">{{ $section['name'] }}</h2>
 
@@ -156,9 +169,19 @@
       </p>
     @endif
 
-    <div class="flex flex-col gap-0.5 p-2">
+    {{--
+      The fields are their own sortable list, nested inside the section's. The
+      drop handler reaches for the nearest `data-sortable`, so a field dropped on
+      a field moves within its section and never lands among the sections.
+    --}}
+    <div class="flex flex-col gap-0.5 p-2" x-data="sortableRows" data-sortable>
       @foreach ($section['fields'] as $field)
-        @include('app.settings.account.templates._field', ['field' => $field])
+        @include('app.settings.account.templates._field', [
+          'field' => $field,
+          'template' => $template,
+          'sectionId' => $section['id'],
+          'isEditable' => $isEditable,
+        ])
       @endforeach
 
       @if ($isEditable)

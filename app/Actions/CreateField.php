@@ -6,6 +6,7 @@ namespace App\Actions;
 
 use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
+use App\Enums\RepetitionOrderEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\CannotNestARepeater;
 use App\Helpers\SlugBuilder;
@@ -64,6 +65,7 @@ class CreateField
         private readonly ?array $validation = null,
         private readonly ?int $repeatMin = null,
         private readonly ?int $repeatMax = null,
+        private readonly ?RepetitionOrderEnum $repetitionOrder = null,
         private readonly bool $isReminderSource = false,
         private readonly ?RelationTargetEnum $relationTarget = null,
         private readonly ?EntityType $relationEntityType = null,
@@ -159,6 +161,7 @@ class CreateField
             'is_repeatable' => $this->type->isRepeater(),
             'repeat_min' => $this->type->isRepeater() ? $this->repeatMin : null,
             'repeat_max' => $this->type->isRepeater() ? $this->repeatMax : null,
+            'repetition_order' => $this->type->isRepeater() ? $this->repetitionOrder : null,
             'parent_field_id' => $this->parent?->id,
             'is_reminder_source' => $this->type->canDriveAReminder() && $this->isReminderSource,
             'relation_target' => $this->type->isRelation() ? ($this->relationTarget ?? RelationTargetEnum::Contact) : null,

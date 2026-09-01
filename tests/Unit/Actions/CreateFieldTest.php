@@ -7,6 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\CreateField;
 use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
+use App\Enums\RepetitionOrderEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\CannotNestARepeater;
 use App\Exceptions\PublishedVersionIsFrozen;
@@ -196,6 +197,71 @@ class CreateFieldTest extends TestCase
         $this->assertTrue($field->is_repeatable);
         $this->assertEquals(1, $field->repeat_min);
         $this->assertEquals(5, $field->repeat_max);
+    }
+
+    /**
+     * Which end a repeater collects at, beside how many it takes. It says where
+     * a new repetition lands and nothing about where an existing one may be
+     * moved to.
+     */
+    #[Test]
+    public function it_takes_the_end_a_repeater_collects_at(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+
+        $field = new CreateField(
+            user: $user,
+            sectionVersion: $version,
+            type: FieldTypeEnum::Repeater,
+            label: 'Notes',
+            repetitionOrder: RepetitionOrderEnum::NewestFirst,
+        )->execute();
+
+        $this->assertSame(RepetitionOrderEnum::NewestFirst, $field->refresh()->repetition_order);
+    }
+
+    #[Test]
+    public function it_says_nothing_about_the_end_when_nobody_chose_one(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+
+        $field = new CreateField(
+            user: $user,
+            sectionVersion: $version,
+            type: FieldTypeEnum::Repeater,
+            label: 'Documents',
+        )->execute();
+
+        $this->assertNull($field->refresh()->repetition_order);
+    }
+
+    /**
+     * Storing a setting the type cannot honour would be storing a lie, which is
+     * the same reason the repetition limits are dropped.
+     */
+    #[Test]
+    public function it_drops_the_end_on_a_field_that_is_not_a_repeater(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+
+        $field = new CreateField(
+            user: $user,
+            sectionVersion: $version,
+            type: FieldTypeEnum::Textarea,
+            label: 'A note',
+            repetitionOrder: RepetitionOrderEnum::NewestFirst,
+        )->execute();
+
+        $this->assertNull($field->refresh()->repetition_order);
     }
 
     /**

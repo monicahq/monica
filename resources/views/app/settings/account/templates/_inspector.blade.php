@@ -79,6 +79,32 @@
             :disabled="! $viewModel->isEditable()"
           />
 
+          {{--
+            Only a repeater has a direction, so only a repeater is asked. It says
+            where a new repetition lands and nothing about where an existing one
+            may be moved to, which is why the sentence under it talks about what
+            somebody will see rather than about sorting.
+          --}}
+          @if ($field['isRepeater'])
+            <x-select
+              id="repetition_order"
+              name="repetition_order"
+              :label="__('New repetitions')"
+              :error="$errors->get('repetition_order')"
+              :disabled="! $viewModel->isEditable()"
+            >
+              @foreach (\App\Enums\RepetitionOrderEnum::cases() as $order)
+                <option value="{{ $order->value }}" @selected($field['repetitionOrder'] === $order->value)>
+                  {{ __($order->label()) }}
+                </option>
+              @endforeach
+
+              <x-slot:help>
+                {{ __(\App\Enums\RepetitionOrderEnum::from($field['repetitionOrder'])->description()) }}
+              </x-slot:help>
+            </x-select>
+          @endif
+
           <div class="flex flex-col gap-2.5 border-t border-hairline pt-4">
             <x-checkbox id="is_required" :checked="$field['isRequired']">
               <span class="font-semibold text-ink">{{ __('Required') }}</span>

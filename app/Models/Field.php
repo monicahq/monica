@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
+use App\Enums\RepetitionOrderEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
 use Carbon\CarbonImmutable;
 use Database\Factories\FieldFactory;
@@ -56,6 +57,7 @@ use Override;
  * @property bool $is_repeatable
  * @property int|null $repeat_min
  * @property int|null $repeat_max
+ * @property RepetitionOrderEnum|null $repetition_order
  * @property int|null $parent_field_id
  * @property bool $is_reminder_source
  * @property RelationTargetEnum|null $relation_target
@@ -89,6 +91,7 @@ use Override;
     'is_repeatable',
     'repeat_min',
     'repeat_max',
+    'repetition_order',
     'parent_field_id',
     'is_reminder_source',
     'relation_target',
@@ -143,6 +146,7 @@ class Field extends Model
             'is_repeatable' => 'boolean',
             'repeat_min' => 'integer',
             'repeat_max' => 'integer',
+            'repetition_order' => RepetitionOrderEnum::class,
             'is_reminder_source' => 'boolean',
             'relation_target' => RelationTargetEnum::class,
         ];

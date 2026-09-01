@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
 use App\Enums\FieldTypeEnum;
+use App\Enums\RepetitionOrderEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;
@@ -141,6 +142,78 @@ class FieldControllerTest extends TestCase
         $this->assertEquals('Weight in kilograms', $field->label);
         $this->assertEquals('To one decimal', $field->help_text);
         $this->assertTrue($field->is_sensitive);
+    }
+
+    /**
+     * Which end a repeater collects at is settled here, beside its label. It
+     * says where a new repetition lands and nothing about where an existing one
+     * may be moved to.
+     */
+    #[Test]
+    public function it_saves_which_end_a_repeater_collects_at(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $field = Field::factory()->create([
+            'section_version_id' => $row->section_version_id,
+            'key' => 'notes',
+            'type' => FieldTypeEnum::Repeater,
+            'is_repeatable' => true,
+        ]);
+
+        $this->actingAs($user)->put(route('settings.fields.update', [$template, $row, $field]), [
+            'label' => 'Notes',
+            'repetition_order' => RepetitionOrderEnum::NewestFirst->value,
+        ])->assertRedirect();
+
+        $this->assertSame(RepetitionOrderEnum::NewestFirst, $field->refresh()->repetition_order);
+    }
+
+    #[Test]
+    public function it_refuses_an_end_it_does_not_offer(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $field = Field::factory()->create([
+            'section_version_id' => $row->section_version_id,
+            'key' => 'notes',
+            'type' => FieldTypeEnum::Repeater,
+            'is_repeatable' => true,
+        ]);
+
+        $this->actingAs($user)->put(route('settings.fields.update', [$template, $row, $field]), [
+            'label' => 'Notes',
+            'repetition_order' => 'sideways',
+        ])->assertSessionHasErrors('repetition_order');
+    }
+
+    /**
+     * A field that is not a repeater has no direction to keep, so storing one
+     * would be storing a setting its type cannot honour.
+     */
+    #[Test]
+    public function it_keeps_no_end_on_a_field_that_is_not_a_repeater(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $field = Field::factory()->create([
+            'section_version_id' => $row->section_version_id,
+            'key' => 'weight',
+            'type' => FieldTypeEnum::Number,
+        ]);
+
+        $this->actingAs($user)->put(route('settings.fields.update', [$template, $row, $field]), [
+            'label' => 'Weight',
+            'repetition_order' => RepetitionOrderEnum::NewestFirst->value,
+        ])->assertRedirect();
+
+        $this->assertNull($field->refresh()->repetition_order);
     }
 
     /**

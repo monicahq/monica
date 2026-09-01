@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
+use App\Enums\FieldTypeEnum;
+use App\Enums\RepetitionOrderEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;
@@ -39,6 +41,133 @@ class TemplateBuilderControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Paper stock')
             ->assertSee('Weight');
+    }
+
+    /**
+     * The whole row is what drags, and until now nothing said so. The grip is
+     * the affordance, and the form beside each row is what a drop submits.
+     */
+    #[Test]
+    public function it_says_that_a_section_and_a_field_can_be_dragged(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $sectionVersion = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+        $field = Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => 'Weight']);
+        $row = TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
+
+        $response->assertStatus(200);
+        $response->assertSee('cursor-grab', escape: false);
+        $response->assertSee('data-row-id="'.$field->id.'"', escape: false);
+        $response->assertSee('data-position-form="'.$field->id.'"', escape: false);
+        $response->assertSee(route('settings.fieldPosition.update', [$template, $row->id, $field->id]), escape: false);
+    }
+
+    /**
+     * The grip is hidden from a screen reader. Dragging is not how anybody using
+     * one reorders anything, and announcing a handle they cannot work is worse
+     * than announcing nothing.
+     */
+    #[Test]
+    public function it_hides_the_grip_from_a_screen_reader(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $sectionVersion = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+        Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => 'Weight']);
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+
+        $html = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))->getContent();
+
+        preg_match_all('/<span[^>]*cursor-grab[^>]*>/', $html, $grips);
+
+        $this->assertNotEmpty($grips[0], 'No grip was drawn at all.');
+
+        foreach ($grips[0] as $grip) {
+            $this->assertStringContainsString('aria-hidden="true"', $grip);
+        }
+    }
+
+    #[Test]
+    public function it_asks_a_repeater_which_end_it_collects_at_and_asks_nothing_else(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $sectionVersion = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+        $repeater = Field::factory()->create([
+            'section_version_id' => $sectionVersion->id,
+            'label' => 'Notes',
+            'type' => FieldTypeEnum::Repeater,
+            'is_repeatable' => true,
+        ]);
+        $plain = Field::factory()->create([
+            'section_version_id' => $sectionVersion->id,
+            'label' => 'Weight',
+            'type' => FieldTypeEnum::Number,
+        ]);
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+
+        $onTheRepeater = $this->actingAs($user)->get(route('settings.templateBuilder.field', [
+            'template' => $template, 'page' => $version->pages->first()->key, 'field' => $repeater->id,
+        ]));
+
+        $onTheRepeater->assertStatus(200);
+        $onTheRepeater->assertSee('New repetitions');
+        $onTheRepeater->assertSee('New ones at the top');
+        $onTheRepeater->assertSee('New ones at the bottom');
+
+        $onThePlainField = $this->actingAs($user)->get(route('settings.templateBuilder.field', [
+            'template' => $template, 'page' => $version->pages->first()->key, 'field' => $plain->id,
+        ]));
+
+        $onThePlainField->assertStatus(200);
+        $onThePlainField->assertDontSee('New repetitions');
+    }
+
+    /**
+     * A repeater collecting at the end is what every repeater does, so a badge
+     * for it would sit on almost every row and say nothing. Only the other
+     * direction is worth a word.
+     */
+    #[Test]
+    public function it_marks_a_repeater_on_the_list_only_when_it_collects_at_the_front(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $sectionVersion = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+        $repeater = Field::factory()->create([
+            'section_version_id' => $sectionVersion->id,
+            'label' => 'Notes',
+            'type' => FieldTypeEnum::Repeater,
+            'is_repeatable' => true,
+        ]);
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+
+        $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
+            ->assertDontSee('New ones at the top');
+
+        Field::query()->whereKey($repeater->id)->update(['repetition_order' => RepetitionOrderEnum::NewestFirst->value]);
+
+        $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
+            ->assertSee('New ones at the top');
     }
 
     #[Test]

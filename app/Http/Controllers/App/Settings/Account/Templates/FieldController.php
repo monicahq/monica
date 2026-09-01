@@ -9,6 +9,7 @@ use App\Actions\DestroyField;
 use App\Actions\MakeSectionVersionEditable;
 use App\Actions\UpdateField;
 use App\Enums\FieldTypeEnum;
+use App\Enums\RepetitionOrderEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Http\Controllers\Controller;
 use App\Models\Field;
@@ -105,6 +106,7 @@ class FieldController extends Controller
             'is_required' => ['nullable', 'boolean'],
             'is_sensitive' => ['nullable', 'boolean'],
             'is_highlighted' => ['nullable', 'boolean'],
+            'repetition_order' => ['nullable', 'string', Rule::in(RepetitionOrderEnum::values())],
         ]);
 
         try {
@@ -119,6 +121,9 @@ class FieldController extends Controller
                 isRequired: $request->boolean('is_required'),
                 isSensitive: $request->boolean('is_sensitive'),
                 isHighlighted: $request->boolean('is_highlighted'),
+                /* Sent by the panel whenever the field is a repeater, so a save
+                   that changes a label cannot quietly take the direction off. */
+                repetitionOrder: RepetitionOrderEnum::tryFrom((string) ($validated['repetition_order'] ?? '')),
                 valueList: $target->valueList,
             )->execute();
         } catch (PublishedVersionIsFrozen) {

@@ -51,6 +51,7 @@ class UpdateFieldValueRowPosition
             ->where('valuable_id', $this->row->valuable_id)
             ->where('field_id', $this->row->field_id)
             ->orderBy('position')
+            ->orderBy('id')
             ->get()
             ->reject(fn (FieldValueRow $row): bool => $row->is($this->row))
             ->values();

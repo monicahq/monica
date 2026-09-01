@@ -255,6 +255,7 @@ class CreateDefaultTemplate implements ShouldQueue
                 'options' => $field->options(),
                 'validation' => null,
                 'is_repeatable' => $field->type()->isRepeater(),
+                'repetition_order' => $field->repetitionOrder(),
                 'repeat_min' => null,
                 'repeat_max' => null,
                 'parent_field_id' => $parent?->id,

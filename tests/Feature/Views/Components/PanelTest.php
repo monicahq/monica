@@ -52,6 +52,22 @@ class PanelTest extends TestCase
     }
 
     #[Test]
+    public function it_centres_the_parts_of_a_header_whose_title_is_one_line(): void
+    {
+        $this->blade('<x-panel title="Contact information" icon="document"><p>Body</p></x-panel>')
+            ->assertSee('min-h-12 items-center', escape: false)
+            ->assertDontSee('items-start', escape: false);
+    }
+
+    #[Test]
+    public function it_keeps_the_mark_level_with_a_title_that_has_a_subtitle_under_it(): void
+    {
+        $this->blade('<x-panel title="Picture" subtitle="A photograph helps." icon="profile"><p>Body</p></x-panel>')
+            ->assertSee('min-h-12 items-start', escape: false)
+            ->assertSee('A photograph helps.');
+    }
+
+    #[Test]
     public function it_takes_the_padding_off_its_body_for_a_list_of_rows(): void
     {
         $this->blade('<x-panel>Prose</x-panel>')

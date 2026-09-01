@@ -10,6 +10,7 @@ use App\Models\Entity;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -86,5 +87,46 @@ class FieldValueRowTest extends TestCase
         $row = FieldValueRow::factory()->create(['position' => 3]);
 
         $this->assertSame(3, $row->fresh()->position);
+    }
+
+    /**
+     * Reading sorts by the place a repetition holds. Two that hold the same
+     * place are separated by identity, so the same record reads the same way
+     * twice rather than in whatever order a driver happened to return.
+     */
+    #[Test]
+    public function it_reads_the_same_way_twice_when_two_repetitions_hold_one_place(): void
+    {
+        $user = User::factory()->create();
+        $contact = Contact::factory()->create();
+        $field = Field::factory()->create(['is_repeatable' => true]);
+
+        $first = FieldValueRow::factory()->create([
+            'account_id' => $contact->vault->account_id,
+            'valuable_type' => $contact->getMorphClass(),
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'position' => 1,
+        ]);
+
+        $second = FieldValueRow::factory()->create([
+            'account_id' => $contact->vault->account_id,
+            'valuable_type' => $contact->getMorphClass(),
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'position' => 1,
+        ]);
+
+        $read = fn (): array => FieldValueRow::query()
+            ->where('valuable_type', $contact->getMorphClass())
+            ->where('valuable_id', $contact->id)
+            ->where('field_id', $field->id)
+            ->orderBy('position')
+            ->orderBy('id')
+            ->pluck('id')
+            ->all();
+
+        $this->assertSame([$first->id, $second->id], $read());
+        $this->assertSame($read(), $read());
     }
 }

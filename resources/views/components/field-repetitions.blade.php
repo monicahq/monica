@@ -45,6 +45,16 @@
   $mayRemove = count($rows) > ($field->repeat_min ?? 0);
 
   $repetition = 'flex flex-col gap-4 rounded-md border border-hairline bg-canvas p-3.5';
+
+  /* Which end a new repetition is drawn at. Two things follow from it, and both
+     matter. The blanks are drawn before what is already there, because somebody
+     should type where the thing they are writing will appear. And the index each
+     repetition is named by is shifted to match, because that index is the whole
+     of what tells the save which order somebody was looking at. */
+  $atTheFront = $field->repetition_order?->addsToTheFront() ?? false;
+
+  $rowOffset = $atTheFront ? $blanks : 0;
+  $blankOffset = $atTheFront ? 0 : count($rows);
 @endphp
 
 <fieldset class="flex flex-col gap-2" x-data="{ shown: 0 }">
@@ -55,61 +65,69 @@
   @endif
 
   <div class="flex flex-col gap-2.5 pt-0.5">
-    @foreach ($rows as $index => $row)
-      <div x-data="{ removed: false }">
-        <fieldset x-show="! removed" :disabled="removed" class="{{ $repetition }}">
-          {{-- What says this is a repetition the record already holds rather
-               than one somebody has just added. Disabled with the rest of them,
-               so a removal arrives as an absence. --}}
-          <input type="hidden" name="fields[{{ $field->id }}][{{ $index }}][id]" value="{{ $row['id'] }}" />
+    {{-- Both blocks are written once and the order they are drawn in is chosen
+         here, because the order of the markup is the order a screen reader reads
+         and the order somebody tabs through. It has to be the order they see,
+         rather than something a stylesheet rearranges afterwards. --}}
+    @foreach ($atTheFront ? ['blanks', 'held'] : ['held', 'blanks'] as $part)
+      @if ($part === 'held')
+      @foreach ($rows as $index => $row)
+        <div x-data="{ removed: false }">
+          <fieldset x-show="! removed" :disabled="removed" class="{{ $repetition }}">
+            {{-- What says this is a repetition the record already holds rather
+                 than one somebody has just added. Disabled with the rest of them,
+                 so a removal arrives as an absence. --}}
+            <input type="hidden" name="fields[{{ $field->id }}][{{ $rowOffset + $index }}][id]" value="{{ $row['id'] }}" />
 
-          @foreach ($row['fields'] as $answer)
-            <x-field-input
-              :field="$answer['field']"
-              :value="$answer['rawValue']"
-              :formatted="$answer['value']"
-              :id="'field-'.$field->id.'-'.$index.'-'.$answer['id']"
-              :name="'fields['.$field->id.']['.$index.'][values]['.$answer['id'].']'"
-              :year-name="'fields['.$field->id.']['.$index.'][unknown_year]['.$answer['id'].']'"
-            />
-          @endforeach
+            @foreach ($row['fields'] as $answer)
+              <x-field-input
+                :field="$answer['field']"
+                :value="$answer['rawValue']"
+                :formatted="$answer['value']"
+                :id="'field-'.$field->id.'-'.$index.'-'.$answer['id']"
+                :name="'fields['.$field->id.']['.($rowOffset + $index).'][values]['.$answer['id'].']'"
+                :year-name="'fields['.$field->id.']['.($rowOffset + $index).'][unknown_year]['.$answer['id'].']'"
+              />
+            @endforeach
 
-          @if ($mayRemove)
-            <div class="flex">
-              <x-button.ghost type="button" size="small" class="ml-auto" @click="removed = true">
-                <x-icon name="close" :size="14" :stroke-width="1.8" />
-                {{ __('Remove') }}
-              </x-button.ghost>
-            </div>
-          @endif
-        </fieldset>
+            @if ($mayRemove)
+              <div class="flex">
+                <x-button.ghost type="button" size="small" class="ml-auto" @click="removed = true">
+                  <x-icon name="close" :size="14" :stroke-width="1.8" />
+                  {{ __('Remove') }}
+                </x-button.ghost>
+              </div>
+            @endif
+          </fieldset>
 
-        <p x-show="removed" x-cloak class="flex flex-wrap items-center gap-2 rounded-md border border-dashed border-hairline-strong bg-card px-3.5 py-2.5 text-xs text-muted">
-          {{ __('This one goes when you save the section.') }}
+          <p x-show="removed" x-cloak class="flex flex-wrap items-center gap-2 rounded-md border border-dashed border-hairline-strong bg-card px-3.5 py-2.5 text-xs text-muted">
+            {{ __('This one goes when you save the section.') }}
 
-          <button
-            type="button"
-            @click="removed = false"
-            class="cursor-pointer font-medium text-ink underline underline-offset-2 decoration-hairline-strong hover:decoration-ink"
-          >{{ __('Keep it') }}</button>
-        </p>
-      </div>
+            <button
+              type="button"
+              @click="removed = false"
+              class="cursor-pointer font-medium text-ink underline underline-offset-2 decoration-hairline-strong hover:decoration-ink"
+            >{{ __('Keep it') }}</button>
+          </p>
+        </div>
+      @endforeach
+      @else
+      @for ($blank = 0; $blank < $blanks; $blank++)
+        <template x-if="shown > {{ $blank }}">
+          <fieldset class="{{ $repetition }}">
+            @foreach ($children as $child)
+              <x-field-input
+                :field="$child"
+                :id="'field-'.$field->id.'-new'.$blank.'-'.$child->id"
+                :name="'fields['.$field->id.']['.($blankOffset + $blank).'][values]['.$child->id.']'"
+                :year-name="'fields['.$field->id.']['.($blankOffset + $blank).'][unknown_year]['.$child->id.']'"
+              />
+            @endforeach
+          </fieldset>
+        </template>
+      @endfor
+      @endif
     @endforeach
-
-    @for ($blank = 0; $blank < $blanks; $blank++)
-      <template x-if="shown > {{ $blank }}">
-        <fieldset class="{{ $repetition }}">
-          @foreach ($children as $child)
-            <x-field-input
-              :field="$child"
-              :id="'field-'.$field->id.'-new'.$blank.'-'.$child->id"
-              :name="'fields['.$field->id.']['.(count($rows) + $blank).'][values]['.$child->id.']'"
-              :year-name="'fields['.$field->id.']['.(count($rows) + $blank).'][unknown_year]['.$child->id.']'"
-            />
-          @endforeach
-        </fieldset>
-      </template>
-    @endfor
   </div>
 
   @if ($blanks > 0)

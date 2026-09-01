@@ -19,11 +19,11 @@ use Override;
  * with nothing but a name, and a form that refuses a birthday nobody knows is a
  * form people stop using.
  *
- * Two of them are repeaters, since a contact carries as many documents and as
- * many photos as they carry, and a field holding one of each would be a field
- * somebody outgrows on the second passport. What sits inside a repeater is its
- * children, and a repeater inside a repeater is refused, so the nesting here is
- * one level and stays that way.
+ * Three of them are repeaters, since a contact carries as many documents, as
+ * many photographs and as many notes as they carry, and a field holding one of
+ * each would be a field somebody outgrows on the second passport. What sits
+ * inside a repeater is its children, and a repeater inside a repeater is
+ * refused, so the nesting here is one level and stays that way.
  */
 enum DefaultFieldEnum: string implements Translatable
 {
@@ -41,6 +41,7 @@ enum DefaultFieldEnum: string implements Translatable
     case Image = 'image';
     case Caption = 'caption';
     case Notes = 'notes';
+    case Note = 'note';
 
     /**
      * What the field is called next to its input. The label doubles as the
@@ -63,6 +64,7 @@ enum DefaultFieldEnum: string implements Translatable
             self::Image => 'Image',
             self::Caption => 'Caption',
             self::Notes => 'Notes',
+            self::Note => 'Note',
         };
     }
 
@@ -86,7 +88,8 @@ enum DefaultFieldEnum: string implements Translatable
             self::Photo => FieldTypeEnum::Repeater,
             self::Image => FieldTypeEnum::Image,
             self::Caption => FieldTypeEnum::Text,
-            self::Notes => FieldTypeEnum::Textarea,
+            self::Notes => FieldTypeEnum::Repeater,
+            self::Note => FieldTypeEnum::Textarea,
         };
     }
 
@@ -94,6 +97,9 @@ enum DefaultFieldEnum: string implements Translatable
      * What a repeater asks for on each repetition, and nothing for every other
      * field. One document is a file and a line saying what it is, which is what
      * makes the block worth repeating rather than an upload repeated on its own.
+     * One note is the note, and nothing else: what somebody wrote down about a
+     * person is the whole of it, and a second box beside it would be a question
+     * nobody asked to answer.
      *
      * A repeater cannot sit inside another, so this never goes deeper than one
      * level.
@@ -105,6 +111,7 @@ enum DefaultFieldEnum: string implements Translatable
         return match ($this) {
             self::Document => [self::File, self::Description],
             self::Photo => [self::Image, self::Caption],
+            self::Notes => [self::Note],
             default => [],
         };
     }
@@ -150,6 +157,24 @@ enum DefaultFieldEnum: string implements Translatable
         return match ($this) {
             self::Category => ValueListEnum::ContactCategories,
             self::Gender => ValueListEnum::Genders,
+            default => null,
+        };
+    }
+
+    /**
+     * Which end of a repeater a new repetition is added at, and nothing for
+     * every other field.
+     *
+     * Notes are the one that differs. Adding one is how somebody records what
+     * they just learned, and reading them is how they catch up on a person, so
+     * the newest belongs where they are already looking. Documents and
+     * photographs are a collection somebody builds up, and reversing a set
+     * nobody asked to have reversed would be a change made on their behalf.
+     */
+    public function repetitionOrder(): ?RepetitionOrderEnum
+    {
+        return match ($this) {
+            self::Notes => RepetitionOrderEnum::NewestFirst,
             default => null,
         };
     }

@@ -49,6 +49,7 @@ enum DefaultPageEnum: string implements Translatable
         return match ($this) {
             self::General => [
                 DefaultSectionEnum::PersonalDetails,
+                DefaultSectionEnum::Notes,
             ],
             self::WaysToConnect => [
                 DefaultSectionEnum::ContactInformation,
@@ -57,7 +58,6 @@ enum DefaultPageEnum: string implements Translatable
             self::Information => [
                 DefaultSectionEnum::Documents,
                 DefaultSectionEnum::Photos,
-                DefaultSectionEnum::Notes,
             ],
         };
     }

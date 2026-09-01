@@ -6,6 +6,7 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\SetFieldValues;
 use App\Enums\FieldTypeEnum;
+use App\Enums\RepetitionOrderEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\FieldIsRequired;
 use App\Models\Contact;
@@ -536,6 +537,311 @@ class SetFieldValuesTest extends TestCase
         )->execute();
     }
 
+    /**
+     * User Story 2. Two repeaters in one section, one collecting at each end,
+     * saved in one request. Each obeys its own direction and neither disturbs
+     * the other.
+     */
+    #[Test]
+    public function it_lets_two_repeaters_in_one_section_collect_at_different_ends(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+
+        $notes = $this->fieldOn($contact, [
+            'key' => 'notes',
+            'type' => FieldTypeEnum::Repeater,
+            'is_repeatable' => true,
+            'repetition_order' => RepetitionOrderEnum::NewestFirst,
+        ]);
+        $note = $this->childOf($notes, ['key' => 'note']);
+
+        $documents = $this->fieldOn($contact, [
+            'key' => 'documents',
+            'type' => FieldTypeEnum::Repeater,
+            'is_repeatable' => true,
+        ], beside: $notes->sectionVersion);
+        $description = $this->childOf($documents, ['key' => 'description']);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($notes),
+            values: [
+                $notes->id => [['values' => [$note->id => 'Where we met']]],
+                $documents->id => [['values' => [$description->id => 'The lease']]],
+            ],
+        )->execute();
+
+        $keptNote = FieldValueRow::query()->where('field_id', $notes->id)->sole();
+        $keptDocument = FieldValueRow::query()->where('field_id', $documents->id)->sole();
+
+        /* The block is drawn with the notes blank first and the documents blank
+           last, which is what these indices stand for. */
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($notes),
+            values: [
+                $notes->id => [
+                    0 => ['values' => [$note->id => 'What they said on Tuesday']],
+                    1 => ['id' => $keptNote->id, 'values' => [$note->id => 'Where we met']],
+                ],
+                $documents->id => [
+                    0 => ['id' => $keptDocument->id, 'values' => [$description->id => 'The lease']],
+                    1 => ['values' => [$description->id => 'The insurance']],
+                ],
+            ],
+        )->execute();
+
+        $this->assertSame(
+            ['What they said on Tuesday', 'Where we met'],
+            $this->descriptionsIn($contact, $notes, $note),
+        );
+        $this->assertSame(
+            ['The lease', 'The insurance'],
+            $this->descriptionsIn($contact, $documents, $description),
+        );
+    }
+
+    /**
+     * Two blanks filled in one save. The form draws them in order, so the upper
+     * one arrives first and stays above the lower one. This is the case that
+     * rules out placing each new repetition at the front as it is created, which
+     * would put the second above the first.
+     */
+    #[Test]
+    public function it_keeps_two_repetitions_added_in_one_save_in_the_order_they_were_typed(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $notes = $this->fieldOn($contact, [
+            'key' => 'notes',
+            'type' => FieldTypeEnum::Repeater,
+            'is_repeatable' => true,
+            'repetition_order' => RepetitionOrderEnum::NewestFirst,
+        ]);
+        $note = $this->childOf($notes, ['key' => 'note']);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($notes),
+            values: [$notes->id => [['values' => [$note->id => 'Where we met']]]],
+        )->execute();
+
+        $held = FieldValueRow::query()->sole();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($notes),
+            values: [$notes->id => [
+                0 => ['values' => [$note->id => 'Typed in the upper box']],
+                1 => ['values' => [$note->id => 'Typed in the lower box']],
+                2 => ['id' => $held->id, 'values' => [$note->id => 'Where we met']],
+            ]],
+        )->execute();
+
+        $this->assertSame(
+            ['Typed in the upper box', 'Typed in the lower box', 'Where we met'],
+            $this->descriptionsIn($contact, $notes, $note),
+        );
+    }
+
+    /**
+     * The one that matters. A save understands a repetition that does not arrive
+     * as one somebody took away, so a block drawn in one order and matched in
+     * another does not produce a muddled list. It deletes.
+     *
+     * So: one repetition the record already holds, one somebody added and one
+     * somebody removed, all in the same save, on a repeater that collects at the
+     * front. Every survivor has to come back as itself.
+     */
+    #[Test]
+    public function it_loses_nothing_when_a_repeater_that_collects_at_the_front_is_saved(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $notes = $this->fieldOn($contact, [
+            'key' => 'notes',
+            'type' => FieldTypeEnum::Repeater,
+            'is_repeatable' => true,
+            'repetition_order' => RepetitionOrderEnum::NewestFirst,
+        ]);
+        $note = $this->childOf($notes, ['key' => 'note']);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($notes),
+            values: [$notes->id => [
+                ['values' => [$note->id => 'Where we met']],
+                ['values' => [$note->id => 'The thing about the move']],
+            ]],
+        )->execute();
+
+        $held = FieldValueRow::query()->orderBy('position')->orderBy('id')->get();
+        $this->assertCount(2, $held);
+
+        /* The block is drawn newest first, so a blank comes before what is
+           already there, and what is already there arrives after it. */
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($notes),
+            values: [$notes->id => [
+                0 => ['values' => [$note->id => 'What they said on Tuesday']],
+                1 => ['id' => $held[0]->id, 'values' => [$note->id => 'Where we met']],
+            ]],
+        )->execute();
+
+        $this->assertSame(
+            ['What they said on Tuesday', 'Where we met'],
+            $this->descriptionsIn($contact, $notes, $note),
+            'The new note is first, the kept one survived, and the removed one is gone.',
+        );
+        $this->assertSame([1, 2], FieldValueRow::query()->orderBy('position')->pluck('position')->all());
+    }
+
+    /**
+     * The place a repetition holds is the order it appears in, so a save gives
+     * each one the place matching the order it arrived in.
+     */
+    #[Test]
+    public function it_numbers_the_repetitions_in_the_order_they_arrived(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $documents = $this->fieldOn($contact, ['key' => 'documents', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $description = $this->childOf($documents, ['key' => 'description']);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($documents),
+            values: [$documents->id => [
+                ['values' => [$description->id => 'First']],
+                ['values' => [$description->id => 'Second']],
+                ['values' => [$description->id => 'Third']],
+            ]],
+        )->execute();
+
+        $this->assertSame([1, 2, 3], FieldValueRow::query()->orderBy('id')->pluck('position')->all());
+        $this->assertSame(['First', 'Second', 'Third'], $this->descriptionsIn($contact, $documents, $description));
+    }
+
+    #[Test]
+    public function it_writes_no_place_when_a_save_moves_nothing(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $documents = $this->fieldOn($contact, ['key' => 'documents', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $description = $this->childOf($documents, ['key' => 'description']);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($documents),
+            values: [$documents->id => [
+                ['values' => [$description->id => 'The lease']],
+                ['values' => [$description->id => 'The insurance']],
+            ]],
+        )->execute();
+
+        $rows = FieldValueRow::query()->orderBy('id')->get();
+        $touched = $rows->pluck('updated_at')->all();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($documents),
+            values: [$documents->id => [
+                ['id' => $rows[0]->id, 'values' => [$description->id => 'The lease, corrected']],
+                ['id' => $rows[1]->id, 'values' => [$description->id => 'The insurance']],
+            ]],
+        )->execute();
+
+        $this->assertSame([1, 2], FieldValueRow::query()->orderBy('id')->pluck('position')->all());
+        $this->assertEquals($touched, FieldValueRow::query()->orderBy('id')->get()->pluck('updated_at')->all());
+    }
+
+    #[Test]
+    public function it_closes_the_gap_a_removal_leaves(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $documents = $this->fieldOn($contact, ['key' => 'documents', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $description = $this->childOf($documents, ['key' => 'description']);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($documents),
+            values: [$documents->id => [
+                ['values' => [$description->id => 'First']],
+                ['values' => [$description->id => 'Second']],
+                ['values' => [$description->id => 'Third']],
+            ]],
+        )->execute();
+
+        $rows = FieldValueRow::query()->orderBy('position')->orderBy('id')->get();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($documents),
+            values: [$documents->id => [
+                ['id' => $rows[0]->id, 'values' => [$description->id => 'First']],
+                ['id' => $rows[2]->id, 'values' => [$description->id => 'Third']],
+            ]],
+        )->execute();
+
+        $this->assertSame([1, 2], FieldValueRow::query()->orderBy('position')->pluck('position')->all());
+        $this->assertSame(['First', 'Third'], $this->descriptionsIn($contact, $documents, $description));
+    }
+
+    /**
+     * The numbering reads the order off the index the form names each repetition
+     * by, so a body whose parts arrive out of order still numbers the way the
+     * block was drawn.
+     */
+    #[Test]
+    public function it_reads_the_order_off_the_index_rather_than_off_the_body(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $documents = $this->fieldOn($contact, ['key' => 'documents', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $description = $this->childOf($documents, ['key' => 'description']);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($documents),
+            values: [$documents->id => [
+                2 => ['values' => [$description->id => 'Third']],
+                0 => ['values' => [$description->id => 'First']],
+                1 => ['values' => [$description->id => 'Second']],
+            ]],
+        )->execute();
+
+        $this->assertSame(['First', 'Second', 'Third'], $this->descriptionsIn($contact, $documents, $description));
+    }
+
     private function contactOf(User $user): Contact
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -638,5 +944,26 @@ class SetFieldValuesTest extends TestCase
         $contact->unsetRelation('templateVersion');
 
         return $field;
+    }
+
+    /**
+     * What one repeater holds, in the order somebody would read it.
+     *
+     * @return list<string|null>
+     */
+    private function descriptionsIn(Contact $contact, Field $repeater, Field $child): array
+    {
+        return FieldValueRow::query()
+            ->where('valuable_type', $contact->getMorphClass())
+            ->where('valuable_id', $contact->id)
+            ->where('field_id', $repeater->id)
+            ->orderBy('position')
+            ->orderBy('id')
+            ->get()
+            ->map(fn (FieldValueRow $row): ?string => FieldValue::query()
+                ->where('field_value_row_id', $row->id)
+                ->where('field_id', $child->id)
+                ->value('value_string'))
+            ->all();
     }
 }

@@ -51,11 +51,17 @@
   $edge = $danger ? 'border-error-edge' : 'border-hairline';
   $band = $danger ? 'border-error-edge bg-error-tint' : 'border-hairline';
   $mark = $danger ? 'border-transparent bg-error text-white' : 'border-hairline bg-card text-body';
+
+  // A title on its own line sits beside the mark, so the three parts of the
+  // header centre on each other. A title with a subtitle under it is a block two
+  // lines tall, and centring that would drop the mark to the middle of it and
+  // leave it pointing at neither line, so it stays level with the title.
+  $align = $subtitle ? 'items-start' : 'items-center';
 @endphp
 
 <section {{ $attributes->class(['overflow-hidden rounded-lg border shadow-panel', $edge, $surface]) }}>
   @if ($title)
-    <header class="flex min-h-12 items-start gap-3 border-b px-4 py-3.5 {{ $band }}">
+    <header class="flex min-h-12 {{ $align }} gap-3 border-b px-4 py-3.5 {{ $band }}">
       @if ($icon)
         <span class="flex size-7 shrink-0 items-center justify-center rounded-md border {{ $mark }}">
           <x-icon :name="$icon" :size="15" :stroke-width="1.5" />

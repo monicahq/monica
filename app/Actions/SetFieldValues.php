@@ -227,6 +227,15 @@ class SetFieldValues
         $existing = $this->repetitionsOf($field);
         $children = $this->childrenOf($field);
         $kept = [];
+        $ordered = [];
+
+        /* The order the repetitions arrive in is the order they were drawn in,
+           which is the order somebody was looking at, and it is what their
+           places are numbered from below. The form names each one by an index
+           that ascends down the block, so the order is read off that rather
+           than trusted to whatever order the body happened to be serialised
+           in. */
+        ksort($submitted, SORT_NUMERIC);
 
         foreach ($submitted as $repetition) {
             if (! is_array($repetition)) {
@@ -247,6 +256,7 @@ class SetFieldValues
             )->execute();
 
             $kept[] = $row->id;
+            $ordered[] = $row;
 
             foreach ($children as $child) {
                 $this->saveOne($child, $values[$child->id] ?? null, $row);
@@ -262,6 +272,39 @@ class SetFieldValues
 
             $this->written++;
         }
+
+        $this->numberTheRepetitions($ordered);
+    }
+
+    /**
+     * Give each repetition the place matching the order it arrived in, counting
+     * from one.
+     *
+     * The place a repetition holds means the order it appears in, and this is
+     * what keeps that true. Whichever end its repeater collects at, and wherever
+     * somebody may later move one to, the block arrives in the order it was
+     * drawn in and the places follow it. That is why a repeater that collects at
+     * the front needs nothing here: its blanks are drawn first, so they arrive
+     * first, so they are numbered first.
+     *
+     * Only a number that has actually changed is written. A save that alters a
+     * value and moves nothing writes no place at all, which matters because
+     * these are repetitions nobody touched.
+     *
+     * @param  list<FieldValueRow>  $ordered
+     */
+    private function numberTheRepetitions(array $ordered): void
+    {
+        foreach (array_values($ordered) as $index => $row) {
+            $position = $index + 1;
+
+            if ($row->position === $position) {
+                continue;
+            }
+
+            $row->position = $position;
+            $row->save();
+        }
     }
 
     /**
@@ -274,6 +317,7 @@ class SetFieldValues
             ->where('valuable_id', $this->record->id)
             ->where('field_id', $field->id)
             ->orderBy('position')
+            ->orderBy('id')
             ->get()
             ->keyBy('id');
     }

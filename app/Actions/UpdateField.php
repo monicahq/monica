@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\RepetitionOrderEnum;
 use App\Enums\UserActionEnum;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
@@ -47,6 +48,7 @@ class UpdateField
         private readonly ?array $validation = null,
         private readonly ?int $repeatMin = null,
         private readonly ?int $repeatMax = null,
+        private readonly ?RepetitionOrderEnum $repetitionOrder = null,
         private readonly bool $isReminderSource = false,
     ) {}
 
@@ -97,6 +99,7 @@ class UpdateField
         $this->field->validation = $this->validation;
         $this->field->repeat_min = $this->field->type->isRepeater() ? $this->repeatMin : null;
         $this->field->repeat_max = $this->field->type->isRepeater() ? $this->repeatMax : null;
+        $this->field->repetition_order = $this->field->type->isRepeater() ? $this->repetitionOrder : null;
         $this->field->is_reminder_source = $this->field->type->canDriveAReminder() && $this->isReminderSource;
         $this->field->save();
     }

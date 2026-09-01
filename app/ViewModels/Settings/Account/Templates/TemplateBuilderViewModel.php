@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Settings\Account\Templates;
 
+use App\Enums\RepetitionOrderEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Template;
@@ -274,6 +275,12 @@ class TemplateBuilderViewModel
             'label' => $field->label,
             'help' => $field->help_text,
             'typeLabel' => FieldCatalogueViewModel::labelFor($field->type),
+            /* Said on the row only when it is worth saying. A repeater
+               collecting at the end is what every repeater does, so a badge for
+               it would be a badge on almost every row. */
+            'repetitionLabel' => $field->repetition_order?->addsToTheFront() === true
+                ? $field->repetition_order->label()
+                : null,
             'isSensitive' => $field->is_sensitive,
             'isSelected' => $field->id === $this->selectedFieldId,
             'url' => route('settings.templateBuilder.field', [
@@ -316,6 +323,8 @@ class TemplateBuilderViewModel
             'isRequired' => $field->is_required,
             'isSensitive' => $field->is_sensitive,
             'isHighlighted' => $field->is_highlighted,
+            'isRepeater' => $field->type->isRepeater(),
+            'repetitionOrder' => ($field->repetition_order ?? RepetitionOrderEnum::NewestLast)->value,
             'sectionName' => $this->pathTo($row),
         ];
     }

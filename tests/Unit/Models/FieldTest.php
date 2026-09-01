@@ -6,6 +6,7 @@ namespace Tests\Unit\Models;
 
 use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
+use App\Enums\RepetitionOrderEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Models\EntityType;
@@ -168,6 +169,22 @@ class FieldTest extends TestCase
         $this->expectException(QueryException::class);
 
         Field::factory()->create(['section_version_id' => $version->id, 'key' => 'street']);
+    }
+
+    #[Test]
+    public function it_reads_which_end_a_new_repetition_is_added_at(): void
+    {
+        $field = Field::factory()->create(['repetition_order' => RepetitionOrderEnum::NewestFirst]);
+
+        $this->assertSame(RepetitionOrderEnum::NewestFirst, $field->refresh()->repetition_order);
+    }
+
+    #[Test]
+    public function it_says_nothing_about_the_end_until_somebody_does(): void
+    {
+        $field = Field::factory()->create();
+
+        $this->assertNull($field->refresh()->repetition_order);
     }
 
     #[Test]
