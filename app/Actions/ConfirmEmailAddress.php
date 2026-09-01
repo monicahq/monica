@@ -27,8 +27,7 @@ class ConfirmEmailAddress
 
     private function confirm(): void
     {
-        $this->user->email_verified_at = now();
-        $this->user->save();
+        $this->user->markEmailAsVerified();
     }
 
     private function log(): void

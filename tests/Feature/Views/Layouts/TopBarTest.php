@@ -62,7 +62,7 @@ class TopBarTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->blade('<x-shell><x-slot:breadcrumb><x-breadcrumb :items="[[\'label\' => \'Dunder Mifflin\']]" /></x-slot:breadcrumb>Anything</x-shell>')
+            ->blade('<x-shell>Anything<x-slot:breadcrumb><x-breadcrumb :items="[[\'label\' => \'Dunder Mifflin\']]" /></x-slot:breadcrumb></x-shell>')
             ->assertSee('Dunder Mifflin')
             ->assertSee('aria-current="page"', escape: false);
     }
@@ -83,7 +83,7 @@ class TopBarTest extends TestCase
         $user = User::factory()->create();
 
         $rendered = $this->actingAs($user)
-            ->blade('<x-shell><x-slot:actions><span>Add someone</span></x-slot:actions>Anything</x-shell>');
+            ->blade('<x-shell>Anything<x-slot:actions><span>Add someone</span></x-slot:actions></x-shell>');
 
         $rendered->assertSee('Add someone');
         $rendered->assertDontSee($user->email);
@@ -119,7 +119,7 @@ class TopBarTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->blade('<x-shell><x-slot:footer><span>Save it</span></x-slot:footer>Anything</x-shell>')
+            ->blade('<x-shell>Anything<x-slot:footer><span>Save it</span></x-slot:footer></x-shell>')
             ->assertSee('Save it')
             ->assertSee('sticky bottom-0', escape: false);
     }

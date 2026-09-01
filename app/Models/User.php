@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Actions\SendEmailVerification;
 use App\Enums\DateFormatEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
 use Carbon\CarbonImmutable;
 use Database\Factories\UserFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -90,7 +92,7 @@ use Override;
     'two_factor_secret',
     'two_factor_recovery_codes',
 ])]
-class User extends Authenticatable implements HasLocalePreference
+class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail
 {
     use HasApiTokens;
 
@@ -252,14 +254,6 @@ class User extends Authenticatable implements HasLocalePreference
     }
 
     /**
-     * Get whether the user confirmed their email address.
-     */
-    public function hasConfirmedEmail(): bool
-    {
-        return $this->email_verified_at !== null;
-    }
-
-    /**
      * Get whether the user finished enrolling in two factor authentication, and
      * therefore has to answer a challenge before they are signed in.
      */
@@ -303,5 +297,16 @@ class User extends Authenticatable implements HasLocalePreference
     public function preferredLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    #[Override]
+    public function sendEmailVerificationNotification()
+    {
+        new SendEmailVerification(user: $this)->execute();
     }
 }

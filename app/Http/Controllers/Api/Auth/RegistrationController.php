@@ -6,10 +6,10 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Actions\CreateAccount;
 use App\Actions\CreateApiKey;
-use App\Actions\SendEmailVerification;
 use App\Helpers\TextSanitizer;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
@@ -49,8 +49,6 @@ class RegistrationController extends Controller
             password: $validated['password'],
             timezone: $validated['timezone'] ?? null,
         )->execute();
-
-        new SendEmailVerification(user: $user)->execute();
 
         $token = new CreateApiKey(
             user: $user,

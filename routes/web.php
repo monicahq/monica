@@ -118,7 +118,7 @@ Route::post('s/{token}', [SharedContactPasswordController::class, 'create'])
     ->name('share.password.create');
 
 // The screens where somebody looks after their vaults.
-Route::middleware(['auth', 'active', 'set.locale'])->group(function (): void {
+Route::middleware(['auth', 'active', 'set.locale', 'verified:auth.verification.notice'])->group(function (): void {
     Route::get('getting-started', [GettingStartedController::class, 'index'])->name('gettingStarted.index');
 
     Route::get('vaults', [VaultController::class, 'index'])->name('vaults.index');
@@ -229,10 +229,8 @@ Route::middleware(['auth', 'active', 'set.locale'])->group(function (): void {
 
     Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
     Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');
-});
 
-// The screens where somebody looks after their own account.
-Route::middleware(['auth', 'active', 'set.locale'])->group(function (): void {
+    // The screens where somebody looks after their own account.
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
 
     Route::get('settings/account/profile', [ProfileController::class, 'index'])->name('settings.profile.index');

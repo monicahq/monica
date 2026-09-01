@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\SendEmailVerification;
-use App\Enums\EmailType;
-use App\Jobs\SendEmail;
 use App\Models\User;
+use App\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -20,7 +19,7 @@ class SendEmailVerificationTest extends TestCase
     #[Test]
     public function it_sends_the_email_that_confirms_the_address(): void
     {
-        Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->unverified()->create();
 
@@ -28,28 +27,22 @@ class SendEmailVerificationTest extends TestCase
 
         $this->assertInstanceOf(User::class, $result);
 
-        Queue::assertPushedOn(
-            queue: 'high',
-            job: SendEmail::class,
-            callback: fn (SendEmail $job): bool => $job->emailType === EmailType::EmailVerification
-                && $job->user->id === $user->id
-                && $job->account->id === $user->account_id,
-        );
+        Notification::assertSentTo($user, VerifyEmail::class);
     }
 
     #[Test]
-    public function it_signs_the_link_so_it_cannot_be_forged(): void
+    public function it_puts_the_email_on_the_queue_the_impatient_ones_go_on(): void
     {
-        Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->unverified()->create();
 
         new SendEmailVerification(user: $user)->execute();
 
-        Queue::assertPushed(
-            job: SendEmail::class,
-            callback: fn (SendEmail $job): bool => str_contains($job->mailable->url, 'signature=')
-                && str_contains($job->mailable->url, '/verify-email/'.$user->id.'/'.sha1((string) $user->email)),
+        Notification::assertSentTo(
+            $user,
+            VerifyEmail::class,
+            fn (VerifyEmail $notification): bool => $notification->queue === 'high',
         );
     }
 }

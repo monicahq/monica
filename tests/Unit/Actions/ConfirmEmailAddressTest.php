@@ -27,7 +27,7 @@ class ConfirmEmailAddressTest extends TestCase
         $result = new ConfirmEmailAddress(user: $user)->execute();
 
         $this->assertInstanceOf(User::class, $result);
-        $this->assertTrue($user->refresh()->hasConfirmedEmail());
+        $this->assertTrue($user->refresh()->hasVerifiedEmail());
 
         Queue::assertPushedOn(
             queue: 'low',

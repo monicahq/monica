@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Controllers\App\Auth;
 
 use App\Actions\CreateAccount;
-use App\Actions\SendEmailVerification;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Rules\Turnstile;
 use App\ViewModels\Auth\RegisterPasskeyViewModel;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -55,9 +56,8 @@ class RegistrationPasskeyController extends Controller
             lastName: $validated['last_name'],
             email: $validated['email'],
             timezone: $validated['timezone'] ?? null,
+            locale: App::currentLocale(),
         )->execute();
-
-        new SendEmailVerification(user: $user)->execute();
 
         Auth::login($user);
 

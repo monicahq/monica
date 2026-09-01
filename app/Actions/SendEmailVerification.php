@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\EmailType;
-use App\Jobs\SendEmail;
-use App\Mail\VerifyEmail;
 use App\Models\User;
-use Illuminate\Support\Facades\URL;
+use App\Notifications\VerifyEmail;
 
 /**
  * Send the email that asks somebody to confirm the address they signed up with.
- * The link is signed and expires. Every email the application sends goes
- * through the SendEmail job, so it is recorded in emails_sent and the account
- * can see what was sent, which is why the framework notification is not used.
+ * The link is signed and expires. `User::sendEmailVerificationNotification()`
+ * lands here, so the framework asks for the email the same way the notice screen
+ * does when somebody asks for it again.
  */
 class SendEmailVerification
 {
@@ -31,23 +28,6 @@ class SendEmailVerification
 
     private function send(): void
     {
-        SendEmail::dispatch(
-            mailable: new VerifyEmail(url: $this->url()),
-            account: $this->user->account,
-            emailType: EmailType::EmailVerification,
-            user: $this->user,
-        )->onQueue('high');
-    }
-
-    private function url(): string
-    {
-        return URL::temporarySignedRoute(
-            'auth.verification.verify',
-            now()->addMinutes(config('auth.verification.expire', 60)),
-            [
-                'id' => $this->user->id,
-                'hash' => sha1($this->user->email),
-            ],
-        );
+        $this->user->notify(new VerifyEmail()->onQueue('high'));
     }
 }

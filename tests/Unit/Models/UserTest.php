@@ -194,8 +194,8 @@ class UserTest extends TestCase
     #[Test]
     public function it_knows_whether_the_email_address_was_confirmed(): void
     {
-        $this->assertFalse(User::factory()->unverified()->create()->hasConfirmedEmail());
-        $this->assertTrue(User::factory()->create()->hasConfirmedEmail());
+        $this->assertFalse(User::factory()->unverified()->create()->hasVerifiedEmail());
+        $this->assertTrue(User::factory()->create()->hasVerifiedEmail());
     }
 
     #[Test]

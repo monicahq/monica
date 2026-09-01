@@ -16,7 +16,7 @@ class EmailVerificationController extends Controller
 {
     public function show(Request $request): View|RedirectResponse
     {
-        if ($request->user()->hasConfirmedEmail()) {
+        if ($request->user()->hasVerifiedEmail()) {
             return redirect()->route('home.index');
         }
 
@@ -31,15 +31,15 @@ class EmailVerificationController extends Controller
     {
         $user = $request->user();
 
-        if (! hash_equals((string) $request->route()->parameter('id'), (string) $user->id)) {
+        if (! hash_equals((string) $user->getKey(), (string) $request->route()->parameter('id'))) {
             abort(403);
         }
 
-        if (! hash_equals((string) $request->route()->parameter('hash'), sha1($user->email))) {
+        if (! hash_equals(sha1($user->getEmailForVerification()), (string) $request->route()->parameter('hash'))) {
             abort(403);
         }
 
-        if ($user->hasConfirmedEmail()) {
+        if ($user->hasVerifiedEmail()) {
             return redirect()->route('home.index');
         }
 
@@ -50,7 +50,7 @@ class EmailVerificationController extends Controller
 
     public function create(Request $request): RedirectResponse
     {
-        if ($request->user()->hasConfirmedEmail()) {
+        if ($request->user()->hasVerifiedEmail()) {
             return redirect()->route('home.index');
         }
 

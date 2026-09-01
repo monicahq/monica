@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Auth;
 
-use App\Enums\EmailType;
 use App\Models\Account;
 use App\Models\User;
+use App\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -68,19 +69,19 @@ class RegistrationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_sends_the_verification_email_and_records_it(): void
+    public function it_sends_the_verification_email(): void
     {
+        Notification::fake();
+
         $this->post(route('auth.register.create'), $this->validPayload());
 
         $user = User::query()->where('email', 'michael.scott@dundermifflin.com')->firstOrFail();
 
-        $this->assertDatabaseHas('emails_sent', [
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-            'email_type' => EmailType::EmailVerification->value,
-            'email_address' => 'michael.scott@dundermifflin.com',
-            'subject' => 'Confirm your email address',
-        ]);
+        Notification::assertSentTo(
+            $user,
+            VerifyEmail::class,
+            fn (VerifyEmail $notification): bool => $notification->queue === 'high',
+        );
     }
 
     #[Test]

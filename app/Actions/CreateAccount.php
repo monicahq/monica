@@ -9,6 +9,7 @@ use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -49,6 +50,7 @@ class CreateAccount
         private readonly string $email,
         private readonly ?string $password = null,
         private readonly ?string $timezone = null,
+        private readonly ?string $locale = null,
     ) {}
 
     public function execute(): User
@@ -59,6 +61,8 @@ class CreateAccount
             $this->createFirstVault();
             $this->createDefaultValueLists();
         });
+
+        event(new Registered($this->user));
 
         $this->createDefaultTemplate();
         $this->log();
@@ -87,6 +91,7 @@ class CreateAccount
             email: $this->email,
             password: $this->password,
             timezone: $this->timezone,
+            locale: $this->locale,
         )->execute();
     }
 

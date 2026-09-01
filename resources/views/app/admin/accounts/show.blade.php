@@ -122,7 +122,7 @@
 
         <div>
           <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Address confirmed') }}</dt>
-          <dd class="text-base text-ink">{{ $viewModel->user()->hasConfirmedEmail() ? __('Yes') : __('No') }}</dd>
+          <dd class="text-base text-ink">{{ $viewModel->user()->hasVerifiedEmail() ? __('Yes') : __('No') }}</dd>
         </div>
 
         <div>

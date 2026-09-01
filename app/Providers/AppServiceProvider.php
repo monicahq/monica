@@ -14,7 +14,6 @@ use Cose\Algorithm\Signature\ECDSA;
 use Cose\Algorithm\Signature\EdDSA;
 use Cose\Algorithm\Signature\RSA;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Date;

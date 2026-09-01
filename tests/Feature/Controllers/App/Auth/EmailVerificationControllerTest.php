@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Auth;
 
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
 use App\Models\User;
+use App\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
@@ -62,7 +62,7 @@ class EmailVerificationControllerTest extends TestCase
         $response = $this->actingAs($user)->get($this->verificationUrl($user));
 
         $response->assertRedirect(route('home.index'));
-        $this->assertTrue($user->refresh()->hasConfirmedEmail());
+        $this->assertTrue($user->refresh()->hasVerifiedEmail());
 
         Queue::assertPushedOn(
             queue: 'low',
@@ -88,7 +88,7 @@ class EmailVerificationControllerTest extends TestCase
         $response = $this->actingAs($user)->get($url);
 
         $response->assertStatus(403);
-        $this->assertFalse($user->refresh()->hasConfirmedEmail());
+        $this->assertFalse($user->refresh()->hasVerifiedEmail());
     }
 
     #[Test]
@@ -102,13 +102,13 @@ class EmailVerificationControllerTest extends TestCase
         ]));
 
         $response->assertStatus(403);
-        $this->assertFalse($user->refresh()->hasConfirmedEmail());
+        $this->assertFalse($user->refresh()->hasVerifiedEmail());
     }
 
     #[Test]
     public function it_sends_the_email_again(): void
     {
-        Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->unverified()->create();
 
@@ -124,18 +124,17 @@ class EmailVerificationControllerTest extends TestCase
             ->assertSee('role="status"', escape: false)
             ->assertSee('We sent you another email.');
 
-        Queue::assertPushedOn(
-            queue: 'high',
-            job: SendEmail::class,
-            callback: fn (SendEmail $job): bool => $job->emailType === EmailType::EmailVerification
-                && $job->user->id === $user->id,
+        Notification::assertSentTo(
+            $user,
+            VerifyEmail::class,
+            fn (VerifyEmail $notification): bool => $notification->queue === 'high',
         );
     }
 
     #[Test]
     public function it_does_not_send_the_email_again_to_somebody_who_has_already_confirmed(): void
     {
-        Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create();
 
@@ -143,6 +142,6 @@ class EmailVerificationControllerTest extends TestCase
 
         $response->assertRedirect(route('home.index'));
 
-        Queue::assertNotPushed(SendEmail::class);
+        Notification::assertNothingSent();
     }
 }
