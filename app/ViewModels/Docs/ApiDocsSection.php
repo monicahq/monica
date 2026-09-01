@@ -38,6 +38,13 @@ class ApiDocsSection
     /** @var list<array{name: string, type: string, required: bool, description: string, default: string|null, example: mixed}> */
     public readonly array $params;
 
+    /**
+     * Every field the answer carries, named by its full path from the top of it.
+     *
+     * @var list<array{name: string, type: string, description: string, opaque?: bool}>
+     */
+    public readonly array $returnFields;
+
     public readonly string $rateLimit;
 
     public readonly ?string $returns;
@@ -69,6 +76,7 @@ class ApiDocsSection
         $this->responseStatus = $section['responseStatus'] ?? 200;
         $this->response = $section['response'] ?? null;
         $this->overriddenBody = $section['exampleBody'] ?? null;
+        $this->returnFields = $section['returnFields'] ?? [];
 
         $this->params = $this->mergeParams($section);
         $this->paramsTitle = $section['paramsTitle'] ?? $this->titleForParams($section);
@@ -77,6 +85,11 @@ class ApiDocsSection
     public function hasParams(): bool
     {
         return $this->params !== [];
+    }
+
+    public function hasReturnFields(): bool
+    {
+        return $this->returnFields !== [];
     }
 
     /**

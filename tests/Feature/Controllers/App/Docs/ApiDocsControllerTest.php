@@ -112,6 +112,18 @@ class ApiDocsControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_describes_every_field_the_endpoint_returns(): void
+    {
+        $response = $this->get(route('docs.api.show', ['section' => 'vaults-index']));
+
+        $response->assertSee('Returns');
+        $response->assertSee('data[].attributes.name', escape: false);
+        $response->assertSee('timestamp');
+        $response->assertSee('Up to 255 characters', escape: false);
+        $response->assertSee('meta.total', escape: false);
+    }
+
+    #[Test]
     public function every_section_of_the_reference_is_reachable(): void
     {
         $ids = array_map(

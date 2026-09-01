@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\ViewModels\Docs\ApiDocsFields;
 use App\ViewModels\Docs\ApiDocsViewModel;
 
 $base = ApiDocsViewModel::baseUrl();
@@ -62,11 +63,20 @@ $identifier = [
     ],
 ];
 
+$keyAttributes = [
+    ['name' => 'name', 'type' => 'string', 'description' => 'What the key is for, between 3 and 255 characters, as the person who minted it wrote it. Two keys may share a name; the identifier is what tells them apart.'],
+    ['name' => 'last_used_at', 'type' => 'timestamp', 'description' => 'When the key last let something in, as a count of seconds, or null if it never has. A key with null here has been minted and never used.'],
+    ['name' => 'expires_at', 'type' => 'timestamp', 'description' => 'When the key stops working, as a count of seconds, or null when it never does. Every key issued today is null: expiry is not something this API sets yet.'],
+    ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the key was minted, as a count of seconds since 1970.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When the row last changed, as a count of seconds, or null. Using a key changes it, so in practice it tracks last_used_at.'],
+];
+
 return [
     'name' => 'API keys',
     'sections' => [
         [
             'id' => 'api-keys-index',
+            'returnFields' => ApiDocsFields::page('api_key', 'key', 'keys', $keyAttributes),
             'title' => 'List keys',
             'label' => 'List keys',
             'method' => 'GET',
@@ -89,6 +99,7 @@ return [
         ],
         [
             'id' => 'api-keys-show',
+            'returnFields' => ApiDocsFields::one('api_key', 'key', $keyAttributes),
             'title' => 'Get a key',
             'label' => 'Get a key',
             'method' => 'GET',
@@ -102,6 +113,10 @@ return [
         ],
         [
             'id' => 'api-keys-create',
+            'returnFields' => [
+                ...ApiDocsFields::one('api_key', 'key', $keyAttributes),
+                ['name' => 'token', 'type' => 'string', 'description' => 'The readable key, at the top of the answer rather than inside the object, because the shape describing a key is one that can never carry a secret. This is the only time it exists in this form: only a hash of it is kept, so a key you fail to copy has to be replaced rather than recovered.'],
+            ],
             'title' => 'Create a key',
             'label' => 'Create a key',
             'method' => 'POST',

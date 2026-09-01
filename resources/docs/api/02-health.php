@@ -7,6 +7,11 @@ return [
     'sections' => [
         [
             'id' => 'status-show',
+            'returnFields' => [
+                ['name' => 'status', 'type' => 'string', 'description' => 'Always ok in this answer. An instance that cannot reach its database answers 503 instead, carrying status of error and nothing else, and one that is not running answers nothing at all. Those three are what a monitor watches for.'],
+                ['name' => 'version', 'type' => 'string', 'description' => 'The release the instance runs, as a semantic version such as 3.0.0. It is how a caller can tell whether a capability it needs has landed here yet.'],
+                ['name' => 'instance', 'type' => 'string', 'description' => 'The host answering, so a monitor watching several self hosted instances can tell them apart.'],
+            ],
             'title' => 'Check status',
             'label' => 'Check status',
             'method' => 'GET',

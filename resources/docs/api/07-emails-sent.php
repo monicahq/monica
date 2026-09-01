@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\ViewModels\Docs\ApiDocsFields;
 use App\ViewModels\Docs\ApiDocsViewModel;
 
 $base = ApiDocsViewModel::baseUrl();
@@ -49,11 +50,31 @@ $withBody['attributes'] = array_merge(
     array_slice($delivered['attributes'], 3, null, true),
 );
 
+$emailAttributes = [
+    ['name' => 'email_type', 'type' => 'string', 'description' => 'Which of our emails this was, as a key such as new_login or magic_link_created, up to 255 characters. The keys come from a set the product keeps and adds to as it sends new kinds of mail, so match the ones you care about and let an unfamiliar one through rather than treating it as an error.'],
+    ['name' => 'subject', 'type' => 'string', 'description' => 'The subject line as it was sent, of no fixed length, or null for a record written before we kept them.'],
+    ['name' => 'email_address', 'type' => 'string', 'description' => 'The address it went to, up to 255 characters. It need not belong to anybody with an account: what matters is that it left on behalf of yours.'],
+    ['name' => 'delivery_status', 'type' => 'string', 'description' => 'Where the email got to: one of bounced, delivered or sent. It is the one word you want out of the three moments below, worked out the same way the account screen works it out, with bounced winning over delivered when a provider reports them out of order.'],
+    ['name' => 'sent_at', 'type' => 'timestamp', 'description' => 'When it left us, as a count of seconds since 1970, or null for a record written before we kept it. This is the moment the list is ordered by.'],
+    ['name' => 'delivered_at', 'type' => 'timestamp', 'description' => 'When the provider told us it arrived, as a count of seconds, or null when nobody has told us. Null means we have not heard, not that it failed.'],
+    ['name' => 'bounced_at', 'type' => 'timestamp', 'description' => 'When it came back, as a count of seconds, or null when it has not. An email with a moment here reached nobody.'],
+    ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the record was written, as a count of seconds. Usually the same second it was sent, and not the same field.'],
+];
+
+$emailBody = ['name' => 'body', 'type' => 'string', 'description' => 'The copy that was sent, or null for a record written before we kept it. It is carried only when one email is read, never on a list row, so that asking for a page never turns into a download.'];
+
+$emailAttributesWithBody = [
+    ...array_slice($emailAttributes, 0, 3),
+    $emailBody,
+    ...array_slice($emailAttributes, 3),
+];
+
 return [
     'name' => 'Emails sent',
     'sections' => [
         [
             'id' => 'emails-sent-index',
+            'returnFields' => ApiDocsFields::page('email_sent', 'email', 'emails', $emailAttributes),
             'title' => 'List emails sent',
             'label' => 'List emails sent',
             'method' => 'GET',
@@ -94,6 +115,7 @@ return [
         ],
         [
             'id' => 'emails-sent-show',
+            'returnFields' => ApiDocsFields::one('email_sent', 'email', $emailAttributesWithBody),
             'title' => 'Get an email sent',
             'label' => 'Get an email sent',
             'method' => 'GET',

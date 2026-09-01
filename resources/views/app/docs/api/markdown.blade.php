@@ -40,9 +40,22 @@
       $block[] = implode(PHP_EOL, $rows);
     }
 
-    if ($section->returns) {
+    if ($section->returns || $section->hasReturnFields()) {
       $block[] = '## Returns';
-      $block[] = $section->returns;
+
+      if ($section->returns) {
+        $block[] = $section->returns;
+      }
+
+      if ($section->hasReturnFields()) {
+        $rows = [];
+
+        foreach ($section->returnFields as $field) {
+          $rows[] = '- `'.$field['name'].'` ('.$field['type'].'): '.$field['description'];
+        }
+
+        $block[] = implode(PHP_EOL, $rows);
+      }
     }
 
     $block[] = '## Rate limit';

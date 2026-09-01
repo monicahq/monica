@@ -80,6 +80,16 @@ class ApiDocsMarkdownControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_carries_the_fields_of_the_answer_as_bullets(): void
+    {
+        $response = $this->get(route('docs.api.markdown.show', ['section' => 'vaults-index']));
+
+        $response->assertSee('## Returns');
+        $response->assertSee('- `data[].attributes.name` (string):', escape: false);
+        $response->assertSee('- `meta.total` (integer):', escape: false);
+    }
+
+    #[Test]
     public function it_finds_nothing_for_a_section_that_does_not_exist(): void
     {
         $this->get(route('docs.api.markdown.show', ['section' => 'nothing-of-the-sort']))

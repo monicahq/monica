@@ -9,7 +9,6 @@ use App\Actions\CreateApiKey;
 use App\Helpers\TextSanitizer;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
@@ -53,7 +52,7 @@ class RegistrationController extends Controller
         $token = new CreateApiKey(
             user: $user,
             name: $this->keyName($validated['device_name'] ?? null),
-        )->execute();
+        )->execute()->plainTextToken;
 
         return response()->json([
             'token' => $token,

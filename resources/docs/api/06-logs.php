@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\ViewModels\Docs\ApiDocsFields;
 use App\ViewModels\Docs\ApiDocsViewModel;
 
 $base = ApiDocsViewModel::baseUrl();
@@ -40,11 +41,22 @@ $systemLog = [
     ],
 ];
 
+$logAttributes = [
+    ['name' => 'author', 'type' => 'string', 'description' => 'Who did it: their name while they are still on the account, the address they had once they are not, and a translated phrase reading The system for anything the product did on its own. Worked out when you ask rather than stored, so a deleted person still reads as somebody.'],
+    ['name' => 'action', 'type' => 'string', 'description' => 'What was done, as a key such as vault_created or contact_deleted, up to 255 characters. The keys come from a set the product keeps and adds to as it gains capabilities, and the column is a plain string rather than a fixed set, so match the ones you care about and let an unfamiliar one through rather than treating it as an error.'],
+    ['name' => 'parameters', 'type' => 'object', 'description' => 'What the action was about, as whatever that kind of action recorded. The keys depend entirely on the action, so nothing here promises a shape: a vault creation carries the name of the vault, another action carries something else.', 'opaque' => true],
+    ['name' => 'description', 'type' => 'string', 'description' => 'The entry as a sentence a person can read, with the parameters already put into it. Worked out when you ask, and in the language of whoever is asking.'],
+    ['name' => 'source', 'type' => 'string', 'description' => 'Where it came from: one of web, api, mcp, import, automation, module or system. It is how a change made by a script is told from one made by hand.'],
+    ['name' => 'ip_address', 'type' => 'string', 'description' => 'The address the request came from, up to 45 characters so that a version six address fits, or null when nothing was recorded, which is the case for anything the system did on its own.'],
+    ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When it happened, as a count of seconds since 1970. The journal is append only, so this never moves.'],
+];
+
 return [
     'name' => 'Logs',
     'sections' => [
         [
             'id' => 'logs-index',
+            'returnFields' => ApiDocsFields::page('log', 'entry', 'entries', $logAttributes),
             'title' => 'List logs',
             'label' => 'List logs',
             'method' => 'GET',
@@ -84,6 +96,7 @@ return [
         ],
         [
             'id' => 'logs-show',
+            'returnFields' => ApiDocsFields::one('log', 'entry', $logAttributes),
             'title' => 'Get a log',
             'label' => 'Get a log',
             'method' => 'GET',

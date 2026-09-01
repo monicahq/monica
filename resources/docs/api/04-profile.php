@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\ViewModels\Docs\ApiDocsFields;
 use App\ViewModels\Docs\ApiDocsViewModel;
 
 $base = ApiDocsViewModel::baseUrl();
@@ -28,11 +29,27 @@ $user = [
     ],
 ];
 
+$userAttributes = [
+    ['name' => 'first_name', 'type' => 'string', 'description' => 'The given name, up to 255 characters. Which of the two names is shown first is name_order rather than this.'],
+    ['name' => 'last_name', 'type' => 'string', 'description' => 'The family name, up to 255 characters.'],
+    ['name' => 'email', 'type' => 'string', 'description' => 'The address the account signs in with, up to 255 characters, always in lower case. It is unique across the instance.'],
+    ['name' => 'email_verified', 'type' => 'boolean', 'description' => 'Whether the address has been confirmed. Worked out from when it was confirmed rather than stored as a flag, so the moment itself is not something the API hands out.'],
+    ['name' => 'locale', 'type' => 'string', 'description' => 'The language the product speaks to this person: one of en, fr_FR, de_DE, es_ES, pt_PT, nl_NL, pt_BR, it_IT or tr_TR. It never affects anything the person themselves wrote.'],
+    ['name' => 'timezone', 'type' => 'string', 'description' => 'The zone their times are shown in, as an identifier such as Europe/Paris, up to 64 characters. Every timestamp in this API is a count of seconds regardless, so this is about what a screen shows rather than about what you receive.'],
+    ['name' => 'time_format', 'type' => 'string', 'description' => 'Either 24 or 12, saying which clock they read.'],
+    ['name' => 'date_format', 'type' => 'string', 'description' => 'How a date is written for them: one of d/m/Y, m/d/Y, Y-m-d or j F Y, or null when they have not chosen and the language decides.'],
+    ['name' => 'name_order', 'type' => 'string', 'description' => 'Either given_first or family_first. Which name comes first varies by culture, so it is a setting rather than an assumption.'],
+    ['name' => 'number_format', 'type' => 'string', 'description' => 'How a number is grouped and pointed: one of comma_dot, dot_comma, space_comma or no_separator, or null when they have not chosen and the language decides.'],
+    ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the account was opened, as a count of seconds since 1970 rather than a written date.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When the profile last changed, as a count of seconds, or null if it has not changed since it was opened.'],
+];
+
 return [
     'name' => 'Your profile',
     'sections' => [
         [
             'id' => 'me-show',
+            'returnFields' => ApiDocsFields::one('user', 'person the token acts as', $userAttributes),
             'title' => 'Get your profile',
             'label' => 'Get your profile',
             'method' => 'GET',
@@ -44,6 +61,7 @@ return [
         ],
         [
             'id' => 'me-update',
+            'returnFields' => ApiDocsFields::one('user', 'person the token acts as', $userAttributes),
             'title' => 'Update your profile',
             'label' => 'Update your profile',
             'method' => 'PUT',

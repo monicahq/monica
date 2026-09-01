@@ -7,6 +7,10 @@ return [
     'sections' => [
         [
             'id' => 'register-store',
+            'returnFields' => [
+                ['name' => 'token', 'type' => 'string', 'description' => 'The bearer token. Send it as an Authorization header reading Bearer followed by this value, on every other endpoint. This is the only time it exists in readable form: only a hash of it is kept, so a token you fail to copy has to be made again.'],
+                ['name' => 'expires_at', 'type' => 'timestamp', 'description' => 'When the token stops working, as a count of seconds, or null when it never does. Every token issued today is null: expiry is not something this API sets yet, and a token is ended by revoking it.'],
+            ],
             'title' => 'Register',
             'label' => 'Register',
             'method' => 'POST',
@@ -83,6 +87,10 @@ return [
         ],
         [
             'id' => 'login-store',
+            'returnFields' => [
+                ['name' => 'token', 'type' => 'string', 'description' => 'The bearer token. Send it as an Authorization header reading Bearer followed by this value, on every other endpoint. This is the only time it exists in readable form: only a hash of it is kept, so a token you fail to copy has to be made again.'],
+                ['name' => 'expires_at', 'type' => 'timestamp', 'description' => 'When the token stops working, as a count of seconds, or null when it never does. Every token issued today is null: expiry is not something this API sets yet, and a token is ended by revoking it.'],
+            ],
             'title' => 'Log in',
             'label' => 'Log in',
             'method' => 'POST',

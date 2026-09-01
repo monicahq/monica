@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\ViewModels\Docs\ApiDocsFields;
 use App\ViewModels\Docs\ApiDocsViewModel;
 
 $base = ApiDocsViewModel::baseUrl();
@@ -70,11 +71,23 @@ $identifier = [
 
 $colours = 'Exactly one of #3f5fd0, #4f8a49, #9a6a24, #9a3f2b, #6b4fa8, #2f7f86, #a8447a or #4a4a52, written in lower case.';
 
+$vaultAttributes = [
+    ['name' => 'name', 'type' => 'string', 'description' => 'What the vault is called. Up to 255 characters. Reduced to plain text when it was written down, so no markup survives here.'],
+    ['name' => 'description', 'type' => 'string', 'description' => 'What the vault is for, up to 65535 characters, or null when nobody said. Null is the ordinary state of a vault nobody described, not a sign of anything missing.'],
+    ['name' => 'colour', 'type' => 'string', 'description' => $colours.' It is how vaults are told apart at a glance, and it is decoration: nothing depends on it.'],
+    ['name' => 'position', 'type' => 'integer', 'description' => 'Where the vault sits in your list, counting from 1. It is the order you arranged, and it is the order the list endpoint answers in.'],
+    ['name' => 'is_default', 'type' => 'boolean', 'description' => 'Whether records land here when nothing says which vault. Exactly one of your vaults is true while you hold a vault at all, and none is while you hold none.'],
+    ['name' => 'contact_count', 'type' => 'integer', 'description' => 'How many contacts the vault holds, counting the archived and the partial ones. It is a running count kept as contacts are written down and deleted, rather than something counted when you ask.'],
+    ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the vault was opened, as a count of seconds since 1970 rather than a written date.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When its wording last changed, as a count of seconds, or null if it has not changed since it was opened.'],
+];
+
 return [
     'name' => 'Vaults',
     'sections' => [
         [
             'id' => 'vaults-index',
+            'returnFields' => ApiDocsFields::page('vault', 'vault', 'vaults', $vaultAttributes),
             'title' => 'List vaults',
             'label' => 'List vaults',
             'method' => 'GET',
@@ -98,6 +111,7 @@ return [
         ],
         [
             'id' => 'vaults-show',
+            'returnFields' => ApiDocsFields::one('vault', 'vault', $vaultAttributes),
             'title' => 'Get a vault',
             'label' => 'Get a vault',
             'method' => 'GET',
@@ -115,6 +129,7 @@ return [
         ],
         [
             'id' => 'vaults-create',
+            'returnFields' => ApiDocsFields::one('vault', 'vault', $vaultAttributes),
             'title' => 'Create a vault',
             'label' => 'Create a vault',
             'method' => 'POST',
@@ -166,6 +181,7 @@ return [
         ],
         [
             'id' => 'vaults-update',
+            'returnFields' => ApiDocsFields::one('vault', 'vault', $vaultAttributes),
             'title' => 'Update a vault',
             'label' => 'Update a vault',
             'method' => 'PUT',

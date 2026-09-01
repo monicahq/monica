@@ -54,10 +54,7 @@
 
     <x-api-docs.params :section="$section" />
 
-    @if ($section->returns)
-      <h2 class="mt-9 mb-1 text-xl text-ink">Returns</h2>
-      <p class="text-[14px] leading-[1.65] text-pretty text-body">{{ $section->returns }}</p>
-    @endif
+    <x-api-docs.returns :section="$section" />
 
     <x-api-docs.rate-limit :section="$section" />
   </div>

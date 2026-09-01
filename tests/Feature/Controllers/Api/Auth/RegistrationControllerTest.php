@@ -47,6 +47,25 @@ class RegistrationControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * The token used to come back as the whole object behind it, which put the
+     * readable value at token.plainTextToken and carried the row it belongs to,
+     * its abilities and what it is attached to, beside it. Signing in has always
+     * answered with the string, and the reference has always promised one.
+     */
+    #[Test]
+    public function it_hands_the_token_back_as_a_string_and_nothing_else(): void
+    {
+        Queue::fake();
+
+        $response = $this->json('POST', '/api/v1/register', $this->payload());
+
+        $response->assertCreated();
+        $this->assertIsString($response->json('token'));
+        $this->assertStringContainsString('|', $response->json('token'));
+        $this->assertSame(['token', 'expires_at'], array_keys($response->json()));
+    }
+
     #[Test]
     public function it_builds_the_account_the_way_the_sign_up_screen_does(): void
     {
