@@ -63,7 +63,7 @@ class ApiDocsViewModelTest extends TestCase
         );
 
         $this->assertEquals(
-            ['Health', 'Authentication', 'Your profile', 'API keys', 'Logs', 'Emails sent'],
+            ['Health', 'Authentication', 'Your profile', 'API keys', 'Logs', 'Emails sent', 'Vaults'],
             array_column($navigation['resources'], 'name'),
         );
     }

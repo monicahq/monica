@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\EmailSentController;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\StatusController;
+use App\Http\Controllers\Api\VaultController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,5 +48,18 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         // arrived. Written as mail leaves, so there is nothing here but reading.
         Route::get('emails-sent', [EmailSentController::class, 'index'])->name('emailsSent');
         Route::get('emails-sent/{emailSent}', [EmailSentController::class, 'show'])->where('emailSent', '[1-9][0-9]*')->name('emailsSent.show');
+
+        // The compartments the account holds. Everything else lives in one, so
+        // an account with no vault can hold nothing, which is why this is where
+        // a caller setting an account up from a script starts.
+        //
+        // A vault is addressed by its uuid and by nothing else: the primary key
+        // would say how many an instance holds, and the constraint means an
+        // address of the wrong shape is refused before a query runs.
+        Route::get('vaults', [VaultController::class, 'index'])->name('vaults');
+        Route::get('vaults/{vault}', [VaultController::class, 'show'])->where('vault', '[0-9a-fA-F-]{36}')->name('vaults.show');
+        Route::post('vaults', [VaultController::class, 'create'])->name('vaults.create');
+        Route::put('vaults/{vault}', [VaultController::class, 'update'])->where('vault', '[0-9a-fA-F-]{36}')->name('vaults.update');
+        Route::delete('vaults/{vault}', [VaultController::class, 'destroy'])->where('vault', '[0-9a-fA-F-]{36}')->name('vaults.destroy');
     });
 });
