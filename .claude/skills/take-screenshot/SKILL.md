@@ -109,6 +109,10 @@ Use descriptive names when taking multiple screenshots.
 
 Do not add generated screenshots to Git unless explicitly requested.
 
+A screenshot taken for a pull request is the exception. It belongs in
+`.github/screenshots/` and is committed, as the
+[pull requests skill](../pull-requests/SKILL.md) describes.
+
 ## Useful Iris options
 
 ```text
