@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Views\Components;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -37,6 +38,36 @@ class IconTest extends TestCase
             ->assertSee('role="img"', escape: false)
             ->assertSee('<title>Email</title>', escape: false)
             ->assertDontSee('aria-hidden', escape: false);
+    }
+
+    #[Test]
+    #[DataProvider('provideTheMarksTheFieldTypeCatalogueAsksFor')]
+    public function it_draws_a_glyph_of_its_own_for_every_mark_the_catalogue_asks_for(string $name): void
+    {
+        $this->blade('<x-icon name="'.$name.'" />')
+            ->assertSee('viewBox="0 0 16 16"', escape: false)
+            ->assertDontSee('<circle cx="8" cy="6" r="2.6">', escape: false);
+    }
+
+    /**
+     * @return array<int, array<int, string>>
+     */
+    public static function provideTheMarksTheFieldTypeCatalogueAsksFor(): array
+    {
+        return [
+            ['text'],
+            ['text-lines'],
+            ['hash'],
+            ['radio'],
+            ['tag'],
+            ['calendar-repeat'],
+            ['clock'],
+            ['layers'],
+            ['coin'],
+            ['divider'],
+            ['heading'],
+            ['swatch'],
+        ];
     }
 
     #[Test]

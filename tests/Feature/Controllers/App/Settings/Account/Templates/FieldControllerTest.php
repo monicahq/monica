@@ -15,6 +15,7 @@ use App\Models\TemplateVersion;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
+use App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
@@ -35,6 +36,106 @@ class FieldControllerTest extends TestCase
             ->assertSee(__('Short text'))
             ->assertSee(__('Recurring date'))
             ->assertSee(__('Later'));
+    }
+
+    #[Test]
+    public function it_draws_the_field_every_type_produces(): void
+    {
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+
+        $response = $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]));
+
+        $response->assertStatus(200)
+            ->assertSee(__('Nothing picked yet'))
+            ->assertSee(__('On the record'))
+            ->assertSee(__('For example: :example.', ['example' => __('Adoption day')]));
+
+        foreach ((new FieldCatalogueViewModel)->types() as $type) {
+            $response->assertSee("previewed === '{$type['key']}'", escape: false);
+        }
+    }
+
+    #[Test]
+    public function it_says_in_words_what_the_panel_is_previewing(): void
+    {
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+
+        $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
+            ->assertSee('aria-live="polite"', escape: false)
+            ->assertSee('Short text. One line of text, up to a length you set.');
+    }
+
+    #[Test]
+    public function it_offers_a_filter_over_the_catalogue(): void
+    {
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $catalogue = new FieldCatalogueViewModel;
+
+        $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
+            ->assertSee(__('Filter the types'))
+            ->assertSee($catalogue->totalPhrase())
+            ->assertSee(__('Nothing matches that.'))
+            ->assertSee(__('Clear the filter'))
+            ->assertSee('recurring date recurring_date');
+    }
+
+    #[Test]
+    public function it_names_the_section_and_the_chosen_type_in_the_footer(): void
+    {
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $section = $row->sectionVersion->section->name;
+
+        $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
+            ->assertSee(__('Pick a type to carry on.'))
+            ->assertSee((new FieldCatalogueViewModel)->footerLines($section)['text']);
+    }
+
+    #[Test]
+    public function it_puts_the_bar_outside_the_form_and_the_cards_on_a_layer_of_their_own(): void
+    {
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+
+        $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
+            ->assertSeeInOrder(['</form>', __('Pick a type to carry on.')], escape: false)
+            ->assertSee('form="add-field"', escape: false)
+            ->assertSee('relative flex cursor-pointer', escape: false);
+    }
+
+    #[Test]
+    public function it_asks_where_the_choices_come_from(): void
+    {
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'name' => 'Species']);
+
+        $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
+            ->assertSee(__('Where do the choices come from?'))
+            ->assertSee($list->name)
+            ->assertSee('needsAList', escape: false);
+    }
+
+    #[Test]
+    public function it_hands_the_label_and_the_type_back_after_a_refusal(): void
+    {
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+
+        $response = $this->actingAs($user)
+            ->from(route('settings.fields.new', [$template, $row]))
+            ->followingRedirects()
+            ->post(route('settings.fields.create', [$template, $row]), [
+                'type' => FieldTypeEnum::Number->value,
+                'label' => str_repeat('Microchip number', 20),
+            ]);
+
+        $response->assertStatus(200)
+            ->assertSee('Microchip number')
+            ->assertSeeInOrder(['value="number"', 'checked'], escape: false);
     }
 
     #[Test]

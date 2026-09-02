@@ -2,25 +2,44 @@
   Picking what kind of field to add.
 
   The type is the one decision about a field that cannot be taken back, so this
-  is a screen of its own rather than a dropdown: each type says what it is for
-  and gives an example, and the label is asked for at the same time so the field
-  arrives named rather than as "Untitled".
+  is a screen of its own rather than a dropdown, and it is built around one
+  question: what will this actually look like once somebody fills it in? The
+  catalogue answers it in a panel that draws the field the previewed type
+  produces, and the cards themselves stay to one line each so a family can be
+  read at a glance.
 
-  It asks for `wide` because the types are read by comparing them, and two
-  columns of cards is what lets somebody scan a family at once.
+  Two things drive the panel, and they are deliberately not the same thing.
+  `type` is what will be submitted, and only a radio moves it. `peek` is what
+  the pointer or the keyboard is currently resting on, and it moves constantly.
+  The panel shows `peek || type`, so somebody can read every type in a family
+  without committing to any of them, and what they chose is still there when
+  they stop.
 
-  The types the first version does not ship are shown and cannot be picked.
-  Somebody deciding how to record a price is better served by reading that money
-  is coming than by inventing a workaround nobody will revisit.
+  The cards are labels wrapping a real radio, as they have always been. That is
+  what gives the group its arrow keys, its required state and its announcement
+  for free. The radio itself is hidden and the chosen card carries a check mark,
+  so the choice is a shape rather than a shade.
+
+  The types the first version does not ship are shown and cannot be picked, but
+  they can be focused, so somebody working from the keyboard can still read what
+  money or a rating would be for. Reading that money is coming beats inventing a
+  workaround nobody will revisit.
+
+  It asks for `wide` because the catalogue and the panel sit side by side.
 
   @var \App\Models\Template $template
   @var \App\Models\TemplateVersionSection $row
   @var string $sectionName
   @var \App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel $catalogue
+  @var \Illuminate\Support\Collection<int, \App\Models\ValueList> $valueLists
   @var \App\Models\User $user
 --}}
 @php
   $backToBuilder = route('settings.templateBuilder.index', ['template' => $template, 'page' => $row->templateVersionPage->key]);
+  $types = $catalogue->types();
+  $pickable = array_values(array_map(fn (array $type): string => $type['key'], array_filter($types, fn (array $type): bool => $type['isAvailable'])));
+  $footerLines = $catalogue->footerLines($sectionName);
+  $nothingPicked = __('Pick a type to carry on.');
 @endphp
 <x-shell :title="__('Add a field')" wide>
   <x-slot:breadcrumb>
@@ -34,26 +53,77 @@
     <x-settings.sidebar :user="$user" current="templates" />
   </x-slot:sidebar>
 
-  <header class="flex flex-col gap-2">
-    <h1 class="text-page-title text-ink">{{ __('What goes in :section?', ['section' => $sectionName]) }}</h1>
+  {{--
+    The bar belongs to the shell rather than to the form, because a `wide` screen
+    scrolls the region between the two bars and not the window: a bar written at
+    the end of the form can only ever pin to the end of the form, which is inside
+    that region. The shell draws it outside, at the foot of the window.
 
-    <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('The type decides what people can type, how it is checked and how it is searched. Pick the closest one. It is settled when the field is added, so everything else about the field can be changed afterwards but this cannot.') }}</p>
-  </header>
+    That puts it beyond the form, so the button says which form it submits, and
+    the two carry the chosen type between them over one event rather than sharing
+    a scope they no longer have. Both sides start from `old('type')`, so they
+    agree before anything is dispatched.
+  --}}
+  <x-slot:footer>
+    <div
+      x-data="{
+        type: {{ Js::from(old('type', '')) }},
+        pickable: {{ Js::from($pickable) }},
+        get canAdd() { return this.pickable.includes(this.type) },
+      }"
+      @field-type-picked.window="type = $event.detail"
+      class="flex w-full flex-wrap items-center gap-3"
+    >
+      <div class="min-w-0 text-sm text-pretty text-muted">
+        <p x-show="!canAdd">{{ $nothingPicked }}</p>
+
+        @foreach ($footerLines as $key => $line)
+          <p x-cloak x-show="canAdd && type === '{{ $key }}'">{{ $line }}</p>
+        @endforeach
+      </div>
+
+      <div class="ml-auto flex items-center gap-3">
+        <x-button.secondary :href="$backToBuilder" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
+
+        <x-button form="add-field" ::disabled="!canAdd">{{ __('Add the field') }}</x-button>
+      </div>
+    </div>
+  </x-slot:footer>
 
   <x-form
+    id="add-field"
     method="post"
     :action="route('settings.fields.create', [$template, $row])"
+    x-effect="$dispatch('field-type-picked', type)"
     x-data="{
-      type: @js(old('type', '')),
-      needsAList: @js($catalogue->typesNeedingAValueList()),
+      type: {{ Js::from(old('type', '')) }},
+      peek: '',
+      query: '',
+      labelValue: {{ Js::from(old('label', '')) }},
+      index: {{ Js::from($catalogue->searchIndex()) }},
+      sentences: {{ Js::from($catalogue->sentences()) }},
+      countPhrases: {{ Js::from($catalogue->countPhrases()) }},
+      totalPhrase: {{ Js::from($catalogue->totalPhrase()) }},
+      pickable: {{ Js::from($pickable) }},
+      needsAList: {{ Js::from($catalogue->typesNeedingAValueList()) }},
+      get needle() { return this.query.trim().toLowerCase() },
+      matches(key) { return this.needle === '' || this.index[key].includes(this.needle) },
+      get shown() { return Object.keys(this.index).filter(key => this.matches(key)).length },
+      get countLine() { return this.needle === '' ? this.totalPhrase : this.countPhrases[this.shown] },
+      get previewed() { return this.peek !== '' ? this.peek : this.type },
+      get canAdd() { return this.pickable.includes(this.type) },
       get offersChoices() { return this.needsAList.includes(this.type) },
     }"
-    class="flex flex-col gap-8"
+    class="flex flex-col gap-7"
   >
+    <header class="flex flex-col gap-2">
+      <h1 class="text-page-title text-ink">{{ __('What goes in :section?', ['section' => $sectionName]) }}</h1>
+
+      <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('The type decides what people can type, how it is checked and how it is searched. Pick the closest one, and the panel shows what it looks like on a record.') }}</p>
+    </header>
+
     <section class="flex flex-col gap-3">
-      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-        <h2 class="shrink-0 text-section-title text-ink">{{ __('What is it called?') }}</h2>
-      </div>
+      <h2 class="text-section-title text-ink">{{ __('What is it called?') }}</h2>
 
       <x-panel>
         <x-input
@@ -68,65 +138,156 @@
           maxlength="255"
           required
           autofocus
+          x-model="labelValue"
         />
       </x-panel>
     </section>
 
-    <section class="flex flex-col gap-6">
-      <div class="flex flex-col gap-1.5 px-0.5">
-        <h2 class="text-section-title text-ink">{{ __('And what kind of thing is it?') }}</h2>
+    <div class="grid items-start gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+      <section class="flex min-w-0 flex-col gap-4">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <h2 class="shrink-0 text-section-title text-ink">{{ __('And what kind of thing is it?') }}</h2>
+
+          <span class="shrink-0 text-xs text-muted" x-text="countLine">{{ $catalogue->totalPhrase() }}</span>
+
+          <label class="relative ml-auto flex h-8 min-w-0 flex-1 items-center gap-2 rounded-md border border-hairline bg-card px-2.5 transition-colors duration-(--duration-fast) ease-out focus-within:border-hairline-strong focus-within:ring-[3px] focus-within:ring-focus-ring/45 sm:max-w-60 sm:flex-none">
+            <span class="sr-only">{{ __('Filter the types') }}</span>
+
+            <x-icon name="search" :size="14" class="shrink-0 text-muted" />
+
+            <input
+              type="search"
+              x-model="query"
+              placeholder="{{ __('Filter the types') }}"
+              class="w-full min-w-0 border-0 bg-transparent p-0 font-sans text-[16px] text-ink placeholder-placeholder focus:outline-none sm:text-sm"
+            />
+          </label>
+        </div>
 
         <x-error :messages="$errors->get('type')" />
         <x-error :messages="$errors->get('value_list_id')" />
-      </div>
 
-      @foreach ($catalogue->families() as $family)
-        <div class="flex flex-col gap-2.5">
-          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-            <h3 class="shrink-0 text-card-title text-ink">{{ $family['name'] }}</h3>
+        <fieldset class="relative flex min-w-0 flex-col gap-4">
+          <legend class="sr-only">{{ __('And what kind of thing is it?') }}</legend>
 
-            <p class="text-sm text-pretty text-muted">{{ $family['blurb'] }}</p>
-          </div>
+          @foreach ($catalogue->families() as $family)
+            @php
+              $familyKeys = array_map(fn (array $type): string => $type['key'], $family['types']);
+            @endphp
+            <div class="flex flex-col gap-2" x-show="{{ Js::from($familyKeys) }}.some(key => matches(key))">
+              <div class="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 border-b border-hairline-soft pb-1.5">
+                <h3 class="shrink-0 text-label tracking-caption text-ink uppercase">{{ $family['name'] }}</h3>
 
-          <div class="grid gap-2.5 sm:grid-cols-2">
-            @foreach ($family['types'] as $type)
-              @if ($type['isAvailable'])
-                <label class="overflow-hidden rounded-lg border border-hairline bg-canvas grid cursor-pointer content-start gap-1.5 p-3.5 transition-colors duration-[110ms] hover:bg-hover has-checked:border-ink has-checked:bg-sunken">
-                  <span class="flex items-center gap-2">
-                    <input type="radio" name="type" value="{{ $type['key'] }}" x-model="type" @checked(old('type') === $type['key']) required />
+                <p class="min-w-0 text-xs text-muted">{{ $family['blurb'] }}</p>
+              </div>
 
-                    <span class="text-base font-semibold text-ink">{{ $type['label'] }}</span>
+              <div class="grid grid-cols-[repeat(auto-fill,minmax(10.5rem,1fr))] gap-1.5">
+                @foreach ($family['types'] as $type)
+                  @if ($type['isAvailable'])
+                    <label
+                      x-show="matches('{{ $type['key'] }}')"
+                      @mouseenter="peek = '{{ $type['key'] }}'"
+                      @mouseleave="peek = ''"
+                      class="relative flex cursor-pointer items-center gap-2 rounded-md border border-hairline bg-canvas px-2.5 py-2 transition-colors duration-(--duration-fast) ease-out hover:bg-hover has-checked:border-ink has-checked:bg-sunken has-focus-visible:ring-[3px] has-focus-visible:ring-focus-ring/45"
+                    >
+                      <input
+                        type="radio"
+                        name="type"
+                        value="{{ $type['key'] }}"
+                        x-model="type"
+                        @focus="peek = '{{ $type['key'] }}'"
+                        @blur="peek = ''"
+                        @checked(old('type') === $type['key'])
+                        required
+                        class="peer sr-only"
+                      />
 
-                    <code class="ml-auto font-mono text-[12.5px] text-muted">{{ $type['key'] }}</code>
-                  </span>
+                      <x-icon :name="$type['mark']" :size="16" class="text-muted peer-checked:text-ink" />
 
-                  <span class="text-sm text-pretty text-muted">{{ $type['description'] }}</span>
+                      <span class="min-w-0 truncate text-sm text-ink peer-checked:font-semibold">{{ $type['label'] }}</span>
 
-                  <span class="text-xs text-pretty text-muted border-t border-hairline pt-1.5">{{ $type['example'] }}</span>
-                </label>
-              @else
-                <div class="overflow-hidden rounded-lg border border-hairline bg-card grid content-start gap-1.5 p-3.5">
-                  <span class="flex items-center gap-2">
-                    <span class="text-base font-semibold text-ink">{{ $type['label'] }}</span>
+                      <x-icon name="check" :size="14" :stroke-width="1.8" class="invisible ml-auto text-ink peer-checked:visible" />
+                    </label>
+                  @else
+                    <button
+                      type="button"
+                      aria-disabled="true"
+                      x-show="matches('{{ $type['key'] }}')"
+                      @mouseenter="peek = '{{ $type['key'] }}'"
+                      @mouseleave="peek = ''"
+                      @focus="peek = '{{ $type['key'] }}'"
+                      @blur="peek = ''"
+                      class="flex cursor-not-allowed items-center gap-2 rounded-md border border-hairline bg-card px-2.5 py-2 text-left focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+                    >
+                      <x-icon :name="$type['mark']" :size="16" class="text-muted-soft" />
 
-                    <x-badge tone="outline">{{ __('Later') }}</x-badge>
+                      <span class="min-w-0 truncate text-sm text-muted">{{ $type['label'] }}</span>
 
-                    <code class="ml-auto font-mono text-[12.5px] text-muted">{{ $type['key'] }}</code>
-                  </span>
+                      <x-badge tone="info" class="ml-auto shrink-0">{{ __('Later') }}</x-badge>
+                    </button>
+                  @endif
+                @endforeach
+              </div>
+            </div>
+          @endforeach
+        </fieldset>
 
-                  <span class="text-sm text-pretty text-muted">{{ $type['description'] }}</span>
+        <div x-show="shown === 0" x-cloak class="flex flex-wrap items-center gap-3">
+          <p class="text-sm text-pretty text-muted">{{ __('Nothing matches that.') }}</p>
 
-                  <span class="text-xs text-pretty text-muted border-t border-hairline pt-1.5">{{ $type['example'] }}</span>
-                </div>
-              @endif
-            @endforeach
-          </div>
+          <x-button.ghost type="button" size="small" @click="query = ''">{{ __('Clear the filter') }}</x-button.ghost>
         </div>
-      @endforeach
-    </section>
+      </section>
+
+      <aside class="relative lg:sticky lg:top-0" x-cloak>
+        <p class="sr-only" aria-live="polite" x-text="previewed === '' ? '' : sentences[previewed]"></p>
+
+        <div class="overflow-hidden rounded-lg border border-hairline bg-canvas">
+          <x-empty-state x-show="previewed === ''" :title="__('Nothing picked yet')" class="bg-sunken">
+            <x-slot:icon><x-icon name="file" :size="30" :stroke-width="1.4" /></x-slot:icon>
+
+            {{ __('Pick a type and this shows the field it produces, filled in.') }}
+          </x-empty-state>
+
+          @foreach ($types as $type)
+            <div x-show="previewed === '{{ $type['key'] }}'">
+              <div class="flex items-center gap-2.5 border-b border-hairline-soft bg-sunken px-4 py-3">
+                <span class="flex size-6.5 shrink-0 items-center justify-center rounded-xs border border-hairline bg-canvas text-ink">
+                  <x-icon :name="$type['mark']" :size="15" />
+                </span>
+
+                <span class="grid min-w-0">
+                  <span class="truncate text-card-title text-ink">{{ $type['label'] }}</span>
+
+                  <code class="truncate font-mono text-xs text-muted-soft">{{ $type['key'] }}</code>
+                </span>
+
+                @unless ($type['isAvailable'])
+                  <x-badge tone="info" class="ml-auto shrink-0">{{ __('Later') }}</x-badge>
+                @endunless
+              </div>
+
+              <div class="flex flex-col gap-3.5 p-4">
+                <p class="text-sm text-pretty text-body">{{ $type['description'] }}</p>
+
+                <div class="flex flex-col gap-2 rounded-md border border-hairline-soft bg-sunken p-3">
+                  <span class="text-label tracking-caption text-muted uppercase">{{ __('On the record') }}</span>
+
+                  <span class="text-sm font-semibold text-ink" x-text="labelValue.trim() === '' ? {{ Js::from($type['label']) }} : labelValue.trim()"></span>
+
+                  @include('app.settings.account.templates._field-type-preview', ['preview' => $type['preview']])
+                </div>
+
+                <p class="text-xs text-pretty text-muted">{{ __('For example: :example.', ['example' => $type['example']]) }}</p>
+              </div>
+            </div>
+          @endforeach
+        </div>
+      </aside>
+    </div>
 
     <section x-cloak x-show="offersChoices" class="flex flex-col gap-3">
-      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h2 class="shrink-0 text-section-title text-ink">{{ __('Where do the choices come from?') }}</h2>
 
         <p class="text-sm text-pretty text-muted">{{ __('A field that offers choices reads them from a value list, so the same options can be reused everywhere rather than retyped into every field.') }}</p>
@@ -147,14 +308,5 @@
       </x-panel>
     </section>
 
-    <div class="sticky bottom-0 flex flex-wrap items-center gap-3 border-t border-hairline bg-page/90 py-3.5 backdrop-blur-md">
-      <p class="text-sm text-pretty text-muted">{{ __('Everything else about the field is set once it exists.') }}</p>
-
-      <div class="ml-auto flex items-center gap-3">
-        <x-button.secondary :href="$backToBuilder" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
-
-        <x-button>{{ __('Add the field') }}</x-button>
-      </div>
-    </div>
   </x-form>
 </x-shell>

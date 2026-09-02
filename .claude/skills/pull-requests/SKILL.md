@@ -9,8 +9,12 @@ description: Conventions for writing pull requests, including Conventional Commi
 - You SHOULD avoid uppercase in the title, except for proper nouns and acronyms.
 - You MUST indicate the issue the PR closes, if that's the case, and reference the issue number. Do not mention anything otherwise.
 - You MUST NOT mention Claude Code anywhere.
-- The pull request description MUST be as small as possible:
-    - use bullet points format
+- The pull request description MUST be bullet points and nothing else:
+    - every line MUST be a bullet, a short heading grouping bullets, or an image
+    - you MUST NOT write a paragraph anywhere, including the opening line and the closing line. No sentence introducing the change, no sentence summarising it, no narration between bullets. A description whose first line is prose is wrong however good the prose is
+    - a heading MUST be two or three words and carry no prose of its own
+    - one idea per bullet, one line each wherever it fits
     - describe the changes made in this PR, using as fewer words as possible
+    - do not restate the title, and do not list what the diff already shows
     - keep it understandable by non technical people
-    - when a new concept is introduced in the codebase, add a few details to let readers understand what it's about
+    - when a new concept is introduced in the codebase, add a few details to let readers understand what it's about, still as a bullet

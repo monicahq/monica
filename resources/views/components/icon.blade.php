@@ -81,6 +81,23 @@
        as filled circles rather than strokes, since a stroked dot at this size is
        a smudge. */
     'grip' => '<circle cx="6" cy="4" r="1" fill="currentColor" stroke="none"></circle><circle cx="10" cy="4" r="1" fill="currentColor" stroke="none"></circle><circle cx="6" cy="8" r="1" fill="currentColor" stroke="none"></circle><circle cx="10" cy="8" r="1" fill="currentColor" stroke="none"></circle><circle cx="6" cy="12" r="1" fill="currentColor" stroke="none"></circle><circle cx="10" cy="12" r="1" fill="currentColor" stroke="none"></circle>',
+    /* The marks the field type catalogue asks for. Each one draws the control
+       the type produces rather than the thing it is about, because that is what
+       tells two neighbouring types apart: a short text and a long text are both
+       text, and what differs is the box you type into. Nothing here carries a
+       letter or a currency sign, since neither survives being translated. */
+    'text' => '<rect x="2.4" y="5.4" width="11.2" height="5.2" rx="1.5"></rect><line x1="4.8" y1="8" x2="8.4" y2="8"></line>',
+    'text-lines' => '<rect x="2.4" y="3.4" width="11.2" height="9.2" rx="1.5"></rect><line x1="4.6" y1="6.4" x2="11.4" y2="6.4"></line><line x1="4.6" y1="8.6" x2="11.4" y2="8.6"></line><line x1="4.6" y1="10.8" x2="8.6" y2="10.8"></line>',
+    'hash' => '<line x1="6.4" y1="2.8" x2="5" y2="13.2"></line><line x1="11" y1="2.8" x2="9.6" y2="13.2"></line><line x1="2.8" y1="6.2" x2="13.2" y2="6.2"></line><line x1="2.4" y1="9.8" x2="12.8" y2="9.8"></line>',
+    'radio' => '<circle cx="4.6" cy="5" r="2.2"></circle><circle cx="4.6" cy="5" r="0.9" fill="currentColor" stroke="none"></circle><circle cx="4.6" cy="11" r="2.2"></circle><line x1="8.6" y1="5" x2="13.4" y2="5"></line><line x1="8.6" y1="11" x2="13.4" y2="11"></line>',
+    'tag' => '<path d="M13.4 8.9 8.9 13.4a1.2 1.2 0 0 1-1.7 0L2.6 8.8V2.6h6.2l4.6 4.6a1.2 1.2 0 0 1 0 1.7Z"></path><circle cx="5.6" cy="5.6" r="1"></circle>',
+    'calendar-repeat' => '<rect x="2.4" y="3.4" width="11.2" height="10.2" rx="1.5"></rect><line x1="2.4" y1="6.4" x2="13.6" y2="6.4"></line><line x1="5.4" y1="2.2" x2="5.4" y2="4.2"></line><line x1="10.6" y1="2.2" x2="10.6" y2="4.2"></line><path d="M5.6 11.4a2.5 2.5 0 0 1 4.2-1.8"></path><path d="M10.1 8.2v1.7H8.4"></path>',
+    'clock' => '<circle cx="8" cy="8" r="5.6"></circle><path d="M8 4.9V8l2.4 1.6"></path>',
+    'layers' => '<rect x="2.4" y="2.6" width="11.2" height="4.6" rx="1.4"></rect><rect x="2.4" y="8.8" width="11.2" height="4.6" rx="1.4"></rect><line x1="4.8" y1="4.9" x2="8.4" y2="4.9"></line><line x1="4.8" y1="11.1" x2="8.4" y2="11.1"></line>',
+    'coin' => '<rect x="2" y="4.6" width="12" height="6.8" rx="1.4"></rect><circle cx="8" cy="8" r="1.8"></circle>',
+    'divider' => '<rect x="2.4" y="2.6" width="11.2" height="3.2" rx="1"></rect><line x1="1.8" y1="8" x2="14.2" y2="8"></line><rect x="2.4" y="10.2" width="11.2" height="3.2" rx="1"></rect>',
+    'heading' => '<line x1="3" y1="4.8" x2="9.6" y2="4.8"></line><line x1="3" y1="8.4" x2="13" y2="8.4"></line><line x1="3" y1="11.6" x2="13" y2="11.6"></line>',
+    'swatch' => '<circle cx="8" cy="8" r="5.6"></circle><path d="M8 2.4a5.6 5.6 0 0 1 0 11.2Z" fill="currentColor" stroke="none"></path>',
   ];
 
   $glyph = $paths[$name] ?? $paths['profile'];

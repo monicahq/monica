@@ -27,6 +27,13 @@
   which is what keeps the navigation column and the bar where they are. That
   region is what runs to the full width, inside the gutter.
 
+  One thing to know before putting an `sr-only` element inside that region: it is
+  absolutely positioned, so with no positioned ancestor it is laid out against the
+  document rather than against the region, and the region cannot clip what it does
+  not contain. A handful of them low down a long screen is enough to give the
+  window something to scroll, and the window scrolling lifts this whole
+  window-height screen, bars included. Give whatever holds one a `relative`.
+
   The column is a slot rather than something this layout builds, because which
   vault it points at and which destination is current are the screen's business,
   not the shell's. A screen that leaves it out gets the whole window instead of a
@@ -119,7 +126,13 @@
 
         @isset($footer)
           <footer class="sticky bottom-0 z-5 border-t border-hairline bg-canvas">
-            <div class="mx-auto flex max-w-240 flex-wrap items-center gap-4 px-4 py-3 sm:px-6">
+            <div
+              @class([
+                'mx-auto flex flex-wrap items-center gap-4 px-4 py-3 sm:px-6',
+                'max-w-240' => ! $wide,
+                'w-full max-w-350' => $wide,
+              ])
+            >
               {{ $footer }}
             </div>
           </footer>
