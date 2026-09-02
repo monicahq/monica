@@ -15,6 +15,7 @@ enum UserActionEnum: string implements Translatable
     case UserPhotoDeletion = 'user_photo_deleted';
     case UserPasswordUpdate = 'user_password_updated';
     case UserPreferencesUpdate = 'user_preferences_updated';
+    case UserTimezoneUpdate = 'user_timezone_updated';
     case EmailConfirmation = 'email_confirmed';
     case TwoFactorEnabled = 'two_factor_enabled';
     case TwoFactorDisabled = 'two_factor_disabled';
@@ -143,6 +144,7 @@ enum UserActionEnum: string implements Translatable
             self::UserPhotoDeletion => 'Removed the photo of :name',
             self::UserPasswordUpdate => 'Changed their password',
             self::UserPreferencesUpdate => 'Changed their preferences',
+            self::UserTimezoneUpdate => 'Set their time zone to :name',
             self::EmailConfirmation => 'Confirmed their email address',
             self::TwoFactorEnabled => 'Turned two factor authentication on',
             self::TwoFactorDisabled => 'Turned two factor authentication off',

@@ -8,6 +8,7 @@ use App\Enums\DateFormatEnum;
 use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 
 /**
  * What the preferences screen shows: the language the interface is in, the
@@ -75,11 +76,13 @@ class PreferencesViewModel
 
     /**
      * The time it is now, written the way the account asked for, so somebody
-     * can see what they picked before they leave the screen.
+     * can see what they picked before they leave the screen. Read in the zone
+     * the account is in rather than the instance's, because a preview of a
+     * clock that is not the reader's clock previews nothing.
      */
     public function timePreview(): string
     {
-        return $this->timeFormat()->format(now());
+        return $this->timeFormat()->format($this->now());
     }
 
     /**
@@ -131,8 +134,26 @@ class PreferencesViewModel
         $format = $this->dateFormat();
 
         return $format === null
-            ? DateFormatEnum::write(now(), $this->languageDateFormat())
-            : $format->format(now());
+            ? DateFormatEnum::write($this->now(), $this->languageDateFormat())
+            : $format->format($this->now());
+    }
+
+    /**
+     * The time zone section, which is its own block: it carries a search index
+     * of four hundred entries and a position on a map, and none of that belongs
+     * beside the four format rows.
+     */
+    public function timezone(bool $isGuess = false): TimezonePanel
+    {
+        return new TimezonePanel(user: $this->user, isGuess: $isGuess);
+    }
+
+    /**
+     * Now, where the account is. Every preview on this screen reads through it.
+     */
+    private function now(): CarbonImmutable
+    {
+        return CarbonImmutable::now($this->user->timezone);
     }
 
     /**

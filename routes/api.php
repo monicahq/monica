@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Auth\RegistrationController;
 use App\Http\Controllers\Api\EmailSentController;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\Api\MeController;
+use App\Http\Controllers\Api\MeTimezoneController;
 use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\VaultController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
         Route::get('me', [MeController::class, 'show'])->name('me');
         Route::put('me', [MeController::class, 'update'])->name('me.update');
+        Route::put('me/timezone', [MeTimezoneController::class, 'update'])->name('me.timezone.update');
 
         // The keys the caller has minted, including the one they are calling with.
         Route::get('api-keys', [ApiKeyController::class, 'index'])->name('apiKeys');

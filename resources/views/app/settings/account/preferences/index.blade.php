@@ -18,7 +18,9 @@
   @var \App\ViewModels\Settings\Account\Preferences\PreferencesViewModel $viewModel
 --}}
 @php
-  $rows = 'language-form time-format-form date-format-form number-format-form preview';
+  // The time zone panel shows a clock, so a change to the clock's format has to
+  // redraw it too, which is why it is in the set every format row refreshes.
+  $rows = 'language-form time-format-form date-format-form number-format-form preview timezone-panel';
 @endphp
 <x-shell :title="__('Preferences')">
   <x-slot:breadcrumb>
@@ -137,4 +139,6 @@
       </x-slot:footer>
     </x-panel>
   </section>
+
+  @include('app.settings.account.preferences._timezone', ['timezone' => $viewModel->timezone(session('timezone_guess', false))])
 </x-shell>

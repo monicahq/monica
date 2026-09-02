@@ -97,5 +97,30 @@ return [
             'returns' => 'The updated user object.',
             'response' => ['data' => $user],
         ],
+        [
+            'id' => 'me-timezone-update',
+            'returnFields' => ApiDocsFields::one('user', 'person the token acts as', $userAttributes),
+            'title' => 'Set your time zone',
+            'label' => 'Set your time zone',
+            'method' => 'PUT',
+            'path' => '/me/timezone',
+            'description' => 'Set the time zone the user the token belongs to reads dates in.',
+            'body' => [
+                'The zone has to be one of the 419 canonical IANA identifiers, which is the same set the interface offers. The deprecated aliases such as US/Pacific are refused, and so are the bare offsets under Etc. Anything else comes back 422 with the stored zone untouched.',
+                'It changes rendering and nothing else. No stored value is rewritten, and no reminder already computed moves: a reminder rule freezes the zone it was created in.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'bodyParams' => [
+                [
+                    'name' => 'timezone',
+                    'type' => 'string',
+                    'required' => true,
+                    'description' => 'An IANA time zone identifier. Maximum 64 characters.',
+                    'example' => 'Europe/Lisbon',
+                ],
+            ],
+            'returns' => 'The updated user object.',
+            'response' => ['data' => $user],
+        ],
     ],
 ];

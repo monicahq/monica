@@ -27,6 +27,7 @@ use App\Http\Controllers\App\Settings\Account\EntityTypes\EntityTypePositionCont
 use App\Http\Controllers\App\Settings\Account\Logs\EmailSentController;
 use App\Http\Controllers\App\Settings\Account\Logs\LogController;
 use App\Http\Controllers\App\Settings\Account\Preferences\PreferenceController;
+use App\Http\Controllers\App\Settings\Account\Preferences\TimezoneController;
 use App\Http\Controllers\App\Settings\Account\Profile\PhotoController;
 use App\Http\Controllers\App\Settings\Account\Profile\ProfileController;
 use App\Http\Controllers\App\Settings\Account\Security\ApiKeyController;
@@ -241,6 +242,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::get('settings/account/preferences', [PreferenceController::class, 'index'])->name('settings.preferences.index');
     Route::put('settings/account/preferences', [PreferenceController::class, 'update'])->name('settings.preferences.update');
+    Route::put('settings/account/preferences/timezone', [TimezoneController::class, 'update'])->name('settings.timezone.update');
 
     Route::get('settings/account/default-values', [ValueListController::class, 'index'])->name('settings.valueLists.index');
     Route::post('settings/account/default-values', [ValueListController::class, 'create'])->name('settings.valueLists.create');

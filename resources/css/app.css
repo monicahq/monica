@@ -133,6 +133,14 @@
     --color-muted: var(--muted);
     --color-muted-soft: var(--muted-soft);
     --color-placeholder: var(--placeholder);
+
+    /* The world map on the time zone screen. Four surfaces, no other user. */
+    --color-map-water: var(--map-water);
+    --color-map-land: var(--map-land);
+    --color-map-coast: var(--map-coast);
+    --color-map-graticule: var(--map-graticule);
+    --color-map-band: var(--map-band);
+    --color-map-marker: var(--map-marker);
     --color-primary: var(--primary);
     --color-on-primary: var(--on-primary);
     --color-link: var(--text-link);
@@ -342,6 +350,31 @@
     --focus: #09090b;
     --focus-ring: #09090b;
 
+    /*
+     * The map, which is a map before it is part of this interface and so keeps
+     * the warm ground and the darker land of the design it came from rather than
+     * the zinc the rest of the screen is drawn in. Land is the darker of the two,
+     * the way an atlas draws it, and the borders between countries are stroked in
+     * the water colour, so a hairline of sea reads as a border without a third
+     * colour being introduced.
+     *
+     * The blue is the one colour on the screen, and it is here because it is the
+     * only thing on the map that means anything: where the pin is, and which hour
+     * of the world it falls in. It is a map token rather than a brand colour,
+     * because the application does not have one and this does not give it one.
+     *
+     * Land against water measures 1.3:1, which is the design's own figure and is
+     * below what a graphic carrying information needs. It carries none: the
+     * continents are there to aim at, and every answer the screen gives is in the
+     * words beside the map and in the list the search field filters.
+     */
+    --map-water: #f3f1ec;
+    --map-land: #d6d3cb;
+    --map-coast: #f3f1ec;
+    --map-graticule: rgb(29 29 32 / 0.09);
+    --map-band: rgb(63 95 208 / 0.13);
+    --map-marker: #3f5fd0;
+
     --primary: #18181b;
     --on-primary: #fafafa;
     --action-primary: #18181b;
@@ -428,6 +461,21 @@
 
     --focus: #d4d4d8;
     --focus-ring: #d4d4d8;
+
+    /*
+     * The same map at night. Water drops below the land rather than above it,
+     * which is the one thing that has to flip: land darker than water works on
+     * paper and disappears on a dark ground. The borders stay stroked in the
+     * water colour, so they are now dark lines inside lighter land, and the blue
+     * lifts to the lighter of the two the design carries so it still reads as
+     * the only colour on the map.
+     */
+    --map-water: #17171a;
+    --map-land: #35343a;
+    --map-coast: #17171a;
+    --map-graticule: rgb(240 240 238 / 0.10);
+    --map-band: rgb(147 167 240 / 0.18);
+    --map-marker: #93a7f0;
 
     --primary: #fafafa;
     --on-primary: #18181b;

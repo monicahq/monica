@@ -91,6 +91,48 @@ class PreferencesViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_writes_the_time_where_the_account_is_rather_than_where_the_instance_is(): void
+    {
+        Carbon::setTestNow(Carbon::create(2026, 7, 31, 17, 45));
+
+        $user = User::factory()->create([
+            'time_format' => TimeFormatEnum::TwentyFourHour,
+            'timezone' => 'Asia/Tokyo',
+        ]);
+
+        $viewModel = new PreferencesViewModel(user: $user);
+
+        $this->assertEquals('02:45', $viewModel->timePreview());
+    }
+
+    #[Test]
+    public function it_writes_the_date_where_the_account_is_rather_than_where_the_instance_is(): void
+    {
+        Carbon::setTestNow(Carbon::create(2026, 7, 31, 17, 45));
+
+        $user = User::factory()->create([
+            'date_format' => DateFormatEnum::YearFirst,
+            'timezone' => 'Asia/Tokyo',
+        ]);
+
+        $viewModel = new PreferencesViewModel(user: $user);
+
+        $this->assertEquals('2026-08-01', $viewModel->datePreview());
+    }
+
+    #[Test]
+    public function it_hands_the_time_zone_section_its_own_block(): void
+    {
+        $user = User::factory()->create(['timezone' => 'Europe/Lisbon']);
+
+        $viewModel = new PreferencesViewModel(user: $user);
+
+        $this->assertSame('Europe/Lisbon', $viewModel->timezone()->timezone());
+        $this->assertFalse($viewModel->timezone()->isGuess());
+        $this->assertTrue($viewModel->timezone(isGuess: true)->isGuess());
+    }
+
+    #[Test]
     public function it_lists_every_date_format_and_ticks_the_one_in_use(): void
     {
         $user = User::factory()->create(['date_format' => DateFormatEnum::MonthFirst]);
