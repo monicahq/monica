@@ -10,6 +10,7 @@ use App\Helpers\LocaleCollation;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\File;
+use App\Models\Reminder;
 use App\Models\ShareLink;
 use App\Models\TemplateVersion;
 use App\Models\User;
@@ -330,5 +331,22 @@ class ContactTest extends TestCase
 
         $this->assertNotContains('sort_key', $contact->getFillable());
         $this->assertNotContains('search_key', $contact->getFillable());
+    }
+
+    #[Test]
+    public function it_knows_every_reminder_rule_about_it_including_the_quiet_ones(): void
+    {
+        $reminder = Reminder::factory()->create();
+        $quiet = Reminder::factory()->inactive()->create([
+            'remindable_type' => Contact::class,
+            'remindable_id' => $reminder->remindable_id,
+            'account_id' => $reminder->account_id,
+            'vault_id' => $reminder->vault_id,
+        ]);
+
+        $this->assertEqualsCanonicalizing(
+            [$reminder->id, $quiet->id],
+            $reminder->remindable->reminders()->pluck('id')->all(),
+        );
     }
 }

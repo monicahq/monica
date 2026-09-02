@@ -282,7 +282,7 @@ class SetFieldValue
      */
     private function missesPart(bool $flag): bool
     {
-        return $flag && $this->field->type->canDriveAReminder();
+        return $flag && $this->field->type->mayHaveAnUnknownPart();
     }
 
     /**

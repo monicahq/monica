@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\DestroyContact;
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\CannotDeleteTheMeContact;
 use App\Jobs\LogUserAction;
@@ -157,5 +158,22 @@ class DestroyContactTest extends TestCase
                 && $job->isAbout($contact)
                 && $job->parameters === ['name' => 'Todd Packer'],
         );
+    }
+
+    #[Test]
+    public function it_silences_every_reminder_about_them(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->reminderAbout($user);
+
+        new DestroyContact(user: $user, contact: $reminder->remindable)->execute();
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'is_active' => false,
+            'inactive_reason' => ReminderInactiveReasonEnum::RecordDeleted->value,
+        ]);
     }
 }

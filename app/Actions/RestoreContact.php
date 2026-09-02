@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -50,6 +51,12 @@ class RestoreContact
 
             $this->contact->vault->increment('contact_count');
             $this->contact->templateVersion->increment('record_count');
+
+            new ReactivateReminders(
+                user: $this->user,
+                subject: $this->contact,
+                reason: ReminderInactiveReasonEnum::RecordDeleted,
+            )->execute();
         });
     }
 

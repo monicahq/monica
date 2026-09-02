@@ -110,19 +110,6 @@ class UpdateFieldTest extends TestCase
     }
 
     #[Test]
-    public function it_only_lets_a_recurring_date_drive_a_reminder(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $field = Field::factory()->create(['account_id' => $user->account_id]);
-
-        new UpdateField(user: $user, field: $field, label: 'Met on', isReminderSource: true)->execute();
-
-        $this->assertFalse($field->fresh()->is_reminder_source);
-    }
-
-    #[Test]
     public function it_refuses_to_change_a_field_on_a_published_section(): void
     {
         Queue::fake();

@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Enums\ReminderCadenceEnum;
+use App\Enums\ReminderMomentDirectionEnum;
+use App\Enums\ReminderMomentUnitEnum;
 use App\Helpers\FieldValueRules;
 use App\Models\Contact;
 use App\Models\Field;
+use App\Models\Reminder;
 use App\Models\TemplateVersionSection;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 use Override;
 use RuntimeException;
 
@@ -46,6 +51,23 @@ class SaveFieldValuesRequest extends FormRequest
             'fields' => ['array'],
             'year_is_unknown' => ['array'],
             'month_is_unknown' => ['array'],
+            /* What a reminder may be shaped like, and no more. Whether the set
+               of moments says anything, whether the zone is one the product
+               knows and whether there is a date to be reminded of are all
+               questions about the record rather than about an input, so they are
+               answered further in and come back as a sentence over the block. */
+            'reminders' => ['array'],
+            'reminders.*.on' => ['nullable', 'boolean'],
+            'reminders.*.name' => ['nullable', 'string', 'max:255'],
+            'reminders.*.recurs' => ['nullable', 'boolean'],
+            'reminders.*.cadence' => ['nullable', Rule::in(ReminderCadenceEnum::values())],
+            'reminders.*.interval' => ['nullable', 'integer', 'min:1', 'max:'.Reminder::MAXIMUM_INTERVAL],
+            'reminders.*.time' => ['nullable', 'date_format:H:i'],
+            'reminders.*.timezone' => ['nullable', 'string', 'timezone'],
+            'reminders.*.moments' => ['nullable', 'array'],
+            'reminders.*.moments.*.direction' => ['nullable', Rule::in(ReminderMomentDirectionEnum::values())],
+            'reminders.*.moments.*.amount' => ['nullable', 'integer'],
+            'reminders.*.moments.*.unit' => ['nullable', Rule::in(ReminderMomentUnitEnum::values())],
         ], FieldValueRules::for($this->fieldsInTheSection()));
     }
 

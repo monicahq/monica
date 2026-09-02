@@ -12,6 +12,7 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\File;
+use App\Models\Reminder;
 use App\Models\ValueListItem;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
@@ -225,5 +226,14 @@ class FieldValueTest extends TestCase
 
         $this->assertCount(1, $values);
         $this->assertTrue($attached->is($values->first()));
+    }
+
+    #[Test]
+    public function it_holds_at_most_one_reminder_rule(): void
+    {
+        $reminder = Reminder::factory()->create();
+
+        $this->assertTrue($reminder->fieldValue->reminder()->exists());
+        $this->assertEquals($reminder->id, $reminder->fieldValue->reminder->id);
     }
 }

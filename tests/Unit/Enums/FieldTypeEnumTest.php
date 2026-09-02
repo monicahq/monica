@@ -133,7 +133,17 @@ class FieldTypeEnumTest extends TestCase
     public function it_says_which_type_a_reminder_may_read_from(): void
     {
         $this->assertTrue(FieldTypeEnum::RecurringDate->canDriveAReminder());
-        $this->assertFalse(FieldTypeEnum::Date->canDriveAReminder());
+        $this->assertTrue(FieldTypeEnum::Date->canDriveAReminder());
+        $this->assertFalse(FieldTypeEnum::Text->canDriveAReminder());
+        $this->assertFalse(FieldTypeEnum::Heading->canDriveAReminder());
+    }
+
+    #[Test]
+    public function it_says_which_type_may_be_missing_part_of_its_date(): void
+    {
+        $this->assertTrue(FieldTypeEnum::RecurringDate->mayHaveAnUnknownPart());
+        $this->assertFalse(FieldTypeEnum::Date->mayHaveAnUnknownPart());
+        $this->assertFalse(FieldTypeEnum::Text->mayHaveAnUnknownPart());
     }
 
     #[Test]

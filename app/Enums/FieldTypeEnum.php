@@ -139,12 +139,28 @@ enum FieldTypeEnum: string
     }
 
     /**
-     * Whether a reminder rule may read from this field. Any recurring date can,
-     * not only a birthday: an anniversary, the date a visa expires, the month a
-     * subscription renews. Nothing in the reminder machinery is allowed to
+     * Whether a reminder rule may read from this field. Any date can, not only a
+     * birthday: an anniversary, the date a visa expires, the month a
+     * subscription renews. A complete date and one that comes round again both
+     * qualify, because the rule owns its own cadence and does not need the field
+     * to repeat on its behalf. Nothing in the reminder machinery is allowed to
      * special case one of them.
      */
     public function canDriveAReminder(): bool
+    {
+        return $this === self::Date || $this === self::RecurringDate;
+    }
+
+    /**
+     * Whether a value of this type may be missing its year or its month. Only a
+     * date that comes round again may: a complete date is complete, and that is
+     * the whole of what separates the two types now that both drive reminders.
+     *
+     * It is asked separately from {@see canDriveAReminder()} rather than derived
+     * from it, because the two questions used to have the same answer and no
+     * longer do.
+     */
+    public function mayHaveAnUnknownPart(): bool
     {
         return $this === self::RecurringDate;
     }

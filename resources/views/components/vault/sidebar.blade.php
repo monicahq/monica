@@ -58,7 +58,7 @@
 <aside
   id="main-nav"
   :class="navOpen && 'max-lg:translate-x-0!'"
-  class="fixed inset-y-0 left-0 z-40 flex w-62 flex-col border-r border-hairline bg-card transition-transform duration-(--duration-slow) ease-out max-lg:-translate-x-full lg:sticky lg:top-0 lg:h-screen lg:w-auto lg:translate-x-0"
+  class="fixed inset-y-0 left-0 z-40 flex w-62 flex-col border-r border-hairline bg-card transition-transform duration-(--duration-slow) ease-out max-lg:-translate-x-full lg:static lg:h-full lg:w-auto lg:translate-x-0"
 >
   <div class="flex items-center gap-2.5 px-4 pt-3.5 pb-2.5">
     <x-logo :size="26" />

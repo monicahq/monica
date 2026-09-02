@@ -55,6 +55,19 @@ class FieldValueFactory extends Factory
     }
 
     /**
+     * Indicate that the value is a date that comes round again, with the year
+     * known. It is the shape a reminder rule reads from.
+     */
+    public function recurringDate(string $date = '1984-02-03'): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'field_id' => Field::factory()->recurringDate(),
+            'value_string' => null,
+            'value_date' => $date,
+        ]);
+    }
+
+    /**
      * Indicate that the value is a date that comes round again, whose year
      * nobody knows.
      */

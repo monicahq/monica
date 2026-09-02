@@ -190,6 +190,30 @@ class SidebarTest extends TestCase
         }
     }
 
+    /**
+     * The column sits in the flow of the shell's grid on a wide screen and fills
+     * its cell, which is what keeps it and its foot where they are while the
+     * screen beside it scrolls. Below the wide breakpoint it comes out of the
+     * flow and slides in over the screen instead.
+     */
+    #[Test]
+    public function both_columns_sit_in_the_flow_and_fill_their_cell_on_a_wide_screen(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        foreach ([
+            ['<x-vault.sidebar :user="$user" :vault="$vault" />', ['user' => $user, 'vault' => $vault]],
+            ['<x-settings.sidebar :user="$user" />', ['user' => $user]],
+        ] as [$template, $data]) {
+            $rendered = $this->actingAs($user)->blade($template, $data);
+
+            $rendered->assertSee('lg:static lg:h-full', escape: false);
+            $rendered->assertSee('fixed inset-y-0 left-0', escape: false);
+            $rendered->assertDontSee('lg:h-screen', escape: false);
+        }
+    }
+
     #[Test]
     public function the_destination_you_are_on_is_a_raised_card_rather_than_a_filled_pill(): void
     {

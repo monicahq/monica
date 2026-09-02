@@ -12,7 +12,7 @@ Section 10.3 turns that into three distinct actions, and the distinction is a pr
 - **Postpone** moves this deadline only and leaves the following ones alone.
 - **Skip** makes this deadline go away without disabling the rule. Skipping this year's birthday does not remove next year's.
 - **Complete** means the thing was done.
-- **Disabling the rule** is the only action on the rule itself that cancels every future deadline, and it lives on [Reminder](040-reminder-not-yet.md).
+- **Disabling the rule** is the only action on the rule itself that cancels every future deadline, and it lives on [Reminder](040-reminder-in-progress.md).
 
 ## Fields
 
@@ -38,7 +38,7 @@ updated_at                  datetime
 ## Relationships
 
 - `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md)
-- `belongsTo` [Reminder](040-reminder-not-yet.md)
+- `belongsTo` [Reminder](040-reminder-in-progress.md)
 - `hasMany` [Notification](042-notification-not-yet.md)
 
 ## Rules

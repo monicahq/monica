@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
+use App\Actions\ArchiveContact;
 use App\Actions\UnarchiveContact;
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -73,5 +75,44 @@ class UnarchiveContactTest extends TestCase
                 && $job->isAbout($contact)
                 && $job->parameters === ['name' => 'Roy Anderson'],
         );
+    }
+
+    #[Test]
+    public function it_brings_back_the_reminders_archiving_silenced(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->reminderAbout($user);
+        $contact = $reminder->remindable;
+
+        new ArchiveContact(user: $user, contact: $contact)->execute();
+        new UnarchiveContact(user: $user, contact: $contact)->execute();
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'is_active' => true,
+            'inactive_reason' => null,
+        ]);
+    }
+
+    #[Test]
+    public function it_leaves_a_reminder_quiet_for_another_reason_quiet(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->reminderAbout($user);
+        $contact = $reminder->remindable;
+
+        new ArchiveContact(user: $user, contact: $contact)->execute();
+
+        $reminder->update([
+            'inactive_reason' => ReminderInactiveReasonEnum::FieldRemoved,
+        ]);
+
+        new UnarchiveContact(user: $user, contact: $contact)->execute();
+
+        $this->assertFalse($reminder->fresh()->is_active);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -16,7 +17,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
  * getting in the way of the people currently in a life.
  *
  * An archived contact is also silent: no reminder about them fires while they
- * are archived. Reminders do not exist yet, so nothing here cancels anything.
+ * are archived. That is the only thing archiving does, so a rule that went on
+ * firing would defeat it. Every rule about them is silenced with the reason, and
+ * {@see UnarchiveContact} brings back exactly those.
  */
 class ArchiveContact
 {
@@ -45,6 +48,12 @@ class ArchiveContact
     {
         $this->contact->is_archived = true;
         $this->contact->save();
+
+        new DeactivateReminders(
+            user: $this->user,
+            subject: $this->contact,
+            reason: ReminderInactiveReasonEnum::RecordArchived,
+        )->execute();
     }
 
     private function log(): void

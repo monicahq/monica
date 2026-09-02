@@ -429,11 +429,11 @@ class CreateFieldTest extends TestCase
     }
 
     /**
-     * Any recurring date can drive a reminder, not only a birthday. A date that
-     * does not come round again cannot.
+     * Whether a field drives a reminder is a property of its type and is never
+     * stored beside it, so nothing a caller passes can make the two disagree.
      */
     #[Test]
-    public function it_only_lets_a_recurring_date_drive_a_reminder(): void
+    public function it_lets_the_type_alone_say_whether_a_field_drives_a_reminder(): void
     {
         Queue::fake();
 
@@ -445,7 +445,6 @@ class CreateFieldTest extends TestCase
             sectionVersion: $version,
             type: FieldTypeEnum::RecurringDate,
             label: 'Birthday',
-            isReminderSource: true,
         )->execute();
 
         $plain = new CreateField(
@@ -453,11 +452,18 @@ class CreateFieldTest extends TestCase
             sectionVersion: $version,
             type: FieldTypeEnum::Date,
             label: 'Met on',
-            isReminderSource: true,
         )->execute();
 
-        $this->assertTrue($recurring->is_reminder_source);
-        $this->assertFalse($plain->is_reminder_source);
+        $text = new CreateField(
+            user: $user,
+            sectionVersion: $version,
+            type: FieldTypeEnum::Text,
+            label: 'Diet',
+        )->execute();
+
+        $this->assertTrue($recurring->type->canDriveAReminder());
+        $this->assertTrue($plain->type->canDriveAReminder());
+        $this->assertFalse($text->type->canDriveAReminder());
     }
 
     #[Test]

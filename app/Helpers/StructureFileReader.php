@@ -436,6 +436,10 @@ class StructureFileReader
             'key', 'type', 'label', 'label_translation_key', 'help_text', 'placeholder', 'position',
             'is_required', 'is_sensitive', 'is_highlighted', 'is_unique', 'is_repeatable',
             'repeat_min', 'repeat_max', 'is_reminder_source', 'default_value', 'options', 'validation',
+            /* `is_reminder_source` is a key this product no longer has. It stays
+               allowed and is read by nothing, because whether a field drives a
+               reminder is now answered by its type, and refusing the key would
+               refuse every file exported before that changed. */
             'parent_field_key', 'value_list_reference', 'relation_target', 'relation_entity_type',
         ], ['type']);
 
@@ -488,12 +492,6 @@ class StructureFileReader
             $this->refuse(__('A repeater in this file asks for more repetitions at least than it allows at most.'));
         }
 
-        $isReminderSource = $this->boolean($field, 'is_reminder_source', $path);
-
-        if ($isReminderSource && ! $type->canDriveAReminder()) {
-            $this->refuse(__('A field in this file says it drives a reminder although its kind cannot.'));
-        }
-
         return [
             'key' => $key === '' ? 'field' : $key,
             'type' => $type->value,
@@ -508,7 +506,6 @@ class StructureFileReader
             'is_repeatable' => $isRepeatable,
             'repeat_min' => $repeatMin,
             'repeat_max' => $repeatMax,
-            'is_reminder_source' => $isReminderSource,
             'default_value' => $type->usesValueList() ? null : $this->defaultValue($field, $path),
             'options' => $this->options($field, $path),
             'parent_field_key' => $this->identifier($field, 'parent_field_key', $path, Field::KEY_LENGTH),

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\ArchiveContact;
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -87,5 +88,22 @@ class ArchiveContactTest extends TestCase
                 && $job->isAbout($contact)
                 && $job->parameters === ['name' => 'Roy Anderson'],
         );
+    }
+
+    #[Test]
+    public function it_silences_every_reminder_about_them(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->reminderAbout($user);
+
+        new ArchiveContact(user: $user, contact: $reminder->remindable)->execute();
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'is_active' => false,
+            'inactive_reason' => ReminderInactiveReasonEnum::RecordArchived->value,
+        ]);
     }
 }

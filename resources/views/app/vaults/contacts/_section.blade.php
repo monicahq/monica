@@ -73,6 +73,8 @@
           :value="$field['rawValue']"
           :formatted="$field['value']"
           :rows="$field['rows']"
+          :reminder="$field['reminder']"
+          :messages="$errors"
           :error="$errors->get('fields.'.$field['id'])"
         />
       @empty

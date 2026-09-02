@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Field;
@@ -20,7 +21,8 @@ use Illuminate\Support\Facades\DB;
  * was written in it, or removing one would be a deletion with a longer name.
  *
  * The files the values held are pointed at again, which takes them back out of
- * the sweep.
+ * the sweep, and the reminder rules the field's departure silenced start again.
+ * Only those: a rule quiet because its record is archived stays quiet.
  */
 class ReattachFieldValues
 {
@@ -61,6 +63,12 @@ class ReattachFieldValues
                         new AttachFile(user: $this->user, file: $value->file)->execute();
                     }
                 });
+
+            new ReactivateReminders(
+                user: $this->user,
+                subject: $this->field,
+                reason: ReminderInactiveReasonEnum::FieldRemoved,
+            )->execute();
 
             $this->count = FieldValue::query()
                 ->where('field_id', $this->field->id)

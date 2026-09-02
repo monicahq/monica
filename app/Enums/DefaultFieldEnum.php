@@ -190,17 +190,6 @@ enum DefaultFieldEnum: string implements Translatable
     }
 
     /**
-     * Whether a reminder rule may read from the field. A birthday says yes
-     * because that is what people ask a birthday for; nothing yet reads the
-     * flag, and the reminder machinery finds it here when it arrives rather
-     * than special casing the key.
-     */
-    public function isReminderSource(): bool
-    {
-        return $this === self::Birthday;
-    }
-
-    /**
      * The label this field is seeded with.
      *
      * Nothing seeds a line of help under it. A field carries its help as words

@@ -12,6 +12,7 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\File;
+use App\Models\Reminder;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\Template;
@@ -507,6 +508,204 @@ class ContactSectionControllerTest extends TestCase
      *
      * @return array{0: Field, 1: Field, 2: Field}
      */
+    #[Test]
+    public function it_offers_a_reminder_under_every_date_it_draws(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
+        $michael->update(['template_version_id' => $version->id]);
+
+        $this->actingAs($user)
+            ->get(route('contacts.sections.edit', [
+                'vault' => $vault,
+                'contact' => $michael,
+                'templateVersionSection' => $this->sectionNamed($version, 'Dates'),
+            ]))
+            ->assertStatus(200)
+            ->assertSee('Add a reminder')
+            ->assertSee('name="reminders['.$birthday->id.'][on]"', false)
+            ->assertSee('name="reminders['.$birthday->id.'][moments][0][direction]"', false);
+    }
+
+    #[Test]
+    public function it_offers_a_reminder_under_a_complete_date_as_well_as_a_recurring_one(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$version, $metOn] = $this->versionWithADate($user, FieldTypeEnum::Date);
+        $michael->update(['template_version_id' => $version->id]);
+
+        $this->actingAs($user)
+            ->get(route('contacts.sections.edit', [
+                'vault' => $vault,
+                'contact' => $michael,
+                'templateVersionSection' => $this->sectionNamed($version, 'Dates'),
+            ]))
+            ->assertStatus(200)
+            ->assertSee('name="reminders['.$metOn->id.'][on]"', false);
+    }
+
+    #[Test]
+    public function it_saves_the_reminder_with_the_block(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
+        $michael->update(['template_version_id' => $version->id]);
+        $section = $this->sectionNamed($version, 'Dates');
+
+        $this->actingAs($user)
+            ->put(route('contacts.sections.update', [
+                'vault' => $vault,
+                'contact' => $michael,
+                'templateVersionSection' => $section,
+            ]), [
+                'fields' => [$birthday->id => '1984-02-03'],
+                'reminders' => [$birthday->id => $this->askedFor()],
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('status', 'Saved.');
+
+        $this->assertDatabaseHas('reminders', [
+            'remindable_id' => $michael->id,
+            'field_id' => $birthday->id,
+            'name' => 'Ring Michael',
+            'is_active' => true,
+            'timezone' => 'Europe/Paris',
+        ]);
+    }
+
+    #[Test]
+    public function it_sends_the_block_back_open_when_a_reminder_is_asked_for_over_an_empty_date(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
+        $michael->update(['template_version_id' => $version->id]);
+        $section = $this->sectionNamed($version, 'Dates');
+
+        $this->actingAs($user)
+            ->put(route('contacts.sections.update', [
+                'vault' => $vault,
+                'contact' => $michael,
+                'templateVersionSection' => $section,
+            ]), [
+                'fields' => [$birthday->id => ''],
+                'reminders' => [$birthday->id => $this->askedFor()],
+            ])
+            ->assertRedirect(route('contacts.sections.edit', [
+                'vault' => $vault,
+                'contact' => $michael,
+                'templateVersionSection' => $section,
+            ]))
+            ->assertSessionHasErrors('fields');
+
+        $this->assertEquals(0, Reminder::query()->count());
+    }
+
+    #[Test]
+    public function it_refuses_a_cadence_it_does_not_know(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
+        $michael->update(['template_version_id' => $version->id]);
+
+        $this->actingAs($user)
+            ->put(route('contacts.sections.update', [
+                'vault' => $vault,
+                'contact' => $michael,
+                'templateVersionSection' => $this->sectionNamed($version, 'Dates'),
+            ]), [
+                'fields' => [$birthday->id => '1984-02-03'],
+                'reminders' => [$birthday->id => $this->askedFor(['cadence' => 'fortnightly'])],
+            ])
+            ->assertSessionHasErrors('reminders.'.$birthday->id.'.cadence');
+
+        $this->assertEquals(0, Reminder::query()->count());
+    }
+
+    #[Test]
+    public function it_reads_a_saved_reminder_back_into_the_block(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
+        $michael->update(['template_version_id' => $version->id]);
+        $section = $this->sectionNamed($version, 'Dates');
+
+        $this->actingAs($user)->put(route('contacts.sections.update', [
+            'vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section,
+        ]), [
+            'fields' => [$birthday->id => '1984-02-03'],
+            'reminders' => [$birthday->id => $this->askedFor()],
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('contacts.sections.edit', [
+                'vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section,
+            ]))
+            ->assertStatus(200)
+            ->assertSee('value="Ring Michael"', false)
+            ->assertSee('7 days before');
+    }
+
+    /**
+     * A structure holding one date, which is what a reminder needs to exist at
+     * all.
+     *
+     * @return array{0: TemplateVersion, 1: Field}
+     */
+    private function versionWithADate(User $user, FieldTypeEnum $type): array
+    {
+        $version = $this->versionWithSections($user, 'Important', ['Dates' => 'Birthday']);
+        $field = Field::query()->where('label', 'Birthday')->firstOrFail();
+        $field->update(['type' => $type, 'account_id' => $user->account_id]);
+
+        return [$version, $field->refresh()];
+    }
+
+    /**
+     * What the panel under a date sends when the box is ticked.
+     *
+     * @param  array<string, mixed>  $changes
+     * @return array<string, mixed>
+     */
+    private function askedFor(array $changes = []): array
+    {
+        return array_merge([
+            'on' => '1',
+            'name' => 'Ring Michael',
+            'recurs' => '1',
+            'cadence' => 'yearly',
+            'interval' => '1',
+            'time' => '09:00',
+            'timezone' => 'Europe/Paris',
+            'moments' => [['direction' => 'before', 'amount' => '7', 'unit' => 'days']],
+        ], $changes);
+    }
+
     private function documentsOn(User $user, Contact $contact): array
     {
         $version = $this->versionWithSections($user, 'Information', ['Documents' => 'Document']);

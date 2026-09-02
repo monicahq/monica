@@ -6,14 +6,18 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\SetFieldValues;
 use App\Enums\FieldTypeEnum;
+use App\Enums\ReminderCadenceEnum;
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\RepetitionOrderEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\FieldIsRequired;
+use App\Exceptions\ReminderNeedsADate;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\File;
+use App\Models\Reminder;
 use App\Models\SectionVersion;
 use App\Models\TemplateVersion;
 use App\Models\TemplateVersionSection;
@@ -840,6 +844,245 @@ class SetFieldValuesTest extends TestCase
         )->execute();
 
         $this->assertSame(['First', 'Second', 'Third'], $this->descriptionsIn($contact, $documents, $description));
+    }
+
+    #[Test]
+    public function it_writes_the_reminder_asked_for_under_a_date(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::RecurringDate, 'label' => 'Birthday']);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($field),
+            values: [$field->id => '1984-02-03'],
+            reminders: [$field->id => $this->asked()],
+        )->execute();
+
+        $value = FieldValue::query()->firstWhere('field_id', $field->id);
+
+        $this->assertDatabaseHas('reminders', [
+            'field_value_id' => $value->id,
+            'field_id' => $field->id,
+            'remindable_id' => $contact->id,
+            'name' => 'Ring Pam',
+            'cadence' => ReminderCadenceEnum::Yearly->value,
+            'is_active' => true,
+        ]);
+        $this->assertEquals(
+            [['direction' => 'before', 'amount' => 7, 'unit' => 'days'], ['direction' => 'on', 'amount' => null, 'unit' => null]],
+            Reminder::query()->firstWhere('field_value_id', $value->id)->moments,
+        );
+    }
+
+    #[Test]
+    public function it_writes_no_reminder_when_the_box_is_left_alone(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::Date]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($field),
+            values: [$field->id => '1984-02-03'],
+            reminders: [$field->id => $this->asked(['on' => null])],
+        )->execute();
+
+        $this->assertEquals(0, Reminder::query()->count());
+    }
+
+    #[Test]
+    public function it_refuses_a_reminder_asked_for_over_a_date_nobody_gave(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::RecurringDate]);
+
+        try {
+            new SetFieldValues(
+                user: $user,
+                record: $contact,
+                section: $this->sectionOf($field),
+                values: [$field->id => ''],
+                reminders: [$field->id => $this->asked()],
+            )->execute();
+
+            $this->fail('The save should have been refused.');
+        } catch (ReminderNeedsADate) {
+            $this->assertEquals(0, Reminder::query()->count());
+            $this->assertEquals(0, FieldValue::query()->count());
+        }
+    }
+
+    #[Test]
+    public function it_changes_the_reminder_a_date_already_carries(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::RecurringDate]);
+        $section = $this->sectionOf($field);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => '1984-02-03'],
+            reminders: [$field->id => $this->asked()],
+        )->execute();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => '1984-02-03'],
+            reminders: [$field->id => $this->asked(['name' => 'Send a card', 'recurs' => '0'])],
+        )->execute();
+
+        $this->assertEquals(1, Reminder::query()->count());
+        $this->assertDatabaseHas('reminders', [
+            'name' => 'Send a card',
+            'cadence' => ReminderCadenceEnum::Once->value,
+        ]);
+    }
+
+    #[Test]
+    public function it_takes_the_reminder_away_when_the_box_comes_back_unticked(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::RecurringDate]);
+        $section = $this->sectionOf($field);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => '1984-02-03'],
+            reminders: [$field->id => $this->asked()],
+        )->execute();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => '1984-02-03'],
+            reminders: [$field->id => $this->asked(['on' => null])],
+        )->execute();
+
+        $this->assertEquals(0, Reminder::query()->count());
+        $this->assertEquals(1, Reminder::query()->withTrashed()->count());
+        $this->assertDatabaseHas('field_values', ['field_id' => $field->id, 'value_date' => '1984-02-03 00:00:00']);
+    }
+
+    #[Test]
+    public function it_leaves_the_reminder_quiet_and_saying_why_when_the_date_is_cleared(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::RecurringDate]);
+        $section = $this->sectionOf($field);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => '1984-02-03'],
+            reminders: [$field->id => $this->asked()],
+        )->execute();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => ''],
+            reminders: [$field->id => $this->asked(['on' => null])],
+        )->execute();
+
+        $this->assertDatabaseHas('reminders', [
+            'is_active' => false,
+            'inactive_reason' => ReminderInactiveReasonEnum::ValueCleared->value,
+            'field_value_id' => null,
+        ]);
+    }
+
+    #[Test]
+    public function it_gives_a_date_typed_in_again_a_reminder_of_its_own(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::RecurringDate]);
+        $section = $this->sectionOf($field);
+
+        new SetFieldValues(user: $user, record: $contact, section: $section, values: [$field->id => '1984-02-03'], reminders: [$field->id => $this->asked()])->execute();
+        new SetFieldValues(user: $user, record: $contact, section: $section, values: [$field->id => ''], reminders: [$field->id => $this->asked(['on' => null])])->execute();
+        new SetFieldValues(user: $user, record: $contact, section: $section, values: [$field->id => '1990-05-05'], reminders: [$field->id => $this->asked()])->execute();
+
+        $live = Reminder::query()->active()->get();
+
+        $this->assertCount(1, $live);
+        $this->assertEquals(FieldValue::query()->firstWhere('field_id', $field->id)->id, $live->first()->field_value_id);
+        $this->assertEquals(1, Reminder::query()->onlyTrashed()->count());
+    }
+
+    #[Test]
+    public function it_offers_no_reminder_on_a_field_that_holds_no_date(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::Text]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($field),
+            values: [$field->id => 'Scranton'],
+            reminders: [$field->id => $this->asked()],
+        )->execute();
+
+        $this->assertEquals(0, Reminder::query()->count());
+    }
+
+    /**
+     * What the panel under a date sends when somebody has ticked the box.
+     *
+     * @param  array<string, mixed>  $changes
+     * @return array<string, mixed>
+     */
+    private function asked(array $changes = []): array
+    {
+        return array_merge([
+            'on' => '1',
+            'name' => 'Ring Pam',
+            'recurs' => '1',
+            'cadence' => 'yearly',
+            'interval' => '1',
+            'time' => '09:00',
+            'timezone' => 'Europe/Paris',
+            'moments' => [
+                0 => ['direction' => 'before', 'amount' => '7', 'unit' => 'days'],
+                2 => ['direction' => 'on', 'amount' => '1', 'unit' => 'days'],
+            ],
+        ], $changes);
     }
 
     private function contactOf(User $user): Contact

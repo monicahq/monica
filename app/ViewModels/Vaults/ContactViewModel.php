@@ -11,6 +11,7 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\RecordSnapshot;
+use App\Models\Reminder;
 use App\Models\TemplateVersion;
 use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
@@ -769,9 +770,51 @@ class ContactViewModel
                 'rawValue' => $this->values()->get($field->id),
                 'isEditable' => $field->type->hasAnInput(),
                 'rows' => $this->repetitionsOf($field),
+                'reminder' => $this->reminderFor($field),
             ])
             ->values()
             ->all();
+    }
+
+    /**
+     * What the reminder panel under one date needs, or null for a field that
+     * holds no date.
+     *
+     * A rule is looked up on the field rather than on the value, because a rule
+     * whose date has been cleared has let go of the value and would otherwise
+     * become invisible, which is the one thing section 3.3 forbids.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function reminderFor(Field $field): ?array
+    {
+        if (! $field->type->canDriveAReminder()) {
+            return null;
+        }
+
+        return new ContactReminderBlock(
+            user: $this->user,
+            contact: $this->contact,
+            field: $field,
+            reminder: $this->reminders()->get($field->id),
+        )->get();
+    }
+
+    /**
+     * Every reminder rule on this record, quiet ones included, read once for the
+     * whole screen and keyed by the field it reads.
+     *
+     * @return Collection<int, Reminder>
+     */
+    private function reminders(): Collection
+    {
+        return once(fn (): Collection => $this->contact
+            ->reminders()
+            ->orderByDesc('is_active')
+            ->orderByDesc('id')
+            ->get()
+            ->keyBy('field_id')
+            ->toBase());
     }
 
     /**

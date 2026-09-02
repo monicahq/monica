@@ -305,7 +305,6 @@ class StructureWriter
             'repeat_min' => $payload['repeat_min'],
             'repeat_max' => $payload['repeat_max'],
             'parent_field_id' => $parent?->id,
-            'is_reminder_source' => $payload['is_reminder_source'],
             'relation_target' => $payload['relation_target'] === null ? null : RelationTargetEnum::from($payload['relation_target']),
             'relation_entity_type_id' => $this->entityType($payload['relation_entity_type'])?->id,
         ]);

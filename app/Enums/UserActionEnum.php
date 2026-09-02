@@ -129,6 +129,11 @@ enum UserActionEnum: string implements Translatable
     case ShareLinkCreation = 'share_link_created';
     case ShareLinkUpdate = 'share_link_updated';
     case ShareLinkRevocation = 'share_link_revoked';
+    case ReminderCreation = 'reminder_created';
+    case ReminderUpdate = 'reminder_updated';
+    case ReminderRemoval = 'reminder_removed';
+    case ReminderDeactivation = 'reminders_deactivated';
+    case ReminderReactivation = 'reminders_reactivated';
 
     /**
      * What the action reads as in the logs, written about whoever performed it.
@@ -258,6 +263,11 @@ enum UserActionEnum: string implements Translatable
             self::ShareLinkCreation => 'Made the link :label onto :name',
             self::ShareLinkUpdate => 'Changed what the link :label shows',
             self::ShareLinkRevocation => 'Revoked the link :label',
+            self::ReminderCreation => 'Asked to be reminded of :label on :name',
+            self::ReminderUpdate => 'Changed the reminder on :label on :name',
+            self::ReminderRemoval => 'Removed the reminder on :label on :name',
+            self::ReminderDeactivation => 'Silenced :count reminder about :name|Silenced :count reminders about :name',
+            self::ReminderReactivation => 'Brought back :count reminder about :name|Brought back :count reminders about :name',
         };
     }
 

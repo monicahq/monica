@@ -201,7 +201,6 @@ class MarketplacePayload
             'is_repeatable' => $field->is_repeatable,
             'repeat_min' => $field->repeat_min,
             'repeat_max' => $field->repeat_max,
-            'is_reminder_source' => $field->is_reminder_source,
             'default_value' => $field->default_value,
             'options' => $field->options,
             'validation' => $field->validation,

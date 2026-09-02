@@ -50,12 +50,14 @@ updated_at                  datetime
 - `morphTo` valuable
 - `belongsTo` [Field](017-field-done.md), [FieldValueRow](021-field-value-row-done.md)
 - `belongsTo` [ValueListItem](010-value-list-item-done.md), [File](008-file-in-progress.md), [Contact](019-contact-done.md), [Entity](020-entity-done.md)
+- `hasOne` [Reminder](040-reminder-in-progress.md), the rule reading this exact value
 
 ## Rules
 
 - Exactly one of the `value_*` columns is populated, decided by the field type. Which one is a property of the type, not a per row choice.
 - `field_key` is copied at write time for the same reason `user_email` is copied on a log: the value has to remain interpretable after the field it came from is gone from the structure.
-- A recurring date with an unknown year is stored with a placeholder year and `year_is_unknown` set (5.5). The year is never rendered and never used to compute an age. A reminder built on it still fires every year (10.2).
+- A recurring date with an unknown year is stored with a placeholder year and `year_is_unknown` set (5.5). The year is never rendered and never used to compute an age. A reminder built on it still fires every year (10.2), reading the day and the month alone. Only a `recurring_date` may be missing a part: a complete `date` drives a reminder too, and it is still complete.
+- A value carries at most one live reminder rule ([Reminder](040-reminder-in-progress.md)). Clearing the value destroys this row, and the rule survives it: the rule lets go of the pointer, goes quiet and says the date it read is gone, because a rule cascaded away with the row would be the silent deletion section 3.3 forbids.
 - Removing a field from a new structure version sets `is_detached` and `detached_at` on its values. They stop appearing on the page, they are listed on a dedicated screen with an explanation, and re-adding the field brings them back (3.3).
 - A value pointing at a file increments that file's `reference_count`. Detaching decrements it and starts the grace period ([File](008-file-in-progress.md)).
 - A value pointing at a deleted contact or entity is kept and rendered as unavailable. It is not nulled.

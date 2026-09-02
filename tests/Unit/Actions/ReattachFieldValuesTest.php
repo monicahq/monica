@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
+use App\Actions\DetachFieldValues;
 use App\Actions\ReattachFieldValues;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
@@ -141,5 +142,23 @@ class ReattachFieldValuesTest extends TestCase
             'field_id' => $field->id,
             'value_string' => 'Scranton',
         ], $attributes));
+    }
+
+    #[Test]
+    public function it_brings_back_the_reminders_the_field_leaving_silenced(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->reminderAbout($user);
+
+        new DetachFieldValues(user: $user, field: $reminder->field)->execute();
+        new ReattachFieldValues(user: $user, field: $reminder->field)->execute();
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'is_active' => true,
+            'inactive_reason' => null,
+        ]);
     }
 }

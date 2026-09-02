@@ -9,6 +9,7 @@ use App\Exceptions\FieldIsRequired;
 use App\Exceptions\FieldValueIsNotUnique;
 use App\Exceptions\NotEnoughRepetitions;
 use App\Exceptions\NotEnoughStorageLeft;
+use App\Exceptions\ReminderNeedsADate;
 use App\Exceptions\TooManyRepetitions;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveFieldValuesRequest;
@@ -55,9 +56,10 @@ class ContactSectionController extends Controller
     /**
      * The refusals that reach here rather than the validator are the ones
      * that are not questions about the input: uniqueness is a question about
-     * the vault, repetitions about what the record already holds, and storage
-     * about the account. All send the block back open, since a refusal
-     * somebody cannot see the controls of is one they cannot act on.
+     * the vault, repetitions about what the record already holds, storage about
+     * the account, and a reminder over an empty date about two controls at once.
+     * All send the block back open, since a refusal somebody cannot see the
+     * controls of is one they cannot act on.
      */
     public function update(SaveFieldValuesRequest $request, Vault $vault, Contact $contact, TemplateVersionSection $templateVersionSection): RedirectResponse
     {
@@ -71,8 +73,9 @@ class ContactSectionController extends Controller
                 values: $request->validated('fields', []),
                 yearIsUnknown: $request->validated('year_is_unknown', []),
                 monthIsUnknown: $request->validated('month_is_unknown', []),
+                reminders: $request->validated('reminders', []),
             )->execute();
-        } catch (FieldIsRequired|FieldValueIsNotUnique|NotEnoughRepetitions|NotEnoughStorageLeft|TooManyRepetitions $e) {
+        } catch (FieldIsRequired|FieldValueIsNotUnique|NotEnoughRepetitions|NotEnoughStorageLeft|ReminderNeedsADate|TooManyRepetitions $e) {
             return redirect()
                 ->route('contacts.sections.edit', ['vault' => $vault, 'contact' => $contact, 'templateVersionSection' => $templateVersionSection])
                 ->withInput()

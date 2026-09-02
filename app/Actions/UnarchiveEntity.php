@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Entity;
@@ -11,9 +12,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Put a record back into the main lists, and with it the reminders its own date
- * fields drive. Reminders do not exist yet, so nothing here brings anything
- * back.
+ * Put a record back into the main lists, and with it the reminders archiving
+ * silenced. Only those: a rule quiet because the field it read has left the
+ * structure stays quiet and goes on saying so.
  */
 class UnarchiveEntity
 {
@@ -42,6 +43,12 @@ class UnarchiveEntity
     {
         $this->entity->is_archived = false;
         $this->entity->save();
+
+        new ReactivateReminders(
+            user: $this->user,
+            subject: $this->entity,
+            reason: ReminderInactiveReasonEnum::RecordArchived,
+        )->execute();
     }
 
     private function log(): void

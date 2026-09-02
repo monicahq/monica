@@ -49,7 +49,6 @@ class UpdateField
         private readonly ?int $repeatMin = null,
         private readonly ?int $repeatMax = null,
         private readonly ?RepetitionOrderEnum $repetitionOrder = null,
-        private readonly bool $isReminderSource = false,
     ) {}
 
     public function execute(): Field
@@ -100,7 +99,6 @@ class UpdateField
         $this->field->repeat_min = $this->field->type->isRepeater() ? $this->repeatMin : null;
         $this->field->repeat_max = $this->field->type->isRepeater() ? $this->repeatMax : null;
         $this->field->repetition_order = $this->field->type->isRepeater() ? $this->repetitionOrder : null;
-        $this->field->is_reminder_source = $this->field->type->canDriveAReminder() && $this->isReminderSource;
         $this->field->save();
     }
 

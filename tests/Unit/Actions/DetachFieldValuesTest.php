@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\DetachFieldValues;
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -156,5 +157,22 @@ class DetachFieldValuesTest extends TestCase
             'field_id' => $field->id,
             'value_string' => 'Scranton',
         ], $attributes));
+    }
+
+    #[Test]
+    public function it_silences_the_reminders_reading_the_field_that_has_gone(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->reminderAbout($user);
+
+        new DetachFieldValues(user: $user, field: $reminder->field)->execute();
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'is_active' => false,
+            'inactive_reason' => ReminderInactiveReasonEnum::FieldRemoved->value,
+        ]);
     }
 }

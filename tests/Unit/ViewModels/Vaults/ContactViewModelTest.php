@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\FieldTypeEnum;
+use App\Enums\ReminderCadenceEnum;
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
 use App\Models\RecordSnapshot;
+use App\Models\Reminder;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\Template;
@@ -603,6 +606,155 @@ class ContactViewModelTest extends TestCase
         $version->template->update(['published_version_id' => $published->id]);
 
         return $published;
+    }
+
+    #[Test]
+    public function it_gives_every_date_field_what_the_reminder_panel_needs(): void
+    {
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee', 'Birthday']]]);
+        $contact = $this->contact($user, $version, ['first_name' => 'Michael', 'last_name' => 'Scott']);
+        $birthday = $this->fieldCalled($version, 'Birthday');
+        $birthday->update(['type' => FieldTypeEnum::RecurringDate, 'account_id' => $user->account_id]);
+
+        $fields = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health')->sections()[0]['fields'];
+
+        $knee = collect($fields)->firstWhere('label', 'Knee');
+        $date = collect($fields)->firstWhere('label', 'Birthday');
+
+        $this->assertNull($knee['reminder']);
+        $this->assertFalse($date['reminder']['isOn']);
+        $this->assertEquals('Birthday — Michael Scott', $date['reminder']['placeholder']);
+        $this->assertEquals('Europe/Paris', $date['reminder']['timezone']);
+        $this->assertEquals('09:00', $date['reminder']['time']);
+        $this->assertTrue($date['reminder']['recurs']);
+        $this->assertEquals('yearly', $date['reminder']['cadence']);
+        $this->assertNull($date['reminder']['nextLine']);
+        $this->assertNull($date['reminder']['quietBecause']);
+    }
+
+    #[Test]
+    public function it_opens_a_date_with_no_rule_on_one_moment_on_the_day(): void
+    {
+        $user = User::factory()->create();
+        $panel = $this->panelFor($user, null)['reminder'];
+
+        $this->assertCount(1, $panel['moments']);
+        $this->assertEquals('on', $panel['moments'][0]['direction']);
+        $this->assertEquals('on the day', $panel['moments'][0]['phrase']);
+    }
+
+    #[Test]
+    public function it_reads_a_saved_rule_back_with_its_moments_in_words(): void
+    {
+        $user = User::factory()->create();
+
+        $panel = $this->panelFor($user, [
+            'name' => 'Ring Michael',
+            'cadence' => ReminderCadenceEnum::Monthly,
+            'frequency_interval' => 2,
+            'time_of_day' => '18:30:00',
+            'timezone' => 'Asia/Tokyo',
+            'moments' => [
+                ['direction' => 'before', 'amount' => 1, 'unit' => 'weeks'],
+                ['direction' => 'on', 'amount' => null, 'unit' => null],
+            ],
+        ])['reminder'];
+
+        $this->assertTrue($panel['isOn']);
+        $this->assertEquals('Ring Michael', $panel['name']);
+        $this->assertEquals('monthly', $panel['cadence']);
+        $this->assertEquals(2, $panel['interval']);
+        $this->assertEquals('18:30', $panel['time']);
+        $this->assertEquals('Asia/Tokyo', $panel['timezone']);
+        $this->assertEquals('1 week before', $panel['moments'][0]['phrase']);
+        $this->assertEquals('on the day', $panel['moments'][1]['phrase']);
+        $this->assertEquals(
+            'You will be reminded 1 week before and on the day, every 2 months, at 18:30 Asia/Tokyo.',
+            $panel['summary'],
+        );
+        $this->assertStringStartsWith('Next:', $panel['nextLine']);
+    }
+
+    #[Test]
+    public function it_says_why_a_rule_has_gone_quiet(): void
+    {
+        $user = User::factory()->create();
+
+        $panel = $this->panelFor($user, [
+            'is_active' => false,
+            'inactive_reason' => ReminderInactiveReasonEnum::FieldRemoved,
+        ])['reminder'];
+
+        $this->assertStringContainsString('this field has left the structure', $panel['quietBecause']);
+    }
+
+    #[Test]
+    public function it_finds_a_rule_whose_date_has_been_cleared(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Birthday']]]);
+        $contact = $this->contact($user, $version);
+        $field = $this->fieldCalled($version, 'Birthday');
+        $field->update(['type' => FieldTypeEnum::RecurringDate, 'account_id' => $user->account_id]);
+
+        Reminder::factory()->create([
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+            'remindable_type' => Contact::class,
+            'remindable_id' => $contact->id,
+            'field_id' => $field->id,
+            'field_value_id' => null,
+            'is_active' => false,
+            'inactive_reason' => ReminderInactiveReasonEnum::ValueCleared,
+        ]);
+
+        $panel = collect(
+            new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health')->sections()[0]['fields'],
+        )->firstWhere('label', 'Birthday')['reminder'];
+
+        $this->assertTrue($panel['isOn']);
+        $this->assertStringContainsString('the date it read is gone', $panel['quietBecause']);
+        $this->assertEquals('It has nothing ahead of it any more.', $panel['nextLine']);
+    }
+
+    /**
+     * One date field on one contact, with the rule described or none at all.
+     *
+     * @param  array<string, mixed>|null  $rule
+     * @return array<string, mixed>
+     */
+    private function panelFor(User $user, ?array $rule): array
+    {
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Birthday']]]);
+        $contact = $this->contact($user, $version, ['first_name' => 'Michael', 'last_name' => 'Scott']);
+        $field = $this->fieldCalled($version, 'Birthday');
+        $field->update(['type' => FieldTypeEnum::RecurringDate, 'account_id' => $user->account_id]);
+
+        $value = FieldValue::factory()->create([
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'field_key' => $field->key,
+            'value_string' => null,
+            'value_date' => '1984-02-03',
+        ]);
+
+        if ($rule !== null) {
+            Reminder::factory()->for($value, 'fieldValue')->create(array_merge([
+                'account_id' => $contact->account_id,
+                'vault_id' => $contact->vault_id,
+                'remindable_type' => Contact::class,
+                'remindable_id' => $contact->id,
+                'field_id' => $field->id,
+            ], $rule));
+        }
+
+        return collect(
+            new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health')->sections()[0]['fields'],
+        )->firstWhere('label', 'Birthday');
     }
 
     private function fieldCalled(TemplateVersion $version, string $label): Field

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
+use App\Actions\DestroyContact;
 use App\Actions\RestoreContact;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
@@ -115,5 +116,24 @@ class RestoreContactTest extends TestCase
                 && $job->isAbout($contact)
                 && $job->parameters === ['name' => 'Ryan Howard'],
         );
+    }
+
+    #[Test]
+    public function it_brings_back_the_reminders_the_deletion_silenced(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->reminderAbout($user);
+        $contact = $reminder->remindable;
+
+        new DestroyContact(user: $user, contact: $contact)->execute();
+        new RestoreContact(user: $user, contact: $contact)->execute();
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'is_active' => true,
+            'inactive_reason' => null,
+        ]);
     }
 }

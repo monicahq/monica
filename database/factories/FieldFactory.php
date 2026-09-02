@@ -51,7 +51,6 @@ class FieldFactory extends Factory
             'repeat_min' => null,
             'repeat_max' => null,
             'parent_field_id' => null,
-            'is_reminder_source' => false,
             'relation_target' => null,
             'relation_entity_type_id' => null,
         ];
@@ -71,15 +70,14 @@ class FieldFactory extends Factory
     }
 
     /**
-     * Indicate that the field is a date that comes round again, which is what
-     * makes it something a reminder rule may read from.
+     * Indicate that the field is a date that comes round again, which is the
+     * kind whose year may be unknown.
      */
     public function recurringDate(): static
     {
         return $this->state(fn (array $attributes): array => [
             'type' => FieldTypeEnum::RecurringDate,
             'label' => 'Birthday',
-            'is_reminder_source' => true,
         ]);
     }
 

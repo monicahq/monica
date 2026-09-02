@@ -28,9 +28,10 @@ use Override;
  * It is where three separate parts of the product meet. Accessibility lands
  * here because pages are generated from structures users invented: a type has
  * to render accessibly by construction, once, or every template anybody builds
- * becomes a new source of problems nobody can fix on their behalf. Any
- * recurring date is a possible reminder source, not just a birthday. And every
- * field is searchable and filterable with no configuration at all.
+ * becomes a new source of problems nobody can fix on their behalf. Any date can
+ * drive a reminder rule, complete or coming round again, and the type is the
+ * only thing that says so. And every field is searchable and filterable with no
+ * configuration at all.
  *
  * The key is stable and unique inside the section. Renaming a label never
  * changes it, which is what lets an import, an export or an API caller keep
@@ -59,7 +60,6 @@ use Override;
  * @property int|null $repeat_max
  * @property RepetitionOrderEnum|null $repetition_order
  * @property int|null $parent_field_id
- * @property bool $is_reminder_source
  * @property RelationTargetEnum|null $relation_target
  * @property int|null $relation_entity_type_id
  * @property CarbonImmutable $created_at
@@ -93,7 +93,6 @@ use Override;
     'repeat_max',
     'repetition_order',
     'parent_field_id',
-    'is_reminder_source',
     'relation_target',
     'relation_entity_type_id',
 ])]
@@ -147,7 +146,6 @@ class Field extends Model
             'repeat_min' => 'integer',
             'repeat_max' => 'integer',
             'repetition_order' => RepetitionOrderEnum::class,
-            'is_reminder_source' => 'boolean',
             'relation_target' => RelationTargetEnum::class,
         ];
     }
@@ -229,6 +227,16 @@ class Field extends Model
     public function values(): HasMany
     {
         return $this->hasMany(FieldValue::class);
+    }
+
+    /**
+     * Get every reminder rule reading this field, on every record.
+     *
+     * @return HasMany<Reminder, $this>
+     */
+    public function reminders(): HasMany
+    {
+        return $this->hasMany(Reminder::class);
     }
 
     /**

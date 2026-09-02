@@ -33,9 +33,19 @@
   @var string|null $formatted
   @var string|array<int, string>|null $error
   @var array<int, array{id: int, fields: array<int, array<string, mixed>>}> $rows
+  A date field may also carry a reminder. What that asks for is a panel of its
+  own, <x-field-reminder>, drawn under the control here so the box sits with the
+  date it is about. It is only ever given for a date sitting directly in the
+  section: a date inside a repetition can hold a rule, since a rule reads one
+  value and a repetition's answer is its own value, but no screen asks for one
+  yet.
+
   @var string|null $id
   @var string|null $name
   @var string|null $yearName
+  @var array<string, mixed>|null $reminder
+  @var string|null $reminderName
+  @var \Illuminate\Support\ViewErrorBag|null $messages
 --}}
 @props([
   'field',
@@ -46,6 +56,9 @@
   'id' => null,
   'name' => null,
   'yearName' => null,
+  'reminder' => null,
+  'reminderName' => null,
+  'messages' => null,
 ])
 
 @php
@@ -54,6 +67,7 @@
   $name ??= "fields[{$field->id}]";
   $id ??= "field-{$field->id}";
   $yearName ??= "year_is_unknown[{$field->id}]";
+  $reminderName ??= "reminders[{$field->id}]";
   $type = $field->type;
 
   /* A field that has left the structure keeps its value and stops being
@@ -268,21 +282,31 @@
       >
         {{ __('I do not know the year') }}
       </x-option-row>
+
+      @if ($reminder !== null)
+        <x-field-reminder :field="$field" :reminder="$reminder" :name="$reminderName" :id="$id.'-reminder'" :messages="$messages" />
+      @endif
     </div>
     @break
 
   @case($type === FieldTypeEnum::Date)
-    <x-input
-      type="date"
-      :id="$id"
-      :name="$name"
-      :label="$field->label"
-      :value="$dateShown"
-      :help="$field->help_text"
-      :error="$error"
-      :required="$field->is_required"
-      :optional="! $field->is_required"
-    />
+    <div class="flex flex-col gap-1.5">
+      <x-input
+        type="date"
+        :id="$id"
+        :name="$name"
+        :label="$field->label"
+        :value="$dateShown"
+        :help="$field->help_text"
+        :error="$error"
+        :required="$field->is_required"
+        :optional="! $field->is_required"
+      />
+
+      @if ($reminder !== null)
+        <x-field-reminder :field="$field" :reminder="$reminder" :name="$reminderName" :id="$id.'-reminder'" :messages="$messages" />
+      @endif
+    </div>
     @break
 
   @case($type->hasAnInput())

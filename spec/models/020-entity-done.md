@@ -36,7 +36,7 @@ deleted_with_vault          bool                            whether the record w
 - `belongsTo` [File](008-file-in-progress.md) as avatar
 - `hasMany` [FieldValue](022-field-value-done.md)
 - `belongsToMany` [Activity](036-activity-not-yet.md) through [ActivityParticipant](037-activity-participant-not-yet.md)
-- `hasMany` [RecordSnapshot](023-record-snapshot-done.md), [Reminder](040-reminder-not-yet.md)
+- `hasMany` [RecordSnapshot](023-record-snapshot-done.md), [Reminder](040-reminder-in-progress.md)
 
 ## Rules
 
@@ -52,7 +52,7 @@ deleted_with_vault          bool                            whether the record w
 
 - **Nothing sets the avatar.** The column points at [File](008-file-in-progress.md) and the relationship reads it, but no action and no screen picks a file for a record, exactly as for a [Contact](019-contact-done.md). Every record is drawn as its initials until something offers that choice.
 - **`last_consulted_at` stays null.** It is written by the screen that consults a record, and there is none.
-- **No reminder is silenced by archiving.** [Reminder](040-reminder-not-yet.md) is ahead, so `ArchiveEntity` and `UnarchiveEntity` move the flag and nothing else. The rule that a contract renewal on an archived company stays quiet is written down and waiting for the model that can keep it.
+- **Archiving silences the reminders about a record, and nothing writes one yet.** `ArchiveEntity` and `UnarchiveEntity` silence and revive with `record_archived`, so a contract renewal on an archived company would stay quiet. No screen creates a rule about an entity, because entities have no screens at all, so today it silences nothing.
 - **Nothing writes a record down from an activity or a relation field.** [Activity](036-activity-not-yet.md) is ahead, and the relation field points at an entity that already exists.
 - **No screen and no API.** Model and actions only.
 

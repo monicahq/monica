@@ -259,7 +259,6 @@ class CreateDefaultTemplate implements ShouldQueue
                 'repeat_min' => null,
                 'repeat_max' => null,
                 'parent_field_id' => $parent?->id,
-                'is_reminder_source' => $field->isReminderSource(),
                 'relation_target' => null,
                 'relation_entity_type_id' => null,
             ]);

@@ -11,6 +11,7 @@ use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Models\EntityType;
 use App\Models\Field;
+use App\Models\Reminder;
 use App\Models\SectionVersion;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -98,13 +99,13 @@ class FieldTest extends TestCase
     }
 
     #[Test]
-    public function it_knows_a_recurring_date_can_drive_a_reminder(): void
+    public function it_knows_any_date_can_drive_a_reminder(): void
     {
         $field = Field::factory()->recurringDate()->create();
 
         $this->assertTrue($field->type->canDriveAReminder());
-        $this->assertTrue($field->is_reminder_source);
-        $this->assertFalse(FieldTypeEnum::Date->canDriveAReminder());
+        $this->assertTrue(FieldTypeEnum::Date->canDriveAReminder());
+        $this->assertFalse(FieldTypeEnum::Text->canDriveAReminder());
     }
 
     #[Test]
@@ -193,5 +194,14 @@ class FieldTest extends TestCase
         $field = Field::factory()->create();
 
         $this->assertEquals($field->sectionVersion->account_id, $field->account_id);
+    }
+
+    #[Test]
+    public function it_knows_every_reminder_rule_reading_it(): void
+    {
+        $reminder = Reminder::factory()->create();
+
+        $this->assertTrue($reminder->field->reminders()->exists());
+        $this->assertEquals([$reminder->id], $reminder->field->reminders()->pluck('id')->all());
     }
 }

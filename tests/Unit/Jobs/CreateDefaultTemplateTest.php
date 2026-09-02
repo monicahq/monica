@@ -354,7 +354,7 @@ class CreateDefaultTemplateTest extends TestCase
         $birthday = Field::query()->firstWhere('key', DefaultFieldEnum::Birthday->value);
 
         $this->assertSame(FieldTypeEnum::RecurringDate, $birthday->type);
-        $this->assertTrue($birthday->is_reminder_source);
+        $this->assertTrue($birthday->type->canDriveAReminder());
     }
 
     #[Test]

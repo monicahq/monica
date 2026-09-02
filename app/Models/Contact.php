@@ -282,6 +282,17 @@ class Contact extends Model
     }
 
     /**
+     * Get every reminder rule about this contact, quiet ones included. A rule
+     * that has gone quiet stays here and says why, rather than disappearing.
+     *
+     * @return MorphMany<Reminder, $this>
+     */
+    public function reminders(): MorphMany
+    {
+        return $this->morphMany(Reminder::class, 'remindable');
+    }
+
+    /**
      * Scope the query to the contacts the main lists show: the ones that are
      * neither archived nor still waiting to be filled in.
      *

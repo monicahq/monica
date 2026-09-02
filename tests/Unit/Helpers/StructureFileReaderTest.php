@@ -180,6 +180,26 @@ class StructureFileReaderTest extends TestCase
         StructureFileReader::read(json_encode($file));
     }
 
+    /**
+     * A file exported before whether a field drives a reminder became a property
+     * of its type still carries the key. Refusing it would refuse every
+     * structure already in circulation, so the key is read by nothing and the
+     * file imports.
+     */
+    #[Test]
+    public function it_still_reads_a_file_carrying_the_reminder_flag_it_no_longer_has(): void
+    {
+        $file = $this->file();
+        $file['template']['pages'][0]['sections'][0]['section']['fields'][0]['is_reminder_source'] = true;
+
+        $read = StructureFileReader::read(json_encode($file));
+
+        $field = $read['template']['pages'][0]['sections'][0]['section']['fields'][0];
+
+        $this->assertEquals('nickname', $field['key']);
+        $this->assertArrayNotHasKey('is_reminder_source', $field);
+    }
+
     #[Test]
     public function it_refuses_a_kind_of_field_it_cannot_render(): void
     {

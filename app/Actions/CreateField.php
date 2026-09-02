@@ -34,9 +34,10 @@ use InvalidArgumentException;
  *
  * Several settings on the row only mean something for certain types, and this
  * is where that is settled rather than left to whoever fills the form. A field
- * that is not a choice carries no value list, one that is not a relation points
- * at nothing, and only a date that comes round again can drive a reminder.
- * Storing a setting the type cannot honour would be storing a lie.
+ * that is not a choice carries no value list and one that is not a relation
+ * points at nothing. Storing a setting the type cannot honour would be storing
+ * a lie, which is also why nothing here says whether the field drives a
+ * reminder: the type answers that on its own.
  *
  * A repeater holds ordinary fields and nothing else. Nesting one inside another
  * would compound the hardest accessibility problem in the builder for no stated
@@ -66,7 +67,6 @@ class CreateField
         private readonly ?int $repeatMin = null,
         private readonly ?int $repeatMax = null,
         private readonly ?RepetitionOrderEnum $repetitionOrder = null,
-        private readonly bool $isReminderSource = false,
         private readonly ?RelationTargetEnum $relationTarget = null,
         private readonly ?EntityType $relationEntityType = null,
     ) {}
@@ -163,7 +163,6 @@ class CreateField
             'repeat_max' => $this->type->isRepeater() ? $this->repeatMax : null,
             'repetition_order' => $this->type->isRepeater() ? $this->repetitionOrder : null,
             'parent_field_id' => $this->parent?->id,
-            'is_reminder_source' => $this->type->canDriveAReminder() && $this->isReminderSource,
             'relation_target' => $this->type->isRelation() ? ($this->relationTarget ?? RelationTargetEnum::Contact) : null,
             'relation_entity_type_id' => $this->type->isRelation() ? $this->relationEntityType?->id : null,
         ]);

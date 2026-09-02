@@ -37,7 +37,6 @@ return new class extends Migration
             $table->unsignedInteger('repeat_max')->nullable()->comment('most repetitions allowed, null for no ceiling');
             $table->string('repetition_order', 32)->nullable()->comment('which end a new repetition is added at, a RepetitionOrderEnum value, null means the end and means nothing for a field that is not a repeater');
             $table->unsignedBigInteger('parent_field_id')->nullable()->comment('repeater this field sits inside, null when it sits directly in the section');
-            $table->boolean('is_reminder_source')->default(false)->comment('whether a recurring date field here may drive a reminder rule');
             $table->string('relation_target', 32)->nullable()->comment('what a relation field points at, null for other types');
             $table->unsignedBigInteger('relation_entity_type_id')->nullable()->comment('entity type a relation field points at, null when it points at contacts');
             $table->timestamps();

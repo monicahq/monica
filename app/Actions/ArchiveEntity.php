@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Entity;
@@ -17,8 +18,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
  *
  * An archived record is also silent: no reminder driven by its own date fields
  * fires while it is archived. A contract renewal on a company nobody deals with
- * any more is exactly the reason somebody archives it. Reminders do not exist
- * yet, so nothing here cancels anything.
+ * any more is exactly the reason somebody archives it. No screen writes a rule
+ * about an entity yet, since entities have no screens at all, so this silences
+ * nothing today and will silence the right thing the day one does.
  */
 class ArchiveEntity
 {
@@ -47,6 +49,12 @@ class ArchiveEntity
     {
         $this->entity->is_archived = true;
         $this->entity->save();
+
+        new DeactivateReminders(
+            user: $this->user,
+            subject: $this->entity,
+            reason: ReminderInactiveReasonEnum::RecordArchived,
+        )->execute();
     }
 
     private function log(): void

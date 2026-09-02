@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Override;
 
@@ -64,6 +65,7 @@ use Override;
  * @property-read File|null $file
  * @property-read Contact|null $relatedContact
  * @property-read Entity|null $relatedEntity
+ * @property-read Reminder|null $reminder
  */
 #[Fillable([
     'account_id',
@@ -214,6 +216,18 @@ class FieldValue extends Model
     public function relatedEntity(): BelongsTo
     {
         return $this->belongsTo(Entity::class, 'related_entity_id');
+    }
+
+    /**
+     * Get the reminder rule reading this value, when somebody asked for one.
+     * There is at most one, because the box beside a date either holds a rule or
+     * holds none.
+     *
+     * @return HasOne<Reminder, $this>
+     */
+    public function reminder(): HasOne
+    {
+        return $this->hasOne(Reminder::class);
     }
 
     /**

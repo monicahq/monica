@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Field;
@@ -21,6 +22,10 @@ use Illuminate\Support\Facades\DB;
  * an explanation, and {@see ReattachFieldValues} brings them back the day
  * somebody puts the field back. Silent deletion is exactly what the product
  * refuses to do.
+ *
+ * A reminder rule reading the field goes quiet for the same reason and in the
+ * same way. It says the field has left the structure rather than disappearing,
+ * which is what section 3.3 asks of it by name.
  *
  * The files the values held are let go of, so a value set aside and never
  * restored does not hold a file alive for ever. Letting go is not deleting: the
@@ -66,6 +71,12 @@ class DetachFieldValues
                         new DetachFile(user: $this->user, file: $value->file)->execute();
                     }
                 });
+
+            new DeactivateReminders(
+                user: $this->user,
+                subject: $this->field,
+                reason: ReminderInactiveReasonEnum::FieldRemoved,
+            )->execute();
 
             $this->count = FieldValue::query()
                 ->where('field_id', $this->field->id)

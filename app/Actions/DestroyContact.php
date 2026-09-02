@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\CannotDeleteTheMeContact;
 use App\Jobs\LogUserAction;
@@ -21,7 +22,8 @@ use Illuminate\Support\Facades\DB;
  *
  * Nothing the contact took part in is destroyed. Relationships, activities and
  * files outlive them, because they describe things that happened rather than
- * the row itself.
+ * the row itself. The reminders about them go quiet with the reason rather than
+ * disappearing, and {@see RestoreContact} brings back exactly those.
  *
  * The contact representing the user never goes. Relationships and activities
  * are written from its point of view, and a vault that lost it would be talking
@@ -62,6 +64,12 @@ class DestroyContact
             $this->contact->delete();
 
             $this->revokeTheLinksOntoThem();
+
+            new DeactivateReminders(
+                user: $this->user,
+                subject: $this->contact,
+                reason: ReminderInactiveReasonEnum::RecordDeleted,
+            )->execute();
 
             Vault::query()
                 ->whereKey($this->contact->vault_id)

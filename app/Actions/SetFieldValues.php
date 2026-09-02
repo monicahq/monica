@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\FieldTypeEnum;
+use App\Enums\ReminderCadenceEnum;
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Exceptions\FieldIsRequired;
+use App\Exceptions\ReminderNeedsADate;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
+use App\Models\Reminder;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\ValueListItem;
@@ -51,10 +55,19 @@ use InvalidArgumentException;
  * the file is unchanged rather than gone. Replacing a document means choosing
  * another one, and removing it means removing the repetition it sits on.
  *
+ * A date may also carry a reminder, and that is written here too, after every
+ * value in the block: a rule points at the value it reads, so the value has to
+ * exist before anything can point at it. The rule follows the box beside the
+ * date. Ticked, it is made or changed; unticked, it is taken away and the date is
+ * left alone; and a date somebody cleared leaves its rule quiet and saying so
+ * rather than gone.
+ *
  * It writes nothing itself. Each value goes through {@see SetFieldValue}, each
  * clearing through {@see DestroyFieldValue}, each repetition through
- * {@see CreateFieldValueRow} and {@see DestroyFieldValueRow}, and each upload
- * through {@see CreateFile}, which is also where the logging happens: this
+ * {@see CreateFieldValueRow} and {@see DestroyFieldValueRow}, each upload
+ * through {@see CreateFile}, and each reminder through {@see CreateReminder},
+ * {@see UpdateReminder}, {@see DestroyReminder} and {@see DeactivateReminders},
+ * which is also where the logging happens: this
  * delegates the whole of its journal to the writes it performs, rather than
  * adding a line that says a section was saved and repeating underneath it what
  * each field now holds.
@@ -67,6 +80,7 @@ class SetFieldValues
      * @param  array<int, mixed>  $values  what was typed, keyed by field id
      * @param  array<int, bool>  $yearIsUnknown
      * @param  array<int, bool>  $monthIsUnknown
+     * @param  array<int, array<string, mixed>>  $reminders  what was asked of each date, keyed by field id
      */
     public function __construct(
         private readonly User $user,
@@ -75,6 +89,7 @@ class SetFieldValues
         private readonly array $values,
         private readonly array $yearIsUnknown = [],
         private readonly array $monthIsUnknown = [],
+        private readonly array $reminders = [],
     ) {}
 
     /**
@@ -87,10 +102,15 @@ class SetFieldValues
         $fields = $this->fieldsInTheSection();
 
         $this->refuseAnEmptyRequiredField($fields);
+        $this->refuseAReminderWithNoDate($fields);
 
         DB::transaction(function () use ($fields): void {
             foreach ($fields as $field) {
                 $this->save($field);
+            }
+
+            foreach ($fields as $field) {
+                $this->saveTheReminder($field);
             }
         });
 
@@ -135,6 +155,182 @@ class SetFieldValues
         if ($missing instanceof Field) {
             throw new FieldIsRequired("{$missing->label} has to be filled in.");
         }
+    }
+
+    /**
+     * Refuse a reminder asked for over a date nobody gave.
+     *
+     * It is checked before anything is written, alongside the required field,
+     * because a rule reads one value and derives every deadline from it: a rule
+     * over an empty date is a rule that can never fire, and saving the block
+     * while quietly dropping it would be losing what somebody asked for.
+     *
+     * @param  Collection<int, Field>  $fields
+     */
+    private function refuseAReminderWithNoDate(Collection $fields): void
+    {
+        $asked = $fields->first(
+            fn (Field $field): bool => $field->type->canDriveAReminder()
+                && $this->wantsAReminderOn($field)
+                && $this->isBlank($this->given($field)),
+        );
+
+        if ($asked instanceof Field) {
+            throw new ReminderNeedsADate("There is no date in {$asked->label} to be reminded of.");
+        }
+    }
+
+    /**
+     * Write, change or take away the reminder on one date.
+     *
+     * It runs after every value in the block, because a rule points at the value
+     * it reads and the value has to exist before anything can point at it.
+     *
+     * A rule the date outlived is quiet rather than gone, and a date typed in
+     * again gets a rule of its own rather than reviving one that points at a
+     * value nobody has any more. The quiet one is taken away as the new one is
+     * made, so the record does not collect an explanation for every time
+     * somebody changed their mind.
+     *
+     * Only a date sitting directly in the section is offered a reminder. One
+     * inside a repetition can hold a rule, since a rule reads a value and a
+     * repetition's answer is its own value, and no screen asks for one yet.
+     */
+    private function saveTheReminder(Field $field): void
+    {
+        if (! $field->type->canDriveAReminder()) {
+            return;
+        }
+
+        $rule = $this->ruleOn($field);
+        $value = $this->valueOn($field);
+
+        if ($value?->value_date === null) {
+            if ($rule instanceof Reminder && $rule->is_active) {
+                new DeactivateReminders(
+                    user: $this->user,
+                    subject: $rule,
+                    reason: ReminderInactiveReasonEnum::ValueCleared,
+                )->execute();
+            }
+
+            return;
+        }
+
+        if (! $this->wantsAReminderOn($field)) {
+            if ($rule instanceof Reminder) {
+                new DestroyReminder(user: $this->user, reminder: $rule)->execute();
+            }
+
+            return;
+        }
+
+        if ($rule instanceof Reminder && $rule->is_active && $rule->field_value_id === $value->id) {
+            $this->changeTheRule($field, $rule);
+
+            return;
+        }
+
+        if ($rule instanceof Reminder) {
+            new DestroyReminder(user: $this->user, reminder: $rule)->execute();
+        }
+
+        $this->makeTheRule($field, $value);
+    }
+
+    private function makeTheRule(Field $field, FieldValue $value): void
+    {
+        new CreateReminder(
+            user: $this->user,
+            fieldValue: $value,
+            cadence: $this->cadenceFor($field),
+            moments: $this->momentsFor($field),
+            timeOfDay: $this->timeFor($field),
+            name: $this->asked($field, 'name'),
+            frequencyInterval: (int) ($this->asked($field, 'interval') ?? 1),
+            timezone: $this->asked($field, 'timezone'),
+        )->execute();
+    }
+
+    private function changeTheRule(Field $field, Reminder $rule): void
+    {
+        new UpdateReminder(
+            user: $this->user,
+            reminder: $rule,
+            cadence: $this->cadenceFor($field),
+            moments: $this->momentsFor($field),
+            timeOfDay: $this->timeFor($field),
+            name: $this->asked($field, 'name'),
+            frequencyInterval: (int) ($this->asked($field, 'interval') ?? 1),
+            timezone: $this->asked($field, 'timezone'),
+        )->execute();
+    }
+
+    /**
+     * The newest rule on this date, quiet ones included and removed ones not.
+     * It is looked up on the field rather than on the value, because a rule
+     * whose date was cleared has let go of the value it read.
+     */
+    private function ruleOn(Field $field): ?Reminder
+    {
+        return Reminder::query()
+            ->where('account_id', $this->user->account_id)
+            ->where('remindable_type', $this->record->getMorphClass())
+            ->where('remindable_id', $this->record->id)
+            ->where('field_id', $field->id)
+            ->orderByDesc('is_active')
+            ->orderByDesc('id')
+            ->first();
+    }
+
+    private function valueOn(Field $field): ?FieldValue
+    {
+        return FieldValue::query()
+            ->where('valuable_type', $this->record->getMorphClass())
+            ->where('valuable_id', $this->record->id)
+            ->where('field_id', $field->id)
+            ->whereNull('field_value_row_id')
+            ->first();
+    }
+
+    private function wantsAReminderOn(Field $field): bool
+    {
+        return filter_var($this->asked($field, 'on') ?? false, FILTER_VALIDATE_BOOLEAN);
+    }
+
+    private function cadenceFor(Field $field): ReminderCadenceEnum
+    {
+        if (! filter_var($this->asked($field, 'recurs') ?? false, FILTER_VALIDATE_BOOLEAN)) {
+            return ReminderCadenceEnum::Once;
+        }
+
+        return ReminderCadenceEnum::tryFrom((string) $this->asked($field, 'cadence')) ?? ReminderCadenceEnum::Yearly;
+    }
+
+    /**
+     * The moments that arrived, renumbered from zero. A moment somebody removed
+     * comes back disabled and therefore absent, so the numbers the form drew
+     * have gaps in them by design.
+     *
+     * @return array<int, array<array-key, mixed>>
+     */
+    private function momentsFor(Field $field): array
+    {
+        $moments = $this->reminders[$field->id]['moments'] ?? [];
+
+        return is_array($moments) ? array_values(array_filter($moments, 'is_array')) : [];
+    }
+
+    private function timeFor(Field $field): string
+    {
+        return (string) ($this->asked($field, 'time') ?? Reminder::DEFAULT_TIME);
+    }
+
+    private function asked(Field $field, string $key): ?string
+    {
+        $value = $this->reminders[$field->id][$key] ?? null;
+
+        return $value === null || $value === '' ? null : (string) $value;
     }
 
     private function save(Field $field): void

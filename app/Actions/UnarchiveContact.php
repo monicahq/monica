@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -12,7 +13,11 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Put an archived contact back in the main lists, and with them the reminders
- * archiving silenced, once reminders exist.
+ * archiving silenced.
+ *
+ * Only those. A rule quiet because the field it read has left the structure
+ * stays quiet and goes on saying so, since unarchiving reverses archiving and
+ * nothing else.
  */
 class UnarchiveContact
 {
@@ -41,6 +46,12 @@ class UnarchiveContact
     {
         $this->contact->is_archived = false;
         $this->contact->save();
+
+        new ReactivateReminders(
+            user: $this->user,
+            subject: $this->contact,
+            reason: ReminderInactiveReasonEnum::RecordArchived,
+        )->execute();
     }
 
     private function log(): void

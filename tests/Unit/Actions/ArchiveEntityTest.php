@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\ArchiveEntity;
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Entity;
+use App\Models\Reminder;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -76,5 +78,28 @@ class ArchiveEntityTest extends TestCase
                 && $job->isAbout($entity)
                 && $job->parameters === ['name' => 'Prince Family Paper'],
         );
+    }
+
+    #[Test]
+    public function it_silences_every_reminder_driven_by_its_own_dates(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $entity = Entity::factory()->create(['account_id' => $user->account_id]);
+        $reminder = Reminder::factory()->create([
+            'account_id' => $entity->account_id,
+            'vault_id' => $entity->vault_id,
+            'remindable_type' => Entity::class,
+            'remindable_id' => $entity->id,
+        ]);
+
+        new ArchiveEntity(user: $user, entity: $entity)->execute();
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'is_active' => false,
+            'inactive_reason' => ReminderInactiveReasonEnum::RecordArchived->value,
+        ]);
     }
 }
