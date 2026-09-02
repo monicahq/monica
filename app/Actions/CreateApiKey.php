@@ -35,7 +35,12 @@ class CreateApiKey
 
         $this->log();
 
-        return $key;
+        $plainTextToken = explode('|', $key->plainTextToken, 2)[1];
+
+        return new NewAccessToken(
+            $key->accessToken,
+            $plainTextToken
+        );
     }
 
     private function log(): void

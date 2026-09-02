@@ -3,7 +3,7 @@
   "specName": "Sent emails endpoints",
   "branch": "2026-08-29-sent-emails-api",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -232,6 +232,20 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-08-29T16:27:27.697Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-02T18:09:53.862Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-02T18:12:02.174Z"
     }
   ],
   "currentTask": "T025",

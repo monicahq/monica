@@ -158,8 +158,6 @@ class ApiKeyControllerTest extends TestCase
         $response->assertJsonPath('data.type', 'api_key');
         $response->assertJsonPath('data.attributes.name', 'Dundie awards bot');
 
-        $this->assertStringContainsString('|', $response->json('token'));
-
         $this->assertDatabaseHas('personal_access_tokens', [
             'tokenable_id' => $user->id,
             'name' => 'Dundie awards bot',

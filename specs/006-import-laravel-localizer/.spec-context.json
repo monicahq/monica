@@ -3,7 +3,7 @@
   "specName": "Import laravel-localizer",
   "branch": "main",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -39,6 +39,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-08-31T21:06:15.512Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-02T18:12:02.174Z"
     }
   ],
   "telemetryInstanceId": "f7f561e7-3d9f-4d94-a225-ce667dac4b92"

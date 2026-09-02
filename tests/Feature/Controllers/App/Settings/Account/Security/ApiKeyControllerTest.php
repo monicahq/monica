@@ -59,6 +59,68 @@ class ApiKeyControllerTest extends TestCase
             ->assertDontSee('Your new API key', escape: false);
     }
 
+    /**
+     * The value sits tight against its tags because the copy reads it back out
+     * of the box, and `select-all` is what makes one click take all of it.
+     */
+    #[Test]
+    public function it_prints_the_new_key_in_a_box_a_click_selects_whole(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->withSession(['apiKey' => 'dunder-mifflin-infinity'])
+            ->get(route('settings.security.index'))
+            ->assertStatus(200)
+            ->assertSee('select-all">dunder-mifflin-infinity</p>', escape: false);
+    }
+
+    #[Test]
+    public function it_has_somewhere_to_announce_what_a_copy_did(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->withSession(['apiKey' => 'dunder-mifflin-infinity'])
+            ->get(route('settings.security.index'))
+            ->assertSee('aria-live="polite"', escape: false)
+            ->assertSee('x-text="messages[state]', escape: false);
+    }
+
+    /**
+     * The control reads the key back out of the box it is printed in, and goes
+     * through the helper that says whether the clipboard took it.
+     */
+    #[Test]
+    public function it_offers_to_copy_the_new_key_and_says_when_it_did(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->withSession(['apiKey' => 'dunder-mifflin-infinity'])
+            ->get(route('settings.security.index'))
+            ->assertSee('Copy to the clipboard', escape: false)
+            ->assertSee('window.copyText($refs.key.textContent)', escape: false)
+            ->assertSee("copied: 'Copied'", escape: false)
+            ->assertSee('select-all">dunder-mifflin-infinity</p>', escape: false);
+    }
+
+    /**
+     * A browser with no clipboard, which is every instance reached over plain
+     * http, has to be told about rather than confirmed at.
+     */
+    #[Test]
+    public function it_says_when_the_copy_did_not_happen(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->withSession(['apiKey' => 'dunder-mifflin-infinity'])
+            ->get(route('settings.security.index'))
+            ->assertSee("failed: 'We could not copy it. Select the key and copy it by hand.'", escape: false)
+            ->assertSee("state = ok ? 'copied' : 'failed'", escape: false);
+    }
+
     #[Test]
     public function it_refuses_a_name_that_is_too_short(): void
     {

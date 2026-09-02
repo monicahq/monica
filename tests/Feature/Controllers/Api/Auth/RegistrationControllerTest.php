@@ -62,7 +62,6 @@ class RegistrationControllerTest extends TestCase
 
         $response->assertCreated();
         $this->assertIsString($response->json('token'));
-        $this->assertStringContainsString('|', $response->json('token'));
         $this->assertSame(['token', 'expires_at'], array_keys($response->json()));
     }
 

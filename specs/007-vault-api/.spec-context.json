@@ -3,7 +3,7 @@
   "specName": "Vault endpoints",
   "branch": "2026-09-01-vault-api",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -312,6 +312,20 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-01T11:45:05.934Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-02T18:09:57.046Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-02T18:12:02.174Z"
     }
   ],
   "telemetryInstanceId": "18f1c581-a0c8-44f3-8fda-4384b39f3a75",

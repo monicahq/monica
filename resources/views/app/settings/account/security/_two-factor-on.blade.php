@@ -67,3 +67,36 @@
     </ul>
   @endif
 </div>
+
+@if ($viewModel->recoveryCodes() !== [])
+  {{-- Nothing to copy once every code has been spent, and a button that
+       confirmed an empty clipboard would be the lie this control exists to
+       avoid. --}}
+  <div
+    class="flex flex-wrap items-center gap-2.5 px-4 pbe-3.5"
+    x-data="{
+      state: 'idle',
+      messages: {
+        idle: '',
+        copied: @js(__('Copied')),
+        failed: @js(__('We could not copy it. Select the key and copy it by hand.')),
+      },
+      codes: @js($viewModel->recoveryCodes()),
+    }"
+  >
+    <x-button
+      type="button"
+      size="small"
+      @click="window.copyText(codes.join('\n')).then((ok) => { state = ok ? 'copied' : 'failed'; if (ok) setTimeout(() => { if (state === 'copied') state = 'idle' }, 2500) })"
+    >{{ __('Copy to the clipboard') }}</x-button>
+
+    <p
+      role="status"
+      aria-live="polite"
+      class="text-sm"
+      :class="{ 'text-success': state === 'copied', 'text-error': state === 'failed' }"
+      x-text="messages[state] ?? ''"
+    ></p>
+  </div>
+@endif
+

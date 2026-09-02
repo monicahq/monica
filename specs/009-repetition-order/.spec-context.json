@@ -3,7 +3,7 @@
   "specName": "Which end a new repetition goes to",
   "branch": "2026-09-01-repetition-order",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -305,6 +305,20 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-01T17:19:26.142Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-02T18:10:00.165Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-02T18:12:02.174Z"
     }
   ],
   "telemetryInstanceId": "de931947-bff8-4fe0-91a7-cb28b1c116e2",

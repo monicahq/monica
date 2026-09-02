@@ -3,7 +3,7 @@
   "specName": "Response fields in the API reference",
   "branch": "2026-09-01-api-field-docs",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -384,6 +384,20 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-01T12:55:17.928Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-02T18:09:58.819Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-02T18:12:02.174Z"
     }
   ],
   "telemetryInstanceId": "76f50cf0-82cc-45a7-ab49-1baaab94d449",

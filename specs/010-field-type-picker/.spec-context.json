@@ -3,7 +3,7 @@
   "specName": "Field Type Picker",
   "branch": "2026-09-02-new-way-of-displaing-fields",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -273,6 +273,20 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-02T12:45:40.800Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-02T18:10:01.599Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-02T18:12:02.174Z"
     }
   ],
   "telemetryInstanceId": "1eeb9436-3afa-448c-81c0-e09d2689745d",

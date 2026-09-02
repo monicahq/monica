@@ -30,12 +30,53 @@
   class="transition-opacity [&[aria-busy]]:opacity-60"
 >
   @if (session('apiKey'))
-    <div class="flex flex-col gap-2 border-b border-hairline bg-sunken px-4 py-3.5">
+    {{--
+      Both wordings sit in the x-data of this div rather than on the button that
+      sets them, because Blade does not compile a directive written inside an
+      attribute of a component tag.
+
+      The key is read back out of the box it is printed in, so that what reaches
+      the clipboard is what somebody can see. That is why the value stays tight
+      against its tags below: textContent would otherwise carry this template's
+      newline and indentation into the copy.
+    --}}
+    <div
+      class="flex flex-col gap-2 border-b border-hairline bg-sunken px-4 py-3.5"
+      x-data="{
+        state: 'idle',
+        messages: {
+          idle: '',
+          copied: @js(__('Copied')),
+          failed: @js(__('We could not copy it. Select the key and copy it by hand.')),
+        },
+      }"
+    >
       <p class="text-base font-semibold text-ink">{{ __('Your new API key') }}</p>
 
       <p class="text-sm text-pretty text-muted">{{ __('This is the only time we can show it to you. Copy it somewhere safe before you leave this screen.') }}</p>
 
-      <p class="rounded-md border border-hairline bg-canvas px-3 py-2 font-mono text-sm break-all text-ink select-all">{{ session('apiKey') }}</p>
+      <p x-ref="key" class="rounded-md border border-hairline bg-canvas px-3 py-2 font-mono text-sm break-all text-ink select-all">{{ session('apiKey') }}</p>
+
+      {{--
+        The region is here whether or not it has something to say, so that a
+        screen reader is already watching it when the answer arrives, and so the
+        panel does not move when it does.
+      --}}
+      <div class="flex flex-wrap items-center gap-2.5">
+        <x-button
+          type="button"
+          size="small"
+          @click="window.copyText($refs.key.textContent).then((ok) => { state = ok ? 'copied' : 'failed'; if (ok) setTimeout(() => { if (state === 'copied') state = 'idle' }, 2500) })"
+        >{{ __('Copy to the clipboard') }}</x-button>
+
+        <p
+          role="status"
+          aria-live="polite"
+          class="text-sm"
+          :class="{ 'text-success': state === 'copied', 'text-error': state === 'failed' }"
+          x-text="messages[state] ?? ''"
+        ></p>
+      </div>
     </div>
   @endif
 

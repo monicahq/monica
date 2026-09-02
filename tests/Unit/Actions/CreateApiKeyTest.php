@@ -55,12 +55,10 @@ class CreateApiKeyTest extends TestCase
 
         $key = new CreateApiKey(user: $user, name: 'Deployment script')->execute()->plainTextToken;
 
-        $this->assertStringContainsString('|', $key);
-
         $stored = $user->tokens()->first()->token;
 
         $this->assertNotSame($key, $stored);
-        $this->assertSame(hash('sha256', explode('|', $key)[1]), $stored);
+        $this->assertSame(hash('sha256', $key), $stored);
     }
 
     /**

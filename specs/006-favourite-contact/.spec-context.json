@@ -3,7 +3,7 @@
   "specName": "Favourite a Contact From Their Page",
   "branch": "2026-08-31-stuff",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -224,6 +224,20 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-08-31T20:25:45.198Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-02T18:09:55.634Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-02T18:12:02.174Z"
     }
   ],
   "telemetryInstanceId": "679c0c04-bf65-450e-a5a9-1dd685581adc",

@@ -123,6 +123,29 @@ class SecurityControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_to_copy_the_recovery_codes(): void
+    {
+        $user = User::factory()->twoFactor()->create(['two_factor_confirmed_at' => now()->subDays(3)]);
+
+        $this->actingAs($user)->get(route('settings.security.index'))
+            ->assertSee('Copy to the clipboard', escape: false)
+            ->assertSee('window.copyText(codes.join(', escape: false);
+    }
+
+    /**
+     * A button that confirmed an empty clipboard would be the lie the control
+     * exists to avoid.
+     */
+    #[Test]
+    public function it_does_not_offer_to_copy_recovery_codes_that_are_all_spent(): void
+    {
+        $user = User::factory()->twoFactor()->create(['two_factor_recovery_codes' => []]);
+
+        $this->actingAs($user)->get(route('settings.security.index'))
+            ->assertDontSee('window.copyText(codes.join(', escape: false);
+    }
+
+    #[Test]
     public function it_redirects_a_visitor_who_is_not_signed_in(): void
     {
         $response = $this->get(route('settings.security.index'));
