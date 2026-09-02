@@ -26,16 +26,16 @@ description                 text                            anything more the us
 kind                        enum (one_off, recurring, field_based, activity_based, inactivity)  which of the five types it is
 remindable_type             string (255)                    class of the record it is about, a contact, an entity or an activity
 remindable_id               int                             id of that record
-field_id                    int                             recurring date field it reads, for a field based rule
+field_id                    int                             date or recurring date field it reads, for a field based rule
 field_value_id              int                             exact value it reads, for a field based rule
 activity_type_id            int                             nature it watches, for an activity based or inactivity rule
 inactivity_days             int                             days of silence before it fires, for an inactivity rule
 offset_days                 json                            how many days before or after the date to fire, several allowed
-frequency                   enum (daily, weekly, monthly, yearly)  cadence of a recurring rule
-frequency_interval          int                             every how many of those, so every second month is expressible
-weekdays                    json                            days of the week it fires on, for a weekly rule
-day_of_month                int                             day it fires on, for a monthly or yearly rule
-month_of_year               int                             month it fires in, for a yearly rule
+frequency                   enum (daily, weekly, monthly, yearly)  cadence of a manual recurring rule
+frequency_interval          int                             every how many of those, for a manual recurring rule
+weekdays                    json                            days of the week a manual weekly rule fires on
+day_of_month                int                             day a manual monthly or yearly rule fires on
+month_of_year               int                             month a manual yearly rule fires in
 starts_on                   date                            first date it may fire
 ends_on                     date                            last date it may fire, null when it never stops
 time_of_day                 time                            local time it fires at
@@ -59,7 +59,7 @@ deleted_at                  datetime
 
 ## Rules
 
-- **Any recurring date field can drive a rule** (10.2), on any page, custom or not. A birthday is one case among many, and nothing in the code may special case it. An adoption date, a contract renewal, an anniversary of a first meeting all work identically.
+- **Any `date` or `recurring_date` field can drive a rule** (10.2), on any page, custom or not. A field based rule derives its record, field and exact value from the source, but keeps its own cadence; the creation behaviour and what the user chooses are settled in 10.2 rather than repeated here.
 - **The time is local, not absolute** (10.3). "Every year at 9am" means 9am local, across daylight saving changes. The zone is frozen at creation, and changing the personal time zone later never shifts a rule already set. This is why `timezone` is on the rule and not read from the user.
 - **Inactivity reads only activities whose type counts as an interaction** (9.3, 10.2). Its quality depends entirely on the journal being kept, which section 10.2 states plainly and which the interface should say too.
 - **A change to the source breaks nothing** (10.3). A corrected date recomputes future occurrences and keeps the history. A deleted contact cancels future occurrences and restores them if it comes back. A field removed from a structure disables the rule and the product **explains why it is inactive** rather than making it disappear. That is what `inactive_reason` is for, and it is a direct application of section 3.3.

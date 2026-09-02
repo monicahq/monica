@@ -434,7 +434,7 @@ Without that distinction, you can neither postpone a reminder cleanly, nor keep 
 
 - **One off**: a date, once.
 - **Recurring**: every year on 12 May, every Monday and Friday, and so on.
-- **Field based**: the product reads a date entered on a record (a birthday, an adoption date, a contract renewal) and derives the deadlines from it, with one or more offsets ("7 days before" and "on the day"). This works for **any recurring date field**, on any record, custom or not. A birthday is only one particular case among others.
+- **Field based**: the product reads any `date` or `recurring_date` entered on a record and derives deadlines from it, with one or more offsets ("7 days before" and "on the day"). The source provides the record, field and value; the reminder separately defines whether it fires once or recurs, and at which frequency. A complete `date` can therefore drive a recurring reminder. A `recurring_date` is useful when the calendar date itself repeats or its year is unknown, and may suggest a yearly cadence without imposing it. Saving a date never creates a rule silently: the interface offers to add one, prefilled from that context, and the user chooses its wording, cadence, offsets and local time.
 - **Relative to an activity**: "14 days after the last lunch". It relies directly on the journal (see 9).
 - **By inactivity**: "tell me if I have had no contact with this person for 90 days". This is probably the most important reminder in a personal CRM, and the most absent from existing tools. It is computed from activities marked as counting as a real interaction (see 9.3), which means its quality depends entirely on the journal being kept.
 
