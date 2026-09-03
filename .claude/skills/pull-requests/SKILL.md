@@ -30,20 +30,26 @@ description: Conventions for writing pull requests, including Conventional Commi
 
 1. `git switch main`.
 2. Rebuild the front end with `bun run build`, because the styles built from your branch do not match main and would draw the old page wrongly.
-3. Capture `.github/screenshots/<feature>-before.png`. The file is untracked, so it survives the switch back.
+3. Capture `/tmp/<feature>-before.png`. Screenshots are temporary review artifacts and MUST stay outside the repository.
 4. `git switch -` to return to your branch, then `bun run build` again.
-5. Capture `.github/screenshots/<feature>-after.png`.
+5. Capture `/tmp/<feature>-after.png`.
 
 ### Putting them in the pull request
 
-- The screenshots are committed to `.github/screenshots/`, in kebab-case, named after the feature. This is the one place screenshots belong in Git.
-- Commit and push them before writing the description, then read the commit with `git rev-parse HEAD`.
-- Link each image with that full commit SHA, never with a branch name, so it keeps working after the branch is deleted:
+- Screenshots MUST NOT be added to Git or stored anywhere in the repository.
+- Use GitHub CLI 2.99.0 or newer, which uploads images directly to GitHub with the repeatable `--attach` flag.
+- If `gh pr create --help` does not list `--attach`, upgrade GitHub CLI before creating the pull request. Never fall back to committing the screenshots.
+- Pass screenshots in before-and-after order. Put the alt text after `#` in the same argument:
 
-```text
-![Before: the field type picker as a plain list](https://github.com/monicahq/erica/blob/<sha>/.github/screenshots/field-type-picker-before.png?raw=1)
-![After: the field type picker showing a preview of the chosen type](https://github.com/monicahq/erica/blob/<sha>/.github/screenshots/field-type-picker-after.png?raw=1)
+```bash
+gh pr create \
+  --title "feat: improve the field type picker" \
+  --body-file /tmp/pr-body.md \
+  --attach '/tmp/field-type-picker-before.png#Before: the field type picker as a plain list' \
+  --attach '/tmp/field-type-picker-after.png#After: the field type picker showing a preview of the chosen type'
 ```
 
 - The alt text MUST start with `Before:` or `After:` and then say what the image shows. That label is what a reviewer reads, and it keeps working when the image does not load.
+- For a new screen, attach only the after screenshot and keep the `After:` label.
 - An image is a line of its own, which the description rules above already allow. Do not introduce it with a sentence.
+- After creating the pull request, read it with `gh pr view --json body,url` and verify that every screenshot appears in the right order as a GitHub attachment. A pull request is not complete while an attachment is missing.

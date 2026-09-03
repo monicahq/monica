@@ -107,10 +107,11 @@ asks for them to be committed or saved:
 
 Use descriptive names when taking multiple screenshots.
 
-Do not add generated screenshots to Git unless explicitly requested.
+Do not add generated screenshots to Git or store them anywhere in the
+repository.
 
-A screenshot taken for a pull request is the exception. It belongs in
-`.github/screenshots/` and is committed, as the
+Screenshots taken for a pull request stay in `/tmp` and are uploaded directly
+to the pull request with GitHub CLI, as the
 [pull requests skill](../pull-requests/SKILL.md) describes.
 
 ## Useful Iris options
