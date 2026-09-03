@@ -718,6 +718,82 @@ class ContactViewModelTest extends TestCase
         $this->assertEquals('It has nothing ahead of it any more.', $panel['nextLine']);
     }
 
+    #[Test]
+    public function a_date_somebody_asked_to_be_told_about_reads_with_a_mark(): void
+    {
+        $user = User::factory()->create();
+
+        $field = $this->panelFor($user, [
+            'moments' => [['direction' => 'before', 'amount' => 7, 'unit' => 'days']],
+        ]);
+
+        $this->assertSame(
+            'You will be reminded 7 days before, every year, at 09:00 Europe/Paris.',
+            $field['reminderMark'],
+        );
+    }
+
+    #[Test]
+    public function a_date_nobody_asked_to_be_told_about_reads_with_no_mark(): void
+    {
+        $user = User::factory()->create();
+
+        $this->assertNull($this->panelFor($user, null)['reminderMark']);
+    }
+
+    #[Test]
+    public function a_rule_that_has_gone_quiet_marks_its_date_with_nothing(): void
+    {
+        $user = User::factory()->create();
+
+        $field = $this->panelFor($user, [
+            'is_active' => false,
+            'inactive_reason' => ReminderInactiveReasonEnum::RecordArchived,
+        ]);
+
+        $this->assertNull($field['reminderMark']);
+    }
+
+    #[Test]
+    public function a_watched_date_drawn_beside_the_photograph_carries_the_mark_there_too(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Birthday']]]);
+        $field = $this->fieldCalled($version, 'Birthday');
+        $field->update([
+            'type' => FieldTypeEnum::RecurringDate,
+            'account_id' => $user->account_id,
+            'is_highlighted' => true,
+        ]);
+        $contact = $this->contact($user, $version->refresh());
+
+        $value = FieldValue::factory()->create([
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'field_key' => $field->key,
+            'value_string' => null,
+            'value_date' => '1984-02-03',
+        ]);
+
+        Reminder::factory()->for($value, 'fieldValue')->create([
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+            'remindable_type' => Contact::class,
+            'remindable_id' => $contact->id,
+            'field_id' => $field->id,
+            'moments' => [['direction' => 'before', 'amount' => 7, 'unit' => 'days']],
+        ]);
+
+        $facts = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->headerFacts();
+
+        $this->assertSame('Birthday', $facts[0]['label']);
+        $this->assertStringContainsString('7 days before', $facts[0]['reminder']);
+        $this->assertNull(end($facts)['reminder']);
+    }
+
     /**
      * One date field on one contact, with the rule described or none at all.
      *

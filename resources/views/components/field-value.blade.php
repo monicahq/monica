@@ -18,16 +18,25 @@
   list of questions somebody decided to ask about this person, and a page that
   quietly hides the unanswered ones cannot be read as that list.
 
+  A date somebody asked to be told about carries a mark. Reading the record is
+  where you find out a date is watched, because the panel that explains the rule
+  is behind the Edit button, and a date that says nothing looks exactly like a
+  date nobody set anything on. The mark is a glyph, and a glyph on its own only
+  says that something is true of this date, so it hands over the whole sentence
+  on hover.
+
   @var \App\Models\Field $field
   @var \App\Models\FieldValue|null $value
   @var string|null $formatted
   @var array<int, array{id: int, fields: array<int, array<string, mixed>>}> $rows
+  @var string|null $reminder  what the reminder on this date does, in words, or null when there is none
 --}}
 @props([
   'field',
   'value' => null,
   'formatted' => null,
   'rows' => [],
+  'reminder' => null,
 ])
 
 @php
@@ -121,7 +130,17 @@
     @break
 
   @default
-    <span @class(['text-base text-pretty', $formatted === null ? 'text-placeholder' : 'text-ink'])>
+    <span @class([
+      'text-base text-pretty',
+      $formatted === null ? 'text-placeholder' : 'text-ink',
+      'inline-flex items-center gap-2' => $reminder !== null,
+    ])>
       {{ $formatted ?? __('Not recorded') }}
+
+      @if ($reminder !== null)
+        <x-tooltip :text="$reminder">
+          <x-icon name="alarm" :size="15" class="text-muted" />
+        </x-tooltip>
+      @endif
     </span>
 @endswitch

@@ -657,7 +657,7 @@ class ContactViewModel
      * every page of the version rather than only the open one: a field put in
      * the header is meant to stay there whatever tab somebody walks to.
      *
-     * @return array<int, array{icon: string, label: string, value: string}>
+     * @return array<int, array{icon: string, label: string, value: string, reminder: string|null}>
      */
     public function headerFacts(): array
     {
@@ -668,6 +668,7 @@ class ContactViewModel
                 'icon' => 'file',
                 'label' => $field->label,
                 'value' => $this->valueOf($field) ?? __('Not recorded'),
+                'reminder' => $this->reminderMarkOn($field),
             ])
             ->all();
 
@@ -675,6 +676,7 @@ class ContactViewModel
             'icon' => 'timeline',
             'label' => __('Last in touch'),
             'value' => $this->contact->last_activity_at?->diffForHumans() ?? __('never'),
+            'reminder' => null,
         ];
 
         return $facts;
@@ -696,17 +698,18 @@ class ContactViewModel
      * and every highlighted field the header had no room for. What is asked
      * about somebody is what their template asks, so nothing is listed here.
      *
-     * @return array<int, array{icon: string, label: string, value: string|null}>
+     * @return array<int, array{icon: string, label: string, value: string|null, reminder: string|null}>
      */
     public function facts(): array
     {
-        $facts = [['icon' => 'file', 'label' => __('Nickname'), 'value' => $this->contact->nickname]];
+        $facts = [['icon' => 'file', 'label' => __('Nickname'), 'value' => $this->contact->nickname, 'reminder' => null]];
 
         foreach ($this->highlightedFields()->skip(self::HEADER_FACTS) as $field) {
             $facts[] = [
                 'icon' => 'info',
                 'label' => $field->label,
                 'value' => $this->valueOf($field),
+                'reminder' => $this->reminderMarkOn($field),
             ];
         }
 
@@ -771,6 +774,7 @@ class ContactViewModel
                 'isEditable' => $field->type->hasAnInput(),
                 'rows' => $this->repetitionsOf($field),
                 'reminder' => $this->reminderFor($field),
+                'reminderMark' => $this->reminderMarkOn($field),
             ])
             ->values()
             ->all();
@@ -798,6 +802,24 @@ class ContactViewModel
             field: $field,
             reminder: $this->reminders()->get($field->id),
         )->get();
+    }
+
+    /**
+     * What the mark beside this date says while the page is being read, or null
+     * for a field that holds no date or holds one nobody asked to be told about.
+     */
+    private function reminderMarkOn(Field $field): ?string
+    {
+        if (! $field->type->canDriveAReminder()) {
+            return null;
+        }
+
+        return new ContactReminderBlock(
+            user: $this->user,
+            contact: $this->contact,
+            field: $field,
+            reminder: $this->reminders()->get($field->id),
+        )->mark();
     }
 
     /**

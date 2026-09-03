@@ -77,6 +77,33 @@ class ContactReminderBlock
     }
 
     /**
+     * What the mark beside the date says when the page is being read rather
+     * than edited, or null for a date that carries no mark.
+     *
+     * It is the reading state's whole account of the reminder, so it is asked
+     * for on its own and not out of {@see get()}: the panel that explains a rule
+     * is behind the Edit button, and a date that says nothing looks exactly like
+     * a date nobody set anything on.
+     *
+     * It says the sentence the panel says rather than the words "reminder set",
+     * because the glyph is never the only carrier of the meaning and the
+     * sentence is what somebody actually wants to know.
+     *
+     * A rule that has gone quiet gets no mark. It is not firing, and a mark
+     * beside its date would say the opposite of what the panel explains.
+     */
+    public function mark(): ?string
+    {
+        $rule = $this->reminder;
+
+        if ($rule === null || ! $rule->is_active) {
+            return null;
+        }
+
+        return $this->summary($rule);
+    }
+
+    /**
      * The words the browser assembles the same sentences from while somebody is
      * typing, with `:n` where the number goes.
      *

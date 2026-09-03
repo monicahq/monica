@@ -107,6 +107,7 @@
               :value="$field['rawValue']"
               :formatted="$field['value']"
               :rows="$field['rows']"
+              :reminder="$field['reminderMark']"
             />
           </dd>
         </div>

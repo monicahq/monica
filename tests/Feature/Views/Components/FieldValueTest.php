@@ -147,6 +147,36 @@ class FieldValueTest extends TestCase
             ->assertSee('This kind of field cannot be filled in here yet.');
     }
 
+    #[Test]
+    public function a_date_somebody_asked_to_be_told_about_carries_a_mark_saying_what_it_does(): void
+    {
+        $this->markedDate('You will be reminded 7 days before, every year, at 09:00 Europe/Paris.')
+            ->assertSee('3 February 1984')
+            ->assertSee('You will be reminded 7 days before, every year, at 09:00 Europe/Paris.')
+            ->assertSee('role="img"', escape: false)
+            ->assertSee('M8 6.6V9.2l1.9 1.3', escape: false);
+    }
+
+    #[Test]
+    public function a_date_nobody_asked_to_be_told_about_carries_no_mark(): void
+    {
+        $this->markedDate(null)
+            ->assertSee('3 February 1984')
+            ->assertDontSee('M8 6.6V9.2l1.9 1.3', escape: false);
+    }
+
+    private function markedDate(?string $reminder): TestView
+    {
+        return $this->blade(
+            '<x-field-value :field="$field" :formatted="$formatted" :reminder="$reminder" />',
+            [
+                'field' => new Field(['type' => FieldTypeEnum::RecurringDate, 'label' => 'Birthday']),
+                'formatted' => '3 February 1984',
+                'reminder' => $reminder,
+            ],
+        );
+    }
+
     private function file(string $name, string $mime): File
     {
         $vault = Vault::factory()->create();

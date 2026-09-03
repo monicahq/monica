@@ -121,6 +121,12 @@
           <li class="flex items-center gap-1.75 text-sm text-body">
             <x-icon :name="$fact['icon']" :size="16" :stroke-width="1.5" class="text-muted" />
             {{ $fact['label'] }} <b class="font-semibold text-ink">{{ $fact['value'] }}</b>
+
+            @if ($fact['reminder'])
+              <x-tooltip :text="$fact['reminder']">
+                <x-icon name="alarm" :size="15" class="text-muted" />
+              </x-tooltip>
+            @endif
           </li>
         @endforeach
       </ul>
@@ -268,8 +274,18 @@
                   {{ $fact['label'] }}
                 </dt>
 
-                <dd @class(['text-base text-pretty', $fact['value'] ? 'text-ink' : 'text-placeholder'])>
+                <dd @class([
+                  'text-base text-pretty',
+                  $fact['value'] ? 'text-ink' : 'text-placeholder',
+                  'inline-flex items-center gap-2' => $fact['reminder'] !== null,
+                ])>
                   {{ $fact['value'] ?? __('Not recorded') }}
+
+                  @if ($fact['reminder'])
+                    <x-tooltip :text="$fact['reminder']">
+                      <x-icon name="alarm" :size="15" class="text-muted" />
+                    </x-tooltip>
+                  @endif
                 </dd>
               </div>
             @endforeach
