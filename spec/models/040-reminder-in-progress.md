@@ -9,7 +9,7 @@ The rule. Section 10.1 takes apart the word "reminder" into four things that beh
 
 - The **source** is where the need comes from: a date on a page, an inactivity, a manual entry.
 - The **rule** is the logic. That is this model.
-- The **occurrence** is a concrete deadline ([ReminderOccurrence](041-reminder-occurrence-not-yet.md)).
+- The **occurrence** is one concrete deadline produced by one moment in one cycle of the rule ([ReminderOccurrence](041-reminder-occurrence-not-yet.md)).
 - The **notification** is what actually reaches the user ([Notification](042-notification-not-yet.md)).
 
 Reminders are in the core (3.2), not because every use needs them, but because the product has to handle them transversally whatever structure the user built.
@@ -29,7 +29,7 @@ name                        string (255)                    what the reminder sa
 source                      enum (field_value)              where the need comes from
 cadence                     enum (once, weekly, monthly, yearly)  how often it fires, once included
 frequency_interval          tinyint                         how many of those between firings, 1 unless somebody set a rhythm
-moments                     json                            when to be told, a list of direction, amount and unit
+moments                     json                            when to be told, a list of direction, amount and unit, each producing an occurrence in every cycle
 time_of_day                 time                            local time it fires at
 timezone                    string (64)                     time zone frozen at creation, which later changes to the user preference never move
 is_active                   boolean                         whether it still produces occurrences
@@ -45,6 +45,8 @@ deleted_at                  datetime
 
 **A moment carries a unit, not a count of days.** Three months before the first of March is the first of December, and no number of days says that: thirty is wrong in February and ninety-two is wrong in a leap year. Each moment is `{direction, amount, unit}`, with the amount and the unit dropped for a moment falling on the day itself.
 
+**A moment becomes an occurrence, not a notification.** One cycle of the rule produces one occurrence for every moment. A yearly rule reading 12 May with moments seven days before and on the day therefore produces occurrences on 5 May and 12 May. The notification layer only delivers each occurrence through the enabled channels; it does not apply the moment again. Postponing, skipping or completing one of those occurrences leaves its siblings in the same cycle and every later cycle alone.
+
 ## Relationships
 
 - `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md)
@@ -56,6 +58,7 @@ deleted_at                  datetime
 
 - **Any `date` or `recurring_date` field can drive a rule** (10.2), on any page, custom or not. A field based rule derives its record, field and exact value from the source, but keeps its own cadence; the creation behaviour and what the user chooses are settled in 10.2 rather than repeated here.
 - **The time is local, not absolute** (10.3). "Every year at 9am" means 9am local, across daylight saving changes. The zone is frozen at creation, and changing the personal time zone later never shifts a rule already set. This is why `timezone` is on the rule and not read from the user.
+- **Every cycle is expanded through `moments`.** The cadence first finds the local date of the cycle, then every normalized moment shifts that date and produces one [ReminderOccurrence](041-reminder-occurrence-not-yet.md) at `time_of_day`. Two moments therefore never share an occurrence, even when calendar clamping makes them land at the same instant.
 - **Inactivity reads only activities whose type counts as an interaction** (9.3, 10.2). Its quality depends entirely on the journal being kept, which section 10.2 states plainly and which the interface should say too.
 - **A change to the source breaks nothing** (10.3). A corrected date recomputes future occurrences and keeps the history. A deleted contact cancels future occurrences and restores them if it comes back. A field removed from a structure disables the rule and the product **explains why it is inactive** rather than making it disappear. That is what `inactive_reason` is for, and it is a direct application of section 3.3.
 - **An archived record is a silent record.** Archiving a [Contact](019-contact-done.md) or an [Entity](020-entity-done.md) deactivates every rule about it with `record_archived`, and unarchiving reactivates them and recomputes what is ahead. Archiving exists so somebody stops hearing about a record without losing what is written on it, and a rule that kept firing would defeat the only thing archiving does. The rule stays visible and says why it is quiet, as it does for every other reason (3.3). An inactivity rule is included: an archived record cannot fire for silence.
@@ -82,6 +85,7 @@ deleted_at                  datetime
 - **`field_value_id` nulls rather than cascades.** Clearing a date destroys its value row, and a rule cascaded away with it would be the silent deletion section 3.3 forbids. The pointer is let go of and the rule stays, quiet and saying why. It is therefore looked up on the field rather than on the value, or a rule whose date has gone would become invisible.
 - **A date typed in again gets a rule of its own.** The quiet one is taken away as the new one is made, so a record does not collect an explanation for every time somebody changed their mind.
 - **The moments live in a json column.** A moment has no identity, is never addressed, never ordered on its own and is always read with its rule. A table for them would enforce the no-duplicates rule in the schema, which is the one thing it buys, and cost a join for something never queried apart. Duplicates are refused in validation instead, by `App\Rules\ReminderMoments`, which the form and the actions behind it both read so neither can have an opinion of its own about what a moment is.
+- **Occurrences snapshot their moment.** A moment needs no row or permanent identifier on the rule. When it produces an occurrence, its normalized direction, amount and unit are copied onto that occurrence with the cycle date. That immutable snapshot says which configured interruption produced the historical deadline after the rule itself has changed.
 - **One live rule per value is enforced in the action, not the schema.** A unique index cannot say "one *live* rule" under soft deletes, because MySQL skips the check whenever a key column is null. It is `CreateReminder` that refuses the second, the way `is_unique` on a value is refused by `SetFieldValue`.
 - **Whether a field drives a reminder is a property of its type.** The `is_reminder_source` column on [Field](017-field-done.md) is gone, along with its builder wiring and its payloads. A structure file exported before that still imports: the key stays allowed and is read by nobody, because refusing it would refuse every file already in circulation.
 

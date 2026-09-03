@@ -430,6 +430,8 @@ A personal CRM that reminds you of nothing is useless. But "reminder" covers fou
 
 Without that distinction, you can neither postpone a reminder cleanly, nor keep the history of what was done with it, nor correctly deliver several notifications for the same deadline.
 
+**Each offset of each cycle produces its own occurrence.** A yearly rule reading 12 May with the offsets "7 days before" and "on the day" produces two occurrences in 2027: 5 May at the chosen local time and 12 May at that time. Each occurrence can then produce one notification on every enabled channel. The offset is applied when the occurrence is generated and is never applied again by the notification. Postponing or skipping the 5 May occurrence touches neither the 12 May occurrence nor either occurrence of the following year.
+
 ### 10.2. The types of reminders
 
 - **One off**: a date, once.

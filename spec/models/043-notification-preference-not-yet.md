@@ -25,7 +25,6 @@ digest_time                 time                            local time the daily
 digest_weekdays             json                            days the summary is sent, so weekends can be spared
 timezone                    string (64)                     zone quiet hours and the digest are read in, defaulting to the user's
 type_overrides              json                            per type exceptions, so one kind of notification can bypass or be silenced
-minimum_reminder_lead_time  int                             how far ahead of an occurrence its notification goes out, in minutes
 created_at                  datetime
 updated_at                  datetime
 ```
@@ -41,6 +40,7 @@ updated_at                  datetime
 - Quiet hours hold a notification, they never drop it (10.4). Something due at 3am arrives at 8am, and the occurrence keeps its real due time ([ReminderOccurrence](041-reminder-occurrence-not-yet.md)).
 - Quiet hours may cross midnight. 22:00 to 08:00 is the obvious setting and the naive comparison gets it wrong.
 - Exceptions defined on a single rule take precedence over these preferences (10.4). `type_overrides` holds the per type layer and the per rule layer lives on the rule itself.
+- Notification preferences add no second lead time to a reminder. When the user wants to be told is expressed by the rule's moments, and each moment has already become an occurrence at that exact time before delivery begins. Moving the notification earlier here would apply the offset twice.
 - Turning every channel off is allowed. Somebody who wants no notifications should not have to disable every rule to get silence.
 - Push must exist server side in v1 even though the mobile applications come later (3.8).
 

@@ -44,7 +44,7 @@ updated_at                  datetime
 
 ## Rules
 
-- One occurrence can produce several notifications, one per enabled channel (10.1).
+- One occurrence can produce several notifications, one per enabled channel (10.1). A reminder's moments have already become separate occurrences before this layer is reached: a notification copies its occurrence's effective `scheduled_for` and never applies the moment offset again.
 - Quiet hours are applied here (10.4). A notification due at 3am is held and delivered at 8am. `scheduled_for` keeps when it was due, `held_until` says when it may go, and the two are never conflated.
 - Digest mode folds notifications into one (10.4). The folded ones keep their rows and point at the digest, so the history stays complete.
 - A notification never goes to somebody viewing a share link (10.4, 4.4). Share link viewers are not users of the account and receive nothing.
