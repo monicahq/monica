@@ -233,11 +233,17 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         ->name('contacts.show');
 
     // Everything this vault will remind somebody about, and everything it has
-    // already sent. The screen of one reminder is its own piece of work; when it
-    // lands, `reminders/sent` stays declared before `reminders/{reminder}`, so a
-    // one segment address reads as the tab it is rather than as a reminder
-    // nobody can find.
+    // already sent. How the list is grouped is part of the address rather than a
+    // query string, so a grouping can be linked to and the back button moves
+    // between the two. Only the grouping that is not the default earns a
+    // segment, which leaves the list one canonical address.
+    //
+    // The screen of one reminder is its own piece of work; when it lands, these
+    // literal segments stay declared before `reminders/{reminder}`, so a one
+    // segment address reads as the tab it is rather than as a reminder nobody
+    // can find.
     Route::get('vaults/{vault}/reminders', [VaultReminderController::class, 'index'])->name('reminders.index');
+    Route::get('vaults/{vault}/reminders/by-contact', [VaultReminderController::class, 'byContact'])->name('reminders.byContact');
     Route::get('vaults/{vault}/reminders/sent', [VaultReminderController::class, 'sent'])->name('reminders.sent');
     Route::put('vaults/{vault}/reminders/occurrences/{reminderOccurrence}/postponement', [ReminderOccurrencePostponementController::class, 'update'])
         ->whereUuid('reminderOccurrence')

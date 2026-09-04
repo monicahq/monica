@@ -8,8 +8,9 @@
   that has lost things, and it is why the empty state below has two wordings
   rather than one.
 
-  Grouping is a way of reading the same list, so it travels in the query string
-  rather than in the path, and only the list swaps. Which grouping somebody
+  Each grouping is an address of its own, so one can be linked to and the back
+  button moves between them. Clicking one swaps the list in place and pushes its
+  address, rather than drawing the whole screen again. Which grouping somebody
   chose is not remembered between visits: it is a glance, not a preference.
 
   Both groupings share one row partial. A row that read differently depending on
@@ -74,13 +75,13 @@
 
       <div class="flex items-center gap-1.5" role="group" aria-labelledby="reminders-grouping">
         @if ($byContact)
-          <x-button.ghost :href="$viewModel->groupedByWhenUrl()" size="small" x-target="reminders-toggle reminders-list">{{ __('When it fires') }}</x-button.ghost>
+          <x-button.ghost :href="$viewModel->groupedByWhenUrl()" size="small" x-target.push="reminders-toggle reminders-list">{{ __('When it fires') }}</x-button.ghost>
 
-          <x-button.secondary :href="$viewModel->groupedByContactUrl()" size="small" aria-current="true" x-target="reminders-toggle reminders-list">{{ __('Contact') }}</x-button.secondary>
+          <x-button.secondary :href="$viewModel->groupedByContactUrl()" size="small" aria-current="true" x-target.push="reminders-toggle reminders-list">{{ __('Contact') }}</x-button.secondary>
         @else
-          <x-button.secondary :href="$viewModel->groupedByWhenUrl()" size="small" aria-current="true" x-target="reminders-toggle reminders-list">{{ __('When it fires') }}</x-button.secondary>
+          <x-button.secondary :href="$viewModel->groupedByWhenUrl()" size="small" aria-current="true" x-target.push="reminders-toggle reminders-list">{{ __('When it fires') }}</x-button.secondary>
 
-          <x-button.ghost :href="$viewModel->groupedByContactUrl()" size="small" x-target="reminders-toggle reminders-list">{{ __('Contact') }}</x-button.ghost>
+          <x-button.ghost :href="$viewModel->groupedByContactUrl()" size="small" x-target.push="reminders-toggle reminders-list">{{ __('Contact') }}</x-button.ghost>
         @endif
       </div>
     </div>

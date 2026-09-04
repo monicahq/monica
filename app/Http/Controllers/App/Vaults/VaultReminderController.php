@@ -18,11 +18,9 @@ use Illuminate\View\View;
  * vault refuses it, so there is nothing for this controller to check beyond what
  * the binding already did.
  *
- * The grouping arrives in the query string rather than in the path. It is a way
- * of reading the same list, not a different list, and a route segment for it
- * would put a presentation choice into the address of the resource. Anything
- * other than the two groupings falls back to the default rather than being
- * refused, because a mistyped address should still draw the screen.
+ * Each way of reading the list has an address of its own, one method each, the
+ * way the tab beside it does. A grouping somebody chose is then something they
+ * can link to and come back to, which a query string swapped in place never was.
  */
 class VaultReminderController extends Controller
 {
@@ -32,7 +30,22 @@ class VaultReminderController extends Controller
             'viewModel' => new VaultRemindersViewModel(
                 user: $request->user(),
                 vault: $vault,
-                groupBy: $request->string('group')->toString(),
+                groupBy: VaultRemindersViewModel::GroupByWhen,
+            ),
+        ]);
+    }
+
+    /**
+     * The same list, gathered under the person each reminder is about rather
+     * than under when it fires.
+     */
+    public function byContact(Request $request, Vault $vault): View
+    {
+        return view('app.vaults.reminders.index', [
+            'viewModel' => new VaultRemindersViewModel(
+                user: $request->user(),
+                vault: $vault,
+                groupBy: VaultRemindersViewModel::GroupByContact,
             ),
         ]);
     }

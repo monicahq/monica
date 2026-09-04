@@ -87,12 +87,12 @@ class VaultRemindersViewModel
 
     public function groupedByWhenUrl(): string
     {
-        return route('reminders.index', ['vault' => $this->vault, 'group' => self::GroupByWhen]);
+        return route('reminders.index', $this->vault);
     }
 
     public function groupedByContactUrl(): string
     {
-        return route('reminders.index', ['vault' => $this->vault, 'group' => self::GroupByContact]);
+        return route('reminders.byContact', $this->vault);
     }
 
     public function sentUrl(): string

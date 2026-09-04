@@ -168,6 +168,17 @@ class VaultRemindersViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_gives_each_grouping_an_address_of_its_own(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $viewModel = $this->viewModelFor($user, $vault);
+
+        $this->assertStringEndsWith("/vaults/{$vault->uuid}/reminders", $viewModel->groupedByWhenUrl());
+        $this->assertStringEndsWith("/vaults/{$vault->uuid}/reminders/by-contact", $viewModel->groupedByContactUrl());
+    }
+
+    #[Test]
     public function it_says_how_far_ahead_it_looks_and_how_a_reminder_arrives(): void
     {
         $user = User::factory()->create();

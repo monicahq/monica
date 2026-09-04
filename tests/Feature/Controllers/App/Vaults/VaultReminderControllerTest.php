@@ -37,6 +37,7 @@ class VaultReminderControllerTest extends TestCase
         $response->assertSee('Michael Scott');
         $response->assertSee('Pam Beesly');
         $response->assertSeeInOrder(['Overdue', 'Michael Scott']);
+        $response->assertSee(route('reminders.byContact', $vault), escape: false);
     }
 
     /**
@@ -59,7 +60,7 @@ class VaultReminderControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_groups_by_contact_when_asked_to(): void
+    public function it_groups_by_contact_at_its_own_address(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -67,11 +68,26 @@ class VaultReminderControllerTest extends TestCase
         $this->deadline($this->ruleAbout($user, $vault, 'Angela', 'Martin'), '+2 days');
         $this->deadline($this->ruleAbout($user, $vault, 'Zoe', 'Vance'), '+3 days');
 
-        $response = $this->actingAs($user)->get(route('reminders.index', ['vault' => $vault, 'group' => 'contact']));
+        $response = $this->actingAs($user)->get(route('reminders.byContact', $vault));
 
         $response->assertStatus(200);
         $response->assertDontSee('Overdue');
         $response->assertSeeInOrder(['Angela Martin', 'Zoe Vance']);
+        $response->assertSee(route('reminders.index', $vault), escape: false);
+    }
+
+    #[Test]
+    public function it_ignores_a_grouping_asked_for_in_the_query_string(): void
+    {
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->deadline($this->ruleAbout($user, $vault, 'Angela', 'Martin'), '-3 days');
+
+        $response = $this->actingAs($user)->get(route('reminders.index', ['vault' => $vault, 'group' => 'contact']));
+
+        $response->assertStatus(200);
+        $response->assertSee('Overdue');
     }
 
     #[Test]
