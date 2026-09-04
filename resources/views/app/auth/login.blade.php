@@ -121,16 +121,19 @@
           </x-box>
         @endif
 
-        {{-- The shortcut that signs the seeded account in, only ever on a machine somebody develops on --}}
+        {{-- The shortcut that signs the seeded account in, only ever on a machine
+             somebody develops on, and only once that account has been seeded --}}
         @env(config('login-link.allowed_environments'))
-          <x-box padding="p-4" class="rounded-lg text-center text-sm text-body">
-            <x-login-link
-              label="Sign in as Michael Scott"
-              email="michael.scott@dundermifflin.com"
-              :redirect-url="route('home.index')"
-              class="inline cursor-pointer font-medium text-ink underline underline-offset-2 decoration-hairline-strong transition-colors duration-150 hover:decoration-ink"
-            />
-          </x-box>
+          @if ($viewModel->exampleAccountEmail() !== null)
+            <x-box padding="p-4" class="rounded-lg text-center text-sm text-body">
+              <x-login-link
+                :label="'Sign in as '.$viewModel->exampleAccountName()"
+                :email="$viewModel->exampleAccountEmail()"
+                :redirect-url="route('home.index')"
+                class="inline cursor-pointer font-medium text-ink underline underline-offset-2 decoration-hairline-strong transition-colors duration-150 hover:decoration-ink"
+              />
+            </x-box>
+          @endif
         @endenv
 
         <x-box padding="p-4" class="rounded-lg text-center text-sm text-body">

@@ -5,12 +5,17 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Auth;
 
 use App\Helpers\PasskeyAvailability;
+use App\Models\User;
 use App\ViewModels\Auth\LoginViewModel;
+use Database\Seeders\ExampleAccountSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LoginViewModelTest extends TestCase
 {
+    use RefreshDatabase;
+
     #[Test]
     public function it_offers_passkeys_over_a_secure_connection(): void
     {
@@ -39,6 +44,29 @@ class LoginViewModelTest extends TestCase
 
             $this->assertFalse(new LoginViewModel()->passkeysAreAvailable(), $host);
         }
+    }
+
+    #[Test]
+    public function it_offers_the_seeded_account_to_a_developer(): void
+    {
+        User::factory()->create(['email' => ExampleAccountSeeder::EMAIL]);
+
+        $viewModel = new LoginViewModel;
+
+        $this->assertEquals(ExampleAccountSeeder::EMAIL, $viewModel->exampleAccountEmail());
+        $this->assertEquals('Monica Geller', $viewModel->exampleAccountName());
+    }
+
+    /**
+     * A login link is configured not to invent a user, so a shortcut pointing at
+     * an address nobody seeded throws when it is clicked.
+     */
+    #[Test]
+    public function it_offers_nothing_when_the_example_account_was_never_seeded(): void
+    {
+        User::factory()->create(['email' => 'gunther@centralperk.example']);
+
+        $this->assertNull(new LoginViewModel()->exampleAccountEmail());
     }
 
     #[Test]

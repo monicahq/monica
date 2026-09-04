@@ -1,0 +1,16 @@
+{
+  "workflow": "speckit",
+  "specName": "Friends seed data",
+  "branch": "2026-09-04-friends-seed-data",
+  "currentStep": "specify",
+  "status": "specified",
+  "history": [
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-04T14:52:17.432Z"
+    }
+  ]
+}

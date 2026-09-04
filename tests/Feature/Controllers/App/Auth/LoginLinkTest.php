@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Auth;
 
 use App\Models\User;
+use Database\Seeders\ExampleAccountSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Spatie\LoginLink\Exceptions\DidNotFindUserToLogIn;
@@ -18,10 +19,12 @@ class LoginLinkTest extends TestCase
     #[Test]
     public function it_hides_the_shortcut_outside_the_allowed_environments(): void
     {
+        User::factory()->create(['email' => ExampleAccountSeeder::EMAIL]);
+
         $response = $this->get(route('auth.login.new'));
 
         $response->assertStatus(200);
-        $response->assertDontSee('Sign in as Michael Scott');
+        $response->assertDontSee('Sign in as');
     }
 
     #[Test]
@@ -29,10 +32,31 @@ class LoginLinkTest extends TestCase
     {
         config(['login-link.allowed_environments' => ['testing']]);
 
+        User::factory()->create(['email' => ExampleAccountSeeder::EMAIL]);
+
         $response = $this->get(route('auth.login.new'));
 
         $response->assertStatus(200);
-        $response->assertSee('Sign in as Michael Scott');
+        $response->assertSee('Sign in as Monica Geller');
+        $response->assertSee(ExampleAccountSeeder::EMAIL);
+    }
+
+    /**
+     * A login link is configured not to invent a user, so a shortcut pointing at
+     * an address nobody seeded throws when it is clicked. Not offering it is the
+     * better answer.
+     */
+    #[Test]
+    public function it_hides_the_shortcut_when_the_example_account_was_never_seeded(): void
+    {
+        config(['login-link.allowed_environments' => ['testing']]);
+
+        User::factory()->create(['email' => 'gunther@centralperk.example']);
+
+        $response = $this->get(route('auth.login.new'));
+
+        $response->assertStatus(200);
+        $response->assertDontSee('Sign in as');
     }
 
     #[Test]
@@ -40,10 +64,10 @@ class LoginLinkTest extends TestCase
     {
         config(['login-link.allowed_environments' => ['testing']]);
 
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+        $user = User::factory()->create(['email' => ExampleAccountSeeder::EMAIL]);
 
         $response = $this->post(route('loginLinkLogin'), [
-            'email' => 'michael.scott@dundermifflin.com',
+            'email' => ExampleAccountSeeder::EMAIL,
             'redirect_url' => route('home.index'),
         ]);
 
@@ -54,13 +78,13 @@ class LoginLinkTest extends TestCase
     #[Test]
     public function it_refuses_to_sign_anybody_in_outside_the_allowed_environments(): void
     {
-        User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+        User::factory()->create(['email' => ExampleAccountSeeder::EMAIL]);
 
         $this->withoutExceptionHandling();
         $this->expectException(NotAllowedInCurrentEnvironment::class);
 
         $this->post(route('loginLinkLogin'), [
-            'email' => 'michael.scott@dundermifflin.com',
+            'email' => ExampleAccountSeeder::EMAIL,
         ]);
     }
 
@@ -73,7 +97,7 @@ class LoginLinkTest extends TestCase
         $this->expectException(DidNotFindUserToLogIn::class);
 
         $this->post(route('loginLinkLogin'), [
-            'email' => 'dwight.schrute@dundermifflin.com',
+            'email' => 'gunther@centralperk.example',
         ]);
     }
 }
