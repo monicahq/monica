@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\EmailType;
 use App\Enums\NotificationChannelEnum;
 use App\Enums\NotificationTypeEnum;
-use App\Jobs\SendEmail;
-use App\Mail\NotificationDigest;
 use App\Models\Account;
 use App\Models\Notification;
 use App\Models\User;
+use App\Notifications\NotificationDigest;
 use Illuminate\Support\Collection;
 
 /**
@@ -113,14 +111,9 @@ class SendNotificationDigest
         /** @var list<array{title: string, body: string}> $lines */
         $lines = $digest->payload['lines'] ?? [];
 
-        SendEmail::dispatch(
-            mailable: new NotificationDigest(
-                heading: $digest->title,
-                lines: $lines,
-            )->locale($digest->locale),
-            account: $this->account,
-            emailType: EmailType::NotificationDigest,
-            user: $user,
-        )->onQueue('high');
+        $user->notify(new NotificationDigest(
+            heading: $digest->title,
+            lines: $lines,
+        )->locale($digest->locale));
     }
 }

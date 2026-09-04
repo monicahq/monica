@@ -7,15 +7,15 @@ namespace Tests\Unit\Actions;
 use App\Actions\DeliverNotification;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceStatusEnum;
-use App\Jobs\SendEmail;
 use App\Models\Contact;
 use App\Models\Notification;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
+use App\Notifications\ReminderDue;
 use Database\Factories\NotificationFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -26,12 +26,12 @@ class DeliverNotificationTest extends TestCase
     #[Test]
     public function it_hands_an_email_to_the_chain_the_product_already_uses(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $notification = $this->notification()->email()->create();
 
         $this->assertTrue(new DeliverNotification(notification: $notification)->execute());
 
-        Queue::assertPushedOn('high', SendEmail::class);
+        NotificationFacade::assertSentTo($notification->user, ReminderDue::class);
         $this->assertNotNull($notification->refresh()->sent_at);
         $this->assertSame(1, $notification->attempts);
     }
@@ -39,19 +39,19 @@ class DeliverNotificationTest extends TestCase
     #[Test]
     public function an_in_app_notification_is_its_own_delivery(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $notification = $this->notification()->create();
 
         $this->assertTrue(new DeliverNotification(notification: $notification)->execute());
 
-        Queue::assertNotPushed(SendEmail::class);
+        NotificationFacade::assertNothingSent();
         $this->assertNotNull($notification->refresh()->sent_at);
     }
 
     #[Test]
     public function it_tells_the_deadline_that_somebody_was_finally_reached(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $notification = $this->notification()->create();
 
         new DeliverNotification(notification: $notification)->execute();
@@ -62,7 +62,7 @@ class DeliverNotificationTest extends TestCase
     #[Test]
     public function only_the_first_channel_to_arrive_writes_when_somebody_was_told(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $first = $this->notification()->create();
         $second = $this->notification()->email()->create([
             'account_id' => $first->account_id,
@@ -82,7 +82,7 @@ class DeliverNotificationTest extends TestCase
     #[Test]
     public function it_sends_nothing_while_quiet_hours_are_still_holding_it(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $notification = $this->notification()->heldUntil(now()->addHours(4)->toDateTimeString())->create();
 
         $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
@@ -93,14 +93,14 @@ class DeliverNotificationTest extends TestCase
     #[Test]
     public function it_sends_nothing_about_a_record_archived_while_it_waited(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $notification = $this->notification()->email()->create();
         $occurrence = ReminderOccurrence::query()->findOrFail($notification->notifiable_id);
         Contact::query()->whereKey($occurrence->reminder->remindable_id)->update(['is_archived' => true]);
 
         $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
 
-        Queue::assertNotPushed(SendEmail::class);
+        NotificationFacade::assertNothingSent();
         $this->assertNotNull($notification->refresh()->failed_at);
         $this->assertNotNull($notification->failure_reason);
     }
@@ -108,7 +108,7 @@ class DeliverNotificationTest extends TestCase
     #[Test]
     public function it_sends_nothing_about_a_rule_switched_off_while_it_waited(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $notification = $this->notification()->email()->create();
         $occurrence = ReminderOccurrence::query()->findOrFail($notification->notifiable_id);
         $occurrence->reminder->update([
@@ -123,7 +123,7 @@ class DeliverNotificationTest extends TestCase
     #[Test]
     public function it_sends_nothing_after_the_deadline_was_dismissed(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $notification = $this->notification()->email()->create();
         ReminderOccurrence::query()->findOrFail($notification->notifiable_id)->update([
             'status' => ReminderOccurrenceStatusEnum::Dismissed,
@@ -132,14 +132,14 @@ class DeliverNotificationTest extends TestCase
 
         $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
 
-        Queue::assertNotPushed(SendEmail::class);
+        NotificationFacade::assertNothingSent();
         $this->assertNotNull($notification->refresh()->failed_at);
     }
 
     #[Test]
     public function it_sends_nothing_prepared_for_an_instant_the_deadline_left_behind(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $notification = $this->notification()->email()->create();
         ReminderOccurrence::query()->findOrFail($notification->notifiable_id)->update([
             'status' => ReminderOccurrenceStatusEnum::Postponed,
@@ -150,14 +150,14 @@ class DeliverNotificationTest extends TestCase
 
         $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
 
-        Queue::assertNotPushed(SendEmail::class);
+        NotificationFacade::assertNothingSent();
         $this->assertNotNull($notification->refresh()->failed_at);
     }
 
     #[Test]
     public function a_notification_that_failed_keeps_its_row_and_its_reason(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $notification = $this->notification()->email()->create();
         ReminderOccurrence::query()->findOrFail($notification->notifiable_id)->reminder->delete();
 
@@ -170,20 +170,20 @@ class DeliverNotificationTest extends TestCase
     #[Test]
     public function it_tells_nobody_twice_when_it_runs_twice(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $notification = $this->notification()->email()->create();
 
         $this->assertTrue(new DeliverNotification(notification: $notification->refresh())->execute());
         $this->assertFalse(new DeliverNotification(notification: $notification->refresh())->execute());
 
-        Queue::assertPushed(SendEmail::class, 1);
+        NotificationFacade::assertSentToTimes($notification->user, ReminderDue::class, 1);
         $this->assertSame(1, $notification->refresh()->attempts);
     }
 
     #[Test]
     public function it_never_reopens_a_notification_already_abandoned(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $notification = $this->notification()->create(['failed_at' => now(), 'failure_reason' => 'Gone']);
 
         $this->assertFalse(new DeliverNotification(notification: $notification)->execute());

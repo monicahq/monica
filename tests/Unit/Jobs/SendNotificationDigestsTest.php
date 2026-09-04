@@ -12,7 +12,7 @@ use App\Models\NotificationPreference;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -23,7 +23,7 @@ class SendNotificationDigestsTest extends TestCase
     #[Test]
     public function it_sends_the_summary_once_the_hour_the_account_chose_has_come_round(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         CarbonImmutable::setTestNow('2027-05-12 17:00:00');
         $this->accountWaiting();
 
@@ -35,7 +35,7 @@ class SendNotificationDigestsTest extends TestCase
     #[Test]
     public function it_waits_until_that_hour(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         CarbonImmutable::setTestNow('2027-05-12 10:00:00');
         $this->accountWaiting();
 
@@ -47,7 +47,7 @@ class SendNotificationDigestsTest extends TestCase
     #[Test]
     public function it_sends_one_summary_a_day_and_not_one_an_hour(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         CarbonImmutable::setTestNow('2027-05-12 17:00:00');
         $this->accountWaiting();
 
@@ -61,7 +61,7 @@ class SendNotificationDigestsTest extends TestCase
     #[Test]
     public function it_spares_a_day_the_account_left_out(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         CarbonImmutable::setTestNow('2027-05-15 17:00:00');
         $account = $this->accountWaiting();
         NotificationPreference::query()
@@ -76,7 +76,7 @@ class SendNotificationDigestsTest extends TestCase
     #[Test]
     public function it_leaves_an_account_that_wants_everything_at_once_alone(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         CarbonImmutable::setTestNow('2027-05-12 17:00:00');
         $account = $this->accountWaiting();
         NotificationPreference::query()

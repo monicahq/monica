@@ -9,18 +9,16 @@ use App\Enums\EmailType;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Jobs\DeliverDueNotifications;
-use App\Jobs\SendEmail;
-use App\Mail\ReminderDue;
 use App\Models\FieldValue;
 use App\Models\Notification;
 use App\Models\NotificationPreference;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
+use App\Notifications\ReminderDue;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -31,14 +29,14 @@ class DeliverDueNotificationsTest extends TestCase
     #[Test]
     public function it_makes_the_notifications_for_a_deadline_that_has_come_due_and_sends_them(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $occurrence = $this->dueOccurrence();
 
         new DeliverDueNotifications()->handle();
 
         $this->assertSame(2, Notification::query()->where('notifiable_id', $occurrence->id)->count());
         $this->assertSame(2, Notification::query()->whereNotNull('sent_at')->count());
-        Queue::assertPushed(SendEmail::class, 1);
+        NotificationFacade::assertSentTimes(ReminderDue::class, 1);
         $this->assertSame(ReminderOccurrenceStatusEnum::Notified, $occurrence->refresh()->status);
         $this->assertNotNull($occurrence->notified_at);
     }
@@ -46,7 +44,7 @@ class DeliverDueNotificationsTest extends TestCase
     #[Test]
     public function it_leaves_a_deadline_that_has_not_arrived_alone(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $this->dueOccurrence(due: false);
 
         new DeliverDueNotifications()->handle();
@@ -57,20 +55,20 @@ class DeliverDueNotificationsTest extends TestCase
     #[Test]
     public function it_tells_nobody_twice_when_it_runs_twice(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $occurrence = $this->dueOccurrence();
 
         new DeliverDueNotifications()->handle();
         new DeliverDueNotifications()->handle();
 
         $this->assertSame(2, Notification::query()->where('notifiable_id', $occurrence->id)->count());
-        Queue::assertPushed(SendEmail::class, 1);
+        NotificationFacade::assertSentTimes(ReminderDue::class, 1);
     }
 
     #[Test]
     public function it_makes_a_notification_for_an_account_on_a_digest_but_leaves_it_for_the_summary(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $occurrence = $this->dueOccurrence();
         NotificationPreference::query()
             ->where('account_id', $occurrence->account_id)
@@ -80,13 +78,13 @@ class DeliverDueNotificationsTest extends TestCase
 
         $this->assertSame(2, Notification::query()->where('notifiable_id', $occurrence->id)->count());
         $this->assertSame(0, Notification::query()->whereNotNull('sent_at')->count());
-        Queue::assertNotPushed(SendEmail::class);
+        NotificationFacade::assertNothingSent();
     }
 
     #[Test]
     public function it_holds_everything_back_while_quiet_hours_are_running(): void
     {
-        Queue::fake();
+        NotificationFacade::fake();
         $this->travelTo(now()->setTime(3, 0));
         $occurrence = $this->dueOccurrence(justNow: true);
         NotificationPreference::query()
@@ -102,7 +100,6 @@ class DeliverDueNotificationsTest extends TestCase
     #[Test]
     public function a_saved_rule_reaches_somebody_by_email_without_anything_being_faked(): void
     {
-        Mail::fake();
         CarbonImmutable::setTestNow('2027-05-05 06:59:00');
 
         $value = FieldValue::factory()->recurringDate('1984-05-12')->create();
@@ -124,7 +121,6 @@ class DeliverDueNotificationsTest extends TestCase
         CarbonImmutable::setTestNow('2027-05-05 07:01:00');
         new DeliverDueNotifications()->handle();
 
-        Mail::assertSent(ReminderDue::class);
         $this->assertDatabaseHas('emails_sent', ['email_type' => EmailType::ReminderDue->value]);
         $this->assertNotNull($occurrence->refresh()->notified_at);
         $this->assertSame(ReminderOccurrenceStatusEnum::Notified, $occurrence->status);
@@ -133,7 +129,6 @@ class DeliverDueNotificationsTest extends TestCase
     #[Test]
     public function quiet_hours_hold_that_email_back_without_moving_the_deadline(): void
     {
-        Mail::fake();
         CarbonImmutable::setTestNow('2027-05-05 00:59:00');
 
         $value = FieldValue::factory()->recurringDate('1984-05-12')->create();
@@ -157,13 +152,13 @@ class DeliverDueNotificationsTest extends TestCase
         CarbonImmutable::setTestNow('2027-05-05 01:01:00');
         new DeliverDueNotifications()->handle();
 
-        Mail::assertNothingSent();
+        $this->assertDatabaseCount('emails_sent', 0);
         $this->assertSame('2027-05-05 03:00', $occurrence->refresh()->scheduled_for->setTimezone('Europe/Paris')->format('Y-m-d H:i'));
 
         CarbonImmutable::setTestNow('2027-05-05 06:01:00');
         new DeliverDueNotifications()->handle();
 
-        Mail::assertSent(ReminderDue::class);
+        $this->assertDatabaseHas('emails_sent', ['email_type' => EmailType::ReminderDue->value]);
         $this->assertSame('2027-05-05 03:00', $occurrence->refresh()->scheduled_for->setTimezone('Europe/Paris')->format('Y-m-d H:i'));
     }
 

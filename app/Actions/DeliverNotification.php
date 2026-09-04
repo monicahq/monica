@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\EmailType;
 use App\Enums\NotificationChannelEnum;
-use App\Jobs\SendEmail;
-use App\Mail\ReminderDue;
 use App\Models\Notification;
 use App\Models\ReminderOccurrence;
+use App\Notifications\ReminderDue;
 use Throwable;
 
 /**
@@ -99,17 +97,12 @@ class DeliverNotification
         $user = $this->notification->user;
         $payload = $this->notification->payload ?? [];
 
-        SendEmail::dispatch(
-            mailable: new ReminderDue(
-                reminderName: $this->notification->title,
-                recordName: (string) ($payload['record_name'] ?? ''),
-                sourceDate: (string) ($payload['source_local_date'] ?? ''),
-                whenItIsAbout: $this->notification->body,
-            )->locale($this->notification->locale),
-            account: $this->notification->account,
-            emailType: EmailType::ReminderDue,
-            user: $user,
-        )->onQueue('high');
+        $user->notify(new ReminderDue(
+            reminderName: $this->notification->title,
+            recordName: (string) ($payload['record_name'] ?? ''),
+            sourceDate: (string) ($payload['source_local_date'] ?? ''),
+            whenItIsAbout: $this->notification->body,
+        )->locale($this->notification->locale));
     }
 
     /**
