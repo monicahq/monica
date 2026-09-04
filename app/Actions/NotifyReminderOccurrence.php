@@ -95,7 +95,7 @@ class NotifyReminderOccurrence
             'notifiable_type' => ReminderOccurrence::class,
             'notifiable_id' => $this->occurrence->id,
             'title' => $reminder->name,
-            'body' => $this->body($locale),
+            'body' => $this->occurrence->howFarOff($locale),
             'payload' => json_encode([
                 'reminder_uuid' => $reminder->uuid,
                 'occurrence_uuid' => $this->occurrence->uuid,
@@ -109,27 +109,6 @@ class NotifyReminderOccurrence
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-    }
-
-    /**
-     * What the notification says under its title, which is how far off the date
-     * is rather than the date itself. A moment seven days before a birthday
-     * arrives a week early on purpose, and a notification that only named the
-     * day would be leaving out the one thing the reader needs.
-     */
-    private function body(string $locale): string
-    {
-        $days = (int) $this->occurrence->local_date
-            ->startOfDay()
-            ->diffInDays($this->occurrence->source_local_date->startOfDay(), absolute: false);
-
-        if ($days === 0) {
-            return __('It is today.', [], $locale);
-        }
-
-        return $days > 0
-            ? trans_choice('It is in :count day.|It is in :count days.', $days, [], $locale)
-            : trans_choice('It was :count day ago.|It was :count days ago.', abs($days), [], $locale);
     }
 
     private function preference(): ?NotificationPreference

@@ -1,0 +1,86 @@
+{{--
+  The dialog that moves one deadline to a later instant.
+
+  The head of it is the reminder itself: whose it is, what it says, and where it
+  stands now. The choice underneath is then made against something rather than
+  in the abstract.
+
+  Each preset shows the instant it lands on. Those are worked out on the server,
+  in the zone frozen on the rule, because that is the zone the reminder fires in
+  and it is not necessarily the reader's. The zone is named under the fields for
+  the same reason.
+
+  The card handles the dialog behaviour itself: the tab key stays inside it, the
+  first field takes focus, Escape closes it and the trigger gets focus back.
+
+  @var array<string, mixed> $row
+--}}
+<x-modal.form
+  :title="$row['text']"
+  :confirm="__('Move it')"
+  method="put"
+  :action="$row['postponeUrl']"
+  :open="$errors->has('postponement')"
+>
+  <x-slot:trigger>
+    <x-icon-button icon="clock" :label="__('Remind me later')" align="right" @click="open = true" />
+  </x-slot:trigger>
+
+  <x-slot:header>
+    <div class="flex items-start gap-3">
+      @if ($row['contactName'] !== null)
+        <x-contact-avatar :name="$row['contactName']" :url="$row['avatarUrl']" :size="38" />
+      @endif
+
+      <div class="flex min-w-0 flex-col gap-0.5">
+        <p class="text-card-title text-ink">{{ $row['text'] }}</p>
+
+        <p class="text-sm text-pretty text-muted">{{ $row['currently'] }}</p>
+      </div>
+    </div>
+  </x-slot:header>
+
+  <x-error :messages="$errors->get('postponement')" />
+
+  <fieldset class="flex flex-col gap-1.5">
+    <legend class="pb-1.5 text-sm font-medium text-ink">{{ __('Move it to') }}</legend>
+
+    @foreach ($row['presets'] as $preset)
+      <x-option-row
+        :id="'preset-'.$row['uuid'].'-'.$preset['value']"
+        name="preset"
+        type="radio"
+        :value="$preset['value']"
+        :hint="$preset['hint']"
+      >{{ $preset['label'] }}</x-option-row>
+    @endforeach
+  </fieldset>
+
+  <div class="flex flex-col gap-3 border-t border-hairline pt-3.5">
+    <p class="text-sm text-pretty text-muted">{{ __('Or pick the moment yourself.') }}</p>
+
+    <div class="flex flex-wrap gap-3">
+      <x-input
+        type="date"
+        :id="'date-'.$row['uuid']"
+        name="date"
+        :label="__('Date')"
+        :value="old('date')"
+        :error="$errors->get('date')"
+        class="flex-1"
+      />
+
+      <x-input
+        type="time"
+        :id="'time-'.$row['uuid']"
+        name="time"
+        :label="__('Time')"
+        :value="old('time')"
+        :error="$errors->get('time')"
+        class="flex-1"
+      />
+    </div>
+
+    <p class="text-xs text-pretty text-muted">{{ __('Times are read in :zone, the zone this reminder fires in.', ['zone' => $row['zone']]) }}</p>
+  </div>
+</x-modal.form>

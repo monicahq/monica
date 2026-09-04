@@ -49,6 +49,11 @@ return new class extends Migration
             $table->index(['reminder_id', 'status', 'scheduled_for'], 'reminder_occurrences_rule_state_index');
             $table->index(['account_id', 'local_date']);
 
+            /* Which reminders one vault has already sent, newest first. The
+               three above answer the engine's questions; this one answers the
+               screen's, and nothing else indexes the vault on its own. */
+            $table->index(['vault_id', 'notified_at']);
+
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
             $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();
             $table->foreign('reminder_id')->references('id')->on('reminders')->cascadeOnDelete();

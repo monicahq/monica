@@ -12,10 +12,14 @@
   are signed in as and is the way into your own settings: the whole row is the
   link, and it lights up under the pointer like any entry above it.
 
-  Some of the navigation points nowhere yet. The tasks, the reminders and the
-  files are each their own screen and none of them exists, so those entries are
-  drawn and not offered: a link that leads nowhere is worse than a word that does
-  not move.
+  Some of the navigation points nowhere yet. The tasks and the files are each
+  their own screen and neither exists, so those entries are drawn and not offered:
+  a link that leads nowhere is worse than a word that does not move.
+
+  The reminders carry a count of what that vault will remind somebody about
+  inside the window deadlines are generated for. It is one more query on every
+  screen of a vault, which is the price of the number being right rather than
+  stale.
 
   This component asks the account for its vaults itself, rather than being handed
   them. It is on every screen inside a vault and none of those screens is about
@@ -39,6 +43,13 @@
 @php
   $item = 'flex min-h-8 items-center gap-2.5 rounded-md px-2 py-1.5 text-nav transition-[background-color,box-shadow,color] duration-(--duration-fast) ease-out max-lg:min-h-10';
 
+  $reminderCount = \App\Models\ReminderOccurrence::query()
+    ->upcomingInVault(
+      vault: $vault,
+      until: \Carbon\CarbonImmutable::now()->addDays((int) config('monica.reminder_generation_window_in_days')),
+    )
+    ->count();
+
   $vaults = \App\Models\Vault::query()
     ->where('account_id', $user->account_id)
     ->orderByDesc('is_default')
@@ -49,7 +60,7 @@
     ['key' => 'dashboard', 'label' => __('Dashboard'), 'icon' => 'heart', 'url' => route('vaults.show', $vault), 'badge' => null],
     ['key' => 'contacts', 'label' => __('People'), 'icon' => 'people', 'url' => route('contacts.index', $vault), 'badge' => $vault->contact_count > 0 ? (string) $vault->contact_count : null],
     ['key' => 'tasks', 'label' => __('Tasks'), 'icon' => 'tasks', 'url' => null, 'badge' => $taskCount === null ? null : (string) $taskCount],
-    ['key' => 'reminders', 'label' => __('Reminders'), 'icon' => 'reminder', 'url' => null, 'badge' => null],
+    ['key' => 'reminders', 'label' => __('Reminders'), 'icon' => 'reminder', 'url' => route('reminders.index', $vault), 'badge' => $reminderCount > 0 ? (string) $reminderCount : null],
     ['key' => 'files', 'label' => __('Files'), 'icon' => 'file', 'url' => null, 'badge' => null],
     ['key' => 'vault-settings', 'label' => __('Vault settings'), 'icon' => 'vault', 'url' => route('vaults.settings.index', $vault), 'badge' => null],
   ];

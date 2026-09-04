@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Views\Components;
 
+use App\Models\Contact;
+use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -242,5 +246,53 @@ class SidebarTest extends TestCase
             $rendered->assertSee('max-lg:-translate-x-full', escape: false);
             $rendered->assertSee('Close the menu');
         }
+    }
+
+    #[Test]
+    public function the_vault_column_offers_the_reminders_and_counts_what_is_coming(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $rule = $this->reminderAbout(user: $user, contact: Contact::factory()->create(['vault_id' => $vault->id]));
+
+        $this->deadline($rule, '+2 days');
+        $this->deadline($rule, '+9 days');
+
+        $rendered = $this->actingAs($user)->blade(
+            '<x-vault.sidebar :user="$user" :vault="$vault" current="reminders" />',
+            ['user' => $user, 'vault' => $vault],
+        );
+
+        $rendered->assertSee(route('reminders.index', $vault), escape: false);
+        $rendered->assertSee('Reminders');
+        $rendered->assertSee('2');
+    }
+
+    #[Test]
+    public function the_vault_column_counts_nothing_when_no_reminder_is_coming(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+
+        $rendered = $this->actingAs($user)->blade(
+            '<x-vault.sidebar :user="$user" :vault="$vault" current="reminders" />',
+            ['user' => $user, 'vault' => $vault],
+        );
+
+        $rendered->assertSee(route('reminders.index', $vault), escape: false);
+        $rendered->assertDontSee('ml-auto text-xs text-muted', escape: false);
+    }
+
+    private function deadline(Reminder $rule, string $when): ReminderOccurrence
+    {
+        $instant = CarbonImmutable::parse($when);
+
+        return ReminderOccurrence::factory()->for($rule)->create([
+            'source_local_date' => $instant->toDateString(),
+            'generation_key' => '1:'.$instant->toDateString().':on::',
+            'scheduled_for' => $instant,
+            'original_scheduled_for' => $instant,
+            'local_date' => $instant->toDateString(),
+        ]);
     }
 }

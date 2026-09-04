@@ -68,9 +68,13 @@ use App\Http\Controllers\App\Vaults\ContactSectionController;
 use App\Http\Controllers\App\Vaults\ContactShareLinkController;
 use App\Http\Controllers\App\Vaults\ContactTemplateVersionController;
 use App\Http\Controllers\App\Vaults\FileController;
+use App\Http\Controllers\App\Vaults\ReminderOccurrenceDismissalController;
+use App\Http\Controllers\App\Vaults\ReminderOccurrencePostponementController;
+use App\Http\Controllers\App\Vaults\ReminderOccurrenceTestNotificationController;
 use App\Http\Controllers\App\Vaults\SetAsideValueController;
 use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
+use App\Http\Controllers\App\Vaults\VaultReminderController;
 use App\Http\Controllers\App\Vaults\VaultSettingsController;
 use App\ViewModels\Vaults\ContactsViewModel;
 use Illuminate\Support\Facades\Route;
@@ -227,6 +231,24 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('vaults/{vault}/contacts/{contact}/{page?}', [ContactController::class, 'show'])
         ->whereUuid('contact')
         ->name('contacts.show');
+
+    // Everything this vault will remind somebody about, and everything it has
+    // already sent. The screen of one reminder is its own piece of work; when it
+    // lands, `reminders/sent` stays declared before `reminders/{reminder}`, so a
+    // one segment address reads as the tab it is rather than as a reminder
+    // nobody can find.
+    Route::get('vaults/{vault}/reminders', [VaultReminderController::class, 'index'])->name('reminders.index');
+    Route::get('vaults/{vault}/reminders/sent', [VaultReminderController::class, 'sent'])->name('reminders.sent');
+    Route::put('vaults/{vault}/reminders/occurrences/{reminderOccurrence}/postponement', [ReminderOccurrencePostponementController::class, 'update'])
+        ->whereUuid('reminderOccurrence')
+        ->name('reminders.occurrences.postponement.update');
+    Route::put('vaults/{vault}/reminders/occurrences/{reminderOccurrence}/dismissal', [ReminderOccurrenceDismissalController::class, 'update'])
+        ->whereUuid('reminderOccurrence')
+        ->name('reminders.occurrences.dismissal.update');
+    Route::post('vaults/{vault}/reminders/occurrences/{reminderOccurrence}/test-notification', [ReminderOccurrenceTestNotificationController::class, 'create'])
+        ->whereUuid('reminderOccurrence')
+        ->middleware('throttle:20,1')
+        ->name('reminders.occurrences.testNotification.create');
 
     Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
     Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');

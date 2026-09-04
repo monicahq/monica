@@ -39,6 +39,10 @@
       <x-input id="name" :label="__('Name')" />
     </x-modal.form>
 
+  A caller that needs more than a line and a sentence at the top puts its own
+  markup in the `header` slot, which replaces both. `title` is still worth
+  passing then, because it is what names the dialog to a screen reader.
+
   @var string|null $title
   @var string|null $description
   @var string|null $confirm
@@ -77,7 +81,9 @@
     >
       <x-form :method="$method" :action="$action" {{ $attributes }}>
         <div class="flex flex-col gap-4 p-5">
-          @if ($title)
+          @if (isset($header) && $header->isNotEmpty())
+            {{ $header }}
+          @elseif ($title)
             <div class="flex flex-col gap-1.5">
               <p class="text-card-title text-ink">{{ $title }}</p>
 

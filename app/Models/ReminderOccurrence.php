@@ -198,6 +198,79 @@ class ReminderOccurrence extends Model
     }
 
     /**
+     * Scope the query to what one vault will still remind somebody about, in the
+     * order it will happen.
+     *
+     * There is no lower bound. A deadline whose instant has passed and which
+     * nobody has dealt with is the first thing somebody opening the screen needs
+     * to see, so it is part of what is upcoming rather than part of history.
+     *
+     * The upper bound is the caller's, because it is the generation window and
+     * the model has no business reading configuration. Nothing exists beyond it
+     * to find: a rule whose next date is further off has produced no row yet.
+     *
+     * A rule that has gone quiet or been taken away produces nothing, and its
+     * deadlines are cancelled anyway. Asking after the rule as well is what keeps
+     * the screen right in the moment between the two.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeUpcomingInVault(Builder $query, Vault $vault, CarbonImmutable $until): void
+    {
+        $query
+            ->where('vault_id', $vault->id)
+            ->where('account_id', $vault->account_id)
+            ->whereIn('status', ReminderOccurrenceStatusEnum::actionable())
+            ->where('scheduled_for', '<=', $until)
+            ->whereHas('reminder', function (Builder $rule): void {
+                $rule->where('is_active', true);
+            })
+            ->orderBy('scheduled_for');
+    }
+
+    /**
+     * Scope the query to what one vault has already sent, most recent first.
+     *
+     * It asks nothing about the rule on purpose. A reminder that reached somebody
+     * really reached them, and a rule deleted afterwards does not unsend it, so
+     * joining the rule here would erase history the screen exists to show.
+     *
+     * @param  Builder<$this>  $query
+     */
+    /**
+     * How far off the date is, in the language given.
+     *
+     * It is what a notification says under its title, and it is here rather
+     * than in the action that writes one because a test send has to say the
+     * same thing as the real one. A moment seven days before a birthday arrives
+     * a week early on purpose, so naming the day alone would leave out what the
+     * reader needs.
+     */
+    public function howFarOff(string $locale): string
+    {
+        $days = (int) $this->local_date
+            ->startOfDay()
+            ->diffInDays($this->source_local_date->startOfDay(), absolute: false);
+
+        if ($days === 0) {
+            return __('It is today.', [], $locale);
+        }
+
+        return $days > 0
+            ? trans_choice('It is in :count day.|It is in :count days.', $days, [], $locale)
+            : trans_choice('It was :count day ago.|It was :count days ago.', abs($days), [], $locale);
+    }
+
+    public function scopeSentInVault(Builder $query, Vault $vault): void
+    {
+        $query
+            ->where('vault_id', $vault->id)
+            ->where('account_id', $vault->account_id)
+            ->whereNotNull('notified_at')
+            ->orderByDesc('notified_at');
+    }
+
+    /**
      * Whether somebody may still put this deadline off or dismiss it.
      */
     public function isActionable(): bool

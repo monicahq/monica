@@ -21,17 +21,31 @@
   panel that clips, so a bubble drawn underneath the last row of one would be
   cut in half; there is always the row above to grow into.
 
+  It opens on focus as well as under the pointer. A sentence only a pointer can
+  reach is a sentence somebody working from the keyboard never gets, and hover
+  alone is the usual way this is got wrong. `focusable` is what puts the wrapper
+  in the tab order, and a tooltip explaining something already focusable, such as
+  the glyph inside a button, leaves it off.
+
   @var string $text
+  @var bool $focusable
 --}}
-@props(['text'])
+@props([
+  'text',
+  'focusable' => false,
+])
 
 <span
   x-data="{ shown: false }"
   @mouseenter="shown = true"
   @mouseleave="shown = false"
+  @focusin="shown = true"
+  @focusout="shown = false"
+  @keydown.escape="shown = false"
+  @if ($focusable) tabindex="0" @endif
   role="img"
   aria-label="{{ $text }}"
-  {{ $attributes->class(['relative inline-flex items-center']) }}
+  {{ $attributes->class(['relative inline-flex items-center', 'rounded-sm focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none' => $focusable]) }}
 >
   {{ $slot }}
 
