@@ -54,9 +54,11 @@
 
   <header class="flex flex-wrap items-start gap-5.5">
     {{--
-      The favourite state is said twice, deliberately. The ring around the avatar
-      carries it from across the page, where a 26px mark is too small to read, and
-      the medallion at the corner is the control you press. Two signals, one state.
+      The favourite state is said three times, deliberately. The ring around the
+      avatar carries it from across the page, where a 26px mark is too small to
+      read, the medallion at the corner is the control you press, and the toast
+      says what just changed, because a mark that changes without moving is easy
+      to miss. Three signals, one state.
 
       The ring is drawn in both states and only changes colour, so nothing moves
       when it is pressed. The medallion changes shape as well as tint, an outline

@@ -57,6 +57,24 @@ class ContactFavouriteControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_shows_the_confirmation_on_the_page_the_redirect_lands_on(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+
+        $this->actingAs($user)
+            ->followingRedirects()
+            ->put(route('contacts.favourite.update', ['vault' => $contact->vault, 'contact' => $contact]), [
+                'favourite' => true,
+            ])
+            ->assertOk()
+            ->assertSee('Marked as a favourite.')
+            ->assertSee('They sit at the top of the list.');
+    }
+
+    #[Test]
     public function it_records_the_marking_in_the_activity(): void
     {
         Queue::fake();
@@ -75,7 +93,7 @@ class ContactFavouriteControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_nothing_the_star_has_not_already_said(): void
+    public function it_confirms_the_marking(): void
     {
         Queue::fake();
 
@@ -86,7 +104,8 @@ class ContactFavouriteControllerTest extends TestCase
             ->put(route('contacts.favourite.update', ['vault' => $contact->vault, 'contact' => $contact]), [
                 'favourite' => true,
             ])
-            ->assertSessionMissing('status');
+            ->assertSessionHas('status', 'Marked as a favourite.')
+            ->assertSessionHas('status_description', 'They sit at the top of the list.');
     }
 
     #[Test]
@@ -145,7 +164,7 @@ class ContactFavouriteControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_destroys_nothing_when_it_clears_the_mark(): void
+    public function it_confirms_the_removal(): void
     {
         Queue::fake();
 
@@ -156,7 +175,22 @@ class ContactFavouriteControllerTest extends TestCase
             ->put(route('contacts.favourite.update', ['vault' => $contact->vault, 'contact' => $contact]), [
                 'favourite' => false,
             ])
-            ->assertSessionMissing('status');
+            ->assertSessionHas('status', 'No longer a favourite.')
+            ->assertSessionHas('status_description', 'They go back in with everybody else.');
+    }
+
+    #[Test]
+    public function it_destroys_nothing_when_it_clears_the_mark(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user, isFavourite: true);
+
+        $this->actingAs($user)
+            ->put(route('contacts.favourite.update', ['vault' => $contact->vault, 'contact' => $contact]), [
+                'favourite' => false,
+            ]);
 
         $this->assertModelExists($contact);
     }
@@ -206,7 +240,8 @@ class ContactFavouriteControllerTest extends TestCase
             ->put(route('contacts.favourite.update', ['vault' => $contact->vault, 'contact' => $contact]), [
                 'favourite' => true,
             ])
-            ->assertNotFound();
+            ->assertNotFound()
+            ->assertSessionMissing('status');
 
         $this->assertFalse($contact->refresh()->is_favourite);
     }
@@ -224,7 +259,8 @@ class ContactFavouriteControllerTest extends TestCase
             ->put(route('contacts.favourite.update', ['vault' => $elsewhere, 'contact' => $contact]), [
                 'favourite' => true,
             ])
-            ->assertNotFound();
+            ->assertNotFound()
+            ->assertSessionMissing('status');
 
         $this->assertFalse($contact->refresh()->is_favourite);
     }
