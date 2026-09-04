@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
-use App\Mail\PasskeyRemoved;
 use App\Models\User;
 use App\Models\WebauthnKey;
+use App\Notifications\PasskeyRemoved;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
@@ -62,12 +60,7 @@ class DestroyPasskey
 
     private function notify(): void
     {
-        SendEmail::dispatch(
-            mailable: new PasskeyRemoved(name: $this->passkey->name),
-            account: $this->user->account,
-            emailType: EmailType::PasskeyRemoved,
-            user: $this->user,
-        )->onQueue('high');
+        $this->user->notify(new PasskeyRemoved(name: $this->passkey->name));
     }
 
     private function destroy(): void

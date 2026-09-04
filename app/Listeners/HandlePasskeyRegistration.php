@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
-use App\Mail\PasskeyAdded;
 use App\Models\User;
 use App\Models\WebauthnKey;
+use App\Notifications\PasskeyAdded;
 use LaravelWebauthn\Events\WebauthnRegister;
 
 /**
@@ -44,11 +42,6 @@ class HandlePasskeyRegistration
             loggable: $passkey,
         )->onQueue('low');
 
-        SendEmail::dispatch(
-            mailable: new PasskeyAdded(name: $passkey->name),
-            account: $user->account,
-            emailType: EmailType::PasskeyAdded,
-            user: $user,
-        )->onQueue('high');
+        $user->notify(new PasskeyAdded(name: $passkey->name));
     }
 }

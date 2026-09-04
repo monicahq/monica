@@ -19,6 +19,11 @@ class VerifyEmail extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public function __construct()
+    {
+        $this->onQueue('high');
+    }
+
     /**
      * @return array<int, string>
      */

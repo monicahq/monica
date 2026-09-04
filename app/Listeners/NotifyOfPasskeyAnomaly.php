@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
-use App\Enums\EmailType;
-use App\Jobs\SendEmail;
-use App\Mail\PasskeyCounterAnomaly;
 use App\Models\User;
 use App\Models\WebauthnKey;
+use App\Notifications\PasskeyCounterAnomaly;
 use ParagonIE\ConstantTime\Base64UrlSafe;
 use Webauthn\Event\AuthenticatorAssertionResponseValidationFailedEvent;
 use Webauthn\Exception\CounterException;
@@ -49,12 +47,7 @@ class NotifyOfPasskeyAnomaly
             return;
         }
 
-        SendEmail::dispatch(
-            mailable: new PasskeyCounterAnomaly(name: $passkey->name),
-            account: $user->account,
-            emailType: EmailType::PasskeyCounterAnomaly,
-            user: $user,
-        )->onQueue('high');
+        $user->notify(new PasskeyCounterAnomaly(name: $passkey->name));
     }
 
     private function passkeyFor(string $credentialId): ?WebauthnKey

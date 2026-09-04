@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
-use App\Mail\NewLoginDetected;
 use App\Models\User;
 use App\Models\WebauthnKey;
+use App\Notifications\NewLoginDetected;
 use LaravelWebauthn\Events\WebauthnLogin;
 
 /**
@@ -51,12 +49,7 @@ class HandlePasskeyLogin
             parameters: ['name' => $this->passkeyName($user)],
         )->onQueue('low');
 
-        SendEmail::dispatch(
-            mailable: new NewLoginDetected(ip: request()->ip() ?? ''),
-            account: $user->account,
-            emailType: EmailType::NewLogin,
-            user: $user,
-        )->onQueue('high');
+        $user->notify(new NewLoginDetected(ip: request()->ip() ?? ''));
     }
 
     /**

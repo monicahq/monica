@@ -1,0 +1,61 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Notifications;
+
+use App\Contracts\HasEmailType;
+use App\Enums\EmailType;
+use App\Models\User;
+use App\Notifications\Messages\MailMessage;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
+use Override;
+
+/**
+ * Tell an author their version was refused, and why.
+ *
+ * The reason is the point of this email. A refusal the author cannot read is a
+ * refusal they cannot act on, which is why the action that rejects will not do
+ * so without one.
+ */
+class MarketplaceListingRejected extends Notification implements HasEmailType, ShouldQueue
+{
+    use Queueable;
+
+    public function __construct(
+        public readonly string $listingName,
+        public readonly int $versionNumber,
+        public readonly string $reason,
+    ) {
+        $this->onQueue('high');
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    public function via(User $notifiable): array
+    {
+        return ['mail'];
+    }
+
+    public function toMail(User $notifiable): MailMessage
+    {
+        return new MailMessage()
+            ->subject(__('About :name in the marketplace', ['name' => $this->listingName]))
+            ->greeting(__('Not this time'))
+            ->line(__('Version :version of :name has not been accepted into the marketplace.', [
+                'version' => $this->versionNumber,
+                'name' => $this->listingName,
+            ]))
+            ->panel($this->reason)
+            ->outroLine(__('You can work on it and submit a new version whenever you are ready. Nothing you built has been touched, and nothing has been removed from your account.'));
+    }
+
+    #[Override]
+    public function emailType(): EmailType
+    {
+        return EmailType::MarketplaceListingRejected;
+    }
+}

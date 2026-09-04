@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\AttemptLogin;
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
 use App\Models\User;
+use App\Notifications\LoginFailed;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
@@ -26,6 +26,7 @@ class AttemptLoginTest extends TestCase
     public function it_signs_a_user_in(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
@@ -57,6 +58,7 @@ class AttemptLoginTest extends TestCase
     public function it_matches_the_address_whatever_the_casing(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
@@ -72,6 +74,7 @@ class AttemptLoginTest extends TestCase
     public function it_refuses_a_wrong_password_and_warns_the_owner(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
@@ -88,11 +91,10 @@ class AttemptLoginTest extends TestCase
 
         $this->assertGuest();
 
-        Queue::assertPushedOn(
-            queue: 'high',
-            job: SendEmail::class,
-            callback: fn (SendEmail $job): bool => $job->emailType === EmailType::LoginFailed
-                && $job->user->id === $user->id,
+        Notification::assertSentTo(
+            $user,
+            LoginFailed::class,
+            fn (LoginFailed $notification): bool => $notification->queue === 'high',
         );
     }
 
@@ -100,6 +102,7 @@ class AttemptLoginTest extends TestCase
     public function it_says_nothing_about_an_address_that_has_no_account(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $this->expectException(ValidationException::class);
 
@@ -109,7 +112,7 @@ class AttemptLoginTest extends TestCase
                 password: 'password',
             )->execute();
         } finally {
-            Queue::assertNotPushed(SendEmail::class);
+            Notification::assertNothingSent();
         }
     }
 
@@ -117,6 +120,7 @@ class AttemptLoginTest extends TestCase
     public function it_refuses_a_suspended_user(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->inactive()->create(['email' => 'michael.scott@dundermifflin.com']);
 
@@ -129,10 +133,7 @@ class AttemptLoginTest extends TestCase
             )->execute();
         } finally {
             $this->assertGuest();
-            Queue::assertPushed(
-                SendEmail::class,
-                fn (SendEmail $job): bool => $job->user->id === $user->id,
-            );
+            Notification::assertSentTo($user, LoginFailed::class);
         }
     }
 
@@ -140,6 +141,7 @@ class AttemptLoginTest extends TestCase
     public function it_refuses_somebody_who_signs_in_through_single_sign_on(): void
     {
         Queue::fake();
+        Notification::fake();
 
         User::factory()->singleSignOn()->create(['email' => 'michael.scott@dundermifflin.com']);
 
@@ -159,6 +161,7 @@ class AttemptLoginTest extends TestCase
     public function it_stops_trying_after_five_failures(): void
     {
         Queue::fake();
+        Notification::fake();
 
         User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
@@ -194,6 +197,7 @@ class AttemptLoginTest extends TestCase
     public function it_forgets_the_failures_once_somebody_gets_in(): void
     {
         Queue::fake();
+        Notification::fake();
 
         User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
@@ -219,6 +223,7 @@ class AttemptLoginTest extends TestCase
     public function it_writes_a_remember_token_when_asked_to(): void
     {
         Queue::fake();
+        Notification::fake();
 
         User::factory()->create([
             'email' => 'michael.scott@dundermifflin.com',
@@ -238,6 +243,7 @@ class AttemptLoginTest extends TestCase
     public function it_leaves_no_remember_token_when_not_asked_to(): void
     {
         Queue::fake();
+        Notification::fake();
 
         User::factory()->create([
             'email' => 'michael.scott@dundermifflin.com',
@@ -256,6 +262,7 @@ class AttemptLoginTest extends TestCase
     public function it_checks_the_credentials_without_starting_a_session(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
@@ -288,6 +295,7 @@ class AttemptLoginTest extends TestCase
     public function it_refuses_a_wrong_password_without_a_session_and_warns_the_owner(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
@@ -301,10 +309,7 @@ class AttemptLoginTest extends TestCase
             )->execute();
         } finally {
             $this->assertGuest();
-            Queue::assertPushed(
-                SendEmail::class,
-                fn (SendEmail $job): bool => $job->user->id === $user->id && $job->emailType === EmailType::LoginFailed,
-            );
+            Notification::assertSentTo($user, LoginFailed::class);
         }
     }
 
@@ -312,6 +317,7 @@ class AttemptLoginTest extends TestCase
     public function it_refuses_a_suspended_user_without_a_session(): void
     {
         Queue::fake();
+        Notification::fake();
 
         User::factory()->inactive()->create(['email' => 'michael.scott@dundermifflin.com']);
 
@@ -332,6 +338,7 @@ class AttemptLoginTest extends TestCase
     public function it_refuses_single_sign_on_without_a_session(): void
     {
         Queue::fake();
+        Notification::fake();
 
         User::factory()->singleSignOn()->create(['email' => 'michael.scott@dundermifflin.com']);
 
@@ -352,6 +359,7 @@ class AttemptLoginTest extends TestCase
     public function it_says_nothing_about_an_unknown_address_without_a_session(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $this->expectException(ValidationException::class);
 
@@ -363,7 +371,7 @@ class AttemptLoginTest extends TestCase
             )->execute();
         } finally {
             $this->assertGuest();
-            Queue::assertNotPushed(SendEmail::class);
+            Notification::assertNothingSent();
         }
     }
 
@@ -371,6 +379,7 @@ class AttemptLoginTest extends TestCase
     public function it_stops_trying_after_five_failures_without_a_session(): void
     {
         Queue::fake();
+        Notification::fake();
 
         User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
@@ -401,6 +410,7 @@ class AttemptLoginTest extends TestCase
     public function it_refuses_an_account_that_gave_its_password_up(): void
     {
         Queue::fake();
+        Notification::fake();
 
         User::factory()->create([
             'email' => 'michael.scott@dundermifflin.com',
@@ -433,6 +443,7 @@ class AttemptLoginTest extends TestCase
     public function it_refuses_an_account_that_gave_its_password_up_without_a_session(): void
     {
         Queue::fake();
+        Notification::fake();
 
         User::factory()->create([
             'email' => 'michael.scott@dundermifflin.com',

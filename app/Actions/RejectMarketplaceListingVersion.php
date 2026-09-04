@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\AdministratorActionEnum;
-use App\Enums\EmailType;
 use App\Enums\MarketplaceListingStatusEnum;
 use App\Enums\MarketplaceVersionStatusEnum;
 use App\Exceptions\ListingIsNotAwaitingModeration;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogAdministratorAction;
-use App\Jobs\SendEmail;
-use App\Mail\MarketplaceListingRejected;
 use App\Models\MarketplaceListingVersion;
 use App\Models\User;
+use App\Notifications\MarketplaceListingRejected;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
@@ -116,16 +114,11 @@ class RejectMarketplaceListingVersion
             return;
         }
 
-        SendEmail::dispatch(
-            mailable: new MarketplaceListingRejected(
-                listingName: $listing->name,
-                versionNumber: $this->version->version_number,
-                reason: $this->reason,
-            ),
-            account: $listing->account,
-            emailType: EmailType::MarketplaceListingRejected,
-            user: $author,
-        )->onQueue('high');
+        $author->notify(new MarketplaceListingRejected(
+            listingName: $listing->name,
+            versionNumber: $this->version->version_number,
+            reason: $this->reason,
+        ));
     }
 
     private function log(): void

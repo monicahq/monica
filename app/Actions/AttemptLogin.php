@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
-use App\Mail\LoginFailed;
 use App\Models\User;
+use App\Notifications\LoginFailed;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Support\Facades\Auth;
@@ -140,12 +138,7 @@ class AttemptLogin
         RateLimiter::hit($this->throttleKey());
 
         if ($candidate !== null) {
-            SendEmail::dispatch(
-                mailable: new LoginFailed,
-                account: $candidate->account,
-                emailType: EmailType::LoginFailed,
-                user: $candidate,
-            )->onQueue('high');
+            $candidate->notify(new LoginFailed);
         }
 
         throw ValidationException::withMessages([

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Enums\EmailType;
-use App\Mail\UserIpChanged;
 use App\Models\User;
+use App\Notifications\UserIpChanged;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
@@ -35,14 +34,9 @@ class CheckLastLogin implements ShouldQueue
             return;
         }
 
-        SendEmail::dispatch(
-            mailable: new UserIpChanged(
-                email: $this->user->email,
-                ip: $this->ip,
-            ),
-            account: $this->user->account,
-            emailType: EmailType::UserIpChanged,
-            user: $this->user,
-        )->onQueue('high');
+        $this->user->notify(new UserIpChanged(
+            email: $this->user->email,
+            ip: $this->ip,
+        ));
     }
 }

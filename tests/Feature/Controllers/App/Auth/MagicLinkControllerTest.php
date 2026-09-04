@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Auth;
 
 use App\Enums\EmailType;
-use App\Jobs\SendEmail;
 use App\Models\MagicLink;
 use App\Models\User;
+use App\Notifications\MagicLinkCreated;
+use Carbon\CarbonInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -31,7 +34,7 @@ class MagicLinkControllerTest extends TestCase
     #[Test]
     public function it_emails_a_link(): void
     {
-        Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
@@ -42,11 +45,10 @@ class MagicLinkControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Check your inbox');
 
-        Queue::assertPushedOn(
-            queue: 'high',
-            job: SendEmail::class,
-            callback: fn (SendEmail $job): bool => $job->emailType === EmailType::MagicLinkCreated
-                && $job->user->id === $user->id,
+        Notification::assertSentTo(
+            $user,
+            MagicLinkCreated::class,
+            fn (MagicLinkCreated $notification): bool => $notification->queue === 'high',
         );
     }
 
@@ -70,7 +72,7 @@ class MagicLinkControllerTest extends TestCase
     #[Test]
     public function it_says_the_same_thing_when_the_address_has_no_account(): void
     {
-        Queue::fake();
+        Notification::fake();
 
         $response = $this->post(route('auth.magicLink.create'), [
             'email' => 'nobody@dundermifflin.com',
@@ -81,7 +83,7 @@ class MagicLinkControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Check your inbox');
 
-        Queue::assertNotPushed(SendEmail::class);
+        Notification::assertNothingSent();
     }
 
     #[Test]
@@ -90,12 +92,9 @@ class MagicLinkControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        MagicLink::factory()->create([
-            'user_id' => $user->id,
-            'token' => hash('sha256', self::TOKEN),
-        ]);
+        $link = $this->linkFor($user);
 
-        $response = $this->get(route('auth.magicLink.show', ['token' => self::TOKEN]));
+        $response = $this->get($this->signedUrlFor($link));
 
         $response->assertRedirect(route('home.index'));
         $this->assertAuthenticatedAs($user);
@@ -107,12 +106,9 @@ class MagicLinkControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->twoFactor()->create();
-        MagicLink::factory()->create([
-            'user_id' => $user->id,
-            'token' => hash('sha256', self::TOKEN),
-        ]);
+        $link = $this->linkFor($user);
 
-        $response = $this->get(route('auth.magicLink.show', ['token' => self::TOKEN]));
+        $response = $this->get($this->signedUrlFor($link));
 
         $response->assertRedirect(route('auth.twoFactor.new'));
         $response->assertSessionHas('twoFactor.user.id', $user->id);
@@ -125,41 +121,83 @@ class MagicLinkControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        MagicLink::factory()->create([
-            'user_id' => $user->id,
-            'token' => hash('sha256', self::TOKEN),
-        ]);
+        $link = $this->linkFor($user);
+        $url = $this->signedUrlFor($link);
 
-        $this->get(route('auth.magicLink.show', ['token' => self::TOKEN]));
+        $this->get($url);
 
         $this->post(route('auth.login.destroy'));
 
-        $response = $this->get(route('auth.magicLink.show', ['token' => self::TOKEN]));
+        $response = $this->get($url);
 
         $response->assertRedirect(route('auth.magicLink.new'));
         $this->assertGuest();
     }
 
     #[Test]
-    public function it_refuses_a_link_that_ran_out_of_time(): void
+    public function it_refuses_a_link_that_ran_out_of_time_even_where_the_signature_still_stands(): void
     {
         Queue::fake();
 
-        MagicLink::factory()->expired()->create([
-            'user_id' => User::factory()->create()->id,
-            'token' => hash('sha256', self::TOKEN),
-        ]);
+        $link = $this->linkFor(User::factory()->create(), ['expires_at' => now()->subMinute()]);
 
-        $response = $this->get(route('auth.magicLink.show', ['token' => self::TOKEN]));
+        $response = $this->get($this->signedUrlFor($link, now()->addMinutes(5)));
 
         $response->assertRedirect(route('auth.magicLink.new'));
         $this->assertGuest();
     }
 
     #[Test]
-    public function it_refuses_a_token_it_has_never_seen(): void
+    public function it_refuses_a_link_whose_signature_ran_out(): void
     {
-        $response = $this->get(route('auth.magicLink.show', ['token' => self::TOKEN]));
+        Queue::fake();
+
+        $link = $this->linkFor(User::factory()->create());
+
+        $response = $this->get($this->signedUrlFor($link, now()->subMinute()));
+
+        $response->assertForbidden();
+        $this->assertGuest();
+    }
+
+    #[Test]
+    public function it_refuses_a_link_whose_signature_was_tampered_with(): void
+    {
+        Queue::fake();
+
+        $link = $this->linkFor(User::factory()->create());
+
+        $response = $this->get($this->signedUrlFor($link).'&intended=home');
+
+        $response->assertForbidden();
+        $this->assertGuest();
+    }
+
+    #[Test]
+    public function it_refuses_a_token_that_does_not_match_the_link_it_names(): void
+    {
+        Queue::fake();
+
+        $link = $this->linkFor(User::factory()->create());
+
+        $response = $this->get(URL::temporarySignedRoute(
+            'auth.magicLink.show',
+            now()->addMinutes(5),
+            ['token' => str_repeat('z', 64)],
+        ));
+
+        $response->assertRedirect(route('auth.magicLink.new'));
+        $this->assertGuest();
+    }
+
+    #[Test]
+    public function it_refuses_a_link_it_has_never_seen(): void
+    {
+        $response = $this->get(URL::temporarySignedRoute(
+            'auth.magicLink.show',
+            now()->addMinutes(5),
+            ['token' => self::TOKEN],
+        ));
 
         $response->assertRedirect(route('auth.magicLink.new'));
         $this->assertGuest();
@@ -168,13 +206,32 @@ class MagicLinkControllerTest extends TestCase
     #[Test]
     public function it_refuses_a_disposable_address(): void
     {
-        Queue::fake();
+        Notification::fake();
 
         $response = $this->post(route('auth.magicLink.create'), [
             'email' => 'michael.scott@mailinator.com',
         ]);
 
         $response->assertSessionHasErrors('email');
-        Queue::assertNotPushed(SendEmail::class);
+        Notification::assertNothingSent();
+    }
+
+    private function linkFor(User $user, array $overrides = []): MagicLink
+    {
+        return MagicLink::factory()->create(array_merge([
+            'user_id' => $user->id,
+            'token' => hash('sha256', self::TOKEN),
+        ], $overrides));
+    }
+
+    private function signedUrlFor(MagicLink $link, ?CarbonInterface $expiration = null): string
+    {
+        return URL::temporarySignedRoute(
+            'auth.magicLink.show',
+            $expiration ?? $link->expires_at,
+            [
+                'token' => self::TOKEN,
+            ],
+        );
     }
 }

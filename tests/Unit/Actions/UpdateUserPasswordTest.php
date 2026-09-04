@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\UpdateUserPassword;
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
 use App\Models\User;
+use App\Notifications\PasswordSet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use PHPUnit\Framework\Attributes\Test;
@@ -86,16 +86,16 @@ class UpdateUserPasswordTest extends TestCase
     #[Test]
     public function it_tells_the_owner_when_a_password_appears_where_there_was_none(): void
     {
-        Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create(['password' => null]);
 
         new UpdateUserPassword(user: $user, password: 'thatswhatshesaid')->execute();
 
-        Queue::assertPushedOn(
-            queue: 'high',
-            job: SendEmail::class,
-            callback: fn (SendEmail $job): bool => $job->emailType === EmailType::PasswordSet,
+        Notification::assertSentTo(
+            $user,
+            PasswordSet::class,
+            fn (PasswordSet $notification): bool => $notification->queue === 'high',
         );
     }
 
@@ -103,6 +103,7 @@ class UpdateUserPasswordTest extends TestCase
     public function it_says_nothing_when_an_existing_password_is_merely_changed(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create();
 
@@ -113,6 +114,6 @@ class UpdateUserPasswordTest extends TestCase
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserPasswordUpdate,
         );
-        Queue::assertNotPushed(SendEmail::class);
+        Notification::assertNothingSent();
     }
 }

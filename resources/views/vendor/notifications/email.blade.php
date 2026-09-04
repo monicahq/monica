@@ -29,6 +29,13 @@
 </x-mail::button>
 @endisset
 
+{{-- Panel --}}
+@if (! empty($panel))
+<x-mail::panel>
+{{ $panel }}
+</x-mail::panel>
+@endif
+
 {{-- Outro Lines --}}
 @foreach ($outroLines as $line)
 {{ $line }}
@@ -39,7 +46,7 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-{{ __('Regards,') }}<br>
+{{ __('Thanks,') }}<br>
 {{ config('app.name') }}
 @endif
 

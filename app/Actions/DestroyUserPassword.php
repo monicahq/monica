@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Helpers\PasskeyAvailability;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
-use App\Mail\PasswordRemoved;
 use App\Models\User;
+use App\Notifications\PasswordRemoved;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -86,11 +84,6 @@ class DestroyUserPassword
 
     private function notify(): void
     {
-        SendEmail::dispatch(
-            mailable: new PasswordRemoved,
-            account: $this->user->account,
-            emailType: EmailType::PasswordRemoved,
-            user: $this->user,
-        )->onQueue('high');
+        $this->user->notify(new PasswordRemoved);
     }
 }

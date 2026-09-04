@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Listeners;
 
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
 use App\Listeners\HandlePasskeyLogin;
 use App\Models\User;
 use App\Models\WebauthnKey;
+use App\Notifications\NewLoginDetected;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use LaravelWebauthn\Events\WebauthnLogin;
 use PHPUnit\Framework\Attributes\Test;
@@ -67,16 +67,16 @@ class HandlePasskeyLoginTest extends TestCase
     #[Test]
     public function it_tells_the_owner_of_the_address(): void
     {
-        Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create();
 
         new HandlePasskeyLogin()->handle(new WebauthnLogin($user));
 
-        Queue::assertPushedOn(
-            queue: 'high',
-            job: SendEmail::class,
-            callback: fn (SendEmail $job): bool => $job->emailType === EmailType::NewLogin,
+        Notification::assertSentTo(
+            $user,
+            NewLoginDetected::class,
+            fn (NewLoginDetected $notification): bool => $notification->queue === 'high',
         );
     }
 }

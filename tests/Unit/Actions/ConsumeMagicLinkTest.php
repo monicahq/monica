@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\ConsumeMagicLink;
-use App\Enums\EmailType;
 use App\Jobs\CheckLastLogin;
-use App\Jobs\SendEmail;
 use App\Models\MagicLink;
 use App\Models\User;
+use App\Notifications\NewLoginDetected;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -36,9 +36,12 @@ class ConsumeMagicLinkTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $this->linkFor($user);
+        $link = $this->linkFor($user);
 
-        $result = new ConsumeMagicLink(token: self::TOKEN, ip: '10.0.0.1')->execute();
+        $result = new ConsumeMagicLink(
+            token: self::TOKEN,
+            ip: '10.0.0.1',
+        )->execute();
 
         $this->assertInstanceOf(User::class, $result);
         $this->assertEquals($user->id, $result->id);
@@ -55,17 +58,21 @@ class ConsumeMagicLinkTest extends TestCase
     public function it_warns_the_user_that_somebody_got_in_without_a_password(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create();
-        $this->linkFor($user);
+        $link = $this->linkFor($user);
 
-        new ConsumeMagicLink(token: self::TOKEN, ip: '10.0.0.1')->execute();
+        new ConsumeMagicLink(
+            token: self::TOKEN,
+            ip: '10.0.0.1',
+        )->execute();
 
-        Queue::assertPushedOn(
-            queue: 'high',
-            job: SendEmail::class,
-            callback: fn (SendEmail $job): bool => $job->emailType === EmailType::NewLogin
-                && $job->user->id === $user->id,
+        Notification::assertSentTo(
+            $user,
+            NewLoginDetected::class,
+            fn (NewLoginDetected $notification): bool => $notification->ip === '10.0.0.1'
+                && $notification->queue === 'high',
         );
     }
 
@@ -91,7 +98,7 @@ class ConsumeMagicLinkTest extends TestCase
     {
         Queue::fake();
 
-        $this->linkFor(User::factory()->create(), ['expires_at' => now()->subMinute()]);
+        $link = $this->linkFor(User::factory()->create(), ['expires_at' => now()->subMinute()]);
 
         $this->expectException(ModelNotFoundException::class);
 
@@ -99,7 +106,7 @@ class ConsumeMagicLinkTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_token_it_has_never_seen(): void
+    public function it_refuses_a_link_it_has_never_seen(): void
     {
         Queue::fake();
 
@@ -113,10 +120,37 @@ class ConsumeMagicLinkTest extends TestCase
     {
         Queue::fake();
 
-        $this->linkFor(User::factory()->inactive()->create());
+        $link = $this->linkFor(User::factory()->inactive()->create());
 
         $this->expectException(ModelNotFoundException::class);
 
         new ConsumeMagicLink(token: self::TOKEN)->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_token_that_does_not_match_the_link_it_names(): void
+    {
+        Queue::fake();
+
+        $link = $this->linkFor(User::factory()->create());
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new ConsumeMagicLink(token: 'somebody-elses-token')->execute();
+    }
+
+    #[Test]
+    public function it_leaves_a_link_it_refused_usable_by_its_owner(): void
+    {
+        Queue::fake();
+
+        $link = $this->linkFor(User::factory()->create());
+
+        try {
+            new ConsumeMagicLink(token: 'a-token-nobody-holds')->execute();
+        } catch (ModelNotFoundException) {
+        }
+
+        $this->assertNull($link->refresh()->used_at);
     }
 }

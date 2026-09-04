@@ -71,7 +71,7 @@ class VerifyEmailTest extends TestCase
         $body = Mail::mailer()->getSymfonyTransport()->messages()[0]->getOriginalMessage()->getTextBody();
 
         $this->assertStringContainsString('Confirmez votre adresse e-mail', $body);
-        $this->assertStringContainsString('Cordialement,', $body);
+        $this->assertStringContainsString('Merci,', $body);
         $this->assertStringContainsString('Tous droits réservés.', $body);
     }
 }

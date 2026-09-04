@@ -42,9 +42,17 @@
 - Dispatch the job, then assert its side effects on the database.
 - Use `assertEqualsWithDelta()` for timestamp assertions to avoid flakiness.
 
-## Mail tests
+## Notification tests
 
-- Assert the envelope subject and that `render()` contains the expected dynamic content.
+- Every email is a notification. Build it, call `toMail($user)`, then assert the `subject`, the
+  `panel`, the `actionUrl` and the `outroLines` of the message it returns, and cast `render()` to a
+  string for the copy that has to reach the reader.
+- Assert which kind of email it is with `emailType()`, since that is what the account's journal
+  records.
+- Fake with `Notification::fake()` and assert with `Notification::assertSentTo()`,
+  `Notification::assertNothingSent()` and `$notification->queue` for the queue it went on. A test
+  that only fakes the queue sees `SendQueuedNotifications` rather than the notification, so a
+  `Queue::assertNothingPushed()` needs `Notification::fake()` next to it.
 
 ## Helper tests
 

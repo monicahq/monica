@@ -93,7 +93,7 @@ guidelines, this file wins. The precedence order is in `CLAUDE.md`.
 ## Test Classes
 
 - A test file MUST contain the test class and nothing else.
-- Every class a test needs (a mailable, a stub, a fake) MUST live in its own file under `tests/Fixtures`, in a namespace that mirrors the application (e.g. `Tests\Fixtures\Mail\NewLoginDetected`), whether or not it is used by a single test.
+- Every class a test needs (a stub, a fake, a notification standing in for a real one) MUST live in its own file under `tests/Fixtures`, in a namespace that mirrors the application (e.g. `Tests\Fixtures\Notifications\SomethingHappened`), whether or not it is used by a single test. The folder is empty today.
 - Use descriptive test method names and follow the arrange, act, assert pattern.
 
 ## Whitespace

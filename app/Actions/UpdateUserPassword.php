@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
-use App\Mail\PasswordSet;
 use App\Models\User;
+use App\Notifications\PasswordSet;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -69,12 +67,7 @@ class UpdateUserPassword
             return;
         }
 
-        SendEmail::dispatch(
-            mailable: new PasswordSet,
-            account: $this->user->account,
-            emailType: EmailType::PasswordSet,
-            user: $this->user,
-        )->onQueue('high');
+        $this->user->notify(new PasswordSet);
     }
 
     private function validate(): void

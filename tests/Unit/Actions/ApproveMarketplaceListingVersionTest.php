@@ -9,13 +9,14 @@ use App\Enums\MarketplaceListingStatusEnum;
 use App\Enums\MarketplaceVersionStatusEnum;
 use App\Exceptions\ListingIsNotAwaitingModeration;
 use App\Jobs\LogAdministratorAction;
-use App\Jobs\SendEmail;
 use App\Models\MarketplaceCategory;
 use App\Models\MarketplaceInstallation;
 use App\Models\MarketplaceListing;
 use App\Models\MarketplaceListingVersion;
 use App\Models\User;
+use App\Notifications\MarketplaceListingApproved;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Override;
 use PHPUnit\Framework\Attributes\Test;
@@ -31,6 +32,7 @@ class ApproveMarketplaceListingVersionTest extends TestCase
         parent::setUp();
 
         Queue::fake();
+        Notification::fake();
     }
 
     private function michael(): User
@@ -153,11 +155,17 @@ class ApproveMarketplaceListingVersionTest extends TestCase
     public function it_tells_the_author_their_version_is_in(): void
     {
         $version = MarketplaceListingVersion::factory()->create();
-        User::factory()->create(['account_id' => $version->listing->account_id]);
+        $author = User::factory()->create(['account_id' => $version->listing->account_id]);
 
         new ApproveMarketplaceListingVersion(version: $version, administrator: $this->michael())->execute();
 
-        Queue::assertPushedOn('high', SendEmail::class);
+        Notification::assertSentTo(
+            $author,
+            MarketplaceListingApproved::class,
+            fn (MarketplaceListingApproved $notification): bool => $notification->listingName === $version->listing->name
+                && $notification->versionNumber === $version->version_number
+                && $notification->queue === 'high',
+        );
     }
 
     #[Test]
@@ -168,7 +176,7 @@ class ApproveMarketplaceListingVersionTest extends TestCase
         new ApproveMarketplaceListingVersion(version: $version, administrator: $this->michael())->execute();
 
         $this->assertEquals(MarketplaceVersionStatusEnum::Approved, $version->fresh()->status);
-        Queue::assertNotPushed(SendEmail::class);
+        Notification::assertNothingSent();
     }
 
     #[Test]

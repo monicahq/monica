@@ -28,6 +28,6 @@ class SendEmailVerification
 
     private function send(): void
     {
-        $this->user->notify(new VerifyEmail()->onQueue('high'));
+        $this->user->notify(new VerifyEmail);
     }
 }

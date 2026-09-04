@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\DestroyUserPassword;
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
 use App\Models\User;
 use App\Models\WebauthnKey;
+use App\Notifications\PasswordRemoved;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
 use PHPUnit\Framework\Attributes\Test;
@@ -73,14 +73,16 @@ class DestroyUserPasswordTest extends TestCase
     #[Test]
     public function it_tells_the_owner_of_the_address(): void
     {
-        Queue::fake();
+        Notification::fake();
 
-        new DestroyUserPassword(user: $this->userWithAPasskey())->execute();
+        $user = $this->userWithAPasskey();
 
-        Queue::assertPushedOn(
-            queue: 'high',
-            job: SendEmail::class,
-            callback: fn (SendEmail $job): bool => $job->emailType === EmailType::PasswordRemoved,
+        new DestroyUserPassword(user: $user)->execute();
+
+        Notification::assertSentTo(
+            $user,
+            PasswordRemoved::class,
+            fn (PasswordRemoved $notification): bool => $notification->queue === 'high',
         );
     }
 
@@ -88,6 +90,7 @@ class DestroyUserPasswordTest extends TestCase
     public function it_refuses_an_account_that_holds_no_passkey(): void
     {
         Queue::fake();
+        Notification::fake();
         $this->overASecureConnection();
 
         $user = User::factory()->create();
@@ -99,6 +102,7 @@ class DestroyUserPasswordTest extends TestCase
         } finally {
             $this->assertNotNull($user->refresh()->password);
             Queue::assertNothingPushed();
+            Notification::assertNothingSent();
         }
     }
 

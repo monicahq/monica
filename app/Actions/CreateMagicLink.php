@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
-use App\Mail\MagicLinkCreated;
 use App\Models\MagicLink;
 use App\Models\User;
+use App\Notifications\MagicLinkCreated;
 use Illuminate\Support\Str;
 
 /**
@@ -18,8 +16,9 @@ use Illuminate\Support\Str;
  * them.
  *
  * Only the hash of the token reaches the database, so somebody who can read the
- * table still cannot sign in as anybody. The plain token exists just long
- * enough to be put in the email.
+ * table still cannot sign in as anybody. The plain token exists just long enough
+ * to be put in the email, where it travels inside a URL signed with the
+ * application key that runs out when the row does.
  *
  * An address with no active account behind it raises ModelNotFoundException,
  * which the caller is expected to swallow: the screen must look the same either
@@ -28,6 +27,8 @@ use Illuminate\Support\Str;
 class CreateMagicLink
 {
     private User $user;
+
+    private MagicLink $magicLink;
 
     private string $token;
 
@@ -63,7 +64,7 @@ class CreateMagicLink
     {
         $this->token = Str::random(64);
 
-        MagicLink::query()->create([
+        $this->magicLink = MagicLink::query()->create([
             'user_id' => $this->user->id,
             'token' => hash('sha256', $this->token),
             'expires_at' => now()->addMinutes($this->minutes()),
@@ -72,15 +73,11 @@ class CreateMagicLink
 
     private function send(): void
     {
-        SendEmail::dispatch(
-            mailable: new MagicLinkCreated(
-                url: route('auth.magicLink.show', ['token' => $this->token]),
-                minutes: $this->minutes(),
-            ),
-            account: $this->user->account,
-            emailType: EmailType::MagicLinkCreated,
-            user: $this->user,
-        )->onQueue('high');
+        $this->user->notify(new MagicLinkCreated(
+            magicLink: $this->magicLink,
+            token: $this->token,
+            minutes: $this->minutes(),
+        ));
     }
 
     private function log(): void

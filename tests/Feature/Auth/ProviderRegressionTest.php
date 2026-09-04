@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\URL;
 use LaravelWebauthn\Auth\EloquentWebAuthnProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -106,12 +107,7 @@ class ProviderRegressionTest extends TestCase
 
         $user = User::factory()->create();
 
-        MagicLink::factory()->create([
-            'user_id' => $user->id,
-            'token' => hash('sha256', self::TOKEN),
-        ]);
-
-        $response = $this->get(route('auth.magicLink.show', ['token' => self::TOKEN]));
+        $response = $this->get($this->signedMagicLinkFor($user));
 
         $response->assertRedirect(route('home.index'));
         $this->assertAuthenticatedAs($user);
@@ -127,12 +123,7 @@ class ProviderRegressionTest extends TestCase
             'two_factor_confirmed_at' => now(),
         ]);
 
-        MagicLink::factory()->create([
-            'user_id' => $user->id,
-            'token' => hash('sha256', self::TOKEN),
-        ]);
-
-        $response = $this->get(route('auth.magicLink.show', ['token' => self::TOKEN]));
+        $response = $this->get($this->signedMagicLinkFor($user));
 
         $response->assertRedirect(route('auth.twoFactor.new'));
         $this->assertGuest();
@@ -219,5 +210,21 @@ class ProviderRegressionTest extends TestCase
         $provider = Auth::guard('web')->getProvider();
 
         $this->assertFalse($provider->validateCredentials($user, ['password' => 'password']));
+    }
+
+    private function signedMagicLinkFor(User $user): string
+    {
+        $link = MagicLink::factory()->create([
+            'user_id' => $user->id,
+            'token' => hash('sha256', self::TOKEN),
+        ]);
+
+        return URL::temporarySignedRoute(
+            'auth.magicLink.show',
+            $link->expires_at,
+            [
+                'token' => self::TOKEN,
+            ],
+        );
     }
 }

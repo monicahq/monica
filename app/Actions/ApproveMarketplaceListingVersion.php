@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\AdministratorActionEnum;
-use App\Enums\EmailType;
 use App\Enums\MarketplaceListingStatusEnum;
 use App\Enums\MarketplaceVersionStatusEnum;
 use App\Exceptions\ListingIsNotAwaitingModeration;
 use App\Jobs\LogAdministratorAction;
-use App\Jobs\SendEmail;
-use App\Mail\MarketplaceListingApproved;
 use App\Models\MarketplaceListingVersion;
 use App\Models\User;
+use App\Notifications\MarketplaceListingApproved;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -112,16 +110,11 @@ class ApproveMarketplaceListingVersion
             return;
         }
 
-        SendEmail::dispatch(
-            mailable: new MarketplaceListingApproved(
-                listingName: $listing->name,
-                versionNumber: $this->version->version_number,
-                url: route('marketplace.index'),
-            ),
-            account: $listing->account,
-            emailType: EmailType::MarketplaceListingApproved,
-            user: $author,
-        )->onQueue('high');
+        $author->notify(new MarketplaceListingApproved(
+            listingName: $listing->name,
+            versionNumber: $this->version->version_number,
+            url: route('marketplace.index'),
+        ));
     }
 
     private function log(): void

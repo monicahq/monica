@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\CreateMagicLink;
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
 use App\Models\MagicLink;
 use App\Models\User;
+use App\Notifications\MagicLinkCreated;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -25,6 +25,7 @@ class CreateMagicLinkTest extends TestCase
     public function it_creates_a_link_and_emails_it(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
@@ -33,11 +34,10 @@ class CreateMagicLinkTest extends TestCase
         $this->assertInstanceOf(User::class, $result);
         $this->assertEquals(1, MagicLink::query()->where('user_id', $user->id)->count());
 
-        Queue::assertPushedOn(
-            queue: 'high',
-            job: SendEmail::class,
-            callback: fn (SendEmail $job): bool => $job->emailType === EmailType::MagicLinkCreated
-                && $job->user->id === $user->id,
+        Notification::assertSentTo(
+            $user,
+            MagicLinkCreated::class,
+            fn (MagicLinkCreated $notification): bool => $notification->queue === 'high',
         );
 
         Queue::assertPushedOn(
@@ -50,20 +50,39 @@ class CreateMagicLinkTest extends TestCase
     #[Test]
     public function it_never_stores_the_token_it_puts_in_the_email(): void
     {
-        Queue::fake();
+        Notification::fake();
 
-        User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
         new CreateMagicLink(email: 'michael.scott@dundermifflin.com')->execute();
 
         $stored = MagicLink::query()->firstOrFail();
 
-        Queue::assertPushed(SendEmail::class, function (SendEmail $job) use ($stored): bool {
-            preg_match('#/magic-link/([A-Za-z0-9]{64})#', $job->mailable->url, $matches);
+        Notification::assertSentTo($user, MagicLinkCreated::class, function (MagicLinkCreated $notification) use ($stored): bool {
+            $this->assertMatchesRegularExpression('#^[A-Za-z0-9]{64}$#', $notification->token);
+            $this->assertNotEquals($notification->token, $stored->token);
+            $this->assertEquals(hash('sha256', $notification->token), $stored->token);
 
-            $this->assertNotEmpty($matches, 'The email should carry a 64 character token.');
-            $this->assertNotEquals($matches[1], $stored->token);
-            $this->assertEquals(hash('sha256', $matches[1]), $stored->token);
+            return true;
+        });
+    }
+
+    #[Test]
+    public function it_puts_the_token_and_nothing_else_in_the_link(): void
+    {
+        Notification::fake();
+
+        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        new CreateMagicLink(email: 'michael.scott@dundermifflin.com')->execute();
+
+        $stored = MagicLink::query()->firstOrFail();
+
+        Notification::assertSentTo($user, MagicLinkCreated::class, function (MagicLinkCreated $notification) use ($user, $stored): bool {
+            $url = (string) $notification->toMail($user)->actionUrl;
+
+            $this->assertStringContainsString('/magic-link/'.$notification->token, $url);
+            $this->assertStringNotContainsString($stored->token, $url);
 
             return true;
         });

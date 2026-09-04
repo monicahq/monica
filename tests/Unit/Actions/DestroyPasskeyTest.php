@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\DestroyPasskey;
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
 use App\Models\User;
 use App\Models\WebauthnKey;
+use App\Notifications\PasskeyRemoved;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -56,17 +56,17 @@ class DestroyPasskeyTest extends TestCase
     #[Test]
     public function it_tells_the_owner_of_the_address(): void
     {
-        Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create();
         $passkey = WebauthnKey::factory()->create(['user_id' => $user->id]);
 
         new DestroyPasskey(user: $user, passkey: $passkey)->execute();
 
-        Queue::assertPushedOn(
-            queue: 'high',
-            job: SendEmail::class,
-            callback: fn (SendEmail $job): bool => $job->emailType === EmailType::PasskeyRemoved,
+        Notification::assertSentTo(
+            $user,
+            PasskeyRemoved::class,
+            fn (PasskeyRemoved $notification): bool => $notification->queue === 'high',
         );
     }
 
@@ -74,6 +74,7 @@ class DestroyPasskeyTest extends TestCase
     public function it_refuses_a_passkey_belonging_to_another_account(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create();
         $somebodyElse = WebauthnKey::factory()->create();
@@ -85,6 +86,7 @@ class DestroyPasskeyTest extends TestCase
         } finally {
             $this->assertModelExists($somebodyElse);
             Queue::assertNothingPushed();
+            Notification::assertNothingSent();
         }
     }
 }

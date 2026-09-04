@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
-use App\Mail\NewLoginDetected;
 use App\Models\MagicLink;
 use App\Models\User;
+use App\Notifications\NewLoginDetected;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
@@ -48,9 +46,11 @@ class ConsumeMagicLink
         $magicLink = MagicLink::query()
             ->with('user')
             ->where('token', hash('sha256', $this->token))
-            ->first();
+            ->firstOrFail();
 
-        if ($magicLink === null || ! $magicLink->isUsable() || ! $magicLink->user->is_active) {
+        if (! $magicLink->isUsable()
+            || ! $magicLink->user->is_active
+            || ! hash_equals($magicLink->token, hash('sha256', $this->token))) {
             throw new ModelNotFoundException('Magic link not found');
         }
 
@@ -81,12 +81,7 @@ class ConsumeMagicLink
      */
     private function notify(): void
     {
-        SendEmail::dispatch(
-            mailable: new NewLoginDetected(ip: $this->ip ?? ''),
-            account: $this->user->account,
-            emailType: EmailType::NewLogin,
-            user: $this->user,
-        )->onQueue('high');
+        $this->user->notify(new NewLoginDetected(ip: $this->ip ?? ''));
     }
 
     private function log(): void

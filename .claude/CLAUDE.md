@@ -43,7 +43,12 @@ When two sources disagree, follow this order.
 - `app/Http/Requests`: form requests. There is one, `SaveFieldValuesRequest`; validation is inline
   everywhere else.
 - `app/Contracts`: the interfaces the application defines. `app/Rules`: validation rules.
-- `app/Jobs`: queued jobs. `app/Mail`: mailables. `app/Enums`: enums. `app/Helpers`: helpers.
+- `app/Jobs`: queued jobs. `app/Enums`: enums. `app/Helpers`: helpers.
+- `app/Notifications`: every email the application sends, one class per email, sent with
+  `$user->notify()`. There is no `app/Mail` and no mailable. `app/Notifications/Messages/MailMessage`
+  is the message they all build: it adds the panel and picks the mailer. An email that belongs in the
+  account's journal says so by implementing `App\Contracts\HasEmailType`, and
+  `App\Listeners\RecordEmailSent` writes the row once it has gone out.
 - `app/ViewModels`: assemble what one screen shows. They query the database, they hold no business
   logic, they may hold presentation logic, and they end up in Blade and nowhere else. One per screen,
   grouped like the controllers (`Vaults`, `Settings`, `Marketplace`, `Admin`, `Auth`). A rich page

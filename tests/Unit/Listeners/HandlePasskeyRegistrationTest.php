@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Listeners;
 
-use App\Enums\EmailType;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
 use App\Listeners\HandlePasskeyRegistration;
 use App\Models\User;
 use App\Models\WebauthnKey;
+use App\Notifications\PasskeyAdded;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use LaravelWebauthn\Events\WebauthnRegister;
 use PHPUnit\Framework\Attributes\Test;
@@ -43,17 +43,18 @@ class HandlePasskeyRegistrationTest extends TestCase
     #[Test]
     public function it_tells_the_owner_of_the_address(): void
     {
-        Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create();
-        $passkey = WebauthnKey::factory()->create(['user_id' => $user->id]);
+        $passkey = WebauthnKey::factory()->create(['user_id' => $user->id, 'name' => 'MacBook Pro']);
 
         new HandlePasskeyRegistration()->handle(new WebauthnRegister($passkey));
 
-        Queue::assertPushedOn(
-            queue: 'high',
-            job: SendEmail::class,
-            callback: fn (SendEmail $job): bool => $job->emailType === EmailType::PasskeyAdded,
+        Notification::assertSentTo(
+            $user,
+            PasskeyAdded::class,
+            fn (PasskeyAdded $notification): bool => $notification->name === 'MacBook Pro'
+                && $notification->queue === 'high',
         );
     }
 }

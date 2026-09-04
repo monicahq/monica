@@ -37,7 +37,7 @@ Route::middleware(['guest'])->group(function (): void {
         ->middleware('throttle:6,1')
         ->name('auth.magicLink.create');
     Route::get('magic-link/{token}', [MagicLinkController::class, 'show'])
-        ->middleware('throttle:6,1')
+        ->middleware(['signed', 'throttle:6,1'])
         ->where('token', '[A-Za-z0-9]{64}')
         ->name('auth.magicLink.show');
 
@@ -51,7 +51,7 @@ Route::middleware(['guest'])->group(function (): void {
         ->name('auth.password.edit');
     Route::post('reset-password', [NewPasswordController::class, 'update'])->name('auth.password.update');
 
-// Answering the two factor challenge, once a password was accepted.
+    // Answering the two factor challenge, once a password was accepted.
     Route::get('two-factor-challenge', [TwoFactorChallengeController::class, 'new'])->name('auth.twoFactor.new');
     Route::post('two-factor-challenge', [TwoFactorChallengeController::class, 'create'])
         ->middleware('throttle:6,1')
@@ -75,5 +75,5 @@ Route::middleware(['auth'])->group(function (): void {
 
     // Signing out.
     Route::post('logout', [LoginController::class, 'destroy'])
-    ->name('auth.login.destroy');
+        ->name('auth.login.destroy');
 });

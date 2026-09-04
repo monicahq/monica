@@ -125,18 +125,4 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Resend
-    |--------------------------------------------------------------------------
-    |
-    | Emails are sent through Resend when this option is enabled, which lets us
-    | capture the identifier Resend gives to every email and track what happens
-    | to it afterwards. Any other instance sends emails the way Laravel does,
-    | through the mailer configured in config/mail.php.
-    |
-    */
-
-    'use_resend' => env('USE_RESEND', false),
-
 ];

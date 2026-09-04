@@ -6,10 +6,10 @@ namespace Tests\Feature\Auth;
 
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Jobs\SendEmail;
 use App\Models\User;
 use App\Models\WebauthnKey;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -39,6 +39,7 @@ class PasskeyManagementTest extends TestCase
     public function it_writes_a_rename_down_without_sending_an_email(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create();
         $passkey = WebauthnKey::factory()->create(['user_id' => $user->id]);
@@ -50,7 +51,7 @@ class PasskeyManagementTest extends TestCase
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::PasskeyRenamed,
         );
-        Queue::assertNotPushed(SendEmail::class);
+        Notification::assertNothingSent();
     }
 
     #[Test]

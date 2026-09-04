@@ -9,11 +9,12 @@ use App\Enums\MarketplaceListingStatusEnum;
 use App\Enums\MarketplaceVersionStatusEnum;
 use App\Exceptions\ListingIsNotAwaitingModeration;
 use App\Jobs\LogAdministratorAction;
-use App\Jobs\SendEmail;
 use App\Models\MarketplaceListing;
 use App\Models\MarketplaceListingVersion;
 use App\Models\User;
+use App\Notifications\MarketplaceListingRejected;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use InvalidArgumentException;
 use Override;
@@ -30,6 +31,7 @@ class RejectMarketplaceListingVersionTest extends TestCase
         parent::setUp();
 
         Queue::fake();
+        Notification::fake();
     }
 
     private function michael(): User
@@ -145,7 +147,7 @@ class RejectMarketplaceListingVersionTest extends TestCase
     public function it_sends_the_author_the_reason(): void
     {
         $version = MarketplaceListingVersion::factory()->create();
-        User::factory()->create(['account_id' => $version->listing->account_id]);
+        $author = User::factory()->create(['account_id' => $version->listing->account_id]);
 
         new RejectMarketplaceListingVersion(
             version: $version,
@@ -153,7 +155,12 @@ class RejectMarketplaceListingVersionTest extends TestCase
             reason: 'The change note does not say what changed.',
         )->execute();
 
-        Queue::assertPushedOn('high', SendEmail::class);
+        Notification::assertSentTo(
+            $author,
+            MarketplaceListingRejected::class,
+            fn (MarketplaceListingRejected $notification): bool => $notification->reason === 'The change note does not say what changed.'
+                && $notification->queue === 'high',
+        );
     }
 
     #[Test]

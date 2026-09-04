@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('magic_links', function (Blueprint $table): void {
             $table->id()->comment('primary key');
             $table->unsignedBigInteger('user_id')->comment('user the link signs in');
-            $table->string('token', 64)->unique()->comment('hash of the token in the link, so the token itself is never stored');
+            $table->string('token', 64)->unique()->comment('token of the link');
             $table->datetime('expires_at')->comment('when the link stops working');
             $table->datetime('used_at')->nullable()->comment('when the link was used, which is also what stops it being used twice');
             $table->timestamps();

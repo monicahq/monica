@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Listeners;
 
-use App\Enums\EmailType;
-use App\Jobs\SendEmail;
 use App\Listeners\NotifyOfPasskeyAnomaly;
 use App\Models\User;
 use App\Models\WebauthnKey;
+use App\Notifications\PasskeyCounterAnomaly;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Mockery;
 use PHPUnit\Framework\Attributes\Test;
@@ -53,19 +53,24 @@ class NotifyOfPasskeyAnomalyTest extends TestCase
     #[Test]
     public function it_tells_the_owner_when_a_counter_went_backwards(): void
     {
-        Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create();
-        WebauthnKey::factory()->create(['user_id' => $user->id, 'credentialId' => 'a-cloned-credential']);
+        WebauthnKey::factory()->create([
+            'user_id' => $user->id,
+            'credentialId' => 'a-cloned-credential',
+            'name' => 'Michael MacBook',
+        ]);
 
         new NotifyOfPasskeyAnomaly()->handle(
             $this->eventFor('a-cloned-credential', CounterException::create(9, 3, 'Invalid counter.')),
         );
 
-        Queue::assertPushedOn(
-            queue: 'high',
-            job: SendEmail::class,
-            callback: fn (SendEmail $job): bool => $job->emailType === EmailType::PasskeyCounterAnomaly,
+        Notification::assertSentTo(
+            $user,
+            PasskeyCounterAnomaly::class,
+            fn (PasskeyCounterAnomaly $notification): bool => $notification->name === 'Michael MacBook'
+                && $notification->queue === 'high',
         );
     }
 
@@ -73,6 +78,7 @@ class NotifyOfPasskeyAnomalyTest extends TestCase
     public function it_says_nothing_about_an_ordinary_failed_assertion(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create();
         WebauthnKey::factory()->create(['user_id' => $user->id, 'credentialId' => 'a-credential']);
@@ -82,17 +88,20 @@ class NotifyOfPasskeyAnomalyTest extends TestCase
         );
 
         Queue::assertNothingPushed();
+        Notification::assertNothingSent();
     }
 
     #[Test]
     public function it_says_nothing_about_a_credential_it_does_not_hold(): void
     {
         Queue::fake();
+        Notification::fake();
 
         new NotifyOfPasskeyAnomaly()->handle(
             $this->eventFor('nobody-owns-this', CounterException::create(9, 3, 'Invalid counter.')),
         );
 
         Queue::assertNothingPushed();
+        Notification::assertNothingSent();
     }
 }
