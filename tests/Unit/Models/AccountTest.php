@@ -7,6 +7,7 @@ namespace Tests\Unit\Models;
 use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\Log;
+use App\Models\NotificationPreference;
 use App\Models\ShareLink;
 use App\Models\User;
 use App\Models\ValueList;
@@ -28,6 +29,14 @@ class AccountTest extends TestCase
 
         $this->assertTrue($account->user()->exists());
         $this->assertTrue($user->is($account->user));
+    }
+
+    #[Test]
+    public function it_has_one_set_of_notification_preferences(): void
+    {
+        $preference = NotificationPreference::factory()->create();
+
+        $this->assertTrue($preference->account->notificationPreference()->exists());
     }
 
     #[Test]

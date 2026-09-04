@@ -430,7 +430,7 @@ A personal CRM that reminds you of nothing is useless. But "reminder" covers fou
 
 Without that distinction, you can neither postpone a reminder cleanly, nor keep the history of what was done with it, nor correctly deliver several notifications for the same deadline.
 
-**Each offset of each cycle produces its own occurrence.** A yearly rule reading 12 May with the offsets "7 days before" and "on the day" produces two occurrences in 2027: 5 May at the chosen local time and 12 May at that time. Each occurrence can then produce one notification on every enabled channel. The offset is applied when the occurrence is generated and is never applied again by the notification. Postponing or skipping the 5 May occurrence touches neither the 12 May occurrence nor either occurrence of the following year.
+**Each offset of each cycle produces its own occurrence.** A yearly rule reading 12 May with the offsets "7 days before" and "on the day" produces two occurrences in 2027: 5 May at the chosen local time and 12 May at that time. Each occurrence can then produce one notification on every enabled channel. The offset is applied when the occurrence is generated and is never applied again by the notification. Postponing or dismissing the 5 May occurrence touches neither the 12 May occurrence nor either occurrence of the following year.
 
 ### 10.2. The types of reminders
 
@@ -442,11 +442,10 @@ Without that distinction, you can neither postpone a reminder cleanly, nor keep 
 
 ### 10.3. Expected behaviours
 
-**Postponing, skipping and completing are three distinct actions.**
+**Postponing and dismissing are the two actions on an occurrence.**
 
-- *Postponing* moves only this deadline, without touching the following ones.
-- *Skipping* makes this precise deadline disappear without deactivating the rule. Skipping this year's birthday does not remove next year's.
-- *Completing* means the action was done.
+- *Postponing* means "not now, remind me at this new date". It moves only this deadline to an exact future instant, keeps its original instant as history, and abandons every delivery still waiting for the old one. It may be done more than once and never touches a sibling or a later cycle.
+- *Dismissing* means "do not interrupt me about this deadline again". It closes this occurrence, abandons every delivery that has not gone out, and makes no claim that an action was completed. Notifications already sent remain as history. Dismissing this year's birthday does not remove next year's.
 - *Deactivating the rule* is the only action that cancels every future deadline, and it is reversible.
 
 **The time is local, not absolute.** "Every year at 9am" means 9am local time, including after a daylight saving change. The reference zone is frozen when the rule is created, and changing your personal zone later never shifts a reminder that is already set.
@@ -531,7 +530,7 @@ The list of events follows the product, not a sub-part of the product. At minimu
 - **Contacts and entities**: creation, modification, deletion, restoration, merge, change of applied structure.
 - **Activities and journal**: an activity is created, modified or deleted, a day is filled in. This is probably the most useful event to listen to, since it allows rebroadcasting your life to any other tool.
 - **Relationships**: creation, confirmation, label change, start and end of a period, deletion.
-- **Reminders**: a deadline arrives, it is postponed, skipped, completed, a rule is deactivated.
+- **Reminders**: a deadline arrives, it is postponed or dismissed, a rule is deactivated.
 - **Structures**: a template or a section is created or published, a new version is published.
 - **Marketplace**: an item is installed, an update is available, an update is accepted.
 - **Files**: a file is added, detached, deleted.

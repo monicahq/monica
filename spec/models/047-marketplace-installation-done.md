@@ -40,7 +40,7 @@ deleted_at                  datetime
 ## Rules
 
 - Installing copies. The local copy is fully editable and has no runtime dependency on the listing (7).
-- A new approved version raises `update_available_version_id` and produces a notification carrying the change note ([Notification](042-notification-not-yet.md)). It changes nothing else.
+- A new approved version raises `update_available_version_id` and produces a notification carrying the change note ([Notification](042-notification-done.md)). It changes nothing else.
 - The installer applies or declines. Declining is a real, remembered choice, not a postponement, and it does not stop them being told about the version after that.
 - Applying an update creates a **new version of the local copy** ([TemplateVersion](013-template-version-done.md) or [SectionVersion](015-section-version-in-progress.md)). A template update copies its pages and section placements into that new local version. It never edits a published local version, and records already on the old version stay there until moved deliberately (6).
 - `has_local_changes` is shown before applying an update, because an update onto an edited copy is where a surprise would come from.
@@ -48,7 +48,7 @@ deleted_at                  datetime
 
 ## What is built
 
-The table, the model and its factory, and nothing else. There is no install action, no update notification and no way to apply or decline one. Installing needs [Notification](042-notification-not-yet.md), which does not exist, and it needs the value list question below answered, which it is not. The columns are all here, so the day that work happens it adds actions and touches no schema.
+The table, the model and its factory, and nothing else. There is no install action, no update notification and no way to apply or decline one. [Notification](042-notification-done.md) now exists and would carry the update notice, so what installing still needs is the value list question below answered, which it is not. The columns are all here, so the day that work happens it adds actions and touches no schema.
 
 ## Open questions
 

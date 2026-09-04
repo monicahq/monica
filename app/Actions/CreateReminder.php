@@ -7,6 +7,10 @@ namespace App\Actions;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderSourceEnum;
 use App\Enums\UserActionEnum;
+use App\Exceptions\ReminderIsNotValid;
+use App\Exceptions\ReminderMomentIsNotValid;
+use App\Exceptions\ValueAlreadyHasAReminder;
+use App\Helpers\ReminderTime;
 use App\Helpers\TextSanitizer;
 use App\Helpers\TimezoneCatalogue;
 use App\Jobs\LogUserAction;
@@ -15,7 +19,7 @@ use App\Models\Reminder;
 use App\Models\User;
 use App\Rules\ReminderMoments;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use InvalidArgumentException;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Ask to be reminded of a date somebody has written on a record.
@@ -62,10 +66,35 @@ class CreateReminder
     {
         $this->sanitize();
         $this->validate();
-        $this->create();
+
+        DB::transaction(function (): void {
+            $this->refuseASecondRule();
+            $this->create();
+            $this->generate();
+        });
+
         $this->log();
 
         return $this->reminder;
+    }
+
+    /**
+     * Refuse a second live rule on a date that already carries one, with the
+     * value locked while the question is asked.
+     *
+     * The lock is what makes it hold. Two saves arriving together would both
+     * find no rule and both write one, and a unique index cannot be the backstop
+     * because it cannot say "one *live* row" under soft deletes. Locking the row
+     * every rule hangs off makes the second save wait for the first to finish
+     * and then see it.
+     */
+    private function refuseASecondRule(): void
+    {
+        FieldValue::query()->whereKey($this->fieldValue->id)->lockForUpdate()->first();
+
+        if ($this->fieldValue->reminder()->exists()) {
+            throw new ValueAlreadyHasAReminder(__('There is already a reminder on this date.'));
+        }
     }
 
     private function sanitize(): void
@@ -85,29 +114,29 @@ class CreateReminder
         }
 
         if (! $this->fieldValue->field->type->canDriveAReminder()) {
-            throw new InvalidArgumentException('This kind of field holds no date to be reminded of.');
+            throw new ReminderIsNotValid(__('This kind of field holds no date to be reminded of.'));
         }
 
         if ($this->fieldValue->value_date === null) {
-            throw new InvalidArgumentException('There is no date here to be reminded of.');
+            throw new ReminderIsNotValid(__('There is no date here to be reminded of.'));
         }
 
         $problem = ReminderMoments::problemWith($this->moments);
 
         if ($problem !== null) {
-            throw new InvalidArgumentException($problem);
+            throw new ReminderMomentIsNotValid($problem);
         }
 
         if ($this->frequencyInterval < 1 || $this->frequencyInterval > Reminder::MAXIMUM_INTERVAL) {
-            throw new InvalidArgumentException('A reminder cannot come back that many times over.');
+            throw new ReminderIsNotValid(__('A reminder cannot come back that many times over.'));
+        }
+
+        if (! ReminderTime::isATime($this->timeOfDay)) {
+            throw new ReminderIsNotValid(__('This is not a time of day.'));
         }
 
         if (TimezoneCatalogue::find($this->zone()) === null) {
-            throw new InvalidArgumentException('This is not a time zone the product knows.');
-        }
-
-        if ($this->fieldValue->reminder()->exists()) {
-            throw new InvalidArgumentException('There is already a reminder on this date.');
+            throw new ReminderIsNotValid(__('This is not a time zone the product knows.'));
         }
     }
 
@@ -130,6 +159,17 @@ class CreateReminder
             'is_active' => true,
             'created_by_user_id' => $this->user->id,
         ]);
+    }
+
+    /**
+     * The deadlines the new rule produces inside the rolling window, written now
+     * rather than waiting for the nightly sweep. A reminder somebody has just
+     * asked for and which produces nothing until tomorrow reads as a reminder
+     * that did not work.
+     */
+    private function generate(): void
+    {
+        new GenerateReminderOccurrences(reminder: $this->reminder)->execute();
     }
 
     /**

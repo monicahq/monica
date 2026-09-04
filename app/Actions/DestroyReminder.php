@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ReminderOccurrenceCancelledReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Reminder;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Stop being reminded of a date, without touching the date.
@@ -24,6 +26,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
  *
  * The value it read is left exactly as it was. Somebody who no longer wants to
  * hear about a birthday has not forgotten when it is.
+ *
+ * The deadlines ahead of it go quiet with it, saying the rule was switched off,
+ * and the ones behind it stay exactly as they are. Restoring the rule brings
+ * back the ones that have not gone by in the meantime.
  */
 class DestroyReminder
 {
@@ -36,7 +42,15 @@ class DestroyReminder
     {
         $this->validate();
         $this->log();
-        $this->reminder->delete();
+
+        DB::transaction(function (): void {
+            new CancelReminderOccurrences(
+                reminder: $this->reminder,
+                reason: ReminderOccurrenceCancelledReasonEnum::RuleDisabled,
+            )->execute();
+
+            $this->reminder->delete();
+        });
     }
 
     private function validate(): void

@@ -18,4 +18,6 @@ enum EmailType: string
     case EmailVerification = 'email_verification';
     case MarketplaceListingApproved = 'marketplace_listing_approved';
     case MarketplaceListingRejected = 'marketplace_listing_rejected';
+    case ReminderDue = 'reminder_due';
+    case NotificationDigest = 'notification_digest';
 }

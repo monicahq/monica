@@ -1,6 +1,6 @@
 # 043. NotificationPreference
 
-**Status:** to create
+**Status:** exists (`app/Models/NotificationPreference.php`), one row per account, read on every send
 **Spec:** 10.4, 3.8
 
 ## What it is
@@ -32,19 +32,30 @@ updated_at                  datetime
 ## Relationships
 
 - `belongsTo` [Account](001-account-in-progress.md)
-- read by [Notification](042-notification-not-yet.md) on every delivery
+- read by [Notification](042-notification-done.md) on every delivery
 
 ## Rules
 
-- One row per account, created with the account so delivery never has to handle a missing row.
-- Quiet hours hold a notification, they never drop it (10.4). Something due at 3am arrives at 8am, and the occurrence keeps its real due time ([ReminderOccurrence](041-reminder-occurrence-not-yet.md)).
+- One row per account, created with the account so delivery never has to handle a missing row. Every account that existed before the feature was given one by migration, for the same reason.
+- **The defaults are in-app and email on, push off, quiet hours off, delivery immediate**, in the zone of the account's user. Quiet hours are off because guessing at somebody's sleeping hours and then silently holding their reminders is worse than telling them at the wrong time once.
+- **Quiet hours reach every channel, in-app included.** Section 10.4 says nothing may disturb and carves nothing out.
+- **The digest hour is never held by quiet hours.** It is an hour the account chose deliberately, and an implicit setting overruling an explicit one would move a summary somebody scheduled.
+- **A window with both ends the same is a whole day of quiet**, not an absence of quiet. Nothing is lost by it: the notification waits.
+- **`push_is_enabled` can be switched on and still delivers nothing.** There is no driver, and the model says so rather than letting a preference promise something the product cannot keep.
+- Quiet hours hold a notification, they never drop it (10.4). Something due at 3am arrives at 8am, and the occurrence keeps its real due time ([ReminderOccurrence](041-reminder-occurrence-done.md)).
 - Quiet hours may cross midnight. 22:00 to 08:00 is the obvious setting and the naive comparison gets it wrong.
 - Exceptions defined on a single rule take precedence over these preferences (10.4). `type_overrides` holds the per type layer and the per rule layer lives on the rule itself.
 - Notification preferences add no second lead time to a reminder. When the user wants to be told is expressed by the rule's moments, and each moment has already become an occurrence at that exact time before delivery begins. Moving the notification earlier here would apply the offset twice.
 - Turning every channel off is allowed. Somebody who wants no notifications should not have to disable every rule to get silence.
 - Push must exist server side in v1 even though the mobile applications come later (3.8).
 
+## Not done yet
+
+- **No screen.** The row is created and read, and nothing lets anybody change it but the action behind it. The Notifications entry in the settings has no URL.
+- **No API.**
+- **Push has no driver, and `type_overrides` has no producer.** The column is shaped for per type exceptions and nothing writes one yet.
+
 ## Open questions
 
-- Where push tokens are stored. See the same question on [Notification](042-notification-not-yet.md).
+- Where push tokens are stored. See the same question on [Notification](042-notification-done.md).
 - Whether digest and immediate can be mixed per type, so a reminder arrives at once while a marketplace update waits for the digest. `type_overrides` is shaped to allow it and the specification does not require it.

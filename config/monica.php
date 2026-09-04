@@ -252,6 +252,37 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | How far ahead reminder deadlines are generated
+    |--------------------------------------------------------------------------
+    |
+    | A rule is expanded into concrete deadlines over a rolling window rather
+    | than for ever, because a yearly rule multiplied across hundreds of records
+    | would otherwise fill a table nobody reads. Ninety days is long enough that
+    | no realistic outage of the generator loses a deadline, since the sweep runs
+    | daily and only has to have run once inside the window.
+    |
+    | Shortening it below the interval between two runs of the generator loses
+    | deadlines outright.
+    |
+    */
+
+    'reminder_generation_window_in_days' => env('MONICA_REMINDER_GENERATION_WINDOW_IN_DAYS', 90),
+
+    /*
+    |--------------------------------------------------------------------------
+    | How many times a notification is attempted
+    |--------------------------------------------------------------------------
+    |
+    | A channel that refuses a notification is tried again, and abandoned after
+    | this many attempts with the reason written on the row. Nothing is deleted
+    | on failure, so a notification nobody received is still visible as one.
+    |
+    */
+
+    'notification_maximum_attempts' => env('MONICA_NOTIFICATION_MAXIMUM_ATTEMPTS', 3),
+
+    /*
+    |--------------------------------------------------------------------------
     | The largest single file
     |--------------------------------------------------------------------------
     |

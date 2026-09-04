@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\ReminderInactiveReasonEnum;
+use App\Enums\ReminderOccurrenceCancelledReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -14,6 +15,7 @@ use App\Models\Reminder;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Bring back the reminder rules one cause silenced, now that the cause has been
@@ -28,6 +30,11 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
  * A rule somebody removed by unticking the box is not here at all: that is a
  * soft delete, and it comes back by being restored rather than by being
  * reactivated.
+ *
+ * The deadlines come back the same way, matched on the same reason and only
+ * where their instant has not gone by in the meantime. Whatever the window now
+ * needs and nothing put back is generated afresh, so a rule quiet for a year
+ * does not come back with a gap in front of it.
  */
 class ReactivateReminders
 {
@@ -60,11 +67,24 @@ class ReactivateReminders
 
     private function reactivate(): void
     {
-        $this->count = $this->rules()->update([
-            'is_active' => true,
-            'inactive_reason' => null,
-            'deactivated_at' => null,
-        ]);
+        DB::transaction(function (): void {
+            $revived = $this->rules()->get();
+
+            $this->count = $this->rules()->update([
+                'is_active' => true,
+                'inactive_reason' => null,
+                'deactivated_at' => null,
+            ]);
+
+            foreach ($revived as $rule) {
+                new RestoreReminderOccurrences(
+                    reminder: $rule,
+                    reason: ReminderOccurrenceCancelledReasonEnum::forInactiveReason($this->reason),
+                )->execute();
+
+                new GenerateReminderOccurrences(reminder: $rule->refresh())->execute();
+            }
+        });
     }
 
     /**

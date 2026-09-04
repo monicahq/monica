@@ -8,6 +8,7 @@ use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Models\Contact;
 use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -24,6 +25,15 @@ class ReminderTest extends TestCase
 
         $this->assertTrue($reminder->account()->exists());
         $this->assertTrue($reminder->vault()->exists());
+    }
+
+    #[Test]
+    public function it_has_many_occurrences(): void
+    {
+        $reminder = Reminder::factory()->create();
+        ReminderOccurrence::factory()->create(['reminder_id' => $reminder->id]);
+
+        $this->assertTrue($reminder->occurrences()->exists());
     }
 
     #[Test]

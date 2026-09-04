@@ -21,6 +21,10 @@ use Override;
  * anything the first has not, and somebody who added one twice by accident would
  * otherwise be told about the same day twice for ever.
  *
+ * How far a moment may reach depends on what it counts in. A year of days, a
+ * year of weeks and a year of months are three different numbers, and one
+ * ceiling for all three is what let "365 months before" through.
+ *
  * It refuses rather than tidies. Dropping a duplicate or filling in a missing
  * unit would be deciding on somebody's behalf what they meant.
  *
@@ -128,15 +132,23 @@ class ReminderMoments implements ValidationRule
             return __('A moment before or after the date has to say how much.');
         }
 
-        if ((int) $amount < Reminder::MINIMUM_AMOUNT || (int) $amount > Reminder::MAXIMUM_AMOUNT) {
-            return __('A moment has to be between :min and :max away from the date.', [
-                'min' => Reminder::MINIMUM_AMOUNT,
-                'max' => Reminder::MAXIMUM_AMOUNT,
-            ]);
+        $unit = ReminderMomentUnitEnum::tryFrom((string) ($moment['unit'] ?? ''));
+
+        if ($unit === null) {
+            return __('A moment has to be counted in days, weeks or months.');
         }
 
-        if (ReminderMomentUnitEnum::tryFrom((string) ($moment['unit'] ?? '')) === null) {
-            return __('A moment has to be counted in days, weeks or months.');
+        /* The ceiling belongs to the unit. One number for all three is what let
+           "365 months before" through, which is a reminder about a different
+           date entirely. */
+        if ((int) $amount < Reminder::MINIMUM_AMOUNT || (int) $amount > $unit->maximumAmount()) {
+            /* The unit is not named in the sentence. It is chosen in the control
+               beside the number, and a noun interpolated into a sentence needs a
+               case ending in several of the languages this ships in. */
+            return __('A moment has to be between :min and :max away from the date.', [
+                'min' => Reminder::MINIMUM_AMOUNT,
+                'max' => $unit->maximumAmount(),
+            ]);
         }
 
         return null;

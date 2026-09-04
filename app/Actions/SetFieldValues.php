@@ -7,6 +7,7 @@ namespace App\Actions;
 use App\Enums\FieldTypeEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
+use App\Enums\ReminderOccurrenceCancelledReasonEnum;
 use App\Exceptions\FieldIsRequired;
 use App\Exceptions\ReminderNeedsADate;
 use App\Models\Contact;
@@ -77,6 +78,16 @@ class SetFieldValues
     private int $written = 0;
 
     /**
+     * What each date field held before this save, so that a corrected date can
+     * be told from a date nobody touched. It has to be read before anything is
+     * written, since the row is corrected in place and the old value is gone the
+     * moment it is.
+     *
+     * @var array<int, string|null>
+     */
+    private array $datesBefore = [];
+
+    /**
      * @param  array<int, mixed>  $values  what was typed, keyed by field id
      * @param  array<int, bool>  $yearIsUnknown
      * @param  array<int, bool>  $monthIsUnknown
@@ -105,6 +116,8 @@ class SetFieldValues
         $this->refuseAReminderWithNoDate($fields);
 
         DB::transaction(function () use ($fields): void {
+            $this->rememberTheDates($fields);
+
             foreach ($fields as $field) {
                 $this->save($field);
             }
@@ -181,6 +194,63 @@ class SetFieldValues
     }
 
     /**
+     * What every date that could drive a reminder holds right now.
+     *
+     * @param  Collection<int, Field>  $fields
+     */
+    private function rememberTheDates(Collection $fields): void
+    {
+        foreach ($fields as $field) {
+            if ($field->type->canDriveAReminder()) {
+                $this->datesBefore[$field->id] = $this->dateSignature($this->valueOn($field));
+            }
+        }
+    }
+
+    /**
+     * Everything about a value that changes which days a rule falls on. The
+     * unknown parts count: a date whose year somebody has just filled in reads
+     * from a different year from tomorrow onwards.
+     */
+    private function dateSignature(?FieldValue $value): ?string
+    {
+        if ($value?->value_date === null) {
+            return null;
+        }
+
+        return implode('|', [
+            $value->value_date->format('Y-m-d'),
+            $value->year_is_unknown ? 'y' : '',
+            $value->month_is_unknown ? 'm' : '',
+        ]);
+    }
+
+    /**
+     * Take away the deadlines ahead of a rule whose date somebody corrected, and
+     * make the ones the corrected date defines.
+     *
+     * Correcting a date breaks nothing and loses nothing. What is behind stays
+     * exactly as it was, because it is the record of what somebody was actually
+     * told, and the cancelled rows say the source changed rather than vanishing.
+     */
+    private function rebuildIfTheDateMoved(Field $field, Reminder $rule, FieldValue $value): void
+    {
+        if (($this->datesBefore[$field->id] ?? null) === $this->dateSignature($value)) {
+            return;
+        }
+
+        new CancelReminderOccurrences(
+            reminder: $rule,
+            reason: ReminderOccurrenceCancelledReasonEnum::SourceChanged,
+        )->execute();
+
+        $rule->schedule_revision++;
+        $rule->save();
+
+        new GenerateReminderOccurrences(reminder: $rule->refresh())->execute();
+    }
+
+    /**
      * Write, change or take away the reminder on one date.
      *
      * It runs after every value in the block, because a rule points at the value
@@ -227,6 +297,7 @@ class SetFieldValues
 
         if ($rule instanceof Reminder && $rule->is_active && $rule->field_value_id === $value->id) {
             $this->changeTheRule($field, $rule);
+            $this->rebuildIfTheDateMoved($field, $rule->refresh(), $value);
 
             return;
         }

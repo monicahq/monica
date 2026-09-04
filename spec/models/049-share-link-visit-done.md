@@ -41,7 +41,7 @@ updated_at                  datetime
 ## Not done yet
 
 - **Nothing prunes a row.** Retention is the open question below, so rows accumulate.
-- **Repeated failures tell nobody.** The failed attempts are written down and the two public routes are throttled, which is the part that had to exist first. Telling the owner about a run of them waits for [Notification](042-notification-not-yet.md).
+- **Repeated failures tell nobody.** The failed attempts are written down and the two public routes are throttled, which is the part that had to exist first. [Notification](042-notification-done.md) now exists and is deliberately not limited to reminders, so telling the owner about a run of them is a producer nobody has written rather than a model nobody has built.
 - **Nothing resolves an address to a country.** The column is filled from what the caller passes, `SharedContactController` passes nothing, and no lookup exists behind it. The screen reads the address instead, and switches to the country the day something fills that column.
 
 ## Decisions taken while building it

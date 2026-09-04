@@ -25,6 +25,23 @@ enum ReminderMomentUnitEnum: string
     case Months = 'months';
 
     /**
+     * The largest amount a moment counted in this unit may name.
+     *
+     * One number for all three units is what lets "365 months before" through,
+     * and a moment nearly thirty years off a date is not about that date any
+     * more. Each ceiling sits about a year out, which is the distance past which
+     * the reminder is really about something else.
+     */
+    public function maximumAmount(): int
+    {
+        return match ($this) {
+            self::Days => 365,
+            self::Weeks => 52,
+            self::Months => 12,
+        };
+    }
+
+    /**
      * @return list<string>
      */
     public static function values(): array

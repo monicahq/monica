@@ -8,7 +8,7 @@
 
 **Input**: Build the foundation for reminders at the contact level, from the design `Reminder from a date field.dc.html`: editing a date field on a contact offers a checkbox, and ticking it reveals the wording, the cadence, one or several moments, the local time and the frozen time zone.
 
-[Reminder](../../spec/models/040-reminder-not-yet.md) has no table and no model. This builds the rule and only the rule: models [041](../../spec/models/041-reminder-occurrence-not-yet.md), [042](../../spec/models/042-notification-not-yet.md) and [043](../../spec/models/043-notification-preference-not-yet.md) stay untouched.
+[Reminder](../../spec/models/040-reminder-not-yet.md) has no table and no model. This builds the rule and only the rule: models [041](../../spec/models/041-reminder-occurrence-done.md), [042](../../spec/models/042-notification-done.md) and [043](../../spec/models/043-notification-preference-done.md) stay untouched.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -112,7 +112,7 @@ not hidden and not deleted: it says which happened, and putting the contact or f
 
 ## Assumptions
 
-- **Concrete deadlines are out of scope.** [ReminderOccurrence](../../spec/models/041-reminder-occurrence-not-yet.md) asks how far ahead deadlines are generated and the specification does not answer it, so nothing here stores or generates one; the next date is computed on read. Postponing, skipping and completing arrive with that model, and delivery with 042 and 043: no notification, no quiet hours, no digest, no channel.
+- **Concrete deadlines are out of scope.** [ReminderOccurrence](../../spec/models/041-reminder-occurrence-done.md) asks how far ahead deadlines are generated and the specification does not answer it, so nothing here stores or generates one; the next date is computed on read. Postponing and dismissing arrive with that model, and delivery with 042 and 043: no notification, no quiet hours, no digest, no channel.
 - **Contacts only.** The record a rule is about is stored so an entity can hold one later, but entities have no screens at all today, so nothing here draws one.
 - **The rule lives inside the block's own form and its own save.** A reminder is an answer about a date, not a second screen, which is what the design shows and what keeps the promise that nothing is written until the block is saved.
 - **The cadence offered is the design's**: once, or coming back yearly, monthly, weekly, or every so many years. Weekdays, a day of the month and an end date are columns the specification names and no screen asks for yet.

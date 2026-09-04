@@ -29,6 +29,7 @@ return new class extends Migration
             $table->json('moments')->comment('when to be told, a list of direction, amount and unit, at least one');
             $table->time('time_of_day')->comment('local time it fires at');
             $table->string('timezone', 64)->comment('zone frozen when the rule was made, which a later preference never moves');
+            $table->unsignedInteger('schedule_revision')->default(1)->comment('bumped every time the schedule changes, so a regenerated deadline never collides with one cancelled under the old schedule');
             $table->boolean('is_active')->default(true)->comment('whether the rule still produces anything');
             $table->string('inactive_reason', 32)->nullable()->comment('why it stopped, a ReminderInactiveReasonEnum value, null while it is active');
             $table->timestamp('deactivated_at')->nullable()->comment('when it stopped');

@@ -122,4 +122,45 @@ class ReminderMomentsTest extends TestCase
     {
         return Validator::make(['moments' => $moments], ['moments' => [new ReminderMoments]])->passes();
     }
+
+    #[Test]
+    public function it_lets_a_moment_reach_a_year_out_in_days(): void
+    {
+        $this->assertNull(ReminderMoments::problemWith([
+            ['direction' => 'before', 'amount' => 365, 'unit' => 'days'],
+        ]));
+    }
+
+    #[Test]
+    public function it_refuses_a_moment_reaching_further_than_a_year_in_days(): void
+    {
+        $this->assertNotNull(ReminderMoments::problemWith([
+            ['direction' => 'before', 'amount' => 366, 'unit' => 'days'],
+        ]));
+    }
+
+    #[Test]
+    public function it_measures_the_ceiling_of_a_moment_in_weeks_in_weeks(): void
+    {
+        $this->assertNull(ReminderMoments::problemWith([
+            ['direction' => 'after', 'amount' => 52, 'unit' => 'weeks'],
+        ]));
+        $this->assertNotNull(ReminderMoments::problemWith([
+            ['direction' => 'after', 'amount' => 53, 'unit' => 'weeks'],
+        ]));
+    }
+
+    #[Test]
+    public function it_refuses_the_three_hundred_and_sixty_five_months_one_number_for_every_unit_let_through(): void
+    {
+        $this->assertNull(ReminderMoments::problemWith([
+            ['direction' => 'before', 'amount' => 12, 'unit' => 'months'],
+        ]));
+        $this->assertNotNull(ReminderMoments::problemWith([
+            ['direction' => 'before', 'amount' => 13, 'unit' => 'months'],
+        ]));
+        $this->assertNotNull(ReminderMoments::problemWith([
+            ['direction' => 'before', 'amount' => 365, 'unit' => 'months'],
+        ]));
+    }
 }

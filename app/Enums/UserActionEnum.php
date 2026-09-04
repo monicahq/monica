@@ -134,6 +134,8 @@ enum UserActionEnum: string implements Translatable
     case ReminderRemoval = 'reminder_removed';
     case ReminderDeactivation = 'reminders_deactivated';
     case ReminderReactivation = 'reminders_reactivated';
+    case ReminderOccurrencePostponement = 'reminder_occurrence_postponed';
+    case ReminderOccurrenceDismissal = 'reminder_occurrence_dismissed';
 
     /**
      * What the action reads as in the logs, written about whoever performed it.
@@ -268,6 +270,8 @@ enum UserActionEnum: string implements Translatable
             self::ReminderRemoval => 'Removed the reminder on :label on :name',
             self::ReminderDeactivation => 'Silenced :count reminder about :name|Silenced :count reminders about :name',
             self::ReminderReactivation => 'Brought back :count reminder about :name|Brought back :count reminders about :name',
+            self::ReminderOccurrencePostponement => 'Put off the reminder :name until :date',
+            self::ReminderOccurrenceDismissal => 'Dismissed the reminder :name of :date',
         };
     }
 

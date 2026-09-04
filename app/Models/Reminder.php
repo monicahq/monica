@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
+use App\Enums\ReminderMomentUnitEnum;
 use App\Enums\ReminderSourceEnum;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInVault;
@@ -14,9 +15,11 @@ use Database\Factories\ReminderFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Override;
@@ -27,8 +30,8 @@ use Override;
  * The rule. Section 10.1 takes the word "reminder" apart into four things that
  * behave differently, and this is the second of them: the source is where the
  * need comes from, the rule is the logic, the occurrence is one concrete
- * deadline and the notification is what reaches somebody. Only the rule exists
- * so far, so nothing here is scheduled and nothing is delivered.
+ * deadline and the notification is what reaches somebody. The rule is the only
+ * one of the four somebody configures; the other three follow from it.
  *
  * It hangs off the value it reads rather than off the pair of record and field.
  * That is what caps it at one live rule per value, and it is what makes a date
@@ -62,6 +65,7 @@ use Override;
  * @property array<array-key, mixed> $moments
  * @property string $time_of_day
  * @property string $timezone
+ * @property int $schedule_revision
  * @property bool $is_active
  * @property ReminderInactiveReasonEnum|null $inactive_reason
  * @property CarbonImmutable|null $deactivated_at
@@ -75,6 +79,7 @@ use Override;
  * @property-read Field $field
  * @property-read FieldValue|null $fieldValue
  * @property-read User|null $createdBy
+ * @property-read Collection<int, ReminderOccurrence> $occurrences
  */
 #[RouteKey('uuid')]
 #[Fillable([
@@ -91,6 +96,7 @@ use Override;
     'moments',
     'time_of_day',
     'timezone',
+    'schedule_revision',
     'is_active',
     'inactive_reason',
     'deactivated_at',
@@ -106,14 +112,16 @@ class Reminder extends Model
     use SoftDeletes;
 
     /**
-     * The fewest and the most days, weeks or months a moment may name. One is
-     * the floor because a moment of nothing is the day itself, which has its own
-     * direction; a year of days is the ceiling because past that the rule is
-     * about a different date.
+     * The fewest days, weeks or months a moment may name. One is the floor
+     * because a moment of nothing is the day itself, which has its own
+     * direction.
+     *
+     * There is no matching ceiling here, because how far a moment may reach
+     * depends on what it counts in: {@see ReminderMomentUnitEnum::maximumAmount()}
+     * carries it, and one number for all three units is what let "365 months
+     * before" through.
      */
     public const int MINIMUM_AMOUNT = 1;
-
-    public const int MAXIMUM_AMOUNT = 365;
 
     /**
      * The most times over a cadence may be spaced out. "Every ninety-nine years"
@@ -130,6 +138,20 @@ class Reminder extends Model
     public const string DEFAULT_TIME = '09:00';
 
     /**
+     * The schedule revision a rule starts at.
+     *
+     * The column has the same default, and a row read back from the database
+     * would carry it either way. It is declared here as well so that a rule
+     * still in memory after being created already knows its revision, since the
+     * generation key of every deadline it produces is built from it.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'schedule_revision' => 1,
+    ];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -141,6 +163,7 @@ class Reminder extends Model
             'source' => ReminderSourceEnum::class,
             'cadence' => ReminderCadenceEnum::class,
             'frequency_interval' => 'integer',
+            'schedule_revision' => 'integer',
             'moments' => 'array',
             'is_active' => 'boolean',
             'inactive_reason' => ReminderInactiveReasonEnum::class,
@@ -210,6 +233,20 @@ class Reminder extends Model
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_user_id');
+    }
+
+    /**
+     * Get the concrete deadlines the rule has produced.
+     *
+     * One cycle produces one of these for every moment, so a yearly rule with
+     * two moments leaves two rows a year rather than one with two notifications
+     * hanging off it. That is what makes putting one off touch only that one.
+     *
+     * @return HasMany<ReminderOccurrence, $this>
+     */
+    public function occurrences(): HasMany
+    {
+        return $this->hasMany(ReminderOccurrence::class);
     }
 
     /**

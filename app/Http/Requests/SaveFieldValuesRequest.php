@@ -12,9 +12,11 @@ use App\Models\Contact;
 use App\Models\Field;
 use App\Models\Reminder;
 use App\Models\TemplateVersionSection;
+use App\Rules\ReminderMoments;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 use Override;
 use RuntimeException;
 
@@ -51,11 +53,15 @@ class SaveFieldValuesRequest extends FormRequest
             'fields' => ['array'],
             'year_is_unknown' => ['array'],
             'month_is_unknown' => ['array'],
-            /* What a reminder may be shaped like, and no more. Whether the set
-               of moments says anything, whether the zone is one the product
-               knows and whether there is a date to be reminded of are all
-               questions about the record rather than about an input, so they are
-               answered further in and come back as a sentence over the block. */
+            /* What a reminder may be shaped like. The set of moments is judged
+               below, by the same rule the actions behind this run, and only for
+               a reminder whose box is ticked: an untouched one sends an empty
+               set, and an empty set is exactly what the rule refuses.
+
+               Whether the zone is one the product knows and whether there is a
+               date to be reminded of are questions about the record rather than
+               about an input, so they are answered further in and come back as a
+               sentence over the block. */
             'reminders' => ['array'],
             'reminders.*.on' => ['nullable', 'boolean'],
             'reminders.*.name' => ['nullable', 'string', 'max:255'],
@@ -69,6 +75,36 @@ class SaveFieldValuesRequest extends FormRequest
             'reminders.*.moments.*.amount' => ['nullable', 'integer'],
             'reminders.*.moments.*.unit' => ['nullable', Rule::in(ReminderMomentUnitEnum::values())],
         ], FieldValueRules::for($this->fieldsInTheSection()));
+    }
+
+    /**
+     * Judge the moments of every reminder somebody actually asked for.
+     *
+     * It runs the same {@see ReminderMoments} the actions run, so the form and
+     * the action behind it cannot have different opinions about what a moment
+     * is. Without it a duplicate moment, a missing unit and an amount past what
+     * its unit allows all reach the action, which throws, and somebody gets a
+     * page that failed instead of a sentence under the block.
+     *
+     * @return array<int, callable>
+     */
+    public function after(): array
+    {
+        return [
+            function (Validator $validator): void {
+                foreach ((array) $this->input('reminders', []) as $fieldId => $reminder) {
+                    if (! filter_var($reminder['on'] ?? false, FILTER_VALIDATE_BOOLEAN)) {
+                        continue;
+                    }
+
+                    $problem = ReminderMoments::problemWith($reminder['moments'] ?? []);
+
+                    if ($problem !== null) {
+                        $validator->errors()->add("reminders.{$fieldId}.moments", $problem);
+                    }
+                }
+            },
+        ];
     }
 
     /**

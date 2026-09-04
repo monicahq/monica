@@ -7,18 +7,22 @@ namespace Tests\Unit\Actions;
 use App\Actions\CreateReminder;
 use App\Enums\FieldTypeEnum;
 use App\Enums\ReminderCadenceEnum;
+use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Enums\ReminderSourceEnum;
 use App\Enums\UserActionEnum;
+use App\Exceptions\ReminderIsNotValid;
+use App\Exceptions\ReminderMomentIsNotValid;
+use App\Exceptions\ValueAlreadyHasAReminder;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\Reminder;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
-use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -184,7 +188,7 @@ class CreateReminderTest extends TestCase
             timeOfDay: '09:00',
         )->execute();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ValueAlreadyHasAReminder::class);
 
         new CreateReminder(
             user: $user,
@@ -204,7 +208,7 @@ class CreateReminderTest extends TestCase
         $field = Field::factory()->create(['account_id' => $user->account_id, 'type' => FieldTypeEnum::Text]);
         $value = $this->dateOf($user, $field);
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ReminderIsNotValid::class);
 
         new CreateReminder(
             user: $user,
@@ -225,7 +229,7 @@ class CreateReminderTest extends TestCase
         $value->value_date = null;
         $value->save();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ReminderIsNotValid::class);
 
         new CreateReminder(
             user: $user,
@@ -243,7 +247,7 @@ class CreateReminderTest extends TestCase
 
         $user = User::factory()->create();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ReminderMomentIsNotValid::class);
 
         new CreateReminder(
             user: $user,
@@ -261,7 +265,7 @@ class CreateReminderTest extends TestCase
 
         $user = User::factory()->create();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ReminderIsNotValid::class);
 
         new CreateReminder(
             user: $user,
@@ -280,7 +284,7 @@ class CreateReminderTest extends TestCase
 
         $user = User::factory()->create();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ReminderIsNotValid::class);
 
         new CreateReminder(
             user: $user,
@@ -353,5 +357,33 @@ class CreateReminderTest extends TestCase
             'value_string' => null,
             'value_date' => '1984-02-03',
         ]);
+    }
+
+    #[Test]
+    public function it_writes_the_deadlines_the_new_rule_produces(): void
+    {
+        Queue::fake();
+        CarbonImmutable::setTestNow('2027-05-01 06:00:00');
+        $value = FieldValue::factory()->recurringDate('1984-05-12')->create();
+        $user = $this->userFor($value);
+
+        $reminder = new CreateReminder(
+            user: $user,
+            fieldValue: $value,
+            cadence: ReminderCadenceEnum::Yearly,
+            moments: [['direction' => 'on', 'amount' => null, 'unit' => null]],
+            timeOfDay: '09:00',
+        )->execute();
+
+        $this->assertDatabaseHas('reminder_occurrences', [
+            'reminder_id' => $reminder->id,
+            'generation_key' => '1:2027-05-12:on::',
+            'status' => ReminderOccurrenceStatusEnum::Pending->value,
+        ]);
+    }
+
+    private function userFor(FieldValue $value): User
+    {
+        return User::factory()->create(['account_id' => $value->account_id]);
     }
 }

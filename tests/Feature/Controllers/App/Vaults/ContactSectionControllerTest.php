@@ -23,11 +23,13 @@ use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -755,6 +757,118 @@ class ContactSectionControllerTest extends TestCase
      *
      * @return array{0: TemplateVersion, 1: Field}
      */
+    #[Test]
+    #[DataProvider('badMoments')]
+    public function it_sends_the_block_back_open_when_the_moments_say_nothing_usable(array $moments): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
+        $michael->update(['template_version_id' => $version->id]);
+        $section = $this->sectionNamed($version, 'Dates');
+
+        $response = $this->actingAs($user)
+            ->put(route('contacts.sections.update', [
+                'vault' => $vault,
+                'contact' => $michael,
+                'templateVersionSection' => $section,
+            ]), [
+                'fields' => [$birthday->id => '1984-02-03'],
+                'reminders' => [$birthday->id => $this->askedFor(['moments' => $moments])],
+            ]);
+
+        $response->assertRedirect()->assertSessionHasErrors("reminders.{$birthday->id}.moments");
+        $this->assertDatabaseCount('reminders', 0);
+    }
+
+    /**
+     * @return array<string, array{0: array<int, array<string, string|null>>}>
+     */
+    public static function badMoments(): array
+    {
+        return [
+            'the same moment twice' => [[
+                ['direction' => 'before', 'amount' => '7', 'unit' => 'days'],
+                ['direction' => 'before', 'amount' => '7', 'unit' => 'days'],
+            ]],
+            'twenty four months before' => [[
+                ['direction' => 'before', 'amount' => '24', 'unit' => 'months'],
+            ]],
+            'four hundred days before' => [[
+                ['direction' => 'before', 'amount' => '400', 'unit' => 'days'],
+            ]],
+            'sixty weeks after' => [[
+                ['direction' => 'after', 'amount' => '60', 'unit' => 'weeks'],
+            ]],
+            'no moment at all' => [[]],
+            'a moment with no amount' => [[
+                ['direction' => 'before', 'amount' => null, 'unit' => 'days'],
+            ]],
+        ];
+    }
+
+    #[Test]
+    public function it_leaves_the_moments_alone_when_nobody_asked_for_a_reminder(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
+        $michael->update(['template_version_id' => $version->id]);
+        $section = $this->sectionNamed($version, 'Dates');
+
+        $this->actingAs($user)
+            ->put(route('contacts.sections.update', [
+                'vault' => $vault,
+                'contact' => $michael,
+                'templateVersionSection' => $section,
+            ]), [
+                'fields' => [$birthday->id => '1984-02-03'],
+                'reminders' => [$birthday->id => $this->askedFor(['on' => null, 'moments' => []])],
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('status', 'Saved.');
+    }
+
+    #[Test]
+    public function it_writes_the_deadlines_of_the_reminder_it_just_saved(): void
+    {
+        Queue::fake();
+        CarbonImmutable::setTestNow('2027-01-01 06:00:00');
+
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
+        $michael->update(['template_version_id' => $version->id]);
+        $section = $this->sectionNamed($version, 'Dates');
+
+        $this->actingAs($user)
+            ->put(route('contacts.sections.update', [
+                'vault' => $vault,
+                'contact' => $michael,
+                'templateVersionSection' => $section,
+            ]), [
+                'fields' => [$birthday->id => '1984-02-03'],
+                'reminders' => [$birthday->id => $this->askedFor()],
+            ])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('reminder_occurrences', [
+            'source_local_date' => '2027-02-03',
+            'local_date' => '2027-01-27',
+            'status' => 'pending',
+        ]);
+    }
+
     private function versionWithADate(User $user, FieldTypeEnum $type): array
     {
         $version = $this->versionWithSections($user, 'Important', ['Dates' => 'Birthday']);

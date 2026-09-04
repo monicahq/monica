@@ -65,7 +65,7 @@ updated_at                  datetime
 
 - **A vault link renders nothing.** `s/{token}` opens a contact page and says plainly that a whole vault has no page yet. The columns and the actions treat both alike; only the screen is missing.
 - **Five inclusions store an intent nothing reads.** Files, activities, activity narratives, day narratives, relationships and group memberships have no models yet ([Activity](036-activity-not-yet.md), [JournalDay](039-journal-day-not-yet.md), [Relationship](026-relationship-not-yet.md), [Group](032-group-not-yet.md)), and neither does `excluded_activity_ids`. The columns are written and read back honestly, nothing acts on them, and the form does not offer a control for any of them.
-- **Nothing keeps notifications away from a viewer** (10.4), since [Notification](042-notification-not-yet.md) does not exist and there is nothing to keep away.
+- **Nothing has to keep notifications away from a viewer** (10.4). [Notification](042-notification-done.md) is addressed to a `user_id`, and somebody holding a link is not a user of the account, so there is no path by which one could reach them.
 
 ## What renders it
 

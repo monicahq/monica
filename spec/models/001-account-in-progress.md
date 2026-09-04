@@ -32,7 +32,7 @@ Section 3.4 removes the subscription the table used to carry: the hosted version
 - `hasMany` [Vault](007-vault-in-progress.md)
 - `hasMany` [ValueList](009-value-list-in-progress.md), [EntityType](011-entity-type-done.md), [Template](012-template-in-progress.md), [Section](014-section-in-progress.md), [ActivityType](035-activity-type-not-yet.md), [Mood](038-mood-not-yet.md), [GroupType](031-group-type-not-yet.md), [RelationshipType](024-relationship-type-not-yet.md), [RelationshipQualifier](028-relationship-qualifier-not-yet.md)
 - `hasMany` [File](008-file-in-progress.md), [Log](004-log-in-progress.md), [EmailSent](005-email-sent-in-progress.md), [ShareLink](048-share-link-done.md), [WebhookSubscription](050-webhook-subscription-not-yet.md), [ModuleInstallation](053-module-installation-not-yet.md)
-- `hasOne` [NotificationPreference](043-notification-preference-not-yet.md)
+- `hasOne` [NotificationPreference](043-notification-preference-done.md)
 
 ## Rules
 
@@ -43,10 +43,10 @@ Section 3.4 removes the subscription the table used to carry: the hosted version
 
 ## Not done yet
 
-- The rest of the seeding rule. Creating an account creates the user, the default vault and the supplied value lists, then asks a job for the supplied contact template. All nine lists are seeded, including the countries, languages and currencies section 5.4 names, each with ten choices to start from (see [ValueList](009-value-list-in-progress.md)). The activity types, moods, relationship types and qualifiers, group types and the `Moi` contact all wait on models 011 and later.
+- The rest of the seeding rule. Creating an account creates the user, the default vault, the supplied value lists and the notification preferences ([NotificationPreference](043-notification-preference-done.md)), then asks a job for the supplied contact template. All nine lists are seeded, including the countries, languages and currencies section 5.4 names, each with ten choices to start from (see [ValueList](009-value-list-in-progress.md)). The activity types, moods, relationship types and qualifiers, group types and the `Moi` contact all wait on models 011 and later.
 - The template arrives a moment after the account rather than with it, since `CreateDefaultTemplate` is queued. It is read as soon as it lands: the job points every vault of the account at the version it publishes ([VaultDefaultTemplate](018-vault-default-template-done.md)), and that is what a new contact starts from. What is not settled is whether the rest of the seeding joins it on the queue: the value lists are nine lists the template itself reads, so they stay where they are.
 - The supplied contact template asks a little more than it did and still not everything. Three pages, six sections: a category, a gender and a birthday; an email address, a phone number and a website; an address; a repeater of documents and one of photographs; a note. A relation and a repeater of labelled phone numbers wait on the controls that would let somebody fill one in. The single phone field is still a stopgap.
-- The relationships to the models that do not exist yet. Only user, vaults, contacts, value lists, entity types, logs and emails sent are wired; templates, sections and files are reached through the models that carry them rather than from here.
+- The relationships to the models that do not exist yet. Only user, vaults, contacts, value lists, entity types, logs, emails sent, notifications and the notification preferences are wired; templates, sections and files are reached through the models that carry them rather than from here.
 - One user per account is a `hasOne` on the model, but the database does not enforce it. The unique index on `users.account_id` belongs to [User](002-user-done.md).
 - The rest of the account deletion. `DestroyAccount` is wired to the profile screen, behind a warning and the address typed out in full, and it clears the photo files and the API keys before cascading through the foreign keys. Every new table has to join that cascade, and anything it writes outside the database has to be removed there too.
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\ReminderInactiveReasonEnum;
+use App\Enums\ReminderOccurrenceCancelledReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -14,6 +15,7 @@ use App\Models\Reminder;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Silence every reminder rule a subject carries, for the reason given.
@@ -34,6 +36,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
  * A rule already quiet for another reason is left exactly as it is. Overwriting
  * its reason would lose the first explanation and make the wrong reversal bring
  * it back.
+ *
+ * Silencing a rule takes its deadlines ahead away too, under the reason matching
+ * the one that silenced it, so that reversing the cause brings back exactly what
+ * it silenced. What is behind is history and is never touched.
  */
 class DeactivateReminders
 {
@@ -66,11 +72,22 @@ class DeactivateReminders
 
     private function deactivate(): void
     {
-        $this->count = $this->rules()->update([
-            'is_active' => false,
-            'inactive_reason' => $this->reason,
-            'deactivated_at' => now(),
-        ]);
+        DB::transaction(function (): void {
+            $silenced = $this->rules()->get();
+
+            $this->count = $this->rules()->update([
+                'is_active' => false,
+                'inactive_reason' => $this->reason,
+                'deactivated_at' => now(),
+            ]);
+
+            foreach ($silenced as $rule) {
+                new CancelReminderOccurrences(
+                    reminder: $rule,
+                    reason: ReminderOccurrenceCancelledReasonEnum::forInactiveReason($this->reason),
+                )->execute();
+            }
+        });
     }
 
     /**

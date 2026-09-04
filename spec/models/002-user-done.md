@@ -48,7 +48,7 @@ No role, no permission, no invitation, no membership. Section 4.1 removes them, 
 ## Relationships
 
 - `belongsTo` [Account](001-account-in-progress.md)
-- `hasMany` [MagicLink](003-magic-link-in-progress.md), [Log](004-log-in-progress.md), [EmailSent](005-email-sent-in-progress.md), [Notification](042-notification-not-yet.md)
+- `hasMany` [MagicLink](003-magic-link-in-progress.md), [Log](004-log-in-progress.md), [EmailSent](005-email-sent-in-progress.md), [Notification](042-notification-done.md)
 - `morphMany` [PersonalAccessToken](006-personal-access-token-in-progress.md)
 
 ## Rules
@@ -63,7 +63,7 @@ No role, no permission, no invitation, no membership. Section 4.1 removes them, 
 - The screen for the rest of the preferences. The preferences screen offers the language, the clock, the order dates read in, the separators numbers are written with, and the time zone, which is searched by city or country or pointed at on a world map. `name_order` is stored and asked for nowhere (3.7): a contact carries its own, and one that carries none reads given name first rather than following this column.
 - Only the preferences screen reads `timezone`, where the clock and the date it previews are written in it so the choice can be seen to have taken. Every other screen still renders in the time zone of the instance, and the rule that freezes a zone belongs to [Reminder](040-reminder-in-progress.md).
 - `date_format` is read on a record and nowhere else. `FieldValueFormatter` writes every date somebody entered in the order this person reads dates in, falling back to the order of their language. Every other date on every other screen is either how long ago it was or a fixed long form, and neither asks the preference. `number_format` is read by nothing outside the screen that sets it, since no screen shows a number worth grouping.
-- The relationship to [Notification](042-notification-not-yet.md), which does not exist yet.
+- Nothing here reads the notifications addressed to the user. [Notification](042-notification-done.md) carries `user_id` and the relationship can be added the day a screen asks for it.
 
 ## Open questions
 

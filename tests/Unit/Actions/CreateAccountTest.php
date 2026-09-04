@@ -61,6 +61,28 @@ class CreateAccountTest extends TestCase
     }
 
     #[Test]
+    public function it_gives_the_account_the_preferences_delivery_reads(): void
+    {
+        $user = new CreateAccount(
+            firstName: 'Michael',
+            lastName: 'Scott',
+            email: 'michael@dundermifflin.com',
+            password: 'Th3W0rldsB3stB0ss',
+            timezone: 'America/New_York',
+        )->execute();
+
+        $this->assertDatabaseHas('notification_preferences', [
+            'account_id' => $user->account_id,
+            'in_app_is_enabled' => true,
+            'email_is_enabled' => true,
+            'push_is_enabled' => false,
+            'quiet_hours_are_enabled' => false,
+            'delivery_mode' => 'immediate',
+            'timezone' => 'America/New_York',
+        ]);
+    }
+
+    #[Test]
     public function it_gives_the_account_a_vault_to_put_contacts_in(): void
     {
         Queue::fake();

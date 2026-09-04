@@ -7,6 +7,8 @@ namespace Tests\Unit\Actions;
 use App\Actions\UpdateReminder;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\UserActionEnum;
+use App\Exceptions\ReminderIsNotValid;
+use App\Exceptions\ReminderMomentIsNotValid;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Field;
@@ -16,7 +18,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
-use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -144,7 +145,7 @@ class UpdateReminderTest extends TestCase
 
         $user = User::factory()->create();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ReminderMomentIsNotValid::class);
 
         new UpdateReminder(
             user: $user,
@@ -162,7 +163,7 @@ class UpdateReminderTest extends TestCase
 
         $user = User::factory()->create();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ReminderIsNotValid::class);
 
         new UpdateReminder(
             user: $user,

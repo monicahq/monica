@@ -74,6 +74,13 @@
   /* How many blank moments one save may add. Each is a full row of controls, so
      this is a real cost on the page rather than a round number. */
   $blanks = 3;
+
+  /* The ceiling on a moment, per unit, so the control offers what the rule
+     accepts rather than one number that is wrong for two of the three. */
+  $maximums = collect(ReminderMomentUnitEnum::cases())
+      ->mapWithKeys(fn (ReminderMomentUnitEnum $unit): array => [$unit->value => $unit->maximumAmount()])
+      ->all();
+
   $held = $reminder['moments'];
   $heldCount = count($held);
 
@@ -130,6 +137,14 @@
     time: @js($reminder['time']),
     zone: @js($reminder['timezone']),
     words: @js($reminder['words']),
+    maximums: @js($maximums),
+    /* How far a moment may reach depends on what it counts in, so the ceiling
+       on the input follows the unit beside it. The action refuses anything past
+       it either way; this is so the control does not invite a number that is
+       going to come back refused. */
+    maximumFor(index) {
+      return this.maximums[this.rows[index].unit] ?? 1;
+    },
     isDrawn(index) {
       return index < this.held + this.shown;
     },
@@ -326,7 +341,7 @@
                   name="{{ $name }}[moments][{{ $index }}][amount]"
                   value="{{ $row['amount'] }}"
                   min="{{ Reminder::MINIMUM_AMOUNT }}"
-                  max="{{ Reminder::MAXIMUM_AMOUNT }}"
+                  :max="maximumFor({{ $index }})"
                   aria-label="{{ __('How much') }}"
                   x-model="rows[{{ $index }}].amount"
                   class="w-20 {{ $control }}"

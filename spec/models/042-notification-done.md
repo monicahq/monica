@@ -1,6 +1,6 @@
 # 042. Notification
 
-**Status:** to create
+**Status:** exists (`app/Models/Notification.php`), made, held and delivered on two channels
 **Spec:** 10.1, 10.4, 3.3, 7, 14.4
 
 ## What it is
@@ -18,18 +18,19 @@ account_id                  int                             account the notifica
 user_id                     int                             user it is for
 type                        string (64)                     what it is about, such as reminder_due or marketplace_update_available
 channel                     enum (in_app, email, push)      how it was delivered
-notifiable_type             string (255)                    class of what it is about, an occurrence, an installation, a subscription
-notifiable_id               int                             id of that object
+notifiable_type             string (255)                    class of what it is about, an occurrence, an installation, a subscription, null on a digest
+notifiable_id               int                             id of that object, null on a digest
 title                       string (255)                    the line the user reads first
 body                        text                            the rest of what it says
 payload                     json                            data the interface needs to render it and to offer its actions
 locale                      string (5)                      language it was rendered in
-scheduled_for               datetime                        when it should go out
-held_until                  datetime                        when it may go out, once quiet hours have pushed it back
+scheduled_for               datetime                        when it was due, copied from the deadline and never recomputed
+held_until                  datetime                        when it may go out, always written, equal to scheduled_for when nothing holds it
 sent_at                     datetime                        when it was handed to the channel
 delivered_at                datetime                        when the channel confirmed delivery, null when it cannot confirm
 failed_at                   datetime                        when delivery failed
-failure_reason              string (255)                    why it failed
+failure_reason              string (255)                    why nothing was sent
+attempts                    int                             how many times the channel was tried, so a bounded retry is visible on the row
 read_at                     datetime                        when the user read it, for the in app channel
 digest_id                   int                             daily digest it was folded into, null when it went out on its own
 created_at                  datetime
@@ -39,7 +40,7 @@ updated_at                  datetime
 ## Relationships
 
 - `belongsTo` [Account](001-account-in-progress.md), [User](002-user-done.md)
-- `morphTo` notifiable, most often a [ReminderOccurrence](041-reminder-occurrence-not-yet.md)
+- `morphTo` notifiable, most often a [ReminderOccurrence](041-reminder-occurrence-done.md)
 - `belongsTo` self as the digest it belongs to
 
 ## Rules
@@ -50,7 +51,19 @@ updated_at                  datetime
 - A notification never goes to somebody viewing a share link (10.4, 4.4). Share link viewers are not users of the account and receive nothing.
 - A held notification is checked again before it goes out, and it does not go out if the record it is about was archived or deleted while it waited. A reminder due at 3am on a contact archived at 7am must not arrive at 8am. The row stays, with `failure_reason` saying why nothing was sent, since a notification that was silently dropped is indistinguishable from one that was never scheduled.
 - `locale` is stored so a language bug is visible after the fact, as on [EmailSent](005-email-sent-in-progress.md).
-- Nothing is deleted silently. A failed delivery keeps its reason.
+- Nothing is deleted silently. A failed delivery keeps its reason, and is retried up to `notification_maximum_attempts` before being abandoned.
+- **Nobody is told twice.** A unique index over `notifiable_type, notifiable_id, channel, user_id, scheduled_for` refuses a second row about the same thing on the same channel. The instant is in the key because putting a deadline off moves it, and somebody who asked to be told later has to be told later: without it a postponed deadline could never produce a second notification. A digest leaves the first two columns null and collides with nothing on any of the three drivers.
+- **An obsolete delivery never escapes.** Postponing an occurrence abandons every unsent notification for its former instant, and dismissing it abandons every unsent notification for that occurrence. Delivery checks both the occurrence state and that the notification still names its current `scheduled_for`, so a row already held by quiet hours or picked up by a worker cannot outlive the action. Sent rows remain as history.
+- `held_until` is always written rather than left null when nothing holds the notification, so the sweep that finds what may go out is one comparison instead of two.
+- The name is `App\Models\Notification` and has nothing to do with Laravel's own notification system, which lives in `app/Notifications` and carries the framework's email verification.
+
+## Not done yet
+
+- **Only in-app and email are delivered.** `push` is a channel and a preference with no driver behind it, which the constitution asks for on the server before the native applications arrive. Nothing pretends to deliver it.
+- **The in-app channel has no screen.** The row is the notification, and there is no notification centre to read it in, so today it is visible only by email or in the table.
+- **Only reminders produce one.** A marketplace update and a webhook subscription switched off are both meant to arrive here, and neither is wired.
+- **No API and no webhook.**
+- **No retention.** See the open question below.
 
 ## Open questions
 

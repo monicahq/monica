@@ -56,6 +56,7 @@ class ReminderFactory extends Factory
             ],
             'time_of_day' => '09:00:00',
             'timezone' => 'Europe/Paris',
+            'schedule_revision' => 1,
             'is_active' => true,
             'inactive_reason' => null,
             'deactivated_at' => null,

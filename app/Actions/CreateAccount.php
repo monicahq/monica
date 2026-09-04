@@ -33,6 +33,10 @@ use Illuminate\Support\Facades\DB;
  * outset, which is the same state an account reaches by giving its password up
  * later, and CreateUser already leaves password_changed_at null to match.
  *
+ * How the account wants to be told things is made here too, for the same
+ * reason the vault is: nothing that reads it should ever have to handle its
+ * absence.
+ *
  * The template a contact is written down with is asked for rather than written
  * here, since nobody is looking at it while the sign-up page is still open. It
  * is asked for once the rows above are committed, so that a worker reaching for
@@ -60,6 +64,7 @@ class CreateAccount
             $this->createUser();
             $this->createFirstVault();
             $this->createDefaultValueLists();
+            $this->createNotificationPreference();
         });
 
         event(new Registered($this->user));
@@ -106,6 +111,16 @@ class CreateAccount
     private function createDefaultValueLists(): void
     {
         new CreateDefaultValueLists(user: $this->user)->execute();
+    }
+
+    /**
+     * How the account wants to be told things, made here rather than the first
+     * time somebody opens a settings screen. Delivery reads it on every send and
+     * is written on the promise that it is there.
+     */
+    private function createNotificationPreference(): void
+    {
+        new CreateNotificationPreference(account: $this->account)->execute();
     }
 
     /**

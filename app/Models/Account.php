@@ -186,6 +186,30 @@ class Account extends Model
     }
 
     /**
+     * Get how the account wants to be told things.
+     *
+     * Exactly one row, made with the account, so that delivery never has to
+     * handle a missing one. Section 10.4 puts the choice at the account level
+     * because every send reads all of it at once.
+     *
+     * @return HasOne<NotificationPreference, $this>
+     */
+    public function notificationPreference(): HasOne
+    {
+        return $this->hasOne(NotificationPreference::class);
+    }
+
+    /**
+     * Get everything the account has been told, on every channel.
+     *
+     * @return HasMany<Notification, $this>
+     */
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    /**
      * Get whether the account is metered. A self hosted instance never is, and
      * neither is an account with no ceiling on the cloud one.
      */

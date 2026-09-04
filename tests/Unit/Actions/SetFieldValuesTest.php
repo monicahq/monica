@@ -8,6 +8,8 @@ use App\Actions\SetFieldValues;
 use App\Enums\FieldTypeEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
+use App\Enums\ReminderOccurrenceCancelledReasonEnum;
+use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Enums\RepetitionOrderEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\FieldIsRequired;
@@ -18,6 +20,7 @@ use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\File;
 use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\SectionVersion;
 use App\Models\TemplateVersion;
 use App\Models\TemplateVersionSection;
@@ -25,6 +28,7 @@ use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
 use App\Models\Vault;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -1194,6 +1198,143 @@ class SetFieldValuesTest extends TestCase
      *
      * @return list<string|null>
      */
+    #[Test]
+    public function it_replaces_the_deadlines_ahead_when_somebody_corrects_the_date(): void
+    {
+        Queue::fake();
+        CarbonImmutable::setTestNow('2027-01-01 06:00:00');
+
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::RecurringDate, 'label' => 'Birthday']);
+        $section = $this->sectionOf($field);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => '1984-02-03'],
+            reminders: [$field->id => $this->asked()],
+        )->execute();
+
+        $before = ReminderOccurrence::query()->pluck('id');
+        $this->assertTrue($before->isNotEmpty());
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => '1984-02-10'],
+            reminders: [$field->id => $this->asked()],
+        )->execute();
+
+        foreach ($before as $id) {
+            $this->assertDatabaseHas('reminder_occurrences', [
+                'id' => $id,
+                'status' => ReminderOccurrenceStatusEnum::Cancelled->value,
+                'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::SourceChanged->value,
+            ]);
+        }
+
+        $this->assertDatabaseHas('reminder_occurrences', [
+            'source_local_date' => '2027-02-10',
+            'status' => ReminderOccurrenceStatusEnum::Pending->value,
+        ]);
+    }
+
+    #[Test]
+    public function it_leaves_the_deadlines_alone_when_the_date_is_saved_unchanged(): void
+    {
+        Queue::fake();
+        CarbonImmutable::setTestNow('2027-01-01 06:00:00');
+
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::RecurringDate, 'label' => 'Birthday']);
+        $section = $this->sectionOf($field);
+
+        foreach ([1, 2] as $ignored) {
+            new SetFieldValues(
+                user: $user,
+                record: $contact,
+                section: $section,
+                values: [$field->id => '1984-02-03'],
+                reminders: [$field->id => $this->asked()],
+            )->execute();
+        }
+
+        $this->assertSame(0, ReminderOccurrence::query()
+            ->where('status', ReminderOccurrenceStatusEnum::Cancelled->value)
+            ->count());
+    }
+
+    #[Test]
+    public function it_cancels_the_deadlines_when_somebody_clears_the_date(): void
+    {
+        Queue::fake();
+        CarbonImmutable::setTestNow('2027-01-01 06:00:00');
+
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::RecurringDate, 'label' => 'Birthday']);
+        $section = $this->sectionOf($field);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => '1984-02-03'],
+            reminders: [$field->id => $this->asked()],
+        )->execute();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => null],
+            reminders: [$field->id => $this->asked(['on' => null])],
+        )->execute();
+
+        $this->assertSame(0, ReminderOccurrence::query()
+            ->where('status', '!=', ReminderOccurrenceStatusEnum::Cancelled->value)
+            ->count());
+        $this->assertSame(0, ReminderOccurrence::query()
+            ->where('cancelled_reason', '!=', ReminderOccurrenceCancelledReasonEnum::ValueCleared->value)
+            ->count());
+    }
+
+    #[Test]
+    public function it_cancels_the_deadlines_when_the_box_is_unticked(): void
+    {
+        Queue::fake();
+        CarbonImmutable::setTestNow('2027-01-01 06:00:00');
+
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::RecurringDate, 'label' => 'Birthday']);
+        $section = $this->sectionOf($field);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => '1984-02-03'],
+            reminders: [$field->id => $this->asked()],
+        )->execute();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => '1984-02-03'],
+            reminders: [$field->id => $this->asked(['on' => null])],
+        )->execute();
+
+        $this->assertSame(0, ReminderOccurrence::query()
+            ->where('cancelled_reason', '!=', ReminderOccurrenceCancelledReasonEnum::RuleDisabled->value)
+            ->count());
+    }
+
     private function descriptionsIn(Contact $contact, Field $repeater, Field $child): array
     {
         return FieldValueRow::query()

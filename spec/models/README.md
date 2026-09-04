@@ -41,8 +41,10 @@ Every file follows the same shape.
 | 005 | [EmailSent](005-email-sent-in-progress.md) | exists, minor changes |
 | 006 | [PersonalAccessToken](006-personal-access-token-in-progress.md) | exists, changes needed |
 
-Models 007 to 023 exist as well, and so does 040, the reminder rule, which was built ahead of the
-journal it will one day also read from. Each file says how far it is built and what it is waiting on.
+Models 007 to 023 exist as well, and so do 040 to 043, the reminder chain: the rule, the concrete
+deadlines it produces, the notifications that carry them and the preferences that say how. It was
+built ahead of the journal it will one day also read from, and ahead of every screen that will show
+it. Each file says how far it is built and what it is waiting on.
 
 ### The compartments and the files
 
@@ -114,9 +116,9 @@ Model 055, [TemplateVersionPage](055-template-version-page-done.md), is a later 
 | # | Model | Spec |
 |---|---|---|
 | 040 | [Reminder](040-reminder-in-progress.md) | 10.1, 10.2 |
-| 041 | [ReminderOccurrence](041-reminder-occurrence-not-yet.md) | 10.1, 10.3 |
-| 042 | [Notification](042-notification-not-yet.md) | 10.4 |
-| 043 | [NotificationPreference](043-notification-preference-not-yet.md) | 10.4 |
+| 041 | [ReminderOccurrence](041-reminder-occurrence-done.md) | 10.1, 10.3 |
+| 042 | [Notification](042-notification-done.md) | 10.4 |
+| 043 | [NotificationPreference](043-notification-preference-done.md) | 10.4 |
 
 ### The marketplace
 
