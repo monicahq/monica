@@ -359,6 +359,39 @@ class TemplateBuilderControllerTest extends TestCase
         $this->get(route('settings.templateBuilder.index', $template))->assertRedirect(route('auth.login.new'));
     }
 
+    #[Test]
+    public function it_offers_the_version_history_once_the_template_has_more_than_one_version(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $first = TemplateVersion::factory()->published()->create(['template_id' => $template->id, 'version_number' => 1]);
+        TemplateVersion::factory()->create([
+            'template_id' => $template->id,
+            'version_number' => 2,
+            'previous_version_id' => $first->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
+
+        $response->assertStatus(200);
+        $response->assertSee('Version history');
+        $response->assertSee('href="'.route('settings.templateVersions.index', $template).'"', escape: false);
+    }
+
+    #[Test]
+    public function it_hides_the_version_history_while_the_template_has_a_single_version(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+
+        $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
+
+        $response->assertStatus(200);
+        $response->assertDontSee('Version history');
+        $response->assertDontSee('href="'.route('settings.templateVersions.index', $template).'"', escape: false);
+    }
+
     private function sectionOn(User $user, TemplateVersion $version, TemplateVersionPage $page, string $name): TemplateVersionSection
     {
         $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => $name]);

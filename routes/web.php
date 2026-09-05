@@ -57,6 +57,7 @@ use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPageContr
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPositionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateShareController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionController;
+use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionHistoryController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicationController;
 use App\Http\Controllers\App\Settings\SettingsController;
 use App\Http\Controllers\App\SharedContactController;
@@ -296,6 +297,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::get('settings/account/templates/{template}/builder/{page?}', [TemplateBuilderController::class, 'index'])->name('settings.templateBuilder.index');
     Route::get('settings/account/templates/{template}/builder/{page}/fields/{field}', [TemplateBuilderController::class, 'index'])->whereNumber('field')->name('settings.templateBuilder.field');
+    Route::get('settings/account/templates/{template}/versions', [TemplateVersionHistoryController::class, 'index'])->name('settings.templateVersions.index');
     Route::post('settings/account/templates/{template}/versions', [TemplateVersionController::class, 'create'])->name('settings.templateVersions.create');
     Route::delete('settings/account/templates/{template}/versions/{templateVersion}', [TemplateVersionController::class, 'destroy'])->whereNumber('templateVersion')->name('settings.templateVersions.destroy');
     Route::put('settings/account/templates/{template}/versions/{templateVersion}/published', [TemplateVersionPublicationController::class, 'update'])->whereNumber('templateVersion')->name('settings.templateVersionPublication.update');

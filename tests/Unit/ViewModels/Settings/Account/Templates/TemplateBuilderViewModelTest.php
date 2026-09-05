@@ -477,6 +477,20 @@ class TemplateBuilderViewModelTest extends TestCase
         $this->assertEquals([['id' => $events->id, 'uuid' => $events->uuid, 'label' => 'Life events']], $others);
     }
 
+    #[Test]
+    public function it_has_a_history_only_once_the_template_has_more_than_one_version(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+
+        $this->assertFalse(new TemplateBuilderViewModel(user: $user, template: $template->fresh())->hasHistory());
+
+        TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 2]);
+
+        $this->assertTrue(new TemplateBuilderViewModel(user: $user, template: $template->fresh())->hasHistory());
+    }
+
     /** @return array{0: Template, 1: TemplateVersionSection} */
     private function templateCarryingASection(User $user): array
     {

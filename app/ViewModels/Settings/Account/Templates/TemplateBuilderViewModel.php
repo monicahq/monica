@@ -49,6 +49,11 @@ class TemplateBuilderViewModel
         return $this->version()?->status->isEditable() === true;
     }
 
+    public function hasHistory(): bool
+    {
+        return $this->template->versions->count() > 1;
+    }
+
     public function isShareable(): bool
     {
         return $this->template->published_version_id !== null
