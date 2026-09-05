@@ -63,6 +63,7 @@ class ApiDocsControllerTest extends TestCase
         $response->assertSee('Emails sent');
         $response->assertSee('Vaults');
         $response->assertSee('Contacts');
+        $response->assertSee('Entity types');
         $response->assertSee('Introduction');
         $response->assertSee('Pagination');
     }
@@ -132,7 +133,7 @@ class ApiDocsControllerTest extends TestCase
             new ApiDocsViewModel()->sections(),
         );
 
-        $this->assertCount(34, $ids);
+        $this->assertCount(41, $ids);
 
         foreach ($ids as $id) {
             $this->get(route('docs.api.show', ['section' => $id]))

@@ -11,6 +11,9 @@ use App\Http\Controllers\Api\ContactFavouriteController;
 use App\Http\Controllers\Api\ContactNameController;
 use App\Http\Controllers\Api\ContactTemplateVersionController;
 use App\Http\Controllers\Api\EmailSentController;
+use App\Http\Controllers\Api\EntityTypeActivationController;
+use App\Http\Controllers\Api\EntityTypeController;
+use App\Http\Controllers\Api\EntityTypePositionController;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\MeTimezoneController;
@@ -68,6 +71,30 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::post('vaults', [VaultController::class, 'create'])->name('vaults.create');
         Route::put('vaults/{vault}', [VaultController::class, 'update'])->where('vault', '[0-9a-fA-F-]{36}')->name('vaults.update');
         Route::delete('vaults/{vault}', [VaultController::class, 'destroy'])->where('vault', '[0-9a-fA-F-]{36}')->name('vaults.destroy');
+
+        // The kinds of object the account invented, when nothing the product
+        // ships with fits. A type belongs to the account rather than to a vault,
+        // so a type declared once is visible in every vault, and no vault appears
+        // in the address.
+        //
+        // The browser reaches a type by its slug, which is readable and is what a
+        // URL wants. This does not: the uuid is what the model keeps for the API,
+        // and the constraint means an address of the wrong shape, a slug included,
+        // is refused before a query runs. The slug is handed out in the answer, so
+        // a caller can still build a link into the application.
+        Route::get('entity-types', [EntityTypeController::class, 'index'])->name('entityTypes');
+        Route::get('entity-types/{entityType}', [EntityTypeController::class, 'show'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.show');
+        Route::post('entity-types', [EntityTypeController::class, 'create'])->name('entityTypes.create');
+        Route::put('entity-types/{entityType}', [EntityTypeController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.update');
+        Route::delete('entity-types/{entityType}', [EntityTypeController::class, 'destroy'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.destroy');
+
+        // The two decisions about a type that are not corrections to its
+        // wording: whether records may still be filed under it, and where it
+        // sits in the navigation. Each has its own address because each is its
+        // own operation with its own entry in the journal, and because neither
+        // may be made by accident while renaming.
+        Route::put('entity-types/{entityType}/activation', [EntityTypeActivationController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.activation.update');
+        Route::put('entity-types/{entityType}/position', [EntityTypePositionController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.position.update');
 
         // The people an account knows, under the vault each of them lives in.
         // The vault is in the address rather than implied, because a contact is

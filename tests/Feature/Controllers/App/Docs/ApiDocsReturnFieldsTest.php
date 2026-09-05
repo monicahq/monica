@@ -7,6 +7,7 @@ namespace Tests\Feature\Controllers\App\Docs;
 use App\Enums\TemplateAppliesToEnum;
 use App\Models\Contact;
 use App\Models\EmailSent;
+use App\Models\EntityType;
 use App\Models\File;
 use App\Models\Log;
 use App\Models\Template;
@@ -344,6 +345,53 @@ class ApiDocsReturnFieldsTest extends TestCase
                     'description' => null,
                     'colour' => '#9a3f2b',
                 ]);
+            }),
+
+            'entity-types-index' => $this->asSomebody(function (User $user): TestResponse {
+                EntityType::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('GET', '/api/v1/entity-types');
+            }),
+
+            'entity-types-show' => $this->asSomebody(function (User $user): TestResponse {
+                $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('GET', "/api/v1/entity-types/{$entityType->uuid}");
+            }),
+
+            'entity-types-create' => $this->asSomebody(fn (): TestResponse => $this->json('POST', '/api/v1/entity-types', [
+                'name_singular' => 'Animal',
+                'name_plural' => 'Animals',
+            ])),
+
+            'entity-types-update' => $this->asSomebody(function (User $user): TestResponse {
+                $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/entity-types/{$entityType->uuid}", [
+                    'name_singular' => 'Pet',
+                    'name_plural' => 'Pets',
+                    'description' => null,
+                    'icon' => 'profile',
+                    'colour' => '#4f8a49',
+                ]);
+            }),
+
+            'entity-types-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('DELETE', "/api/v1/entity-types/{$entityType->uuid}");
+            }),
+
+            'entity-types-activation' => $this->asSomebody(function (User $user): TestResponse {
+                $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/entity-types/{$entityType->uuid}/activation", ['is_active' => false]);
+            }),
+
+            'entity-types-position' => $this->asSomebody(function (User $user): TestResponse {
+                $entityType = EntityType::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
+
+                return $this->json('PUT', "/api/v1/entity-types/{$entityType->uuid}/position", ['position' => 1]);
             }),
 
             'contacts-index' => $this->asSomebody(function (User $user): TestResponse {
