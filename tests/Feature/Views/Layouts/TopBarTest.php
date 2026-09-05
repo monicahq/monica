@@ -167,7 +167,7 @@ class TopBarTest extends TestCase
     {
         $rendered = $this->actingAs(User::factory()->create())->blade('<x-shell>Anything</x-shell>');
 
-        $rendered->assertSee('class="relative min-w-0 overflow-y-auto"', escape: false);
+        $rendered->assertSee('class="relative min-w-0 overflow-y-auto print:overflow-visible"', escape: false);
     }
 
     #[Test]

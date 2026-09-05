@@ -19,7 +19,7 @@
     <div
       x-data="{ navOpen: false }"
       @keydown.escape.window="navOpen = false"
-      @class(['grid h-dvh grid-cols-1 overflow-hidden', 'lg:grid-cols-[248px_minmax(0,1fr)]' => isset($sidebar)])
+      @class(['grid h-dvh grid-cols-1 overflow-hidden print:block print:h-auto print:overflow-visible', 'lg:grid-cols-[248px_minmax(0,1fr)]' => isset($sidebar)])
     >
       @isset($sidebar)
         {{ $sidebar }}
@@ -36,9 +36,9 @@
 
       <main
         x-bind:class="navOpen && 'max-lg:overflow-hidden'"
-        @class(['relative min-w-0 overflow-y-auto', 'flex flex-col' => isset($footer)])
+        @class(['relative min-w-0 overflow-y-auto print:overflow-visible', 'flex flex-col' => isset($footer)])
       >
-        <header class="flex h-14 shrink-0 items-center gap-3.5 border-b border-topbar-hairline bg-topbar px-4 sm:px-6">
+        <header class="flex h-14 shrink-0 items-center gap-3.5 border-b border-topbar-hairline bg-topbar px-4 sm:px-6 print:hidden">
           <button
             type="button"
             @click="navOpen = true"
@@ -65,7 +65,7 @@
 
         <div
           @class([
-            'w-full px-4 pt-6 sm:px-6 sm:pt-7',
+            'w-full px-4 pt-6 sm:px-6 sm:pt-7 print:max-w-none print:p-0',
             'mx-auto max-w-240 space-y-8' => ! $wide,
             'mx-auto flex w-full max-w-350 flex-col gap-4' => $wide,
             'flex-1 pb-8' => isset($footer),
